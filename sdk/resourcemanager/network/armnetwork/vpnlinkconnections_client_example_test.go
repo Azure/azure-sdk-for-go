@@ -13,11 +13,12 @@ import (
 	"context"
 	"log"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v6"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VpnSiteLinkConnectionReset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/VpnSiteLinkConnectionReset.json
 func ExampleVPNLinkConnectionsClient_BeginResetConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,7 +39,136 @@ func ExampleVPNLinkConnectionsClient_BeginResetConnection() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VpnSiteLinkConnectionGetIkeSas.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/VpnSiteLinkConnectionSharedKeysGet.json
+func ExampleVPNLinkConnectionsClient_NewGetAllSharedKeysPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewVPNLinkConnectionsClient().NewGetAllSharedKeysPager("rg1", "gateway1", "vpnConnection1", "Connection-Link1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.ConnectionSharedKeyResultList = armnetwork.ConnectionSharedKeyResultList{
+		// 	Value: []*armnetwork.ConnectionSharedKeyResult{
+		// 		{
+		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/vpnGateways/gateway1/vpnConnections/vpnConnection1/vpnLinkConnections/Connection-Link1/sharedKeys/default"),
+		// 			Name: to.Ptr("default"),
+		// 			Type: to.Ptr("Microsoft.Network/vpnGateways/vpnConnections/vpnLinkConnections/sharedKeys"),
+		// 			Properties: &armnetwork.SharedKeyProperties{
+		// 				SharedKeyLength: to.Ptr[int32](16),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/VpnSiteLinkConnectionDefaultSharedKeyGet.json
+func ExampleVPNLinkConnectionsClient_GetDefaultSharedKey() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVPNLinkConnectionsClient().GetDefaultSharedKey(ctx, "rg1", "gateway1", "vpnConnection1", "Connection-Link1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ConnectionSharedKeyResult = armnetwork.ConnectionSharedKeyResult{
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/vpnGateways/gateway1/vpnConnections/vpnConnection1/vpnLinkConnections/Connection-Link1/sharedKeys/default"),
+	// 	Name: to.Ptr("default"),
+	// 	Type: to.Ptr("Microsoft.Network/vpnGateways/vpnConnections/vpnLinkConnections/sharedKeys"),
+	// 	Properties: &armnetwork.SharedKeyProperties{
+	// 		SharedKeyLength: to.Ptr[int32](16),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/VpnSiteLinkConnectionDefaultSharedKeyPut.json
+func ExampleVPNLinkConnectionsClient_BeginSetOrInitDefaultSharedKey() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVPNLinkConnectionsClient().BeginSetOrInitDefaultSharedKey(ctx, "rg1", "gateway1", "vpnConnection1", "Connection-Link1", armnetwork.ConnectionSharedKeyResult{
+		Properties: &armnetwork.SharedKeyProperties{
+			SharedKey: to.Ptr("ABCDEF123456"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ConnectionSharedKeyResult = armnetwork.ConnectionSharedKeyResult{
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/vpnGateways/gateway1/vpnConnections/vpnConnection1/vpnLinkConnections/Connection-Link1/sharedKeys/default"),
+	// 	Name: to.Ptr("default"),
+	// 	Type: to.Ptr("Microsoft.Network/vpnGateways/vpnConnections/vpnLinkConnections/sharedKeys"),
+	// 	Properties: &armnetwork.SharedKeyProperties{
+	// 		SharedKeyLength: to.Ptr[int32](12),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/VpnSiteLinkConnectionDefaultSharedKeyList.json
+func ExampleVPNLinkConnectionsClient_ListDefaultSharedKey() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVPNLinkConnectionsClient().ListDefaultSharedKey(ctx, "rg1", "gateway1", "vpnConnection1", "Connection-Link1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ConnectionSharedKeyResult = armnetwork.ConnectionSharedKeyResult{
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/vpnGateways/gateway1/vpnConnections/vpnConnection1/vpnLinkConnections/Connection-Link1/sharedKeys/default"),
+	// 	Name: to.Ptr("default"),
+	// 	Type: to.Ptr("Microsoft.Network/vpnGateways/vpnConnections/vpnLinkConnections/sharedKeys"),
+	// 	Properties: &armnetwork.SharedKeyProperties{
+	// 		SharedKey: to.Ptr("AzureAbc1234"),
+	// 		SharedKeyLength: to.Ptr[int32](12),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/VpnSiteLinkConnectionGetIkeSas.json
 func ExampleVPNLinkConnectionsClient_BeginGetIkeSas() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -63,7 +193,7 @@ func ExampleVPNLinkConnectionsClient_BeginGetIkeSas() {
 	// res.Value = "\"{\"Status\":\"Successful\",\"Data\":null}\""
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VpnSiteLinkConnectionList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/VpnSiteLinkConnectionList.json
 func ExampleVPNLinkConnectionsClient_NewListByVPNConnectionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -1,5 +1,34 @@
 # Release History
 
+## 0.6.0 (2024-09-26)
+### Features Added
+
+- New enum type `QuickStartTemplateType` with values `QuickStartTemplateTypeALL`, `QuickStartTemplateTypeHCI`, `QuickStartTemplateTypeHCIAKS`, `QuickStartTemplateTypeHCIARCVM`, `QuickStartTemplateTypeNone`
+- New function `*ClientFactory.NewIacProfilesClient() *IacProfilesClient`
+- New function `NewIacProfilesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*IacProfilesClient, error)`
+- New function `*IacProfilesClient.CreateOrUpdate(context.Context, string, string, IacProfile, *IacProfilesClientCreateOrUpdateOptions) (IacProfilesClientCreateOrUpdateResponse, error)`
+- New function `*IacProfilesClient.Delete(context.Context, string, string, *IacProfilesClientDeleteOptions) (IacProfilesClientDeleteResponse, error)`
+- New function `*IacProfilesClient.Export(context.Context, string, string, ExportTemplateRequest, *IacProfilesClientExportOptions) (IacProfilesClientExportResponse, error)`
+- New function `*IacProfilesClient.Get(context.Context, string, string, *IacProfilesClientGetOptions) (IacProfilesClientGetResponse, error)`
+- New function `*IacProfilesClient.NewListByResourceGroupPager(string, *IacProfilesClientListByResourceGroupOptions) *runtime.Pager[IacProfilesClientListByResourceGroupResponse]`
+- New function `*IacProfilesClient.NewListPager(*IacProfilesClientListOptions) *runtime.Pager[IacProfilesClientListResponse]`
+- New function `*IacProfilesClient.Scale(context.Context, string, string, ScaleTemplateRequest, *IacProfilesClientScaleOptions) (IacProfilesClientScaleResponse, error)`
+- New function `*IacProfilesClient.Sync(context.Context, string, string, *IacProfilesClientSyncOptions) (IacProfilesClientSyncResponse, error)`
+- New function `*IacProfilesClient.UpdateTags(context.Context, string, string, TagsObject, *IacProfilesClientUpdateTagsOptions) (IacProfilesClientUpdateTagsResponse, error)`
+- New struct `ExportTemplateRequest`
+- New struct `IacGitHubProfile`
+- New struct `IacProfile`
+- New struct `IacProfileListResult`
+- New struct `IacProfileProperties`
+- New struct `IacTemplateDetails`
+- New struct `IacTemplateProperties`
+- New struct `PrLinkResponse`
+- New struct `ScaleProperty`
+- New struct `ScaleTemplateRequest`
+- New struct `StageProperties`
+- New struct `TerraformProfile`
+
+
 ## 0.5.0 (2023-11-24)
 ### Features Added
 

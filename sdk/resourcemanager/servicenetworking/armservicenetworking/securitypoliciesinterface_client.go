@@ -98,7 +98,7 @@ func (client *SecurityPoliciesInterfaceClient) createOrUpdate(ctx context.Contex
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *SecurityPoliciesInterfaceClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, trafficControllerName string, securityPolicyName string, resource SecurityPolicy, options *SecurityPoliciesInterfaceClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/securityPolicy/{securityPolicyName}"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/securityPolicies/{securityPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -183,7 +183,7 @@ func (client *SecurityPoliciesInterfaceClient) deleteOperation(ctx context.Conte
 
 // deleteCreateRequest creates the Delete request.
 func (client *SecurityPoliciesInterfaceClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, trafficControllerName string, securityPolicyName string, options *SecurityPoliciesInterfaceClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/securityPolicy/{securityPolicyName}"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/securityPolicies/{securityPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -244,7 +244,7 @@ func (client *SecurityPoliciesInterfaceClient) Get(ctx context.Context, resource
 
 // getCreateRequest creates the Get request.
 func (client *SecurityPoliciesInterfaceClient) getCreateRequest(ctx context.Context, resourceGroupName string, trafficControllerName string, securityPolicyName string, options *SecurityPoliciesInterfaceClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/securityPolicy/{securityPolicyName}"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/securityPolicies/{securityPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -313,7 +313,7 @@ func (client *SecurityPoliciesInterfaceClient) NewListByTrafficControllerPager(r
 
 // listByTrafficControllerCreateRequest creates the ListByTrafficController request.
 func (client *SecurityPoliciesInterfaceClient) listByTrafficControllerCreateRequest(ctx context.Context, resourceGroupName string, trafficControllerName string, options *SecurityPoliciesInterfaceClientListByTrafficControllerOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/securityPolicy"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/securityPolicies"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -380,7 +380,7 @@ func (client *SecurityPoliciesInterfaceClient) Update(ctx context.Context, resou
 
 // updateCreateRequest creates the Update request.
 func (client *SecurityPoliciesInterfaceClient) updateCreateRequest(ctx context.Context, resourceGroupName string, trafficControllerName string, securityPolicyName string, properties SecurityPolicyUpdate, options *SecurityPoliciesInterfaceClientUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/securityPolicy/{securityPolicyName}"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/securityPolicies/{securityPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlDatabaseList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBSqlDatabaseList.json
 func ExampleSQLResourcesClient_NewListSQLDatabasesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -64,7 +64,7 @@ func ExampleSQLResourcesClient_NewListSQLDatabasesPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlDatabaseGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBSqlDatabaseGet.json
 func ExampleSQLResourcesClient_GetSQLDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,7 +102,7 @@ func ExampleSQLResourcesClient_GetSQLDatabase() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlDatabaseCreateUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBSqlDatabaseCreateUpdate.json
 func ExampleSQLResourcesClient_BeginCreateUpdateSQLDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -151,7 +151,7 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLDatabase() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlDatabaseDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBSqlDatabaseDelete.json
 func ExampleSQLResourcesClient_BeginDeleteSQLDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -172,7 +172,7 @@ func ExampleSQLResourcesClient_BeginDeleteSQLDatabase() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlDatabaseThroughputGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBSqlDatabaseThroughputGet.json
 func ExampleSQLResourcesClient_GetSQLDatabaseThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -212,7 +212,7 @@ func ExampleSQLResourcesClient_GetSQLDatabaseThroughput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlDatabaseThroughputUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBSqlDatabaseThroughputUpdate.json
 func ExampleSQLResourcesClient_BeginUpdateSQLDatabaseThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -262,7 +262,7 @@ func ExampleSQLResourcesClient_BeginUpdateSQLDatabaseThroughput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlDatabaseMigrateToAutoscale.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBSqlDatabaseMigrateToAutoscale.json
 func ExampleSQLResourcesClient_BeginMigrateSQLDatabaseToAutoscale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -301,7 +301,7 @@ func ExampleSQLResourcesClient_BeginMigrateSQLDatabaseToAutoscale() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlDatabaseMigrateToManualThroughput.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBSqlDatabaseMigrateToManualThroughput.json
 func ExampleSQLResourcesClient_BeginMigrateSQLDatabaseToManualThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -337,7 +337,7 @@ func ExampleSQLResourcesClient_BeginMigrateSQLDatabaseToManualThroughput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlContainerList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBSqlContainerList.json
 func ExampleSQLResourcesClient_NewListSQLContainersPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -568,7 +568,7 @@ func ExampleSQLResourcesClient_NewListSQLContainersPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlContainerGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBSqlContainerGet.json
 func ExampleSQLResourcesClient_GetSQLContainer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -660,7 +660,7 @@ func ExampleSQLResourcesClient_GetSQLContainer() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlContainerCreateUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBSqlContainerCreateUpdate.json
 func ExampleSQLResourcesClient_BeginCreateUpdateSQLContainer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -814,7 +814,7 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLContainer() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlContainerDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBSqlContainerDelete.json
 func ExampleSQLResourcesClient_BeginDeleteSQLContainer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -835,7 +835,7 @@ func ExampleSQLResourcesClient_BeginDeleteSQLContainer() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlContainerThroughputGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBSqlContainerThroughputGet.json
 func ExampleSQLResourcesClient_GetSQLContainerThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -875,7 +875,7 @@ func ExampleSQLResourcesClient_GetSQLContainerThroughput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlContainerThroughputUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBSqlContainerThroughputUpdate.json
 func ExampleSQLResourcesClient_BeginUpdateSQLContainerThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -925,7 +925,7 @@ func ExampleSQLResourcesClient_BeginUpdateSQLContainerThroughput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlContainerMigrateToAutoscale.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBSqlContainerMigrateToAutoscale.json
 func ExampleSQLResourcesClient_BeginMigrateSQLContainerToAutoscale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -964,7 +964,7 @@ func ExampleSQLResourcesClient_BeginMigrateSQLContainerToAutoscale() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlContainerMigrateToManualThroughput.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBSqlContainerMigrateToManualThroughput.json
 func ExampleSQLResourcesClient_BeginMigrateSQLContainerToManualThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1000,7 +1000,7 @@ func ExampleSQLResourcesClient_BeginMigrateSQLContainerToManualThroughput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlClientEncryptionKeysList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBSqlClientEncryptionKeysList.json
 func ExampleSQLResourcesClient_NewListClientEncryptionKeysPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1070,7 +1070,7 @@ func ExampleSQLResourcesClient_NewListClientEncryptionKeysPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlClientEncryptionKeyGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBSqlClientEncryptionKeyGet.json
 func ExampleSQLResourcesClient_GetClientEncryptionKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1111,7 +1111,7 @@ func ExampleSQLResourcesClient_GetClientEncryptionKey() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlClientEncryptionKeyCreateUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBSqlClientEncryptionKeyCreateUpdate.json
 func ExampleSQLResourcesClient_BeginCreateUpdateClientEncryptionKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1170,7 +1170,7 @@ func ExampleSQLResourcesClient_BeginCreateUpdateClientEncryptionKey() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlStoredProcedureList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBSqlStoredProcedureList.json
 func ExampleSQLResourcesClient_NewListSQLStoredProceduresPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1212,7 +1212,7 @@ func ExampleSQLResourcesClient_NewListSQLStoredProceduresPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlStoredProcedureGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBSqlStoredProcedureGet.json
 func ExampleSQLResourcesClient_GetSQLStoredProcedure() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1246,7 +1246,7 @@ func ExampleSQLResourcesClient_GetSQLStoredProcedure() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlStoredProcedureCreateUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBSqlStoredProcedureCreateUpdate.json
 func ExampleSQLResourcesClient_BeginCreateUpdateSQLStoredProcedure() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1292,7 +1292,7 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLStoredProcedure() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlStoredProcedureDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBSqlStoredProcedureDelete.json
 func ExampleSQLResourcesClient_BeginDeleteSQLStoredProcedure() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1313,7 +1313,7 @@ func ExampleSQLResourcesClient_BeginDeleteSQLStoredProcedure() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlUserDefinedFunctionList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBSqlUserDefinedFunctionList.json
 func ExampleSQLResourcesClient_NewListSQLUserDefinedFunctionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1355,7 +1355,7 @@ func ExampleSQLResourcesClient_NewListSQLUserDefinedFunctionsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlUserDefinedFunctionGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBSqlUserDefinedFunctionGet.json
 func ExampleSQLResourcesClient_GetSQLUserDefinedFunction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1389,7 +1389,7 @@ func ExampleSQLResourcesClient_GetSQLUserDefinedFunction() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlUserDefinedFunctionCreateUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBSqlUserDefinedFunctionCreateUpdate.json
 func ExampleSQLResourcesClient_BeginCreateUpdateSQLUserDefinedFunction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1435,7 +1435,7 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLUserDefinedFunction() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlUserDefinedFunctionDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBSqlUserDefinedFunctionDelete.json
 func ExampleSQLResourcesClient_BeginDeleteSQLUserDefinedFunction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1456,7 +1456,7 @@ func ExampleSQLResourcesClient_BeginDeleteSQLUserDefinedFunction() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlTriggerList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBSqlTriggerList.json
 func ExampleSQLResourcesClient_NewListSQLTriggersPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1500,7 +1500,7 @@ func ExampleSQLResourcesClient_NewListSQLTriggersPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlTriggerGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBSqlTriggerGet.json
 func ExampleSQLResourcesClient_GetSQLTrigger() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1536,7 +1536,7 @@ func ExampleSQLResourcesClient_GetSQLTrigger() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlTriggerCreateUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBSqlTriggerCreateUpdate.json
 func ExampleSQLResourcesClient_BeginCreateUpdateSQLTrigger() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1586,7 +1586,7 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLTrigger() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlTriggerDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBSqlTriggerDelete.json
 func ExampleSQLResourcesClient_BeginDeleteSQLTrigger() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1607,7 +1607,7 @@ func ExampleSQLResourcesClient_BeginDeleteSQLTrigger() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlRoleDefinitionGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBSqlRoleDefinitionGet.json
 func ExampleSQLResourcesClient_GetSQLRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1647,7 +1647,7 @@ func ExampleSQLResourcesClient_GetSQLRoleDefinition() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlRoleDefinitionCreateUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBSqlRoleDefinitionCreateUpdate.json
 func ExampleSQLResourcesClient_BeginCreateUpdateSQLRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1704,7 +1704,7 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLRoleDefinition() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlRoleDefinitionDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBSqlRoleDefinitionDelete.json
 func ExampleSQLResourcesClient_BeginDeleteSQLRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1725,7 +1725,7 @@ func ExampleSQLResourcesClient_BeginDeleteSQLRoleDefinition() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlRoleDefinitionList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBSqlRoleDefinitionList.json
 func ExampleSQLResourcesClient_NewListSQLRoleDefinitionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1773,7 +1773,7 @@ func ExampleSQLResourcesClient_NewListSQLRoleDefinitionsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlRoleAssignmentGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBSqlRoleAssignmentGet.json
 func ExampleSQLResourcesClient_GetSQLRoleAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1803,7 +1803,7 @@ func ExampleSQLResourcesClient_GetSQLRoleAssignment() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlRoleAssignmentCreateUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBSqlRoleAssignmentCreateUpdate.json
 func ExampleSQLResourcesClient_BeginCreateUpdateSQLRoleAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1843,7 +1843,7 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLRoleAssignment() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlRoleAssignmentDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBSqlRoleAssignmentDelete.json
 func ExampleSQLResourcesClient_BeginDeleteSQLRoleAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1864,7 +1864,7 @@ func ExampleSQLResourcesClient_BeginDeleteSQLRoleAssignment() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlRoleAssignmentList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBSqlRoleAssignmentList.json
 func ExampleSQLResourcesClient_NewListSQLRoleAssignmentsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1902,7 +1902,7 @@ func ExampleSQLResourcesClient_NewListSQLRoleAssignmentsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ec7ee8842bf615c2f0354bf8b5b8725fdac9454a/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlContainerBackupInformation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBSqlContainerBackupInformation.json
 func ExampleSQLResourcesClient_BeginRetrieveContinuousBackupInformation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

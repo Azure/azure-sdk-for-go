@@ -47,7 +47,7 @@ func NewRestorableGremlinResourcesClient(subscriptionID string, credential azcor
 // location. This helps in scenarios to validate what resources exist at given timestamp and
 // location. This API requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/…/read' permission.
 //
-// Generated from API version 2024-05-15
+// Generated from API version 2024-08-15
 //   - location - Cosmos DB region, with spaces between words and each word capitalized.
 //   - instanceID - The instanceId GUID of a restorable database account.
 //   - options - RestorableGremlinResourcesClientListOptions contains the optional parameters for the RestorableGremlinResourcesClient.NewListPager
@@ -96,7 +96,7 @@ func (client *RestorableGremlinResourcesClient) listCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-15")
+	reqQP.Set("api-version", "2024-08-15")
 	if options != nil && options.RestoreLocation != nil {
 		reqQP.Set("restoreLocation", *options.RestoreLocation)
 	}

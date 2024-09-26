@@ -1,5 +1,12 @@
 # Release History
 
+## 6.1.0-beta.3 (2024-09-26)
+### Features Added
+
+- New enum type `DriverType` with values `DriverTypeCUDA`, `DriverTypeGRID`
+- New field `DriverType` in struct `AgentPoolGPUProfile`
+
+
 ## 6.1.0-beta.1 (2024-08-22)
 ### Features Added
 

@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster/TempTypeSpecFiles/DocumentDB.MongoCluster.Management/examples/2024-06-01-preview/MongoClusters_NameAvailability.json
+// Generated from example definition: 2024-06-01-preview/MongoClusters_NameAvailability.json
 func ExampleMongoClustersClient_CheckNameAvailability_checksAndConfirmsTheMongoClusterNameIsAvailabilityForUse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func ExampleMongoClustersClient_CheckNameAvailability_checksAndConfirmsTheMongoC
 	// }
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster/TempTypeSpecFiles/DocumentDB.MongoCluster.Management/examples/2024-06-01-preview/MongoClusters_NameAvailability_AlreadyExists.json
+// Generated from example definition: 2024-06-01-preview/MongoClusters_NameAvailability_AlreadyExists.json
 func ExampleMongoClustersClient_CheckNameAvailability_checksAndReturnsThatTheMongoClusterNameIsAlreadyInUse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,7 +71,7 @@ func ExampleMongoClustersClient_CheckNameAvailability_checksAndReturnsThatTheMon
 	// }
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster/TempTypeSpecFiles/DocumentDB.MongoCluster.Management/examples/2024-06-01-preview/MongoClusters_Create.json
+// Generated from example definition: 2024-06-01-preview/MongoClusters_Create.json
 func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,7 +147,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResou
 	// }
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster/TempTypeSpecFiles/DocumentDB.MongoCluster.Management/examples/2024-06-01-preview/MongoClusters_CreateGeoReplica.json
+// Generated from example definition: 2024-06-01-preview/MongoClusters_CreateGeoReplica.json
 func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAReplicaMongoClusterResourceFromASourceResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -214,7 +214,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAReplicaMongoClusterR
 	// }
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster/TempTypeSpecFiles/DocumentDB.MongoCluster.Management/examples/2024-06-01-preview/MongoClusters_CreatePITR.json
+// Generated from example definition: 2024-06-01-preview/MongoClusters_CreatePITR.json
 func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAMongoClusterResourceFromAPointInTimeRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -275,7 +275,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAMongoClusterResource
 	// }
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster/TempTypeSpecFiles/DocumentDB.MongoCluster.Management/examples/2024-06-01-preview/MongoClusters_Delete.json
+// Generated from example definition: 2024-06-01-preview/MongoClusters_Delete.json
 func ExampleMongoClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -296,7 +296,7 @@ func ExampleMongoClustersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster/TempTypeSpecFiles/DocumentDB.MongoCluster.Management/examples/2024-06-01-preview/MongoClusters_Get.json
+// Generated from example definition: 2024-06-01-preview/MongoClusters_Get.json
 func ExampleMongoClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -357,7 +357,7 @@ func ExampleMongoClustersClient_Get() {
 	// }
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster/TempTypeSpecFiles/DocumentDB.MongoCluster.Management/examples/2024-06-01-preview/MongoClusters_List.json
+// Generated from example definition: 2024-06-01-preview/MongoClusters_List.json
 func ExampleMongoClustersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -464,7 +464,7 @@ func ExampleMongoClustersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster/TempTypeSpecFiles/DocumentDB.MongoCluster.Management/examples/2024-06-01-preview/MongoClusters_ListByResourceGroup.json
+// Generated from example definition: 2024-06-01-preview/MongoClusters_ListByResourceGroup.json
 func ExampleMongoClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -571,7 +571,7 @@ func ExampleMongoClustersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster/TempTypeSpecFiles/DocumentDB.MongoCluster.Management/examples/2024-06-01-preview/MongoClusters_ListConnectionStrings.json
+// Generated from example definition: 2024-06-01-preview/MongoClusters_ListConnectionStrings.json
 func ExampleMongoClustersClient_ListConnectionStrings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -601,7 +601,7 @@ func ExampleMongoClustersClient_ListConnectionStrings() {
 	// }
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster/TempTypeSpecFiles/DocumentDB.MongoCluster.Management/examples/2024-06-01-preview/MongoClusters_ForcePromoteReplica.json
+// Generated from example definition: 2024-06-01-preview/MongoClusters_ForcePromoteReplica.json
 func ExampleMongoClustersClient_BeginPromote() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -625,7 +625,7 @@ func ExampleMongoClustersClient_BeginPromote() {
 	}
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster/TempTypeSpecFiles/DocumentDB.MongoCluster.Management/examples/2024-06-01-preview/MongoClusters_PatchDiskSize.json
+// Generated from example definition: 2024-06-01-preview/MongoClusters_PatchDiskSize.json
 func ExampleMongoClustersClient_BeginUpdate_updatesTheDiskSizeOnAMongoClusterResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -693,7 +693,7 @@ func ExampleMongoClustersClient_BeginUpdate_updatesTheDiskSizeOnAMongoClusterRes
 	// }
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster/TempTypeSpecFiles/DocumentDB.MongoCluster.Management/examples/2024-06-01-preview/MongoClusters_PatchPrivateNetworkAccess.json
+// Generated from example definition: 2024-06-01-preview/MongoClusters_PatchPrivateNetworkAccess.json
 func ExampleMongoClustersClient_BeginUpdate_disablesPublicNetworkAccessOnAMongoClusterResourceWithAPrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -782,7 +782,7 @@ func ExampleMongoClustersClient_BeginUpdate_disablesPublicNetworkAccessOnAMongoC
 	// }
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster/TempTypeSpecFiles/DocumentDB.MongoCluster.Management/examples/2024-06-01-preview/MongoClusters_ResetPassword.json
+// Generated from example definition: 2024-06-01-preview/MongoClusters_ResetPassword.json
 func ExampleMongoClustersClient_BeginUpdate_resetsTheAdministratorLoginPassword() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -846,7 +846,7 @@ func ExampleMongoClustersClient_BeginUpdate_resetsTheAdministratorLoginPassword(
 	// }
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster/TempTypeSpecFiles/DocumentDB.MongoCluster.Management/examples/2024-06-01-preview/MongoClusters_Update.json
+// Generated from example definition: 2024-06-01-preview/MongoClusters_Update.json
 func ExampleMongoClustersClient_BeginUpdate_updatesAMongoClusterResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -10,7 +10,7 @@ package armcosmos
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
-	moduleVersion = "v3.0.0"
+	moduleVersion = "v3.1.0"
 )
 
 // APIType - Enum to indicate the API type of the restorable database account.
@@ -698,13 +698,14 @@ func PossibleRoleDefinitionTypeValues() []RoleDefinitionType {
 	}
 }
 
-// ServerVersion - Describes the ServerVersion of an a MongoDB account.
+// ServerVersion - Describes the version of the MongoDB account.
 type ServerVersion string
 
 const (
 	ServerVersionFive0  ServerVersion = "5.0"
 	ServerVersionFour0  ServerVersion = "4.0"
 	ServerVersionFour2  ServerVersion = "4.2"
+	ServerVersionSeven0 ServerVersion = "7.0"
 	ServerVersionSix0   ServerVersion = "6.0"
 	ServerVersionThree2 ServerVersion = "3.2"
 	ServerVersionThree6 ServerVersion = "3.6"
@@ -716,6 +717,7 @@ func PossibleServerVersionValues() []ServerVersion {
 		ServerVersionFive0,
 		ServerVersionFour0,
 		ServerVersionFour2,
+		ServerVersionSeven0,
 		ServerVersionSix0,
 		ServerVersionThree2,
 		ServerVersionThree6,

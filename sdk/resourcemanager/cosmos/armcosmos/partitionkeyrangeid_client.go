@@ -45,7 +45,7 @@ func NewPartitionKeyRangeIDClient(subscriptionID string, credential azcore.Token
 
 // NewListMetricsPager - Retrieves the metrics determined by the given filter for the given partition key range id.
 //
-// Generated from API version 2024-05-15
+// Generated from API version 2024-08-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseRid - Cosmos DB database rid.
@@ -113,7 +113,7 @@ func (client *PartitionKeyRangeIDClient) listMetricsCreateRequest(ctx context.Co
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("$filter", filter)
-	reqQP.Set("api-version", "2024-05-15")
+	reqQP.Set("api-version", "2024-08-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

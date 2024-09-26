@@ -176,6 +176,25 @@ type PrivateLinkResourcesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ReplicaSharedPrivateLinkResourcesClientBeginCreateOrUpdateOptions contains the optional parameters for the ReplicaSharedPrivateLinkResourcesClient.BeginCreateOrUpdate
+// method.
+type ReplicaSharedPrivateLinkResourcesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ReplicaSharedPrivateLinkResourcesClientGetOptions contains the optional parameters for the ReplicaSharedPrivateLinkResourcesClient.Get
+// method.
+type ReplicaSharedPrivateLinkResourcesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ReplicaSharedPrivateLinkResourcesClientListOptions contains the optional parameters for the ReplicaSharedPrivateLinkResourcesClient.NewListPager
+// method.
+type ReplicaSharedPrivateLinkResourcesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ReplicasClientBeginCreateOrUpdateOptions contains the optional parameters for the ReplicasClient.BeginCreateOrUpdate method.
 type ReplicasClientBeginCreateOrUpdateOptions struct {
 	// Resumes the LRO from the provided token.

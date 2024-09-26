@@ -46,7 +46,7 @@ func NewHubsClient(subscriptionID string, credential azcore.TokenCredential, opt
 // BeginCreateOrUpdate - Create or update a hub setting.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2024-03-01
 //   - hubName - The hub name.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
@@ -74,7 +74,7 @@ func (client *HubsClient) BeginCreateOrUpdate(ctx context.Context, hubName strin
 // CreateOrUpdate - Create or update a hub setting.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2024-03-01
 func (client *HubsClient) createOrUpdate(ctx context.Context, hubName string, resourceGroupName string, resourceName string, parameters Hub, options *HubsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "HubsClient.BeginCreateOrUpdate"
@@ -120,7 +120,7 @@ func (client *HubsClient) createOrUpdateCreateRequest(ctx context.Context, hubNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-01-preview")
+	reqQP.Set("api-version", "2024-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -132,7 +132,7 @@ func (client *HubsClient) createOrUpdateCreateRequest(ctx context.Context, hubNa
 // BeginDelete - Delete a hub setting.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2024-03-01
 //   - hubName - The hub name.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
@@ -158,7 +158,7 @@ func (client *HubsClient) BeginDelete(ctx context.Context, hubName string, resou
 // Delete - Delete a hub setting.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2024-03-01
 func (client *HubsClient) deleteOperation(ctx context.Context, hubName string, resourceGroupName string, resourceName string, options *HubsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "HubsClient.BeginDelete"
@@ -204,7 +204,7 @@ func (client *HubsClient) deleteCreateRequest(ctx context.Context, hubName strin
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-01-preview")
+	reqQP.Set("api-version", "2024-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -213,7 +213,7 @@ func (client *HubsClient) deleteCreateRequest(ctx context.Context, hubName strin
 // Get - Get a hub setting.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2024-03-01
 //   - hubName - The hub name.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
@@ -264,7 +264,7 @@ func (client *HubsClient) getCreateRequest(ctx context.Context, hubName string, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-01-preview")
+	reqQP.Set("api-version", "2024-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -281,7 +281,7 @@ func (client *HubsClient) getHandleResponse(resp *http.Response) (HubsClientGetR
 
 // NewListPager - List hub settings.
 //
-// Generated from API version 2023-08-01-preview
+// Generated from API version 2024-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
 //   - options - HubsClientListOptions contains the optional parameters for the HubsClient.NewListPager method.
@@ -328,7 +328,7 @@ func (client *HubsClient) listCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-01-preview")
+	reqQP.Set("api-version", "2024-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

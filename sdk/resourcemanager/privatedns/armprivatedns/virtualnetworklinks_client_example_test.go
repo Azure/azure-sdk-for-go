@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/privatedns/armprivatedns"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/VirtualNetworkLinkPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4991356eec55985c1af47096c9c2091126a7d0f/specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/VirtualNetworkLinkPut.json
 func ExampleVirtualNetworkLinksClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func ExampleVirtualNetworkLinksClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/VirtualNetworkLinkPatch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4991356eec55985c1af47096c9c2091126a7d0f/specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/VirtualNetworkLinkPatch.json
 func ExampleVirtualNetworkLinksClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,12 +84,13 @@ func ExampleVirtualNetworkLinksClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewVirtualNetworkLinksClient().BeginUpdate(ctx, "resourceGroup1", "privatezone1.com", "virtualNetworkLink1", armprivatedns.VirtualNetworkLink{
+	poller, err := clientFactory.NewVirtualNetworkLinksClient().BeginUpdate(ctx, "resourceGroup1", "privatelink.contoso.com", "virtualNetworkLink1", armprivatedns.VirtualNetworkLink{
 		Tags: map[string]*string{
 			"key2": to.Ptr("value2"),
 		},
 		Properties: &armprivatedns.VirtualNetworkLinkProperties{
 			RegistrationEnabled: to.Ptr(true),
+			ResolutionPolicy:    to.Ptr(armprivatedns.ResolutionPolicyNxDomainRedirect),
 		},
 	}, &armprivatedns.VirtualNetworkLinksClientBeginUpdateOptions{IfMatch: nil})
 	if err != nil {
@@ -105,7 +106,7 @@ func ExampleVirtualNetworkLinksClient_BeginUpdate() {
 	// res.VirtualNetworkLink = armprivatedns.VirtualNetworkLink{
 	// 	Name: to.Ptr("virtualNetworkLink1"),
 	// 	Type: to.Ptr("Microsoft.Network/privateDnsZones/virtualNetworkLinks"),
-	// 	ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/privatezone1.com/virtualNetworkLinks/virtualNetworkLink1"),
+	// 	ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/privatelink.contoso.com/virtualNetworkLinks/virtualNetworkLink1"),
 	// 	Location: to.Ptr("global"),
 	// 	Tags: map[string]*string{
 	// 		"key2": to.Ptr("value2"),
@@ -114,6 +115,7 @@ func ExampleVirtualNetworkLinksClient_BeginUpdate() {
 	// 	Properties: &armprivatedns.VirtualNetworkLinkProperties{
 	// 		ProvisioningState: to.Ptr(armprivatedns.ProvisioningStateSucceeded),
 	// 		RegistrationEnabled: to.Ptr(true),
+	// 		ResolutionPolicy: to.Ptr(armprivatedns.ResolutionPolicyNxDomainRedirect),
 	// 		VirtualNetwork: &armprivatedns.SubResource{
 	// 			ID: to.Ptr("/subscriptions/virtualNetworkSubscriptionId/resourceGroups/virtualNetworkResourceGroup/providers/Microsoft.Network/virtualNetworks/virtualNetworkName"),
 	// 		},
@@ -122,7 +124,7 @@ func ExampleVirtualNetworkLinksClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/VirtualNetworkLinkDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4991356eec55985c1af47096c9c2091126a7d0f/specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/VirtualNetworkLinkDelete.json
 func ExampleVirtualNetworkLinksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -143,7 +145,7 @@ func ExampleVirtualNetworkLinksClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/VirtualNetworkLinkGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4991356eec55985c1af47096c9c2091126a7d0f/specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/VirtualNetworkLinkGet.json
 func ExampleVirtualNetworkLinksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -181,7 +183,7 @@ func ExampleVirtualNetworkLinksClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/VirtualNetworkLinkList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4991356eec55985c1af47096c9c2091126a7d0f/specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/VirtualNetworkLinkList.json
 func ExampleVirtualNetworkLinksClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -192,7 +194,7 @@ func ExampleVirtualNetworkLinksClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewVirtualNetworkLinksClient().NewListPager("resourceGroup1", "privatezone1.com", &armprivatedns.VirtualNetworkLinksClientListOptions{Top: nil})
+	pager := clientFactory.NewVirtualNetworkLinksClient().NewListPager("resourceGroup1", "privatelink.contoso.com", &armprivatedns.VirtualNetworkLinksClientListOptions{Top: nil})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -208,7 +210,7 @@ func ExampleVirtualNetworkLinksClient_NewListPager() {
 		// 		{
 		// 			Name: to.Ptr("virtualNetworkLink1"),
 		// 			Type: to.Ptr("Microsoft.Network/privateDnsZones/virtualNetworkLinks"),
-		// 			ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/privatezone1.com/virtualNetworkLinks/virtualNetworkLink1"),
+		// 			ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/privatelink.contoso.com/virtualNetworkLinks/virtualNetworkLink1"),
 		// 			Location: to.Ptr("global"),
 		// 			Tags: map[string]*string{
 		// 				"key1": to.Ptr("value1"),
@@ -217,6 +219,7 @@ func ExampleVirtualNetworkLinksClient_NewListPager() {
 		// 			Properties: &armprivatedns.VirtualNetworkLinkProperties{
 		// 				ProvisioningState: to.Ptr(armprivatedns.ProvisioningStateSucceeded),
 		// 				RegistrationEnabled: to.Ptr(false),
+		// 				ResolutionPolicy: to.Ptr(armprivatedns.ResolutionPolicyNxDomainRedirect),
 		// 				VirtualNetwork: &armprivatedns.SubResource{
 		// 					ID: to.Ptr("/subscriptions/virtualNetworkSubscriptionId/resourceGroups/virtualNetworkResourceGroup/providers/Microsoft.Network/virtualNetworks/virtualNetworkName"),
 		// 				},
@@ -226,12 +229,13 @@ func ExampleVirtualNetworkLinksClient_NewListPager() {
 		// 		{
 		// 			Name: to.Ptr("virtualNetworkLink2"),
 		// 			Type: to.Ptr("Microsoft.Network/privateDnsZones/virtualNetworkLinks"),
-		// 			ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/privatezone1.com/virtualNetworkLinks/virtualNetworkLink2"),
+		// 			ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/privatelink.contoso.com/virtualNetworkLinks/virtualNetworkLink2"),
 		// 			Location: to.Ptr("global"),
 		// 			Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 			Properties: &armprivatedns.VirtualNetworkLinkProperties{
 		// 				ProvisioningState: to.Ptr(armprivatedns.ProvisioningStateSucceeded),
 		// 				RegistrationEnabled: to.Ptr(true),
+		// 				ResolutionPolicy: to.Ptr(armprivatedns.ResolutionPolicyDefault),
 		// 				VirtualNetwork: &armprivatedns.SubResource{
 		// 					ID: to.Ptr("/subscriptions/virtualNetworkSubscriptionId/resourceGroups/virtualNetworkResourceGroup/providers/Microsoft.Network/virtualNetworks/virtualNetworkName"),
 		// 				},

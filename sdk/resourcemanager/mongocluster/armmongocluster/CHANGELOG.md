@@ -1,5 +1,27 @@
 # Release History
 
+## 1.0.0 (2024-09-27)
+### Breaking Changes
+
+- Enum `NodeKind` has been removed
+- Struct `NodeGroupSpec` has been removed
+- Field `AdministratorLogin`, `AdministratorLoginPassword`, `EarliestRestoreTime`, `NodeGroupSpecs` of struct `Properties` has been removed
+- Field `AdministratorLogin`, `AdministratorLoginPassword`, `NodeGroupSpecs` of struct `UpdateProperties` has been removed
+
+### Features Added
+
+- New enum type `HighAvailabilityMode` with values `HighAvailabilityModeDisabled`, `HighAvailabilityModeSameZone`, `HighAvailabilityModeZoneRedundantPreferred`
+- New struct `AdministratorProperties`
+- New struct `BackupProperties`
+- New struct `ComputeProperties`
+- New struct `HighAvailabilityProperties`
+- New struct `ShardingProperties`
+- New struct `StorageProperties`
+- New field `Name` in struct `ConnectionString`
+- New field `Administrator`, `Backup`, `Compute`, `HighAvailability`, `Sharding`, `Storage` in struct `Properties`
+- New field `Administrator`, `Backup`, `Compute`, `HighAvailability`, `Sharding`, `Storage` in struct `UpdateProperties`
+
+
 ## 0.2.0 (2024-09-26)
 ### Breaking Changes
 

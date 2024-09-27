@@ -6,6 +6,21 @@ package armmongocluster
 
 import "time"
 
+// AdministratorProperties - The local administrator login properties.
+type AdministratorProperties struct {
+	// The administrator password.
+	Password *string
+
+	// The administrator user name.
+	UserName *string
+}
+
+// BackupProperties - The backup properties of the cluster. This includes the earliest restore time and retention settings.
+type BackupProperties struct {
+	// READ-ONLY; Earliest restore timestamp in UTC ISO8601 format.
+	EarliestRestoreTime *string
+}
+
 // CheckNameAvailabilityRequest - The check availability request body.
 type CheckNameAvailabilityRequest struct {
 	// The name of the resource for which availability needs to be checked.
@@ -27,6 +42,14 @@ type CheckNameAvailabilityResponse struct {
 	Reason *CheckNameAvailabilityReason
 }
 
+// ComputeProperties - The compute properties of the cluster. This includes the virtual-cores/memory and scaling options applied
+// to servers in the cluster.
+type ComputeProperties struct {
+	// The compute tier to assign to the cluster, where each tier maps to a virtual-core and memory size. Example values: 'M30',
+	// 'M40'.
+	Tier *string
+}
+
 // ConnectionString - Connection string for the mongo cluster
 type ConnectionString struct {
 	// READ-ONLY; Value of the connection string
@@ -34,6 +57,9 @@ type ConnectionString struct {
 
 	// READ-ONLY; Description of the connection string
 	Description *string
+
+	// READ-ONLY; Name of the connection string.
+	Name *string
 }
 
 // FirewallRule - Represents a mongo cluster firewall rule.
@@ -75,6 +101,12 @@ type FirewallRuleProperties struct {
 	ProvisioningState *ProvisioningState
 }
 
+// HighAvailabilityProperties - The high availability properties of the cluster.
+type HighAvailabilityProperties struct {
+	// The target high availability mode requested for the cluster.
+	TargetMode *HighAvailabilityMode
+}
+
 // ListConnectionStringsResult - The connection strings for the given mongo cluster.
 type ListConnectionStringsResult struct {
 	// READ-ONLY; An array that contains the connection strings for a mongo cluster.
@@ -112,25 +144,6 @@ type MongoCluster struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
-}
-
-// NodeGroupSpec - Specification for a node group.
-type NodeGroupSpec struct {
-	// The disk storage size for the node group in GB. Example values: 128, 256, 512, 1024.
-	DiskSizeGB *int64
-
-	// Whether high availability is enabled on the node group.
-	EnableHa *bool
-
-	// The node type deployed in the node group.
-	Kind *NodeKind
-
-	// The number of nodes in the node group.
-	NodeCount *int32
-
-	// The resource sku for the node group. This defines the size of CPU and memory that is provisioned for each node. Example
-	// values: 'M30', 'M40'.
-	SKU *string
 }
 
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API
@@ -312,17 +325,20 @@ type PromoteReplicaRequest struct {
 
 // Properties - The properties of a mongo cluster.
 type Properties struct {
-	// The administrator's login for the mongo cluster.
-	AdministratorLogin *string
+	// The local administrator properties for the mongo cluster.
+	Administrator *AdministratorProperties
 
-	// The password of the administrator login.
-	AdministratorLoginPassword *string
+	// The backup properties of the mongo cluster.
+	Backup *BackupProperties
+
+	// The compute properties of the mongo cluster.
+	Compute *ComputeProperties
 
 	// The mode to create a mongo cluster.
 	CreateMode *CreateMode
 
-	// The list of node group specs in the cluster.
-	NodeGroupSpecs []*NodeGroupSpec
+	// The high availability properties of the mongo cluster.
+	HighAvailability *HighAvailabilityProperties
 
 	// List of private endpoint connections.
 	PreviewFeatures []*PreviewFeature
@@ -339,14 +355,17 @@ type Properties struct {
 	// The Mongo DB server version. Defaults to the latest available version if not specified.
 	ServerVersion *string
 
+	// The sharding properties of the mongo cluster.
+	Sharding *ShardingProperties
+
+	// The storage properties of the mongo cluster.
+	Storage *StorageProperties
+
 	// READ-ONLY; The status of the mongo cluster.
 	ClusterStatus *Status
 
 	// READ-ONLY; The default mongo connection string for the cluster.
 	ConnectionString *string
-
-	// READ-ONLY; Earliest restore timestamp in UTC ISO8601 format.
-	EarliestRestoreTime *string
 
 	// READ-ONLY; The infrastructure version the cluster is provisioned on.
 	InfrastructureVersion *string
@@ -418,6 +437,20 @@ type RestoreParameters struct {
 	SourceResourceID *string
 }
 
+// ShardingProperties - The sharding properties of the cluster. This includes the shard count and scaling options for the
+// cluster.
+type ShardingProperties struct {
+	// Number of shards to provision on the cluster.
+	ShardCount *int32
+}
+
+// StorageProperties - The storage properties of the cluster. This includes the data storage size and scaling applied to servers
+// in the cluster.
+type StorageProperties struct {
+	// The size of the data disk assigned to each server.
+	SizeGb *int64
+}
+
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
@@ -450,14 +483,17 @@ type Update struct {
 
 // UpdateProperties - The updatable properties of the MongoCluster.
 type UpdateProperties struct {
-	// The administrator's login for the mongo cluster.
-	AdministratorLogin *string
+	// The local administrator properties for the mongo cluster.
+	Administrator *AdministratorProperties
 
-	// The password of the administrator login.
-	AdministratorLoginPassword *string
+	// The backup properties of the mongo cluster.
+	Backup *BackupProperties
 
-	// The list of node group specs in the cluster.
-	NodeGroupSpecs []*NodeGroupSpec
+	// The compute properties of the mongo cluster.
+	Compute *ComputeProperties
+
+	// The high availability properties of the mongo cluster.
+	HighAvailability *HighAvailabilityProperties
 
 	// List of private endpoint connections.
 	PreviewFeatures []*PreviewFeature
@@ -467,4 +503,10 @@ type UpdateProperties struct {
 
 	// The Mongo DB server version. Defaults to the latest available version if not specified.
 	ServerVersion *string
+
+	// The sharding properties of the mongo cluster.
+	Sharding *ShardingProperties
+
+	// The storage properties of the mongo cluster.
+	Storage *StorageProperties
 }

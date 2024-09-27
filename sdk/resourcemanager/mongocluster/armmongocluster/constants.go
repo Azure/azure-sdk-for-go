@@ -6,7 +6,7 @@ package armmongocluster
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster"
-	moduleVersion = "v0.2.0"
+	moduleVersion = "v1.0.0"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -90,18 +90,27 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// NodeKind - The kind of the node on the cluster.
-type NodeKind string
+// HighAvailabilityMode - The high availability modes for a cluster.
+type HighAvailabilityMode string
 
 const (
-	// NodeKindShard - The node is a shard kind.
-	NodeKindShard NodeKind = "Shard"
+	// HighAvailabilityModeDisabled - High availability mode is disabled. This mode is can see availability impact during faults
+	// or maintenance and is not recommended for production.
+	HighAvailabilityModeDisabled HighAvailabilityMode = "Disabled"
+	// HighAvailabilityModeSameZone - High availability mode is enabled, where each server in a shard is placed in the same availability
+	// zone.
+	HighAvailabilityModeSameZone HighAvailabilityMode = "SameZone"
+	// HighAvailabilityModeZoneRedundantPreferred - High availability mode is enabled and preferences ZoneRedundant if availability
+	// zones capacity is available in the region, otherwise falls-back to provisioning with SameZone.
+	HighAvailabilityModeZoneRedundantPreferred HighAvailabilityMode = "ZoneRedundantPreferred"
 )
 
-// PossibleNodeKindValues returns the possible values for the NodeKind const type.
-func PossibleNodeKindValues() []NodeKind {
-	return []NodeKind{
-		NodeKindShard,
+// PossibleHighAvailabilityModeValues returns the possible values for the HighAvailabilityMode const type.
+func PossibleHighAvailabilityModeValues() []HighAvailabilityMode {
+	return []HighAvailabilityMode{
+		HighAvailabilityModeDisabled,
+		HighAvailabilityModeSameZone,
+		HighAvailabilityModeZoneRedundantPreferred,
 	}
 }
 

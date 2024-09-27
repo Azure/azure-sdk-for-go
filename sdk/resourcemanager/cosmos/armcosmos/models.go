@@ -30,6 +30,9 @@ type ARMProxyResource struct {
 
 // ARMResourceProperties - The core properties of ARM resources.
 type ARMResourceProperties struct {
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity
+
 	// The location of the resource group to which the resource belongs.
 	Location *string
 
@@ -48,6 +51,45 @@ type ARMResourceProperties struct {
 
 	// READ-ONLY; The type of Azure resource.
 	Type *string
+}
+
+// AccessRule - Access rule in a network security perimeter configuration profile
+type AccessRule struct {
+	// Name of the access rule
+	Name *string
+
+	// Properties of Access Rule
+	Properties *AccessRuleProperties
+}
+
+// AccessRuleProperties - Properties of Access Rule
+type AccessRuleProperties struct {
+	// Address prefixes in the CIDR format for inbound rules
+	AddressPrefixes []*string
+
+	// Direction of Access Rule
+	Direction *AccessRuleDirection
+
+	// Email addresses for outbound rules
+	EmailAddresses []*string
+
+	// Fully qualified domain names (FQDN) for outbound rules
+	FullyQualifiedDomainNames []*string
+
+	// Network security perimeters for inbound rules
+	NetworkSecurityPerimeters []*NetworkSecurityPerimeter
+
+	// Phone numbers for outbound rules
+	PhoneNumbers []*string
+
+	// Subscriptions for inbound rules
+	Subscriptions []*AccessRulePropertiesSubscriptionsItem
+}
+
+// AccessRulePropertiesSubscriptionsItem - Subscription identifiers
+type AccessRulePropertiesSubscriptionsItem struct {
+	// The fully qualified Azure resource ID of the subscription e.g. ('/subscriptions/00000000-0000-0000-0000-000000000000')
+	ID *string
 }
 
 // AccountKeyMetadata - The metadata related to an access key for a given database account.
@@ -111,6 +153,23 @@ type AutoscaleSettingsResource struct {
 	TargetMaxThroughput *int32
 }
 
+// AzureBlobDataTransferDataSourceSink - An Azure Blob Storage data source/sink
+type AzureBlobDataTransferDataSourceSink struct {
+	// REQUIRED
+	Component *DataTransferComponent
+
+	// REQUIRED
+	ContainerName *string
+	EndpointURL   *string
+}
+
+// GetDataTransferDataSourceSink implements the DataTransferDataSourceSinkClassification interface for type AzureBlobDataTransferDataSourceSink.
+func (a *AzureBlobDataTransferDataSourceSink) GetDataTransferDataSourceSink() *DataTransferDataSourceSink {
+	return &DataTransferDataSourceSink{
+		Component: a.Component,
+	}
+}
+
 // BackupInformation - Backup information of a resource.
 type BackupInformation struct {
 	// READ-ONLY; Information about the status of continuous backups.
@@ -141,6 +200,55 @@ type BackupPolicyMigrationState struct {
 	TargetType *BackupPolicyType
 }
 
+// BackupResource - A restorable backup of a Cassandra cluster.
+type BackupResource struct {
+	// The time at which the backup will expire.
+	BackupExpiryTimestamp *time.Time
+
+	// The unique identifier of backup.
+	BackupID *string
+
+	// The time at which the backup process begins.
+	BackupStartTimestamp *time.Time
+
+	// The current state of the backup.
+	BackupState *BackupState
+
+	// The time at which the backup process ends.
+	BackupStopTimestamp *time.Time
+}
+
+type BackupSchedule struct {
+	// The cron expression that defines when you want to back up your data.
+	CronExpression *string
+
+	// The retention period (hours) of the backups. If you want to retain data forever, set retention to 0.
+	RetentionInHours *int32
+
+	// The unique identifier of backup schedule.
+	ScheduleName *string
+}
+
+// BaseCosmosDataTransferDataSourceSink - A base CosmosDB data source/sink
+type BaseCosmosDataTransferDataSourceSink struct {
+	// REQUIRED
+	Component         *DataTransferComponent
+	RemoteAccountName *string
+}
+
+// GetBaseCosmosDataTransferDataSourceSink implements the BaseCosmosDataTransferDataSourceSinkClassification interface for
+// type BaseCosmosDataTransferDataSourceSink.
+func (b *BaseCosmosDataTransferDataSourceSink) GetBaseCosmosDataTransferDataSourceSink() *BaseCosmosDataTransferDataSourceSink {
+	return b
+}
+
+// GetDataTransferDataSourceSink implements the DataTransferDataSourceSinkClassification interface for type BaseCosmosDataTransferDataSourceSink.
+func (b *BaseCosmosDataTransferDataSourceSink) GetDataTransferDataSourceSink() *DataTransferDataSourceSink {
+	return &DataTransferDataSourceSink{
+		Component: b.Component,
+	}
+}
+
 // Capability - Cosmos DB capability object
 type Capability struct {
 	// Name of the Cosmos DB capability. For example, "name": "EnableCassandra". Current values also include "EnableTable" and
@@ -154,6 +262,27 @@ type Capacity struct {
 	// that can be provisioned on that account to be 2000. A totalThroughputLimit of
 	// -1 indicates no limits on provisioning of throughput.
 	TotalThroughputLimit *int32
+}
+
+// CapacityModeChangeTransitionState - The transition state information related capacity mode change with update request.
+type CapacityModeChangeTransitionState struct {
+	// The transition status of capacity mode.
+	CapacityModeTransitionStatus *CapacityModeTransitionStatus
+
+	// Indicates the current capacity mode of the account.
+	CurrentCapacityMode *CapacityMode
+
+	// Indicates the previous capacity mode of the account before successful transition.
+	PreviousCapacityMode *CapacityMode
+
+	// READ-ONLY; End time in UTC of the last successful capacity mode change.
+	CapacityModeLastSuccessfulTransitionEndTimestamp *time.Time
+
+	// READ-ONLY; Begin time in UTC of the capacity mode change.
+	CapacityModeTransitionBeginTimestamp *time.Time
+
+	// READ-ONLY; End time in UTC of the capacity mode change.
+	CapacityModeTransitionEndTimestamp *time.Time
 }
 
 // CassandraClusterPublicStatus - Properties of a managed Cassandra cluster public status.
@@ -179,6 +308,35 @@ type CassandraClusterPublicStatusDataCentersItem struct {
 	SeedNodes []*string
 }
 
+// CassandraDataTransferDataSourceSink - A CosmosDB Cassandra API data source/sink
+type CassandraDataTransferDataSourceSink struct {
+	// REQUIRED
+	Component *DataTransferComponent
+
+	// REQUIRED
+	KeyspaceName *string
+
+	// REQUIRED
+	TableName         *string
+	RemoteAccountName *string
+}
+
+// GetBaseCosmosDataTransferDataSourceSink implements the BaseCosmosDataTransferDataSourceSinkClassification interface for
+// type CassandraDataTransferDataSourceSink.
+func (c *CassandraDataTransferDataSourceSink) GetBaseCosmosDataTransferDataSourceSink() *BaseCosmosDataTransferDataSourceSink {
+	return &BaseCosmosDataTransferDataSourceSink{
+		Component:         c.Component,
+		RemoteAccountName: c.RemoteAccountName,
+	}
+}
+
+// GetDataTransferDataSourceSink implements the DataTransferDataSourceSinkClassification interface for type CassandraDataTransferDataSourceSink.
+func (c *CassandraDataTransferDataSourceSink) GetDataTransferDataSourceSink() *DataTransferDataSourceSink {
+	return &DataTransferDataSourceSink{
+		Component: c.Component,
+	}
+}
+
 type CassandraError struct {
 	// Additional information about the error.
 	AdditionalErrorInfo *string
@@ -197,6 +355,9 @@ type CassandraError struct {
 type CassandraKeyspaceCreateUpdateParameters struct {
 	// REQUIRED; Properties to create and update Azure Cosmos DB Cassandra keyspace.
 	Properties *CassandraKeyspaceCreateUpdateProperties
+
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity
 
 	// The location of the resource group to which the resource belongs.
 	Location *string
@@ -258,6 +419,9 @@ type CassandraKeyspaceGetPropertiesResource struct {
 
 // CassandraKeyspaceGetResults - An Azure Cosmos DB Cassandra keyspace.
 type CassandraKeyspaceGetResults struct {
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity
+
 	// The location of the resource group to which the resource belongs.
 	Location *string
 
@@ -315,6 +479,9 @@ type CassandraSchema struct {
 type CassandraTableCreateUpdateParameters struct {
 	// REQUIRED; Properties to create and update Azure Cosmos DB Cassandra table.
 	Properties *CassandraTableCreateUpdateProperties
+
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity
 
 	// The location of the resource group to which the resource belongs.
 	Location *string
@@ -385,6 +552,9 @@ type CassandraTableGetPropertiesResource struct {
 
 // CassandraTableGetResults - An Azure Cosmos DB Cassandra table.
 type CassandraTableGetResults struct {
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity
+
 	// The location of the resource group to which the resource belongs.
 	Location *string
 
@@ -429,9 +599,166 @@ type CassandraTableResource struct {
 	Schema *CassandraSchema
 }
 
+// CassandraViewCreateUpdateParameters - Parameters to create and update Cosmos DB Cassandra view.
+type CassandraViewCreateUpdateParameters struct {
+	// REQUIRED; Properties to create and update Azure Cosmos DB Cassandra view.
+	Properties *CassandraViewCreateUpdateProperties
+
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity
+
+	// The location of the resource group to which the resource belongs.
+	Location *string
+
+	// Tags are a list of key-value pairs that describe the resource. These tags can be used in viewing and grouping this resource
+	// (across resource groups). A maximum of 15 tags can be provided for a
+	// resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters. For example,
+	// the default experience for a template type is set with "defaultExperience":
+	// "Cassandra". Current "defaultExperience" values also include "Table", "Graph", "DocumentDB", and "MongoDB".
+	Tags map[string]*string
+
+	// READ-ONLY; The unique resource identifier of the ARM resource.
+	ID *string
+
+	// READ-ONLY; The name of the ARM resource.
+	Name *string
+
+	// READ-ONLY; The type of Azure resource.
+	Type *string
+}
+
+// CassandraViewCreateUpdateProperties - Properties to create and update Azure Cosmos DB Cassandra view.
+type CassandraViewCreateUpdateProperties struct {
+	// REQUIRED; The standard JSON format of a Cassandra view
+	Resource *CassandraViewResource
+
+	// A key-value pair of options to be applied for the request. This corresponds to the headers sent with the request.
+	Options *CreateUpdateOptions
+}
+
+// CassandraViewGetProperties - The properties of an Azure Cosmos DB Cassandra view
+type CassandraViewGetProperties struct {
+	Options  *CassandraViewGetPropertiesOptions
+	Resource *CassandraViewGetPropertiesResource
+}
+
+type CassandraViewGetPropertiesOptions struct {
+	// Specifies the Autoscale settings.
+	AutoscaleSettings *AutoscaleSettings
+
+	// Value of the Cosmos DB resource throughput or autoscaleSettings. Use the ThroughputSetting resource when retrieving offer
+	// details.
+	Throughput *int32
+}
+
+type CassandraViewGetPropertiesResource struct {
+	// REQUIRED; Name of the Cosmos DB Cassandra view
+	ID *string
+
+	// REQUIRED; View Definition of the Cosmos DB Cassandra view
+	ViewDefinition *string
+
+	// READ-ONLY; A system generated property representing the resource etag required for optimistic concurrency control.
+	Etag *string
+
+	// READ-ONLY; A system generated property. A unique identifier.
+	Rid *string
+
+	// READ-ONLY; A system generated property that denotes the last updated timestamp of the resource.
+	Ts *float32
+}
+
+// CassandraViewGetResults - An Azure Cosmos DB Cassandra view.
+type CassandraViewGetResults struct {
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity
+
+	// The location of the resource group to which the resource belongs.
+	Location *string
+
+	// The properties of an Azure Cosmos DB Cassandra view
+	Properties *CassandraViewGetProperties
+
+	// Tags are a list of key-value pairs that describe the resource. These tags can be used in viewing and grouping this resource
+	// (across resource groups). A maximum of 15 tags can be provided for a
+	// resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters. For example,
+	// the default experience for a template type is set with "defaultExperience":
+	// "Cassandra". Current "defaultExperience" values also include "Table", "Graph", "DocumentDB", and "MongoDB".
+	Tags map[string]*string
+
+	// READ-ONLY; The unique resource identifier of the ARM resource.
+	ID *string
+
+	// READ-ONLY; The name of the ARM resource.
+	Name *string
+
+	// READ-ONLY; The type of Azure resource.
+	Type *string
+}
+
+// CassandraViewListResult - The List operation response, that contains the Cassandra views and their properties.
+type CassandraViewListResult struct {
+	// READ-ONLY; List of Cassandra views and their properties.
+	Value []*CassandraViewGetResults
+}
+
+// CassandraViewResource - Cosmos DB Cassandra view resource object
+type CassandraViewResource struct {
+	// REQUIRED; Name of the Cosmos DB Cassandra view
+	ID *string
+
+	// REQUIRED; View Definition of the Cosmos DB Cassandra view
+	ViewDefinition *string
+}
+
 type Certificate struct {
 	// PEM formatted public key.
 	Pem *string
+}
+
+// ChaosFaultListResponse - Chaos Fault List Response.
+type ChaosFaultListResponse struct {
+	// READ-ONLY; The link used to get the next page of results.
+	NextLink *string
+
+	// READ-ONLY; List of Chaos Faults.
+	Value []*ChaosFaultResource
+}
+
+// ChaosFaultProperties - A request object to enable/disable the chaos fault.
+type ChaosFaultProperties struct {
+	// Indicates whether what action to take for the Chaos Fault.
+	Action *SupportedActions
+
+	// Container name.
+	ContainerName *string
+
+	// Database name.
+	DatabaseName *string
+
+	// Region of the account where the Chaos Fault is to be enabled/disabled.
+	Region *string
+
+	// READ-ONLY; A provisioning state of the Chaos Fault.
+	ProvisioningState *string
+}
+
+// ChaosFaultResource - A request object to enable/disable the chaos fault
+type ChaosFaultResource struct {
+	// A request object to enable/disable the chaos fault.
+	Properties *ChaosFaultProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
 }
 
 // ClientEncryptionIncludedPath - .
@@ -579,8 +906,14 @@ type ClusterResourceProperties struct {
 	// authentication. The default is 'Cassandra'.
 	AuthenticationMethod *AuthenticationMethod
 
+	// The form of AutoReplicate that is being used by this cluster.
+	AutoReplicate *AutoReplicate
+
 	// How to connect to the azure services needed for running the cluster
 	AzureConnectionMethod *AzureConnectionType
+
+	// List of backup schedules that define when you want to back up your data.
+	BackupSchedules []*BackupSchedule
 
 	// Whether Cassandra audit logging is enabled
 	CassandraAuditLoggingEnabled *bool
@@ -599,6 +932,9 @@ type ClusterResourceProperties struct {
 	// the value to use on this property.
 	ClusterNameOverride *string
 
+	// Type of the cluster. If set to Production, some operations might not be permitted on cluster.
+	ClusterType *ClusterType
+
 	// Whether the cluster and associated data centers has been deallocated.
 	Deallocated *bool
 
@@ -606,6 +942,12 @@ type ClusterResourceProperties struct {
 	// must be routable to all subnets that will be delegated to data centers. The
 	// resource id must be of the form '/subscriptions//resourceGroups//providers/Microsoft.Network/virtualNetworks//subnets/'
 	DelegatedManagementSubnetID *string
+
+	// Extensions to be added or updated on cluster.
+	Extensions []*string
+
+	// List of the data center names for unmanaged data centers in this cluster to be included in auto-replication.
+	ExternalDataCenters []*string
 
 	// List of TLS certificates used to authorize gossip from unmanaged data centers. The TLS certificates of all nodes in unmanaged
 	// data centers must be verifiable using one of the certificates provided in
@@ -641,12 +983,15 @@ type ClusterResourceProperties struct {
 	// the resource id of the backup.
 	RestoreFromBackupID *string
 
+	// How the nodes in the cluster react to scheduled events
+	ScheduledEventStrategy *ScheduledEventStrategy
+
 	// READ-ONLY; List of TLS certificates that unmanaged nodes must trust for gossip with managed nodes. All managed nodes will
 	// present TLS client certificates that are verifiable using one of the certificates
 	// provided in this property.
 	GossipCertificates []*Certificate
 
-	// READ-ONLY; If the Connection Method is VPN, this is the Id of the private link resource that the datacenters need to connect
+	// READ-ONLY; If the Connection Method is Vpn, this is the Id of the private link resource that the datacenters need to connect
 	// to.
 	PrivateLinkResourceID *string
 
@@ -679,13 +1024,46 @@ type CommandPostBody struct {
 	Host *string
 
 	// The arguments for the command to be run
-	Arguments map[string]*string
+	Arguments any
 
 	// If true, stops cassandra before executing the command and then start it again
 	CassandraStopStart *bool
 
 	// If true, allows the command to write to the cassandra directory, otherwise read-only.
-	Readwrite *bool
+	ReadWrite *bool
+}
+
+// CommandPublicResource - resource representing a command
+type CommandPublicResource struct {
+	// The arguments for the command to be run
+	Arguments any
+
+	// If true, stops cassandra before executing the command and then start it again
+	CassandraStopStart *bool
+
+	// The command which should be run
+	Command *string
+
+	// The unique id of command
+	CommandID *string
+
+	// IP address of the cassandra host to run the command on
+	Host *string
+
+	// Whether command has admin privileges
+	IsAdmin *bool
+
+	// The name of the file where the result is written.
+	OutputFile *string
+
+	// If true, allows the command to write to the cassandra directory, otherwise read-only.
+	ReadWrite *bool
+
+	// Result output of the command.
+	Result *string
+
+	// Status of the command.
+	Status *CommandStatus
 }
 
 type Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties struct {
@@ -714,6 +1092,9 @@ type ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersIte
 
 	// The network ID of the node.
 	HostID *string
+
+	// If node has been updated to latest model
+	IsLatestModel *bool
 
 	// The amount of file system data in the data directory (e.g., 47.66 kB), excluding all content in the snapshots subdirectories.
 	// Because all SSTable data files are included, any data that is not cleaned
@@ -860,7 +1241,7 @@ func (c *ContinuousModeBackupPolicy) GetBackupPolicy() *BackupPolicy {
 
 // ContinuousModeProperties - Configuration values for periodic mode backup
 type ContinuousModeProperties struct {
-	// Enum to indicate type of Continuous backup mode
+	// Enum to indicate type of Continuos backup mode
 	Tier *ContinuousTier
 }
 
@@ -880,6 +1261,21 @@ type CorsPolicy struct {
 
 	// The maximum amount time that a browser should cache the preflight OPTIONS request.
 	MaxAgeInSeconds *int64
+}
+
+// CreateJobRequest - Parameters to create Data Transfer Job
+type CreateJobRequest struct {
+	// REQUIRED; Data Transfer Create Job Properties
+	Properties *DataTransferJobProperties
+
+	// READ-ONLY; The unique resource identifier of the database account.
+	ID *string
+
+	// READ-ONLY; The name of the database account.
+	Name *string
+
+	// READ-ONLY; The type of Azure resource.
+	Type *string
 }
 
 // CreateUpdateOptions are a list of key-value pairs that describe the resource. Supported keys are "If-Match", "If-None-Match",
@@ -967,6 +1363,77 @@ type DataCenterResourceProperties struct {
 	// property on the cluster, which aggregates the seed nodes from all data centers in
 	// the cluster.
 	SeedNodes []*SeedNode
+}
+
+// DataTransferDataSourceSink - Base class for all DataTransfer source/sink
+type DataTransferDataSourceSink struct {
+	// REQUIRED
+	Component *DataTransferComponent
+}
+
+// GetDataTransferDataSourceSink implements the DataTransferDataSourceSinkClassification interface for type DataTransferDataSourceSink.
+func (d *DataTransferDataSourceSink) GetDataTransferDataSourceSink() *DataTransferDataSourceSink {
+	return d
+}
+
+// DataTransferJobFeedResults - The List operation response, that contains the Data Transfer jobs and their properties.
+type DataTransferJobFeedResults struct {
+	// READ-ONLY; URL to get the next set of Data Transfer job list results if there are any.
+	NextLink *string
+
+	// READ-ONLY; List of Data Transfer jobs and their properties.
+	Value []*DataTransferJobGetResults
+}
+
+// DataTransferJobGetResults - A Cosmos DB Data Transfer Job
+type DataTransferJobGetResults struct {
+	// The properties of a DataTransfer Job
+	Properties *DataTransferJobProperties
+
+	// READ-ONLY; The unique resource identifier of the database account.
+	ID *string
+
+	// READ-ONLY; The name of the database account.
+	Name *string
+
+	// READ-ONLY; The type of Azure resource.
+	Type *string
+}
+
+// DataTransferJobProperties - The properties of a DataTransfer Job
+type DataTransferJobProperties struct {
+	// REQUIRED; Destination DataStore details
+	Destination DataTransferDataSourceSinkClassification
+
+	// REQUIRED; Source DataStore details
+	Source DataTransferDataSourceSinkClassification
+
+	// Mode of job execution
+	Mode *DataTransferJobMode
+
+	// Worker count
+	WorkerCount *int32
+
+	// READ-ONLY; Total Duration of Job
+	Duration *string
+
+	// READ-ONLY; Error response for Faulted job
+	Error *ErrorResponse
+
+	// READ-ONLY; Job Name
+	JobName *string
+
+	// READ-ONLY; Last Updated Time (ISO-8601 format).
+	LastUpdatedUTCTime *time.Time
+
+	// READ-ONLY; Processed Count.
+	ProcessedCount *int64
+
+	// READ-ONLY; Job Status
+	Status *string
+
+	// READ-ONLY; Total Count.
+	TotalCount *int64
 }
 
 // DataTransferRegionalServiceResource - Resource for a regional service location.
@@ -1115,6 +1582,9 @@ type DatabaseAccountCreateUpdateProperties struct {
 	// The object that represents all properties related to capacity enforcement on an account.
 	Capacity *Capacity
 
+	// Indicates the capacityMode of the Cosmos DB account.
+	CapacityMode *CapacityMode
+
 	// The cassandra connector offer type for the Cosmos DB database C* account.
 	ConnectorOffer *ConnectorOffer
 
@@ -1136,6 +1606,12 @@ type DatabaseAccountCreateUpdateProperties struct {
 	// "SystemAssignedIdentity" and more.
 	DefaultIdentity *string
 
+	// Enum to indicate default Priority Level of request for Priority Based Execution.
+	DefaultPriorityLevel *DefaultPriorityLevel
+
+	// The Object representing the different Diagnostic log settings for the Cosmos DB Account.
+	DiagnosticLogSettings *DiagnosticLogSettings
+
 	// Disable write operations on metadata resources (databases, containers, throughput) via account keys
 	DisableKeyBasedMetadataWriteAccess *bool
 
@@ -1150,7 +1626,7 @@ type DatabaseAccountCreateUpdateProperties struct {
 	// based on the failover priorities configured for the account.
 	EnableAutomaticFailover *bool
 
-	// Flag to indicate enabling/disabling of Burst Capacity feature on the account
+	// Flag to indicate enabling/disabling of Burst Capacity Preview feature on the account
 	EnableBurstCapacity *bool
 
 	// Enables the cassandra connector on the Cosmos DB C* account
@@ -1159,11 +1635,20 @@ type DatabaseAccountCreateUpdateProperties struct {
 	// Flag to indicate whether Free Tier is enabled.
 	EnableFreeTier *bool
 
+	// Flag to indicate whether to enable MaterializedViews on the Cosmos DB account
+	EnableMaterializedViews *bool
+
 	// Enables the account to write in multiple locations
 	EnableMultipleWriteLocations *bool
 
 	// Flag to indicate enabling/disabling of Partition Merge feature on the account
 	EnablePartitionMerge *bool
+
+	// Flag to indicate enabling/disabling of Per-Region Per-partition autoscale Preview feature on the account
+	EnablePerRegionPerPartitionAutoscale *bool
+
+	// Flag to indicate enabling/disabling of Priority Based Execution Preview feature on the account
+	EnablePriorityBasedExecution *bool
 
 	// List of IpRules.
 	IPRules []*IPAddressOrRange
@@ -1174,7 +1659,8 @@ type DatabaseAccountCreateUpdateProperties struct {
 	// The URI of the key vault
 	KeyVaultKeyURI *string
 
-	// Indicates the minimum allowed Tls version. The default value is Tls 1.2. Cassandra and Mongo APIs only work with Tls 1.2.
+	// Indicates the minimum allowed Tls version. The default is Tls 1.0, except for Cassandra and Mongo API's, which only work
+	// with Tls 1.2.
 	MinimalTLSVersion *MinimalTLSVersion
 
 	// Indicates what services are allowed to bypass firewall checks.
@@ -1214,6 +1700,12 @@ type DatabaseAccountGetProperties struct {
 	// The object that represents all properties related to capacity enforcement on an account.
 	Capacity *Capacity
 
+	// Indicates the capacityMode of the Cosmos DB account.
+	CapacityMode *CapacityMode
+
+	// The object that represents the migration state for the CapacityMode of the Cosmos DB account.
+	CapacityModeChangeTransitionState *CapacityModeChangeTransitionState
+
 	// The cassandra connector offer type for the Cosmos DB database C* account.
 	ConnectorOffer *ConnectorOffer
 
@@ -1235,6 +1727,12 @@ type DatabaseAccountGetProperties struct {
 	// "SystemAssignedIdentity" and more.
 	DefaultIdentity *string
 
+	// Enum to indicate default Priority Level of request for Priority Based Execution.
+	DefaultPriorityLevel *DefaultPriorityLevel
+
+	// The Object representing the different Diagnostic log settings for the Cosmos DB Account.
+	DiagnosticLogSettings *DiagnosticLogSettings
+
 	// Disable write operations on metadata resources (databases, containers, throughput) via account keys
 	DisableKeyBasedMetadataWriteAccess *bool
 
@@ -1249,7 +1747,7 @@ type DatabaseAccountGetProperties struct {
 	// based on the failover priorities configured for the account.
 	EnableAutomaticFailover *bool
 
-	// Flag to indicate enabling/disabling of Burst Capacity feature on the account
+	// Flag to indicate enabling/disabling of Burst Capacity Preview feature on the account
 	EnableBurstCapacity *bool
 
 	// Enables the cassandra connector on the Cosmos DB C* account
@@ -1258,11 +1756,20 @@ type DatabaseAccountGetProperties struct {
 	// Flag to indicate whether Free Tier is enabled.
 	EnableFreeTier *bool
 
+	// Flag to indicate whether to enable MaterializedViews on the Cosmos DB account
+	EnableMaterializedViews *bool
+
 	// Enables the account to write in multiple locations
 	EnableMultipleWriteLocations *bool
 
 	// Flag to indicate enabling/disabling of Partition Merge feature on the account
 	EnablePartitionMerge *bool
+
+	// Flag to indicate enabling/disabling of Per-Region Per-partition autoscale Preview feature on the account
+	EnablePerRegionPerPartitionAutoscale *bool
+
+	// Flag to indicate enabling/disabling of Priority Based Execution Preview feature on the account
+	EnablePriorityBasedExecution *bool
 
 	// List of IpRules.
 	IPRules []*IPAddressOrRange
@@ -1273,7 +1780,8 @@ type DatabaseAccountGetProperties struct {
 	// The URI of the key vault
 	KeyVaultKeyURI *string
 
-	// Indicates the minimum allowed Tls version. The default value is Tls 1.2. Cassandra and Mongo APIs only work with Tls 1.2.
+	// Indicates the minimum allowed Tls version. The default is Tls 1.0, except for Cassandra and Mongo API's, which only work
+	// with Tls 1.2.
 	MinimalTLSVersion *MinimalTLSVersion
 
 	// Indicates what services are allowed to bypass firewall checks.
@@ -1448,6 +1956,9 @@ type DatabaseAccountUpdateProperties struct {
 	// The object that represents all properties related to capacity enforcement on an account.
 	Capacity *Capacity
 
+	// Indicates the capacityMode of the Cosmos DB account.
+	CapacityMode *CapacityMode
+
 	// The cassandra connector offer type for the Cosmos DB database C* account.
 	ConnectorOffer *ConnectorOffer
 
@@ -1466,6 +1977,12 @@ type DatabaseAccountUpdateProperties struct {
 	// "SystemAssignedIdentity" and more.
 	DefaultIdentity *string
 
+	// Enum to indicate default Priority Level of request for Priority Based Execution.
+	DefaultPriorityLevel *DefaultPriorityLevel
+
+	// The Object representing the different Diagnostic log settings for the Cosmos DB Account.
+	DiagnosticLogSettings *DiagnosticLogSettings
+
 	// Disable write operations on metadata resources (databases, containers, throughput) via account keys
 	DisableKeyBasedMetadataWriteAccess *bool
 
@@ -1480,7 +1997,7 @@ type DatabaseAccountUpdateProperties struct {
 	// based on the failover priorities configured for the account.
 	EnableAutomaticFailover *bool
 
-	// Flag to indicate enabling/disabling of Burst Capacity feature on the account
+	// Flag to indicate enabling/disabling of Burst Capacity Preview feature on the account
 	EnableBurstCapacity *bool
 
 	// Enables the cassandra connector on the Cosmos DB C* account
@@ -1489,11 +2006,20 @@ type DatabaseAccountUpdateProperties struct {
 	// Flag to indicate whether Free Tier is enabled.
 	EnableFreeTier *bool
 
+	// Flag to indicate whether to enable MaterializedViews on the Cosmos DB account
+	EnableMaterializedViews *bool
+
 	// Enables the account to write in multiple locations
 	EnableMultipleWriteLocations *bool
 
 	// Flag to indicate enabling/disabling of Partition Merge feature on the account
 	EnablePartitionMerge *bool
+
+	// Flag to indicate enabling/disabling of Per-Region Per-partition autoscale Preview feature on the account
+	EnablePerRegionPerPartitionAutoscale *bool
+
+	// Flag to indicate enabling/disabling of Priority Based Execution Preview feature on the account
+	EnablePriorityBasedExecution *bool
 
 	// List of IpRules.
 	IPRules []*IPAddressOrRange
@@ -1507,7 +2033,8 @@ type DatabaseAccountUpdateProperties struct {
 	// An array that contains the georeplication locations enabled for the Cosmos DB account.
 	Locations []*Location
 
-	// Indicates the minimum allowed Tls version. The default value is Tls 1.2. Cassandra and Mongo APIs only work with Tls 1.2.
+	// Indicates the minimum allowed Tls version. The default is Tls 1.0, except for Cassandra and Mongo API's, which only work
+	// with Tls 1.2.
 	MinimalTLSVersion *MinimalTLSVersion
 
 	// Indicates what services are allowed to bypass firewall checks.
@@ -1540,6 +2067,12 @@ type DatabaseRestoreResource struct {
 
 	// The name of the database available for restore.
 	DatabaseName *string
+}
+
+// DiagnosticLogSettings - Indicates what diagnostic log settings are to be enabled.
+type DiagnosticLogSettings struct {
+	// Describe the level of detail with which queries are to be logged.
+	EnableFullTextQuery *EnableFullTextQuery
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
@@ -1705,10 +2238,110 @@ func (g *GraphAPIComputeServiceResourceProperties) GetServiceResourceProperties(
 	}
 }
 
+// GraphResource - Cosmos DB Graph resource object
+type GraphResource struct {
+	// REQUIRED; Name of the Cosmos DB Graph
+	ID *string
+}
+
+// GraphResourceCreateUpdateParameters - Parameters to create and update Cosmos DB Graph resource.
+type GraphResourceCreateUpdateParameters struct {
+	// REQUIRED; Properties to create and update Azure Cosmos DB Graph resource.
+	Properties *GraphResourceCreateUpdateProperties
+
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity
+
+	// The location of the resource group to which the resource belongs.
+	Location *string
+
+	// Tags are a list of key-value pairs that describe the resource. These tags can be used in viewing and grouping this resource
+	// (across resource groups). A maximum of 15 tags can be provided for a
+	// resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters. For example,
+	// the default experience for a template type is set with "defaultExperience":
+	// "Cassandra". Current "defaultExperience" values also include "Table", "Graph", "DocumentDB", and "MongoDB".
+	Tags map[string]*string
+
+	// READ-ONLY; The unique resource identifier of the ARM resource.
+	ID *string
+
+	// READ-ONLY; The name of the ARM resource.
+	Name *string
+
+	// READ-ONLY; The type of Azure resource.
+	Type *string
+}
+
+// GraphResourceCreateUpdateProperties - Properties to create and update Azure Cosmos DB Graph resource.
+type GraphResourceCreateUpdateProperties struct {
+	// REQUIRED; The standard JSON format of a Graph resource
+	Resource *GraphResource
+
+	// A key-value pair of options to be applied for the request. This corresponds to the headers sent with the request.
+	Options *CreateUpdateOptions
+}
+
+// GraphResourceGetProperties - The properties of an Azure Cosmos DB SQL database
+type GraphResourceGetProperties struct {
+	Options  *GraphResourceGetPropertiesOptions
+	Resource *GraphResourceGetPropertiesResource
+}
+
+type GraphResourceGetPropertiesOptions struct {
+	// Specifies the Autoscale settings.
+	AutoscaleSettings *AutoscaleSettings
+
+	// Value of the Cosmos DB resource throughput or autoscaleSettings. Use the ThroughputSetting resource when retrieving offer
+	// details.
+	Throughput *int32
+}
+
+type GraphResourceGetPropertiesResource struct {
+	// REQUIRED; Name of the Cosmos DB Graph
+	ID *string
+}
+
+// GraphResourceGetResults - An Azure Cosmos DB Graph resource.
+type GraphResourceGetResults struct {
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity
+
+	// The location of the resource group to which the resource belongs.
+	Location *string
+
+	// The properties of an Azure Cosmos DB Graph resource.
+	Properties *GraphResourceGetProperties
+
+	// Tags are a list of key-value pairs that describe the resource. These tags can be used in viewing and grouping this resource
+	// (across resource groups). A maximum of 15 tags can be provided for a
+	// resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters. For example,
+	// the default experience for a template type is set with "defaultExperience":
+	// "Cassandra". Current "defaultExperience" values also include "Table", "Graph", "DocumentDB", and "MongoDB".
+	Tags map[string]*string
+
+	// READ-ONLY; The unique resource identifier of the ARM resource.
+	ID *string
+
+	// READ-ONLY; The name of the ARM resource.
+	Name *string
+
+	// READ-ONLY; The type of Azure resource.
+	Type *string
+}
+
+// GraphResourcesListResult - The List operation response, that contains the Graph resource and their properties.
+type GraphResourcesListResult struct {
+	// READ-ONLY; List of Graph resource and their properties.
+	Value []*GraphResourceGetResults
+}
+
 // GremlinDatabaseCreateUpdateParameters - Parameters to create and update Cosmos DB Gremlin database.
 type GremlinDatabaseCreateUpdateParameters struct {
 	// REQUIRED; Properties to create and update Azure Cosmos DB Gremlin database.
 	Properties *GremlinDatabaseCreateUpdateProperties
+
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity
 
 	// The location of the resource group to which the resource belongs.
 	Location *string
@@ -1776,6 +2409,9 @@ type GremlinDatabaseGetPropertiesResource struct {
 
 // GremlinDatabaseGetResults - An Azure Cosmos DB Gremlin database.
 type GremlinDatabaseGetResults struct {
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity
+
 	// The location of the resource group to which the resource belongs.
 	Location *string
 
@@ -1830,6 +2466,9 @@ type GremlinDatabaseRestoreResource struct {
 type GremlinGraphCreateUpdateParameters struct {
 	// REQUIRED; Properties to create and update Azure Cosmos DB Gremlin graph.
 	Properties *GremlinGraphCreateUpdateProperties
+
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity
 
 	// The location of the resource group to which the resource belongs.
 	Location *string
@@ -1916,6 +2555,9 @@ type GremlinGraphGetPropertiesResource struct {
 
 // GremlinGraphGetResults - An Azure Cosmos DB Gremlin graph.
 type GremlinGraphGetResults struct {
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity
+
 	// The location of the resource group to which the resource belongs.
 	Location *string
 
@@ -2043,10 +2685,22 @@ type KeyWrapMetadata struct {
 	Value *string
 }
 
+// ListBackups - List of restorable backups for a Cassandra cluster.
+type ListBackups struct {
+	// READ-ONLY; Container for array of backups.
+	Value []*BackupResource
+}
+
 // ListClusters - List of managed Cassandra clusters.
 type ListClusters struct {
 	// Container for the array of clusters.
 	Value []*ClusterResource
+}
+
+// ListCommands - List of commands for cluster.
+type ListCommands struct {
+	// READ-ONLY; Container for array of commands.
+	Value []*CommandPublicResource
 }
 
 // ListDataCenters - List of managed Cassandra data centers and their properties.
@@ -2192,6 +2846,19 @@ type ManagedServiceIdentity struct {
 	TenantID *string
 }
 
+// MaterializedViewDefinition - Materialized View definition for the container.
+type MaterializedViewDefinition struct {
+	// REQUIRED; The definition should be an SQL query which would be used to fetch data from the source container to populate
+	// into the Materialized View container.
+	Definition *string
+
+	// REQUIRED; The name of the source container on which the Materialized View will be created.
+	SourceCollectionID *string
+
+	// READ-ONLY; An unique identifier for the source collection. This is a system generated property.
+	SourceCollectionRid *string
+}
+
 // MaterializedViewsBuilderRegionalServiceResource - Resource for a regional service location.
 type MaterializedViewsBuilderRegionalServiceResource struct {
 	// READ-ONLY; The location name.
@@ -2266,6 +2933,12 @@ func (m *MaterializedViewsBuilderServiceResourceProperties) GetServiceResourcePr
 		ServiceType:          m.ServiceType,
 		Status:               m.Status,
 	}
+}
+
+// MergeParameters - The properties of an Azure Cosmos DB merge operations
+type MergeParameters struct {
+	// Specifies whether the operation is a real merge operation or a simulation.
+	IsDryRun *bool
 }
 
 // Metric data
@@ -2363,6 +3036,9 @@ type MongoDBCollectionCreateUpdateParameters struct {
 	// REQUIRED; Properties to create and update Azure Cosmos DB MongoDB collection.
 	Properties *MongoDBCollectionCreateUpdateProperties
 
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity
+
 	// The location of the resource group to which the resource belongs.
 	Location *string
 
@@ -2438,6 +3114,9 @@ type MongoDBCollectionGetPropertiesResource struct {
 
 // MongoDBCollectionGetResults - An Azure Cosmos DB MongoDB collection.
 type MongoDBCollectionGetResults struct {
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity
+
 	// The location of the resource group to which the resource belongs.
 	Location *string
 
@@ -2492,6 +3171,9 @@ type MongoDBCollectionResource struct {
 type MongoDBDatabaseCreateUpdateParameters struct {
 	// REQUIRED; Properties to create and update Azure Cosmos DB MongoDB database.
 	Properties *MongoDBDatabaseCreateUpdateProperties
+
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity
 
 	// The location of the resource group to which the resource belongs.
 	Location *string
@@ -2559,6 +3241,9 @@ type MongoDBDatabaseGetPropertiesResource struct {
 
 // MongoDBDatabaseGetResults - An Azure Cosmos DB MongoDB database.
 type MongoDBDatabaseGetResults struct {
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity
+
 	// The location of the resource group to which the resource belongs.
 	Location *string
 
@@ -2598,6 +3283,35 @@ type MongoDBDatabaseResource struct {
 
 	// Parameters to indicate the information about the restore
 	RestoreParameters *ResourceRestoreParameters
+}
+
+// MongoDataTransferDataSourceSink - A CosmosDB Mongo API data source/sink
+type MongoDataTransferDataSourceSink struct {
+	// REQUIRED
+	CollectionName *string
+
+	// REQUIRED
+	Component *DataTransferComponent
+
+	// REQUIRED
+	DatabaseName      *string
+	RemoteAccountName *string
+}
+
+// GetBaseCosmosDataTransferDataSourceSink implements the BaseCosmosDataTransferDataSourceSinkClassification interface for
+// type MongoDataTransferDataSourceSink.
+func (m *MongoDataTransferDataSourceSink) GetBaseCosmosDataTransferDataSourceSink() *BaseCosmosDataTransferDataSourceSink {
+	return &BaseCosmosDataTransferDataSourceSink{
+		Component:         m.Component,
+		RemoteAccountName: m.RemoteAccountName,
+	}
+}
+
+// GetDataTransferDataSourceSink implements the DataTransferDataSourceSinkClassification interface for type MongoDataTransferDataSourceSink.
+func (m *MongoDataTransferDataSourceSink) GetDataTransferDataSourceSink() *DataTransferDataSourceSink {
+	return &DataTransferDataSourceSink{
+		Component: m.Component,
+	}
 }
 
 // MongoIndex - Cosmos DB MongoDB collection index key
@@ -2717,6 +3431,102 @@ type MongoUserDefinitionResource struct {
 
 	// The user name for User Definition.
 	UserName *string
+}
+
+// MongoVCoreDataTransferDataSourceSink - A CosmosDB Mongo vCore API data source/sink
+type MongoVCoreDataTransferDataSourceSink struct {
+	// REQUIRED
+	CollectionName *string
+
+	// REQUIRED
+	Component *DataTransferComponent
+
+	// REQUIRED
+	DatabaseName                *string
+	ConnectionStringKeyVaultURI *string
+	HostName                    *string
+}
+
+// GetDataTransferDataSourceSink implements the DataTransferDataSourceSinkClassification interface for type MongoVCoreDataTransferDataSourceSink.
+func (m *MongoVCoreDataTransferDataSourceSink) GetDataTransferDataSourceSink() *DataTransferDataSourceSink {
+	return &DataTransferDataSourceSink{
+		Component: m.Component,
+	}
+}
+
+// NetworkSecurityPerimeter - Information about a network security perimeter (NSP)
+type NetworkSecurityPerimeter struct {
+	// Fully qualified Azure resource ID of the NSP resource
+	ID *string
+
+	// Location of the network security perimeter
+	Location *string
+
+	// Universal unique ID (UUID) of the network security perimeter
+	PerimeterGUID *string
+}
+
+// NetworkSecurityPerimeterConfiguration - Network security perimeter (NSP) configuration resource
+type NetworkSecurityPerimeterConfiguration struct {
+	// Network security configuration properties.
+	Properties *NetworkSecurityPerimeterConfigurationProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// NetworkSecurityPerimeterConfigurationListResult - Result of a list NSP (network security perimeter) configurations request.
+type NetworkSecurityPerimeterConfigurationListResult struct {
+	// The link used to get the next page of results.
+	NextLink *string
+
+	// Array of network security perimeter results.
+	Value []*NetworkSecurityPerimeterConfiguration
+}
+
+// NetworkSecurityPerimeterConfigurationProperties - Network security configuration properties.
+type NetworkSecurityPerimeterConfigurationProperties struct {
+	// Information about a network security perimeter (NSP)
+	NetworkSecurityPerimeter *NetworkSecurityPerimeter
+
+	// Network security perimeter configuration profile
+	Profile *NetworkSecurityProfile
+
+	// Information about resource association
+	ResourceAssociation *ResourceAssociation
+
+	// READ-ONLY; List of provisioning issues, if any
+	ProvisioningIssues []*ProvisioningIssue
+
+	// READ-ONLY; Provisioning state of a network security perimeter configuration that is being created or updated.
+	ProvisioningState *NetworkSecurityPerimeterConfigurationProvisioningState
+}
+
+// NetworkSecurityProfile - Network security perimeter configuration profile
+type NetworkSecurityProfile struct {
+	// List of Access Rules
+	AccessRules []*AccessRule
+
+	// Current access rules version
+	AccessRulesVersion *int32
+
+	// Current diagnostic settings version
+	DiagnosticSettingsVersion *int32
+
+	// List of log categories that are enabled
+	EnabledLogCategories []*string
+
+	// Name of the profile
+	Name *string
 }
 
 // NotebookWorkspace - A notebook workspace resource
@@ -2987,16 +3797,97 @@ type Permission struct {
 	NotDataActions []*string
 }
 
+// PhysicalPartitionID - PhysicalPartitionId object
+type PhysicalPartitionID struct {
+	// REQUIRED; Id of a physical partition
+	ID *string
+}
+
+// PhysicalPartitionStorageInfo - The storage of a physical partition
+type PhysicalPartitionStorageInfo struct {
+	// READ-ONLY; The unique identifier of the partition.
+	ID *string
+
+	// READ-ONLY; The storage in KB for the physical partition.
+	StorageInKB *float64
+}
+
+// PhysicalPartitionStorageInfoCollection - List of physical partitions and their properties returned by a merge operation.
+type PhysicalPartitionStorageInfoCollection struct {
+	// READ-ONLY; List of physical partitions and their properties.
+	PhysicalPartitionStorageInfoCollection []*PhysicalPartitionStorageInfo
+}
+
+// PhysicalPartitionThroughputInfoProperties - The properties of an Azure Cosmos DB PhysicalPartitionThroughputInfoProperties
+// object
+type PhysicalPartitionThroughputInfoProperties struct {
+	// Array of physical partition throughput info objects
+	PhysicalPartitionThroughputInfo []*PhysicalPartitionThroughputInfoResource
+}
+
+// PhysicalPartitionThroughputInfoResource - PhysicalPartitionThroughputInfo object
+type PhysicalPartitionThroughputInfoResource struct {
+	// REQUIRED; Id of a physical partition
+	ID *string
+
+	// Throughput of a physical partition
+	Throughput *float64
+}
+
+// PhysicalPartitionThroughputInfoResult - An Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+type PhysicalPartitionThroughputInfoResult struct {
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity
+
+	// The location of the resource group to which the resource belongs.
+	Location *string
+
+	// The properties of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object
+	Properties *PhysicalPartitionThroughputInfoResultProperties
+
+	// Tags are a list of key-value pairs that describe the resource. These tags can be used in viewing and grouping this resource
+	// (across resource groups). A maximum of 15 tags can be provided for a
+	// resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters. For example,
+	// the default experience for a template type is set with "defaultExperience":
+	// "Cassandra". Current "defaultExperience" values also include "Table", "Graph", "DocumentDB", and "MongoDB".
+	Tags map[string]*string
+
+	// READ-ONLY; The unique resource identifier of the ARM resource.
+	ID *string
+
+	// READ-ONLY; The name of the ARM resource.
+	Name *string
+
+	// READ-ONLY; The type of Azure resource.
+	Type *string
+}
+
+// PhysicalPartitionThroughputInfoResultProperties - The properties of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult
+// object
+type PhysicalPartitionThroughputInfoResultProperties struct {
+	// properties of physical partition throughput info
+	Resource *PhysicalPartitionThroughputInfoResultPropertiesResource
+}
+
+// PhysicalPartitionThroughputInfoResultPropertiesResource - properties of physical partition throughput info
+type PhysicalPartitionThroughputInfoResultPropertiesResource struct {
+	// Array of physical partition throughput info objects
+	PhysicalPartitionThroughputInfo []*PhysicalPartitionThroughputInfoResource
+}
+
 // PrivateEndpointConnection - A private endpoint connection
 type PrivateEndpointConnection struct {
 	// Resource properties.
 	Properties *PrivateEndpointConnectionProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
@@ -3092,17 +3983,98 @@ type PrivilegeResource struct {
 	Db *string
 }
 
+// ProvisioningIssue - Describes a provisioning issue for a network security perimeter configuration
+type ProvisioningIssue struct {
+	// READ-ONLY; Name of the issue
+	Name *string
+
+	// READ-ONLY; Details of a provisioning issue for a network security perimeter (NSP) configuration. Resource providers should
+	// generate separate provisioning issue elements for each separate issue detected, and
+	// include a meaningful and distinctive description, as well as any appropriate suggestedResourceIds and suggestedAccessRules
+	Properties *ProvisioningIssueProperties
+}
+
+// ProvisioningIssueProperties - Details of a provisioning issue for a network security perimeter (NSP) configuration. Resource
+// providers should generate separate provisioning issue elements for each separate issue detected, and
+// include a meaningful and distinctive description, as well as any appropriate suggestedResourceIds and suggestedAccessRules
+type ProvisioningIssueProperties struct {
+	// READ-ONLY; Description of the issue
+	Description *string
+
+	// READ-ONLY; Type of issue
+	IssueType *IssueType
+
+	// READ-ONLY; Severity of the issue.
+	Severity *Severity
+
+	// READ-ONLY; Access rules that can be added to the network security profile (NSP) to remediate the issue.
+	SuggestedAccessRules []*AccessRule
+
+	// READ-ONLY; Fully qualified resource IDs of suggested resources that can be associated to the network security perimeter
+	// (NSP) to remediate the issue.
+	SuggestedResourceIDs []*string
+}
+
 // ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
 // location
 type ProxyResource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
+}
+
+// RedistributeThroughputParameters - Cosmos DB redistribute throughput parameters object
+type RedistributeThroughputParameters struct {
+	// REQUIRED; Properties to redistribute throughput parameters object
+	Properties *RedistributeThroughputProperties
+
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity
+
+	// The location of the resource group to which the resource belongs.
+	Location *string
+
+	// Tags are a list of key-value pairs that describe the resource. These tags can be used in viewing and grouping this resource
+	// (across resource groups). A maximum of 15 tags can be provided for a
+	// resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters. For example,
+	// the default experience for a template type is set with "defaultExperience":
+	// "Cassandra". Current "defaultExperience" values also include "Table", "Graph", "DocumentDB", and "MongoDB".
+	Tags map[string]*string
+
+	// READ-ONLY; The unique resource identifier of the ARM resource.
+	ID *string
+
+	// READ-ONLY; The name of the ARM resource.
+	Name *string
+
+	// READ-ONLY; The type of Azure resource.
+	Type *string
+}
+
+// RedistributeThroughputProperties - Properties to redistribute throughput for Azure Cosmos DB resource.
+type RedistributeThroughputProperties struct {
+	// REQUIRED; The standard JSON format of a resource throughput
+	Resource *RedistributeThroughputPropertiesResource
+}
+
+// RedistributeThroughputPropertiesResource - Resource to redistribute throughput for Azure Cosmos DB resource
+type RedistributeThroughputPropertiesResource struct {
+	// REQUIRED; Array of PhysicalPartitionThroughputInfoResource objects.
+	SourcePhysicalPartitionThroughputInfo []*PhysicalPartitionThroughputInfoResource
+
+	// REQUIRED; Array of PhysicalPartitionThroughputInfoResource objects.
+	TargetPhysicalPartitionThroughputInfo []*PhysicalPartitionThroughputInfoResource
+
+	// REQUIRED; ThroughputPolicy to apply for throughput redistribution
+	ThroughputPolicy *ThroughputPolicyType
 }
 
 // RegionForOnlineOffline - Cosmos DB region to online or offline.
@@ -3125,14 +4097,26 @@ type RegionalServiceResource struct {
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
+}
+
+// ResourceAssociation - Information about resource association
+type ResourceAssociation struct {
+	// Access mode of the resource association
+	AccessMode *ResourceAssociationAccessMode
+
+	// Name of the resource association
+	Name *string
 }
 
 // ResourceRestoreParameters - Parameters to indicate the information about the restore.
@@ -3538,6 +4522,9 @@ type RestorableSQLContainerPropertiesResourceContainer struct {
 	// The configuration of the indexing policy. By default, the indexing is automatic for all document paths within the container
 	IndexingPolicy *IndexingPolicy
 
+	// The configuration for defining Materialized Views. This must be specified only for creating a Materialized View container.
+	MaterializedViewDefinition *MaterializedViewDefinition
+
 	// The configuration of the partition key to be used for partitioning data into multiple partitions
 	PartitionKey *ContainerPartitionKey
 
@@ -3765,6 +4752,9 @@ type RestoreParameters struct {
 	// Specifies whether the restored account will have Time-To-Live disabled upon the successful restore.
 	RestoreWithTTLDisabled *bool
 
+	// The source backup location for restore.
+	SourceBackupLocation *string
+
 	// List of specific tables available for restore.
 	TablesToRestore []*string
 }
@@ -3782,6 +4772,46 @@ type RestoreParametersBase struct {
 	RestoreWithTTLDisabled *bool
 }
 
+// RetrieveThroughputParameters - Cosmos DB retrieve throughput parameters object
+type RetrieveThroughputParameters struct {
+	// REQUIRED; Properties to retrieve throughput parameters object
+	Properties *RetrieveThroughputProperties
+
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity
+
+	// The location of the resource group to which the resource belongs.
+	Location *string
+
+	// Tags are a list of key-value pairs that describe the resource. These tags can be used in viewing and grouping this resource
+	// (across resource groups). A maximum of 15 tags can be provided for a
+	// resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters. For example,
+	// the default experience for a template type is set with "defaultExperience":
+	// "Cassandra". Current "defaultExperience" values also include "Table", "Graph", "DocumentDB", and "MongoDB".
+	Tags map[string]*string
+
+	// READ-ONLY; The unique resource identifier of the ARM resource.
+	ID *string
+
+	// READ-ONLY; The name of the ARM resource.
+	Name *string
+
+	// READ-ONLY; The type of Azure resource.
+	Type *string
+}
+
+// RetrieveThroughputProperties - Properties to retrieve throughput for Azure Cosmos DB resource.
+type RetrieveThroughputProperties struct {
+	// REQUIRED; The standard JSON format of a resource throughput
+	Resource *RetrieveThroughputPropertiesResource
+}
+
+// RetrieveThroughputPropertiesResource - Resource to retrieve throughput information for Cosmos DB resource
+type RetrieveThroughputPropertiesResource struct {
+	// REQUIRED; Array of PhysicalPartitionId objects.
+	PhysicalPartitionIDs []*PhysicalPartitionID
+}
+
 // Role - The set of roles permitted through this Role Definition.
 type Role struct {
 	// The database name the role is applied.
@@ -3795,6 +4825,9 @@ type Role struct {
 type SQLContainerCreateUpdateParameters struct {
 	// REQUIRED; Properties to create and update Azure Cosmos DB container.
 	Properties *SQLContainerCreateUpdateProperties
+
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity
 
 	// The location of the resource group to which the resource belongs.
 	Location *string
@@ -3865,6 +4898,9 @@ type SQLContainerGetPropertiesResource struct {
 	// The configuration of the indexing policy. By default, the indexing is automatic for all document paths within the container
 	IndexingPolicy *IndexingPolicy
 
+	// The configuration for defining Materialized Views. This must be specified only for creating a Materialized View container.
+	MaterializedViewDefinition *MaterializedViewDefinition
+
 	// The configuration of the partition key to be used for partitioning data into multiple partitions
 	PartitionKey *ContainerPartitionKey
 
@@ -3887,6 +4923,9 @@ type SQLContainerGetPropertiesResource struct {
 
 // SQLContainerGetResults - An Azure Cosmos DB container.
 type SQLContainerGetResults struct {
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity
+
 	// The location of the resource group to which the resource belongs.
 	Location *string
 
@@ -3942,6 +4981,9 @@ type SQLContainerResource struct {
 	// The configuration of the indexing policy. By default, the indexing is automatic for all document paths within the container
 	IndexingPolicy *IndexingPolicy
 
+	// The configuration for defining Materialized Views. This must be specified only for creating a Materialized View container.
+	MaterializedViewDefinition *MaterializedViewDefinition
+
 	// The configuration of the partition key to be used for partitioning data into multiple partitions
 	PartitionKey *ContainerPartitionKey
 
@@ -3953,10 +4995,42 @@ type SQLContainerResource struct {
 	UniqueKeyPolicy *UniqueKeyPolicy
 }
 
+// SQLDataTransferDataSourceSink - A CosmosDB No Sql API data source/sink
+type SQLDataTransferDataSourceSink struct {
+	// REQUIRED
+	Component *DataTransferComponent
+
+	// REQUIRED
+	ContainerName *string
+
+	// REQUIRED
+	DatabaseName      *string
+	RemoteAccountName *string
+}
+
+// GetBaseCosmosDataTransferDataSourceSink implements the BaseCosmosDataTransferDataSourceSinkClassification interface for
+// type SQLDataTransferDataSourceSink.
+func (s *SQLDataTransferDataSourceSink) GetBaseCosmosDataTransferDataSourceSink() *BaseCosmosDataTransferDataSourceSink {
+	return &BaseCosmosDataTransferDataSourceSink{
+		Component:         s.Component,
+		RemoteAccountName: s.RemoteAccountName,
+	}
+}
+
+// GetDataTransferDataSourceSink implements the DataTransferDataSourceSinkClassification interface for type SQLDataTransferDataSourceSink.
+func (s *SQLDataTransferDataSourceSink) GetDataTransferDataSourceSink() *DataTransferDataSourceSink {
+	return &DataTransferDataSourceSink{
+		Component: s.Component,
+	}
+}
+
 // SQLDatabaseCreateUpdateParameters - Parameters to create and update Cosmos DB SQL database.
 type SQLDatabaseCreateUpdateParameters struct {
 	// REQUIRED; Properties to create and update Azure Cosmos DB SQL database.
 	Properties *SQLDatabaseCreateUpdateProperties
+
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity
 
 	// The location of the resource group to which the resource belongs.
 	Location *string
@@ -4030,6 +5104,9 @@ type SQLDatabaseGetPropertiesResource struct {
 
 // SQLDatabaseGetResults - An Azure Cosmos DB SQL database.
 type SQLDatabaseGetResults struct {
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity
+
 	// The location of the resource group to which the resource belongs.
 	Location *string
 
@@ -4251,6 +5328,9 @@ type SQLStoredProcedureCreateUpdateParameters struct {
 	// REQUIRED; Properties to create and update Azure Cosmos DB storedProcedure.
 	Properties *SQLStoredProcedureCreateUpdateProperties
 
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity
+
 	// The location of the resource group to which the resource belongs.
 	Location *string
 
@@ -4304,6 +5384,9 @@ type SQLStoredProcedureGetPropertiesResource struct {
 
 // SQLStoredProcedureGetResults - An Azure Cosmos DB storedProcedure.
 type SQLStoredProcedureGetResults struct {
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity
+
 	// The location of the resource group to which the resource belongs.
 	Location *string
 
@@ -4346,6 +5429,9 @@ type SQLStoredProcedureResource struct {
 type SQLTriggerCreateUpdateParameters struct {
 	// REQUIRED; Properties to create and update Azure Cosmos DB trigger.
 	Properties *SQLTriggerCreateUpdateProperties
+
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity
 
 	// The location of the resource group to which the resource belongs.
 	Location *string
@@ -4406,6 +5492,9 @@ type SQLTriggerGetPropertiesResource struct {
 
 // SQLTriggerGetResults - An Azure Cosmos DB trigger.
 type SQLTriggerGetResults struct {
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity
+
 	// The location of the resource group to which the resource belongs.
 	Location *string
 
@@ -4454,6 +5543,9 @@ type SQLTriggerResource struct {
 type SQLUserDefinedFunctionCreateUpdateParameters struct {
 	// REQUIRED; Properties to create and update Azure Cosmos DB userDefinedFunction.
 	Properties *SQLUserDefinedFunctionCreateUpdateProperties
+
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity
 
 	// The location of the resource group to which the resource belongs.
 	Location *string
@@ -4508,6 +5600,9 @@ type SQLUserDefinedFunctionGetPropertiesResource struct {
 
 // SQLUserDefinedFunctionGetResults - An Azure Cosmos DB userDefinedFunction.
 type SQLUserDefinedFunctionGetResults struct {
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity
+
 	// The location of the resource group to which the resource belongs.
 	Location *string
 
@@ -4656,6 +5751,9 @@ type TableCreateUpdateParameters struct {
 	// REQUIRED; Properties to create and update Azure Cosmos DB Table.
 	Properties *TableCreateUpdateProperties
 
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity
+
 	// The location of the resource group to which the resource belongs.
 	Location *string
 
@@ -4722,6 +5820,9 @@ type TableGetPropertiesResource struct {
 
 // TableGetResults - An Azure Cosmos DB Table.
 type TableGetResults struct {
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity
+
 	// The location of the resource group to which the resource belongs.
 	Location *string
 
@@ -4772,6 +5873,118 @@ type ThroughputPolicyResource struct {
 	IsEnabled *bool
 }
 
+// ThroughputPoolAccountCreateParameters - Parameters for creating a Azure Cosmos DB throughput pool account.
+type ThroughputPoolAccountCreateParameters struct {
+	// Properties to update Azure Cosmos DB throughput pool.
+	Properties *ThroughputPoolAccountCreateProperties
+
+	// Tags are a list of key-value pairs that describe the resource. These tags can be used in viewing and grouping this resource
+	// (across resource groups). A maximum of 15 tags can be provided for a
+	// resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters. For example,
+	// the default experience for a template type is set with "defaultExperience":
+	// "Cassandra". Current "defaultExperience" values also include "Table", "Graph", "DocumentDB", and "MongoDB".
+	Tags map[string]*string
+}
+
+// ThroughputPoolAccountCreateProperties - Properties to update Azure Cosmos DB throughput pool.
+type ThroughputPoolAccountCreateProperties struct {
+	// The location of global database account in the throughputPool.
+	AccountLocation *string
+
+	// The resource identifier of global database account in the throughputPool.
+	AccountResourceIdentifier *string
+}
+
+// ThroughputPoolAccountProperties - An Azure Cosmos DB Global Database Account which is part of a Throughputpool.
+type ThroughputPoolAccountProperties struct {
+	// The location of global database account in the throughputPool.
+	AccountLocation *string
+
+	// The resource identifier of global database account in the throughputPool.
+	AccountResourceIdentifier *string
+
+	// A provisioning state of the ThroughputPool Account.
+	ProvisioningState *Status
+
+	// READ-ONLY; The instance id of global database account in the throughputPool.
+	AccountInstanceID *string
+}
+
+// ThroughputPoolAccountResource - An Azure Cosmos DB Throughputpool Account
+type ThroughputPoolAccountResource struct {
+	// An Azure Cosmos DB Global Database Account which is part of a Throughputpool.
+	Properties *ThroughputPoolAccountProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ThroughputPoolAccountsListResult - The List operation response, that contains the global database accounts and their properties.
+type ThroughputPoolAccountsListResult struct {
+	// READ-ONLY; The link used to get the next page of results.
+	NextLink *string
+
+	// READ-ONLY; List of global database accounts in a throughput pool and their properties.
+	Value []*ThroughputPoolAccountResource
+}
+
+// ThroughputPoolProperties - Properties to update Azure Cosmos DB throughput pool.
+type ThroughputPoolProperties struct {
+	// Value for throughput to be shared among CosmosDB resources in the pool.
+	MaxThroughput *int32
+
+	// A provisioning state of the ThroughputPool.
+	ProvisioningState *Status
+}
+
+// ThroughputPoolResource - An Azure Cosmos DB Throughputpool.
+type ThroughputPoolResource struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Properties to update Azure Cosmos DB throughput pool.
+	Properties *ThroughputPoolProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ThroughputPoolUpdate - Represents a throughput pool resource for updates.
+type ThroughputPoolUpdate struct {
+	// Properties of the throughput pool.
+	Properties *ThroughputPoolProperties
+}
+
+// ThroughputPoolsListResult - The List operation response, that contains the throughput pools and their properties.
+type ThroughputPoolsListResult struct {
+	// READ-ONLY; The link used to get the next page of results.
+	NextLink *string
+
+	// READ-ONLY; List of throughput pools and their properties.
+	Value []*ThroughputPoolResource
+}
+
 // ThroughputSettingsGetProperties - The properties of an Azure Cosmos DB resource throughput
 type ThroughputSettingsGetProperties struct {
 	Resource *ThroughputSettingsGetPropertiesResource
@@ -4808,6 +6021,9 @@ type ThroughputSettingsGetPropertiesResource struct {
 
 // ThroughputSettingsGetResults - An Azure Cosmos DB resource throughput.
 type ThroughputSettingsGetResults struct {
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity
+
 	// The location of the resource group to which the resource belongs.
 	Location *string
 
@@ -4858,6 +6074,9 @@ type ThroughputSettingsUpdateParameters struct {
 	// REQUIRED; Properties to update Azure Cosmos DB resource throughput.
 	Properties *ThroughputSettingsUpdateProperties
 
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity
+
 	// The location of the resource group to which the resource belongs.
 	Location *string
 
@@ -4882,6 +6101,28 @@ type ThroughputSettingsUpdateParameters struct {
 type ThroughputSettingsUpdateProperties struct {
 	// REQUIRED; The standard JSON format of a resource throughput
 	Resource *ThroughputSettingsResource
+}
+
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
+type TrackedResource struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
 }
 
 // UniqueKey - The unique key on that enforces uniqueness constraint on documents in the collection in the Azure Cosmos DB

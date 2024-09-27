@@ -45,7 +45,7 @@ func NewCollectionClient(subscriptionID string, credential azcore.TokenCredentia
 
 // NewListMetricDefinitionsPager - Retrieves metric definitions for the given collection.
 //
-// Generated from API version 2024-08-15
+// Generated from API version 2024-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseRid - Cosmos DB database rid.
@@ -104,7 +104,7 @@ func (client *CollectionClient) listMetricDefinitionsCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-15")
+	reqQP.Set("api-version", "2024-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -121,7 +121,7 @@ func (client *CollectionClient) listMetricDefinitionsHandleResponse(resp *http.R
 
 // NewListMetricsPager - Retrieves the metrics determined by the given filter for the given database account and collection.
 //
-// Generated from API version 2024-08-15
+// Generated from API version 2024-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseRid - Cosmos DB database rid.
@@ -184,7 +184,7 @@ func (client *CollectionClient) listMetricsCreateRequest(ctx context.Context, re
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("$filter", filter)
-	reqQP.Set("api-version", "2024-08-15")
+	reqQP.Set("api-version", "2024-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -201,7 +201,7 @@ func (client *CollectionClient) listMetricsHandleResponse(resp *http.Response) (
 
 // NewListUsagesPager - Retrieves the usages (most recent storage data) for the given collection.
 //
-// Generated from API version 2024-08-15
+// Generated from API version 2024-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseRid - Cosmos DB database rid.
@@ -263,7 +263,7 @@ func (client *CollectionClient) listUsagesCreateRequest(ctx context.Context, res
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2024-08-15")
+	reqQP.Set("api-version", "2024-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

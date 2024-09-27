@@ -360,11 +360,6 @@ func TestBearerTokenPolicy_CAEChallengeHandling(t *testing.T) {
 			expectedClaims: `{"access_token":{"nbf":{"essential":true,"value":"1726077595"},"xms_caeerror":{"value":"10012"}}}`,
 		},
 		{
-			desc:           "no padding",
-			challenge:      `Bearer error="insufficient_claims", authorization_uri="http://localhost", claims="ey"`,
-			expectedClaims: "{",
-		},
-		{
 			desc:           "multiple challenges",
 			challenge:      `PoP realm="", authorization_uri="http://localhost", client_id="...", nonce="ey==", Bearer realm="", error="insufficient_claims", authorization_uri="http://localhost", client_id="...", error_description="Continuous access evaluation resulted in challenge with result: InteractionRequired and code: TokenIssuedBeforeRevocationTimestamp", claims="eyJhY2Nlc3NfdG9rZW4iOnsibmJmIjp7ImVzc2VudGlhbCI6dHJ1ZSwgInZhbHVlIjoiMTcyNjI1ODEyMiJ9fX0="`,
 			expectedClaims: `{"access_token":{"nbf":{"essential":true, "value":"1726258122"}}}`,

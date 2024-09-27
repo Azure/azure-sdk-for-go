@@ -1,5 +1,9 @@
 # Release History
 
+## 6.1.0-beta.3 (2024-09-27)
+### Other Changes
+
+
 ## 6.1.0-beta.2 (2024-09-26)
 ### Features Added
 

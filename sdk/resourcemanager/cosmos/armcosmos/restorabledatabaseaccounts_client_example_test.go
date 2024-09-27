@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBRestorableDatabaseAccountList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1ad29756bd141a47cac770140105a706d065ae1b/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-09-01-preview/examples/CosmosDBRestorableDatabaseAccountList.json
 func ExampleRestorableDatabaseAccountsClient_NewListByLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,7 +51,7 @@ func ExampleRestorableDatabaseAccountsClient_NewListByLocationPager() {
 		// 				APIType: to.Ptr(armcosmos.APITypeSQL),
 		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-11T21:56:15.000Z"); return t}()),
 		// 				DeletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09.000Z"); return t}()),
-		// 				OldestRestorableTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09.000Z"); return t}()),
+		// 				OldestRestorableTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-01T22:05:09.000Z"); return t}()),
 		// 				RestorableLocations: []*armcosmos.RestorableLocationResource{
 		// 					{
 		// 						CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-30T21:13:10.000Z"); return t}()),
@@ -75,7 +75,7 @@ func ExampleRestorableDatabaseAccountsClient_NewListByLocationPager() {
 		// 				AccountName: to.Ptr("ddb2"),
 		// 				APIType: to.Ptr(armcosmos.APITypeSQL),
 		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-01T08:05:18.000Z"); return t}()),
-		// 				OldestRestorableTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-01T08:05:18.000Z"); return t}()),
+		// 				OldestRestorableTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-01T22:05:09.000Z"); return t}()),
 		// 				RestorableLocations: []*armcosmos.RestorableLocationResource{
 		// 					{
 		// 						CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-30T21:13:10.000Z"); return t}()),
@@ -94,7 +94,7 @@ func ExampleRestorableDatabaseAccountsClient_NewListByLocationPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBRestorableDatabaseAccountNoLocationList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1ad29756bd141a47cac770140105a706d065ae1b/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-09-01-preview/examples/CosmosDBRestorableDatabaseAccountNoLocationList.json
 func ExampleRestorableDatabaseAccountsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -128,7 +128,7 @@ func ExampleRestorableDatabaseAccountsClient_NewListPager() {
 		// 				APIType: to.Ptr(armcosmos.APITypeSQL),
 		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-11T21:56:15.000Z"); return t}()),
 		// 				DeletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09.000Z"); return t}()),
-		// 				OldestRestorableTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09.000Z"); return t}()),
+		// 				OldestRestorableTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-01T22:05:09.000Z"); return t}()),
 		// 				RestorableLocations: []*armcosmos.RestorableLocationResource{
 		// 					{
 		// 						CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-30T21:13:10.000Z"); return t}()),
@@ -152,7 +152,7 @@ func ExampleRestorableDatabaseAccountsClient_NewListPager() {
 		// 				AccountName: to.Ptr("ddb2"),
 		// 				APIType: to.Ptr(armcosmos.APITypeSQL),
 		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-01T08:05:18.000Z"); return t}()),
-		// 				OldestRestorableTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-01T08:05:18.000Z"); return t}()),
+		// 				OldestRestorableTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-01T22:05:09.000Z"); return t}()),
 		// 				RestorableLocations: []*armcosmos.RestorableLocationResource{
 		// 					{
 		// 						CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-30T21:13:10.000Z"); return t}()),
@@ -171,7 +171,7 @@ func ExampleRestorableDatabaseAccountsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4d065866a422257746306b352cb34fd5c98d5754/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/CosmosDBRestorableDatabaseAccountGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1ad29756bd141a47cac770140105a706d065ae1b/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-09-01-preview/examples/CosmosDBRestorableDatabaseAccountGet.json
 func ExampleRestorableDatabaseAccountsClient_GetByLocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -68,6 +68,11 @@ type MongoClustersClientListResponse struct {
 	ListResult
 }
 
+// MongoClustersClientPromoteResponse contains the response from method MongoClustersClient.BeginPromote.
+type MongoClustersClientPromoteResponse struct {
+	// placeholder for future response values
+}
+
 // MongoClustersClientUpdateResponse contains the response from method MongoClustersClient.BeginUpdate.
 type MongoClustersClientUpdateResponse struct {
 	// Represents a mongo cluster resource.
@@ -107,4 +112,10 @@ type PrivateEndpointConnectionsClientListByMongoClusterResponse struct {
 type PrivateLinksClientListByMongoClusterResponse struct {
 	// The response of a PrivateLinkResource list operation.
 	PrivateLinkResourceListResult
+}
+
+// ReplicasClientListByParentResponse contains the response from method ReplicasClient.NewListByParentPager.
+type ReplicasClientListByParentResponse struct {
+	// The response of a Replica list operation.
+	ReplicaListResult
 }

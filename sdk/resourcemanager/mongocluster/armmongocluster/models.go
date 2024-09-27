@@ -138,7 +138,7 @@ type Operation struct {
 	// Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 	ActionType *ActionType
 
-	// Localized display information for this particular operation.
+	// READ-ONLY; Localized display information for this particular operation.
 	Display *OperationDisplay
 
 	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for Azure
@@ -156,17 +156,19 @@ type Operation struct {
 
 // OperationDisplay - Localized display information for and operation.
 type OperationDisplay struct {
-	// The short, localized friendly description of the operation; suitable for tool tips and detailed views.
+	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
 	Description *string
 
-	// The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual Machine",
-	// "Restart Virtual Machine".
+	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
+	// Machine", "Restart Virtual Machine".
 	Operation *string
 
-	// The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft Compute".
+	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
+	// Compute".
 	Provider *string
 
-	// The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job Schedule Collections".
+	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
+	// Schedule Collections".
 	Resource *string
 }
 
@@ -299,6 +301,15 @@ type PrivateLinkServiceConnectionState struct {
 	Status *PrivateEndpointServiceConnectionStatus
 }
 
+// PromoteReplicaRequest - Promote replica request properties.
+type PromoteReplicaRequest struct {
+	// REQUIRED; The promote option to apply to the operation.
+	PromoteOption *PromoteOption
+
+	// The mode to apply to the promote operation. Value is optional and default value is 'Switchover'.
+	Mode *PromoteMode
+}
+
 // Properties - The properties of a mongo cluster.
 type Properties struct {
 	// The administrator's login for the mongo cluster.
@@ -313,8 +324,14 @@ type Properties struct {
 	// The list of node group specs in the cluster.
 	NodeGroupSpecs []*NodeGroupSpec
 
+	// List of private endpoint connections.
+	PreviewFeatures []*PreviewFeature
+
 	// Whether or not public endpoint access is allowed for this mongo cluster.
 	PublicNetworkAccess *PublicNetworkAccess
+
+	// The parameters to create a replica mongo cluster.
+	ReplicaParameters *ReplicaParameters
 
 	// The parameters to create a point-in-time restore mongo cluster.
 	RestoreParameters *RestoreParameters
@@ -323,7 +340,7 @@ type Properties struct {
 	ServerVersion *string
 
 	// READ-ONLY; The status of the mongo cluster.
-	ClusterStatus *MongoClusterStatus
+	ClusterStatus *Status
 
 	// READ-ONLY; The default mongo connection string for the cluster.
 	ConnectionString *string
@@ -331,11 +348,65 @@ type Properties struct {
 	// READ-ONLY; Earliest restore timestamp in UTC ISO8601 format.
 	EarliestRestoreTime *string
 
+	// READ-ONLY; The infrastructure version the cluster is provisioned on.
+	InfrastructureVersion *string
+
 	// READ-ONLY; List of private endpoint connections.
 	PrivateEndpointConnections []*PrivateEndpointConnection
 
 	// READ-ONLY; The provisioning state of the mongo cluster.
 	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; The replication properties for the mongo cluster
+	Replica *ReplicationProperties
+}
+
+// Replica - Represents a mongo cluster replica.
+type Replica struct {
+	// The resource-specific properties for this resource.
+	Properties *Properties
+
+	// READ-ONLY; The name of the mongo cluster firewall rule.
+	Name *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ReplicaListResult - The response of a Replica list operation.
+type ReplicaListResult struct {
+	// REQUIRED; The Replica items on this page
+	Value []*Replica
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ReplicaParameters - Parameters used for replica operations.
+type ReplicaParameters struct {
+	// REQUIRED; The location of the source cluster
+	SourceLocation *string
+
+	// REQUIRED; The id of the replication source cluster.
+	SourceResourceID *string
+}
+
+// ReplicationProperties - Replica properties of the mongo cluster.
+type ReplicationProperties struct {
+	// READ-ONLY; The replication link state of the replica cluster.
+	ReplicationState *ReplicationState
+
+	// READ-ONLY; The replication role of the cluster
+	Role *ReplicationRole
+
+	// READ-ONLY; The resource id the source cluster for the replica cluster.
+	SourceResourceID *string
 }
 
 // RestoreParameters - Parameters used for restore operations
@@ -370,7 +441,7 @@ type SystemData struct {
 
 // Update - The type used for update operations of the MongoCluster.
 type Update struct {
-	// The updatable properties of the MongoCluster.
+	// The resource-specific properties for this resource.
 	Properties *UpdateProperties
 
 	// Resource tags.
@@ -387,6 +458,9 @@ type UpdateProperties struct {
 
 	// The list of node group specs in the cluster.
 	NodeGroupSpecs []*NodeGroupSpec
+
+	// List of private endpoint connections.
+	PreviewFeatures []*PreviewFeature
 
 	// Whether or not public endpoint access is allowed for this mongo cluster.
 	PublicNetworkAccess *PublicNetworkAccess

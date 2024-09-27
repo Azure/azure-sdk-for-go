@@ -20,6 +20,8 @@ const (
 	credNameAzurePipelines = "AzurePipelinesCredential"
 	oidcAPIVersion         = "7.1"
 	systemOIDCRequestURI   = "SYSTEM_OIDCREQUESTURI"
+	xMsEdgeRef             = "x-msedge-ref"
+	xVssE2eId              = "x-vss-e2eid"
 )
 
 // AzurePipelinesCredential authenticates with workload identity federation in an Azure Pipeline. See
@@ -86,6 +88,8 @@ func NewAzurePipelinesCredential(tenantID, clientID, serviceConnectionID, system
 	if options == nil {
 		options = &AzurePipelinesCredentialOptions{}
 	}
+	// these headers are useful to the DevOps team when debugging OIDC error responses
+	options.ClientOptions.Logging.AllowedHeaders = append(options.ClientOptions.Logging.AllowedHeaders, xMsEdgeRef, xVssE2eId)
 	caco := ClientAssertionCredentialOptions{
 		AdditionallyAllowedTenants: options.AdditionallyAllowedTenants,
 		Cache:                      options.Cache,
@@ -121,12 +125,19 @@ func (a *AzurePipelinesCredential) getAssertion(ctx context.Context) (string, er
 		return "", newAuthenticationFailedError(credNameAzurePipelines, "couldn't create OIDC token request: "+err.Error(), nil)
 	}
 	req.Header.Set("Authorization", "Bearer "+a.systemAccessToken)
+	// instruct endpoint to return 401 instead of 302, if the system access token is invalid
+	req.Header.Set("X-TFS-FedAuthRedirect", "Suppress")
 	res, err := doForClient(a.cred.client.azClient, req)
 	if err != nil {
 		return "", newAuthenticationFailedError(credNameAzurePipelines, "couldn't send OIDC token request: "+err.Error(), nil)
 	}
 	if res.StatusCode != http.StatusOK {
-		msg := res.Status + " response from the OIDC endpoint. Check service connection ID and Pipeline configuration"
+		msg := res.Status + " response from the OIDC endpoint. Check service connection ID and Pipeline configuration."
+		for _, h := range []string{xMsEdgeRef, xVssE2eId} {
+			if v := res.Header.Get(h); v != "" {
+				msg += fmt.Sprintf("\n%s: %s", h, v)
+			}
+		}
 		// include the response because its body, if any, probably contains an error message.
 		// OK responses aren't included with errors because they probably contain secrets
 		return "", newAuthenticationFailedError(credNameAzurePipelines, msg, res)

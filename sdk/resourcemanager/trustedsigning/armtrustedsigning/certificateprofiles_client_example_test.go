@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: D:/ws/azure-sdk-for-go/sdk/resourcemanager/trustedsigning/armtrustedsigning/TempTypeSpecFiles/CodeSigning.Management/examples/2024-02-05-preview/CertificateProfiles_Create.json
+// Generated from example definition: 2024-02-05-preview/CertificateProfiles_Create.json
 func ExampleCertificateProfilesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -80,7 +80,7 @@ func ExampleCertificateProfilesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: D:/ws/azure-sdk-for-go/sdk/resourcemanager/trustedsigning/armtrustedsigning/TempTypeSpecFiles/CodeSigning.Management/examples/2024-02-05-preview/CertificateProfiles_Delete.json
+// Generated from example definition: 2024-02-05-preview/CertificateProfiles_Delete.json
 func ExampleCertificateProfilesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleCertificateProfilesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: D:/ws/azure-sdk-for-go/sdk/resourcemanager/trustedsigning/armtrustedsigning/TempTypeSpecFiles/CodeSigning.Management/examples/2024-02-05-preview/CertificateProfiles_Get.json
+// Generated from example definition: 2024-02-05-preview/CertificateProfiles_Get.json
 func ExampleCertificateProfilesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -157,7 +157,7 @@ func ExampleCertificateProfilesClient_Get() {
 	// }
 }
 
-// Generated from example definition: D:/ws/azure-sdk-for-go/sdk/resourcemanager/trustedsigning/armtrustedsigning/TempTypeSpecFiles/CodeSigning.Management/examples/2024-02-05-preview/CertificateProfiles_ListByCodeSigningAccount.json
+// Generated from example definition: 2024-02-05-preview/CertificateProfiles_ListByCodeSigningAccount.json
 func ExampleCertificateProfilesClient_NewListByCodeSigningAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -222,7 +222,7 @@ func ExampleCertificateProfilesClient_NewListByCodeSigningAccountPager() {
 	}
 }
 
-// Generated from example definition: D:/ws/azure-sdk-for-go/sdk/resourcemanager/trustedsigning/armtrustedsigning/TempTypeSpecFiles/CodeSigning.Management/examples/2024-02-05-preview/CertificateProfiles_RevokeCertificate.json
+// Generated from example definition: 2024-02-05-preview/CertificateProfiles_RevokeCertificate.json
 func ExampleCertificateProfilesClient_RevokeCertificate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

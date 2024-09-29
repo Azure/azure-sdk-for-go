@@ -20,6 +20,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"strconv"
 )
 
 // AgentPoolsServer is a fake server for instances of the armcontainerservice.AgentPoolsClient type.
@@ -205,7 +206,16 @@ func (a *AgentPoolsServerTransport) dispatchBeginCreateOrUpdate(req *http.Reques
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := a.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, resourceNameParam, agentPoolNameParam, body, nil)
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armcontainerservice.AgentPoolsClientBeginCreateOrUpdateOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armcontainerservice.AgentPoolsClientBeginCreateOrUpdateOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := a.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, resourceNameParam, agentPoolNameParam, body, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -241,6 +251,7 @@ func (a *AgentPoolsServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
@@ -253,7 +264,23 @@ func (a *AgentPoolsServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := a.srv.BeginDelete(req.Context(), resourceGroupNameParam, resourceNameParam, agentPoolNameParam, nil)
+		ignorePodDisruptionBudgetUnescaped, err := url.QueryUnescape(qp.Get("ignore-pod-disruption-budget"))
+		if err != nil {
+			return nil, err
+		}
+		ignorePodDisruptionBudgetParam, err := parseOptional(ignorePodDisruptionBudgetUnescaped, strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		var options *armcontainerservice.AgentPoolsClientBeginDeleteOptions
+		if ignorePodDisruptionBudgetParam != nil || ifMatchParam != nil {
+			options = &armcontainerservice.AgentPoolsClientBeginDeleteOptions{
+				IgnorePodDisruptionBudget: ignorePodDisruptionBudgetParam,
+				IfMatch:                   ifMatchParam,
+			}
+		}
+		respr, errRespr := a.srv.BeginDelete(req.Context(), resourceGroupNameParam, resourceNameParam, agentPoolNameParam, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

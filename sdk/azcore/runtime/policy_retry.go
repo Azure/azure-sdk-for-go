@@ -59,28 +59,25 @@ func setDefaults(o *policy.RetryOptions) {
 }
 
 func calcDelay(o policy.RetryOptions, try int32) time.Duration { // try is >=1; never 0
-	const maxDelay = math.MaxInt64
-
-	var factor int64
-	if try >= 63 {
-		factor = maxDelay
-	} else {
-		factor = int64(1)<<try - 1
+	// avoid overflow when shifting left
+	factor := time.Duration(math.MaxInt64)
+	if try < 63 {
+		factor = time.Duration(int64(1)<<try - 1)
 	}
 
-	var delay time.Duration
-	if factor > maxDelay/int64(o.RetryDelay) {
-		delay = maxDelay
-	} else {
-		delay = time.Duration(factor) * o.RetryDelay
+	delay := time.Duration(factor) * o.RetryDelay
+	if delay < factor {
+		// overflow has happend so set to max value
+		delay = time.Duration(math.MaxInt64)
 	}
 
 	// Introduce jitter:  [0.0, 1.0) / 2 = [0.0, 0.5) + 0.8 = [0.8, 1.3)
 	jitterMultiplier := rand.Float64()/2 + 0.8 // NOTE: We want math/rand; not crypto/rand
 
 	delayFloat := float64(delay) * jitterMultiplier
-	if delayFloat >= float64(maxDelay) { // NOTE: if the jitter pushes us over the maxDelay, just return the maxDelay
-		delay = maxDelay
+	if delayFloat > float64(math.MaxInt64) {
+		// the jitter pushed us over MaxInt64, so just use MaxInt64
+		delay = time.Duration(math.MaxInt64)
 	} else {
 		delay = time.Duration(delayFloat)
 	}

@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 * Omit the `ResponseError.RawResponse` field from JSON marshaling so instances can be marshaled.
+* Fixed an integer overflow in the retry policy.
 
 ### Other Changes
 

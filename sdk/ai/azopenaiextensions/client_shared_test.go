@@ -57,7 +57,9 @@ func getEnvVariable(varName string) string {
 	val := os.Getenv(varName)
 
 	if val == "" {
-		panic(fmt.Sprintf("Missing required environment variable %s", varName))
+		if recording.GetRecordMode() != recording.PlaybackMode {
+			panic(fmt.Sprintf("Missing required environment variable %s", varName))
+		}
 	}
 
 	return val
@@ -185,6 +187,11 @@ var azureOpenAI = func() testVars {
 }()
 
 func newStainlessTestClient(t *testing.T, ep endpoint) *openai.Client {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("Skipping tests in playback mode")
+		return nil
+	}
+
 	tokenCredential, err := credential.New(nil)
 	require.NoError(t, err)
 
@@ -195,6 +202,11 @@ func newStainlessTestClient(t *testing.T, ep endpoint) *openai.Client {
 }
 
 func newStainlessChatCompletionService(t *testing.T, ep endpoint) *openai.ChatCompletionService {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("Skipping tests in playback mode")
+		return nil
+	}
+
 	tokenCredential, err := credential.New(nil)
 	require.NoError(t, err)
 

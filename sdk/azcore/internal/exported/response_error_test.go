@@ -7,6 +7,7 @@
 package exported
 
 import (
+	"encoding/json"
 	"errors"
 	"io"
 	"net/http"
@@ -547,4 +548,18 @@ ERROR CODE: ErrorTooManyCheats
 	require.True(t, ok)
 	require.Len(t, msg, 1)
 	require.EqualValues(t, want, msg[0])
+}
+
+func TestResponseErrorMarshal(t *testing.T) {
+	respErr := &ResponseError{
+		ErrorCode:  "TheErrorCode",
+		StatusCode: http.StatusBadRequest,
+		RawResponse: &http.Response{
+			Request: &http.Request{},
+		},
+	}
+
+	b, err := json.Marshal(respErr)
+	require.NoError(t, err)
+	require.EqualValues(t, `{"ErrorCode":"TheErrorCode","StatusCode":400}`, string(b))
 }

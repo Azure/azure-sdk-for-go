@@ -117,7 +117,7 @@ type ResponseError struct {
 	StatusCode int
 
 	// RawResponse is the underlying HTTP response.
-	RawResponse *http.Response
+	RawResponse *http.Response `json:"-"`
 }
 
 // Error implements the error interface for type ResponseError.

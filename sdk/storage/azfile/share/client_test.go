@@ -205,6 +205,25 @@ func (s *ShareUnrecordedTestsSuite) TestShareClientUsingSAS() {
 	_require.Equal(fileCtr, 1)
 }
 
+func (s *ShareRecordedTestsSuite) TestShareCreateDeleteUsingOAuth() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	shareName := testcommon.GenerateShareName(testName)
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	shareClientOAuth, err := share.NewClient("https://"+accountName+".file.core.windows.net/"+shareName, cred, nil)
+	_require.NoError(err)
+
+	_, err = shareClientOAuth.Delete(context.Background(), nil)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.ShareNotFound)
+
+}
+
 func (s *ShareRecordedTestsSuite) TestShareCreateDeleteNonDefault() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -470,6 +489,36 @@ func (s *ShareRecordedTestsSuite) TestShareGetSetPropertiesDefault() {
 	_require.NotNil(props.Version)
 	_require.Equal(props.Date.IsZero(), false)
 	_require.Greater(*props.Quota, int32(0)) // When using service default quota, it could be any value
+}
+
+func (s *ShareRecordedTestsSuite) TestShareGetSetPropertiesOAuth() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	shareName := testcommon.GenerateShareName(testName)
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	shareClientOAuth, err := share.NewClient("https://"+accountName+".file.core.windows.net/"+shareName, cred, nil)
+	_require.NoError(err)
+
+	sResp, err := shareClientOAuth.SetProperties(context.Background(), &share.SetPropertiesOptions{
+		AccessTier: to.Ptr(share.AccessTierCool),
+	})
+	_require.NoError(err)
+	_require.NotNil(sResp.ETag)
+	_require.Equal(sResp.LastModified.IsZero(), false)
+	_require.NotNil(sResp.RequestID)
+	_require.NotNil(sResp.Version)
+	_require.Equal(sResp.Date.IsZero(), false)
+
+	properties, err := shareClientOAuth.GetProperties(context.Background(), nil)
+	_require.NotNil(properties.ETag)
+	_require.Equal(properties.AccessTier, share.AccessTierCool)
+
 }
 
 func (s *ShareRecordedTestsSuite) TestShareGetSetPropertiesWithSnapshotVirtualDirectory() {

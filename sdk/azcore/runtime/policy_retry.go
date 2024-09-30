@@ -62,7 +62,7 @@ func calcDelay(o policy.RetryOptions, try int32) time.Duration { // try is >=1; 
 	// avoid overflow when shifting left
 	factor := time.Duration(math.MaxInt64)
 	if try < 63 {
-		factor = time.Duration(int64(1)<<try - 1)
+		factor = time.Duration(int64(1<<try) - 1)
 	}
 
 	delay := factor * o.RetryDelay

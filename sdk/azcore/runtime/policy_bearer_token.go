@@ -59,14 +59,13 @@ func NewBearerTokenPolicy(cred exported.TokenCredential, scopes []string, opts *
 	if opts == nil {
 		opts = &policy.BearerTokenOptions{}
 	}
-	b := &BearerTokenPolicy{
+	return &BearerTokenPolicy{
 		authzHandler: opts.AuthorizationHandler,
 		cred:         cred,
 		scopes:       scopes,
 		mainResource: temporal.NewResource(acquire),
 		allowHTTP:    opts.InsecureAllowCredentialWithHTTP,
 	}
-	return b
 }
 
 // authenticateAndAuthorize returns a function which authorizes req with a token from the policy's credential

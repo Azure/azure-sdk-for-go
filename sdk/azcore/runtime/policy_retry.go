@@ -67,7 +67,7 @@ func calcDelay(o policy.RetryOptions, try int32) time.Duration { // try is >=1; 
 
 	delay := factor * o.RetryDelay
 	if delay < factor {
-		// overflow has happend so set to max value
+		// overflow has happened so set to max value
 		delay = time.Duration(math.MaxInt64)
 	}
 

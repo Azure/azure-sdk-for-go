@@ -1,12 +1,10 @@
 # Release History
 
-## 1.15.0 (Unreleased)
+## 1.15.0 (2024-10-03)
 
 ### Features Added
 
-* `BearerTokenPolicy` handles CAE claims challenges by default. Added `AuthorizationHandler.SupportsCAE`
-  so clients providing a custom `OnChallenge` implementation can indicate whether it handles CAE claims
-  challenges.
+* `BearerTokenPolicy` handles CAE claims challenges
 
 ### Breaking Changes
 

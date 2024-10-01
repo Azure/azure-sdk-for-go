@@ -31,7 +31,7 @@ See [Key concepts][openai_key_concepts] in the product documentation for more de
 
 # Examples
 
-Examples for scenarios specific to Azure can be found on [pkg.go.dev](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiextensions#pkg-examples) or in the example*_test.go files in our GitHub repo for [azopenaiextensions](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/ai/azopenaiextensions).
+Examples for scenarios specific to Azure can be found on [pkg.go.dev](https://aka.ms/azsdk/go/azopenaiextensions/pkg#pkg-examples) or in the example*_test.go files in our GitHub repo for [azopenaiextensions](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/ai/azopenaiextensions).
 
 For examples on using the openai-go client, see the examples in the [openai-go](https://github.com/openai/openai-go/tree/main/examples) repository.
 
@@ -60,5 +60,5 @@ comments.
 [openai_key_concepts]: https://learn.microsoft.com/azure/cognitive-services/openai/overview#key-concepts
 [openai_on_your_data]: https://learn.microsoft.com/azure/ai-services/openai/concepts/use-your-data
 [openai_rest_docs]: https://learn.microsoft.com/azure/cognitive-services/openai/reference
-[pkggodev]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiextensions
+[pkggodev]: https://aka.ms/azsdk/go/azopenaiextensions/pkg
 [repo]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/ai/azopenaiextensions

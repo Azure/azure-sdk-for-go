@@ -1,12 +1,6 @@
 # Release History
 
-## 1.8.0-beta.4 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.8.0 (2024-10-08)
 
 ### Other Changes
 * `AzurePipelinesCredential` sets an additional OIDC request header so that it

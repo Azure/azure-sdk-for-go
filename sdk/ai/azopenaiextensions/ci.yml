@@ -33,6 +33,7 @@ extends:
     ServiceDirectory: "ai/azopenaiextensions"
     RunLiveTests: true
     UsePipelineProxy: false
+    ExcludeGoNMinus2: true
     CloudConfig:
       Public:
         SubscriptionConfigurations:

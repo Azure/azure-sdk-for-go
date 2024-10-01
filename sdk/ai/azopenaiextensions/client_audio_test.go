@@ -79,9 +79,8 @@ func TestClient_GetAudioTranslation(t *testing.T) {
 	model := azureOpenAI.Whisper.Model
 
 	resp, err := client.Audio.Translations.New(context.Background(), openai.AudioTranslationNewParams{
-		Model: openai.F(openai.AudioModel(model)),
-		File:  openai.F(getFile(t, "testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.m4a")),
-		// TODO: no specific enumeration for Translations format?
+		Model:          openai.F(openai.AudioModel(model)),
+		File:           openai.F(getFile(t, "testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.m4a")),
 		ResponseFormat: openai.F(openai.AudioResponseFormatVerboseJSON),
 		Temperature:    openai.Float(0.0),
 	})

@@ -42,6 +42,11 @@ func storeRecord(record azidentity.AuthenticationRecord) error {
 //  3. Call Authenticate to acquire an [AuthenticationRecord] and store that for future use. An [AuthenticationRecord]
 //     enables credentials to access data in the persistent cache. The record contains no authentication secrets.
 //  4. Add the [AuthenticationRecord] to the credential's options
+//
+// This examples applies to credentials that authenticate users. For credentials authenticating service principal, see
+// the [persistent service principal authentication example].
+//
+// [persistent service principal authentication example]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#example-package-PersistentServicePrincipalAuthentication
 func Example_persistentUserAuthentication() {
 	record, err := retrieveRecord()
 	if err != nil {

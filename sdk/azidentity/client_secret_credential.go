@@ -34,7 +34,7 @@ type ClientSecretCredentialOptions struct {
 
 	// Cache is a persistent cache the credential will use to store the tokens it acquires, making
 	// them available to other processes and credential instances. The default, zero value means the
-	// credential will store tokens in memory and not share them.
+	// credential will store tokens in memory and not share them with any other credential instance.
 	Cache Cache
 }
 

@@ -6,12 +6,6 @@
 
 * `BearerTokenPolicy` handles CAE claims challenges
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 1.14.0 (2024-08-07)
 
 ### Features Added

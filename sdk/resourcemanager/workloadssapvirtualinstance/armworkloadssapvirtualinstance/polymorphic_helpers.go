@@ -20,11 +20,11 @@ func unmarshalFileShareConfigurationClassification(rawMsg json.RawMessage) (File
 	}
 	var b FileShareConfigurationClassification
 	switch m["configurationType"] {
-	case string(ConfigurationTypeCreateAndMount):
+	case string(FileShareConfigurationTypeCreateAndMount):
 		b = &CreateAndMountFileShareConfiguration{}
-	case string(ConfigurationTypeMount):
+	case string(FileShareConfigurationTypeMount):
 		b = &MountFileShareConfiguration{}
-	case string(ConfigurationTypeSkip):
+	case string(FileShareConfigurationTypeSkip):
 		b = &SkipFileShareConfiguration{}
 	default:
 		b = &FileShareConfiguration{}

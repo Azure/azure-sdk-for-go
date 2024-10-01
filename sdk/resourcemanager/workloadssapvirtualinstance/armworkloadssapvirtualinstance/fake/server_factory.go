@@ -20,11 +20,10 @@ import (
 // ServerFactory is a fake server for instances of the armworkloadssapvirtualinstance.ClientFactory type.
 type ServerFactory struct {
 	OperationsServer                    OperationsServer
-	SAPApplicationServerInstancesServer SAPApplicationServerInstancesServer
-	SAPCentralInstancesServer           SAPCentralInstancesServer
-	SAPDatabaseInstancesServer          SAPDatabaseInstancesServer
-	SAPVirtualInstancesServer           SAPVirtualInstancesServer
-	WorkloadsServer                     WorkloadsServer
+	SapApplicationServerInstancesServer SapApplicationServerInstancesServer
+	SapCentralServerInstancesServer     SapCentralServerInstancesServer
+	SapDatabaseInstancesServer          SapDatabaseInstancesServer
+	SapVirtualInstancesServer           SapVirtualInstancesServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -42,11 +41,10 @@ type ServerFactoryTransport struct {
 	srv                                   *ServerFactory
 	trMu                                  sync.Mutex
 	trOperationsServer                    *OperationsServerTransport
-	trSAPApplicationServerInstancesServer *SAPApplicationServerInstancesServerTransport
-	trSAPCentralInstancesServer           *SAPCentralInstancesServerTransport
-	trSAPDatabaseInstancesServer          *SAPDatabaseInstancesServerTransport
-	trSAPVirtualInstancesServer           *SAPVirtualInstancesServerTransport
-	trWorkloadsServer                     *WorkloadsServerTransport
+	trSapApplicationServerInstancesServer *SapApplicationServerInstancesServerTransport
+	trSapCentralServerInstancesServer     *SapCentralServerInstancesServerTransport
+	trSapDatabaseInstancesServer          *SapDatabaseInstancesServerTransport
+	trSapVirtualInstancesServer           *SapVirtualInstancesServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -65,29 +63,26 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
-	case "SAPApplicationServerInstancesClient":
-		initServer(s, &s.trSAPApplicationServerInstancesServer, func() *SAPApplicationServerInstancesServerTransport {
-			return NewSAPApplicationServerInstancesServerTransport(&s.srv.SAPApplicationServerInstancesServer)
+	case "SapApplicationServerInstancesClient":
+		initServer(s, &s.trSapApplicationServerInstancesServer, func() *SapApplicationServerInstancesServerTransport {
+			return NewSapApplicationServerInstancesServerTransport(&s.srv.SapApplicationServerInstancesServer)
 		})
-		resp, err = s.trSAPApplicationServerInstancesServer.Do(req)
-	case "SAPCentralInstancesClient":
-		initServer(s, &s.trSAPCentralInstancesServer, func() *SAPCentralInstancesServerTransport {
-			return NewSAPCentralInstancesServerTransport(&s.srv.SAPCentralInstancesServer)
+		resp, err = s.trSapApplicationServerInstancesServer.Do(req)
+	case "SapCentralServerInstancesClient":
+		initServer(s, &s.trSapCentralServerInstancesServer, func() *SapCentralServerInstancesServerTransport {
+			return NewSapCentralServerInstancesServerTransport(&s.srv.SapCentralServerInstancesServer)
 		})
-		resp, err = s.trSAPCentralInstancesServer.Do(req)
-	case "SAPDatabaseInstancesClient":
-		initServer(s, &s.trSAPDatabaseInstancesServer, func() *SAPDatabaseInstancesServerTransport {
-			return NewSAPDatabaseInstancesServerTransport(&s.srv.SAPDatabaseInstancesServer)
+		resp, err = s.trSapCentralServerInstancesServer.Do(req)
+	case "SapDatabaseInstancesClient":
+		initServer(s, &s.trSapDatabaseInstancesServer, func() *SapDatabaseInstancesServerTransport {
+			return NewSapDatabaseInstancesServerTransport(&s.srv.SapDatabaseInstancesServer)
 		})
-		resp, err = s.trSAPDatabaseInstancesServer.Do(req)
-	case "SAPVirtualInstancesClient":
-		initServer(s, &s.trSAPVirtualInstancesServer, func() *SAPVirtualInstancesServerTransport {
-			return NewSAPVirtualInstancesServerTransport(&s.srv.SAPVirtualInstancesServer)
+		resp, err = s.trSapDatabaseInstancesServer.Do(req)
+	case "SapVirtualInstancesClient":
+		initServer(s, &s.trSapVirtualInstancesServer, func() *SapVirtualInstancesServerTransport {
+			return NewSapVirtualInstancesServerTransport(&s.srv.SapVirtualInstancesServer)
 		})
-		resp, err = s.trSAPVirtualInstancesServer.Do(req)
-	case "WorkloadsClient":
-		initServer(s, &s.trWorkloadsServer, func() *WorkloadsServerTransport { return NewWorkloadsServerTransport(&s.srv.WorkloadsServer) })
-		resp, err = s.trWorkloadsServer.Do(req)
+		resp, err = s.trSapVirtualInstancesServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

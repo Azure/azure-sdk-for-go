@@ -28,7 +28,7 @@ func TestClient_GetAudioTranscription(t *testing.T) {
 	model := azureOpenAI.Whisper.Model
 
 	// We're experiencing load issues on some of our shared test resources so we'll just spot check.
-	t.Run(fmt.Sprintf("%s (%s)", openai.AudioTranscriptionNewParamsResponseFormatText, "m4a"), func(t *testing.T) {
+	t.Run(fmt.Sprintf("%s (%s)", openai.AudioResponseFormatText, "m4a"), func(t *testing.T) {
 		// TODO: BUG: I think. I'm not quite sure how to request any format other than JSON because the bare formats
 		// cause a deserialization error in the Stainless client.
 		//
@@ -47,7 +47,7 @@ func TestClient_GetAudioTranscription(t *testing.T) {
 		transcriptResp, err := client.Audio.Transcriptions.New(context.Background(), openai.AudioTranscriptionNewParams{
 			Model:          openai.F(openai.AudioModel(model)),
 			File:           openai.F(getFile(t, "testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.m4a")),
-			ResponseFormat: openai.F(openai.AudioTranscriptionNewParamsResponseFormatText),
+			ResponseFormat: openai.F(openai.AudioResponseFormatText),
 			Language:       openai.String("en"),
 			Temperature:    openai.Float(0.0),
 		}, option.WithResponseBodyInto(&text))
@@ -56,11 +56,11 @@ func TestClient_GetAudioTranscription(t *testing.T) {
 		require.NotEmpty(t, *text)
 	})
 
-	t.Run(fmt.Sprintf("%s (%s)", openai.AudioTranscriptionNewParamsResponseFormatJSON, "mp3"), func(t *testing.T) {
+	t.Run(fmt.Sprintf("%s (%s)", openai.AudioResponseFormatJSON, "mp3"), func(t *testing.T) {
 		transcriptResp, err := client.Audio.Transcriptions.New(context.Background(), openai.AudioTranscriptionNewParams{
 			Model:          openai.F(openai.AudioModel(model)),
 			File:           openai.F(getFile(t, "testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.mp3")),
-			ResponseFormat: openai.F(openai.AudioTranscriptionNewParamsResponseFormatVerboseJSON),
+			ResponseFormat: openai.F(openai.AudioResponseFormatJSON),
 			Language:       openai.String("en"),
 			Temperature:    openai.Float(0.0),
 		})
@@ -82,7 +82,7 @@ func TestClient_GetAudioTranslation(t *testing.T) {
 		Model: openai.F(openai.AudioModel(model)),
 		File:  openai.F(getFile(t, "testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.m4a")),
 		// TODO: no specific enumeration for Translations format?
-		ResponseFormat: openai.F(string(openai.AudioTranscriptionNewParamsResponseFormatVerboseJSON)),
+		ResponseFormat: openai.F(openai.AudioResponseFormatVerboseJSON),
 		Temperature:    openai.Float(0.0),
 	})
 	customRequireNoError(t, err, true)
@@ -141,7 +141,7 @@ func TestClient_GetAudioSpeech(t *testing.T) {
 	transcriptResp, err := transcriptClient.Audio.Transcriptions.New(context.Background(), openai.AudioTranscriptionNewParams{
 		Model:          openai.F(openai.AudioModel(azureOpenAI.Whisper.Model)),
 		File:           openai.F[io.Reader](tempFile),
-		ResponseFormat: openai.F(openai.AudioTranscriptionNewParamsResponseFormatVerboseJSON),
+		ResponseFormat: openai.F(openai.AudioResponseFormatVerboseJSON),
 		Language:       openai.String("en"),
 		Temperature:    openai.Float(0.0),
 	})

@@ -21,7 +21,7 @@ func TestClient_GetEmbeddings_InvalidModel(t *testing.T) {
 	client := newStainlessTestClient(t, azureOpenAI.Embeddings.Endpoint)
 
 	_, err := client.Embeddings.New(context.Background(), openai.EmbeddingNewParams{
-		Model: openai.F(openai.EmbeddingNewParamsModel("thisdoesntexist")),
+		Model: openai.F(openai.EmbeddingModel("thisdoesntexist")),
 	})
 
 	var openaiErr *openai.Error
@@ -35,7 +35,7 @@ func TestClient_GetEmbeddings(t *testing.T) {
 
 	resp, err := client.Embeddings.New(context.Background(), openai.EmbeddingNewParams{
 		Input: openai.F[openai.EmbeddingNewParamsInputUnion](openai.EmbeddingNewParamsInputArrayOfStrings([]string{"\"Your text string goes here\""})),
-		Model: openai.F(openai.EmbeddingNewParamsModel(azureOpenAI.Embeddings.Model)),
+		Model: openai.F(openai.EmbeddingModel(azureOpenAI.Embeddings.Model)),
 	})
 	require.NoError(t, err)
 	require.NotEmpty(t, resp.Data[0].Embedding)
@@ -48,7 +48,7 @@ func TestClient_GetEmbeddings_embeddingsFormat(t *testing.T) {
 		arg := openai.EmbeddingNewParams{
 			Input:          openai.F[openai.EmbeddingNewParamsInputUnion](openai.EmbeddingNewParamsInputArrayOfStrings([]string{"hello"})),
 			EncodingFormat: openai.F(openai.EmbeddingNewParamsEncodingFormatBase64),
-			Model:          openai.F(openai.EmbeddingNewParamsModel(epm.Model)),
+			Model:          openai.F(openai.EmbeddingModel(epm.Model)),
 		}
 
 		if dimension > 0 {
@@ -70,7 +70,7 @@ func TestClient_GetEmbeddings_embeddingsFormat(t *testing.T) {
 
 		arg2 := openai.EmbeddingNewParams{
 			Input: openai.F[openai.EmbeddingNewParamsInputUnion](openai.EmbeddingNewParamsInputArrayOfStrings([]string{"hello"})),
-			Model: openai.F(openai.EmbeddingNewParamsModel(epm.Model)),
+			Model: openai.F(openai.EmbeddingModel(epm.Model)),
 		}
 
 		if dimension > 0 {

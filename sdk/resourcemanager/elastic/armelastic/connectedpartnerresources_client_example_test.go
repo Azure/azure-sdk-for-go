@@ -25,8 +25,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/elastic/resource-manager/Microsoft.Elastic/stable/2024-03-01/examples/MonitoredResources_List.json
-func ExampleMonitoredResourcesClient_NewListPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/elastic/resource-manager/Microsoft.Elastic/stable/2024-03-01/examples/ConnectedPartnerResources_List.json
+func ExampleConnectedPartnerResourcesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -36,7 +36,7 @@ func ExampleMonitoredResourcesClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewMonitoredResourcesClient().NewListPager("myResourceGroup", "myMonitor", nil)
+	pager := clientFactory.NewConnectedPartnerResourcesClient().NewListPager("myResourceGroup", "myMonitor", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -47,12 +47,15 @@ func ExampleMonitoredResourcesClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.MonitoredResourceListResponse = armelastic.MonitoredResourceListResponse{
-		// 	Value: []*armelastic.MonitoredResource{
+		// page.ConnectedPartnerResourcesListResponse = armelastic.ConnectedPartnerResourcesListResponse{
+		// 	Value: []*armelastic.ConnectedPartnerResourcesListFormat{
 		// 		{
-		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/myVault"),
-		// 			ReasonForLogsStatus: to.Ptr("CapturedByRules"),
-		// 			SendingLogs: to.Ptr(armelastic.SendingLogsTrue),
+		// 			Properties: &armelastic.ConnectedPartnerResourceProperties{
+		// 				AzureResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/monitors/myMonitor"),
+		// 				Location: to.Ptr("West US 2"),
+		// 				PartnerDeploymentName: to.Ptr("deploymentname"),
+		// 				PartnerDeploymentURI: to.Ptr("https://examplessourl.com"),
+		// 			},
 		// 	}},
 		// }
 	}

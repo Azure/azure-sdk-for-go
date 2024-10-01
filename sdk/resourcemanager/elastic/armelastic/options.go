@@ -32,6 +32,17 @@ type AssociateTrafficFilterClientBeginAssociateOptions struct {
 	RulesetID *string
 }
 
+// BillingInfoClientGetOptions contains the optional parameters for the BillingInfoClient.Get method.
+type BillingInfoClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectedPartnerResourcesClientListOptions contains the optional parameters for the ConnectedPartnerResourcesClient.NewListPager
+// method.
+type ConnectedPartnerResourcesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // CreateAndAssociateIPFilterClientBeginCreateOptions contains the optional parameters for the CreateAndAssociateIPFilterClient.BeginCreate
 // method.
 type CreateAndAssociateIPFilterClientBeginCreateOptions struct {
@@ -146,6 +157,31 @@ type MonitorsClientUpdateOptions struct {
 	Body *MonitorResourceUpdateParameters
 }
 
+// OpenAIClientCreateOrUpdateOptions contains the optional parameters for the OpenAIClient.CreateOrUpdate method.
+type OpenAIClientCreateOrUpdateOptions struct {
+	Body *OpenAIIntegrationRPModel
+}
+
+// OpenAIClientDeleteOptions contains the optional parameters for the OpenAIClient.Delete method.
+type OpenAIClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OpenAIClientGetOptions contains the optional parameters for the OpenAIClient.Get method.
+type OpenAIClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OpenAIClientGetStatusOptions contains the optional parameters for the OpenAIClient.GetStatus method.
+type OpenAIClientGetStatusOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OpenAIClientListOptions contains the optional parameters for the OpenAIClient.NewListPager method.
+type OpenAIClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -155,6 +191,12 @@ type OperationsClientListOptions struct {
 type OrganizationsClientGetAPIKeyOptions struct {
 	// Email Id parameter of the User Organization, of which the API Key must be returned
 	Body *UserEmailID
+}
+
+// OrganizationsClientGetElasticToAzureSubscriptionMappingOptions contains the optional parameters for the OrganizationsClient.GetElasticToAzureSubscriptionMapping
+// method.
+type OrganizationsClientGetElasticToAzureSubscriptionMappingOptions struct {
+	// placeholder for future optional parameters
 }
 
 // TagRulesClientBeginDeleteOptions contains the optional parameters for the TagRulesClient.BeginDelete method.

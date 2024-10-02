@@ -118,11 +118,17 @@ type ResponseError struct {
 
 	// RawResponse is the underlying HTTP response.
 	RawResponse *http.Response `json:"-"`
+
+	errMsg string
 }
 
 // Error implements the error interface for type ResponseError.
 // Note that the message contents are not contractual and can change over time.
 func (e *ResponseError) Error() string {
+	if e.errMsg != "" {
+		return e.errMsg
+	}
+
 	const separator = "--------------------------------------------------------------------------------"
 	// write the request method and URL with response status code
 	msg := &bytes.Buffer{}
@@ -163,5 +169,38 @@ func (e *ResponseError) Error() string {
 	}
 	fmt.Fprintln(msg, separator)
 
-	return msg.String()
+	e.errMsg = msg.String()
+	return e.errMsg
+}
+
+// internal type used for marshaling/unmarshaling
+type responseError struct {
+	ErrorCode    string `json:"errorCode"`
+	StatusCode   int    `json:"statusCode"`
+	ErrorMessage string `json:"errorMessage"`
+}
+
+func (e ResponseError) MarshalJSON() ([]byte, error) {
+	// populate errMsg as needed
+	if e.errMsg == "" {
+		_ = e.Error()
+	}
+
+	return json.Marshal(responseError{
+		ErrorCode:    e.ErrorCode,
+		StatusCode:   e.StatusCode,
+		ErrorMessage: e.errMsg,
+	})
+}
+
+func (e *ResponseError) UnmarshalJSON(data []byte) error {
+	re := responseError{}
+	if err := json.Unmarshal(data, &re); err != nil {
+		return err
+	}
+
+	e.ErrorCode = re.ErrorCode
+	e.StatusCode = re.StatusCode
+	e.errMsg = re.ErrorMessage
+	return nil
 }

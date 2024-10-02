@@ -228,7 +228,7 @@ func TestClient_GetChatCompletions_Vision(t *testing.T) {
 	})
 
 	// vision is a bit of an oversubscribed Azure resource. Allow 429, but mark the test as skipped.
-	customRequireNoError(t, err, true)
+	customRequireNoError(t, err)
 	require.NotEmpty(t, resp.Choices[0].Message.Content)
 
 	t.Logf("Content: %s", resp.Choices[0].Message.Content)

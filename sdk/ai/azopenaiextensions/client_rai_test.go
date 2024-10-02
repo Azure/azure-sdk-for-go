@@ -71,7 +71,7 @@ func TestClient_GetChatCompletions_AzureOpenAI_ContentFilter_WithResponse(t *tes
 		Temperature: openai.Float(0.0),
 		Model:       openai.F(openai.ChatModel(azureOpenAI.ChatCompletionsRAI.Model)),
 	})
-	customRequireNoError(t, err, true)
+	customRequireNoError(t, err)
 
 	contentFilterResults, err := azopenaiextensions.ChatCompletionChoice(resp.Choices[0]).ContentFilterResults()
 	require.NoError(t, err)

@@ -47,7 +47,7 @@ func TestClient_GetAudioTranscription(t *testing.T) {
 			Language:       openai.String("en"),
 			Temperature:    openai.Float(0.0),
 		})
-		customRequireNoError(t, err, true)
+		customRequireNoError(t, err)
 		t.Logf("Transcription: %s", transcriptResp.Text)
 		require.NotEmpty(t, transcriptResp)
 	})
@@ -67,7 +67,7 @@ func TestClient_GetAudioTranslation(t *testing.T) {
 		ResponseFormat: openai.F(openai.AudioResponseFormatVerboseJSON),
 		Temperature:    openai.Float(0.0),
 	})
-	customRequireNoError(t, err, true)
+	customRequireNoError(t, err)
 
 	t.Logf("Translation: %s", resp.Text)
 	require.NotEmpty(t, resp.Text)

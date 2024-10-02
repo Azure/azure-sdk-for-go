@@ -31,7 +31,7 @@ func TestChatCompletions_extensions_bringYourOwnData(t *testing.T) {
 
 	resp, err := client.Chat.Completions.New(context.Background(), inputParams,
 		azopenaiextensions.WithDataSources(&azureOpenAI.Cognitive))
-	require.NoError(t, err)
+	customRequireNoError(t, err)
 	require.NotEmpty(t, resp)
 
 	msg := azopenaiextensions.ChatCompletionMessage(resp.Choices[0].Message)

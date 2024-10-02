@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strings"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiextensions"
@@ -223,22 +224,27 @@ func skipNowIfThrottled(t *testing.T, err error) {
 
 // customRequireNoError checks the error but allows throttling errors to account for resources that are
 // constrained.
-func customRequireNoError(t *testing.T, err error, throttlingAllowed bool) {
+func customRequireNoError(t *testing.T, err error) {
 	if err == nil {
 		return
 	}
 
-	if throttlingAllowed {
+	var respErr *openai.Error
 
-		if respErr := (*openai.Error)(nil); errors.As(err, &respErr) && respErr.StatusCode == http.StatusTooManyRequests {
-			t.Skip("Skipping test because of throttling (http.StatusTooManyRequests)")
-			return
-		}
-
-		if errors.Is(err, context.DeadlineExceeded) {
-			t.Skip("Skipping test because of throttling (DeadlineExceeded)")
-			return
-		}
+	switch {
+	case errors.As(err, &respErr) && respErr.StatusCode == http.StatusTooManyRequests:
+		t.Skip("Skipping test because of throttling (http.StatusTooManyRequests)")
+		return
+	// If you're using OYD, then the response error (from Azure OpenAI) will be a 400, but the underlying text will mention
+	// that it's 429'd.
+	// 	  "code": 400,
+	// 	  "message": "Server responded with status 429. Error message: {'error': {'code': '429', 'message': 'Rate limit is exceeded. Try again in 1 seconds.'}}"
+	case errors.As(err, &respErr) && respErr.StatusCode == http.StatusBadRequest && strings.Contains(err.Error(), "Rate limit is exceeded"):
+		t.Skip("Skipping test because of throttling in OYD resource")
+		return
+	case errors.Is(err, context.DeadlineExceeded):
+		t.Skip("Skipping test because of throttling (DeadlineExceeded)")
+		return
 	}
 
 	require.NoError(t, err)

@@ -181,15 +181,10 @@ type responseError struct {
 }
 
 func (e ResponseError) MarshalJSON() ([]byte, error) {
-	// populate errMsg as needed
-	if e.errMsg == "" {
-		_ = e.Error()
-	}
-
 	return json.Marshal(responseError{
 		ErrorCode:    e.ErrorCode,
 		StatusCode:   e.StatusCode,
-		ErrorMessage: e.errMsg,
+		ErrorMessage: e.Error(),
 	})
 }
 

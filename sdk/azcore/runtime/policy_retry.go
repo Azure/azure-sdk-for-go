@@ -82,7 +82,7 @@ func calcDelay(o policy.RetryOptions, try int32) time.Duration { // try is >=1; 
 		delay = time.Duration(delayFloat)
 	}
 
-	if delay > o.MaxRetryDelay {
+	if delay > o.MaxRetryDelay { // MaxRetryDelay is backfilled with non-negative value
 		delay = o.MaxRetryDelay
 	}
 

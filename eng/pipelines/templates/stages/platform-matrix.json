@@ -12,25 +12,8 @@
     },
     "GoVersion": [
       "1.18.10",
-      "1.21.7"
+      "1.22.8",
+      "1.23.2"
     ]
-  },
-  "include": [
-    {
-      "Agent": {
-        "ubuntu-20.04": {
-          "OSVmImage": "env:LINUXVMIMAGE",
-          "Pool": "env:LINUXPOOL"
-        },
-        "windows-2022": {
-          "OSVmImage": "env:WINDOWSVMIMAGE",
-          "Pool": "env:WINDOWSPOOL"
-        }
-      },
-      "GoVersion": [
-        "1.22.0"
-      ],
-      "GOEXPERIMENT": "nocoverageredesign"
-    }
-  ]
+  }
 }

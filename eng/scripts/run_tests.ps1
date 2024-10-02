@@ -12,7 +12,7 @@ Push-Location sdk/$serviceDirectory
 
 if ($enableRaceDetector) {
     Write-Host "##[command] Executing 'go test -timeout $testTimeout -race -v -coverprofile coverage.txt ./...' in sdk/$serviceDirectory"
-    go test -timeout $testTimeout -v -coverprofile -race coverage.txt ./... | Tee-Object -FilePath outfile.txt
+    go test -timeout $testTimeout -race -v -coverprofile coverage.txt ./... | Tee-Object -FilePath outfile.txt
 } else {
     Write-Host "##[command] Executing 'go test -timeout $testTimeout -v -coverprofile coverage.txt ./...' in sdk/$serviceDirectory"
     go test -timeout $testTimeout -v -coverprofile coverage.txt ./... | Tee-Object -FilePath outfile.txt

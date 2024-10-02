@@ -10,15 +10,15 @@ Param(
 $ErrorActionPreference = 'Stop'
 
 # empty string produces incorrect command, so we include the -v here so it's never empty
-$raceDetector = '-v'
+$raceDetector = "-v"
 if ($enableRaceDetector) {
-    $raceDetector = '-race -v'
+    $raceDetector = "-race -v"
 }
 
 Push-Location sdk/$serviceDirectory
-Write-Host "##[command]Executing 'go test -timeout $testTimeout ${raceDetector} -coverprofile coverage.txt ./...' in sdk/$serviceDirectory"
+Write-Host "##[command]Executing 'go test -timeout $testTimeout $raceDetector -coverprofile coverage.txt ./...' in sdk/$serviceDirectory"
 
-go test -timeout $testTimeout ${raceDetector} -coverprofile coverage.txt ./... | Tee-Object -FilePath outfile.txt
+go test -timeout $testTimeout $raceDetector -coverprofile coverage.txt ./... | Tee-Object -FilePath outfile.txt
 # go test will return a non-zero exit code on test failures so don't skip generating the report in this case
 $GOTESTEXITCODE = $LASTEXITCODE
 

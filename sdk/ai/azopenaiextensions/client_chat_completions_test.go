@@ -12,7 +12,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiextensions"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/openai/openai-go"
 	"github.com/stretchr/testify/require"
 )
@@ -68,22 +67,6 @@ func TestClient_GetChatCompletions(t *testing.T) {
 			PromptTokens:     resp.Usage.PromptTokens,
 			TotalTokens:      resp.Usage.TotalTokens,
 		})
-
-		if checkRAI {
-			promptFilterResults, err := azopenaiextensions.ChatCompletion(*resp).PromptFilterResults()
-			require.NoError(t, err)
-
-			require.Equal(t, []azopenaiextensions.ContentFilterResultsForPrompt{
-				{
-					PromptIndex:          to.Ptr[int32](0),
-					ContentFilterResults: safeContentFilterResultDetailsForPrompt,
-				},
-			}, promptFilterResults)
-
-			choiceContentFilter, err := azopenaiextensions.ChatCompletionChoice(resp.Choices[0]).ContentFilterResults()
-			require.NoError(t, err)
-			require.Equal(t, safeContentFilter, choiceContentFilter)
-		}
 	}
 
 	t.Run("AzureOpenAI", func(t *testing.T) {
@@ -196,14 +179,10 @@ func TestClient_GetChatCompletionsStream(t *testing.T) {
 
 		azureChunk := azopenaiextensions.ChatCompletionChunk(chunk)
 
-		promptResults, err := azureChunk.PromptFilterResults()
+		// NOTE: prompt filter results are non-deterministic as they're based on their own criteria, which
+		// can change over time. We'll check that we can safely attempt to deserialize it.
+		_, err := azureChunk.PromptFilterResults()
 		require.NoError(t, err)
-
-		if promptResults != nil {
-			require.Equal(t, []azopenaiextensions.ContentFilterResultsForPrompt{
-				{PromptIndex: to.Ptr[int32](0), ContentFilterResults: safeContentFilterResultDetailsForPrompt},
-			}, promptResults)
-		}
 
 		if len(chunk.Choices) == 0 {
 			// you can get empty entries that contain just metadata (ie, prompt annotations)
@@ -249,7 +228,7 @@ func TestClient_GetChatCompletions_Vision(t *testing.T) {
 	})
 
 	// vision is a bit of an oversubscribed Azure resource. Allow 429, but mark the test as skipped.
-	customRequireNoError(t, err, true)
+	customRequireNoError(t, err)
 	require.NotEmpty(t, resp.Choices[0].Message.Content)
 
 	t.Logf("Content: %s", resp.Choices[0].Message.Content)

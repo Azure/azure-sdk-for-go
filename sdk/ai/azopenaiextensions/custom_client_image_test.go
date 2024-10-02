@@ -36,7 +36,7 @@ func TestImageGeneration_AzureOpenAI(t *testing.T) {
 		ResponseFormat: openai.F(openai.ImageGenerateParamsResponseFormatURL),
 		Model:          openai.F(openai.ImageModel(azureOpenAI.DallE.Model)),
 	})
-	customRequireNoError(t, err, true)
+	customRequireNoError(t, err)
 
 	if recording.GetRecordMode() == recording.LiveMode {
 		headResp, err := http.DefaultClient.Head(resp.Data[0].URL)

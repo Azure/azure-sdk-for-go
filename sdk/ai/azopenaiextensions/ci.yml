@@ -33,8 +33,12 @@ extends:
     ServiceDirectory: "ai/azopenaiextensions"
     RunLiveTests: true
     UsePipelineProxy: false
+    ExcludeGoNMinus2: true
     CloudConfig:
       Public:
+        ServiceConnection: azure-sdk-tests
+        SubscriptionConfigurationFilePaths:
+          - eng/common/TestResources/sub-config/AzurePublicMsft.json
         SubscriptionConfigurations:
           - $(sub-config-azure-cloud-test-resources)
           - $(sub-config-openai-test-resources) # TestSecrets-openai

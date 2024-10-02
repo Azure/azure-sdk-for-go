@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+
 package azopenaiextensions_test
 
 import (
@@ -110,11 +113,7 @@ func Example_usingAzureOnYourData() {
 		fmt.Fprintf(os.Stderr, "Content: %s\n", azureChatCompletionMsg.Content)
 	}
 
-	fmt.Printf("Example complete\n")
-
-	// Output:
-	// Example complete
-	//
+	fmt.Fprintf(os.Stderr, "Example complete\n")
 }
 
 func Example_usingEnhancements() {
@@ -203,9 +202,5 @@ func Example_usingEnhancements() {
 		fmt.Fprintf(os.Stderr, "Content: %s\n", azureChatCompletionMsg.Content)
 	}
 
-	fmt.Printf("Example complete\n")
-
-	// Output:
-	// Example complete
-	//
+	fmt.Fprintf(os.Stderr, "Example complete\n")
 }

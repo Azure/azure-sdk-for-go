@@ -21,6 +21,7 @@ type ContentFilterError struct {
 	ContentFilterResultDetailsForPrompt
 }
 
+// Error implements the error interface for type ContentFilterError.
 func (c *ContentFilterError) Error() string {
 	return c.OpenAIError.Error()
 }

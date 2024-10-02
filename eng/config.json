@@ -53,6 +53,10 @@
             "CoverageGoal": 0.00
         },
         {
+            "Name": "ai/azopenaiextensions",
+            "CoverageGoal": 0.00
+        },
+        {
             "Name": "aztemplate",
             "CoverageGoal": 0.50
         },

@@ -177,15 +177,17 @@ func ResultHelper[T any](resp *http.Response, failed bool, jsonPath string, out 
 		return err
 	}
 
+	// try to extract the payload from the response if JSON path is provided
 	if jsonPath != "" && len(payload) > 0 {
-		// extract the payload from the specified JSON path.
-		// do this before the zero-length check in case there
-		// is no payload.
 		jsonBody := map[string]json.RawMessage{}
 		if err = json.Unmarshal(payload, &jsonBody); err != nil {
 			return err
 		}
-		payload = jsonBody[jsonPath]
+		// if the JSON path is found, use that as the payload
+		// otherwise, use the entire payload
+		if v, ok := jsonBody[jsonPath]; ok {
+			payload = v
+		}
 	}
 
 	if len(payload) == 0 {

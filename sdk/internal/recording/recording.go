@@ -144,7 +144,7 @@ func init() {
 		certPool, err = x509.SystemCertPool()
 		if err != nil {
 			log.Println("could not create a system cert pool")
-			log.Panicf(err.Error())
+			log.Panic(err.Error())
 		}
 	}
 	cert, err := os.ReadFile(localFile)

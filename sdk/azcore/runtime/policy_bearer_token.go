@@ -169,15 +169,15 @@ func parseCAEChallenge(res *http.Response) (*authChallenge, error) {
 	for _, c := range parseChallenges(res) {
 		if c.scheme == "Bearer" {
 			if claims := c.params["claims"]; claims != "" && c.params["error"] == "insufficient_claims" {
-				b, de := base64.StdEncoding.DecodeString(claims)
-				if de != nil {
+				if b, de := base64.StdEncoding.DecodeString(claims); de == nil {
+					c.params["claims"] = string(b)
+					caeChallenge = &c
+				} else {
 					// don't include the decoding error because it's something
 					// unhelpful like "illegal base64 data at input byte 42"
 					err = errorinfo.NonRetriableError(errors.New("authentication challenge contains invalid claims: " + claims))
-					break
 				}
-				c.params["claims"] = string(b)
-				caeChallenge = &c
+				break
 			}
 		}
 	}

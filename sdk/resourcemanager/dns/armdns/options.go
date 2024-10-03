@@ -8,6 +8,42 @@
 
 package armdns
 
+// DnssecConfigsClientBeginCreateOrUpdateOptions contains the optional parameters for the DnssecConfigsClient.BeginCreateOrUpdate
+// method.
+type DnssecConfigsClientBeginCreateOrUpdateOptions struct {
+	// The etag of the DNSSEC configuration. Omit this value to always overwrite the DNSSEC configuration. Specify the last-seen
+	// etag value to prevent accidentally overwriting any concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow this DNSSEC configuration to be created, but to prevent updating existing DNSSEC configuration. Other
+	// values will be ignored.
+	IfNoneMatch *string
+
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// DnssecConfigsClientBeginDeleteOptions contains the optional parameters for the DnssecConfigsClient.BeginDelete method.
+type DnssecConfigsClientBeginDeleteOptions struct {
+	// The etag of this DNSSEC configuration. Omit this value to always delete the DNSSEC configuration. Specify the last-seen
+	// etag value to prevent accidentally deleting any concurrent changes.
+	IfMatch *string
+
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// DnssecConfigsClientGetOptions contains the optional parameters for the DnssecConfigsClient.Get method.
+type DnssecConfigsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DnssecConfigsClientListByDNSZoneOptions contains the optional parameters for the DnssecConfigsClient.NewListByDNSZonePager
+// method.
+type DnssecConfigsClientListByDNSZoneOptions struct {
+	// placeholder for future optional parameters
+}
+
 // RecordSetsClientCreateOrUpdateOptions contains the optional parameters for the RecordSetsClient.CreateOrUpdate method.
 type RecordSetsClientCreateOrUpdateOptions struct {
 	// The etag of the record set. Omit this value to always overwrite the current record set. Specify the last-seen etag value

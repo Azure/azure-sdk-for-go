@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+* Omit the `ResponseError.RawResponse` field from JSON marshaling so instances can be marshaled.
+
 ### Other Changes
 
 ## 1.14.0 (2024-08-07)

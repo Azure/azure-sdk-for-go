@@ -7,6 +7,7 @@
 package exported
 
 import (
+	"encoding/json"
 	"errors"
 	"io"
 	"net/http"
@@ -547,4 +548,42 @@ ERROR CODE: ErrorTooManyCheats
 	require.True(t, ok)
 	require.Len(t, msg, 1)
 	require.EqualValues(t, want, msg[0])
+}
+
+func TestResponseErrorMarshal(t *testing.T) {
+	fakeURL, err := url.Parse("https://fakeurl.com/the/path?qp=removed")
+	require.NoError(t, err)
+	respHeader := http.Header{}
+	respHeader.Set(shared.HeaderXMSErrorCode, "ErrorTooManyCheats")
+	respErrSrc := NewResponseError(&http.Response{
+		Status:     "the system is down",
+		StatusCode: http.StatusInternalServerError,
+		Body:       io.NopCloser(strings.NewReader(`{"code":"ErrorItsBroken","message":"it's not working"}`)),
+		Header:     respHeader,
+		Request: &http.Request{
+			Method: http.MethodGet,
+			URL:    fakeURL,
+		},
+	})
+
+	data, err := json.Marshal(respErrSrc)
+	require.NoError(t, err)
+
+	const want = `GET https://fakeurl.com/the/path
+--------------------------------------------------------------------------------
+RESPONSE 500: the system is down
+ERROR CODE: ErrorTooManyCheats
+--------------------------------------------------------------------------------
+{
+  "code": "ErrorItsBroken",
+  "message": "it's not working"
+}
+--------------------------------------------------------------------------------
+`
+
+	var respErrDst *ResponseError
+	require.NoError(t, json.Unmarshal(data, &respErrDst))
+	require.EqualValues(t, "ErrorTooManyCheats", respErrDst.ErrorCode)
+	require.EqualValues(t, http.StatusInternalServerError, respErrDst.StatusCode)
+	require.EqualValues(t, want, respErrDst.Error())
 }

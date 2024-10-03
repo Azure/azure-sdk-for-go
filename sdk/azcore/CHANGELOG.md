@@ -13,6 +13,8 @@
 
 ### Other Changes
 
+* Update dependencies.
+
 ## 1.14.0 (2024-08-07)
 
 ### Features Added

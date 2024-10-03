@@ -271,6 +271,29 @@ func TestBearerTokenPolicy_OnChallenge(t *testing.T) {
 		})
 	}
 
+	t.Run("errors non-retriable", func(t *testing.T) {
+		srv, close := mock.NewTLSServer()
+		defer close()
+		srv.AppendResponse(mock.WithHeader(shared.HeaderWWWAuthenticate, `Bearer key="value"`), mock.WithStatusCode(http.StatusUnauthorized))
+
+		expectedErr := errors.New("something went wrong")
+		b := NewBearerTokenPolicy(mockCredential{}, []string{scope}, &policy.BearerTokenOptions{
+			AuthorizationHandler: policy.AuthorizationHandler{
+				OnChallenge: func(_ *policy.Request, _ *http.Response, _ func(policy.TokenRequestOptions) error) error {
+					return expectedErr
+				},
+			},
+		})
+		pl := newTestPipeline(&policy.ClientOptions{PerRetryPolicies: []policy.Policy{b}, Transport: srv})
+
+		req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+		require.NoError(t, err)
+		_, err = pl.Do(req)
+		var nre errorinfo.NonRetriable
+		require.ErrorAs(t, err, &nre, "policy should ensure OnChallenge errors are NonRetriable")
+		require.EqualError(t, nre, expectedErr.Error())
+	})
+
 	t.Run("CAE challenge after non-CAE challenge", func(t *testing.T) {
 		cae1 := fmt.Sprintf(`Bearer error="insufficient_claims", claims=%q`, base64.StdEncoding.EncodeToString([]byte{'1'}))
 		cae2 := fmt.Sprintf(`Bearer error="insufficient_claims", claims=%q`, base64.StdEncoding.EncodeToString([]byte{'2'}))

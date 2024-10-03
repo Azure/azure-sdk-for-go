@@ -110,6 +110,14 @@ func (b *BearerTokenPolicy) Do(req *policy.Request) (*http.Response, error) {
 		return nil, err
 	}
 
+	res, err = b.handleChallenge(req, res, false)
+	return res, err
+}
+
+// handleChallenge handles authentication challenges either directly (for CAE challenges) or by calling
+// the AuthorizationHandler. It's a no-op when the response doesn't include an authentication challenge.
+func (b *BearerTokenPolicy) handleChallenge(req *policy.Request, res *http.Response, recursed bool) (*http.Response, error) {
+	var err error
 	if res.StatusCode == http.StatusUnauthorized {
 		b.mainResource.Expire()
 		if res.Header.Get(shared.HeaderWWWAuthenticate) != "" {
@@ -126,28 +134,19 @@ func (b *BearerTokenPolicy) Do(req *policy.Request) (*http.Response, error) {
 				if err = b.authenticateAndAuthorize(req)(tro); err == nil {
 					res, err = req.Next()
 				}
-			case b.authzHandler.OnChallenge != nil:
+			case b.authzHandler.OnChallenge != nil && !recursed:
 				if err = b.authzHandler.OnChallenge(req, res, b.authenticateAndAuthorize(req)); err == nil {
-					if res, err = req.Next(); err == nil && res.StatusCode == http.StatusUnauthorized {
-						b.mainResource.Expire()
-						if caeChallenge, err = parseCAEChallenge(res); caeChallenge != nil {
-							tro := policy.TokenRequestOptions{
-								Claims: caeChallenge.params["claims"],
-								Scopes: b.scopes,
-							}
-							if err = b.authenticateAndAuthorize(req)(tro); err == nil {
-								res, err = req.Next()
-							}
-						}
+					if res, err = req.Next(); err == nil {
+						res, err = b.handleChallenge(req, res, true)
 					}
+				} else {
+					// don't retry challenge handling errors
+					err = errorinfo.NonRetriableError(err)
 				}
 			default:
 				// return the response to the pipeline
 			}
 		}
-	}
-	if err != nil {
-		err = errorinfo.NonRetriableError(err)
 	}
 	return res, err
 }

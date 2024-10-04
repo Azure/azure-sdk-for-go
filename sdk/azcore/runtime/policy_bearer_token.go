@@ -205,21 +205,16 @@ func parseChallenges(res *http.Response) []authChallenge {
 	// WWW-Authenticate can have multiple values, each containing multiple challenges
 	for _, h := range res.Header.Values(shared.HeaderWWWAuthenticate) {
 		for _, sm := range challenge.FindAllStringSubmatch(h, -1) {
-			// sm is [challenge, scheme, params]
-			// len checks aren't necessary but save you from wondering whether this function could panic
-			if len(sm) == 3 {
-				c := authChallenge{
-					params: make(map[string]string),
-					scheme: sm[1],
-				}
-				for _, sm := range challengeParams.FindAllStringSubmatch(sm[2], -1) {
-					// sm is [key="value", key, value]
-					if len(sm) == 3 {
-						c.params[sm[1]] = sm[2]
-					}
-				}
-				parsed = append(parsed, c)
+			// sm is [challenge, scheme, params] (see regexp documentation on submatches)
+			c := authChallenge{
+				params: make(map[string]string),
+				scheme: sm[1],
 			}
+			for _, sm := range challengeParams.FindAllStringSubmatch(sm[2], -1) {
+				// sm is [key="value", key, value] (see regexp documentation on submatches)
+				c.params[sm[1]] = sm[2]
+			}
+			parsed = append(parsed, c)
 		}
 	}
 	return parsed

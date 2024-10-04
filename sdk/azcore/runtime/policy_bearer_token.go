@@ -116,6 +116,8 @@ func (b *BearerTokenPolicy) Do(req *policy.Request) (*http.Response, error) {
 
 // handleChallenge handles authentication challenges either directly (for CAE challenges) or by calling
 // the AuthorizationHandler. It's a no-op when the response doesn't include an authentication challenge.
+// It will recurse at most once, to handle a CAE challenge following a non-CAE challenge handled by the
+// AuthorizationHandler.
 func (b *BearerTokenPolicy) handleChallenge(req *policy.Request, res *http.Response, recursed bool) (*http.Response, error) {
 	var err error
 	if res.StatusCode == http.StatusUnauthorized {

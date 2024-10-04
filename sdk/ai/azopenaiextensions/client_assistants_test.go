@@ -61,6 +61,7 @@ func TestAssistants(t *testing.T) {
 	// listing assistants
 	{
 		pager, err := assistantClient.List(context.Background(), openai.BetaAssistantListParams{
+			After: openai.F(assistant.ID),
 			Limit: openai.Int(1),
 		})
 		require.NoError(t, err)

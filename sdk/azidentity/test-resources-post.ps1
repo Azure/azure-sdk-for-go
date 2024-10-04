@@ -28,7 +28,7 @@ if ($CI) {
     Write-Host "Skipping post-provisioning script because resources weren't deployed"
     return
   }
-  az login --federated-token $env:OIDC_TOKEN --service-principal -t $TenantId -u $TestApplicationId
+  az login --federated-token $env:ARM_OIDC_TOKEN --service-principal -t $TenantId -u $TestApplicationId
   az account set --subscription $DeploymentOutputs['AZIDENTITY_SUBSCRIPTION_ID']
 }
 

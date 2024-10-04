@@ -89,7 +89,7 @@ func TestChatExtensionsStreaming_extensions_bringYourOwnData(t *testing.T) {
 		}
 	}
 
-	require.NoError(t, streamer.Err())
+	customRequireNoError(t, streamer.Err())
 	require.NotEmpty(t, text)
 
 	t.Logf("Streaming content = %s", text)

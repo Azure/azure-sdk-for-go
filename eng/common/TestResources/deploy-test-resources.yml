@@ -8,6 +8,7 @@ parameters:
   ServiceConnection: not-specified
   ResourceType: test
   UseFederatedAuth: false
+  PersistOidcToken: false
 
 # SubscriptionConfiguration will be splatted into the parameters of the test
 # resources script. It should be JSON in the form:
@@ -41,6 +42,23 @@ steps:
 
   - template: /eng/common/TestResources/setup-environments.yml
 
+  - ${{ if parameters.PersistOidcToken }}:
+    - task: AzureCLI@2
+      displayName: Set OIDC token
+      env:
+        ARM_OIDC_TOKEN: $(ARM_OIDC_TOKEN)
+        ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+        ARM_TENANT_ID: $(ARM_TENANT_ID)
+      inputs:
+        azureSubscription: ${{ parameters.ServiceConnection }}
+        addSpnToEnvironment: true
+        scriptLocation: inlineScript
+        scriptType: pscore
+        inlineScript: |
+          Write-Host "##vso[task.setvariable variable=ARM_OIDC_TOKEN;issecret=true]$($env:idToken)"
+          Write-Host "##vso[task.setvariable variable=ARM_CLIENT_ID;issecret=true]$($env:servicePrincipalId)"
+          Write-Host "##vso[task.setvariable variable=ARM_TENANT_ID;issecret=true]$($env:tenantId)"
+
   - ${{ if eq('true', parameters.UseFederatedAuth) }}:
     - task: AzurePowerShell@5
       displayName: 🚀 Deploy test resources
@@ -60,6 +78,7 @@ steps:
           '@ | ConvertFrom-Json -AsHashtable;
 
           $context = Get-AzContext
+          $subscriptionConfiguration["Environment"] = $context.Environment.Name
           $subscriptionConfiguration["SubscriptionId"] = $context.Subscription.Id
           $subscriptionConfiguration["TenantId"] = $context.Subscription.TenantId
           $subscriptionConfiguration["TestApplicationId"] = $context.Account.Id

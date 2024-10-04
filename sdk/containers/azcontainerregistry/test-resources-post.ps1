@@ -19,6 +19,9 @@ param (
     $RemainingArguments
 )
 
+$ErrorActionPreference = 'Stop'
+$PSNativeCommandUseErrorActionPreference = $true
+
 if ($CI) {
     az login --federated-token $env:OIDC_TOKEN --service-principal -t $TenantId -u $TestApplicationId
     az account set --subscription $DeploymentOutputs['AZCONTAINERREGISTRY_SUBSCRIPTION_ID']

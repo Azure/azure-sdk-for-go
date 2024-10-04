@@ -65,6 +65,10 @@ steps:
       env:
         TEMP: $(Agent.TempDirectory)
         PoolSubnet: $(PoolSubnet)
+        ${{ if parameters.PersistOidcToken }}:
+          ARM_OIDC_TOKEN: $(ARM_OIDC_TOKEN)
+          ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+          ARM_TENANT_ID: $(ARM_TENANT_ID)
         ${{ insert }}: ${{ parameters.EnvVars }}
       inputs:
         azureSubscription: ${{ parameters.ServiceConnection }}

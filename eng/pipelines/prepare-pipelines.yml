@@ -1,11 +1,9 @@
 trigger: none
 
+variables:
+- template: /eng/pipelines/templates/variables/image.yml
+
 extends:
   template: /eng/common/pipelines/templates/jobs/prepare-pipelines.yml
   parameters:
-    Repository: $(Build.Repository.Name)
-    Prefix: go
-    CIConventionOptions: ''
-    # Includes live test variable group 64 for unified pipeline (ci+live tests)
-    UPConventionOptions: '--variablegroups 58 76 93 64'
-    GenerateUnifiedWeekly: true
+    Repository: Azure/azure-sdk-for-go

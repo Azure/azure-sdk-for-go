@@ -250,7 +250,7 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKi
 
 	resp, err := c.azClient.Pipeline().Do(msg)
 	if err != nil {
-		return azcore.AccessToken{}, newAuthenticationFailedError(credNameManagedIdentity, err.Error(), nil, err)
+		return azcore.AccessToken{}, newAuthenticationFailedError(credNameManagedIdentity, err.Error(), nil)
 	}
 
 	if azruntime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
@@ -261,7 +261,7 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKi
 		switch resp.StatusCode {
 		case http.StatusBadRequest:
 			if id != nil {
-				return azcore.AccessToken{}, newAuthenticationFailedError(credNameManagedIdentity, "the requested identity isn't assigned to this resource", resp, nil)
+				return azcore.AccessToken{}, newAuthenticationFailedError(credNameManagedIdentity, "the requested identity isn't assigned to this resource", resp)
 			}
 			msg := "failed to authenticate a system assigned identity"
 			if body, err := azruntime.Payload(resp); err == nil && len(body) > 0 {
@@ -278,7 +278,7 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKi
 		}
 	}
 
-	return azcore.AccessToken{}, newAuthenticationFailedError(credNameManagedIdentity, "authentication failed", resp, nil)
+	return azcore.AccessToken{}, newAuthenticationFailedError(credNameManagedIdentity, "", resp)
 }
 
 func (c *managedIdentityClient) createAccessToken(res *http.Response) (azcore.AccessToken, error) {
@@ -306,10 +306,10 @@ func (c *managedIdentityClient) createAccessToken(res *http.Response) (azcore.Ac
 		if expiresOn, err := strconv.Atoi(v); err == nil {
 			return azcore.AccessToken{Token: value.Token, ExpiresOn: time.Unix(int64(expiresOn), 0).UTC()}, nil
 		}
-		return azcore.AccessToken{}, newAuthenticationFailedError(credNameManagedIdentity, "unexpected expires_on value: "+v, res, nil)
+		return azcore.AccessToken{}, newAuthenticationFailedError(credNameManagedIdentity, "unexpected expires_on value: "+v, res)
 	default:
 		msg := fmt.Sprintf("unsupported type received in expires_on: %T, %v", v, v)
-		return azcore.AccessToken{}, newAuthenticationFailedError(credNameManagedIdentity, msg, res, nil)
+		return azcore.AccessToken{}, newAuthenticationFailedError(credNameManagedIdentity, msg, res)
 	}
 }
 
@@ -324,7 +324,7 @@ func (c *managedIdentityClient) createAuthRequest(ctx context.Context, id Manage
 		key, err := c.getAzureArcSecretKey(ctx, scopes)
 		if err != nil {
 			msg := fmt.Sprintf("failed to retreive secret key from the identity endpoint: %v", err)
-			return nil, newAuthenticationFailedError(credNameManagedIdentity, msg, nil, err)
+			return nil, newAuthenticationFailedError(credNameManagedIdentity, msg, nil)
 		}
 		return c.createAzureArcAuthRequest(ctx, scopes, key)
 	case msiTypeAzureML:
@@ -399,9 +399,9 @@ func (c *managedIdentityClient) createAzureMLAuthRequest(ctx context.Context, id
 		case miClientID:
 			q.Set("clientid", id.String())
 		case miObjectID:
-			return nil, newAuthenticationFailedError(credNameManagedIdentity, "Azure ML doesn't support specifying a managed identity by object ID", nil, nil)
+			return nil, newAuthenticationFailedError(credNameManagedIdentity, "Azure ML doesn't support specifying a managed identity by object ID", nil)
 		case miResourceID:
-			return nil, newAuthenticationFailedError(credNameManagedIdentity, "Azure ML doesn't support specifying a managed identity by resource ID", nil, nil)
+			return nil, newAuthenticationFailedError(credNameManagedIdentity, "Azure ML doesn't support specifying a managed identity by resource ID", nil)
 		}
 	}
 	request.Raw().URL.RawQuery = q.Encode()
@@ -442,34 +442,34 @@ func (c *managedIdentityClient) getAzureArcSecretKey(ctx context.Context, resour
 	// of the secret key file. Any other status code indicates an error in the request.
 	if response.StatusCode != 401 {
 		msg := fmt.Sprintf("expected a 401 response, received %d", response.StatusCode)
-		return "", newAuthenticationFailedError(credNameManagedIdentity, msg, response, nil)
+		return "", newAuthenticationFailedError(credNameManagedIdentity, msg, response)
 	}
 	header := response.Header.Get("WWW-Authenticate")
 	if len(header) == 0 {
-		return "", newAuthenticationFailedError(credNameManagedIdentity, "HIMDS response has no WWW-Authenticate header", nil, nil)
+		return "", newAuthenticationFailedError(credNameManagedIdentity, "HIMDS response has no WWW-Authenticate header", nil)
 	}
 	// the WWW-Authenticate header is expected in the following format: Basic realm=/some/file/path.key
 	_, p, found := strings.Cut(header, "=")
 	if !found {
-		return "", newAuthenticationFailedError(credNameManagedIdentity, "unexpected WWW-Authenticate header from HIMDS: "+header, nil, nil)
+		return "", newAuthenticationFailedError(credNameManagedIdentity, "unexpected WWW-Authenticate header from HIMDS: "+header, nil)
 	}
 	expected, err := arcKeyDirectory()
 	if err != nil {
 		return "", err
 	}
 	if filepath.Dir(p) != expected || !strings.HasSuffix(p, ".key") {
-		return "", newAuthenticationFailedError(credNameManagedIdentity, "unexpected file path from HIMDS service: "+p, nil, nil)
+		return "", newAuthenticationFailedError(credNameManagedIdentity, "unexpected file path from HIMDS service: "+p, nil)
 	}
 	f, err := os.Stat(p)
 	if err != nil {
-		return "", newAuthenticationFailedError(credNameManagedIdentity, fmt.Sprintf("could not stat %q: %v", p, err), nil, nil)
+		return "", newAuthenticationFailedError(credNameManagedIdentity, fmt.Sprintf("could not stat %q: %v", p, err), nil)
 	}
 	if s := f.Size(); s > 4096 {
-		return "", newAuthenticationFailedError(credNameManagedIdentity, fmt.Sprintf("key is too large (%d bytes)", s), nil, nil)
+		return "", newAuthenticationFailedError(credNameManagedIdentity, fmt.Sprintf("key is too large (%d bytes)", s), nil)
 	}
 	key, err := os.ReadFile(p)
 	if err != nil {
-		return "", newAuthenticationFailedError(credNameManagedIdentity, fmt.Sprintf("could not read %q: %v", p, err), nil, nil)
+		return "", newAuthenticationFailedError(credNameManagedIdentity, fmt.Sprintf("could not read %q: %v", p, err), nil)
 	}
 	return string(key), nil
 }

@@ -78,6 +78,8 @@ func (t *transformer) Do() error {
 		t.hideListFunctions,
 		t.fixFiles,
 		t.fixStreaming,
+		t.renameTypes,
+		t.replaceDocs,
 		t.applyHacks,
 	}
 
@@ -183,6 +185,11 @@ func (t *transformer) fixFiles() error {
 		return err
 	}
 
+	/* We are removing a vestigial type from a feature that was rolled back, when it is re-implemented we will need to remove this */
+	if err := removeTypes(t.fileCache, []string{"MessageDeltaTextURLCitationDetails"}, nil); err != nil {
+		return err
+	}
+
 	return transformFiles(t.fileCache, "fixFiles", []string{"client.go"}, func(text string) (string, error) {
 		return strings.Replace(
 			text,
@@ -192,17 +199,6 @@ func (t *transformer) fixFiles() error {
 }
 
 func (t *transformer) applyHacks() error {
-	// TODO: the 'fileID' parameter for "createVectorStoreFileCreateRequest" isn't being encoded as a body field, it's being encoded as the entire body.
-	re := regexp.MustCompile(`(?s)(func \(client \*Client\) createVectorStoreFileCreateRequest\(.+?if err := runtime.MarshalAsJSON\(req, )fileID`)
-
-	err := transformFiles(t.fileCache, "createVectorStoreFileCreateRequest fix", []string{"client.go"}, func(text string) (string, error) {
-		text = re.ReplaceAllString(text, "${1}fileIDStruct{fileID}")
-		return text, nil
-	}, nil)
-
-	if err != nil {
-		return err
-	}
 
 	// TODO: for some reason the doc comments aren't making it over.
 	docs := map[string]string{
@@ -210,6 +206,7 @@ func (t *transformer) applyHacks() error {
 		"SubmitToolOutputsToRunBody":     "// SubmitToolOutputsToRunBody contains arguments for the [SubmitToolOutputsToRun] method.",
 		"UpdateMessageBody":              "// UpdateMessageBody contains arguments for the [UpdateMessage] method.",
 		"UpdateRunBody":                  "// UpdateRunBody contains arguments for the [UpdateRun] method.",
+		"CreateVectorStoreFileBody":      "// CreateVectorStoreFileBody contains arguments for the [CreateVectorStoreFile] method.",
 	}
 
 	for typeName, comment := range docs {
@@ -251,5 +248,43 @@ func (t *transformer) fixStreaming() error {
 		return text, nil
 	}, nil)
 
+	return err
+}
+
+func (t *transformer) renameTypes() error {
+	log.Printf("renameTypes()")
+
+	err := transformFiles(t.fileCache, "Rename Paths1Wlr7QiVectorStoresVectorstoreidFilesPostRequestbodyContentApplicationJSONSchema type", []string{"models_serde.go", "models.go", "client.go"}, func(text string) (string, error) {
+		text = strings.ReplaceAll(text, `Paths1Wlr7QiVectorStoresVectorstoreidFilesPostRequestbodyContentApplicationJSONSchema`, `CreateVectorStoreFileBody`)
+		return text, nil
+	}, nil)
+
+	return err
+}
+
+func (t *transformer) replaceDocs() error {
+	log.Printf("replaceDocs()")
+
+	err := transformFiles(t.fileCache, "replaceDocs", []string{"client.go"}, func(text string) (string, error) {
+		docString := `
+// CreateVectorStoreFile - Create a vector store file by attaching a file to a vector store.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-07-01-preview
+//   - vectorStoreID - The ID of the vector store for which to create a File.
+//   - options - CreateVectorStoreFileOptions contains the optional parameters for the Client.CreateVectorStoreFile method.
+`
+		newDocString := `
+// CreateVectorStoreFile - Create a vector store file by attaching a file to a vector store.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-07-01-preview
+//   - vectorStoreID - The ID of the vector store for which to create a File.
+//   - body - Request object for creating a vector store file.
+//   - options - CreateVectorStoreFileOptions contains the optional parameters for the Client.CreateVectorStoreFile method.
+`
+		text = strings.ReplaceAll(text, docString, newDocString)
+		return text, nil
+	}, nil)
 	return err
 }

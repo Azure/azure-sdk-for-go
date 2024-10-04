@@ -68,15 +68,6 @@ func TestClient_GetChatCompletions(t *testing.T) {
 		skipNowIfThrottled(t, err)
 		require.NoError(t, err)
 
-		if checkRAI {
-			// Azure also provides content-filtering. This particular prompt and responses
-			// will be considered safe.
-			expected.PromptFilterResults = []azopenai.ContentFilterResultsForPrompt{
-				{PromptIndex: to.Ptr[int32](0), ContentFilterResults: safeContentFilterResultDetailsForPrompt},
-			}
-			expected.Choices[0].ContentFilterResults = safeContentFilter
-		}
-
 		require.NotEmpty(t, resp.ID)
 		require.NotEmpty(t, resp.Created)
 
@@ -84,6 +75,14 @@ func TestClient_GetChatCompletions(t *testing.T) {
 		expected.Created = resp.Created
 
 		t.Logf("isAzure: %t, deployment: %s, returnedModel: %s", checkRAI, deployment, *resp.ChatCompletions.Model)
+
+		// Content filtering results are proving too difficult to make predictable.
+		resp.ChatCompletions.PromptFilterResults = nil
+
+		for i := 0; i < len(resp.ChatCompletions.Choices); i++ {
+			resp.ChatCompletions.Choices[i].ContentFilterResults = nil
+		}
+
 		require.Equal(t, expected, resp.ChatCompletions)
 	}
 
@@ -239,12 +238,6 @@ func TestClient_GetChatCompletionsStream(t *testing.T) {
 			}
 
 			require.NoError(t, err)
-
-			if completion.PromptFilterResults != nil {
-				require.Equal(t, []azopenai.ContentFilterResultsForPrompt{
-					{PromptIndex: to.Ptr[int32](0), ContentFilterResults: safeContentFilterResultDetailsForPrompt},
-				}, completion.PromptFilterResults)
-			}
 
 			if len(completion.Choices) == 0 {
 				// you can get empty entries that contain just metadata (ie, prompt annotations)

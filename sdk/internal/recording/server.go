@@ -12,7 +12,6 @@ import (
 	"compress/gzip"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"math/rand"
 	"net/http"
@@ -303,11 +302,11 @@ func ensureTestProxyInstalled(proxyVersion string, proxyPath string, proxyDir st
 }
 
 func getProxyLog() (*os.File, error) {
-	rand.Seed(time.Now().UnixNano())
+	rng := rand.New(rand.NewSource(time.Now().UnixNano()))
 	const letters = "abcdefghijklmnopqrstuvwxyz"
 	suffix := make([]byte, 6)
 	for i := range suffix {
-		suffix[i] = letters[rand.Intn(len(letters))]
+		suffix[i] = letters[rng.Intn(len(letters))]
 	}
 	proxyLogName := fmt.Sprintf("test-proxy.log.%s", suffix)
 	proxyLog, err := os.Create(filepath.Join(os.TempDir(), proxyLogName))
@@ -322,14 +321,14 @@ func getProxyVersion(gitRoot string) (string, error) {
 	overrideProxyVersionConfig := filepath.Join(gitRoot, "eng/target_proxy_version.txt")
 
 	if _, err := os.Stat(overrideProxyVersionConfig); err == nil {
-		version, err := ioutil.ReadFile(overrideProxyVersionConfig)
+		version, err := os.ReadFile(overrideProxyVersionConfig)
 		if err == nil {
 			proxyVersion := strings.TrimSpace(string(version))
 			return proxyVersion, nil
 		}
 	}
 
-	version, err := ioutil.ReadFile(proxyVersionConfig)
+	version, err := os.ReadFile(proxyVersionConfig)
 	if err != nil {
 		return "", err
 	}

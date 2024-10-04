@@ -276,15 +276,6 @@ type BenchmarkReference struct {
 	Reference *string
 }
 
-// CertificateInfo - Certificate information
-type CertificateInfo struct {
-	// READ-ONLY; The certificate name
-	CertificateName *string
-
-	// READ-ONLY; The certificate expiry date
-	ExpiryDate *time.Time
-}
-
 // ChangeLongTermRetentionBackupAccessTierParameters - Contains the information necessary to change long term retention backup
 // access tier and related operation mode.
 type ChangeLongTermRetentionBackupAccessTierParameters struct {
@@ -1659,122 +1650,37 @@ type DistributedAvailabilityGroup struct {
 	Type *string
 }
 
-// DistributedAvailabilityGroupDatabase - Database specific information
-type DistributedAvailabilityGroupDatabase struct {
-	// The name of the database in link
-	DatabaseName *string
-
-	// READ-ONLY; Link connected state
-	ConnectedState *ReplicaConnectedState
-
-	// READ-ONLY; Redo lag when Managed Instance link side is primary
-	InstanceRedoReplicationLagSeconds *int32
-
-	// READ-ONLY; Managed instance replica id
-	InstanceReplicaID *string
-
-	// READ-ONLY; Replication lag when Managed Instance link side is primary
-	InstanceSendReplicationLagSeconds *int32
-
-	// READ-ONLY; Last backup LSN
-	LastBackupLsn *string
-
-	// READ-ONLY; Last backup LSN time
-	LastBackupTime *time.Time
-
-	// READ-ONLY; Last commit LSN
-	LastCommitLsn *string
-
-	// READ-ONLY; Last commit LSN time
-	LastCommitTime *time.Time
-
-	// READ-ONLY; Last hardened LSN
-	LastHardenedLsn *string
-
-	// READ-ONLY; Last hardened LSN time
-	LastHardenedTime *time.Time
-
-	// READ-ONLY; Last received LSN
-	LastReceivedLsn *string
-
-	// READ-ONLY; Last received LSN time
-	LastReceivedTime *time.Time
-
-	// READ-ONLY; Last sent LSN
-	LastSentLsn *string
-
-	// READ-ONLY; Last sent LSN time
-	LastSentTime *time.Time
-
-	// READ-ONLY; The most recent link connection error description
-	MostRecentLinkError *string
-
-	// READ-ONLY; SQL server certificate validity
-	PartnerAuthCertValidity *CertificateInfo
-
-	// READ-ONLY; SQL server replica id
-	PartnerReplicaID *string
-
-	// READ-ONLY; Current link state
-	ReplicaState *string
-
-	// READ-ONLY; Seeding progress
-	SeedingProgress *string
-
-	// READ-ONLY; Link health state
-	SynchronizationHealth *ReplicaSynchronizationHealth
-}
-
 // DistributedAvailabilityGroupProperties - The properties of a distributed availability group.
 type DistributedAvailabilityGroupProperties struct {
-	// Databases in the distributed availability group
-	Databases []*DistributedAvailabilityGroupDatabase
+	// The primary availability group name
+	PrimaryAvailabilityGroupName *string
 
-	// The link failover mode - can be Manual if intended to be used for two-way failover with a supported SQL Server, or None
-	// for one-way failover to Azure.
-	FailoverMode *FailoverModeType
+	// The replication mode of a distributed availability group. Parameter will be ignored during link creation.
+	ReplicationMode *ReplicationMode
 
-	// Managed instance side availability group name
-	InstanceAvailabilityGroupName *string
+	// The secondary availability group name
+	SecondaryAvailabilityGroupName *string
 
-	// Managed instance side link role
-	InstanceLinkRole *LinkRole
+	// The source endpoint
+	SourceEndpoint *string
 
-	// SQL server side availability group name
-	PartnerAvailabilityGroupName *string
+	// The name of the target database
+	TargetDatabase *string
 
-	// SQL server side endpoint - IP or DNS resolvable name
-	PartnerEndpoint *string
-
-	// Replication mode of the link
-	ReplicationMode *ReplicationModeType
-
-	// Database seeding mode – can be Automatic (default), or Manual for supported scenarios.
-	SeedingMode *SeedingModeType
-
-	// READ-ONLY; ID of the distributed availability group
+	// READ-ONLY; The distributed availability group id
 	DistributedAvailabilityGroupID *string
 
-	// READ-ONLY; Name of the distributed availability group
-	DistributedAvailabilityGroupName *string
+	// READ-ONLY; The last hardened lsn
+	LastHardenedLsn *string
 
-	// READ-ONLY; SQL server side link role
-	PartnerLinkRole *LinkRole
-}
+	// READ-ONLY; The link state
+	LinkState *string
 
-// DistributedAvailabilityGroupSetRole - Distributed availability group failover request.
-type DistributedAvailabilityGroupSetRole struct {
-	// REQUIRED; New role of managed instance in a distributed availability group, can be Primary or Secondary.
-	InstanceRole *InstanceRole
+	// READ-ONLY; The source replica id
+	SourceReplicaID *string
 
-	// REQUIRED; The type of the role change, can be Planned or Forced.
-	RoleChangeType *RoleChangeType
-}
-
-// DistributedAvailabilityGroupsFailoverRequest - Distributed availability group failover.
-type DistributedAvailabilityGroupsFailoverRequest struct {
-	// REQUIRED; The failover type, can be ForcedAllowDataLoss or Planned.
-	FailoverType *FailoverType
+	// READ-ONLY; The target replica id
+	TargetReplicaID *string
 }
 
 // DistributedAvailabilityGroupsListResult - A list of distributed availability groups in instance.
@@ -2677,6 +2583,9 @@ type FailoverGroupProperties struct {
 	// Read-only endpoint of the failover group instance.
 	ReadOnlyEndpoint *FailoverGroupReadOnlyEndpoint
 
+	// Databases secondary type on partner server.
+	SecondaryType *FailoverGroupDatabasesSecondaryType
+
 	// READ-ONLY; Local replication role of the failover group instance.
 	ReplicationRole *FailoverGroupReplicationRole
 
@@ -2726,6 +2635,9 @@ type FailoverGroupUpdateProperties struct {
 
 	// Read-write endpoint of the failover group instance.
 	ReadWriteEndpoint *FailoverGroupReadWriteEndpoint
+
+	// Databases secondary type on partner server.
+	SecondaryType *FailoverGroupDatabasesSecondaryType
 }
 
 // FirewallRule - A server firewall rule.
@@ -6339,14 +6251,17 @@ type ReplicationLinkListResult struct {
 
 // ReplicationLinkProperties - Properties of a replication link.
 type ReplicationLinkProperties struct {
+	// Link type (GEO, NAMED, STANDBY). Update operation does not support NAMED.
+	LinkType *ReplicationLinkType
+
 	// READ-ONLY; Whether the user is currently allowed to terminate the link.
 	IsTerminationAllowed *bool
 
-	// READ-ONLY; Link type (GEO, NAMED, STANDBY).
-	LinkType *ReplicationLinkType
-
 	// READ-ONLY; Resource partner database.
 	PartnerDatabase *string
+
+	// READ-ONLY; Resource partner database Id.
+	PartnerDatabaseID *string
 
 	// READ-ONLY; Resource partner location.
 	PartnerLocation *string
@@ -6371,6 +6286,27 @@ type ReplicationLinkProperties struct {
 
 	// READ-ONLY; Time at which the link was created.
 	StartTime *time.Time
+}
+
+// ReplicationLinkUpdate - A replication link update request.
+type ReplicationLinkUpdate struct {
+	// Resource properties.
+	Properties *ReplicationLinkUpdateProperties
+
+	// READ-ONLY; Resource ID.
+	ID *string
+
+	// READ-ONLY; Resource name.
+	Name *string
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
+// ReplicationLinkUpdateProperties - Properties of a replication link update.
+type ReplicationLinkUpdateProperties struct {
+	// Link type (GEO, NAMED, STANDBY). Update operation does not support NAMED.
+	LinkType *ReplicationLinkType
 }
 
 // Resource - ARM resource.

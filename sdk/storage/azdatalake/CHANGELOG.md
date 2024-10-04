@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.1-beta.2 (Unreleased)
+## 1.2.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,11 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.1 (2024-09-23)
+
+### Features Added
+* Upgraded service version to `2024-08-04`.
 
 ## 1.2.1-beta.1 (2024-08-30)
 

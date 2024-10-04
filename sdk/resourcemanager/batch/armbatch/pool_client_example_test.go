@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e79d9ef3e065f2dcb6bd1db51e29c62a99dff5cb/specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/PoolList.json
 func ExamplePoolClient_NewListByBatchAccountPager_listPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,9 +73,14 @@ func ExamplePoolClient_NewListByBatchAccountPager_listPool() {
 		// 						CurrentDedicatedNodes: to.Ptr[int32](0),
 		// 						CurrentLowPriorityNodes: to.Ptr[int32](0),
 		// 						DeploymentConfiguration: &armbatch.DeploymentConfiguration{
-		// 							CloudServiceConfiguration: &armbatch.CloudServiceConfiguration{
-		// 								OSFamily: to.Ptr("4"),
-		// 								OSVersion: to.Ptr("WA-GUEST-OS-4.45_201708-01"),
+		// 							VirtualMachineConfiguration: &armbatch.VirtualMachineConfiguration{
+		// 								ImageReference: &armbatch.ImageReference{
+		// 									Offer: to.Ptr("WindowsServer"),
+		// 									Publisher: to.Ptr("MicrosoftWindowsServer"),
+		// 									SKU: to.Ptr("2016-Datacenter-SmallDisk"),
+		// 									Version: to.Ptr("latest"),
+		// 								},
+		// 								NodeAgentSKUID: to.Ptr("batch.node.windows amd64"),
 		// 							},
 		// 						},
 		// 						InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateEnabled),
@@ -180,7 +185,7 @@ func ExamplePoolClient_NewListByBatchAccountPager_listPool() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolListWithFilter.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e79d9ef3e065f2dcb6bd1db51e29c62a99dff5cb/specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/PoolListWithFilter.json
 func ExamplePoolClient_NewListByBatchAccountPager_listPoolWithFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -235,7 +240,7 @@ func ExamplePoolClient_NewListByBatchAccountPager_listPoolWithFilter() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolCreate_SharedImageGallery.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e79d9ef3e065f2dcb6bd1db51e29c62a99dff5cb/specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/PoolCreate_SharedImageGallery.json
 func ExamplePoolClient_Create_createPoolCustomImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -305,221 +310,7 @@ func ExamplePoolClient_Create_createPoolCustomImage() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolCreate_CloudServiceConfiguration.json
-func ExamplePoolClient_Create_createPoolFullCloudServiceConfiguration() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbatch.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewPoolClient().Create(ctx, "default-azurebatch-japaneast", "sampleacct", "testpool", armbatch.Pool{
-		Properties: &armbatch.PoolProperties{
-			ApplicationLicenses: []*string{
-				to.Ptr("app-license0"),
-				to.Ptr("app-license1")},
-			ApplicationPackages: []*armbatch.ApplicationPackageReference{
-				{
-					ID:      to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool/applications/app_1234"),
-					Version: to.Ptr("asdf"),
-				}},
-			Certificates: []*armbatch.CertificateReference{
-				{
-					ID:            to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool/certificates/sha1-1234567"),
-					StoreLocation: to.Ptr(armbatch.CertificateStoreLocationLocalMachine),
-					StoreName:     to.Ptr("MY"),
-					Visibility: []*armbatch.CertificateVisibility{
-						to.Ptr(armbatch.CertificateVisibilityRemoteUser)},
-				}},
-			DeploymentConfiguration: &armbatch.DeploymentConfiguration{
-				CloudServiceConfiguration: &armbatch.CloudServiceConfiguration{
-					OSFamily:  to.Ptr("4"),
-					OSVersion: to.Ptr("WA-GUEST-OS-4.45_201708-01"),
-				},
-			},
-			DisplayName:            to.Ptr("my-pool-name"),
-			InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateEnabled),
-			Metadata: []*armbatch.MetadataItem{
-				{
-					Name:  to.Ptr("metadata-1"),
-					Value: to.Ptr("value-1"),
-				},
-				{
-					Name:  to.Ptr("metadata-2"),
-					Value: to.Ptr("value-2"),
-				}},
-			NetworkConfiguration: &armbatch.NetworkConfiguration{
-				PublicIPAddressConfiguration: &armbatch.PublicIPAddressConfiguration{
-					IPAddressIDs: []*string{
-						to.Ptr("/subscriptions/subid1/resourceGroups/rg13/providers/Microsoft.Network/publicIPAddresses/ip135"),
-						to.Ptr("/subscriptions/subid2/resourceGroups/rg24/providers/Microsoft.Network/publicIPAddresses/ip268")},
-					Provision: to.Ptr(armbatch.IPAddressProvisioningTypeUserManaged),
-				},
-				SubnetID: to.Ptr("/subscriptions/subid/resourceGroups/rg1234/providers/Microsoft.Network/virtualNetworks/network1234/subnets/subnet123"),
-			},
-			ScaleSettings: &armbatch.ScaleSettings{
-				FixedScale: &armbatch.FixedScaleSettings{
-					NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionTaskCompletion),
-					ResizeTimeout:          to.Ptr("PT8M"),
-					TargetDedicatedNodes:   to.Ptr[int32](6),
-					TargetLowPriorityNodes: to.Ptr[int32](28),
-				},
-			},
-			StartTask: &armbatch.StartTask{
-				CommandLine: to.Ptr("cmd /c SET"),
-				EnvironmentSettings: []*armbatch.EnvironmentSetting{
-					{
-						Name:  to.Ptr("MYSET"),
-						Value: to.Ptr("1234"),
-					}},
-				MaxTaskRetryCount: to.Ptr[int32](6),
-				ResourceFiles: []*armbatch.ResourceFile{
-					{
-						FileMode: to.Ptr("777"),
-						FilePath: to.Ptr("c:\\temp\\gohere"),
-						HTTPURL:  to.Ptr("https://testaccount.blob.core.windows.net/example-blob-file"),
-					}},
-				UserIdentity: &armbatch.UserIdentity{
-					AutoUser: &armbatch.AutoUserSpecification{
-						ElevationLevel: to.Ptr(armbatch.ElevationLevelAdmin),
-						Scope:          to.Ptr(armbatch.AutoUserScopePool),
-					},
-				},
-				WaitForSuccess: to.Ptr(true),
-			},
-			TaskSchedulingPolicy: &armbatch.TaskSchedulingPolicy{
-				NodeFillType: to.Ptr(armbatch.ComputeNodeFillTypePack),
-			},
-			TaskSlotsPerNode: to.Ptr[int32](13),
-			UserAccounts: []*armbatch.UserAccount{
-				{
-					Name:           to.Ptr("username1"),
-					ElevationLevel: to.Ptr(armbatch.ElevationLevelAdmin),
-					LinuxUserConfiguration: &armbatch.LinuxUserConfiguration{
-						Gid:           to.Ptr[int32](4567),
-						SSHPrivateKey: to.Ptr("sshprivatekeyvalue"),
-						UID:           to.Ptr[int32](1234),
-					},
-					Password: to.Ptr("<ExamplePassword>"),
-				}},
-			VMSize: to.Ptr("STANDARD_D4"),
-		},
-	}, &armbatch.PoolClientCreateOptions{IfMatch: nil,
-		IfNoneMatch: nil,
-	})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Pool = armbatch.Pool{
-	// 	Name: to.Ptr("testpool"),
-	// 	Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
-	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
-	// 	Properties: &armbatch.PoolProperties{
-	// 		AllocationState: to.Ptr(armbatch.AllocationStateResizing),
-	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
-	// 		ApplicationLicenses: []*string{
-	// 			to.Ptr("app-license0"),
-	// 			to.Ptr("app-license1")},
-	// 			ApplicationPackages: []*armbatch.ApplicationPackageReference{
-	// 				{
-	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool/applications/app_1234"),
-	// 					Version: to.Ptr("asdf"),
-	// 			}},
-	// 			Certificates: []*armbatch.CertificateReference{
-	// 				{
-	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool/certificates/sha1-1234567"),
-	// 					StoreLocation: to.Ptr(armbatch.CertificateStoreLocationLocalMachine),
-	// 					StoreName: to.Ptr("MY"),
-	// 					Visibility: []*armbatch.CertificateVisibility{
-	// 						to.Ptr(armbatch.CertificateVisibilityRemoteUser)},
-	// 				}},
-	// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
-	// 				CurrentDedicatedNodes: to.Ptr[int32](0),
-	// 				CurrentLowPriorityNodes: to.Ptr[int32](0),
-	// 				DeploymentConfiguration: &armbatch.DeploymentConfiguration{
-	// 					CloudServiceConfiguration: &armbatch.CloudServiceConfiguration{
-	// 						OSFamily: to.Ptr("4"),
-	// 						OSVersion: to.Ptr("WA-GUEST-OS-4.45_201708-01"),
-	// 					},
-	// 				},
-	// 				InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateEnabled),
-	// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
-	// 				Metadata: []*armbatch.MetadataItem{
-	// 					{
-	// 						Name: to.Ptr("metadata-1"),
-	// 						Value: to.Ptr("value-1"),
-	// 					},
-	// 					{
-	// 						Name: to.Ptr("metadata-2"),
-	// 						Value: to.Ptr("value-2"),
-	// 				}},
-	// 				NetworkConfiguration: &armbatch.NetworkConfiguration{
-	// 					PublicIPAddressConfiguration: &armbatch.PublicIPAddressConfiguration{
-	// 						IPAddressIDs: []*string{
-	// 							to.Ptr("/subscriptions/subid1/resourceGroups/rg13/providers/Microsoft.Network/publicIPAddresses/ip135"),
-	// 							to.Ptr("/subscriptions/subid2/resourceGroups/rg24/providers/Microsoft.Network/publicIPAddresses/ip268")},
-	// 							Provision: to.Ptr(armbatch.IPAddressProvisioningTypeUserManaged),
-	// 						},
-	// 						SubnetID: to.Ptr("/subscriptions/subid/resourceGroups/rg1234/providers/Microsoft.Network/virtualNetworks/network1234/subnets/subnet123"),
-	// 					},
-	// 					ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 					ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
-	// 					ScaleSettings: &armbatch.ScaleSettings{
-	// 						FixedScale: &armbatch.FixedScaleSettings{
-	// 							NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionTaskCompletion),
-	// 							ResizeTimeout: to.Ptr("PT8M"),
-	// 							TargetDedicatedNodes: to.Ptr[int32](6),
-	// 							TargetLowPriorityNodes: to.Ptr[int32](28),
-	// 						},
-	// 					},
-	// 					StartTask: &armbatch.StartTask{
-	// 						CommandLine: to.Ptr("cmd /c SET"),
-	// 						EnvironmentSettings: []*armbatch.EnvironmentSetting{
-	// 							{
-	// 								Name: to.Ptr("MYSET"),
-	// 								Value: to.Ptr("1234"),
-	// 						}},
-	// 						MaxTaskRetryCount: to.Ptr[int32](6),
-	// 						ResourceFiles: []*armbatch.ResourceFile{
-	// 							{
-	// 								FileMode: to.Ptr("777"),
-	// 								FilePath: to.Ptr("c:\\temp\\gohere"),
-	// 								HTTPURL: to.Ptr("https://testaccount.blob.core.windows.net/example-blob-file"),
-	// 						}},
-	// 						UserIdentity: &armbatch.UserIdentity{
-	// 							AutoUser: &armbatch.AutoUserSpecification{
-	// 								ElevationLevel: to.Ptr(armbatch.ElevationLevelAdmin),
-	// 								Scope: to.Ptr(armbatch.AutoUserScopePool),
-	// 							},
-	// 						},
-	// 						WaitForSuccess: to.Ptr(true),
-	// 					},
-	// 					TaskSchedulingPolicy: &armbatch.TaskSchedulingPolicy{
-	// 						NodeFillType: to.Ptr(armbatch.ComputeNodeFillTypePack),
-	// 					},
-	// 					TaskSlotsPerNode: to.Ptr[int32](13),
-	// 					UserAccounts: []*armbatch.UserAccount{
-	// 						{
-	// 							Name: to.Ptr("username1"),
-	// 							ElevationLevel: to.Ptr(armbatch.ElevationLevelAdmin),
-	// 							LinuxUserConfiguration: &armbatch.LinuxUserConfiguration{
-	// 								Gid: to.Ptr[int32](4567),
-	// 								UID: to.Ptr[int32](1234),
-	// 							},
-	// 					}},
-	// 					VMSize: to.Ptr("STANDARD_D4"),
-	// 				},
-	// 			}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolCreate_VirtualMachineConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e79d9ef3e065f2dcb6bd1db51e29c62a99dff5cb/specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/PoolCreate_VirtualMachineConfiguration.json
 func ExamplePoolClient_Create_createPoolFullVirtualMachineConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -712,84 +503,7 @@ func ExamplePoolClient_Create_createPoolFullVirtualMachineConfiguration() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolCreate_MinimalCloudServiceConfiguration.json
-func ExamplePoolClient_Create_createPoolMinimalCloudServiceConfiguration() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbatch.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewPoolClient().Create(ctx, "default-azurebatch-japaneast", "sampleacct", "testpool", armbatch.Pool{
-		Properties: &armbatch.PoolProperties{
-			DeploymentConfiguration: &armbatch.DeploymentConfiguration{
-				CloudServiceConfiguration: &armbatch.CloudServiceConfiguration{
-					OSFamily: to.Ptr("5"),
-				},
-			},
-			ScaleSettings: &armbatch.ScaleSettings{
-				FixedScale: &armbatch.FixedScaleSettings{
-					TargetDedicatedNodes: to.Ptr[int32](3),
-				},
-			},
-			VMSize: to.Ptr("STANDARD_D4"),
-		},
-	}, &armbatch.PoolClientCreateOptions{IfMatch: nil,
-		IfNoneMatch: nil,
-	})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Pool = armbatch.Pool{
-	// 	Name: to.Ptr("testpool"),
-	// 	Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
-	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
-	// 	Properties: &armbatch.PoolProperties{
-	// 		AllocationState: to.Ptr(armbatch.AllocationStateResizing),
-	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
-	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
-	// 		CurrentDedicatedNodes: to.Ptr[int32](0),
-	// 		CurrentLowPriorityNodes: to.Ptr[int32](0),
-	// 		DeploymentConfiguration: &armbatch.DeploymentConfiguration{
-	// 			CloudServiceConfiguration: &armbatch.CloudServiceConfiguration{
-	// 				OSFamily: to.Ptr("5"),
-	// 				OSVersion: to.Ptr("*"),
-	// 			},
-	// 		},
-	// 		InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
-	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
-	// 		ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
-	// 		ResizeOperationStatus: &armbatch.ResizeOperationStatus{
-	// 			NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionRequeue),
-	// 			ResizeTimeout: to.Ptr("PT15M"),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
-	// 			TargetDedicatedNodes: to.Ptr[int32](3),
-	// 		},
-	// 		ScaleSettings: &armbatch.ScaleSettings{
-	// 			FixedScale: &armbatch.FixedScaleSettings{
-	// 				ResizeTimeout: to.Ptr("PT15M"),
-	// 				TargetDedicatedNodes: to.Ptr[int32](3),
-	// 				TargetLowPriorityNodes: to.Ptr[int32](0),
-	// 			},
-	// 		},
-	// 		TaskSchedulingPolicy: &armbatch.TaskSchedulingPolicy{
-	// 			NodeFillType: to.Ptr(armbatch.ComputeNodeFillTypeSpread),
-	// 		},
-	// 		TaskSlotsPerNode: to.Ptr[int32](1),
-	// 		VMSize: to.Ptr("STANDARD_D4"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolCreate_MinimalVirtualMachineConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e79d9ef3e065f2dcb6bd1db51e29c62a99dff5cb/specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/PoolCreate_MinimalVirtualMachineConfiguration.json
 func ExamplePoolClient_Create_createPoolMinimalVirtualMachineConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -871,7 +585,7 @@ func ExamplePoolClient_Create_createPoolMinimalVirtualMachineConfiguration() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolCreate_NoPublicIPAddresses.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e79d9ef3e065f2dcb6bd1db51e29c62a99dff5cb/specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/PoolCreate_NoPublicIPAddresses.json
 func ExamplePoolClient_Create_createPoolNoPublicIp() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -953,7 +667,7 @@ func ExamplePoolClient_Create_createPoolNoPublicIp() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolCreate_PublicIPs.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e79d9ef3e065f2dcb6bd1db51e29c62a99dff5cb/specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/PoolCreate_PublicIPs.json
 func ExamplePoolClient_Create_createPoolPublicIPs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1039,7 +753,7 @@ func ExamplePoolClient_Create_createPoolPublicIPs() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolCreate_ResourceTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e79d9ef3e065f2dcb6bd1db51e29c62a99dff5cb/specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/PoolCreate_ResourceTags.json
 func ExamplePoolClient_Create_createPoolResourceTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1136,7 +850,7 @@ func ExamplePoolClient_Create_createPoolResourceTags() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolCreate_SecurityProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e79d9ef3e065f2dcb6bd1db51e29c62a99dff5cb/specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/PoolCreate_SecurityProfile.json
 func ExamplePoolClient_Create_createPoolSecurityProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1160,7 +874,7 @@ func ExamplePoolClient_Create_createPoolSecurityProfile() {
 					NodeAgentSKUID: to.Ptr("batch.node.ubuntu 18.04"),
 					SecurityProfile: &armbatch.SecurityProfile{
 						EncryptionAtHost: to.Ptr(true),
-						SecurityType:     to.Ptr("trustedLaunch"),
+						SecurityType:     to.Ptr(armbatch.SecurityTypesTrustedLaunch),
 						UefiSettings: &armbatch.UefiSettings{
 							VTpmEnabled: to.Ptr(false),
 						},
@@ -1206,7 +920,7 @@ func ExamplePoolClient_Create_createPoolSecurityProfile() {
 	// 				NodeAgentSKUID: to.Ptr("batch.node.ubuntu 18.04"),
 	// 				SecurityProfile: &armbatch.SecurityProfile{
 	// 					EncryptionAtHost: to.Ptr(true),
-	// 					SecurityType: to.Ptr("trustedLaunch"),
+	// 					SecurityType: to.Ptr(armbatch.SecurityTypesTrustedLaunch),
 	// 					UefiSettings: &armbatch.UefiSettings{
 	// 						VTpmEnabled: to.Ptr(false),
 	// 					},
@@ -1239,7 +953,104 @@ func ExamplePoolClient_Create_createPoolSecurityProfile() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolCreate_UpgradePolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e79d9ef3e065f2dcb6bd1db51e29c62a99dff5cb/specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/PoolCreate_Tags.json
+func ExamplePoolClient_Create_createPoolTags() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbatch.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewPoolClient().Create(ctx, "default-azurebatch-japaneast", "sampleacct", "testpool", armbatch.Pool{
+		Tags: map[string]*string{
+			"TagName1": to.Ptr("TagValue1"),
+			"TagName2": to.Ptr("TagValue2"),
+		},
+		Properties: &armbatch.PoolProperties{
+			DeploymentConfiguration: &armbatch.DeploymentConfiguration{
+				VirtualMachineConfiguration: &armbatch.VirtualMachineConfiguration{
+					ImageReference: &armbatch.ImageReference{
+						Offer:     to.Ptr("0001-com-ubuntu-server-jammy"),
+						Publisher: to.Ptr("Canonical"),
+						SKU:       to.Ptr("22_04-lts"),
+						Version:   to.Ptr("latest"),
+					},
+					NodeAgentSKUID: to.Ptr("batch.node.ubuntu 22.04"),
+				},
+			},
+			ScaleSettings: &armbatch.ScaleSettings{
+				FixedScale: &armbatch.FixedScaleSettings{
+					TargetDedicatedNodes:   to.Ptr[int32](1),
+					TargetLowPriorityNodes: to.Ptr[int32](0),
+				},
+			},
+			VMSize: to.Ptr("Standard_d4s_v3"),
+		},
+	}, &armbatch.PoolClientCreateOptions{IfMatch: nil,
+		IfNoneMatch: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Pool = armbatch.Pool{
+	// 	Name: to.Ptr("testpool"),
+	// 	Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
+	// 	Etag: to.Ptr("W/\"0x8DB554F8E08BCF4\""),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
+	// 	Tags: map[string]*string{
+	// 		"TagName1": to.Ptr("TagValue1"),
+	// 		"TagName2": to.Ptr("TagValue2"),
+	// 	},
+	// 	Properties: &armbatch.PoolProperties{
+	// 		AllocationState: to.Ptr(armbatch.AllocationStateResizing),
+	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-14T07:03:58.323Z"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-14T07:03:58.323Z"); return t}()),
+	// 		CurrentDedicatedNodes: to.Ptr[int32](0),
+	// 		CurrentLowPriorityNodes: to.Ptr[int32](0),
+	// 		DeploymentConfiguration: &armbatch.DeploymentConfiguration{
+	// 			VirtualMachineConfiguration: &armbatch.VirtualMachineConfiguration{
+	// 				ImageReference: &armbatch.ImageReference{
+	// 					Offer: to.Ptr("0001-com-ubuntu-server-jammy"),
+	// 					Publisher: to.Ptr("Canonical"),
+	// 					SKU: to.Ptr("22_04-lts"),
+	// 					Version: to.Ptr("latest"),
+	// 				},
+	// 				NodeAgentSKUID: to.Ptr("batch.node.ubuntu 22.04"),
+	// 			},
+	// 		},
+	// 		InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
+	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-14T07:03:58.323Z"); return t}()),
+	// 		ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
+	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-14T07:03:58.323Z"); return t}()),
+	// 		ResizeOperationStatus: &armbatch.ResizeOperationStatus{
+	// 			NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionRequeue),
+	// 			ResizeTimeout: to.Ptr("PT15M"),
+	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-27T07:33:13.062Z"); return t}()),
+	// 			TargetDedicatedNodes: to.Ptr[int32](1),
+	// 		},
+	// 		ScaleSettings: &armbatch.ScaleSettings{
+	// 			FixedScale: &armbatch.FixedScaleSettings{
+	// 				ResizeTimeout: to.Ptr("PT15M"),
+	// 				TargetDedicatedNodes: to.Ptr[int32](1),
+	// 				TargetLowPriorityNodes: to.Ptr[int32](0),
+	// 			},
+	// 		},
+	// 		TaskSchedulingPolicy: &armbatch.TaskSchedulingPolicy{
+	// 			NodeFillType: to.Ptr(armbatch.ComputeNodeFillTypeSpread),
+	// 		},
+	// 		TaskSlotsPerNode: to.Ptr[int32](1),
+	// 		VMSize: to.Ptr("STANDARD_D4S_V3"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e79d9ef3e065f2dcb6bd1db51e29c62a99dff5cb/specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/PoolCreate_UpgradePolicy.json
 func ExamplePoolClient_Create_createPoolUpgradePolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1376,7 +1187,7 @@ func ExamplePoolClient_Create_createPoolUpgradePolicy() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolCreate_UserAssignedIdentities.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e79d9ef3e065f2dcb6bd1db51e29c62a99dff5cb/specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/PoolCreate_UserAssignedIdentities.json
 func ExamplePoolClient_Create_createPoolUserAssignedIdentities() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1478,7 +1289,7 @@ func ExamplePoolClient_Create_createPoolUserAssignedIdentities() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolCreate_VirtualMachineConfiguration_Extensions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e79d9ef3e065f2dcb6bd1db51e29c62a99dff5cb/specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/PoolCreate_VirtualMachineConfiguration_Extensions.json
 func ExamplePoolClient_Create_createPoolVirtualMachineConfigurationExtensions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1586,7 +1397,7 @@ func ExamplePoolClient_Create_createPoolVirtualMachineConfigurationExtensions() 
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolCreate_VirtualMachineConfiguration_ManagedOSDisk.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e79d9ef3e065f2dcb6bd1db51e29c62a99dff5cb/specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/PoolCreate_VirtualMachineConfiguration_ManagedOSDisk.json
 func ExamplePoolClient_Create_createPoolVirtualMachineConfigurationOsDisk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1690,7 +1501,7 @@ func ExamplePoolClient_Create_createPoolVirtualMachineConfigurationOsDisk() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolCreate_VirtualMachineConfiguration_ServiceArtifactReference.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e79d9ef3e065f2dcb6bd1db51e29c62a99dff5cb/specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/PoolCreate_VirtualMachineConfiguration_ServiceArtifactReference.json
 func ExamplePoolClient_Create_createPoolVirtualMachineConfigurationServiceArtifactReference() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1803,7 +1614,7 @@ func ExamplePoolClient_Create_createPoolVirtualMachineConfigurationServiceArtifa
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolCreate_AcceleratedNetworking.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e79d9ef3e065f2dcb6bd1db51e29c62a99dff5cb/specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/PoolCreate_AcceleratedNetworking.json
 func ExamplePoolClient_Create_createPoolAcceleratedNetworking() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1902,7 +1713,7 @@ func ExamplePoolClient_Create_createPoolAcceleratedNetworking() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolUpdate_EnableAutoScale.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e79d9ef3e065f2dcb6bd1db51e29c62a99dff5cb/specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/PoolUpdate_EnableAutoScale.json
 func ExamplePoolClient_Update_updatePoolEnableAutoscale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1944,9 +1755,14 @@ func ExamplePoolClient_Update_updatePoolEnableAutoscale() {
 	// 		CurrentDedicatedNodes: to.Ptr[int32](12),
 	// 		CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 		DeploymentConfiguration: &armbatch.DeploymentConfiguration{
-	// 			CloudServiceConfiguration: &armbatch.CloudServiceConfiguration{
-	// 				OSFamily: to.Ptr("5"),
-	// 				OSVersion: to.Ptr("*"),
+	// 			VirtualMachineConfiguration: &armbatch.VirtualMachineConfiguration{
+	// 				ImageReference: &armbatch.ImageReference{
+	// 					Offer: to.Ptr("WindowsServer"),
+	// 					Publisher: to.Ptr("MicrosoftWindowsServer"),
+	// 					SKU: to.Ptr("2016-Datacenter-SmallDisk"),
+	// 					Version: to.Ptr("latest"),
+	// 				},
+	// 				NodeAgentSKUID: to.Ptr("batch.node.windows amd64"),
 	// 			},
 	// 		},
 	// 		InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
@@ -1974,7 +1790,7 @@ func ExamplePoolClient_Update_updatePoolEnableAutoscale() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolUpdate_OtherProperties.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e79d9ef3e065f2dcb6bd1db51e29c62a99dff5cb/specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/PoolUpdate_OtherProperties.json
 func ExamplePoolClient_Update_updatePoolOtherProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2049,9 +1865,14 @@ func ExamplePoolClient_Update_updatePoolOtherProperties() {
 	// 			CurrentDedicatedNodes: to.Ptr[int32](12),
 	// 			CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 			DeploymentConfiguration: &armbatch.DeploymentConfiguration{
-	// 				CloudServiceConfiguration: &armbatch.CloudServiceConfiguration{
-	// 					OSFamily: to.Ptr("5"),
-	// 					OSVersion: to.Ptr("*"),
+	// 				VirtualMachineConfiguration: &armbatch.VirtualMachineConfiguration{
+	// 					ImageReference: &armbatch.ImageReference{
+	// 						Offer: to.Ptr("WindowsServer"),
+	// 						Publisher: to.Ptr("MicrosoftWindowsServer"),
+	// 						SKU: to.Ptr("2016-Datacenter-SmallDisk"),
+	// 						Version: to.Ptr("latest"),
+	// 					},
+	// 					NodeAgentSKUID: to.Ptr("batch.node.windows amd64"),
 	// 				},
 	// 			},
 	// 			InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
@@ -2087,7 +1908,7 @@ func ExamplePoolClient_Update_updatePoolOtherProperties() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolUpdate_RemoveStartTask.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e79d9ef3e065f2dcb6bd1db51e29c62a99dff5cb/specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/PoolUpdate_RemoveStartTask.json
 func ExamplePoolClient_Update_updatePoolRemoveStartTask() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2125,9 +1946,14 @@ func ExamplePoolClient_Update_updatePoolRemoveStartTask() {
 	// 		CurrentDedicatedNodes: to.Ptr[int32](12),
 	// 		CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 		DeploymentConfiguration: &armbatch.DeploymentConfiguration{
-	// 			CloudServiceConfiguration: &armbatch.CloudServiceConfiguration{
-	// 				OSFamily: to.Ptr("5"),
-	// 				OSVersion: to.Ptr("*"),
+	// 			VirtualMachineConfiguration: &armbatch.VirtualMachineConfiguration{
+	// 				ImageReference: &armbatch.ImageReference{
+	// 					Offer: to.Ptr("WindowsServer"),
+	// 					Publisher: to.Ptr("MicrosoftWindowsServer"),
+	// 					SKU: to.Ptr("2016-Datacenter-SmallDisk"),
+	// 					Version: to.Ptr("latest"),
+	// 				},
+	// 				NodeAgentSKUID: to.Ptr("batch.node.windows amd64"),
 	// 			},
 	// 		},
 	// 		InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
@@ -2155,7 +1981,7 @@ func ExamplePoolClient_Update_updatePoolRemoveStartTask() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolUpdate_ResizePool.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e79d9ef3e065f2dcb6bd1db51e29c62a99dff5cb/specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/PoolUpdate_ResizePool.json
 func ExamplePoolClient_Update_updatePoolResizePool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2200,9 +2026,14 @@ func ExamplePoolClient_Update_updatePoolResizePool() {
 	// 		CurrentDedicatedNodes: to.Ptr[int32](12),
 	// 		CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 		DeploymentConfiguration: &armbatch.DeploymentConfiguration{
-	// 			CloudServiceConfiguration: &armbatch.CloudServiceConfiguration{
-	// 				OSFamily: to.Ptr("5"),
-	// 				OSVersion: to.Ptr("*"),
+	// 			VirtualMachineConfiguration: &armbatch.VirtualMachineConfiguration{
+	// 				ImageReference: &armbatch.ImageReference{
+	// 					Offer: to.Ptr("WindowsServer"),
+	// 					Publisher: to.Ptr("MicrosoftWindowsServer"),
+	// 					SKU: to.Ptr("2016-Datacenter-SmallDisk"),
+	// 					Version: to.Ptr("latest"),
+	// 				},
+	// 				NodeAgentSKUID: to.Ptr("batch.node.windows amd64"),
 	// 			},
 	// 		},
 	// 		InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
@@ -2232,7 +2063,7 @@ func ExamplePoolClient_Update_updatePoolResizePool() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e79d9ef3e065f2dcb6bd1db51e29c62a99dff5cb/specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/PoolDelete.json
 func ExamplePoolClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2253,7 +2084,7 @@ func ExamplePoolClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e79d9ef3e065f2dcb6bd1db51e29c62a99dff5cb/specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/PoolGet.json
 func ExamplePoolClient_Get_getPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2299,9 +2130,14 @@ func ExamplePoolClient_Get_getPool() {
 	// 				CurrentDedicatedNodes: to.Ptr[int32](0),
 	// 				CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 				DeploymentConfiguration: &armbatch.DeploymentConfiguration{
-	// 					CloudServiceConfiguration: &armbatch.CloudServiceConfiguration{
-	// 						OSFamily: to.Ptr("4"),
-	// 						OSVersion: to.Ptr("WA-GUEST-OS-4.45_201708-01"),
+	// 					VirtualMachineConfiguration: &armbatch.VirtualMachineConfiguration{
+	// 						ImageReference: &armbatch.ImageReference{
+	// 							Offer: to.Ptr("WindowsServer"),
+	// 							Publisher: to.Ptr("MicrosoftWindowsServer"),
+	// 							SKU: to.Ptr("2016-Datacenter-SmallDisk"),
+	// 							Version: to.Ptr("latest"),
+	// 						},
+	// 						NodeAgentSKUID: to.Ptr("batch.node.windows amd64"),
 	// 					},
 	// 				},
 	// 				InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateEnabled),
@@ -2400,7 +2236,7 @@ func ExamplePoolClient_Get_getPool() {
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolGet_AcceleratedNetworking.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e79d9ef3e065f2dcb6bd1db51e29c62a99dff5cb/specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/PoolGet_AcceleratedNetworking.json
 func ExamplePoolClient_Get_getPoolAcceleratedNetworking() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2471,7 +2307,7 @@ func ExamplePoolClient_Get_getPoolAcceleratedNetworking() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolGet_SecurityProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e79d9ef3e065f2dcb6bd1db51e29c62a99dff5cb/specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/PoolGet_SecurityProfile.json
 func ExamplePoolClient_Get_getPoolSecurityProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2512,7 +2348,7 @@ func ExamplePoolClient_Get_getPoolSecurityProfile() {
 	// 				NodeAgentSKUID: to.Ptr("batch.node.ubuntu 18.04"),
 	// 				SecurityProfile: &armbatch.SecurityProfile{
 	// 					EncryptionAtHost: to.Ptr(true),
-	// 					SecurityType: to.Ptr("trustedLaunch"),
+	// 					SecurityType: to.Ptr(armbatch.SecurityTypesTrustedLaunch),
 	// 					UefiSettings: &armbatch.UefiSettings{
 	// 						VTpmEnabled: to.Ptr(false),
 	// 					},
@@ -2545,7 +2381,7 @@ func ExamplePoolClient_Get_getPoolSecurityProfile() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolGet_UpgradePolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e79d9ef3e065f2dcb6bd1db51e29c62a99dff5cb/specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/PoolGet_UpgradePolicy.json
 func ExamplePoolClient_Get_getPoolUpgradePolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2636,7 +2472,7 @@ func ExamplePoolClient_Get_getPoolUpgradePolicy() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolGet_VirtualMachineConfiguration_Extensions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e79d9ef3e065f2dcb6bd1db51e29c62a99dff5cb/specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/PoolGet_VirtualMachineConfiguration_Extensions.json
 func ExamplePoolClient_Get_getPoolVirtualMachineConfigurationExtensions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2717,7 +2553,7 @@ func ExamplePoolClient_Get_getPoolVirtualMachineConfigurationExtensions() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolGet_VirtualMachineConfiguration_MangedOSDisk.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e79d9ef3e065f2dcb6bd1db51e29c62a99dff5cb/specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/PoolGet_VirtualMachineConfiguration_MangedOSDisk.json
 func ExamplePoolClient_Get_getPoolVirtualMachineConfigurationOsDisk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2792,7 +2628,7 @@ func ExamplePoolClient_Get_getPoolVirtualMachineConfigurationOsDisk() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolGet_VirtualMachineConfiguration_ServiceArtifactReference.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e79d9ef3e065f2dcb6bd1db51e29c62a99dff5cb/specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/PoolGet_VirtualMachineConfiguration_ServiceArtifactReference.json
 func ExamplePoolClient_Get_getPoolVirtualMachineConfigurationServiceArtifactReference() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2871,7 +2707,7 @@ func ExamplePoolClient_Get_getPoolVirtualMachineConfigurationServiceArtifactRefe
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolDisableAutoScale.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e79d9ef3e065f2dcb6bd1db51e29c62a99dff5cb/specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/PoolDisableAutoScale.json
 func ExamplePoolClient_DisableAutoScale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2931,7 +2767,7 @@ func ExamplePoolClient_DisableAutoScale() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolStopResize.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e79d9ef3e065f2dcb6bd1db51e29c62a99dff5cb/specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/PoolStopResize.json
 func ExamplePoolClient_StopResize() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

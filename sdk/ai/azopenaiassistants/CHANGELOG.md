@@ -1,14 +1,11 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 0.2.1 (2024-09-10)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Added support for the `FileSearch` tool definition.
+- Added `ChunkingStrategy` to vector store creation APIs.
 
 ## 0.2.0 (2024-06-25)
 

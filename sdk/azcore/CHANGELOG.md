@@ -11,6 +11,10 @@
 * Omit the `ResponseError.RawResponse` field from JSON marshaling so instances can be marshaled.
 * Fixed an integer overflow in the retry policy.
 
+### Other Changes
+
+* Update dependencies.
+
 ## 1.14.0 (2024-08-07)
 
 ### Features Added

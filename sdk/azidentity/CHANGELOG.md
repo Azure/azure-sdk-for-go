@@ -1,15 +1,26 @@
 # Release History
 
-## 1.8.0-beta.3 (Unreleased)
+## 1.8.0-beta.4 (Unreleased)
 
 ### Features Added
-* Added `ObjectID` type for `ManagedIdentityCredentialOptions.ID`
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+* `AzurePipelinesCredential` sets an additional OIDC request header so that it
+  receives a 401 instead of a 302 after presenting an invalid system access token
+* Allow logging of debugging headers for `AzurePipelinesCredential` and include
+  them in error messages
+
+## 1.8.0-beta.3 (2024-09-17)
+
+### Features Added
+* Added `ObjectID` type for `ManagedIdentityCredentialOptions.ID`
+
+### Other Changes
+* Removed redundant content from error messages
 
 ## 1.8.0-beta.2 (2024-08-06)
 

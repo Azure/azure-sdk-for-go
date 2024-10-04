@@ -11,13 +11,15 @@ package armbilling
 import (
 	"context"
 	"errors"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"net/http"
-	"net/url"
-	"strings"
 )
 
 // ProfilesClient contains the methods for the BillingProfiles group.
@@ -41,13 +43,14 @@ func NewProfilesClient(credential azcore.TokenCredential, options *arm.ClientOpt
 }
 
 // BeginCreateOrUpdate - Creates or updates a billing profile. The operation is supported for billing accounts with agreement
-// type Microsoft Customer Agreement or Microsoft Partner Agreement.
+// type Microsoft Customer Agreement and Microsoft Partner Agreement. If you are a MCA Individual
+// (Pay-as-you-go) customer, then please use the Azure portal experience to create the billing profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
 //   - billingProfileName - The ID that uniquely identifies a billing profile.
-//   - parameters - The new or updated billing profile.
+//   - parameters - A billing profile.
 //   - options - ProfilesClientBeginCreateOrUpdateOptions contains the optional parameters for the ProfilesClient.BeginCreateOrUpdate
 //     method.
 func (client *ProfilesClient) BeginCreateOrUpdate(ctx context.Context, billingAccountName string, billingProfileName string, parameters Profile, options *ProfilesClientBeginCreateOrUpdateOptions) (*runtime.Poller[ProfilesClientCreateOrUpdateResponse], error) {
@@ -57,7 +60,8 @@ func (client *ProfilesClient) BeginCreateOrUpdate(ctx context.Context, billingAc
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ProfilesClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -68,10 +72,11 @@ func (client *ProfilesClient) BeginCreateOrUpdate(ctx context.Context, billingAc
 }
 
 // CreateOrUpdate - Creates or updates a billing profile. The operation is supported for billing accounts with agreement type
-// Microsoft Customer Agreement or Microsoft Partner Agreement.
+// Microsoft Customer Agreement and Microsoft Partner Agreement. If you are a MCA Individual
+// (Pay-as-you-go) customer, then please use the Azure portal experience to create the billing profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 func (client *ProfilesClient) createOrUpdate(ctx context.Context, billingAccountName string, billingProfileName string, parameters Profile, options *ProfilesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ProfilesClient.BeginCreateOrUpdate"
@@ -86,7 +91,7 @@ func (client *ProfilesClient) createOrUpdate(ctx context.Context, billingAccount
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}
@@ -109,7 +114,7 @@ func (client *ProfilesClient) createOrUpdateCreateRequest(ctx context.Context, b
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -118,11 +123,85 @@ func (client *ProfilesClient) createOrUpdateCreateRequest(ctx context.Context, b
 	return req, nil
 }
 
-// Get - Gets a billing profile by its ID. The operation is supported for billing accounts with agreement type Microsoft Customer
-// Agreement or Microsoft Partner Agreement.
+// BeginDelete - Deletes a billing profile. The operation is supported for billing accounts with agreement type Microsoft
+// Customer Agreement and Microsoft Partner Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingProfileName - The ID that uniquely identifies a billing profile.
+//   - options - ProfilesClientBeginDeleteOptions contains the optional parameters for the ProfilesClient.BeginDelete method.
+func (client *ProfilesClient) BeginDelete(ctx context.Context, billingAccountName string, billingProfileName string, options *ProfilesClientBeginDeleteOptions) (*runtime.Poller[ProfilesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, billingAccountName, billingProfileName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ProfilesClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ProfilesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// Delete - Deletes a billing profile. The operation is supported for billing accounts with agreement type Microsoft Customer
+// Agreement and Microsoft Partner Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+func (client *ProfilesClient) deleteOperation(ctx context.Context, billingAccountName string, billingProfileName string, options *ProfilesClientBeginDeleteOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ProfilesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteCreateRequest(ctx, billingAccountName, billingProfileName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// deleteCreateRequest creates the Delete request.
+func (client *ProfilesClient) deleteCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, options *ProfilesClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if billingProfileName == "" {
+		return nil, errors.New("parameter billingProfileName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// Get - Gets a billing profile by its ID. The operation is supported for billing accounts with agreement type Microsoft Customer
+// Agreement and Microsoft Partner Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
 //   - billingProfileName - The ID that uniquely identifies a billing profile.
 //   - options - ProfilesClientGetOptions contains the optional parameters for the ProfilesClient.Get method.
@@ -164,10 +243,7 @@ func (client *ProfilesClient) getCreateRequest(ctx context.Context, billingAccou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
-	if options != nil && options.Expand != nil {
-		reqQP.Set("$expand", *options.Expand)
-	}
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -183,9 +259,9 @@ func (client *ProfilesClient) getHandleResponse(resp *http.Response) (ProfilesCl
 }
 
 // NewListByBillingAccountPager - Lists the billing profiles that a user has access to. The operation is supported for billing
-// accounts with agreement type Microsoft Customer Agreement or Microsoft Partner Agreement.
+// accounts with agreement of type Microsoft Customer Agreement and Microsoft Partner Agreement.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
 //   - options - ProfilesClientListByBillingAccountOptions contains the optional parameters for the ProfilesClient.NewListByBillingAccountPager
 //     method.
@@ -224,9 +300,27 @@ func (client *ProfilesClient) listByBillingAccountCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
-	if options != nil && options.Expand != nil {
-		reqQP.Set("$expand", *options.Expand)
+	reqQP.Set("api-version", "2024-04-01")
+	if options != nil && options.Count != nil {
+		reqQP.Set("count", strconv.FormatBool(*options.Count))
+	}
+	if options != nil && options.Filter != nil {
+		reqQP.Set("filter", *options.Filter)
+	}
+	if options != nil && options.IncludeDeleted != nil {
+		reqQP.Set("includeDeleted", strconv.FormatBool(*options.IncludeDeleted))
+	}
+	if options != nil && options.OrderBy != nil {
+		reqQP.Set("orderBy", *options.OrderBy)
+	}
+	if options != nil && options.Search != nil {
+		reqQP.Set("search", *options.Search)
+	}
+	if options != nil && options.Skip != nil {
+		reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
@@ -238,6 +332,68 @@ func (client *ProfilesClient) listByBillingAccountHandleResponse(resp *http.Resp
 	result := ProfilesClientListByBillingAccountResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProfileListResult); err != nil {
 		return ProfilesClientListByBillingAccountResponse{}, err
+	}
+	return result, nil
+}
+
+// ValidateDeleteEligibility - Validates if the billing profile can be deleted. The operation is supported for billing accounts
+// with agreement type Microsoft Customer Agreement and Microsoft Partner Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingProfileName - The ID that uniquely identifies a billing profile.
+//   - options - ProfilesClientValidateDeleteEligibilityOptions contains the optional parameters for the ProfilesClient.ValidateDeleteEligibility
+//     method.
+func (client *ProfilesClient) ValidateDeleteEligibility(ctx context.Context, billingAccountName string, billingProfileName string, options *ProfilesClientValidateDeleteEligibilityOptions) (ProfilesClientValidateDeleteEligibilityResponse, error) {
+	var err error
+	const operationName = "ProfilesClient.ValidateDeleteEligibility"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.validateDeleteEligibilityCreateRequest(ctx, billingAccountName, billingProfileName, options)
+	if err != nil {
+		return ProfilesClientValidateDeleteEligibilityResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ProfilesClientValidateDeleteEligibilityResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return ProfilesClientValidateDeleteEligibilityResponse{}, err
+	}
+	resp, err := client.validateDeleteEligibilityHandleResponse(httpResp)
+	return resp, err
+}
+
+// validateDeleteEligibilityCreateRequest creates the ValidateDeleteEligibility request.
+func (client *ProfilesClient) validateDeleteEligibilityCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, options *ProfilesClientValidateDeleteEligibilityOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/validateDeleteEligibility"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if billingProfileName == "" {
+		return nil, errors.New("parameter billingProfileName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// validateDeleteEligibilityHandleResponse handles the ValidateDeleteEligibility response.
+func (client *ProfilesClient) validateDeleteEligibilityHandleResponse(resp *http.Response) (ProfilesClientValidateDeleteEligibilityResponse, error) {
+	result := ProfilesClientValidateDeleteEligibilityResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DeleteBillingProfileEligibilityResult); err != nil {
+		return ProfilesClientValidateDeleteEligibilityResponse{}, err
 	}
 	return result, nil
 }

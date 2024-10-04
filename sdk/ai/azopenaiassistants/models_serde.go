@@ -655,6 +655,7 @@ func (c *CreateCodeInterpreterToolResourceOptions) UnmarshalJSON(data []byte) er
 // MarshalJSON implements the json.Marshaller interface for type CreateFileSearchToolResourceVectorStoreOptions.
 func (c CreateFileSearchToolResourceVectorStoreOptions) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "chunking_strategy", c.ChunkingStrategy)
 	populate(objectMap, "file_ids", c.FileIDs)
 	populate(objectMap, "metadata", c.Metadata)
 	return json.Marshal(objectMap)
@@ -669,6 +670,9 @@ func (c *CreateFileSearchToolResourceVectorStoreOptions) UnmarshalJSON(data []by
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "chunking_strategy":
+			c.ChunkingStrategy, err = unmarshalVectorStoreChunkingStrategyRequestClassification(val)
+			delete(rawMsg, key)
 		case "file_ids":
 			err = unpopulate(val, "FileIDs", &c.FileIDs)
 			delete(rawMsg, key)
@@ -905,6 +909,7 @@ func (c *CreateToolResourcesOptions) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type CreateVectorStoreFileBatchBody.
 func (c CreateVectorStoreFileBatchBody) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "chunking_strategy", c.ChunkingStrategy)
 	populate(objectMap, "file_ids", c.FileIDs)
 	return json.Marshal(objectMap)
 }
@@ -918,6 +923,9 @@ func (c *CreateVectorStoreFileBatchBody) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "chunking_strategy":
+			c.ChunkingStrategy, err = unmarshalVectorStoreChunkingStrategyRequestClassification(val)
+			delete(rawMsg, key)
 		case "file_ids":
 			err = unpopulate(val, "FileIDs", &c.FileIDs)
 			delete(rawMsg, key)
@@ -998,6 +1006,7 @@ func (f *FileListResponse) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type FileSearchToolDefinition.
 func (f FileSearchToolDefinition) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "file_search", f.FileSearch)
 	objectMap["type"] = "file_search"
 	return json.Marshal(objectMap)
 }
@@ -1011,8 +1020,38 @@ func (f *FileSearchToolDefinition) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "file_search":
+			err = unpopulate(val, "FileSearch", &f.FileSearch)
+			delete(rawMsg, key)
 		case "type":
 			err = unpopulate(val, "Type", &f.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", f, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type FileSearchToolDefinitionDetails.
+func (f FileSearchToolDefinitionDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "max_num_results", f.MaxNumResults)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type FileSearchToolDefinitionDetails.
+func (f *FileSearchToolDefinitionDetails) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", f, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "max_num_results":
+			err = unpopulate(val, "MaxNumResults", &f.MaxNumResults)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1164,6 +1203,33 @@ func (m *MessageAttachment) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "tools":
 			err = unpopulate(val, "Tools", &m.Tools)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", m, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type MessageAttachmentToolAssignment.
+func (m MessageAttachmentToolAssignment) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "type", m.Type)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type MessageAttachmentToolAssignment.
+func (m *MessageAttachmentToolAssignment) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", m, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "type":
+			err = unpopulate(val, "Type", &m.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1980,6 +2046,37 @@ func (o *OpenAIFile) UnmarshalJSON(data []byte) error {
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", o, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CreateVectorStoreFileBody.
+func (p CreateVectorStoreFileBody) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "chunking_strategy", p.ChunkingStrategy)
+	populate(objectMap, "file_id", p.FileID)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type CreateVectorStoreFileBody.
+func (p *CreateVectorStoreFileBody) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", p, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "chunking_strategy":
+			p.ChunkingStrategy, err = unmarshalVectorStoreChunkingStrategyRequestClassification(val)
+			delete(rawMsg, key)
+		case "file_id":
+			err = unpopulate(val, "FileID", &p.FileID)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", p, err)
 		}
 	}
 	return nil
@@ -4152,7 +4249,7 @@ func (u *UpdateAssistantThreadOptionsToolResources) UnmarshalJSON(data []byte) e
 // MarshalJSON implements the json.Marshaller interface for type UpdateCodeInterpreterToolResourceOptions.
 func (u UpdateCodeInterpreterToolResourceOptions) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "fileIds", u.FileIDs)
+	populate(objectMap, "file_ids", u.FileIDs)
 	return json.Marshal(objectMap)
 }
 
@@ -4165,7 +4262,7 @@ func (u *UpdateCodeInterpreterToolResourceOptions) UnmarshalJSON(data []byte) er
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "fileIds":
+		case "file_ids":
 			err = unpopulate(val, "FileIDs", &u.FileIDs)
 			delete(rawMsg, key)
 		}
@@ -4179,7 +4276,7 @@ func (u *UpdateCodeInterpreterToolResourceOptions) UnmarshalJSON(data []byte) er
 // MarshalJSON implements the json.Marshaller interface for type UpdateFileSearchToolResourceOptions.
 func (u UpdateFileSearchToolResourceOptions) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "vectorStoreIds", u.VectorStoreIDs)
+	populate(objectMap, "vector_store_ids", u.VectorStoreIDs)
 	return json.Marshal(objectMap)
 }
 
@@ -4192,7 +4289,7 @@ func (u *UpdateFileSearchToolResourceOptions) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "vectorStoreIds":
+		case "vector_store_ids":
 			err = unpopulate(val, "VectorStoreIDs", &u.VectorStoreIDs)
 			delete(rawMsg, key)
 		}
@@ -4386,9 +4483,64 @@ func (v *VectorStore) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type VectorStoreAutoChunkingStrategyRequest.
+func (v VectorStoreAutoChunkingStrategyRequest) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	objectMap["type"] = VectorStoreChunkingStrategyRequestTypeAuto
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type VectorStoreAutoChunkingStrategyRequest.
+func (v *VectorStoreAutoChunkingStrategyRequest) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", v, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "type":
+			err = unpopulate(val, "Type", &v.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", v, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type VectorStoreAutoChunkingStrategyResponse.
+func (v VectorStoreAutoChunkingStrategyResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	objectMap["type"] = VectorStoreChunkingStrategyResponseTypeOther
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type VectorStoreAutoChunkingStrategyResponse.
+func (v *VectorStoreAutoChunkingStrategyResponse) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", v, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "type":
+			err = unpopulate(val, "Type", &v.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", v, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type VectorStoreBody.
 func (v VectorStoreBody) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "chunking_strategy", v.ChunkingStrategy)
 	populate(objectMap, "expires_after", v.ExpiresAfter)
 	populate(objectMap, "file_ids", v.FileIDs)
 	populate(objectMap, "metadata", v.Metadata)
@@ -4405,6 +4557,9 @@ func (v *VectorStoreBody) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "chunking_strategy":
+			v.ChunkingStrategy, err = unmarshalVectorStoreChunkingStrategyRequestClassification(val)
+			delete(rawMsg, key)
 		case "expires_after":
 			err = unpopulate(val, "ExpiresAfter", &v.ExpiresAfter)
 			delete(rawMsg, key)
@@ -4416,6 +4571,60 @@ func (v *VectorStoreBody) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "name":
 			err = unpopulate(val, "Name", &v.Name)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", v, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type VectorStoreChunkingStrategyRequest.
+func (v VectorStoreChunkingStrategyRequest) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	objectMap["type"] = v.Type
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type VectorStoreChunkingStrategyRequest.
+func (v *VectorStoreChunkingStrategyRequest) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", v, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "type":
+			err = unpopulate(val, "Type", &v.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", v, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type VectorStoreChunkingStrategyResponse.
+func (v VectorStoreChunkingStrategyResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	objectMap["type"] = v.Type
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type VectorStoreChunkingStrategyResponse.
+func (v *VectorStoreChunkingStrategyResponse) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", v, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "type":
+			err = unpopulate(val, "Type", &v.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -4494,6 +4703,7 @@ func (v *VectorStoreExpirationPolicy) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type VectorStoreFile.
 func (v VectorStoreFile) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "chunking_strategy", v.ChunkingStrategy)
 	populateTimeUnix(objectMap, "created_at", v.CreatedAt)
 	populate(objectMap, "id", v.ID)
 	populate(objectMap, "last_error", v.LastError)
@@ -4513,6 +4723,9 @@ func (v *VectorStoreFile) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "chunking_strategy":
+			v.ChunkingStrategy, err = unmarshalVectorStoreChunkingStrategyResponseClassification(val)
+			delete(rawMsg, key)
 		case "created_at":
 			err = unpopulateTimeUnix(val, "CreatedAt", &v.CreatedAt)
 			delete(rawMsg, key)
@@ -4806,6 +5019,99 @@ func (v *VectorStoreFilesPage) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "object":
 			err = unpopulate(val, "Object", &v.Object)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", v, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type VectorStoreStaticChunkingStrategyOptions.
+func (v VectorStoreStaticChunkingStrategyOptions) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "chunk_overlap_tokens", v.ChunkOverlapTokens)
+	populate(objectMap, "max_chunk_size_tokens", v.MaxChunkSizeTokens)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type VectorStoreStaticChunkingStrategyOptions.
+func (v *VectorStoreStaticChunkingStrategyOptions) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", v, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "chunk_overlap_tokens":
+			err = unpopulate(val, "ChunkOverlapTokens", &v.ChunkOverlapTokens)
+			delete(rawMsg, key)
+		case "max_chunk_size_tokens":
+			err = unpopulate(val, "MaxChunkSizeTokens", &v.MaxChunkSizeTokens)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", v, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type VectorStoreStaticChunkingStrategyRequest.
+func (v VectorStoreStaticChunkingStrategyRequest) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "static", v.Static)
+	objectMap["type"] = VectorStoreChunkingStrategyRequestTypeStatic
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type VectorStoreStaticChunkingStrategyRequest.
+func (v *VectorStoreStaticChunkingStrategyRequest) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", v, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "static":
+			err = unpopulate(val, "Static", &v.Static)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, "Type", &v.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", v, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type VectorStoreStaticChunkingStrategyResponse.
+func (v VectorStoreStaticChunkingStrategyResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "static", v.Static)
+	objectMap["type"] = VectorStoreChunkingStrategyResponseTypeStatic
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type VectorStoreStaticChunkingStrategyResponse.
+func (v *VectorStoreStaticChunkingStrategyResponse) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", v, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "static":
+			err = unpopulate(val, "Static", &v.Static)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, "Type", &v.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {

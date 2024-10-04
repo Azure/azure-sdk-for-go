@@ -1,5 +1,66 @@
 # Release History
 
+## 3.0.0 (2024-09-27)
+### Breaking Changes
+
+- Type of `SecurityProfile.SecurityType` has been changed from `*string` to `*SecurityTypes`
+- Function `*LocationClient.NewListSupportedCloudServiceSKUsPager` has been removed
+- Struct `CloudServiceConfiguration` has been removed
+- Field `CloudServiceConfiguration` of struct `DeploymentConfiguration` has been removed
+- Field `Etag` of struct `ProxyResource` has been removed
+- Field `Location`, `Tags` of struct `Resource` has been removed
+
+### Features Added
+
+- New value `PublicNetworkAccessTypeSecuredByPerimeter` added to enum type `PublicNetworkAccessType`
+- New enum type `AccessRuleDirection` with values `AccessRuleDirectionInbound`, `AccessRuleDirectionOutbound`
+- New enum type `ContainerHostDataPath` with values `ContainerHostDataPathApplications`, `ContainerHostDataPathJobPrep`, `ContainerHostDataPathShared`, `ContainerHostDataPathStartup`, `ContainerHostDataPathTask`, `ContainerHostDataPathVfsMounts`
+- New enum type `CreatedByType` with values `CreatedByTypeApplication`, `CreatedByTypeKey`, `CreatedByTypeManagedIdentity`, `CreatedByTypeUser`
+- New enum type `IssueType` with values `IssueTypeConfigurationPropagationFailure`, `IssueTypeMissingIdentityConfiguration`, `IssueTypeMissingPerimeterConfiguration`, `IssueTypeUnknown`
+- New enum type `NetworkSecurityPerimeterConfigurationProvisioningState` with values `NetworkSecurityPerimeterConfigurationProvisioningStateAccepted`, `NetworkSecurityPerimeterConfigurationProvisioningStateCanceled`, `NetworkSecurityPerimeterConfigurationProvisioningStateCreating`, `NetworkSecurityPerimeterConfigurationProvisioningStateDeleting`, `NetworkSecurityPerimeterConfigurationProvisioningStateFailed`, `NetworkSecurityPerimeterConfigurationProvisioningStateSucceeded`, `NetworkSecurityPerimeterConfigurationProvisioningStateUpdating`
+- New enum type `ResourceAssociationAccessMode` with values `ResourceAssociationAccessModeAudit`, `ResourceAssociationAccessModeEnforced`, `ResourceAssociationAccessModeLearning`
+- New enum type `SecurityEncryptionTypes` with values `SecurityEncryptionTypesNonPersistedTPM`, `SecurityEncryptionTypesVMGuestStateOnly`
+- New enum type `SecurityTypes` with values `SecurityTypesConfidentialVM`, `SecurityTypesTrustedLaunch`
+- New enum type `Severity` with values `SeverityError`, `SeverityWarning`
+- New function `*ClientFactory.NewNetworkSecurityPerimeterClient() *NetworkSecurityPerimeterClient`
+- New function `NewNetworkSecurityPerimeterClient(string, azcore.TokenCredential, *arm.ClientOptions) (*NetworkSecurityPerimeterClient, error)`
+- New function `*NetworkSecurityPerimeterClient.GetConfiguration(context.Context, string, string, string, *NetworkSecurityPerimeterClientGetConfigurationOptions) (NetworkSecurityPerimeterClientGetConfigurationResponse, error)`
+- New function `*NetworkSecurityPerimeterClient.NewListConfigurationsPager(string, string, *NetworkSecurityPerimeterClientListConfigurationsOptions) *runtime.Pager[NetworkSecurityPerimeterClientListConfigurationsResponse]`
+- New function `*NetworkSecurityPerimeterClient.BeginReconcileConfiguration(context.Context, string, string, string, *NetworkSecurityPerimeterClientBeginReconcileConfigurationOptions) (*runtime.Poller[NetworkSecurityPerimeterClientReconcileConfigurationResponse], error)`
+- New struct `AccessRule`
+- New struct `AccessRuleProperties`
+- New struct `AccessRulePropertiesSubscriptionsItem`
+- New struct `AzureProxyResource`
+- New struct `AzureResource`
+- New struct `ContainerHostBatchBindMountEntry`
+- New struct `ErrorAdditionalInfo`
+- New struct `ErrorDetail`
+- New struct `ErrorResponse`
+- New struct `NetworkSecurityPerimeter`
+- New struct `NetworkSecurityPerimeterConfiguration`
+- New struct `NetworkSecurityPerimeterConfigurationListResult`
+- New struct `NetworkSecurityPerimeterConfigurationProperties`
+- New struct `NetworkSecurityProfile`
+- New struct `ProvisioningIssue`
+- New struct `ProvisioningIssueProperties`
+- New struct `ResourceAssociation`
+- New struct `SystemData`
+- New struct `VMDiskSecurityProfile`
+- New field `Tags` in struct `Application`
+- New field `Tags` in struct `ApplicationPackage`
+- New field `Tags` in struct `Certificate`
+- New field `Tags` in struct `CertificateCreateOrUpdateParameters`
+- New field `Tags` in struct `DetectorResponse`
+- New field `CommunityGalleryImageID`, `SharedGalleryImageID` in struct `ImageReference`
+- New field `SecurityProfile` in struct `ManagedDisk`
+- New field `Tags` in struct `Pool`
+- New field `Tags` in struct `PrivateEndpointConnection`
+- New field `Tags` in struct `PrivateLinkResource`
+- New field `SystemData` in struct `ProxyResource`
+- New field `SystemData` in struct `Resource`
+- New field `ContainerHostBatchBindMounts` in struct `TaskContainerSettings`
+
+
 ## 2.3.0 (2024-03-22)
 ### Features Added
 

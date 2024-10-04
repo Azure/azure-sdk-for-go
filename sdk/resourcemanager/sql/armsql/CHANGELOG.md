@@ -1,5 +1,40 @@
 # Release History
 
+## 2.0.0-beta.6 (2024-08-30)
+### Breaking Changes
+
+- Type of `DistributedAvailabilityGroupProperties.ReplicationMode` has been changed from `*ReplicationModeType` to `*ReplicationMode`
+- Enum `FailoverModeType` has been removed
+- Enum `FailoverType` has been removed
+- Enum `InstanceRole` has been removed
+- Enum `LinkRole` has been removed
+- Enum `ReplicaConnectedState` has been removed
+- Enum `ReplicaSynchronizationHealth` has been removed
+- Enum `ReplicationModeType` has been removed
+- Enum `RoleChangeType` has been removed
+- Enum `SeedingModeType` has been removed
+- Function `*DistributedAvailabilityGroupsClient.BeginFailover` has been removed
+- Function `*DistributedAvailabilityGroupsClient.BeginSetRole` has been removed
+- Struct `CertificateInfo` has been removed
+- Struct `DistributedAvailabilityGroupDatabase` has been removed
+- Struct `DistributedAvailabilityGroupSetRole` has been removed
+- Struct `DistributedAvailabilityGroupsFailoverRequest` has been removed
+- Field `Databases`, `DistributedAvailabilityGroupName`, `FailoverMode`, `InstanceAvailabilityGroupName`, `InstanceLinkRole`, `PartnerAvailabilityGroupName`, `PartnerEndpoint`, `PartnerLinkRole`, `SeedingMode` of struct `DistributedAvailabilityGroupProperties` has been removed
+
+### Features Added
+
+- New enum type `FailoverGroupDatabasesSecondaryType` with values `FailoverGroupDatabasesSecondaryTypeGeo`, `FailoverGroupDatabasesSecondaryTypeStandby`
+- New enum type `ReplicationMode` with values `ReplicationModeAsync`, `ReplicationModeSync`
+- New function `*ReplicationLinksClient.BeginCreateOrUpdate(context.Context, string, string, string, string, ReplicationLink, *ReplicationLinksClientBeginCreateOrUpdateOptions) (*runtime.Poller[ReplicationLinksClientCreateOrUpdateResponse], error)`
+- New function `*ReplicationLinksClient.BeginUpdate(context.Context, string, string, string, string, ReplicationLinkUpdate, *ReplicationLinksClientBeginUpdateOptions) (*runtime.Poller[ReplicationLinksClientUpdateResponse], error)`
+- New struct `ReplicationLinkUpdate`
+- New struct `ReplicationLinkUpdateProperties`
+- New field `LastHardenedLsn`, `LinkState`, `PrimaryAvailabilityGroupName`, `SecondaryAvailabilityGroupName`, `SourceEndpoint`, `SourceReplicaID`, `TargetDatabase`, `TargetReplicaID` in struct `DistributedAvailabilityGroupProperties`
+- New field `SecondaryType` in struct `FailoverGroupProperties`
+- New field `SecondaryType` in struct `FailoverGroupUpdateProperties`
+- New field `PartnerDatabaseID` in struct `ReplicationLinkProperties`
+
+
 ## 2.0.0-beta.5 (2024-05-24)
 ### Breaking Changes
 

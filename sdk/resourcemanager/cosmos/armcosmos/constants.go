@@ -10,7 +10,7 @@ package armcosmos
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
-	moduleVersion = "v3.0.0"
+	moduleVersion = "v4.0.0-beta.1"
 )
 
 // APIType - Enum to indicate the API type of the restorable database account.
@@ -34,6 +34,24 @@ func PossibleAPITypeValues() []APIType {
 		APITypeMongoDB,
 		APITypeSQL,
 		APITypeTable,
+	}
+}
+
+// AccessRuleDirection - Direction of Access Rule
+type AccessRuleDirection string
+
+const (
+	// AccessRuleDirectionInbound - Applies to inbound network traffic to the secured resources.
+	AccessRuleDirectionInbound AccessRuleDirection = "Inbound"
+	// AccessRuleDirectionOutbound - Applies to outbound network traffic from the secured resources
+	AccessRuleDirectionOutbound AccessRuleDirection = "Outbound"
+)
+
+// PossibleAccessRuleDirectionValues returns the possible values for the AccessRuleDirection const type.
+func PossibleAccessRuleDirectionValues() []AccessRuleDirection {
+	return []AccessRuleDirection{
+		AccessRuleDirectionInbound,
+		AccessRuleDirectionOutbound,
 	}
 }
 
@@ -70,6 +88,24 @@ func PossibleAuthenticationMethodValues() []AuthenticationMethod {
 		AuthenticationMethodCassandra,
 		AuthenticationMethodLdap,
 		AuthenticationMethodNone,
+	}
+}
+
+// AutoReplicate - The form of AutoReplicate that is being used by this cluster.
+type AutoReplicate string
+
+const (
+	AutoReplicateAllKeyspaces    AutoReplicate = "AllKeyspaces"
+	AutoReplicateNone            AutoReplicate = "None"
+	AutoReplicateSystemKeyspaces AutoReplicate = "SystemKeyspaces"
+)
+
+// PossibleAutoReplicateValues returns the possible values for the AutoReplicate const type.
+func PossibleAutoReplicateValues() []AutoReplicate {
+	return []AutoReplicate{
+		AutoReplicateAllKeyspaces,
+		AutoReplicateNone,
+		AutoReplicateSystemKeyspaces,
 	}
 }
 
@@ -125,6 +161,26 @@ func PossibleBackupPolicyTypeValues() []BackupPolicyType {
 	}
 }
 
+// BackupState - The current state of the backup.
+type BackupState string
+
+const (
+	BackupStateFailed     BackupState = "Failed"
+	BackupStateInProgress BackupState = "InProgress"
+	BackupStateInitiated  BackupState = "Initiated"
+	BackupStateSucceeded  BackupState = "Succeeded"
+)
+
+// PossibleBackupStateValues returns the possible values for the BackupState const type.
+func PossibleBackupStateValues() []BackupState {
+	return []BackupState{
+		BackupStateFailed,
+		BackupStateInProgress,
+		BackupStateInitiated,
+		BackupStateSucceeded,
+	}
+}
+
 // BackupStorageRedundancy - Enum to indicate type of backup storage redundancy.
 type BackupStorageRedundancy string
 
@@ -140,6 +196,86 @@ func PossibleBackupStorageRedundancyValues() []BackupStorageRedundancy {
 		BackupStorageRedundancyGeo,
 		BackupStorageRedundancyLocal,
 		BackupStorageRedundancyZone,
+	}
+}
+
+// CapacityMode - Indicates the capacity mode of the account.
+type CapacityMode string
+
+const (
+	CapacityModeNone        CapacityMode = "None"
+	CapacityModeProvisioned CapacityMode = "Provisioned"
+	CapacityModeServerless  CapacityMode = "Serverless"
+)
+
+// PossibleCapacityModeValues returns the possible values for the CapacityMode const type.
+func PossibleCapacityModeValues() []CapacityMode {
+	return []CapacityMode{
+		CapacityModeNone,
+		CapacityModeProvisioned,
+		CapacityModeServerless,
+	}
+}
+
+// CapacityModeTransitionStatus - The transition status of capacity mode.
+type CapacityModeTransitionStatus string
+
+const (
+	CapacityModeTransitionStatusCompleted   CapacityModeTransitionStatus = "Completed"
+	CapacityModeTransitionStatusFailed      CapacityModeTransitionStatus = "Failed"
+	CapacityModeTransitionStatusInProgress  CapacityModeTransitionStatus = "InProgress"
+	CapacityModeTransitionStatusInitialized CapacityModeTransitionStatus = "Initialized"
+	CapacityModeTransitionStatusInvalid     CapacityModeTransitionStatus = "Invalid"
+)
+
+// PossibleCapacityModeTransitionStatusValues returns the possible values for the CapacityModeTransitionStatus const type.
+func PossibleCapacityModeTransitionStatusValues() []CapacityModeTransitionStatus {
+	return []CapacityModeTransitionStatus{
+		CapacityModeTransitionStatusCompleted,
+		CapacityModeTransitionStatusFailed,
+		CapacityModeTransitionStatusInProgress,
+		CapacityModeTransitionStatusInitialized,
+		CapacityModeTransitionStatusInvalid,
+	}
+}
+
+// ClusterType - Type of the cluster. If set to Production, some operations might not be permitted on cluster.
+type ClusterType string
+
+const (
+	ClusterTypeNonProduction ClusterType = "NonProduction"
+	ClusterTypeProduction    ClusterType = "Production"
+)
+
+// PossibleClusterTypeValues returns the possible values for the ClusterType const type.
+func PossibleClusterTypeValues() []ClusterType {
+	return []ClusterType{
+		ClusterTypeNonProduction,
+		ClusterTypeProduction,
+	}
+}
+
+// CommandStatus - Status of the command.
+type CommandStatus string
+
+const (
+	CommandStatusDone       CommandStatus = "Done"
+	CommandStatusEnqueue    CommandStatus = "Enqueue"
+	CommandStatusFailed     CommandStatus = "Failed"
+	CommandStatusFinished   CommandStatus = "Finished"
+	CommandStatusProcessing CommandStatus = "Processing"
+	CommandStatusRunning    CommandStatus = "Running"
+)
+
+// PossibleCommandStatusValues returns the possible values for the CommandStatus const type.
+func PossibleCommandStatusValues() []CommandStatus {
+	return []CommandStatus{
+		CommandStatusDone,
+		CommandStatusEnqueue,
+		CommandStatusFailed,
+		CommandStatusFinished,
+		CommandStatusProcessing,
+		CommandStatusRunning,
 	}
 }
 
@@ -265,6 +401,43 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
+type DataTransferComponent string
+
+const (
+	DataTransferComponentAzureBlobStorage   DataTransferComponent = "AzureBlobStorage"
+	DataTransferComponentCosmosDBCassandra  DataTransferComponent = "CosmosDBCassandra"
+	DataTransferComponentCosmosDBMongo      DataTransferComponent = "CosmosDBMongo"
+	DataTransferComponentCosmosDBMongoVCore DataTransferComponent = "CosmosDBMongoVCore"
+	DataTransferComponentCosmosDBSQL        DataTransferComponent = "CosmosDBSql"
+)
+
+// PossibleDataTransferComponentValues returns the possible values for the DataTransferComponent const type.
+func PossibleDataTransferComponentValues() []DataTransferComponent {
+	return []DataTransferComponent{
+		DataTransferComponentAzureBlobStorage,
+		DataTransferComponentCosmosDBCassandra,
+		DataTransferComponentCosmosDBMongo,
+		DataTransferComponentCosmosDBMongoVCore,
+		DataTransferComponentCosmosDBSQL,
+	}
+}
+
+// DataTransferJobMode - Mode of job execution
+type DataTransferJobMode string
+
+const (
+	DataTransferJobModeOffline DataTransferJobMode = "Offline"
+	DataTransferJobModeOnline  DataTransferJobMode = "Online"
+)
+
+// PossibleDataTransferJobModeValues returns the possible values for the DataTransferJobMode const type.
+func PossibleDataTransferJobModeValues() []DataTransferJobMode {
+	return []DataTransferJobMode{
+		DataTransferJobModeOffline,
+		DataTransferJobModeOnline,
+	}
+}
+
 // DataType - The datatype for which the indexing behavior is applied to.
 type DataType string
 
@@ -345,6 +518,40 @@ func PossibleDefaultConsistencyLevelValues() []DefaultConsistencyLevel {
 	}
 }
 
+// DefaultPriorityLevel - Enum to indicate default priorityLevel of requests
+type DefaultPriorityLevel string
+
+const (
+	DefaultPriorityLevelHigh DefaultPriorityLevel = "High"
+	DefaultPriorityLevelLow  DefaultPriorityLevel = "Low"
+)
+
+// PossibleDefaultPriorityLevelValues returns the possible values for the DefaultPriorityLevel const type.
+func PossibleDefaultPriorityLevelValues() []DefaultPriorityLevel {
+	return []DefaultPriorityLevel{
+		DefaultPriorityLevelHigh,
+		DefaultPriorityLevelLow,
+	}
+}
+
+// EnableFullTextQuery - Describe the level of detail with which queries are to be logged.
+type EnableFullTextQuery string
+
+const (
+	EnableFullTextQueryFalse EnableFullTextQuery = "False"
+	EnableFullTextQueryNone  EnableFullTextQuery = "None"
+	EnableFullTextQueryTrue  EnableFullTextQuery = "True"
+)
+
+// PossibleEnableFullTextQueryValues returns the possible values for the EnableFullTextQuery const type.
+func PossibleEnableFullTextQueryValues() []EnableFullTextQuery {
+	return []EnableFullTextQuery{
+		EnableFullTextQueryFalse,
+		EnableFullTextQueryNone,
+		EnableFullTextQueryTrue,
+	}
+}
+
 // IndexKind - Indicates the type of index.
 type IndexKind string
 
@@ -378,6 +585,33 @@ func PossibleIndexingModeValues() []IndexingMode {
 		IndexingModeConsistent,
 		IndexingModeLazy,
 		IndexingModeNone,
+	}
+}
+
+// IssueType - Type of issue
+type IssueType string
+
+const (
+	// IssueTypeConfigurationPropagationFailure - An error occurred while applying the network security perimeter (NSP) configuration.
+	IssueTypeConfigurationPropagationFailure IssueType = "ConfigurationPropagationFailure"
+	// IssueTypeMissingIdentityConfiguration - An managed identity hasn't been associated with the resource. The resource will
+	// still be able to validate inbound traffic from the network security perimeter (NSP) or matching inbound access rules, but
+	// it won't be able to perform outbound access as a member of the NSP.
+	IssueTypeMissingIdentityConfiguration IssueType = "MissingIdentityConfiguration"
+	// IssueTypeMissingPerimeterConfiguration - A network connectivity issue is happening on the resource which could be addressed
+	// either by adding new resources to the network security perimeter (NSP) or by modifying access rules.
+	IssueTypeMissingPerimeterConfiguration IssueType = "MissingPerimeterConfiguration"
+	// IssueTypeUnknown - Unknown issue type
+	IssueTypeUnknown IssueType = "Unknown"
+)
+
+// PossibleIssueTypeValues returns the possible values for the IssueType const type.
+func PossibleIssueTypeValues() []IssueType {
+	return []IssueType{
+		IssueTypeConfigurationPropagationFailure,
+		IssueTypeMissingIdentityConfiguration,
+		IssueTypeMissingPerimeterConfiguration,
+		IssueTypeUnknown,
 	}
 }
 
@@ -461,8 +695,8 @@ func PossibleManagedCassandraResourceIdentityTypeValues() []ManagedCassandraReso
 	}
 }
 
-// MinimalTLSVersion - Indicates the minimum allowed Tls version. The default value is Tls 1.2. Cassandra and Mongo APIs only
-// work with Tls 1.2.
+// MinimalTLSVersion - Indicates the minimum allowed Tls version. The default is Tls 1.0, except for Cassandra and Mongo API's,
+// which only work with Tls 1.2.
 type MinimalTLSVersion string
 
 const (
@@ -509,6 +743,33 @@ func PossibleNetworkACLBypassValues() []NetworkACLBypass {
 	return []NetworkACLBypass{
 		NetworkACLBypassAzureServices,
 		NetworkACLBypassNone,
+	}
+}
+
+// NetworkSecurityPerimeterConfigurationProvisioningState - Provisioning state of a network security perimeter configuration
+// that is being created or updated.
+type NetworkSecurityPerimeterConfigurationProvisioningState string
+
+const (
+	NetworkSecurityPerimeterConfigurationProvisioningStateAccepted  NetworkSecurityPerimeterConfigurationProvisioningState = "Accepted"
+	NetworkSecurityPerimeterConfigurationProvisioningStateCanceled  NetworkSecurityPerimeterConfigurationProvisioningState = "Canceled"
+	NetworkSecurityPerimeterConfigurationProvisioningStateCreating  NetworkSecurityPerimeterConfigurationProvisioningState = "Creating"
+	NetworkSecurityPerimeterConfigurationProvisioningStateDeleting  NetworkSecurityPerimeterConfigurationProvisioningState = "Deleting"
+	NetworkSecurityPerimeterConfigurationProvisioningStateFailed    NetworkSecurityPerimeterConfigurationProvisioningState = "Failed"
+	NetworkSecurityPerimeterConfigurationProvisioningStateSucceeded NetworkSecurityPerimeterConfigurationProvisioningState = "Succeeded"
+	NetworkSecurityPerimeterConfigurationProvisioningStateUpdating  NetworkSecurityPerimeterConfigurationProvisioningState = "Updating"
+)
+
+// PossibleNetworkSecurityPerimeterConfigurationProvisioningStateValues returns the possible values for the NetworkSecurityPerimeterConfigurationProvisioningState const type.
+func PossibleNetworkSecurityPerimeterConfigurationProvisioningStateValues() []NetworkSecurityPerimeterConfigurationProvisioningState {
+	return []NetworkSecurityPerimeterConfigurationProvisioningState{
+		NetworkSecurityPerimeterConfigurationProvisioningStateAccepted,
+		NetworkSecurityPerimeterConfigurationProvisioningStateCanceled,
+		NetworkSecurityPerimeterConfigurationProvisioningStateCreating,
+		NetworkSecurityPerimeterConfigurationProvisioningStateDeleting,
+		NetworkSecurityPerimeterConfigurationProvisioningStateFailed,
+		NetworkSecurityPerimeterConfigurationProvisioningStateSucceeded,
+		NetworkSecurityPerimeterConfigurationProvisioningStateUpdating,
 	}
 }
 
@@ -646,6 +907,29 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 	}
 }
 
+// ResourceAssociationAccessMode - Access mode of the resource association
+type ResourceAssociationAccessMode string
+
+const (
+	// ResourceAssociationAccessModeAudit - Audit access mode - traffic to the resource that fails access checks is logged but
+	// not blocked
+	ResourceAssociationAccessModeAudit ResourceAssociationAccessMode = "Audit"
+	// ResourceAssociationAccessModeEnforced - Enforced access mode - traffic to the resource that failed access checks is blocked
+	ResourceAssociationAccessModeEnforced ResourceAssociationAccessMode = "Enforced"
+	// ResourceAssociationAccessModeLearning - Learning access mode - traffic to the resource is enabled for analysis but not
+	// blocked
+	ResourceAssociationAccessModeLearning ResourceAssociationAccessMode = "Learning"
+)
+
+// PossibleResourceAssociationAccessModeValues returns the possible values for the ResourceAssociationAccessMode const type.
+func PossibleResourceAssociationAccessModeValues() []ResourceAssociationAccessMode {
+	return []ResourceAssociationAccessMode{
+		ResourceAssociationAccessModeAudit,
+		ResourceAssociationAccessModeEnforced,
+		ResourceAssociationAccessModeLearning,
+	}
+}
+
 // ResourceIdentityType - The type of identity used for the resource. The type 'SystemAssigned,UserAssigned' includes both
 // an implicitly created identity and a set of user assigned identities. The type 'None' will remove any
 // identities from the service.
@@ -698,13 +982,32 @@ func PossibleRoleDefinitionTypeValues() []RoleDefinitionType {
 	}
 }
 
-// ServerVersion - Describes the ServerVersion of an a MongoDB account.
+// ScheduledEventStrategy - How the nodes in the cluster react to scheduled events
+type ScheduledEventStrategy string
+
+const (
+	ScheduledEventStrategyIgnore     ScheduledEventStrategy = "Ignore"
+	ScheduledEventStrategyStopAny    ScheduledEventStrategy = "StopAny"
+	ScheduledEventStrategyStopByRack ScheduledEventStrategy = "StopByRack"
+)
+
+// PossibleScheduledEventStrategyValues returns the possible values for the ScheduledEventStrategy const type.
+func PossibleScheduledEventStrategyValues() []ScheduledEventStrategy {
+	return []ScheduledEventStrategy{
+		ScheduledEventStrategyIgnore,
+		ScheduledEventStrategyStopAny,
+		ScheduledEventStrategyStopByRack,
+	}
+}
+
+// ServerVersion - Describes the version of the MongoDB account.
 type ServerVersion string
 
 const (
 	ServerVersionFive0  ServerVersion = "5.0"
 	ServerVersionFour0  ServerVersion = "4.0"
 	ServerVersionFour2  ServerVersion = "4.2"
+	ServerVersionSeven0 ServerVersion = "7.0"
 	ServerVersionSix0   ServerVersion = "6.0"
 	ServerVersionThree2 ServerVersion = "3.2"
 	ServerVersionThree6 ServerVersion = "3.6"
@@ -716,6 +1019,7 @@ func PossibleServerVersionValues() []ServerVersion {
 		ServerVersionFive0,
 		ServerVersionFour0,
 		ServerVersionFour2,
+		ServerVersionSeven0,
 		ServerVersionSix0,
 		ServerVersionThree2,
 		ServerVersionThree6,
@@ -784,6 +1088,22 @@ func PossibleServiceTypeValues() []ServiceType {
 	}
 }
 
+// Severity - Severity of the issue.
+type Severity string
+
+const (
+	SeverityError   Severity = "Error"
+	SeverityWarning Severity = "Warning"
+)
+
+// PossibleSeverityValues returns the possible values for the Severity const type.
+func PossibleSeverityValues() []Severity {
+	return []Severity{
+		SeverityError,
+		SeverityWarning,
+	}
+}
+
 // SpatialType - Indicates the spatial type of index.
 type SpatialType string
 
@@ -808,21 +1128,63 @@ func PossibleSpatialTypeValues() []SpatialType {
 type Status string
 
 const (
+	StatusCanceled        Status = "Canceled"
 	StatusDeleting        Status = "Deleting"
+	StatusFailed          Status = "Failed"
 	StatusInitializing    Status = "Initializing"
 	StatusInternallyReady Status = "InternallyReady"
 	StatusOnline          Status = "Online"
+	StatusSucceeded       Status = "Succeeded"
 	StatusUninitialized   Status = "Uninitialized"
+	StatusUpdating        Status = "Updating"
 )
 
 // PossibleStatusValues returns the possible values for the Status const type.
 func PossibleStatusValues() []Status {
 	return []Status{
+		StatusCanceled,
 		StatusDeleting,
+		StatusFailed,
 		StatusInitializing,
 		StatusInternallyReady,
 		StatusOnline,
+		StatusSucceeded,
 		StatusUninitialized,
+		StatusUpdating,
+	}
+}
+
+// SupportedActions - Indicates whether what action to take for the Chaos Fault.
+type SupportedActions string
+
+const (
+	SupportedActionsDisable SupportedActions = "Disable"
+	SupportedActionsEnable  SupportedActions = "Enable"
+)
+
+// PossibleSupportedActionsValues returns the possible values for the SupportedActions const type.
+func PossibleSupportedActionsValues() []SupportedActions {
+	return []SupportedActions{
+		SupportedActionsDisable,
+		SupportedActionsEnable,
+	}
+}
+
+// ThroughputPolicyType - ThroughputPolicy to apply for throughput redistribution
+type ThroughputPolicyType string
+
+const (
+	ThroughputPolicyTypeCustom ThroughputPolicyType = "custom"
+	ThroughputPolicyTypeEqual  ThroughputPolicyType = "equal"
+	ThroughputPolicyTypeNone   ThroughputPolicyType = "none"
+)
+
+// PossibleThroughputPolicyTypeValues returns the possible values for the ThroughputPolicyType const type.
+func PossibleThroughputPolicyTypeValues() []ThroughputPolicyType {
+	return []ThroughputPolicyType{
+		ThroughputPolicyTypeCustom,
+		ThroughputPolicyTypeEqual,
+		ThroughputPolicyTypeNone,
 	}
 }
 

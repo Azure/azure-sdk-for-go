@@ -6,6 +6,21 @@ package armmongocluster
 
 import "time"
 
+// AdministratorProperties - The local administrator login properties.
+type AdministratorProperties struct {
+	// The administrator password.
+	Password *string
+
+	// The administrator user name.
+	UserName *string
+}
+
+// BackupProperties - The backup properties of the cluster. This includes the earliest restore time and retention settings.
+type BackupProperties struct {
+	// READ-ONLY; Earliest restore timestamp in UTC ISO8601 format.
+	EarliestRestoreTime *string
+}
+
 // CheckNameAvailabilityRequest - The check availability request body.
 type CheckNameAvailabilityRequest struct {
 	// The name of the resource for which availability needs to be checked.
@@ -27,6 +42,14 @@ type CheckNameAvailabilityResponse struct {
 	Reason *CheckNameAvailabilityReason
 }
 
+// ComputeProperties - The compute properties of the cluster. This includes the virtual-cores/memory and scaling options applied
+// to servers in the cluster.
+type ComputeProperties struct {
+	// The compute tier to assign to the cluster, where each tier maps to a virtual-core and memory size. Example values: 'M30',
+	// 'M40'.
+	Tier *string
+}
+
 // ConnectionString - Connection string for the mongo cluster
 type ConnectionString struct {
 	// READ-ONLY; Value of the connection string
@@ -34,6 +57,9 @@ type ConnectionString struct {
 
 	// READ-ONLY; Description of the connection string
 	Description *string
+
+	// READ-ONLY; Name of the connection string.
+	Name *string
 }
 
 // FirewallRule - Represents a mongo cluster firewall rule.
@@ -75,6 +101,12 @@ type FirewallRuleProperties struct {
 	ProvisioningState *ProvisioningState
 }
 
+// HighAvailabilityProperties - The high availability properties of the cluster.
+type HighAvailabilityProperties struct {
+	// The target high availability mode requested for the cluster.
+	TargetMode *HighAvailabilityMode
+}
+
 // ListConnectionStringsResult - The connection strings for the given mongo cluster.
 type ListConnectionStringsResult struct {
 	// READ-ONLY; An array that contains the connection strings for a mongo cluster.
@@ -114,31 +146,12 @@ type MongoCluster struct {
 	Type *string
 }
 
-// NodeGroupSpec - Specification for a node group.
-type NodeGroupSpec struct {
-	// The disk storage size for the node group in GB. Example values: 128, 256, 512, 1024.
-	DiskSizeGB *int64
-
-	// Whether high availability is enabled on the node group.
-	EnableHa *bool
-
-	// The node type deployed in the node group.
-	Kind *NodeKind
-
-	// The number of nodes in the node group.
-	NodeCount *int32
-
-	// The resource sku for the node group. This defines the size of CPU and memory that is provisioned for each node. Example
-	// values: 'M30', 'M40'.
-	SKU *string
-}
-
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
 	// Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 	ActionType *ActionType
 
-	// Localized display information for this particular operation.
+	// READ-ONLY; Localized display information for this particular operation.
 	Display *OperationDisplay
 
 	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for Azure
@@ -156,17 +169,19 @@ type Operation struct {
 
 // OperationDisplay - Localized display information for and operation.
 type OperationDisplay struct {
-	// The short, localized friendly description of the operation; suitable for tool tips and detailed views.
+	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
 	Description *string
 
-	// The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual Machine",
-	// "Restart Virtual Machine".
+	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
+	// Machine", "Restart Virtual Machine".
 	Operation *string
 
-	// The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft Compute".
+	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
+	// Compute".
 	Provider *string
 
-	// The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job Schedule Collections".
+	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
+	// Schedule Collections".
 	Resource *string
 }
 
@@ -299,22 +314,40 @@ type PrivateLinkServiceConnectionState struct {
 	Status *PrivateEndpointServiceConnectionStatus
 }
 
+// PromoteReplicaRequest - Promote replica request properties.
+type PromoteReplicaRequest struct {
+	// REQUIRED; The promote option to apply to the operation.
+	PromoteOption *PromoteOption
+
+	// The mode to apply to the promote operation. Value is optional and default value is 'Switchover'.
+	Mode *PromoteMode
+}
+
 // Properties - The properties of a mongo cluster.
 type Properties struct {
-	// The administrator's login for the mongo cluster.
-	AdministratorLogin *string
+	// The local administrator properties for the mongo cluster.
+	Administrator *AdministratorProperties
 
-	// The password of the administrator login.
-	AdministratorLoginPassword *string
+	// The backup properties of the mongo cluster.
+	Backup *BackupProperties
+
+	// The compute properties of the mongo cluster.
+	Compute *ComputeProperties
 
 	// The mode to create a mongo cluster.
 	CreateMode *CreateMode
 
-	// The list of node group specs in the cluster.
-	NodeGroupSpecs []*NodeGroupSpec
+	// The high availability properties of the mongo cluster.
+	HighAvailability *HighAvailabilityProperties
+
+	// List of private endpoint connections.
+	PreviewFeatures []*PreviewFeature
 
 	// Whether or not public endpoint access is allowed for this mongo cluster.
 	PublicNetworkAccess *PublicNetworkAccess
+
+	// The parameters to create a replica mongo cluster.
+	ReplicaParameters *ReplicaParameters
 
 	// The parameters to create a point-in-time restore mongo cluster.
 	RestoreParameters *RestoreParameters
@@ -322,20 +355,77 @@ type Properties struct {
 	// The Mongo DB server version. Defaults to the latest available version if not specified.
 	ServerVersion *string
 
+	// The sharding properties of the mongo cluster.
+	Sharding *ShardingProperties
+
+	// The storage properties of the mongo cluster.
+	Storage *StorageProperties
+
 	// READ-ONLY; The status of the mongo cluster.
-	ClusterStatus *MongoClusterStatus
+	ClusterStatus *Status
 
 	// READ-ONLY; The default mongo connection string for the cluster.
 	ConnectionString *string
 
-	// READ-ONLY; Earliest restore timestamp in UTC ISO8601 format.
-	EarliestRestoreTime *string
+	// READ-ONLY; The infrastructure version the cluster is provisioned on.
+	InfrastructureVersion *string
 
 	// READ-ONLY; List of private endpoint connections.
 	PrivateEndpointConnections []*PrivateEndpointConnection
 
 	// READ-ONLY; The provisioning state of the mongo cluster.
 	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; The replication properties for the mongo cluster
+	Replica *ReplicationProperties
+}
+
+// Replica - Represents a mongo cluster replica.
+type Replica struct {
+	// The resource-specific properties for this resource.
+	Properties *Properties
+
+	// READ-ONLY; The name of the mongo cluster firewall rule.
+	Name *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ReplicaListResult - The response of a Replica list operation.
+type ReplicaListResult struct {
+	// REQUIRED; The Replica items on this page
+	Value []*Replica
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ReplicaParameters - Parameters used for replica operations.
+type ReplicaParameters struct {
+	// REQUIRED; The location of the source cluster
+	SourceLocation *string
+
+	// REQUIRED; The id of the replication source cluster.
+	SourceResourceID *string
+}
+
+// ReplicationProperties - Replica properties of the mongo cluster.
+type ReplicationProperties struct {
+	// READ-ONLY; The replication link state of the replica cluster.
+	ReplicationState *ReplicationState
+
+	// READ-ONLY; The replication role of the cluster
+	Role *ReplicationRole
+
+	// READ-ONLY; The resource id the source cluster for the replica cluster.
+	SourceResourceID *string
 }
 
 // RestoreParameters - Parameters used for restore operations
@@ -345,6 +435,20 @@ type RestoreParameters struct {
 
 	// Resource ID to locate the source cluster to restore
 	SourceResourceID *string
+}
+
+// ShardingProperties - The sharding properties of the cluster. This includes the shard count and scaling options for the
+// cluster.
+type ShardingProperties struct {
+	// Number of shards to provision on the cluster.
+	ShardCount *int32
+}
+
+// StorageProperties - The storage properties of the cluster. This includes the data storage size and scaling applied to servers
+// in the cluster.
+type StorageProperties struct {
+	// The size of the data disk assigned to each server.
+	SizeGb *int64
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -370,7 +474,7 @@ type SystemData struct {
 
 // Update - The type used for update operations of the MongoCluster.
 type Update struct {
-	// The updatable properties of the MongoCluster.
+	// The resource-specific properties for this resource.
 	Properties *UpdateProperties
 
 	// Resource tags.
@@ -379,18 +483,30 @@ type Update struct {
 
 // UpdateProperties - The updatable properties of the MongoCluster.
 type UpdateProperties struct {
-	// The administrator's login for the mongo cluster.
-	AdministratorLogin *string
+	// The local administrator properties for the mongo cluster.
+	Administrator *AdministratorProperties
 
-	// The password of the administrator login.
-	AdministratorLoginPassword *string
+	// The backup properties of the mongo cluster.
+	Backup *BackupProperties
 
-	// The list of node group specs in the cluster.
-	NodeGroupSpecs []*NodeGroupSpec
+	// The compute properties of the mongo cluster.
+	Compute *ComputeProperties
+
+	// The high availability properties of the mongo cluster.
+	HighAvailability *HighAvailabilityProperties
+
+	// List of private endpoint connections.
+	PreviewFeatures []*PreviewFeature
 
 	// Whether or not public endpoint access is allowed for this mongo cluster.
 	PublicNetworkAccess *PublicNetworkAccess
 
 	// The Mongo DB server version. Defaults to the latest available version if not specified.
 	ServerVersion *string
+
+	// The sharding properties of the mongo cluster.
+	Sharding *ShardingProperties
+
+	// The storage properties of the mongo cluster.
+	Storage *StorageProperties
 }

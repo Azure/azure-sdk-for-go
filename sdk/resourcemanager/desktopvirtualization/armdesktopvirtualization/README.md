@@ -57,7 +57,7 @@ clientFactory, err := armdesktopvirtualization.NewClientFactory(<subscription ID
 A client groups a set of related APIs, providing access to its functionality.  Create one or more clients to access the APIs you require using client factory.
 
 ```go
-client := clientFactory.NewWorkspacesClient()
+client := clientFactory.NewAppAttachPackageClient()
 ```
 
 ## Fakes

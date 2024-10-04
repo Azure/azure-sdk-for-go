@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v6"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkWatcherFlowLogCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/NetworkWatcherFlowLogCreate.json
 func ExampleFlowLogsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,9 +42,10 @@ func ExampleFlowLogsClient_BeginCreateOrUpdate() {
 				Type:    to.Ptr(armnetwork.FlowLogFormatTypeJSON),
 				Version: to.Ptr[int32](1),
 			},
-			Enabled:          to.Ptr(true),
-			StorageID:        to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Storage/storageAccounts/nwtest1mgvbfmqsigdxe"),
-			TargetResourceID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkSecurityGroups/desmondcentral-nsg"),
+			Enabled:                  to.Ptr(true),
+			EnabledFilteringCriteria: to.Ptr("srcIP=158.255.7.8 || dstPort=56891"),
+			StorageID:                to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Storage/storageAccounts/nwtest1mgvbfmqsigdxe"),
+			TargetResourceID:         to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkSecurityGroups/desmondcentral-nsg"),
 		},
 	}, nil)
 	if err != nil {
@@ -78,6 +79,7 @@ func ExampleFlowLogsClient_BeginCreateOrUpdate() {
 	// 			Version: to.Ptr[int32](1),
 	// 		},
 	// 		Enabled: to.Ptr(true),
+	// 		EnabledFilteringCriteria: to.Ptr("srcIP=158.255.7.8 || dstPort=56891"),
 	// 		FlowAnalyticsConfiguration: &armnetwork.TrafficAnalyticsProperties{
 	// 		},
 	// 		ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
@@ -92,7 +94,7 @@ func ExampleFlowLogsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkWatcherFlowLogUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/NetworkWatcherFlowLogUpdateTags.json
 func ExampleFlowLogsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,6 +142,7 @@ func ExampleFlowLogsClient_UpdateTags() {
 	// 			Version: to.Ptr[int32](1),
 	// 		},
 	// 		Enabled: to.Ptr(true),
+	// 		EnabledFilteringCriteria: to.Ptr("srcIP=158.255.7.8 || dstPort=56891"),
 	// 		FlowAnalyticsConfiguration: &armnetwork.TrafficAnalyticsProperties{
 	// 		},
 	// 		ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
@@ -154,7 +157,7 @@ func ExampleFlowLogsClient_UpdateTags() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkWatcherFlowLogGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/NetworkWatcherFlowLogGet.json
 func ExampleFlowLogsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -193,6 +196,7 @@ func ExampleFlowLogsClient_Get() {
 	// 			Version: to.Ptr[int32](2),
 	// 		},
 	// 		Enabled: to.Ptr(true),
+	// 		EnabledFilteringCriteria: to.Ptr("srcIP=158.255.7.8 || dstPort=56891"),
 	// 		FlowAnalyticsConfiguration: &armnetwork.TrafficAnalyticsProperties{
 	// 			NetworkWatcherFlowAnalyticsConfiguration: &armnetwork.TrafficAnalyticsConfigurationProperties{
 	// 				Enabled: to.Ptr(false),
@@ -213,7 +217,7 @@ func ExampleFlowLogsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkWatcherFlowLogDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/NetworkWatcherFlowLogDelete.json
 func ExampleFlowLogsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -234,7 +238,7 @@ func ExampleFlowLogsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkWatcherFlowLogList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/NetworkWatcherFlowLogList.json
 func ExampleFlowLogsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -279,6 +283,7 @@ func ExampleFlowLogsClient_NewListPager() {
 		// 					Version: to.Ptr[int32](2),
 		// 				},
 		// 				Enabled: to.Ptr(true),
+		// 				EnabledFilteringCriteria: to.Ptr("srcIP=158.255.7.8 || dstPort=56891"),
 		// 				FlowAnalyticsConfiguration: &armnetwork.TrafficAnalyticsProperties{
 		// 					NetworkWatcherFlowAnalyticsConfiguration: &armnetwork.TrafficAnalyticsConfigurationProperties{
 		// 						Enabled: to.Ptr(false),
@@ -318,6 +323,7 @@ func ExampleFlowLogsClient_NewListPager() {
 		// 					Version: to.Ptr[int32](2),
 		// 				},
 		// 				Enabled: to.Ptr(true),
+		// 				EnabledFilteringCriteria: to.Ptr("srcIP=158.255.7.8 || dstPort=56891"),
 		// 				FlowAnalyticsConfiguration: &armnetwork.TrafficAnalyticsProperties{
 		// 				},
 		// 				ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),

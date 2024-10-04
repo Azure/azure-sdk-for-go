@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v6"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/ServiceEndpointPolicyDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/ServiceEndpointPolicyDelete.json
 func ExampleServiceEndpointPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExampleServiceEndpointPoliciesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/ServiceEndpointPolicyGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/ServiceEndpointPolicyGet.json
 func ExampleServiceEndpointPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,6 +67,7 @@ func ExampleServiceEndpointPoliciesClient_Get() {
 	// 		ResourceGUID: to.Ptr("6A7C139D-8B8D-499B-B7CB-4F3F02A8A44F"),
 	// 		ServiceEndpointPolicyDefinitions: []*armnetwork.ServiceEndpointPolicyDefinition{
 	// 			{
+	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/serviceEndpointPolicies/testServiceEndpointPolicy/serviceEndpointPolicyDefinitions/StorageServiceEndpointPolicyDefinition"),
 	// 				Name: to.Ptr("StorageServiceEndpointPolicyDefinition"),
 	// 				Properties: &armnetwork.ServiceEndpointPolicyDefinitionPropertiesFormat{
 	// 					Description: to.Ptr("Storage Service EndpointPolicy Definition"),
@@ -83,7 +84,7 @@ func ExampleServiceEndpointPoliciesClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/ServiceEndpointPolicyCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/ServiceEndpointPolicyCreate.json
 func ExampleServiceEndpointPoliciesClient_BeginCreateOrUpdate_createServiceEndpointPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +124,7 @@ func ExampleServiceEndpointPoliciesClient_BeginCreateOrUpdate_createServiceEndpo
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/ServiceEndpointPolicyCreateWithDefinition.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/ServiceEndpointPolicyCreateWithDefinition.json
 func ExampleServiceEndpointPoliciesClient_BeginCreateOrUpdate_createServiceEndpointPolicyWithDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -171,6 +172,7 @@ func ExampleServiceEndpointPoliciesClient_BeginCreateOrUpdate_createServiceEndpo
 	// 		ResourceGUID: to.Ptr("6A7C139D-8B8D-499B-B7CB-4F3F02A8A44F"),
 	// 		ServiceEndpointPolicyDefinitions: []*armnetwork.ServiceEndpointPolicyDefinition{
 	// 			{
+	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/serviceEndpointPolicies/testServiceEndpointPolicy/serviceEndpointPolicyDefinitions/StorageServiceEndpointPolicyDefinition"),
 	// 				Name: to.Ptr("StorageServiceEndpointPolicyDefinition"),
 	// 				Properties: &armnetwork.ServiceEndpointPolicyDefinitionPropertiesFormat{
 	// 					Description: to.Ptr("Storage Service EndpointPolicy Definition"),
@@ -187,7 +189,7 @@ func ExampleServiceEndpointPoliciesClient_BeginCreateOrUpdate_createServiceEndpo
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/ServiceEndpointPolicyUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/ServiceEndpointPolicyUpdateTags.json
 func ExampleServiceEndpointPoliciesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -240,7 +242,7 @@ func ExampleServiceEndpointPoliciesClient_UpdateTags() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/ServiceEndpointPolicyListAll.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/ServiceEndpointPolicyListAll.json
 func ExampleServiceEndpointPoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -274,6 +276,7 @@ func ExampleServiceEndpointPoliciesClient_NewListPager() {
 		// 				ResourceGUID: to.Ptr("6A7C139D-8B8D-499B-B7CB-4F3F02A8A44F"),
 		// 				ServiceEndpointPolicyDefinitions: []*armnetwork.ServiceEndpointPolicyDefinition{
 		// 					{
+		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/serviceEndpointPolicies/testPolicy/serviceEndpointPolicyDefinitions/StorageServiceEndpointPolicyDefinition1"),
 		// 						Name: to.Ptr("StorageServiceEndpointPolicyDefinition1"),
 		// 						Properties: &armnetwork.ServiceEndpointPolicyDefinitionPropertiesFormat{
 		// 							Description: to.Ptr("Storage Service EndpointPolicy Definition"),
@@ -298,6 +301,7 @@ func ExampleServiceEndpointPoliciesClient_NewListPager() {
 		// 					ResourceGUID: to.Ptr("6A7C139D-8B8D-499B-B7CB-4F3F02A8A44F"),
 		// 					ServiceEndpointPolicyDefinitions: []*armnetwork.ServiceEndpointPolicyDefinition{
 		// 						{
+		// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/serviceEndpointPolicies/testPolicy1/serviceEndpointPolicyDefinitions/StorageServiceEndpointPolicyDefinition2"),
 		// 							Name: to.Ptr("StorageServiceEndpointPolicyDefinition2"),
 		// 							Properties: &armnetwork.ServiceEndpointPolicyDefinitionPropertiesFormat{
 		// 								Description: to.Ptr("Storage Service EndpointPolicy Definition"),
@@ -316,7 +320,7 @@ func ExampleServiceEndpointPoliciesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/ServiceEndpointPolicyList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/ServiceEndpointPolicyList.json
 func ExampleServiceEndpointPoliciesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -349,6 +353,7 @@ func ExampleServiceEndpointPoliciesClient_NewListByResourceGroupPager() {
 		// 				ResourceGUID: to.Ptr("6A7C139D-8B8D-499B-B7CB-4F3F02A8A44F"),
 		// 				ServiceEndpointPolicyDefinitions: []*armnetwork.ServiceEndpointPolicyDefinition{
 		// 					{
+		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/serviceEndpointPolicies/testServiceEndpointPolicy/serviceEndpointPolicyDefinitions/StorageServiceEndpointPolicyDefinition"),
 		// 						Name: to.Ptr("StorageServiceEndpointPolicyDefinition"),
 		// 						Properties: &armnetwork.ServiceEndpointPolicyDefinitionPropertiesFormat{
 		// 							Description: to.Ptr("Storage Service EndpointPolicy Definition"),
@@ -372,6 +377,7 @@ func ExampleServiceEndpointPoliciesClient_NewListByResourceGroupPager() {
 		// 					ResourceGUID: to.Ptr("6A7C139D-8B8D-499B-B7CB-4F3F02A8A44F"),
 		// 					ServiceEndpointPolicyDefinitions: []*armnetwork.ServiceEndpointPolicyDefinition{
 		// 						{
+		// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/serviceEndpointPolicies/testServiceEndpointPolicy1/serviceEndpointPolicyDefinitions/StorageServiceEndpointPolicyDefinition1"),
 		// 							Name: to.Ptr("StorageServiceEndpointPolicyDefinition1"),
 		// 							Properties: &armnetwork.ServiceEndpointPolicyDefinitionPropertiesFormat{
 		// 								Description: to.Ptr("Storage Service EndpointPolicy Definition"),

@@ -1,5 +1,101 @@
 # Release History
 
+## 6.1.0 (2024-09-24)
+### Features Added
+
+- New value `ConfigurationTypeRouting`, `ConfigurationTypeSecurityUser` added to enum type `ConfigurationType`
+- New enum type `ApplicationGatewayWafRuleSensitivityTypes` with values `ApplicationGatewayWafRuleSensitivityTypesHigh`, `ApplicationGatewayWafRuleSensitivityTypesLow`, `ApplicationGatewayWafRuleSensitivityTypesMedium`, `ApplicationGatewayWafRuleSensitivityTypesNone`
+- New enum type `DisableBgpRoutePropagation` with values `DisableBgpRoutePropagationFalse`, `DisableBgpRoutePropagationTrue`
+- New enum type `ExceptionEntryMatchVariable` with values `ExceptionEntryMatchVariableRemoteAddr`, `ExceptionEntryMatchVariableRequestHeader`, `ExceptionEntryMatchVariableRequestURI`
+- New enum type `ExceptionEntrySelectorMatchOperator` with values `ExceptionEntrySelectorMatchOperatorContains`, `ExceptionEntrySelectorMatchOperatorEndsWith`, `ExceptionEntrySelectorMatchOperatorEquals`, `ExceptionEntrySelectorMatchOperatorStartsWith`
+- New enum type `ExceptionEntryValueMatchOperator` with values `ExceptionEntryValueMatchOperatorContains`, `ExceptionEntryValueMatchOperatorEndsWith`, `ExceptionEntryValueMatchOperatorEquals`, `ExceptionEntryValueMatchOperatorIPMatch`, `ExceptionEntryValueMatchOperatorStartsWith`
+- New enum type `GroupMemberType` with values `GroupMemberTypeSubnet`, `GroupMemberTypeVirtualNetwork`
+- New enum type `PrivateEndpointVNetPolicies` with values `PrivateEndpointVNetPoliciesBasic`, `PrivateEndpointVNetPoliciesDisabled`
+- New enum type `ResiliencyModel` with values `ResiliencyModelMultiHomed`, `ResiliencyModelSingleHomed`
+- New enum type `RoutingRuleDestinationType` with values `RoutingRuleDestinationTypeAddressPrefix`, `RoutingRuleDestinationTypeServiceTag`
+- New enum type `RoutingRuleNextHopType` with values `RoutingRuleNextHopTypeInternet`, `RoutingRuleNextHopTypeNoNextHop`, `RoutingRuleNextHopTypeVirtualAppliance`, `RoutingRuleNextHopTypeVirtualNetworkGateway`, `RoutingRuleNextHopTypeVnetLocal`
+- New enum type `SensitivityType` with values `SensitivityTypeHigh`, `SensitivityTypeLow`, `SensitivityTypeMedium`, `SensitivityTypeNone`
+- New function `*ClientFactory.NewManagerRoutingConfigurationsClient() *ManagerRoutingConfigurationsClient`
+- New function `*ClientFactory.NewRoutingRuleCollectionsClient() *RoutingRuleCollectionsClient`
+- New function `*ClientFactory.NewRoutingRulesClient() *RoutingRulesClient`
+- New function `*ClientFactory.NewSecurityUserConfigurationsClient() *SecurityUserConfigurationsClient`
+- New function `*ClientFactory.NewSecurityUserRuleCollectionsClient() *SecurityUserRuleCollectionsClient`
+- New function `*ClientFactory.NewSecurityUserRulesClient() *SecurityUserRulesClient`
+- New function `NewManagerRoutingConfigurationsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ManagerRoutingConfigurationsClient, error)`
+- New function `*ManagerRoutingConfigurationsClient.CreateOrUpdate(context.Context, string, string, string, ManagerRoutingConfiguration, *ManagerRoutingConfigurationsClientCreateOrUpdateOptions) (ManagerRoutingConfigurationsClientCreateOrUpdateResponse, error)`
+- New function `*ManagerRoutingConfigurationsClient.BeginDelete(context.Context, string, string, string, *ManagerRoutingConfigurationsClientBeginDeleteOptions) (*runtime.Poller[ManagerRoutingConfigurationsClientDeleteResponse], error)`
+- New function `*ManagerRoutingConfigurationsClient.Get(context.Context, string, string, string, *ManagerRoutingConfigurationsClientGetOptions) (ManagerRoutingConfigurationsClientGetResponse, error)`
+- New function `*ManagerRoutingConfigurationsClient.NewListPager(string, string, *ManagerRoutingConfigurationsClientListOptions) *runtime.Pager[ManagerRoutingConfigurationsClientListResponse]`
+- New function `NewRoutingRuleCollectionsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*RoutingRuleCollectionsClient, error)`
+- New function `*RoutingRuleCollectionsClient.CreateOrUpdate(context.Context, string, string, string, string, RoutingRuleCollection, *RoutingRuleCollectionsClientCreateOrUpdateOptions) (RoutingRuleCollectionsClientCreateOrUpdateResponse, error)`
+- New function `*RoutingRuleCollectionsClient.BeginDelete(context.Context, string, string, string, string, *RoutingRuleCollectionsClientBeginDeleteOptions) (*runtime.Poller[RoutingRuleCollectionsClientDeleteResponse], error)`
+- New function `*RoutingRuleCollectionsClient.Get(context.Context, string, string, string, string, *RoutingRuleCollectionsClientGetOptions) (RoutingRuleCollectionsClientGetResponse, error)`
+- New function `*RoutingRuleCollectionsClient.NewListPager(string, string, string, *RoutingRuleCollectionsClientListOptions) *runtime.Pager[RoutingRuleCollectionsClientListResponse]`
+- New function `NewRoutingRulesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*RoutingRulesClient, error)`
+- New function `*RoutingRulesClient.CreateOrUpdate(context.Context, string, string, string, string, string, RoutingRule, *RoutingRulesClientCreateOrUpdateOptions) (RoutingRulesClientCreateOrUpdateResponse, error)`
+- New function `*RoutingRulesClient.BeginDelete(context.Context, string, string, string, string, string, *RoutingRulesClientBeginDeleteOptions) (*runtime.Poller[RoutingRulesClientDeleteResponse], error)`
+- New function `*RoutingRulesClient.Get(context.Context, string, string, string, string, string, *RoutingRulesClientGetOptions) (RoutingRulesClientGetResponse, error)`
+- New function `*RoutingRulesClient.NewListPager(string, string, string, string, *RoutingRulesClientListOptions) *runtime.Pager[RoutingRulesClientListResponse]`
+- New function `NewSecurityUserConfigurationsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*SecurityUserConfigurationsClient, error)`
+- New function `*SecurityUserConfigurationsClient.CreateOrUpdate(context.Context, string, string, string, SecurityUserConfiguration, *SecurityUserConfigurationsClientCreateOrUpdateOptions) (SecurityUserConfigurationsClientCreateOrUpdateResponse, error)`
+- New function `*SecurityUserConfigurationsClient.BeginDelete(context.Context, string, string, string, *SecurityUserConfigurationsClientBeginDeleteOptions) (*runtime.Poller[SecurityUserConfigurationsClientDeleteResponse], error)`
+- New function `*SecurityUserConfigurationsClient.Get(context.Context, string, string, string, *SecurityUserConfigurationsClientGetOptions) (SecurityUserConfigurationsClientGetResponse, error)`
+- New function `*SecurityUserConfigurationsClient.NewListPager(string, string, *SecurityUserConfigurationsClientListOptions) *runtime.Pager[SecurityUserConfigurationsClientListResponse]`
+- New function `NewSecurityUserRuleCollectionsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*SecurityUserRuleCollectionsClient, error)`
+- New function `*SecurityUserRuleCollectionsClient.CreateOrUpdate(context.Context, string, string, string, string, SecurityUserRuleCollection, *SecurityUserRuleCollectionsClientCreateOrUpdateOptions) (SecurityUserRuleCollectionsClientCreateOrUpdateResponse, error)`
+- New function `*SecurityUserRuleCollectionsClient.BeginDelete(context.Context, string, string, string, string, *SecurityUserRuleCollectionsClientBeginDeleteOptions) (*runtime.Poller[SecurityUserRuleCollectionsClientDeleteResponse], error)`
+- New function `*SecurityUserRuleCollectionsClient.Get(context.Context, string, string, string, string, *SecurityUserRuleCollectionsClientGetOptions) (SecurityUserRuleCollectionsClientGetResponse, error)`
+- New function `*SecurityUserRuleCollectionsClient.NewListPager(string, string, string, *SecurityUserRuleCollectionsClientListOptions) *runtime.Pager[SecurityUserRuleCollectionsClientListResponse]`
+- New function `NewSecurityUserRulesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*SecurityUserRulesClient, error)`
+- New function `*SecurityUserRulesClient.CreateOrUpdate(context.Context, string, string, string, string, string, SecurityUserRule, *SecurityUserRulesClientCreateOrUpdateOptions) (SecurityUserRulesClientCreateOrUpdateResponse, error)`
+- New function `*SecurityUserRulesClient.BeginDelete(context.Context, string, string, string, string, string, *SecurityUserRulesClientBeginDeleteOptions) (*runtime.Poller[SecurityUserRulesClientDeleteResponse], error)`
+- New function `*SecurityUserRulesClient.Get(context.Context, string, string, string, string, string, *SecurityUserRulesClientGetOptions) (SecurityUserRulesClientGetResponse, error)`
+- New function `*SecurityUserRulesClient.NewListPager(string, string, string, string, *SecurityUserRulesClientListOptions) *runtime.Pager[SecurityUserRulesClientListResponse]`
+- New function `*VPNLinkConnectionsClient.NewGetAllSharedKeysPager(string, string, string, string, *VPNLinkConnectionsClientGetAllSharedKeysOptions) *runtime.Pager[VPNLinkConnectionsClientGetAllSharedKeysResponse]`
+- New function `*VPNLinkConnectionsClient.GetDefaultSharedKey(context.Context, string, string, string, string, *VPNLinkConnectionsClientGetDefaultSharedKeyOptions) (VPNLinkConnectionsClientGetDefaultSharedKeyResponse, error)`
+- New function `*VPNLinkConnectionsClient.ListDefaultSharedKey(context.Context, string, string, string, string, *VPNLinkConnectionsClientListDefaultSharedKeyOptions) (VPNLinkConnectionsClientListDefaultSharedKeyResponse, error)`
+- New function `*VPNLinkConnectionsClient.BeginSetOrInitDefaultSharedKey(context.Context, string, string, string, string, ConnectionSharedKeyResult, *VPNLinkConnectionsClientBeginSetOrInitDefaultSharedKeyOptions) (*runtime.Poller[VPNLinkConnectionsClientSetOrInitDefaultSharedKeyResponse], error)`
+- New struct `ApplicationGatewayForContainersReferenceDefinition`
+- New struct `AzureFirewallAutoscaleConfiguration`
+- New struct `ConnectionSharedKeyResult`
+- New struct `ConnectionSharedKeyResultList`
+- New struct `ExceptionEntry`
+- New struct `ManagerRoutingConfiguration`
+- New struct `ManagerRoutingConfigurationListResult`
+- New struct `ManagerRoutingConfigurationPropertiesFormat`
+- New struct `ManagerRoutingGroupItem`
+- New struct `RoutingRule`
+- New struct `RoutingRuleCollection`
+- New struct `RoutingRuleCollectionListResult`
+- New struct `RoutingRuleCollectionPropertiesFormat`
+- New struct `RoutingRuleListResult`
+- New struct `RoutingRuleNextHop`
+- New struct `RoutingRulePropertiesFormat`
+- New struct `RoutingRuleRouteDestination`
+- New struct `SecurityUserConfiguration`
+- New struct `SecurityUserConfigurationListResult`
+- New struct `SecurityUserConfigurationPropertiesFormat`
+- New struct `SecurityUserGroupItem`
+- New struct `SecurityUserRule`
+- New struct `SecurityUserRuleCollection`
+- New struct `SecurityUserRuleCollectionListResult`
+- New struct `SecurityUserRuleCollectionPropertiesFormat`
+- New struct `SecurityUserRuleListResult`
+- New struct `SecurityUserRulePropertiesFormat`
+- New struct `SharedKeyProperties`
+- New field `Sensitivity` in struct `ApplicationGatewayFirewallRule`
+- New field `AutoscaleConfiguration` in struct `AzureFirewallPropertiesFormat`
+- New field `EnabledFilteringCriteria` in struct `FlowLogProperties`
+- New field `EnabledFilteringCriteria` in struct `FlowLogPropertiesFormat`
+- New field `MemberType` in struct `GroupProperties`
+- New field `Sensitivity` in struct `ManagedRuleOverride`
+- New field `Exceptions` in struct `ManagedRulesDefinition`
+- New field `DestinationIPAddress` in struct `PrivateLinkServiceProperties`
+- New field `ResiliencyModel` in struct `VirtualNetworkGatewayPropertiesFormat`
+- New field `PrivateEndpointVNetPolicies` in struct `VirtualNetworkPropertiesFormat`
+- New field `ApplicationGatewayForContainers` in struct `WebApplicationFirewallPolicyPropertiesFormat`
+
+
 ## 6.0.0 (2024-07-25)
 ### Breaking Changes
 

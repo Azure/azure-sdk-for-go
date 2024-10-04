@@ -90,6 +90,7 @@ type ServerFactory struct {
 	ManagementGroupNetworkManagerConnectionsServer        ManagementGroupNetworkManagerConnectionsServer
 	ManagerCommitsServer                                  ManagerCommitsServer
 	ManagerDeploymentStatusServer                         ManagerDeploymentStatusServer
+	ManagerRoutingConfigurationsServer                    ManagerRoutingConfigurationsServer
 	ManagersServer                                        ManagersServer
 	NatGatewaysServer                                     NatGatewaysServer
 	NatRulesServer                                        NatRulesServer
@@ -110,11 +111,16 @@ type ServerFactory struct {
 	RouteTablesServer                                     RouteTablesServer
 	RoutesServer                                          RoutesServer
 	RoutingIntentServer                                   RoutingIntentServer
+	RoutingRuleCollectionsServer                          RoutingRuleCollectionsServer
+	RoutingRulesServer                                    RoutingRulesServer
 	ScopeConnectionsServer                                ScopeConnectionsServer
 	SecurityAdminConfigurationsServer                     SecurityAdminConfigurationsServer
 	SecurityGroupsServer                                  SecurityGroupsServer
 	SecurityPartnerProvidersServer                        SecurityPartnerProvidersServer
 	SecurityRulesServer                                   SecurityRulesServer
+	SecurityUserConfigurationsServer                      SecurityUserConfigurationsServer
+	SecurityUserRuleCollectionsServer                     SecurityUserRuleCollectionsServer
+	SecurityUserRulesServer                               SecurityUserRulesServer
 	ServiceAssociationLinksServer                         ServiceAssociationLinksServer
 	ServiceEndpointPoliciesServer                         ServiceEndpointPoliciesServer
 	ServiceEndpointPolicyDefinitionsServer                ServiceEndpointPolicyDefinitionsServer
@@ -242,6 +248,7 @@ type ServerFactoryTransport struct {
 	trManagementGroupNetworkManagerConnectionsServer        *ManagementGroupNetworkManagerConnectionsServerTransport
 	trManagerCommitsServer                                  *ManagerCommitsServerTransport
 	trManagerDeploymentStatusServer                         *ManagerDeploymentStatusServerTransport
+	trManagerRoutingConfigurationsServer                    *ManagerRoutingConfigurationsServerTransport
 	trManagersServer                                        *ManagersServerTransport
 	trNatGatewaysServer                                     *NatGatewaysServerTransport
 	trNatRulesServer                                        *NatRulesServerTransport
@@ -262,11 +269,16 @@ type ServerFactoryTransport struct {
 	trRouteTablesServer                                     *RouteTablesServerTransport
 	trRoutesServer                                          *RoutesServerTransport
 	trRoutingIntentServer                                   *RoutingIntentServerTransport
+	trRoutingRuleCollectionsServer                          *RoutingRuleCollectionsServerTransport
+	trRoutingRulesServer                                    *RoutingRulesServerTransport
 	trScopeConnectionsServer                                *ScopeConnectionsServerTransport
 	trSecurityAdminConfigurationsServer                     *SecurityAdminConfigurationsServerTransport
 	trSecurityGroupsServer                                  *SecurityGroupsServerTransport
 	trSecurityPartnerProvidersServer                        *SecurityPartnerProvidersServerTransport
 	trSecurityRulesServer                                   *SecurityRulesServerTransport
+	trSecurityUserConfigurationsServer                      *SecurityUserConfigurationsServerTransport
+	trSecurityUserRuleCollectionsServer                     *SecurityUserRuleCollectionsServerTransport
+	trSecurityUserRulesServer                               *SecurityUserRulesServerTransport
 	trServiceAssociationLinksServer                         *ServiceAssociationLinksServerTransport
 	trServiceEndpointPoliciesServer                         *ServiceEndpointPoliciesServerTransport
 	trServiceEndpointPolicyDefinitionsServer                *ServiceEndpointPolicyDefinitionsServerTransport
@@ -663,6 +675,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewManagerDeploymentStatusServerTransport(&s.srv.ManagerDeploymentStatusServer)
 		})
 		resp, err = s.trManagerDeploymentStatusServer.Do(req)
+	case "ManagerRoutingConfigurationsClient":
+		initServer(s, &s.trManagerRoutingConfigurationsServer, func() *ManagerRoutingConfigurationsServerTransport {
+			return NewManagerRoutingConfigurationsServerTransport(&s.srv.ManagerRoutingConfigurationsServer)
+		})
+		resp, err = s.trManagerRoutingConfigurationsServer.Do(req)
 	case "ManagersClient":
 		initServer(s, &s.trManagersServer, func() *ManagersServerTransport { return NewManagersServerTransport(&s.srv.ManagersServer) })
 		resp, err = s.trManagersServer.Do(req)
@@ -745,6 +762,14 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewRoutingIntentServerTransport(&s.srv.RoutingIntentServer)
 		})
 		resp, err = s.trRoutingIntentServer.Do(req)
+	case "RoutingRuleCollectionsClient":
+		initServer(s, &s.trRoutingRuleCollectionsServer, func() *RoutingRuleCollectionsServerTransport {
+			return NewRoutingRuleCollectionsServerTransport(&s.srv.RoutingRuleCollectionsServer)
+		})
+		resp, err = s.trRoutingRuleCollectionsServer.Do(req)
+	case "RoutingRulesClient":
+		initServer(s, &s.trRoutingRulesServer, func() *RoutingRulesServerTransport { return NewRoutingRulesServerTransport(&s.srv.RoutingRulesServer) })
+		resp, err = s.trRoutingRulesServer.Do(req)
 	case "ScopeConnectionsClient":
 		initServer(s, &s.trScopeConnectionsServer, func() *ScopeConnectionsServerTransport {
 			return NewScopeConnectionsServerTransport(&s.srv.ScopeConnectionsServer)
@@ -770,6 +795,21 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewSecurityRulesServerTransport(&s.srv.SecurityRulesServer)
 		})
 		resp, err = s.trSecurityRulesServer.Do(req)
+	case "SecurityUserConfigurationsClient":
+		initServer(s, &s.trSecurityUserConfigurationsServer, func() *SecurityUserConfigurationsServerTransport {
+			return NewSecurityUserConfigurationsServerTransport(&s.srv.SecurityUserConfigurationsServer)
+		})
+		resp, err = s.trSecurityUserConfigurationsServer.Do(req)
+	case "SecurityUserRuleCollectionsClient":
+		initServer(s, &s.trSecurityUserRuleCollectionsServer, func() *SecurityUserRuleCollectionsServerTransport {
+			return NewSecurityUserRuleCollectionsServerTransport(&s.srv.SecurityUserRuleCollectionsServer)
+		})
+		resp, err = s.trSecurityUserRuleCollectionsServer.Do(req)
+	case "SecurityUserRulesClient":
+		initServer(s, &s.trSecurityUserRulesServer, func() *SecurityUserRulesServerTransport {
+			return NewSecurityUserRulesServerTransport(&s.srv.SecurityUserRulesServer)
+		})
+		resp, err = s.trSecurityUserRulesServer.Do(req)
 	case "ServiceAssociationLinksClient":
 		initServer(s, &s.trServiceAssociationLinksServer, func() *ServiceAssociationLinksServerTransport {
 			return NewServiceAssociationLinksServerTransport(&s.srv.ServiceAssociationLinksServer)

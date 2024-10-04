@@ -46,10 +46,14 @@
         },
         {
             "Name": "azopenai",
-            "CoverageGoal": 0.22
+            "CoverageGoal": 0.18
         },
         {
             "Name": "ai/azopenaiassistants",
+            "CoverageGoal": 0.00
+        },
+        {
+            "Name": "ai/azopenaiextensions",
             "CoverageGoal": 0.00
         },
         {

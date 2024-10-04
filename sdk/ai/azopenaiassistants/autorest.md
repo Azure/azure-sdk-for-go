@@ -30,8 +30,8 @@ directive:
   - from: swagger-document
     where: $["x-ms-parameterized-host"].parameters.0
     transform: $["x-ms-parameter-location"] = "client";
-  
-  # fix a generation issue where "| null" in TypeSpec generates an allOf that 
+
+  # fix a generation issue where "| null" in TypeSpec generates an allOf that
   # doesn't work with our polymorphic types.
   - from: swagger-document
     where: $.definitions.ThreadRun.properties.required_action
@@ -63,7 +63,7 @@ directive:
       // $.CreateFileSearchToolResourceVectorStoreOptions["x-ms-client-name"] = "CreateFileSearchToolResourceVectorStoreBody";
       // $.CreateToolResourcesOptions["x-ms-client-name"] = "CreateToolResourcesBody";
       // $.UpdateFileSearchToolResourceOptions["x-ms-client-name"] = "UpdateFileSearchToolResourceBody";
-      // $.UpdateCodeInterpreterToolResourceOptions["x-ms-client-name"] = "UpdateCodeInterpreterToolResourceBody";      
+      // $.UpdateCodeInterpreterToolResourceOptions["x-ms-client-name"] = "UpdateCodeInterpreterToolResourceBody";
       // $.UpdateToolResourcesOptions["x-ms-client-name"] = "UpdateToolResourcesBody";
       // $.CreateCodeInterpreterToolResourceOptions["x-ms-client-name"] = "CreateCodeInterpreterToolResourceBody";
       return $;
@@ -71,25 +71,9 @@ directive:
 
 ## Unions
 
-MessageAttachmentToolDefinition
-
-```yaml
-directive:
-  - from: swagger-document
-    where: $.definitions
-    transform: |
-      // this is the minimum needed to get autorest to generate a reference
-      // for this type that I can then fill in manually.
-      $.MessageAttachmentToolDefinition = {
-        "x-ms-external": true,
-        "type": "object",
-        "properties": { "ignored": { "type": "string" } }
-      };
-```
-
 APIToolChoice
 
-```yaml   
+```yaml
 directive:
   - from: swagger-document
     where: $.definitions
@@ -193,17 +177,17 @@ directive:
   - from: swagger-document
     where: $.paths
     transform: |
-      // 
+      //
       // assistants
       //
       $["/assistants"].get.responses["200"].schema["x-ms-client-name"] = "AssistantsPage";
 
-      // 
+      //
       // threads
-      // 
+      //
 
       const threadsBase = '/threads/{threadId}';
-      
+
       // GETs
       $[threadsBase + "/messages"].get.responses["200"].schema["x-ms-client-name"] = "ThreadMessagesPage";
       $[threadsBase + "/runs"].get.responses["200"].schema["x-ms-client-name"] = "ThreadRunsPage";
@@ -215,9 +199,9 @@ directive:
       $[threadsBase + "/runs"].post.parameters[1]["x-ms-client-name"] = "CreateRunBody";
       $[threadsBase + "/runs/{runId}/submit_tool_outputs"].post.parameters[2].schema["x-ms-client-name"] = "SubmitToolOutputsToRunBody";
 
-      // 
+      //
       // vector stores
-      // 
+      //
       const vectorStoresBase = '/vector_stores';
 
       // GETs

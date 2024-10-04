@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v6"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/PrivateLinkServiceDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/PrivateLinkServiceDelete.json
 func ExamplePrivateLinkServicesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExamplePrivateLinkServicesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/PrivateLinkServiceGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/PrivateLinkServiceGet.json
 func ExamplePrivateLinkServicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,8 @@ func ExamplePrivateLinkServicesClient_Get() {
 	// 				to.Ptr("fqdn3")},
 	// 				IPConfigurations: []*armnetwork.PrivateLinkServiceIPConfiguration{
 	// 					{
-	// 						Name: to.Ptr("fe-lb"),
+	// 						ID: to.Ptr("/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls/ipConfigurations/ipconfig1"),
+	// 						Name: to.Ptr("ipconfig1"),
 	// 						Properties: &armnetwork.PrivateLinkServiceIPConfigurationProperties{
 	// 							PrivateIPAddress: to.Ptr("10.0.1.4"),
 	// 							PrivateIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
@@ -95,6 +96,7 @@ func ExamplePrivateLinkServicesClient_Get() {
 	// 				}},
 	// 				PrivateEndpointConnections: []*armnetwork.PrivateEndpointConnection{
 	// 					{
+	// 						ID: to.Ptr("/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls/privateEndpointConnections/privateEndpointConnection"),
 	// 						Name: to.Ptr("privateEndpointConnection"),
 	// 						Properties: &armnetwork.PrivateEndpointConnectionProperties{
 	// 							PrivateEndpoint: &armnetwork.PrivateEndpoint{
@@ -117,7 +119,7 @@ func ExamplePrivateLinkServicesClient_Get() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/PrivateLinkServiceCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/PrivateLinkServiceCreate.json
 func ExamplePrivateLinkServicesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -191,7 +193,8 @@ func ExamplePrivateLinkServicesClient_BeginCreateOrUpdate() {
 	// 				to.Ptr("fqdn3")},
 	// 				IPConfigurations: []*armnetwork.PrivateLinkServiceIPConfiguration{
 	// 					{
-	// 						Name: to.Ptr("fe-lb"),
+	// 						ID: to.Ptr("/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls/ipConfigurations/ipconfig1"),
+	// 						Name: to.Ptr("ipconfig1"),
 	// 						Properties: &armnetwork.PrivateLinkServiceIPConfigurationProperties{
 	// 							PrivateIPAddress: to.Ptr("10.0.1.4"),
 	// 							PrivateIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
@@ -220,7 +223,7 @@ func ExamplePrivateLinkServicesClient_BeginCreateOrUpdate() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/PrivateLinkServiceList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/PrivateLinkServiceList.json
 func ExamplePrivateLinkServicesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -260,7 +263,8 @@ func ExamplePrivateLinkServicesClient_NewListPager() {
 		// 						to.Ptr("fqdn2")},
 		// 						IPConfigurations: []*armnetwork.PrivateLinkServiceIPConfiguration{
 		// 							{
-		// 								Name: to.Ptr("fe-lb1"),
+		// 								ID: to.Ptr("/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls1/ipConfigurations/ipconfig1"),
+		// 								Name: to.Ptr("ipconfig1"),
 		// 								Properties: &armnetwork.PrivateLinkServiceIPConfigurationProperties{
 		// 									PrivateIPAddress: to.Ptr("10.0.1.4"),
 		// 									PrivateIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
@@ -280,6 +284,7 @@ func ExamplePrivateLinkServicesClient_NewListPager() {
 		// 						}},
 		// 						PrivateEndpointConnections: []*armnetwork.PrivateEndpointConnection{
 		// 							{
+		// 								ID: to.Ptr("/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls1/privateEndpointConnections/pec1"),
 		// 								Name: to.Ptr("pec1"),
 		// 								Properties: &armnetwork.PrivateEndpointConnectionProperties{
 		// 									PrivateEndpoint: &armnetwork.PrivateEndpoint{
@@ -316,7 +321,8 @@ func ExamplePrivateLinkServicesClient_NewListPager() {
 		// 									to.Ptr("fqdn3")},
 		// 									IPConfigurations: []*armnetwork.PrivateLinkServiceIPConfiguration{
 		// 										{
-		// 											Name: to.Ptr("fe-lb2"),
+		// 											ID: to.Ptr("/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls2/ipConfigurations/ipconfig2"),
+		// 											Name: to.Ptr("ipconfig2"),
 		// 											Properties: &armnetwork.PrivateLinkServiceIPConfigurationProperties{
 		// 												PrivateIPAddress: to.Ptr("10.0.1.5"),
 		// 												PrivateIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
@@ -336,6 +342,7 @@ func ExamplePrivateLinkServicesClient_NewListPager() {
 		// 									}},
 		// 									PrivateEndpointConnections: []*armnetwork.PrivateEndpointConnection{
 		// 										{
+		// 											ID: to.Ptr("/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls2/privateEndpointConnections/pec2"),
 		// 											Name: to.Ptr("pec2"),
 		// 											Properties: &armnetwork.PrivateEndpointConnectionProperties{
 		// 												PrivateEndpoint: &armnetwork.PrivateEndpoint{
@@ -360,7 +367,7 @@ func ExamplePrivateLinkServicesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/PrivateLinkServiceListAll.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/PrivateLinkServiceListAll.json
 func ExamplePrivateLinkServicesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -402,7 +409,8 @@ func ExamplePrivateLinkServicesClient_NewListBySubscriptionPager() {
 		// 						to.Ptr("fqdn3")},
 		// 						IPConfigurations: []*armnetwork.PrivateLinkServiceIPConfiguration{
 		// 							{
-		// 								Name: to.Ptr("fe-lb1"),
+		// 								ID: to.Ptr("/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls1/ipConfigurations/ipconfig1"),
+		// 								Name: to.Ptr("ipconfig1"),
 		// 								Properties: &armnetwork.PrivateLinkServiceIPConfigurationProperties{
 		// 									PrivateIPAddress: to.Ptr("10.0.1.4"),
 		// 									PrivateIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
@@ -422,6 +430,7 @@ func ExamplePrivateLinkServicesClient_NewListBySubscriptionPager() {
 		// 						}},
 		// 						PrivateEndpointConnections: []*armnetwork.PrivateEndpointConnection{
 		// 							{
+		// 								ID: to.Ptr("/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls1/privateEndpointConnections/pec1"),
 		// 								Name: to.Ptr("pec1"),
 		// 								Properties: &armnetwork.PrivateEndpointConnectionProperties{
 		// 									PrivateEndpoint: &armnetwork.PrivateEndpoint{
@@ -459,7 +468,8 @@ func ExamplePrivateLinkServicesClient_NewListBySubscriptionPager() {
 		// 									to.Ptr("fqdn2")},
 		// 									IPConfigurations: []*armnetwork.PrivateLinkServiceIPConfiguration{
 		// 										{
-		// 											Name: to.Ptr("fe-lb2"),
+		// 											ID: to.Ptr("/subscriptions/subId/resourceGroups/rg2/providers/Microsoft.Network/privateLinkServices/testPls2/ipConfigurations/ipconfig2"),
+		// 											Name: to.Ptr("ipconfig2"),
 		// 											Properties: &armnetwork.PrivateLinkServiceIPConfigurationProperties{
 		// 												PrivateIPAddress: to.Ptr("10.0.1.5"),
 		// 												PrivateIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
@@ -479,7 +489,8 @@ func ExamplePrivateLinkServicesClient_NewListBySubscriptionPager() {
 		// 									}},
 		// 									PrivateEndpointConnections: []*armnetwork.PrivateEndpointConnection{
 		// 										{
-		// 											Name: to.Ptr("pec1"),
+		// 											ID: to.Ptr("/subscriptions/subId/resourceGroups/rg2/providers/Microsoft.Network/privateLinkServices/testPls2/privateEndpointConnections/pec2"),
+		// 											Name: to.Ptr("pec2"),
 		// 											Properties: &armnetwork.PrivateEndpointConnectionProperties{
 		// 												PrivateEndpoint: &armnetwork.PrivateEndpoint{
 		// 													ID: to.Ptr("/subscriptions/subId/resourceGroups/rg2/providers/Microsoft.Network/privateEndpoints/testPe2"),
@@ -502,7 +513,7 @@ func ExamplePrivateLinkServicesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/PrivateLinkServiceGetPrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/PrivateLinkServiceGetPrivateEndpointConnection.json
 func ExamplePrivateLinkServicesClient_GetPrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -521,6 +532,7 @@ func ExamplePrivateLinkServicesClient_GetPrivateEndpointConnection() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.PrivateEndpointConnection = armnetwork.PrivateEndpointConnection{
+	// 	ID: to.Ptr("/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls/privateEndpointConnections/testPlePeConnection"),
 	// 	Name: to.Ptr("testPlePeConnection"),
 	// 	Properties: &armnetwork.PrivateEndpointConnectionProperties{
 	// 		PrivateEndpoint: &armnetwork.PrivateEndpoint{
@@ -534,7 +546,7 @@ func ExamplePrivateLinkServicesClient_GetPrivateEndpointConnection() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/PrivateLinkServiceUpdatePrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/PrivateLinkServiceUpdatePrivateEndpointConnection.json
 func ExamplePrivateLinkServicesClient_UpdatePrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -564,6 +576,7 @@ func ExamplePrivateLinkServicesClient_UpdatePrivateEndpointConnection() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.PrivateEndpointConnection = armnetwork.PrivateEndpointConnection{
+	// 	ID: to.Ptr("/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls/privateEndpointConnections/testPlePeConnection"),
 	// 	Name: to.Ptr("testPlePeConnection"),
 	// 	Properties: &armnetwork.PrivateEndpointConnectionProperties{
 	// 		PrivateEndpoint: &armnetwork.PrivateEndpoint{
@@ -577,7 +590,7 @@ func ExamplePrivateLinkServicesClient_UpdatePrivateEndpointConnection() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/PrivateLinkServiceDeletePrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/PrivateLinkServiceDeletePrivateEndpointConnection.json
 func ExamplePrivateLinkServicesClient_BeginDeletePrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -598,7 +611,7 @@ func ExamplePrivateLinkServicesClient_BeginDeletePrivateEndpointConnection() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/PrivateLinkServiceListPrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/PrivateLinkServiceListPrivateEndpointConnection.json
 func ExamplePrivateLinkServicesClient_NewListPrivateEndpointConnectionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -623,6 +636,7 @@ func ExamplePrivateLinkServicesClient_NewListPrivateEndpointConnectionsPager() {
 		// page.PrivateEndpointConnectionListResult = armnetwork.PrivateEndpointConnectionListResult{
 		// 	Value: []*armnetwork.PrivateEndpointConnection{
 		// 		{
+		// 			ID: to.Ptr("/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls/privateEndpointConnections/testPlePeConnection1"),
 		// 			Name: to.Ptr("testPlePeConnection1"),
 		// 			Properties: &armnetwork.PrivateEndpointConnectionProperties{
 		// 				PrivateEndpoint: &armnetwork.PrivateEndpoint{
@@ -635,6 +649,7 @@ func ExamplePrivateLinkServicesClient_NewListPrivateEndpointConnectionsPager() {
 		// 			},
 		// 		},
 		// 		{
+		// 			ID: to.Ptr("/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls/privateEndpointConnections/testPlePeConnection2"),
 		// 			Name: to.Ptr("testPlePeConnection2"),
 		// 			Properties: &armnetwork.PrivateEndpointConnectionProperties{
 		// 				PrivateEndpoint: &armnetwork.PrivateEndpoint{
@@ -650,7 +665,7 @@ func ExamplePrivateLinkServicesClient_NewListPrivateEndpointConnectionsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/CheckPrivateLinkServiceVisibility.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/CheckPrivateLinkServiceVisibility.json
 func ExamplePrivateLinkServicesClient_BeginCheckPrivateLinkServiceVisibility() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -679,7 +694,7 @@ func ExamplePrivateLinkServicesClient_BeginCheckPrivateLinkServiceVisibility() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/CheckPrivateLinkServiceVisibilityByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/CheckPrivateLinkServiceVisibilityByResourceGroup.json
 func ExamplePrivateLinkServicesClient_BeginCheckPrivateLinkServiceVisibilityByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -708,7 +723,7 @@ func ExamplePrivateLinkServicesClient_BeginCheckPrivateLinkServiceVisibilityByRe
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/AutoApprovedPrivateLinkServicesGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/AutoApprovedPrivateLinkServicesGet.json
 func ExamplePrivateLinkServicesClient_NewListAutoApprovedPrivateLinkServicesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -745,7 +760,7 @@ func ExamplePrivateLinkServicesClient_NewListAutoApprovedPrivateLinkServicesPage
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/AutoApprovedPrivateLinkServicesResourceGroupGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/AutoApprovedPrivateLinkServicesResourceGroupGet.json
 func ExamplePrivateLinkServicesClient_NewListAutoApprovedPrivateLinkServicesByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

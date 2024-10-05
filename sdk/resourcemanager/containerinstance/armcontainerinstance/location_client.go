@@ -46,7 +46,7 @@ func NewLocationClient(subscriptionID string, credential azcore.TokenCredential,
 
 // NewListCachedImagesPager - Get the list of cached images on specific OS type for a subscription in a region.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2024-10-01-preview
 //   - location - The identifier for the physical azure location.
 //   - options - LocationClientListCachedImagesOptions contains the optional parameters for the LocationClient.NewListCachedImagesPager
 //     method.
@@ -89,7 +89,7 @@ func (client *LocationClient) listCachedImagesCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2024-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -106,7 +106,7 @@ func (client *LocationClient) listCachedImagesHandleResponse(resp *http.Response
 
 // NewListCapabilitiesPager - Get the list of CPU/memory/GPU capabilities of a region.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2024-10-01-preview
 //   - location - The identifier for the physical azure location.
 //   - options - LocationClientListCapabilitiesOptions contains the optional parameters for the LocationClient.NewListCapabilitiesPager
 //     method.
@@ -149,7 +149,7 @@ func (client *LocationClient) listCapabilitiesCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2024-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -166,7 +166,7 @@ func (client *LocationClient) listCapabilitiesHandleResponse(resp *http.Response
 
 // NewListUsagePager - Get the usage for a subscription
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2024-10-01-preview
 //   - location - The identifier for the physical azure location.
 //   - options - LocationClientListUsageOptions contains the optional parameters for the LocationClient.NewListUsagePager method.
 func (client *LocationClient) NewListUsagePager(location string, options *LocationClientListUsageOptions) *runtime.Pager[LocationClientListUsageResponse] {
@@ -209,7 +209,7 @@ func (client *LocationClient) listUsageCreateRequest(ctx context.Context, locati
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2024-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

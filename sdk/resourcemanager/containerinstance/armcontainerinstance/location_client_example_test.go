@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerinstance/armcontainerinstance/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e60df62e9e0d88462e6abba81a76d94eab000f0d/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2023-05-01/examples/ContainerGroupUsage.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4995036206058b8a75070667995b8feb038549be/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-10-01-preview/examples/ContainerGroupUsage.json
 func ExampleLocationClient_NewListUsagePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExampleLocationClient_NewListUsagePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e60df62e9e0d88462e6abba81a76d94eab000f0d/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2023-05-01/examples/CachedImagesList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4995036206058b8a75070667995b8feb038549be/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-10-01-preview/examples/CachedImagesList.json
 func ExampleLocationClient_NewListCachedImagesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,7 +94,7 @@ func ExampleLocationClient_NewListCachedImagesPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e60df62e9e0d88462e6abba81a76d94eab000f0d/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2023-05-01/examples/CapabilitiesList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4995036206058b8a75070667995b8feb038549be/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-10-01-preview/examples/CapabilitiesList.json
 func ExampleLocationClient_NewListCapabilitiesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

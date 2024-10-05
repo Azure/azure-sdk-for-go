@@ -23,6 +23,9 @@ type AzureFileVolume struct {
 
 	// The storage account access key used to access the Azure File share.
 	StorageAccountKey *string
+
+	// The reference to the storage account access key used to access the Azure File share.
+	StorageAccountKeyReference *string
 }
 
 // CachedImages - The cached image and OS type.
@@ -265,6 +268,9 @@ type ContainerGroupPropertiesProperties struct {
 	// The SKU for a container group.
 	SKU *ContainerGroupSKU
 
+	// The secret references that will be referenced within the container group.
+	SecretReferences []*SecretReference
+
 	// The subnet resource IDs for a container group.
 	SubnetIDs []*ContainerGroupSubnetID
 
@@ -460,6 +466,9 @@ type EnvironmentVariable struct {
 	// The value of the secure environment variable.
 	SecureValue *string
 
+	// The reference of the secure environment variable.
+	SecureValueReference *string
+
 	// The value of the environment variable.
 	Value *string
 }
@@ -557,6 +566,9 @@ type ImageRegistryCredential struct {
 
 	// The password for the private registry.
 	Password *string
+
+	// The reference for the private registry password.
+	PasswordReference *string
 
 	// The username for the private registry.
 	Username *string
@@ -733,6 +745,18 @@ type ResourceRequirements struct {
 	Limits *ResourceLimits
 }
 
+// SecretReference - A secret reference
+type SecretReference struct {
+	// REQUIRED; The ARM resource id of the managed identity that has access to the secret in the key vault
+	Identity *string
+
+	// REQUIRED; The identifier of the secret reference
+	Name *string
+
+	// REQUIRED; The URI to the secret in key vault
+	SecretReferenceURI *string
+}
+
 // SecurityContextCapabilitiesDefinition - The capabilities to add or drop from a container.
 type SecurityContextCapabilitiesDefinition struct {
 	// The capabilities to add to the container.
@@ -823,6 +847,9 @@ type Volume struct {
 
 	// The secret volume.
 	Secret map[string]*string
+
+	// The secret reference volume.
+	SecretReference map[string]*string
 }
 
 // VolumeMount - The properties of the volume mount.

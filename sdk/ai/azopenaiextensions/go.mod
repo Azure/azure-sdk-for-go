@@ -10,7 +10,7 @@ require (
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.7.0
-	github.com/openai/openai-go v0.1.0-alpha.23
+	github.com/openai/openai-go v0.1.0-alpha.25
 )
 
 require (
@@ -21,7 +21,7 @@ require (
 	github.com/kylelemons/godebug v1.1.0 // indirect
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	github.com/tidwall/gjson v1.17.3 // indirect
+	github.com/tidwall/gjson v1.18.0 // indirect
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.1 // indirect
 	github.com/tidwall/sjson v1.2.5 // indirect

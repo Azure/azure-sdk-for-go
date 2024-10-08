@@ -21,7 +21,6 @@
   - ChatRequestSystemMessage.Content is now a ChatRequestSystemMessageContent.
   - ChatRequestToolMessage.Content is now a ChatRequestToolMessageContent.
 
-
 ## 0.6.2 (2024-09-10)
 
 ### Features Added

@@ -4,6 +4,7 @@
 
 ### Features Added
 
+- MongoDBChatExtensionConfiguration has been added as an "On Your Data" data source.
 - Several types now have union types for their content or dependency information:
   - ChatRequestAssistantMessage.Content is now a ChatRequestAssistantMessageContent.
   - ChatRequestSystemMessage.Content is now a ChatRequestSystemMessageContent.
@@ -19,7 +20,6 @@
   - ChatRequestAssistantMessage.Content is now a ChatRequestAssistantMessageContent.
   - ChatRequestSystemMessage.Content is now a ChatRequestSystemMessageContent.
   - ChatRequestToolMessage.Content is now a ChatRequestToolMessageContent.
-  - MongoDBChatExtensionParameters.EmbeddingDependency is now a MongoDBChatExtensionParametersEmbeddingDependency
 
 
 ## 0.6.2 (2024-09-10)

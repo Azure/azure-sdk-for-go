@@ -197,9 +197,6 @@ type ChatRequestAssistantMessageContent struct {
 }
 
 // NewChatRequestAssistantMessageContent creates a [azopenai.ChatRequestAssistantMessageContent].
-// - []ChatMessageRefusalContentItem - // TODO: doc
-// - []ChatMessageTextContentItem - // TODO: doc
-// - string - // TODO: doc
 func NewChatRequestAssistantMessageContent[T []ChatMessageRefusalContentItem | []ChatMessageTextContentItem | string](value T) *ChatRequestAssistantMessageContent {
 	switch any(value).(type) {
 	case []ChatMessageRefusalContentItem:
@@ -218,7 +215,7 @@ func (c ChatRequestAssistantMessageContent) MarshalJSON() ([]byte, error) {
 	return json.Marshal(c.value)
 }
 
-// ChatRequestSystemMessageContent // TODO: doc
+// ChatRequestSystemMessageContent contains the content for a [ChatRequestSystemMessage].
 // NOTE: This should be created using [azopenai.NewChatRequestSystemMessageContent]
 type ChatRequestSystemMessageContent struct {
 	value any
@@ -230,8 +227,6 @@ func (c ChatRequestSystemMessageContent) MarshalJSON() ([]byte, error) {
 }
 
 // NewChatRequestSystemMessageContent creates a [azopenai.ChatRequestSystemMessageContent].
-// - []ChatMessageTextContentItem - // TODO: doc
-// - string - // TODO: doc
 func NewChatRequestSystemMessageContent[T []ChatMessageTextContentItem | string](value T) *ChatRequestSystemMessageContent {
 	switch any(value).(type) {
 	case []ChatMessageTextContentItem:
@@ -243,7 +238,7 @@ func NewChatRequestSystemMessageContent[T []ChatMessageTextContentItem | string]
 	}
 }
 
-// ChatRequestToolMessageContent // TODO: doc
+// ChatRequestToolMessageContent contains the content for a [ChatRequestToolMessage].
 // NOTE: This should be created using [azopenai.NewChatRequestToolMessageContent]
 type ChatRequestToolMessageContent struct {
 	value any
@@ -255,8 +250,6 @@ func (c ChatRequestToolMessageContent) MarshalJSON() ([]byte, error) {
 }
 
 // NewChatRequestToolMessageContent creates a [azopenai.ChatRequestToolMessageContent].
-// - []ChatMessageTextContentItem - // TODO: doc
-// - string - // TODO: doc
 func NewChatRequestToolMessageContent[T []ChatMessageTextContentItem | string](value T) *ChatRequestToolMessageContent {
 	switch any(value).(type) {
 	case []ChatMessageTextContentItem:
@@ -268,15 +261,13 @@ func NewChatRequestToolMessageContent[T []ChatMessageTextContentItem | string](v
 	}
 }
 
-// MongoDBChatExtensionParametersEmbeddingDependency // TODO: doc
+// MongoDBChatExtensionParametersEmbeddingDependency contains the embedding dependency for the [MongoDBChatExtensionParameters].
 // NOTE: This should be created using [azopenai.NewMongoDBChatExtensionParametersEmbeddingDependency]
 type MongoDBChatExtensionParametersEmbeddingDependency struct {
 	value any
 }
 
 // NewMongoDBChatExtensionParametersEmbeddingDependency creates a [azopenai.MongoDBChatExtensionParametersEmbeddingDependency].
-// - OnYourDataDeploymentNameVectorizationSource - // TODO: doc
-// - OnYourDataEndpointVectorizationSource - // TODO: doc
 func NewMongoDBChatExtensionParametersEmbeddingDependency[T OnYourDataDeploymentNameVectorizationSource | OnYourDataEndpointVectorizationSource](value T) *MongoDBChatExtensionParametersEmbeddingDependency {
 	switch any(value).(type) {
 	case OnYourDataDeploymentNameVectorizationSource:

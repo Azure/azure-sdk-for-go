@@ -426,62 +426,6 @@ func (client *Client) generateSpeechFromTextCreateRequest(ctx context.Context, b
 	return req, nil
 }
 
-// GetAudioTranscriptionAsPlainText - Gets transcribed text and associated metadata from provided spoken audio data. Audio
-// will be transcribed in the written language corresponding to the language it was spoken in.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-08-01-preview
-//   - file - The audio data to transcribe. This must be the binary content of a file in one of the supported media formats: flac,
-//     mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm.
-//   - options - GetAudioTranscriptionAsPlainTextOptions contains the optional parameters for the Client.GetAudioTranscriptionAsPlainText
-//     method.
-func (client *Client) GetAudioTranscriptionAsPlainText(ctx context.Context, file io.ReadSeekCloser, options *GetAudioTranscriptionAsPlainTextOptions) (GetAudioTranscriptionAsPlainTextResponse, error) {
-	var err error
-	req, err := client.getAudioTranscriptionAsPlainTextCreateRequest(ctx, file, options)
-	if err != nil {
-		return GetAudioTranscriptionAsPlainTextResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return GetAudioTranscriptionAsPlainTextResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusOK) {
-		err = client.newError(httpResp)
-		return GetAudioTranscriptionAsPlainTextResponse{}, err
-	}
-	resp, err := client.getAudioTranscriptionAsPlainTextHandleResponse(httpResp)
-	return resp, err
-}
-
-// getAudioTranscriptionAsPlainTextCreateRequest creates the GetAudioTranscriptionAsPlainText request.
-func (client *Client) getAudioTranscriptionAsPlainTextCreateRequest(ctx context.Context, file io.ReadSeekCloser, options *GetAudioTranscriptionAsPlainTextOptions) (*policy.Request, error) {
-	urlPath := "audio/transcriptions"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, getDeployment(body)))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"text/plain, application/json"}
-	if err := setMultipartFormData(req, file, *body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// getAudioTranscriptionAsPlainTextHandleResponse handles the GetAudioTranscriptionAsPlainText response.
-func (client *Client) getAudioTranscriptionAsPlainTextHandleResponse(resp *http.Response) (GetAudioTranscriptionAsPlainTextResponse, error) {
-	result := GetAudioTranscriptionAsPlainTextResponse{}
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return GetAudioTranscriptionAsPlainTextResponse{}, err
-	}
-	txt := string(body)
-	result.Value = &txt
-	return result, nil
-}
-
 // getAudioTranscriptionInternal - Gets transcribed text and associated metadata from provided spoken audio data. Audio will
 // be transcribed in the written language corresponding to the language it was spoken in.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -493,9 +437,9 @@ func (client *Client) getAudioTranscriptionAsPlainTextHandleResponse(resp *http.
 //     mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm.
 //   - options - getAudioTranscriptionInternalOptions contains the optional parameters for the Client.getAudioTranscriptionInternal
 //     method.
-func (client *Client) getAudioTranscriptionInternal(ctx context.Context, deploymentID string, file io.ReadSeekCloser, options *getAudioTranscriptionInternalOptions) (getAudioTranscriptionInternalResponse, error) {
+func (client *Client) getAudioTranscriptionInternal(ctx context.Context, file io.ReadSeekCloser, options *getAudioTranscriptionInternalOptions) (getAudioTranscriptionInternalResponse, error) {
 	var err error
-	req, err := client.getAudioTranscriptionInternalCreateRequest(ctx, deploymentID, file, options)
+	req, err := client.getAudioTranscriptionInternalCreateRequest(ctx, file, options)
 	if err != nil {
 		return getAudioTranscriptionInternalResponse{}, err
 	}
@@ -512,7 +456,7 @@ func (client *Client) getAudioTranscriptionInternal(ctx context.Context, deploym
 }
 
 // getAudioTranscriptionInternalCreateRequest creates the getAudioTranscriptionInternal request.
-func (client *Client) getAudioTranscriptionInternalCreateRequest(ctx context.Context, deploymentID string, file io.ReadSeekCloser, body *getAudioTranscriptionInternalOptions) (*policy.Request, error) {
+func (client *Client) getAudioTranscriptionInternalCreateRequest(ctx context.Context, file io.ReadSeekCloser, body *getAudioTranscriptionInternalOptions) (*policy.Request, error) {
 	urlPath := "audio/transcriptions"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, getDeployment(body)))
 	if err != nil {
@@ -537,62 +481,6 @@ func (client *Client) getAudioTranscriptionInternalHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// GetAudioTranslationAsPlainText - Gets English language transcribed text and associated metadata from provided spoken audio
-// data.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-08-01-preview
-//   - file - The audio data to translate. This must be the binary content of a file in one of the supported media formats: flac,
-//     mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm.
-//   - options - GetAudioTranslationAsPlainTextOptions contains the optional parameters for the Client.GetAudioTranslationAsPlainText
-//     method.
-func (client *Client) GetAudioTranslationAsPlainText(ctx context.Context, file io.ReadSeekCloser, options *GetAudioTranslationAsPlainTextOptions) (GetAudioTranslationAsPlainTextResponse, error) {
-	var err error
-	req, err := client.getAudioTranslationAsPlainTextCreateRequest(ctx, file, options)
-	if err != nil {
-		return GetAudioTranslationAsPlainTextResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return GetAudioTranslationAsPlainTextResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusOK) {
-		err = client.newError(httpResp)
-		return GetAudioTranslationAsPlainTextResponse{}, err
-	}
-	resp, err := client.getAudioTranslationAsPlainTextHandleResponse(httpResp)
-	return resp, err
-}
-
-// getAudioTranslationAsPlainTextCreateRequest creates the GetAudioTranslationAsPlainText request.
-func (client *Client) getAudioTranslationAsPlainTextCreateRequest(ctx context.Context, file io.ReadSeekCloser, options *GetAudioTranslationAsPlainTextOptions) (*policy.Request, error) {
-	urlPath := "audio/translations"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, getDeployment(body)))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"text/plain, application/json"}
-	if err := setMultipartFormData(req, file, *body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// getAudioTranslationAsPlainTextHandleResponse handles the GetAudioTranslationAsPlainText response.
-func (client *Client) getAudioTranslationAsPlainTextHandleResponse(resp *http.Response) (GetAudioTranslationAsPlainTextResponse, error) {
-	result := GetAudioTranslationAsPlainTextResponse{}
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return GetAudioTranslationAsPlainTextResponse{}, err
-	}
-	txt := string(body)
-	result.Value = &txt
-	return result, nil
-}
-
 // getAudioTranslationInternal - Gets English language transcribed text and associated metadata from provided spoken audio
 // data.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -604,9 +492,9 @@ func (client *Client) getAudioTranslationAsPlainTextHandleResponse(resp *http.Re
 //     mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm.
 //   - options - getAudioTranslationInternalOptions contains the optional parameters for the Client.getAudioTranslationInternal
 //     method.
-func (client *Client) getAudioTranslationInternal(ctx context.Context, deploymentID string, file io.ReadSeekCloser, options *getAudioTranslationInternalOptions) (getAudioTranslationInternalResponse, error) {
+func (client *Client) getAudioTranslationInternal(ctx context.Context, file io.ReadSeekCloser, options *getAudioTranslationInternalOptions) (getAudioTranslationInternalResponse, error) {
 	var err error
-	req, err := client.getAudioTranslationInternalCreateRequest(ctx, deploymentID, file, options)
+	req, err := client.getAudioTranslationInternalCreateRequest(ctx, file, options)
 	if err != nil {
 		return getAudioTranslationInternalResponse{}, err
 	}
@@ -623,7 +511,7 @@ func (client *Client) getAudioTranslationInternal(ctx context.Context, deploymen
 }
 
 // getAudioTranslationInternalCreateRequest creates the getAudioTranslationInternal request.
-func (client *Client) getAudioTranslationInternalCreateRequest(ctx context.Context, deploymentID string, file io.ReadSeekCloser, body *getAudioTranslationInternalOptions) (*policy.Request, error) {
+func (client *Client) getAudioTranslationInternalCreateRequest(ctx context.Context, file io.ReadSeekCloser, body *getAudioTranslationInternalOptions) (*policy.Request, error) {
 	urlPath := "audio/translations"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, getDeployment(body)))
 	if err != nil {

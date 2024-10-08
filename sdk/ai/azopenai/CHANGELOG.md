@@ -2,11 +2,25 @@
 
 ## 0.7.0 (TBD)
 
+### Features Added
+
+- Several types now have union types for their content or dependency information:
+  - ChatRequestAssistantMessage.Content is now a ChatRequestAssistantMessageContent.
+  - ChatRequestSystemMessage.Content is now a ChatRequestSystemMessageContent.
+  - ChatRequestToolMessage.Content is now a ChatRequestToolMessageContent.
+  - MongoDBChatExtensionParameters.EmbeddingDependency is now a MongoDBChatExtensionParametersEmbeddingDependency
+
 ### Breaking Changes
 
 - FunctionDefinition has been renamed to ChatCompletionsFunctionToolDefinitionFunction.
-- ChatRequestSystemMessage.Content has been changed from string to ChatRequestSystemMessageContent.
-- 
+- AzureCosmosDBChatExtensionParameters.RoleInformation has been removed.
+- AzureMachineLearningIndexChatExtension and related types have been removed.
+- Several types now have union types for their content or dependency information:
+  - ChatRequestAssistantMessage.Content is now a ChatRequestAssistantMessageContent.
+  - ChatRequestSystemMessage.Content is now a ChatRequestSystemMessageContent.
+  - ChatRequestToolMessage.Content is now a ChatRequestToolMessageContent.
+  - MongoDBChatExtensionParameters.EmbeddingDependency is now a MongoDBChatExtensionParametersEmbeddingDependency
+
 
 ## 0.6.2 (2024-09-10)
 

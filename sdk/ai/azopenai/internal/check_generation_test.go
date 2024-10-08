@@ -111,14 +111,14 @@ func TestNoUntypedFields(t *testing.T) {
 
 	// To fix this, you'll need manually create a union input type:
 	//
-	// 1. Create the union type and it's associated functions. Look at custom_models.go and [ChatRequestSystemMessageContent]
+	// 1. Create the union type and it's associated functions. Look at custom_models.go and [MongoDBChatExtensionParametersEmbeddingDependency]
 	//    to see what you'll need:
-	//    - ChatRequestSystemMessageContent (the union type - naming is "object that has field" + "field name")
-	//    - NewChatRequestSystemMessageContent (the function the user calls to construct the ChatRequestSystemMessageContent)
-	//    - ChatRequestSystemMessageContent.MarshalJSON
+	//    - MongoDBChatExtensionParametersEmbeddingDependency (the union type - naming is "object that has field" + "field name")
+	//    - NewMongoDBChatExtensionParametersEmbeddingDependency (the function the user calls to construct the MongoDBChatExtensionParametersEmbeddingDependency)
+	//    - MongoDBChatExtensionParametersEmbeddingDependency.MarshalJSON
 	//
 	// 2. Add in the an autorest.md snippet in "## Unions" section. This will make it so the Go emitter will reference
-	//    your custom type. See 'ChatRequestSystemMessage''s block within there for a sample.
+	//    your custom type. See 'MongoDBChatExtensionParametersEmbeddingDependency's block within there for a sample.
 	require.Empty(t, withByteFields, "no new []byte fields. If this test fails see the test for details on how to fix it.")
 }
 

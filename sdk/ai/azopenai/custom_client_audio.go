@@ -90,7 +90,9 @@ func (client *Client) GetAudioTranslation(ctx context.Context, body AudioTransla
 	return GetAudioTranslationResponse(resp), nil
 }
 
-func setMultipartFormData[T getAudioTranscriptionInternalOptions | getAudioTranslationInternalOptions | UploadFileOptions](req *policy.Request, file io.ReadSeekCloser, options T) error {
+type NoFilenameChange struct{}
+
+func setMultipartFormData[T getAudioTranscriptionInternalOptions | getAudioTranslationInternalOptions | UploadFileOptions | NoFilenameChange](req *policy.Request, file io.ReadSeekCloser, options T) error {
 	body := bytes.Buffer{}
 	writer := multipart.NewWriter(&body)
 
@@ -119,6 +121,8 @@ func setMultipartFormData[T getAudioTranscriptionInternalOptions | getAudioTrans
 		if opt.Filename != nil {
 			filename = *opt.Filename
 		}
+	case NoFilenameChange:
+		// no optional filename here.
 	}
 
 	if err := writeContent("file", filename, file); err != nil {

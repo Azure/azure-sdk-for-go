@@ -8,6 +8,7 @@ package azopenai
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -187,4 +188,97 @@ func (tc ChatCompletionsToolChoice) MarshalJSON() ([]byte, error) {
 // UnmarshalJSON implements the json.Unmarshaller interface for type ChatCompletionsToolChoice.
 func (tc *ChatCompletionsToolChoice) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &tc.value)
+}
+
+// ChatRequestAssistantMessageContent represents the content for a [azopenai.ChatRequestAssistantMessage].
+// NOTE: This should be created using [azopenai.NewChatRequestAssistantMessageContent]
+type ChatRequestAssistantMessageContent struct {
+	value any
+}
+
+// NewChatRequestAssistantMessageContent creates a [azopenai.ChatRequestAssistantMessageContent].
+// - []ChatMessageRefusalContentItem - // TODO: doc
+// - []ChatMessageTextContentItem - // TODO: doc
+// - string - // TODO: doc
+func NewChatRequestAssistantMessageContent[T []ChatMessageRefusalContentItem | []ChatMessageTextContentItem | string](value T) *ChatRequestAssistantMessageContent {
+	switch any(value).(type) {
+	case []ChatMessageRefusalContentItem:
+		return &ChatRequestAssistantMessageContent{value: value}
+	case []ChatMessageTextContentItem:
+		return &ChatRequestAssistantMessageContent{value: value}
+	case string:
+		return &ChatRequestAssistantMessageContent{value: value}
+	default:
+		panic(fmt.Sprintf("Invalid type %T for ChatRequestAssistantMessageContent", value))
+	}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ChatRequestAssistantMessageContent.
+func (c ChatRequestAssistantMessageContent) MarshalJSON() ([]byte, error) {
+	return json.Marshal(c.value)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ChatRequestAssistantMessageContent.
+func (c *ChatRequestAssistantMessageContent) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &c.value)
+}
+
+// ChatRequestSystemMessageContent // TODO: doc
+// NOTE: This should be created using [azopenai.NewChatRequestSystemMessageContent]
+type ChatRequestSystemMessageContent struct {
+	value any
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ChatRequestSystemMessageContent.
+func (c ChatRequestSystemMessageContent) MarshalJSON() ([]byte, error) {
+	return json.Marshal(c.value)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ChatRequestSystemMessageContent.
+func (c *ChatRequestSystemMessageContent) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &c.value)
+}
+
+// NewChatRequestSystemMessageContent creates a [azopenai.ChatRequestSystemMessageContent].
+// - []ChatMessageTextContentItem - // TODO: doc
+// - string - // TODO: doc
+func NewChatRequestSystemMessageContent[T []ChatMessageTextContentItem | string](value T) *ChatRequestSystemMessageContent {
+	switch any(value).(type) {
+	case []ChatMessageTextContentItem:
+		return &ChatRequestSystemMessageContent{value: value}
+	case string:
+		return &ChatRequestSystemMessageContent{value: value}
+	default:
+		panic(fmt.Sprintf("Invalid type %T for ChatRequestSystemMessageContent", value))
+	}
+}
+
+// ChatRequestToolMessageContent // TODO: doc
+// NOTE: This should be created using [azopenai.NewChatRequestToolMessageContent]
+type ChatRequestToolMessageContent struct {
+	value any
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ChatRequestToolMessageContent.
+func (c ChatRequestToolMessageContent) MarshalJSON() ([]byte, error) {
+	return json.Marshal(c.value)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ChatRequestToolMessageContent.
+func (c *ChatRequestToolMessageContent) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &c.value)
+}
+
+// NewChatRequestToolMessageContent creates a [azopenai.ChatRequestToolMessageContent].
+// - []ChatMessageTextContentItem - // TODO: doc
+// - string - // TODO: doc
+func NewChatRequestToolMessageContent[T []ChatMessageTextContentItem | string](value T) *ChatRequestToolMessageContent {
+	switch any(value).(type) {
+	case []ChatMessageTextContentItem:
+		return &ChatRequestToolMessageContent{value: value}
+	case string:
+		return &ChatRequestToolMessageContent{value: value}
+	default:
+		panic(fmt.Sprintf("Invalid type %T for ChatRequestToolMessageContent", value))
+	}
 }

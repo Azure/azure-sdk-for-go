@@ -365,7 +365,7 @@ func TestGetChatCompletions_usingResponseFormatForJSON(t *testing.T) {
 		body := azopenai.ChatCompletionsOptions{
 			DeploymentName: &deploymentName,
 			Messages: []azopenai.ChatRequestMessageClassification{
-				&azopenai.ChatRequestSystemMessage{Content: to.Ptr("You are a helpful assistant designed to output JSON.")},
+				&azopenai.ChatRequestSystemMessage{Content: azopenai.NewChatRequestSystemMessageContent("You are a helpful assistant designed to output JSON.")},
 				&azopenai.ChatRequestUserMessage{
 					Content: azopenai.NewChatRequestUserMessageContent("List capital cities and their states"),
 				},

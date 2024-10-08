@@ -33,7 +33,7 @@ func TestClient_OpenAI_InvalidModel(t *testing.T) {
 	_, err := chatClient.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
 		Messages: []azopenai.ChatRequestMessageClassification{
 			&azopenai.ChatRequestSystemMessage{
-				Content: to.Ptr("hello"),
+				Content: azopenai.NewChatRequestSystemMessageContent("hello"),
 			},
 		},
 		DeploymentName: to.Ptr("non-existent-model"),

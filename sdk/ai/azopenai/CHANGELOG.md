@@ -1,5 +1,13 @@
 # Release History
 
+## 0.7.0 (TBD)
+
+### Breaking Changes
+
+- FunctionDefinition has been renamed to ChatCompletionsFunctionToolDefinitionFunction.
+- ChatRequestSystemMessage.Content has been changed from string to ChatRequestSystemMessageContent.
+- 
+
 ## 0.6.2 (2024-09-10)
 
 ### Features Added

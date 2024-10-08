@@ -10,16 +10,40 @@ package azopenai
 
 import "io"
 
+// AddUploadPartResponse contains the response from method Client.AddUploadPart.
+type AddUploadPartResponse struct {
+	// The upload Part represents a chunk of bytes we can add to an Upload object.
+	UploadPart
+}
+
 // CancelBatchResponse contains the response from method Client.CancelBatch.
 type CancelBatchResponse struct {
 	// The Batch object.
 	Batch
 }
 
+// CancelUploadResponse contains the response from method Client.CancelUpload.
+type CancelUploadResponse struct {
+	// The Upload object can accept byte chunks in the form of Parts.
+	Upload
+}
+
+// CompleteUploadResponse contains the response from method Client.CompleteUpload.
+type CompleteUploadResponse struct {
+	// The Upload object can accept byte chunks in the form of Parts.
+	Upload
+}
+
 // CreateBatchResponse contains the response from method Client.CreateBatch.
 type CreateBatchResponse struct {
 	// The Batch object.
 	Batch
+}
+
+// CreateUploadResponse contains the response from method Client.CreateUpload.
+type CreateUploadResponse struct {
+	// The Upload object can accept byte chunks in the form of Parts.
+	Upload
 }
 
 // DeleteFileResponse contains the response from method Client.DeleteFile.

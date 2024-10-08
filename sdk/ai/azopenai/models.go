@@ -9,7 +9,6 @@
 package azopenai
 
 import (
-	"io"
 	"time"
 )
 
@@ -975,7 +974,7 @@ type ChatCompletionsJSONSchemaResponseFormat struct {
 	// REQUIRED; The discriminated type for the response format.
 	respType *string
 
-	// REQUIRED
+	// REQUIRED; A description of what the response format is for, used by the model to determine how to respond in the format.
 	JSONSchema *ChatCompletionsJSONSchemaResponseFormatJSONSchema
 }
 
@@ -986,6 +985,8 @@ func (c *ChatCompletionsJSONSchemaResponseFormat) GetChatCompletionsResponseForm
 	}
 }
 
+// ChatCompletionsJSONSchemaResponseFormatJSONSchema - A description of what the response format is for, used by the model
+// to determine how to respond in the format.
 type ChatCompletionsJSONSchemaResponseFormatJSONSchema struct {
 	// REQUIRED; The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length
 	// of 64.
@@ -2509,11 +2510,6 @@ type OnYourDataVectorizationSource struct {
 // GetOnYourDataVectorizationSource implements the OnYourDataVectorizationSourceClassification interface for type OnYourDataVectorizationSource.
 func (o *OnYourDataVectorizationSource) GetOnYourDataVectorizationSource() *OnYourDataVectorizationSource {
 	return o
-}
-
-type Paths46Ul4XUploadsUploadIDPartsPostRequestbodyContentMultipartFormDataSchema struct {
-	// REQUIRED; The chunk of bytes for this Part.
-	Data *io.ReadSeekCloser
 }
 
 // PineconeChatExtensionConfiguration - A specific representation of configurable options for Pinecone when using it as an

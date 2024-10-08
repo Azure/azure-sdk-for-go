@@ -346,7 +346,7 @@ func TestClient_GetChatCompletions_Vision(t *testing.T) {
 		customRequireNoError(t, err, azure)
 		require.NotEmpty(t, resp.Choices[0].Message.Content)
 
-		t.Logf(*resp.Choices[0].Message.Content)
+		t.Logf("Content = %s", *resp.Choices[0].Message.Content)
 	}
 
 	t.Run("AzureOpenAI", func(t *testing.T) {

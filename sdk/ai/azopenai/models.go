@@ -2174,7 +2174,7 @@ type MongoDBChatExtensionParameters struct {
 	DatabaseName *string
 
 	// REQUIRED; The vectorization source to use with the MongoDB chat extension.
-	EmbeddingDependency []byte
+	EmbeddingDependency *MongoDBChatExtensionParametersEmbeddingDependency
 
 	// REQUIRED; The endpoint name for MongoDB.
 	Endpoint *string

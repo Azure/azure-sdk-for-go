@@ -17,7 +17,9 @@ import (
 
 const typeSpecDir = "../testdata/TempTypeSpecFiles/OpenAI.Inference"
 
-var goModelsFiles = []string{"../models.go", "../custom_models.go", "../custom_client_embeddings.go"}
+const modelsGoFile = "../models.go"
+
+var goModelsFiles = []string{modelsGoFile, "../custom_models.go", "../custom_client_embeddings.go"}
 
 var typeSpecModelRE = regexp.MustCompile(`(?m)^model\s+([^\s]+)`)
 var goModelRE = regexp.MustCompile(`(?m)^type\s+([^\s]+)\s+struct`)
@@ -30,7 +32,7 @@ func TestAllModelsHaveBeenGenerated(t *testing.T) {
 	// drop those types since they can't be represented.
 	//
 	// Until we resolve all of that we just check to make sure that hasn't happened,
-	// and manually correct it.
+	// and manually correct it. See the [TestNoUntypedFields] below for how to fix it.
 	//
 	if _, err := os.Stat(typeSpecDir); err != nil {
 		t.Skipf("Skipping model/typespec tests: %s doesn't exist - run `go generate` to create it.", typeSpecDir)
@@ -83,26 +85,38 @@ func TestAllModelsHaveBeenGenerated(t *testing.T) {
 	}
 }
 
-// Tests to see if any of our fields looks like one where the generator defaulted to just returning/accepting
-// JSON, which is typical when TypeSpec uses a union type.
+// Tests to see if any of our fields looks like one where the generator defaulted to
+// just accepting JSON, which is typical when TypeSpec uses a union type that is
+// not polymorphic (ie, string | someObject).
 func TestNoUntypedFields(t *testing.T) {
-	withByteFields, err := getGoModelsWithByteSliceFields("../models.go")
-	require.NoError(t, err)
-
-	require.Empty(t, withByteFields, "all []byte fields should be accounted for")
-}
-
-func getGoModelsWithByteSliceFields(goFile string) ([]string, error) {
+	// these types are allowed as they're intended to be []byte fields.
 	allowed := map[string]bool{
 		"AddUploadPartRequest.Data":                                true,
 		"AudioTranscriptionOptions.File":                           true,
 		"AudioTranslationOptions.File":                             true,
-		"ChatCompletionsFunctionToolDefinitionFunction.Parameters": true,
-		"ChatCompletionsJSONSchemaResponseFormatJSONSchema.Schema": true,
-		"FunctionDefinition.Parameters":                            true,
+		"ChatCompletionsFunctionToolDefinitionFunction.Parameters": true, // user intentionally passes their own serialized JSON bytes
+		"ChatCompletionsJSONSchemaResponseFormatJSONSchema.Schema": true, // user intentionally passes their own serialized JSON bytes
+		"FunctionDefinition.Parameters":                            true, // user intentionally passes their own serialized JSON bytes
 		"SpeechGenerationResponse.Audio":                           true,
 	}
 
+	withByteFields, err := getGoModelsWithByteSliceFields(modelsGoFile, allowed)
+	require.NoError(t, err)
+
+	// To fix this, you'll need manually create a union input type:
+	//
+	// 1. Create the union type and it's associated functions. Look at custom_models.go and [ChatRequestSystemMessageContent]
+	//    to see what you'll need:
+	//    - ChatRequestSystemMessageContent (the union type - naming is "object that has field" + "field name")
+	//    - NewChatRequestSystemMessageContent (the function the user calls to construct the ChatRequestSystemMessageContent)
+	//    - ChatRequestSystemMessageContent.MarshalJSON
+	//
+	// 2. Add in the an autorest.md snippet in "## Unions" section. This will make it so the Go emitter will reference
+	//    your custom type. See 'ChatRequestSystemMessage''s block within there for a sample.
+	require.Empty(t, withByteFields, "no new []byte fields. If this test fails see the test for details on how to fix it.")
+}
+
+func getGoModelsWithByteSliceFields(goFile string, allowed map[string]bool) ([]string, error) {
 	file, err := os.Open(goFile)
 
 	if err != nil {

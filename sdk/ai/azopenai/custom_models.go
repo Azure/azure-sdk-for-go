@@ -218,11 +218,6 @@ func (c ChatRequestAssistantMessageContent) MarshalJSON() ([]byte, error) {
 	return json.Marshal(c.value)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ChatRequestAssistantMessageContent.
-func (c *ChatRequestAssistantMessageContent) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &c.value)
-}
-
 // ChatRequestSystemMessageContent // TODO: doc
 // NOTE: This should be created using [azopenai.NewChatRequestSystemMessageContent]
 type ChatRequestSystemMessageContent struct {
@@ -232,11 +227,6 @@ type ChatRequestSystemMessageContent struct {
 // MarshalJSON implements the json.Marshaller interface for type ChatRequestSystemMessageContent.
 func (c ChatRequestSystemMessageContent) MarshalJSON() ([]byte, error) {
 	return json.Marshal(c.value)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ChatRequestSystemMessageContent.
-func (c *ChatRequestSystemMessageContent) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &c.value)
 }
 
 // NewChatRequestSystemMessageContent creates a [azopenai.ChatRequestSystemMessageContent].
@@ -264,11 +254,6 @@ func (c ChatRequestToolMessageContent) MarshalJSON() ([]byte, error) {
 	return json.Marshal(c.value)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ChatRequestToolMessageContent.
-func (c *ChatRequestToolMessageContent) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &c.value)
-}
-
 // NewChatRequestToolMessageContent creates a [azopenai.ChatRequestToolMessageContent].
 // - []ChatMessageTextContentItem - // TODO: doc
 // - string - // TODO: doc
@@ -281,4 +266,29 @@ func NewChatRequestToolMessageContent[T []ChatMessageTextContentItem | string](v
 	default:
 		panic(fmt.Sprintf("Invalid type %T for ChatRequestToolMessageContent", value))
 	}
+}
+
+// MongoDBChatExtensionParametersEmbeddingDependency // TODO: doc
+// NOTE: This should be created using [azopenai.NewMongoDBChatExtensionParametersEmbeddingDependency]
+type MongoDBChatExtensionParametersEmbeddingDependency struct {
+	value any
+}
+
+// NewMongoDBChatExtensionParametersEmbeddingDependency creates a [azopenai.MongoDBChatExtensionParametersEmbeddingDependency].
+// - OnYourDataDeploymentNameVectorizationSource - // TODO: doc
+// - OnYourDataEndpointVectorizationSource - // TODO: doc
+func NewMongoDBChatExtensionParametersEmbeddingDependency[T OnYourDataDeploymentNameVectorizationSource | OnYourDataEndpointVectorizationSource](value T) *MongoDBChatExtensionParametersEmbeddingDependency {
+	switch any(value).(type) {
+	case OnYourDataDeploymentNameVectorizationSource:
+		return &MongoDBChatExtensionParametersEmbeddingDependency{value: value}
+	case OnYourDataEndpointVectorizationSource:
+		return &MongoDBChatExtensionParametersEmbeddingDependency{value: value}
+	default:
+		panic(fmt.Sprintf("Invalid type %T for MongoDBChatExtensionParametersEmbeddingDependency", value))
+	}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type MongoDBChatExtensionParametersEmbeddingDependency.
+func (c MongoDBChatExtensionParametersEmbeddingDependency) MarshalJSON() ([]byte, error) {
+	return json.Marshal(c.value)
 }

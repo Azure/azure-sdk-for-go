@@ -4460,7 +4460,7 @@ func (m MongoDBChatExtensionParameters) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "authentication", m.Authentication)
 	populate(objectMap, "collection_name", m.CollectionName)
 	populate(objectMap, "database_name", m.DatabaseName)
-	populate(objectMap, "embedding_dependency", json.RawMessage(m.EmbeddingDependency))
+	populate(objectMap, "embedding_dependency", m.EmbeddingDependency)
 	populate(objectMap, "endpoint", m.Endpoint)
 	populate(objectMap, "fields_mapping", m.FieldsMapping)
 	populate(objectMap, "in_scope", m.InScope)
@@ -4497,9 +4497,7 @@ func (m *MongoDBChatExtensionParameters) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "DatabaseName", &m.DatabaseName)
 			delete(rawMsg, key)
 		case "embedding_dependency":
-			if string(val) != "null" {
-				m.EmbeddingDependency = val
-			}
+			err = unpopulate(val, "EmbeddingDependency", &m.EmbeddingDependency)
 			delete(rawMsg, key)
 		case "endpoint":
 			err = unpopulate(val, "Endpoint", &m.Endpoint)

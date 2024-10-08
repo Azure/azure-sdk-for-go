@@ -774,6 +774,23 @@ directive:
     transform: $["$ref"] = "#/definitions/ChatRequestToolMessageContent"; return $;
 ```
 
+Update MongoDBChatExtensionParameters.embedding_dependency to use its custom type.
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: |
+      $["MongoDBChatExtensionParametersEmbeddingDependency"] = {
+        "x-ms-external": true,
+        "type": "object", "properties": { "stub": { "type": "string" }}
+      };
+      return $;
+  - from: swagger-document
+    where: $.definitions.MongoDBChatExtensionParameters.properties.embedding_dependency
+    transform: $["$ref"] = "#/definitions/MongoDBChatExtensionParametersEmbeddingDependency"; return $;
+```
+
 *ChatCompletionsToolChoice
 
 ```yaml

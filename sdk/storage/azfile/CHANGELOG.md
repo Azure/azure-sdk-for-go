@@ -3,6 +3,7 @@
 ## 1.3.1-beta.2 (Unreleased)
 
 ### Features Added
+* Add Paid Burst IOPS/Bandwidth support for Premium Files.
 
 ### Breaking Changes
 

@@ -8,6 +8,7 @@ package internal_test
 
 import (
 	"bufio"
+	"encoding/json"
 	"fmt"
 	"io/fs"
 	"os"
@@ -120,6 +121,33 @@ func TestNoUntypedFields(t *testing.T) {
 	// 2. Add in the an autorest.md snippet in "## Unions" section. This will make it so the Go emitter will reference
 	//    your custom type. See 'MongoDBChatExtensionParametersEmbeddingDependency's block within there for a sample.
 	require.Empty(t, withByteFields, "no new []byte fields. If this test fails see the test for details on how to fix it.")
+}
+
+func TestAPIVersionIsBumped(t *testing.T) {
+	var openAPI *struct {
+		Info struct {
+			Version string
+		}
+	}
+
+	data, err := os.ReadFile("../testdata/generated/openapi.json")
+	require.NoError(t, err)
+
+	err = json.Unmarshal(data, &openAPI)
+	require.NoError(t, err)
+
+	t.Run("TestsUseNewAPIVersion", func(t *testing.T) {
+		// ex: const apiVersion = "2024-07-01-preview"
+		re := regexp.MustCompile(`const apiVersion = "(.+?)"`)
+
+		data, err := os.ReadFile("../custom_client.go")
+		require.NoError(t, err)
+
+		matches := re.FindStringSubmatch(string(data))
+		require.NotEmpty(t, matches)
+
+		require.Equal(t, openAPI.Info.Version, matches[1], "update the client_shared_test.go to use the API version we just generated from")
+	})
 }
 
 func getGoModelsWithByteSliceFields(goFile string, allowed map[string]bool) ([]string, error) {

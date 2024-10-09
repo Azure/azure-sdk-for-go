@@ -53,6 +53,7 @@ func getEndpointCredAndClientOptions(t *testing.T) (string, azcore.TokenCredenti
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 	options := azcore.ClientOptions{
+		Cloud:     testConfig.cloud,
 		Transport: transport,
 	}
 	return "https://" + testConfig.loginServer, testConfig.credential, options

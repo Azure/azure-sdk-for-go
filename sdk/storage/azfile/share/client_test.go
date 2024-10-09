@@ -334,6 +334,44 @@ func (s *ShareRecordedTestsSuite) TestShareCreateWithSnapshotVirtualDirectoryAcc
 	_require.Equal(response.EnableSnapshotVirtualDirectoryAccess, to.Ptr(true))
 }
 
+func (s *ShareRecordedTestsSuite) TestShareCreatePaidBursting() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountPremium)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareURL := "https://" + cred.AccountName() + ".file.core.windows.net/" + shareName
+	options := &share.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	shareClient, err := share.NewClientWithSharedKeyCredential(shareURL, cred, options)
+	_require.NoError(err)
+
+	createOptions := &share.CreateOptions{
+		PaidBurstingEnabled:           to.Ptr(true),
+		PaidBurstingMaxIops:           to.Ptr(int64(5000)),
+		PaidBurstingMaxBandwidthMibps: to.Ptr(int64(1000)),
+	}
+
+	resp, err := shareClient.Create(context.Background(), createOptions)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	_require.NoError(err)
+	_require.NotNil(resp.ETag)
+	_require.NotNil(resp.RequestID)
+
+	props, err := shareClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(props.ETag)
+	_require.Equal(props.LastModified.IsZero(), false)
+	_require.NotNil(props.RequestID)
+	_require.NotNil(props.Version)
+	_require.Equal(props.PaidBurstingEnabled, to.Ptr(true))
+	_require.Equal(*props.PaidBurstingMaxIops, int64(5000))
+	_require.Equal(*props.PaidBurstingMaxBandwidthMibps, int64(1000))
+}
+
 func (s *ShareRecordedTestsSuite) TestAuthenticationErrorDetailError() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -516,6 +554,7 @@ func (s *ShareRecordedTestsSuite) TestShareGetSetPropertiesOAuth() {
 	_require.Equal(sResp.Date.IsZero(), false)
 
 	properties, err := shareClientOAuth.GetProperties(context.Background(), nil)
+	_require.NotNil(err)
 	_require.NotNil(properties.ETag)
 	_require.Equal(properties.AccessTier, share.AccessTierCool)
 
@@ -542,6 +581,40 @@ func (s *ShareRecordedTestsSuite) TestShareGetSetPropertiesWithSnapshotVirtualDi
 	props, err := shareClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.Equal(*props.EnableSnapshotVirtualDirectoryAccess, true)
+}
+
+func (s *ShareRecordedTestsSuite) TestShareSetPropertiesPaidBursting() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountPremium, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	sResp, err := shareClient.SetProperties(context.Background(), &share.SetPropertiesOptions{
+		PaidBurstingEnabled:           to.Ptr(true),
+		PaidBurstingMaxIops:           to.Ptr(int64(5000)),
+		PaidBurstingMaxBandwidthMibps: to.Ptr(int64(1000)),
+	})
+	_require.NoError(err)
+	_require.NotNil(sResp.ETag)
+	_require.Equal(sResp.LastModified.IsZero(), false)
+	_require.NotNil(sResp.RequestID)
+	_require.NotNil(sResp.Version)
+	_require.Equal(sResp.Date.IsZero(), false)
+
+	props, err := shareClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(props.ETag)
+	_require.Equal(props.LastModified.IsZero(), false)
+	_require.NotNil(props.RequestID)
+	_require.NotNil(props.Version)
+	_require.Equal(props.Date.IsZero(), false)
+	_require.Equal(props.PaidBurstingEnabled, to.Ptr(true))
+	_require.Equal(*props.PaidBurstingMaxIops, int64(5000))
+	_require.Equal(*props.PaidBurstingMaxBandwidthMibps, int64(1000))
 }
 
 func (s *ShareRecordedTestsSuite) TestShareSetQuotaNegative() {

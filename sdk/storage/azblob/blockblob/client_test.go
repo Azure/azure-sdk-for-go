@@ -773,6 +773,9 @@ func (s *BlockBlobRecordedTestsSuite) TestStageBlockWithCRC64() {
 	testName := s.T().Name()
 	var b [8]byte
 	_, err := rand.Read(b[:])
+	if err != nil {
+		return
+	}
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 

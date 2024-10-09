@@ -1,10 +1,11 @@
 # Release History
 
-## 1.2.3 (Unreleased)
+## 1.2.3 (2024-10-09)
 
 ### Bugs Fixed
 
-- Fixed a bug where cancelling RenewMessageLock() calls could cause hangs in future RenewMessageLock calls. (PR#23400)
+- Fixed bug where cancelling management link calls, such GetEventHubProperties() or GetPartitionProperties, could result in blocked calls. (PR#23400)
+- Apply fix from @bcho for overflows with retries. (PR#TBD)
 
 ## 1.2.2 (2024-08-15)
 

@@ -423,7 +423,7 @@ func newReceivedMessage(amqpMsg *amqp.Message, receiver amqpwrap.AMQPReceiver) *
 		// }
 	}
 
-	if amqpMsg.DeliveryTag != nil && len(amqpMsg.DeliveryTag) > 0 {
+	if len(amqpMsg.DeliveryTag) > 0 {
 		lockToken, err := lockTokenFromMessageTag(amqpMsg)
 
 		if err == nil {

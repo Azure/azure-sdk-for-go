@@ -11,7 +11,6 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/stretchr/testify/require"
 )
@@ -33,28 +32,6 @@ func TestClient_GetChatCompletions_AzureOpenAI_ContentFilter_WithResponse(t *tes
 	customRequireNoError(t, err, true)
 
 	require.Equal(t, safeContentFilter, resp.ChatCompletions.Choices[0].ContentFilterResults)
-}
-
-// assertContentFilterError checks that the content filtering error came back from Azure OpenAI.
-func assertContentFilterError(t *testing.T, err error, requireAnnotations bool) {
-	var respErr *azcore.ResponseError
-	require.ErrorAs(t, err, &respErr)
-	require.Equal(t, "content_filter", respErr.ErrorCode)
-
-	require.Contains(t, respErr.Error(), "The response was filtered due to the prompt triggering")
-
-	// Azure also returns error information when content filtering happens.
-	var contentFilterErr *azopenai.ContentFilterResponseError
-	require.ErrorAs(t, err, &contentFilterErr)
-
-	if requireAnnotations {
-		require.NotNil(t, contentFilterErr.ContentFilterResults)
-
-		require.Equal(t, &azopenai.ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(azopenai.ContentFilterSeveritySafe)}, contentFilterErr.ContentFilterResults.Hate)
-		require.Equal(t, &azopenai.ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(azopenai.ContentFilterSeveritySafe)}, contentFilterErr.ContentFilterResults.SelfHarm)
-		require.Equal(t, &azopenai.ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(azopenai.ContentFilterSeveritySafe)}, contentFilterErr.ContentFilterResults.Sexual)
-		require.Equal(t, &azopenai.ContentFilterResult{Filtered: to.Ptr(true), Severity: to.Ptr(azopenai.ContentFilterSeverityMedium)}, contentFilterErr.ContentFilterResults.Violence)
-	}
 }
 
 var safeContentFilter = &azopenai.ContentFilterResultsForChoice{

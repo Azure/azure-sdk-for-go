@@ -161,11 +161,12 @@ type BearerTokenOptions struct {
 
 // AuthorizationHandler allows SDK developers to insert custom logic that runs when BearerTokenPolicy must authorize a request.
 type AuthorizationHandler struct {
-	// OnRequest is called each time the policy receives a request. Its func parameter authorizes the request with a token
-	// from the policy's given credential. Implementations that need to perform I/O should use the Request's context,
-	// available from Request.Raw().Context(). When OnRequest returns an error, the policy propagates that error and doesn't
-	// send the request. When OnRequest is nil, the policy follows its default behavior, authorizing the request with a
-	// token from its credential according to its configuration.
+	// OnRequest provides TokenRequestOptions the policy can use to acquire a token for a request. The policy calls OnRequest
+	// whenever it needs a token and may call it multiple times for the same request. Its func parameter authorizes the request
+	// with a token from the policy's credential. Implementations that need to perform I/O should use the Request's context,
+	// available from Request.Raw().Context(). When OnRequest returns an error, the policy propagates that error and doesn't send
+	// the request. When OnRequest is nil, the policy follows its default behavior, which is to authorize the request with a token
+	// from its credential according to its configuration.
 	OnRequest func(*Request, func(TokenRequestOptions) error) error
 
 	// OnChallenge allows clients to implement custom HTTP authentication challenge handling. BearerTokenPolicy calls it upon

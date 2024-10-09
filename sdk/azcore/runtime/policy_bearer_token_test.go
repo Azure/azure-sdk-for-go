@@ -393,65 +393,95 @@ func TestBearerTokenPolicy_CAEChallengeHandling(t *testing.T) {
 			expectedClaims: "{",
 		},
 	} {
-		t.Run(test.desc, func(t *testing.T) {
-			challengedToken := "needs more claims"
-			tokenWithClaims := "all the claims"
-
-			srv, close := mock.NewTLSServer()
-			defer close()
-			srv.AppendResponse(
-				mock.WithHeader(shared.HeaderWWWAuthenticate, test.challenge),
-				mock.WithPredicate(requireToken(t, challengedToken)),
-				mock.WithStatusCode(http.StatusUnauthorized),
+		for _, customOnRequest := range []bool{false, true} {
+			expectedTRO := policy.TokenRequestOptions{
+				Claims:    test.expectedClaims,
+				EnableCAE: true,
+				Scopes:    []string{scope},
+			}
+			var (
+				name      string
+				onRequest func(*policy.Request, func(policy.TokenRequestOptions) error) error
 			)
-			srv.AppendResponse() // when a response's predicate returns true, srv pops the following one
-			srv.AppendResponse(mock.WithPredicate(requireToken(t, tokenWithClaims)))
-			srv.AppendResponse()
-			srv.AppendResponse(mock.WithPredicate(requireToken(t, tokenWithClaims)))
-			srv.AppendResponse()
+			if customOnRequest {
+				name = "/custom OnRequest"
+				expectedTRO.Scopes = []string{"scope set by OnRequest"}
+				expectedTRO.TenantID = "tenant set by OnRequest"
+				onRequest = func(_ *policy.Request, authNZ func(policy.TokenRequestOptions) error) error {
+					tro := expectedTRO
+					// zero fields the policy should set so the test fails when it doesn't set them
+					tro.Claims = ""
+					tro.EnableCAE = false
+					return authNZ(tro)
+				}
+			}
+			t.Run(test.desc+name, func(t *testing.T) {
+				challengedToken := "needs more claims"
+				tokenWithClaims := "all the claims"
 
-			tkReqs := 0
-			cred := mockCredential{
-				getTokenImpl: func(_ context.Context, actual policy.TokenRequestOptions) (exported.AccessToken, error) {
-					require.True(t, actual.EnableCAE)
-					tkReqs += 1
-					tk := challengedToken
-					switch tkReqs {
-					case 1:
-						require.Empty(t, actual.Claims)
-					case 2:
-						tk = tokenWithClaims
-						require.Equal(t, test.expectedClaims, actual.Claims)
-					default:
-						t.Fatal("unexpected token request")
-					}
-					return exported.AccessToken{Token: tk, ExpiresOn: time.Now().Add(time.Hour).UTC()}, nil
-				},
-			}
-			b := NewBearerTokenPolicy(cred, []string{scope}, &policy.BearerTokenOptions{
-				AuthorizationHandler: policy.AuthorizationHandler{
-					OnChallenge: func(*policy.Request, *http.Response, func(policy.TokenRequestOptions) error) error {
-						t.Fatal("policy shouldn't call a client's challenge handler")
-						return nil
+				srv, close := mock.NewTLSServer()
+				defer close()
+				srv.AppendResponse(
+					mock.WithHeader(shared.HeaderWWWAuthenticate, test.challenge),
+					mock.WithPredicate(requireToken(t, challengedToken)),
+					mock.WithStatusCode(http.StatusUnauthorized),
+				)
+				srv.AppendResponse() // when a response's predicate returns true, srv pops the following one
+				srv.AppendResponse(mock.WithPredicate(requireToken(t, tokenWithClaims)))
+				srv.AppendResponse()
+				srv.AppendResponse(mock.WithPredicate(requireToken(t, tokenWithClaims)))
+				srv.AppendResponse()
+
+				tkReqs := 0
+				cred := mockCredential{
+					getTokenImpl: func(_ context.Context, actual policy.TokenRequestOptions) (exported.AccessToken, error) {
+						require.True(t, actual.EnableCAE, "policy should always request CAE-enabled tokens")
+						tkReqs += 1
+						tk := challengedToken
+						switch tkReqs {
+						case 1:
+							require.Empty(t, actual.Claims, "policy should specify claims only when handling a CAE challenge")
+						case 2:
+							tk = tokenWithClaims
+							require.Equal(t, expectedTRO, actual)
+						default:
+							t.Fatal("unexpected token request")
+						}
+						return exported.AccessToken{Token: tk, ExpiresOn: time.Now().Add(time.Hour).UTC()}, nil
 					},
-				},
-			})
-			pipeline := newTestPipeline(&policy.ClientOptions{PerRetryPolicies: []policy.Policy{b}, Transport: srv})
-			req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
-			require.NoError(t, err)
-			_, err = pipeline.Do(req)
-			if test.err == nil {
+				}
+				var scopes []string
+				if !customOnRequest {
+					cp := make([]string, len(expectedTRO.Scopes))
+					copy(cp, expectedTRO.Scopes)
+					scopes = cp
+				}
+				b := NewBearerTokenPolicy(cred, scopes, &policy.BearerTokenOptions{
+					AuthorizationHandler: policy.AuthorizationHandler{
+						OnChallenge: func(*policy.Request, *http.Response, func(policy.TokenRequestOptions) error) error {
+							t.Fatal("policy shouldn't call a client's challenge handler")
+							return nil
+						},
+						OnRequest: onRequest,
+					},
+				})
+				pipeline := newTestPipeline(&policy.ClientOptions{PerRetryPolicies: []policy.Policy{b}, Transport: srv})
+				req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 				require.NoError(t, err)
-				// send another request to verify the policy cached the token it acquired to satisfy the challenge
 				_, err = pipeline.Do(req)
-				require.NoError(t, err)
-			} else {
-				require.ErrorAs(t, err, &test.err)
-			}
-			if test.expectedClaims != "" {
-				require.Equal(t, 2, tkReqs, "policy should request a new token upon receiving the challenge")
-			}
-		})
+				if test.err == nil {
+					require.NoError(t, err)
+					// send another request to verify the policy cached the token it acquired to satisfy the challenge
+					_, err = pipeline.Do(req)
+					require.NoError(t, err)
+				} else {
+					require.ErrorAs(t, err, &test.err)
+				}
+				if test.expectedClaims != "" {
+					require.Equal(t, 2, tkReqs, "policy should request a new token upon receiving the challenge")
+				}
+			})
+		}
 	}
 
 	t.Run("consecutive challenges", func(t *testing.T) {

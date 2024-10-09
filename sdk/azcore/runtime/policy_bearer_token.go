@@ -59,8 +59,18 @@ func NewBearerTokenPolicy(cred exported.TokenCredential, scopes []string, opts *
 	if opts == nil {
 		opts = &policy.BearerTokenOptions{}
 	}
+	ah := opts.AuthorizationHandler
+	if ah.OnRequest == nil {
+		// Set a default OnRequest that simply requests a token with the given scopes. OnChallenge
+		// doesn't get a default so the policy can use a nil check to determine whether the caller
+		// provided an implementation.
+		ah.OnRequest = func(_ *policy.Request, authNZ func(policy.TokenRequestOptions) error) error {
+			// authNZ sets EnableCAE: true in all cases, no need to duplicate that here
+			return authNZ(policy.TokenRequestOptions{Scopes: scopes})
+		}
+	}
 	return &BearerTokenPolicy{
-		authzHandler: opts.AuthorizationHandler,
+		authzHandler: ah,
 		cred:         cred,
 		scopes:       scopes,
 		mainResource: temporal.NewResource(acquire),
@@ -95,12 +105,7 @@ func (b *BearerTokenPolicy) Do(req *policy.Request) (*http.Response, error) {
 		return nil, err
 	}
 
-	var err error
-	if b.authzHandler.OnRequest != nil {
-		err = b.authzHandler.OnRequest(req, b.authenticateAndAuthorize(req))
-	} else {
-		err = b.authenticateAndAuthorize(req)(policy.TokenRequestOptions{Scopes: b.scopes})
-	}
+	err := b.authzHandler.OnRequest(req, b.authenticateAndAuthorize(req))
 	if err != nil {
 		return nil, errorinfo.NonRetriableError(err)
 	}
@@ -129,11 +134,16 @@ func (b *BearerTokenPolicy) handleChallenge(req *policy.Request, res *http.Respo
 			}
 			switch {
 			case caeChallenge != nil:
-				tro := policy.TokenRequestOptions{
-					Claims: caeChallenge.params["claims"],
-					Scopes: b.scopes,
+				authNZ := func(tro policy.TokenRequestOptions) error {
+					// Take the TokenRequestOptions provided by OnRequest and add the challenge claims. The value
+					// will be empty at time of writing because CAE is the only feature involving claims. If in
+					// the future some client needs to specify unrelated claims, this function may need to merge
+					// them with the challenge claims.
+					tro.Claims = caeChallenge.params["claims"]
+					return b.authenticateAndAuthorize(req)(tro)
 				}
-				if err = b.authenticateAndAuthorize(req)(tro); err == nil {
+				err = b.authzHandler.OnRequest(req, authNZ)
+				if err == nil {
 					res, err = req.Next()
 				}
 			case b.authzHandler.OnChallenge != nil && !recursed:

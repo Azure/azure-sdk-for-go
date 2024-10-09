@@ -58,6 +58,10 @@ func TestNoUntypedFields(t *testing.T) {
 }
 
 func TestAllOYDModelsAreGenerated(t *testing.T) {
+	if _, err := os.Stat("../testdata/generated/openapi.json"); err != nil {
+		t.Skip("openapi.json isn't there, not doing codegen tests")
+	}
+
 	// we do a little autorest hackery to trim out models that aren't used, just check that we didn't
 	// miss something new. If we did, just add it to the "Keep only "Azure OpenAI On Your Data"
 	// models, or enhancements."
@@ -107,6 +111,10 @@ func TestAllOYDModelsAreGenerated(t *testing.T) {
 }
 
 func TestAPIVersionIsBumped(t *testing.T) {
+	if _, err := os.Stat("../testdata/generated/openapi.json"); err != nil {
+		t.Skip("openapi.json isn't there, not doing codegen tests")
+	}
+
 	var openAPI *struct {
 		Info struct {
 			Version string

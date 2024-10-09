@@ -5,7 +5,7 @@
 ### Bugs Fixed
 
 - Fixed bug where cancelling management link calls, such GetEventHubProperties() or GetPartitionProperties, could result in blocked calls. (PR#23400)
-- Apply fix from @bcho for overflows with retries. (PR#TBD)
+- Apply fix from @bcho for overflows with retries. (PR#23562)
 
 ## 1.2.2 (2024-08-15)
 

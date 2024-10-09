@@ -4,7 +4,7 @@
 
 ### Bugs Fixed
 
-- Apply fix from @bcho for overflows with retries. (PR#TBD)
+- Apply fix from @bcho for overflows with retries. (PR#23562)
 
 ## 1.7.2 (2024-09-11)
 

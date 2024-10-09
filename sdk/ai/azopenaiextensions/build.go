@@ -10,4 +10,7 @@
 //go:generate go mod tidy
 //go:generate goimports -w .
 
+// running the tests that check that generation went the way we expected to.
+//go:go test -v ./internal
+
 package azopenaiextensions

@@ -11,8 +11,8 @@ package azopenaiextensions
 // AzureChatExtensionConfigurationClassification provides polymorphic access to related types.
 // Call the interface's GetAzureChatExtensionConfiguration() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AzureChatExtensionConfiguration, *AzureCosmosDBChatExtensionConfiguration, *AzureMachineLearningIndexChatExtensionConfiguration,
-// - *AzureSearchChatExtensionConfiguration, *PineconeChatExtensionConfiguration
+// - *AzureChatExtensionConfiguration, *AzureCosmosDBChatExtensionConfiguration, *AzureSearchChatExtensionConfiguration, *ElasticsearchChatExtensionConfiguration,
+// - *MongoDBChatExtensionConfiguration, *PineconeChatExtensionConfiguration
 type AzureChatExtensionConfigurationClassification interface {
 	// GetAzureChatExtensionConfiguration returns the AzureChatExtensionConfiguration content of the underlying type.
 	GetAzureChatExtensionConfiguration() *AzureChatExtensionConfiguration
@@ -23,7 +23,8 @@ type AzureChatExtensionConfigurationClassification interface {
 // Use a type switch to determine the concrete type.  The possible types are:
 // - *OnYourDataAPIKeyAuthenticationOptions, *OnYourDataAccessTokenAuthenticationOptions, *OnYourDataAuthenticationOptions,
 // - *OnYourDataConnectionStringAuthenticationOptions, *OnYourDataEncodedAPIKeyAuthenticationOptions, *OnYourDataKeyAndKeyIDAuthenticationOptions,
-// - *OnYourDataSystemAssignedManagedIdentityAuthenticationOptions, *OnYourDataUserAssignedManagedIdentityAuthenticationOptions
+// - *OnYourDataSystemAssignedManagedIdentityAuthenticationOptions, *OnYourDataUserAssignedManagedIdentityAuthenticationOptions,
+// - *OnYourDataUsernameAndPasswordAuthenticationOptions
 type OnYourDataAuthenticationOptionsClassification interface {
 	// GetOnYourDataAuthenticationOptions returns the OnYourDataAuthenticationOptions content of the underlying type.
 	GetOnYourDataAuthenticationOptions() *OnYourDataAuthenticationOptions
@@ -41,8 +42,8 @@ type OnYourDataVectorSearchAuthenticationOptionsClassification interface {
 // OnYourDataVectorizationSourceClassification provides polymorphic access to related types.
 // Call the interface's GetOnYourDataVectorizationSource() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *OnYourDataDeploymentNameVectorizationSource, *OnYourDataEndpointVectorizationSource, *OnYourDataModelIDVectorizationSource,
-// - *OnYourDataVectorizationSource
+// - *OnYourDataDeploymentNameVectorizationSource, *OnYourDataEndpointVectorizationSource, *OnYourDataIntegratedVectorizationSource,
+// - *OnYourDataModelIDVectorizationSource, *OnYourDataVectorizationSource
 type OnYourDataVectorizationSourceClassification interface {
 	// GetOnYourDataVectorizationSource returns the OnYourDataVectorizationSource content of the underlying type.
 	GetOnYourDataVectorizationSource() *OnYourDataVectorizationSource

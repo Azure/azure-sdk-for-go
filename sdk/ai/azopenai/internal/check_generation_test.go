@@ -124,6 +124,10 @@ func TestNoUntypedFields(t *testing.T) {
 }
 
 func TestAPIVersionIsBumped(t *testing.T) {
+	if _, err := os.Stat("../testdata/generated/openapi.json"); err != nil {
+		t.Skip("openapi.json isn't there, not doing codegen tests")
+	}
+
 	var openAPI *struct {
 		Info struct {
 			Version string

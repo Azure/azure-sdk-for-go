@@ -91,9 +91,6 @@ func TestRetrier(t *testing.T) {
 			return errors.Is(err, context.Canceled)
 		}
 
-		customRetryOptions := fastRetryOptions
-		customRetryOptions.MaxRetries = 1
-
 		var actualAttempts []int32
 
 		maxRetries := int32(2)

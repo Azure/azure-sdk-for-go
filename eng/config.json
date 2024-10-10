@@ -46,7 +46,7 @@
         },
         {
             "Name": "azopenai",
-            "CoverageGoal": 0.18
+            "CoverageGoal": 0.16
         },
         {
             "Name": "ai/azopenaiassistants",

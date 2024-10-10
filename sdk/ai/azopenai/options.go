@@ -8,13 +8,33 @@
 
 package azopenai
 
+// AddUploadPartOptions contains the optional parameters for the Client.AddUploadPart method.
+type AddUploadPartOptions struct {
+	// placeholder for future optional parameters
+}
+
 // CancelBatchOptions contains the optional parameters for the Client.CancelBatch method.
 type CancelBatchOptions struct {
 	// placeholder for future optional parameters
 }
 
+// CancelUploadOptions contains the optional parameters for the Client.CancelUpload method.
+type CancelUploadOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CompleteUploadOptions contains the optional parameters for the Client.CompleteUpload method.
+type CompleteUploadOptions struct {
+	// placeholder for future optional parameters
+}
+
 // CreateBatchOptions contains the optional parameters for the Client.CreateBatch method.
 type CreateBatchOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CreateUploadOptions contains the optional parameters for the Client.CreateUpload method.
+type CreateUploadOptions struct {
 	// placeholder for future optional parameters
 }
 

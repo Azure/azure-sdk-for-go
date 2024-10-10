@@ -33,7 +33,7 @@ func TestClient_OpenAI_InvalidModel(t *testing.T) {
 	_, err := chatClient.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
 		Messages: []azopenai.ChatRequestMessageClassification{
 			&azopenai.ChatRequestSystemMessage{
-				Content: to.Ptr("hello"),
+				Content: azopenai.NewChatRequestSystemMessageContent("hello"),
 			},
 		},
 		DeploymentName: to.Ptr("non-existent-model"),
@@ -81,7 +81,7 @@ func TestClient_InsecureHTTPAllowed(t *testing.T) {
 	}()
 
 	url := <-urlCh
-	t.Logf(url)
+	t.Logf("InsecureURL: %s", url)
 
 	t.Run("DefaultsToHTTPSOnly", func(t *testing.T) {
 		client, err := azopenai.NewClientForOpenAI(url, azcore.NewKeyCredential("fake-key"), nil)

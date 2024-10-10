@@ -22,12 +22,12 @@ func unmarshalAzureChatExtensionConfigurationClassification(rawMsg json.RawMessa
 	switch m["type"] {
 	case string(AzureChatExtensionTypeAzureCosmosDB):
 		b = &AzureCosmosDBChatExtensionConfiguration{}
-	case string(AzureChatExtensionTypeAzureMachineLearningIndex):
-		b = &AzureMachineLearningIndexChatExtensionConfiguration{}
 	case string(AzureChatExtensionTypeAzureSearch):
 		b = &AzureSearchChatExtensionConfiguration{}
 	case string(AzureChatExtensionTypeElasticsearch):
 		b = &ElasticsearchChatExtensionConfiguration{}
+	case string(AzureChatExtensionTypeMongoDB):
+		b = &MongoDBChatExtensionConfiguration{}
 	case string(AzureChatExtensionTypePinecone):
 		b = &PineconeChatExtensionConfiguration{}
 	default:
@@ -70,6 +70,8 @@ func unmarshalChatCompletionsResponseFormatClassification(rawMsg json.RawMessage
 	switch m["type"] {
 	case "json_object":
 		b = &ChatCompletionsJSONResponseFormat{}
+	case "json_schema":
+		b = &ChatCompletionsJSONSchemaResponseFormat{}
 	case "text":
 		b = &ChatCompletionsTextResponseFormat{}
 	default:
@@ -238,6 +240,8 @@ func unmarshalOnYourDataAuthenticationOptionsClassification(rawMsg json.RawMessa
 		b = &OnYourDataSystemAssignedManagedIdentityAuthenticationOptions{}
 	case string(OnYourDataAuthenticationTypeUserAssignedManagedIdentity):
 		b = &OnYourDataUserAssignedManagedIdentityAuthenticationOptions{}
+	case string(OnYourDataAuthenticationTypeUsernameAndPassword):
+		b = &OnYourDataUsernameAndPasswordAuthenticationOptions{}
 	default:
 		b = &OnYourDataAuthenticationOptions{}
 	}
@@ -284,6 +288,8 @@ func unmarshalOnYourDataVectorizationSourceClassification(rawMsg json.RawMessage
 		b = &OnYourDataDeploymentNameVectorizationSource{}
 	case string(OnYourDataVectorizationSourceTypeEndpoint):
 		b = &OnYourDataEndpointVectorizationSource{}
+	case string(OnYourDataVectorizationSourceTypeIntegrated):
+		b = &OnYourDataIntegratedVectorizationSource{}
 	case string(OnYourDataVectorizationSourceTypeModelID):
 		b = &OnYourDataModelIDVectorizationSource{}
 	default:

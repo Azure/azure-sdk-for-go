@@ -137,13 +137,12 @@ type AzureChatExtensionType string
 const (
 	// AzureChatExtensionTypeAzureCosmosDB - Represents the use of Azure Cosmos DB as an Azure OpenAI chat extension.
 	AzureChatExtensionTypeAzureCosmosDB AzureChatExtensionType = "azure_cosmos_db"
-	// AzureChatExtensionTypeAzureMachineLearningIndex - Represents the use of Azure Machine Learning index as an Azure OpenAI
-	// chat extension.
-	AzureChatExtensionTypeAzureMachineLearningIndex AzureChatExtensionType = "azure_ml_index"
 	// AzureChatExtensionTypeAzureSearch - Represents the use of Azure AI Search as an Azure OpenAI chat extension.
 	AzureChatExtensionTypeAzureSearch AzureChatExtensionType = "azure_search"
 	// AzureChatExtensionTypeElasticsearch - Represents the use of Elasticsearch® index as an Azure OpenAI chat extension.
 	AzureChatExtensionTypeElasticsearch AzureChatExtensionType = "elasticsearch"
+	// AzureChatExtensionTypeMongoDB - Represents the use of a MongoDB chat extension.
+	AzureChatExtensionTypeMongoDB AzureChatExtensionType = "mongo_db"
 	// AzureChatExtensionTypePinecone - Represents the use of Pinecone index as an Azure OpenAI chat extension.
 	AzureChatExtensionTypePinecone AzureChatExtensionType = "pinecone"
 )
@@ -152,9 +151,9 @@ const (
 func PossibleAzureChatExtensionTypeValues() []AzureChatExtensionType {
 	return []AzureChatExtensionType{
 		AzureChatExtensionTypeAzureCosmosDB,
-		AzureChatExtensionTypeAzureMachineLearningIndex,
 		AzureChatExtensionTypeAzureSearch,
 		AzureChatExtensionTypeElasticsearch,
+		AzureChatExtensionTypeMongoDB,
 		AzureChatExtensionTypePinecone,
 	}
 }
@@ -401,6 +400,28 @@ func PossibleContentFilterSeverityValues() []ContentFilterSeverity {
 	}
 }
 
+// CreateUploadRequestPurpose - The intended purpose of the uploaded file.
+// Use 'assistants' for Assistants and Message files, 'vision' for Assistants image file inputs, 'batch' for Batch API, and
+// 'fine-tune' for Fine-tuning.
+type CreateUploadRequestPurpose string
+
+const (
+	CreateUploadRequestPurposeAssistants CreateUploadRequestPurpose = "assistants"
+	CreateUploadRequestPurposeBatch      CreateUploadRequestPurpose = "batch"
+	CreateUploadRequestPurposeFineTune   CreateUploadRequestPurpose = "fine-tune"
+	CreateUploadRequestPurposeVision     CreateUploadRequestPurpose = "vision"
+)
+
+// PossibleCreateUploadRequestPurposeValues returns the possible values for the CreateUploadRequestPurpose const type.
+func PossibleCreateUploadRequestPurposeValues() []CreateUploadRequestPurpose {
+	return []CreateUploadRequestPurpose{
+		CreateUploadRequestPurposeAssistants,
+		CreateUploadRequestPurposeBatch,
+		CreateUploadRequestPurposeFineTune,
+		CreateUploadRequestPurposeVision,
+	}
+}
+
 // ElasticsearchQueryType - The type of Elasticsearch® retrieval query that should be executed when using it as an Azure OpenAI
 // chat extension.
 type ElasticsearchQueryType string
@@ -644,6 +665,8 @@ const (
 	OnYourDataAuthenticationTypeSystemAssignedManagedIdentity OnYourDataAuthenticationType = "system_assigned_managed_identity"
 	// OnYourDataAuthenticationTypeUserAssignedManagedIdentity - Authentication via user-assigned managed identity.
 	OnYourDataAuthenticationTypeUserAssignedManagedIdentity OnYourDataAuthenticationType = "user_assigned_managed_identity"
+	// OnYourDataAuthenticationTypeUsernameAndPassword - Authentication via username and password.
+	OnYourDataAuthenticationTypeUsernameAndPassword OnYourDataAuthenticationType = "username_and_password"
 )
 
 // PossibleOnYourDataAuthenticationTypeValues returns the possible values for the OnYourDataAuthenticationType const type.
@@ -656,6 +679,7 @@ func PossibleOnYourDataAuthenticationTypeValues() []OnYourDataAuthenticationType
 		OnYourDataAuthenticationTypeKeyAndKeyID,
 		OnYourDataAuthenticationTypeSystemAssignedManagedIdentity,
 		OnYourDataAuthenticationTypeUserAssignedManagedIdentity,
+		OnYourDataAuthenticationTypeUsernameAndPassword,
 	}
 }
 
@@ -711,6 +735,8 @@ const (
 	// OnYourDataVectorizationSourceTypeEndpoint - Represents vectorization performed by public service calls to an Azure OpenAI
 	// embedding model.
 	OnYourDataVectorizationSourceTypeEndpoint OnYourDataVectorizationSourceType = "endpoint"
+	// OnYourDataVectorizationSourceTypeIntegrated - Represents the integrated vectorizer defined within the search resource.
+	OnYourDataVectorizationSourceTypeIntegrated OnYourDataVectorizationSourceType = "integrated"
 	// OnYourDataVectorizationSourceTypeModelID - Represents a specific embedding model ID as defined in the search service.
 	// Currently only supported by Elasticsearch®.
 	OnYourDataVectorizationSourceTypeModelID OnYourDataVectorizationSourceType = "model_id"
@@ -721,6 +747,7 @@ func PossibleOnYourDataVectorizationSourceTypeValues() []OnYourDataVectorization
 	return []OnYourDataVectorizationSourceType{
 		OnYourDataVectorizationSourceTypeDeploymentName,
 		OnYourDataVectorizationSourceTypeEndpoint,
+		OnYourDataVectorizationSourceTypeIntegrated,
 		OnYourDataVectorizationSourceTypeModelID,
 	}
 }
@@ -787,5 +814,51 @@ func PossibleSpeechVoiceValues() []SpeechVoice {
 		SpeechVoiceNova,
 		SpeechVoiceOnyx,
 		SpeechVoiceShimmer,
+	}
+}
+
+// UploadPurpose - The intended purpose of the file.
+type UploadPurpose string
+
+const (
+	UploadPurposeAssistants       UploadPurpose = "assistants"
+	UploadPurposeAssistantsOutput UploadPurpose = "assistants_output"
+	UploadPurposeBatch            UploadPurpose = "batch"
+	UploadPurposeBatchOutput      UploadPurpose = "batch_output"
+	UploadPurposeFineTune         UploadPurpose = "fine-tune"
+	UploadPurposeFineTuneResults  UploadPurpose = "fine-tune-results"
+	UploadPurposeVision           UploadPurpose = "vision"
+)
+
+// PossibleUploadPurposeValues returns the possible values for the UploadPurpose const type.
+func PossibleUploadPurposeValues() []UploadPurpose {
+	return []UploadPurpose{
+		UploadPurposeAssistants,
+		UploadPurposeAssistantsOutput,
+		UploadPurposeBatch,
+		UploadPurposeBatchOutput,
+		UploadPurposeFineTune,
+		UploadPurposeFineTuneResults,
+		UploadPurposeVision,
+	}
+}
+
+// UploadStatus - The status of the Upload.
+type UploadStatus string
+
+const (
+	UploadStatusCancelled UploadStatus = "cancelled"
+	UploadStatusCompleted UploadStatus = "completed"
+	UploadStatusExpired   UploadStatus = "expired"
+	UploadStatusPending   UploadStatus = "pending"
+)
+
+// PossibleUploadStatusValues returns the possible values for the UploadStatus const type.
+func PossibleUploadStatusValues() []UploadStatus {
+	return []UploadStatus{
+		UploadStatusCancelled,
+		UploadStatusCompleted,
+		UploadStatusExpired,
+		UploadStatusPending,
 	}
 }

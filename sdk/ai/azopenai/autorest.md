@@ -191,6 +191,7 @@ directive:
         'Paths1G1Yr9HDeploymentsDeploymentidAudioTranslationsPostRequestbodyContentMultipartFormDataSchema',
         'Paths1MlipaDeploymentsDeploymentidAudioTranscriptionsPostRequestbodyContentMultipartFormDataSchema',
         'Paths1Filz8PFilesPostRequestbodyContentMultipartFormDataSchema',
+        'Paths46Ul4XUploadsUploadIDPartsPostRequestbodyContentMultipartFormDataSchema',
         'BatchCreateResponse',
       ];
 
@@ -371,7 +372,8 @@ directive:
       return $
         .replace(/(func.* getAudio(?:Translation|Transcription)InternalCreateRequest\(.+?)options/g, "$1body")
         .replace(/(func.* uploadFileCreateRequest\(.+?)options/g, "$1body")
-        .replace(/runtime\.SetMultipartFormData\(.+?\)/sg, "setMultipartFormData(req, file, *body)");
+        .replace(/runtime\.SetMultipartFormData\(.+?\)/sg, "setMultipartFormData(req, file, *body)")
+        .replace(/(addUploadPartCreateRequest.+?)setMultipartFormData\(req, file, \*body\)/sg, "$1setMultipartFormData(req, data, noFilenameChange{})");
 
   # response type parsing (can be text/plain _or_ JSON)
   - from: client.go
@@ -637,6 +639,8 @@ directive:
         `}\n`);
 ```
 
+Embedding has two ways of coming back - base64 or already decoded into floats. This has to be handled manually.
+
 ```yaml
 directive:
   - from: models_serde.go
@@ -718,6 +722,74 @@ directive:
   - from: swagger-document
     where: $.definitions.ChatRequestUserMessage.properties.content
     transform: $["$ref"] = "#/definitions/ChatRequestUserMessageContent"; return $;
+```
+
+Update ChatRequestAssistantMessage.Content to use its custom type.
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: |
+      $["ChatRequestAssistantMessageContent"] = {
+        "x-ms-external": true,
+        "type": "object", "properties": { "stub": { "type": "string" }}
+      };
+      return $;
+  - from: swagger-document
+    where: $.definitions.ChatRequestAssistantMessage.properties.content
+    transform: $["$ref"] = "#/definitions/ChatRequestAssistantMessageContent"; return $;
+```
+
+Update ChatRequestSystemMessage.content to use its custom type.
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: |
+      $["ChatRequestSystemMessageContent"] = {
+        "x-ms-external": true,
+        "type": "object", "properties": { "stub": { "type": "string" }}
+      };
+      return $;
+  - from: swagger-document
+    where: $.definitions.ChatRequestSystemMessage.properties.content
+    transform: $["$ref"] = "#/definitions/ChatRequestSystemMessageContent"; return $;
+```
+
+Update ChatRequestToolMessage.content to use its custom type.
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: |
+      $["ChatRequestToolMessageContent"] = {
+        "x-ms-external": true,
+        "type": "object", "properties": { "stub": { "type": "string" }}
+      };
+      return $;
+  - from: swagger-document
+    where: $.definitions.ChatRequestToolMessage.properties.content
+    transform: $["$ref"] = "#/definitions/ChatRequestToolMessageContent"; return $;
+```
+
+Update MongoDBChatExtensionParameters.embedding_dependency to use its custom type.
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: |
+      $["MongoDBChatExtensionParametersEmbeddingDependency"] = {
+        "x-ms-external": true,
+        "type": "object", "properties": { "stub": { "type": "string" }}
+      };
+      return $;
+  - from: swagger-document
+    where: $.definitions.MongoDBChatExtensionParameters.properties.embedding_dependency
+    transform: $["$ref"] = "#/definitions/MongoDBChatExtensionParametersEmbeddingDependency"; return $;
 ```
 
 *ChatCompletionsToolChoice
@@ -828,4 +900,16 @@ directive:
   - from: swagger-document
     where: $.paths['/batches'].get.responses['200'].schema
     transform: $["x-ms-client-name"] = "ListBatchesPage"; return $;
+```
+
+
+## Doc updates
+
+Hoisting the description for an anonymous type.
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.ChatCompletionsJsonSchemaResponseFormat.properties.json_schema
+    transform: $.description = $.properties.description.description; return $;
 ```

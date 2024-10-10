@@ -1,5 +1,26 @@
 # Release History
 
+## 0.7.0 (2024-10-10)
+
+### Features Added
+
+- MongoDBChatExtensionConfiguration has been added as an "On Your Data" data source.
+- Several types now have union types for their content or dependency information:
+  - ChatRequestAssistantMessage.Content is now a ChatRequestAssistantMessageContent.
+  - ChatRequestSystemMessage.Content is now a ChatRequestSystemMessageContent.
+  - ChatRequestToolMessage.Content is now a ChatRequestToolMessageContent.
+  - MongoDBChatExtensionParameters.EmbeddingDependency is now a MongoDBChatExtensionParametersEmbeddingDependency
+
+### Breaking Changes
+
+- FunctionDefinition has been renamed to ChatCompletionsFunctionToolDefinitionFunction.
+- AzureCosmosDBChatExtensionParameters.RoleInformation has been removed.
+- AzureMachineLearningIndexChatExtension and related types have been removed.
+- Several types now have union types for their content or dependency information:
+  - ChatRequestAssistantMessage.Content is now a ChatRequestAssistantMessageContent.
+  - ChatRequestSystemMessage.Content is now a ChatRequestSystemMessageContent.
+  - ChatRequestToolMessage.Content is now a ChatRequestToolMessageContent.
+
 ## 0.6.2 (2024-09-10)
 
 ### Features Added

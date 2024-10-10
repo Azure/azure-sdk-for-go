@@ -42,12 +42,12 @@ func TestGetChatCompletions_usingFunctions(t *testing.T) {
 			DeploymentName: &deploymentName,
 			Messages: []azopenai.ChatRequestMessageClassification{
 				&azopenai.ChatRequestAssistantMessage{
-					Content: to.Ptr("What's the weather like in Boston, MA, in celsius?"),
+					Content: azopenai.NewChatRequestAssistantMessageContent("What's the weather like in Boston, MA, in celsius?"),
 				},
 			},
 			Tools: []azopenai.ChatCompletionsToolDefinitionClassification{
 				&azopenai.ChatCompletionsFunctionToolDefinition{
-					Function: &azopenai.FunctionDefinition{
+					Function: &azopenai.ChatCompletionsFunctionToolDefinitionFunction{
 						Name:        to.Ptr("get_current_weather"),
 						Description: to.Ptr("Get the current weather in a given location"),
 						Parameters:  parametersJSON,
@@ -149,7 +149,7 @@ func TestGetChatCompletions_usingFunctions_legacy(t *testing.T) {
 			DeploymentName: &epm.Model,
 			Messages: []azopenai.ChatRequestMessageClassification{
 				&azopenai.ChatRequestAssistantMessage{
-					Content: to.Ptr("What's the weather like in Boston, MA, in celsius?"),
+					Content: azopenai.NewChatRequestAssistantMessageContent("What's the weather like in Boston, MA, in celsius?"),
 				},
 			},
 			FunctionCall: &azopenai.ChatCompletionsOptionsFunctionCall{
@@ -220,12 +220,12 @@ func TestGetChatCompletions_usingFunctions_streaming(t *testing.T) {
 			DeploymentName: &epm.Model,
 			Messages: []azopenai.ChatRequestMessageClassification{
 				&azopenai.ChatRequestAssistantMessage{
-					Content: to.Ptr("What's the weather like in Boston, MA, in celsius?"),
+					Content: azopenai.NewChatRequestAssistantMessageContent("What's the weather like in Boston, MA, in celsius?"),
 				},
 			},
 			Tools: []azopenai.ChatCompletionsToolDefinitionClassification{
 				&azopenai.ChatCompletionsFunctionToolDefinition{
-					Function: &azopenai.FunctionDefinition{
+					Function: &azopenai.ChatCompletionsFunctionToolDefinitionFunction{
 						Name:        to.Ptr("get_current_weather"),
 						Description: to.Ptr("Get the current weather in a given location"),
 						Parameters:  parametersJSON,

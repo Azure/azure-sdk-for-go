@@ -10,7 +10,7 @@ package armservicelinker
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicelinker/armservicelinker"
-	moduleVersion = "v2.0.0-beta.1"
+	moduleVersion = "v2.0.0-beta.2"
 )
 
 type AccessKeyPermissions string
@@ -118,12 +118,14 @@ func PossibleAuthTypeValues() []AuthType {
 type AzureResourceType string
 
 const (
-	AzureResourceTypeKeyVault AzureResourceType = "KeyVault"
+	AzureResourceTypeAppConfig AzureResourceType = "AppConfig"
+	AzureResourceTypeKeyVault  AzureResourceType = "KeyVault"
 )
 
 // PossibleAzureResourceTypeValues returns the possible values for the AzureResourceType const type.
 func PossibleAzureResourceTypeValues() []AzureResourceType {
 	return []AzureResourceType{
+		AzureResourceTypeAppConfig,
 		AzureResourceTypeKeyVault,
 	}
 }
@@ -360,6 +362,7 @@ const (
 	TargetServiceTypeAzureResource            TargetServiceType = "AzureResource"
 	TargetServiceTypeConfluentBootstrapServer TargetServiceType = "ConfluentBootstrapServer"
 	TargetServiceTypeConfluentSchemaRegistry  TargetServiceType = "ConfluentSchemaRegistry"
+	TargetServiceTypeFabricPlatform           TargetServiceType = "FabricPlatform"
 	TargetServiceTypeSelfHostedServer         TargetServiceType = "SelfHostedServer"
 )
 
@@ -369,6 +372,7 @@ func PossibleTargetServiceTypeValues() []TargetServiceType {
 		TargetServiceTypeAzureResource,
 		TargetServiceTypeConfluentBootstrapServer,
 		TargetServiceTypeConfluentSchemaRegistry,
+		TargetServiceTypeFabricPlatform,
 		TargetServiceTypeSelfHostedServer,
 	}
 }

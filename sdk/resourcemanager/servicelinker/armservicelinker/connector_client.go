@@ -43,7 +43,7 @@ func NewConnectorClient(credential azcore.TokenCredential, options *arm.ClientOp
 // BeginCreateDryrun - create a dryrun job to do necessary check before actual creation
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01-preview
+// Generated from API version 2024-07-01-preview
 //   - subscriptionID - The ID of the target subscription.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - location - The name of Azure region.
@@ -72,7 +72,7 @@ func (client *ConnectorClient) BeginCreateDryrun(ctx context.Context, subscripti
 // CreateDryrun - create a dryrun job to do necessary check before actual creation
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01-preview
+// Generated from API version 2024-07-01-preview
 func (client *ConnectorClient) createDryrun(ctx context.Context, subscriptionID string, resourceGroupName string, location string, dryrunName string, parameters DryrunResource, options *ConnectorClientBeginCreateDryrunOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConnectorClient.BeginCreateDryrun"
@@ -118,7 +118,7 @@ func (client *ConnectorClient) createDryrunCreateRequest(ctx context.Context, su
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01-preview")
+	reqQP.Set("api-version", "2024-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -130,7 +130,7 @@ func (client *ConnectorClient) createDryrunCreateRequest(ctx context.Context, su
 // BeginCreateOrUpdate - Create or update Connector resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01-preview
+// Generated from API version 2024-07-01-preview
 //   - subscriptionID - The ID of the target subscription.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - location - The name of Azure region.
@@ -159,7 +159,7 @@ func (client *ConnectorClient) BeginCreateOrUpdate(ctx context.Context, subscrip
 // CreateOrUpdate - Create or update Connector resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01-preview
+// Generated from API version 2024-07-01-preview
 func (client *ConnectorClient) createOrUpdate(ctx context.Context, subscriptionID string, resourceGroupName string, location string, connectorName string, parameters LinkerResource, options *ConnectorClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConnectorClient.BeginCreateOrUpdate"
@@ -205,7 +205,7 @@ func (client *ConnectorClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01-preview")
+	reqQP.Set("api-version", "2024-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -217,7 +217,7 @@ func (client *ConnectorClient) createOrUpdateCreateRequest(ctx context.Context, 
 // BeginDelete - Delete a Connector.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01-preview
+// Generated from API version 2024-07-01-preview
 //   - subscriptionID - The ID of the target subscription.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - location - The name of Azure region.
@@ -244,7 +244,7 @@ func (client *ConnectorClient) BeginDelete(ctx context.Context, subscriptionID s
 // Delete - Delete a Connector.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01-preview
+// Generated from API version 2024-07-01-preview
 func (client *ConnectorClient) deleteOperation(ctx context.Context, subscriptionID string, resourceGroupName string, location string, connectorName string, options *ConnectorClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConnectorClient.BeginDelete"
@@ -290,7 +290,7 @@ func (client *ConnectorClient) deleteCreateRequest(ctx context.Context, subscrip
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01-preview")
+	reqQP.Set("api-version", "2024-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -299,7 +299,7 @@ func (client *ConnectorClient) deleteCreateRequest(ctx context.Context, subscrip
 // DeleteDryrun - delete a dryrun job
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01-preview
+// Generated from API version 2024-07-01-preview
 //   - subscriptionID - The ID of the target subscription.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - location - The name of Azure region.
@@ -350,7 +350,7 @@ func (client *ConnectorClient) deleteDryrunCreateRequest(ctx context.Context, su
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01-preview")
+	reqQP.Set("api-version", "2024-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -359,7 +359,7 @@ func (client *ConnectorClient) deleteDryrunCreateRequest(ctx context.Context, su
 // GenerateConfigurations - Generate configurations for a Connector.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01-preview
+// Generated from API version 2024-07-01-preview
 //   - subscriptionID - The ID of the target subscription.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - location - The name of Azure region.
@@ -412,7 +412,7 @@ func (client *ConnectorClient) generateConfigurationsCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01-preview")
+	reqQP.Set("api-version", "2024-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
@@ -436,7 +436,7 @@ func (client *ConnectorClient) generateConfigurationsHandleResponse(resp *http.R
 // Get - Returns Connector resource for a given name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01-preview
+// Generated from API version 2024-07-01-preview
 //   - subscriptionID - The ID of the target subscription.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - location - The name of Azure region.
@@ -488,7 +488,7 @@ func (client *ConnectorClient) getCreateRequest(ctx context.Context, subscriptio
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01-preview")
+	reqQP.Set("api-version", "2024-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -506,7 +506,7 @@ func (client *ConnectorClient) getHandleResponse(resp *http.Response) (Connector
 // GetDryrun - get a dryrun job
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01-preview
+// Generated from API version 2024-07-01-preview
 //   - subscriptionID - The ID of the target subscription.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - location - The name of Azure region.
@@ -558,7 +558,7 @@ func (client *ConnectorClient) getDryrunCreateRequest(ctx context.Context, subsc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01-preview")
+	reqQP.Set("api-version", "2024-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -576,7 +576,7 @@ func (client *ConnectorClient) getDryrunHandleResponse(resp *http.Response) (Con
 // NewListPager - Returns list of connector which connects to the resource, which supports to config the target service during
 // the resource provision.
 //
-// Generated from API version 2023-04-01-preview
+// Generated from API version 2024-07-01-preview
 //   - subscriptionID - The ID of the target subscription.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - location - The name of Azure region.
@@ -624,7 +624,7 @@ func (client *ConnectorClient) listCreateRequest(ctx context.Context, subscripti
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01-preview")
+	reqQP.Set("api-version", "2024-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -641,7 +641,7 @@ func (client *ConnectorClient) listHandleResponse(resp *http.Response) (Connecto
 
 // NewListDryrunPager - list dryrun jobs
 //
-// Generated from API version 2023-04-01-preview
+// Generated from API version 2024-07-01-preview
 //   - subscriptionID - The ID of the target subscription.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - location - The name of Azure region.
@@ -690,7 +690,7 @@ func (client *ConnectorClient) listDryrunCreateRequest(ctx context.Context, subs
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01-preview")
+	reqQP.Set("api-version", "2024-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -708,7 +708,7 @@ func (client *ConnectorClient) listDryrunHandleResponse(resp *http.Response) (Co
 // BeginUpdate - Operation to update an existing Connector.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01-preview
+// Generated from API version 2024-07-01-preview
 //   - subscriptionID - The ID of the target subscription.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - location - The name of Azure region.
@@ -736,7 +736,7 @@ func (client *ConnectorClient) BeginUpdate(ctx context.Context, subscriptionID s
 // Update - Operation to update an existing Connector.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01-preview
+// Generated from API version 2024-07-01-preview
 func (client *ConnectorClient) update(ctx context.Context, subscriptionID string, resourceGroupName string, location string, connectorName string, parameters LinkerPatch, options *ConnectorClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConnectorClient.BeginUpdate"
@@ -782,7 +782,7 @@ func (client *ConnectorClient) updateCreateRequest(ctx context.Context, subscrip
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01-preview")
+	reqQP.Set("api-version", "2024-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -794,7 +794,7 @@ func (client *ConnectorClient) updateCreateRequest(ctx context.Context, subscrip
 // BeginUpdateDryrun - update a dryrun job to do necessary check before actual creation
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01-preview
+// Generated from API version 2024-07-01-preview
 //   - subscriptionID - The ID of the target subscription.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - location - The name of Azure region.
@@ -823,7 +823,7 @@ func (client *ConnectorClient) BeginUpdateDryrun(ctx context.Context, subscripti
 // UpdateDryrun - update a dryrun job to do necessary check before actual creation
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01-preview
+// Generated from API version 2024-07-01-preview
 func (client *ConnectorClient) updateDryrun(ctx context.Context, subscriptionID string, resourceGroupName string, location string, dryrunName string, parameters DryrunPatch, options *ConnectorClientBeginUpdateDryrunOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConnectorClient.BeginUpdateDryrun"
@@ -869,7 +869,7 @@ func (client *ConnectorClient) updateDryrunCreateRequest(ctx context.Context, su
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01-preview")
+	reqQP.Set("api-version", "2024-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -881,7 +881,7 @@ func (client *ConnectorClient) updateDryrunCreateRequest(ctx context.Context, su
 // BeginValidate - Validate a Connector.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01-preview
+// Generated from API version 2024-07-01-preview
 //   - subscriptionID - The ID of the target subscription.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - location - The name of Azure region.
@@ -908,7 +908,7 @@ func (client *ConnectorClient) BeginValidate(ctx context.Context, subscriptionID
 // Validate - Validate a Connector.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01-preview
+// Generated from API version 2024-07-01-preview
 func (client *ConnectorClient) validate(ctx context.Context, subscriptionID string, resourceGroupName string, location string, connectorName string, options *ConnectorClientBeginValidateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConnectorClient.BeginValidate"
@@ -954,7 +954,7 @@ func (client *ConnectorClient) validateCreateRequest(ctx context.Context, subscr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01-preview")
+	reqQP.Set("api-version", "2024-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

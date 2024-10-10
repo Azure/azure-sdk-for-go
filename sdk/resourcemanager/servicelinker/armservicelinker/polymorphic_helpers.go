@@ -55,6 +55,8 @@ func unmarshalAzureResourcePropertiesBaseClassification(rawMsg json.RawMessage) 
 	}
 	var b AzureResourcePropertiesBaseClassification
 	switch m["type"] {
+	case string(AzureResourceTypeAppConfig):
+		b = &AzureAppConfigProperties{}
 	case string(AzureResourceTypeKeyVault):
 		b = &AzureKeyVaultProperties{}
 	default:
@@ -170,6 +172,8 @@ func unmarshalTargetServiceBaseClassification(rawMsg json.RawMessage) (TargetSer
 		b = &ConfluentBootstrapServer{}
 	case string(TargetServiceTypeConfluentSchemaRegistry):
 		b = &ConfluentSchemaRegistry{}
+	case string(TargetServiceTypeFabricPlatform):
+		b = &FabricPlatform{}
 	case string(TargetServiceTypeSelfHostedServer):
 		b = &SelfHostedServer{}
 	default:

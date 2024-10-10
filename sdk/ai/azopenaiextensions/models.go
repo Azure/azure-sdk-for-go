@@ -52,6 +52,9 @@ type AzureChatExtensionDataSourceResponseCitation struct {
 	// The file path of the citation.
 	Filepath *string
 
+	// The rerank score of the retrieved document.
+	RerankScore *float64
+
 	// The title of the citation.
 	Title *string
 
@@ -180,11 +183,6 @@ type AzureCosmosDBChatExtensionParameters struct {
 	// will decide the number of queries to send.
 	MaxSearchQueries *int32
 
-	// Give the model instructions about how it should behave and any context it should reference when generating a response.
-	// You can describe the assistant's personality and tell it how to format responses.
-	// There's a 100 token limit for it, and it counts against the overall token limit.
-	RoleInformation *string
-
 	// The configured strictness of the search relevance filtering. The higher of strictness, the higher of the precision but
 	// lower recall of the answer.
 	Strictness *int32
@@ -256,73 +254,6 @@ type AzureGroundingEnhancementLineSpan struct {
 	Text *string
 }
 
-// AzureMachineLearningIndexChatExtensionConfiguration - A specific representation of configurable options for Azure Machine
-// Learning vector index when using it as an Azure OpenAI chat extension.
-type AzureMachineLearningIndexChatExtensionConfiguration struct {
-	// REQUIRED; The parameters for the Azure Machine Learning vector index chat extension.
-	Parameters *AzureMachineLearningIndexChatExtensionParameters
-
-	// REQUIRED; The label for the type of an Azure chat extension. This typically corresponds to a matching Azure resource. Azure
-	// chat extensions are only compatible with Azure OpenAI.
-	Type *AzureChatExtensionType
-}
-
-// GetAzureChatExtensionConfiguration implements the AzureChatExtensionConfigurationClassification interface for type AzureMachineLearningIndexChatExtensionConfiguration.
-func (a *AzureMachineLearningIndexChatExtensionConfiguration) GetAzureChatExtensionConfiguration() *AzureChatExtensionConfiguration {
-	return &AzureChatExtensionConfiguration{
-		Type: a.Type,
-	}
-}
-
-// AzureMachineLearningIndexChatExtensionParameters - Parameters for the Azure Machine Learning vector index chat extension.
-// The supported authentication types are AccessToken, SystemAssignedManagedIdentity and UserAssignedManagedIdentity.
-type AzureMachineLearningIndexChatExtensionParameters struct {
-	// REQUIRED; The Azure Machine Learning vector index name.
-	Name *string
-
-	// REQUIRED; The resource ID of the Azure Machine Learning project.
-	ProjectResourceID *string
-
-	// REQUIRED; The version of the Azure Machine Learning vector index.
-	Version *string
-
-	// If specified as true, the system will allow partial search results to be used and the request fails if all the queries
-	// fail. If not specified, or specified as false, the request will fail if any
-	// search query fails.
-	AllowPartialResult *bool
-
-	// The authentication method to use when accessing the defined data source. Each data source type supports a specific set
-	// of available authentication methods; please see the documentation of the data
-	// source for supported mechanisms. If not otherwise provided, On Your Data will attempt to use System Managed Identity (default
-	// credential) authentication.
-	Authentication OnYourDataAuthenticationOptionsClassification
-
-	// Search filter. Only supported if the Azure Machine Learning vector index is of type AzureSearch.
-	Filter *string
-
-	// Whether queries should be restricted to use of indexed data.
-	InScope *bool
-
-	// The included properties of the output context. If not specified, the default value is citations and intent.
-	IncludeContexts []OnYourDataContextProperty
-
-	// The max number of rewritten queries should be send to search provider for one user message. If not specified, the system
-	// will decide the number of queries to send.
-	MaxSearchQueries *int32
-
-	// Give the model instructions about how it should behave and any context it should reference when generating a response.
-	// You can describe the assistant's personality and tell it how to format responses.
-	// There's a 100 token limit for it, and it counts against the overall token limit.
-	RoleInformation *string
-
-	// The configured strictness of the search relevance filtering. The higher of strictness, the higher of the precision but
-	// lower recall of the answer.
-	Strictness *int32
-
-	// The configured top number of documents to feature for the configured query.
-	TopNDocuments *int32
-}
-
 // AzureSearchChatExtensionConfiguration - A specific representation of configurable options for Azure Search when using it
 // as an Azure OpenAI chat extension.
 type AzureSearchChatExtensionConfiguration struct {
@@ -382,11 +313,6 @@ type AzureSearchChatExtensionParameters struct {
 
 	// The query type to use with Azure Cognitive Search.
 	QueryType *AzureSearchQueryType
-
-	// Give the model instructions about how it should behave and any context it should reference when generating a response.
-	// You can describe the assistant's personality and tell it how to format responses.
-	// There's a 100 token limit for it, and it counts against the overall token limit.
-	RoleInformation *string
 
 	// The additional semantic configuration for the query.
 	SemanticConfiguration *string
@@ -558,6 +484,93 @@ type ContentFilterResultsForPrompt struct {
 	PromptIndex *int32
 }
 
+// ElasticsearchChatExtensionConfiguration - A specific representation of configurable options for Elasticsearch when using
+// it as an Azure OpenAI chat extension.
+type ElasticsearchChatExtensionConfiguration struct {
+	// REQUIRED; The parameters to use when configuring Elasticsearch®.
+	Parameters *ElasticsearchChatExtensionParameters
+
+	// REQUIRED; The label for the type of an Azure chat extension. This typically corresponds to a matching Azure resource. Azure
+	// chat extensions are only compatible with Azure OpenAI.
+	Type *AzureChatExtensionType
+}
+
+// GetAzureChatExtensionConfiguration implements the AzureChatExtensionConfigurationClassification interface for type ElasticsearchChatExtensionConfiguration.
+func (e *ElasticsearchChatExtensionConfiguration) GetAzureChatExtensionConfiguration() *AzureChatExtensionConfiguration {
+	return &AzureChatExtensionConfiguration{
+		Type: e.Type,
+	}
+}
+
+// ElasticsearchChatExtensionParameters - Parameters to use when configuring Elasticsearch® as an Azure OpenAI chat extension.
+// The supported authentication types are KeyAndKeyId and EncodedAPIKey.
+type ElasticsearchChatExtensionParameters struct {
+	// REQUIRED; The endpoint of Elasticsearch®.
+	Endpoint *string
+
+	// REQUIRED; The index name of Elasticsearch®.
+	IndexName *string
+
+	// If specified as true, the system will allow partial search results to be used and the request fails if all the queries
+	// fail. If not specified, or specified as false, the request will fail if any
+	// search query fails.
+	AllowPartialResult *bool
+
+	// The authentication method to use when accessing the defined data source. Each data source type supports a specific set
+	// of available authentication methods; please see the documentation of the data
+	// source for supported mechanisms. If not otherwise provided, On Your Data will attempt to use System Managed Identity (default
+	// credential) authentication.
+	Authentication OnYourDataAuthenticationOptionsClassification
+
+	// The embedding dependency for vector search.
+	EmbeddingDependency OnYourDataVectorizationSourceClassification
+
+	// The index field mapping options of Elasticsearch®.
+	FieldsMapping *ElasticsearchIndexFieldMappingOptions
+
+	// Whether queries should be restricted to use of indexed data.
+	InScope *bool
+
+	// The included properties of the output context. If not specified, the default value is citations and intent.
+	IncludeContexts []OnYourDataContextProperty
+
+	// The max number of rewritten queries should be send to search provider for one user message. If not specified, the system
+	// will decide the number of queries to send.
+	MaxSearchQueries *int32
+
+	// The query type of Elasticsearch®.
+	QueryType *ElasticsearchQueryType
+
+	// The configured strictness of the search relevance filtering. The higher of strictness, the higher of the precision but
+	// lower recall of the answer.
+	Strictness *int32
+
+	// The configured top number of documents to feature for the configured query.
+	TopNDocuments *int32
+}
+
+// ElasticsearchIndexFieldMappingOptions - Optional settings to control how fields are processed when using a configured Elasticsearch®
+// resource.
+type ElasticsearchIndexFieldMappingOptions struct {
+	// The names of index fields that should be treated as content.
+	ContentFields []string
+
+	// The separator pattern that content fields should use.
+	ContentFieldsSeparator *string
+
+	// The name of the index field to use as a filepath.
+	FilepathField *string
+
+	// The name of the index field to use as a title.
+	TitleField *string
+
+	// The name of the index field to use as a URL.
+	URLField *string
+
+	// The names of fields that represent vector data.
+	VectorFields []string
+}
+
 // Error - The error object.
 type Error struct {
 	// REQUIRED; One of a server-defined set of error codes.
@@ -565,6 +578,91 @@ type Error struct {
 
 	// REQUIRED; A human-readable representation of the error.
 	Message *string
+}
+
+// MongoDBChatExtensionConfiguration - A specific representation of configurable options for a MongoDB chat extension configuration.
+type MongoDBChatExtensionConfiguration struct {
+	// REQUIRED; The parameters for the MongoDB chat extension.
+	Parameters *MongoDBChatExtensionParameters
+
+	// REQUIRED; The label for the type of an Azure chat extension. This typically corresponds to a matching Azure resource. Azure
+	// chat extensions are only compatible with Azure OpenAI.
+	Type *AzureChatExtensionType
+}
+
+// GetAzureChatExtensionConfiguration implements the AzureChatExtensionConfigurationClassification interface for type MongoDBChatExtensionConfiguration.
+func (m *MongoDBChatExtensionConfiguration) GetAzureChatExtensionConfiguration() *AzureChatExtensionConfiguration {
+	return &AzureChatExtensionConfiguration{
+		Type: m.Type,
+	}
+}
+
+// MongoDBChatExtensionParameters - Parameters for the MongoDB chat extension. The supported authentication types are AccessToken,
+// SystemAssignedManagedIdentity and UserAssignedManagedIdentity.
+type MongoDBChatExtensionParameters struct {
+	// REQUIRED; The app name for MongoDB.
+	AppName *string
+
+	// REQUIRED; The collection name for MongoDB.
+	CollectionName *string
+
+	// REQUIRED; The database name for MongoDB.
+	DatabaseName *string
+
+	// REQUIRED; The vectorization source to use with the MongoDB chat extension.
+	EmbeddingDependency *MongoDBChatExtensionParametersEmbeddingDependency
+
+	// REQUIRED; The endpoint name for MongoDB.
+	Endpoint *string
+
+	// REQUIRED; Field mappings to apply to data used by the MongoDB data source. Note that content and vector field mappings
+	// are required for MongoDB.
+	FieldsMapping *MongoDBChatExtensionParametersFieldsMapping
+
+	// REQUIRED; The name of the MongoDB index.
+	IndexName *string
+
+	// If specified as true, the system will allow partial search results to be used and the request fails if all the queries
+	// fail. If not specified, or specified as false, the request will fail if any
+	// search query fails.
+	AllowPartialResult *bool
+
+	// The authentication method to use when accessing the defined data source. Each data source type supports a specific set
+	// of available authentication methods; please see the documentation of the data
+	// source for supported mechanisms. If not otherwise provided, On Your Data will attempt to use System Managed Identity (default
+	// credential) authentication.
+	Authentication OnYourDataAuthenticationOptionsClassification
+
+	// Whether queries should be restricted to use of indexed data.
+	InScope *bool
+
+	// The included properties of the output context. If not specified, the default value is citations and intent.
+	IncludeContexts []OnYourDataContextProperty
+
+	// The max number of rewritten queries should be send to search provider for one user message. If not specified, the system
+	// will decide the number of queries to send.
+	MaxSearchQueries *int32
+
+	// The configured strictness of the search relevance filtering. The higher of strictness, the higher of the precision but
+	// lower recall of the answer.
+	Strictness *int32
+
+	// The configured top number of documents to feature for the configured query.
+	TopNDocuments *int32
+}
+
+// MongoDBChatExtensionParametersFieldsMapping - Field mappings to apply to data used by the MongoDB data source. Note that
+// content and vector field mappings are required for MongoDB.
+type MongoDBChatExtensionParametersFieldsMapping struct {
+	// REQUIRED
+	ContentFields []string
+
+	// REQUIRED
+	VectorFields           []string
+	ContentFieldsSeparator *string
+	FilepathField          *string
+	TitleField             *string
+	URLField               *string
 }
 
 // OnYourDataAPIKeyAuthenticationOptions - The authentication options for Azure OpenAI On Your Data when using an API key.
@@ -688,6 +786,19 @@ func (o *OnYourDataEndpointVectorizationSource) GetOnYourDataVectorizationSource
 	}
 }
 
+// OnYourDataIntegratedVectorizationSource - Represents the integrated vectorizer defined within the search resource.
+type OnYourDataIntegratedVectorizationSource struct {
+	// REQUIRED; The type of vectorization source to use.
+	Type *OnYourDataVectorizationSourceType
+}
+
+// GetOnYourDataVectorizationSource implements the OnYourDataVectorizationSourceClassification interface for type OnYourDataIntegratedVectorizationSource.
+func (o *OnYourDataIntegratedVectorizationSource) GetOnYourDataVectorizationSource() *OnYourDataVectorizationSource {
+	return &OnYourDataVectorizationSource{
+		Type: o.Type,
+	}
+}
+
 // OnYourDataKeyAndKeyIDAuthenticationOptions - The authentication options for Azure OpenAI On Your Data when using an Elasticsearch
 // key and key ID pair.
 type OnYourDataKeyAndKeyIDAuthenticationOptions struct {
@@ -751,6 +862,26 @@ type OnYourDataUserAssignedManagedIdentityAuthenticationOptions struct {
 
 // GetOnYourDataAuthenticationOptions implements the OnYourDataAuthenticationOptionsClassification interface for type OnYourDataUserAssignedManagedIdentityAuthenticationOptions.
 func (o *OnYourDataUserAssignedManagedIdentityAuthenticationOptions) GetOnYourDataAuthenticationOptions() *OnYourDataAuthenticationOptions {
+	return &OnYourDataAuthenticationOptions{
+		Type: o.Type,
+	}
+}
+
+// OnYourDataUsernameAndPasswordAuthenticationOptions - The authentication options for Azure OpenAI On Your Data when using
+// a username and password.
+type OnYourDataUsernameAndPasswordAuthenticationOptions struct {
+	// REQUIRED; The password.
+	Password *string
+
+	// REQUIRED; The authentication type.
+	Type *OnYourDataAuthenticationType
+
+	// REQUIRED; The username.
+	Username *string
+}
+
+// GetOnYourDataAuthenticationOptions implements the OnYourDataAuthenticationOptionsClassification interface for type OnYourDataUsernameAndPasswordAuthenticationOptions.
+func (o *OnYourDataUsernameAndPasswordAuthenticationOptions) GetOnYourDataAuthenticationOptions() *OnYourDataAuthenticationOptions {
 	return &OnYourDataAuthenticationOptions{
 		Type: o.Type,
 	}
@@ -869,11 +1000,6 @@ type PineconeChatExtensionParameters struct {
 	// The max number of rewritten queries should be send to search provider for one user message. If not specified, the system
 	// will decide the number of queries to send.
 	MaxSearchQueries *int32
-
-	// Give the model instructions about how it should behave and any context it should reference when generating a response.
-	// You can describe the assistant's personality and tell it how to format responses.
-	// There's a 100 token limit for it, and it counts against the overall token limit.
-	RoleInformation *string
 
 	// The configured strictness of the search relevance filtering. The higher of strictness, the higher of the precision but
 	// lower recall of the answer.

@@ -35,7 +35,7 @@ func Example_usingAzureOnYourData() {
 	}
 
 	client := openai.NewClient(
-		azure.WithEndpoint(endpoint, "2024-07-01-preview"),
+		azure.WithEndpoint(endpoint, "2024-08-01-preview"),
 		azure.WithTokenCredential(tokenCredential),
 	)
 
@@ -136,7 +136,7 @@ func Example_usingEnhancements() {
 	}
 
 	client := openai.NewClient(
-		azure.WithEndpoint(endpoint, "2024-07-01-preview"),
+		azure.WithEndpoint(endpoint, "2024-08-01-preview"),
 		azure.WithTokenCredential(tokenCredential),
 	)
 

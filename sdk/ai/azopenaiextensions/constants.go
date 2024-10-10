@@ -36,13 +36,12 @@ type AzureChatExtensionType string
 const (
 	// AzureChatExtensionTypeAzureCosmosDB - Represents the use of Azure Cosmos DB as an Azure OpenAI chat extension.
 	AzureChatExtensionTypeAzureCosmosDB AzureChatExtensionType = "azure_cosmos_db"
-	// AzureChatExtensionTypeAzureMachineLearningIndex - Represents the use of Azure Machine Learning index as an Azure OpenAI
-	// chat extension.
-	AzureChatExtensionTypeAzureMachineLearningIndex AzureChatExtensionType = "azure_ml_index"
 	// AzureChatExtensionTypeAzureSearch - Represents the use of Azure AI Search as an Azure OpenAI chat extension.
 	AzureChatExtensionTypeAzureSearch AzureChatExtensionType = "azure_search"
 	// AzureChatExtensionTypeElasticsearch - Represents the use of Elasticsearch® index as an Azure OpenAI chat extension.
 	AzureChatExtensionTypeElasticsearch AzureChatExtensionType = "elasticsearch"
+	// AzureChatExtensionTypeMongoDB - Represents the use of a MongoDB chat extension.
+	AzureChatExtensionTypeMongoDB AzureChatExtensionType = "mongo_db"
 	// AzureChatExtensionTypePinecone - Represents the use of Pinecone index as an Azure OpenAI chat extension.
 	AzureChatExtensionTypePinecone AzureChatExtensionType = "pinecone"
 )
@@ -51,9 +50,9 @@ const (
 func PossibleAzureChatExtensionTypeValues() []AzureChatExtensionType {
 	return []AzureChatExtensionType{
 		AzureChatExtensionTypeAzureCosmosDB,
-		AzureChatExtensionTypeAzureMachineLearningIndex,
 		AzureChatExtensionTypeAzureSearch,
 		AzureChatExtensionTypeElasticsearch,
+		AzureChatExtensionTypeMongoDB,
 		AzureChatExtensionTypePinecone,
 	}
 }
@@ -119,6 +118,25 @@ func PossibleContentFilterSeverityValues() []ContentFilterSeverity {
 	}
 }
 
+// ElasticsearchQueryType - The type of Elasticsearch® retrieval query that should be executed when using it as an Azure OpenAI
+// chat extension.
+type ElasticsearchQueryType string
+
+const (
+	// ElasticsearchQueryTypeSimple - Represents the default, simple query parser.
+	ElasticsearchQueryTypeSimple ElasticsearchQueryType = "simple"
+	// ElasticsearchQueryTypeVector - Represents vector search over computed data.
+	ElasticsearchQueryTypeVector ElasticsearchQueryType = "vector"
+)
+
+// PossibleElasticsearchQueryTypeValues returns the possible values for the ElasticsearchQueryType const type.
+func PossibleElasticsearchQueryTypeValues() []ElasticsearchQueryType {
+	return []ElasticsearchQueryType{
+		ElasticsearchQueryTypeSimple,
+		ElasticsearchQueryTypeVector,
+	}
+}
+
 // OnYourDataAuthenticationType - The authentication types supported with Azure OpenAI On Your Data.
 type OnYourDataAuthenticationType string
 
@@ -137,6 +155,8 @@ const (
 	OnYourDataAuthenticationTypeSystemAssignedManagedIdentity OnYourDataAuthenticationType = "system_assigned_managed_identity"
 	// OnYourDataAuthenticationTypeUserAssignedManagedIdentity - Authentication via user-assigned managed identity.
 	OnYourDataAuthenticationTypeUserAssignedManagedIdentity OnYourDataAuthenticationType = "user_assigned_managed_identity"
+	// OnYourDataAuthenticationTypeUsernameAndPassword - Authentication via username and password.
+	OnYourDataAuthenticationTypeUsernameAndPassword OnYourDataAuthenticationType = "username_and_password"
 )
 
 // PossibleOnYourDataAuthenticationTypeValues returns the possible values for the OnYourDataAuthenticationType const type.
@@ -149,6 +169,7 @@ func PossibleOnYourDataAuthenticationTypeValues() []OnYourDataAuthenticationType
 		OnYourDataAuthenticationTypeKeyAndKeyID,
 		OnYourDataAuthenticationTypeSystemAssignedManagedIdentity,
 		OnYourDataAuthenticationTypeUserAssignedManagedIdentity,
+		OnYourDataAuthenticationTypeUsernameAndPassword,
 	}
 }
 
@@ -204,6 +225,8 @@ const (
 	// OnYourDataVectorizationSourceTypeEndpoint - Represents vectorization performed by public service calls to an Azure OpenAI
 	// embedding model.
 	OnYourDataVectorizationSourceTypeEndpoint OnYourDataVectorizationSourceType = "endpoint"
+	// OnYourDataVectorizationSourceTypeIntegrated - Represents the integrated vectorizer defined within the search resource.
+	OnYourDataVectorizationSourceTypeIntegrated OnYourDataVectorizationSourceType = "integrated"
 	// OnYourDataVectorizationSourceTypeModelID - Represents a specific embedding model ID as defined in the search service.
 	// Currently only supported by Elasticsearch®.
 	OnYourDataVectorizationSourceTypeModelID OnYourDataVectorizationSourceType = "model_id"
@@ -214,6 +237,7 @@ func PossibleOnYourDataVectorizationSourceTypeValues() []OnYourDataVectorization
 	return []OnYourDataVectorizationSourceType{
 		OnYourDataVectorizationSourceTypeDeploymentName,
 		OnYourDataVectorizationSourceTypeEndpoint,
+		OnYourDataVectorizationSourceTypeIntegrated,
 		OnYourDataVectorizationSourceTypeModelID,
 	}
 }

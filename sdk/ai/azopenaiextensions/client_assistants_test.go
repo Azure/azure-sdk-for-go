@@ -190,9 +190,6 @@ func TestAssistantRun(t *testing.T) {
 		AssistantID:  openai.String(assistant.ID),
 		Instructions: openai.String("Please address the user as Jane Doe. The user has a premium account."),
 	})
-	if err != nil {
-		panic(err)
-	}
 
 	for stream.Next() {
 		evt := stream.Current()

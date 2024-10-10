@@ -22,7 +22,7 @@ rawjson-as-bytes: true
 
 ## Transformations
 
-Fix deployment and endpoint parameters so they show up in the right spots
+Keep only "Azure OpenAI On Your Data" models, or enhancements.
 
 ``` yaml
 directive:
@@ -43,7 +43,7 @@ directive:
       const keep = {};
 
       // this'll catch the Azure "on your data" models.
-      const oydModelRegex = /^(OnYour|Azure|Pinecone|ContentFilter).+$/;
+      const oydModelRegex = /^(OnYour|Azure|Pinecone|ContentFilter|Mongo|Elasticsearch).+$/;
 
       for (const key in $.definitions) {
         if (!(key in keep) && !key.match(oydModelRegex)) {
@@ -73,4 +73,23 @@ directive:
       $["Azure.Core.Foundations.InnerError"]["x-ms-external"] = true;
       $["Azure.Core.Foundations.ErrorResponse"]["x-ms-external"] = true; 
       return $;
+```
+
+## Unions
+
+Update MongoDBChatExtensionParameters.embedding_dependency to use its custom type.
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: |
+      $["MongoDBChatExtensionParametersEmbeddingDependency"] = {
+        "x-ms-external": true,
+        "type": "object", "properties": { "stub": { "type": "string" }}
+      };
+      return $;
+  - from: swagger-document
+    where: $.definitions.MongoDBChatExtensionParameters.properties.embedding_dependency
+    transform: $["$ref"] = "#/definitions/MongoDBChatExtensionParametersEmbeddingDependency"; return $;
 ```

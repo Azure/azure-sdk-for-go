@@ -34,6 +34,8 @@ func unmarshalOnYourDataAuthenticationOptionsClassification(rawMsg json.RawMessa
 		b = &OnYourDataSystemAssignedManagedIdentityAuthenticationOptions{}
 	case string(OnYourDataAuthenticationTypeUserAssignedManagedIdentity):
 		b = &OnYourDataUserAssignedManagedIdentityAuthenticationOptions{}
+	case string(OnYourDataAuthenticationTypeUsernameAndPassword):
+		b = &OnYourDataUsernameAndPasswordAuthenticationOptions{}
 	default:
 		b = &OnYourDataAuthenticationOptions{}
 	}
@@ -80,6 +82,8 @@ func unmarshalOnYourDataVectorizationSourceClassification(rawMsg json.RawMessage
 		b = &OnYourDataDeploymentNameVectorizationSource{}
 	case string(OnYourDataVectorizationSourceTypeEndpoint):
 		b = &OnYourDataEndpointVectorizationSource{}
+	case string(OnYourDataVectorizationSourceTypeIntegrated):
+		b = &OnYourDataIntegratedVectorizationSource{}
 	case string(OnYourDataVectorizationSourceTypeModelID):
 		b = &OnYourDataModelIDVectorizationSource{}
 	default:

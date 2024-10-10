@@ -323,7 +323,7 @@ func (u userAgentTest) Do(req *policy.Request) (*http.Response, error) {
 
 	currentUserAgentHeader := req.Raw().Header.Get(userAgentHeader)
 	if !strings.HasPrefix(currentUserAgentHeader, "azsdk-go-azblob/"+exported.ModuleVersion) {
-		return nil, fmt.Errorf(currentUserAgentHeader + " user agent doesn't match expected agent: azsdk-go-azdatalake/v1.2.0 (go1.19.3; Windows_NT)")
+		return nil, fmt.Errorf("%s user agent doesn't match expected agent: azsdk-go-azdatalake/v1.2.0 (go1.19.3; Windows_NT)", currentUserAgentHeader)
 	}
 
 	return &http.Response{

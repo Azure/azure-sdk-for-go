@@ -10,6 +10,7 @@ import (
 	"bytes"
 	"context"
 	"crypto/md5"
+	cryptoRand "crypto/rand"
 	"encoding/binary"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
@@ -17,7 +18,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 	"hash/crc64"
 	"io"
-	"math/rand"
 	"net/http"
 	"os"
 	"strconv"
@@ -104,7 +104,7 @@ func (u userAgentTest) Do(req *policy.Request) (*http.Response, error) {
 
 	currentUserAgentHeader := req.Raw().Header.Get(userAgentHeader)
 	if !strings.HasPrefix(currentUserAgentHeader, "azsdk-go-azdatalake/"+exported.ModuleVersion) {
-		return nil, fmt.Errorf(currentUserAgentHeader + " user agent doesn't match expected agent: azsdk-go-azdatalake/vx.xx.xx")
+		return nil, fmt.Errorf("%s user agent doesn't match expected agent: azsdk-go-azdatalake/vx.xx.xx", currentUserAgentHeader)
 	}
 
 	return &http.Response{
@@ -2694,7 +2694,7 @@ func (s *UnrecordedTestSuite) TestFileUploadDownloadStream() {
 	_require.NotNil(resp)
 
 	content := make([]byte, fileSize)
-	_, err = rand.Read(content)
+	_, err = cryptoRand.Read(content)
 	_require.NoError(err)
 	md5Value := md5.Sum(content)
 	contentMD5 := md5Value[:]
@@ -2877,7 +2877,7 @@ func (s *UnrecordedTestSuite) TestFileUploadDownloadStreamWithCPK() {
 	_require.NotNil(resp)
 
 	content := make([]byte, fileSize)
-	_, err = rand.Read(content)
+	_, err = cryptoRand.Read(content)
 	_require.NoError(err)
 	md5Value := md5.Sum(content)
 	contentMD5 := md5Value[:]
@@ -2923,7 +2923,7 @@ func (s *UnrecordedTestSuite) TestFileUploadDownloadStreamWithEncryptionContext(
 	_require.NoError(err)
 
 	content := make([]byte, fileSize)
-	_, err = rand.Read(content)
+	_, err = cryptoRand.Read(content)
 	_require.NoError(err)
 
 	err = fClient.UploadStream(context.Background(), streaming.NopCloser(bytes.NewReader(content)), &file.UploadStreamOptions{
@@ -2963,7 +2963,7 @@ func (s *UnrecordedTestSuite) TestFileUploadDownloadStreamWithCPKNegative() {
 	_require.NotNil(resp)
 
 	content := make([]byte, fileSize)
-	_, err = rand.Read(content)
+	_, err = cryptoRand.Read(content)
 	_require.NoError(err)
 
 	err = fClient.UploadStream(context.Background(), streaming.NopCloser(bytes.NewReader(content)), &file.UploadStreamOptions{
@@ -3003,7 +3003,7 @@ func (s *UnrecordedTestSuite) TestFileUploadFile() {
 
 	// create local file
 	content := make([]byte, fileSize)
-	_, err = rand.Read(content)
+	_, err = cryptoRand.Read(content)
 	_require.NoError(err)
 	err = os.WriteFile("testFile", content, 0644)
 	_require.NoError(err)
@@ -3067,7 +3067,7 @@ func (s *UnrecordedTestSuite) TestFileUploadBufferEncryptionContext() {
 
 	// create local file
 	content := make([]byte, fileSize)
-	_, err = rand.Read(content)
+	_, err = cryptoRand.Read(content)
 	_require.NoError(err)
 	err = os.WriteFile("testFile", content, 0644)
 	_require.NoError(err)
@@ -3117,7 +3117,7 @@ func (s *UnrecordedTestSuite) TestFileUploadFileEncryptionContext() {
 
 	// create local file
 	content := make([]byte, fileSize)
-	_, err = rand.Read(content)
+	_, err = cryptoRand.Read(content)
 	_require.NoError(err)
 	err = os.WriteFile("testFile", content, 0644)
 	_require.NoError(err)
@@ -3173,7 +3173,7 @@ func (s *UnrecordedTestSuite) TestFileDownloadStreamEncryptionContext() {
 	_require.NotNil(resp)
 
 	content := make([]byte, fileSize)
-	_, err = rand.Read(content)
+	_, err = cryptoRand.Read(content)
 	_require.NoError(err)
 	md5Value := md5.Sum(content)
 	contentMD5 := md5Value[:]
@@ -3514,7 +3514,7 @@ func (s *UnrecordedTestSuite) TestFileUploadBuffer() {
 	_require.NotNil(resp)
 
 	content := make([]byte, fileSize)
-	_, err = rand.Read(content)
+	_, err = cryptoRand.Read(content)
 	_require.NoError(err)
 	md5Value := md5.Sum(content)
 	contentMD5 := md5Value[:]
@@ -4618,7 +4618,7 @@ func (s *UnrecordedTestSuite) TestFileDownloadFile() {
 	_require.NotNil(resp)
 
 	content := make([]byte, fileSize)
-	_, err = rand.Read(content)
+	_, err = cryptoRand.Read(content)
 	_require.NoError(err)
 	md5Value := md5.Sum(content)
 	contentMD5 := md5Value[:]
@@ -5086,7 +5086,7 @@ func (s *UnrecordedTestSuite) TestFileDownloadBuffer() {
 	_require.NotNil(resp)
 
 	content := make([]byte, fileSize)
-	_, err = rand.Read(content)
+	_, err = cryptoRand.Read(content)
 	_require.NoError(err)
 	md5Value := md5.Sum(content)
 	contentMD5 := md5Value[:]

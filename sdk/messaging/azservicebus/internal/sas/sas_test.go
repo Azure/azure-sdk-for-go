@@ -107,7 +107,7 @@ func parseSig(sigStr string) (*sig, error) {
 		case "skn":
 			parsed.skn = keyValue[1]
 		default:
-			return nil, fmt.Errorf(fmt.Sprintf("unknown key / value: %q", keyValue))
+			return nil, fmt.Errorf("unknown key / value: %q", keyValue)
 		}
 	}
 	return parsed, nil

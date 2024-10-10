@@ -6,7 +6,6 @@ package internal
 import (
 	"context"
 	"fmt"
-	"net"
 	"testing"
 	"time"
 
@@ -113,6 +112,8 @@ func TestLinksRecoverLinkWithConnectionFailureAndExpiredContext(t *testing.T) {
 	defer test.RequireClose(t, links)
 	defer test.RequireNSClose(t, ns)
 
+	t.Logf("Getting links (original), manually")
+
 	oldLWID, err := links.GetLink(context.Background(), "0")
 	require.NoError(t, err)
 
@@ -123,32 +124,44 @@ func TestLinksRecoverLinkWithConnectionFailureAndExpiredContext(t *testing.T) {
 	err = origConn.Close()
 	require.NoError(t, err)
 
-	err = oldLWID.Link().Send(context.Background(), &amqp.Message{}, nil)
-	require.Error(t, err)
-	require.Equal(t, RecoveryKindConn, GetRecoveryKind(err))
-
 	// Try to recover, but using an expired context. We'll get a network error (not enough time to resolve or
 	// create a connection), which would normally be a connection level recovery event.
 	cancelledCtx, cancel := context.WithDeadline(context.Background(), time.Now().Add(-time.Hour))
 	defer cancel()
 
-	err = links.lr.RecoverIfNeeded(cancelledCtx, lwidToError(err, oldLWID))
-	var netErr net.Error
-	require.ErrorAs(t, err, &netErr)
+	t.Logf("Sending message, within retry loop, with an already expired context")
 
-	// now recover like normal
-	err = links.lr.RecoverIfNeeded(context.Background(), lwidToError(err, oldLWID))
-	require.NoError(t, err)
+	err = links.Retry(cancelledCtx, "(expired context) retry loop with precancelled context", "send", "0", exported.RetryOptions{}, func(ctx context.Context, lwid LinkWithID[amqpwrap.AMQPSenderCloser]) error {
+		// ignoring the cancelled context, let's see what happens.
+		t.Logf("(expired context) Sending message")
+		err = lwid.Link().Send(context.Background(), &amqp.Message{
+			Data: [][]byte{[]byte("(expired context) hello world")},
+		}, nil)
 
-	newLWID, err := links.GetLink(context.Background(), "0")
+		t.Logf("(expired context) Message sent, error: %#v", err)
+		return err
+	})
+	require.ErrorIs(t, err, context.DeadlineExceeded)
+
+	t.Logf("Sending message, within retry loop, NO expired context")
+
+	var newLWID LinkWithID[amqpwrap.AMQPSenderCloser]
+
+	err = links.Retry(context.Background(), "(normal) retry loop without cancelled context", "send", "0", exported.RetryOptions{}, func(ctx context.Context, lwid LinkWithID[amqpwrap.AMQPSenderCloser]) error {
+		// ignoring the cancelled context, let's see what happens.
+		t.Logf("(normal) Sending message")
+		err = lwid.Link().Send(context.Background(), &amqp.Message{
+			Data: [][]byte{[]byte("hello world")},
+		}, nil)
+		t.Logf("(normal) Message sent, error: %#v", err)
+
+		newLWID = lwid
+		return err
+	})
 	require.NoError(t, err)
 
 	requireNewLinkNewConn(t, oldLWID, newLWID)
-
-	err = newLWID.Link().Send(context.Background(), &amqp.Message{
-		Data: [][]byte{[]byte("hello world")},
-	}, nil)
-	require.NoError(t, err)
+	require.Equal(t, newLWID.ConnID(), uint64(2), "we should have recovered the connection")
 }
 
 func TestLinkFailureWhenConnectionIsDead(t *testing.T) {

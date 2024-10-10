@@ -37,8 +37,6 @@ func SetupRPC(sender *MockAMQPSenderCloser, receiver *MockAMQPReceiverCloser, ex
 						CorrelationID: sentMessage.Properties.MessageID,
 					},
 				}
-				receiver.EXPECT().AcceptMessage(gomock.Any(), gomock.Any()).Return(nil)
-
 				// let the caller fill in the blanks of whatever needs to happen here.
 				handler(sentMessage, response)
 				return response, nil

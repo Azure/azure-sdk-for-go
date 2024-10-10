@@ -942,7 +942,7 @@ func sendEventToPartition(t *testing.T, producer *azeventhubs.ProducerClient, pa
 
 		eventToSend.Properties = props
 
-		err = batch.AddEventData(event, nil)
+		err = batch.AddEventData(&eventToSend, nil)
 		require.NoError(t, err)
 	}
 

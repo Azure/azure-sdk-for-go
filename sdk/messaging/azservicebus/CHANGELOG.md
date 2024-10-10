@@ -1,5 +1,11 @@
 # Release History
 
+## 1.7.3 (2024-10-10)
+
+### Bugs Fixed
+
+- Apply fix from @bcho for overflows with retries. (PR#23562)
+
 ## 1.7.2 (2024-09-11)
 
 ### Bugs Fixed

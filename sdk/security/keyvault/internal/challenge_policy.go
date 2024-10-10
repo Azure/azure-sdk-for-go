@@ -30,9 +30,7 @@ type KeyVaultChallengePolicyOptions struct {
 type keyVaultAuthorizer struct {
 	// tro is the policy's authentication parameters. These are discovered from an authentication challenge
 	// elicited ahead of the first client request.
-	tro policy.TokenRequestOptions
-	// TODO: move into tro once it has a tenant field (https://github.com/Azure/azure-sdk-for-go/issues/19841)
-	tenantID                string
+	tro                     policy.TokenRequestOptions
 	verifyChallengeResource bool
 }
 
@@ -57,7 +55,7 @@ func NewKeyVaultChallengePolicy(cred azcore.TokenCredential, opts *KeyVaultChall
 }
 
 func (k *keyVaultAuthorizer) authorize(req *policy.Request, authNZ func(policy.TokenRequestOptions) error) error {
-	if len(k.tro.Scopes) == 0 || k.tenantID == "" {
+	if len(k.tro.Scopes) == 0 || k.tro.TenantID == "" {
 		if body := req.Body(); body != nil {
 			// We don't know the scope or tenant ID because we haven't seen a challenge yet. We elicit one now by sending
 			// the request without authorization, first removing its body, if any. authorizeOnChallenge will reattach the
@@ -128,7 +126,7 @@ func (k *keyVaultAuthorizer) updateTokenRequestOptions(resp *http.Response, req 
 		}
 	}
 
-	k.tenantID = parseTenant(vals["authorization"])
+	k.tro.TenantID = parseTenant(vals["authorization"])
 	scope := ""
 	if v, ok := vals["scope"]; ok {
 		scope = v

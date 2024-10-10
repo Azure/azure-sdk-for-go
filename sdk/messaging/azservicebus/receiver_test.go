@@ -7,11 +7,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net"
 	"regexp"
 	"sort"
 	"strings"
-	"sync/atomic"
 	"testing"
 	"time"
 
@@ -1057,41 +1055,4 @@ func (messages receivedMessageSlice) Less(i, j int) bool {
 
 func (messages receivedMessageSlice) Swap(i, j int) {
 	messages[i], messages[j] = messages[j], messages[i]
-}
-
-type slowConn struct {
-	slow int64
-	t    *testing.T
-	net.Conn
-}
-
-func (sc *slowConn) Read(b []byte) (n int, err error) {
-	if atomic.LoadInt64(&sc.slow) == 1 {
-		sc.t.Logf("Simulating broken reads")
-		err := sc.Conn.SetReadDeadline(time.Now().Add(time.Nanosecond))
-
-		if err != nil {
-			return 0, err
-		}
-	}
-
-	return sc.Conn.Read(b)
-}
-
-func (sc *slowConn) Write(b []byte) (n int, err error) {
-	if atomic.LoadInt64(&sc.slow) == 1 {
-		sc.t.Logf("Simulating broken writes")
-		err := sc.Conn.SetWriteDeadline(time.Now().Add(time.Nanosecond))
-
-		if err != nil {
-			return 0, err
-		}
-	}
-
-	return sc.Conn.Write(b)
-}
-
-func (sc *slowConn) Close() error {
-	sc.t.Logf("Closing connection")
-	return sc.Conn.Close()
 }

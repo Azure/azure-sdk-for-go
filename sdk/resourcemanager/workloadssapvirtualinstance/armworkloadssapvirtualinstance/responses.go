@@ -14,206 +14,206 @@ type OperationsClientListResponse struct {
 	OperationListResult
 }
 
-// SAPApplicationServerInstancesClientCreateResponse contains the response from method SAPApplicationServerInstancesClient.BeginCreate.
-type SAPApplicationServerInstancesClientCreateResponse struct {
+// SapApplicationServerInstancesClientCreateResponse contains the response from method SapApplicationServerInstancesClient.BeginCreate.
+type SapApplicationServerInstancesClientCreateResponse struct {
 	// Define the SAP Application Server Instance resource.
 	SAPApplicationServerInstance
 }
 
-// SAPApplicationServerInstancesClientDeleteResponse contains the response from method SAPApplicationServerInstancesClient.BeginDelete.
-type SAPApplicationServerInstancesClientDeleteResponse struct {
+// SapApplicationServerInstancesClientDeleteResponse contains the response from method SapApplicationServerInstancesClient.BeginDelete.
+type SapApplicationServerInstancesClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// SAPApplicationServerInstancesClientGetResponse contains the response from method SAPApplicationServerInstancesClient.Get.
-type SAPApplicationServerInstancesClientGetResponse struct {
+// SapApplicationServerInstancesClientGetResponse contains the response from method SapApplicationServerInstancesClient.Get.
+type SapApplicationServerInstancesClientGetResponse struct {
 	// Define the SAP Application Server Instance resource.
 	SAPApplicationServerInstance
 }
 
-// SAPApplicationServerInstancesClientListResponse contains the response from method SAPApplicationServerInstancesClient.NewListPager.
-type SAPApplicationServerInstancesClientListResponse struct {
-	// Defines the collection of SAP Application Server Instance resources.
-	SAPApplicationServerInstanceList
+// SapApplicationServerInstancesClientListResponse contains the response from method SapApplicationServerInstancesClient.NewListPager.
+type SapApplicationServerInstancesClientListResponse struct {
+	// The response of a SAPApplicationServerInstance list operation.
+	SAPApplicationServerInstanceListResult
 }
 
-// SAPApplicationServerInstancesClientStartInstanceResponse contains the response from method SAPApplicationServerInstancesClient.BeginStartInstance.
-type SAPApplicationServerInstancesClientStartInstanceResponse struct {
+// SapApplicationServerInstancesClientStartResponse contains the response from method SapApplicationServerInstancesClient.BeginStart.
+type SapApplicationServerInstancesClientStartResponse struct {
 	// The current status of an async operation.
 	OperationStatusResult
 }
 
-// SAPApplicationServerInstancesClientStopInstanceResponse contains the response from method SAPApplicationServerInstancesClient.BeginStopInstance.
-type SAPApplicationServerInstancesClientStopInstanceResponse struct {
+// SapApplicationServerInstancesClientStopResponse contains the response from method SapApplicationServerInstancesClient.BeginStop.
+type SapApplicationServerInstancesClientStopResponse struct {
 	// The current status of an async operation.
 	OperationStatusResult
 }
 
-// SAPApplicationServerInstancesClientUpdateResponse contains the response from method SAPApplicationServerInstancesClient.Update.
-type SAPApplicationServerInstancesClientUpdateResponse struct {
+// SapApplicationServerInstancesClientUpdateResponse contains the response from method SapApplicationServerInstancesClient.Update.
+type SapApplicationServerInstancesClientUpdateResponse struct {
 	// Define the SAP Application Server Instance resource.
 	SAPApplicationServerInstance
 }
 
-// SAPCentralInstancesClientCreateResponse contains the response from method SAPCentralInstancesClient.BeginCreate.
-type SAPCentralInstancesClientCreateResponse struct {
+// SapCentralServerInstancesClientCreateResponse contains the response from method SapCentralServerInstancesClient.BeginCreate.
+type SapCentralServerInstancesClientCreateResponse struct {
 	// Define the SAP Central Services Instance resource.
 	SAPCentralServerInstance
 }
 
-// SAPCentralInstancesClientDeleteResponse contains the response from method SAPCentralInstancesClient.BeginDelete.
-type SAPCentralInstancesClientDeleteResponse struct {
+// SapCentralServerInstancesClientDeleteResponse contains the response from method SapCentralServerInstancesClient.BeginDelete.
+type SapCentralServerInstancesClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// SAPCentralInstancesClientGetResponse contains the response from method SAPCentralInstancesClient.Get.
-type SAPCentralInstancesClientGetResponse struct {
+// SapCentralServerInstancesClientGetResponse contains the response from method SapCentralServerInstancesClient.Get.
+type SapCentralServerInstancesClientGetResponse struct {
 	// Define the SAP Central Services Instance resource.
 	SAPCentralServerInstance
 }
 
-// SAPCentralInstancesClientListResponse contains the response from method SAPCentralInstancesClient.NewListPager.
-type SAPCentralInstancesClientListResponse struct {
-	// Defines the collection of SAP Central Services Instance resources.
-	SAPCentralInstanceList
+// SapCentralServerInstancesClientListResponse contains the response from method SapCentralServerInstancesClient.NewListPager.
+type SapCentralServerInstancesClientListResponse struct {
+	// The response of a SAPCentralServerInstance list operation.
+	SAPCentralServerInstanceListResult
 }
 
-// SAPCentralInstancesClientStartInstanceResponse contains the response from method SAPCentralInstancesClient.BeginStartInstance.
-type SAPCentralInstancesClientStartInstanceResponse struct {
+// SapCentralServerInstancesClientStartResponse contains the response from method SapCentralServerInstancesClient.BeginStart.
+type SapCentralServerInstancesClientStartResponse struct {
 	// The current status of an async operation.
 	OperationStatusResult
 }
 
-// SAPCentralInstancesClientStopInstanceResponse contains the response from method SAPCentralInstancesClient.BeginStopInstance.
-type SAPCentralInstancesClientStopInstanceResponse struct {
+// SapCentralServerInstancesClientStopResponse contains the response from method SapCentralServerInstancesClient.BeginStop.
+type SapCentralServerInstancesClientStopResponse struct {
 	// The current status of an async operation.
 	OperationStatusResult
 }
 
-// SAPCentralInstancesClientUpdateResponse contains the response from method SAPCentralInstancesClient.Update.
-type SAPCentralInstancesClientUpdateResponse struct {
+// SapCentralServerInstancesClientUpdateResponse contains the response from method SapCentralServerInstancesClient.Update.
+type SapCentralServerInstancesClientUpdateResponse struct {
 	// Define the SAP Central Services Instance resource.
 	SAPCentralServerInstance
 }
 
-// SAPDatabaseInstancesClientCreateResponse contains the response from method SAPDatabaseInstancesClient.BeginCreate.
-type SAPDatabaseInstancesClientCreateResponse struct {
+// SapDatabaseInstancesClientCreateResponse contains the response from method SapDatabaseInstancesClient.BeginCreate.
+type SapDatabaseInstancesClientCreateResponse struct {
 	// Define the Database resource.
 	SAPDatabaseInstance
 }
 
-// SAPDatabaseInstancesClientDeleteResponse contains the response from method SAPDatabaseInstancesClient.BeginDelete.
-type SAPDatabaseInstancesClientDeleteResponse struct {
+// SapDatabaseInstancesClientDeleteResponse contains the response from method SapDatabaseInstancesClient.BeginDelete.
+type SapDatabaseInstancesClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// SAPDatabaseInstancesClientGetResponse contains the response from method SAPDatabaseInstancesClient.Get.
-type SAPDatabaseInstancesClientGetResponse struct {
+// SapDatabaseInstancesClientGetResponse contains the response from method SapDatabaseInstancesClient.Get.
+type SapDatabaseInstancesClientGetResponse struct {
 	// Define the Database resource.
 	SAPDatabaseInstance
 }
 
-// SAPDatabaseInstancesClientListResponse contains the response from method SAPDatabaseInstancesClient.NewListPager.
-type SAPDatabaseInstancesClientListResponse struct {
-	// Defines the collection of SAP Database Instances.
-	SAPDatabaseInstanceList
+// SapDatabaseInstancesClientListResponse contains the response from method SapDatabaseInstancesClient.NewListPager.
+type SapDatabaseInstancesClientListResponse struct {
+	// The response of a SAPDatabaseInstance list operation.
+	SAPDatabaseInstanceListResult
 }
 
-// SAPDatabaseInstancesClientStartInstanceResponse contains the response from method SAPDatabaseInstancesClient.BeginStartInstance.
-type SAPDatabaseInstancesClientStartInstanceResponse struct {
+// SapDatabaseInstancesClientStartResponse contains the response from method SapDatabaseInstancesClient.BeginStart.
+type SapDatabaseInstancesClientStartResponse struct {
 	// The current status of an async operation.
 	OperationStatusResult
 }
 
-// SAPDatabaseInstancesClientStopInstanceResponse contains the response from method SAPDatabaseInstancesClient.BeginStopInstance.
-type SAPDatabaseInstancesClientStopInstanceResponse struct {
+// SapDatabaseInstancesClientStopResponse contains the response from method SapDatabaseInstancesClient.BeginStop.
+type SapDatabaseInstancesClientStopResponse struct {
 	// The current status of an async operation.
 	OperationStatusResult
 }
 
-// SAPDatabaseInstancesClientUpdateResponse contains the response from method SAPDatabaseInstancesClient.Update.
-type SAPDatabaseInstancesClientUpdateResponse struct {
+// SapDatabaseInstancesClientUpdateResponse contains the response from method SapDatabaseInstancesClient.Update.
+type SapDatabaseInstancesClientUpdateResponse struct {
 	// Define the Database resource.
 	SAPDatabaseInstance
 }
 
-// SAPVirtualInstancesClientCreateResponse contains the response from method SAPVirtualInstancesClient.BeginCreate.
-type SAPVirtualInstancesClientCreateResponse struct {
+// SapVirtualInstancesClientCreateResponse contains the response from method SapVirtualInstancesClient.BeginCreate.
+type SapVirtualInstancesClientCreateResponse struct {
 	// Define the Virtual Instance for SAP solutions resource.
 	SAPVirtualInstance
 }
 
-// SAPVirtualInstancesClientDeleteResponse contains the response from method SAPVirtualInstancesClient.BeginDelete.
-type SAPVirtualInstancesClientDeleteResponse struct {
+// SapVirtualInstancesClientDeleteResponse contains the response from method SapVirtualInstancesClient.BeginDelete.
+type SapVirtualInstancesClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// SAPVirtualInstancesClientGetResponse contains the response from method SAPVirtualInstancesClient.Get.
-type SAPVirtualInstancesClientGetResponse struct {
+// SapVirtualInstancesClientGetResponse contains the response from method SapVirtualInstancesClient.Get.
+type SapVirtualInstancesClientGetResponse struct {
 	// Define the Virtual Instance for SAP solutions resource.
 	SAPVirtualInstance
 }
 
-// SAPVirtualInstancesClientListByResourceGroupResponse contains the response from method SAPVirtualInstancesClient.NewListByResourceGroupPager.
-type SAPVirtualInstancesClientListByResourceGroupResponse struct {
-	// Defines the collection of Virtual Instance for SAP solutions resources.
-	SAPVirtualInstanceList
-}
-
-// SAPVirtualInstancesClientListBySubscriptionResponse contains the response from method SAPVirtualInstancesClient.NewListBySubscriptionPager.
-type SAPVirtualInstancesClientListBySubscriptionResponse struct {
-	// Defines the collection of Virtual Instance for SAP solutions resources.
-	SAPVirtualInstanceList
-}
-
-// SAPVirtualInstancesClientStartResponse contains the response from method SAPVirtualInstancesClient.BeginStart.
-type SAPVirtualInstancesClientStartResponse struct {
-	// The current status of an async operation.
-	OperationStatusResult
-}
-
-// SAPVirtualInstancesClientStopResponse contains the response from method SAPVirtualInstancesClient.BeginStop.
-type SAPVirtualInstancesClientStopResponse struct {
-	// The current status of an async operation.
-	OperationStatusResult
-}
-
-// SAPVirtualInstancesClientUpdateResponse contains the response from method SAPVirtualInstancesClient.BeginUpdate.
-type SAPVirtualInstancesClientUpdateResponse struct {
-	// Define the Virtual Instance for SAP solutions resource.
-	SAPVirtualInstance
-}
-
-// WorkloadsClientSAPAvailabilityZoneDetailsResponse contains the response from method WorkloadsClient.SAPAvailabilityZoneDetails.
-type WorkloadsClientSAPAvailabilityZoneDetailsResponse struct {
+// SapVirtualInstancesClientInvokeAvailabilityZoneDetailsResponse contains the response from method SapVirtualInstancesClient.InvokeAvailabilityZoneDetails.
+type SapVirtualInstancesClientInvokeAvailabilityZoneDetailsResponse struct {
 	// The list of supported availability zone pairs which are part of SAP HA deployment.
 	SAPAvailabilityZoneDetailsResult
 }
 
-// WorkloadsClientSAPDiskConfigurationsResponse contains the response from method WorkloadsClient.SAPDiskConfigurations.
-type WorkloadsClientSAPDiskConfigurationsResponse struct {
+// SapVirtualInstancesClientInvokeDiskConfigurationsResponse contains the response from method SapVirtualInstancesClient.InvokeDiskConfigurations.
+type SapVirtualInstancesClientInvokeDiskConfigurationsResponse struct {
 	// The list of disk configuration for vmSku which are part of SAP deployment.
 	SAPDiskConfigurationsResult
 }
 
-// WorkloadsClientSAPSizingRecommendationsResponse contains the response from method WorkloadsClient.SAPSizingRecommendations.
-type WorkloadsClientSAPSizingRecommendationsResponse struct {
+// SapVirtualInstancesClientInvokeSapSupportedSKUResponse contains the response from method SapVirtualInstancesClient.InvokeSapSupportedSKU.
+type SapVirtualInstancesClientInvokeSapSupportedSKUResponse struct {
+	// The list of supported SKUs for different resources which are part of SAP deployment.
+	SAPSupportedResourceSKUsResult
+}
+
+// SapVirtualInstancesClientInvokeSizingRecommendationsResponse contains the response from method SapVirtualInstancesClient.InvokeSizingRecommendations.
+type SapVirtualInstancesClientInvokeSizingRecommendationsResponse struct {
 	// The SAP sizing recommendation result.
 	SAPSizingRecommendationResultClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type WorkloadsClientSAPSizingRecommendationsResponse.
-func (w *WorkloadsClientSAPSizingRecommendationsResponse) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type SapVirtualInstancesClientInvokeSizingRecommendationsResponse.
+func (s *SapVirtualInstancesClientInvokeSizingRecommendationsResponse) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalSAPSizingRecommendationResultClassification(data)
 	if err != nil {
 		return err
 	}
-	w.SAPSizingRecommendationResultClassification = res
+	s.SAPSizingRecommendationResultClassification = res
 	return nil
 }
 
-// WorkloadsClientSAPSupportedSKUResponse contains the response from method WorkloadsClient.SAPSupportedSKU.
-type WorkloadsClientSAPSupportedSKUResponse struct {
-	// The list of supported SKUs for different resources which are part of SAP deployment.
-	SAPSupportedResourceSKUsResult
+// SapVirtualInstancesClientListByResourceGroupResponse contains the response from method SapVirtualInstancesClient.NewListByResourceGroupPager.
+type SapVirtualInstancesClientListByResourceGroupResponse struct {
+	// The response of a SAPVirtualInstance list operation.
+	SAPVirtualInstanceListResult
+}
+
+// SapVirtualInstancesClientListBySubscriptionResponse contains the response from method SapVirtualInstancesClient.NewListBySubscriptionPager.
+type SapVirtualInstancesClientListBySubscriptionResponse struct {
+	// The response of a SAPVirtualInstance list operation.
+	SAPVirtualInstanceListResult
+}
+
+// SapVirtualInstancesClientStartResponse contains the response from method SapVirtualInstancesClient.BeginStart.
+type SapVirtualInstancesClientStartResponse struct {
+	// The current status of an async operation.
+	OperationStatusResult
+}
+
+// SapVirtualInstancesClientStopResponse contains the response from method SapVirtualInstancesClient.BeginStop.
+type SapVirtualInstancesClientStopResponse struct {
+	// The current status of an async operation.
+	OperationStatusResult
+}
+
+// SapVirtualInstancesClientUpdateResponse contains the response from method SapVirtualInstancesClient.BeginUpdate.
+type SapVirtualInstancesClientUpdateResponse struct {
+	// Define the Virtual Instance for SAP solutions resource.
+	SAPVirtualInstance
 }

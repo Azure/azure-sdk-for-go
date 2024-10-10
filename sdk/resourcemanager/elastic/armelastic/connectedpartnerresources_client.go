@@ -29,61 +29,63 @@ import (
 	"strings"
 )
 
-// AllTrafficFiltersClient contains the methods for the AllTrafficFilters group.
-// Don't use this type directly, use NewAllTrafficFiltersClient() instead.
-type AllTrafficFiltersClient struct {
+// ConnectedPartnerResourcesClient contains the methods for the ConnectedPartnerResources group.
+// Don't use this type directly, use NewConnectedPartnerResourcesClient() instead.
+type ConnectedPartnerResourcesClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewAllTrafficFiltersClient creates a new instance of AllTrafficFiltersClient with the specified values.
+// NewConnectedPartnerResourcesClient creates a new instance of ConnectedPartnerResourcesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewAllTrafficFiltersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AllTrafficFiltersClient, error) {
+func NewConnectedPartnerResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConnectedPartnerResourcesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &AllTrafficFiltersClient{
+	client := &ConnectedPartnerResourcesClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// List - Get the list of all traffic filters for the account.
-// If the operation fails it returns an *azcore.ResponseError type.
+// NewListPager - List of all active deployments that are associated with the marketplace subscription linked to the given
+// monitor.
 //
 // Generated from API version 2024-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
-//   - options - AllTrafficFiltersClientListOptions contains the optional parameters for the AllTrafficFiltersClient.List method.
-func (client *AllTrafficFiltersClient) List(ctx context.Context, resourceGroupName string, monitorName string, options *AllTrafficFiltersClientListOptions) (AllTrafficFiltersClientListResponse, error) {
-	var err error
-	const operationName = "AllTrafficFiltersClient.List"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listCreateRequest(ctx, resourceGroupName, monitorName, options)
-	if err != nil {
-		return AllTrafficFiltersClientListResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return AllTrafficFiltersClientListResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AllTrafficFiltersClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+//   - options - ConnectedPartnerResourcesClientListOptions contains the optional parameters for the ConnectedPartnerResourcesClient.NewListPager
+//     method.
+func (client *ConnectedPartnerResourcesClient) NewListPager(resourceGroupName string, monitorName string, options *ConnectedPartnerResourcesClientListOptions) *runtime.Pager[ConnectedPartnerResourcesClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ConnectedPartnerResourcesClientListResponse]{
+		More: func(page ConnectedPartnerResourcesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ConnectedPartnerResourcesClientListResponse) (ConnectedPartnerResourcesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ConnectedPartnerResourcesClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, monitorName, options)
+			}, nil)
+			if err != nil {
+				return ConnectedPartnerResourcesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
 }
 
 // listCreateRequest creates the List request.
-func (client *AllTrafficFiltersClient) listCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *AllTrafficFiltersClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/listAllTrafficFilters"
+func (client *ConnectedPartnerResourcesClient) listCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *ConnectedPartnerResourcesClientListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/listConnectedPartnerResources"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -108,10 +110,10 @@ func (client *AllTrafficFiltersClient) listCreateRequest(ctx context.Context, re
 }
 
 // listHandleResponse handles the List response.
-func (client *AllTrafficFiltersClient) listHandleResponse(resp *http.Response) (AllTrafficFiltersClientListResponse, error) {
-	result := AllTrafficFiltersClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.TrafficFilterResponse); err != nil {
-		return AllTrafficFiltersClientListResponse{}, err
+func (client *ConnectedPartnerResourcesClient) listHandleResponse(resp *http.Response) (ConnectedPartnerResourcesClientListResponse, error) {
+	result := ConnectedPartnerResourcesClientListResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectedPartnerResourcesListResponse); err != nil {
+		return ConnectedPartnerResourcesClientListResponse{}, err
 	}
 	return result, nil
 }

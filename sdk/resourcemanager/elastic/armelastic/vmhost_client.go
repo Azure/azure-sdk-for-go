@@ -37,7 +37,7 @@ type VMHostClient struct {
 }
 
 // NewVMHostClient creates a new instance of VMHostClient with the specified values.
-//   - subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewVMHostClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VMHostClient, error) {
@@ -54,8 +54,8 @@ func NewVMHostClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // NewListPager - List the vm resources currently being monitored by the Elastic monitor resource.
 //
-// Generated from API version 2023-02-01-preview
-//   - resourceGroupName - The name of the resource group to which the Elastic resource belongs.
+// Generated from API version 2024-03-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - VMHostClientListOptions contains the optional parameters for the VMHostClient.NewListPager method.
 func (client *VMHostClient) NewListPager(resourceGroupName string, monitorName string, options *VMHostClientListOptions) *runtime.Pager[VMHostClientListResponse] {
@@ -101,7 +101,7 @@ func (client *VMHostClient) listCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2024-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

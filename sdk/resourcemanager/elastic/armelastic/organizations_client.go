@@ -37,7 +37,7 @@ type OrganizationsClient struct {
 }
 
 // NewOrganizationsClient creates a new instance of OrganizationsClient with the specified values.
-//   - subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewOrganizationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OrganizationsClient, error) {
@@ -56,7 +56,7 @@ func NewOrganizationsClient(subscriptionID string, credential azcore.TokenCreden
 // Organization.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2024-03-01
 //   - options - OrganizationsClientGetAPIKeyOptions contains the optional parameters for the OrganizationsClient.GetAPIKey method.
 func (client *OrganizationsClient) GetAPIKey(ctx context.Context, options *OrganizationsClientGetAPIKeyOptions) (OrganizationsClientGetAPIKeyResponse, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *OrganizationsClient) getAPIKeyCreateRequest(ctx context.Context, o
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2024-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
@@ -109,6 +109,62 @@ func (client *OrganizationsClient) getAPIKeyHandleResponse(resp *http.Response) 
 	result := OrganizationsClientGetAPIKeyResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UserAPIKeyResponse); err != nil {
 		return OrganizationsClientGetAPIKeyResponse{}, err
+	}
+	return result, nil
+}
+
+// GetElasticToAzureSubscriptionMapping - Get Elastic Organization To Azure Subscription Mapping details for the logged-in
+// user.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-03-01
+//   - options - OrganizationsClientGetElasticToAzureSubscriptionMappingOptions contains the optional parameters for the OrganizationsClient.GetElasticToAzureSubscriptionMapping
+//     method.
+func (client *OrganizationsClient) GetElasticToAzureSubscriptionMapping(ctx context.Context, options *OrganizationsClientGetElasticToAzureSubscriptionMappingOptions) (OrganizationsClientGetElasticToAzureSubscriptionMappingResponse, error) {
+	var err error
+	const operationName = "OrganizationsClient.GetElasticToAzureSubscriptionMapping"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getElasticToAzureSubscriptionMappingCreateRequest(ctx, options)
+	if err != nil {
+		return OrganizationsClientGetElasticToAzureSubscriptionMappingResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return OrganizationsClientGetElasticToAzureSubscriptionMappingResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return OrganizationsClientGetElasticToAzureSubscriptionMappingResponse{}, err
+	}
+	resp, err := client.getElasticToAzureSubscriptionMappingHandleResponse(httpResp)
+	return resp, err
+}
+
+// getElasticToAzureSubscriptionMappingCreateRequest creates the GetElasticToAzureSubscriptionMapping request.
+func (client *OrganizationsClient) getElasticToAzureSubscriptionMappingCreateRequest(ctx context.Context, options *OrganizationsClientGetElasticToAzureSubscriptionMappingOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Elastic/getElasticOrganizationToAzureSubscriptionMapping"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-03-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getElasticToAzureSubscriptionMappingHandleResponse handles the GetElasticToAzureSubscriptionMapping response.
+func (client *OrganizationsClient) getElasticToAzureSubscriptionMappingHandleResponse(resp *http.Response) (OrganizationsClientGetElasticToAzureSubscriptionMappingResponse, error) {
+	result := OrganizationsClientGetElasticToAzureSubscriptionMappingResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.OrganizationToAzureSubscriptionMappingResponse); err != nil {
+		return OrganizationsClientGetElasticToAzureSubscriptionMappingResponse{}, err
 	}
 	return result, nil
 }

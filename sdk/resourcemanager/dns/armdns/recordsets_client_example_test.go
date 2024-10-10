@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dns/armdns"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/PatchARecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/PatchARecordset.json
 func ExampleRecordSetsClient_Update_patchARecordset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -61,7 +61,7 @@ func ExampleRecordSetsClient_Update_patchARecordset() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/PatchAAAARecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/PatchAAAARecordset.json
 func ExampleRecordSetsClient_Update_patchAaaaRecordset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,7 +104,7 @@ func ExampleRecordSetsClient_Update_patchAaaaRecordset() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/PatchCaaRecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/PatchCaaRecordset.json
 func ExampleRecordSetsClient_Update_patchCaaRecordset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,7 +149,7 @@ func ExampleRecordSetsClient_Update_patchCaaRecordset() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/PatchCNAMERecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/PatchCNAMERecordset.json
 func ExampleRecordSetsClient_Update_patchCnameRecordset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -191,7 +191,55 @@ func ExampleRecordSetsClient_Update_patchCnameRecordset() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/PatchMXRecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/PatchDSRecordset.json
+func ExampleRecordSetsClient_Update_patchDsRecordset() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdns.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewRecordSetsClient().Update(ctx, "rg1", "zone1", "record1", armdns.RecordTypeDS, armdns.RecordSet{
+		Properties: &armdns.RecordSetProperties{
+			Metadata: map[string]*string{
+				"key2": to.Ptr("value2"),
+			},
+		},
+	}, &armdns.RecordSetsClientUpdateOptions{IfMatch: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.RecordSet = armdns.RecordSet{
+	// 	Name: to.Ptr("record1"),
+	// 	Type: to.Ptr("Microsoft.Network/dnsZones/DS"),
+	// 	Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/DS/record1"),
+	// 	Properties: &armdns.RecordSetProperties{
+	// 		DsRecords: []*armdns.DsRecord{
+	// 			{
+	// 				Algorithm: to.Ptr[int32](5),
+	// 				Digest: &armdns.Digest{
+	// 					AlgorithmType: to.Ptr[int32](1),
+	// 					Value: to.Ptr("2BB183AF5F22588179A53B0A98631FAD1A292118"),
+	// 				},
+	// 				KeyTag: to.Ptr[int32](60485),
+	// 		}},
+	// 		TTL: to.Ptr[int64](3600),
+	// 		Fqdn: to.Ptr("record1.zone1"),
+	// 		Metadata: map[string]*string{
+	// 			"key2": to.Ptr("value2"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/PatchMXRecordset.json
 func ExampleRecordSetsClient_Update_patchMxRecordset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -235,7 +283,55 @@ func ExampleRecordSetsClient_Update_patchMxRecordset() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/PatchNSRecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/PatchNAPTRRecordset.json
+func ExampleRecordSetsClient_Update_patchNaptrRecordset() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdns.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewRecordSetsClient().Update(ctx, "rg1", "zone1", "record1", armdns.RecordTypeNAPTR, armdns.RecordSet{
+		Properties: &armdns.RecordSetProperties{
+			Metadata: map[string]*string{
+				"key2": to.Ptr("value2"),
+			},
+		},
+	}, &armdns.RecordSetsClientUpdateOptions{IfMatch: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.RecordSet = armdns.RecordSet{
+	// 	Name: to.Ptr("record1"),
+	// 	Type: to.Ptr("Microsoft.Network/dnsZones/NAPTR"),
+	// 	Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/NAPTR/record1"),
+	// 	Properties: &armdns.RecordSetProperties{
+	// 		NaptrRecords: []*armdns.NaptrRecord{
+	// 			{
+	// 				Flags: to.Ptr("U"),
+	// 				Order: to.Ptr[int32](100),
+	// 				Preference: to.Ptr[int32](10),
+	// 				Regexp: to.Ptr("!^.*$!sip:user@example.com!"),
+	// 				Replacement: to.Ptr(""),
+	// 				Services: to.Ptr("E2U+sip"),
+	// 		}},
+	// 		TTL: to.Ptr[int64](3600),
+	// 		Fqdn: to.Ptr("record1.zone1"),
+	// 		Metadata: map[string]*string{
+	// 			"key2": to.Ptr("value2"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/PatchNSRecordset.json
 func ExampleRecordSetsClient_Update_patchNsRecordset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -278,7 +374,7 @@ func ExampleRecordSetsClient_Update_patchNsRecordset() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/PatchPTRRecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/PatchPTRRecordset.json
 func ExampleRecordSetsClient_Update_patchPtrRecordset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -321,7 +417,7 @@ func ExampleRecordSetsClient_Update_patchPtrRecordset() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/PatchSOARecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/PatchSOARecordset.json
 func ExampleRecordSetsClient_Update_patchSoaRecordset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -369,7 +465,7 @@ func ExampleRecordSetsClient_Update_patchSoaRecordset() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/PatchSRVRecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/PatchSRVRecordset.json
 func ExampleRecordSetsClient_Update_patchSrvRecordset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -415,7 +511,53 @@ func ExampleRecordSetsClient_Update_patchSrvRecordset() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/PatchTXTRecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/PatchTLSARecordset.json
+func ExampleRecordSetsClient_Update_patchTlsaRecordset() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdns.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewRecordSetsClient().Update(ctx, "rg1", "zone1", "record1", armdns.RecordTypeTLSA, armdns.RecordSet{
+		Properties: &armdns.RecordSetProperties{
+			Metadata: map[string]*string{
+				"key2": to.Ptr("value2"),
+			},
+		},
+	}, &armdns.RecordSetsClientUpdateOptions{IfMatch: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.RecordSet = armdns.RecordSet{
+	// 	Name: to.Ptr("record1"),
+	// 	Type: to.Ptr("Microsoft.Network/dnsZones/TLSA"),
+	// 	Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/TLSA/record1"),
+	// 	Properties: &armdns.RecordSetProperties{
+	// 		TlsaRecords: []*armdns.TlsaRecord{
+	// 			{
+	// 				CertAssociationData: to.Ptr("6EC8A4B7F511454D84DCC055213B8D195E8ADA751FE14300AFE32D54B162438B"),
+	// 				MatchingType: to.Ptr[int32](1),
+	// 				Selector: to.Ptr[int32](1),
+	// 				Usage: to.Ptr[int32](3),
+	// 		}},
+	// 		TTL: to.Ptr[int64](3600),
+	// 		Fqdn: to.Ptr("record1.zone1"),
+	// 		Metadata: map[string]*string{
+	// 			"key2": to.Ptr("value2"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/PatchTXTRecordset.json
 func ExampleRecordSetsClient_Update_patchTxtRecordset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -460,7 +602,7 @@ func ExampleRecordSetsClient_Update_patchTxtRecordset() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/CreateOrUpdateARecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/CreateOrUpdateARecordset.json
 func ExampleRecordSetsClient_CreateOrUpdate_createARecordset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -510,7 +652,7 @@ func ExampleRecordSetsClient_CreateOrUpdate_createARecordset() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/CreateOrUpdateARecordsetAlias.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/CreateOrUpdateARecordsetAlias.json
 func ExampleRecordSetsClient_CreateOrUpdate_createARecordsetWithAliasTargetResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -559,7 +701,56 @@ func ExampleRecordSetsClient_CreateOrUpdate_createARecordsetWithAliasTargetResou
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/CreateOrUpdateAAAARecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/CreateOrUpdateARecordSetTrafficManagementProfile.json
+func ExampleRecordSetsClient_CreateOrUpdate_createARecordsetWithTrafficManagementProfile() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdns.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewRecordSetsClient().CreateOrUpdate(ctx, "rg1", "zone1", "record1", armdns.RecordTypeA, armdns.RecordSet{
+		Properties: &armdns.RecordSetProperties{
+			TTL: to.Ptr[int64](3600),
+			Metadata: map[string]*string{
+				"key1": to.Ptr("value1"),
+			},
+			TrafficManagementProfile: &armdns.SubResource{
+				ID: to.Ptr("/subscriptions/726f8cd6-6459-4db4-8e6d-2cd2716904e2/resourceGroups/test/providers/Microsoft.Network/trafficManagerProfiles/testpp2"),
+			},
+		},
+	}, &armdns.RecordSetsClientCreateOrUpdateOptions{IfMatch: nil,
+		IfNoneMatch: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.RecordSet = armdns.RecordSet{
+	// 	Name: to.Ptr("record1"),
+	// 	Type: to.Ptr("Microsoft.Network/dnsZones/A"),
+	// 	Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/A/record1"),
+	// 	Properties: &armdns.RecordSetProperties{
+	// 		TTL: to.Ptr[int64](3600),
+	// 		Fqdn: to.Ptr("record1.zone1"),
+	// 		Metadata: map[string]*string{
+	// 			"key1": to.Ptr("value1"),
+	// 		},
+	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		TrafficManagementProfile: &armdns.SubResource{
+	// 			ID: to.Ptr("/subscriptions/726f8cd6-6459-4db4-8e6d-2cd2716904e2/resourceGroups/test/providers/Microsoft.Network/trafficManagerProfiles/testpp2"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/CreateOrUpdateAAAARecordset.json
 func ExampleRecordSetsClient_CreateOrUpdate_createAaaaRecordset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -609,7 +800,7 @@ func ExampleRecordSetsClient_CreateOrUpdate_createAaaaRecordset() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/CreateOrUpdateCaaRecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/CreateOrUpdateCaaRecordset.json
 func ExampleRecordSetsClient_CreateOrUpdate_createCaaRecordset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -663,7 +854,7 @@ func ExampleRecordSetsClient_CreateOrUpdate_createCaaRecordset() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/CreateOrUpdateCNAMERecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/CreateOrUpdateCNAMERecordset.json
 func ExampleRecordSetsClient_CreateOrUpdate_createCnameRecordset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -711,7 +902,67 @@ func ExampleRecordSetsClient_CreateOrUpdate_createCnameRecordset() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/CreateOrUpdateMXRecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/CreateOrUpdateDSRecordset.json
+func ExampleRecordSetsClient_CreateOrUpdate_createDsRecordset() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdns.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewRecordSetsClient().CreateOrUpdate(ctx, "rg1", "zone1", "record1", armdns.RecordTypeDS, armdns.RecordSet{
+		Properties: &armdns.RecordSetProperties{
+			DsRecords: []*armdns.DsRecord{
+				{
+					Algorithm: to.Ptr[int32](5),
+					Digest: &armdns.Digest{
+						AlgorithmType: to.Ptr[int32](1),
+						Value:         to.Ptr("2BB183AF5F22588179A53B0A98631FAD1A292118"),
+					},
+					KeyTag: to.Ptr[int32](60485),
+				}},
+			TTL: to.Ptr[int64](3600),
+			Metadata: map[string]*string{
+				"key1": to.Ptr("value1"),
+			},
+		},
+	}, &armdns.RecordSetsClientCreateOrUpdateOptions{IfMatch: nil,
+		IfNoneMatch: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.RecordSet = armdns.RecordSet{
+	// 	Name: to.Ptr("record1"),
+	// 	Type: to.Ptr("Microsoft.Network/dnszones/DS"),
+	// 	Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/DS/record1"),
+	// 	Properties: &armdns.RecordSetProperties{
+	// 		DsRecords: []*armdns.DsRecord{
+	// 			{
+	// 				Algorithm: to.Ptr[int32](5),
+	// 				Digest: &armdns.Digest{
+	// 					AlgorithmType: to.Ptr[int32](1),
+	// 					Value: to.Ptr("2BB183AF5F22588179A53B0A98631FAD1A292118"),
+	// 				},
+	// 				KeyTag: to.Ptr[int32](60485),
+	// 		}},
+	// 		TTL: to.Ptr[int64](3600),
+	// 		Fqdn: to.Ptr("record1.zone1"),
+	// 		Metadata: map[string]*string{
+	// 			"key1": to.Ptr("value1"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/CreateOrUpdateMXRecordset.json
 func ExampleRecordSetsClient_CreateOrUpdate_createMxRecordset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -763,7 +1014,67 @@ func ExampleRecordSetsClient_CreateOrUpdate_createMxRecordset() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/CreateOrUpdateNSRecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/CreateOrUpdateNAPTRRecordset.json
+func ExampleRecordSetsClient_CreateOrUpdate_createNaptrRecordset() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdns.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewRecordSetsClient().CreateOrUpdate(ctx, "rg1", "zone1", "record1", armdns.RecordTypeNAPTR, armdns.RecordSet{
+		Properties: &armdns.RecordSetProperties{
+			NaptrRecords: []*armdns.NaptrRecord{
+				{
+					Flags:       to.Ptr("U"),
+					Order:       to.Ptr[int32](100),
+					Preference:  to.Ptr[int32](10),
+					Regexp:      to.Ptr("!^.*$!sip:user@example.com!"),
+					Replacement: to.Ptr(""),
+					Services:    to.Ptr("E2U+sip"),
+				}},
+			TTL: to.Ptr[int64](3600),
+			Metadata: map[string]*string{
+				"key1": to.Ptr("value1"),
+			},
+		},
+	}, &armdns.RecordSetsClientCreateOrUpdateOptions{IfMatch: nil,
+		IfNoneMatch: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.RecordSet = armdns.RecordSet{
+	// 	Name: to.Ptr("record1"),
+	// 	Type: to.Ptr("Microsoft.Network/dnsZones/NAPTR"),
+	// 	Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/NAPTR/record1"),
+	// 	Properties: &armdns.RecordSetProperties{
+	// 		NaptrRecords: []*armdns.NaptrRecord{
+	// 			{
+	// 				Flags: to.Ptr("U"),
+	// 				Order: to.Ptr[int32](100),
+	// 				Preference: to.Ptr[int32](10),
+	// 				Regexp: to.Ptr("!^.*$!sip:user@example.com!"),
+	// 				Replacement: to.Ptr(""),
+	// 				Services: to.Ptr("E2U+sip"),
+	// 		}},
+	// 		TTL: to.Ptr[int64](3600),
+	// 		Fqdn: to.Ptr("record1.zone1"),
+	// 		Metadata: map[string]*string{
+	// 			"key1": to.Ptr("value1"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/CreateOrUpdateNSRecordset.json
 func ExampleRecordSetsClient_CreateOrUpdate_createNsRecordset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -813,7 +1124,7 @@ func ExampleRecordSetsClient_CreateOrUpdate_createNsRecordset() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/CreateOrUpdatePTRRecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/CreateOrUpdatePTRRecordset.json
 func ExampleRecordSetsClient_CreateOrUpdate_createPtrRecordset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -863,7 +1174,7 @@ func ExampleRecordSetsClient_CreateOrUpdate_createPtrRecordset() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/CreateOrUpdateSOARecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/CreateOrUpdateSOARecordset.json
 func ExampleRecordSetsClient_CreateOrUpdate_createSoaRecordset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -923,7 +1234,7 @@ func ExampleRecordSetsClient_CreateOrUpdate_createSoaRecordset() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/CreateOrUpdateSRVRecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/CreateOrUpdateSRVRecordset.json
 func ExampleRecordSetsClient_CreateOrUpdate_createSrvRecordset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -979,7 +1290,63 @@ func ExampleRecordSetsClient_CreateOrUpdate_createSrvRecordset() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/CreateOrUpdateTXTRecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/CreateOrUpdateTLSARecordset.json
+func ExampleRecordSetsClient_CreateOrUpdate_createTlsaRecordset() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdns.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewRecordSetsClient().CreateOrUpdate(ctx, "rg1", "zone1", "record1", armdns.RecordTypeTLSA, armdns.RecordSet{
+		Properties: &armdns.RecordSetProperties{
+			TlsaRecords: []*armdns.TlsaRecord{
+				{
+					CertAssociationData: to.Ptr("6EC8A4B7F511454D84DCC055213B8D195E8ADA751FE14300AFE32D54B162438B"),
+					MatchingType:        to.Ptr[int32](1),
+					Selector:            to.Ptr[int32](1),
+					Usage:               to.Ptr[int32](3),
+				}},
+			TTL: to.Ptr[int64](3600),
+			Metadata: map[string]*string{
+				"key1": to.Ptr("value1"),
+			},
+		},
+	}, &armdns.RecordSetsClientCreateOrUpdateOptions{IfMatch: nil,
+		IfNoneMatch: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.RecordSet = armdns.RecordSet{
+	// 	Name: to.Ptr("record1"),
+	// 	Type: to.Ptr("Microsoft.Network/dnsZones/TLSA"),
+	// 	Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/TLSA/record1"),
+	// 	Properties: &armdns.RecordSetProperties{
+	// 		TlsaRecords: []*armdns.TlsaRecord{
+	// 			{
+	// 				CertAssociationData: to.Ptr("6EC8A4B7F511454D84DCC055213B8D195E8ADA751FE14300AFE32D54B162438B"),
+	// 				MatchingType: to.Ptr[int32](1),
+	// 				Selector: to.Ptr[int32](1),
+	// 				Usage: to.Ptr[int32](3),
+	// 		}},
+	// 		TTL: to.Ptr[int64](3600),
+	// 		Fqdn: to.Ptr("record1.zone1"),
+	// 		Metadata: map[string]*string{
+	// 			"key1": to.Ptr("value1"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/CreateOrUpdateTXTRecordset.json
 func ExampleRecordSetsClient_CreateOrUpdate_createTxtRecordset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1033,7 +1400,7 @@ func ExampleRecordSetsClient_CreateOrUpdate_createTxtRecordset() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/DeleteARecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DeleteARecordset.json
 func ExampleRecordSetsClient_Delete_deleteARecordset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1050,7 +1417,7 @@ func ExampleRecordSetsClient_Delete_deleteARecordset() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/DeleteAAAARecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DeleteAAAARecordset.json
 func ExampleRecordSetsClient_Delete_deleteAaaaRecordset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1067,7 +1434,7 @@ func ExampleRecordSetsClient_Delete_deleteAaaaRecordset() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/DeleteCaaRecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DeleteCaaRecordset.json
 func ExampleRecordSetsClient_Delete_deleteCaaRecordset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1084,7 +1451,92 @@ func ExampleRecordSetsClient_Delete_deleteCaaRecordset() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/DeletePTRRecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DeleteCNAMERecordset.json
+func ExampleRecordSetsClient_Delete_deleteCnameRecordset() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdns.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewRecordSetsClient().Delete(ctx, "rg1", "zone1", "record1", armdns.RecordTypeCNAME, &armdns.RecordSetsClientDeleteOptions{IfMatch: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DeleteDSRecordset.json
+func ExampleRecordSetsClient_Delete_deleteDsRecordset() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdns.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewRecordSetsClient().Delete(ctx, "rg1", "zone1", "record1", armdns.RecordTypeDS, &armdns.RecordSetsClientDeleteOptions{IfMatch: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DeleteMXRecordset.json
+func ExampleRecordSetsClient_Delete_deleteMxRecordset() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdns.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewRecordSetsClient().Delete(ctx, "rg1", "zone1", "record1", armdns.RecordTypeMX, &armdns.RecordSetsClientDeleteOptions{IfMatch: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DeleteNAPTRRecordset.json
+func ExampleRecordSetsClient_Delete_deleteNaptrRecordset() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdns.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewRecordSetsClient().Delete(ctx, "rg1", "zone1", "record1", armdns.RecordTypeNAPTR, &armdns.RecordSetsClientDeleteOptions{IfMatch: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DeleteNSRecordset.json
+func ExampleRecordSetsClient_Delete_deleteNsRecordset() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdns.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewRecordSetsClient().Delete(ctx, "rg1", "zone1", "record1", armdns.RecordTypeNS, &armdns.RecordSetsClientDeleteOptions{IfMatch: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DeletePTRRecordset.json
 func ExampleRecordSetsClient_Delete_deletePtrRecordset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1101,7 +1553,7 @@ func ExampleRecordSetsClient_Delete_deletePtrRecordset() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/DeleteSRVRecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DeleteSRVRecordset.json
 func ExampleRecordSetsClient_Delete_deleteSrvRecordset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1118,7 +1570,24 @@ func ExampleRecordSetsClient_Delete_deleteSrvRecordset() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/DeleteTXTRecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DeleteTLSARecordset.json
+func ExampleRecordSetsClient_Delete_deleteTlsaRecordset() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdns.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewRecordSetsClient().Delete(ctx, "rg1", "zone1", "record1", armdns.RecordTypeTLSA, &armdns.RecordSetsClientDeleteOptions{IfMatch: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DeleteTXTRecordset.json
 func ExampleRecordSetsClient_Delete_deleteTxtRecordset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1135,7 +1604,7 @@ func ExampleRecordSetsClient_Delete_deleteTxtRecordset() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/GetARecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/GetARecordset.json
 func ExampleRecordSetsClient_Get_getARecordset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1172,7 +1641,7 @@ func ExampleRecordSetsClient_Get_getARecordset() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/GetAAAARecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/GetAAAARecordset.json
 func ExampleRecordSetsClient_Get_getAaaaRecordset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1209,7 +1678,7 @@ func ExampleRecordSetsClient_Get_getAaaaRecordset() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/GetCaaRecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/GetCaaRecordset.json
 func ExampleRecordSetsClient_Get_getCaaRecordset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1248,7 +1717,7 @@ func ExampleRecordSetsClient_Get_getCaaRecordset() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/GetCNAMERecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/GetCNAMERecordset.json
 func ExampleRecordSetsClient_Get_getCnameRecordset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1284,7 +1753,49 @@ func ExampleRecordSetsClient_Get_getCnameRecordset() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/GetMXRecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/GetDSRecordset.json
+func ExampleRecordSetsClient_Get_getDsRecordset() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdns.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewRecordSetsClient().Get(ctx, "rg1", "zone1", "record1", armdns.RecordTypeDS, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.RecordSet = armdns.RecordSet{
+	// 	Name: to.Ptr("record1"),
+	// 	Type: to.Ptr("Microsoft.Network/dnsZones/DS"),
+	// 	Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/DS/record1"),
+	// 	Properties: &armdns.RecordSetProperties{
+	// 		DsRecords: []*armdns.DsRecord{
+	// 			{
+	// 				Algorithm: to.Ptr[int32](5),
+	// 				Digest: &armdns.Digest{
+	// 					AlgorithmType: to.Ptr[int32](1),
+	// 					Value: to.Ptr("2BB183AF5F22588179A53B0A98631FAD1A292118"),
+	// 				},
+	// 				KeyTag: to.Ptr[int32](60485),
+	// 		}},
+	// 		TTL: to.Ptr[int64](3600),
+	// 		Fqdn: to.Ptr("record1.zone1"),
+	// 		Metadata: map[string]*string{
+	// 			"key1": to.Ptr("value1"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/GetMXRecordset.json
 func ExampleRecordSetsClient_Get_getMxRecordset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1322,7 +1833,49 @@ func ExampleRecordSetsClient_Get_getMxRecordset() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/GetNSRecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/GetNAPTRRecordset.json
+func ExampleRecordSetsClient_Get_getNaptrRecordset() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdns.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewRecordSetsClient().Get(ctx, "rg1", "zone1", "record1", armdns.RecordTypeNAPTR, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.RecordSet = armdns.RecordSet{
+	// 	Name: to.Ptr("record1"),
+	// 	Type: to.Ptr("Microsoft.Network/dnsZones/NAPTR"),
+	// 	Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/NAPTR/record1"),
+	// 	Properties: &armdns.RecordSetProperties{
+	// 		NaptrRecords: []*armdns.NaptrRecord{
+	// 			{
+	// 				Flags: to.Ptr("U"),
+	// 				Order: to.Ptr[int32](100),
+	// 				Preference: to.Ptr[int32](10),
+	// 				Regexp: to.Ptr("!^.*$!sip:user@example.com!"),
+	// 				Replacement: to.Ptr(""),
+	// 				Services: to.Ptr("E2U+sip"),
+	// 		}},
+	// 		TTL: to.Ptr[int64](3600),
+	// 		Fqdn: to.Ptr("record1.zone1"),
+	// 		Metadata: map[string]*string{
+	// 			"key1": to.Ptr("value1"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/GetNSRecordset.json
 func ExampleRecordSetsClient_Get_getNsRecordset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1359,7 +1912,7 @@ func ExampleRecordSetsClient_Get_getNsRecordset() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/GetPTRRecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/GetPTRRecordset.json
 func ExampleRecordSetsClient_Get_getPtrRecordset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1396,7 +1949,7 @@ func ExampleRecordSetsClient_Get_getPtrRecordset() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/GetSOARecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/GetSOARecordset.json
 func ExampleRecordSetsClient_Get_getSoaRecordset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1438,7 +1991,7 @@ func ExampleRecordSetsClient_Get_getSoaRecordset() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/GetSRVRecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/GetSRVRecordset.json
 func ExampleRecordSetsClient_Get_getSrvRecordset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1478,7 +2031,47 @@ func ExampleRecordSetsClient_Get_getSrvRecordset() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/GetTXTRecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/GetTLSARecordset.json
+func ExampleRecordSetsClient_Get_getTlsaRecordset() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdns.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewRecordSetsClient().Get(ctx, "rg1", "zone1", "record1", armdns.RecordTypeTLSA, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.RecordSet = armdns.RecordSet{
+	// 	Name: to.Ptr("record1"),
+	// 	Type: to.Ptr("Microsoft.Network/dnsZones/TLSA"),
+	// 	Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/TLSA/record1"),
+	// 	Properties: &armdns.RecordSetProperties{
+	// 		TlsaRecords: []*armdns.TlsaRecord{
+	// 			{
+	// 				CertAssociationData: to.Ptr("6EC8A4B7F511454D84DCC055213B8D195E8ADA751FE14300AFE32D54B162438B"),
+	// 				MatchingType: to.Ptr[int32](1),
+	// 				Selector: to.Ptr[int32](1),
+	// 				Usage: to.Ptr[int32](3),
+	// 		}},
+	// 		TTL: to.Ptr[int64](3600),
+	// 		Fqdn: to.Ptr("record1.zone1"),
+	// 		Metadata: map[string]*string{
+	// 			"key1": to.Ptr("value1"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/GetTXTRecordset.json
 func ExampleRecordSetsClient_Get_getTxtRecordset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1517,7 +2110,7 @@ func ExampleRecordSetsClient_Get_getTxtRecordset() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/ListARecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/ListARecordset.json
 func ExampleRecordSetsClient_NewListByTypePager_listARecordsets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1564,7 +2157,7 @@ func ExampleRecordSetsClient_NewListByTypePager_listARecordsets() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/ListAAAARecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/ListAAAARecordset.json
 func ExampleRecordSetsClient_NewListByTypePager_listAaaaRecordsets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1611,7 +2204,7 @@ func ExampleRecordSetsClient_NewListByTypePager_listAaaaRecordsets() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/ListCaaRecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/ListCaaRecordset.json
 func ExampleRecordSetsClient_NewListByTypePager_listCaaRecordsets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1660,7 +2253,7 @@ func ExampleRecordSetsClient_NewListByTypePager_listCaaRecordsets() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/ListCNAMERecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/ListCNAMERecordset.json
 func ExampleRecordSetsClient_NewListByTypePager_listCnameRecordsets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1706,7 +2299,59 @@ func ExampleRecordSetsClient_NewListByTypePager_listCnameRecordsets() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/ListMXRecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/ListDSRecordset.json
+func ExampleRecordSetsClient_NewListByTypePager_listDsRecordsets() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdns.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewRecordSetsClient().NewListByTypePager("rg1", "zone1", armdns.RecordTypeDS, &armdns.RecordSetsClientListByTypeOptions{Top: nil,
+		Recordsetnamesuffix: nil,
+	})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.RecordSetListResult = armdns.RecordSetListResult{
+		// 	Value: []*armdns.RecordSet{
+		// 		{
+		// 			Name: to.Ptr("record1"),
+		// 			Type: to.Ptr("Microsoft.Network/dnsZones/DS"),
+		// 			Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/DS/record1"),
+		// 			Properties: &armdns.RecordSetProperties{
+		// 				DsRecords: []*armdns.DsRecord{
+		// 					{
+		// 						Algorithm: to.Ptr[int32](5),
+		// 						Digest: &armdns.Digest{
+		// 							AlgorithmType: to.Ptr[int32](1),
+		// 							Value: to.Ptr("2BB183AF5F22588179A53B0A98631FAD1A292118"),
+		// 						},
+		// 						KeyTag: to.Ptr[int32](60485),
+		// 				}},
+		// 				TTL: to.Ptr[int64](3600),
+		// 				Fqdn: to.Ptr("record1.zone1"),
+		// 				Metadata: map[string]*string{
+		// 					"key1": to.Ptr("value1"),
+		// 				},
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/ListMXRecordset.json
 func ExampleRecordSetsClient_NewListByTypePager_listMxRecordsets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1754,7 +2399,59 @@ func ExampleRecordSetsClient_NewListByTypePager_listMxRecordsets() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/ListNSRecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/ListNAPTRRecordset.json
+func ExampleRecordSetsClient_NewListByTypePager_listNaptrRecordsets() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdns.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewRecordSetsClient().NewListByTypePager("rg1", "zone1", armdns.RecordTypeNAPTR, &armdns.RecordSetsClientListByTypeOptions{Top: nil,
+		Recordsetnamesuffix: nil,
+	})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.RecordSetListResult = armdns.RecordSetListResult{
+		// 	Value: []*armdns.RecordSet{
+		// 		{
+		// 			Name: to.Ptr("record1"),
+		// 			Type: to.Ptr("Microsoft.Network/dnsZones/NAPTR"),
+		// 			Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/NAPTR/record1"),
+		// 			Properties: &armdns.RecordSetProperties{
+		// 				NaptrRecords: []*armdns.NaptrRecord{
+		// 					{
+		// 						Flags: to.Ptr("u"),
+		// 						Order: to.Ptr[int32](100),
+		// 						Preference: to.Ptr[int32](10),
+		// 						Regexp: to.Ptr("!^.*$!sip:user@example.com!"),
+		// 						Replacement: to.Ptr(""),
+		// 						Services: to.Ptr("E2U+sip"),
+		// 				}},
+		// 				TTL: to.Ptr[int64](3600),
+		// 				Fqdn: to.Ptr("record1.zone1"),
+		// 				Metadata: map[string]*string{
+		// 					"key1": to.Ptr("value1"),
+		// 				},
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/ListNSRecordset.json
 func ExampleRecordSetsClient_NewListByTypePager_listNsRecordsets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1801,7 +2498,7 @@ func ExampleRecordSetsClient_NewListByTypePager_listNsRecordsets() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/ListPTRRecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/ListPTRRecordset.json
 func ExampleRecordSetsClient_NewListByTypePager_listPtrRecordsets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1848,7 +2545,7 @@ func ExampleRecordSetsClient_NewListByTypePager_listPtrRecordsets() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/ListSOARecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/ListSOARecordset.json
 func ExampleRecordSetsClient_NewListByTypePager_listSoaRecordsets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1900,7 +2597,7 @@ func ExampleRecordSetsClient_NewListByTypePager_listSoaRecordsets() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/ListSRVRecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/ListSRVRecordset.json
 func ExampleRecordSetsClient_NewListByTypePager_listSrvRecordsets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1950,7 +2647,57 @@ func ExampleRecordSetsClient_NewListByTypePager_listSrvRecordsets() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/ListTXTRecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/ListTLSARecordset.json
+func ExampleRecordSetsClient_NewListByTypePager_listTlsaRecordsets() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdns.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewRecordSetsClient().NewListByTypePager("rg1", "zone1", armdns.RecordTypeTLSA, &armdns.RecordSetsClientListByTypeOptions{Top: nil,
+		Recordsetnamesuffix: nil,
+	})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.RecordSetListResult = armdns.RecordSetListResult{
+		// 	Value: []*armdns.RecordSet{
+		// 		{
+		// 			Name: to.Ptr("record1"),
+		// 			Type: to.Ptr("Microsoft.Network/dnsZones/TLSA"),
+		// 			Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/TLSA/record1"),
+		// 			Properties: &armdns.RecordSetProperties{
+		// 				TlsaRecords: []*armdns.TlsaRecord{
+		// 					{
+		// 						CertAssociationData: to.Ptr("6EC8A4B7F511454D84DCC055213B8D195E8ADA751FE14300AFE32D54B162438B"),
+		// 						MatchingType: to.Ptr[int32](1),
+		// 						Selector: to.Ptr[int32](1),
+		// 						Usage: to.Ptr[int32](3),
+		// 				}},
+		// 				TTL: to.Ptr[int64](3600),
+		// 				Fqdn: to.Ptr("record1.zone1"),
+		// 				Metadata: map[string]*string{
+		// 					"key1": to.Ptr("value1"),
+		// 				},
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/ListTXTRecordset.json
 func ExampleRecordSetsClient_NewListByTypePager_listTxtRecordsets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1999,7 +2746,7 @@ func ExampleRecordSetsClient_NewListByTypePager_listTxtRecordsets() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/ListRecordSetsByZone.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/ListRecordSetsByZone.json
 func ExampleRecordSetsClient_NewListByDNSZonePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

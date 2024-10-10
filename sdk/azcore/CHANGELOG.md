@@ -1,10 +1,10 @@
 # Release History
 
-## 1.14.1 (Unreleased)
+## 1.15.0 (2024-10-10)
 
 ### Features Added
 
-### Breaking Changes
+* `BearerTokenPolicy` handles CAE claims challenges
 
 ### Bugs Fixed
 

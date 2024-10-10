@@ -1,5 +1,11 @@
 # Release History
 
+## 6.2.0 (2024-10-24)
+### Features Added
+
+- New field `IgnorePodDisruptionBudget` in struct `AgentPoolsClientBeginDeleteOptions`
+
+
 ## 6.2.0-beta.1 (2024-09-29)
 ### Features Added
 

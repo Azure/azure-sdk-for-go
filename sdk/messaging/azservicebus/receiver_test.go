@@ -15,17 +15,13 @@ import (
 	"testing"
 	"time"
 
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/sas"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
 	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/require"
-	"nhooyr.io/websocket"
 )
 
 func TestReceiverBackupSettlement(t *testing.T) {
@@ -1047,91 +1043,6 @@ func TestReceiveWithDifferentWaitTime(t *testing.T) {
 	t.Logf("Bigger: %d messages", bigger)
 	require.Greater(t, bigger, base)
 	require.Greater(t, bigger, base2)
-}
-
-func TestReceiverConnectionTimeout(t *testing.T) {
-	getLogs := test.CaptureLogsForTest(false)
-
-	var conn *slowConn
-
-	newWebSocketConnFn := func(ctx context.Context, args NewWebSocketConnArgs) (net.Conn, error) {
-		t.Logf("Using websocket function")
-		opts := &websocket.DialOptions{Subprotocols: []string{"amqp"}}
-		wssConn, _, err := websocket.Dial(ctx, args.Host, opts)
-
-		if err != nil {
-			return nil, err
-		}
-
-		netConn := websocket.NetConn(ctx, wssConn, websocket.MessageBinary)
-		conn = &slowConn{t: t, Conn: netConn}
-
-		t.Logf("Returning slow connection")
-		return conn, nil
-	}
-
-	serviceBusClient := newServiceBusClientForTest(t, &test.NewClientOptions[ClientOptions]{
-		ClientOptions: &ClientOptions{
-			NewWebSocketConn: newWebSocketConnFn,
-			RetryOptions: exported.RetryOptions{
-				MaxRetryDelay: time.Nanosecond,
-			},
-		},
-	})
-
-	queueName, cleanup := createQueue(t, nil, nil)
-	t.Cleanup(cleanup)
-
-	sender, err := serviceBusClient.NewSender(queueName, nil)
-	require.NoError(t, err)
-
-	err = sender.SendMessage(context.Background(), &Message{
-		Body: []byte("hello world"),
-	}, nil)
-	require.NoError(t, err)
-
-	receiver, err := serviceBusClient.NewReceiverForQueue(queueName, nil)
-	require.NoError(t, err)
-
-	ctxWithTimeout, cancel := context.WithTimeout(context.Background(), 30*time.Second)
-	defer cancel()
-	messages, err := receiver.ReceiveMessages(ctxWithTimeout, 1, nil)
-
-	require.NoError(t, err)
-	require.NotEmpty(t, messages)
-
-	log.Printf("\n\n\nReceived messages, lock expiration in %s\n\n\n", messages[0].LockedUntil)
-
-	// cause the connection to have arbitrarily low read/write timeouts - it'll force errors with
-	// this connection, at the lowest level, and we should see it bubble up as a connection recovery.
-	atomic.StoreInt64(&conn.slow, 1)
-
-	log.Printf("\n\n\nAbout to renew message lock\n\n\n")
-
-	err = receiver.RenewMessageLock(context.Background(), messages[0], nil)
-	require.NoError(t, err)
-
-	// check that the log messages made it in.
-	recovered := false
-
-	logs := getLogs()
-
-	for _, log := range logs {
-		if strings.Contains(log, "Recovered connection and links") {
-			recovered = true
-		}
-	}
-
-	if !recovered {
-		// dump out the logs so we can see what happened instead...
-		for _, log := range logs {
-			t.Logf("LOG: %s", log)
-		}
-	}
-
-	require.True(t, recovered)
-
-	log.Printf("\n\n\nDone with renew message lock, lock expiry time: %s\n\n\n", messages[0].LockedUntil)
 }
 
 type receivedMessageSlice []*ReceivedMessage

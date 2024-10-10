@@ -17,40 +17,53 @@ import (
 // Don't use this type directly, use NewClientFactory instead.
 type ClientFactory struct {
 	subscriptionID string
-	credential     azcore.TokenCredential
-	options        *arm.ClientOptions
+	internal       *arm.Client
 }
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
 // The parameter values will be propagated to any client created from this factory.
-//   - subscriptionID - Specifies the Azure subscription ID, which uniquely identifies the Microsoft Azure subscription.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
+	internal, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	return &ClientFactory{
-		subscriptionID: subscriptionID, credential: credential,
-		options: options.Clone(),
+		subscriptionID: subscriptionID,
+		internal:       internal,
 	}, nil
+}
+
+// NewDnssecConfigsClient creates a new instance of DnssecConfigsClient.
+func (c *ClientFactory) NewDnssecConfigsClient() *DnssecConfigsClient {
+	return &DnssecConfigsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewRecordSetsClient creates a new instance of RecordSetsClient.
 func (c *ClientFactory) NewRecordSetsClient() *RecordSetsClient {
-	subClient, _ := NewRecordSetsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &RecordSetsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewResourceReferenceClient creates a new instance of ResourceReferenceClient.
 func (c *ClientFactory) NewResourceReferenceClient() *ResourceReferenceClient {
-	subClient, _ := NewResourceReferenceClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &ResourceReferenceClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewZonesClient creates a new instance of ZonesClient.
 func (c *ClientFactory) NewZonesClient() *ZonesClient {
-	subClient, _ := NewZonesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &ZonesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }

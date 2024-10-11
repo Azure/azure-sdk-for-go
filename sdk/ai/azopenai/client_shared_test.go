@@ -151,7 +151,7 @@ var azureOpenAI, openAI = func() (testVars, testVars) {
 				Model:    ifAzure(azure, "text-embedding-ada-002", "text-embedding-ada-002"),
 			},
 			Files: endpointWithModel{
-				Endpoint: ifAzure(azure, servers.SWECentral, servers.OpenAI),
+				Endpoint: ifAzure(azure, servers.USEast2, servers.OpenAI),
 				Model:    "",
 			},
 			Speech: endpointWithModel{

@@ -69,7 +69,9 @@ func (client *Client) addUploadPartCreateRequest(ctx context.Context, uploadID s
 		return nil, err
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := setMultipartFormData(req, data, noFilenameChange{}); err != nil {
+	if err := runtime.SetMultipartFormData(req, map[string]any{
+		"data": data,
+	}); err != nil {
 		return nil, err
 	}
 	return req, nil

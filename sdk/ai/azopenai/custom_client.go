@@ -35,6 +35,8 @@ type ClientOptions struct {
 	azcore.ClientOptions
 }
 
+const apiVersion = "2024-08-01-preview"
+
 // NewClient creates a new instance of Client that connects to an Azure OpenAI endpoint.
 //   - endpoint - Azure OpenAI service endpoint, for example: https://{your-resource-name}.openai.azure.com
 //   - credential - used to authorize requests. Usually a credential from [github.com/Azure/azure-sdk-for-go/sdk/azidentity].
@@ -327,7 +329,7 @@ type tempAPIVersionPolicy struct{}
 
 func (tavp tempAPIVersionPolicy) Do(req *policy.Request) (*http.Response, error) {
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01-preview")
+	reqQP.Set("api-version", apiVersion)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req.Next()
 }

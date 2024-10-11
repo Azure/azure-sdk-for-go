@@ -7,5 +7,5 @@
 package azopenai
 
 const (
-	version = "v0.6.2"
+	version = "v0.7.0"
 )

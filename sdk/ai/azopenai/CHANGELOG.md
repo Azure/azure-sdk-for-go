@@ -1,6 +1,6 @@
 # Release History
 
-## 0.7.0 (2024-10-10)
+## 0.7.0 (2024-10-14)
 
 ### Features Added
 
@@ -29,8 +29,8 @@
 
 ### Breaking Changes
 
-- FunctionDefinition.Parameters has been changed to take JSON instead of an object/map. You can set it using code 
-similar to this:
+- FunctionDefinition.Parameters has been changed to take JSON instead of an object/map. You can set it using code
+  similar to this:
 
   ```go
     parametersJSON, err := json.Marshal(map[string]any{
@@ -43,7 +43,7 @@ similar to this:
         },
       },
     })
-    
+
     if err != nil {
       // TODO: Update the following line with your application specific error handling logic
       log.Printf("ERROR: %s", err)
@@ -66,7 +66,7 @@ similar to this:
 
 ### Bugs Fixed
 
-- Client now respects the `InsecureAllowCredentialWithHTTP` flag for allowing non-HTTPS connections. Thank you @ukrocks007!  (PR#23188)
+- Client now respects the `InsecureAllowCredentialWithHTTP` flag for allowing non-HTTPS connections. Thank you @ukrocks007! (PR#23188)
 
 ## 0.6.0 (2024-06-11)
 

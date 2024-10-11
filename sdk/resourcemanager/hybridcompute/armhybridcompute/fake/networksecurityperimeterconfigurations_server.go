@@ -33,7 +33,7 @@ type NetworkSecurityPerimeterConfigurationsServer struct {
 	NewListByPrivateLinkScopePager func(resourceGroupName string, scopeName string, options *armhybridcompute.NetworkSecurityPerimeterConfigurationsClientListByPrivateLinkScopeOptions) (resp azfake.PagerResponder[armhybridcompute.NetworkSecurityPerimeterConfigurationsClientListByPrivateLinkScopeResponse])
 
 	// BeginReconcileForPrivateLinkScope is the fake for method NetworkSecurityPerimeterConfigurationsClient.BeginReconcileForPrivateLinkScope
-	// HTTP status codes to indicate success: http.StatusAccepted
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginReconcileForPrivateLinkScope func(ctx context.Context, resourceGroupName string, scopeName string, perimeterName string, options *armhybridcompute.NetworkSecurityPerimeterConfigurationsClientBeginReconcileForPrivateLinkScopeOptions) (resp azfake.PollerResponder[armhybridcompute.NetworkSecurityPerimeterConfigurationsClientReconcileForPrivateLinkScopeResponse], errResp azfake.ErrorResponder)
 }
 
@@ -200,9 +200,9 @@ func (n *NetworkSecurityPerimeterConfigurationsServerTransport) dispatchBeginRec
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		n.beginReconcileForPrivateLinkScope.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginReconcileForPrivateLinkScope) {
 		n.beginReconcileForPrivateLinkScope.remove(req)

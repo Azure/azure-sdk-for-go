@@ -1,5 +1,146 @@
 # Release History
 
+## 2.0.0 (2024-10-11)
+### Breaking Changes
+
+- Type of `MachineExtensionProperties.ProtectedSettings` has been changed from `any` to `map[string]any`
+- Type of `MachineExtensionProperties.Settings` has been changed from `any` to `map[string]any`
+- Type of `MachineExtensionUpdateProperties.ProtectedSettings` has been changed from `any` to `map[string]any`
+- Type of `MachineExtensionUpdateProperties.Settings` has been changed from `any` to `map[string]any`
+- Struct `ErrorResponse` has been removed
+- Struct `PrivateLinkScopesResource` has been removed
+- Struct `ProxyResource` has been removed
+- Struct `Resource` has been removed
+- Struct `ResourceUpdate` has been removed
+- Struct `TrackedResource` has been removed
+
+### Features Added
+
+- New value `PublicNetworkAccessTypeSecuredByPerimeter` added to enum type `PublicNetworkAccessType`
+- New enum type `AccessMode` with values `AccessModeAudit`, `AccessModeEnforced`, `AccessModeLearning`
+- New enum type `AccessRuleDirection` with values `AccessRuleDirectionInbound`, `AccessRuleDirectionOutbound`
+- New enum type `AgentConfigurationMode` with values `AgentConfigurationModeFull`, `AgentConfigurationModeMonitor`
+- New enum type `ArcKindEnum` with values `ArcKindEnumAVS`, `ArcKindEnumAWS`, `ArcKindEnumEPS`, `ArcKindEnumGCP`, `ArcKindEnumHCI`, `ArcKindEnumSCVMM`, `ArcKindEnumVMware`
+- New enum type `EsuEligibility` with values `EsuEligibilityEligible`, `EsuEligibilityIneligible`, `EsuEligibilityUnknown`
+- New enum type `EsuKeyState` with values `EsuKeyStateActive`, `EsuKeyStateInactive`
+- New enum type `EsuServerType` with values `EsuServerTypeDatacenter`, `EsuServerTypeStandard`
+- New enum type `HotpatchEnablementStatus` with values `HotpatchEnablementStatusActionRequired`, `HotpatchEnablementStatusDisabled`, `HotpatchEnablementStatusEnabled`, `HotpatchEnablementStatusPendingEvaluation`, `HotpatchEnablementStatusUnknown`
+- New enum type `LastAttemptStatusEnum` with values `LastAttemptStatusEnumFailed`, `LastAttemptStatusEnumSuccess`
+- New enum type `LicenseAssignmentState` with values `LicenseAssignmentStateAssigned`, `LicenseAssignmentStateNotAssigned`
+- New enum type `LicenseCoreType` with values `LicenseCoreTypePCore`, `LicenseCoreTypeVCore`
+- New enum type `LicenseEdition` with values `LicenseEditionDatacenter`, `LicenseEditionStandard`
+- New enum type `LicenseProfileProductType` with values `LicenseProfileProductTypeWindowsIoTEnterprise`, `LicenseProfileProductTypeWindowsServer`
+- New enum type `LicenseProfileSubscriptionStatus` with values `LicenseProfileSubscriptionStatusDisabled`, `LicenseProfileSubscriptionStatusDisabling`, `LicenseProfileSubscriptionStatusEnabled`, `LicenseProfileSubscriptionStatusEnabling`, `LicenseProfileSubscriptionStatusFailed`, `LicenseProfileSubscriptionStatusUnknown`
+- New enum type `LicenseProfileSubscriptionStatusUpdate` with values `LicenseProfileSubscriptionStatusUpdateDisable`, `LicenseProfileSubscriptionStatusUpdateEnable`
+- New enum type `LicenseState` with values `LicenseStateActivated`, `LicenseStateDeactivated`
+- New enum type `LicenseStatus` with values `LicenseStatusExtendedGrace`, `LicenseStatusLicensed`, `LicenseStatusNonGenuineGrace`, `LicenseStatusNotification`, `LicenseStatusOOBGrace`, `LicenseStatusOOTGrace`, `LicenseStatusUnlicensed`
+- New enum type `LicenseTarget` with values `LicenseTargetWindowsServer2012`, `LicenseTargetWindowsServer2012R2`
+- New enum type `LicenseType` with values `LicenseTypeESU`
+- New enum type `OsType` with values `OsTypeLinux`, `OsTypeWindows`
+- New enum type `PatchOperationStartedBy` with values `PatchOperationStartedByPlatform`, `PatchOperationStartedByUser`
+- New enum type `PatchOperationStatus` with values `PatchOperationStatusCompletedWithWarnings`, `PatchOperationStatusFailed`, `PatchOperationStatusInProgress`, `PatchOperationStatusSucceeded`, `PatchOperationStatusUnknown`
+- New enum type `PatchServiceUsed` with values `PatchServiceUsedAPT`, `PatchServiceUsedUnknown`, `PatchServiceUsedWU`, `PatchServiceUsedWUWSUS`, `PatchServiceUsedYUM`, `PatchServiceUsedZypper`
+- New enum type `ProgramYear` with values `ProgramYearYear1`, `ProgramYearYear2`, `ProgramYearYear3`
+- New enum type `ProvisioningIssueSeverity` with values `ProvisioningIssueSeverityError`, `ProvisioningIssueSeverityWarning`
+- New enum type `ProvisioningIssueType` with values `ProvisioningIssueTypeConfigurationPropagationFailure`, `ProvisioningIssueTypeMissingIdentityConfiguration`, `ProvisioningIssueTypeMissingPerimeterConfiguration`, `ProvisioningIssueTypeOther`
+- New enum type `ProvisioningState` with values `ProvisioningStateAccepted`, `ProvisioningStateCanceled`, `ProvisioningStateCreating`, `ProvisioningStateDeleted`, `ProvisioningStateDeleting`, `ProvisioningStateFailed`, `ProvisioningStateSucceeded`, `ProvisioningStateUpdating`
+- New enum type `VMGuestPatchClassificationLinux` with values `VMGuestPatchClassificationLinuxCritical`, `VMGuestPatchClassificationLinuxOther`, `VMGuestPatchClassificationLinuxSecurity`
+- New enum type `VMGuestPatchClassificationWindows` with values `VMGuestPatchClassificationWindowsCritical`, `VMGuestPatchClassificationWindowsDefinition`, `VMGuestPatchClassificationWindowsFeaturePack`, `VMGuestPatchClassificationWindowsSecurity`, `VMGuestPatchClassificationWindowsServicePack`, `VMGuestPatchClassificationWindowsTools`, `VMGuestPatchClassificationWindowsUpdateRollUp`, `VMGuestPatchClassificationWindowsUpdates`
+- New enum type `VMGuestPatchRebootSetting` with values `VMGuestPatchRebootSettingAlways`, `VMGuestPatchRebootSettingIfRequired`, `VMGuestPatchRebootSettingNever`
+- New enum type `VMGuestPatchRebootStatus` with values `VMGuestPatchRebootStatusCompleted`, `VMGuestPatchRebootStatusFailed`, `VMGuestPatchRebootStatusNotNeeded`, `VMGuestPatchRebootStatusRequired`, `VMGuestPatchRebootStatusStarted`, `VMGuestPatchRebootStatusUnknown`
+- New function `*ClientFactory.NewExtensionMetadataClient() *ExtensionMetadataClient`
+- New function `*ClientFactory.NewLicenseProfilesClient() *LicenseProfilesClient`
+- New function `*ClientFactory.NewLicensesClient() *LicensesClient`
+- New function `*ClientFactory.NewNetworkProfileClient() *NetworkProfileClient`
+- New function `*ClientFactory.NewNetworkSecurityPerimeterConfigurationsClient() *NetworkSecurityPerimeterConfigurationsClient`
+- New function `NewExtensionMetadataClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ExtensionMetadataClient, error)`
+- New function `*ExtensionMetadataClient.Get(context.Context, string, string, string, string, *ExtensionMetadataClientGetOptions) (ExtensionMetadataClientGetResponse, error)`
+- New function `*ExtensionMetadataClient.NewListPager(string, string, string, *ExtensionMetadataClientListOptions) *runtime.Pager[ExtensionMetadataClientListResponse]`
+- New function `NewLicenseProfilesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*LicenseProfilesClient, error)`
+- New function `*LicenseProfilesClient.BeginCreateOrUpdate(context.Context, string, string, LicenseProfile, *LicenseProfilesClientBeginCreateOrUpdateOptions) (*runtime.Poller[LicenseProfilesClientCreateOrUpdateResponse], error)`
+- New function `*LicenseProfilesClient.BeginDelete(context.Context, string, string, *LicenseProfilesClientBeginDeleteOptions) (*runtime.Poller[LicenseProfilesClientDeleteResponse], error)`
+- New function `*LicenseProfilesClient.Get(context.Context, string, string, *LicenseProfilesClientGetOptions) (LicenseProfilesClientGetResponse, error)`
+- New function `*LicenseProfilesClient.NewListPager(string, string, *LicenseProfilesClientListOptions) *runtime.Pager[LicenseProfilesClientListResponse]`
+- New function `*LicenseProfilesClient.BeginUpdate(context.Context, string, string, LicenseProfileUpdate, *LicenseProfilesClientBeginUpdateOptions) (*runtime.Poller[LicenseProfilesClientUpdateResponse], error)`
+- New function `NewLicensesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*LicensesClient, error)`
+- New function `*LicensesClient.BeginCreateOrUpdate(context.Context, string, string, License, *LicensesClientBeginCreateOrUpdateOptions) (*runtime.Poller[LicensesClientCreateOrUpdateResponse], error)`
+- New function `*LicensesClient.BeginDelete(context.Context, string, string, *LicensesClientBeginDeleteOptions) (*runtime.Poller[LicensesClientDeleteResponse], error)`
+- New function `*LicensesClient.Get(context.Context, string, string, *LicensesClientGetOptions) (LicensesClientGetResponse, error)`
+- New function `*LicensesClient.NewListByResourceGroupPager(string, *LicensesClientListByResourceGroupOptions) *runtime.Pager[LicensesClientListByResourceGroupResponse]`
+- New function `*LicensesClient.NewListBySubscriptionPager(*LicensesClientListBySubscriptionOptions) *runtime.Pager[LicensesClientListBySubscriptionResponse]`
+- New function `*LicensesClient.BeginUpdate(context.Context, string, string, LicenseUpdate, *LicensesClientBeginUpdateOptions) (*runtime.Poller[LicensesClientUpdateResponse], error)`
+- New function `*LicensesClient.BeginValidateLicense(context.Context, License, *LicensesClientBeginValidateLicenseOptions) (*runtime.Poller[LicensesClientValidateLicenseResponse], error)`
+- New function `*MachinesClient.BeginAssessPatches(context.Context, string, string, *MachinesClientBeginAssessPatchesOptions) (*runtime.Poller[MachinesClientAssessPatchesResponse], error)`
+- New function `*MachinesClient.BeginInstallPatches(context.Context, string, string, MachineInstallPatchesParameters, *MachinesClientBeginInstallPatchesOptions) (*runtime.Poller[MachinesClientInstallPatchesResponse], error)`
+- New function `PossibleLicenseProfileSubscriptionStatusValues() []LicenseProfileSubscriptionStatus`
+- New function `NewNetworkProfileClient(string, azcore.TokenCredential, *arm.ClientOptions) (*NetworkProfileClient, error)`
+- New function `*NetworkProfileClient.Get(context.Context, string, string, *NetworkProfileClientGetOptions) (NetworkProfileClientGetResponse, error)`
+- New function `NewNetworkSecurityPerimeterConfigurationsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*NetworkSecurityPerimeterConfigurationsClient, error)`
+- New function `*NetworkSecurityPerimeterConfigurationsClient.GetByPrivateLinkScope(context.Context, string, string, string, *NetworkSecurityPerimeterConfigurationsClientGetByPrivateLinkScopeOptions) (NetworkSecurityPerimeterConfigurationsClientGetByPrivateLinkScopeResponse, error)`
+- New function `*NetworkSecurityPerimeterConfigurationsClient.NewListByPrivateLinkScopePager(string, string, *NetworkSecurityPerimeterConfigurationsClientListByPrivateLinkScopeOptions) *runtime.Pager[NetworkSecurityPerimeterConfigurationsClientListByPrivateLinkScopeResponse]`
+- New function `*NetworkSecurityPerimeterConfigurationsClient.BeginReconcileForPrivateLinkScope(context.Context, string, string, string, *NetworkSecurityPerimeterConfigurationsClientBeginReconcileForPrivateLinkScopeOptions) (*runtime.Poller[NetworkSecurityPerimeterConfigurationsClientReconcileForPrivateLinkScopeResponse], error)`
+- New struct `AccessRule`
+- New struct `AccessRuleProperties`
+- New struct `AgentUpgrade`
+- New struct `AvailablePatchCountByClassification`
+- New struct `EsuKey`
+- New struct `EsuProfileUpdateProperties`
+- New struct `ExtensionValue`
+- New struct `ExtensionValueListResult`
+- New struct `ExtensionValueProperties`
+- New struct `IPAddress`
+- New struct `License`
+- New struct `LicenseDetails`
+- New struct `LicenseProfile`
+- New struct `LicenseProfileArmEsuProperties`
+- New struct `LicenseProfileArmProductProfileProperties`
+- New struct `LicenseProfileMachineInstanceView`
+- New struct `LicenseProfileMachineInstanceViewEsuProperties`
+- New struct `LicenseProfileMachineInstanceViewSoftwareAssurance`
+- New struct `LicenseProfileProperties`
+- New struct `LicenseProfilePropertiesSoftwareAssurance`
+- New struct `LicenseProfileUpdate`
+- New struct `LicenseProfileUpdateProperties`
+- New struct `LicenseProfileUpdatePropertiesSoftwareAssurance`
+- New struct `LicenseProfilesListResult`
+- New struct `LicenseProperties`
+- New struct `LicenseUpdate`
+- New struct `LicenseUpdateProperties`
+- New struct `LicenseUpdatePropertiesLicenseDetails`
+- New struct `LicensesListResult`
+- New struct `LinuxParameters`
+- New struct `MachineAssessPatchesResult`
+- New struct `MachineInstallPatchesParameters`
+- New struct `MachineInstallPatchesResult`
+- New struct `NetworkInterface`
+- New struct `NetworkProfile`
+- New struct `NetworkSecurityPerimeter`
+- New struct `NetworkSecurityPerimeterConfiguration`
+- New struct `NetworkSecurityPerimeterConfigurationListResult`
+- New struct `NetworkSecurityPerimeterConfigurationProperties`
+- New struct `NetworkSecurityPerimeterConfigurationReconcileResult`
+- New struct `NetworkSecurityPerimeterProfile`
+- New struct `PatchSettingsStatus`
+- New struct `ProductFeature`
+- New struct `ProductFeatureUpdate`
+- New struct `ProductProfileUpdateProperties`
+- New struct `ProvisioningIssue`
+- New struct `ProvisioningIssueProperties`
+- New struct `ResourceAssociation`
+- New struct `Subnet`
+- New struct `VolumeLicenseDetails`
+- New struct `WindowsParameters`
+- New field `ConfigMode` in struct `AgentConfiguration`
+- New field `Kind`, `Resources` in struct `Machine`
+- New field `EnableAutomaticUpgrade` in struct `MachineExtensionUpdateProperties`
+- New field `AgentUpgrade`, `LicenseProfile`, `NetworkProfile`, `OSEdition` in struct `MachineProperties`
+- New field `Kind` in struct `MachineUpdate`
+- New field `AgentUpgrade` in struct `MachineUpdateProperties`
+- New field `Expand` in struct `MachinesClientCreateOrUpdateOptions`
+- New field `Expand` in struct `MachinesClientListByResourceGroupOptions`
+- New field `EnableHotpatching`, `Status` in struct `PatchSettings`
+
+
 ## 2.0.0-beta.4 (2024-07-23)
 ### Breaking Changes
 

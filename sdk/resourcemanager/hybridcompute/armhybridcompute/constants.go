@@ -10,7 +10,7 @@ package armhybridcompute
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute"
-	moduleVersion = "v2.0.0-beta.4"
+	moduleVersion = "v2.0.0"
 )
 
 // AccessMode - Property that impacts a resource's logging behavior and its connectivity with other resources and public networks.
@@ -181,64 +181,6 @@ func PossibleEsuServerTypeValues() []EsuServerType {
 	}
 }
 
-// ExecutionState - Script execution status.
-type ExecutionState string
-
-const (
-	ExecutionStateCanceled  ExecutionState = "Canceled"
-	ExecutionStateFailed    ExecutionState = "Failed"
-	ExecutionStatePending   ExecutionState = "Pending"
-	ExecutionStateRunning   ExecutionState = "Running"
-	ExecutionStateSucceeded ExecutionState = "Succeeded"
-	ExecutionStateTimedOut  ExecutionState = "TimedOut"
-	ExecutionStateUnknown   ExecutionState = "Unknown"
-)
-
-// PossibleExecutionStateValues returns the possible values for the ExecutionState const type.
-func PossibleExecutionStateValues() []ExecutionState {
-	return []ExecutionState{
-		ExecutionStateCanceled,
-		ExecutionStateFailed,
-		ExecutionStatePending,
-		ExecutionStateRunning,
-		ExecutionStateSucceeded,
-		ExecutionStateTimedOut,
-		ExecutionStateUnknown,
-	}
-}
-
-// ExtensionsStatusLevelTypes - The level code.
-type ExtensionsStatusLevelTypes string
-
-const (
-	ExtensionsStatusLevelTypesError   ExtensionsStatusLevelTypes = "Error"
-	ExtensionsStatusLevelTypesInfo    ExtensionsStatusLevelTypes = "Info"
-	ExtensionsStatusLevelTypesWarning ExtensionsStatusLevelTypes = "Warning"
-)
-
-// PossibleExtensionsStatusLevelTypesValues returns the possible values for the ExtensionsStatusLevelTypes const type.
-func PossibleExtensionsStatusLevelTypesValues() []ExtensionsStatusLevelTypes {
-	return []ExtensionsStatusLevelTypes{
-		ExtensionsStatusLevelTypesError,
-		ExtensionsStatusLevelTypesInfo,
-		ExtensionsStatusLevelTypesWarning,
-	}
-}
-
-// GatewayType - The type of the Gateway resource.
-type GatewayType string
-
-const (
-	GatewayTypePublic GatewayType = "Public"
-)
-
-// PossibleGatewayTypeValues returns the possible values for the GatewayType const type.
-func PossibleGatewayTypeValues() []GatewayType {
-	return []GatewayType{
-		GatewayTypePublic,
-	}
-}
-
 // HotpatchEnablementStatus - Status of hotpatch enablement or disablement.
 type HotpatchEnablementStatus string
 
@@ -258,6 +200,19 @@ func PossibleHotpatchEnablementStatusValues() []HotpatchEnablementStatus {
 		HotpatchEnablementStatusEnabled,
 		HotpatchEnablementStatusPendingEvaluation,
 		HotpatchEnablementStatusUnknown,
+	}
+}
+
+type InstanceViewTypes string
+
+const (
+	InstanceViewTypesInstanceView InstanceViewTypes = "instanceView"
+)
+
+// PossibleInstanceViewTypesValues returns the possible values for the InstanceViewTypes const type.
+func PossibleInstanceViewTypesValues() []InstanceViewTypes {
+	return []InstanceViewTypes{
+		InstanceViewTypesInstanceView,
 	}
 }
 
@@ -362,6 +317,22 @@ func PossibleLicenseProfileSubscriptionStatusValues() []LicenseProfileSubscripti
 		LicenseProfileSubscriptionStatusEnabling,
 		LicenseProfileSubscriptionStatusFailed,
 		LicenseProfileSubscriptionStatusUnknown,
+	}
+}
+
+// LicenseProfileSubscriptionStatusUpdate - Indicates the new subscription status of the OS or Product Features.
+type LicenseProfileSubscriptionStatusUpdate string
+
+const (
+	LicenseProfileSubscriptionStatusUpdateDisable LicenseProfileSubscriptionStatusUpdate = "Disable"
+	LicenseProfileSubscriptionStatusUpdateEnable  LicenseProfileSubscriptionStatusUpdate = "Enable"
+)
+
+// PossibleLicenseProfileSubscriptionStatusUpdateValues returns the possible values for the LicenseProfileSubscriptionStatusUpdate const type.
+func PossibleLicenseProfileSubscriptionStatusUpdateValues() []LicenseProfileSubscriptionStatusUpdate {
+	return []LicenseProfileSubscriptionStatusUpdate{
+		LicenseProfileSubscriptionStatusUpdateDisable,
+		LicenseProfileSubscriptionStatusUpdateEnable,
 	}
 }
 

@@ -336,6 +336,33 @@ func (f *FileRecordedTestsSuite) TestFileCreateNonDefaultMetadataNonEmpty() {
 	}
 }
 
+func (f *FileRecordedTestsSuite) TestFileCreateRenameFilePermissionFormatDefault() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fClient := shareClient.NewRootDirectoryClient().NewFileClient(testcommon.GenerateFileName(testName))
+
+	_, err = fClient.Create(context.Background(), 1024, &file.CreateOptions{
+		FilePermissionFormat: (*file.PermissionFormat)(to.Ptr(testcommon.FilePermissionBinary)),
+	})
+	_require.NoError(err)
+
+	_, err = fClient.Rename(context.Background(), "file2", &file.RenameOptions{
+		FilePermissionFormat: (*file.PermissionFormat)(to.Ptr(testcommon.FilePermissionFormatSddl)),
+		Permissions: &file.Permissions{
+			Permission: &testcommon.SampleSDDL,
+		},
+	})
+	_require.NoError(err)
+
+}
+
 func (f *FileRecordedTestsSuite) TestFileCreateNonDefaultHTTPHeaders() {
 	_require := require.New(f.T())
 	testName := f.T().Name()

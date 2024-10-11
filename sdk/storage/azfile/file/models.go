@@ -43,6 +43,9 @@ func ParseNTFSFileAttributes(attributes *string) (*NTFSFileAttributes, error) {
 // Permissions contains the optional parameters for the permissions on the file.
 type Permissions = exported.Permissions
 
+// PermissionFormat contains the format of the file permissions, Can be sddl (Default) or Binary.
+type PermissionFormat = generated.FilePermissionFormat
+
 // HTTPHeaders contains optional parameters for the Client.Create method.
 type HTTPHeaders = generated.ShareFileHTTPHeaders
 
@@ -80,6 +83,7 @@ type CreateOptions struct {
 	SMBProperties *SMBProperties
 	// The default value is 'inherit' for Permission field in file.Permissions.
 	Permissions           *Permissions
+	FilePermissionFormat  *PermissionFormat
 	HTTPHeaders           *HTTPHeaders
 	LeaseAccessConditions *LeaseAccessConditions
 	// A name-value pair to associate with a file storage object.
@@ -89,10 +93,11 @@ type CreateOptions struct {
 func (o *CreateOptions) format() (*generated.FileClientCreateOptions, *generated.ShareFileHTTPHeaders, *LeaseAccessConditions) {
 	if o == nil {
 		return &generated.FileClientCreateOptions{
-			FileAttributes:    to.Ptr(shared.FileAttributesNone),
-			FileCreationTime:  to.Ptr(shared.DefaultCurrentTimeString),
-			FileLastWriteTime: to.Ptr(shared.DefaultCurrentTimeString),
-			FilePermission:    to.Ptr(shared.DefaultFilePermissionString),
+			FileAttributes:       to.Ptr(shared.FileAttributesNone),
+			FileCreationTime:     to.Ptr(shared.DefaultCurrentTimeString),
+			FileLastWriteTime:    to.Ptr(shared.DefaultCurrentTimeString),
+			FilePermission:       to.Ptr(shared.DefaultFilePermissionString),
+			FilePermissionFormat: to.Ptr(PermissionFormat(shared.DefaultFilePermissionFormat)),
 		}, nil, nil
 	}
 
@@ -101,13 +106,18 @@ func (o *CreateOptions) format() (*generated.FileClientCreateOptions, *generated
 	permission, permissionKey := exported.FormatPermissions(o.Permissions, to.Ptr(shared.DefaultFilePermissionString))
 
 	createOptions := &generated.FileClientCreateOptions{
-		FileAttributes:    fileAttributes,
-		FileChangeTime:    fileChangeTime,
-		FileCreationTime:  fileCreationTime,
-		FileLastWriteTime: fileLastWriteTime,
-		FilePermission:    permission,
-		FilePermissionKey: permissionKey,
-		Metadata:          o.Metadata,
+		FileAttributes:       fileAttributes,
+		FileChangeTime:       fileChangeTime,
+		FileCreationTime:     fileCreationTime,
+		FileLastWriteTime:    fileLastWriteTime,
+		FilePermission:       permission,
+		FilePermissionKey:    permissionKey,
+		FilePermissionFormat: to.Ptr(PermissionFormat(shared.DefaultFilePermissionFormat)),
+		Metadata:             o.Metadata,
+	}
+
+	if o.FilePermissionFormat != nil {
+		createOptions.FilePermissionFormat = o.FilePermissionFormat
 	}
 
 	return createOptions, o.HTTPHeaders, o.LeaseAccessConditions
@@ -136,6 +146,12 @@ type RenameOptions struct {
 	SMBProperties *SMBProperties
 	// Permissions contains the optional parameters for the permissions on the file.
 	Permissions *Permissions
+	// Optional. Available for version 2023-06-01 and later. Specifies the format in which the permission is returned. Acceptable
+	// values are SDDL or binary. If x-ms-file-permission-format is unspecified or
+	// explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is explicitly set to
+	// binary, the permission is returned as a base64 string representing the binary
+	// encoding of the permission
+	FilePermissionFormat *PermissionFormat
 	// ContentType sets the content type of the file.
 	ContentType *string
 	// IgnoreReadOnly specifies whether the ReadOnly attribute on a pre-existing destination file should be respected.
@@ -156,7 +172,9 @@ type RenameOptions struct {
 
 func (o *RenameOptions) format() (*generated.FileClientRenameOptions, *generated.SourceLeaseAccessConditions, *generated.DestinationLeaseAccessConditions, *generated.CopyFileSMBInfo, *generated.ShareFileHTTPHeaders) {
 	if o == nil {
-		return nil, nil, nil, nil, nil
+		return &generated.FileClientRenameOptions{
+			FilePermissionFormat: to.Ptr(PermissionFormat(shared.DefaultFilePermissionFormat)),
+		}, nil, nil, nil, nil
 	}
 
 	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.SMBProperties, nil, nil, false)
@@ -164,11 +182,16 @@ func (o *RenameOptions) format() (*generated.FileClientRenameOptions, *generated
 	permission, permissionKey := exported.FormatPermissions(o.Permissions, nil)
 
 	renameOpts := &generated.FileClientRenameOptions{
-		FilePermission:    permission,
-		FilePermissionKey: permissionKey,
-		IgnoreReadOnly:    o.IgnoreReadOnly,
-		Metadata:          o.Metadata,
-		ReplaceIfExists:   o.ReplaceIfExists,
+		FilePermission:       permission,
+		FilePermissionKey:    permissionKey,
+		FilePermissionFormat: to.Ptr(PermissionFormat(shared.DefaultFilePermissionFormat)),
+		IgnoreReadOnly:       o.IgnoreReadOnly,
+		Metadata:             o.Metadata,
+		ReplaceIfExists:      o.ReplaceIfExists,
+	}
+
+	if o.FilePermissionFormat != nil {
+		renameOpts.FilePermissionFormat = o.FilePermissionFormat
 	}
 
 	smbInfo := &generated.CopyFileSMBInfo{
@@ -216,6 +239,13 @@ type SetHTTPHeadersOptions struct {
 	SMBProperties *SMBProperties
 	// The default value is 'preserve' for Permission field in file.Permissions.
 	Permissions *Permissions
+	// Optional. Available for version 2023-06-01 and later. Specifies the format in which the permission is returned. Acceptable
+	// values are SDDL or binary. If x-ms-file-permission-format is unspecified or
+	// explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is explicitly set to
+	// binary, the permission is returned as a base64 string representing the binary
+	// encoding of the permission
+	FilePermissionFormat *PermissionFormat
+
 	HTTPHeaders *HTTPHeaders
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
@@ -224,10 +254,11 @@ type SetHTTPHeadersOptions struct {
 func (o *SetHTTPHeadersOptions) format() (*generated.FileClientSetHTTPHeadersOptions, *generated.ShareFileHTTPHeaders, *LeaseAccessConditions) {
 	if o == nil {
 		return &generated.FileClientSetHTTPHeadersOptions{
-			FileAttributes:    to.Ptr(shared.DefaultPreserveString),
-			FileCreationTime:  to.Ptr(shared.DefaultPreserveString),
-			FileLastWriteTime: to.Ptr(shared.DefaultPreserveString),
-			FilePermission:    to.Ptr(shared.DefaultPreserveString),
+			FileAttributes:       to.Ptr(shared.DefaultPreserveString),
+			FileCreationTime:     to.Ptr(shared.DefaultPreserveString),
+			FileLastWriteTime:    to.Ptr(shared.DefaultPreserveString),
+			FilePermission:       to.Ptr(shared.DefaultPreserveString),
+			FilePermissionFormat: to.Ptr(PermissionFormat(shared.DefaultFilePermissionFormat)),
 		}, nil, nil
 	}
 
@@ -236,13 +267,14 @@ func (o *SetHTTPHeadersOptions) format() (*generated.FileClientSetHTTPHeadersOpt
 	permission, permissionKey := exported.FormatPermissions(o.Permissions, to.Ptr(shared.DefaultPreserveString))
 
 	opts := &generated.FileClientSetHTTPHeadersOptions{
-		FileAttributes:    fileAttributes,
-		FileChangeTime:    fileChangeTime,
-		FileCreationTime:  fileCreationTime,
-		FileLastWriteTime: fileLastWriteTime,
-		FileContentLength: o.FileContentLength,
-		FilePermission:    permission,
-		FilePermissionKey: permissionKey,
+		FileAttributes:       fileAttributes,
+		FileChangeTime:       fileChangeTime,
+		FileCreationTime:     fileCreationTime,
+		FileLastWriteTime:    fileLastWriteTime,
+		FileContentLength:    o.FileContentLength,
+		FilePermission:       permission,
+		FilePermissionKey:    permissionKey,
+		FilePermissionFormat: o.FilePermissionFormat,
 	}
 
 	return opts, o.HTTPHeaders, o.LeaseAccessConditions

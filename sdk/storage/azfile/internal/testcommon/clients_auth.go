@@ -52,7 +52,9 @@ const (
 )
 
 const (
-	ISO8601 = "2006-01-02T15:04:05.0000000Z07:00"
+	ISO8601                  = "2006-01-02T15:04:05.0000000Z07:00"
+	FilePermissionFormatSddl = "Sddl"
+	FilePermissionBinary     = "Binary"
 )
 
 var (

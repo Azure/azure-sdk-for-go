@@ -1,5 +1,11 @@
 # Release History
 
+## 1.7.3 (2024-10-14)
+
+### Bugs Fixed
+
+- Apply fix from @bcho for overflows with retries. (PR#23562)
+
 ## 1.7.2 (2024-09-11)
 
 ### Bugs Fixed
@@ -33,7 +39,7 @@
 
 ### Bugs Fixed
 
-- Settling a message (using CompleteMessage, AbandonMessage, etc..) on a different Receiver instance than you received on no 
+- Settling a message (using CompleteMessage, AbandonMessage, etc..) on a different Receiver instance than you received on no
   longer leaks memory. (PR#22253)
 
 ## 1.5.0 (2023-10-10)
@@ -57,7 +63,7 @@
 
 ### Features Added
 
-- `admin.SubscriptionProperties` now allow for a `DefaultRule` to be set. This allows Subscriptions to be created with an immediate filter/action. 
+- `admin.SubscriptionProperties` now allow for a `DefaultRule` to be set. This allows Subscriptions to be created with an immediate filter/action.
   Contributed by @StrawbrryFlurry. (PR#20888)
 
 ## 1.3.0 (2023-05-09)

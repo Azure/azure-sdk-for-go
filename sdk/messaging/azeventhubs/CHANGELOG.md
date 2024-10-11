@@ -1,10 +1,11 @@
 # Release History
 
-## 1.2.3 (Unreleased)
+## 1.2.3 (2024-10-14)
 
 ### Bugs Fixed
 
-- Fixed a bug where cancelling RenewMessageLock() calls could cause hangs in future RenewMessageLock calls. (PR#23400)
+- Fixed bug where cancelling management link calls, such GetEventHubProperties() or GetPartitionProperties, could result in blocked calls. (PR#23400)
+- Apply fix from @bcho for overflows with retries. (PR#23562)
 
 ## 1.2.2 (2024-08-15)
 
@@ -23,9 +24,10 @@
 ### Bugs Fixed
 
 Processor.Run had unclear behavior for some cases:
-- Run() now returns an explicit error when called more than once on a single 
+
+- Run() now returns an explicit error when called more than once on a single
   Processor instance or if multiple Run calls are made concurrently. (PR#22833)
-- NextProcessorClient now properly terminates (and returns nil) if called on a 
+- NextProcessorClient now properly terminates (and returns nil) if called on a
   stopped Processor. (PR#22833)
 
 ## 1.1.0 (2024-04-02)

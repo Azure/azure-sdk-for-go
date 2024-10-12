@@ -269,6 +269,48 @@ func (d *DirectoryRecordedTestsSuite) TestDirCreateDeleteDefault() {
 	_require.Equal(gResp.FileChangeTime.IsZero(), false)
 }
 
+func (d *DirectoryRecordedTestsSuite) TestDirCreateRenameFilePermissionFormatDefault() {
+	_require := require.New(d.T())
+	testName := d.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	dirName := testcommon.GenerateDirectoryName(testName)
+	dirURL := "https://" + cred.AccountName() + ".file.core.windows.net/" + shareName + "/" + dirName
+
+	options := &directory.ClientOptions{}
+	testcommon.SetClientOptions(d.T(), &options.ClientOptions)
+	dirClient, err := directory.NewClientWithSharedKeyCredential(dirURL, cred, options)
+	_require.NoError(err)
+
+	resp, err := dirClient.Create(context.Background(), &directory.CreateOptions{
+		FilePermissionFormat: (*file.PermissionFormat)(to.Ptr(testcommon.FilePermissionBinary)),
+		FilePermissions: &file.Permissions{
+			Permission: &testcommon.SampleBinary,
+		},
+	})
+	_require.NoError(err)
+	_require.NotNil(resp.ETag)
+	_require.NotNil(resp.RequestID)
+	_require.Equal(resp.LastModified.IsZero(), false)
+
+	_, err = dirClient.Rename(context.Background(), "testFile", &directory.RenameOptions{
+		FilePermissionFormat: (*file.PermissionFormat)(to.Ptr(testcommon.FilePermissionFormatSddl)),
+		FilePermissions: &file.Permissions{
+			Permission: &testcommon.SampleSDDL,
+		},
+	})
+	_require.NoError(err)
+}
+
 func (d *DirectoryRecordedTestsSuite) TestDirSetPropertiesDefault() {
 	_require := require.New(d.T())
 	testName := d.T().Name()

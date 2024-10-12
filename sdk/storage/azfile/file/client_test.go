@@ -350,6 +350,9 @@ func (f *FileRecordedTestsSuite) TestFileCreateRenameFilePermissionFormatDefault
 
 	_, err = fClient.Create(context.Background(), 1024, &file.CreateOptions{
 		FilePermissionFormat: (*file.PermissionFormat)(to.Ptr(testcommon.FilePermissionBinary)),
+		Permissions: &file.Permissions{
+			Permission: &testcommon.SampleBinary,
+		},
 	})
 	_require.NoError(err)
 
@@ -550,6 +553,59 @@ func (f *FileRecordedTestsSuite) TestFileGetSetPropertiesDefault() {
 	_require.Equal(getResp.Date.IsZero(), false)
 	_require.NotNil(getResp.IsServerEncrypted)
 	_require.EqualValues(getResp.Metadata, metadata)
+}
+
+func (f *FileRecordedTestsSuite) TestFileSetHTTPHeaders() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fClient := shareClient.NewRootDirectoryClient().NewFileClient(testcommon.GenerateFileName(testName))
+	_, err = fClient.Create(context.Background(), 0, &file.CreateOptions{
+		FilePermissionFormat: (*file.PermissionFormat)(to.Ptr(testcommon.FilePermissionFormatSddl)),
+		Permissions: &file.Permissions{
+			Permission: &testcommon.SampleSDDL,
+		},
+	})
+	_require.NoError(err)
+
+	md5Str := "MDAwMDAwMDA="
+	testMd5 := []byte(md5Str)
+
+	creationTime := time.Now().Add(-time.Hour)
+	lastWriteTime := time.Now().Add(-time.Minute * 15)
+	changeTime := time.Now().Add(-time.Minute * 30)
+
+	options := &file.SetHTTPHeadersOptions{
+		FilePermissionFormat: (*file.PermissionFormat)(to.Ptr(testcommon.FilePermissionBinary)),
+		Permissions:          &file.Permissions{Permission: &testcommon.SampleBinary},
+		SMBProperties: &file.SMBProperties{
+			Attributes:    &file.NTFSFileAttributes{Hidden: true},
+			CreationTime:  &creationTime,
+			LastWriteTime: &lastWriteTime,
+			ChangeTime:    &changeTime,
+		},
+		HTTPHeaders: &file.HTTPHeaders{
+			ContentType:        to.Ptr("text/html"),
+			ContentEncoding:    to.Ptr("gzip"),
+			ContentLanguage:    to.Ptr("en"),
+			ContentMD5:         testMd5,
+			CacheControl:       to.Ptr("no-transform"),
+			ContentDisposition: to.Ptr("attachment"),
+		},
+	}
+	setResp, err := fClient.SetHTTPHeaders(context.Background(), options)
+	_require.NoError(err)
+	_require.NotNil(setResp.ETag)
+	_require.Equal(setResp.LastModified.IsZero(), false)
+	_require.NotNil(setResp.RequestID)
+	_require.NotNil(setResp.Version)
+	_require.Equal(setResp.Date.IsZero(), false)
+	_require.NotNil(setResp.IsServerEncrypted)
 }
 
 func (f *FileRecordedTestsSuite) TestFilePreservePermissions() {

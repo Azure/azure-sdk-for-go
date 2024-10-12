@@ -7,8 +7,10 @@
 package share
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
 	"time"
 )
 
@@ -272,15 +274,24 @@ func (o *CreatePermissionOptions) format(sharePermission string) (Permission, *g
 // Permission - A permission (a security descriptor) at the share level.
 type Permission = generated.SharePermission
 
+type PermissionFormat = generated.FilePermissionFormat
+
 // ---------------------------------------------------------------------------------------------------------------------
 
 // GetPermissionOptions contains the optional parameters for the Client.GetPermission method.
 type GetPermissionOptions struct {
-	// placeholder for future options
+	FilePermissionFormat *PermissionFormat
 }
 
 func (o *GetPermissionOptions) format() *generated.ShareClientGetPermissionOptions {
-	return nil
+	if o == nil {
+		return &generated.ShareClientGetPermissionOptions{
+			FilePermissionFormat: to.Ptr(PermissionFormat(shared.DefaultFilePermissionFormat)),
+		}
+	}
+	return &generated.ShareClientGetPermissionOptions{
+		FilePermissionFormat: o.FilePermissionFormat,
+	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

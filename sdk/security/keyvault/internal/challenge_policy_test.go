@@ -207,6 +207,7 @@ func TestChallengePolicy_TwoCAEChallenges(t *testing.T) {
 		mock.WithHeader("WWW-Authenticate", kvChallenge),
 		mock.WithStatusCode(401),
 	)
+	srv.AppendResponse()
 	srv.AppendResponse(
 		mock.WithHeader("WWW-Authenticate", caeChallenge1),
 		mock.WithStatusCode(401),
@@ -235,9 +236,19 @@ func TestChallengePolicy_TwoCAEChallenges(t *testing.T) {
 		runtime.PipelineOptions{PerRetry: []policy.Policy{p}},
 		&policy.ClientOptions{Transport: srv},
 	)
+
+	// req 1 kv then regular
 	req, err := runtime.NewRequest(context.Background(), "GET", "https://42.vault.azure.net")
 	require.NoError(t, err)
 	res, err := pl.Do(req)
+	require.NoError(t, err)
+	require.Equal(t, 200, res.StatusCode)
+	require.Equal(t, tkReqs, 1)
+
+	// req 2 cae twice
+	req, err = runtime.NewRequest(context.Background(), "GET", "https://42.vault.azure.net")
+	require.NoError(t, err)
+	res, err = pl.Do(req)
 	require.NoError(t, err)
 	require.Equal(t, 401, res.StatusCode)
 	require.Equal(t, caeChallenge2, res.Header.Get("WWW-Authenticate"))

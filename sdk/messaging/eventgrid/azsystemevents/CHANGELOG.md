@@ -6,12 +6,6 @@
 
 - New field has been added to ACSIncomingCallEventData: OnBehalfOfCallee.
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 0.4.2 (2024-09-19)
 
 ### Features Added

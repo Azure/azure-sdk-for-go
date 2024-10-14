@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- New field has been added to ACSIncomingCallEventData: OnBehalfOfCallee.
+
 ### Breaking Changes
 
 ### Bugs Fixed
@@ -27,14 +29,14 @@
 
 ### Breaking Changes
 
-- Models that were not system events (ex: ACSChatMessageEventInThreadBaseProperties), or referenced by system events, have been removed. 
+- Models that were not system events (ex: ACSChatMessageEventInThreadBaseProperties), or referenced by system events, have been removed.
 
 ## 0.4.0 (2024-06-11)
 
 ### Breaking Changes
 
 - `Type` has been removed, making it simpler to compare the EventGridEvent.Type and CloudEvent.Type values against
-our provided constants.
+  our provided constants.
 
 - The following models have had 'Advanced' removed from their name:
   - ACSMessageButtonContent
@@ -56,6 +58,7 @@ our provided constants.
 ### Breaking Changes
 
 Field and type renames:
+
 - Globally, types and fields named ChannelType has been renamed to ChannelKind
 - ACS events and constants have been changed to use an all-caps name (ex: AcsEmailDeliveryReportStatusDetails -> ACSEmailDeliveryReportStatusDetails).
 - ACSAdvancedMessageContext.ID -> MessageID

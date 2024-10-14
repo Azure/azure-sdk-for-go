@@ -579,6 +579,9 @@ type ACSIncomingCallEventData struct {
 	// Signed incoming call context.
 	IncomingCallContext *string
 
+	// The communication identifier of the user on behalf of whom the call is made.
+	OnBehalfOfCallee *CommunicationIdentifierModel
+
 	// The Id of the server call
 	ServerCallID *string
 }
@@ -1749,14 +1752,14 @@ type APIManagementUserUpdatedEventData struct {
 
 // AVSClusterCreatedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.AVS.ClusterCreated event.
 type AVSClusterCreatedEventData struct {
+	// REQUIRED; Id of the operation that caused this event.
+	OperationID *string
+
 	// Hosts added to the cluster in this event, if any.
 	AddedHostNames []string
 
 	// Hosts in Maintenance mode in the cluster, if any.
 	InMaintenanceHostNames []string
-
-	// Id of the operation that caused this event.
-	OperationID *string
 
 	// Hosts removed from the cluster in this event, if any.
 	RemovedHostNames []string
@@ -1764,14 +1767,14 @@ type AVSClusterCreatedEventData struct {
 
 // AVSClusterDeletedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.AVS.ClusterDeleted event.
 type AVSClusterDeletedEventData struct {
+	// REQUIRED; Id of the operation that caused this event.
+	OperationID *string
+
 	// Hosts added to the cluster in this event, if any.
 	AddedHostNames []string
 
 	// Hosts in Maintenance mode in the cluster, if any.
 	InMaintenanceHostNames []string
-
-	// Id of the operation that caused this event.
-	OperationID *string
 
 	// Hosts removed from the cluster in this event, if any.
 	RemovedHostNames []string
@@ -1779,6 +1782,9 @@ type AVSClusterDeletedEventData struct {
 
 // AVSClusterFailedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.AVS.ClusterFailed event.
 type AVSClusterFailedEventData struct {
+	// REQUIRED; Id of the operation that caused this event.
+	OperationID *string
+
 	// Hosts added to the cluster in this event, if any.
 	AddedHostNames []string
 
@@ -1788,23 +1794,20 @@ type AVSClusterFailedEventData struct {
 	// Hosts in Maintenance mode in the cluster, if any.
 	InMaintenanceHostNames []string
 
-	// Id of the operation that caused this event.
-	OperationID *string
-
 	// Hosts removed from the cluster in this event, if any.
 	RemovedHostNames []string
 }
 
 // AVSClusterUpdatedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.AVS.ClusterUpdated event.
 type AVSClusterUpdatedEventData struct {
+	// REQUIRED; Id of the operation that caused this event.
+	OperationID *string
+
 	// Hosts added to the cluster in this event, if any.
 	AddedHostNames []string
 
 	// Hosts in Maintenance mode in the cluster, if any.
 	InMaintenanceHostNames []string
-
-	// Id of the operation that caused this event.
-	OperationID *string
 
 	// Hosts removed from the cluster in this event, if any.
 	RemovedHostNames []string
@@ -1812,14 +1815,14 @@ type AVSClusterUpdatedEventData struct {
 
 // AVSClusterUpdatingEventData - Schema of the Data property of an EventGridEvent for a Microsoft.AVS.ClusterUpdating event.
 type AVSClusterUpdatingEventData struct {
+	// REQUIRED; Id of the operation that caused this event.
+	OperationID *string
+
 	// Hosts added to the cluster in this event, if any.
 	AddedHostNames []string
 
 	// Hosts in Maintenance mode in the cluster, if any.
 	InMaintenanceHostNames []string
-
-	// Id of the operation that caused this event.
-	OperationID *string
 
 	// Hosts removed from the cluster in this event, if any.
 	RemovedHostNames []string
@@ -1828,34 +1831,34 @@ type AVSClusterUpdatingEventData struct {
 // AVSPrivateCloudFailedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.AVS.PrivateCloudFailed
 // event.
 type AVSPrivateCloudFailedEventData struct {
+	// REQUIRED; Id of the operation that caused this event.
+	OperationID *string
+
 	// Failure reason of an event.
 	FailureMessage *string
-
-	// Id of the operation that caused this event.
-	OperationID *string
 }
 
 // AVSPrivateCloudUpdatedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.AVS.PrivateCloudUpdated
 // event.
 type AVSPrivateCloudUpdatedEventData struct {
-	// Id of the operation that caused this event.
+	// REQUIRED; Id of the operation that caused this event.
 	OperationID *string
 }
 
 // AVSPrivateCloudUpdatingEventData - Schema of the Data property of an EventGridEvent for a Microsoft.AVS.PrivateCloudUpdating
 // event.
 type AVSPrivateCloudUpdatingEventData struct {
-	// Id of the operation that caused this event.
+	// REQUIRED; Id of the operation that caused this event.
 	OperationID *string
 }
 
 // AVSScriptExecutionCancelledEventData - Schema of the Data property of an EventGridEvent for a Microsoft.AVS.ScriptExecutionCancelled
 // event.
 type AVSScriptExecutionCancelledEventData struct {
-	// Cmdlet referenced in the execution that caused this event.
+	// REQUIRED; Cmdlet referenced in the execution that caused this event.
 	CmdletID *string
 
-	// Id of the operation that caused this event.
+	// REQUIRED; Id of the operation that caused this event.
 	OperationID *string
 
 	// Stdout outputs from the execution, if any.
@@ -1865,14 +1868,14 @@ type AVSScriptExecutionCancelledEventData struct {
 // AVSScriptExecutionFailedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.AVS.ScriptExecutionFailed
 // event.
 type AVSScriptExecutionFailedEventData struct {
-	// Cmdlet referenced in the execution that caused this event.
+	// REQUIRED; Cmdlet referenced in the execution that caused this event.
 	CmdletID *string
+
+	// REQUIRED; Id of the operation that caused this event.
+	OperationID *string
 
 	// Failure reason of an event.
 	FailureMessage *string
-
-	// Id of the operation that caused this event.
-	OperationID *string
 
 	// Stdout outputs from the execution, if any.
 	Output []string
@@ -1881,13 +1884,13 @@ type AVSScriptExecutionFailedEventData struct {
 // AVSScriptExecutionFinishedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.AVS.ScriptExecutionFinished
 // event.
 type AVSScriptExecutionFinishedEventData struct {
+	// REQUIRED; Cmdlet referenced in the execution that caused this event.
+	CmdletID *string
+
 	// REQUIRED; Named outputs of completed execution, if any.
 	NamedOutputs map[string]*string
 
-	// Cmdlet referenced in the execution that caused this event.
-	CmdletID *string
-
-	// Id of the operation that caused this event.
+	// REQUIRED; Id of the operation that caused this event.
 	OperationID *string
 
 	// Stdout outputs from the execution, if any.
@@ -1897,10 +1900,10 @@ type AVSScriptExecutionFinishedEventData struct {
 // AVSScriptExecutionStartedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.AVS.ScriptExecutionStarted
 // event.
 type AVSScriptExecutionStartedEventData struct {
-	// Cmdlet referenced in the execution that caused this event.
+	// REQUIRED; Cmdlet referenced in the execution that caused this event.
 	CmdletID *string
 
-	// Id of the operation that caused this event.
+	// REQUIRED; Id of the operation that caused this event.
 	OperationID *string
 
 	// Stdout outputs from the execution, if any.

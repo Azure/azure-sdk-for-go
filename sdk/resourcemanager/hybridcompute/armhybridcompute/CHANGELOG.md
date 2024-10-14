@@ -8,11 +8,6 @@
 - Type of `MachineExtensionUpdateProperties.ProtectedSettings` has been changed from `any` to `map[string]any`
 - Type of `MachineExtensionUpdateProperties.Settings` has been changed from `any` to `map[string]any`
 - Struct `ErrorResponse` has been removed
-- Struct `PrivateLinkScopesResource` has been removed
-- Struct `ProxyResource` has been removed
-- Struct `Resource` has been removed
-- Struct `ResourceUpdate` has been removed
-- Struct `TrackedResource` has been removed
 
 ### Features Added
 

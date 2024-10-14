@@ -3,6 +3,7 @@
 ## 1.1.1 (Unreleased)
 
 ### Features Added
+* Added API for creating Hierarchical PartitionKeys
 
 ### Breaking Changes
 

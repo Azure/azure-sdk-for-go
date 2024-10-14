@@ -475,13 +475,15 @@ func (s *ShareRecordedTestsSuite) TestShareGetSetPropertiesDefault() {
 func (s *ShareRecordedTestsSuite) TestShareGetSetPropertiesWithSnapshotVirtualDirectory() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountPremium, nil)
 	_require.NoError(err)
 
 	shareName := testcommon.GenerateShareName(testName)
-	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	shareClient := testcommon.GetShareClient(shareName, svcClient)
 
-	_, err = shareClient.Create(context.Background(), nil)
+	_, err = shareClient.Create(context.Background(), &share.CreateOptions{EnabledProtocols: to.Ptr("NFS")})
+	_require.NoError(err)
+
 	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
 	_require.NoError(err)
 

@@ -3,6 +3,7 @@
 
 package azcosmos
 
+// PartitionKeyBuilder is used to build a PartitionKey.
 type PartitionKeyBuilder struct {
 	components []interface{}
 }
@@ -30,6 +31,7 @@ func (pkb *PartitionKeyBuilder) AppendNumber(value float64) *PartitionKeyBuilder
 	return pkb
 }
 
+// AppendNull appends a null value to the partition key.
 func (pkb *PartitionKeyBuilder) AppendNull() *PartitionKeyBuilder {
 	pkb.components = append(pkb.components, nil)
 	return pkb

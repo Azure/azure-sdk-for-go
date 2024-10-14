@@ -236,6 +236,8 @@ func (s *RecordedTestSuite) TestGetAndCreateFileClientWithSpecialNames() {
 }
 
 func (s *RecordedTestSuite) TestCreateNewSubdirectoryClient() {
+	//todo: enable this test after pointing to azblob's recent release version
+	s.T().Skip("Test will run successfully after pointing to azblob's recent release version")
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -2141,6 +2143,8 @@ func (s *RecordedTestSuite) TestDirSetMetadataWithAccessConditions() {
 }
 
 func (s *RecordedTestSuite) TestDirSetMetadataWithCPK() {
+	//todo: enable this test after pointing to azblob's recent release version
+	s.T().Skip("Test will run successfully after pointing to azblob's recent release version")
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -2170,6 +2174,8 @@ func (s *RecordedTestSuite) TestDirSetMetadataWithCPK() {
 }
 
 func (s *RecordedTestSuite) TestDirSetMetadataWithCPKNegative() {
+	//todo: enable this test after pointing to azblob's recent release version
+	s.T().Skip("Test will run successfully after pointing to azblob's recent release version")
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -2848,6 +2854,8 @@ func (s *RecordedTestSuite) TestDirGetPropertiesResponseCapture() {
 }
 
 func (s *RecordedTestSuite) TestDirGetPropertiesWithCPK() {
+	//todo: enable this test after pointing to azblob's recent release version
+	s.T().Skip("Test will run successfully after pointing to azblob's recent release version")
 	_require := require.New(s.T())
 	testName := s.T().Name()
 

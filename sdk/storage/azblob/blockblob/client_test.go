@@ -367,15 +367,9 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlobCrcResponseHeader() {
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
-	accountName, accountKey := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
 	blobName := testName
-	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s", accountName, containerName, blobName)
 
-	cred, err := blob.NewSharedKeyCredential(accountName, accountKey)
-	_require.NoError(err)
-
-	bbClient, err := blockblob.NewClientWithSharedKeyCredential(blobURL, cred, nil)
-	_require.NoError(err)
+	bbClient := containerClient.NewBlockBlobClient(blobName)
 
 	contentSize := 4 * 1024 // 4 KB
 	r, sourceData := testcommon.GetDataAndReader(testName, contentSize)

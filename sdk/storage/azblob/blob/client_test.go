@@ -939,7 +939,7 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopyDestIfModifiedSinceFalse() {
 		},
 	}
 	_, err = destBlobClient.StartCopyFromURL(context.Background(), bbClient.URL(), &options)
-	testcommon.ValidateBlobErrorCode(_require, err, bloberror.TargetConditionNotMet)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 }
 
 func (s *BlobRecordedTestsSuite) TestBlobStartCopyDestIfUnmodifiedSinceTrue() {
@@ -1073,7 +1073,7 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopyDestIfMatchFalse() {
 
 	_, err = destBlobClient.StartCopyFromURL(context.Background(), bbClient.URL(), &options)
 	_require.Error(err)
-	testcommon.ValidateBlobErrorCode(_require, err, bloberror.TargetConditionNotMet)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 }
 
 func (s *BlobRecordedTestsSuite) TestBlobStartCopyDestIfNoneMatchTrue() {
@@ -1140,7 +1140,7 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopyDestIfNoneMatchFalse() {
 
 	_, err = destBlobClient.StartCopyFromURL(context.Background(), bbClient.URL(), &options)
 	_require.Error(err)
-	testcommon.ValidateBlobErrorCode(_require, err, bloberror.TargetConditionNotMet)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 }
 
 func (s *BlobUnrecordedTestsSuite) TestBlobAbortCopyInProgress() {

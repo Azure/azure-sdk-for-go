@@ -503,6 +503,211 @@ func TestItemIdEncodingComputeGW(t *testing.T) {
 	verifyEncodingScenario(t, container, "ComputeGW-IdWithUnicodeCharacters", "WithUnicode鱀", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
 }
 
+func TestItemCRUDHierarchicalPartitionKey(t *testing.T) {
+	emulatorTests := newEmulatorTests(t)
+	client := emulatorTests.getClient(t, newSpanValidator(t, spanMatcher{
+		ExpectedSpans: []string{},
+	}))
+
+	database := emulatorTests.createDatabase(t, context.TODO(), client, "itemCRUDHierarchicalPartitionKey")
+	defer emulatorTests.deleteDatabase(t, context.TODO(), database)
+	properties := ContainerProperties{
+		ID: "aContainer",
+		PartitionKeyDefinition: PartitionKeyDefinition{
+			Paths: []string{"/id", "/type"},
+		},
+	}
+
+	_, err := database.CreateContainer(context.TODO(), properties, nil)
+	if err != nil {
+		t.Fatalf("Failed to create container: %v", err)
+	}
+
+	container, err := database.NewContainer("aContainer")
+	if err != nil {
+		t.Fatalf("Failed to get container: %v", err)
+	}
+
+	itemAlpha := map[string]interface{}{
+		"id":    "1",
+		"type":  "alpha",
+		"value": "0",
+	}
+
+	itemBeta := map[string]interface{}{
+		"id":    "1",
+		"type":  "beta",
+		"value": "0",
+	}
+
+	pkAlpha := NewPartitionKeyBuilder().AppendString("1").AppendString("alpha").Build()
+	pkBeta := NewPartitionKeyBuilder().AppendString("1").AppendString("alpha").Build()
+
+	marshalledAlpha, err := json.Marshal(itemAlpha)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	marshalledBeta, err := json.Marshal(itemBeta)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	item0Res, err := container.CreateItem(context.TODO(), pkAlpha, marshalledAlpha, nil)
+	if err != nil {
+		t.Fatalf("Failed to create item: %v", err)
+	}
+
+	if item0Res.SessionToken == nil {
+		t.Fatalf("Session token is empty")
+	}
+
+	if len(item0Res.Value) != 0 {
+		t.Fatalf("Expected empty response, got %v", item0Res.Value)
+	}
+
+	item1Res, err := container.CreateItem(context.TODO(), pkAlpha, marshalledBeta, nil)
+	if err != nil {
+		t.Fatalf("Failed to create item: %v", err)
+	}
+
+	if item1Res.SessionToken == nil {
+		t.Fatalf("Session token is empty")
+	}
+
+	if len(item1Res.Value) != 0 {
+		t.Fatalf("Expected empty response, got %v", item1Res.Value)
+	}
+
+	item0Res, err = container.ReadItem(context.TODO(), pkAlpha, "1", nil)
+	if err != nil {
+		t.Fatalf("Failed to read item: %v", err)
+	}
+
+	if len(item0Res.Value) == 0 {
+		t.Fatalf("Expected non-empty response, got %v", item0Res.Value)
+	}
+
+	item1Res, err = container.ReadItem(context.TODO(), pkBeta, "1", nil)
+	if err != nil {
+		t.Fatalf("Failed to read item: %v", err)
+	}
+
+	if len(item1Res.Value) == 0 {
+		t.Fatalf("Expected non-empty response, got %v", item1Res.Value)
+	}
+
+	var item0ResBody map[string]interface{}
+	err = json.Unmarshal(item0Res.Value, &item0ResBody)
+
+	if err != nil {
+		t.Fatalf("Failed to unmarshal item response: %v", err)
+	}
+
+	if item0ResBody["id"] != "1" {
+		t.Fatalf("Expected id to be 1, got %v", item0ResBody["id"])
+	}
+
+	if item0ResBody["type"] != "alpha" {
+		t.Fatalf("Expected type to be alpha, got %v", item0ResBody["type"])
+	}
+
+	if item0ResBody["value"] != "0" {
+		t.Fatalf("Expected value to be 0, got %v", item0ResBody["value"])
+	}
+
+	var item1ResBody map[string]interface{}
+	err = json.Unmarshal(item1Res.Value, &item1ResBody)
+	if err != nil {
+		t.Fatalf("Failed to unmarshal item response: %v", err)
+	}
+
+	if item1ResBody["id"] != "1" {
+		t.Fatalf("Expected id to be 1, got %v", item1ResBody["id"])
+	}
+
+	if item1ResBody["type"] != "beta" {
+		t.Fatalf("Expected type to be beta, got %v", item1ResBody["type"])
+	}
+
+	if item1ResBody["value"] != "0" {
+		t.Fatalf("Expected value to be 0, got %v", item1ResBody["value"])
+	}
+
+	pkAll := NewPartitionKeyBuilder().AppendString("1").Build()
+	pager := container.NewQueryItemsPager("SELECT * FROM c", pkAll, nil)
+
+	var allItems []map[string]interface{}
+	for pager.More() {
+		page, err := pager.NextPage(context.TODO())
+		if err != nil {
+			t.Fatalf("Failed to get next page: %v", err)
+		}
+
+		for _, item := range page.Items {
+			var itemBody map[string]interface{}
+			err = json.Unmarshal(item, &itemBody)
+			if err != nil {
+				t.Fatalf("Failed to unmarshal item response: %v", err)
+			}
+
+			allItems = append(allItems, itemBody)
+		}
+	}
+
+	if len(allItems) != 2 {
+		t.Fatalf("Expected 2 items, got %v", len(allItems))
+	}
+
+	pager = container.NewQueryItemsPager("SELECT * FROM c WHERE", pkAlpha, nil)
+
+	var alphaItems []map[string]interface{}
+	for pager.More() {
+		page, err := pager.NextPage(context.TODO())
+		if err != nil {
+			t.Fatalf("Failed to get next page: %v", err)
+		}
+
+		for _, item := range page.Items {
+			var itemBody map[string]interface{}
+			err = json.Unmarshal(item, &itemBody)
+			if err != nil {
+				t.Fatalf("Failed to unmarshal item response: %v", err)
+			}
+
+			alphaItems = append(alphaItems, itemBody)
+		}
+	}
+
+	if len(alphaItems) != 1 {
+		t.Fatalf("Expected 1 item, got %v", len(alphaItems))
+	}
+
+	pager = container.NewQueryItemsPager("SELECT * FROM c WHERE", pkBeta, nil)
+
+	var betaItems []map[string]interface{}
+	for pager.More() {
+		page, err := pager.NextPage(context.TODO())
+		if err != nil {
+			t.Fatalf("Failed to get next page: %v", err)
+		}
+
+		for _, item := range page.Items {
+			var itemBody map[string]interface{}
+			err = json.Unmarshal(item, &itemBody)
+			if err != nil {
+				t.Fatalf("Failed to unmarshal item response: %v", err)
+			}
+
+			betaItems = append(betaItems, itemBody)
+		}
+	}
+
+	if len(betaItems) != 1 {
+		t.Fatalf("Expected 1 item, got %v", len(betaItems))
+	}
+}
+
 func verifyEncodingScenario(t *testing.T, container *ContainerClient, name string, id string, expectedCreate int, expectedRead int, expectedReplace int, expectedDelete int) {
 	item := map[string]interface{}{
 		"id": id,

@@ -4,6 +4,9 @@
 ### Breaking Changes
 
 - Type of `MachineExtensionProperties.ProtectedSettings` has been changed from `any` to `map[string]any`
+- Type of `MachineExtensionProperties.Settings` has been changed from `any` to `map[string]any`
+- Type of `MachineExtensionUpdateProperties.ProtectedSettings` has been changed from `any` to `map[string]any`
+- Type of `MachineExtensionUpdateProperties.Settings` has been changed from `any` to `map[string]any`
 
 ### Features Added
 

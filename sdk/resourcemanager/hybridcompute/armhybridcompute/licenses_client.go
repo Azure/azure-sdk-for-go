@@ -46,7 +46,7 @@ func NewLicensesClient(subscriptionID string, credential azcore.TokenCredential,
 // BeginCreateOrUpdate - The operation to create or update a license.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-20-preview
+// Generated from API version 2024-07-10
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - licenseName - The name of the license.
 //   - parameters - Parameters supplied to the Create license operation.
@@ -72,7 +72,7 @@ func (client *LicensesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 // CreateOrUpdate - The operation to create or update a license.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-20-preview
+// Generated from API version 2024-07-10
 func (client *LicensesClient) createOrUpdate(ctx context.Context, resourceGroupName string, licenseName string, parameters License, options *LicensesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "LicensesClient.BeginCreateOrUpdate"
@@ -114,7 +114,7 @@ func (client *LicensesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-20-preview")
+	reqQP.Set("api-version", "2024-07-10")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -126,7 +126,7 @@ func (client *LicensesClient) createOrUpdateCreateRequest(ctx context.Context, r
 // BeginDelete - The operation to delete a license.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-20-preview
+// Generated from API version 2024-07-10
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - licenseName - The name of the license.
 //   - options - LicensesClientBeginDeleteOptions contains the optional parameters for the LicensesClient.BeginDelete method.
@@ -150,7 +150,7 @@ func (client *LicensesClient) BeginDelete(ctx context.Context, resourceGroupName
 // Delete - The operation to delete a license.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-20-preview
+// Generated from API version 2024-07-10
 func (client *LicensesClient) deleteOperation(ctx context.Context, resourceGroupName string, licenseName string, options *LicensesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "LicensesClient.BeginDelete"
@@ -192,7 +192,7 @@ func (client *LicensesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-20-preview")
+	reqQP.Set("api-version", "2024-07-10")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -201,7 +201,7 @@ func (client *LicensesClient) deleteCreateRequest(ctx context.Context, resourceG
 // Get - Retrieves information about the view of a license.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-20-preview
+// Generated from API version 2024-07-10
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - licenseName - The name of the license.
 //   - options - LicensesClientGetOptions contains the optional parameters for the LicensesClient.Get method.
@@ -247,7 +247,7 @@ func (client *LicensesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-20-preview")
+	reqQP.Set("api-version", "2024-07-10")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -264,7 +264,7 @@ func (client *LicensesClient) getHandleResponse(resp *http.Response) (LicensesCl
 
 // NewListByResourceGroupPager - The operation to get all licenses of a non-Azure machine
 //
-// Generated from API version 2024-05-20-preview
+// Generated from API version 2024-07-10
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - LicensesClientListByResourceGroupOptions contains the optional parameters for the LicensesClient.NewListByResourceGroupPager
 //     method.
@@ -307,7 +307,7 @@ func (client *LicensesClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-20-preview")
+	reqQP.Set("api-version", "2024-07-10")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -324,7 +324,7 @@ func (client *LicensesClient) listByResourceGroupHandleResponse(resp *http.Respo
 
 // NewListBySubscriptionPager - The operation to get all licenses of a non-Azure machine
 //
-// Generated from API version 2024-05-20-preview
+// Generated from API version 2024-07-10
 //   - options - LicensesClientListBySubscriptionOptions contains the optional parameters for the LicensesClient.NewListBySubscriptionPager
 //     method.
 func (client *LicensesClient) NewListBySubscriptionPager(options *LicensesClientListBySubscriptionOptions) *runtime.Pager[LicensesClientListBySubscriptionResponse] {
@@ -362,7 +362,7 @@ func (client *LicensesClient) listBySubscriptionCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-20-preview")
+	reqQP.Set("api-version", "2024-07-10")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -380,7 +380,7 @@ func (client *LicensesClient) listBySubscriptionHandleResponse(resp *http.Respon
 // BeginUpdate - The operation to update a license.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-20-preview
+// Generated from API version 2024-07-10
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - licenseName - The name of the license.
 //   - parameters - Parameters supplied to the Update license operation.
@@ -405,7 +405,7 @@ func (client *LicensesClient) BeginUpdate(ctx context.Context, resourceGroupName
 // Update - The operation to update a license.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-20-preview
+// Generated from API version 2024-07-10
 func (client *LicensesClient) update(ctx context.Context, resourceGroupName string, licenseName string, parameters LicenseUpdate, options *LicensesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "LicensesClient.BeginUpdate"
@@ -447,7 +447,77 @@ func (client *LicensesClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-20-preview")
+	reqQP.Set("api-version", "2024-07-10")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginValidateLicense - The operation to validate a license.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-07-10
+//   - parameters - Parameters supplied to the license validation operation.
+//   - options - LicensesClientBeginValidateLicenseOptions contains the optional parameters for the LicensesClient.BeginValidateLicense
+//     method.
+func (client *LicensesClient) BeginValidateLicense(ctx context.Context, parameters License, options *LicensesClientBeginValidateLicenseOptions) (*runtime.Poller[LicensesClientValidateLicenseResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.validateLicense(ctx, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LicensesClientValidateLicenseResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LicensesClientValidateLicenseResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// ValidateLicense - The operation to validate a license.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-07-10
+func (client *LicensesClient) validateLicense(ctx context.Context, parameters License, options *LicensesClientBeginValidateLicenseOptions) (*http.Response, error) {
+	var err error
+	const operationName = "LicensesClient.BeginValidateLicense"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.validateLicenseCreateRequest(ctx, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// validateLicenseCreateRequest creates the ValidateLicense request.
+func (client *LicensesClient) validateLicenseCreateRequest(ctx context.Context, parameters License, options *LicensesClientBeginValidateLicenseOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HybridCompute/validateLicense"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-07-10")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

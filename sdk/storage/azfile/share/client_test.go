@@ -315,7 +315,7 @@ func (s *ShareRecordedTestsSuite) TestShareCreateWithSnapshotVirtualDirectoryAcc
 	_require.Equal(response.EnableSnapshotVirtualDirectoryAccess, to.Ptr(true))
 }
 
-func (s *ShareRecordedTestsSuite) TestAuthenticationErrorDetailError() {
+func (s *ShareUnrecordedTestsSuite) TestAuthenticationErrorDetailError() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1818,7 +1818,7 @@ func (s *ShareRecordedTestsSuite) TestShareClientCustomAudience() {
 	_require.NotEmpty(*getResp.Permission)
 }
 
-func (s *ShareRecordedTestsSuite) TestShareClientAudienceNegative() {
+func (s *ShareUnrecordedTestsSuite) TestShareClientAudienceNegative() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1846,5 +1846,5 @@ func (s *ShareRecordedTestsSuite) TestShareClientAudienceNegative() {
 	// Create a permission and check that it's not empty.
 	_, err = shareClientAudience.CreatePermission(context.Background(), testcommon.SampleSDDL, nil)
 	_require.Error(err)
-	testcommon.ValidateFileErrorCode(_require, err, fileerror.InvalidAuthenticationInfo)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.AuthenticationFailed)
 }

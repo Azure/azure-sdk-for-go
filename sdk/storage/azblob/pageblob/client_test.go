@@ -608,11 +608,15 @@ func (s *PageBlobUnrecordedTestsSuite) TestIncrementalCopy() {
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
-	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
-	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
-	_, err = containerClient.SetAccessPolicy(context.Background(), &container.SetAccessPolicyOptions{Access: to.Ptr(container.PublicAccessTypeBlob)})
+	serviceSAS, err := testcommon.GetServiceSAS(containerName, sas.BlobPermissions{Read: true, Create: true, Write: true, List: true, Add: true, Delete: true})
 	_require.NoError(err)
+
+	svcClientSAS, err := service.NewClientWithNoCredential(svcClient.URL()+"?"+serviceSAS, nil)
+	_require.NoError(err)
+	containerClient := svcClientSAS.NewContainerClient(containerName)
+
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	srcBlob := createNewPageBlob(context.Background(), _require, "src"+testcommon.GenerateBlobName(testName), containerClient)
 

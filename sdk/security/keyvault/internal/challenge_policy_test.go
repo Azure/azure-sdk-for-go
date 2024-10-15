@@ -22,21 +22,22 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-var (
+const (
 	challengedToken = "needs more claims"
 	claimsToken     = "all the claims"
 	kvChallenge     = `Bearer authorization="https://login.microsoftonline.com/tenant", resource="https://vault.azure.net"`
 	caeChallenge1   = `Bearer realm="", authorization_uri="https://login.microsoftonline.com/common/oauth2/authorize", error="insufficient_claims", claims="dGVzdGluZzE="`
 	caeChallenge2   = `Bearer realm="", authorization_uri="https://login.microsoftonline.com/common/oauth2/authorize", error="insufficient_claims", claims="dGVzdGluZzI="`
-	// requireToken is a mock.Response predicate that checks a request for the expected token
-	requireToken = func(t *testing.T, want string) func(req *http.Request) bool {
-		return func(r *http.Request) bool {
-			_, actual, _ := strings.Cut(r.Header.Get("Authorization"), " ")
-			require.Equal(t, want, actual)
-			return true
-		}
-	}
 )
+
+// requireToken is a mock.Response predicate that checks a request for the expected token
+var requireToken = func(t *testing.T, want string) func(req *http.Request) bool {
+	return func(r *http.Request) bool {
+		_, actual, _ := strings.Cut(r.Header.Get("Authorization"), " ")
+		require.Equal(t, want, actual)
+		return true
+	}
+}
 
 type credentialFunc func(context.Context, policy.TokenRequestOptions) (azcore.AccessToken, error)
 

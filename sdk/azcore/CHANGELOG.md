@@ -4,6 +4,8 @@
 
 ### Features Added
 
+* Added field `Kind` to `runtime.StartSpanOptions` to allow a kind to be set when starting a span.
+
 ### Breaking Changes
 
 ### Bugs Fixed

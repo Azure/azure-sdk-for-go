@@ -22,6 +22,22 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+var (
+	challengedToken = "needs more claims"
+	claimsToken     = "all the claims"
+	kvChallenge     = `Bearer authorization="https://login.microsoftonline.com/tenant", resource="https://vault.azure.net"`
+	caeChallenge1   = `Bearer realm="", authorization_uri="https://login.microsoftonline.com/common/oauth2/authorize", error="insufficient_claims", claims="dGVzdGluZzE="`
+	caeChallenge2   = `Bearer realm="", authorization_uri="https://login.microsoftonline.com/common/oauth2/authorize", error="insufficient_claims", claims="dGVzdGluZzI="`
+	// requireToken is a mock.Response predicate that checks a request for the expected token
+	requireToken = func(t *testing.T, want string) func(req *http.Request) bool {
+		return func(r *http.Request) bool {
+			_, actual, _ := strings.Cut(r.Header.Get("Authorization"), " ")
+			require.Equal(t, want, actual)
+			return true
+		}
+	}
+)
+
 type credentialFunc func(context.Context, policy.TokenRequestOptions) (azcore.AccessToken, error)
 
 func (cf credentialFunc) GetToken(ctx context.Context, options policy.TokenRequestOptions) (azcore.AccessToken, error) {
@@ -100,41 +116,43 @@ func TestChallengePolicy(t *testing.T) {
 	}
 }
 
-var (
-	accessTk      = "***"
-	kvChallenge   = `Bearer authorization="https://login.microsoftonline.com/tenant", resource="https://vault.azure.net"`
-	caeChallenge1 = `Bearer realm="", authorization_uri="https://login.microsoftonline.com/common/oauth2/authorize", error="insufficient_claims", claims="dGVzdGluZzE="`
-	caeChallenge2 = `Bearer realm="", authorization_uri="https://login.microsoftonline.com/common/oauth2/authorize", error="insufficient_claims", claims="dGVzdGluZzI="`
-)
-
 func TestChallengePolicy_CAE(t *testing.T) {
 	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
 	defer close()
 	srv.AppendResponse(
 		mock.WithHeader("WWW-Authenticate", kvChallenge),
 		mock.WithStatusCode(401),
+		mock.WithPredicate(requireToken(t, "")),
 	)
+	srv.AppendResponse() // when a response's predicate returns true, srv pops the following one
 	srv.AppendResponse()
+
 	srv.AppendResponse(
 		mock.WithHeader("WWW-Authenticate", caeChallenge1),
 		mock.WithStatusCode(401),
+		mock.WithPredicate(requireToken(t, challengedToken)),
 	)
-	srv.AppendResponse()
+	srv.AppendResponse() // when a response's predicate returns true, srv pops the following one
+	srv.AppendResponse(
+		mock.WithPredicate(requireToken(t, claimsToken)),
+	)
+	srv.AppendResponse() // when a response's predicate returns true, srv pops the following one
 
 	tkReqs := 0
 	cred := credentialFunc(func(ctx context.Context, tro policy.TokenRequestOptions) (azcore.AccessToken, error) {
 		require.True(t, tro.EnableCAE)
 		tkReqs += 1
+		tk := challengedToken
 		switch tkReqs {
 		case 1:
 			require.Empty(t, tro.Claims)
 		case 2:
-			// second call should include challenge claims
+			tk = claimsToken
 			require.Equal(t, "testing1", tro.Claims)
 		default:
 			t.Fatal("unexpected token request")
 		}
-		return azcore.AccessToken{Token: accessTk, ExpiresOn: time.Now().Add(time.Hour)}, nil
+		return azcore.AccessToken{Token: tk, ExpiresOn: time.Now().Add(time.Hour)}, nil
 	})
 	p := NewKeyVaultChallengePolicy(cred, nil)
 	pl := runtime.NewPipeline("", "",
@@ -148,7 +166,7 @@ func TestChallengePolicy_CAE(t *testing.T) {
 	res, err := pl.Do(req)
 	require.NoError(t, err)
 	require.Equal(t, 200, res.StatusCode)
-	require.Equal(t, tkReqs, 1)
+	require.Equal(t, 1, tkReqs)
 
 	// req 2 cae
 	req, err = runtime.NewRequest(context.Background(), "GET", "https://42.vault.azure.net")
@@ -156,7 +174,7 @@ func TestChallengePolicy_CAE(t *testing.T) {
 	res, err = pl.Do(req)
 	require.NoError(t, err)
 	require.Equal(t, 200, res.StatusCode)
-	require.Equal(t, tkReqs, 2)
+	require.Equal(t, 2, tkReqs)
 }
 
 func TestChallengePolicy_KVThenCAE(t *testing.T) {
@@ -165,27 +183,35 @@ func TestChallengePolicy_KVThenCAE(t *testing.T) {
 	srv.AppendResponse(
 		mock.WithHeader("WWW-Authenticate", kvChallenge),
 		mock.WithStatusCode(401),
+		mock.WithPredicate(requireToken(t, "")),
 	)
+	srv.AppendResponse() // when a response's predicate returns true, srv pops the following one
 	srv.AppendResponse(
 		mock.WithHeader("WWW-Authenticate", caeChallenge1),
 		mock.WithStatusCode(401),
+		mock.WithPredicate(requireToken(t, challengedToken)),
 	)
-	srv.AppendResponse()
+	srv.AppendResponse() // when a response's predicate returns true, srv pops the following one
+	srv.AppendResponse(
+		mock.WithPredicate(requireToken(t, claimsToken)),
+	)
+	srv.AppendResponse() // when a response's predicate returns true, srv pops the following one
 
 	tkReqs := 0
 	cred := credentialFunc(func(ctx context.Context, tro policy.TokenRequestOptions) (azcore.AccessToken, error) {
 		require.True(t, tro.EnableCAE)
 		tkReqs += 1
+		tk := challengedToken
 		switch tkReqs {
 		case 1:
 			require.Empty(t, tro.Claims)
 		case 2:
-			// second call should include challenge claims
+			tk = claimsToken
 			require.Equal(t, "testing1", tro.Claims)
 		default:
 			t.Fatal("unexpected token request")
 		}
-		return azcore.AccessToken{Token: accessTk, ExpiresOn: time.Now().Add(time.Hour)}, nil
+		return azcore.AccessToken{Token: tk, ExpiresOn: time.Now().Add(time.Hour)}, nil
 	})
 	p := NewKeyVaultChallengePolicy(cred, nil)
 	pl := runtime.NewPipeline("", "",
@@ -206,30 +232,38 @@ func TestChallengePolicy_TwoCAEChallenges(t *testing.T) {
 	srv.AppendResponse(
 		mock.WithHeader("WWW-Authenticate", kvChallenge),
 		mock.WithStatusCode(401),
+		mock.WithPredicate(requireToken(t, "")),
 	)
+	srv.AppendResponse() // when a response's predicate returns true, srv pops the following one
 	srv.AppendResponse()
+
 	srv.AppendResponse(
 		mock.WithHeader("WWW-Authenticate", caeChallenge1),
 		mock.WithStatusCode(401),
+		mock.WithPredicate(requireToken(t, challengedToken)),
 	)
+	srv.AppendResponse() // when a response's predicate returns true, srv pops the following one
 	srv.AppendResponse(
 		mock.WithHeader("WWW-Authenticate", caeChallenge2),
 		mock.WithStatusCode(401),
+		mock.WithPredicate(requireToken(t, claimsToken)),
 	)
+	srv.AppendResponse() // when a response's predicate returns true, srv pops the following one
 	tkReqs := 0
 	cred := credentialFunc(func(ctx context.Context, tro policy.TokenRequestOptions) (azcore.AccessToken, error) {
 		require.True(t, tro.EnableCAE)
+		tk := challengedToken
 		tkReqs += 1
 		switch tkReqs {
 		case 1:
 			require.Empty(t, tro.Claims)
 		case 2:
-			// second call should include challenge claims
+			tk = claimsToken
 			require.Equal(t, "testing1", tro.Claims)
 		default:
 			t.Fatal("unexpected token request")
 		}
-		return azcore.AccessToken{Token: accessTk, ExpiresOn: time.Now().Add(time.Hour)}, nil
+		return azcore.AccessToken{Token: tk, ExpiresOn: time.Now().Add(time.Hour)}, nil
 	})
 	p := NewKeyVaultChallengePolicy(cred, nil)
 	pl := runtime.NewPipeline("", "",

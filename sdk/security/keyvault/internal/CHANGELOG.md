@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0 (2024-10-15)
+## 1.1.0 (2024-10-16)
 
 ### Features Added
 * Added CAE support

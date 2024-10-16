@@ -464,8 +464,8 @@ func (f *FileUnrecordedTestsSuite) TestFileGetSetPropertiesNonDefault() {
 	_require.EqualValues(fileAttributes, fileAttributes2)
 
 	_require.EqualValues(getResp.FileCreationTime.Format(testcommon.ISO8601), creationTime.UTC().Format(testcommon.ISO8601))
-	//_require.EqualValues(getResp.FileCreationTime.Format(testcommon.ISO8601), lastWriteTime.UTC().Format(testcommon.ISO8601))
-	//_require.EqualValues(getResp.FileCreationTime.Format(testcommon.ISO8601), changeTime.UTC().Format(testcommon.ISO8601))
+	// _require.EqualValues(getResp.FileCreationTime.Format(testcommon.ISO8601), lastWriteTime.UTC().Format(testcommon.ISO8601))
+	// _require.EqualValues(getResp.FileCreationTime.Format(testcommon.ISO8601), changeTime.UTC().Format(testcommon.ISO8601))
 
 	_require.NotNil(getResp.ETag)
 	_require.NotNil(getResp.RequestID)

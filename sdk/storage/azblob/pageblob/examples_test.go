@@ -9,9 +9,9 @@ package pageblob_test
 import (
 	"bytes"
 	"context"
+	"crypto/rand"
 	"fmt"
 	"log"
-	"math/rand"
 	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
@@ -50,7 +50,10 @@ func Example_pageblob_Client() {
 	for i := 0; i < 5; i++ {
 		count := int64(1024)
 		page := make([]byte, 2*pageblob.PageBytes)
-		rand.Read(page)
+		_, err := rand.Read(page)
+		if err != nil {
+			return
+		}
 		_, err = pageBlobClient.UploadPages(context.Background(), streaming.NopCloser(bytes.NewReader(page)),
 			blob.HTTPRange{Offset: int64(i) * count, Count: count}, nil)
 		handleError(err)

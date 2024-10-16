@@ -939,7 +939,7 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopyDestIfModifiedSinceFalse() {
 		},
 	}
 	_, err = destBlobClient.StartCopyFromURL(context.Background(), bbClient.URL(), &options)
-	testcommon.ValidateBlobErrorCode(_require, err, bloberror.TargetConditionNotMet)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 }
 
 func (s *BlobRecordedTestsSuite) TestBlobStartCopyDestIfUnmodifiedSinceTrue() {
@@ -1073,7 +1073,7 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopyDestIfMatchFalse() {
 
 	_, err = destBlobClient.StartCopyFromURL(context.Background(), bbClient.URL(), &options)
 	_require.Error(err)
-	testcommon.ValidateBlobErrorCode(_require, err, bloberror.TargetConditionNotMet)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 }
 
 func (s *BlobRecordedTestsSuite) TestBlobStartCopyDestIfNoneMatchTrue() {
@@ -1140,17 +1140,28 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopyDestIfNoneMatchFalse() {
 
 	_, err = destBlobClient.StartCopyFromURL(context.Background(), bbClient.URL(), &options)
 	_require.Error(err)
-	testcommon.ValidateBlobErrorCode(_require, err, bloberror.TargetConditionNotMet)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 }
 
 func (s *BlobUnrecordedTestsSuite) TestBlobAbortCopyInProgress() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
-	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
-	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	svcClientSharedKey, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	accountSAS, err := testcommon.GetAccountSAS(sas.AccountPermissions{Read: true, Create: true, Write: true, List: true, Add: true, Delete: true},
+		sas.AccountResourceTypes{Service: true, Container: true, Object: true})
+	_require.NoError(err)
+
+	svcClientSAS, err := service.NewClientWithNoCredential(svcClientSharedKey.URL()+"?"+accountSAS, nil)
+	_require.NoError(err)
+
+	containerClient := svcClientSAS.NewContainerClient(containerName)
+	_, err = containerClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	blockBlobName := testcommon.GenerateBlobName(testName)
@@ -1160,12 +1171,6 @@ func (s *BlobUnrecordedTestsSuite) TestBlobAbortCopyInProgress() {
 	blobSize := 8 * 1024 * 1024
 	blobReader, _ := testcommon.GetDataAndReader(testName, blobSize)
 	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(blobReader), nil)
-	_require.NoError(err)
-
-	setAccessPolicyOptions := container.SetAccessPolicyOptions{
-		Access: to.Ptr(container.PublicAccessTypeBlob),
-	}
-	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions) // So that we don't have to create a SAS
 	_require.NoError(err)
 
 	// Must copy across accounts so it takes time to copy

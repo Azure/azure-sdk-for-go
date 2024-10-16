@@ -1846,5 +1846,5 @@ func (s *ShareUnrecordedTestsSuite) TestShareClientAudienceNegative() {
 	// Create a permission and check that it's not empty.
 	_, err = shareClientAudience.CreatePermission(context.Background(), testcommon.SampleSDDL, nil)
 	_require.Error(err)
-	testcommon.ValidateFileErrorCode(_require, err, fileerror.AuthenticationFailed)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.InvalidAuthenticationInfo)
 }

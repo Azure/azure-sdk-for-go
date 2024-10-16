@@ -2365,5 +2365,5 @@ func (d *DirectoryUnrecordedTestsSuite) TestDirectoryAudienceNegative() {
 
 	_, err = dirClientAudience.Create(context.Background(), nil)
 	_require.Error(err)
-	testcommon.ValidateFileErrorCode(_require, err, fileerror.AuthenticationFailed)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.InvalidAuthenticationInfo)
 }

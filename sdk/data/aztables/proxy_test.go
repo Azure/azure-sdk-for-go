@@ -353,11 +353,8 @@ func createCosmosServiceClient(t *testing.T, tp tracing.Provider, options *testC
 }
 
 func createRandomName(t *testing.T, prefix string) (string, error) {
-	// TODO: this isn't random, it's actually totally predictable...?
 	h := fnv.New32a()
 
-	// TODO: adding in some extra text to give it a bit more uniqueness
-	//_, err := h.Write([]byte(t.Name() + time.Now().Format(time.RFC3339Nano)))
 	_, err := h.Write([]byte(t.Name()))
 	return prefix + fmt.Sprint(h.Sum32()), err
 }

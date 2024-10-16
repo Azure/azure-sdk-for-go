@@ -1146,17 +1146,11 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopyDestIfNoneMatchFalse() {
 func (s *BlobUnrecordedTestsSuite) TestBlobAbortCopyInProgress() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
-	svcClientSharedKey, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
-	_require.NoError(err)
-	serviceSAS, err := testcommon.GetServiceSAS(containerName, sas.BlobPermissions{Read: true, Create: true, Write: true, List: true, Add: true, Delete: true})
-	_require.NoError(err)
-
-	svcClientSAS, err := service.NewClientWithNoCredential(svcClientSharedKey.URL()+"?"+serviceSAS, nil)
-	_require.NoError(err)
-	containerClient := svcClientSAS.NewContainerClient(containerName)
-
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	blockBlobName := testcommon.GenerateBlobName(testName)
@@ -1166,6 +1160,12 @@ func (s *BlobUnrecordedTestsSuite) TestBlobAbortCopyInProgress() {
 	blobSize := 8 * 1024 * 1024
 	blobReader, _ := testcommon.GetDataAndReader(testName, blobSize)
 	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(blobReader), nil)
+	_require.NoError(err)
+
+	setAccessPolicyOptions := container.SetAccessPolicyOptions{
+		Access: to.Ptr(container.PublicAccessTypeBlob),
+	}
+	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions) // So that we don't have to create a SAS
 	_require.NoError(err)
 
 	// Must copy across accounts so it takes time to copy

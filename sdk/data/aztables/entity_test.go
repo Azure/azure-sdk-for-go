@@ -15,8 +15,7 @@ import (
 func TestAddBasicEntity(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true, tracing.Provider{})
-			defer delete()
+			client := initClientTest(t, service, true, tracing.Provider{})
 
 			basicEntity := basicTestEntity{
 				Entity: Entity{
@@ -65,8 +64,7 @@ func TestAddBasicEntity(t *testing.T) {
 func TestEdmMarshalling(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true, tracing.Provider{})
-			defer delete()
+			client := initClientTest(t, service, true, tracing.Provider{})
 
 			edmEntity := createEdmEntity(1, "partition")
 
@@ -108,8 +106,7 @@ func TestEdmMarshalling(t *testing.T) {
 func TestEntityQuotes(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true, tracing.Provider{})
-			defer delete()
+			client := initClientTest(t, service, true, tracing.Provider{})
 
 			pk, err := createRandomName(t, "partition")
 			require.NoError(t, err)
@@ -165,8 +162,7 @@ func TestEntityQuotes(t *testing.T) {
 func TestEntityUnicode(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true, tracing.Provider{})
-			defer delete()
+			client := initClientTest(t, service, true, tracing.Provider{})
 
 			pk, err := createRandomName(t, "partition")
 			require.NoError(t, err)

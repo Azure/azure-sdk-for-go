@@ -59,9 +59,8 @@ func main() {
 For more information about table service URL's and how to configure custom domain names for Azure Storage check out the [official documentation][azure_portal_account_url]
 
 #### Types of credentials
-The clients support different forms of authentication. Cosmos accounts can use a Shared Key Credential, Connection String, or an Shared Access Signature Token for authentication. Storage account can use the same credentials as a Cosmos account and can use the credentials in [`azidentity`](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity) like `azidentity.NewDefaultAzureCredential()`.
 
-The aztables package supports any of the types that implement the `azcore.TokenCredential` interface, authorization via a Connection String, or authorization with a Shared Access Signature Token.
+Both services (Cosmos and Storage) support the the following forms of authentication: a Shared Key Credential, Connection String, Shared Access Signature Token or a credential from the [`azidentity`](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity) module, like `azidentity.DefaultAzureCredential`.
 
 ##### Creating the client with an AAD credential
 Use AAD authentication as the credential parameter to authenticate the client:

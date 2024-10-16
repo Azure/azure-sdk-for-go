@@ -540,8 +540,8 @@ func TestItemCRUDHierarchicalPartitionKey(t *testing.T) {
 		"value": "0",
 	}
 
-	pkAlpha := NewPartitionKeyBuilder().AppendString("1").AppendString("alpha").Build()
-	pkBeta := NewPartitionKeyBuilder().AppendString("1").AppendString("alpha").Build()
+	pkAlpha := NewPartitionKey().AppendString("1").AppendString("alpha")
+	pkBeta := NewPartitionKey().AppendString("1").AppendString("alpha")
 
 	marshalledAlpha, err := json.Marshal(itemAlpha)
 	if err != nil {
@@ -634,7 +634,7 @@ func TestItemCRUDHierarchicalPartitionKey(t *testing.T) {
 		t.Fatalf("Expected value to be 0, got %v", item1ResBody["value"])
 	}
 
-	pkAll := NewPartitionKeyBuilder().AppendString("1").Build()
+	pkAll := NewPartitionKey().AppendString("1")
 	pager := container.NewQueryItemsPager("SELECT * FROM c", pkAll, nil)
 
 	var allItems []map[string]interface{}

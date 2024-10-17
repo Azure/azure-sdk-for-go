@@ -57,7 +57,7 @@ clientFactory, err := armdns.NewClientFactory(<subscription ID>, cred, &options)
 A client groups a set of related APIs, providing access to its functionality.  Create one or more clients to access the APIs you require using client factory.
 
 ```go
-client := clientFactory.NewRecordSetsClient()
+client := clientFactory.NewDnssecConfigsClient()
 ```
 
 ## Fakes

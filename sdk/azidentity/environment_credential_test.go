@@ -335,3 +335,18 @@ func TestEnvironmentCredential_InvalidPasswordLive(t *testing.T) {
 		t.Fatal("missing credential type prefix")
 	}
 }
+
+func TestEnvironmentCredential_InvalidCloud(t *testing.T) {
+	vars := map[string]string{
+		azureClientID: developerSignOnClientID,
+		azureTenantID: liveUser.tenantID,
+		azureUsername: liveUser.username,
+		azurePassword: liveUser.password,
+		azureCloud:    "invalid",
+	}
+	setEnvironmentVariables(t, vars)
+	_, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{})
+	if err == nil {
+		t.Fatal("expected an error")
+	}
+}

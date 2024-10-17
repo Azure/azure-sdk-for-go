@@ -37,7 +37,7 @@ type AssociateTrafficFilterClient struct {
 }
 
 // NewAssociateTrafficFilterClient creates a new instance of AssociateTrafficFilterClient with the specified values.
-//   - subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAssociateTrafficFilterClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AssociateTrafficFilterClient, error) {
@@ -55,8 +55,8 @@ func NewAssociateTrafficFilterClient(subscriptionID string, credential azcore.To
 // BeginAssociate - Associate traffic filter for the given deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
-//   - resourceGroupName - The name of the resource group to which the Elastic resource belongs.
+// Generated from API version 2024-03-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - AssociateTrafficFilterClientBeginAssociateOptions contains the optional parameters for the AssociateTrafficFilterClient.BeginAssociate
 //     method.
@@ -81,7 +81,7 @@ func (client *AssociateTrafficFilterClient) BeginAssociate(ctx context.Context, 
 // Associate - Associate traffic filter for the given deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2024-03-01
 func (client *AssociateTrafficFilterClient) associate(ctx context.Context, resourceGroupName string, monitorName string, options *AssociateTrafficFilterClientBeginAssociateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AssociateTrafficFilterClient.BeginAssociate"
@@ -123,7 +123,7 @@ func (client *AssociateTrafficFilterClient) associateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2024-03-01")
 	if options != nil && options.RulesetID != nil {
 		reqQP.Set("rulesetId", *options.RulesetID)
 	}

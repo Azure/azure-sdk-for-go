@@ -37,7 +37,7 @@ type TrafficFiltersClient struct {
 }
 
 // NewTrafficFiltersClient creates a new instance of TrafficFiltersClient with the specified values.
-//   - subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewTrafficFiltersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TrafficFiltersClient, error) {
@@ -55,8 +55,8 @@ func NewTrafficFiltersClient(subscriptionID string, credential azcore.TokenCrede
 // Delete - Delete traffic filter from the account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
-//   - resourceGroupName - The name of the resource group to which the Elastic resource belongs.
+// Generated from API version 2024-03-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - TrafficFiltersClientDeleteOptions contains the optional parameters for the TrafficFiltersClient.Delete method.
 func (client *TrafficFiltersClient) Delete(ctx context.Context, resourceGroupName string, monitorName string, options *TrafficFiltersClientDeleteOptions) (TrafficFiltersClientDeleteResponse, error) {
@@ -100,7 +100,7 @@ func (client *TrafficFiltersClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2024-03-01")
 	if options != nil && options.RulesetID != nil {
 		reqQP.Set("rulesetId", *options.RulesetID)
 	}

@@ -21,7 +21,7 @@ import (
 )
 
 const recordingDirectory = "sdk/data/aztables/testdata"
-const fakeAccount = "Sanitized"
+const fakeAccount = recording.SanitizedValue
 
 func TestMain(m *testing.M) {
 	code := run(m)
@@ -258,7 +258,7 @@ func createStorageClient(t *testing.T, tp tracing.Provider, options *testClientO
 	if options.UseSharedKey {
 		var cred *SharedKeyCredential
 
-		if recording.GetRecordMode() == "playback" {
+		if recording.GetRecordMode() == recording.PlaybackMode {
 			cred, err = getSharedKeyCredential()
 			require.NoError(t, err)
 		} else {
@@ -282,7 +282,7 @@ func createCosmosClient(t *testing.T, tp tracing.Provider, options *testClientOp
 	}
 
 	accountName := recording.GetEnvVariable("TABLES_COSMOS_ACCOUNT_NAME", fakeAccount)
-	if recording.GetRecordMode() == "playback" {
+	if recording.GetRecordMode() == recording.PlaybackMode {
 		accountName = fakeAccount
 	}
 
@@ -313,7 +313,7 @@ func createStorageServiceClient(t *testing.T, tp tracing.Provider, options *test
 		var cred *SharedKeyCredential
 		var err error
 
-		if recording.GetRecordMode() == "playback" {
+		if recording.GetRecordMode() == recording.PlaybackMode {
 			cred, err = getSharedKeyCredential()
 			require.NoError(t, err)
 		} else {
@@ -334,7 +334,7 @@ func createCosmosServiceClient(t *testing.T, tp tracing.Provider, options *testC
 
 	accountName := recording.GetEnvVariable("TABLES_COSMOS_ACCOUNT_NAME", fakeAccount)
 
-	if recording.GetRecordMode() == "playback" {
+	if recording.GetRecordMode() == recording.PlaybackMode {
 		accountName = fakeAccount
 	}
 

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
 param baseName string
 
 @description('The principal to assign the role to. This is application object id.')

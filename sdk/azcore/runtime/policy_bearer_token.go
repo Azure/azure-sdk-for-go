@@ -142,14 +142,17 @@ func (b *BearerTokenPolicy) handleChallenge(req *policy.Request, res *http.Respo
 					tro.Claims = caeChallenge.params["claims"]
 					return b.authenticateAndAuthorize(req)(tro)
 				}
-				err = b.authzHandler.OnRequest(req, authNZ)
-				if err == nil {
-					res, err = req.Next()
+				if err = b.authzHandler.OnRequest(req, authNZ); err == nil {
+					if err = req.RewindBody(); err == nil {
+						res, err = req.Next()
+					}
 				}
 			case b.authzHandler.OnChallenge != nil && !recursed:
 				if err = b.authzHandler.OnChallenge(req, res, b.authenticateAndAuthorize(req)); err == nil {
-					if res, err = req.Next(); err == nil {
-						res, err = b.handleChallenge(req, res, true)
+					if err = req.RewindBody(); err == nil {
+						if res, err = req.Next(); err == nil {
+							res, err = b.handleChallenge(req, res, true)
+						}
 					}
 				} else {
 					// don't retry challenge handling errors

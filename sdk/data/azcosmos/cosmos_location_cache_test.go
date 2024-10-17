@@ -183,7 +183,7 @@ func TestGetLocation(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Received error Reading DB account: %s", err.Error())
 	}
-	if dbAcct.WriteRegions == nil || len(dbAcct.WriteRegions) == 0 {
+	if len(dbAcct.WriteRegions) == 0 {
 		t.Fatal("Write Regions are empty")
 	}
 	actual := lc.getLocation(*defaultEndpoint)

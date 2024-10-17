@@ -20,9 +20,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/confidential"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/public"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal"
 )
 
 const (
@@ -37,6 +38,7 @@ const (
 	azureRegionalAuthorityName      = "AZURE_REGIONAL_AUTHORITY_NAME"
 	azureTenantID                   = "AZURE_TENANT_ID"
 	azureUsername                   = "AZURE_USERNAME"
+	azureCloud                      = "AZURE_CLOUD"
 
 	organizationsTenantID   = "organizations"
 	developerSignOnClientID = "04b07795-8ddb-461a-bbee-02f9e1bf7b46"

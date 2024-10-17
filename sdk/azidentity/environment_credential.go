@@ -14,6 +14,7 @@ import (
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
@@ -99,6 +100,19 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 			additionalTenants = strings.Split(tenants, ";")
 		}
 	}
+	cloudConfig, ok := os.LookupEnv(azureCloud)
+	if ok {
+		switch cloudConfig {
+		case "usgovernment":
+			options.Cloud = cloud.AzureGovernment
+		case "public":
+			options.Cloud = cloud.AzurePublic
+		case "china":
+			options.Cloud = cloud.AzureChina
+		default:
+			return nil, fmt.Errorf("invalid value for %s: %s", azureCloud, cloudConfig)
+		}
+	}
 	if clientSecret := os.Getenv(azureClientSecret); clientSecret != "" {
 		log.Write(EventAuthentication, "EnvironmentCredential will authenticate with ClientSecretCredential")
 		o := &ClientSecretCredentialOptions{
@@ -106,6 +120,7 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 			ClientOptions:              options.ClientOptions,
 			DisableInstanceDiscovery:   options.DisableInstanceDiscovery,
 		}
+		o.Cloud = options.Cloud
 		cred, err := NewClientSecretCredential(tenantID, clientID, clientSecret, o)
 		if err != nil {
 			return nil, err
@@ -131,6 +146,7 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 			ClientOptions:              options.ClientOptions,
 			DisableInstanceDiscovery:   options.DisableInstanceDiscovery,
 		}
+		o.Cloud = options.Cloud
 		if v, ok := os.LookupEnv(envVarSendCertChain); ok {
 			o.SendCertificateChain = v == "1" || strings.ToLower(v) == "true"
 		}
@@ -148,6 +164,7 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 				ClientOptions:              options.ClientOptions,
 				DisableInstanceDiscovery:   options.DisableInstanceDiscovery,
 			}
+			o.Cloud = options.Cloud
 			cred, err := NewUsernamePasswordCredential(tenantID, clientID, username, password, o)
 			if err != nil {
 				return nil, err

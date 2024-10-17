@@ -231,7 +231,7 @@ func initServiceTest(t *testing.T, service endpointType, tp tracing.Provider) *S
 }
 
 func getSharedKeyCredential() (*SharedKeyCredential, error) {
-	if recording.GetRecordMode() == "playback" {
+	if recording.GetRecordMode() == recording.PlaybackMode {
 		return NewSharedKeyCredential("accountName", "daaaaaaaaaabbbbbbbbbbcccccccccccccccccccdddddddddddddddddddeeeeeeeeeeefffffffffffggggg==")
 	}
 

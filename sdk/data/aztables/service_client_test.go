@@ -217,7 +217,7 @@ func TestGetStatistics(t *testing.T) {
 	accountName := recording.GetEnvVariable("TABLES_STORAGE_ACCOUNT_NAME", "fakeaccount")
 	accountKey := recording.GetEnvVariable("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY", "fakeAccountKey")
 
-	if recording.GetRecordMode() == "playback" {
+	if recording.GetRecordMode() == recording.PlaybackMode {
 		cred, err = NewSharedKeyCredential("fakeaccount", "fakeAccountKey==")
 	} else {
 		cred, err = NewSharedKeyCredential(accountName, accountKey)

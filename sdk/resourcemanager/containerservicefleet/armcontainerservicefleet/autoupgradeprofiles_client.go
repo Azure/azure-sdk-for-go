@@ -20,68 +20,68 @@ import (
 	"strings"
 )
 
-// FleetUpdateStrategiesClient contains the methods for the FleetUpdateStrategies group.
-// Don't use this type directly, use NewFleetUpdateStrategiesClient() instead.
-type FleetUpdateStrategiesClient struct {
+// AutoUpgradeProfilesClient contains the methods for the AutoUpgradeProfiles group.
+// Don't use this type directly, use NewAutoUpgradeProfilesClient() instead.
+type AutoUpgradeProfilesClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewFleetUpdateStrategiesClient creates a new instance of FleetUpdateStrategiesClient with the specified values.
+// NewAutoUpgradeProfilesClient creates a new instance of AutoUpgradeProfilesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewFleetUpdateStrategiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FleetUpdateStrategiesClient, error) {
+func NewAutoUpgradeProfilesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AutoUpgradeProfilesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &FleetUpdateStrategiesClient{
+	client := &AutoUpgradeProfilesClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Create a FleetUpdateStrategy
+// BeginCreateOrUpdate - Create a AutoUpgradeProfile
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-05-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - The name of the Fleet resource.
-//   - updateStrategyName - The name of the UpdateStrategy resource.
+//   - autoUpgradeProfileName - The name of the AutoUpgradeProfile resource.
 //   - resource - Resource create parameters.
-//   - options - FleetUpdateStrategiesClientBeginCreateOrUpdateOptions contains the optional parameters for the FleetUpdateStrategiesClient.BeginCreateOrUpdate
+//   - options - AutoUpgradeProfilesClientBeginCreateOrUpdateOptions contains the optional parameters for the AutoUpgradeProfilesClient.BeginCreateOrUpdate
 //     method.
-func (client *FleetUpdateStrategiesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, fleetName string, updateStrategyName string, resource FleetUpdateStrategy, options *FleetUpdateStrategiesClientBeginCreateOrUpdateOptions) (*runtime.Poller[FleetUpdateStrategiesClientCreateOrUpdateResponse], error) {
+func (client *AutoUpgradeProfilesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, fleetName string, autoUpgradeProfileName string, resource AutoUpgradeProfile, options *AutoUpgradeProfilesClientBeginCreateOrUpdateOptions) (*runtime.Poller[AutoUpgradeProfilesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, fleetName, updateStrategyName, resource, options)
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, fleetName, autoUpgradeProfileName, resource, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FleetUpdateStrategiesClientCreateOrUpdateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AutoUpgradeProfilesClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[FleetUpdateStrategiesClientCreateOrUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AutoUpgradeProfilesClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// CreateOrUpdate - Create a FleetUpdateStrategy
+// CreateOrUpdate - Create a AutoUpgradeProfile
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-05-02-preview
-func (client *FleetUpdateStrategiesClient) createOrUpdate(ctx context.Context, resourceGroupName string, fleetName string, updateStrategyName string, resource FleetUpdateStrategy, options *FleetUpdateStrategiesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+func (client *AutoUpgradeProfilesClient) createOrUpdate(ctx context.Context, resourceGroupName string, fleetName string, autoUpgradeProfileName string, resource AutoUpgradeProfile, options *AutoUpgradeProfilesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "FleetUpdateStrategiesClient.BeginCreateOrUpdate"
+	const operationName = "AutoUpgradeProfilesClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, fleetName, updateStrategyName, resource, options)
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, fleetName, autoUpgradeProfileName, resource, options)
 	if err != nil {
 		return nil, err
 	}
@@ -97,8 +97,8 @@ func (client *FleetUpdateStrategiesClient) createOrUpdate(ctx context.Context, r
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *FleetUpdateStrategiesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, updateStrategyName string, resource FleetUpdateStrategy, options *FleetUpdateStrategiesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateStrategies/{updateStrategyName}"
+func (client *AutoUpgradeProfilesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, autoUpgradeProfileName string, resource AutoUpgradeProfile, options *AutoUpgradeProfilesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/autoUpgradeProfiles/{autoUpgradeProfileName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -111,10 +111,10 @@ func (client *FleetUpdateStrategiesClient) createOrUpdateCreateRequest(ctx conte
 		return nil, errors.New("parameter fleetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{fleetName}", url.PathEscape(fleetName))
-	if updateStrategyName == "" {
-		return nil, errors.New("parameter updateStrategyName cannot be empty")
+	if autoUpgradeProfileName == "" {
+		return nil, errors.New("parameter autoUpgradeProfileName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{updateStrategyName}", url.PathEscape(updateStrategyName))
+	urlPath = strings.ReplaceAll(urlPath, "{autoUpgradeProfileName}", url.PathEscape(autoUpgradeProfileName))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -135,44 +135,44 @@ func (client *FleetUpdateStrategiesClient) createOrUpdateCreateRequest(ctx conte
 	return req, nil
 }
 
-// BeginDelete - Delete a FleetUpdateStrategy
+// BeginDelete - Delete a AutoUpgradeProfile
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-05-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - The name of the Fleet resource.
-//   - updateStrategyName - The name of the UpdateStrategy resource.
-//   - options - FleetUpdateStrategiesClientBeginDeleteOptions contains the optional parameters for the FleetUpdateStrategiesClient.BeginDelete
+//   - autoUpgradeProfileName - The name of the AutoUpgradeProfile resource.
+//   - options - AutoUpgradeProfilesClientBeginDeleteOptions contains the optional parameters for the AutoUpgradeProfilesClient.BeginDelete
 //     method.
-func (client *FleetUpdateStrategiesClient) BeginDelete(ctx context.Context, resourceGroupName string, fleetName string, updateStrategyName string, options *FleetUpdateStrategiesClientBeginDeleteOptions) (*runtime.Poller[FleetUpdateStrategiesClientDeleteResponse], error) {
+func (client *AutoUpgradeProfilesClient) BeginDelete(ctx context.Context, resourceGroupName string, fleetName string, autoUpgradeProfileName string, options *AutoUpgradeProfilesClientBeginDeleteOptions) (*runtime.Poller[AutoUpgradeProfilesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, fleetName, updateStrategyName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, fleetName, autoUpgradeProfileName, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FleetUpdateStrategiesClientDeleteResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AutoUpgradeProfilesClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[FleetUpdateStrategiesClientDeleteResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AutoUpgradeProfilesClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Delete - Delete a FleetUpdateStrategy
+// Delete - Delete a AutoUpgradeProfile
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-05-02-preview
-func (client *FleetUpdateStrategiesClient) deleteOperation(ctx context.Context, resourceGroupName string, fleetName string, updateStrategyName string, options *FleetUpdateStrategiesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *AutoUpgradeProfilesClient) deleteOperation(ctx context.Context, resourceGroupName string, fleetName string, autoUpgradeProfileName string, options *AutoUpgradeProfilesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "FleetUpdateStrategiesClient.BeginDelete"
+	const operationName = "AutoUpgradeProfilesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, fleetName, updateStrategyName, options)
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, fleetName, autoUpgradeProfileName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -180,7 +180,7 @@ func (client *FleetUpdateStrategiesClient) deleteOperation(ctx context.Context, 
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}
@@ -188,8 +188,8 @@ func (client *FleetUpdateStrategiesClient) deleteOperation(ctx context.Context, 
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *FleetUpdateStrategiesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, updateStrategyName string, options *FleetUpdateStrategiesClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateStrategies/{updateStrategyName}"
+func (client *AutoUpgradeProfilesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, autoUpgradeProfileName string, options *AutoUpgradeProfilesClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/autoUpgradeProfiles/{autoUpgradeProfileName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -202,10 +202,10 @@ func (client *FleetUpdateStrategiesClient) deleteCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter fleetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{fleetName}", url.PathEscape(fleetName))
-	if updateStrategyName == "" {
-		return nil, errors.New("parameter updateStrategyName cannot be empty")
+	if autoUpgradeProfileName == "" {
+		return nil, errors.New("parameter autoUpgradeProfileName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{updateStrategyName}", url.PathEscape(updateStrategyName))
+	urlPath = strings.ReplaceAll(urlPath, "{autoUpgradeProfileName}", url.PathEscape(autoUpgradeProfileName))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -220,40 +220,39 @@ func (client *FleetUpdateStrategiesClient) deleteCreateRequest(ctx context.Conte
 	return req, nil
 }
 
-// Get - Get a FleetUpdateStrategy
+// Get - Get a AutoUpgradeProfile
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-05-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - The name of the Fleet resource.
-//   - updateStrategyName - The name of the UpdateStrategy resource.
-//   - options - FleetUpdateStrategiesClientGetOptions contains the optional parameters for the FleetUpdateStrategiesClient.Get
-//     method.
-func (client *FleetUpdateStrategiesClient) Get(ctx context.Context, resourceGroupName string, fleetName string, updateStrategyName string, options *FleetUpdateStrategiesClientGetOptions) (FleetUpdateStrategiesClientGetResponse, error) {
+//   - autoUpgradeProfileName - The name of the AutoUpgradeProfile resource.
+//   - options - AutoUpgradeProfilesClientGetOptions contains the optional parameters for the AutoUpgradeProfilesClient.Get method.
+func (client *AutoUpgradeProfilesClient) Get(ctx context.Context, resourceGroupName string, fleetName string, autoUpgradeProfileName string, options *AutoUpgradeProfilesClientGetOptions) (AutoUpgradeProfilesClientGetResponse, error) {
 	var err error
-	const operationName = "FleetUpdateStrategiesClient.Get"
+	const operationName = "AutoUpgradeProfilesClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, fleetName, updateStrategyName, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, fleetName, autoUpgradeProfileName, options)
 	if err != nil {
-		return FleetUpdateStrategiesClientGetResponse{}, err
+		return AutoUpgradeProfilesClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return FleetUpdateStrategiesClientGetResponse{}, err
+		return AutoUpgradeProfilesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return FleetUpdateStrategiesClientGetResponse{}, err
+		return AutoUpgradeProfilesClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *FleetUpdateStrategiesClient) getCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, updateStrategyName string, options *FleetUpdateStrategiesClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateStrategies/{updateStrategyName}"
+func (client *AutoUpgradeProfilesClient) getCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, autoUpgradeProfileName string, options *AutoUpgradeProfilesClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/autoUpgradeProfiles/{autoUpgradeProfileName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -266,10 +265,10 @@ func (client *FleetUpdateStrategiesClient) getCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter fleetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{fleetName}", url.PathEscape(fleetName))
-	if updateStrategyName == "" {
-		return nil, errors.New("parameter updateStrategyName cannot be empty")
+	if autoUpgradeProfileName == "" {
+		return nil, errors.New("parameter autoUpgradeProfileName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{updateStrategyName}", url.PathEscape(updateStrategyName))
+	urlPath = strings.ReplaceAll(urlPath, "{autoUpgradeProfileName}", url.PathEscape(autoUpgradeProfileName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -282,28 +281,28 @@ func (client *FleetUpdateStrategiesClient) getCreateRequest(ctx context.Context,
 }
 
 // getHandleResponse handles the Get response.
-func (client *FleetUpdateStrategiesClient) getHandleResponse(resp *http.Response) (FleetUpdateStrategiesClientGetResponse, error) {
-	result := FleetUpdateStrategiesClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.FleetUpdateStrategy); err != nil {
-		return FleetUpdateStrategiesClientGetResponse{}, err
+func (client *AutoUpgradeProfilesClient) getHandleResponse(resp *http.Response) (AutoUpgradeProfilesClientGetResponse, error) {
+	result := AutoUpgradeProfilesClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AutoUpgradeProfile); err != nil {
+		return AutoUpgradeProfilesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListByFleetPager - List FleetUpdateStrategy resources by Fleet
+// NewListByFleetPager - List AutoUpgradeProfile resources by Fleet
 //
 // Generated from API version 2024-05-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - The name of the Fleet resource.
-//   - options - FleetUpdateStrategiesClientListByFleetOptions contains the optional parameters for the FleetUpdateStrategiesClient.NewListByFleetPager
+//   - options - AutoUpgradeProfilesClientListByFleetOptions contains the optional parameters for the AutoUpgradeProfilesClient.NewListByFleetPager
 //     method.
-func (client *FleetUpdateStrategiesClient) NewListByFleetPager(resourceGroupName string, fleetName string, options *FleetUpdateStrategiesClientListByFleetOptions) *runtime.Pager[FleetUpdateStrategiesClientListByFleetResponse] {
-	return runtime.NewPager(runtime.PagingHandler[FleetUpdateStrategiesClientListByFleetResponse]{
-		More: func(page FleetUpdateStrategiesClientListByFleetResponse) bool {
+func (client *AutoUpgradeProfilesClient) NewListByFleetPager(resourceGroupName string, fleetName string, options *AutoUpgradeProfilesClientListByFleetOptions) *runtime.Pager[AutoUpgradeProfilesClientListByFleetResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AutoUpgradeProfilesClientListByFleetResponse]{
+		More: func(page AutoUpgradeProfilesClientListByFleetResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *FleetUpdateStrategiesClientListByFleetResponse) (FleetUpdateStrategiesClientListByFleetResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "FleetUpdateStrategiesClient.NewListByFleetPager")
+		Fetcher: func(ctx context.Context, page *AutoUpgradeProfilesClientListByFleetResponse) (AutoUpgradeProfilesClientListByFleetResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AutoUpgradeProfilesClient.NewListByFleetPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -312,7 +311,7 @@ func (client *FleetUpdateStrategiesClient) NewListByFleetPager(resourceGroupName
 				return client.listByFleetCreateRequest(ctx, resourceGroupName, fleetName, options)
 			}, nil)
 			if err != nil {
-				return FleetUpdateStrategiesClientListByFleetResponse{}, err
+				return AutoUpgradeProfilesClientListByFleetResponse{}, err
 			}
 			return client.listByFleetHandleResponse(resp)
 		},
@@ -321,8 +320,8 @@ func (client *FleetUpdateStrategiesClient) NewListByFleetPager(resourceGroupName
 }
 
 // listByFleetCreateRequest creates the ListByFleet request.
-func (client *FleetUpdateStrategiesClient) listByFleetCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, options *FleetUpdateStrategiesClientListByFleetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateStrategies"
+func (client *AutoUpgradeProfilesClient) listByFleetCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, options *AutoUpgradeProfilesClientListByFleetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/autoUpgradeProfiles"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -347,10 +346,10 @@ func (client *FleetUpdateStrategiesClient) listByFleetCreateRequest(ctx context.
 }
 
 // listByFleetHandleResponse handles the ListByFleet response.
-func (client *FleetUpdateStrategiesClient) listByFleetHandleResponse(resp *http.Response) (FleetUpdateStrategiesClientListByFleetResponse, error) {
-	result := FleetUpdateStrategiesClientListByFleetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.FleetUpdateStrategyListResult); err != nil {
-		return FleetUpdateStrategiesClientListByFleetResponse{}, err
+func (client *AutoUpgradeProfilesClient) listByFleetHandleResponse(resp *http.Response) (AutoUpgradeProfilesClientListByFleetResponse, error) {
+	result := AutoUpgradeProfilesClientListByFleetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AutoUpgradeProfileListResult); err != nil {
+		return AutoUpgradeProfilesClientListByFleetResponse{}, err
 	}
 	return result, nil
 }

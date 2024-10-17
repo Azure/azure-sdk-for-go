@@ -8,6 +8,40 @@
 
 package armcontainerservicefleet
 
+// AutoUpgradeProfilesClientBeginCreateOrUpdateOptions contains the optional parameters for the AutoUpgradeProfilesClient.BeginCreateOrUpdate
+// method.
+type AutoUpgradeProfilesClientBeginCreateOrUpdateOptions struct {
+	// The request should only proceed if an entity matches this string.
+	IfMatch *string
+
+	// The request should only proceed if no entity matches this string.
+	IfNoneMatch *string
+
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AutoUpgradeProfilesClientBeginDeleteOptions contains the optional parameters for the AutoUpgradeProfilesClient.BeginDelete
+// method.
+type AutoUpgradeProfilesClientBeginDeleteOptions struct {
+	// The request should only proceed if an entity matches this string.
+	IfMatch *string
+
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AutoUpgradeProfilesClientGetOptions contains the optional parameters for the AutoUpgradeProfilesClient.Get method.
+type AutoUpgradeProfilesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AutoUpgradeProfilesClientListByFleetOptions contains the optional parameters for the AutoUpgradeProfilesClient.NewListByFleetPager
+// method.
+type AutoUpgradeProfilesClientListByFleetOptions struct {
+	// placeholder for future optional parameters
+}
+
 // FleetMembersClientBeginCreateOptions contains the optional parameters for the FleetMembersClient.BeginCreate method.
 type FleetMembersClientBeginCreateOptions struct {
 	// The request should only proceed if an entity matches this string.

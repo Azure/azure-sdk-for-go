@@ -18,8 +18,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservicefleet/armcontainerservicefleet"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2024-05-02-preview/examples/UpdateStrategies_ListByFleet.json
-func ExampleFleetUpdateStrategiesClient_NewListByFleetPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2024-05-02-preview/examples/AutoUpgradeProfiles_ListByFleet.json
+func ExampleAutoUpgradeProfilesClient_NewListByFleetPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleFleetUpdateStrategiesClient_NewListByFleetPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewFleetUpdateStrategiesClient().NewListByFleetPager("rg1", "fleet1", nil)
+	pager := clientFactory.NewAutoUpgradeProfilesClient().NewListByFleetPager("rg1", "fleet1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -40,12 +40,12 @@ func ExampleFleetUpdateStrategiesClient_NewListByFleetPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.FleetUpdateStrategyListResult = armcontainerservicefleet.FleetUpdateStrategyListResult{
-		// 	Value: []*armcontainerservicefleet.FleetUpdateStrategy{
+		// page.AutoUpgradeProfileListResult = armcontainerservicefleet.AutoUpgradeProfileListResult{
+		// 	Value: []*armcontainerservicefleet.AutoUpgradeProfile{
 		// 		{
-		// 			Name: to.Ptr("strategy1"),
-		// 			Type: to.Ptr("Microsoft.ContainerService/fleets/updateStrategies"),
-		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/fleets/myFleet/updateStrategies/strategy1"),
+		// 			Name: to.Ptr("autoupgradeprofile1"),
+		// 			Type: to.Ptr("Microsoft.ContainerService/fleets/autoUpgradeProfiles"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/fleets/myFleet/autoUpgradeProfiles/autoupgradeprofile1"),
 		// 			SystemData: &armcontainerservicefleet.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
 		// 				CreatedBy: to.Ptr("@contoso.com"),
@@ -55,27 +55,17 @@ func ExampleFleetUpdateStrategiesClient_NewListByFleetPager() {
 		// 				LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
 		// 			},
 		// 			ETag: to.Ptr("\"EtagValue\""),
-		// 			Properties: &armcontainerservicefleet.FleetUpdateStrategyProperties{
-		// 				ProvisioningState: to.Ptr(armcontainerservicefleet.FleetUpdateStrategyProvisioningStateSucceeded),
-		// 				Strategy: &armcontainerservicefleet.UpdateRunStrategy{
-		// 					Stages: []*armcontainerservicefleet.UpdateStage{
-		// 						{
-		// 							Name: to.Ptr("stage1"),
-		// 							AfterStageWaitInSeconds: to.Ptr[int32](3600),
-		// 							Groups: []*armcontainerservicefleet.UpdateGroup{
-		// 								{
-		// 									Name: to.Ptr("group-a"),
-		// 							}},
-		// 					}},
-		// 				},
+		// 			Properties: &armcontainerservicefleet.AutoUpgradeProfileProperties{
+		// 				Channel: to.Ptr(armcontainerservicefleet.UpgradeChannelStable),
+		// 				ProvisioningState: to.Ptr(armcontainerservicefleet.AutoUpgradeProfileProvisioningStateSucceeded),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2024-05-02-preview/examples/UpdateStrategies_Get.json
-func ExampleFleetUpdateStrategiesClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2024-05-02-preview/examples/AutoUpgradeProfiles_Get.json
+func ExampleAutoUpgradeProfilesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -85,17 +75,17 @@ func ExampleFleetUpdateStrategiesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewFleetUpdateStrategiesClient().Get(ctx, "rg1", "fleet1", "strategy1", nil)
+	res, err := clientFactory.NewAutoUpgradeProfilesClient().Get(ctx, "rg1", "fleet1", "autoupgradeprofile1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.FleetUpdateStrategy = armcontainerservicefleet.FleetUpdateStrategy{
-	// 	Name: to.Ptr("strategy1"),
-	// 	Type: to.Ptr("Microsoft.ContainerService/fleets/updateStrategies"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/fleets/myFleet/updateStrategies/strategy1"),
+	// res.AutoUpgradeProfile = armcontainerservicefleet.AutoUpgradeProfile{
+	// 	Name: to.Ptr("autoupgradeprofile1"),
+	// 	Type: to.Ptr("Microsoft.ContainerService/fleets/autoUpgradeProfiles"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/fleets/myFleet/autoUpgradeProfiles/autoupgradeprofile1"),
 	// 	SystemData: &armcontainerservicefleet.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
 	// 		CreatedBy: to.Ptr("@contoso.com"),
@@ -105,25 +95,15 @@ func ExampleFleetUpdateStrategiesClient_Get() {
 	// 		LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
 	// 	},
 	// 	ETag: to.Ptr("\"EtagValue\""),
-	// 	Properties: &armcontainerservicefleet.FleetUpdateStrategyProperties{
-	// 		ProvisioningState: to.Ptr(armcontainerservicefleet.FleetUpdateStrategyProvisioningStateSucceeded),
-	// 		Strategy: &armcontainerservicefleet.UpdateRunStrategy{
-	// 			Stages: []*armcontainerservicefleet.UpdateStage{
-	// 				{
-	// 					Name: to.Ptr("stage1"),
-	// 					AfterStageWaitInSeconds: to.Ptr[int32](3600),
-	// 					Groups: []*armcontainerservicefleet.UpdateGroup{
-	// 						{
-	// 							Name: to.Ptr("group-a"),
-	// 					}},
-	// 			}},
-	// 		},
+	// 	Properties: &armcontainerservicefleet.AutoUpgradeProfileProperties{
+	// 		Channel: to.Ptr(armcontainerservicefleet.UpgradeChannelStable),
+	// 		ProvisioningState: to.Ptr(armcontainerservicefleet.AutoUpgradeProfileProvisioningStateSucceeded),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2024-05-02-preview/examples/UpdateStrategies_CreateOrUpdate.json
-func ExampleFleetUpdateStrategiesClient_BeginCreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2024-05-02-preview/examples/AutoUpgradeProfiles_CreateOrUpdate.json
+func ExampleAutoUpgradeProfilesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -133,21 +113,11 @@ func ExampleFleetUpdateStrategiesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewFleetUpdateStrategiesClient().BeginCreateOrUpdate(ctx, "rg1", "fleet1", "strartegy1", armcontainerservicefleet.FleetUpdateStrategy{
-		Properties: &armcontainerservicefleet.FleetUpdateStrategyProperties{
-			Strategy: &armcontainerservicefleet.UpdateRunStrategy{
-				Stages: []*armcontainerservicefleet.UpdateStage{
-					{
-						Name:                    to.Ptr("stage1"),
-						AfterStageWaitInSeconds: to.Ptr[int32](3600),
-						Groups: []*armcontainerservicefleet.UpdateGroup{
-							{
-								Name: to.Ptr("group-a"),
-							}},
-					}},
-			},
+	poller, err := clientFactory.NewAutoUpgradeProfilesClient().BeginCreateOrUpdate(ctx, "rg1", "fleet1", "autoupgradeprofile1", armcontainerservicefleet.AutoUpgradeProfile{
+		Properties: &armcontainerservicefleet.AutoUpgradeProfileProperties{
+			Channel: to.Ptr(armcontainerservicefleet.UpgradeChannelStable),
 		},
-	}, &armcontainerservicefleet.FleetUpdateStrategiesClientBeginCreateOrUpdateOptions{IfMatch: nil,
+	}, &armcontainerservicefleet.AutoUpgradeProfilesClientBeginCreateOrUpdateOptions{IfMatch: nil,
 		IfNoneMatch: nil,
 	})
 	if err != nil {
@@ -160,10 +130,10 @@ func ExampleFleetUpdateStrategiesClient_BeginCreateOrUpdate() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.FleetUpdateStrategy = armcontainerservicefleet.FleetUpdateStrategy{
-	// 	Name: to.Ptr("strategy1"),
-	// 	Type: to.Ptr("Microsoft.ContainerService/fleets/updateStrategies"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/fleets/myFleet/updateStrategies/strategy1"),
+	// res.AutoUpgradeProfile = armcontainerservicefleet.AutoUpgradeProfile{
+	// 	Name: to.Ptr("autoupgradeprofile1"),
+	// 	Type: to.Ptr("Microsoft.ContainerService/fleets/autoUpgradeProfiles"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/fleets/myFleet/autoUpgradeProfiles/autoupgradeprofile1"),
 	// 	SystemData: &armcontainerservicefleet.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
 	// 		CreatedBy: to.Ptr("@contoso.com"),
@@ -173,25 +143,15 @@ func ExampleFleetUpdateStrategiesClient_BeginCreateOrUpdate() {
 	// 		LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
 	// 	},
 	// 	ETag: to.Ptr("\"EtagValue\""),
-	// 	Properties: &armcontainerservicefleet.FleetUpdateStrategyProperties{
-	// 		ProvisioningState: to.Ptr(armcontainerservicefleet.FleetUpdateStrategyProvisioningStateSucceeded),
-	// 		Strategy: &armcontainerservicefleet.UpdateRunStrategy{
-	// 			Stages: []*armcontainerservicefleet.UpdateStage{
-	// 				{
-	// 					Name: to.Ptr("stage1"),
-	// 					AfterStageWaitInSeconds: to.Ptr[int32](3600),
-	// 					Groups: []*armcontainerservicefleet.UpdateGroup{
-	// 						{
-	// 							Name: to.Ptr("group-a"),
-	// 					}},
-	// 			}},
-	// 		},
+	// 	Properties: &armcontainerservicefleet.AutoUpgradeProfileProperties{
+	// 		Channel: to.Ptr(armcontainerservicefleet.UpgradeChannelStable),
+	// 		ProvisioningState: to.Ptr(armcontainerservicefleet.AutoUpgradeProfileProvisioningStateSucceeded),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2024-05-02-preview/examples/UpdateStrategies_Delete.json
-func ExampleFleetUpdateStrategiesClient_BeginDelete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad60d7f8eba124edc6999677c55aba2184e303b0/specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2024-05-02-preview/examples/AutoUpgradeProfiles_Delete.json
+func ExampleAutoUpgradeProfilesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -201,7 +161,7 @@ func ExampleFleetUpdateStrategiesClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewFleetUpdateStrategiesClient().BeginDelete(ctx, "rg1", "fleet1", "strategy1", &armcontainerservicefleet.FleetUpdateStrategiesClientBeginDeleteOptions{IfMatch: nil})
+	poller, err := clientFactory.NewAutoUpgradeProfilesClient().BeginDelete(ctx, "rg1", "fleet1", "autoupgradeprofile1", &armcontainerservicefleet.AutoUpgradeProfilesClientBeginDeleteOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

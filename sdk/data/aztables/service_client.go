@@ -16,8 +16,10 @@ import (
 	generated "github.com/Azure/azure-sdk-for-go/sdk/data/aztables/internal"
 )
 
-var storageScope = []string{"https://storage.azure.com/.default"}
-var cosmosScope = []string{"https://cosmos.azure.com/.default"}
+var (
+	storageScope = []string{"https://storage.azure.com/.default"}
+	cosmosScope  = []string{"https://cosmos.azure.com/.default"}
+)
 
 // ServiceClient represents a client to the table service. It can be used to query
 // the available tables, create/delete tables, and various other service level operations.

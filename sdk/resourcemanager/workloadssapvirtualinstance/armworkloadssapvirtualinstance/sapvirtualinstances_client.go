@@ -20,23 +20,23 @@ import (
 	"strings"
 )
 
-// SAPVirtualInstancesClient contains the methods for the SAPVirtualInstances group.
-// Don't use this type directly, use NewSAPVirtualInstancesClient() instead.
-type SAPVirtualInstancesClient struct {
+// SapVirtualInstancesClient contains the methods for the SapVirtualInstances group.
+// Don't use this type directly, use NewSapVirtualInstancesClient() instead.
+type SapVirtualInstancesClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewSAPVirtualInstancesClient creates a new instance of SAPVirtualInstancesClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+// NewSapVirtualInstancesClient creates a new instance of SapVirtualInstancesClient with the specified values.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewSAPVirtualInstancesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SAPVirtualInstancesClient, error) {
+func NewSapVirtualInstancesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SapVirtualInstancesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &SAPVirtualInstancesClient{
+	client := &SapVirtualInstancesClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
@@ -46,25 +46,25 @@ func NewSAPVirtualInstancesClient(subscriptionID string, credential azcore.Token
 // BeginCreate - Creates a Virtual Instance for SAP solutions (VIS) resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sapVirtualInstanceName - The name of the Virtual Instances for SAP solutions resource
-//   - body - Virtual Instance for SAP solutions resource request body.
-//   - options - SAPVirtualInstancesClientBeginCreateOptions contains the optional parameters for the SAPVirtualInstancesClient.BeginCreate
+//   - resource - Virtual Instance for SAP solutions resource request body.
+//   - options - SapVirtualInstancesClientBeginCreateOptions contains the optional parameters for the SapVirtualInstancesClient.BeginCreate
 //     method.
-func (client *SAPVirtualInstancesClient) BeginCreate(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, body SAPVirtualInstance, options *SAPVirtualInstancesClientBeginCreateOptions) (*runtime.Poller[SAPVirtualInstancesClientCreateResponse], error) {
+func (client *SapVirtualInstancesClient) BeginCreate(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, resource SAPVirtualInstance, options *SapVirtualInstancesClientBeginCreateOptions) (*runtime.Poller[SapVirtualInstancesClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.create(ctx, resourceGroupName, sapVirtualInstanceName, body, options)
+		resp, err := client.create(ctx, resourceGroupName, sapVirtualInstanceName, resource, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SAPVirtualInstancesClientCreateResponse]{
-			FinalStateVia: runtime.FinalStateViaLocation,
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SapVirtualInstancesClientCreateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SAPVirtualInstancesClientCreateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SapVirtualInstancesClientCreateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
@@ -73,14 +73,14 @@ func (client *SAPVirtualInstancesClient) BeginCreate(ctx context.Context, resour
 // Create - Creates a Virtual Instance for SAP solutions (VIS) resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
-func (client *SAPVirtualInstancesClient) create(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, body SAPVirtualInstance, options *SAPVirtualInstancesClientBeginCreateOptions) (*http.Response, error) {
+// Generated from API version 2024-09-01
+func (client *SapVirtualInstancesClient) create(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, resource SAPVirtualInstance, options *SapVirtualInstancesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "SAPVirtualInstancesClient.BeginCreate"
+	const operationName = "SapVirtualInstancesClient.BeginCreate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createCreateRequest(ctx, resourceGroupName, sapVirtualInstanceName, body, options)
+	req, err := client.createCreateRequest(ctx, resourceGroupName, sapVirtualInstanceName, resource, options)
 	if err != nil {
 		return nil, err
 	}
@@ -96,7 +96,7 @@ func (client *SAPVirtualInstancesClient) create(ctx context.Context, resourceGro
 }
 
 // createCreateRequest creates the Create request.
-func (client *SAPVirtualInstancesClient) createCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, body SAPVirtualInstance, options *SAPVirtualInstancesClientBeginCreateOptions) (*policy.Request, error) {
+func (client *SapVirtualInstancesClient) createCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, resource SAPVirtualInstance, options *SapVirtualInstancesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -115,10 +115,10 @@ func (client *SAPVirtualInstancesClient) createCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2024-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
+	if err := runtime.MarshalAsJSON(req, resource); err != nil {
 		return nil, err
 	}
 	return req, nil
@@ -128,24 +128,24 @@ func (client *SAPVirtualInstancesClient) createCreateRequest(ctx context.Context
 // Services Instance, Application Server Instances and Database Instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sapVirtualInstanceName - The name of the Virtual Instances for SAP solutions resource
-//   - options - SAPVirtualInstancesClientBeginDeleteOptions contains the optional parameters for the SAPVirtualInstancesClient.BeginDelete
+//   - options - SapVirtualInstancesClientBeginDeleteOptions contains the optional parameters for the SapVirtualInstancesClient.BeginDelete
 //     method.
-func (client *SAPVirtualInstancesClient) BeginDelete(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *SAPVirtualInstancesClientBeginDeleteOptions) (*runtime.Poller[SAPVirtualInstancesClientDeleteResponse], error) {
+func (client *SapVirtualInstancesClient) BeginDelete(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *SapVirtualInstancesClientBeginDeleteOptions) (*runtime.Poller[SapVirtualInstancesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, sapVirtualInstanceName, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SAPVirtualInstancesClientDeleteResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SapVirtualInstancesClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SAPVirtualInstancesClientDeleteResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SapVirtualInstancesClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
@@ -155,10 +155,10 @@ func (client *SAPVirtualInstancesClient) BeginDelete(ctx context.Context, resour
 // Services Instance, Application Server Instances and Database Instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
-func (client *SAPVirtualInstancesClient) deleteOperation(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *SAPVirtualInstancesClientBeginDeleteOptions) (*http.Response, error) {
+// Generated from API version 2024-09-01
+func (client *SapVirtualInstancesClient) deleteOperation(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *SapVirtualInstancesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "SAPVirtualInstancesClient.BeginDelete"
+	const operationName = "SapVirtualInstancesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -178,7 +178,7 @@ func (client *SAPVirtualInstancesClient) deleteOperation(ctx context.Context, re
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SAPVirtualInstancesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *SAPVirtualInstancesClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *SapVirtualInstancesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *SapVirtualInstancesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -197,7 +197,7 @@ func (client *SAPVirtualInstancesClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2024-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -206,34 +206,34 @@ func (client *SAPVirtualInstancesClient) deleteCreateRequest(ctx context.Context
 // Get - Gets a Virtual Instance for SAP solutions resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sapVirtualInstanceName - The name of the Virtual Instances for SAP solutions resource
-//   - options - SAPVirtualInstancesClientGetOptions contains the optional parameters for the SAPVirtualInstancesClient.Get method.
-func (client *SAPVirtualInstancesClient) Get(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *SAPVirtualInstancesClientGetOptions) (SAPVirtualInstancesClientGetResponse, error) {
+//   - options - SapVirtualInstancesClientGetOptions contains the optional parameters for the SapVirtualInstancesClient.Get method.
+func (client *SapVirtualInstancesClient) Get(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *SapVirtualInstancesClientGetOptions) (SapVirtualInstancesClientGetResponse, error) {
 	var err error
-	const operationName = "SAPVirtualInstancesClient.Get"
+	const operationName = "SapVirtualInstancesClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, sapVirtualInstanceName, options)
 	if err != nil {
-		return SAPVirtualInstancesClientGetResponse{}, err
+		return SapVirtualInstancesClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return SAPVirtualInstancesClientGetResponse{}, err
+		return SapVirtualInstancesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return SAPVirtualInstancesClientGetResponse{}, err
+		return SapVirtualInstancesClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *SAPVirtualInstancesClient) getCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *SAPVirtualInstancesClientGetOptions) (*policy.Request, error) {
+func (client *SapVirtualInstancesClient) getCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *SapVirtualInstancesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -252,34 +252,290 @@ func (client *SAPVirtualInstancesClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2024-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *SAPVirtualInstancesClient) getHandleResponse(resp *http.Response) (SAPVirtualInstancesClientGetResponse, error) {
-	result := SAPVirtualInstancesClientGetResponse{}
+func (client *SapVirtualInstancesClient) getHandleResponse(resp *http.Response) (SapVirtualInstancesClientGetResponse, error) {
+	result := SapVirtualInstancesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SAPVirtualInstance); err != nil {
-		return SAPVirtualInstancesClientGetResponse{}, err
+		return SapVirtualInstancesClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// InvokeAvailabilityZoneDetails - Get the recommended SAP Availability Zone Pair Details for your region.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-09-01
+//   - location - The name of the Azure region.
+//   - body - The content of the action request
+//   - options - SapVirtualInstancesClientInvokeAvailabilityZoneDetailsOptions contains the optional parameters for the SapVirtualInstancesClient.InvokeAvailabilityZoneDetails
+//     method.
+func (client *SapVirtualInstancesClient) InvokeAvailabilityZoneDetails(ctx context.Context, location string, body SAPAvailabilityZoneDetailsRequest, options *SapVirtualInstancesClientInvokeAvailabilityZoneDetailsOptions) (SapVirtualInstancesClientInvokeAvailabilityZoneDetailsResponse, error) {
+	var err error
+	const operationName = "SapVirtualInstancesClient.InvokeAvailabilityZoneDetails"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.invokeAvailabilityZoneDetailsCreateRequest(ctx, location, body, options)
+	if err != nil {
+		return SapVirtualInstancesClientInvokeAvailabilityZoneDetailsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return SapVirtualInstancesClientInvokeAvailabilityZoneDetailsResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return SapVirtualInstancesClientInvokeAvailabilityZoneDetailsResponse{}, err
+	}
+	resp, err := client.invokeAvailabilityZoneDetailsHandleResponse(httpResp)
+	return resp, err
+}
+
+// invokeAvailabilityZoneDetailsCreateRequest creates the InvokeAvailabilityZoneDetails request.
+func (client *SapVirtualInstancesClient) invokeAvailabilityZoneDetailsCreateRequest(ctx context.Context, location string, body SAPAvailabilityZoneDetailsRequest, options *SapVirtualInstancesClientInvokeAvailabilityZoneDetailsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/locations/{location}/sapVirtualInstanceMetadata/default/getAvailabilityZoneDetails"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if location == "" {
+		return nil, errors.New("parameter location cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// invokeAvailabilityZoneDetailsHandleResponse handles the InvokeAvailabilityZoneDetails response.
+func (client *SapVirtualInstancesClient) invokeAvailabilityZoneDetailsHandleResponse(resp *http.Response) (SapVirtualInstancesClientInvokeAvailabilityZoneDetailsResponse, error) {
+	result := SapVirtualInstancesClientInvokeAvailabilityZoneDetailsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SAPAvailabilityZoneDetailsResult); err != nil {
+		return SapVirtualInstancesClientInvokeAvailabilityZoneDetailsResponse{}, err
+	}
+	return result, nil
+}
+
+// InvokeDiskConfigurations - Get the SAP Disk Configuration Layout prod/non-prod SAP System.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-09-01
+//   - location - The name of the Azure region.
+//   - body - The content of the action request
+//   - options - SapVirtualInstancesClientInvokeDiskConfigurationsOptions contains the optional parameters for the SapVirtualInstancesClient.InvokeDiskConfigurations
+//     method.
+func (client *SapVirtualInstancesClient) InvokeDiskConfigurations(ctx context.Context, location string, body SAPDiskConfigurationsRequest, options *SapVirtualInstancesClientInvokeDiskConfigurationsOptions) (SapVirtualInstancesClientInvokeDiskConfigurationsResponse, error) {
+	var err error
+	const operationName = "SapVirtualInstancesClient.InvokeDiskConfigurations"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.invokeDiskConfigurationsCreateRequest(ctx, location, body, options)
+	if err != nil {
+		return SapVirtualInstancesClientInvokeDiskConfigurationsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return SapVirtualInstancesClientInvokeDiskConfigurationsResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return SapVirtualInstancesClientInvokeDiskConfigurationsResponse{}, err
+	}
+	resp, err := client.invokeDiskConfigurationsHandleResponse(httpResp)
+	return resp, err
+}
+
+// invokeDiskConfigurationsCreateRequest creates the InvokeDiskConfigurations request.
+func (client *SapVirtualInstancesClient) invokeDiskConfigurationsCreateRequest(ctx context.Context, location string, body SAPDiskConfigurationsRequest, options *SapVirtualInstancesClientInvokeDiskConfigurationsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/locations/{location}/sapVirtualInstanceMetadata/default/getDiskConfigurations"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if location == "" {
+		return nil, errors.New("parameter location cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// invokeDiskConfigurationsHandleResponse handles the InvokeDiskConfigurations response.
+func (client *SapVirtualInstancesClient) invokeDiskConfigurationsHandleResponse(resp *http.Response) (SapVirtualInstancesClientInvokeDiskConfigurationsResponse, error) {
+	result := SapVirtualInstancesClientInvokeDiskConfigurationsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SAPDiskConfigurationsResult); err != nil {
+		return SapVirtualInstancesClientInvokeDiskConfigurationsResponse{}, err
+	}
+	return result, nil
+}
+
+// InvokeSapSupportedSKU - Get a list of SAP supported SKUs for ASCS, Application and Database tier.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-09-01
+//   - location - The name of the Azure region.
+//   - body - The content of the action request
+//   - options - SapVirtualInstancesClientInvokeSapSupportedSKUOptions contains the optional parameters for the SapVirtualInstancesClient.InvokeSapSupportedSKU
+//     method.
+func (client *SapVirtualInstancesClient) InvokeSapSupportedSKU(ctx context.Context, location string, body SAPSupportedSKUsRequest, options *SapVirtualInstancesClientInvokeSapSupportedSKUOptions) (SapVirtualInstancesClientInvokeSapSupportedSKUResponse, error) {
+	var err error
+	const operationName = "SapVirtualInstancesClient.InvokeSapSupportedSKU"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.invokeSapSupportedSKUCreateRequest(ctx, location, body, options)
+	if err != nil {
+		return SapVirtualInstancesClientInvokeSapSupportedSKUResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return SapVirtualInstancesClientInvokeSapSupportedSKUResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return SapVirtualInstancesClientInvokeSapSupportedSKUResponse{}, err
+	}
+	resp, err := client.invokeSapSupportedSKUHandleResponse(httpResp)
+	return resp, err
+}
+
+// invokeSapSupportedSKUCreateRequest creates the InvokeSapSupportedSKU request.
+func (client *SapVirtualInstancesClient) invokeSapSupportedSKUCreateRequest(ctx context.Context, location string, body SAPSupportedSKUsRequest, options *SapVirtualInstancesClientInvokeSapSupportedSKUOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/locations/{location}/sapVirtualInstanceMetadata/default/getSapSupportedSku"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if location == "" {
+		return nil, errors.New("parameter location cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// invokeSapSupportedSKUHandleResponse handles the InvokeSapSupportedSKU response.
+func (client *SapVirtualInstancesClient) invokeSapSupportedSKUHandleResponse(resp *http.Response) (SapVirtualInstancesClientInvokeSapSupportedSKUResponse, error) {
+	result := SapVirtualInstancesClientInvokeSapSupportedSKUResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SAPSupportedResourceSKUsResult); err != nil {
+		return SapVirtualInstancesClientInvokeSapSupportedSKUResponse{}, err
+	}
+	return result, nil
+}
+
+// InvokeSizingRecommendations - Gets the sizing recommendations.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-09-01
+//   - location - The name of the Azure region.
+//   - body - The content of the action request
+//   - options - SapVirtualInstancesClientInvokeSizingRecommendationsOptions contains the optional parameters for the SapVirtualInstancesClient.InvokeSizingRecommendations
+//     method.
+func (client *SapVirtualInstancesClient) InvokeSizingRecommendations(ctx context.Context, location string, body SAPSizingRecommendationRequest, options *SapVirtualInstancesClientInvokeSizingRecommendationsOptions) (SapVirtualInstancesClientInvokeSizingRecommendationsResponse, error) {
+	var err error
+	const operationName = "SapVirtualInstancesClient.InvokeSizingRecommendations"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.invokeSizingRecommendationsCreateRequest(ctx, location, body, options)
+	if err != nil {
+		return SapVirtualInstancesClientInvokeSizingRecommendationsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return SapVirtualInstancesClientInvokeSizingRecommendationsResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return SapVirtualInstancesClientInvokeSizingRecommendationsResponse{}, err
+	}
+	resp, err := client.invokeSizingRecommendationsHandleResponse(httpResp)
+	return resp, err
+}
+
+// invokeSizingRecommendationsCreateRequest creates the InvokeSizingRecommendations request.
+func (client *SapVirtualInstancesClient) invokeSizingRecommendationsCreateRequest(ctx context.Context, location string, body SAPSizingRecommendationRequest, options *SapVirtualInstancesClientInvokeSizingRecommendationsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/locations/{location}/sapVirtualInstanceMetadata/default/getSizingRecommendations"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if location == "" {
+		return nil, errors.New("parameter location cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// invokeSizingRecommendationsHandleResponse handles the InvokeSizingRecommendations response.
+func (client *SapVirtualInstancesClient) invokeSizingRecommendationsHandleResponse(resp *http.Response) (SapVirtualInstancesClientInvokeSizingRecommendationsResponse, error) {
+	result := SapVirtualInstancesClientInvokeSizingRecommendationsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
+		return SapVirtualInstancesClientInvokeSizingRecommendationsResponse{}, err
 	}
 	return result, nil
 }
 
 // NewListByResourceGroupPager - Gets all Virtual Instances for SAP solutions resources in a Resource Group.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - options - SAPVirtualInstancesClientListByResourceGroupOptions contains the optional parameters for the SAPVirtualInstancesClient.NewListByResourceGroupPager
+//   - options - SapVirtualInstancesClientListByResourceGroupOptions contains the optional parameters for the SapVirtualInstancesClient.NewListByResourceGroupPager
 //     method.
-func (client *SAPVirtualInstancesClient) NewListByResourceGroupPager(resourceGroupName string, options *SAPVirtualInstancesClientListByResourceGroupOptions) *runtime.Pager[SAPVirtualInstancesClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PagingHandler[SAPVirtualInstancesClientListByResourceGroupResponse]{
-		More: func(page SAPVirtualInstancesClientListByResourceGroupResponse) bool {
+func (client *SapVirtualInstancesClient) NewListByResourceGroupPager(resourceGroupName string, options *SapVirtualInstancesClientListByResourceGroupOptions) *runtime.Pager[SapVirtualInstancesClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[SapVirtualInstancesClientListByResourceGroupResponse]{
+		More: func(page SapVirtualInstancesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *SAPVirtualInstancesClientListByResourceGroupResponse) (SAPVirtualInstancesClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SAPVirtualInstancesClient.NewListByResourceGroupPager")
+		Fetcher: func(ctx context.Context, page *SapVirtualInstancesClientListByResourceGroupResponse) (SapVirtualInstancesClientListByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SapVirtualInstancesClient.NewListByResourceGroupPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -288,7 +544,7 @@ func (client *SAPVirtualInstancesClient) NewListByResourceGroupPager(resourceGro
 				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 			}, nil)
 			if err != nil {
-				return SAPVirtualInstancesClientListByResourceGroupResponse{}, err
+				return SapVirtualInstancesClientListByResourceGroupResponse{}, err
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
@@ -297,7 +553,7 @@ func (client *SAPVirtualInstancesClient) NewListByResourceGroupPager(resourceGro
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *SAPVirtualInstancesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *SAPVirtualInstancesClientListByResourceGroupOptions) (*policy.Request, error) {
+func (client *SapVirtualInstancesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *SapVirtualInstancesClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -312,33 +568,33 @@ func (client *SAPVirtualInstancesClient) listByResourceGroupCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2024-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *SAPVirtualInstancesClient) listByResourceGroupHandleResponse(resp *http.Response) (SAPVirtualInstancesClientListByResourceGroupResponse, error) {
-	result := SAPVirtualInstancesClientListByResourceGroupResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SAPVirtualInstanceList); err != nil {
-		return SAPVirtualInstancesClientListByResourceGroupResponse{}, err
+func (client *SapVirtualInstancesClient) listByResourceGroupHandleResponse(resp *http.Response) (SapVirtualInstancesClientListByResourceGroupResponse, error) {
+	result := SapVirtualInstancesClientListByResourceGroupResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SAPVirtualInstanceListResult); err != nil {
+		return SapVirtualInstancesClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
 // NewListBySubscriptionPager - Gets all Virtual Instances for SAP solutions resources in a Subscription.
 //
-// Generated from API version 2023-10-01-preview
-//   - options - SAPVirtualInstancesClientListBySubscriptionOptions contains the optional parameters for the SAPVirtualInstancesClient.NewListBySubscriptionPager
+// Generated from API version 2024-09-01
+//   - options - SapVirtualInstancesClientListBySubscriptionOptions contains the optional parameters for the SapVirtualInstancesClient.NewListBySubscriptionPager
 //     method.
-func (client *SAPVirtualInstancesClient) NewListBySubscriptionPager(options *SAPVirtualInstancesClientListBySubscriptionOptions) *runtime.Pager[SAPVirtualInstancesClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PagingHandler[SAPVirtualInstancesClientListBySubscriptionResponse]{
-		More: func(page SAPVirtualInstancesClientListBySubscriptionResponse) bool {
+func (client *SapVirtualInstancesClient) NewListBySubscriptionPager(options *SapVirtualInstancesClientListBySubscriptionOptions) *runtime.Pager[SapVirtualInstancesClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PagingHandler[SapVirtualInstancesClientListBySubscriptionResponse]{
+		More: func(page SapVirtualInstancesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *SAPVirtualInstancesClientListBySubscriptionResponse) (SAPVirtualInstancesClientListBySubscriptionResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SAPVirtualInstancesClient.NewListBySubscriptionPager")
+		Fetcher: func(ctx context.Context, page *SapVirtualInstancesClientListBySubscriptionResponse) (SapVirtualInstancesClientListBySubscriptionResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SapVirtualInstancesClient.NewListBySubscriptionPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -347,7 +603,7 @@ func (client *SAPVirtualInstancesClient) NewListBySubscriptionPager(options *SAP
 				return client.listBySubscriptionCreateRequest(ctx, options)
 			}, nil)
 			if err != nil {
-				return SAPVirtualInstancesClientListBySubscriptionResponse{}, err
+				return SapVirtualInstancesClientListBySubscriptionResponse{}, err
 			}
 			return client.listBySubscriptionHandleResponse(resp)
 		},
@@ -356,7 +612,7 @@ func (client *SAPVirtualInstancesClient) NewListBySubscriptionPager(options *SAP
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *SAPVirtualInstancesClient) listBySubscriptionCreateRequest(ctx context.Context, options *SAPVirtualInstancesClientListBySubscriptionOptions) (*policy.Request, error) {
+func (client *SapVirtualInstancesClient) listBySubscriptionCreateRequest(ctx context.Context, options *SapVirtualInstancesClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/sapVirtualInstances"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -367,17 +623,17 @@ func (client *SAPVirtualInstancesClient) listBySubscriptionCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2024-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *SAPVirtualInstancesClient) listBySubscriptionHandleResponse(resp *http.Response) (SAPVirtualInstancesClientListBySubscriptionResponse, error) {
-	result := SAPVirtualInstancesClientListBySubscriptionResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SAPVirtualInstanceList); err != nil {
-		return SAPVirtualInstancesClientListBySubscriptionResponse{}, err
+func (client *SapVirtualInstancesClient) listBySubscriptionHandleResponse(resp *http.Response) (SapVirtualInstancesClientListBySubscriptionResponse, error) {
+	result := SapVirtualInstancesClientListBySubscriptionResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SAPVirtualInstanceListResult); err != nil {
+		return SapVirtualInstancesClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
@@ -385,24 +641,24 @@ func (client *SAPVirtualInstancesClient) listBySubscriptionHandleResponse(resp *
 // BeginStart - Starts the SAP application, that is the Central Services instance and Application server instances.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sapVirtualInstanceName - The name of the Virtual Instances for SAP solutions resource
-//   - options - SAPVirtualInstancesClientBeginStartOptions contains the optional parameters for the SAPVirtualInstancesClient.BeginStart
+//   - options - SapVirtualInstancesClientBeginStartOptions contains the optional parameters for the SapVirtualInstancesClient.BeginStart
 //     method.
-func (client *SAPVirtualInstancesClient) BeginStart(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *SAPVirtualInstancesClientBeginStartOptions) (*runtime.Poller[SAPVirtualInstancesClientStartResponse], error) {
+func (client *SapVirtualInstancesClient) BeginStart(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *SapVirtualInstancesClientBeginStartOptions) (*runtime.Poller[SapVirtualInstancesClientStartResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.start(ctx, resourceGroupName, sapVirtualInstanceName, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SAPVirtualInstancesClientStartResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SapVirtualInstancesClientStartResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SAPVirtualInstancesClientStartResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SapVirtualInstancesClientStartResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
@@ -411,10 +667,10 @@ func (client *SAPVirtualInstancesClient) BeginStart(ctx context.Context, resourc
 // Start - Starts the SAP application, that is the Central Services instance and Application server instances.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
-func (client *SAPVirtualInstancesClient) start(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *SAPVirtualInstancesClientBeginStartOptions) (*http.Response, error) {
+// Generated from API version 2024-09-01
+func (client *SapVirtualInstancesClient) start(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *SapVirtualInstancesClientBeginStartOptions) (*http.Response, error) {
 	var err error
-	const operationName = "SAPVirtualInstancesClient.BeginStart"
+	const operationName = "SapVirtualInstancesClient.BeginStart"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -434,7 +690,7 @@ func (client *SAPVirtualInstancesClient) start(ctx context.Context, resourceGrou
 }
 
 // startCreateRequest creates the Start request.
-func (client *SAPVirtualInstancesClient) startCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *SAPVirtualInstancesClientBeginStartOptions) (*policy.Request, error) {
+func (client *SapVirtualInstancesClient) startCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *SapVirtualInstancesClientBeginStartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/start"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -453,7 +709,7 @@ func (client *SAPVirtualInstancesClient) startCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2024-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
@@ -468,24 +724,24 @@ func (client *SAPVirtualInstancesClient) startCreateRequest(ctx context.Context,
 // BeginStop - Stops the SAP Application, that is the Application server instances and Central Services instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sapVirtualInstanceName - The name of the Virtual Instances for SAP solutions resource
-//   - options - SAPVirtualInstancesClientBeginStopOptions contains the optional parameters for the SAPVirtualInstancesClient.BeginStop
+//   - options - SapVirtualInstancesClientBeginStopOptions contains the optional parameters for the SapVirtualInstancesClient.BeginStop
 //     method.
-func (client *SAPVirtualInstancesClient) BeginStop(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *SAPVirtualInstancesClientBeginStopOptions) (*runtime.Poller[SAPVirtualInstancesClientStopResponse], error) {
+func (client *SapVirtualInstancesClient) BeginStop(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *SapVirtualInstancesClientBeginStopOptions) (*runtime.Poller[SapVirtualInstancesClientStopResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.stop(ctx, resourceGroupName, sapVirtualInstanceName, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SAPVirtualInstancesClientStopResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SapVirtualInstancesClientStopResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SAPVirtualInstancesClientStopResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SapVirtualInstancesClientStopResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
@@ -494,10 +750,10 @@ func (client *SAPVirtualInstancesClient) BeginStop(ctx context.Context, resource
 // Stop - Stops the SAP Application, that is the Application server instances and Central Services instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
-func (client *SAPVirtualInstancesClient) stop(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *SAPVirtualInstancesClientBeginStopOptions) (*http.Response, error) {
+// Generated from API version 2024-09-01
+func (client *SapVirtualInstancesClient) stop(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *SapVirtualInstancesClientBeginStopOptions) (*http.Response, error) {
 	var err error
-	const operationName = "SAPVirtualInstancesClient.BeginStop"
+	const operationName = "SapVirtualInstancesClient.BeginStop"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -517,7 +773,7 @@ func (client *SAPVirtualInstancesClient) stop(ctx context.Context, resourceGroup
 }
 
 // stopCreateRequest creates the Stop request.
-func (client *SAPVirtualInstancesClient) stopCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *SAPVirtualInstancesClientBeginStopOptions) (*policy.Request, error) {
+func (client *SapVirtualInstancesClient) stopCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *SapVirtualInstancesClientBeginStopOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/stop"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -536,7 +792,7 @@ func (client *SAPVirtualInstancesClient) stopCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2024-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
@@ -551,25 +807,25 @@ func (client *SAPVirtualInstancesClient) stopCreateRequest(ctx context.Context, 
 // BeginUpdate - Updates a Virtual Instance for SAP solutions resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sapVirtualInstanceName - The name of the Virtual Instances for SAP solutions resource
-//   - body - Request body to update a Virtual Instance for SAP solutions resource.
-//   - options - SAPVirtualInstancesClientBeginUpdateOptions contains the optional parameters for the SAPVirtualInstancesClient.BeginUpdate
+//   - properties - Request body to update a Virtual Instance for SAP solutions resource.
+//   - options - SapVirtualInstancesClientBeginUpdateOptions contains the optional parameters for the SapVirtualInstancesClient.BeginUpdate
 //     method.
-func (client *SAPVirtualInstancesClient) BeginUpdate(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, body UpdateSAPVirtualInstanceRequest, options *SAPVirtualInstancesClientBeginUpdateOptions) (*runtime.Poller[SAPVirtualInstancesClientUpdateResponse], error) {
+func (client *SapVirtualInstancesClient) BeginUpdate(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, properties UpdateSAPVirtualInstanceRequest, options *SapVirtualInstancesClientBeginUpdateOptions) (*runtime.Poller[SapVirtualInstancesClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, sapVirtualInstanceName, body, options)
+		resp, err := client.update(ctx, resourceGroupName, sapVirtualInstanceName, properties, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SAPVirtualInstancesClientUpdateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SapVirtualInstancesClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SAPVirtualInstancesClientUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SapVirtualInstancesClientUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
@@ -578,14 +834,14 @@ func (client *SAPVirtualInstancesClient) BeginUpdate(ctx context.Context, resour
 // Update - Updates a Virtual Instance for SAP solutions resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
-func (client *SAPVirtualInstancesClient) update(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, body UpdateSAPVirtualInstanceRequest, options *SAPVirtualInstancesClientBeginUpdateOptions) (*http.Response, error) {
+// Generated from API version 2024-09-01
+func (client *SapVirtualInstancesClient) update(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, properties UpdateSAPVirtualInstanceRequest, options *SapVirtualInstancesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "SAPVirtualInstancesClient.BeginUpdate"
+	const operationName = "SapVirtualInstancesClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, sapVirtualInstanceName, body, options)
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, sapVirtualInstanceName, properties, options)
 	if err != nil {
 		return nil, err
 	}
@@ -601,7 +857,7 @@ func (client *SAPVirtualInstancesClient) update(ctx context.Context, resourceGro
 }
 
 // updateCreateRequest creates the Update request.
-func (client *SAPVirtualInstancesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, body UpdateSAPVirtualInstanceRequest, options *SAPVirtualInstancesClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *SapVirtualInstancesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, properties UpdateSAPVirtualInstanceRequest, options *SapVirtualInstancesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -620,10 +876,10 @@ func (client *SAPVirtualInstancesClient) updateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2024-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
 		return nil, err
 	}
 	return req, nil

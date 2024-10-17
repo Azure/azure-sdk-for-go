@@ -1,5 +1,16 @@
 # Release History
 
+## 2.5.0-beta.1 (2024-10-25)
+### Features Added
+
+- New struct `SecretReference`
+- New field `StorageAccountKeyReference` in struct `AzureFileVolume`
+- New field `SecretReferences` in struct `ContainerGroupPropertiesProperties`
+- New field `SecureValueReference` in struct `EnvironmentVariable`
+- New field `PasswordReference` in struct `ImageRegistryCredential`
+- New field `SecretReference` in struct `Volume`
+
+
 ## 2.4.0 (2023-11-24)
 ### Features Added
 

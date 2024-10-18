@@ -4,6 +4,8 @@
 
 ### Features Added
 
+* Support `encoding.TextMarshaler` and `encoding.TextUnmarshaler` interfaces in `arm.ResourceID`.
+
 ### Breaking Changes
 
 ### Bugs Fixed

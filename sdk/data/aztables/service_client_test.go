@@ -19,10 +19,9 @@ import (
 func TestServiceErrorsServiceClient(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			service, delete := initServiceTest(t, service, NewSpanValidator(t, SpanMatcher{
+			service := initServiceTest(t, service, NewSpanValidator(t, SpanMatcher{
 				Name: "ServiceClient.DeleteTable",
 			}))
-			defer delete()
 
 			tableName, err := createRandomName(t, tableNamePrefix)
 			require.NoError(t, err)
@@ -47,10 +46,9 @@ func TestServiceErrorsServiceClient(t *testing.T) {
 func TestCreateTableFromService(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			service, delete := initServiceTest(t, service, NewSpanValidator(t, SpanMatcher{
+			service := initServiceTest(t, service, NewSpanValidator(t, SpanMatcher{
 				Name: "ServiceClient.CreateTable",
 			}))
-			defer delete()
 
 			tableName, err := createRandomName(t, tableNamePrefix)
 			require.NoError(t, err)
@@ -62,7 +60,7 @@ func TestCreateTableFromService(t *testing.T) {
 					fmt.Printf("Error cleaning up test. %v\n", err.Error())
 				}
 			}
-			defer deleteTable()
+			t.Cleanup(deleteTable)
 
 			require.NoError(t, err)
 			// require.Equal(t, *resp.TableResponse.TableName, tableName)
@@ -73,15 +71,20 @@ func TestCreateTableFromService(t *testing.T) {
 func TestQueryTable(t *testing.T) {
 	for _, svc := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), svc), func(t *testing.T) {
-			service, delete := initServiceTest(t, svc, tracing.Provider{})
-			defer delete()
+			service := initServiceTest(t, svc, tracing.Provider{})
 
 			tableCount := 5
 			tableNames := make([]string, tableCount)
 			prefix1 := "zzza"
 			prefix2 := "zzzb"
 
-			defer require.NoError(t, clearAllTables(service))
+			// clean up the tables on the last test for that resource (storage, cosmos)
+			if svc == cosmosTokenCredentialEndpoint || svc == storageTokenCredentialEndpoint {
+				t.Cleanup(func() {
+					require.NoError(t, clearAllTables(service))
+				})
+			}
+
 			// create 10 tables with our exected prefix and 1 with a different prefix
 			for i := 0; i < tableCount; i++ {
 				if i < (tableCount - 1) {
@@ -91,8 +94,12 @@ func TestQueryTable(t *testing.T) {
 					name := fmt.Sprintf("%v%v", prefix2, i)
 					tableNames[i] = name
 				}
-				_, err := service.CreateTable(ctx, tableNames[i], nil)
-				require.NoError(t, err)
+
+				// only create the tables in the first test type for that resource (ie, storage, cosmos)
+				if svc == cosmosEndpoint || svc == storageEndpoint {
+					_, err := service.CreateTable(ctx, tableNames[i], nil)
+					require.NoError(t, err)
+				}
 			}
 
 			// Query for tables with no pagination. The filter should exclude one table from the results
@@ -142,10 +149,10 @@ type mdForListTables struct {
 func TestListTables(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initServiceTest(t, service, NewSpanValidator(t, SpanMatcher{
+			client := initServiceTest(t, service, NewSpanValidator(t, SpanMatcher{
 				Name: "Pager[ListTablesResponse].NextPage",
 			}))
-			defer delete()
+
 			tableName, err := createRandomName(t, tableNamePrefix)
 			require.NoError(t, err)
 
@@ -167,7 +174,7 @@ func TestListTables(t *testing.T) {
 				count += len(resp.Tables)
 
 				for _, table := range resp.Tables {
-					if service == "storage" {
+					if service == storageEndpoint {
 						// cosmos doesn't send full metadata
 						require.NotEmpty(t, table.Value)
 						var md mdForListTables
@@ -189,8 +196,7 @@ func TestListTables(t *testing.T) {
 					}
 				}
 			}
-			defer deleteTable()
-
+			t.Cleanup(deleteTable)
 		})
 	}
 }
@@ -211,14 +217,14 @@ func TestGetStatistics(t *testing.T) {
 	accountName := recording.GetEnvVariable("TABLES_STORAGE_ACCOUNT_NAME", "fakeaccount")
 	accountKey := recording.GetEnvVariable("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY", "fakeAccountKey")
 
-	if recording.GetRecordMode() == "playback" {
+	if recording.GetRecordMode() == recording.PlaybackMode {
 		cred, err = NewSharedKeyCredential("fakeaccount", "fakeAccountKey==")
 	} else {
 		cred, err = NewSharedKeyCredential(accountName, accountKey)
 	}
 
 	serviceURL := storageURI(accountName + "-secondary")
-	service, err := createServiceClientForRecording(t, serviceURL, *cred, NewSpanValidator(t, SpanMatcher{
+	service, err := createServiceClientForRecordingForSharedKey(t, serviceURL, *cred, NewSpanValidator(t, SpanMatcher{
 		Name: "ServiceClient.GetStatistics",
 	}))
 	require.NoError(t, err)
@@ -232,10 +238,9 @@ func TestGetStatistics(t *testing.T) {
 
 // Functionality is only available on storage accounts
 func TestGetProperties(t *testing.T) {
-	service, delete := initServiceTest(t, "storage", NewSpanValidator(t, SpanMatcher{
+	service := initServiceTest(t, storageEndpoint, NewSpanValidator(t, SpanMatcher{
 		Name: "ServiceClient.GetProperties",
 	}))
-	defer delete()
 
 	resp, err := service.GetProperties(ctx, nil)
 	require.NoError(t, err)
@@ -244,10 +249,9 @@ func TestGetProperties(t *testing.T) {
 
 // Logging is only available on storage accounts
 func TestSetLogging(t *testing.T) {
-	service, delete := initServiceTest(t, "storage", NewSpanValidator(t, SpanMatcher{
+	service := initServiceTest(t, storageEndpoint, NewSpanValidator(t, SpanMatcher{
 		Name: "ServiceClient.SetProperties",
 	}))
-	defer delete()
 
 	getResp, err := service.GetProperties(ctx, nil)
 	require.NoError(t, err)
@@ -280,8 +284,7 @@ func TestSetLogging(t *testing.T) {
 }
 
 func TestSetHoursMetrics(t *testing.T) {
-	service, delete := initServiceTest(t, "storage", tracing.Provider{})
-	defer delete()
+	service := initServiceTest(t, storageEndpoint, tracing.Provider{})
 
 	getResp, err := service.GetProperties(ctx, nil)
 	require.NoError(t, err)
@@ -312,8 +315,7 @@ func TestSetHoursMetrics(t *testing.T) {
 }
 
 func TestSetMinuteMetrics(t *testing.T) {
-	service, delete := initServiceTest(t, "storage", tracing.Provider{})
-	defer delete()
+	service := initServiceTest(t, storageEndpoint, tracing.Provider{})
 
 	getResp, err := service.GetProperties(ctx, nil)
 	require.NoError(t, err)
@@ -344,8 +346,7 @@ func TestSetMinuteMetrics(t *testing.T) {
 }
 
 func TestSetCors(t *testing.T) {
-	service, delete := initServiceTest(t, "storage", tracing.Provider{})
-	defer delete()
+	service := initServiceTest(t, storageEndpoint, tracing.Provider{})
 
 	getResp, err := service.GetProperties(ctx, nil)
 	require.NoError(t, err)
@@ -377,8 +378,7 @@ func TestSetCors(t *testing.T) {
 }
 
 func TestSetTooManyCors(t *testing.T) {
-	service, delete := initServiceTest(t, "storage", tracing.Provider{})
-	defer delete()
+	service := initServiceTest(t, storageEndpoint, tracing.Provider{})
 
 	corsRules1 := CorsRule{
 		AllowedHeaders:  to.Ptr("x-ms-meta-data*"),
@@ -400,8 +400,7 @@ func TestSetTooManyCors(t *testing.T) {
 }
 
 func TestRetentionTooLong(t *testing.T) {
-	service, delete := initServiceTest(t, "storage", tracing.Provider{})
-	defer delete()
+	service := initServiceTest(t, storageEndpoint, tracing.Provider{})
 
 	metrics := Metrics{
 		Enabled:     to.Ptr(true),

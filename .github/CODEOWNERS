@@ -46,7 +46,7 @@
 # AzureSDKOwners: @jhendrixMSFT
 # ServiceLabel: %Tables
 # PRLabel: %Tables
-/sdk/data/aztables/           @jhendrixMSFT
+/sdk/data/aztables/           @jhendrixMSFT @richardpark-msft
 
 # AzureSDKOwners: @gracewilcox
 # ServiceLabel: %KeyVault

@@ -16,20 +16,18 @@ import (
 )
 
 func TestSetEmptyAccessPolicy(t *testing.T) {
-	client, delete := initClientTest(t, "storage", true, NewSpanValidator(t, SpanMatcher{
+	client := initClientTest(t, storageEndpoint, true, NewSpanValidator(t, SpanMatcher{
 		Name: "Client.SetAccessPolicy",
 	}))
-	defer delete()
 
 	_, err := client.SetAccessPolicy(ctx, nil)
 	require.NoError(t, err)
 }
 
 func TestSetAccessPolicy(t *testing.T) {
-	client, delete := initClientTest(t, "storage", true, NewSpanValidator(t, SpanMatcher{
+	client := initClientTest(t, storageEndpoint, true, NewSpanValidator(t, SpanMatcher{
 		Name: "Client.GetAccessPolicy",
 	}))
-	defer delete()
 
 	start := time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC)
 	expiration := time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)
@@ -72,8 +70,7 @@ func TestSetAccessPolicy(t *testing.T) {
 }
 
 func TestSetMultipleAccessPolicies(t *testing.T) {
-	client, delete := initClientTest(t, "storage", true, tracing.Provider{})
-	defer delete()
+	client := initClientTest(t, storageEndpoint, true, tracing.Provider{})
 
 	id := "empty"
 
@@ -120,11 +117,10 @@ func TestSetMultipleAccessPolicies(t *testing.T) {
 }
 
 func TestSetTooManyAccessPolicies(t *testing.T) {
-	client, delete := initClientTest(t, "storage", true, NewSpanValidator(t, SpanMatcher{
+	client := initClientTest(t, storageEndpoint, true, NewSpanValidator(t, SpanMatcher{
 		Name:   "Client.SetAccessPolicy",
 		Status: tracing.SpanStatusError,
 	}))
-	defer delete()
 
 	start := time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC)
 	expiration := time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)
@@ -155,8 +151,7 @@ func TestSetTooManyAccessPolicies(t *testing.T) {
 }
 
 func TestSetNullAccessPolicy(t *testing.T) {
-	client, delete := initClientTest(t, "storage", true, tracing.Provider{})
-	defer delete()
+	client := initClientTest(t, storageEndpoint, true, tracing.Provider{})
 
 	id := "null"
 
@@ -178,8 +173,7 @@ func TestSetNullAccessPolicy(t *testing.T) {
 }
 
 func TestSetInvalidAccessPolicy(t *testing.T) {
-	client, delete := initClientTest(t, "storage", true, tracing.Provider{})
-	defer delete()
+	client := initClientTest(t, storageEndpoint, true, tracing.Provider{})
 
 	signedIdentifiers := make([]*SignedIdentifier, 0)
 	signedIdentifiers = append(signedIdentifiers, &SignedIdentifier{

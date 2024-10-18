@@ -5,12 +5,8 @@
 ### Features Added
 * Added CAE support
 
-### Breaking Changes
-
 ### Bugs Fixed
 * Allow the Key Vault client to access resources across tenants.
-
-### Other Changes
 
 ## 1.0.1 (2024-04-09)
 

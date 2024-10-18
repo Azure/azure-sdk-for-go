@@ -42,11 +42,11 @@ type ItemOptions struct {
 func (options *ItemOptions) toHeaders() *map[string]string {
 	headers := make(map[string]string)
 
-	if options.PreTriggers != nil && len(options.PreTriggers) > 0 {
+	if len(options.PreTriggers) > 0 {
 		headers[cosmosHeaderPreTriggerInclude] = strings.Join(options.PreTriggers, ",")
 	}
 
-	if options.PostTriggers != nil && len(options.PostTriggers) > 0 {
+	if len(options.PostTriggers) > 0 {
 		headers[cosmosHeaderPostTriggerInclude] = strings.Join(options.PostTriggers, ",")
 	}
 

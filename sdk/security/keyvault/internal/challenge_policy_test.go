@@ -7,6 +7,7 @@
 package internal
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"net/http"
@@ -17,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/stretchr/testify/require"
@@ -162,7 +164,9 @@ func TestChallengePolicy_CAE(t *testing.T) {
 	)
 
 	// req 1 kv then regular
-	req, err := runtime.NewRequest(context.Background(), "GET", "https://42.vault.azure.net")
+	req, err := runtime.NewRequest(context.Background(), "POST", "https://42.vault.azure.net")
+	require.NoError(t, err)
+	err = req.SetBody(streaming.NopCloser(bytes.NewReader([]byte("test"))), "text/plain")
 	require.NoError(t, err)
 	res, err := pl.Do(req)
 	require.NoError(t, err)
@@ -170,7 +174,9 @@ func TestChallengePolicy_CAE(t *testing.T) {
 	require.Equal(t, 1, tkReqs)
 
 	// req 2 cae
-	req, err = runtime.NewRequest(context.Background(), "GET", "https://42.vault.azure.net")
+	req, err = runtime.NewRequest(context.Background(), "POST", "https://42.vault.azure.net")
+	require.NoError(t, err)
+	err = req.SetBody(streaming.NopCloser(bytes.NewReader([]byte("test2"))), "text/plain")
 	require.NoError(t, err)
 	res, err = pl.Do(req)
 	require.NoError(t, err)

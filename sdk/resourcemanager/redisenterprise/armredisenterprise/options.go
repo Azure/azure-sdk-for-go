@@ -8,6 +8,31 @@
 
 package armredisenterprise
 
+// AccessPolicyAssignmentClientBeginCreateUpdateOptions contains the optional parameters for the AccessPolicyAssignmentClient.BeginCreateUpdate
+// method.
+type AccessPolicyAssignmentClientBeginCreateUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AccessPolicyAssignmentClientBeginDeleteOptions contains the optional parameters for the AccessPolicyAssignmentClient.BeginDelete
+// method.
+type AccessPolicyAssignmentClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AccessPolicyAssignmentClientGetOptions contains the optional parameters for the AccessPolicyAssignmentClient.Get method.
+type AccessPolicyAssignmentClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessPolicyAssignmentClientListOptions contains the optional parameters for the AccessPolicyAssignmentClient.NewListPager
+// method.
+type AccessPolicyAssignmentClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ClientBeginCreateOptions contains the optional parameters for the Client.BeginCreate method.
 type ClientBeginCreateOptions struct {
 	// Resumes the LRO from the provided token.

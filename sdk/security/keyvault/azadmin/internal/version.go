@@ -8,5 +8,5 @@ package internal
 
 const (
 	ModuleName = "github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin"
-	Version    = "v1.1.1"
+	Version    = "v1.2.0"
 )

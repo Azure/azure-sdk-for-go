@@ -250,11 +250,10 @@ type SetHTTPHeadersOptions struct {
 func (o *SetHTTPHeadersOptions) format() (*generated.FileClientSetHTTPHeadersOptions, *generated.ShareFileHTTPHeaders, *LeaseAccessConditions) {
 	if o == nil {
 		return &generated.FileClientSetHTTPHeadersOptions{
-			FileAttributes:       to.Ptr(shared.DefaultPreserveString),
-			FileCreationTime:     to.Ptr(shared.DefaultPreserveString),
-			FileLastWriteTime:    to.Ptr(shared.DefaultPreserveString),
-			FilePermission:       to.Ptr(shared.DefaultPreserveString),
-			FilePermissionFormat: to.Ptr(PermissionFormat(shared.DefaultFilePermissionFormat)),
+			FileAttributes:    to.Ptr(shared.DefaultPreserveString),
+			FileCreationTime:  to.Ptr(shared.DefaultPreserveString),
+			FileLastWriteTime: to.Ptr(shared.DefaultPreserveString),
+			FilePermission:    to.Ptr(shared.DefaultPreserveString),
 		}, nil, nil
 	}
 
@@ -263,14 +262,19 @@ func (o *SetHTTPHeadersOptions) format() (*generated.FileClientSetHTTPHeadersOpt
 	permission, permissionKey := exported.FormatPermissions(o.Permissions, to.Ptr(shared.DefaultPreserveString))
 
 	opts := &generated.FileClientSetHTTPHeadersOptions{
-		FileAttributes:       fileAttributes,
-		FileChangeTime:       fileChangeTime,
-		FileCreationTime:     fileCreationTime,
-		FileLastWriteTime:    fileLastWriteTime,
-		FileContentLength:    o.FileContentLength,
-		FilePermission:       permission,
-		FilePermissionKey:    permissionKey,
-		FilePermissionFormat: o.FilePermissionFormat,
+		FileAttributes:    fileAttributes,
+		FileChangeTime:    fileChangeTime,
+		FileCreationTime:  fileCreationTime,
+		FileLastWriteTime: fileLastWriteTime,
+		FileContentLength: o.FileContentLength,
+		FilePermission:    permission,
+		FilePermissionKey: permissionKey,
+	}
+
+	if permissionKey != nil && *permissionKey != shared.DefaultPreserveString {
+		opts.FilePermissionFormat = to.Ptr(PermissionFormat(shared.DefaultFilePermissionFormat))
+	} else if o.FilePermissionFormat != nil {
+		opts.FilePermissionFormat = to.Ptr(PermissionFormat(*o.FilePermissionFormat))
 	}
 
 	return opts, o.HTTPHeaders, o.LeaseAccessConditions

@@ -421,43 +421,6 @@ func (d *DirectoryRecordedTestsSuite) TestDirSetPropertiesNonDefault() {
 	_require.EqualValues(fileAttributes2, fileAttributes)
 }
 
-func (d *DirectoryRecordedTestsSuite) TestDirSetPropertiesFilePermissionFormat() {
-	_require := require.New(d.T())
-	testName := d.T().Name()
-	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
-	_require.NoError(err)
-
-	shareName := testcommon.GenerateShareName(testName)
-	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
-	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
-
-	dirName := testcommon.GenerateDirectoryName(testName)
-	dirClient := testcommon.GetDirectoryClient(dirName, shareClient)
-
-	cResp, err := dirClient.Create(context.Background(), &directory.CreateOptions{
-		FilePermissionFormat: (*file.PermissionFormat)(to.Ptr(testcommon.FilePermissionBinary)),
-		FilePermissions: &file.Permissions{
-			Permission: &testcommon.SampleBinary,
-		},
-	})
-	_require.NoError(err)
-	_require.NotNil(cResp.FilePermissionKey)
-	_require.NoError(err)
-
-	// Set the custom permissions
-	sResp, err := dirClient.SetProperties(context.Background(), &directory.SetPropertiesOptions{
-		FilePermissionFormat: (*directory.FilePermissionFormat)(to.Ptr(testcommon.FilePermissionFormatSddl)),
-		FilePermissions: &file.Permissions{
-			Permission: &testcommon.SampleSDDL,
-		},
-	})
-	_require.NoError(err)
-	_require.NotNil(sResp.FileCreationTime)
-	_require.NotNil(sResp.FileLastWriteTime)
-	_require.NotNil(sResp.FilePermissionKey)
-	_require.NotEqual(*sResp.FilePermissionKey, *cResp.FilePermissionKey)
-}
-
 func (d *DirectoryUnrecordedTestsSuite) TestDirCreateDeleteNonDefault() {
 	_require := require.New(d.T())
 	testName := d.T().Name()

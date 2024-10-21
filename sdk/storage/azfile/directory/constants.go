@@ -8,9 +8,6 @@ package directory
 
 import "github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 
-// FilePermissionFormat contains the format of the file permissions, Can be sddl (Default) or Binary.
-type FilePermissionFormat = generated.FilePermissionFormat
-
 // ListFilesIncludeType defines values for ListFilesIncludeType
 type ListFilesIncludeType = generated.ListFilesIncludeType
 

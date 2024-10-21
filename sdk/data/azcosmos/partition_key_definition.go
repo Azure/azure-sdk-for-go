@@ -9,12 +9,11 @@ import (
 )
 
 // PartitionKeyKind represents the type of the partition key that is used in an Azure Cosmos DB container.
-// The possible values are "Hash" and "MultiHash".
 type PartitionKeyKind string
 
 const (
-	Hash      PartitionKeyKind = "Hash"
-	MultiHash PartitionKeyKind = "MultiHash"
+	PartitionKeyKindHash      PartitionKeyKind = "Hash"
+	PartitionKeyKindMultiHash PartitionKeyKind = "MultiHash"
 )
 
 // PartitionKeyDefinition represents a partition key definition in the Azure Cosmos DB database service.
@@ -37,9 +36,9 @@ func (pkd PartitionKeyDefinition) MarshalJSON() ([]byte, error) {
 	if pkd.Kind != "" {
 		kind = pkd.Kind
 	} else if pkd.Kind == "" && paths_length == 1 {
-		kind = Hash
+		kind = PartitionKeyKindHash
 	} else if pkd.Kind == "" && paths_length > 1 {
-		kind = MultiHash
+		kind = PartitionKeyKindMultiHash
 	}
 
 	return json.Marshal(struct {
@@ -79,9 +78,9 @@ func (pkd *PartitionKeyDefinition) UnmarshalJSON(data []byte) error {
 	}
 
 	if pkd.Kind == "" && len(pkd.Paths) == 1 {
-		pkd.Kind = Hash
+		pkd.Kind = PartitionKeyKindHash
 	} else if pkd.Kind == "" && len(pkd.Paths) > 1 {
-		pkd.Kind = MultiHash
+		pkd.Kind = PartitionKeyKindMultiHash
 	}
 
 	return nil

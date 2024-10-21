@@ -1,13 +1,9 @@
 # Release History
 
-## 1.3.0 (Unreleased)
+## 1.3.0 (2024-11-05)
 
 ### Features Added
 * Client/ServiceClient now supports `azcore.TokenCredential` authentication with Azure Cosmos DB for Table.
-
-### Breaking Changes
-
-### Bugs Fixed
 
 ### Other Changes
 * Updated dependencies.

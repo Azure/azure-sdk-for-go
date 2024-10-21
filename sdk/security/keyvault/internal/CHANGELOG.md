@@ -4,6 +4,7 @@
 
 ### Features Added
 * Added CAE support
+* `KeyVaultChallengePolicy` always requests tokens from the Vault's tenant, overriding any credential default
 
 ## 1.0.1 (2024-04-09)
 

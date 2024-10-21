@@ -13,8 +13,8 @@ import (
 type PartitionKeyKind string
 
 const (
-	Hash      PartitionKeyKind = "Hash"
-	MultiHash PartitionKeyKind = "MultiHash"
+	PartitionKeyKindHash      PartitionKeyKind = "Hash"
+	PartitionKeyKindMultiHash PartitionKeyKind = "MultiHash"
 )
 
 // PartitionKeyDefinition represents a partition key definition in the Azure Cosmos DB database service.

@@ -40,7 +40,7 @@ func TestPartitionKeyDefinitionSerialization(t *testing.T) {
 	}
 
 	pkd_kind_set := PartitionKeyDefinition{
-		Kind:    MultiHash,
+		Kind:    PartitionKeyKindMultiHash,
 		Paths:   []string{"somePath"},
 		Version: 2,
 	}
@@ -75,7 +75,7 @@ func TestPartitionKeyDefinitionDeserialization(t *testing.T) {
 	}
 
 	// Kind is inferred based on the number of paths
-	if otherDef.Kind != Hash {
+	if otherDef.Kind != PartitionKeyKindHash {
 		t.Errorf("Expected Kind to be %v, but got %v", def.Kind, otherDef.Kind)
 	}
 
@@ -103,8 +103,8 @@ func TestPartitionKeyDefinitionDeserialization(t *testing.T) {
 	}
 
 	// Kind is inferred based on the number of paths
-	if otherDef.Kind != MultiHash {
-		t.Errorf("Expected Kind to be %v, but got %v", MultiHash, otherDef.Kind)
+	if otherDef.Kind != PartitionKeyKindMultiHash {
+		t.Errorf("Expected Kind to be %v, but got %v", PartitionKeyKindMultiHash, otherDef.Kind)
 	}
 
 	if !reflect.DeepEqual(def.Paths, otherDef.Paths) {
@@ -116,7 +116,7 @@ func TestPartitionKeyDefinitionDeserialization(t *testing.T) {
 	}
 
 	def = PartitionKeyDefinition{
-		Kind:    MultiHash,
+		Kind:    PartitionKeyKindMultiHash,
 		Paths:   []string{"somePath"},
 		Version: 2,
 	}

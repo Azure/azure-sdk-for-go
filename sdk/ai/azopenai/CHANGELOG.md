@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- `MongoDBChatExtensionParameters.Authentication`'s type has been changed to a `OnYourDataUsernameAndPasswordAuthenticationOptions`. (PR#TBD)
+
 ### Other Changes
 
 ## 0.7.0 (2024-10-14)

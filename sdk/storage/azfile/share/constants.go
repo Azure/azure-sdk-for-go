@@ -17,6 +17,8 @@ const (
 	AccessTierTransactionOptimized AccessTier = generated.ShareAccessTierTransactionOptimized
 )
 
+type PermissionFormat = generated.FilePermissionFormat
+
 // PossibleAccessTierValues returns the possible values for the AccessTier const type.
 func PossibleAccessTierValues() []AccessTier {
 	return generated.PossibleShareAccessTierValues()

@@ -4,9 +4,7 @@
 
 ### Features Added
 * Added CAE support
-
-### Bugs Fixed
-* Allow the Key Vault client to access resources across tenants.
+* `KeyVaultChallengePolicy` always requests tokens from the Vault's tenant, overriding any credential default
 
 ## 1.0.1 (2024-04-09)
 

@@ -555,7 +555,7 @@ func (f *FileRecordedTestsSuite) TestFileGetSetPropertiesDefault() {
 	_require.EqualValues(getResp.Metadata, metadata)
 }
 
-func (f *FileRecordedTestsSuite) TestFileSetHTTPHeaders() {
+func (f *FileUnrecordedTestsSuite) TestFileSetHTTPHeaders() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)

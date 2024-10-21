@@ -43,9 +43,6 @@ func ParseNTFSFileAttributes(attributes *string) (*NTFSFileAttributes, error) {
 // Permissions contains the optional parameters for the permissions on the file.
 type Permissions = exported.Permissions
 
-// PermissionFormat contains the format of the file permissions, Can be sddl (Default) or Binary.
-type PermissionFormat = generated.FilePermissionFormat
-
 // HTTPHeaders contains optional parameters for the Client.Create method.
 type HTTPHeaders = generated.ShareFileHTTPHeaders
 

@@ -29,9 +29,6 @@ type DestinationLeaseAccessConditions = generated.DestinationLeaseAccessConditio
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// PermissionFormat contains the format of the file permissions, Can be sddl (Default) or Binary.
-type PermissionFormat = generated.FilePermissionFormat
-
 // CreateOptions contains the optional parameters for the Client.Create method.
 type CreateOptions struct {
 	// The default value is 'Directory' for Attributes and 'now' for CreationTime and LastWriteTime fields in file.SMBProperties.
@@ -45,7 +42,7 @@ type CreateOptions struct {
 	// explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is explicitly set to
 	// binary, the permission is returned as a base64 string representing the binary
 	// encoding of the permission
-	FilePermissionFormat *PermissionFormat
+	FilePermissionFormat *FilePermissionFormat
 }
 
 func (o *CreateOptions) format() *generated.DirectoryClientCreateOptions {
@@ -55,7 +52,7 @@ func (o *CreateOptions) format() *generated.DirectoryClientCreateOptions {
 			FileCreationTime:     to.Ptr(shared.DefaultCurrentTimeString),
 			FileLastWriteTime:    to.Ptr(shared.DefaultCurrentTimeString),
 			FilePermission:       to.Ptr(shared.DefaultFilePermissionString),
-			FilePermissionFormat: to.Ptr(PermissionFormat(shared.DefaultFilePermissionFormat)),
+			FilePermissionFormat: to.Ptr(FilePermissionFormat(shared.DefaultFilePermissionFormat)),
 		}
 	}
 
@@ -70,7 +67,7 @@ func (o *CreateOptions) format() *generated.DirectoryClientCreateOptions {
 		FileLastWriteTime:    fileLastWriteTime,
 		FilePermission:       permission,
 		FilePermissionKey:    permissionKey,
-		FilePermissionFormat: to.Ptr(PermissionFormat(shared.DefaultFilePermissionFormat)),
+		FilePermissionFormat: to.Ptr(FilePermissionFormat(shared.DefaultFilePermissionFormat)),
 		Metadata:             o.Metadata,
 	}
 
@@ -101,7 +98,7 @@ type RenameOptions struct {
 	// FilePermissions contains the optional parameters for the permissions on the file.
 	FilePermissions *file.Permissions
 	// FilePermissionFormat contains the file permission format, sddl(Default) or Binary.
-	FilePermissionFormat *PermissionFormat
+	FilePermissionFormat *FilePermissionFormat
 	// IgnoreReadOnly specifies whether the ReadOnly attribute on a pre-existing destination file should be respected.
 	// If true, rename will succeed, otherwise, a previous file at the destination with the ReadOnly attribute set will cause rename to fail.
 	IgnoreReadOnly *bool
@@ -119,7 +116,7 @@ type RenameOptions struct {
 func (o *RenameOptions) format() (*generated.DirectoryClientRenameOptions, *generated.DestinationLeaseAccessConditions, *generated.CopyFileSMBInfo) {
 	if o == nil {
 		return &generated.DirectoryClientRenameOptions{
-			FilePermissionFormat: to.Ptr(PermissionFormat(shared.DefaultFilePermissionFormat)),
+			FilePermissionFormat: to.Ptr(FilePermissionFormat(shared.DefaultFilePermissionFormat)),
 		}, nil, nil
 	}
 
@@ -130,7 +127,7 @@ func (o *RenameOptions) format() (*generated.DirectoryClientRenameOptions, *gene
 	renameOpts := &generated.DirectoryClientRenameOptions{
 		FilePermission:       permission,
 		FilePermissionKey:    permissionKey,
-		FilePermissionFormat: to.Ptr(PermissionFormat(shared.DefaultFilePermissionFormat)),
+		FilePermissionFormat: to.Ptr(FilePermissionFormat(shared.DefaultFilePermissionFormat)),
 		IgnoreReadOnly:       o.IgnoreReadOnly,
 		Metadata:             o.Metadata,
 		ReplaceIfExists:      o.ReplaceIfExists,
@@ -177,7 +174,7 @@ type SetPropertiesOptions struct {
 	// The default value is 'preserve' for Permission field in file.Permissions.
 	FilePermissions *file.Permissions
 	// FilePermissionFormat contains the format of the file permissions, Can be sddl (Default) or Binary.
-	FilePermissionFormat *PermissionFormat
+	FilePermissionFormat *FilePermissionFormat
 }
 
 func (o *SetPropertiesOptions) format() *generated.DirectoryClientSetPropertiesOptions {
@@ -187,7 +184,7 @@ func (o *SetPropertiesOptions) format() *generated.DirectoryClientSetPropertiesO
 			FileCreationTime:     to.Ptr(shared.DefaultPreserveString),
 			FileLastWriteTime:    to.Ptr(shared.DefaultPreserveString),
 			FilePermission:       to.Ptr(shared.DefaultPreserveString),
-			FilePermissionFormat: to.Ptr(PermissionFormat(shared.DefaultFilePermissionFormat)),
+			FilePermissionFormat: to.Ptr(FilePermissionFormat(shared.DefaultFilePermissionFormat)),
 		}
 	}
 
@@ -202,7 +199,7 @@ func (o *SetPropertiesOptions) format() *generated.DirectoryClientSetPropertiesO
 		FileLastWriteTime:    fileLastWriteTime,
 		FilePermission:       permission,
 		FilePermissionKey:    permissionKey,
-		FilePermissionFormat: to.Ptr(PermissionFormat(shared.DefaultFilePermissionFormat)),
+		FilePermissionFormat: to.Ptr(FilePermissionFormat(shared.DefaultFilePermissionFormat)),
 	}
 
 	if o.FilePermissionFormat != nil {

@@ -515,6 +515,7 @@ func TestItemCRUDHierarchicalPartitionKey(t *testing.T) {
 		ID: "aContainer",
 		PartitionKeyDefinition: PartitionKeyDefinition{
 			Paths: []string{"/id", "/type"},
+			Kind:  MultiHash,
 		},
 	}
 

@@ -1639,11 +1639,11 @@ type ContentFilterCitedDetectionResult struct {
 
 // ContentFilterDetailedResults - Represents a structured collection of result details for content filtering.
 type ContentFilterDetailedResults struct {
-	// REQUIRED; The collection of detailed blocklist result information.
-	Details []ContentFilterBlocklistIDResult
-
 	// REQUIRED; A value indicating whether or not the content has been filtered.
 	Filtered *bool
+
+	// The collection of detailed blocklist result information.
+	Details []ContentFilterBlocklistIDResult
 }
 
 // ContentFilterDetectionResult - Represents the outcome of a detection operation performed by content filtering.
@@ -2196,7 +2196,7 @@ type MongoDBChatExtensionParameters struct {
 	// of available authentication methods; please see the documentation of the data
 	// source for supported mechanisms. If not otherwise provided, On Your Data will attempt to use System Managed Identity (default
 	// credential) authentication.
-	Authentication OnYourDataAuthenticationOptionsClassification
+	Authentication *OnYourDataUsernameAndPasswordAuthenticationOptions
 
 	// Whether queries should be restricted to use of indexed data.
 	InScope *bool

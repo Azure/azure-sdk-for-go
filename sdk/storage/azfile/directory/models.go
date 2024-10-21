@@ -117,9 +117,7 @@ type RenameOptions struct {
 
 func (o *RenameOptions) format() (*generated.DirectoryClientRenameOptions, *generated.DestinationLeaseAccessConditions, *generated.CopyFileSMBInfo) {
 	if o == nil {
-		return &generated.DirectoryClientRenameOptions{
-			FilePermissionFormat: to.Ptr(FilePermissionFormat(shared.DefaultFilePermissionFormat)),
-		}, nil, nil
+		return nil, nil, nil
 	}
 
 	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.FileSMBProperties, nil, nil, true)
@@ -127,16 +125,19 @@ func (o *RenameOptions) format() (*generated.DirectoryClientRenameOptions, *gene
 	permission, permissionKey := exported.FormatPermissions(o.FilePermissions, nil)
 
 	renameOpts := &generated.DirectoryClientRenameOptions{
-		FilePermission:       permission,
-		FilePermissionKey:    permissionKey,
-		FilePermissionFormat: to.Ptr(FilePermissionFormat(shared.DefaultFilePermissionFormat)),
-		IgnoreReadOnly:       o.IgnoreReadOnly,
-		Metadata:             o.Metadata,
-		ReplaceIfExists:      o.ReplaceIfExists,
+		FilePermission:    permission,
+		FilePermissionKey: permissionKey,
+		IgnoreReadOnly:    o.IgnoreReadOnly,
+		Metadata:          o.Metadata,
+		ReplaceIfExists:   o.ReplaceIfExists,
 	}
 
-	if o.FilePermissionFormat != nil {
-		renameOpts.FilePermissionFormat = o.FilePermissionFormat
+	if permissionKey != nil && permissionKey != to.Ptr(shared.DefaultFilePermissionString) {
+		if o.FilePermissionFormat == nil {
+			renameOpts.FilePermissionFormat = to.Ptr(FilePermissionFormat(shared.DefaultFilePermissionFormat))
+		} else {
+			renameOpts.FilePermissionFormat = to.Ptr(FilePermissionFormat(*o.FilePermissionFormat))
+		}
 	}
 
 	smbInfo := &generated.CopyFileSMBInfo{

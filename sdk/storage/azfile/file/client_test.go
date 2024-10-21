@@ -3804,7 +3804,7 @@ func (f *FileRecordedTestsSuite) TestFileRenameDefault() {
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
 }
 
-func (f *FileRecordedTestsSuite) TestFileRenameUsingOAuth() {
+func (f *FileUnrecordedTestsSuite) TestFileRenameUsingOAuth() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -4344,7 +4344,7 @@ func (f *FileRecordedTestsSuite) TestFileUploadClearListRangeTrailingDotOAuth() 
 	_require.Len(rangeList2.Ranges, 0)
 }
 
-func (f *FileRecordedTestsSuite) TestFileRenameTrailingDotOAuth() {
+func (f *FileUnrecordedTestsSuite) TestFileRenameTrailingDotOAuth() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 

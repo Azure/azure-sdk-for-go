@@ -2196,7 +2196,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryRenameNegativeSourceTrailingD
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
 }
 
-func (d *DirectoryRecordedTestsSuite) TestDirectoryRenameSourceTrailingDotAndOAuth() {
+func (d *DirectoryUnrecordedTestsSuite) TestDirectoryRenameSourceTrailingDotAndOAuth() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
 

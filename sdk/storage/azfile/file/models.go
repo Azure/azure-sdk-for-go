@@ -90,11 +90,10 @@ type CreateOptions struct {
 func (o *CreateOptions) format() (*generated.FileClientCreateOptions, *generated.ShareFileHTTPHeaders, *LeaseAccessConditions) {
 	if o == nil {
 		return &generated.FileClientCreateOptions{
-			FileAttributes:       to.Ptr(shared.FileAttributesNone),
-			FileCreationTime:     to.Ptr(shared.DefaultCurrentTimeString),
-			FileLastWriteTime:    to.Ptr(shared.DefaultCurrentTimeString),
-			FilePermission:       to.Ptr(shared.DefaultFilePermissionString),
-			FilePermissionFormat: to.Ptr(PermissionFormat(shared.DefaultFilePermissionFormat)),
+			FileAttributes:    to.Ptr(shared.FileAttributesNone),
+			FileCreationTime:  to.Ptr(shared.DefaultCurrentTimeString),
+			FileLastWriteTime: to.Ptr(shared.DefaultCurrentTimeString),
+			FilePermission:    to.Ptr(shared.DefaultFilePermissionString),
 		}, nil, nil
 	}
 
@@ -103,18 +102,21 @@ func (o *CreateOptions) format() (*generated.FileClientCreateOptions, *generated
 	permission, permissionKey := exported.FormatPermissions(o.Permissions, to.Ptr(shared.DefaultFilePermissionString))
 
 	createOptions := &generated.FileClientCreateOptions{
-		FileAttributes:       fileAttributes,
-		FileChangeTime:       fileChangeTime,
-		FileCreationTime:     fileCreationTime,
-		FileLastWriteTime:    fileLastWriteTime,
-		FilePermission:       permission,
-		FilePermissionKey:    permissionKey,
-		FilePermissionFormat: to.Ptr(PermissionFormat(shared.DefaultFilePermissionFormat)),
-		Metadata:             o.Metadata,
+		FileAttributes:    fileAttributes,
+		FileChangeTime:    fileChangeTime,
+		FileCreationTime:  fileCreationTime,
+		FileLastWriteTime: fileLastWriteTime,
+		FilePermission:    permission,
+		FilePermissionKey: permissionKey,
+		Metadata:          o.Metadata,
 	}
 
-	if o.FilePermissionFormat != nil {
-		createOptions.FilePermissionFormat = o.FilePermissionFormat
+	if permissionKey != nil && permissionKey != to.Ptr(shared.DefaultFilePermissionString) {
+		if o.FilePermissionFormat == nil {
+			createOptions.FilePermissionFormat = to.Ptr(PermissionFormat(shared.DefaultFilePermissionFormat))
+		} else {
+			createOptions.FilePermissionFormat = to.Ptr(PermissionFormat(*o.FilePermissionFormat))
+		}
 	}
 
 	return createOptions, o.HTTPHeaders, o.LeaseAccessConditions

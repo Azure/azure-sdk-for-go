@@ -349,17 +349,17 @@ func (f *FileRecordedTestsSuite) TestFileCreateRenameFilePermissionFormatDefault
 	fClient := shareClient.NewRootDirectoryClient().NewFileClient(testcommon.GenerateFileName(testName))
 
 	_, err = fClient.Create(context.Background(), 1024, &file.CreateOptions{
-		FilePermissionFormat: (*file.PermissionFormat)(to.Ptr(testcommon.FilePermissionBinary)),
+		FilePermissionFormat: (*file.PermissionFormat)(to.Ptr(testcommon.FilePermissionFormatSddl)),
 		Permissions: &file.Permissions{
-			Permission: &testcommon.SampleBinary,
+			Permission: &testcommon.SampleSDDL,
 		},
 	})
 	_require.NoError(err)
 
 	_, err = fClient.Rename(context.Background(), "file2", &file.RenameOptions{
-		FilePermissionFormat: (*file.PermissionFormat)(to.Ptr(testcommon.FilePermissionFormatSddl)),
+		FilePermissionFormat: (*file.PermissionFormat)(to.Ptr(testcommon.FilePermissionBinary)),
 		Permissions: &file.Permissions{
-			Permission: &testcommon.SampleSDDL,
+			Permission: &testcommon.SampleBinary,
 		},
 	})
 	_require.NoError(err)

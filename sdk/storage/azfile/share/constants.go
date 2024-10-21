@@ -17,6 +17,7 @@ const (
 	AccessTierTransactionOptimized AccessTier = generated.ShareAccessTierTransactionOptimized
 )
 
+// PermissionFormat contains the format of the file permissions, Can be sddl (Default) or Binary.
 type PermissionFormat = generated.FilePermissionFormat
 
 // PossibleAccessTierValues returns the possible values for the AccessTier const type.

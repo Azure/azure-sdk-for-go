@@ -274,8 +274,6 @@ func (o *CreatePermissionOptions) format(sharePermission string) (Permission, *g
 // Permission - A permission (a security descriptor) at the share level.
 type Permission = generated.SharePermission
 
-type PermissionFormat = generated.FilePermissionFormat
-
 // ---------------------------------------------------------------------------------------------------------------------
 
 // GetPermissionOptions contains the optional parameters for the Client.GetPermission method.

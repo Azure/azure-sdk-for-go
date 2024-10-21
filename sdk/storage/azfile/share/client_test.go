@@ -557,7 +557,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareGetSetPropertiesOAuth() {
 	_require.Equal(sResp.Date.IsZero(), false)
 
 	properties, err := shareClientOAuth.GetProperties(context.Background(), nil)
-	_require.NotNil(err)
+	_require.NoError(err)
 	_require.NotNil(properties.ETag)
 	_require.Equal(properties.AccessTier, share.AccessTierCool)
 

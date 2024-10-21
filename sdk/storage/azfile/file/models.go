@@ -111,12 +111,10 @@ func (o *CreateOptions) format() (*generated.FileClientCreateOptions, *generated
 		Metadata:          o.Metadata,
 	}
 
-	if permissionKey != nil && permissionKey != to.Ptr(shared.DefaultFilePermissionString) {
-		if o.FilePermissionFormat == nil {
-			createOptions.FilePermissionFormat = to.Ptr(PermissionFormat(shared.DefaultFilePermissionFormat))
-		} else {
-			createOptions.FilePermissionFormat = to.Ptr(PermissionFormat(*o.FilePermissionFormat))
-		}
+	if permissionKey != nil && *permissionKey != shared.DefaultFilePermissionString {
+		createOptions.FilePermissionFormat = to.Ptr(PermissionFormat(shared.DefaultFilePermissionFormat))
+	} else if o.FilePermissionFormat != nil {
+		createOptions.FilePermissionFormat = to.Ptr(PermissionFormat(*o.FilePermissionFormat))
 	}
 
 	return createOptions, o.HTTPHeaders, o.LeaseAccessConditions
@@ -186,12 +184,10 @@ func (o *RenameOptions) format() (*generated.FileClientRenameOptions, *generated
 		ReplaceIfExists:   o.ReplaceIfExists,
 	}
 
-	if permissionKey != nil && permissionKey != to.Ptr(shared.DefaultFilePermissionString) {
-		if o.FilePermissionFormat == nil {
-			renameOpts.FilePermissionFormat = to.Ptr(PermissionFormat(shared.DefaultFilePermissionFormat))
-		} else {
-			renameOpts.FilePermissionFormat = to.Ptr(PermissionFormat(*o.FilePermissionFormat))
-		}
+	if permissionKey != nil && *permissionKey != shared.DefaultPreserveString {
+		renameOpts.FilePermissionFormat = to.Ptr(PermissionFormat(shared.DefaultFilePermissionFormat))
+	} else if o.FilePermissionFormat != nil {
+		renameOpts.FilePermissionFormat = to.Ptr(PermissionFormat(*o.FilePermissionFormat))
 	}
 
 	smbInfo := &generated.CopyFileSMBInfo{

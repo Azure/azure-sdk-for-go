@@ -69,12 +69,10 @@ func (o *CreateOptions) format() *generated.DirectoryClientCreateOptions {
 		Metadata:          o.Metadata,
 	}
 
-	if permissionKey != nil && permissionKey != to.Ptr(shared.DefaultFilePermissionString) {
-		if o.FilePermissionFormat == nil {
-			createOptions.FilePermissionFormat = to.Ptr(FilePermissionFormat(shared.DefaultFilePermissionFormat))
-		} else {
-			createOptions.FilePermissionFormat = to.Ptr(FilePermissionFormat(*o.FilePermissionFormat))
-		}
+	if permissionKey != nil && *permissionKey != shared.DefaultFilePermissionString {
+		createOptions.FilePermissionFormat = to.Ptr(FilePermissionFormat(shared.DefaultFilePermissionFormat))
+	} else if o.FilePermissionFormat != nil {
+		createOptions.FilePermissionFormat = to.Ptr(FilePermissionFormat(*o.FilePermissionFormat))
 	}
 
 	return createOptions
@@ -132,12 +130,10 @@ func (o *RenameOptions) format() (*generated.DirectoryClientRenameOptions, *gene
 		ReplaceIfExists:   o.ReplaceIfExists,
 	}
 
-	if permissionKey != nil && permissionKey != to.Ptr(shared.DefaultFilePermissionString) {
-		if o.FilePermissionFormat == nil {
-			renameOpts.FilePermissionFormat = to.Ptr(FilePermissionFormat(shared.DefaultFilePermissionFormat))
-		} else {
-			renameOpts.FilePermissionFormat = to.Ptr(FilePermissionFormat(*o.FilePermissionFormat))
-		}
+	if permissionKey != nil && *permissionKey != shared.DefaultPreserveString {
+		renameOpts.FilePermissionFormat = to.Ptr(FilePermissionFormat(shared.DefaultFilePermissionFormat))
+	} else if o.FilePermissionFormat != nil {
+		renameOpts.FilePermissionFormat = to.Ptr(FilePermissionFormat(*o.FilePermissionFormat))
 	}
 
 	smbInfo := &generated.CopyFileSMBInfo{
@@ -203,12 +199,10 @@ func (o *SetPropertiesOptions) format() *generated.DirectoryClientSetPropertiesO
 		FilePermissionKey: permissionKey,
 	}
 
-	if permissionKey != nil && permissionKey != to.Ptr(shared.DefaultFilePermissionString) {
-		if o.FilePermissionFormat == nil {
-			setPropertiesOptions.FilePermissionFormat = to.Ptr(FilePermissionFormat(shared.DefaultFilePermissionFormat))
-		} else {
-			setPropertiesOptions.FilePermissionFormat = to.Ptr(FilePermissionFormat(*o.FilePermissionFormat))
-		}
+	if permissionKey != nil && *permissionKey != shared.DefaultPreserveString {
+		setPropertiesOptions.FilePermissionFormat = to.Ptr(FilePermissionFormat(shared.DefaultFilePermissionFormat))
+	} else if o.FilePermissionFormat != nil {
+		setPropertiesOptions.FilePermissionFormat = to.Ptr(FilePermissionFormat(*o.FilePermissionFormat))
 	}
 	return setPropertiesOptions
 }

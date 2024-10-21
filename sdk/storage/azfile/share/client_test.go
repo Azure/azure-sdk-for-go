@@ -543,6 +543,9 @@ func (s *ShareUnrecordedTestsSuite) TestShareGetSetPropertiesOAuth() {
 	shareClientOAuth, err := share.NewClient("https://"+accountName+".file.core.windows.net/"+shareName, cred, nil)
 	_require.NoError(err)
 
+	_, err = shareClientOAuth.Create(context.Background(), nil)
+	_require.NoError(err)
+
 	sResp, err := shareClientOAuth.SetProperties(context.Background(), &share.SetPropertiesOptions{
 		AccessTier: to.Ptr(share.AccessTierCool),
 	})
@@ -1704,39 +1707,6 @@ func (s *ShareRecordedTestsSuite) TestSASShareClientSignNegative() {
 	// empty permissions
 	_, err = shareClient.GetSASURL(sas.SharePermissions{}, expiry, nil)
 	_require.Equal(err.Error(), "service SAS is missing at least one of these: ExpiryTime or Permissions")
-}
-
-func (s *ShareUnrecordedTestsSuite) TestShareOAuthNegative() {
-	_require := require.New(s.T())
-	testName := s.T().Name()
-
-	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
-	_require.Greater(len(accountName), 0)
-
-	cred, err := testcommon.GetGenericTokenCredential()
-	_require.NoError(err)
-
-	shareName := testcommon.GenerateShareName(testName)
-	options := &share.ClientOptions{FileRequestIntent: to.Ptr(share.TokenIntentBackup)}
-	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
-	shareClient, err := share.NewClient("https://"+accountName+".file.core.windows.net/"+shareName, cred, options)
-	_require.NoError(err)
-
-	_, err = shareClient.Create(context.Background(), nil)
-	_require.Error(err)
-	testcommon.ValidateFileErrorCode(_require, err, fileerror.FileOAuthManagementAPIRestrictedToSRP)
-
-	_, err = shareClient.GetProperties(context.Background(), nil)
-	_require.Error(err)
-	testcommon.ValidateFileErrorCode(_require, err, fileerror.FileOAuthManagementAPIRestrictedToSRP)
-
-	_, err = shareClient.SetProperties(context.Background(), nil)
-	_require.Error(err)
-	testcommon.ValidateFileErrorCode(_require, err, fileerror.FileOAuthManagementAPIRestrictedToSRP)
-
-	_, err = shareClient.Delete(context.Background(), nil)
-	_require.Error(err)
-	testcommon.ValidateFileErrorCode(_require, err, fileerror.FileOAuthManagementAPIRestrictedToSRP)
 }
 
 func (s *ShareRecordedTestsSuite) TestShareCreateAndGetPermissionOAuth() {

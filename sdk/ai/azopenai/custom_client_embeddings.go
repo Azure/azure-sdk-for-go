@@ -18,6 +18,9 @@ type EmbeddingItem struct {
 
 	// REQUIRED; Index of the prompt to which the EmbeddingItem corresponds.
 	Index *int32
+
+	// The object type which is always 'embedding'.
+	Object string
 }
 
 func deserializeEmbeddingsArray(msg json.RawMessage, embeddingItem *EmbeddingItem) error {

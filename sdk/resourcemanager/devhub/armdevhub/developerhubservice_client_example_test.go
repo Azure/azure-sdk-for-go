@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devhub/armdevhub"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/GitHubOAuth.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/34f5146bc945549d087d38a8a593c0a5f475ad7f/specification/developerhub/resource-manager/Microsoft.DevHub/preview/2024-05-01-preview/examples/GitHubOAuth.json
 func ExampleDeveloperHubServiceClient_GitHubOAuth() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,12 +40,12 @@ func ExampleDeveloperHubServiceClient_GitHubOAuth() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.GitHubOAuthInfoResponse = armdevhub.GitHubOAuthInfoResponse{
-	// 	AuthURL: to.Ptr("https://github.com/login/oauth/authorize?client_id=11111111&redirect_uri=https://management.azure.com/subscriptions/subscriptionId1/providers/Microsoft.DevHub/locations/eastus2euap/githuboauth&state=2345678-3456-7890-5678-012345678901&scope=repo,user:email,workflow"),
+	// 	AuthURL: to.Ptr("https://github.com/login/oauth/authorize?client_id=11111111&redirect_uri=https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DevHub/locations/eastus2euap/githuboauth&state=2345678-3456-7890-5678-012345678901&scope=repo,user:email,workflow"),
 	// 	Token: to.Ptr(""),
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/GitHubOAuthCallback.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/34f5146bc945549d087d38a8a593c0a5f475ad7f/specification/developerhub/resource-manager/Microsoft.DevHub/preview/2024-05-01-preview/examples/GitHubOAuthCallback.json
 func ExampleDeveloperHubServiceClient_GitHubOAuthCallback() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,14 +66,14 @@ func ExampleDeveloperHubServiceClient_GitHubOAuthCallback() {
 	// res.GitHubOAuthResponse = armdevhub.GitHubOAuthResponse{
 	// 	Name: to.Ptr("default"),
 	// 	Type: to.Ptr("Microsoft.DevHub/locations/githuboauth"),
-	// 	ID: to.Ptr("/subscriptions/subscriptionId1/providers/Microsoft.DevHub/locations/eastus2euap/githuboauth/default"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DevHub/locations/eastus2euap/githuboauth/default"),
 	// 	Properties: &armdevhub.GitHubOAuthProperties{
 	// 		Username: to.Ptr("user"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/GitHubOAuth_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/34f5146bc945549d087d38a8a593c0a5f475ad7f/specification/developerhub/resource-manager/Microsoft.DevHub/preview/2024-05-01-preview/examples/GitHubOAuth_List.json
 func ExampleDeveloperHubServiceClient_ListGitHubOAuth() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,7 +96,7 @@ func ExampleDeveloperHubServiceClient_ListGitHubOAuth() {
 	// 		{
 	// 			Name: to.Ptr("default"),
 	// 			Type: to.Ptr("Microsoft.DevHub/locations/githuboauth"),
-	// 			ID: to.Ptr("/subscriptions/subscriptionId1/providers/Microsoft.DevHub/locations/eastus2euap/githuboauth/default"),
+	// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DevHub/locations/eastus2euap/githuboauth/default"),
 	// 			Properties: &armdevhub.GitHubOAuthProperties{
 	// 				Username: to.Ptr("user"),
 	// 			},
@@ -104,7 +104,7 @@ func ExampleDeveloperHubServiceClient_ListGitHubOAuth() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/GeneratePreviewArtifacts.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/34f5146bc945549d087d38a8a593c0a5f475ad7f/specification/developerhub/resource-manager/Microsoft.DevHub/preview/2024-05-01-preview/examples/GeneratePreviewArtifacts.json
 func ExampleDeveloperHubServiceClient_GeneratePreviewArtifacts() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

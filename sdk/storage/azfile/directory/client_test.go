@@ -2414,7 +2414,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryClientCustomAudience() {
 	_require.NoError(err)
 }
 
-func (d *DirectoryRecordedTestsSuite) TestDirectoryAudienceNegative() {
+func (d *DirectoryUnrecordedTestsSuite) TestDirectoryAudienceNegative() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
 
@@ -2444,5 +2444,5 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryAudienceNegative() {
 
 	_, err = dirClientAudience.Create(context.Background(), nil)
 	_require.Error(err)
-	testcommon.ValidateFileErrorCode(_require, err, fileerror.AuthenticationFailed)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.InvalidAuthenticationInfo)
 }

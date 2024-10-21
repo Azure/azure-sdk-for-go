@@ -1,0 +1,57 @@
+{
+  "properties": {
+    "helpUri": "https://eng.ms/docs/microsoft-security/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/microsoft-guardian/general/baselines"
+  },
+  "version": "1.0.0",
+  "baselines": {
+    "default": {
+      "name": "default",
+      "createdDate": "2024-09-13 19:07:55Z",
+      "lastUpdatedDate": "2024-09-13 19:07:55Z"
+    }
+  },
+  "results": {
+    "406d1fe9b95e1c2761c797d66a18e8743f5ca56447a59fc6cbc94b05dab2877a": {
+      "signature": "406d1fe9b95e1c2761c797d66a18e8743f5ca56447a59fc6cbc94b05dab2877a",
+      "alternativeSignatures": [],
+      "target": "sdk/resourcemanager/apimanagement/armapimanagement/authorizationprovider_client_example_test.go",
+      "line": 304,
+      "memberOf": [
+        "default"
+      ],
+      "tool": "credscan",
+      "ruleId": "CSCAN-GENERAL0130",
+      "createdDate": "2024-09-13 19:07:55Z",
+      "expirationDate": "2025-03-02 19:26:21Z",
+      "justification": "This error is baselined with an expiration date of 180 days from 2024-09-13 19:26:21Z"
+    },
+    "8b9fc02ff39970bf2cf0343478521546f47d847317ecb30cb3d4575949137419": {
+      "signature": "8b9fc02ff39970bf2cf0343478521546f47d847317ecb30cb3d4575949137419",
+      "alternativeSignatures": [],
+      "target": "sdk/resourcemanager/notificationhubs/armnotificationhubs/client_example_test.go",
+      "line": 482,
+      "memberOf": [
+        "default"
+      ],
+      "tool": "credscan",
+      "ruleId": "CSCAN-GENERAL0130",
+      "createdDate": "2024-09-13 19:07:55Z",
+      "expirationDate": "2025-03-02 19:26:21Z",
+      "justification": "This error is baselined with an expiration date of 180 days from 2024-09-13 19:26:21Z"
+    },
+    "1110f1c2b7fa4e780163f2f5818c643108257b76203f3b735b114c0b97c9388f": {
+      "signature": "1110f1c2b7fa4e780163f2f5818c643108257b76203f3b735b114c0b97c9388f",
+      "alternativeSignatures": [],
+      "target": "sdk/resourcemanager/notificationhubs/armnotificationhubs/namespaces_client_example_test.go",
+      "line": 222,
+      "memberOf": [
+        "default"
+      ],
+      "tool": "credscan",
+      "ruleId": "CSCAN-GENERAL0130",
+      "createdDate": "2024-09-13 19:07:55Z",
+      "expirationDate": "2025-03-02 19:26:21Z",
+      "justification": "This error is baselined with an expiration date of 180 days from 2024-09-13 19:26:21Z"
+    }
+  }
+}

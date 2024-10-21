@@ -41,6 +41,12 @@ type MongoClustersClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
+// MongoClustersClientBeginPromoteOptions contains the optional parameters for the MongoClustersClient.BeginPromote method.
+type MongoClustersClientBeginPromoteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // MongoClustersClientBeginUpdateOptions contains the optional parameters for the MongoClustersClient.BeginUpdate method.
 type MongoClustersClientBeginUpdateOptions struct {
 	// Resumes the long-running operation from the provided token.
@@ -109,5 +115,10 @@ type PrivateEndpointConnectionsClientListByMongoClusterOptions struct {
 // PrivateLinksClientListByMongoClusterOptions contains the optional parameters for the PrivateLinksClient.NewListByMongoClusterPager
 // method.
 type PrivateLinksClientListByMongoClusterOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ReplicasClientListByParentOptions contains the optional parameters for the ReplicasClient.NewListByParentPager method.
+type ReplicasClientListByParentOptions struct {
 	// placeholder for future optional parameters
 }

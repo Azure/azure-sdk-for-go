@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v6"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/DscpConfigurationCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/DscpConfigurationCreate.json
 func ExampleDscpConfigurationClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -164,7 +164,7 @@ func ExampleDscpConfigurationClient_BeginCreateOrUpdate() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/DscpConfigurationDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/DscpConfigurationDelete.json
 func ExampleDscpConfigurationClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -185,7 +185,7 @@ func ExampleDscpConfigurationClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/DscpConfigurationGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/DscpConfigurationGet.json
 func ExampleDscpConfigurationClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -211,8 +211,10 @@ func ExampleDscpConfigurationClient_Get() {
 	// 	Properties: &armnetwork.DscpConfigurationPropertiesFormat{
 	// 		AssociatedNetworkInterfaces: []*armnetwork.Interface{
 	// 			{
+	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/test-nic1"),
 	// 			},
 	// 			{
+	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/test-nic2"),
 	// 		}},
 	// 		ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 	// 		QosCollectionID: to.Ptr("0f8fad5b-d9cb-469f-a165-70867728950e"),
@@ -271,7 +273,7 @@ func ExampleDscpConfigurationClient_Get() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/DscpConfigurationList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/DscpConfigurationList.json
 func ExampleDscpConfigurationClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -303,8 +305,10 @@ func ExampleDscpConfigurationClient_NewListPager() {
 		// 			Properties: &armnetwork.DscpConfigurationPropertiesFormat{
 		// 				AssociatedNetworkInterfaces: []*armnetwork.Interface{
 		// 					{
+		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/test-nic1"),
 		// 					},
 		// 					{
+		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/test-nic2"),
 		// 				}},
 		// 				ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 		// 				QosCollectionID: to.Ptr("0f8fad5b-d9cb-469f-a165-70867728950e"),
@@ -369,8 +373,10 @@ func ExampleDscpConfigurationClient_NewListPager() {
 		// 					Properties: &armnetwork.DscpConfigurationPropertiesFormat{
 		// 						AssociatedNetworkInterfaces: []*armnetwork.Interface{
 		// 							{
+		// 								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/test-nic3"),
 		// 							},
 		// 							{
+		// 								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/test-nic4"),
 		// 						}},
 		// 						ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 		// 						QosCollectionID: to.Ptr("9as24mf6-d9cb-7a7f-a165-70867728950e"),
@@ -431,7 +437,7 @@ func ExampleDscpConfigurationClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/DscpConfigurationListAll.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/DscpConfigurationListAll.json
 func ExampleDscpConfigurationClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -463,8 +469,10 @@ func ExampleDscpConfigurationClient_NewListAllPager() {
 		// 			Properties: &armnetwork.DscpConfigurationPropertiesFormat{
 		// 				AssociatedNetworkInterfaces: []*armnetwork.Interface{
 		// 					{
+		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/test-nic1"),
 		// 					},
 		// 					{
+		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/test-nic2"),
 		// 				}},
 		// 				ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 		// 				QosCollectionID: to.Ptr("0f8fad5b-d9cb-469f-a165-70867728950e"),
@@ -529,8 +537,10 @@ func ExampleDscpConfigurationClient_NewListAllPager() {
 		// 					Properties: &armnetwork.DscpConfigurationPropertiesFormat{
 		// 						AssociatedNetworkInterfaces: []*armnetwork.Interface{
 		// 							{
+		// 								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/networkInterfaces/test-nic3"),
 		// 							},
 		// 							{
+		// 								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/networkInterfaces/test-nic4"),
 		// 						}},
 		// 						ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 		// 						QosCollectionID: to.Ptr("9as24mf6-d9cb-7a7f-a165-70867728950e"),

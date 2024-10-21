@@ -39,26 +39,11 @@ parameters:
     type: object
     default:
       Public:
-        ServiceConnection: azure-sdk-tests
-        SubscriptionConfigurationFilePaths:
-          - eng/common/TestResources/sub-config/AzurePublicMsft.json
-      Preview:
-        ServiceConnection: azure-sdk-tests-preview
-        SubscriptionConfigurationFilePaths:
-          - eng/common/TestResources/sub-config/AzurePreviewMsft.json
-      Canary:
-        ServiceConnection: azure-sdk-tests-preview
-        SubscriptionConfigurationFilePaths:
-          - eng/common/TestResources/sub-config/AzurePreviewMsft.json
-        Location: 'centraluseuap'
+      # Canary regions are currently not supported in TME so disabling for now
+      # Canary:
+      #   Location: 'centraluseuap'
       UsGov:
-        ServiceConnection: usgov_azure-sdk-tests
-        SubscriptionConfigurationFilePaths:
-          - eng/common/TestResources/sub-config/AzureUsGovMsft.json
       China:
-        ServiceConnection: china_azure-sdk-tests
-        SubscriptionConfigurationFilePaths:
-          - eng/common/TestResources/sub-config/AzureChinaMsft.json
   - name: MatrixConfigs
     type: object
     default:
@@ -99,6 +84,9 @@ parameters:
   - name: UseFederatedAuth
     type: boolean
     default: true
+  - name: PersistOidcToken
+    type: boolean
+    default: false
 
 extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml
@@ -153,7 +141,7 @@ extends:
 
               - task: GoTool@0
                 inputs:
-                  version: '1.22.0'
+                  version: '1.23.2'
                 displayName: "Select Go Version"
 
               - template: /eng/pipelines/templates/steps/create-go-workspace.yml@self
@@ -194,6 +182,7 @@ extends:
                                 PostSteps:
                                   - ${{ parameters.PostSteps }}
                                 UseFederatedAuth: ${{ parameters.UseFederatedAuth }}
+                                PersistOidcToken: ${{ parameters.PersistOidcToken }}
                               MatrixConfigs:
                                 # Enumerate platforms and additional platforms based on supported clouds (sparse platform<-->cloud matrix).
                                 - ${{ each config in parameters.MatrixConfigs }}:
@@ -209,11 +198,11 @@ extends:
                                     - ${{ cloudReplace }}
                                 - ${{ parameters.MatrixReplace }}
                               CloudConfig:
+                                Cloud: ${{ cloud.key }}
+                                Location: ${{ coalesce(cloud.value.Location, parameters.Location) }}
+                                ServiceConnection: ${{ coalesce(cloud.value.ServiceConnection, lower(format('azure-sdk-tests-{0}', cloud.key))) }}
                                 SubscriptionConfiguration: ${{ cloud.value.SubscriptionConfiguration }}
                                 SubscriptionConfigurations: ${{ cloud.value.SubscriptionConfigurations }}
-                                Location: ${{ coalesce(parameters.Location, cloud.value.Location) }}
-                                Cloud: ${{ cloud.key }}
-                                ServiceConnection: ${{ cloud.value.ServiceConnection }}
                                 SubscriptionConfigurationFilePaths: ${{ cloud.value.SubscriptionConfigurationFilePaths }}
 
       # The Prerelease and Release stages are conditioned on:

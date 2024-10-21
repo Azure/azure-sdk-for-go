@@ -8,28 +8,96 @@
 
 package armbilling
 
+import "time"
+
+// AccountsClientBeginAddPaymentTermsOptions contains the optional parameters for the AccountsClient.BeginAddPaymentTerms
+// method.
+type AccountsClientBeginAddPaymentTermsOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AccountsClientBeginCancelPaymentTermsOptions contains the optional parameters for the AccountsClient.BeginCancelPaymentTerms
+// method.
+type AccountsClientBeginCancelPaymentTermsOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // AccountsClientBeginUpdateOptions contains the optional parameters for the AccountsClient.BeginUpdate method.
 type AccountsClientBeginUpdateOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
 
+// AccountsClientConfirmTransitionOptions contains the optional parameters for the AccountsClient.ConfirmTransition method.
+type AccountsClientConfirmTransitionOptions struct {
+	// placeholder for future optional parameters
+}
+
 // AccountsClientGetOptions contains the optional parameters for the AccountsClient.Get method.
 type AccountsClientGetOptions struct {
-	// May be used to expand the soldTo, invoice sections and billing profiles.
-	Expand *string
+	// placeholder for future optional parameters
 }
 
 // AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionOptions contains the optional parameters for the AccountsClient.NewListInvoiceSectionsByCreateSubscriptionPermissionPager
 // method.
 type AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionOptions struct {
-	// placeholder for future optional parameters
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
+	Filter *string
 }
 
 // AccountsClientListOptions contains the optional parameters for the AccountsClient.NewListPager method.
 type AccountsClientListOptions struct {
-	// May be used to expand the soldTo, invoice sections and billing profiles.
+	// Expand is allowed for SoldTo and EnrollmentDetails/PONumber.
 	Expand *string
+
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
+	Filter *string
+
+	// When true, results will include Billing Accounts that the user does not have a direct role assignment on if the user has
+	// one of the following AAD roles: Global Administrator, Global Reader, Billing
+	// Administrator.
+	IncludeAll *bool
+
+	// When true, results will include Billing Accounts that are not fully created if the user has one of the following AAD roles:
+	// Global Administrator, Global Reader, Billing Administrator.
+	IncludeAllWithoutBillingProfiles *bool
+
+	// When true, results will include any billing accounts in a deleted state.
+	IncludeDeleted *bool
+
+	// Includes billing accounts with agreement pending signature that the user has access to.
+	IncludePendingAgreement *bool
+
+	// Includes the customer's billing account of Microsoft Partner Agreement that the user has access to.
+	IncludeResellee *bool
+
+	// Must be combined with legalOwnerTID, results will only include Billing Accounts for whom is legally responsible for the
+	// Billing Accounts. Optional.
+	LegalOwnerOID *string
+
+	// Must be combined with legalOwnerOID, results will only include Billing Accounts for whom is legally responsible for the
+	// Billing Accounts. Optional.
+	LegalOwnerTID *string
+
+	// The search query option allows clients to request items within a collection matching a free-text search expression. search
+	// is only supported for string fields.
+	Search *string
+
+	// The skip query option requests the number of items in the queried collection that are to be skipped and not included in
+	// the result.
+	Skip *int64
+
+	// The top query option requests the number of items in the queried collection to be included in the result. The maximum supported
+	// value for top is 50.
+	Top *int64
+}
+
+// AccountsClientValidatePaymentTermsOptions contains the optional parameters for the AccountsClient.ValidatePaymentTerms
+// method.
+type AccountsClientValidatePaymentTermsOptions struct {
+	// placeholder for future optional parameters
 }
 
 // AddressClientValidateOptions contains the optional parameters for the AddressClient.Validate method.
@@ -39,8 +107,7 @@ type AddressClientValidateOptions struct {
 
 // AgreementsClientGetOptions contains the optional parameters for the AgreementsClient.Get method.
 type AgreementsClientGetOptions struct {
-	// May be used to expand the participants.
-	Expand *string
+	// placeholder for future optional parameters
 }
 
 // AgreementsClientListByBillingAccountOptions contains the optional parameters for the AgreementsClient.NewListByBillingAccountPager
@@ -50,35 +117,163 @@ type AgreementsClientListByBillingAccountOptions struct {
 	Expand *string
 }
 
-// AvailableBalancesClientGetOptions contains the optional parameters for the AvailableBalancesClient.Get method.
-type AvailableBalancesClientGetOptions struct {
+// AssociatedTenantsClientBeginCreateOrUpdateOptions contains the optional parameters for the AssociatedTenantsClient.BeginCreateOrUpdate
+// method.
+type AssociatedTenantsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AssociatedTenantsClientBeginDeleteOptions contains the optional parameters for the AssociatedTenantsClient.BeginDelete
+// method.
+type AssociatedTenantsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AssociatedTenantsClientGetOptions contains the optional parameters for the AssociatedTenantsClient.Get method.
+type AssociatedTenantsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AssociatedTenantsClientListByBillingAccountOptions contains the optional parameters for the AssociatedTenantsClient.NewListByBillingAccountPager
+// method.
+type AssociatedTenantsClientListByBillingAccountOptions struct {
+	// The count query option allows clients to request a count of the matching resources included with the resources in the response.
+	Count *bool
+
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
+	Filter *string
+
+	// Can be used to get revoked associated tenants.
+	IncludeRevoked *bool
+
+	// The orderby query option allows clients to request resources in a particular order.
+	OrderBy *string
+
+	// The search query option allows clients to request items within a collection matching a free-text search expression. search
+	// is only supported for string fields.
+	Search *string
+
+	// The skip query option requests the number of items in the queried collection that are to be skipped and not included in
+	// the result.
+	Skip *int64
+
+	// The top query option requests the number of items in the queried collection to be included in the result. The maximum supported
+	// value for top is 50.
+	Top *int64
+}
+
+// AvailableBalancesClientGetByBillingAccountOptions contains the optional parameters for the AvailableBalancesClient.GetByBillingAccount
+// method.
+type AvailableBalancesClientGetByBillingAccountOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AvailableBalancesClientGetByBillingProfileOptions contains the optional parameters for the AvailableBalancesClient.GetByBillingProfile
+// method.
+type AvailableBalancesClientGetByBillingProfileOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CustomersClientGetByBillingAccountOptions contains the optional parameters for the CustomersClient.GetByBillingAccount
+// method.
+type CustomersClientGetByBillingAccountOptions struct {
 	// placeholder for future optional parameters
 }
 
 // CustomersClientGetOptions contains the optional parameters for the CustomersClient.Get method.
 type CustomersClientGetOptions struct {
-	// May be used to expand enabledAzurePlans and resellers
-	Expand *string
+	// placeholder for future optional parameters
 }
 
 // CustomersClientListByBillingAccountOptions contains the optional parameters for the CustomersClient.NewListByBillingAccountPager
 // method.
 type CustomersClientListByBillingAccountOptions struct {
-	// May be used to filter the list of customers.
+	// The count query option allows clients to request a count of the matching resources included with the resources in the response.
+	Count *bool
+
+	// May be used to expand enabledAzurePlans and resellers
+	Expand *string
+
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
 	Filter *string
 
-	// Used for searching customers by their name. Any customer with name containing the search text will be included in the response
+	// The orderby query option allows clients to request resources in a particular order.
+	OrderBy *string
+
+	// The search query option allows clients to request items within a collection matching a free-text search expression. search
+	// is only supported for string fields.
 	Search *string
+
+	// The skip query option requests the number of items in the queried collection that are to be skipped and not included in
+	// the result.
+	Skip *int64
+
+	// The top query option requests the number of items in the queried collection to be included in the result. The maximum supported
+	// value for top is 50.
+	Top *int64
 }
 
 // CustomersClientListByBillingProfileOptions contains the optional parameters for the CustomersClient.NewListByBillingProfilePager
 // method.
 type CustomersClientListByBillingProfileOptions struct {
-	// May be used to filter the list of customers.
+	// The count query option allows clients to request a count of the matching resources included with the resources in the response.
+	Count *bool
+
+	// May be used to expand enabledAzurePlans and resellers
+	Expand *string
+
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
 	Filter *string
 
-	// Used for searching customers by their name. Any customer with name containing the search text will be included in the response
+	// The orderby query option allows clients to request resources in a particular order.
+	OrderBy *string
+
+	// The search query option allows clients to request items within a collection matching a free-text search expression. search
+	// is only supported for string fields.
 	Search *string
+
+	// The skip query option requests the number of items in the queried collection that are to be skipped and not included in
+	// the result.
+	Skip *int64
+
+	// The top query option requests the number of items in the queried collection to be included in the result. The maximum supported
+	// value for top is 50.
+	Top *int64
+}
+
+// DepartmentsClientGetOptions contains the optional parameters for the DepartmentsClient.Get method.
+type DepartmentsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DepartmentsClientListByBillingAccountOptions contains the optional parameters for the DepartmentsClient.NewListByBillingAccountPager
+// method.
+type DepartmentsClientListByBillingAccountOptions struct {
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
+	Filter *string
+
+	// The orderby query option allows clients to request resources in a particular order.
+	OrderBy *string
+
+	// The search query option allows clients to request items within a collection matching a free-text search expression. search
+	// is only supported for string fields.
+	Search *string
+
+	// The skip query option requests the number of items in the queried collection that are to be skipped and not included in
+	// the result.
+	Skip *int64
+
+	// The top query option requests the number of items in the queried collection to be included in the result. The maximum supported
+	// value for top is 50.
+	Top *int64
+}
+
+// EnrollmentAccountsClientGetByDepartmentOptions contains the optional parameters for the EnrollmentAccountsClient.GetByDepartment
+// method.
+type EnrollmentAccountsClientGetByDepartmentOptions struct {
+	// placeholder for future optional parameters
 }
 
 // EnrollmentAccountsClientGetOptions contains the optional parameters for the EnrollmentAccountsClient.Get method.
@@ -86,30 +281,65 @@ type EnrollmentAccountsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EnrollmentAccountsClientListOptions contains the optional parameters for the EnrollmentAccountsClient.NewListPager method.
-type EnrollmentAccountsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// InstructionsClientGetOptions contains the optional parameters for the InstructionsClient.Get method.
-type InstructionsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// InstructionsClientListByBillingProfileOptions contains the optional parameters for the InstructionsClient.NewListByBillingProfilePager
+// EnrollmentAccountsClientListByBillingAccountOptions contains the optional parameters for the EnrollmentAccountsClient.NewListByBillingAccountPager
 // method.
-type InstructionsClientListByBillingProfileOptions struct {
-	// placeholder for future optional parameters
+type EnrollmentAccountsClientListByBillingAccountOptions struct {
+	// The count query option allows clients to request a count of the matching resources included with the resources in the response.
+	Count *bool
+
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
+	Filter *string
+
+	// The orderby query option allows clients to request resources in a particular order.
+	OrderBy *string
+
+	// The search query option allows clients to request items within a collection matching a free-text search expression. search
+	// is only supported for string fields.
+	Search *string
+
+	// The skip query option requests the number of items in the queried collection that are to be skipped and not included in
+	// the result.
+	Skip *int64
+
+	// The top query option requests the number of items in the queried collection to be included in the result. The maximum supported
+	// value for top is 50.
+	Top *int64
 }
 
-// InstructionsClientPutOptions contains the optional parameters for the InstructionsClient.Put method.
-type InstructionsClientPutOptions struct {
-	// placeholder for future optional parameters
+// EnrollmentAccountsClientListByDepartmentOptions contains the optional parameters for the EnrollmentAccountsClient.NewListByDepartmentPager
+// method.
+type EnrollmentAccountsClientListByDepartmentOptions struct {
+	// The count query option allows clients to request a count of the matching resources included with the resources in the response.
+	Count *bool
+
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
+	Filter *string
+
+	// The orderby query option allows clients to request resources in a particular order.
+	OrderBy *string
+
+	// The search query option allows clients to request items within a collection matching a free-text search expression. search
+	// is only supported for string fields.
+	Search *string
+
+	// The skip query option requests the number of items in the queried collection that are to be skipped and not included in
+	// the result.
+	Skip *int64
+
+	// The top query option requests the number of items in the queried collection to be included in the result. The maximum supported
+	// value for top is 50.
+	Top *int64
 }
 
 // InvoiceSectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the InvoiceSectionsClient.BeginCreateOrUpdate
 // method.
 type InvoiceSectionsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// InvoiceSectionsClientBeginDeleteOptions contains the optional parameters for the InvoiceSectionsClient.BeginDelete method.
+type InvoiceSectionsClientBeginDeleteOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -122,45 +352,94 @@ type InvoiceSectionsClientGetOptions struct {
 // InvoiceSectionsClientListByBillingProfileOptions contains the optional parameters for the InvoiceSectionsClient.NewListByBillingProfilePager
 // method.
 type InvoiceSectionsClientListByBillingProfileOptions struct {
+	// The count query option allows clients to request a count of the matching resources included with the resources in the response.
+	Count *bool
+
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
+	Filter *string
+
+	// Can be used to get deleted invoice sections.
+	IncludeDeleted *bool
+
+	// The orderby query option allows clients to request resources in a particular order.
+	OrderBy *string
+
+	// The search query option allows clients to request items within a collection matching a free-text search expression. search
+	// is only supported for string fields.
+	Search *string
+
+	// The skip query option requests the number of items in the queried collection that are to be skipped and not included in
+	// the result.
+	Skip *int64
+
+	// The top query option requests the number of items in the queried collection to be included in the result. The maximum supported
+	// value for top is 50.
+	Top *int64
+}
+
+// InvoiceSectionsClientValidateDeleteEligibilityOptions contains the optional parameters for the InvoiceSectionsClient.ValidateDeleteEligibility
+// method.
+type InvoiceSectionsClientValidateDeleteEligibilityOptions struct {
 	// placeholder for future optional parameters
 }
 
-// InvoicesClientBeginDownloadBillingSubscriptionInvoiceOptions contains the optional parameters for the InvoicesClient.BeginDownloadBillingSubscriptionInvoice
-// method.
-type InvoicesClientBeginDownloadBillingSubscriptionInvoiceOptions struct {
+// InvoicesClientBeginAmendOptions contains the optional parameters for the InvoicesClient.BeginAmend method.
+type InvoicesClientBeginAmendOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
 
-// InvoicesClientBeginDownloadInvoiceOptions contains the optional parameters for the InvoicesClient.BeginDownloadInvoice
+// InvoicesClientBeginDownloadByBillingAccountOptions contains the optional parameters for the InvoicesClient.BeginDownloadByBillingAccount
 // method.
-type InvoicesClientBeginDownloadInvoiceOptions struct {
+type InvoicesClientBeginDownloadByBillingAccountOptions struct {
+	// The ID that uniquely identifies an invoice document. This ID may be an identifier for an invoice PDF, a credit note, or
+	// a tax receipt.
+	DocumentName *string
+
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
 
-// InvoicesClientBeginDownloadMultipleBillingProfileInvoicesOptions contains the optional parameters for the InvoicesClient.BeginDownloadMultipleBillingProfileInvoices
+// InvoicesClientBeginDownloadByBillingSubscriptionOptions contains the optional parameters for the InvoicesClient.BeginDownloadByBillingSubscription
 // method.
-type InvoicesClientBeginDownloadMultipleBillingProfileInvoicesOptions struct {
+type InvoicesClientBeginDownloadByBillingSubscriptionOptions struct {
+	// The ID that uniquely identifies an invoice document. This ID may be an identifier for an invoice PDF, a credit note, or
+	// a tax receipt.
+	DocumentName *string
+
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
 
-// InvoicesClientBeginDownloadMultipleBillingSubscriptionInvoicesOptions contains the optional parameters for the InvoicesClient.BeginDownloadMultipleBillingSubscriptionInvoices
+// InvoicesClientBeginDownloadDocumentsByBillingAccountOptions contains the optional parameters for the InvoicesClient.BeginDownloadDocumentsByBillingAccount
 // method.
-type InvoicesClientBeginDownloadMultipleBillingSubscriptionInvoicesOptions struct {
+type InvoicesClientBeginDownloadDocumentsByBillingAccountOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
 
-// InvoicesClientGetByIDOptions contains the optional parameters for the InvoicesClient.GetByID method.
-type InvoicesClientGetByIDOptions struct {
+// InvoicesClientBeginDownloadDocumentsByBillingSubscriptionOptions contains the optional parameters for the InvoicesClient.BeginDownloadDocumentsByBillingSubscription
+// method.
+type InvoicesClientBeginDownloadDocumentsByBillingSubscriptionOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// InvoicesClientBeginDownloadSummaryByBillingAccountOptions contains the optional parameters for the InvoicesClient.BeginDownloadSummaryByBillingAccount
+// method.
+type InvoicesClientBeginDownloadSummaryByBillingAccountOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// InvoicesClientGetByBillingAccountOptions contains the optional parameters for the InvoicesClient.GetByBillingAccount method.
+type InvoicesClientGetByBillingAccountOptions struct {
 	// placeholder for future optional parameters
 }
 
-// InvoicesClientGetBySubscriptionAndInvoiceIDOptions contains the optional parameters for the InvoicesClient.GetBySubscriptionAndInvoiceID
+// InvoicesClientGetByBillingSubscriptionOptions contains the optional parameters for the InvoicesClient.GetByBillingSubscription
 // method.
-type InvoicesClientGetBySubscriptionAndInvoiceIDOptions struct {
+type InvoicesClientGetByBillingSubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -172,19 +451,94 @@ type InvoicesClientGetOptions struct {
 // InvoicesClientListByBillingAccountOptions contains the optional parameters for the InvoicesClient.NewListByBillingAccountPager
 // method.
 type InvoicesClientListByBillingAccountOptions struct {
-	// placeholder for future optional parameters
+	// The count query option allows clients to request a count of the matching resources included with the resources in the response.
+	Count *bool
+
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
+	Filter *string
+
+	// The orderby query option allows clients to request resources in a particular order.
+	OrderBy *string
+
+	// The end date of the billing period for which the invoice is generated. The date is in MM-DD-YYYY format.
+	PeriodEndDate *time.Time
+
+	// The start date of the billing period for which the invoice is generated. The date is in MM-DD-YYYY format.
+	PeriodStartDate *time.Time
+
+	// The search query option allows clients to request items within a collection matching a free-text search expression. search
+	// is only supported for string fields.
+	Search *string
+
+	// The skip query option requests the number of items in the queried collection that are to be skipped and not included in
+	// the result.
+	Skip *int64
+
+	// The top query option requests the number of items in the queried collection to be included in the result. The maximum supported
+	// value for top is 50.
+	Top *int64
 }
 
 // InvoicesClientListByBillingProfileOptions contains the optional parameters for the InvoicesClient.NewListByBillingProfilePager
 // method.
 type InvoicesClientListByBillingProfileOptions struct {
-	// placeholder for future optional parameters
+	// The count query option allows clients to request a count of the matching resources included with the resources in the response.
+	Count *bool
+
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
+	Filter *string
+
+	// The orderby query option allows clients to request resources in a particular order.
+	OrderBy *string
+
+	// The end date of the billing period for which the invoice is generated. The date is in MM-DD-YYYY format.
+	PeriodEndDate *time.Time
+
+	// The start date of the billing period for which the invoice is generated. The date is in MM-DD-YYYY format.
+	PeriodStartDate *time.Time
+
+	// The search query option allows clients to request items within a collection matching a free-text search expression. search
+	// is only supported for string fields.
+	Search *string
+
+	// The skip query option requests the number of items in the queried collection that are to be skipped and not included in
+	// the result.
+	Skip *int64
+
+	// The top query option requests the number of items in the queried collection to be included in the result. The maximum supported
+	// value for top is 50.
+	Top *int64
 }
 
 // InvoicesClientListByBillingSubscriptionOptions contains the optional parameters for the InvoicesClient.NewListByBillingSubscriptionPager
 // method.
 type InvoicesClientListByBillingSubscriptionOptions struct {
-	// placeholder for future optional parameters
+	// The count query option allows clients to request a count of the matching resources included with the resources in the response.
+	Count *bool
+
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
+	Filter *string
+
+	// The orderby query option allows clients to request resources in a particular order.
+	OrderBy *string
+
+	// The end date of the billing period for which the invoice is generated. The date is in MM-DD-YYYY format.
+	PeriodEndDate *time.Time
+
+	// The start date of the billing period for which the invoice is generated. The date is in MM-DD-YYYY format.
+	PeriodStartDate *time.Time
+
+	// The search query option allows clients to request items within a collection matching a free-text search expression. search
+	// is only supported for string fields.
+	Search *string
+
+	// The skip query option requests the number of items in the queried collection that are to be skipped and not included in
+	// the result.
+	Skip *int64
+
+	// The top query option requests the number of items in the queried collection to be included in the result. The maximum supported
+	// value for top is 50.
+	Top *int64
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -192,24 +546,100 @@ type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PeriodsClientGetOptions contains the optional parameters for the PeriodsClient.Get method.
-type PeriodsClientGetOptions struct {
+// PartnerTransfersClientCancelOptions contains the optional parameters for the PartnerTransfersClient.Cancel method.
+type PartnerTransfersClientCancelOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PeriodsClientListOptions contains the optional parameters for the PeriodsClient.NewListPager method.
-type PeriodsClientListOptions struct {
-	// May be used to filter billing periods by billingPeriodEndDate. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'.
-	// It does not currently support 'ne', 'or', or 'not'.
-	Filter *string
+// PartnerTransfersClientGetOptions contains the optional parameters for the PartnerTransfersClient.Get method.
+type PartnerTransfersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
 
-	// Skiptoken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
-	// the value of the nextLink element will include a skiptoken parameter that
-	// specifies a starting point to use for subsequent calls.
-	Skiptoken *string
+// PartnerTransfersClientInitiateOptions contains the optional parameters for the PartnerTransfersClient.Initiate method.
+type PartnerTransfersClientInitiateOptions struct {
+	// placeholder for future optional parameters
+}
 
-	// May be used to limit the number of results to the most recent N billing periods.
-	Top *int32
+// PartnerTransfersClientListOptions contains the optional parameters for the PartnerTransfersClient.NewListPager method.
+type PartnerTransfersClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PaymentMethodsClientDeleteByUserOptions contains the optional parameters for the PaymentMethodsClient.DeleteByUser method.
+type PaymentMethodsClientDeleteByUserOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PaymentMethodsClientGetByBillingAccountOptions contains the optional parameters for the PaymentMethodsClient.GetByBillingAccount
+// method.
+type PaymentMethodsClientGetByBillingAccountOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PaymentMethodsClientGetByBillingProfileOptions contains the optional parameters for the PaymentMethodsClient.GetByBillingProfile
+// method.
+type PaymentMethodsClientGetByBillingProfileOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PaymentMethodsClientGetByUserOptions contains the optional parameters for the PaymentMethodsClient.GetByUser method.
+type PaymentMethodsClientGetByUserOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PaymentMethodsClientListByBillingAccountOptions contains the optional parameters for the PaymentMethodsClient.NewListByBillingAccountPager
+// method.
+type PaymentMethodsClientListByBillingAccountOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PaymentMethodsClientListByBillingProfileOptions contains the optional parameters for the PaymentMethodsClient.NewListByBillingProfilePager
+// method.
+type PaymentMethodsClientListByBillingProfileOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PaymentMethodsClientListByUserOptions contains the optional parameters for the PaymentMethodsClient.NewListByUserPager
+// method.
+type PaymentMethodsClientListByUserOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PermissionsClientCheckAccessByBillingAccountOptions contains the optional parameters for the PermissionsClient.CheckAccessByBillingAccount
+// method.
+type PermissionsClientCheckAccessByBillingAccountOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PermissionsClientCheckAccessByBillingProfileOptions contains the optional parameters for the PermissionsClient.CheckAccessByBillingProfile
+// method.
+type PermissionsClientCheckAccessByBillingProfileOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PermissionsClientCheckAccessByCustomerOptions contains the optional parameters for the PermissionsClient.CheckAccessByCustomer
+// method.
+type PermissionsClientCheckAccessByCustomerOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PermissionsClientCheckAccessByDepartmentOptions contains the optional parameters for the PermissionsClient.CheckAccessByDepartment
+// method.
+type PermissionsClientCheckAccessByDepartmentOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PermissionsClientCheckAccessByEnrollmentAccountOptions contains the optional parameters for the PermissionsClient.CheckAccessByEnrollmentAccount
+// method.
+type PermissionsClientCheckAccessByEnrollmentAccountOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PermissionsClientCheckAccessByInvoiceSectionOptions contains the optional parameters for the PermissionsClient.CheckAccessByInvoiceSection
+// method.
+type PermissionsClientCheckAccessByInvoiceSectionOptions struct {
+	// placeholder for future optional parameters
 }
 
 // PermissionsClientListByBillingAccountOptions contains the optional parameters for the PermissionsClient.NewListByBillingAccountPager
@@ -224,15 +654,66 @@ type PermissionsClientListByBillingProfileOptions struct {
 	// placeholder for future optional parameters
 }
 
+// PermissionsClientListByCustomerAtBillingAccountOptions contains the optional parameters for the PermissionsClient.NewListByCustomerAtBillingAccountPager
+// method.
+type PermissionsClientListByCustomerAtBillingAccountOptions struct {
+	// placeholder for future optional parameters
+}
+
 // PermissionsClientListByCustomerOptions contains the optional parameters for the PermissionsClient.NewListByCustomerPager
 // method.
 type PermissionsClientListByCustomerOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PermissionsClientListByInvoiceSectionsOptions contains the optional parameters for the PermissionsClient.NewListByInvoiceSectionsPager
+// PermissionsClientListByDepartmentOptions contains the optional parameters for the PermissionsClient.NewListByDepartmentPager
 // method.
-type PermissionsClientListByInvoiceSectionsOptions struct {
+type PermissionsClientListByDepartmentOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PermissionsClientListByEnrollmentAccountOptions contains the optional parameters for the PermissionsClient.NewListByEnrollmentAccountPager
+// method.
+type PermissionsClientListByEnrollmentAccountOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PermissionsClientListByInvoiceSectionOptions contains the optional parameters for the PermissionsClient.NewListByInvoiceSectionPager
+// method.
+type PermissionsClientListByInvoiceSectionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PoliciesClientBeginCreateOrUpdateByBillingAccountOptions contains the optional parameters for the PoliciesClient.BeginCreateOrUpdateByBillingAccount
+// method.
+type PoliciesClientBeginCreateOrUpdateByBillingAccountOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PoliciesClientBeginCreateOrUpdateByBillingProfileOptions contains the optional parameters for the PoliciesClient.BeginCreateOrUpdateByBillingProfile
+// method.
+type PoliciesClientBeginCreateOrUpdateByBillingProfileOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PoliciesClientBeginCreateOrUpdateByCustomerAtBillingAccountOptions contains the optional parameters for the PoliciesClient.BeginCreateOrUpdateByCustomerAtBillingAccount
+// method.
+type PoliciesClientBeginCreateOrUpdateByCustomerAtBillingAccountOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PoliciesClientBeginCreateOrUpdateByCustomerOptions contains the optional parameters for the PoliciesClient.BeginCreateOrUpdateByCustomer
+// method.
+type PoliciesClientBeginCreateOrUpdateByCustomerOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PoliciesClientGetByBillingAccountOptions contains the optional parameters for the PoliciesClient.GetByBillingAccount method.
+type PoliciesClientGetByBillingAccountOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -241,19 +722,26 @@ type PoliciesClientGetByBillingProfileOptions struct {
 	// placeholder for future optional parameters
 }
 
+// PoliciesClientGetByCustomerAtBillingAccountOptions contains the optional parameters for the PoliciesClient.GetByCustomerAtBillingAccount
+// method.
+type PoliciesClientGetByCustomerAtBillingAccountOptions struct {
+	// placeholder for future optional parameters
+}
+
 // PoliciesClientGetByCustomerOptions contains the optional parameters for the PoliciesClient.GetByCustomer method.
 type PoliciesClientGetByCustomerOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PoliciesClientUpdateCustomerOptions contains the optional parameters for the PoliciesClient.UpdateCustomer method.
-type PoliciesClientUpdateCustomerOptions struct {
+// PoliciesClientGetBySubscriptionOptions contains the optional parameters for the PoliciesClient.GetBySubscription method.
+type PoliciesClientGetBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PoliciesClientUpdateOptions contains the optional parameters for the PoliciesClient.Update method.
-type PoliciesClientUpdateOptions struct {
-	// placeholder for future optional parameters
+// ProductsClientBeginMoveOptions contains the optional parameters for the ProductsClient.BeginMove method.
+type ProductsClientBeginMoveOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ProductsClientGetOptions contains the optional parameters for the ProductsClient.Get method.
@@ -264,38 +752,100 @@ type ProductsClientGetOptions struct {
 // ProductsClientListByBillingAccountOptions contains the optional parameters for the ProductsClient.NewListByBillingAccountPager
 // method.
 type ProductsClientListByBillingAccountOptions struct {
-	// May be used to filter by product type. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently
-	// support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key
-	// and value are separated by a colon (:).
+	// The count query option allows clients to request a count of the matching resources included with the resources in the response.
+	Count *bool
+
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
 	Filter *string
+
+	// The orderby query option allows clients to request resources in a particular order.
+	OrderBy *string
+
+	// The search query option allows clients to request items within a collection matching a free-text search expression. search
+	// is only supported for string fields.
+	Search *string
+
+	// The skip query option requests the number of items in the queried collection that are to be skipped and not included in
+	// the result.
+	Skip *int64
+
+	// The top query option requests the number of items in the queried collection to be included in the result. The maximum supported
+	// value for top is 50.
+	Top *int64
 }
 
 // ProductsClientListByBillingProfileOptions contains the optional parameters for the ProductsClient.NewListByBillingProfilePager
 // method.
 type ProductsClientListByBillingProfileOptions struct {
-	// May be used to filter by product type. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently
-	// support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key
-	// and value are separated by a colon (:).
+	// The count query option allows clients to request a count of the matching resources included with the resources in the response.
+	Count *bool
+
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
 	Filter *string
+
+	// The orderby query option allows clients to request resources in a particular order.
+	OrderBy *string
+
+	// The search query option allows clients to request items within a collection matching a free-text search expression. search
+	// is only supported for string fields.
+	Search *string
+
+	// The skip query option requests the number of items in the queried collection that are to be skipped and not included in
+	// the result.
+	Skip *int64
+
+	// The top query option requests the number of items in the queried collection to be included in the result. The maximum supported
+	// value for top is 50.
+	Top *int64
 }
 
 // ProductsClientListByCustomerOptions contains the optional parameters for the ProductsClient.NewListByCustomerPager method.
 type ProductsClientListByCustomerOptions struct {
-	// placeholder for future optional parameters
+	// The count query option allows clients to request a count of the matching resources included with the resources in the response.
+	Count *bool
+
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
+	Filter *string
+
+	// The orderby query option allows clients to request resources in a particular order.
+	OrderBy *string
+
+	// The search query option allows clients to request items within a collection matching a free-text search expression. search
+	// is only supported for string fields.
+	Search *string
+
+	// The skip query option requests the number of items in the queried collection that are to be skipped and not included in
+	// the result.
+	Skip *int64
+
+	// The top query option requests the number of items in the queried collection to be included in the result. The maximum supported
+	// value for top is 50.
+	Top *int64
 }
 
 // ProductsClientListByInvoiceSectionOptions contains the optional parameters for the ProductsClient.NewListByInvoiceSectionPager
 // method.
 type ProductsClientListByInvoiceSectionOptions struct {
-	// May be used to filter by product type. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently
-	// support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key
-	// and value are separated by a colon (:).
-	Filter *string
-}
+	// The count query option allows clients to request a count of the matching resources included with the resources in the response.
+	Count *bool
 
-// ProductsClientMoveOptions contains the optional parameters for the ProductsClient.Move method.
-type ProductsClientMoveOptions struct {
-	// placeholder for future optional parameters
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
+	Filter *string
+
+	// The orderby query option allows clients to request resources in a particular order.
+	OrderBy *string
+
+	// The search query option allows clients to request items within a collection matching a free-text search expression. search
+	// is only supported for string fields.
+	Search *string
+
+	// The skip query option requests the number of items in the queried collection that are to be skipped and not included in
+	// the result.
+	Skip *int64
+
+	// The top query option requests the number of items in the queried collection to be included in the result. The maximum supported
+	// value for top is 50.
+	Top *int64
 }
 
 // ProductsClientUpdateOptions contains the optional parameters for the ProductsClient.Update method.
@@ -303,8 +853,9 @@ type ProductsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProductsClientValidateMoveOptions contains the optional parameters for the ProductsClient.ValidateMove method.
-type ProductsClientValidateMoveOptions struct {
+// ProductsClientValidateMoveEligibilityOptions contains the optional parameters for the ProductsClient.ValidateMoveEligibility
+// method.
+type ProductsClientValidateMoveEligibilityOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -314,22 +865,59 @@ type ProfilesClientBeginCreateOrUpdateOptions struct {
 	ResumeToken string
 }
 
+// ProfilesClientBeginDeleteOptions contains the optional parameters for the ProfilesClient.BeginDelete method.
+type ProfilesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // ProfilesClientGetOptions contains the optional parameters for the ProfilesClient.Get method.
 type ProfilesClientGetOptions struct {
-	// May be used to expand the invoice sections.
-	Expand *string
+	// placeholder for future optional parameters
 }
 
 // ProfilesClientListByBillingAccountOptions contains the optional parameters for the ProfilesClient.NewListByBillingAccountPager
 // method.
 type ProfilesClientListByBillingAccountOptions struct {
-	// May be used to expand the invoice sections.
-	Expand *string
+	// The count query option allows clients to request a count of the matching resources included with the resources in the response.
+	Count *bool
+
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
+	Filter *string
+
+	// Can be used to get deleted billing profiles.
+	IncludeDeleted *bool
+
+	// The orderby query option allows clients to request resources in a particular order.
+	OrderBy *string
+
+	// The search query option allows clients to request items within a collection matching a free-text search expression. search
+	// is only supported for string fields.
+	Search *string
+
+	// The skip query option requests the number of items in the queried collection that are to be skipped and not included in
+	// the result.
+	Skip *int64
+
+	// The top query option requests the number of items in the queried collection to be included in the result. The maximum supported
+	// value for top is 50.
+	Top *int64
+}
+
+// ProfilesClientValidateDeleteEligibilityOptions contains the optional parameters for the ProfilesClient.ValidateDeleteEligibility
+// method.
+type ProfilesClientValidateDeleteEligibilityOptions struct {
+	// placeholder for future optional parameters
 }
 
 // PropertyClientGetOptions contains the optional parameters for the PropertyClient.Get method.
 type PropertyClientGetOptions struct {
-	// placeholder for future optional parameters
+	// A flag that specifies whether or not to include billing country.
+	IncludeBillingCountry *bool
+
+	// A flag that specifies whether or not to include transition status for billing accounts with agreement type Microsoft Customer
+	// Agreement.
+	IncludeTransitionStatus *bool
 }
 
 // PropertyClientUpdateOptions contains the optional parameters for the PropertyClient.Update method.
@@ -337,38 +925,348 @@ type PropertyClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
+// RecipientTransfersClientAcceptOptions contains the optional parameters for the RecipientTransfersClient.Accept method.
+type RecipientTransfersClientAcceptOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RecipientTransfersClientDeclineOptions contains the optional parameters for the RecipientTransfersClient.Decline method.
+type RecipientTransfersClientDeclineOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RecipientTransfersClientGetOptions contains the optional parameters for the RecipientTransfersClient.Get method.
+type RecipientTransfersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RecipientTransfersClientListOptions contains the optional parameters for the RecipientTransfersClient.NewListPager method.
+type RecipientTransfersClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RecipientTransfersClientValidateOptions contains the optional parameters for the RecipientTransfersClient.Validate method.
+type RecipientTransfersClientValidateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RequestsClientBeginCreateOrUpdateOptions contains the optional parameters for the RequestsClient.BeginCreateOrUpdate method.
+type RequestsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// RequestsClientGetOptions contains the optional parameters for the RequestsClient.Get method.
+type RequestsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RequestsClientListByBillingAccountOptions contains the optional parameters for the RequestsClient.NewListByBillingAccountPager
+// method.
+type RequestsClientListByBillingAccountOptions struct {
+	// The count query option allows clients to request a count of the matching resources included with the resources in the response.
+	Count *bool
+
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
+	Filter *string
+
+	// The orderby query option allows clients to request resources in a particular order.
+	OrderBy *string
+
+	// The search query option allows clients to request items within a collection matching a free-text search expression. search
+	// is only supported for string fields.
+	Search *string
+
+	// The skip query option requests the number of items in the queried collection that are to be skipped and not included in
+	// the result.
+	Skip *int64
+
+	// The top query option requests the number of items in the queried collection to be included in the result. The maximum supported
+	// value for top is 50.
+	Top *int64
+}
+
+// RequestsClientListByBillingProfileOptions contains the optional parameters for the RequestsClient.NewListByBillingProfilePager
+// method.
+type RequestsClientListByBillingProfileOptions struct {
+	// The count query option allows clients to request a count of the matching resources included with the resources in the response.
+	Count *bool
+
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
+	Filter *string
+
+	// The orderby query option allows clients to request resources in a particular order.
+	OrderBy *string
+
+	// The search query option allows clients to request items within a collection matching a free-text search expression. search
+	// is only supported for string fields.
+	Search *string
+
+	// The skip query option requests the number of items in the queried collection that are to be skipped and not included in
+	// the result.
+	Skip *int64
+
+	// The top query option requests the number of items in the queried collection to be included in the result. The maximum supported
+	// value for top is 50.
+	Top *int64
+}
+
+// RequestsClientListByCustomerOptions contains the optional parameters for the RequestsClient.NewListByCustomerPager method.
+type RequestsClientListByCustomerOptions struct {
+	// The count query option allows clients to request a count of the matching resources included with the resources in the response.
+	Count *bool
+
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
+	Filter *string
+
+	// The orderby query option allows clients to request resources in a particular order.
+	OrderBy *string
+
+	// The search query option allows clients to request items within a collection matching a free-text search expression. search
+	// is only supported for string fields.
+	Search *string
+
+	// The skip query option requests the number of items in the queried collection that are to be skipped and not included in
+	// the result.
+	Skip *int64
+
+	// The top query option requests the number of items in the queried collection to be included in the result. The maximum supported
+	// value for top is 50.
+	Top *int64
+}
+
+// RequestsClientListByInvoiceSectionOptions contains the optional parameters for the RequestsClient.NewListByInvoiceSectionPager
+// method.
+type RequestsClientListByInvoiceSectionOptions struct {
+	// The count query option allows clients to request a count of the matching resources included with the resources in the response.
+	Count *bool
+
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
+	Filter *string
+
+	// The orderby query option allows clients to request resources in a particular order.
+	OrderBy *string
+
+	// The search query option allows clients to request items within a collection matching a free-text search expression. search
+	// is only supported for string fields.
+	Search *string
+
+	// The skip query option requests the number of items in the queried collection that are to be skipped and not included in
+	// the result.
+	Skip *int64
+
+	// The top query option requests the number of items in the queried collection to be included in the result. The maximum supported
+	// value for top is 50.
+	Top *int64
+}
+
+// RequestsClientListByUserOptions contains the optional parameters for the RequestsClient.NewListByUserPager method.
+type RequestsClientListByUserOptions struct {
+	// The count query option allows clients to request a count of the matching resources included with the resources in the response.
+	Count *bool
+
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
+	Filter *string
+
+	// The orderby query option allows clients to request resources in a particular order.
+	OrderBy *string
+
+	// The search query option allows clients to request items within a collection matching a free-text search expression. search
+	// is only supported for string fields.
+	Search *string
+
+	// The skip query option requests the number of items in the queried collection that are to be skipped and not included in
+	// the result.
+	Skip *int64
+
+	// The top query option requests the number of items in the queried collection to be included in the result. The maximum supported
+	// value for top is 50.
+	Top *int64
+}
+
+// ReservationOrdersClientGetByBillingAccountOptions contains the optional parameters for the ReservationOrdersClient.GetByBillingAccount
+// method.
+type ReservationOrdersClientGetByBillingAccountOptions struct {
+	// May be used to expand the detail information of some properties.
+	Expand *string
+}
+
+// ReservationOrdersClientListByBillingAccountOptions contains the optional parameters for the ReservationOrdersClient.NewListByBillingAccountPager
+// method.
+type ReservationOrdersClientListByBillingAccountOptions struct {
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
+	Filter *string
+
+	// The orderby query option allows clients to request resources in a particular order.
+	OrderBy *string
+
+	// The number of reservations to skip from the list before returning results
+	Skiptoken *float32
+}
+
+// ReservationsClientBeginUpdateByBillingAccountOptions contains the optional parameters for the ReservationsClient.BeginUpdateByBillingAccount
+// method.
+type ReservationsClientBeginUpdateByBillingAccountOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ReservationsClientGetByReservationOrderOptions contains the optional parameters for the ReservationsClient.GetByReservationOrder
+// method.
+type ReservationsClientGetByReservationOrderOptions struct {
+	// May be used to expand the detail information of some properties.
+	Expand *string
+}
+
 // ReservationsClientListByBillingAccountOptions contains the optional parameters for the ReservationsClient.NewListByBillingAccountPager
 // method.
 type ReservationsClientListByBillingAccountOptions struct {
-	// May be used to filter by reservation properties. The filter supports 'eq', 'or', and 'and'. It does not currently support
-	// 'ne', 'gt', 'le', 'ge', or 'not'.
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
 	Filter *string
 
-	// May be used to sort order by reservation properties.
-	Orderby *string
+	// The orderby query option allows clients to request resources in a particular order.
+	OrderBy *string
 
 	// To indicate whether to refresh the roll up counts of the reservations group by provisioning states
 	RefreshSummary *string
 
 	// The selected provisioning state
 	SelectedState *string
+
+	// The number of reservations to skip from the list before returning results
+	Skiptoken *float32
+
+	// The number of reservations to return in API response.
+	Take *float32
 }
 
 // ReservationsClientListByBillingProfileOptions contains the optional parameters for the ReservationsClient.NewListByBillingProfilePager
 // method.
 type ReservationsClientListByBillingProfileOptions struct {
-	// May be used to filter by reservation properties. The filter supports 'eq', 'or', and 'and'. It does not currently support
-	// 'ne', 'gt', 'le', 'ge', or 'not'.
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
 	Filter *string
 
-	// May be used to sort order by reservation properties.
-	Orderby *string
+	// The orderby query option allows clients to request resources in a particular order.
+	OrderBy *string
 
-	// To indicate whether to refresh the roll up counts of the reservations group by provisioning state
+	// To indicate whether to refresh the roll up counts of the reservations group by provisioning states
 	RefreshSummary *string
 
 	// The selected provisioning state
 	SelectedState *string
+
+	// The number of reservations to skip from the list before returning results
+	Skiptoken *float32
+
+	// The number of reservations to return in API response.
+	Take *float32
+}
+
+// ReservationsClientListByReservationOrderOptions contains the optional parameters for the ReservationsClient.NewListByReservationOrderPager
+// method.
+type ReservationsClientListByReservationOrderOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RoleAssignmentsClientBeginCreateByBillingAccountOptions contains the optional parameters for the RoleAssignmentsClient.BeginCreateByBillingAccount
+// method.
+type RoleAssignmentsClientBeginCreateByBillingAccountOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// RoleAssignmentsClientBeginCreateByBillingProfileOptions contains the optional parameters for the RoleAssignmentsClient.BeginCreateByBillingProfile
+// method.
+type RoleAssignmentsClientBeginCreateByBillingProfileOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// RoleAssignmentsClientBeginCreateByCustomerOptions contains the optional parameters for the RoleAssignmentsClient.BeginCreateByCustomer
+// method.
+type RoleAssignmentsClientBeginCreateByCustomerOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// RoleAssignmentsClientBeginCreateByInvoiceSectionOptions contains the optional parameters for the RoleAssignmentsClient.BeginCreateByInvoiceSection
+// method.
+type RoleAssignmentsClientBeginCreateByInvoiceSectionOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// RoleAssignmentsClientBeginCreateOrUpdateByBillingAccountOptions contains the optional parameters for the RoleAssignmentsClient.BeginCreateOrUpdateByBillingAccount
+// method.
+type RoleAssignmentsClientBeginCreateOrUpdateByBillingAccountOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// RoleAssignmentsClientBeginCreateOrUpdateByDepartmentOptions contains the optional parameters for the RoleAssignmentsClient.BeginCreateOrUpdateByDepartment
+// method.
+type RoleAssignmentsClientBeginCreateOrUpdateByDepartmentOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// RoleAssignmentsClientBeginCreateOrUpdateByEnrollmentAccountOptions contains the optional parameters for the RoleAssignmentsClient.BeginCreateOrUpdateByEnrollmentAccount
+// method.
+type RoleAssignmentsClientBeginCreateOrUpdateByEnrollmentAccountOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// RoleAssignmentsClientBeginResolveByBillingAccountOptions contains the optional parameters for the RoleAssignmentsClient.BeginResolveByBillingAccount
+// method.
+type RoleAssignmentsClientBeginResolveByBillingAccountOptions struct {
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
+	Filter *string
+
+	// Resolves the scope display name for each of the role assignments.
+	ResolveScopeDisplayNames *bool
+
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// RoleAssignmentsClientBeginResolveByBillingProfileOptions contains the optional parameters for the RoleAssignmentsClient.BeginResolveByBillingProfile
+// method.
+type RoleAssignmentsClientBeginResolveByBillingProfileOptions struct {
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
+	Filter *string
+
+	// Resolves the scope display name for each of the role assignments.
+	ResolveScopeDisplayNames *bool
+
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// RoleAssignmentsClientBeginResolveByCustomerOptions contains the optional parameters for the RoleAssignmentsClient.BeginResolveByCustomer
+// method.
+type RoleAssignmentsClientBeginResolveByCustomerOptions struct {
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
+	Filter *string
+
+	// Resolves the scope display name for each of the role assignments.
+	ResolveScopeDisplayNames *bool
+
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// RoleAssignmentsClientBeginResolveByInvoiceSectionOptions contains the optional parameters for the RoleAssignmentsClient.BeginResolveByInvoiceSection
+// method.
+type RoleAssignmentsClientBeginResolveByInvoiceSectionOptions struct {
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
+	Filter *string
+
+	// Resolves the scope display name for each of the role assignments.
+	ResolveScopeDisplayNames *bool
+
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // RoleAssignmentsClientDeleteByBillingAccountOptions contains the optional parameters for the RoleAssignmentsClient.DeleteByBillingAccount
@@ -380,6 +1278,24 @@ type RoleAssignmentsClientDeleteByBillingAccountOptions struct {
 // RoleAssignmentsClientDeleteByBillingProfileOptions contains the optional parameters for the RoleAssignmentsClient.DeleteByBillingProfile
 // method.
 type RoleAssignmentsClientDeleteByBillingProfileOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RoleAssignmentsClientDeleteByCustomerOptions contains the optional parameters for the RoleAssignmentsClient.DeleteByCustomer
+// method.
+type RoleAssignmentsClientDeleteByCustomerOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RoleAssignmentsClientDeleteByDepartmentOptions contains the optional parameters for the RoleAssignmentsClient.DeleteByDepartment
+// method.
+type RoleAssignmentsClientDeleteByDepartmentOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RoleAssignmentsClientDeleteByEnrollmentAccountOptions contains the optional parameters for the RoleAssignmentsClient.DeleteByEnrollmentAccount
+// method.
+type RoleAssignmentsClientDeleteByEnrollmentAccountOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -401,6 +1317,24 @@ type RoleAssignmentsClientGetByBillingProfileOptions struct {
 	// placeholder for future optional parameters
 }
 
+// RoleAssignmentsClientGetByCustomerOptions contains the optional parameters for the RoleAssignmentsClient.GetByCustomer
+// method.
+type RoleAssignmentsClientGetByCustomerOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RoleAssignmentsClientGetByDepartmentOptions contains the optional parameters for the RoleAssignmentsClient.GetByDepartment
+// method.
+type RoleAssignmentsClientGetByDepartmentOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RoleAssignmentsClientGetByEnrollmentAccountOptions contains the optional parameters for the RoleAssignmentsClient.GetByEnrollmentAccount
+// method.
+type RoleAssignmentsClientGetByEnrollmentAccountOptions struct {
+	// placeholder for future optional parameters
+}
+
 // RoleAssignmentsClientGetByInvoiceSectionOptions contains the optional parameters for the RoleAssignmentsClient.GetByInvoiceSection
 // method.
 type RoleAssignmentsClientGetByInvoiceSectionOptions struct {
@@ -410,55 +1344,270 @@ type RoleAssignmentsClientGetByInvoiceSectionOptions struct {
 // RoleAssignmentsClientListByBillingAccountOptions contains the optional parameters for the RoleAssignmentsClient.NewListByBillingAccountPager
 // method.
 type RoleAssignmentsClientListByBillingAccountOptions struct {
-	// placeholder for future optional parameters
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
+	Filter *string
+
+	// The skip query option requests the number of items in the queried collection that are to be skipped and not included in
+	// the result.
+	Skip *int64
+
+	// The top query option requests the number of items in the queried collection to be included in the result. The maximum supported
+	// value for top is 50.
+	Top *int64
 }
 
 // RoleAssignmentsClientListByBillingProfileOptions contains the optional parameters for the RoleAssignmentsClient.NewListByBillingProfilePager
 // method.
 type RoleAssignmentsClientListByBillingProfileOptions struct {
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
+	Filter *string
+
+	// The skip query option requests the number of items in the queried collection that are to be skipped and not included in
+	// the result.
+	Skip *int64
+
+	// The top query option requests the number of items in the queried collection to be included in the result. The maximum supported
+	// value for top is 50.
+	Top *int64
+}
+
+// RoleAssignmentsClientListByCustomerOptions contains the optional parameters for the RoleAssignmentsClient.NewListByCustomerPager
+// method.
+type RoleAssignmentsClientListByCustomerOptions struct {
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
+	Filter *string
+
+	// The skip query option requests the number of items in the queried collection that are to be skipped and not included in
+	// the result.
+	Skip *int64
+
+	// The top query option requests the number of items in the queried collection to be included in the result. The maximum supported
+	// value for top is 50.
+	Top *int64
+}
+
+// RoleAssignmentsClientListByDepartmentOptions contains the optional parameters for the RoleAssignmentsClient.NewListByDepartmentPager
+// method.
+type RoleAssignmentsClientListByDepartmentOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RoleAssignmentsClientListByEnrollmentAccountOptions contains the optional parameters for the RoleAssignmentsClient.NewListByEnrollmentAccountPager
+// method.
+type RoleAssignmentsClientListByEnrollmentAccountOptions struct {
 	// placeholder for future optional parameters
 }
 
 // RoleAssignmentsClientListByInvoiceSectionOptions contains the optional parameters for the RoleAssignmentsClient.NewListByInvoiceSectionPager
 // method.
 type RoleAssignmentsClientListByInvoiceSectionOptions struct {
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
+	Filter *string
+
+	// The skip query option requests the number of items in the queried collection that are to be skipped and not included in
+	// the result.
+	Skip *int64
+
+	// The top query option requests the number of items in the queried collection to be included in the result. The maximum supported
+	// value for top is 50.
+	Top *int64
+}
+
+// RoleDefinitionClientGetByBillingAccountOptions contains the optional parameters for the RoleDefinitionClient.GetByBillingAccount
+// method.
+type RoleDefinitionClientGetByBillingAccountOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleDefinitionsClientGetByBillingAccountOptions contains the optional parameters for the RoleDefinitionsClient.GetByBillingAccount
+// RoleDefinitionClientGetByBillingProfileOptions contains the optional parameters for the RoleDefinitionClient.GetByBillingProfile
 // method.
-type RoleDefinitionsClientGetByBillingAccountOptions struct {
+type RoleDefinitionClientGetByBillingProfileOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleDefinitionsClientGetByBillingProfileOptions contains the optional parameters for the RoleDefinitionsClient.GetByBillingProfile
-// method.
-type RoleDefinitionsClientGetByBillingProfileOptions struct {
+// RoleDefinitionClientGetByCustomerOptions contains the optional parameters for the RoleDefinitionClient.GetByCustomer method.
+type RoleDefinitionClientGetByCustomerOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleDefinitionsClientGetByInvoiceSectionOptions contains the optional parameters for the RoleDefinitionsClient.GetByInvoiceSection
+// RoleDefinitionClientGetByDepartmentOptions contains the optional parameters for the RoleDefinitionClient.GetByDepartment
 // method.
-type RoleDefinitionsClientGetByInvoiceSectionOptions struct {
+type RoleDefinitionClientGetByDepartmentOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleDefinitionsClientListByBillingAccountOptions contains the optional parameters for the RoleDefinitionsClient.NewListByBillingAccountPager
+// RoleDefinitionClientGetByEnrollmentAccountOptions contains the optional parameters for the RoleDefinitionClient.GetByEnrollmentAccount
 // method.
-type RoleDefinitionsClientListByBillingAccountOptions struct {
+type RoleDefinitionClientGetByEnrollmentAccountOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleDefinitionsClientListByBillingProfileOptions contains the optional parameters for the RoleDefinitionsClient.NewListByBillingProfilePager
+// RoleDefinitionClientGetByInvoiceSectionOptions contains the optional parameters for the RoleDefinitionClient.GetByInvoiceSection
 // method.
-type RoleDefinitionsClientListByBillingProfileOptions struct {
+type RoleDefinitionClientGetByInvoiceSectionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleDefinitionsClientListByInvoiceSectionOptions contains the optional parameters for the RoleDefinitionsClient.NewListByInvoiceSectionPager
+// RoleDefinitionClientListByBillingAccountOptions contains the optional parameters for the RoleDefinitionClient.NewListByBillingAccountPager
 // method.
-type RoleDefinitionsClientListByInvoiceSectionOptions struct {
+type RoleDefinitionClientListByBillingAccountOptions struct {
 	// placeholder for future optional parameters
+}
+
+// RoleDefinitionClientListByBillingProfileOptions contains the optional parameters for the RoleDefinitionClient.NewListByBillingProfilePager
+// method.
+type RoleDefinitionClientListByBillingProfileOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RoleDefinitionClientListByCustomerOptions contains the optional parameters for the RoleDefinitionClient.NewListByCustomerPager
+// method.
+type RoleDefinitionClientListByCustomerOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RoleDefinitionClientListByDepartmentOptions contains the optional parameters for the RoleDefinitionClient.NewListByDepartmentPager
+// method.
+type RoleDefinitionClientListByDepartmentOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RoleDefinitionClientListByEnrollmentAccountOptions contains the optional parameters for the RoleDefinitionClient.NewListByEnrollmentAccountPager
+// method.
+type RoleDefinitionClientListByEnrollmentAccountOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RoleDefinitionClientListByInvoiceSectionOptions contains the optional parameters for the RoleDefinitionClient.NewListByInvoiceSectionPager
+// method.
+type RoleDefinitionClientListByInvoiceSectionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SavingsPlanOrdersClientGetByBillingAccountOptions contains the optional parameters for the SavingsPlanOrdersClient.GetByBillingAccount
+// method.
+type SavingsPlanOrdersClientGetByBillingAccountOptions struct {
+	// May be used to expand the planInformation.
+	Expand *string
+}
+
+// SavingsPlanOrdersClientListByBillingAccountOptions contains the optional parameters for the SavingsPlanOrdersClient.NewListByBillingAccountPager
+// method.
+type SavingsPlanOrdersClientListByBillingAccountOptions struct {
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
+	Filter *string
+
+	// The orderby query option allows clients to request resources in a particular order.
+	OrderBy *string
+
+	// The number of savings plans to skip from the list before returning results
+	Skiptoken *float32
+}
+
+// SavingsPlansClientBeginUpdateByBillingAccountOptions contains the optional parameters for the SavingsPlansClient.BeginUpdateByBillingAccount
+// method.
+type SavingsPlansClientBeginUpdateByBillingAccountOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// SavingsPlansClientGetByBillingAccountOptions contains the optional parameters for the SavingsPlansClient.GetByBillingAccount
+// method.
+type SavingsPlansClientGetByBillingAccountOptions struct {
+	// May be used to expand the planInformation.
+	Expand *string
+}
+
+// SavingsPlansClientListByBillingAccountOptions contains the optional parameters for the SavingsPlansClient.NewListByBillingAccountPager
+// method.
+type SavingsPlansClientListByBillingAccountOptions struct {
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
+	Filter *string
+
+	// The orderby query option allows clients to request resources in a particular order.
+	OrderBy *string
+
+	// To indicate whether to refresh the roll up counts of the savings plans group by provisioning states
+	RefreshSummary *string
+
+	// The selected provisioning state
+	SelectedState *string
+
+	// The number of savings plans to skip from the list before returning results
+	Skiptoken *float32
+
+	// The number of savings plans to return
+	Take *float32
+}
+
+// SavingsPlansClientListBySavingsPlanOrderOptions contains the optional parameters for the SavingsPlansClient.NewListBySavingsPlanOrderPager
+// method.
+type SavingsPlansClientListBySavingsPlanOrderOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SavingsPlansClientValidateUpdateByBillingAccountOptions contains the optional parameters for the SavingsPlansClient.ValidateUpdateByBillingAccount
+// method.
+type SavingsPlansClientValidateUpdateByBillingAccountOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SubscriptionsAliasesClientBeginCreateOrUpdateOptions contains the optional parameters for the SubscriptionsAliasesClient.BeginCreateOrUpdate
+// method.
+type SubscriptionsAliasesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// SubscriptionsAliasesClientGetOptions contains the optional parameters for the SubscriptionsAliasesClient.Get method.
+type SubscriptionsAliasesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SubscriptionsAliasesClientListByBillingAccountOptions contains the optional parameters for the SubscriptionsAliasesClient.NewListByBillingAccountPager
+// method.
+type SubscriptionsAliasesClientListByBillingAccountOptions struct {
+	// The count query option allows clients to request a count of the matching resources included with the resources in the response.
+	Count *bool
+
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
+	Filter *string
+
+	// Can be used to get deleted billing subscriptions.
+	IncludeDeleted *bool
+
+	// The orderby query option allows clients to request resources in a particular order.
+	OrderBy *string
+
+	// The search query option allows clients to request items within a collection matching a free-text search expression. search
+	// is only supported for string fields.
+	Search *string
+
+	// The skip query option requests the number of items in the queried collection that are to be skipped and not included in
+	// the result.
+	Skip *int64
+
+	// The top query option requests the number of items in the queried collection to be included in the result. The maximum supported
+	// value for top is 50.
+	Top *int64
+}
+
+// SubscriptionsClientBeginCancelOptions contains the optional parameters for the SubscriptionsClient.BeginCancel method.
+type SubscriptionsClientBeginCancelOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// SubscriptionsClientBeginDeleteOptions contains the optional parameters for the SubscriptionsClient.BeginDelete method.
+type SubscriptionsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// SubscriptionsClientBeginMergeOptions contains the optional parameters for the SubscriptionsClient.BeginMerge method.
+type SubscriptionsClientBeginMergeOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SubscriptionsClientBeginMoveOptions contains the optional parameters for the SubscriptionsClient.BeginMove method.
@@ -467,47 +1616,357 @@ type SubscriptionsClientBeginMoveOptions struct {
 	ResumeToken string
 }
 
+// SubscriptionsClientBeginSplitOptions contains the optional parameters for the SubscriptionsClient.BeginSplit method.
+type SubscriptionsClientBeginSplitOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// SubscriptionsClientBeginUpdateOptions contains the optional parameters for the SubscriptionsClient.BeginUpdate method.
+type SubscriptionsClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// SubscriptionsClientGetByBillingProfileOptions contains the optional parameters for the SubscriptionsClient.GetByBillingProfile
+// method.
+type SubscriptionsClientGetByBillingProfileOptions struct {
+	// Can be used to expand Reseller, ConsumptionCostCenter, LastMonthCharges and MonthToDateCharges
+	Expand *string
+}
+
 // SubscriptionsClientGetOptions contains the optional parameters for the SubscriptionsClient.Get method.
 type SubscriptionsClientGetOptions struct {
-	// placeholder for future optional parameters
+	// Can be used to expand Reseller, ConsumptionCostCenter, LastMonthCharges and MonthToDateCharges
+	Expand *string
 }
 
 // SubscriptionsClientListByBillingAccountOptions contains the optional parameters for the SubscriptionsClient.NewListByBillingAccountPager
 // method.
 type SubscriptionsClientListByBillingAccountOptions struct {
-	// placeholder for future optional parameters
+	// The count query option allows clients to request a count of the matching resources included with the resources in the response.
+	Count *bool
+
+	// Can be used to expand Reseller, ConsumptionCostCenter, LastMonthCharges and MonthToDateCharges
+	Expand *string
+
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
+	Filter *string
+
+	// Can be used to get deleted billing subscriptions.
+	IncludeDeleted *bool
+
+	// Can be used to get failed billing subscriptions.
+	IncludeFailed *bool
+
+	// Can be used to get tenant-owned billing subscriptions. This field is only applies to Microsoft Online Services Program
+	// billing accounts.
+	IncludeTenantSubscriptions *bool
+
+	// The orderby query option allows clients to request resources in a particular order.
+	OrderBy *string
+
+	// The search query option allows clients to request items within a collection matching a free-text search expression. search
+	// is only supported for string fields.
+	Search *string
+
+	// The skip query option requests the number of items in the queried collection that are to be skipped and not included in
+	// the result.
+	Skip *int64
+
+	// The top query option requests the number of items in the queried collection to be included in the result. The maximum supported
+	// value for top is 50.
+	Top *int64
 }
 
 // SubscriptionsClientListByBillingProfileOptions contains the optional parameters for the SubscriptionsClient.NewListByBillingProfilePager
 // method.
 type SubscriptionsClientListByBillingProfileOptions struct {
-	// placeholder for future optional parameters
+	// The count query option allows clients to request a count of the matching resources included with the resources in the response.
+	Count *bool
+
+	// Can be used to expand Reseller, ConsumptionCostCenter, LastMonthCharges and MonthToDateCharges
+	Expand *string
+
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
+	Filter *string
+
+	// Can be used to get deleted billing subscriptions.
+	IncludeDeleted *bool
+
+	// The orderby query option allows clients to request resources in a particular order.
+	OrderBy *string
+
+	// The search query option allows clients to request items within a collection matching a free-text search expression. search
+	// is only supported for string fields.
+	Search *string
+
+	// The skip query option requests the number of items in the queried collection that are to be skipped and not included in
+	// the result.
+	Skip *int64
+
+	// The top query option requests the number of items in the queried collection to be included in the result. The maximum supported
+	// value for top is 50.
+	Top *int64
+}
+
+// SubscriptionsClientListByCustomerAtBillingAccountOptions contains the optional parameters for the SubscriptionsClient.NewListByCustomerAtBillingAccountPager
+// method.
+type SubscriptionsClientListByCustomerAtBillingAccountOptions struct {
+	// The count query option allows clients to request a count of the matching resources included with the resources in the response.
+	Count *bool
+
+	// Can be used to expand Reseller, ConsumptionCostCenter, LastMonthCharges and MonthToDateCharges
+	Expand *string
+
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
+	Filter *string
+
+	// Can be used to get deleted billing subscriptions.
+	IncludeDeleted *bool
+
+	// The orderby query option allows clients to request resources in a particular order.
+	OrderBy *string
+
+	// The search query option allows clients to request items within a collection matching a free-text search expression. search
+	// is only supported for string fields.
+	Search *string
+
+	// The skip query option requests the number of items in the queried collection that are to be skipped and not included in
+	// the result.
+	Skip *int64
+
+	// The top query option requests the number of items in the queried collection to be included in the result. The maximum supported
+	// value for top is 50.
+	Top *int64
 }
 
 // SubscriptionsClientListByCustomerOptions contains the optional parameters for the SubscriptionsClient.NewListByCustomerPager
 // method.
 type SubscriptionsClientListByCustomerOptions struct {
-	// placeholder for future optional parameters
+	// The count query option allows clients to request a count of the matching resources included with the resources in the response.
+	Count *bool
+
+	// Can be used to expand Reseller, ConsumptionCostCenter, LastMonthCharges and MonthToDateCharges
+	Expand *string
+
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
+	Filter *string
+
+	// Can be used to get deleted billing subscriptions.
+	IncludeDeleted *bool
+
+	// The orderby query option allows clients to request resources in a particular order.
+	OrderBy *string
+
+	// The search query option allows clients to request items within a collection matching a free-text search expression. search
+	// is only supported for string fields.
+	Search *string
+
+	// The skip query option requests the number of items in the queried collection that are to be skipped and not included in
+	// the result.
+	Skip *int64
+
+	// The top query option requests the number of items in the queried collection to be included in the result. The maximum supported
+	// value for top is 50.
+	Top *int64
+}
+
+// SubscriptionsClientListByEnrollmentAccountOptions contains the optional parameters for the SubscriptionsClient.NewListByEnrollmentAccountPager
+// method.
+type SubscriptionsClientListByEnrollmentAccountOptions struct {
+	// The count query option allows clients to request a count of the matching resources included with the resources in the response.
+	Count *bool
+
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
+	Filter *string
+
+	// The orderby query option allows clients to request resources in a particular order.
+	OrderBy *string
+
+	// The search query option allows clients to request items within a collection matching a free-text search expression. search
+	// is only supported for string fields.
+	Search *string
+
+	// The skip query option requests the number of items in the queried collection that are to be skipped and not included in
+	// the result.
+	Skip *int64
+
+	// The top query option requests the number of items in the queried collection to be included in the result. The maximum supported
+	// value for top is 50.
+	Top *int64
 }
 
 // SubscriptionsClientListByInvoiceSectionOptions contains the optional parameters for the SubscriptionsClient.NewListByInvoiceSectionPager
 // method.
 type SubscriptionsClientListByInvoiceSectionOptions struct {
+	// The count query option allows clients to request a count of the matching resources included with the resources in the response.
+	Count *bool
+
+	// Can be used to expand Reseller, ConsumptionCostCenter, LastMonthCharges and MonthToDateCharges
+	Expand *string
+
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
+	Filter *string
+
+	// Can be used to get deleted billing subscriptions.
+	IncludeDeleted *bool
+
+	// The orderby query option allows clients to request resources in a particular order.
+	OrderBy *string
+
+	// The search query option allows clients to request items within a collection matching a free-text search expression. search
+	// is only supported for string fields.
+	Search *string
+
+	// The skip query option requests the number of items in the queried collection that are to be skipped and not included in
+	// the result.
+	Skip *int64
+
+	// The top query option requests the number of items in the queried collection to be included in the result. The maximum supported
+	// value for top is 50.
+	Top *int64
+}
+
+// SubscriptionsClientValidateMoveEligibilityOptions contains the optional parameters for the SubscriptionsClient.ValidateMoveEligibility
+// method.
+type SubscriptionsClientValidateMoveEligibilityOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SubscriptionsClientUpdateOptions contains the optional parameters for the SubscriptionsClient.Update method.
-type SubscriptionsClientUpdateOptions struct {
-	// placeholder for future optional parameters
+// TransactionsClientBeginTransactionsDownloadByInvoiceOptions contains the optional parameters for the TransactionsClient.BeginTransactionsDownloadByInvoice
+// method.
+type TransactionsClientBeginTransactionsDownloadByInvoiceOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// SubscriptionsClientValidateMoveOptions contains the optional parameters for the SubscriptionsClient.ValidateMove method.
-type SubscriptionsClientValidateMoveOptions struct {
-	// placeholder for future optional parameters
+// TransactionsClientGetTransactionSummaryByInvoiceOptions contains the optional parameters for the TransactionsClient.GetTransactionSummaryByInvoice
+// method.
+type TransactionsClientGetTransactionSummaryByInvoiceOptions struct {
+	// The filter query option allows clients to filter the line items that are aggregated to create the line item summary.
+	Filter *string
+
+	// The search query option allows clients to filter the line items that are aggregated to create the line item summary.
+	Search *string
+}
+
+// TransactionsClientListByBillingProfileOptions contains the optional parameters for the TransactionsClient.NewListByBillingProfilePager
+// method.
+type TransactionsClientListByBillingProfileOptions struct {
+	// The count query option allows clients to request a count of the matching resources included with the resources in the response.
+	Count *bool
+
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
+	Filter *string
+
+	// The orderby query option allows clients to request resources in a particular order.
+	OrderBy *string
+
+	// The search query option allows clients to request items within a collection matching a free-text search expression. search
+	// is only supported for string fields.
+	Search *string
+
+	// The skip query option requests the number of items in the queried collection that are to be skipped and not included in
+	// the result.
+	Skip *int64
+
+	// The top query option requests the number of items in the queried collection to be included in the result. The maximum supported
+	// value for top is 50.
+	Top *int64
+}
+
+// TransactionsClientListByCustomerOptions contains the optional parameters for the TransactionsClient.NewListByCustomerPager
+// method.
+type TransactionsClientListByCustomerOptions struct {
+	// The count query option allows clients to request a count of the matching resources included with the resources in the response.
+	Count *bool
+
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
+	Filter *string
+
+	// The orderby query option allows clients to request resources in a particular order.
+	OrderBy *string
+
+	// The search query option allows clients to request items within a collection matching a free-text search expression. search
+	// is only supported for string fields.
+	Search *string
+
+	// The skip query option requests the number of items in the queried collection that are to be skipped and not included in
+	// the result.
+	Skip *int64
+
+	// The top query option requests the number of items in the queried collection to be included in the result. The maximum supported
+	// value for top is 50.
+	Top *int64
 }
 
 // TransactionsClientListByInvoiceOptions contains the optional parameters for the TransactionsClient.NewListByInvoicePager
 // method.
 type TransactionsClientListByInvoiceOptions struct {
+	// The count query option allows clients to request a count of the matching resources included with the resources in the response.
+	Count *bool
+
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
+	Filter *string
+
+	// The orderby query option allows clients to request resources in a particular order.
+	OrderBy *string
+
+	// The search query option allows clients to request items within a collection matching a free-text search expression. search
+	// is only supported for string fields.
+	Search *string
+
+	// The skip query option requests the number of items in the queried collection that are to be skipped and not included in
+	// the result.
+	Skip *int64
+
+	// The top query option requests the number of items in the queried collection to be included in the result. The maximum supported
+	// value for top is 50.
+	Top *int64
+}
+
+// TransactionsClientListByInvoiceSectionOptions contains the optional parameters for the TransactionsClient.NewListByInvoiceSectionPager
+// method.
+type TransactionsClientListByInvoiceSectionOptions struct {
+	// The count query option allows clients to request a count of the matching resources included with the resources in the response.
+	Count *bool
+
+	// The filter query option allows clients to filter a collection of resources that are addressed by a request URL.
+	Filter *string
+
+	// The orderby query option allows clients to request resources in a particular order.
+	OrderBy *string
+
+	// The search query option allows clients to request items within a collection matching a free-text search expression. search
+	// is only supported for string fields.
+	Search *string
+
+	// The skip query option requests the number of items in the queried collection that are to be skipped and not included in
+	// the result.
+	Skip *int64
+
+	// The top query option requests the number of items in the queried collection to be included in the result. The maximum supported
+	// value for top is 50.
+	Top *int64
+}
+
+// TransfersClientCancelOptions contains the optional parameters for the TransfersClient.Cancel method.
+type TransfersClientCancelOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TransfersClientGetOptions contains the optional parameters for the TransfersClient.Get method.
+type TransfersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TransfersClientInitiateOptions contains the optional parameters for the TransfersClient.Initiate method.
+type TransfersClientInitiateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TransfersClientListOptions contains the optional parameters for the TransfersClient.NewListPager method.
+type TransfersClientListOptions struct {
 	// placeholder for future optional parameters
 }

@@ -1,5 +1,10 @@
 # Release History
 
+## 1.1.0-beta.2 (2024-09-26)
+### Bugs Fixed
+
+- Fix wrong url according to the spec fix.
+
 ## 1.1.0-beta.1 (2024-08-23)
 ### Features Added
 

@@ -29,6 +29,9 @@ type ServerFactory struct {
 
 	// PrivateLinksServer contains the fakes for client PrivateLinksClient
 	PrivateLinksServer PrivateLinksServer
+
+	// ReplicasServer contains the fakes for client ReplicasClient
+	ReplicasServer ReplicasServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -50,6 +53,7 @@ type ServerFactoryTransport struct {
 	trOperationsServer                 *OperationsServerTransport
 	trPrivateEndpointConnectionsServer *PrivateEndpointConnectionsServerTransport
 	trPrivateLinksServer               *PrivateLinksServerTransport
+	trReplicasServer                   *ReplicasServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -86,6 +90,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "PrivateLinksClient":
 		initServer(s, &s.trPrivateLinksServer, func() *PrivateLinksServerTransport { return NewPrivateLinksServerTransport(&s.srv.PrivateLinksServer) })
 		resp, err = s.trPrivateLinksServer.Do(req)
+	case "ReplicasClient":
+		initServer(s, &s.trReplicasServer, func() *ReplicasServerTransport { return NewReplicasServerTransport(&s.srv.ReplicasServer) })
+		resp, err = s.trReplicasServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

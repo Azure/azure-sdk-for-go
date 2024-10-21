@@ -604,6 +604,14 @@ func (c *ClientFactory) NewManagerDeploymentStatusClient() *ManagerDeploymentSta
 	}
 }
 
+// NewManagerRoutingConfigurationsClient creates a new instance of ManagerRoutingConfigurationsClient.
+func (c *ClientFactory) NewManagerRoutingConfigurationsClient() *ManagerRoutingConfigurationsClient {
+	return &ManagerRoutingConfigurationsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewManagersClient creates a new instance of ManagersClient.
 func (c *ClientFactory) NewManagersClient() *ManagersClient {
 	return &ManagersClient{
@@ -763,6 +771,22 @@ func (c *ClientFactory) NewRoutingIntentClient() *RoutingIntentClient {
 	}
 }
 
+// NewRoutingRuleCollectionsClient creates a new instance of RoutingRuleCollectionsClient.
+func (c *ClientFactory) NewRoutingRuleCollectionsClient() *RoutingRuleCollectionsClient {
+	return &RoutingRuleCollectionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewRoutingRulesClient creates a new instance of RoutingRulesClient.
+func (c *ClientFactory) NewRoutingRulesClient() *RoutingRulesClient {
+	return &RoutingRulesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewScopeConnectionsClient creates a new instance of ScopeConnectionsClient.
 func (c *ClientFactory) NewScopeConnectionsClient() *ScopeConnectionsClient {
 	return &ScopeConnectionsClient{
@@ -798,6 +822,30 @@ func (c *ClientFactory) NewSecurityPartnerProvidersClient() *SecurityPartnerProv
 // NewSecurityRulesClient creates a new instance of SecurityRulesClient.
 func (c *ClientFactory) NewSecurityRulesClient() *SecurityRulesClient {
 	return &SecurityRulesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewSecurityUserConfigurationsClient creates a new instance of SecurityUserConfigurationsClient.
+func (c *ClientFactory) NewSecurityUserConfigurationsClient() *SecurityUserConfigurationsClient {
+	return &SecurityUserConfigurationsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewSecurityUserRuleCollectionsClient creates a new instance of SecurityUserRuleCollectionsClient.
+func (c *ClientFactory) NewSecurityUserRuleCollectionsClient() *SecurityUserRuleCollectionsClient {
+	return &SecurityUserRuleCollectionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewSecurityUserRulesClient creates a new instance of SecurityUserRulesClient.
+func (c *ClientFactory) NewSecurityUserRulesClient() *SecurityUserRulesClient {
+	return &SecurityUserRulesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

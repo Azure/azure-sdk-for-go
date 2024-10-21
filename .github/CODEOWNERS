@@ -32,7 +32,7 @@
 # PRLabel: %Internal
 /sdk/internal/                @chlowell @jhendrixMSFT @richardpark-msft @rickwinter
 
-# AzureSDKOwners: @jhendrixMSFT 
+# AzureSDKOwners: @jhendrixMSFT
 # ServiceLabel: %App Configuration
 # PRLabel: %App Configuration
 /sdk/data/azappconfig/        @jhendrixMSFT @rickwinter
@@ -46,7 +46,7 @@
 # AzureSDKOwners: @jhendrixMSFT
 # ServiceLabel: %Tables
 # PRLabel: %Tables
-/sdk/data/aztables/           @jhendrixMSFT
+/sdk/data/aztables/           @jhendrixMSFT @richardpark-msft
 
 # AzureSDKOwners: @gracewilcox
 # ServiceLabel: %KeyVault
@@ -76,7 +76,7 @@
 # AzureSDKOwners: @lirenhe
 # ServiceLabel: %Mgmt
 # PRLabel: %Mgmt
-/sdk/resourcemanager/         @ArcturusZhang @lirenhe @tadelesh @raych1
+/sdk/resourcemanager/         @ArcturusZhang @lirenhe @tadelesh
 
 # AzureSDKOwners: @jhendrixMSFT
 # ServiceOwner: @tanyasethi-msft
@@ -88,22 +88,6 @@
 # ServiceLabel: %OpenTelemetry
 # PRLabel: %OpenTelemetry
 /sdk/tracing/azotel           @jhendrixMSFT @rickwinter
-
-###########
-# Eng Sys
-###########
-/eng/                         @benbp @weshaggard
-/eng/common/                  @Azure/azure-sdk-eng
-/.github/workflows/           @Azure/azure-sdk-eng
-/eng/config.json              @richardpark-msft @jhendrixMSFT @rickwinter @chlowell @gracewilcox
-
-
-# Add owners for notifications for specific pipelines
-/eng/common/pipelines/codeowners-linter.yml       @rickwinter
-
-# Add owners for go sdk tool
-/eng/tools/generator          @ArcturusZhang @lirenhe @tadelesh @raych1
-/eng/tools/internal           @ArcturusZhang @lirenhe @tadelesh @raych1
 
 # AzureSDKOwners: @benbp
 # ServiceLabel: %EngSys
@@ -417,7 +401,7 @@
 #/<NotInRepo>/          @azmonapplicationinsights
 
 # ServiceLabel: %Monitor - Exporter
-#/<NotInRepo>/          @cijothomas @reyang @rajkumar-rangaraj @TimothyMothra @vishweshbankwar
+#/<NotInRepo>/          @cijothomas @reyang @rajkumar-rangaraj @TimothyMothra
 
 # ServiceLabel: %MySQL
 #/<NotInRepo>/          @ambhatna @savjani
@@ -502,7 +486,7 @@
 #/<NotInRepo>/          @derek1ee
 
 # ServiceLabel: %Search
-#/<NotInRepo>/          @brjohnstmsft @bleroy @tjacobhi @markheff @miwelsh
+#/<NotInRepo>/          @bleroy @tjacobhi @markheff @miwelsh
 
 # ServiceLabel: %Security
 #/<NotInRepo>/          @chlahav
@@ -626,3 +610,20 @@
 
 # ServiceLabel: %Consumption - RIandShowBack
 #/<NotInRepo>/          @ccmshowbackdevs
+
+###########
+# Eng Sys
+###########
+/eng/                         @benbp @weshaggard
+/eng/common/                  @Azure/azure-sdk-eng
+/eng/config.json              @richardpark-msft @jhendrixMSFT @rickwinter @chlowell @gracewilcox
+/.config/1espt/               @benbp @weshaggard
+/.github/workflows/           @Azure/azure-sdk-eng
+/.github/CODEOWNERS           @rickwinter @sandeep-sen @Azure/azure-sdk-eng
+
+# Add owners for go sdk tool
+/eng/tools/generator          @ArcturusZhang @lirenhe @tadelesh
+/eng/tools/internal           @ArcturusZhang @lirenhe @tadelesh
+
+# Add owners for notifications for specific pipelines
+/eng/common/pipelines/codeowners-linter.yml       @rickwinter

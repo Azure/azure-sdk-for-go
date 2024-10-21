@@ -43,10 +43,10 @@ func NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcor
 	return client, nil
 }
 
-// BeginDelete - Deletes the specified private endpoint connection associated with the RedisEnterprise cluster.
+// BeginDelete - Deletes the specified private endpoint connection associated with the Redis Enterprise cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01-preview
+// Generated from API version 2024-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Redis Enterprise cluster.
 //   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource
@@ -70,10 +70,10 @@ func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context,
 	}
 }
 
-// Delete - Deletes the specified private endpoint connection associated with the RedisEnterprise cluster.
+// Delete - Deletes the specified private endpoint connection associated with the Redis Enterprise cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01-preview
+// Generated from API version 2024-09-01-preview
 func (client *PrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateEndpointConnectionsClient.BeginDelete"
@@ -119,16 +119,16 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01-preview")
+	reqQP.Set("api-version", "2024-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// Get - Gets the specified private endpoint connection associated with the RedisEnterprise cluster.
+// Get - Gets the specified private endpoint connection associated with the Redis Enterprise cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01-preview
+// Generated from API version 2024-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Redis Enterprise cluster.
 //   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource
@@ -180,7 +180,7 @@ func (client *PrivateEndpointConnectionsClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01-preview")
+	reqQP.Set("api-version", "2024-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -195,9 +195,9 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// NewListPager - Lists all the private endpoint connections associated with the RedisEnterprise cluster.
+// NewListPager - Lists all the private endpoint connections associated with the Redis Enterprise cluster.
 //
-// Generated from API version 2024-03-01-preview
+// Generated from API version 2024-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Redis Enterprise cluster.
 //   - options - PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListPager
@@ -246,7 +246,7 @@ func (client *PrivateEndpointConnectionsClient) listCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01-preview")
+	reqQP.Set("api-version", "2024-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -261,10 +261,10 @@ func (client *PrivateEndpointConnectionsClient) listHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// BeginPut - Updates the state of the specified private endpoint connection associated with the RedisEnterprise cluster.
+// BeginPut - Updates the state of the specified private endpoint connection associated with the Redis Enterprise cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01-preview
+// Generated from API version 2024-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Redis Enterprise cluster.
 //   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource
@@ -288,10 +288,10 @@ func (client *PrivateEndpointConnectionsClient) BeginPut(ctx context.Context, re
 	}
 }
 
-// Put - Updates the state of the specified private endpoint connection associated with the RedisEnterprise cluster.
+// Put - Updates the state of the specified private endpoint connection associated with the Redis Enterprise cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01-preview
+// Generated from API version 2024-09-01-preview
 func (client *PrivateEndpointConnectionsClient) put(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointConnectionName string, properties PrivateEndpointConnection, options *PrivateEndpointConnectionsClientBeginPutOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateEndpointConnectionsClient.BeginPut"
@@ -337,7 +337,7 @@ func (client *PrivateEndpointConnectionsClient) putCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01-preview")
+	reqQP.Set("api-version", "2024-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

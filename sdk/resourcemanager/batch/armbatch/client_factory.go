@@ -76,6 +76,14 @@ func (c *ClientFactory) NewLocationClient() *LocationClient {
 	}
 }
 
+// NewNetworkSecurityPerimeterClient creates a new instance of NetworkSecurityPerimeterClient.
+func (c *ClientFactory) NewNetworkSecurityPerimeterClient() *NetworkSecurityPerimeterClient {
+	return &NetworkSecurityPerimeterClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return &OperationsClient{

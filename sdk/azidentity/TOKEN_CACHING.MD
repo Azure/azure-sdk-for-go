@@ -1,6 +1,6 @@
 ## Token caching in the Azure Identity client module
 
-*Token caching* is a feature provided by the Azure Identity library that helps apps:
+Token caching helps apps:
 
 - Improve their resilience and performance.
 - Reduce the number of requests sent to Microsoft Entra ID to obtain access tokens.
@@ -18,28 +18,26 @@ Credential types that support caching store tokens in memory by default and requ
 
 ### Persistent token caching
 
-> Only azidentity v1.8.0-beta versions support persistent token caching
-
 Some credential types support opt-in persistent token caching (see [the below table](#credentials-supporting-token-caching) for a list). This feature enables credentials to store and retrieve tokens across process executions, so an application doesn't need to authenticate every time it runs.
 
 Persistent caches are encrypted at rest using a mechanism that depends on the operating system:
 
-| Operating system | Encryption facility                   |
-|------------------|---------------------------------------|
-| Linux            | kernel key retention service (keyctl) |
-| macOS            | Keychain                              |
-| Windows          | Data Protection API (DPAPI)           |
+| Operating system | Encryption facility                            |
+| ---------------- | ---------------------------------------------- |
+| Linux            | kernel key retention service (keyctl)          |
+| macOS            | Keychain (requires cgo and native build tools) |
+| Windows          | Data Protection API (DPAPI)                    |
 
-Persistent caching requires encryption. When the required encryption facility is unuseable, or the application is running on an unsupported OS, the persistent cache constructor returns an error. This doesn't mean that authentication is impossible, only that credentials can't persist authentication data and the application will need to reauthenticate the next time it runs. See the [package documentation][example] for example code showing how to configure persistent caching and access cached data.
+Persistent caching requires encryption. When the required encryption facility is unuseable, or the application is running on an unsupported OS, the persistent cache constructor returns an error. This doesn't mean that authentication is impossible, only that credentials can't persist authentication data and the application will need to reauthenticate the next time it runs. See the package documentation for examples showing how to configure persistent caching and access cached data for [users][user_example] and [service principals][sp_example].
 
 ### Credentials supporting token caching
 
 The following table indicates the state of in-memory and persistent caching in each credential type.
 
-**Note:** in-memory caching is enabled by default for every type supporting it. Persistent token caching needs to be enabled explicitly as shown in the [package documentation][example].
+**Note:** in-memory caching is enabled by default for every type supporting it. Persistent token caching must be enabled explicitly. See the [package documentation][user_example] for an example showing how to do this for credential types authenticating users. For types that authenticate service principals, set the `Cache` field on the constructor's options as shown in [this example][sp_example].
 
 | Credential                     | In-memory token caching                                             | Persistent token caching |
-|--------------------------------|---------------------------------------------------------------------|--------------------------|
+| ------------------------------ | ------------------------------------------------------------------- | ------------------------ |
 | `AzureCLICredential`           | Not Supported                                                       | Not Supported            |
 | `AzureDeveloperCLICredential`  | Not Supported                                                       | Not Supported            |
 | `AzurePipelinesCredential`     | Supported                                                           | Supported                |
@@ -51,8 +49,9 @@ The following table indicates the state of in-memory and persistent caching in e
 | `EnvironmentCredential`        | Supported                                                           | Not Supported            |
 | `InteractiveBrowserCredential` | Supported                                                           | Supported                |
 | `ManagedIdentityCredential`    | Supported                                                           | Not Supported            |
-| `OnBehalfOfCredential`         | Supported                                                           | Supported                |
+| `OnBehalfOfCredential`         | Supported                                                           | Not Supported            |
 | `UsernamePasswordCredential`   | Supported                                                           | Supported                |
 | `WorkloadIdentityCredential`   | Supported                                                           | Supported                |
 
-[example]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity@v1.8.0-beta.1#example-package-PersistentUserAuthentication
+[sp_example]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#example-package-PersistentServicePrincipalAuthentication
+[user_example]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#example-package-PersistentUserAuthentication

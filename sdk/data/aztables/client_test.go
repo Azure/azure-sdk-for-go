@@ -17,16 +17,20 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-var services = []string{"storage", "cosmos"}
+var services = []endpointType{
+	storageEndpoint,
+	cosmosEndpoint,
+	storageTokenCredentialEndpoint,
+	cosmosTokenCredentialEndpoint,
+}
 
 func TestServiceErrors(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true, NewSpanValidator(t, SpanMatcher{
+			client := initClientTest(t, service, true, NewSpanValidator(t, SpanMatcher{
 				Name:   "Client.CreateTable",
 				Status: tracing.SpanStatusError,
 			}))
-			defer delete()
 
 			// Create a duplicate table to produce an error
 			_, err := client.CreateTable(ctx, nil)
@@ -42,10 +46,9 @@ func TestServiceErrors(t *testing.T) {
 func TestCreateTable(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, false, NewSpanValidator(t, SpanMatcher{
+			client := initClientTest(t, service, false, NewSpanValidator(t, SpanMatcher{
 				Name: "Client.Delete",
 			}))
-			defer delete()
 
 			_, err := client.CreateTable(ctx, nil)
 
@@ -62,10 +65,9 @@ type mdforAddGet struct {
 func TestAddEntity(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true, NewSpanValidator(t, SpanMatcher{
+			client := initClientTest(t, service, true, NewSpanValidator(t, SpanMatcher{
 				Name: "Client.AddEntity",
 			}))
-			defer delete()
 
 			simpleEntity := createSimpleEntity(1, "partition")
 
@@ -85,8 +87,7 @@ func TestAddEntity(t *testing.T) {
 func TestAddComplexEntity(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true, tracing.Provider{})
-			defer delete()
+			client := initClientTest(t, service, true, tracing.Provider{})
 
 			entity := createComplexEntity(1, "partition")
 
@@ -112,10 +113,9 @@ func TestAddComplexEntity(t *testing.T) {
 func TestDeleteEntity(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true, NewSpanValidator(t, SpanMatcher{
+			client := initClientTest(t, service, true, NewSpanValidator(t, SpanMatcher{
 				Name: "Client.DeleteEntity",
 			}))
-			defer delete()
 
 			simpleEntity := createSimpleEntity(1, "partition")
 
@@ -132,8 +132,7 @@ func TestDeleteEntity(t *testing.T) {
 func TestDeleteEntityWithETag(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true, tracing.Provider{})
-			defer delete()
+			client := initClientTest(t, service, true, tracing.Provider{})
 
 			simpleEntity := createSimpleEntity(1, "partition")
 			simpleEntity2 := createSimpleEntity(2, "partition")
@@ -168,10 +167,9 @@ func TestDeleteEntityWithETag(t *testing.T) {
 func TestMergeEntity(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true, NewSpanValidator(t, SpanMatcher{
+			client := initClientTest(t, service, true, NewSpanValidator(t, SpanMatcher{
 				Name: "Client.GetEntity",
 			}))
-			defer delete()
 
 			entityToCreate := createSimpleEntity(1, "partition")
 			marshalled, err := json.Marshal(entityToCreate)
@@ -230,11 +228,10 @@ func TestMergeEntity(t *testing.T) {
 func TestMergeEntityDoesNotExist(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true, NewSpanValidator(t, SpanMatcher{
+			client := initClientTest(t, service, true, NewSpanValidator(t, SpanMatcher{
 				Name:   "Client.UpdateEntity",
 				Status: tracing.SpanStatusError,
 			}))
-			defer delete()
 
 			entityToCreate := createSimpleEntity(1, "partition")
 			marshalled, err := json.Marshal(entityToCreate)
@@ -253,10 +250,9 @@ func TestMergeEntityDoesNotExist(t *testing.T) {
 func TestInsertEntity(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true, NewSpanValidator(t, SpanMatcher{
+			client := initClientTest(t, service, true, NewSpanValidator(t, SpanMatcher{
 				Name: "Client.UpsertEntity",
 			}))
-			defer delete()
 
 			// 1. Create Basic Entity
 			entityToCreate := createSimpleEntityWithRowKey(1, "parti'tion", "one'")
@@ -322,8 +318,7 @@ func TestInsertEntity(t *testing.T) {
 func TestInsertEntityTwice(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true, tracing.Provider{})
-			defer delete()
+			client := initClientTest(t, service, true, tracing.Provider{})
 
 			// 1. Create Basic Entity
 			entityToCreate := createSimpleEntity(1, "partition")
@@ -347,10 +342,9 @@ type mdForListEntities struct {
 func TestQuerySimpleEntity(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true, NewSpanValidator(t, SpanMatcher{
+			client := initClientTest(t, service, true, NewSpanValidator(t, SpanMatcher{
 				Name: "Pager[ListEntitiesResponse].NextPage",
 			}))
-			defer delete()
 
 			// Add 5 entities
 			entitiesToCreate := createSimpleEntities(5, "partition")
@@ -407,8 +401,7 @@ func TestQuerySimpleEntity(t *testing.T) {
 func TestQueryComplexEntity(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true, tracing.Provider{})
-			defer delete()
+			client := initClientTest(t, service, true, tracing.Provider{})
 
 			// Add 5 entities
 			entitiesToCreate := createComplexEntities(5, "partition")
@@ -462,8 +455,7 @@ func TestQueryComplexEntity(t *testing.T) {
 func TestInvalidEntity(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true, tracing.Provider{})
-			defer delete()
+			client := initClientTest(t, service, true, tracing.Provider{})
 
 			badEntity := map[string]any{
 				"Value":  10,
@@ -483,8 +475,7 @@ func TestInvalidEntity(t *testing.T) {
 func TestContinuationTokens(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true, tracing.Provider{})
-			defer delete()
+			client := initClientTest(t, service, true, tracing.Provider{})
 
 			err := insertNEntities("contToken", 10, client)
 			require.NoError(t, err)
@@ -524,8 +515,7 @@ func TestContinuationTokens(t *testing.T) {
 func TestContinuationTokensFilters(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true, tracing.Provider{})
-			defer delete()
+			client := initClientTest(t, service, true, tracing.Provider{})
 
 			err := insertNEntities("contToken", 10, client)
 			require.NoError(t, err)

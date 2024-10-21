@@ -16,10 +16,12 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/stretchr/testify/require"
 )
 
 const recordingDirectory = "sdk/data/aztables/testdata"
+const fakeAccount = recording.SanitizedValue
 
 func TestMain(m *testing.M) {
 	code := run(m)
@@ -76,7 +78,26 @@ func NewFakeCredential(accountName, accountKey string) *FakeCredential {
 	}
 }
 
-func createClientForRecording(t *testing.T, tableName string, serviceURL string, cred SharedKeyCredential, tp tracing.Provider) (*Client, error) {
+func createClientForRecording(t *testing.T, tableName string, serviceURL string, tp tracing.Provider) (*Client, error) {
+	client, err := recording.NewRecordingHTTPClient(t, nil)
+	require.NoError(t, err)
+
+	tokenCredential, err := credential.New(nil)
+	require.NoError(t, err)
+
+	options := &ClientOptions{ClientOptions: azcore.ClientOptions{
+		TracingProvider: tp,
+		Transport:       client,
+	}}
+	if !strings.HasSuffix(serviceURL, "/") && tableName != "" {
+		serviceURL += "/"
+	}
+	serviceURL += tableName
+
+	return NewClient(serviceURL, tokenCredential, options)
+}
+
+func createClientForRecordingForSharedKey(t *testing.T, tableName string, serviceURL string, cred SharedKeyCredential, tp tracing.Provider) (*Client, error) {
 	client, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 
@@ -108,7 +129,21 @@ func createClientForRecordingWithNoCredential(t *testing.T, tableName string, se
 	return NewClientWithNoCredential(serviceURL, options)
 }
 
-func createServiceClientForRecording(t *testing.T, serviceURL string, cred SharedKeyCredential, tp tracing.Provider) (*ServiceClient, error) {
+func createServiceClientForRecording(t *testing.T, serviceURL string, tp tracing.Provider) (*ServiceClient, error) {
+	client, err := recording.NewRecordingHTTPClient(t, nil)
+	require.NoError(t, err)
+
+	tokenCredential, err := credential.New(nil)
+	require.NoError(t, err)
+
+	options := &ClientOptions{ClientOptions: azcore.ClientOptions{
+		TracingProvider: tp,
+		Transport:       client,
+	}}
+	return NewServiceClient(serviceURL, tokenCredential, options)
+}
+
+func createServiceClientForRecordingForSharedKey(t *testing.T, serviceURL string, cred SharedKeyCredential, tp tracing.Provider) (*ServiceClient, error) {
 	client, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 
@@ -130,16 +165,24 @@ func createServiceClientForRecordingWithNoCredential(t *testing.T, serviceURL st
 	return NewServiceClientWithNoCredential(serviceURL, options)
 }
 
-func initClientTest(t *testing.T, service string, createTable bool, tp tracing.Provider) (*Client, func()) {
+func initClientTest(t *testing.T, service endpointType, createTable bool, tp tracing.Provider) *Client {
 	var client *Client
 	var err error
-	if service == string(storageEndpoint) {
-		client, err = createStorageClient(t, tp)
-		require.NoError(t, err)
-	} else if service == string(cosmosEndpoint) {
-		client, err = createCosmosClient(t, tp)
-		require.NoError(t, err)
+
+	switch service {
+	case storageEndpoint:
+		client, err = createStorageClient(t, tp, &testClientOptions{UseSharedKey: true})
+	case storageTokenCredentialEndpoint:
+		client, err = createStorageClient(t, tp, &testClientOptions{UseSharedKey: false})
+	case cosmosEndpoint:
+		client, err = createCosmosClient(t, tp, &testClientOptions{UseSharedKey: true})
+	case cosmosTokenCredentialEndpoint:
+		client, err = createCosmosClient(t, tp, &testClientOptions{UseSharedKey: false})
+	default:
+		require.FailNowf(t, "Invalid client test option", "%s", string(service))
 	}
+
+	require.NoError(t, err)
 
 	err = recording.Start(t, recordingDirectory, nil)
 	require.NoError(t, err)
@@ -149,121 +192,169 @@ func initClientTest(t *testing.T, service string, createTable bool, tp tracing.P
 		require.NoError(t, err)
 	}
 
-	return client, func() {
+	t.Cleanup(func() {
 		_, err = client.Delete(ctx, nil)
 		require.NoError(t, err)
 		err = recording.Stop(t, nil)
 		require.NoError(t, err)
-	}
+	})
+
+	return client
 }
 
-func initServiceTest(t *testing.T, service string, tp tracing.Provider) (*ServiceClient, func()) {
+func initServiceTest(t *testing.T, service endpointType, tp tracing.Provider) *ServiceClient {
 	var client *ServiceClient
 	var err error
-	if service == string(storageEndpoint) {
-		client, err = createStorageServiceClient(t, tp)
-		require.NoError(t, err)
-	} else if service == string(cosmosEndpoint) {
-		client, err = createCosmosServiceClient(t, tp)
-		require.NoError(t, err)
+	switch service {
+	case storageEndpoint:
+		client, err = createStorageServiceClient(t, tp, &testClientOptions{UseSharedKey: true})
+	case storageTokenCredentialEndpoint:
+		client, err = createStorageServiceClient(t, tp, &testClientOptions{UseSharedKey: false})
+	case cosmosEndpoint:
+		client, err = createCosmosServiceClient(t, tp, &testClientOptions{UseSharedKey: true})
+	case cosmosTokenCredentialEndpoint:
+		client, err = createCosmosServiceClient(t, tp, &testClientOptions{UseSharedKey: false})
+	default:
+		require.FailNowf(t, "Invalid service test option", "%s", string(service))
 	}
+	require.NoError(t, err)
 
 	err = recording.Start(t, recordingDirectory, nil)
 	require.NoError(t, err)
 
-	return client, func() {
+	t.Cleanup(func() {
 		err = recording.Stop(t, nil)
 		require.NoError(t, err)
-	}
+	})
+
+	return client
 }
 
 func getSharedKeyCredential() (*SharedKeyCredential, error) {
-	if recording.GetRecordMode() == "playback" {
+	if recording.GetRecordMode() == recording.PlaybackMode {
 		return NewSharedKeyCredential("accountName", "daaaaaaaaaabbbbbbbbbbcccccccccccccccccccdddddddddddddddddddeeeeeeeeeeefffffffffffggggg==")
 	}
 
-	accountName := recording.GetEnvVariable("TABLES_COSMOS_ACCOUNT_NAME", "fakeaccount")
+	accountName := recording.GetEnvVariable("TABLES_COSMOS_ACCOUNT_NAME", fakeAccount)
 	accountKey := recording.GetEnvVariable("TABLES_PRIMARY_COSMOS_ACCOUNT_KEY", "fakeAccountKey")
 
 	return NewSharedKeyCredential(accountName, accountKey)
 }
 
-func createStorageClient(t *testing.T, tp tracing.Provider) (*Client, error) {
-	var cred *SharedKeyCredential
-	var err error
-	accountName := recording.GetEnvVariable("TABLES_STORAGE_ACCOUNT_NAME", "fakeaccount")
-	accountKey := recording.GetEnvVariable("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY", "fakeaccountkey")
-
-	if recording.GetRecordMode() == "playback" {
-		cred, err = getSharedKeyCredential()
-		require.NoError(t, err)
-	} else {
-		cred, err = NewSharedKeyCredential(accountName, accountKey)
-		require.NoError(t, err)
+func createStorageClient(t *testing.T, tp tracing.Provider, options *testClientOptions) (*Client, error) {
+	if options == nil {
+		options = &testClientOptions{}
 	}
+
+	var err error
+	accountName := recording.GetEnvVariable("TABLES_STORAGE_ACCOUNT_NAME", fakeAccount)
+	accountKey := recording.GetEnvVariable("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY", "fakeaccountkey")
 
 	serviceURL := storageURI(accountName)
 
 	tableName, err := createRandomName(t, tableNamePrefix)
 	require.NoError(t, err)
 
-	return createClientForRecording(t, tableName, serviceURL, *cred, tp)
-}
+	if options.UseSharedKey {
+		var cred *SharedKeyCredential
 
-func createCosmosClient(t *testing.T, tp tracing.Provider) (*Client, error) {
-	var cred *SharedKeyCredential
-	accountName := recording.GetEnvVariable("TABLES_COSMOS_ACCOUNT_NAME", "fakeaccount")
-	if recording.GetRecordMode() == "playback" {
-		accountName = "fakeaccount"
+		if recording.GetRecordMode() == recording.PlaybackMode {
+			cred, err = getSharedKeyCredential()
+			require.NoError(t, err)
+		} else {
+			cred, err = NewSharedKeyCredential(accountName, accountKey)
+			require.NoError(t, err)
+		}
+
+		return createClientForRecordingForSharedKey(t, tableName, serviceURL, *cred, tp)
 	}
 
-	cred, err := getSharedKeyCredential()
-	require.NoError(t, err)
+	return createClientForRecording(t, tableName, serviceURL, tp)
+}
+
+type testClientOptions struct {
+	UseSharedKey bool
+}
+
+func createCosmosClient(t *testing.T, tp tracing.Provider, options *testClientOptions) (*Client, error) {
+	if options == nil {
+		options = &testClientOptions{}
+	}
+
+	accountName := recording.GetEnvVariable("TABLES_COSMOS_ACCOUNT_NAME", fakeAccount)
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		accountName = fakeAccount
+	}
 
 	serviceURL := cosmosURI(accountName)
 
 	tableName, err := createRandomName(t, tableNamePrefix)
 	require.NoError(t, err)
 
-	return createClientForRecording(t, tableName, serviceURL, *cred, tp)
-}
-
-func createStorageServiceClient(t *testing.T, tp tracing.Provider) (*ServiceClient, error) {
-	var cred *SharedKeyCredential
-	var err error
-	accountName := recording.GetEnvVariable("TABLES_STORAGE_ACCOUNT_NAME", "fakeaccount")
-	accountKey := recording.GetEnvVariable("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY", "fakeaccountkey")
-
-	if recording.GetRecordMode() == "playback" {
-		cred, err = getSharedKeyCredential()
+	if options.UseSharedKey {
+		cred, err := getSharedKeyCredential()
 		require.NoError(t, err)
-	} else {
-		cred, err = NewSharedKeyCredential(accountName, accountKey)
-		require.NoError(t, err)
+		return createClientForRecordingForSharedKey(t, tableName, serviceURL, *cred, tp)
 	}
 
+	return createClientForRecording(t, tableName, serviceURL, tp)
+}
+
+func createStorageServiceClient(t *testing.T, tp tracing.Provider, options *testClientOptions) (*ServiceClient, error) {
+	if options == nil {
+		options = &testClientOptions{}
+	}
+
+	accountName := recording.GetEnvVariable("TABLES_STORAGE_ACCOUNT_NAME", fakeAccount)
+	accountKey := recording.GetEnvVariable("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY", "fakeaccountkey")
 	serviceURL := storageURI(accountName)
 
-	return createServiceClientForRecording(t, serviceURL, *cred, tp)
-}
+	if options.UseSharedKey {
+		var cred *SharedKeyCredential
+		var err error
 
-func createCosmosServiceClient(t *testing.T, tp tracing.Provider) (*ServiceClient, error) {
-	var cred *SharedKeyCredential
-	accountName := recording.GetEnvVariable("TABLES_COSMOS_ACCOUNT_NAME", "fakeaccount")
-	if recording.GetRecordMode() == "playback" {
-		accountName = "fakeaccount"
+		if recording.GetRecordMode() == recording.PlaybackMode {
+			cred, err = getSharedKeyCredential()
+			require.NoError(t, err)
+		} else {
+			cred, err = NewSharedKeyCredential(accountName, accountKey)
+			require.NoError(t, err)
+		}
+
+		return createServiceClientForRecordingForSharedKey(t, serviceURL, *cred, tp)
 	}
 
-	cred, err := getSharedKeyCredential()
-	require.NoError(t, err)
+	return createServiceClientForRecording(t, serviceURL, tp)
+}
+
+func createCosmosServiceClient(t *testing.T, tp tracing.Provider, options *testClientOptions) (*ServiceClient, error) {
+	if options == nil {
+		options = &testClientOptions{}
+	}
+
+	accountName := recording.GetEnvVariable("TABLES_COSMOS_ACCOUNT_NAME", fakeAccount)
+
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		accountName = fakeAccount
+	}
 
 	serviceURL := cosmosURI(accountName)
 
-	return createServiceClientForRecording(t, serviceURL, *cred, tp)
+	if options.UseSharedKey {
+		var cred *SharedKeyCredential
+
+		cred, err := getSharedKeyCredential()
+		require.NoError(t, err)
+
+		return createServiceClientForRecordingForSharedKey(t, serviceURL, *cred, tp)
+	}
+
+	return createServiceClientForRecording(t, serviceURL, tp)
 }
 
 func createRandomName(t *testing.T, prefix string) (string, error) {
 	h := fnv.New32a()
+
 	_, err := h.Write([]byte(t.Name()))
 	return prefix + fmt.Sprint(h.Sum32()), err
 }

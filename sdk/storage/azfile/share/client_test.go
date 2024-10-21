@@ -563,13 +563,15 @@ func (s *ShareRecordedTestsSuite) TestShareGetSetPropertiesOAuth() {
 func (s *ShareRecordedTestsSuite) TestShareGetSetPropertiesWithSnapshotVirtualDirectory() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountPremium, nil)
 	_require.NoError(err)
 
 	shareName := testcommon.GenerateShareName(testName)
-	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	shareClient := testcommon.GetShareClient(shareName, svcClient)
 
-	_, err = shareClient.Create(context.Background(), nil)
+	_, err = shareClient.Create(context.Background(), &share.CreateOptions{EnabledProtocols: to.Ptr("NFS")})
+	_require.NoError(err)
+
 	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
 	_require.NoError(err)
 
@@ -1938,7 +1940,7 @@ func (s *ShareRecordedTestsSuite) TestShareClientCustomAudience() {
 	_require.NotEmpty(*getResp.Permission)
 }
 
-func (s *ShareRecordedTestsSuite) TestShareClientAudienceNegative() {
+func (s *ShareUnrecordedTestsSuite) TestShareClientAudienceNegative() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1966,5 +1968,5 @@ func (s *ShareRecordedTestsSuite) TestShareClientAudienceNegative() {
 	// Create a permission and check that it's not empty.
 	_, err = shareClientAudience.CreatePermission(context.Background(), testcommon.SampleSDDL, nil)
 	_require.Error(err)
-	testcommon.ValidateFileErrorCode(_require, err, fileerror.AuthenticationFailed)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.InvalidAuthenticationInfo)
 }

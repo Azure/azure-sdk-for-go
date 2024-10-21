@@ -45,13 +45,13 @@ func ExampleClient_GetChatCompletions() {
 	// NOTE: all messages, regardless of role, count against token usage for this API.
 	messages := []azopenai.ChatRequestMessageClassification{
 		// You set the tone and rules of the conversation with a prompt as the system role.
-		&azopenai.ChatRequestSystemMessage{Content: to.Ptr("You are a helpful assistant. You will talk like a pirate.")},
+		&azopenai.ChatRequestSystemMessage{Content: azopenai.NewChatRequestSystemMessageContent("You are a helpful assistant. You will talk like a pirate.")},
 
 		// The user asks a question
 		&azopenai.ChatRequestUserMessage{Content: azopenai.NewChatRequestUserMessageContent("Can you help me?")},
 
 		// The reply would come back from the ChatGPT. You'd add it to the conversation so we can maintain context.
-		&azopenai.ChatRequestAssistantMessage{Content: to.Ptr("Arrrr! Of course, me hearty! What can I do for ye?")},
+		&azopenai.ChatRequestAssistantMessage{Content: azopenai.NewChatRequestAssistantMessageContent("Arrrr! Of course, me hearty! What can I do for ye?")},
 
 		// The user answers the question based on the latest reply.
 		&azopenai.ChatRequestUserMessage{Content: azopenai.NewChatRequestUserMessageContent("What's the best way to train a parrot?")},
@@ -150,7 +150,7 @@ func ExampleClient_GetChatCompletions_functions() {
 		panic(err)
 	}
 
-	funcDef := &azopenai.FunctionDefinition{
+	funcDef := &azopenai.ChatCompletionsFunctionToolDefinitionFunction{
 		Name:        to.Ptr("get_current_weather"),
 		Description: to.Ptr("Get the current weather in a given location"),
 		Parameters:  jsonBytes,
@@ -329,13 +329,13 @@ func ExampleClient_GetChatCompletionsStream() {
 	// NOTE: all messages, regardless of role, count against token usage for this API.
 	messages := []azopenai.ChatRequestMessageClassification{
 		// You set the tone and rules of the conversation with a prompt as the system role.
-		&azopenai.ChatRequestSystemMessage{Content: to.Ptr("You are a helpful assistant. You will talk like a pirate and limit your responses to 20 words or less.")},
+		&azopenai.ChatRequestSystemMessage{Content: azopenai.NewChatRequestSystemMessageContent("You are a helpful assistant. You will talk like a pirate and limit your responses to 20 words or less.")},
 
 		// The user asks a question
 		&azopenai.ChatRequestUserMessage{Content: azopenai.NewChatRequestUserMessageContent("Can you help me?")},
 
 		// The reply would come back from the ChatGPT. You'd add it to the conversation so we can maintain context.
-		&azopenai.ChatRequestAssistantMessage{Content: to.Ptr("Arrrr! Of course, me hearty! What can I do for ye?")},
+		&azopenai.ChatRequestAssistantMessage{Content: azopenai.NewChatRequestAssistantMessageContent("Arrrr! Of course, me hearty! What can I do for ye?")},
 
 		// The user answers the question based on the latest reply.
 		&azopenai.ChatRequestUserMessage{Content: azopenai.NewChatRequestUserMessageContent("What's the best way to train a parrot?")},

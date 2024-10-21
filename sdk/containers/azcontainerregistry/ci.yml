@@ -24,18 +24,9 @@ pr:
 extends:
   template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:
-    PreSteps:
-    - task: AzureCLI@2
-      displayName: Set OIDC token
-      inputs:
-        addSpnToEnvironment: true
-        azureSubscription: azure-sdk-tests
-        inlineScript: Write-Host "##vso[task.setvariable variable=OIDC_TOKEN;]$($env:idToken)"
-        scriptType: pscore
-        scriptLocation: inlineScript
     ServiceDirectory: 'containers/azcontainerregistry'
     RunLiveTests: true
-    UseFederatedAuth: true
     UsePipelineProxy: false
     TestRunTime: '30m'
     SupportedClouds: 'Public,UsGov'
+    PersistOidcToken: true

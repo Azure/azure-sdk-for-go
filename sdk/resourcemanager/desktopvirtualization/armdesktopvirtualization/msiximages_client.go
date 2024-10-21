@@ -28,7 +28,7 @@ type MsixImagesClient struct {
 }
 
 // NewMsixImagesClient creates a new instance of MsixImagesClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewMsixImagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MsixImagesClient, error) {
@@ -45,7 +45,7 @@ func NewMsixImagesClient(subscriptionID string, credential azcore.TokenCredentia
 
 // NewExpandPager - Expands and Lists MSIX packages in an Image, given the Image Path.
 //
-// Generated from API version 2023-09-05
+// Generated from API version 2024-04-03
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - hostPoolName - The name of the host pool within the specified resource group
 //   - msixImageURI - Object containing URI to MSIX Image
@@ -93,7 +93,7 @@ func (client *MsixImagesClient) expandCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-05")
+	reqQP.Set("api-version", "2024-04-03")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, msixImageURI); err != nil {

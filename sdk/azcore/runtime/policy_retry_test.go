@@ -894,3 +894,71 @@ func (n *nilRespInjector) Do(req *http.Request) (*http.Response, error) {
 	}
 	return n.t.Do(req)
 }
+
+func BenchmarkCalcDelay_defaultSettings(b *testing.B) {
+	retryOptions := policy.RetryOptions{}
+	setDefaults(&retryOptions)
+
+	for i := 0; i < b.N; i++ {
+		calcDelay(retryOptions, 32)
+	}
+}
+
+func BenchmarkCalcDelay_overflow(b *testing.B) {
+	retryOptions := policy.RetryOptions{
+		RetryDelay:    1,
+		MaxRetryDelay: math.MaxInt64,
+	}
+	setDefaults(&retryOptions)
+
+	for i := 0; i < b.N; i++ {
+		calcDelay(retryOptions, 100)
+	}
+}
+
+func TestCalcDelay(t *testing.T) {
+	requireWithinJitter := func(t testing.TB, expected, actual time.Duration) {
+		lower, upper := float64(expected)*0.8, float64(expected)*1.3
+		require.Truef(
+			t, float64(actual) >= lower && float64(actual) <= upper,
+			"%.2f not within jitter of %.2f", actual.Seconds(), expected.Seconds(),
+		)
+	}
+
+	t.Run("basic cases", func(t *testing.T) {
+		retryOptions := policy.RetryOptions{
+			RetryDelay:    1 * time.Second,
+			MaxRetryDelay: 30 * time.Second,
+		}
+		setDefaults(&retryOptions)
+
+		for i := int32(1); i <= 5; i++ {
+			delay := float64(calcDelay(retryOptions, i))
+			expected := float64((1<<i - 1) * int64(retryOptions.RetryDelay))
+			requireWithinJitter(
+				t, time.Duration(expected), time.Duration(delay),
+			)
+		}
+		for i := int32(6); i < 100; i++ {
+			require.Equal(
+				t,
+				calcDelay(retryOptions, i),
+				retryOptions.MaxRetryDelay,
+			)
+		}
+	})
+
+	t.Run("overflow", func(t *testing.T) {
+		retryOptions := policy.RetryOptions{
+			RetryDelay:    1,
+			MaxRetryDelay: math.MaxInt64,
+		}
+		setDefaults(&retryOptions)
+
+		for i := int32(63); i < 100000; i++ {
+			requireWithinJitter(
+				t, math.MaxInt64, calcDelay(retryOptions, i),
+			)
+		}
+	})
+}

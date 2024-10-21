@@ -10,7 +10,7 @@ package armcontainerservice
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice"
-	moduleVersion = "v6.1.0-beta.1"
+	moduleVersion = "v6.2.0-beta.1"
 )
 
 // AddonAutoscaling - Whether VPA add-on is enabled and configured to scale AKS-managed add-ons.
@@ -208,6 +208,27 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
+// DriverType - Specify the type of GPU driver to install when creating Windows agent pools. If not provided, AKS selects
+// the driver based on system compatibility. This cannot be changed once the AgentPool has been
+// created. This cannot be set on Linux AgentPools. For Linux AgentPools, the driver is selected based on system compatibility.
+type DriverType string
+
+const (
+	// DriverTypeCUDA - Install the CUDA driver for the GPU, optimized for computational tasks in scientific computing and data-intensive
+	// applications.
+	DriverTypeCUDA DriverType = "CUDA"
+	// DriverTypeGRID - Install the GRID driver for the GPU, suitable for applications requiring virtualization support.
+	DriverTypeGRID DriverType = "GRID"
+)
+
+// PossibleDriverTypeValues returns the possible values for the DriverType const type.
+func PossibleDriverTypeValues() []DriverType {
+	return []DriverType{
+		DriverTypeCUDA,
+		DriverTypeGRID,
+	}
+}
+
 // Expander - If not specified, the default is 'random'. See expanders [https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/FAQ.md#what-are-expanders]
 // for more information.
 type Expander string
@@ -311,7 +332,7 @@ func PossibleGuardrailsSupportValues() []GuardrailsSupport {
 	}
 }
 
-// IPFamily - To determine if address belongs IPv4 or IPv6 family.
+// IPFamily - To determine if address belongs IPv4 or IPv6 family
 type IPFamily string
 
 const (
@@ -670,6 +691,34 @@ func PossibleNetworkPolicyValues() []NetworkPolicy {
 		NetworkPolicyCalico,
 		NetworkPolicyCilium,
 		NetworkPolicyNone,
+	}
+}
+
+// NginxIngressControllerType - Ingress type for the default NginxIngressController custom resource
+type NginxIngressControllerType string
+
+const (
+	// NginxIngressControllerTypeAnnotationControlled - The default NginxIngressController will be created. Users can edit the
+	// default NginxIngressController Custom Resource to configure load balancer annotations.
+	NginxIngressControllerTypeAnnotationControlled NginxIngressControllerType = "AnnotationControlled"
+	// NginxIngressControllerTypeExternal - The default NginxIngressController will be created and the operator will provision
+	// an external loadbalancer with it. Any annotation to make the default loadbalancer internal will be overwritten.
+	NginxIngressControllerTypeExternal NginxIngressControllerType = "External"
+	// NginxIngressControllerTypeInternal - The default NginxIngressController will be created and the operator will provision
+	// an internal loadbalancer with it. Any annotation to make the default loadbalancer external will be overwritten.
+	NginxIngressControllerTypeInternal NginxIngressControllerType = "Internal"
+	// NginxIngressControllerTypeNone - The default Ingress Controller will not be created. It will not be deleted by the system
+	// if it exists. Users should delete the default NginxIngressController Custom Resource manually if desired.
+	NginxIngressControllerTypeNone NginxIngressControllerType = "None"
+)
+
+// PossibleNginxIngressControllerTypeValues returns the possible values for the NginxIngressControllerType const type.
+func PossibleNginxIngressControllerTypeValues() []NginxIngressControllerType {
+	return []NginxIngressControllerType{
+		NginxIngressControllerTypeAnnotationControlled,
+		NginxIngressControllerTypeExternal,
+		NginxIngressControllerTypeInternal,
+		NginxIngressControllerTypeNone,
 	}
 }
 
@@ -1123,6 +1172,28 @@ func PossibleSnapshotTypeValues() []SnapshotType {
 	return []SnapshotType{
 		SnapshotTypeManagedCluster,
 		SnapshotTypeNodePool,
+	}
+}
+
+// TLSManagement - Management of TLS certificates for querying network flow logs via the flow log endpoint for Advanced Networking
+// observability clusters. If not specified, the default is Managed. For more information
+// see aka.ms/acnstls.
+type TLSManagement string
+
+const (
+	// TLSManagementManaged - Enable TLS and cert rotation is managed by Azure.
+	TLSManagementManaged TLSManagement = "Managed"
+	// TLSManagementNone - Disable TLS management of certificates. This leaves the flow log endpoint unencrypted. It is strongly
+	// recommended when using this option that you configure your own encryption on top, for example by putting the flow logs
+	// endpoint behind an ingress controller.
+	TLSManagementNone TLSManagement = "None"
+)
+
+// PossibleTLSManagementValues returns the possible values for the TLSManagement const type.
+func PossibleTLSManagementValues() []TLSManagement {
+	return []TLSManagement{
+		TLSManagementManaged,
+		TLSManagementNone,
 	}
 }
 

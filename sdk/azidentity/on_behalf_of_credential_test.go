@@ -74,12 +74,12 @@ func TestOnBehalfOfCredential(t *testing.T) {
 		},
 	} {
 		t.Run(test.name, func(t *testing.T) {
-			key := struct{}{}
-			ctx := context.WithValue(context.Background(), key, true)
+			type key struct{}
+			ctx := context.WithValue(context.Background(), key{}, true)
 			srv := mockSTS{tokenRequestCallback: func(r *http.Request) *http.Response {
 				if c := r.Context(); c == nil {
 					t.Fatal("AcquireTokenOnBehalfOf received no Context")
-				} else if v := c.Value(key); v == nil || !v.(bool) {
+				} else if v := c.Value(key{}); v == nil || !v.(bool) {
 					t.Fatal("AcquireTokenOnBehalfOf received unexpected Context")
 				}
 				if err := r.ParseForm(); err != nil {

@@ -16,8 +16,10 @@ import (
 type endpointType string
 
 const (
-	storageEndpoint endpointType = "storage"
-	cosmosEndpoint  endpointType = "cosmos"
+	storageEndpoint                endpointType = "storage"
+	storageTokenCredentialEndpoint endpointType = "storage_tc"
+	cosmosEndpoint                 endpointType = "cosmos"
+	cosmosTokenCredentialEndpoint  endpointType = "cosmos_tc"
 )
 
 var ctx = context.Background()

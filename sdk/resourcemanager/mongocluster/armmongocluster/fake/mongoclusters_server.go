@@ -48,6 +48,10 @@ type MongoClustersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	ListConnectionStrings func(ctx context.Context, resourceGroupName string, mongoClusterName string, options *armmongocluster.MongoClustersClientListConnectionStringsOptions) (resp azfake.Responder[armmongocluster.MongoClustersClientListConnectionStringsResponse], errResp azfake.ErrorResponder)
 
+	// BeginPromote is the fake for method MongoClustersClient.BeginPromote
+	// HTTP status codes to indicate success: http.StatusAccepted
+	BeginPromote func(ctx context.Context, resourceGroupName string, mongoClusterName string, body armmongocluster.PromoteReplicaRequest, options *armmongocluster.MongoClustersClientBeginPromoteOptions) (resp azfake.PollerResponder[armmongocluster.MongoClustersClientPromoteResponse], errResp azfake.ErrorResponder)
+
 	// BeginUpdate is the fake for method MongoClustersClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, mongoClusterName string, properties armmongocluster.Update, options *armmongocluster.MongoClustersClientBeginUpdateOptions) (resp azfake.PollerResponder[armmongocluster.MongoClustersClientUpdateResponse], errResp azfake.ErrorResponder)
@@ -63,6 +67,7 @@ func NewMongoClustersServerTransport(srv *MongoClustersServer) *MongoClustersSer
 		beginDelete:                 newTracker[azfake.PollerResponder[armmongocluster.MongoClustersClientDeleteResponse]](),
 		newListPager:                newTracker[azfake.PagerResponder[armmongocluster.MongoClustersClientListResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armmongocluster.MongoClustersClientListByResourceGroupResponse]](),
+		beginPromote:                newTracker[azfake.PollerResponder[armmongocluster.MongoClustersClientPromoteResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armmongocluster.MongoClustersClientUpdateResponse]](),
 	}
 }
@@ -75,6 +80,7 @@ type MongoClustersServerTransport struct {
 	beginDelete                 *tracker[azfake.PollerResponder[armmongocluster.MongoClustersClientDeleteResponse]]
 	newListPager                *tracker[azfake.PagerResponder[armmongocluster.MongoClustersClientListResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armmongocluster.MongoClustersClientListByResourceGroupResponse]]
+	beginPromote                *tracker[azfake.PollerResponder[armmongocluster.MongoClustersClientPromoteResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armmongocluster.MongoClustersClientUpdateResponse]]
 }
 
@@ -108,6 +114,8 @@ func (m *MongoClustersServerTransport) dispatchToMethodFake(req *http.Request, m
 		resp, err = m.dispatchNewListByResourceGroupPager(req)
 	case "MongoClustersClient.ListConnectionStrings":
 		resp, err = m.dispatchListConnectionStrings(req)
+	case "MongoClustersClient.BeginPromote":
+		resp, err = m.dispatchBeginPromote(req)
 	case "MongoClustersClient.BeginUpdate":
 		resp, err = m.dispatchBeginUpdate(req)
 	default:
@@ -375,6 +383,54 @@ func (m *MongoClustersServerTransport) dispatchListConnectionStrings(req *http.R
 	if err != nil {
 		return nil, err
 	}
+	return resp, nil
+}
+
+func (m *MongoClustersServerTransport) dispatchBeginPromote(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginPromote == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginPromote not implemented")}
+	}
+	beginPromote := m.beginPromote.get(req)
+	if beginPromote == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/mongoClusters/(?P<mongoClusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/promote`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armmongocluster.PromoteReplicaRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		mongoClusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("mongoClusterName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginPromote(req.Context(), resourceGroupNameParam, mongoClusterNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginPromote = &respr
+		m.beginPromote.add(req, beginPromote)
+	}
+
+	resp, err := server.PollerResponderNext(beginPromote, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusAccepted}, resp.StatusCode) {
+		m.beginPromote.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginPromote) {
+		m.beginPromote.remove(req)
+	}
+
 	return resp, nil
 }
 

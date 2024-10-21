@@ -372,7 +372,7 @@ func (s *ShareRecordedTestsSuite) TestShareCreatePaidBursting() {
 	_require.Equal(*props.PaidBurstingMaxBandwidthMibps, int64(1000))
 }
 
-func (s *ShareRecordedTestsSuite) TestAuthenticationErrorDetailError() {
+func (s *ShareUnrecordedTestsSuite) TestAuthenticationErrorDetailError() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 

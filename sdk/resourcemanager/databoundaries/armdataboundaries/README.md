@@ -1,8 +1,8 @@
-# Azure Databoundaries Module for Go
+# Azure Data Boundary Module for Go
 
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoundaries/armdataboundaries)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoundaries/armdataboundaries)
 
-The `armdataboundaries` module provides operations for working with Azure Databoundaries.
+The `armdataboundaries` module provides operations for working with Azure Data Boundary.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/databoundaries/armdataboundaries)
 
@@ -17,7 +17,7 @@ The `armdataboundaries` module provides operations for working with Azure Databo
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Databoundaries module:
+Install the Azure Data Boundary module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoundaries/armdataboundaries
@@ -25,7 +25,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoundaries/armd
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Databoundaries.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Data Boundary.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -35,7 +35,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Databoundaries module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure Data Boundary module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armdataboundaries.NewClientFactory(<subscription ID>, cred, nil)
@@ -70,7 +70,7 @@ Please see https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/samples/fakes
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please
-[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Databoundaries` label.
+[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Data Boundary` label.
 
 # Contributing
 

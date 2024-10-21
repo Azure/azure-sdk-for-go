@@ -8,6 +8,8 @@ import (
 	"fmt"
 )
 
+// PartitionKeyKind represents the type of the partition key that is used in an Azure Cosmos DB container.
+// The possible values are "Hash" and "MultiHash".
 type PartitionKeyKind string
 
 const (

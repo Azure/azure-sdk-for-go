@@ -205,7 +205,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareClientUsingSAS() {
 	_require.Equal(fileCtr, 1)
 }
 
-func (s *ShareRecordedTestsSuite) TestShareCreateDeleteUsingOAuth() {
+func (s *ShareUnrecordedTestsSuite) TestShareCreateDeleteUsingOAuth() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	shareName := testcommon.GenerateShareName(testName)
@@ -529,7 +529,7 @@ func (s *ShareRecordedTestsSuite) TestShareGetSetPropertiesDefault() {
 	_require.Greater(*props.Quota, int32(0)) // When using service default quota, it could be any value
 }
 
-func (s *ShareRecordedTestsSuite) TestShareGetSetPropertiesOAuth() {
+func (s *ShareUnrecordedTestsSuite) TestShareGetSetPropertiesOAuth() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	shareName := testcommon.GenerateShareName(testName)
@@ -1706,7 +1706,7 @@ func (s *ShareRecordedTestsSuite) TestSASShareClientSignNegative() {
 	_require.Equal(err.Error(), "service SAS is missing at least one of these: ExpiryTime or Permissions")
 }
 
-func (s *ShareRecordedTestsSuite) TestShareOAuthNegative() {
+func (s *ShareUnrecordedTestsSuite) TestShareOAuthNegative() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 

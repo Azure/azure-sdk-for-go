@@ -182,11 +182,10 @@ type SetPropertiesOptions struct {
 func (o *SetPropertiesOptions) format() *generated.DirectoryClientSetPropertiesOptions {
 	if o == nil {
 		return &generated.DirectoryClientSetPropertiesOptions{
-			FileAttributes:       to.Ptr(shared.DefaultPreserveString),
-			FileCreationTime:     to.Ptr(shared.DefaultPreserveString),
-			FileLastWriteTime:    to.Ptr(shared.DefaultPreserveString),
-			FilePermission:       to.Ptr(shared.DefaultPreserveString),
-			FilePermissionFormat: to.Ptr(FilePermissionFormat(shared.DefaultFilePermissionFormat)),
+			FileAttributes:    to.Ptr(shared.DefaultPreserveString),
+			FileCreationTime:  to.Ptr(shared.DefaultPreserveString),
+			FileLastWriteTime: to.Ptr(shared.DefaultPreserveString),
+			FilePermission:    to.Ptr(shared.DefaultPreserveString),
 		}
 	}
 
@@ -195,17 +194,20 @@ func (o *SetPropertiesOptions) format() *generated.DirectoryClientSetPropertiesO
 	permission, permissionKey := exported.FormatPermissions(o.FilePermissions, to.Ptr(shared.DefaultPreserveString))
 
 	setPropertiesOptions := &generated.DirectoryClientSetPropertiesOptions{
-		FileAttributes:       fileAttributes,
-		FileChangeTime:       fileChangeTime,
-		FileCreationTime:     fileCreationTime,
-		FileLastWriteTime:    fileLastWriteTime,
-		FilePermission:       permission,
-		FilePermissionKey:    permissionKey,
-		FilePermissionFormat: to.Ptr(FilePermissionFormat(shared.DefaultFilePermissionFormat)),
+		FileAttributes:    fileAttributes,
+		FileChangeTime:    fileChangeTime,
+		FileCreationTime:  fileCreationTime,
+		FileLastWriteTime: fileLastWriteTime,
+		FilePermission:    permission,
+		FilePermissionKey: permissionKey,
 	}
 
-	if o.FilePermissionFormat != nil {
-		setPropertiesOptions.FilePermissionFormat = o.FilePermissionFormat
+	if permissionKey != nil && permissionKey != to.Ptr(shared.DefaultFilePermissionString) {
+		if o.FilePermissionFormat == nil {
+			setPropertiesOptions.FilePermissionFormat = to.Ptr(FilePermissionFormat(shared.DefaultFilePermissionFormat))
+		} else {
+			setPropertiesOptions.FilePermissionFormat = to.Ptr(FilePermissionFormat(*o.FilePermissionFormat))
+		}
 	}
 	return setPropertiesOptions
 }

@@ -48,6 +48,22 @@ type AuthInfoBase struct {
 // GetAuthInfoBase implements the AuthInfoBaseClassification interface for type AuthInfoBase.
 func (a *AuthInfoBase) GetAuthInfoBase() *AuthInfoBase { return a }
 
+// AzureAppConfigProperties - The resource properties when type is Azure App Configuration
+type AzureAppConfigProperties struct {
+	// REQUIRED; The azure resource type.
+	Type *AzureResourceType
+
+	// True if connection enables app configuration kubernetes extension.
+	ConnectWithKubernetesExtension *bool
+}
+
+// GetAzureResourcePropertiesBase implements the AzureResourcePropertiesBaseClassification interface for type AzureAppConfigProperties.
+func (a *AzureAppConfigProperties) GetAzureResourcePropertiesBase() *AzureResourcePropertiesBase {
+	return &AzureResourcePropertiesBase{
+		Type: a.Type,
+	}
+}
+
 // AzureKeyVaultProperties - The resource properties when type is Azure Key Vault
 type AzureKeyVaultProperties struct {
 	// REQUIRED; The azure resource type.
@@ -489,6 +505,22 @@ type ErrorDetail struct {
 type ErrorResponse struct {
 	// The error object.
 	Error *ErrorDetail
+}
+
+// FabricPlatform - The service properties when target service type is FabricPlatform
+type FabricPlatform struct {
+	// REQUIRED; The target service type.
+	Type *TargetServiceType
+
+	// The endpoint of service.
+	Endpoint *string
+}
+
+// GetTargetServiceBase implements the TargetServiceBaseClassification interface for type FabricPlatform.
+func (f *FabricPlatform) GetTargetServiceBase() *TargetServiceBase {
+	return &TargetServiceBase{
+		Type: f.Type,
+	}
 }
 
 // FirewallRules - Target service's firewall rules. to allow connections from source service.

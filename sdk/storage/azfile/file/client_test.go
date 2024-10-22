@@ -349,17 +349,17 @@ func (f *FileRecordedTestsSuite) TestFileCreateRenameFilePermissionFormatDefault
 	fClient := shareClient.NewRootDirectoryClient().NewFileClient(testcommon.GenerateFileName(testName))
 
 	_, err = fClient.Create(context.Background(), 1024, &file.CreateOptions{
-		FilePermissionFormat: (*file.PermissionFormat)(to.Ptr(testcommon.FilePermissionBinary)),
+		FilePermissionFormat: (*file.PermissionFormat)(to.Ptr(testcommon.FilePermissionFormatSddl)),
 		Permissions: &file.Permissions{
-			Permission: &testcommon.SampleBinary,
+			Permission: &testcommon.SampleSDDL,
 		},
 	})
 	_require.NoError(err)
 
 	_, err = fClient.Rename(context.Background(), "file2", &file.RenameOptions{
-		FilePermissionFormat: (*file.PermissionFormat)(to.Ptr(testcommon.FilePermissionFormatSddl)),
+		FilePermissionFormat: (*file.PermissionFormat)(to.Ptr(testcommon.FilePermissionBinary)),
 		Permissions: &file.Permissions{
-			Permission: &testcommon.SampleSDDL,
+			Permission: &testcommon.SampleBinary,
 		},
 	})
 	_require.NoError(err)
@@ -555,7 +555,7 @@ func (f *FileRecordedTestsSuite) TestFileGetSetPropertiesDefault() {
 	_require.EqualValues(getResp.Metadata, metadata)
 }
 
-func (f *FileRecordedTestsSuite) TestFileSetHTTPHeaders() {
+func (f *FileUnrecordedTestsSuite) TestFileSetHTTPHeaders() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
@@ -3804,7 +3804,7 @@ func (f *FileRecordedTestsSuite) TestFileRenameDefault() {
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
 }
 
-func (f *FileRecordedTestsSuite) TestFileRenameUsingOAuth() {
+func (f *FileUnrecordedTestsSuite) TestFileRenameUsingOAuth() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -4344,7 +4344,7 @@ func (f *FileRecordedTestsSuite) TestFileUploadClearListRangeTrailingDotOAuth() 
 	_require.Len(rangeList2.Ranges, 0)
 }
 
-func (f *FileRecordedTestsSuite) TestFileRenameTrailingDotOAuth() {
+func (f *FileUnrecordedTestsSuite) TestFileRenameTrailingDotOAuth() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 

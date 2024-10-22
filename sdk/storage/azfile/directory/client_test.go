@@ -292,9 +292,9 @@ func (d *DirectoryRecordedTestsSuite) TestDirCreateRenameFilePermissionFormatDef
 	_require.NoError(err)
 
 	resp, err := dirClient.Create(context.Background(), &directory.CreateOptions{
-		FilePermissionFormat: (*file.PermissionFormat)(to.Ptr(testcommon.FilePermissionBinary)),
+		FilePermissionFormat: (*file.PermissionFormat)(to.Ptr(testcommon.FilePermissionFormatSddl)),
 		FilePermissions: &file.Permissions{
-			Permission: &testcommon.SampleBinary,
+			Permission: &testcommon.SampleSDDL,
 		},
 	})
 	_require.NoError(err)
@@ -303,9 +303,9 @@ func (d *DirectoryRecordedTestsSuite) TestDirCreateRenameFilePermissionFormatDef
 	_require.Equal(resp.LastModified.IsZero(), false)
 
 	_, err = dirClient.Rename(context.Background(), "testFile", &directory.RenameOptions{
-		FilePermissionFormat: (*file.PermissionFormat)(to.Ptr(testcommon.FilePermissionFormatSddl)),
+		FilePermissionFormat: (*file.PermissionFormat)(to.Ptr(testcommon.FilePermissionBinary)),
 		FilePermissions: &file.Permissions{
-			Permission: &testcommon.SampleSDDL,
+			Permission: &testcommon.SampleBinary,
 		},
 	})
 	_require.NoError(err)
@@ -435,9 +435,9 @@ func (d *DirectoryRecordedTestsSuite) TestDirSetPropertiesFilePermissionFormat()
 	dirClient := testcommon.GetDirectoryClient(dirName, shareClient)
 
 	cResp, err := dirClient.Create(context.Background(), &directory.CreateOptions{
-		FilePermissionFormat: (*file.PermissionFormat)(to.Ptr(testcommon.FilePermissionBinary)),
+		FilePermissionFormat: (*file.PermissionFormat)(to.Ptr(testcommon.FilePermissionFormatSddl)),
 		FilePermissions: &file.Permissions{
-			Permission: &testcommon.SampleBinary,
+			Permission: &testcommon.SampleSDDL,
 		},
 	})
 	_require.NoError(err)
@@ -2196,7 +2196,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryRenameNegativeSourceTrailingD
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
 }
 
-func (d *DirectoryRecordedTestsSuite) TestDirectoryRenameSourceTrailingDotAndOAuth() {
+func (d *DirectoryUnrecordedTestsSuite) TestDirectoryRenameSourceTrailingDotAndOAuth() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
 

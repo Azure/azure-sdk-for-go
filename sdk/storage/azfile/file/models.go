@@ -90,11 +90,10 @@ type CreateOptions struct {
 func (o *CreateOptions) format() (*generated.FileClientCreateOptions, *generated.ShareFileHTTPHeaders, *LeaseAccessConditions) {
 	if o == nil {
 		return &generated.FileClientCreateOptions{
-			FileAttributes:       to.Ptr(shared.FileAttributesNone),
-			FileCreationTime:     to.Ptr(shared.DefaultCurrentTimeString),
-			FileLastWriteTime:    to.Ptr(shared.DefaultCurrentTimeString),
-			FilePermission:       to.Ptr(shared.DefaultFilePermissionString),
-			FilePermissionFormat: to.Ptr(PermissionFormat(shared.DefaultFilePermissionFormat)),
+			FileAttributes:    to.Ptr(shared.FileAttributesNone),
+			FileCreationTime:  to.Ptr(shared.DefaultCurrentTimeString),
+			FileLastWriteTime: to.Ptr(shared.DefaultCurrentTimeString),
+			FilePermission:    to.Ptr(shared.DefaultFilePermissionString),
 		}, nil, nil
 	}
 
@@ -103,18 +102,19 @@ func (o *CreateOptions) format() (*generated.FileClientCreateOptions, *generated
 	permission, permissionKey := exported.FormatPermissions(o.Permissions, to.Ptr(shared.DefaultFilePermissionString))
 
 	createOptions := &generated.FileClientCreateOptions{
-		FileAttributes:       fileAttributes,
-		FileChangeTime:       fileChangeTime,
-		FileCreationTime:     fileCreationTime,
-		FileLastWriteTime:    fileLastWriteTime,
-		FilePermission:       permission,
-		FilePermissionKey:    permissionKey,
-		FilePermissionFormat: to.Ptr(PermissionFormat(shared.DefaultFilePermissionFormat)),
-		Metadata:             o.Metadata,
+		FileAttributes:    fileAttributes,
+		FileChangeTime:    fileChangeTime,
+		FileCreationTime:  fileCreationTime,
+		FileLastWriteTime: fileLastWriteTime,
+		FilePermission:    permission,
+		FilePermissionKey: permissionKey,
+		Metadata:          o.Metadata,
 	}
 
-	if o.FilePermissionFormat != nil {
-		createOptions.FilePermissionFormat = o.FilePermissionFormat
+	if permissionKey != nil && *permissionKey != shared.DefaultFilePermissionString {
+		createOptions.FilePermissionFormat = to.Ptr(PermissionFormat(shared.DefaultFilePermissionFormat))
+	} else if o.FilePermissionFormat != nil {
+		createOptions.FilePermissionFormat = to.Ptr(PermissionFormat(*o.FilePermissionFormat))
 	}
 
 	return createOptions, o.HTTPHeaders, o.LeaseAccessConditions
@@ -169,9 +169,7 @@ type RenameOptions struct {
 
 func (o *RenameOptions) format() (*generated.FileClientRenameOptions, *generated.SourceLeaseAccessConditions, *generated.DestinationLeaseAccessConditions, *generated.CopyFileSMBInfo, *generated.ShareFileHTTPHeaders) {
 	if o == nil {
-		return &generated.FileClientRenameOptions{
-			FilePermissionFormat: to.Ptr(PermissionFormat(shared.DefaultFilePermissionFormat)),
-		}, nil, nil, nil, nil
+		return nil, nil, nil, nil, nil
 	}
 
 	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.SMBProperties, nil, nil, false)
@@ -179,16 +177,17 @@ func (o *RenameOptions) format() (*generated.FileClientRenameOptions, *generated
 	permission, permissionKey := exported.FormatPermissions(o.Permissions, nil)
 
 	renameOpts := &generated.FileClientRenameOptions{
-		FilePermission:       permission,
-		FilePermissionKey:    permissionKey,
-		FilePermissionFormat: to.Ptr(PermissionFormat(shared.DefaultFilePermissionFormat)),
-		IgnoreReadOnly:       o.IgnoreReadOnly,
-		Metadata:             o.Metadata,
-		ReplaceIfExists:      o.ReplaceIfExists,
+		FilePermission:    permission,
+		FilePermissionKey: permissionKey,
+		IgnoreReadOnly:    o.IgnoreReadOnly,
+		Metadata:          o.Metadata,
+		ReplaceIfExists:   o.ReplaceIfExists,
 	}
 
-	if o.FilePermissionFormat != nil {
-		renameOpts.FilePermissionFormat = o.FilePermissionFormat
+	if permissionKey != nil && *permissionKey != shared.DefaultPreserveString {
+		renameOpts.FilePermissionFormat = to.Ptr(PermissionFormat(shared.DefaultFilePermissionFormat))
+	} else if o.FilePermissionFormat != nil {
+		renameOpts.FilePermissionFormat = to.Ptr(PermissionFormat(*o.FilePermissionFormat))
 	}
 
 	smbInfo := &generated.CopyFileSMBInfo{
@@ -251,11 +250,10 @@ type SetHTTPHeadersOptions struct {
 func (o *SetHTTPHeadersOptions) format() (*generated.FileClientSetHTTPHeadersOptions, *generated.ShareFileHTTPHeaders, *LeaseAccessConditions) {
 	if o == nil {
 		return &generated.FileClientSetHTTPHeadersOptions{
-			FileAttributes:       to.Ptr(shared.DefaultPreserveString),
-			FileCreationTime:     to.Ptr(shared.DefaultPreserveString),
-			FileLastWriteTime:    to.Ptr(shared.DefaultPreserveString),
-			FilePermission:       to.Ptr(shared.DefaultPreserveString),
-			FilePermissionFormat: to.Ptr(PermissionFormat(shared.DefaultFilePermissionFormat)),
+			FileAttributes:    to.Ptr(shared.DefaultPreserveString),
+			FileCreationTime:  to.Ptr(shared.DefaultPreserveString),
+			FileLastWriteTime: to.Ptr(shared.DefaultPreserveString),
+			FilePermission:    to.Ptr(shared.DefaultPreserveString),
 		}, nil, nil
 	}
 
@@ -264,14 +262,19 @@ func (o *SetHTTPHeadersOptions) format() (*generated.FileClientSetHTTPHeadersOpt
 	permission, permissionKey := exported.FormatPermissions(o.Permissions, to.Ptr(shared.DefaultPreserveString))
 
 	opts := &generated.FileClientSetHTTPHeadersOptions{
-		FileAttributes:       fileAttributes,
-		FileChangeTime:       fileChangeTime,
-		FileCreationTime:     fileCreationTime,
-		FileLastWriteTime:    fileLastWriteTime,
-		FileContentLength:    o.FileContentLength,
-		FilePermission:       permission,
-		FilePermissionKey:    permissionKey,
-		FilePermissionFormat: o.FilePermissionFormat,
+		FileAttributes:    fileAttributes,
+		FileChangeTime:    fileChangeTime,
+		FileCreationTime:  fileCreationTime,
+		FileLastWriteTime: fileLastWriteTime,
+		FileContentLength: o.FileContentLength,
+		FilePermission:    permission,
+		FilePermissionKey: permissionKey,
+	}
+
+	if permissionKey != nil && *permissionKey != shared.DefaultPreserveString {
+		opts.FilePermissionFormat = to.Ptr(PermissionFormat(shared.DefaultFilePermissionFormat))
+	} else if o.FilePermissionFormat != nil {
+		opts.FilePermissionFormat = to.Ptr(PermissionFormat(*o.FilePermissionFormat))
 	}
 
 	return opts, o.HTTPHeaders, o.LeaseAccessConditions

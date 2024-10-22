@@ -3,12 +3,15 @@
 ## 1.3.2 (Unreleased)
 
 ### Features Added
+* Add Paid Burst IOPS/Bandwidth support for Premium Files.
+* REST API for binary ACE in Azure Files.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+* Updated `azidentity` version to `1.8.0`
 
 ## 1.3.1 (2024-09-18)
 

@@ -17,6 +17,19 @@ const (
 	AccessTierTransactionOptimized AccessTier = generated.ShareAccessTierTransactionOptimized
 )
 
+// PermissionFormat contains the format of the file permissions, Can be sddl (Default) or Binary.
+type PermissionFormat = generated.FilePermissionFormat
+
+const (
+	FilePermissionFormatBinary PermissionFormat = generated.FilePermissionFormatBinary
+	FilePermissionFormatSddl   PermissionFormat = generated.FilePermissionFormatSddl
+)
+
+// PossibleFilePermissionFormatValues returns the possible values for the FilePermissionFormat const type.
+func PossibleFilePermissionFormatValues() []PermissionFormat {
+	return generated.PossibleFilePermissionFormatValues()
+}
+
 // PossibleAccessTierValues returns the possible values for the AccessTier const type.
 func PossibleAccessTierValues() []AccessTier {
 	return generated.PossibleShareAccessTierValues()

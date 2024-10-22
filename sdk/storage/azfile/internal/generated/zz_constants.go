@@ -75,6 +75,21 @@ func PossibleFileLastWrittenModeValues() []FileLastWrittenMode {
 	}
 }
 
+type FilePermissionFormat string
+
+const (
+	FilePermissionFormatBinary FilePermissionFormat = "Binary"
+	FilePermissionFormatSddl   FilePermissionFormat = "Sddl"
+)
+
+// PossibleFilePermissionFormatValues returns the possible values for the FilePermissionFormat const type.
+func PossibleFilePermissionFormatValues() []FilePermissionFormat {
+	return []FilePermissionFormat{
+		FilePermissionFormatBinary,
+		FilePermissionFormatSddl,
+	}
+}
+
 type FileRangeWriteType string
 
 const (

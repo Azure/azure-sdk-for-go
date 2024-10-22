@@ -269,6 +269,48 @@ func (d *DirectoryRecordedTestsSuite) TestDirCreateDeleteDefault() {
 	_require.Equal(gResp.FileChangeTime.IsZero(), false)
 }
 
+func (d *DirectoryRecordedTestsSuite) TestDirCreateRenameFilePermissionFormatDefault() {
+	_require := require.New(d.T())
+	testName := d.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	dirName := testcommon.GenerateDirectoryName(testName)
+	dirURL := "https://" + cred.AccountName() + ".file.core.windows.net/" + shareName + "/" + dirName
+
+	options := &directory.ClientOptions{}
+	testcommon.SetClientOptions(d.T(), &options.ClientOptions)
+	dirClient, err := directory.NewClientWithSharedKeyCredential(dirURL, cred, options)
+	_require.NoError(err)
+
+	resp, err := dirClient.Create(context.Background(), &directory.CreateOptions{
+		FilePermissionFormat: (*file.PermissionFormat)(to.Ptr(testcommon.FilePermissionFormatSddl)),
+		FilePermissions: &file.Permissions{
+			Permission: &testcommon.SampleSDDL,
+		},
+	})
+	_require.NoError(err)
+	_require.NotNil(resp.ETag)
+	_require.NotNil(resp.RequestID)
+	_require.Equal(resp.LastModified.IsZero(), false)
+
+	_, err = dirClient.Rename(context.Background(), "testFile", &directory.RenameOptions{
+		FilePermissionFormat: (*file.PermissionFormat)(to.Ptr(testcommon.FilePermissionBinary)),
+		FilePermissions: &file.Permissions{
+			Permission: &testcommon.SampleBinary,
+		},
+	})
+	_require.NoError(err)
+}
+
 func (d *DirectoryRecordedTestsSuite) TestDirSetPropertiesDefault() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
@@ -377,6 +419,43 @@ func (d *DirectoryRecordedTestsSuite) TestDirSetPropertiesNonDefault() {
 	_require.True(fileAttributes2.System)
 	_require.True(fileAttributes2.Directory)
 	_require.EqualValues(fileAttributes2, fileAttributes)
+}
+
+func (d *DirectoryRecordedTestsSuite) TestDirSetPropertiesFilePermissionFormat() {
+	_require := require.New(d.T())
+	testName := d.T().Name()
+	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	dirName := testcommon.GenerateDirectoryName(testName)
+	dirClient := testcommon.GetDirectoryClient(dirName, shareClient)
+
+	cResp, err := dirClient.Create(context.Background(), &directory.CreateOptions{
+		FilePermissionFormat: (*file.PermissionFormat)(to.Ptr(testcommon.FilePermissionFormatSddl)),
+		FilePermissions: &file.Permissions{
+			Permission: &testcommon.SampleSDDL,
+		},
+	})
+	_require.NoError(err)
+	_require.NotNil(cResp.FilePermissionKey)
+	_require.NoError(err)
+
+	// Set the custom permissions
+	sResp, err := dirClient.SetProperties(context.Background(), &directory.SetPropertiesOptions{
+		FilePermissionFormat: (*directory.FilePermissionFormat)(to.Ptr(testcommon.FilePermissionFormatSddl)),
+		FilePermissions: &file.Permissions{
+			Permission: &testcommon.SampleSDDL,
+		},
+	})
+	_require.NoError(err)
+	_require.NotNil(sResp.FileCreationTime)
+	_require.NotNil(sResp.FileLastWriteTime)
+	_require.NotNil(sResp.FilePermissionKey)
+	_require.NotEqual(*sResp.FilePermissionKey, *cResp.FilePermissionKey)
 }
 
 func (d *DirectoryUnrecordedTestsSuite) TestDirCreateDeleteNonDefault() {
@@ -2117,7 +2196,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryRenameNegativeSourceTrailingD
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
 }
 
-func (d *DirectoryRecordedTestsSuite) TestDirectoryRenameSourceTrailingDotAndOAuth() {
+func (d *DirectoryUnrecordedTestsSuite) TestDirectoryRenameSourceTrailingDotAndOAuth() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
 

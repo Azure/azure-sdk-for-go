@@ -3,11 +3,10 @@
 ## 1.0.0 (2024-10-22)
 ### Breaking Changes
 
-- `NetworkAPIVersion20201101` from enum `NetworkAPIVersion` has been removed
+- `NetworkAPIVersion20201101` from enum `NetworkAPIVersion` has been renamed to `NetworkAPIVersionV20201101`
 
 ### Features Added
 
-- New value `NetworkAPIVersionV20201101` added to enum type `NetworkAPIVersion`
 - New enum type `AcceleratorManufacturer` with values `AcceleratorManufacturerAMD`, `AcceleratorManufacturerNvidia`, `AcceleratorManufacturerXilinx`
 - New enum type `AcceleratorType` with values `AcceleratorTypeFPGA`, `AcceleratorTypeGPU`
 - New enum type `ArchitectureType` with values `ArchitectureTypeARM64`, `ArchitectureTypeX64`

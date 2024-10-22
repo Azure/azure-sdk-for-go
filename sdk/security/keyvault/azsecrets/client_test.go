@@ -9,10 +9,12 @@ package azsecrets_test
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"strings"
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
@@ -381,4 +383,41 @@ func TestRecover(t *testing.T) {
 	require.Equal(t, setResp.Attributes, getResp.Attributes)
 	require.Equal(t, setResp.ID, getResp.ID)
 	require.Equal(t, setResp.ContentType, getResp.ContentType)
+}
+
+func TestAPIVersion(t *testing.T) {
+	apiVersion := "7.3"
+	var requireVersion = func(t *testing.T) func(req *http.Request) bool {
+		return func(r *http.Request) bool {
+			version := r.URL.Query().Get("api-version")
+			require.Equal(t, version, apiVersion)
+			return true
+		}
+	}
+	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer close()
+	srv.AppendResponse(
+		mock.WithHeader("WWW-Authenticate", `Bearer authorization="https://login.microsoftonline.com/tenant", resource="https://vault.azure.net"`),
+		mock.WithStatusCode(401),
+		mock.WithPredicate(requireVersion(t)),
+	)
+	srv.AppendResponse() // when a response's predicate returns true, srv pops the following one
+	srv.AppendResponse(
+		mock.WithStatusCode(200),
+		mock.WithPredicate(requireVersion(t)),
+	)
+	srv.AppendResponse() // when a response's predicate returns true, srv pops the following one
+
+	opts := &azsecrets.ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			Transport:  srv,
+			APIVersion: apiVersion,
+		},
+	}
+	client, err := azsecrets.NewClient(vaultURL, credential, opts)
+	require.NoError(t, err)
+
+	res, err := client.GetSecret(context.Background(), "name", "", nil)
+	_ = res
+	require.NoError(t, err)
 }

@@ -30,6 +30,8 @@ import (
 type ServerFactory struct {
 	AllTrafficFiltersServer            AllTrafficFiltersServer
 	AssociateTrafficFilterServer       AssociateTrafficFilterServer
+	BillingInfoServer                  BillingInfoServer
+	ConnectedPartnerResourcesServer    ConnectedPartnerResourcesServer
 	CreateAndAssociateIPFilterServer   CreateAndAssociateIPFilterServer
 	CreateAndAssociatePLFilterServer   CreateAndAssociatePLFilterServer
 	DeploymentInfoServer               DeploymentInfoServer
@@ -40,6 +42,7 @@ type ServerFactory struct {
 	MonitorServer                      MonitorServer
 	MonitoredResourcesServer           MonitoredResourcesServer
 	MonitorsServer                     MonitorsServer
+	OpenAIServer                       OpenAIServer
 	OperationsServer                   OperationsServer
 	OrganizationsServer                OrganizationsServer
 	TagRulesServer                     TagRulesServer
@@ -67,6 +70,8 @@ type ServerFactoryTransport struct {
 	trMu                                 sync.Mutex
 	trAllTrafficFiltersServer            *AllTrafficFiltersServerTransport
 	trAssociateTrafficFilterServer       *AssociateTrafficFilterServerTransport
+	trBillingInfoServer                  *BillingInfoServerTransport
+	trConnectedPartnerResourcesServer    *ConnectedPartnerResourcesServerTransport
 	trCreateAndAssociateIPFilterServer   *CreateAndAssociateIPFilterServerTransport
 	trCreateAndAssociatePLFilterServer   *CreateAndAssociatePLFilterServerTransport
 	trDeploymentInfoServer               *DeploymentInfoServerTransport
@@ -77,6 +82,7 @@ type ServerFactoryTransport struct {
 	trMonitorServer                      *MonitorServerTransport
 	trMonitoredResourcesServer           *MonitoredResourcesServerTransport
 	trMonitorsServer                     *MonitorsServerTransport
+	trOpenAIServer                       *OpenAIServerTransport
 	trOperationsServer                   *OperationsServerTransport
 	trOrganizationsServer                *OrganizationsServerTransport
 	trTagRulesServer                     *TagRulesServerTransport
@@ -111,6 +117,14 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewAssociateTrafficFilterServerTransport(&s.srv.AssociateTrafficFilterServer)
 		})
 		resp, err = s.trAssociateTrafficFilterServer.Do(req)
+	case "BillingInfoClient":
+		initServer(s, &s.trBillingInfoServer, func() *BillingInfoServerTransport { return NewBillingInfoServerTransport(&s.srv.BillingInfoServer) })
+		resp, err = s.trBillingInfoServer.Do(req)
+	case "ConnectedPartnerResourcesClient":
+		initServer(s, &s.trConnectedPartnerResourcesServer, func() *ConnectedPartnerResourcesServerTransport {
+			return NewConnectedPartnerResourcesServerTransport(&s.srv.ConnectedPartnerResourcesServer)
+		})
+		resp, err = s.trConnectedPartnerResourcesServer.Do(req)
 	case "CreateAndAssociateIPFilterClient":
 		initServer(s, &s.trCreateAndAssociateIPFilterServer, func() *CreateAndAssociateIPFilterServerTransport {
 			return NewCreateAndAssociateIPFilterServerTransport(&s.srv.CreateAndAssociateIPFilterServer)
@@ -155,6 +169,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "MonitorsClient":
 		initServer(s, &s.trMonitorsServer, func() *MonitorsServerTransport { return NewMonitorsServerTransport(&s.srv.MonitorsServer) })
 		resp, err = s.trMonitorsServer.Do(req)
+	case "OpenAIClient":
+		initServer(s, &s.trOpenAIServer, func() *OpenAIServerTransport { return NewOpenAIServerTransport(&s.srv.OpenAIServer) })
+		resp, err = s.trOpenAIServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)

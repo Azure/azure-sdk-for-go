@@ -28,6 +28,18 @@ type AssociateTrafficFilterClientAssociateResponse struct {
 	// placeholder for future response values
 }
 
+// BillingInfoClientGetResponse contains the response from method BillingInfoClient.Get.
+type BillingInfoClientGetResponse struct {
+	// Marketplace Subscription and Organization details to which resource gets billed into.
+	BillingInfoResponse
+}
+
+// ConnectedPartnerResourcesClientListResponse contains the response from method ConnectedPartnerResourcesClient.NewListPager.
+type ConnectedPartnerResourcesClientListResponse struct {
+	// List of all active elastic deployments.
+	ConnectedPartnerResourcesListResponse
+}
+
 // CreateAndAssociateIPFilterClientCreateResponse contains the response from method CreateAndAssociateIPFilterClient.BeginCreate.
 type CreateAndAssociateIPFilterClientCreateResponse struct {
 	// placeholder for future response values
@@ -112,6 +124,35 @@ type MonitorsClientUpdateResponse struct {
 	MonitorResource
 }
 
+// OpenAIClientCreateOrUpdateResponse contains the response from method OpenAIClient.CreateOrUpdate.
+type OpenAIClientCreateOrUpdateResponse struct {
+	// Capture properties of Open AI resource Integration.
+	OpenAIIntegrationRPModel
+}
+
+// OpenAIClientDeleteResponse contains the response from method OpenAIClient.Delete.
+type OpenAIClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// OpenAIClientGetResponse contains the response from method OpenAIClient.Get.
+type OpenAIClientGetResponse struct {
+	// Capture properties of Open AI resource Integration.
+	OpenAIIntegrationRPModel
+}
+
+// OpenAIClientGetStatusResponse contains the response from method OpenAIClient.GetStatus.
+type OpenAIClientGetStatusResponse struct {
+	// Status of the OpenAI Integration
+	OpenAIIntegrationStatusResponse
+}
+
+// OpenAIClientListResponse contains the response from method OpenAIClient.NewListPager.
+type OpenAIClientListResponse struct {
+	// Response of a list operation.
+	OpenAIIntegrationRPModelListResponse
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// Result of GET request to list the Microsoft.Elastic operations.
@@ -122,6 +163,12 @@ type OperationsClientListResponse struct {
 type OrganizationsClientGetAPIKeyResponse struct {
 	// The User Api Key created for the Organization associated with the User Email Id that was passed in the request
 	UserAPIKeyResponse
+}
+
+// OrganizationsClientGetElasticToAzureSubscriptionMappingResponse contains the response from method OrganizationsClient.GetElasticToAzureSubscriptionMapping.
+type OrganizationsClientGetElasticToAzureSubscriptionMappingResponse struct {
+	// The Azure Subscription ID to which the Organization of the logged in user belongs and gets billed into.
+	OrganizationToAzureSubscriptionMappingResponse
 }
 
 // TagRulesClientCreateOrUpdateResponse contains the response from method TagRulesClient.CreateOrUpdate.

@@ -31,12 +31,12 @@ steps:
     inputs:
       filePath: $(Build.SourcesDirectory)/eng/scripts/Create-ApiReview.ps1
       arguments: >
-        -ServiceDirectory ${{parameters.ServiceDirectory}}
-        -OutPath $(Build.ArtifactStagingDirectory)
-        -ApiKey "$(azuresdk-apiview-apikey)"
-        -SourceBranch $(Build.SourceBranchName)
-        -DefaultBranch $(DefaultBranch)
-        -ConfigFileDir $(Build.ArtifactStagingDirectory)/PackageInfo
+        -ServiceDirectory '${{parameters.ServiceDirectory}}'
+        -OutPath '$(Build.ArtifactStagingDirectory)'
+        -ApiKey '$(azuresdk-apiview-apikey)'
+        -SourceBranch '$(Build.SourceBranchName)'
+        -DefaultBranch '$(DefaultBranch)'
+        -ConfigFileDir '$(Build.ArtifactStagingDirectory)/PackageInfo'
         -BuildId $(Build.BuildId)
         -RepoName '$(Build.Repository.Name)'
       pwsh: true

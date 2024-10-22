@@ -116,6 +116,64 @@ func (a *APIErrorBase) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type AdditionalCapabilities.
+func (a AdditionalCapabilities) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "hibernationEnabled", a.HibernationEnabled)
+	populate(objectMap, "ultraSSDEnabled", a.UltraSSDEnabled)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AdditionalCapabilities.
+func (a *AdditionalCapabilities) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "hibernationEnabled":
+			err = unpopulate(val, "HibernationEnabled", &a.HibernationEnabled)
+			delete(rawMsg, key)
+		case "ultraSSDEnabled":
+			err = unpopulate(val, "UltraSSDEnabled", &a.UltraSSDEnabled)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AdditionalLocationsProfile.
+func (a AdditionalLocationsProfile) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "locationProfiles", a.LocationProfiles)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AdditionalLocationsProfile.
+func (a *AdditionalLocationsProfile) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "locationProfiles":
+			err = unpopulate(val, "LocationProfiles", &a.LocationProfiles)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type AdditionalUnattendContent.
 func (a AdditionalUnattendContent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -330,6 +388,7 @@ func (c *CapacityReservationProfile) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ComputeProfile.
 func (c ComputeProfile) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "additionalVirtualMachineCapabilities", c.AdditionalVirtualMachineCapabilities)
 	populate(objectMap, "baseVirtualMachineProfile", c.BaseVirtualMachineProfile)
 	populate(objectMap, "computeApiVersion", c.ComputeAPIVersion)
 	populate(objectMap, "platformFaultDomainCount", c.PlatformFaultDomainCount)
@@ -345,6 +404,9 @@ func (c *ComputeProfile) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "additionalVirtualMachineCapabilities":
+			err = unpopulate(val, "AdditionalVirtualMachineCapabilities", &c.AdditionalVirtualMachineCapabilities)
+			delete(rawMsg, key)
 		case "baseVirtualMachineProfile":
 			err = unpopulate(val, "BaseVirtualMachineProfile", &c.BaseVirtualMachineProfile)
 			delete(rawMsg, key)
@@ -571,12 +633,14 @@ func (f *FleetListResult) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type FleetProperties.
 func (f FleetProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "additionalLocationsProfile", f.AdditionalLocationsProfile)
 	populate(objectMap, "computeProfile", f.ComputeProfile)
 	populate(objectMap, "provisioningState", f.ProvisioningState)
 	populate(objectMap, "regularPriorityProfile", f.RegularPriorityProfile)
 	populate(objectMap, "spotPriorityProfile", f.SpotPriorityProfile)
 	populateDateTimeRFC3339(objectMap, "timeCreated", f.TimeCreated)
 	populate(objectMap, "uniqueId", f.UniqueID)
+	populate(objectMap, "vmAttributes", f.VMAttributes)
 	populate(objectMap, "vmSizesProfile", f.VMSizesProfile)
 	return json.Marshal(objectMap)
 }
@@ -590,6 +654,9 @@ func (f *FleetProperties) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "additionalLocationsProfile":
+			err = unpopulate(val, "AdditionalLocationsProfile", &f.AdditionalLocationsProfile)
+			delete(rawMsg, key)
 		case "computeProfile":
 			err = unpopulate(val, "ComputeProfile", &f.ComputeProfile)
 			delete(rawMsg, key)
@@ -607,6 +674,9 @@ func (f *FleetProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "uniqueId":
 			err = unpopulate(val, "UniqueID", &f.UniqueID)
+			delete(rawMsg, key)
+		case "vmAttributes":
+			err = unpopulate(val, "VMAttributes", &f.VMAttributes)
 			delete(rawMsg, key)
 		case "vmSizesProfile":
 			err = unpopulate(val, "VMSizesProfile", &f.VMSizesProfile)
@@ -875,6 +945,37 @@ func (l *LinuxVMGuestPatchAutomaticByPlatformSettings) UnmarshalJSON(data []byte
 			delete(rawMsg, key)
 		case "rebootSetting":
 			err = unpopulate(val, "RebootSetting", &l.RebootSetting)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", l, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type LocationProfile.
+func (l LocationProfile) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "location", l.Location)
+	populate(objectMap, "virtualMachineProfileOverride", l.VirtualMachineProfileOverride)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type LocationProfile.
+func (l *LocationProfile) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", l, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "location":
+			err = unpopulate(val, "Location", &l.Location)
+			delete(rawMsg, key)
+		case "virtualMachineProfileOverride":
+			err = unpopulate(val, "VirtualMachineProfileOverride", &l.VirtualMachineProfileOverride)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1727,6 +1828,171 @@ func (u *UserAssignedIdentity) UnmarshalJSON(data []byte) error {
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", u, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type VMAttributeMinMaxDouble.
+func (v VMAttributeMinMaxDouble) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "max", v.Max)
+	populate(objectMap, "min", v.Min)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type VMAttributeMinMaxDouble.
+func (v *VMAttributeMinMaxDouble) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", v, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "max":
+			err = unpopulate(val, "Max", &v.Max)
+			delete(rawMsg, key)
+		case "min":
+			err = unpopulate(val, "Min", &v.Min)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", v, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type VMAttributeMinMaxInteger.
+func (v VMAttributeMinMaxInteger) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "max", v.Max)
+	populate(objectMap, "min", v.Min)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type VMAttributeMinMaxInteger.
+func (v *VMAttributeMinMaxInteger) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", v, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "max":
+			err = unpopulate(val, "Max", &v.Max)
+			delete(rawMsg, key)
+		case "min":
+			err = unpopulate(val, "Min", &v.Min)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", v, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type VMAttributes.
+func (v VMAttributes) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "acceleratorCount", v.AcceleratorCount)
+	populate(objectMap, "acceleratorManufacturers", v.AcceleratorManufacturers)
+	populate(objectMap, "acceleratorSupport", v.AcceleratorSupport)
+	populate(objectMap, "acceleratorTypes", v.AcceleratorTypes)
+	populate(objectMap, "architectureTypes", v.ArchitectureTypes)
+	populate(objectMap, "burstableSupport", v.BurstableSupport)
+	populate(objectMap, "cpuManufacturers", v.CPUManufacturers)
+	populate(objectMap, "dataDiskCount", v.DataDiskCount)
+	populate(objectMap, "excludedVMSizes", v.ExcludedVMSizes)
+	populate(objectMap, "localStorageDiskTypes", v.LocalStorageDiskTypes)
+	populate(objectMap, "localStorageInGiB", v.LocalStorageInGiB)
+	populate(objectMap, "localStorageSupport", v.LocalStorageSupport)
+	populate(objectMap, "memoryInGiB", v.MemoryInGiB)
+	populate(objectMap, "memoryInGiBPerVCpu", v.MemoryInGiBPerVCpu)
+	populate(objectMap, "networkBandwidthInMbps", v.NetworkBandwidthInMbps)
+	populate(objectMap, "networkInterfaceCount", v.NetworkInterfaceCount)
+	populate(objectMap, "rdmaNetworkInterfaceCount", v.RdmaNetworkInterfaceCount)
+	populate(objectMap, "rdmaSupport", v.RdmaSupport)
+	populate(objectMap, "vCpuCount", v.VCPUCount)
+	populate(objectMap, "vmCategories", v.VMCategories)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type VMAttributes.
+func (v *VMAttributes) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", v, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "acceleratorCount":
+			err = unpopulate(val, "AcceleratorCount", &v.AcceleratorCount)
+			delete(rawMsg, key)
+		case "acceleratorManufacturers":
+			err = unpopulate(val, "AcceleratorManufacturers", &v.AcceleratorManufacturers)
+			delete(rawMsg, key)
+		case "acceleratorSupport":
+			err = unpopulate(val, "AcceleratorSupport", &v.AcceleratorSupport)
+			delete(rawMsg, key)
+		case "acceleratorTypes":
+			err = unpopulate(val, "AcceleratorTypes", &v.AcceleratorTypes)
+			delete(rawMsg, key)
+		case "architectureTypes":
+			err = unpopulate(val, "ArchitectureTypes", &v.ArchitectureTypes)
+			delete(rawMsg, key)
+		case "burstableSupport":
+			err = unpopulate(val, "BurstableSupport", &v.BurstableSupport)
+			delete(rawMsg, key)
+		case "cpuManufacturers":
+			err = unpopulate(val, "CPUManufacturers", &v.CPUManufacturers)
+			delete(rawMsg, key)
+		case "dataDiskCount":
+			err = unpopulate(val, "DataDiskCount", &v.DataDiskCount)
+			delete(rawMsg, key)
+		case "excludedVMSizes":
+			err = unpopulate(val, "ExcludedVMSizes", &v.ExcludedVMSizes)
+			delete(rawMsg, key)
+		case "localStorageDiskTypes":
+			err = unpopulate(val, "LocalStorageDiskTypes", &v.LocalStorageDiskTypes)
+			delete(rawMsg, key)
+		case "localStorageInGiB":
+			err = unpopulate(val, "LocalStorageInGiB", &v.LocalStorageInGiB)
+			delete(rawMsg, key)
+		case "localStorageSupport":
+			err = unpopulate(val, "LocalStorageSupport", &v.LocalStorageSupport)
+			delete(rawMsg, key)
+		case "memoryInGiB":
+			err = unpopulate(val, "MemoryInGiB", &v.MemoryInGiB)
+			delete(rawMsg, key)
+		case "memoryInGiBPerVCpu":
+			err = unpopulate(val, "MemoryInGiBPerVCpu", &v.MemoryInGiBPerVCpu)
+			delete(rawMsg, key)
+		case "networkBandwidthInMbps":
+			err = unpopulate(val, "NetworkBandwidthInMbps", &v.NetworkBandwidthInMbps)
+			delete(rawMsg, key)
+		case "networkInterfaceCount":
+			err = unpopulate(val, "NetworkInterfaceCount", &v.NetworkInterfaceCount)
+			delete(rawMsg, key)
+		case "rdmaNetworkInterfaceCount":
+			err = unpopulate(val, "RdmaNetworkInterfaceCount", &v.RdmaNetworkInterfaceCount)
+			delete(rawMsg, key)
+		case "rdmaSupport":
+			err = unpopulate(val, "RdmaSupport", &v.RdmaSupport)
+			delete(rawMsg, key)
+		case "vCpuCount":
+			err = unpopulate(val, "VCPUCount", &v.VCPUCount)
+			delete(rawMsg, key)
+		case "vmCategories":
+			err = unpopulate(val, "VMCategories", &v.VMCategories)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", v, err)
 		}
 	}
 	return nil

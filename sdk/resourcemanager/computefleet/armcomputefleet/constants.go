@@ -6,8 +6,47 @@ package armcomputefleet
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/computefleet/armcomputefleet"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v1.0.0"
 )
+
+// AcceleratorManufacturer - Accelerator manufacturers supported by Azure VMs.
+type AcceleratorManufacturer string
+
+const (
+	// AcceleratorManufacturerAMD - AMD GpuType
+	AcceleratorManufacturerAMD AcceleratorManufacturer = "AMD"
+	// AcceleratorManufacturerNvidia - Nvidia GpuType
+	AcceleratorManufacturerNvidia AcceleratorManufacturer = "Nvidia"
+	// AcceleratorManufacturerXilinx - Xilinx GpuType
+	AcceleratorManufacturerXilinx AcceleratorManufacturer = "Xilinx"
+)
+
+// PossibleAcceleratorManufacturerValues returns the possible values for the AcceleratorManufacturer const type.
+func PossibleAcceleratorManufacturerValues() []AcceleratorManufacturer {
+	return []AcceleratorManufacturer{
+		AcceleratorManufacturerAMD,
+		AcceleratorManufacturerNvidia,
+		AcceleratorManufacturerXilinx,
+	}
+}
+
+// AcceleratorType - Accelerator types supported by Azure VMs.
+type AcceleratorType string
+
+const (
+	// AcceleratorTypeFPGA - FPGA Accelerator
+	AcceleratorTypeFPGA AcceleratorType = "FPGA"
+	// AcceleratorTypeGPU - GPU Accelerator
+	AcceleratorTypeGPU AcceleratorType = "GPU"
+)
+
+// PossibleAcceleratorTypeValues returns the possible values for the AcceleratorType const type.
+func PossibleAcceleratorTypeValues() []AcceleratorType {
+	return []AcceleratorType{
+		AcceleratorTypeFPGA,
+		AcceleratorTypeGPU,
+	}
+}
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
@@ -21,6 +60,48 @@ const (
 func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
+	}
+}
+
+// ArchitectureType - Architecture types supported by Azure VMs.
+type ArchitectureType string
+
+const (
+	// ArchitectureTypeARM64 - ARM64 Architecture
+	ArchitectureTypeARM64 ArchitectureType = "ARM64"
+	// ArchitectureTypeX64 - X64 Architecture
+	ArchitectureTypeX64 ArchitectureType = "X64"
+)
+
+// PossibleArchitectureTypeValues returns the possible values for the ArchitectureType const type.
+func PossibleArchitectureTypeValues() []ArchitectureType {
+	return []ArchitectureType{
+		ArchitectureTypeARM64,
+		ArchitectureTypeX64,
+	}
+}
+
+// CPUManufacturer - Cpu Manufacturers supported by Azure VMs.
+type CPUManufacturer string
+
+const (
+	// CPUManufacturerAMD - AMD CPU.
+	CPUManufacturerAMD CPUManufacturer = "AMD"
+	// CPUManufacturerAmpere - Ampere CPU.
+	CPUManufacturerAmpere CPUManufacturer = "Ampere"
+	// CPUManufacturerIntel - Intel CPU.
+	CPUManufacturerIntel CPUManufacturer = "Intel"
+	// CPUManufacturerMicrosoft - Microsoft CPU.
+	CPUManufacturerMicrosoft CPUManufacturer = "Microsoft"
+)
+
+// PossibleCPUManufacturerValues returns the possible values for the CPUManufacturer const type.
+func PossibleCPUManufacturerValues() []CPUManufacturer {
+	return []CPUManufacturer{
+		CPUManufacturerAMD,
+		CPUManufacturerAmpere,
+		CPUManufacturerIntel,
+		CPUManufacturerMicrosoft,
 	}
 }
 
@@ -344,6 +425,24 @@ func PossibleLinuxVMGuestPatchModeValues() []LinuxVMGuestPatchMode {
 	}
 }
 
+// LocalStorageDiskType - Different kind of Local storage disk types supported by Azure VMs.
+type LocalStorageDiskType string
+
+const (
+	// LocalStorageDiskTypeHDD - HDD DiskType.
+	LocalStorageDiskTypeHDD LocalStorageDiskType = "HDD"
+	// LocalStorageDiskTypeSSD - SDD DiskType.
+	LocalStorageDiskTypeSSD LocalStorageDiskType = "SSD"
+)
+
+// PossibleLocalStorageDiskTypeValues returns the possible values for the LocalStorageDiskType const type.
+func PossibleLocalStorageDiskTypeValues() []LocalStorageDiskType {
+	return []LocalStorageDiskType{
+		LocalStorageDiskTypeHDD,
+		LocalStorageDiskTypeSSD,
+	}
+}
+
 // ManagedServiceIdentityType - Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
 type ManagedServiceIdentityType string
 
@@ -395,14 +494,14 @@ func PossibleModeValues() []Mode {
 type NetworkAPIVersion string
 
 const (
-	// NetworkAPIVersion20201101 - Initial version supported. Later versions are supported as well.
-	NetworkAPIVersion20201101 NetworkAPIVersion = "2020-11-01"
+	// NetworkAPIVersionV20201101 - Initial version supported. Later versions are supported as well.
+	NetworkAPIVersionV20201101 NetworkAPIVersion = "2020-11-01"
 )
 
 // PossibleNetworkAPIVersionValues returns the possible values for the NetworkAPIVersion const type.
 func PossibleNetworkAPIVersionValues() []NetworkAPIVersion {
 	return []NetworkAPIVersion{
-		NetworkAPIVersion20201101,
+		NetworkAPIVersionV20201101,
 	}
 }
 
@@ -732,6 +831,75 @@ func PossibleStorageAccountTypesValues() []StorageAccountTypes {
 		StorageAccountTypesStandardSSDLRS,
 		StorageAccountTypesStandardSSDZRS,
 		StorageAccountTypesUltraSSDLRS,
+	}
+}
+
+// VMAttributeSupport - VMSizes supported by Azure VMs. Included is a union of Excluded and Required.
+type VMAttributeSupport string
+
+const (
+	// VMAttributeSupportExcluded - All VMSizes having the feature support will be excluded.
+	VMAttributeSupportExcluded VMAttributeSupport = "Excluded"
+	// VMAttributeSupportIncluded - VMSizes that have the feature support and that do not have the feature support will be used.
+	// Included is a union of Excluded and Required.
+	VMAttributeSupportIncluded VMAttributeSupport = "Included"
+	// VMAttributeSupportRequired - Only the VMSizes having the feature support will be used.
+	VMAttributeSupportRequired VMAttributeSupport = "Required"
+)
+
+// PossibleVMAttributeSupportValues returns the possible values for the VMAttributeSupport const type.
+func PossibleVMAttributeSupportValues() []VMAttributeSupport {
+	return []VMAttributeSupport{
+		VMAttributeSupportExcluded,
+		VMAttributeSupportIncluded,
+		VMAttributeSupportRequired,
+	}
+}
+
+// VMCategory - VMCategories defined for Azure VMs.
+// See: https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/overview?tabs=breakdownseries%2Cgeneralsizelist%2Ccomputesizelist%2Cmemorysizelist%2Cstoragesizelist%2Cgpusizelist%2Cfpgasizelist%2Chpcsizelist#general-purpose
+type VMCategory string
+
+const (
+	// VMCategoryComputeOptimized - Compute optimized VM sizes have a high CPU-to-memory ratio. These sizes are good for medium
+	// traffic web servers, network appliances, batch processes, and application servers.
+	VMCategoryComputeOptimized VMCategory = "ComputeOptimized"
+	// VMCategoryFpgaAccelerated - FPGA optimized VM sizes are specialized virtual machines available with single or multiple
+	// FPGA.
+	// These sizes are designed for compute-intensive workloads. This article provides information about the number and type of
+	// FPGA, vCPUs, data disks, and NICs.
+	// Storage throughput and network bandwidth are also included for each size in this grouping.
+	VMCategoryFpgaAccelerated VMCategory = "FpgaAccelerated"
+	// VMCategoryGeneralPurpose - General purpose VM sizes provide balanced CPU-to-memory ratio. Ideal for testing and development,
+	// small to medium databases, and low to medium traffic web servers.
+	VMCategoryGeneralPurpose VMCategory = "GeneralPurpose"
+	// VMCategoryGpuAccelerated - GPU optimized VM sizes are specialized virtual machines available with single, multiple, or
+	// fractional GPUs.
+	// These sizes are designed for compute-intensive, graphics-intensive, and visualization workloads.
+	VMCategoryGpuAccelerated VMCategory = "GpuAccelerated"
+	// VMCategoryHighPerformanceCompute - Azure High Performance Compute VMs are optimized for various HPC workloads such as computational
+	// fluid dynamics, finite element analysis, frontend and backend EDA,
+	// rendering, molecular dynamics, computational geo science, weather simulation, and financial risk analysis.
+	VMCategoryHighPerformanceCompute VMCategory = "HighPerformanceCompute"
+	// VMCategoryMemoryOptimized - Memory optimized VM sizes offer a high memory-to-CPU ratio that is great for relational database
+	// servers, medium to large caches, and in-memory analytics.
+	VMCategoryMemoryOptimized VMCategory = "MemoryOptimized"
+	// VMCategoryStorageOptimized - Storage optimized virtual machine (VM) sizes offer high disk throughput and IO, and are ideal
+	// for Big Data, SQL, NoSQL databases, data warehousing, and large transactional databases.
+	// Examples include Cassandra, MongoDB, Cloudera, and Redis.
+	VMCategoryStorageOptimized VMCategory = "StorageOptimized"
+)
+
+// PossibleVMCategoryValues returns the possible values for the VMCategory const type.
+func PossibleVMCategoryValues() []VMCategory {
+	return []VMCategory{
+		VMCategoryComputeOptimized,
+		VMCategoryFpgaAccelerated,
+		VMCategoryGeneralPurpose,
+		VMCategoryGpuAccelerated,
+		VMCategoryHighPerformanceCompute,
+		VMCategoryMemoryOptimized,
+		VMCategoryStorageOptimized,
 	}
 }
 

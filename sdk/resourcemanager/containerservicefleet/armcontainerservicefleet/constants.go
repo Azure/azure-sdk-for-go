@@ -10,7 +10,7 @@ package armcontainerservicefleet
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservicefleet/armcontainerservicefleet"
-	moduleVersion = "v1.2.0"
+	moduleVersion = "v1.3.0-beta.1"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -24,6 +24,53 @@ const (
 func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
+	}
+}
+
+// AutoUpgradeNodeImageSelectionType - The node image upgrade type.
+type AutoUpgradeNodeImageSelectionType string
+
+const (
+	// AutoUpgradeNodeImageSelectionTypeConsistent - The image versions to upgrade nodes to are selected as described below: for
+	// each node pool in managed clusters affected by the update run, the system selects the latest image version such that it
+	// is available across all other node pools (in all other clusters) of the same image type. As a result, all node pools of
+	// the same image type will be upgraded to the same image version. For example, if the latest image version for image type
+	// 'AKSUbuntu-1804gen2containerd' is 'AKSUbuntu-1804gen2containerd-2021.10.12' for a node pool in cluster A in region X, and
+	// is 'AKSUbuntu-1804gen2containerd-2021.10.17' for a node pool in cluster B in region Y, the system will upgrade both node
+	// pools to image version 'AKSUbuntu-1804gen2containerd-2021.10.12'.
+	AutoUpgradeNodeImageSelectionTypeConsistent AutoUpgradeNodeImageSelectionType = "Consistent"
+	// AutoUpgradeNodeImageSelectionTypeLatest - Use the latest image version when upgrading nodes. Clusters may use different
+	// image versions (e.g., 'AKSUbuntu-1804gen2containerd-2021.10.12' and 'AKSUbuntu-1804gen2containerd-2021.10.19') because,
+	// for example, the latest available version is different in different regions.
+	AutoUpgradeNodeImageSelectionTypeLatest AutoUpgradeNodeImageSelectionType = "Latest"
+)
+
+// PossibleAutoUpgradeNodeImageSelectionTypeValues returns the possible values for the AutoUpgradeNodeImageSelectionType const type.
+func PossibleAutoUpgradeNodeImageSelectionTypeValues() []AutoUpgradeNodeImageSelectionType {
+	return []AutoUpgradeNodeImageSelectionType{
+		AutoUpgradeNodeImageSelectionTypeConsistent,
+		AutoUpgradeNodeImageSelectionTypeLatest,
+	}
+}
+
+// AutoUpgradeProfileProvisioningState - The provisioning state of the AutoUpgradeProfile resource.
+type AutoUpgradeProfileProvisioningState string
+
+const (
+	// AutoUpgradeProfileProvisioningStateCanceled - Resource creation was canceled.
+	AutoUpgradeProfileProvisioningStateCanceled AutoUpgradeProfileProvisioningState = "Canceled"
+	// AutoUpgradeProfileProvisioningStateFailed - Resource creation failed.
+	AutoUpgradeProfileProvisioningStateFailed AutoUpgradeProfileProvisioningState = "Failed"
+	// AutoUpgradeProfileProvisioningStateSucceeded - Resource has been created.
+	AutoUpgradeProfileProvisioningStateSucceeded AutoUpgradeProfileProvisioningState = "Succeeded"
+)
+
+// PossibleAutoUpgradeProfileProvisioningStateValues returns the possible values for the AutoUpgradeProfileProvisioningState const type.
+func PossibleAutoUpgradeProfileProvisioningStateValues() []AutoUpgradeProfileProvisioningState {
+	return []AutoUpgradeProfileProvisioningState{
+		AutoUpgradeProfileProvisioningStateCanceled,
+		AutoUpgradeProfileProvisioningStateFailed,
+		AutoUpgradeProfileProvisioningStateSucceeded,
 	}
 }
 
@@ -183,6 +230,9 @@ const (
 	// is 'AKSUbuntu-1804gen2containerd-2021.10.12' for a node pool in cluster A in region X, and is 'AKSUbuntu-1804gen2containerd-2021.10.17'
 	// for a node pool in cluster B in region Y, the system will upgrade both node pools to image version 'AKSUbuntu-1804gen2containerd-2021.10.12'.
 	NodeImageSelectionTypeConsistent NodeImageSelectionType = "Consistent"
+	// NodeImageSelectionTypeCustom - Upgrade the nodes to the custom image versions. When set, update run will use node image
+	// versions provided in customNodeImageVersions to upgrade the nodes. If set, customNodeImageVersions must not be empty.
+	NodeImageSelectionTypeCustom NodeImageSelectionType = "Custom"
 	// NodeImageSelectionTypeLatest - Use the latest image version when upgrading nodes. Clusters may use different image versions
 	// (e.g., 'AKSUbuntu-1804gen2containerd-2021.10.12' and 'AKSUbuntu-1804gen2containerd-2021.10.19') because, for example, the
 	// latest available version is different in different regions.
@@ -193,6 +243,7 @@ const (
 func PossibleNodeImageSelectionTypeValues() []NodeImageSelectionType {
 	return []NodeImageSelectionType{
 		NodeImageSelectionTypeConsistent,
+		NodeImageSelectionTypeCustom,
 		NodeImageSelectionTypeLatest,
 	}
 }
@@ -291,5 +342,30 @@ func PossibleUpdateStateValues() []UpdateState {
 		UpdateStateSkipped,
 		UpdateStateStopped,
 		UpdateStateStopping,
+	}
+}
+
+// UpgradeChannel - Configuration of how auto upgrade will be run.
+type UpgradeChannel string
+
+const (
+	// UpgradeChannelNodeImage - Upgrade node image version of the clusters.
+	UpgradeChannelNodeImage UpgradeChannel = "NodeImage"
+	// UpgradeChannelRapid - Upgrades the clusters kubernetes version to the latest supported patch release on the latest supported
+	// minor version.
+	UpgradeChannelRapid UpgradeChannel = "Rapid"
+	// UpgradeChannelStable - Upgrades the clusters kubernetes version to the latest supported patch release on minor version
+	// N-1, where N is the latest supported minor version.
+	// For example, if a cluster runs version 1.17.7 and versions 1.17.9, 1.18.4, 1.18.6, and 1.19.1 are available, the cluster
+	// upgrades to 1.18.6.
+	UpgradeChannelStable UpgradeChannel = "Stable"
+)
+
+// PossibleUpgradeChannelValues returns the possible values for the UpgradeChannel const type.
+func PossibleUpgradeChannelValues() []UpgradeChannel {
+	return []UpgradeChannel{
+		UpgradeChannelNodeImage,
+		UpgradeChannelRapid,
+		UpgradeChannelStable,
 	}
 }

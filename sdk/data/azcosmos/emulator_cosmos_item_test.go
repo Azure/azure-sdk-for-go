@@ -543,7 +543,7 @@ func TestItemCRUDHierarchicalPartitionKey(t *testing.T) {
 	}
 
 	pkAlpha := NewPartitionKey().AppendString("1").AppendString("alpha")
-	pkBeta := NewPartitionKey().AppendString("1").AppendString("alpha")
+	pkBeta := NewPartitionKey().AppendString("1").AppendString("beta")
 
 	marshalledAlpha, err := json.Marshal(itemAlpha)
 	if err != nil {
@@ -568,7 +568,7 @@ func TestItemCRUDHierarchicalPartitionKey(t *testing.T) {
 		t.Fatalf("Expected empty response, got %v", item0Res.Value)
 	}
 
-	item1Res, err := container.CreateItem(context.TODO(), pkAlpha, marshalledBeta, nil)
+	item1Res, err := container.CreateItem(context.TODO(), pkBeta, marshalledBeta, nil)
 	if err != nil {
 		t.Fatalf("Failed to create item: %v", err)
 	}

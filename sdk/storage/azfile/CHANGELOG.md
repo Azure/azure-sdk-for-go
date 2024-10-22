@@ -1,6 +1,6 @@
 # Release History
 
-## 1.4.1-beta.1 (2024-10-22)
+## 1.4.0-beta.1 (2024-10-22)
 
 ### Features Added
 * Add Paid Burst IOPS/Bandwidth support for Premium Files.

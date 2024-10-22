@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.1-beta.1 (2024-10-22)
+## 1.5.0-beta.1 (2024-10-22)
 
 ### Other Changes
 * Updated `azcore` version to `1.16.0`

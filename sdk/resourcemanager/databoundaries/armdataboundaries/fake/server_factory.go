@@ -19,7 +19,7 @@ import (
 
 // ServerFactory is a fake server for instances of the armdataboundaries.ClientFactory type.
 type ServerFactory struct {
-	Server           Server
+	Server Server
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -34,9 +34,9 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armdataboundaries.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                *ServerFactory
-	trMu               sync.Mutex
-	trServer           *ServerTransport
+	srv      *ServerFactory
+	trMu     sync.Mutex
+	trServer *ServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.

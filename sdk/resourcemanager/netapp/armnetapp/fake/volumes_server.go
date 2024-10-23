@@ -26,6 +26,10 @@ import (
 
 // VolumesServer is a fake server for instances of the armnetapp.VolumesClient type.
 type VolumesServer struct {
+	// BeginAuthorizeExternalReplication is the fake for method VolumesClient.BeginAuthorizeExternalReplication
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginAuthorizeExternalReplication func(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *armnetapp.VolumesClientBeginAuthorizeExternalReplicationOptions) (resp azfake.PollerResponder[armnetapp.VolumesClientAuthorizeExternalReplicationResponse], errResp azfake.ErrorResponder)
+
 	// BeginAuthorizeReplication is the fake for method VolumesClient.BeginAuthorizeReplication
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginAuthorizeReplication func(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body armnetapp.AuthorizeRequest, options *armnetapp.VolumesClientBeginAuthorizeReplicationOptions) (resp azfake.PollerResponder[armnetapp.VolumesClientAuthorizeReplicationResponse], errResp azfake.ErrorResponder)
@@ -50,6 +54,10 @@ type VolumesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginDeleteReplication func(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *armnetapp.VolumesClientBeginDeleteReplicationOptions) (resp azfake.PollerResponder[armnetapp.VolumesClientDeleteReplicationResponse], errResp azfake.ErrorResponder)
 
+	// BeginFinalizeExternalReplication is the fake for method VolumesClient.BeginFinalizeExternalReplication
+	// HTTP status codes to indicate success: http.StatusAccepted
+	BeginFinalizeExternalReplication func(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *armnetapp.VolumesClientBeginFinalizeExternalReplicationOptions) (resp azfake.PollerResponder[armnetapp.VolumesClientFinalizeExternalReplicationResponse], errResp azfake.ErrorResponder)
+
 	// BeginFinalizeRelocation is the fake for method VolumesClient.BeginFinalizeRelocation
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginFinalizeRelocation func(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *armnetapp.VolumesClientBeginFinalizeRelocationOptions) (resp azfake.PollerResponder[armnetapp.VolumesClientFinalizeRelocationResponse], errResp azfake.ErrorResponder)
@@ -69,6 +77,14 @@ type VolumesServer struct {
 	// NewListReplicationsPager is the fake for method VolumesClient.NewListReplicationsPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListReplicationsPager func(resourceGroupName string, accountName string, poolName string, volumeName string, options *armnetapp.VolumesClientListReplicationsOptions) (resp azfake.PagerResponder[armnetapp.VolumesClientListReplicationsResponse])
+
+	// BeginPeerExternalCluster is the fake for method VolumesClient.BeginPeerExternalCluster
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginPeerExternalCluster func(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body armnetapp.PeerClusterForVolumeMigrationRequest, options *armnetapp.VolumesClientBeginPeerExternalClusterOptions) (resp azfake.PollerResponder[armnetapp.VolumesClientPeerExternalClusterResponse], errResp azfake.ErrorResponder)
+
+	// BeginPerformReplicationTransfer is the fake for method VolumesClient.BeginPerformReplicationTransfer
+	// HTTP status codes to indicate success: http.StatusAccepted
+	BeginPerformReplicationTransfer func(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *armnetapp.VolumesClientBeginPerformReplicationTransferOptions) (resp azfake.PollerResponder[armnetapp.VolumesClientPerformReplicationTransferResponse], errResp azfake.ErrorResponder)
 
 	// BeginPoolChange is the fake for method VolumesClient.BeginPoolChange
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
@@ -121,16 +137,20 @@ type VolumesServer struct {
 func NewVolumesServerTransport(srv *VolumesServer) *VolumesServerTransport {
 	return &VolumesServerTransport{
 		srv:                                srv,
+		beginAuthorizeExternalReplication:  newTracker[azfake.PollerResponder[armnetapp.VolumesClientAuthorizeExternalReplicationResponse]](),
 		beginAuthorizeReplication:          newTracker[azfake.PollerResponder[armnetapp.VolumesClientAuthorizeReplicationResponse]](),
 		beginBreakFileLocks:                newTracker[azfake.PollerResponder[armnetapp.VolumesClientBreakFileLocksResponse]](),
 		beginBreakReplication:              newTracker[azfake.PollerResponder[armnetapp.VolumesClientBreakReplicationResponse]](),
 		beginCreateOrUpdate:                newTracker[azfake.PollerResponder[armnetapp.VolumesClientCreateOrUpdateResponse]](),
 		beginDelete:                        newTracker[azfake.PollerResponder[armnetapp.VolumesClientDeleteResponse]](),
 		beginDeleteReplication:             newTracker[azfake.PollerResponder[armnetapp.VolumesClientDeleteReplicationResponse]](),
+		beginFinalizeExternalReplication:   newTracker[azfake.PollerResponder[armnetapp.VolumesClientFinalizeExternalReplicationResponse]](),
 		beginFinalizeRelocation:            newTracker[azfake.PollerResponder[armnetapp.VolumesClientFinalizeRelocationResponse]](),
 		newListPager:                       newTracker[azfake.PagerResponder[armnetapp.VolumesClientListResponse]](),
 		beginListGetGroupIDListForLdapUser: newTracker[azfake.PollerResponder[armnetapp.VolumesClientListGetGroupIDListForLdapUserResponse]](),
 		newListReplicationsPager:           newTracker[azfake.PagerResponder[armnetapp.VolumesClientListReplicationsResponse]](),
+		beginPeerExternalCluster:           newTracker[azfake.PollerResponder[armnetapp.VolumesClientPeerExternalClusterResponse]](),
+		beginPerformReplicationTransfer:    newTracker[azfake.PollerResponder[armnetapp.VolumesClientPerformReplicationTransferResponse]](),
 		beginPoolChange:                    newTracker[azfake.PollerResponder[armnetapp.VolumesClientPoolChangeResponse]](),
 		beginPopulateAvailabilityZone:      newTracker[azfake.PollerResponder[armnetapp.VolumesClientPopulateAvailabilityZoneResponse]](),
 		beginReInitializeReplication:       newTracker[azfake.PollerResponder[armnetapp.VolumesClientReInitializeReplicationResponse]](),
@@ -148,16 +168,20 @@ func NewVolumesServerTransport(srv *VolumesServer) *VolumesServerTransport {
 // Don't use this type directly, use NewVolumesServerTransport instead.
 type VolumesServerTransport struct {
 	srv                                *VolumesServer
+	beginAuthorizeExternalReplication  *tracker[azfake.PollerResponder[armnetapp.VolumesClientAuthorizeExternalReplicationResponse]]
 	beginAuthorizeReplication          *tracker[azfake.PollerResponder[armnetapp.VolumesClientAuthorizeReplicationResponse]]
 	beginBreakFileLocks                *tracker[azfake.PollerResponder[armnetapp.VolumesClientBreakFileLocksResponse]]
 	beginBreakReplication              *tracker[azfake.PollerResponder[armnetapp.VolumesClientBreakReplicationResponse]]
 	beginCreateOrUpdate                *tracker[azfake.PollerResponder[armnetapp.VolumesClientCreateOrUpdateResponse]]
 	beginDelete                        *tracker[azfake.PollerResponder[armnetapp.VolumesClientDeleteResponse]]
 	beginDeleteReplication             *tracker[azfake.PollerResponder[armnetapp.VolumesClientDeleteReplicationResponse]]
+	beginFinalizeExternalReplication   *tracker[azfake.PollerResponder[armnetapp.VolumesClientFinalizeExternalReplicationResponse]]
 	beginFinalizeRelocation            *tracker[azfake.PollerResponder[armnetapp.VolumesClientFinalizeRelocationResponse]]
 	newListPager                       *tracker[azfake.PagerResponder[armnetapp.VolumesClientListResponse]]
 	beginListGetGroupIDListForLdapUser *tracker[azfake.PollerResponder[armnetapp.VolumesClientListGetGroupIDListForLdapUserResponse]]
 	newListReplicationsPager           *tracker[azfake.PagerResponder[armnetapp.VolumesClientListReplicationsResponse]]
+	beginPeerExternalCluster           *tracker[azfake.PollerResponder[armnetapp.VolumesClientPeerExternalClusterResponse]]
+	beginPerformReplicationTransfer    *tracker[azfake.PollerResponder[armnetapp.VolumesClientPerformReplicationTransferResponse]]
 	beginPoolChange                    *tracker[azfake.PollerResponder[armnetapp.VolumesClientPoolChangeResponse]]
 	beginPopulateAvailabilityZone      *tracker[azfake.PollerResponder[armnetapp.VolumesClientPopulateAvailabilityZoneResponse]]
 	beginReInitializeReplication       *tracker[azfake.PollerResponder[armnetapp.VolumesClientReInitializeReplicationResponse]]
@@ -182,6 +206,8 @@ func (v *VolumesServerTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch method {
+	case "VolumesClient.BeginAuthorizeExternalReplication":
+		resp, err = v.dispatchBeginAuthorizeExternalReplication(req)
 	case "VolumesClient.BeginAuthorizeReplication":
 		resp, err = v.dispatchBeginAuthorizeReplication(req)
 	case "VolumesClient.BeginBreakFileLocks":
@@ -194,6 +220,8 @@ func (v *VolumesServerTransport) Do(req *http.Request) (*http.Response, error) {
 		resp, err = v.dispatchBeginDelete(req)
 	case "VolumesClient.BeginDeleteReplication":
 		resp, err = v.dispatchBeginDeleteReplication(req)
+	case "VolumesClient.BeginFinalizeExternalReplication":
+		resp, err = v.dispatchBeginFinalizeExternalReplication(req)
 	case "VolumesClient.BeginFinalizeRelocation":
 		resp, err = v.dispatchBeginFinalizeRelocation(req)
 	case "VolumesClient.Get":
@@ -204,6 +232,10 @@ func (v *VolumesServerTransport) Do(req *http.Request) (*http.Response, error) {
 		resp, err = v.dispatchBeginListGetGroupIDListForLdapUser(req)
 	case "VolumesClient.NewListReplicationsPager":
 		resp, err = v.dispatchNewListReplicationsPager(req)
+	case "VolumesClient.BeginPeerExternalCluster":
+		resp, err = v.dispatchBeginPeerExternalCluster(req)
+	case "VolumesClient.BeginPerformReplicationTransfer":
+		resp, err = v.dispatchBeginPerformReplicationTransfer(req)
 	case "VolumesClient.BeginPoolChange":
 		resp, err = v.dispatchBeginPoolChange(req)
 	case "VolumesClient.BeginPopulateAvailabilityZone":
@@ -232,6 +264,58 @@ func (v *VolumesServerTransport) Do(req *http.Request) (*http.Response, error) {
 
 	if err != nil {
 		return nil, err
+	}
+
+	return resp, nil
+}
+
+func (v *VolumesServerTransport) dispatchBeginAuthorizeExternalReplication(req *http.Request) (*http.Response, error) {
+	if v.srv.BeginAuthorizeExternalReplication == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginAuthorizeExternalReplication not implemented")}
+	}
+	beginAuthorizeExternalReplication := v.beginAuthorizeExternalReplication.get(req)
+	if beginAuthorizeExternalReplication == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumes/(?P<volumeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizeExternalReplication`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
+		if err != nil {
+			return nil, err
+		}
+		volumeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := v.srv.BeginAuthorizeExternalReplication(req.Context(), resourceGroupNameParam, accountNameParam, poolNameParam, volumeNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginAuthorizeExternalReplication = &respr
+		v.beginAuthorizeExternalReplication.add(req, beginAuthorizeExternalReplication)
+	}
+
+	resp, err := server.PollerResponderNext(beginAuthorizeExternalReplication, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		v.beginAuthorizeExternalReplication.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginAuthorizeExternalReplication) {
+		v.beginAuthorizeExternalReplication.remove(req)
 	}
 
 	return resp, nil
@@ -592,6 +676,58 @@ func (v *VolumesServerTransport) dispatchBeginDeleteReplication(req *http.Reques
 	return resp, nil
 }
 
+func (v *VolumesServerTransport) dispatchBeginFinalizeExternalReplication(req *http.Request) (*http.Response, error) {
+	if v.srv.BeginFinalizeExternalReplication == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginFinalizeExternalReplication not implemented")}
+	}
+	beginFinalizeExternalReplication := v.beginFinalizeExternalReplication.get(req)
+	if beginFinalizeExternalReplication == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumes/(?P<volumeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/finalizeExternalReplication`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
+		if err != nil {
+			return nil, err
+		}
+		volumeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := v.srv.BeginFinalizeExternalReplication(req.Context(), resourceGroupNameParam, accountNameParam, poolNameParam, volumeNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginFinalizeExternalReplication = &respr
+		v.beginFinalizeExternalReplication.add(req, beginFinalizeExternalReplication)
+	}
+
+	resp, err := server.PollerResponderNext(beginFinalizeExternalReplication, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusAccepted}, resp.StatusCode) {
+		v.beginFinalizeExternalReplication.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginFinalizeExternalReplication) {
+		v.beginFinalizeExternalReplication.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (v *VolumesServerTransport) dispatchBeginFinalizeRelocation(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginFinalizeRelocation == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginFinalizeRelocation not implemented")}
@@ -829,6 +965,114 @@ func (v *VolumesServerTransport) dispatchNewListReplicationsPager(req *http.Requ
 	if !server.PagerResponderMore(newListReplicationsPager) {
 		v.newListReplicationsPager.remove(req)
 	}
+	return resp, nil
+}
+
+func (v *VolumesServerTransport) dispatchBeginPeerExternalCluster(req *http.Request) (*http.Response, error) {
+	if v.srv.BeginPeerExternalCluster == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginPeerExternalCluster not implemented")}
+	}
+	beginPeerExternalCluster := v.beginPeerExternalCluster.get(req)
+	if beginPeerExternalCluster == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumes/(?P<volumeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/peerExternalCluster`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnetapp.PeerClusterForVolumeMigrationRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
+		if err != nil {
+			return nil, err
+		}
+		volumeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := v.srv.BeginPeerExternalCluster(req.Context(), resourceGroupNameParam, accountNameParam, poolNameParam, volumeNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginPeerExternalCluster = &respr
+		v.beginPeerExternalCluster.add(req, beginPeerExternalCluster)
+	}
+
+	resp, err := server.PollerResponderNext(beginPeerExternalCluster, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		v.beginPeerExternalCluster.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginPeerExternalCluster) {
+		v.beginPeerExternalCluster.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (v *VolumesServerTransport) dispatchBeginPerformReplicationTransfer(req *http.Request) (*http.Response, error) {
+	if v.srv.BeginPerformReplicationTransfer == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginPerformReplicationTransfer not implemented")}
+	}
+	beginPerformReplicationTransfer := v.beginPerformReplicationTransfer.get(req)
+	if beginPerformReplicationTransfer == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumes/(?P<volumeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/performReplicationTransfer`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
+		if err != nil {
+			return nil, err
+		}
+		volumeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := v.srv.BeginPerformReplicationTransfer(req.Context(), resourceGroupNameParam, accountNameParam, poolNameParam, volumeNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginPerformReplicationTransfer = &respr
+		v.beginPerformReplicationTransfer.add(req, beginPerformReplicationTransfer)
+	}
+
+	resp, err := server.PollerResponderNext(beginPerformReplicationTransfer, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusAccepted}, resp.StatusCode) {
+		v.beginPerformReplicationTransfer.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginPerformReplicationTransfer) {
+		v.beginPerformReplicationTransfer.remove(req)
+	}
+
 	return resp, nil
 }
 

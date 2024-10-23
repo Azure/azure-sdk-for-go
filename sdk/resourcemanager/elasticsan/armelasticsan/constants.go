@@ -10,7 +10,7 @@ package armelasticsan
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan"
-	moduleVersion = "v1.1.0"
+	moduleVersion = "v1.2.0-beta.1"
 )
 
 // Action - The action of virtual network rule.
@@ -38,6 +38,24 @@ const (
 func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
+	}
+}
+
+// AutoScalePolicyEnforcement - Enable or Disable scale up setting on Elastic San Appliance.
+type AutoScalePolicyEnforcement string
+
+const (
+	AutoScalePolicyEnforcementDisabled AutoScalePolicyEnforcement = "Disabled"
+	AutoScalePolicyEnforcementEnabled  AutoScalePolicyEnforcement = "Enabled"
+	AutoScalePolicyEnforcementNone     AutoScalePolicyEnforcement = "None"
+)
+
+// PossibleAutoScalePolicyEnforcementValues returns the possible values for the AutoScalePolicyEnforcement const type.
+func PossibleAutoScalePolicyEnforcementValues() []AutoScalePolicyEnforcement {
+	return []AutoScalePolicyEnforcement{
+		AutoScalePolicyEnforcementDisabled,
+		AutoScalePolicyEnforcementEnabled,
+		AutoScalePolicyEnforcementNone,
 	}
 }
 

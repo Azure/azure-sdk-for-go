@@ -731,3 +731,39 @@ func TestWrapUnwrap(t *testing.T) {
 		})
 	}
 }
+
+func TestAPIVersion(t *testing.T) {
+	apiVersion := "7.3"
+	var requireVersion = func(t *testing.T) func(req *http.Request) bool {
+		return func(r *http.Request) bool {
+			version := r.URL.Query().Get("api-version")
+			require.Equal(t, version, apiVersion)
+			return true
+		}
+	}
+	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer close()
+	srv.AppendResponse(
+		mock.WithHeader("WWW-Authenticate", `Bearer authorization="https://login.microsoftonline.com/tenant", resource="https://vault.azure.net"`),
+		mock.WithStatusCode(401),
+		mock.WithPredicate(requireVersion(t)),
+	)
+	srv.AppendResponse() // when a response's predicate returns true, srv pops the following one
+	srv.AppendResponse(
+		mock.WithStatusCode(200),
+		mock.WithPredicate(requireVersion(t)),
+	)
+	srv.AppendResponse() // when a response's predicate returns true, srv pops the following one
+
+	opts := &azkeys.ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			Transport:  srv,
+			APIVersion: apiVersion,
+		},
+	}
+	client, err := azkeys.NewClient(vaultURL, &azcred.Fake{}, opts)
+	require.NoError(t, err)
+
+	_, err = client.GetKey(context.Background(), "name", "", nil)
+	require.NoError(t, err)
+}

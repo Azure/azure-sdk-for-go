@@ -9,11 +9,14 @@ package rbac_test
 import (
 	"context"
 	"math/rand"
+	"net/http"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	azcred "github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin/rbac"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
@@ -242,4 +245,40 @@ func TestDeleteRoleAssignment_FailureInvalidRole(t *testing.T) {
 	require.Nil(t, res.Type)
 
 	testSerde(t, &res)
+}
+
+func TestAPIVersion(t *testing.T) {
+	apiVersion := "7.3"
+	var requireVersion = func(t *testing.T) func(req *http.Request) bool {
+		return func(r *http.Request) bool {
+			version := r.URL.Query().Get("api-version")
+			require.Equal(t, version, apiVersion)
+			return true
+		}
+	}
+	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer close()
+	srv.AppendResponse(
+		mock.WithHeader("WWW-Authenticate", `Bearer authorization="https://login.microsoftonline.com/tenant", resource="https://managedhsm.azure.net"`),
+		mock.WithStatusCode(401),
+		mock.WithPredicate(requireVersion(t)),
+	)
+	srv.AppendResponse() // when a response's predicate returns true, srv pops the following one
+	srv.AppendResponse(
+		mock.WithStatusCode(200),
+		mock.WithPredicate(requireVersion(t)),
+	)
+	srv.AppendResponse() // when a response's predicate returns true, srv pops the following one
+
+	opts := &rbac.ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			Transport:  srv,
+			APIVersion: apiVersion,
+		},
+	}
+	client, err := rbac.NewClient(hsmURL, &azcred.Fake{}, opts)
+	require.NoError(t, err)
+
+	_, err = client.GetRoleAssignment(context.Background(), rbac.RoleScopeGlobal, "name", nil)
+	require.NoError(t, err)
 }

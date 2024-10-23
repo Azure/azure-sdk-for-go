@@ -8,13 +8,17 @@ package backup_test
 
 import (
 	"context"
+	"net/http"
 	"strings"
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	azcred "github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin/backup"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azkeys"
 	"github.com/stretchr/testify/require"
@@ -176,4 +180,49 @@ func TestBeginSelectiveKeyRestoreOperation(t *testing.T) {
 	if recording.GetRecordMode() != recording.PlaybackMode {
 		time.Sleep(60 * time.Second)
 	}
+}
+
+func TestAPIVersion(t *testing.T) {
+	apiVersion := "7.3"
+	var requireVersion = func(t *testing.T) func(req *http.Request) bool {
+		return func(r *http.Request) bool {
+			version := r.URL.Query().Get("api-version")
+			require.Equal(t, version, apiVersion)
+			return true
+		}
+	}
+	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer close()
+	srv.AppendResponse(
+		mock.WithHeader("WWW-Authenticate", `Bearer authorization="https://login.microsoftonline.com/tenant", resource="https://managedhsm.azure.net"`),
+		mock.WithStatusCode(401),
+		mock.WithPredicate(requireVersion(t)),
+	)
+	srv.AppendResponse() // when a response's predicate returns true, srv pops the following one
+	srv.AppendResponse(
+		mock.WithStatusCode(202),
+		mock.WithHeader("Azure-AsyncOperation", "https://Sanitized.managedhsm.azure.net/backup/test/pending"),
+		mock.WithPredicate(requireVersion(t)),
+	)
+	srv.AppendResponse() // when a response's predicate returns true, srv pops the following one
+	srv.AppendResponse(
+		mock.WithStatusCode(200),
+		mock.WithBody([]byte(`{"status": "Succeeded"}`)),
+		mock.WithPredicate(requireVersion(t)),
+	)
+	srv.AppendResponse() // when a response's predicate returns true, srv pops the following one
+
+	opts := &backup.ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			Transport:  srv,
+			APIVersion: apiVersion,
+		},
+	}
+	client, err := backup.NewClient(hsmURL, &azcred.Fake{}, opts)
+	require.NoError(t, err)
+
+	poller, err := client.BeginSelectiveKeyRestore(context.Background(), "keyName", backup.SelectiveKeyRestoreOperationParameters{}, nil)
+	require.NoError(t, err)
+	_, err = poller.PollUntilDone(context.Background(), nil)
+	require.NoError(t, err)
 }

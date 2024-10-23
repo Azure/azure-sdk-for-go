@@ -414,10 +414,9 @@ func TestAPIVersion(t *testing.T) {
 			APIVersion: apiVersion,
 		},
 	}
-	client, err := azsecrets.NewClient(vaultURL, credential, opts)
+	client, err := azsecrets.NewClient(vaultURL, &azcred.Fake{}, opts)
 	require.NoError(t, err)
 
-	res, err := client.GetSecret(context.Background(), "name", "", nil)
-	_ = res
+	_, err = client.GetSecret(context.Background(), "name", "", nil)
 	require.NoError(t, err)
 }

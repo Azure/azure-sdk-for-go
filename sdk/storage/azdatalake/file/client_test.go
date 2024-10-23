@@ -10,6 +10,7 @@ import (
 	"bytes"
 	"context"
 	"crypto/md5"
+	"crypto/rand"
 	"encoding/binary"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
@@ -17,7 +18,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 	"hash/crc64"
 	"io"
-	"math/rand"
 	"net/http"
 	"os"
 	"strconv"
@@ -104,7 +104,8 @@ func (u userAgentTest) Do(req *policy.Request) (*http.Response, error) {
 
 	currentUserAgentHeader := req.Raw().Header.Get(userAgentHeader)
 	if !strings.HasPrefix(currentUserAgentHeader, "azsdk-go-azdatalake/"+exported.ModuleVersion) {
-		return nil, fmt.Errorf(currentUserAgentHeader + " user agent doesn't match expected agent: azsdk-go-azdatalake/vx.xx.xx")
+		return nil, fmt.Errorf("%s user agent doesn't match expected agent: "+
+			"azsdk-go-azdatalake/vx.xx.xx", currentUserAgentHeader)
 	}
 
 	return &http.Response{
@@ -2694,7 +2695,8 @@ func (s *UnrecordedTestSuite) TestFileUploadDownloadStream() {
 	_require.NotNil(resp)
 
 	content := make([]byte, fileSize)
-	_, err = rand.Read(content)
+	var b [8]byte
+	_, err = rand.Read(b[:])
 	_require.NoError(err)
 	md5Value := md5.Sum(content)
 	contentMD5 := md5Value[:]
@@ -2877,7 +2879,8 @@ func (s *UnrecordedTestSuite) TestFileUploadDownloadStreamWithCPK() {
 	_require.NotNil(resp)
 
 	content := make([]byte, fileSize)
-	_, err = rand.Read(content)
+	var b [8]byte
+	_, err = rand.Read(b[:])
 	_require.NoError(err)
 	md5Value := md5.Sum(content)
 	contentMD5 := md5Value[:]

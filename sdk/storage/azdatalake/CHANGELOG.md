@@ -1,14 +1,11 @@
 # Release History
 
-## 1.2.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.3.0-beta.1 (2024-10-23)
 
 ### Other Changes
+* Updated `azcore` version to `1.16.0`
+* Updated `azblob` version to `v1.5.0-beta-1`
+* Updated `azidentity` version to `1.8.0`
 
 ## 1.2.1 (2024-09-23)
 

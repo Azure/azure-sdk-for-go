@@ -2980,7 +2980,7 @@ func (s *UnrecordedTestSuite) TestFileUploadDownloadStreamWithCPKNegative() {
 
 	_, err = fClient.DownloadStream(context.Background(), &file.DownloadStreamOptions{})
 	_require.Error(err)
-	_require.ErrorContains(err, "PathUsesCustomerSpecifiedEncryption")
+	_require.ErrorContains(err, "BlobUsesCustomerSpecifiedEncryption")
 }
 
 func (s *UnrecordedTestSuite) TestFileUploadFile() {

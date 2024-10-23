@@ -1,5 +1,15 @@
 # Release History
 
+## 1.2.0-beta.1 (2024-10-23)
+### Features Added
+
+- New enum type `AutoScalePolicyEnforcement` with values `AutoScalePolicyEnforcementDisabled`, `AutoScalePolicyEnforcementEnabled`, `AutoScalePolicyEnforcementNone`
+- New struct `AutoScaleProperties`
+- New struct `ScaleUpProperties`
+- New field `AutoScaleProperties` in struct `Properties`
+- New field `AutoScaleProperties` in struct `UpdateProperties`
+
+
 ## 1.1.0 (2024-08-22)
 ### Features Added
 

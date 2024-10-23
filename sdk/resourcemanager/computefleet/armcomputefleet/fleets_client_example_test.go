@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/computefleet/armcomputefleet/TempTypeSpecFiles/AzureFleet.Management/examples/2024-11-01/Fleets_CreateOrUpdate.json
+// Generated from example definition: 2024-11-01/Fleets_CreateOrUpdate.json
 func ExampleFleetsClient_BeginCreateOrUpdate_fleetsCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -799,7 +799,7 @@ func ExampleFleetsClient_BeginCreateOrUpdate_fleetsCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/computefleet/armcomputefleet/TempTypeSpecFiles/AzureFleet.Management/examples/2024-11-01/Fleets_CreateOrUpdate_MinimumSet.json
+// Generated from example definition: 2024-11-01/Fleets_CreateOrUpdate_MinimumSet.json
 func ExampleFleetsClient_BeginCreateOrUpdate_fleetsCreateOrUpdateMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1007,7 +1007,7 @@ func ExampleFleetsClient_BeginCreateOrUpdate_fleetsCreateOrUpdateMinimumSet() {
 	// }
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/computefleet/armcomputefleet/TempTypeSpecFiles/AzureFleet.Management/examples/2024-11-01/Fleets_Delete.json
+// Generated from example definition: 2024-11-01/Fleets_Delete.json
 func ExampleFleetsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1028,7 +1028,7 @@ func ExampleFleetsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/computefleet/armcomputefleet/TempTypeSpecFiles/AzureFleet.Management/examples/2024-11-01/Fleets_Get.json
+// Generated from example definition: 2024-11-01/Fleets_Get.json
 func ExampleFleetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1441,7 +1441,7 @@ func ExampleFleetsClient_Get() {
 	// }
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/computefleet/armcomputefleet/TempTypeSpecFiles/AzureFleet.Management/examples/2024-11-01/Fleets_ListByResourceGroup.json
+// Generated from example definition: 2024-11-01/Fleets_ListByResourceGroup.json
 func ExampleFleetsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1864,7 +1864,7 @@ func ExampleFleetsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/computefleet/armcomputefleet/TempTypeSpecFiles/AzureFleet.Management/examples/2024-11-01/Fleets_ListBySubscription.json
+// Generated from example definition: 2024-11-01/Fleets_ListBySubscription.json
 func ExampleFleetsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2287,7 +2287,7 @@ func ExampleFleetsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/computefleet/armcomputefleet/TempTypeSpecFiles/AzureFleet.Management/examples/2024-11-01/Fleets_ListVirtualMachineScaleSets.json
+// Generated from example definition: 2024-11-01/Fleets_ListVirtualMachineScaleSets.json
 func ExampleFleetsClient_NewListVirtualMachineScaleSetsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2340,7 +2340,7 @@ func ExampleFleetsClient_NewListVirtualMachineScaleSetsPager() {
 	}
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/computefleet/armcomputefleet/TempTypeSpecFiles/AzureFleet.Management/examples/2024-11-01/Fleets_Update.json
+// Generated from example definition: 2024-11-01/Fleets_Update.json
 func ExampleFleetsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

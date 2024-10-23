@@ -37,6 +37,7 @@ type testVars struct {
 	ChatCompletionsLegacyFunctions        endpointWithModel
 	ChatCompletionsOYD                    endpointWithModel // azure only
 	ChatCompletionsRAI                    endpointWithModel // azure only
+	ChatCompletionsStructuredOutputs      endpointWithModel
 	ChatCompletionsWithJSONResponseFormat endpointWithModel
 	Cognitive                             azopenai.AzureSearchChatExtensionConfiguration
 	Completions                           endpointWithModel
@@ -133,6 +134,10 @@ var azureOpenAI, openAI = func() (testVars, testVars) {
 			ChatCompletionsRAI: endpointWithModel{
 				Endpoint: ifAzure(azure, servers.USEast, servers.OpenAI),
 				Model:    ifAzure(azure, "gpt-4-0613", ""), // azure only
+			},
+			ChatCompletionsStructuredOutputs: endpointWithModel{
+				Endpoint: ifAzure(azure, servers.USEast, servers.OpenAI),
+				Model:    ifAzure(azure, "gpt-4o-0806", "gpt-4o"),
 			},
 			ChatCompletionsWithJSONResponseFormat: endpointWithModel{
 				Endpoint: ifAzure(azure, servers.SWECentral, servers.OpenAI),

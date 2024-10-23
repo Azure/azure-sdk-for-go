@@ -47,7 +47,7 @@ func NewManagedApplyMaintenanceWindowClient(subscriptionID string, credential az
 // applied.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2024-06-01-preview
 //   - resourceGroupName - The name of the resource group.
 //   - clusterName - The name of the cluster resource.
 //   - options - ManagedApplyMaintenanceWindowClientPostOptions contains the optional parameters for the ManagedApplyMaintenanceWindowClient.Post
@@ -93,7 +93,7 @@ func (client *ManagedApplyMaintenanceWindowClient) postCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01")
+	reqQP.Set("api-version", "2024-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

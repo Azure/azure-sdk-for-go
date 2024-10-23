@@ -46,7 +46,7 @@ func NewManagedClusterVersionClient(subscriptionID string, credential azcore.Tok
 // Get - Gets information about an available Service Fabric managed cluster code version.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2024-06-01-preview
 //   - location - The location for the cluster code versions. This is different from cluster location.
 //   - clusterVersion - The cluster code version.
 //   - options - ManagedClusterVersionClientGetOptions contains the optional parameters for the ManagedClusterVersionClient.Get
@@ -93,7 +93,7 @@ func (client *ManagedClusterVersionClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01")
+	reqQP.Set("api-version", "2024-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -111,7 +111,7 @@ func (client *ManagedClusterVersionClient) getHandleResponse(resp *http.Response
 // GetByEnvironment - Gets information about an available Service Fabric cluster code version by environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2024-06-01-preview
 //   - location - The location for the cluster code versions. This is different from cluster location.
 //   - environment - The operating system of the cluster. The default means all.
 //   - clusterVersion - The cluster code version.
@@ -163,7 +163,7 @@ func (client *ManagedClusterVersionClient) getByEnvironmentCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01")
+	reqQP.Set("api-version", "2024-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -181,7 +181,7 @@ func (client *ManagedClusterVersionClient) getByEnvironmentHandleResponse(resp *
 // List - Gets all available code versions for Service Fabric cluster resources by location.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2024-06-01-preview
 //   - location - The location for the cluster code versions. This is different from cluster location.
 //   - options - ManagedClusterVersionClientListOptions contains the optional parameters for the ManagedClusterVersionClient.List
 //     method.
@@ -223,7 +223,7 @@ func (client *ManagedClusterVersionClient) listCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01")
+	reqQP.Set("api-version", "2024-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -241,7 +241,7 @@ func (client *ManagedClusterVersionClient) listHandleResponse(resp *http.Respons
 // ListByEnvironment - Gets all available code versions for Service Fabric cluster resources by environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2024-06-01-preview
 //   - location - The location for the cluster code versions. This is different from cluster location.
 //   - environment - The operating system of the cluster. The default means all.
 //   - options - ManagedClusterVersionClientListByEnvironmentOptions contains the optional parameters for the ManagedClusterVersionClient.ListByEnvironment
@@ -288,7 +288,7 @@ func (client *ManagedClusterVersionClient) listByEnvironmentCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01")
+	reqQP.Set("api-version", "2024-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

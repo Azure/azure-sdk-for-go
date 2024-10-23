@@ -8,6 +8,53 @@
 
 package armcontainerinstance
 
+// ContainerGroupProfileClientGetByRevisionNumberResponse contains the response from method ContainerGroupProfileClient.GetByRevisionNumber.
+type ContainerGroupProfileClientGetByRevisionNumberResponse struct {
+	// A container group profile.
+	ContainerGroupProfile
+}
+
+// ContainerGroupProfileClientListAllRevisionsResponse contains the response from method ContainerGroupProfileClient.NewListAllRevisionsPager.
+type ContainerGroupProfileClientListAllRevisionsResponse struct {
+	// The container group profile list response that contains the container group profile properties.
+	ContainerGroupProfileListResult
+}
+
+// ContainerGroupProfilesClientCreateOrUpdateResponse contains the response from method ContainerGroupProfilesClient.CreateOrUpdate.
+type ContainerGroupProfilesClientCreateOrUpdateResponse struct {
+	// A container group profile.
+	ContainerGroupProfile
+}
+
+// ContainerGroupProfilesClientDeleteResponse contains the response from method ContainerGroupProfilesClient.Delete.
+type ContainerGroupProfilesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ContainerGroupProfilesClientGetResponse contains the response from method ContainerGroupProfilesClient.Get.
+type ContainerGroupProfilesClientGetResponse struct {
+	// A container group profile.
+	ContainerGroupProfile
+}
+
+// ContainerGroupProfilesClientListByResourceGroupResponse contains the response from method ContainerGroupProfilesClient.NewListByResourceGroupPager.
+type ContainerGroupProfilesClientListByResourceGroupResponse struct {
+	// The container group profile list response that contains the container group profile properties.
+	ContainerGroupProfileListResult
+}
+
+// ContainerGroupProfilesClientListResponse contains the response from method ContainerGroupProfilesClient.NewListPager.
+type ContainerGroupProfilesClientListResponse struct {
+	// The container group profile list response that contains the container group profile properties.
+	ContainerGroupProfileListResult
+}
+
+// ContainerGroupProfilesClientPatchResponse contains the response from method ContainerGroupProfilesClient.Patch.
+type ContainerGroupProfilesClientPatchResponse struct {
+	// A container group profile.
+	ContainerGroupProfile
+}
+
 // ContainerGroupsClientCreateOrUpdateResponse contains the response from method ContainerGroupsClient.BeginCreateOrUpdate.
 type ContainerGroupsClientCreateOrUpdateResponse struct {
 	// A container group.

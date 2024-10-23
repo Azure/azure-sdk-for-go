@@ -25,6 +25,12 @@ type AllowedPrincipals struct {
 	Identities []*string
 }
 
+// AppInsightsConfiguration - Configuration of Application Insights
+type AppInsightsConfiguration struct {
+	// Application Insights connection string
+	ConnectionString *string
+}
+
 // AppLogsConfiguration - Configuration of application logs
 type AppLogsConfiguration struct {
 	// Logs destination, can be 'log-analytics', 'azure-monitor' or 'none'
@@ -41,6 +47,54 @@ type AppRegistration struct {
 
 	// The app setting name that contains the app secret.
 	AppSecretSettingName *string
+}
+
+// AppResiliency - Configuration to setup App Resiliency
+type AppResiliency struct {
+	// App Resiliency resource specific properties
+	Properties *AppResiliencyProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// AppResiliencyCollection - Collection of AppResiliency policies
+type AppResiliencyCollection struct {
+	// REQUIRED; Collection of resources.
+	Value []*AppResiliency
+
+	// READ-ONLY; Link to next page of resources.
+	NextLink *string
+}
+
+// AppResiliencyProperties - App Resiliency resource specific properties
+type AppResiliencyProperties struct {
+	// Policy that defines circuit breaker conditions
+	CircuitBreakerPolicy *CircuitBreakerPolicy
+
+	// Defines parameters for http connection pooling
+	HTTPConnectionPool *HTTPConnectionPool
+
+	// Policy that defines http request retry conditions
+	HTTPRetryPolicy *HTTPRetryPolicy
+
+	// Defines parameters for tcp connection pooling
+	TCPConnectionPool *TCPConnectionPool
+
+	// Policy that defines tcp request retry conditions
+	TCPRetryPolicy *TCPRetryPolicy
+
+	// Policy to set request timeouts
+	TimeoutPolicy *TimeoutPolicy
 }
 
 // Apple - The configuration settings of the Apple provider.
@@ -69,7 +123,7 @@ type AuthConfig struct {
 	// AuthConfig resource specific properties
 	Properties *AuthConfigProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -141,7 +195,7 @@ type AvailableWorkloadProfile struct {
 	// Revision resource specific properties
 	Properties *AvailableWorkloadProfileProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -320,6 +374,10 @@ type BaseContainer struct {
 	// Container image tag.
 	Image *string
 
+	// The type of the image. Set to CloudBuild to let the system manages the image, where user will not be able to update image
+	// through image field. Set to ContainerImage for user provided image.
+	ImageType *ImageType
+
 	// Custom container name.
 	Name *string
 
@@ -375,6 +433,150 @@ type BlobStorageTokenStore struct {
 	SasURLSettingName *string
 }
 
+// BuildCollection - The response of a BuildResource list operation.
+type BuildCollection struct {
+	// REQUIRED; The BuildResource items on this page
+	Value []*BuildResource
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// BuildConfiguration - Configuration of the build.
+type BuildConfiguration struct {
+	// Base OS used to build and run the app.
+	BaseOs *string
+
+	// List of environment variables to be passed to the build, secrets should not be used in environment variable.
+	EnvironmentVariables []*EnvironmentVariable
+
+	// Platform to be used to build and run the app.
+	Platform *string
+
+	// Platform version to be used to build and run the app.
+	PlatformVersion *string
+
+	// List of steps to perform before the build.
+	PreBuildSteps []*PreBuildStep
+}
+
+// BuildProperties - The build properties.
+type BuildProperties struct {
+	// Configuration of the build.
+	Configuration *BuildConfiguration
+
+	// Container registry that the final image will be uploaded to.
+	DestinationContainerRegistry *ContainerRegistryWithCustomImage
+
+	// READ-ONLY; Status of the build once it has been provisioned.
+	BuildStatus *BuildStatus
+
+	// READ-ONLY; Endpoint from which the build logs can be streamed.
+	LogStreamEndpoint *string
+
+	// READ-ONLY; Build provisioning state.
+	ProvisioningState *BuildProvisioningState
+
+	// READ-ONLY; Endpoint to use to retrieve an authentication token for log streaming and uploading source code.
+	TokenEndpoint *string
+
+	// READ-ONLY; Endpoint to which the source code should be uploaded.
+	UploadEndpoint *string
+}
+
+// BuildResource - Information pertaining to an individual build.
+type BuildResource struct {
+	// The resource-specific properties for this resource.
+	Properties *BuildProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// BuildToken - Build Auth Token.
+type BuildToken struct {
+	// READ-ONLY; Token expiration date.
+	Expires *time.Time
+
+	// READ-ONLY; Authentication token.
+	Token *string
+}
+
+// BuilderCollection - The response of a BuilderResource list operation.
+type BuilderCollection struct {
+	// REQUIRED; The BuilderResource items on this page
+	Value []*BuilderResource
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// BuilderProperties - The builder properties.
+type BuilderProperties struct {
+	// REQUIRED; Resource ID of the container apps environment that the builder is associated with.
+	EnvironmentID *string
+
+	// List of mappings of container registries and the managed identity used to connect to it.
+	ContainerRegistries []*ContainerRegistry
+
+	// READ-ONLY; Provisioning state of a builder resource.
+	ProvisioningState *BuilderProvisioningState
+}
+
+// BuilderResource - Information about the SourceToCloud builder resource.
+type BuilderResource struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
+
+	// The resource-specific properties for this resource.
+	Properties *BuilderProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// BuilderResourceUpdate - The type used for update operations of the BuilderResource.
+type BuilderResourceUpdate struct {
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
+
+	// The updatable properties of the BuilderResource.
+	Properties *BuilderResourceUpdateProperties
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// BuilderResourceUpdateProperties - The updatable properties of the BuilderResource.
+type BuilderResourceUpdateProperties struct {
+	// Resource ID of the container apps environment that the builder is associated with.
+	EnvironmentID *string
+}
+
 // Certificate used for Custom Domain bindings of Container Apps in a Managed Environment
 type Certificate struct {
 	// REQUIRED; The geo-location where the resource lives
@@ -386,7 +588,7 @@ type Certificate struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -408,6 +610,15 @@ type CertificateCollection struct {
 	NextLink *string
 }
 
+// CertificateKeyVaultProperties - Properties for a certificate stored in a Key Vault.
+type CertificateKeyVaultProperties struct {
+	// Resource ID of a managed identity to authenticate with Azure Key Vault, or System to use a system-assigned identity.
+	Identity *string
+
+	// URL pointing to the Azure Key Vault secret that holds the certificate.
+	KeyVaultURL *string
+}
+
 // CertificatePatch - A certificate to update
 type CertificatePatch struct {
 	// Application-specific metadata in the form of key-value pairs.
@@ -416,6 +627,12 @@ type CertificatePatch struct {
 
 // CertificateProperties - Certificate resource specific properties
 type CertificateProperties struct {
+	// Properties for a certificate stored in a Key Vault.
+	CertificateKeyVaultProperties *CertificateKeyVaultProperties
+
+	// The type of the certificate. Allowed values are ServerSSLCertificate and ImagePullTrustedCA
+	CertificateType *CertificateType
+
 	// Certificate password.
 	Password *string
 
@@ -471,6 +688,19 @@ type CheckNameAvailabilityResponse struct {
 	Reason *CheckNameAvailabilityReason
 }
 
+// CircuitBreakerPolicy - Policy that defines circuit breaker conditions
+type CircuitBreakerPolicy struct {
+	// Number of consecutive errors before the circuit breaker opens
+	ConsecutiveErrors *int32
+
+	// The time interval, in seconds, between endpoint checks. This can result in opening the circuit breaker if the check fails
+	// as well as closing the circuit breaker if the check succeeds. Defaults to 10s.
+	IntervalInSeconds *int32
+
+	// Maximum percentage of hosts that will be ejected after failure threshold has been met
+	MaxEjectionPercent *int32
+}
+
 // ClientRegistration - The configuration settings of the app registration for providers that have client ids and client secrets
 type ClientRegistration struct {
 	// The Client ID of the app used for login.
@@ -490,6 +720,10 @@ type Configuration struct {
 	// Dapr configuration for the Container App.
 	Dapr *Dapr
 
+	// Optional settings for Managed Identities that are assigned to the Container App. If a Managed Identity is not specified
+	// here, default settings will be used.
+	IdentitySettings []*IdentitySettings
+
 	// Ingress configurations.
 	Ingress *Ingress
 
@@ -498,6 +732,9 @@ type Configuration struct {
 
 	// Collection of private container registry credentials for containers used by the Container app
 	Registries []*RegistryCredentials
+
+	// App runtime configuration for the Container App.
+	Runtime *Runtime
 
 	// Collection of secrets used by a Container app
 	Secrets []*Secret
@@ -520,7 +757,7 @@ type ConnectedEnvironment struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -568,7 +805,7 @@ type ConnectedEnvironmentStorage struct {
 	// Storage properties
 	Properties *ConnectedEnvironmentStorageProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -585,6 +822,9 @@ type ConnectedEnvironmentStorage struct {
 type ConnectedEnvironmentStorageProperties struct {
 	// Azure file properties
 	AzureFile *AzureFileProperties
+
+	// SMB storage properties
+	Smb *SmbStorage
 }
 
 // ConnectedEnvironmentStoragesCollection - Collection of Storage for Environments
@@ -606,6 +846,10 @@ type Container struct {
 
 	// Container image tag.
 	Image *string
+
+	// The type of the image. Set to CloudBuild to let the system manages the image, where user will not be able to update image
+	// through image field. Set to ContainerImage for user provided image.
+	ImageType *ImageType
 
 	// Custom container name.
 	Name *string
@@ -632,6 +876,11 @@ type ContainerApp struct {
 	// in code.
 	Identity *ManagedServiceIdentity
 
+	// Metadata used to render different experiences for resources of the same type; e.g. WorkflowApp is a kind of Microsoft.App/ContainerApps
+	// type. If supported, the resource provider must validate and
+	// persist this value.
+	Kind *Kind
+
 	// The fully qualified resource ID of the resource that manages this resource. Indicates if this resource is managed by another
 	// Azure resource. If this is present, complete mode deployment will not
 	// delete the resource if it is removed from the template since it is managed by another resource.
@@ -643,7 +892,7 @@ type ContainerApp struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -667,7 +916,7 @@ type ContainerAppAuthToken struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -797,6 +1046,9 @@ type ContainerAppProperties struct {
 	// Deprecated. Resource ID of the Container App's environment.
 	ManagedEnvironmentID *string
 
+	// Container App auto patch configuration.
+	PatchingConfiguration *ContainerAppPropertiesPatchingConfiguration
+
 	// Container App versioned application definition.
 	Template *Template
 
@@ -805,6 +1057,9 @@ type ContainerAppProperties struct {
 
 	// READ-ONLY; Id used to verify domain name ownership
 	CustomDomainVerificationID *string
+
+	// READ-ONLY; Any errors that occurred during deployment
+	DeploymentErrors *string
 
 	// READ-ONLY; The endpoint of the eventstream of the container app.
 	EventStreamEndpoint *string
@@ -825,6 +1080,14 @@ type ContainerAppProperties struct {
 	ProvisioningState *ContainerAppProvisioningState
 }
 
+// ContainerAppPropertiesPatchingConfiguration - Container App auto patch configuration.
+type ContainerAppPropertiesPatchingConfiguration struct {
+	// Patching mode for the container app. Null or default in this field will be interpreted as Automatic by RP. Automatic mode
+	// will automatically apply available patches. Manual mode will require the user
+	// to manually apply patches. Disabled mode will stop patch detection and auto patching.
+	PatchingMode *PatchingMode
+}
+
 // ContainerAppSecret - Container App Secret.
 type ContainerAppSecret struct {
 	// READ-ONLY; Resource ID of a managed identity to authenticate with Azure Key Vault, or System to use a system-assigned identity.
@@ -838,6 +1101,121 @@ type ContainerAppSecret struct {
 
 	// READ-ONLY; Secret Value.
 	Value *string
+}
+
+// ContainerAppsBuildCollection - The response of a Container Apps Build Resource list operation.
+type ContainerAppsBuildCollection struct {
+	// REQUIRED; The Container Apps Build Resource items on this page
+	Value []*ContainerAppsBuildResource
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ContainerAppsBuildConfiguration - Configuration of the build.
+type ContainerAppsBuildConfiguration struct {
+	// READ-ONLY; Base OS used to build and run the app.
+	BaseOs *string
+
+	// READ-ONLY; List of environment variables to be passed to the build, secrets should not be used in environment variable.
+	EnvironmentVariables []*EnvironmentVariable
+
+	// READ-ONLY; Platform to be used to build and run the app.
+	Platform *string
+
+	// READ-ONLY; Platform version to be used to build and run the app.
+	PlatformVersion *string
+
+	// READ-ONLY; List of steps to perform before the build.
+	PreBuildSteps []*PreBuildStep
+}
+
+// ContainerAppsBuildProperties - The ContainerAppBuild properties.
+type ContainerAppsBuildProperties struct {
+	// READ-ONLY; Status of the build once it has been provisioned.
+	BuildStatus *BuildStatus
+
+	// READ-ONLY; Configuration of the build.
+	Configuration *ContainerAppsBuildConfiguration
+
+	// READ-ONLY; Container registry that the final image will be uploaded to.
+	DestinationContainerRegistry *ContainerRegistryWithCustomImage
+
+	// READ-ONLY; Endpoint from which the build logs can be streamed.
+	LogStreamEndpoint *string
+
+	// READ-ONLY; Build provisioning state.
+	ProvisioningState *BuildProvisioningState
+}
+
+// ContainerAppsBuildResource - Information pertaining to an individual build.
+type ContainerAppsBuildResource struct {
+	// The resource-specific properties for this resource.
+	Properties *ContainerAppsBuildProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ContainerAppsPatchResource - Container App Patch
+type ContainerAppsPatchResource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Properties that describes current states of the patch resource.
+	Properties *PatchProperties
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ContainerExecutionStatus - Container Apps Job execution container status. Contains status code and reason
+type ContainerExecutionStatus struct {
+	// Additional information for the container status
+	AdditionalInformation *string
+
+	// Exit code
+	Code *int32
+
+	// Container Name.
+	Name *string
+
+	// Status of the container
+	Status *string
+}
+
+// ContainerRegistry - Model representing a mapping from a container registry to the identity used to connect to it.
+type ContainerRegistry struct {
+	// REQUIRED; Login server of the container registry.
+	ContainerRegistryServer *string
+
+	// REQUIRED; Resource ID of the managed identity.
+	IdentityResourceID *string
+}
+
+// ContainerRegistryWithCustomImage - Container registry that the final image will be uploaded to.
+type ContainerRegistryWithCustomImage struct {
+	// REQUIRED; Login server of the container registry that the final image should be uploaded to. Builder resource needs to
+	// have this container registry defined along with an identity to use to access it.
+	Server *string
+
+	// Full name that the final image should be uploaded as, including both image name and tag.
+	Image *string
 }
 
 // ContainerResources - Container App container resource requirements.
@@ -882,6 +1260,18 @@ type CorsPolicy struct {
 	MaxAge *int32
 }
 
+// CustomContainerTemplate - Custom container configuration.
+type CustomContainerTemplate struct {
+	// List of container definitions for the sessions of the session pool.
+	Containers []*SessionContainer
+
+	// Session pool ingress configuration.
+	Ingress *SessionIngress
+
+	// Private container registry credentials for containers used by the sessions of the session pool.
+	RegistryCredentials *SessionRegistryCredentials
+}
+
 // CustomDomain - Custom Domain of a Container App
 type CustomDomain struct {
 	// REQUIRED; Hostname.
@@ -896,6 +1286,9 @@ type CustomDomain struct {
 
 // CustomDomainConfiguration - Configuration properties for apps environment custom domain
 type CustomDomainConfiguration struct {
+	// Certificate stored in Azure Key Vault.
+	CertificateKeyVaultProperties *CertificateKeyVaultProperties
+
 	// Certificate password
 	CertificatePassword *string
 
@@ -1001,6 +1394,10 @@ type CustomScaleRule struct {
 	// Authentication secrets for the custom scale rule.
 	Auth []*ScaleRuleAuth
 
+	// The resource ID of a user-assigned managed identity that is assigned to the Container App, or 'system' for system-assigned
+	// identity.
+	Identity *string
+
 	// Metadata properties to describe custom scale rule.
 	Metadata map[string]*string
 
@@ -1041,7 +1438,7 @@ type DaprComponent struct {
 	// Dapr Component resource specific properties
 	Properties *DaprComponentProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1077,8 +1474,109 @@ type DaprComponentProperties struct {
 	// Collection of secrets used by a Dapr component
 	Secrets []*Secret
 
+	// List of container app services that are bound to the Dapr component
+	ServiceComponentBind []*DaprComponentServiceBinding
+
 	// Component version
 	Version *string
+}
+
+// DaprComponentResiliencyPoliciesCollection - Dapr Component Resiliency Policies ARM resource.
+type DaprComponentResiliencyPoliciesCollection struct {
+	// REQUIRED; Collection of resources.
+	Value []*DaprComponentResiliencyPolicy
+
+	// READ-ONLY; Link to next page of resources.
+	NextLink *string
+}
+
+// DaprComponentResiliencyPolicy - Dapr Component Resiliency Policy.
+type DaprComponentResiliencyPolicy struct {
+	// Dapr Component Resiliency Policy resource specific properties
+	Properties *DaprComponentResiliencyPolicyProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// DaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration - Dapr Component Resiliency Policy Circuit Breaker Policy
+// Configuration.
+type DaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration struct {
+	// The number of consecutive errors before the circuit is opened.
+	ConsecutiveErrors *int32
+
+	// The optional interval in seconds after which the error count resets to 0. An interval of 0 will never reset. If not specified,
+	// the timeoutInSeconds value will be used.
+	IntervalInSeconds *int32
+
+	// The interval in seconds until a retry attempt is made after the circuit is opened.
+	TimeoutInSeconds *int32
+}
+
+// DaprComponentResiliencyPolicyConfiguration - Dapr Component Resiliency Policy Configuration.
+type DaprComponentResiliencyPolicyConfiguration struct {
+	// The optional circuit breaker policy configuration
+	CircuitBreakerPolicy *DaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration
+
+	// The optional HTTP retry policy configuration
+	HTTPRetryPolicy *DaprComponentResiliencyPolicyHTTPRetryPolicyConfiguration
+
+	// The optional timeout policy configuration
+	TimeoutPolicy *DaprComponentResiliencyPolicyTimeoutPolicyConfiguration
+}
+
+// DaprComponentResiliencyPolicyHTTPRetryBackOffConfiguration - Dapr Component Resiliency Policy HTTP Retry Backoff Configuration.
+type DaprComponentResiliencyPolicyHTTPRetryBackOffConfiguration struct {
+	// The optional initial delay in milliseconds before an operation is retried
+	InitialDelayInMilliseconds *int32
+
+	// The optional maximum time interval in milliseconds between retry attempts
+	MaxIntervalInMilliseconds *int32
+}
+
+// DaprComponentResiliencyPolicyHTTPRetryPolicyConfiguration - Dapr Component Resiliency Policy HTTP Retry Policy Configuration.
+type DaprComponentResiliencyPolicyHTTPRetryPolicyConfiguration struct {
+	// The optional maximum number of retries
+	MaxRetries *int32
+
+	// The optional retry backoff configuration
+	RetryBackOff *DaprComponentResiliencyPolicyHTTPRetryBackOffConfiguration
+}
+
+// DaprComponentResiliencyPolicyProperties - Dapr Component Resiliency Policy resource specific properties
+type DaprComponentResiliencyPolicyProperties struct {
+	// The optional inbound component resiliency policy configuration
+	InboundPolicy *DaprComponentResiliencyPolicyConfiguration
+
+	// The optional outbound component resiliency policy configuration
+	OutboundPolicy *DaprComponentResiliencyPolicyConfiguration
+}
+
+// DaprComponentResiliencyPolicyTimeoutPolicyConfiguration - Dapr Component Resiliency Policy Timeout Policy Configuration.
+type DaprComponentResiliencyPolicyTimeoutPolicyConfiguration struct {
+	// The optional response timeout in seconds
+	ResponseTimeoutInSeconds *int32
+}
+
+// DaprComponentServiceBinding - Configuration to bind a Dapr Component to a dev ContainerApp Service
+type DaprComponentServiceBinding struct {
+	// Service bind metadata
+	Metadata *DaprServiceBindMetadata
+
+	// Name of the service bind
+	Name *string
+
+	// Resource id of the target service
+	ServiceID *string
 }
 
 // DaprComponentsCollection - Dapr Components ARM resource.
@@ -1121,6 +1619,108 @@ type DaprSecret struct {
 type DaprSecretsCollection struct {
 	// REQUIRED; Collection of secrets used by a Dapr component
 	Value []*DaprSecret
+}
+
+// DaprServiceBindMetadata - Dapr component metadata.
+type DaprServiceBindMetadata struct {
+	// Service bind metadata property name.
+	Name *string
+
+	// Service bind metadata property value.
+	Value *string
+}
+
+// DaprSubscription - Dapr PubSub Event Subscription.
+type DaprSubscription struct {
+	// Dapr PubSub Event Subscription resource specific properties
+	Properties *DaprSubscriptionProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// DaprSubscriptionBulkSubscribeOptions - Dapr PubSub Bulk Subscription Options.
+type DaprSubscriptionBulkSubscribeOptions struct {
+	// Enable bulk subscription
+	Enabled *bool
+
+	// Maximum duration in milliseconds to wait before a bulk message is sent to the app.
+	MaxAwaitDurationMs *int32
+
+	// Maximum number of messages to deliver in a bulk message.
+	MaxMessagesCount *int32
+}
+
+// DaprSubscriptionProperties - Dapr PubSub Event Subscription resource specific properties
+type DaprSubscriptionProperties struct {
+	// Bulk subscription options
+	BulkSubscribe *DaprSubscriptionBulkSubscribeOptions
+
+	// Deadletter topic name
+	DeadLetterTopic *string
+
+	// Subscription metadata
+	Metadata map[string]*string
+
+	// Dapr PubSub component name
+	PubsubName *string
+
+	// Subscription routes
+	Routes *DaprSubscriptionRoutes
+
+	// Application scopes to restrict the subscription to specific apps.
+	Scopes []*string
+
+	// Topic name
+	Topic *string
+}
+
+// DaprSubscriptionRouteRule - Dapr Pubsub Event Subscription Route Rule is used to specify the condition for sending a message
+// to a specific path.
+type DaprSubscriptionRouteRule struct {
+	// The optional CEL expression used to match the event. If the match is not specified, then the route is considered the default.
+	// The rules are tested in the order specified, so they should be define from
+	// most-to-least specific. The default route should appear last in the list.
+	Match *string
+
+	// The path for events that match this rule
+	Path *string
+}
+
+// DaprSubscriptionRoutes - Dapr PubSub Event Subscription Routes configuration.
+type DaprSubscriptionRoutes struct {
+	// The default path to deliver events that do not match any of the rules.
+	Default *string
+
+	// The list of Dapr PubSub Event Subscription Route Rules.
+	Rules []*DaprSubscriptionRouteRule
+}
+
+// DaprSubscriptionsCollection - Dapr Subscriptions ARM resource.
+type DaprSubscriptionsCollection struct {
+	// REQUIRED; Collection of resources.
+	Value []*DaprSubscription
+
+	// READ-ONLY; Link to next page of resources.
+	NextLink *string
+}
+
+// DataDogConfiguration - Configuration of datadog
+type DataDogConfiguration struct {
+	// The data dog api key
+	Key *string
+
+	// The data dog site
+	Site *string
 }
 
 // DefaultAuthorizationPolicy - The configuration settings of the Azure Active Directory default authorization policy.
@@ -1166,6 +1766,15 @@ type DefaultErrorResponseErrorDetailsItem struct {
 
 	// READ-ONLY; Detailed error description and debugging information.
 	Target *string
+}
+
+// DestinationsConfiguration - Configuration of Open Telemetry destinations
+type DestinationsConfiguration struct {
+	// Open telemetry datadog destination configuration
+	DataDogConfiguration *DataDogConfiguration
+
+	// Open telemetry otlp configurations
+	OtlpConfigurations []*OtlpConfiguration
 }
 
 // DiagnosticDataProviderMetadata - Details of a diagnostics data provider
@@ -1239,7 +1848,7 @@ type Diagnostics struct {
 	// Diagnostics resource specific properties
 	Properties *DiagnosticsProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1324,6 +1933,75 @@ type DiagnosticsStatus struct {
 	StatusID *int32
 }
 
+// DotNetComponent - .NET Component.
+type DotNetComponent struct {
+	// .NET Component resource specific properties
+	Properties *DotNetComponentProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// DotNetComponentConfigurationProperty - Configuration properties for a .NET Component
+type DotNetComponentConfigurationProperty struct {
+	// The name of the property
+	PropertyName *string
+
+	// The value of the property
+	Value *string
+}
+
+// DotNetComponentProperties - .NET Component resource specific properties
+type DotNetComponentProperties struct {
+	// Type of the .NET Component.
+	ComponentType *DotNetComponentType
+
+	// List of .NET Components configuration properties
+	Configurations []*DotNetComponentConfigurationProperty
+
+	// List of .NET Components that are bound to the .NET component
+	ServiceBinds []*DotNetComponentServiceBind
+
+	// READ-ONLY; Provisioning state of the .NET Component.
+	ProvisioningState *DotNetComponentProvisioningState
+}
+
+// DotNetComponentServiceBind - Configuration to bind a .NET Component to another .NET Component
+type DotNetComponentServiceBind struct {
+	// Name of the service bind
+	Name *string
+
+	// Resource id of the target service
+	ServiceID *string
+}
+
+// DotNetComponentsCollection - .NET Components ARM resource.
+type DotNetComponentsCollection struct {
+	// REQUIRED; Collection of resources.
+	Value []*DotNetComponent
+
+	// READ-ONLY; Link to next page of resources.
+	NextLink *string
+}
+
+// DynamicPoolConfiguration - Dynamic pool configuration.
+type DynamicPoolConfiguration struct {
+	// The cooldown period of a session in seconds.
+	CooldownPeriodInSeconds *int32
+
+	// The execution type of the session pool.
+	ExecutionType *ExecutionType
+}
+
 // EncryptionSettings - The configuration settings of the secrets references of encryption key and signing key for ContainerApp
 // Service Authentication/Authorization.
 type EncryptionSettings struct {
@@ -1345,7 +2023,7 @@ type EnvironmentAuthToken struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1379,6 +2057,15 @@ type EnvironmentVar struct {
 	Value *string
 }
 
+// EnvironmentVariable - Model representing an environment variable.
+type EnvironmentVariable struct {
+	// REQUIRED; Environment variable name.
+	Name *string
+
+	// REQUIRED; Environment variable value.
+	Value *string
+}
+
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
@@ -1406,11 +2093,44 @@ type ErrorDetail struct {
 	Target *string
 }
 
+// ErrorEntity - Body of the error response returned from the API.
+type ErrorEntity struct {
+	// Basic error code.
+	Code *string
+
+	// Error Details.
+	Details []*ErrorEntity
+
+	// Type of error.
+	ExtendedCode *string
+
+	// Inner errors.
+	InnerErrors []*ErrorEntity
+
+	// Any details of the error.
+	Message *string
+
+	// Message template.
+	MessageTemplate *string
+
+	// Parameters for the template.
+	Parameters []*string
+
+	// The error target.
+	Target *string
+}
+
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
 	// The error object.
 	Error *ErrorDetail
+}
+
+// ExecutionStatus - Container Apps Job execution status.
+type ExecutionStatus struct {
+	// Replicas in the execution.
+	Replicas []*ReplicaExecutionStatus
 }
 
 // ExtendedLocation - The complex type of the extended location.
@@ -1466,8 +2186,14 @@ type GithubActionConfiguration struct {
 	// AzureCredentials configurations.
 	AzureCredentials *AzureCredentials
 
+	// List of environment variables to be passed to the build.
+	BuildEnvironmentVariables []*EnvironmentVariable
+
 	// Context path
 	ContextPath *string
+
+	// Dockerfile path
+	DockerfilePath *string
 
 	// One time Github PAT to configure github environment
 	GithubPersonalAccessToken *string
@@ -1520,10 +2246,68 @@ type Google struct {
 	Validation *AllowedAudiencesValidation
 }
 
+// HTTPConnectionPool - Defines parameters for http connection pooling
+type HTTPConnectionPool struct {
+	// Maximum number of pending http1 requests allowed
+	HTTP1MaxPendingRequests *int32
+
+	// Maximum number of http2 requests allowed
+	HTTP2MaxRequests *int32
+}
+
+// HTTPGet - Model representing a http get request.
+type HTTPGet struct {
+	// REQUIRED; URL to make HTTP GET request against.
+	URL *string
+
+	// Name of the file that the request should be saved to.
+	FileName *string
+
+	// List of headers to send with the request.
+	Headers []*string
+}
+
+// HTTPRetryPolicy - Policy that defines http request retry conditions
+type HTTPRetryPolicy struct {
+	// Conditions that must be met for a request to be retried
+	Matches *HTTPRetryPolicyMatches
+
+	// Maximum number of times a request will retry
+	MaxRetries *int32
+
+	// Settings for retry backoff characteristics
+	RetryBackOff *HTTPRetryPolicyRetryBackOff
+}
+
+// HTTPRetryPolicyMatches - Conditions that must be met for a request to be retried
+type HTTPRetryPolicyMatches struct {
+	// Errors that can trigger a retry
+	Errors []*string
+
+	// Additional http status codes that can trigger a retry
+	HTTPStatusCodes []*int32
+
+	// Headers that must be present for a request to be retried
+	Headers []*HeaderMatch
+}
+
+// HTTPRetryPolicyRetryBackOff - Settings for retry backoff characteristics
+type HTTPRetryPolicyRetryBackOff struct {
+	// Initial delay, in milliseconds, before retrying a request
+	InitialDelayInMilliseconds *int64
+
+	// Maximum interval, in milliseconds, between retries
+	MaxIntervalInMilliseconds *int64
+}
+
 // HTTPScaleRule - Container App container Http scaling rule.
 type HTTPScaleRule struct {
 	// Authentication secrets for the custom scale rule.
 	Auth []*ScaleRuleAuth
+
+	// The resource ID of a user-assigned managed identity that is assigned to the Container App, or 'system' for system-assigned
+	// identity.
+	Identity *string
 
 	// Metadata properties to describe http scale rule.
 	Metadata map[string]*string
@@ -1546,6 +2330,39 @@ type HTTPSettings struct {
 type HTTPSettingsRoutes struct {
 	// The prefix that should precede all the authentication/authorization paths.
 	APIPrefix *string
+}
+
+// Header of otlp configuration
+type Header struct {
+	// The key of otlp configuration header
+	Key *string
+
+	// The value of otlp configuration header
+	Value *string
+}
+
+// HeaderMatch - Conditions required to match a header
+type HeaderMatch struct {
+	// Name of the header
+	Header *string
+
+	// Type of match to perform
+	Match *HeaderMatchMatch
+}
+
+// HeaderMatchMatch - Type of match to perform
+type HeaderMatchMatch struct {
+	// Exact value of the header
+	ExactMatch *string
+
+	// Prefix value of the header
+	PrefixMatch *string
+
+	// Regex value of the header
+	RegexMatch *string
+
+	// Suffix value of the header
+	SuffixMatch *string
 }
 
 // IPSecurityRestrictionRule - Rule to restrict incoming IP address.
@@ -1592,6 +2409,16 @@ type IdentityProviders struct {
 	Twitter *Twitter
 }
 
+// IdentitySettings - Optional settings for a Managed Identity that is assigned to the Container App.
+type IdentitySettings struct {
+	// REQUIRED; The resource ID of a user-assigned managed identity that is assigned to the Container App, or 'system' for system-assigned
+	// identity.
+	Identity *string
+
+	// Use to select the lifecycle stages of a Container App during which the Managed Identity should be available.
+	Lifecycle *IdentitySettingsLifeCycle
+}
+
 // Ingress - Container App Ingress configuration.
 type Ingress struct {
 	// Settings to expose additional ports on container app
@@ -1626,6 +2453,9 @@ type Ingress struct {
 
 	// Target Port in containers for traffic from ingress
 	TargetPort *int32
+
+	// Whether an http app listens on http or https
+	TargetPortHTTPScheme *IngressTargetPortHTTPScheme
 
 	// Traffic weights for app's revisions
 	Traffic []*TrafficWeight
@@ -1669,6 +2499,10 @@ type InitContainer struct {
 	// Container image tag.
 	Image *string
 
+	// The type of the image. Set to CloudBuild to let the system manages the image, where user will not be able to update image
+	// through image field. Set to ContainerImage for user provided image.
+	ImageType *ImageType
+
 	// Custom container name.
 	Name *string
 
@@ -1679,10 +2513,94 @@ type InitContainer struct {
 	VolumeMounts []*VolumeMount
 }
 
+// JavaComponent - Java Component.
+type JavaComponent struct {
+	// Java Component resource specific properties
+	Properties JavaComponentPropertiesClassification
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// JavaComponentConfigurationProperty - Configuration properties for a Java Component
+type JavaComponentConfigurationProperty struct {
+	// The name of the property
+	PropertyName *string
+
+	// The value of the property
+	Value *string
+}
+
+// JavaComponentIngress - Container App Ingress configuration.
+type JavaComponentIngress struct {
+	// READ-ONLY; Hostname of the Java Component endpoint
+	Fqdn *string
+}
+
+// JavaComponentProperties - Java Component common properties.
+type JavaComponentProperties struct {
+	// REQUIRED; Type of the Java Component.
+	ComponentType *JavaComponentType
+
+	// List of Java Components configuration properties
+	Configurations []*JavaComponentConfigurationProperty
+
+	// Java component scaling configurations
+	Scale *JavaComponentPropertiesScale
+
+	// List of Java Components that are bound to the Java component
+	ServiceBinds []*JavaComponentServiceBind
+
+	// READ-ONLY; Provisioning state of the Java Component.
+	ProvisioningState *JavaComponentProvisioningState
+}
+
+// GetJavaComponentProperties implements the JavaComponentPropertiesClassification interface for type JavaComponentProperties.
+func (j *JavaComponentProperties) GetJavaComponentProperties() *JavaComponentProperties { return j }
+
+// JavaComponentPropertiesScale - Java component scaling configurations
+type JavaComponentPropertiesScale struct {
+	// Optional. Maximum number of Java component replicas
+	MaxReplicas *int32
+
+	// Optional. Minimum number of Java component replicas. Defaults to 1 if not set
+	MinReplicas *int32
+}
+
+// JavaComponentServiceBind - Configuration to bind a Java Component to another Java Component
+type JavaComponentServiceBind struct {
+	// Name of the service bind
+	Name *string
+
+	// Resource id of the target service
+	ServiceID *string
+}
+
+// JavaComponentsCollection - Java Components ARM resource.
+type JavaComponentsCollection struct {
+	// REQUIRED; Collection of resources.
+	Value []*JavaComponent
+
+	// READ-ONLY; Link to next page of resources.
+	NextLink *string
+}
+
 // Job - Container App Job
 type Job struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
+
+	// The complex type of the extended location.
+	ExtendedLocation *ExtendedLocation
 
 	// Managed identities needed by a container app job to interact with other Azure services to not maintain any secrets or credentials
 	// in code.
@@ -1694,7 +2612,7 @@ type Job struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1717,6 +2635,10 @@ type JobConfiguration struct {
 
 	// Trigger configuration of an event driven job.
 	EventTriggerConfig *JobConfigurationEventTriggerConfig
+
+	// Optional settings for Managed Identities that are assigned to the Container App Job. If a Managed Identity is not specified
+	// here, default settings will be used.
+	IdentitySettings []*IdentitySettings
 
 	// Manual trigger configuration for a single execution job. Properties replicaCompletionCount and parallelism would be set
 	// to 1 by default
@@ -1824,6 +2746,9 @@ type JobExecutionNamesCollection struct {
 
 // JobExecutionProperties - Container Apps Job execution specific properties.
 type JobExecutionProperties struct {
+	// Detailed status of the job execution.
+	DetailedStatus *ExecutionStatus
+
 	// Job execution end time.
 	EndTime *time.Time
 
@@ -1848,6 +2773,9 @@ type JobExecutionTemplate struct {
 
 // JobPatchProperties - Container Apps Job resource specific properties.
 type JobPatchProperties struct {
+	// The complex type of the extended location.
+	ExtendedLocation *ExtendedLocation
+
 	// Managed identities needed by a container app job to interact with other Azure services to not maintain any secrets or credentials
 	// in code.
 	Identity   *ManagedServiceIdentity
@@ -1896,6 +2824,9 @@ type JobProperties struct {
 
 	// READ-ONLY; Provisioning state of the Container Apps Job.
 	ProvisioningState *JobProvisioningState
+
+	// READ-ONLY; Current running state of the job
+	RunningState *JobRunningState
 }
 
 // JobScale - Scaling configurations for event driven jobs.
@@ -1917,6 +2848,9 @@ type JobScale struct {
 type JobScaleRule struct {
 	// Authentication secrets for the scale rule.
 	Auth []*ScaleRuleAuth
+
+	// The resource ID of a user-assigned managed identity that is assigned to the job, or 'system' for system-assigned identity.
+	Identity *string
 
 	// Metadata properties to describe the scale rule.
 	Metadata any
@@ -1985,8 +2919,38 @@ type LogAnalyticsConfiguration struct {
 	// Log analytics customer id
 	CustomerID *string
 
+	// Boolean indicating whether to parse json string log into dynamic json columns
+	DynamicJSONColumns *bool
+
 	// Log analytics customer key
 	SharedKey *string
+}
+
+// LoggerSetting - Logger settings for java workloads.
+type LoggerSetting struct {
+	// REQUIRED; The specified logger's log level.
+	Level *Level
+
+	// REQUIRED; Logger name.
+	Logger *string
+}
+
+// LogicApp - A logic app extension resource
+type LogicApp struct {
+	// The resource-specific properties for this resource.
+	Properties any
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
 }
 
 // Login - The configuration settings of the login flow of users using ContainerApp Service Authentication/Authorization.
@@ -2024,6 +2988,12 @@ type LoginScopes struct {
 	Scopes []*string
 }
 
+// LogsConfiguration - Configuration of Open Telemetry logs
+type LogsConfiguration struct {
+	// Open telemetry logs destinations
+	Destinations []*string
+}
+
 // ManagedCertificate - Managed certificates used for Custom Domain bindings of Container Apps in a Managed Environment
 type ManagedCertificate struct {
 	// REQUIRED; The geo-location where the resource lives
@@ -2035,7 +3005,7 @@ type ManagedCertificate struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -2086,6 +3056,10 @@ type ManagedEnvironment struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
+	// Managed identities for the Managed Environment to interact with other Azure services without maintaining any secrets or
+	// credentials in code.
+	Identity *ManagedServiceIdentity
+
 	// Kind of the Environment.
 	Kind *string
 
@@ -2095,7 +3069,7 @@ type ManagedEnvironment struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -2110,6 +3084,9 @@ type ManagedEnvironment struct {
 
 // ManagedEnvironmentProperties - Managed environment resource specific properties
 type ManagedEnvironmentProperties struct {
+	// Environment level Application Insights configuration
+	AppInsightsConfiguration *AppInsightsConfiguration
+
 	// Cluster configuration which enables the log daemon to export app logs to a destination. Currently only "log-analytics"
 	// is supported
 	AppLogsConfiguration *AppLogsConfiguration
@@ -2134,11 +3111,17 @@ type ManagedEnvironmentProperties struct {
 	// The configuration of Keda component.
 	KedaConfiguration *KedaConfiguration
 
+	// Environment Open Telemetry configuration
+	OpenTelemetryConfiguration *OpenTelemetryConfiguration
+
 	// Peer authentication settings for the Managed Environment
 	PeerAuthentication *ManagedEnvironmentPropertiesPeerAuthentication
 
 	// Peer traffic settings for the Managed Environment
 	PeerTrafficConfiguration *ManagedEnvironmentPropertiesPeerTrafficConfiguration
+
+	// Property to allow or block all public traffic. Allowed Values: 'Enabled', 'Disabled'.
+	PublicNetworkAccess *PublicNetworkAccess
 
 	// Vnet configuration for the environment
 	VnetConfiguration *VnetConfiguration
@@ -2157,6 +3140,9 @@ type ManagedEnvironmentProperties struct {
 
 	// READ-ONLY; The endpoint of the eventstream of the Environment.
 	EventStreamEndpoint *string
+
+	// READ-ONLY; Private endpoint connections to the resource.
+	PrivateEndpointConnections []*PrivateEndpointConnection
 
 	// READ-ONLY; Provisioning state of the Environment.
 	ProvisioningState *EnvironmentProvisioningState
@@ -2188,7 +3174,7 @@ type ManagedEnvironmentStorage struct {
 	// Storage properties
 	Properties *ManagedEnvironmentStorageProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -2205,6 +3191,9 @@ type ManagedEnvironmentStorage struct {
 type ManagedEnvironmentStorageProperties struct {
 	// Azure file properties
 	AzureFile *AzureFileProperties
+
+	// NFS Azure file properties
+	NfsAzureFile *NfsAzureFileProperties
 }
 
 // ManagedEnvironmentStoragesCollection - Collection of Storage for Environments
@@ -2242,10 +3231,63 @@ type ManagedServiceIdentity struct {
 	TenantID *string
 }
 
+// MetricsConfiguration - Configuration of Open Telemetry metrics
+type MetricsConfiguration struct {
+	// Open telemetry metrics destinations
+	Destinations []*string
+
+	// Boolean indicating if including keda metrics
+	IncludeKeda *bool
+}
+
 // Mtls - Configuration properties for mutual TLS authentication
 type Mtls struct {
 	// Boolean indicating whether the mutual TLS authentication is enabled
 	Enabled *bool
+}
+
+// NacosComponent - Nacos properties.
+type NacosComponent struct {
+	// REQUIRED; Type of the Java Component.
+	ComponentType *JavaComponentType
+
+	// List of Java Components configuration properties
+	Configurations []*JavaComponentConfigurationProperty
+
+	// Java Component Ingress configurations.
+	Ingress *JavaComponentIngress
+
+	// Java component scaling configurations
+	Scale *JavaComponentPropertiesScale
+
+	// List of Java Components that are bound to the Java component
+	ServiceBinds []*JavaComponentServiceBind
+
+	// READ-ONLY; Provisioning state of the Java Component.
+	ProvisioningState *JavaComponentProvisioningState
+}
+
+// GetJavaComponentProperties implements the JavaComponentPropertiesClassification interface for type NacosComponent.
+func (n *NacosComponent) GetJavaComponentProperties() *JavaComponentProperties {
+	return &JavaComponentProperties{
+		ComponentType:     n.ComponentType,
+		Configurations:    n.Configurations,
+		ProvisioningState: n.ProvisioningState,
+		Scale:             n.Scale,
+		ServiceBinds:      n.ServiceBinds,
+	}
+}
+
+// NfsAzureFileProperties - NFS Azure File Properties.
+type NfsAzureFileProperties struct {
+	// Access mode for storage
+	AccessMode *AccessMode
+
+	// Server for NFS azure file.
+	Server *string
+
+	// NFS Azure file share name.
+	ShareName *string
 }
 
 // Nonce - The configuration settings of the nonce used in the login flow.
@@ -2305,6 +3347,21 @@ type OpenIDConnectRegistration struct {
 	OpenIDConnectConfiguration *OpenIDConnectConfig
 }
 
+// OpenTelemetryConfiguration - Configuration of Open Telemetry
+type OpenTelemetryConfiguration struct {
+	// Open telemetry destinations configuration
+	DestinationsConfiguration *DestinationsConfiguration
+
+	// Open telemetry logs configuration
+	LogsConfiguration *LogsConfiguration
+
+	// Open telemetry metrics configuration
+	MetricsConfiguration *MetricsConfiguration
+
+	// Open telemetry trace configuration
+	TracesConfiguration *TracesConfiguration
+}
+
 // OperationDetail - Operation detail payload
 type OperationDetail struct {
 	// Display of the operation
@@ -2335,10 +3392,227 @@ type OperationDisplay struct {
 	Resource *string
 }
 
+// OtlpConfiguration - Configuration of otlp
+type OtlpConfiguration struct {
+	// The endpoint of otlp configuration
+	Endpoint *string
+
+	// Headers of otlp configurations
+	Headers []*Header
+
+	// Boolean indicating if otlp configuration is insecure
+	Insecure *bool
+
+	// The name of otlp configuration
+	Name *string
+}
+
+// PatchCollection - Container App patch collection
+type PatchCollection struct {
+	// REQUIRED; Collection of patch resources.
+	Value []*ContainerAppsPatchResource
+
+	// the link to the next page of items
+	NextLink *string
+}
+
+// PatchDetails - The detailed info of patch operation performing when applying a patch.
+type PatchDetails struct {
+	// READ-ONLY; The status of the patch detection.
+	DetectionStatus *DetectionStatus
+
+	// READ-ONLY; The UTC timestamp that describes the latest detection was done.
+	LastDetectionTime *time.Time
+
+	// READ-ONLY; The name of the target container for the patch.
+	TargetContainerName *string
+
+	// READ-ONLY; The name of the target image for the patch.
+	TargetImage *string
+
+	// READ-ONLY; The name of the new image created by the patch.
+	NewImageName *string
+
+	// READ-ONLY; New layer update details in the target image.
+	NewLayer *PatchDetailsNewLayer
+
+	// READ-ONLY; The old layer details in the target image.
+	OldLayer *PatchDetailsOldLayer
+
+	// READ-ONLY; The type for the patch.
+	PatchType *PatchType
+}
+
+// PatchDetailsNewLayer - New layer update details in the target image.
+type PatchDetailsNewLayer struct {
+	// The framework and its version in the new run image for the target image.
+	FrameworkAndVersion *string
+
+	// The details of the new layer for the target image.
+	Name *string
+
+	// The OS name and its version in the new run image for the target image.
+	OSAndVersion *string
+}
+
+// PatchDetailsOldLayer - The old layer details in the target image.
+type PatchDetailsOldLayer struct {
+	// The framework and its version in the old run image for the target image.
+	FrameworkAndVersion *string
+
+	// The details of the old layer for the target image.
+	Name *string
+
+	// The OS name and its version in the old run image for the target image.
+	OSAndVersion *string
+}
+
+// PatchProperties - Top level properties that describes current states of the patch resource
+type PatchProperties struct {
+	// The Azure resource id of the target container app for the patch.
+	TargetContainerAppID *string
+
+	// The Azure resource id of the target environment for the patch.
+	TargetEnvironmentID *string
+
+	// The Azure resource id of the target revision for the patch.
+	TargetRevisionID *string
+
+	// READ-ONLY; The UTC timestamp that describes when the patch object was created.
+	CreatedAt *time.Time
+
+	// READ-ONLY; The UTC timestamp that describes when the patch object was last updated.
+	LastModifiedAt *time.Time
+
+	// READ-ONLY; The status of the patch operation.
+	PatchApplyStatus *PatchApplyStatus
+
+	// READ-ONLY; Detailed info describes the patch operation for the target container app.
+	PatchDetails []*PatchDetails
+}
+
+// PatchSkipConfig - The configuration for patcher to skip a patch or not.
+type PatchSkipConfig struct {
+	// The flag to indicate whether to skip the patch or not.
+	Skip *bool
+}
+
+// PreBuildStep - Model representing a pre-build step.
+type PreBuildStep struct {
+	// Description of the pre-build step.
+	Description *string
+
+	// Http get request to send before the build.
+	HTTPGet *HTTPGet
+
+	// List of custom commands to run.
+	Scripts []*string
+}
+
+// PrivateEndpoint - The Private Endpoint resource.
+type PrivateEndpoint struct {
+	// READ-ONLY; The ARM identifier for Private Endpoint
+	ID *string
+}
+
+// PrivateEndpointConnection - The Private Endpoint Connection resource.
+type PrivateEndpointConnection struct {
+	// Resource properties.
+	Properties *PrivateEndpointConnectionProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// PrivateEndpointConnectionListResult - List of private endpoint connection associated with the specified resource
+type PrivateEndpointConnectionListResult struct {
+	// Array of private endpoint connections
+	Value []*PrivateEndpointConnection
+
+	// READ-ONLY; URL to get the next set of operation list results (if there are any).
+	NextLink *string
+}
+
+// PrivateEndpointConnectionProperties - Properties of the private endpoint connection.
+type PrivateEndpointConnectionProperties struct {
+	// REQUIRED; A collection of information about the state of the connection between service consumer and provider.
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState
+
+	// The resource of private end point.
+	PrivateEndpoint *PrivateEndpoint
+
+	// READ-ONLY; The group ids for the private endpoint resource.
+	GroupIDs []*string
+
+	// READ-ONLY; The provisioning state of the private endpoint connection resource.
+	ProvisioningState *PrivateEndpointConnectionProvisioningState
+}
+
+// PrivateLinkResource - A private link resource
+type PrivateLinkResource struct {
+	// Resource properties.
+	Properties *PrivateLinkResourceProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// PrivateLinkResourceListResult - A list of private link resources
+type PrivateLinkResourceListResult struct {
+	// Array of private link resources
+	Value []*PrivateLinkResource
+
+	// READ-ONLY; URL to get the next set of operation list results (if there are any).
+	NextLink *string
+}
+
+// PrivateLinkResourceProperties - Properties of a private link resource.
+type PrivateLinkResourceProperties struct {
+	// The private link resource private link DNS zone name.
+	RequiredZoneNames []*string
+
+	// READ-ONLY; The private link resource group id.
+	GroupID *string
+
+	// READ-ONLY; The private link resource required member names.
+	RequiredMembers []*string
+}
+
+// PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer
+// and provider.
+type PrivateLinkServiceConnectionState struct {
+	// A message indicating if changes on the service provider require any updates on the consumer.
+	ActionsRequired *string
+
+	// The reason for approval/rejection of the connection.
+	Description *string
+
+	// Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
+	Status *PrivateEndpointServiceConnectionStatus
+}
+
 // ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
 // location
 type ProxyResource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -2353,8 +3627,15 @@ type ProxyResource struct {
 
 // QueueScaleRule - Container App container Azure Queue based scaling rule.
 type QueueScaleRule struct {
+	// Storage account name. required if using managed identity to authenticate
+	AccountName *string
+
 	// Authentication secrets for the queue scale rule.
 	Auth []*ScaleRuleAuth
+
+	// The resource ID of a user-assigned managed identity that is assigned to the Container App, or 'system' for system-assigned
+	// identity.
+	Identity *string
 
 	// Queue length.
 	QueueLength *int32
@@ -2396,7 +3677,7 @@ type Replica struct {
 	// Replica resource specific properties
 	Properties *ReplicaProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -2432,6 +3713,9 @@ type ReplicaContainer struct {
 	// The container start status
 	Started *bool
 
+	// READ-ONLY; Container debug endpoint
+	DebugEndpoint *string
+
 	// READ-ONLY; Container exec endpoint
 	ExecEndpoint *string
 
@@ -2443,6 +3727,15 @@ type ReplicaContainer struct {
 
 	// READ-ONLY; The details of container current running state
 	RunningStateDetails *string
+}
+
+// ReplicaExecutionStatus - Container Apps Job execution replica status.
+type ReplicaExecutionStatus struct {
+	// Containers in the execution replica
+	Containers []*ContainerExecutionStatus
+
+	// Replica Name.
+	Name *string
 }
 
 // ReplicaProperties - Replica resource specific properties
@@ -2465,7 +3758,7 @@ type ReplicaProperties struct {
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -2483,7 +3776,7 @@ type Revision struct {
 	// Revision resource specific properties
 	Properties *RevisionProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -2542,16 +3835,70 @@ type RevisionProperties struct {
 	TrafficWeight *int32
 }
 
+// Runtime - Container App Runtime configuration.
+type Runtime struct {
+	// .NET app configuration
+	Dotnet *RuntimeDotnet
+
+	// Java app configuration
+	Java *RuntimeJava
+}
+
+// RuntimeDotnet - .NET app configuration
+type RuntimeDotnet struct {
+	// Auto configure the ASP.NET Core Data Protection feature
+	AutoConfigureDataProtection *bool
+}
+
+// RuntimeJava - Java app configuration
+type RuntimeJava struct {
+	// Enable jmx core metrics for the java app
+	EnableMetrics *bool
+
+	// Diagnostic capabilities achieved by java agent
+	JavaAgent *RuntimeJavaAgent
+}
+
+// RuntimeJavaAgent - Diagnostic capabilities achieved by java agent
+type RuntimeJavaAgent struct {
+	// Enable java agent injection for the java app.
+	Enabled *bool
+
+	// Capabilities on the java logging scenario.
+	Logging *RuntimeJavaAgentLogging
+}
+
+// RuntimeJavaAgentLogging - Capabilities on the java logging scenario.
+type RuntimeJavaAgentLogging struct {
+	// Settings of the logger for the java app.
+	LoggerSettings []*LoggerSetting
+}
+
 // Scale - Container App scaling configurations.
 type Scale struct {
+	// Optional. KEDA Cooldown Period. Defaults to 300 seconds if not set.
+	CooldownPeriod *int32
+
 	// Optional. Maximum number of container replicas. Defaults to 10 if not set.
 	MaxReplicas *int32
 
 	// Optional. Minimum number of container replicas.
 	MinReplicas *int32
 
+	// Optional. KEDA Polling Interval. Defaults to 30 seconds if not set.
+	PollingInterval *int32
+
 	// Scaling rules.
 	Rules []*ScaleRule
+}
+
+// ScaleConfiguration - Scale configuration.
+type ScaleConfiguration struct {
+	// The maximum count of sessions at the same time.
+	MaxConcurrentSessions *int32
+
+	// The minimum count of ready session instances.
+	ReadySessionInstances *int32
 }
 
 // ScaleRule - Container App container scaling rule.
@@ -2579,6 +3926,24 @@ type ScaleRuleAuth struct {
 
 	// Trigger Parameter that uses the secret
 	TriggerParameter *string
+}
+
+// ScgRoute - Spring Cloud Gateway route definition
+type ScgRoute struct {
+	// REQUIRED; Id of the route
+	ID *string
+
+	// REQUIRED; Uri of the route
+	URI *string
+
+	// Filters of the route
+	Filters []*string
+
+	// Order of the route
+	Order *int64
+
+	// Predicates of the route
+	Predicates []*string
 }
 
 // Secret definition.
@@ -2619,6 +3984,12 @@ type Service struct {
 
 // ServiceBind - Configuration to bind a ContainerApp to a dev ContainerApp Service
 type ServiceBind struct {
+	// Type of the client to be used to connect to the service
+	ClientType *string
+
+	// Customized keys for customizing injected values to the app
+	CustomizedKeys map[string]*string
+
 	// Name of the service bind
 	Name *string
 
@@ -2626,12 +3997,193 @@ type ServiceBind struct {
 	ServiceID *string
 }
 
+// SessionContainer - Container definitions for the sessions of the session pool.
+type SessionContainer struct {
+	// Container start command arguments.
+	Args []*string
+
+	// Container start command.
+	Command []*string
+
+	// Container environment variables.
+	Env []*EnvironmentVar
+
+	// Container image tag.
+	Image *string
+
+	// Custom container name.
+	Name *string
+
+	// Container resource requirements.
+	Resources *SessionContainerResources
+}
+
+// SessionContainerResources - Container resource requirements for sessions of the session pool.
+type SessionContainerResources struct {
+	// Required CPU in cores, e.g. 0.5
+	CPU *float64
+
+	// Required memory, e.g. "250Mb"
+	Memory *string
+}
+
+// SessionIngress - Session pool ingress configuration.
+type SessionIngress struct {
+	// Target port in containers for traffic from ingress
+	TargetPort *int32
+}
+
+// SessionNetworkConfiguration - Session network configuration.
+type SessionNetworkConfiguration struct {
+	// Network status for the sessions.
+	Status *SessionNetworkStatus
+}
+
+// SessionPool - Container App session pool.
+type SessionPool struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Container App session pool resource specific properties
+	Properties *SessionPoolProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// SessionPoolCollection - Session pool collection Azure resource.
+type SessionPoolCollection struct {
+	// REQUIRED; Collection of resources.
+	Value []*SessionPool
+
+	// READ-ONLY; Link to next page of resources.
+	NextLink *string
+}
+
+// SessionPoolProperties - Container App session pool resource specific properties
+type SessionPoolProperties struct {
+	// The container type of the sessions.
+	ContainerType *ContainerType
+
+	// The custom container configuration if the containerType is CustomContainer.
+	CustomContainerTemplate *CustomContainerTemplate
+
+	// The pool configuration if the poolManagementType is dynamic.
+	DynamicPoolConfiguration *DynamicPoolConfiguration
+
+	// Resource ID of the session pool's environment.
+	EnvironmentID *string
+
+	// The pool management type of the session pool.
+	PoolManagementType *PoolManagementType
+
+	// The scale configuration of the session pool.
+	ScaleConfiguration *ScaleConfiguration
+
+	// The secrets of the session pool.
+	Secrets []*SessionPoolSecret
+
+	// The network configuration of the sessions in the session pool.
+	SessionNetworkConfiguration *SessionNetworkConfiguration
+
+	// READ-ONLY; The number of nodes the session pool is using.
+	NodeCount *int32
+
+	// READ-ONLY; The endpoint to manage the pool.
+	PoolManagementEndpoint *string
+
+	// READ-ONLY; Provisioning state of the session pool.
+	ProvisioningState *SessionPoolProvisioningState
+}
+
+// SessionPoolSecret - Secret definition.
+type SessionPoolSecret struct {
+	// Secret Name.
+	Name *string
+
+	// Secret Value.
+	Value *string
+}
+
+// SessionPoolUpdatableProperties - Container App session pool updatable properties.
+type SessionPoolUpdatableProperties struct {
+	// Session pool resource specific updatable properties.
+	Properties *SessionPoolUpdatablePropertiesProperties
+}
+
+// SessionPoolUpdatablePropertiesProperties - Session pool resource specific updatable properties.
+type SessionPoolUpdatablePropertiesProperties struct {
+	// The custom container configuration if the containerType is CustomContainer.
+	CustomContainerTemplate *CustomContainerTemplate
+
+	// The pool configuration if the poolManagementType is dynamic.
+	DynamicPoolConfiguration *DynamicPoolConfiguration
+
+	// The scale configuration of the session pool.
+	ScaleConfiguration *ScaleConfiguration
+
+	// The secrets of the session pool.
+	Secrets []*SessionPoolSecret
+
+	// The network configuration of the sessions in the session pool.
+	SessionNetworkConfiguration *SessionNetworkConfiguration
+}
+
+// SessionRegistryCredentials - Session pool private registry credentials.
+type SessionRegistryCredentials struct {
+	// A Managed Identity to use to authenticate with Azure Container Registry. For user-assigned identities, use the full user-assigned
+	// identity Resource ID. For system-assigned identities, use 'system'
+	Identity *string
+
+	// The name of the secret that contains the registry login password
+	PasswordSecretRef *string
+
+	// Container registry server.
+	Server *string
+
+	// Container registry username.
+	Username *string
+}
+
+// SmbStorage - SMB storage properties
+type SmbStorage struct {
+	// Access mode for storage
+	AccessMode *AccessMode
+
+	// The domain name for the user.
+	Domain *string
+
+	// The host name or IP address of the SMB server.
+	Host *string
+
+	// The password for the user.
+	Password *string
+
+	// The path to the SMB shared folder.
+	ShareName *string
+
+	// The user to log on to the SMB server.
+	Username *string
+}
+
 // SourceControl - Container App SourceControl.
 type SourceControl struct {
 	// SourceControl resource specific properties
 	Properties *SourceControlProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -2669,6 +4221,134 @@ type SourceControlProperties struct {
 	OperationState *SourceControlOperationState
 }
 
+// SpringBootAdminComponent - Spring Boot Admin properties.
+type SpringBootAdminComponent struct {
+	// REQUIRED; Type of the Java Component.
+	ComponentType *JavaComponentType
+
+	// List of Java Components configuration properties
+	Configurations []*JavaComponentConfigurationProperty
+
+	// Java Component Ingress configurations.
+	Ingress *JavaComponentIngress
+
+	// Java component scaling configurations
+	Scale *JavaComponentPropertiesScale
+
+	// List of Java Components that are bound to the Java component
+	ServiceBinds []*JavaComponentServiceBind
+
+	// READ-ONLY; Provisioning state of the Java Component.
+	ProvisioningState *JavaComponentProvisioningState
+}
+
+// GetJavaComponentProperties implements the JavaComponentPropertiesClassification interface for type SpringBootAdminComponent.
+func (s *SpringBootAdminComponent) GetJavaComponentProperties() *JavaComponentProperties {
+	return &JavaComponentProperties{
+		ComponentType:     s.ComponentType,
+		Configurations:    s.Configurations,
+		ProvisioningState: s.ProvisioningState,
+		Scale:             s.Scale,
+		ServiceBinds:      s.ServiceBinds,
+	}
+}
+
+// SpringCloudConfigComponent - Spring Cloud Config properties.
+type SpringCloudConfigComponent struct {
+	// REQUIRED; Type of the Java Component.
+	ComponentType *JavaComponentType
+
+	// List of Java Components configuration properties
+	Configurations []*JavaComponentConfigurationProperty
+
+	// Java component scaling configurations
+	Scale *JavaComponentPropertiesScale
+
+	// List of Java Components that are bound to the Java component
+	ServiceBinds []*JavaComponentServiceBind
+
+	// READ-ONLY; Provisioning state of the Java Component.
+	ProvisioningState *JavaComponentProvisioningState
+}
+
+// GetJavaComponentProperties implements the JavaComponentPropertiesClassification interface for type SpringCloudConfigComponent.
+func (s *SpringCloudConfigComponent) GetJavaComponentProperties() *JavaComponentProperties {
+	return &JavaComponentProperties{
+		ComponentType:     s.ComponentType,
+		Configurations:    s.Configurations,
+		ProvisioningState: s.ProvisioningState,
+		Scale:             s.Scale,
+		ServiceBinds:      s.ServiceBinds,
+	}
+}
+
+// SpringCloudEurekaComponent - Spring Cloud Eureka properties.
+type SpringCloudEurekaComponent struct {
+	// REQUIRED; Type of the Java Component.
+	ComponentType *JavaComponentType
+
+	// List of Java Components configuration properties
+	Configurations []*JavaComponentConfigurationProperty
+
+	// Java Component Ingress configurations.
+	Ingress *JavaComponentIngress
+
+	// Java component scaling configurations
+	Scale *JavaComponentPropertiesScale
+
+	// List of Java Components that are bound to the Java component
+	ServiceBinds []*JavaComponentServiceBind
+
+	// READ-ONLY; Provisioning state of the Java Component.
+	ProvisioningState *JavaComponentProvisioningState
+}
+
+// GetJavaComponentProperties implements the JavaComponentPropertiesClassification interface for type SpringCloudEurekaComponent.
+func (s *SpringCloudEurekaComponent) GetJavaComponentProperties() *JavaComponentProperties {
+	return &JavaComponentProperties{
+		ComponentType:     s.ComponentType,
+		Configurations:    s.Configurations,
+		ProvisioningState: s.ProvisioningState,
+		Scale:             s.Scale,
+		ServiceBinds:      s.ServiceBinds,
+	}
+}
+
+// SpringCloudGatewayComponent - Spring Cloud Gateway properties.
+type SpringCloudGatewayComponent struct {
+	// REQUIRED; Type of the Java Component.
+	ComponentType *JavaComponentType
+
+	// List of Java Components configuration properties
+	Configurations []*JavaComponentConfigurationProperty
+
+	// Java Component Ingress configurations.
+	Ingress *JavaComponentIngress
+
+	// Java component scaling configurations
+	Scale *JavaComponentPropertiesScale
+
+	// List of Java Components that are bound to the Java component
+	ServiceBinds []*JavaComponentServiceBind
+
+	// Gateway route definition
+	SpringCloudGatewayRoutes []*ScgRoute
+
+	// READ-ONLY; Provisioning state of the Java Component.
+	ProvisioningState *JavaComponentProvisioningState
+}
+
+// GetJavaComponentProperties implements the JavaComponentPropertiesClassification interface for type SpringCloudGatewayComponent.
+func (s *SpringCloudGatewayComponent) GetJavaComponentProperties() *JavaComponentProperties {
+	return &JavaComponentProperties{
+		ComponentType:     s.ComponentType,
+		Configurations:    s.Configurations,
+		ProvisioningState: s.ProvisioningState,
+		Scale:             s.Scale,
+		ServiceBinds:      s.ServiceBinds,
+	}
+}
+
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
@@ -2690,10 +4370,26 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType
 }
 
+// TCPConnectionPool - Defines parameters for tcp connection pooling
+type TCPConnectionPool struct {
+	// Maximum number of tcp connections allowed
+	MaxConnections *int32
+}
+
+// TCPRetryPolicy - Policy that defines tcp request retry conditions
+type TCPRetryPolicy struct {
+	// Maximum number of attempts to connect to the tcp service
+	MaxConnectAttempts *int32
+}
+
 // TCPScaleRule - Container App container Tcp scaling rule.
 type TCPScaleRule struct {
 	// Authentication secrets for the tcp scale rule.
 	Auth []*ScaleRuleAuth
+
+	// The resource ID of a user-assigned managed identity that is assigned to the Container App, or 'system' for system-assigned
+	// identity.
+	Identity *string
 
 	// Metadata properties to describe tcp scale rule.
 	Metadata map[string]*string
@@ -2727,6 +4423,15 @@ type Template struct {
 	Volumes []*Volume
 }
 
+// TimeoutPolicy - Policy to set request timeouts
+type TimeoutPolicy struct {
+	// Timeout, in seconds, for a request to initiate a connection
+	ConnectionTimeoutInSeconds *int32
+
+	// Timeout, in seconds, for a request to respond
+	ResponseTimeoutInSeconds *int32
+}
+
 // TokenStore - The configuration settings of the token store.
 type TokenStore struct {
 	// The configuration settings of the storage of the tokens if blob storage is used.
@@ -2741,6 +4446,15 @@ type TokenStore struct {
 	TokenRefreshExtensionHours *float64
 }
 
+// TracesConfiguration - Configuration of Open Telemetry traces
+type TracesConfiguration struct {
+	// Open telemetry traces destinations
+	Destinations []*string
+
+	// Boolean indicating if including dapr traces
+	IncludeDapr *bool
+}
+
 // TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
 // and a 'location'
 type TrackedResource struct {
@@ -2750,7 +4464,7 @@ type TrackedResource struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -2852,7 +4566,7 @@ type VnetConfiguration struct {
 
 // Volume definitions for the Container App.
 type Volume struct {
-	// Mount options used while mounting the AzureFile. Must be a comma-separated string.
+	// Mount options used while mounting the Azure file share or NFS Azure file share. Must be a comma-separated string.
 	MountOptions *string
 
 	// Volume name.
@@ -2880,6 +4594,69 @@ type VolumeMount struct {
 	VolumeName *string
 }
 
+// WorkflowArtifacts - The workflow filter.
+type WorkflowArtifacts struct {
+	// Application settings of the workflow.
+	AppSettings any
+
+	// Files of the app.
+	Files any
+
+	// Files of the app to delete.
+	FilesToDelete []*string
+}
+
+// WorkflowEnvelope - Workflow properties definition.
+type WorkflowEnvelope struct {
+	// The resource kind.
+	Kind *string
+
+	// The resource location.
+	Location *string
+
+	// Additional workflow properties.
+	Properties *WorkflowEnvelopeProperties
+
+	// READ-ONLY; The resource id.
+	ID *string
+
+	// READ-ONLY; Gets the resource name.
+	Name *string
+
+	// READ-ONLY; Gets the resource type.
+	Type *string
+}
+
+// WorkflowEnvelopeCollection - Collection of workflow information elements.
+type WorkflowEnvelopeCollection struct {
+	// REQUIRED; Collection of resources.
+	Value []*WorkflowEnvelope
+
+	// READ-ONLY; Link to next page of resources.
+	NextLink *string
+}
+
+// WorkflowEnvelopeProperties - Additional workflow properties.
+type WorkflowEnvelopeProperties struct {
+	// Gets or sets the files.
+	Files any
+
+	// Gets or sets the state of the workflow.
+	FlowState *WorkflowState
+
+	// Gets or sets workflow health.
+	Health *WorkflowHealth
+}
+
+// WorkflowHealth - Represents the workflow health.
+type WorkflowHealth struct {
+	// REQUIRED; Gets or sets the workflow health state.
+	State *WorkflowHealthState
+
+	// Gets or sets the workflow error.
+	Error *ErrorEntity
+}
+
 // WorkloadProfile - Workload profile to scope container app execution.
 type WorkloadProfile struct {
 	// REQUIRED; Workload profile type for the workloads to run on.
@@ -2887,6 +4664,9 @@ type WorkloadProfile struct {
 
 	// REQUIRED; Workload profile type for the workloads to run on.
 	WorkloadProfileType *string
+
+	// Whether to use a FIPS-enabled OS. Supported only for dedicated workload profiles.
+	EnableFips *bool
 
 	// The maximum capacity.
 	MaximumCount *int32
@@ -2900,7 +4680,7 @@ type WorkloadProfileStates struct {
 	// Workload Profile resource specific properties.
 	Properties *WorkloadProfileStatesProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource

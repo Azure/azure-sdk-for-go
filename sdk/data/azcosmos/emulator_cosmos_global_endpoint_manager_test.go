@@ -14,7 +14,7 @@ import (
 
 func TestGlobalEndpointManagerEmulator(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
-	client := emulatorTests.getClient(t, newSpanValidator(t, spanMatcher{
+	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{
 		ExpectedSpans: []string{},
 	}))
 	emulatorRegionName := "South Central US"
@@ -79,7 +79,7 @@ func TestGlobalEndpointManagerEmulator(t *testing.T) {
 
 func TestGlobalEndpointManagerPolicyEmulator(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
-	client := emulatorTests.getClient(t, newSpanValidator(t, spanMatcher{
+	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{
 		ExpectedSpans: []string{},
 	}))
 	emulatorRegionName := "South Central US"

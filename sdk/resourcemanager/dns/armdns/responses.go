@@ -8,6 +8,29 @@
 
 package armdns
 
+// DnssecConfigsClientCreateOrUpdateResponse contains the response from method DnssecConfigsClient.BeginCreateOrUpdate.
+type DnssecConfigsClientCreateOrUpdateResponse struct {
+	// Represents the DNSSEC configuration.
+	DnssecConfig
+}
+
+// DnssecConfigsClientDeleteResponse contains the response from method DnssecConfigsClient.BeginDelete.
+type DnssecConfigsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// DnssecConfigsClientGetResponse contains the response from method DnssecConfigsClient.Get.
+type DnssecConfigsClientGetResponse struct {
+	// Represents the DNSSEC configuration.
+	DnssecConfig
+}
+
+// DnssecConfigsClientListByDNSZoneResponse contains the response from method DnssecConfigsClient.NewListByDNSZonePager.
+type DnssecConfigsClientListByDNSZoneResponse struct {
+	// The response to a List DNSSEC configurations operation.
+	DnssecConfigListResult
+}
+
 // RecordSetsClientCreateOrUpdateResponse contains the response from method RecordSetsClient.CreateOrUpdate.
 type RecordSetsClientCreateOrUpdateResponse struct {
 	// Describes a DNS record set (a collection of DNS records with the same name and type).

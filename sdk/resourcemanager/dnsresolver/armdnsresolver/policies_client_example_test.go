@@ -18,8 +18,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DnsResolver_Put.json
-func ExampleDNSResolversClient_BeginCreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DnsResolverPolicy_Put.json
+func ExamplePoliciesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,17 +29,12 @@ func ExampleDNSResolversClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewDNSResolversClient().BeginCreateOrUpdate(ctx, "sampleResourceGroup", "sampleDnsResolver", armdnsresolver.DNSResolver{
+	poller, err := clientFactory.NewPoliciesClient().BeginCreateOrUpdate(ctx, "sampleResourceGroup", "sampleDnsResolverPolicy", armdnsresolver.Policy{
 		Location: to.Ptr("westus2"),
 		Tags: map[string]*string{
 			"key1": to.Ptr("value1"),
 		},
-		Properties: &armdnsresolver.Properties{
-			VirtualNetwork: &armdnsresolver.SubResource{
-				ID: to.Ptr("/subscriptions/cbb1387e-4b03-44f2-ad41-58d4677b9873/resourceGroups/virtualNetworkResourceGroup/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork"),
-			},
-		},
-	}, &armdnsresolver.DNSResolversClientBeginCreateOrUpdateOptions{IfMatch: nil,
+	}, &armdnsresolver.PoliciesClientBeginCreateOrUpdateOptions{IfMatch: nil,
 		IfNoneMatch: nil,
 	})
 	if err != nil {
@@ -52,10 +47,10 @@ func ExampleDNSResolversClient_BeginCreateOrUpdate() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.DNSResolver = armdnsresolver.DNSResolver{
-	// 	Name: to.Ptr("sampleDnsResolver"),
-	// 	Type: to.Ptr("Microsoft.Network/dnsResolvers"),
-	// 	ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolvers/sampleDnsResolver"),
+	// res.Policy = armdnsresolver.Policy{
+	// 	Name: to.Ptr("sampleDnsResolverPolicy"),
+	// 	Type: to.Ptr("Microsoft.Network/dnsResolverPolicies"),
+	// 	ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverPolicies/sampleDnsResolverPolicy"),
 	// 	SystemData: &armdnsresolver.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.107Z"); return t}()),
 	// 		CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
@@ -67,19 +62,15 @@ func ExampleDNSResolversClient_BeginCreateOrUpdate() {
 	// 		"key1": to.Ptr("value1"),
 	// 	},
 	// 	Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 	Properties: &armdnsresolver.Properties{
-	// 		DNSResolverState: to.Ptr(armdnsresolver.DNSResolverStateConnected),
+	// 	Properties: &armdnsresolver.PolicyProperties{
 	// 		ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
 	// 		ResourceGUID: to.Ptr("b6b2d964-8588-4e3a-a7fe-8a5b7fe8eca5"),
-	// 		VirtualNetwork: &armdnsresolver.SubResource{
-	// 			ID: to.Ptr("/subscriptions/cbb1387e-4b03-44f2-ad41-58d4677b9873/resourceGroups/virtualNetworkResourceGroup/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork"),
-	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DnsResolver_Patch.json
-func ExampleDNSResolversClient_BeginUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DnsResolverPolicy_Patch.json
+func ExamplePoliciesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -89,11 +80,11 @@ func ExampleDNSResolversClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewDNSResolversClient().BeginUpdate(ctx, "sampleResourceGroup", "sampleDnsResolver", armdnsresolver.Patch{
+	poller, err := clientFactory.NewPoliciesClient().BeginUpdate(ctx, "sampleResourceGroup", "sampleDnsResolverPolicy", armdnsresolver.PolicyPatch{
 		Tags: map[string]*string{
 			"key1": to.Ptr("value1"),
 		},
-	}, &armdnsresolver.DNSResolversClientBeginUpdateOptions{IfMatch: nil})
+	}, &armdnsresolver.PoliciesClientBeginUpdateOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -104,10 +95,10 @@ func ExampleDNSResolversClient_BeginUpdate() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.DNSResolver = armdnsresolver.DNSResolver{
-	// 	Name: to.Ptr("sampleDnsResolver"),
-	// 	Type: to.Ptr("Microsoft.Network/dnsResolvers"),
-	// 	ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolvers/sampleDnsResolver"),
+	// res.Policy = armdnsresolver.Policy{
+	// 	Name: to.Ptr("sampleDnsResolverPolicy"),
+	// 	Type: to.Ptr("Microsoft.Network/dnsResolverPolicies"),
+	// 	ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverPolicies/sampleDnsResolverPolicy"),
 	// 	SystemData: &armdnsresolver.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.107Z"); return t}()),
 	// 		CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
@@ -119,19 +110,15 @@ func ExampleDNSResolversClient_BeginUpdate() {
 	// 		"key1": to.Ptr("value1"),
 	// 	},
 	// 	Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 	Properties: &armdnsresolver.Properties{
-	// 		DNSResolverState: to.Ptr(armdnsresolver.DNSResolverStateConnected),
+	// 	Properties: &armdnsresolver.PolicyProperties{
 	// 		ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
 	// 		ResourceGUID: to.Ptr("b6b2d964-8588-4e3a-a7fe-8a5b7fe8eca5"),
-	// 		VirtualNetwork: &armdnsresolver.SubResource{
-	// 			ID: to.Ptr("/subscriptions/cbb1387e-4b03-44f2-ad41-58d4677b9873/resourceGroups/virtualNetworkResourceGroup/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork"),
-	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DnsResolver_Delete.json
-func ExampleDNSResolversClient_BeginDelete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DnsResolverPolicy_Delete.json
+func ExamplePoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -141,7 +128,7 @@ func ExampleDNSResolversClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewDNSResolversClient().BeginDelete(ctx, "sampleResourceGroup", "sampleDnsResolver", &armdnsresolver.DNSResolversClientBeginDeleteOptions{IfMatch: nil})
+	poller, err := clientFactory.NewPoliciesClient().BeginDelete(ctx, "sampleResourceGroup", "sampleDnsResolverPolicy", &armdnsresolver.PoliciesClientBeginDeleteOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -151,8 +138,8 @@ func ExampleDNSResolversClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DnsResolver_Get.json
-func ExampleDNSResolversClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DnsResolverPolicy_Get.json
+func ExamplePoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -162,21 +149,21 @@ func ExampleDNSResolversClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewDNSResolversClient().Get(ctx, "sampleResourceGroup", "sampleDnsResolver", nil)
+	res, err := clientFactory.NewPoliciesClient().Get(ctx, "sampleResourceGroup", "sampleDnsResolverPolicy", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.DNSResolver = armdnsresolver.DNSResolver{
-	// 	Name: to.Ptr("sampleDnsResolver"),
-	// 	Type: to.Ptr("Microsoft.Network/dnsResolvers"),
-	// 	ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolvers/sampleDnsResolver"),
+	// res.Policy = armdnsresolver.Policy{
+	// 	Name: to.Ptr("sampleDnsResolverPolicy"),
+	// 	Type: to.Ptr("Microsoft.Network/dnsResolverPolicies"),
+	// 	ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverPolicies/sampleDnsResolverPolicy"),
 	// 	SystemData: &armdnsresolver.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-03T01:01:01.107Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T01:01:01.107Z"); return t}()),
 	// 		CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-04T02:03:01.197Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-04T02:03:01.197Z"); return t}()),
 	// 		LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
 	// 	},
 	// 	Location: to.Ptr("westus2"),
@@ -184,19 +171,15 @@ func ExampleDNSResolversClient_Get() {
 	// 		"key1": to.Ptr("value1"),
 	// 	},
 	// 	Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 	Properties: &armdnsresolver.Properties{
-	// 		DNSResolverState: to.Ptr(armdnsresolver.DNSResolverStateConnected),
+	// 	Properties: &armdnsresolver.PolicyProperties{
 	// 		ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
 	// 		ResourceGUID: to.Ptr("a7e1a32c-498c-401c-a805-5bc3518257b8"),
-	// 		VirtualNetwork: &armdnsresolver.SubResource{
-	// 			ID: to.Ptr("/subscriptions/cbb1387e-4b03-44f2-ad41-58d4677b9873/resourceGroups/virtualNetworkResourceGroup/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork"),
-	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DnsResolver_ListByResourceGroup.json
-func ExampleDNSResolversClient_NewListByResourceGroupPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DnsResolverPolicy_ListByResourceGroup.json
+func ExamplePoliciesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -206,7 +189,7 @@ func ExampleDNSResolversClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewDNSResolversClient().NewListByResourceGroupPager("sampleResourceGroup", &armdnsresolver.DNSResolversClientListByResourceGroupOptions{Top: nil})
+	pager := clientFactory.NewPoliciesClient().NewListByResourceGroupPager("sampleResourceGroup", &armdnsresolver.PoliciesClientListByResourceGroupOptions{Top: nil})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -217,12 +200,12 @@ func ExampleDNSResolversClient_NewListByResourceGroupPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.ListResult = armdnsresolver.ListResult{
-		// 	Value: []*armdnsresolver.DNSResolver{
+		// page.PolicyListResult = armdnsresolver.PolicyListResult{
+		// 	Value: []*armdnsresolver.Policy{
 		// 		{
-		// 			Name: to.Ptr("sampleDnsResolver1"),
-		// 			Type: to.Ptr("Microsoft.Network/dnsResolvers"),
-		// 			ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolvers/sampleDnsResolver1"),
+		// 			Name: to.Ptr("sampleDnsResolverPolicy1"),
+		// 			Type: to.Ptr("Microsoft.Network/dnsResolverPolicies"),
+		// 			ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverPolicies/sampleDnsResolverPolicy1"),
 		// 			SystemData: &armdnsresolver.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.107Z"); return t}()),
 		// 				CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
@@ -234,19 +217,15 @@ func ExampleDNSResolversClient_NewListByResourceGroupPager() {
 		// 				"key1": to.Ptr("value1"),
 		// 			},
 		// 			Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 			Properties: &armdnsresolver.Properties{
-		// 				DNSResolverState: to.Ptr(armdnsresolver.DNSResolverStateConnected),
+		// 			Properties: &armdnsresolver.PolicyProperties{
 		// 				ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
 		// 				ResourceGUID: to.Ptr("ad9c8da4-3bb2-4821-a878-c2cb07b01fb6"),
-		// 				VirtualNetwork: &armdnsresolver.SubResource{
-		// 					ID: to.Ptr("/subscriptions/cbb1387e-4b03-44f2-ad41-58d4677b9873/resourceGroups/virtualNetworkResourceGroup/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork1"),
-		// 				},
 		// 			},
 		// 		},
 		// 		{
-		// 			Name: to.Ptr("sampleDnsResolver2"),
-		// 			Type: to.Ptr("Microsoft.Network/dnsResolvers"),
-		// 			ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolvers/sampleDnsResolver2"),
+		// 			Name: to.Ptr("sampleDnsResolverPolicy2"),
+		// 			Type: to.Ptr("Microsoft.Network/dnsResolverPolicies"),
+		// 			ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverPolicies/sampleDnsResolverPolicy2"),
 		// 			SystemData: &armdnsresolver.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-03T01:01:01.107Z"); return t}()),
 		// 				CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
@@ -258,21 +237,17 @@ func ExampleDNSResolversClient_NewListByResourceGroupPager() {
 		// 				"key1": to.Ptr("value1"),
 		// 			},
 		// 			Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 			Properties: &armdnsresolver.Properties{
-		// 				DNSResolverState: to.Ptr(armdnsresolver.DNSResolverStateConnected),
+		// 			Properties: &armdnsresolver.PolicyProperties{
 		// 				ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
 		// 				ResourceGUID: to.Ptr("b6b2d964-8588-4e3a-a7fe-8a5b7fe8eca5"),
-		// 				VirtualNetwork: &armdnsresolver.SubResource{
-		// 					ID: to.Ptr("/subscriptions/cbb1387e-4b03-44f2-ad41-58d4677b9873/resourceGroups/virtualNetworkResourceGroup/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork2"),
-		// 				},
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DnsResolver_ListBySubscription.json
-func ExampleDNSResolversClient_NewListPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DnsResolverPolicy_ListBySubscription.json
+func ExamplePoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -282,7 +257,7 @@ func ExampleDNSResolversClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewDNSResolversClient().NewListPager(&armdnsresolver.DNSResolversClientListOptions{Top: nil})
+	pager := clientFactory.NewPoliciesClient().NewListPager(&armdnsresolver.PoliciesClientListOptions{Top: nil})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -293,12 +268,12 @@ func ExampleDNSResolversClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.ListResult = armdnsresolver.ListResult{
-		// 	Value: []*armdnsresolver.DNSResolver{
+		// page.PolicyListResult = armdnsresolver.PolicyListResult{
+		// 	Value: []*armdnsresolver.Policy{
 		// 		{
-		// 			Name: to.Ptr("sampleDnsResolver1"),
-		// 			Type: to.Ptr("Microsoft.Network/dnsResolvers"),
-		// 			ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolvers/sampleDnsResolver1"),
+		// 			Name: to.Ptr("sampleDnsResolverPolicy1"),
+		// 			Type: to.Ptr("Microsoft.Network/dnsResolverPolicies"),
+		// 			ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverPolicies/sampleDnsResolverPolicy1"),
 		// 			SystemData: &armdnsresolver.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.107Z"); return t}()),
 		// 				CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
@@ -310,19 +285,15 @@ func ExampleDNSResolversClient_NewListPager() {
 		// 				"key1": to.Ptr("value1"),
 		// 			},
 		// 			Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 			Properties: &armdnsresolver.Properties{
-		// 				DNSResolverState: to.Ptr(armdnsresolver.DNSResolverStateConnected),
+		// 			Properties: &armdnsresolver.PolicyProperties{
 		// 				ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
 		// 				ResourceGUID: to.Ptr("ad9c8da4-3bb2-4821-a878-c2cb07b01fb6"),
-		// 				VirtualNetwork: &armdnsresolver.SubResource{
-		// 					ID: to.Ptr("/subscriptions/cbb1387e-4b03-44f2-ad41-58d4677b9873/resourceGroups/virtualNetworkResourceGroup/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork1"),
-		// 				},
 		// 			},
 		// 		},
 		// 		{
-		// 			Name: to.Ptr("sampleDnsResolver2"),
-		// 			Type: to.Ptr("Microsoft.Network/dnsResolvers"),
-		// 			ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolvers/sampleDnsResolver2"),
+		// 			Name: to.Ptr("sampleDnsResolverPolicy2"),
+		// 			Type: to.Ptr("Microsoft.Network/dnsResolverPolicies"),
+		// 			ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverPolicies/sampleDnsResolverPolicy2"),
 		// 			SystemData: &armdnsresolver.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.107Z"); return t}()),
 		// 				CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
@@ -334,21 +305,17 @@ func ExampleDNSResolversClient_NewListPager() {
 		// 				"key1": to.Ptr("value1"),
 		// 			},
 		// 			Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 			Properties: &armdnsresolver.Properties{
-		// 				DNSResolverState: to.Ptr(armdnsresolver.DNSResolverStateConnected),
+		// 			Properties: &armdnsresolver.PolicyProperties{
 		// 				ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
 		// 				ResourceGUID: to.Ptr("b6b2d964-8588-4e3a-a7fe-8a5b7fe8eca5"),
-		// 				VirtualNetwork: &armdnsresolver.SubResource{
-		// 					ID: to.Ptr("/subscriptions/cbb1387e-4b03-44f2-ad41-58d4677b9873/resourceGroups/virtualNetworkResourceGroup/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork2"),
-		// 				},
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DnsResolver_ListByVirtualNetwork.json
-func ExampleDNSResolversClient_NewListByVirtualNetworkPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DnsResolverPolicy_ListByVirtualNetwork.json
+func ExamplePoliciesClient_NewListByVirtualNetworkPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -358,7 +325,7 @@ func ExampleDNSResolversClient_NewListByVirtualNetworkPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewDNSResolversClient().NewListByVirtualNetworkPager("sampleResourceGroup", "sampleVirtualNetwork", &armdnsresolver.DNSResolversClientListByVirtualNetworkOptions{Top: nil})
+	pager := clientFactory.NewPoliciesClient().NewListByVirtualNetworkPager("sampleResourceGroup", "sampleVirtualNetwork", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -372,7 +339,7 @@ func ExampleDNSResolversClient_NewListByVirtualNetworkPager() {
 		// page.SubResourceListResult = armdnsresolver.SubResourceListResult{
 		// 	Value: []*armdnsresolver.SubResource{
 		// 		{
-		// 			ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolvers/sampleDnsResolver1"),
+		// 			ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverPolicies/sampleDnsResolverPolicy1"),
 		// 	}},
 		// }
 	}

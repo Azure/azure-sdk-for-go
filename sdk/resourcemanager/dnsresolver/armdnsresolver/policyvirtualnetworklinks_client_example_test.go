@@ -18,8 +18,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/VirtualNetworkLink_Put.json
-func ExampleVirtualNetworkLinksClient_BeginCreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DnsResolverPolicyVirtualNetworkLink_Put.json
+func ExamplePolicyVirtualNetworkLinksClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,16 +29,17 @@ func ExampleVirtualNetworkLinksClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewVirtualNetworkLinksClient().BeginCreateOrUpdate(ctx, "sampleResourceGroup", "sampleDnsForwardingRuleset", "sampleVirtualNetworkLink", armdnsresolver.VirtualNetworkLink{
-		Properties: &armdnsresolver.VirtualNetworkLinkProperties{
-			Metadata: map[string]*string{
-				"additionalProp1": to.Ptr("value1"),
-			},
+	poller, err := clientFactory.NewPolicyVirtualNetworkLinksClient().BeginCreateOrUpdate(ctx, "sampleResourceGroup", "sampleDnsResolverPolicy", "sampleVirtualNetworkLink", armdnsresolver.PolicyVirtualNetworkLink{
+		Location: to.Ptr("westus2"),
+		Tags: map[string]*string{
+			"key1": to.Ptr("value1"),
+		},
+		Properties: &armdnsresolver.PolicyVirtualNetworkLinkProperties{
 			VirtualNetwork: &armdnsresolver.SubResource{
 				ID: to.Ptr("/subscriptions/0403cfa9-9659-4f33-9f30-1f191c51d111/resourceGroups/sampleVnetResourceGroupName/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork"),
 			},
 		},
-	}, &armdnsresolver.VirtualNetworkLinksClientBeginCreateOrUpdateOptions{IfMatch: nil,
+	}, &armdnsresolver.PolicyVirtualNetworkLinksClientBeginCreateOrUpdateOptions{IfMatch: nil,
 		IfNoneMatch: nil,
 	})
 	if err != nil {
@@ -51,21 +52,22 @@ func ExampleVirtualNetworkLinksClient_BeginCreateOrUpdate() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.VirtualNetworkLink = armdnsresolver.VirtualNetworkLink{
+	// res.PolicyVirtualNetworkLink = armdnsresolver.PolicyVirtualNetworkLink{
 	// 	Name: to.Ptr("sampleVirtualNetworkLink"),
-	// 	Type: to.Ptr("Microsoft.Network/dnsForwardingRulesets/virtualNetworkLinks"),
-	// 	ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsForwardingRuleset/sampleDnsForwardingRuleset/virtualNetworkLinks/sampleVirtualNetworkLink"),
+	// 	Type: to.Ptr("Microsoft.Network/dnsResolverPolicies/virtualNetworkLinks"),
+	// 	ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverPolicy/sampleDnsResolverPolicy/virtualNetworkLinks/sampleVirtualNetworkLink"),
 	// 	SystemData: &armdnsresolver.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.107Z"); return t}()),
 	// 		CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
 	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T02:03:01.197Z"); return t}()),
 	// 		LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
 	// 	},
+	// 	Location: to.Ptr("westus2"),
+	// 	Tags: map[string]*string{
+	// 		"key1": to.Ptr("value1"),
+	// 	},
 	// 	Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 	Properties: &armdnsresolver.VirtualNetworkLinkProperties{
-	// 		Metadata: map[string]*string{
-	// 			"additionalProp1": to.Ptr("value1"),
-	// 		},
+	// 	Properties: &armdnsresolver.PolicyVirtualNetworkLinkProperties{
 	// 		ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
 	// 		VirtualNetwork: &armdnsresolver.SubResource{
 	// 			ID: to.Ptr("/subscriptions/0403cfa9-9659-4f33-9f30-1f191c51d111/resourceGroups/sampleVnetResourceGroupName/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork"),
@@ -74,8 +76,8 @@ func ExampleVirtualNetworkLinksClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/VirtualNetworkLink_Patch.json
-func ExampleVirtualNetworkLinksClient_BeginUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DnsResolverPolicyVirtualNetworkLink_Patch.json
+func ExamplePolicyVirtualNetworkLinksClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -85,13 +87,11 @@ func ExampleVirtualNetworkLinksClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewVirtualNetworkLinksClient().BeginUpdate(ctx, "sampleResourceGroup", "sampleDnsForwardingRuleset", "sampleVirtualNetworkLink", armdnsresolver.VirtualNetworkLinkPatch{
-		Properties: &armdnsresolver.VirtualNetworkLinkPatchProperties{
-			Metadata: map[string]*string{
-				"additionalProp1": to.Ptr("value1"),
-			},
+	poller, err := clientFactory.NewPolicyVirtualNetworkLinksClient().BeginUpdate(ctx, "sampleResourceGroup", "sampleDnsResolverPolicy", "sampleVirtualNetworkLink", armdnsresolver.PolicyVirtualNetworkLinkPatch{
+		Tags: map[string]*string{
+			"key1": to.Ptr("value1"),
 		},
-	}, &armdnsresolver.VirtualNetworkLinksClientBeginUpdateOptions{IfMatch: nil})
+	}, &armdnsresolver.PolicyVirtualNetworkLinksClientBeginUpdateOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -102,21 +102,22 @@ func ExampleVirtualNetworkLinksClient_BeginUpdate() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.VirtualNetworkLink = armdnsresolver.VirtualNetworkLink{
+	// res.PolicyVirtualNetworkLink = armdnsresolver.PolicyVirtualNetworkLink{
 	// 	Name: to.Ptr("sampleVirtualNetworkLink"),
-	// 	Type: to.Ptr("Microsoft.Network/dnsForwardingRulesets/virtualNetworkLinks"),
-	// 	ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsForwardingRuleset/sampleDnsForwardingRuleset/virtualNetworkLinks/sampleVirtualNetworkLink"),
+	// 	Type: to.Ptr("Microsoft.Network/dnsResolverPolicies/virtualNetworkLinks"),
+	// 	ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverPolicies/sampleDnsResolverPolicy/virtualNetworkLinks/sampleVirtualNetworkLink"),
 	// 	SystemData: &armdnsresolver.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.107Z"); return t}()),
 	// 		CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
 	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T02:03:01.197Z"); return t}()),
 	// 		LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
 	// 	},
+	// 	Location: to.Ptr("westus2"),
+	// 	Tags: map[string]*string{
+	// 		"key1": to.Ptr("value1"),
+	// 	},
 	// 	Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 	Properties: &armdnsresolver.VirtualNetworkLinkProperties{
-	// 		Metadata: map[string]*string{
-	// 			"additionalProp1": to.Ptr("value1"),
-	// 		},
+	// 	Properties: &armdnsresolver.PolicyVirtualNetworkLinkProperties{
 	// 		ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
 	// 		VirtualNetwork: &armdnsresolver.SubResource{
 	// 			ID: to.Ptr("/subscriptions/0403cfa9-9659-4f33-9f30-1f191c51d111/resourceGroups/sampleVnetResourceGroupName/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork"),
@@ -125,8 +126,8 @@ func ExampleVirtualNetworkLinksClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/VirtualNetworkLink_Delete.json
-func ExampleVirtualNetworkLinksClient_BeginDelete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DnsResolverPolicyVirtualNetworkLink_Delete.json
+func ExamplePolicyVirtualNetworkLinksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -136,7 +137,7 @@ func ExampleVirtualNetworkLinksClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewVirtualNetworkLinksClient().BeginDelete(ctx, "sampleResourceGroup", "sampleDnsForwardingRuleset", "sampleVirtualNetworkLink", &armdnsresolver.VirtualNetworkLinksClientBeginDeleteOptions{IfMatch: nil})
+	poller, err := clientFactory.NewPolicyVirtualNetworkLinksClient().BeginDelete(ctx, "sampleResourceGroup", "sampleDnsResolverPolicy", "sampleVirtualNetworkLink", &armdnsresolver.PolicyVirtualNetworkLinksClientBeginDeleteOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -146,8 +147,8 @@ func ExampleVirtualNetworkLinksClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/VirtualNetworkLink_Get.json
-func ExampleVirtualNetworkLinksClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DnsResolverPolicyVirtualNetworkLink_Get.json
+func ExamplePolicyVirtualNetworkLinksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -157,28 +158,29 @@ func ExampleVirtualNetworkLinksClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewVirtualNetworkLinksClient().Get(ctx, "sampleResourceGroup", "sampleDnsForwardingRuleset", "sampleVirtualNetworkLink", nil)
+	res, err := clientFactory.NewPolicyVirtualNetworkLinksClient().Get(ctx, "sampleResourceGroup", "sampleDnsResolverPolicy", "sampleVirtualNetworkLink", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.VirtualNetworkLink = armdnsresolver.VirtualNetworkLink{
+	// res.PolicyVirtualNetworkLink = armdnsresolver.PolicyVirtualNetworkLink{
 	// 	Name: to.Ptr("sampleVirtualNetworkLink"),
-	// 	Type: to.Ptr("Microsoft.Network/dnsForwardingRulesets/virtualNetworkLinks"),
-	// 	ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsForwardingRuleset/sampleDnsForwardingRuleset/virtualNetworkLinks/sampleVirtualNetworkLink"),
+	// 	Type: to.Ptr("Microsoft.Network/dnsResolverPolicies/virtualNetworkLinks"),
+	// 	ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverPolicies/sampleDnsResolverPolicy/virtualNetworkLinks/sampleVirtualNetworkLink"),
 	// 	SystemData: &armdnsresolver.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.107Z"); return t}()),
 	// 		CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
 	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T02:03:01.197Z"); return t}()),
 	// 		LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
 	// 	},
+	// 	Location: to.Ptr("westus2"),
+	// 	Tags: map[string]*string{
+	// 		"key1": to.Ptr("value1"),
+	// 	},
 	// 	Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 	Properties: &armdnsresolver.VirtualNetworkLinkProperties{
-	// 		Metadata: map[string]*string{
-	// 			"additionalProp1": to.Ptr("value1"),
-	// 		},
+	// 	Properties: &armdnsresolver.PolicyVirtualNetworkLinkProperties{
 	// 		ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
 	// 		VirtualNetwork: &armdnsresolver.SubResource{
 	// 			ID: to.Ptr("/subscriptions/0403cfa9-9659-4f33-9f30-1f191c51d111/resourceGroups/sampleVnetResourceGroupName/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork"),
@@ -187,8 +189,8 @@ func ExampleVirtualNetworkLinksClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/VirtualNetworkLink_List.json
-func ExampleVirtualNetworkLinksClient_NewListPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DnsResolverPolicyVirtualNetworkLink_List.json
+func ExamplePolicyVirtualNetworkLinksClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -198,7 +200,7 @@ func ExampleVirtualNetworkLinksClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewVirtualNetworkLinksClient().NewListPager("sampleResourceGroup", "sampleDnsForwardingRuleset", &armdnsresolver.VirtualNetworkLinksClientListOptions{Top: nil})
+	pager := clientFactory.NewPolicyVirtualNetworkLinksClient().NewListPager("sampleResourceGroup", "sampleDnsResolverPolicy", &armdnsresolver.PolicyVirtualNetworkLinksClientListOptions{Top: nil})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -209,23 +211,24 @@ func ExampleVirtualNetworkLinksClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.VirtualNetworkLinkListResult = armdnsresolver.VirtualNetworkLinkListResult{
-		// 	Value: []*armdnsresolver.VirtualNetworkLink{
+		// page.PolicyVirtualNetworkLinkListResult = armdnsresolver.PolicyVirtualNetworkLinkListResult{
+		// 	Value: []*armdnsresolver.PolicyVirtualNetworkLink{
 		// 		{
 		// 			Name: to.Ptr("sampleVirtualNetworkLink"),
-		// 			Type: to.Ptr("Microsoft.Network/dnsForwardingRulesets/virtualNetworkLinks"),
-		// 			ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsForwardingRuleset/sampleDnsForwardingRuleset/virtualNetworkLinks/sampleVirtualNetworkLink"),
+		// 			Type: to.Ptr("Microsoft.Network/dnsResolverPolicies/virtualNetworkLinks"),
+		// 			ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverPolicies/sampleDnsResolverPolicy/virtualNetworkLinks/sampleVirtualNetworkLink"),
 		// 			SystemData: &armdnsresolver.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.107Z"); return t}()),
 		// 				CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
 		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T02:03:01.197Z"); return t}()),
 		// 				LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
 		// 			},
+		// 			Location: to.Ptr("westus2"),
+		// 			Tags: map[string]*string{
+		// 				"key1": to.Ptr("value1"),
+		// 			},
 		// 			Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 			Properties: &armdnsresolver.VirtualNetworkLinkProperties{
-		// 				Metadata: map[string]*string{
-		// 					"additionalProp1": to.Ptr("value1"),
-		// 				},
+		// 			Properties: &armdnsresolver.PolicyVirtualNetworkLinkProperties{
 		// 				ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
 		// 				VirtualNetwork: &armdnsresolver.SubResource{
 		// 					ID: to.Ptr("/subscriptions/0403cfa9-9659-4f33-9f30-1f191c51d111/resourceGroups/sampleVnetResourceGroupName/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork"),

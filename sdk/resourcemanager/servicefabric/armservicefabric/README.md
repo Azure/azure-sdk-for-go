@@ -1,6 +1,6 @@
 # Azure Service Fabric Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric/v2)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric/v2)
 
 The `armservicefabric` module provides operations for working with Azure Service Fabric.
 
@@ -20,7 +20,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Service Fabric module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric/v2
 ```
 
 ## Authorization
@@ -57,7 +57,7 @@ clientFactory, err := armservicefabric.NewClientFactory(<subscription ID>, cred,
 A client groups a set of related APIs, providing access to its functionality.  Create one or more clients to access the APIs you require using client factory.
 
 ```go
-client := clientFactory.NewServicesClient()
+client := clientFactory.NewApplicationTypeVersionsClient()
 ```
 
 ## Fakes

@@ -259,16 +259,10 @@ func TestAPIVersion(t *testing.T) {
 	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
 	defer close()
 	srv.AppendResponse(
-		mock.WithHeader("WWW-Authenticate", `Bearer authorization="https://login.microsoftonline.com/tenant", resource="https://managedhsm.azure.net"`),
-		mock.WithStatusCode(401),
-		mock.WithPredicate(requireVersion(t)),
-	)
-	srv.AppendResponse() // when a response's predicate returns true, srv pops the following one
-	srv.AppendResponse(
 		mock.WithStatusCode(200),
 		mock.WithPredicate(requireVersion(t)),
 	)
-	srv.AppendResponse() // when a response's predicate returns true, srv pops the following one
+	srv.AppendResponse(mock.WithStatusCode(http.StatusInternalServerError))
 
 	opts := &rbac.ClientOptions{
 		ClientOptions: azcore.ClientOptions{

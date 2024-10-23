@@ -3,6 +3,7 @@
 ### 1.2.1 (Unreleased)
 
 #### Features Added
+* Added API Version support. Users can now change the default API Version by setting ClientOptions.APIVersion
 
 #### Breaking Changes
 

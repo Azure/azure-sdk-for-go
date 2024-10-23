@@ -11,7 +11,7 @@ import (
 
 func TestItemTransactionalBatch(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
-	client := emulatorTests.getClient(t, newSpanValidator(t, spanMatcher{
+	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{
 		ExpectedSpans: []string{"execute_batch aContainer"},
 	}))
 
@@ -171,7 +171,7 @@ func TestItemTransactionalBatch(t *testing.T) {
 
 func TestItemTransactionalBatchError(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
-	client := emulatorTests.getClient(t, newSpanValidator(t, spanMatcher{
+	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{
 		ExpectedSpans: []string{"execute_batch aContainer"},
 	}))
 

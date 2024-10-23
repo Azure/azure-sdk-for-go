@@ -12,7 +12,7 @@ import (
 
 func TestSinglePartitionQueryWithIndexMetrics(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
-	client := emulatorTests.getClient(t, newSpanValidator(t, spanMatcher{
+	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{
 		ExpectedSpans: []string{},
 	}))
 
@@ -87,7 +87,7 @@ func TestSinglePartitionQueryWithIndexMetrics(t *testing.T) {
 
 func TestSinglePartitionQuery(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
-	client := emulatorTests.getClient(t, newSpanValidator(t, spanMatcher{
+	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{
 		ExpectedSpans: []string{},
 	}))
 
@@ -175,7 +175,7 @@ func TestSinglePartitionQuery(t *testing.T) {
 
 func TestSinglePartitionQueryWithParameters(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
-	client := emulatorTests.getClient(t, newSpanValidator(t, spanMatcher{
+	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{
 		ExpectedSpans: []string{},
 	}))
 
@@ -227,7 +227,7 @@ func TestSinglePartitionQueryWithParameters(t *testing.T) {
 
 func TestSinglePartitionQueryWithProjection(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
-	client := emulatorTests.getClient(t, newSpanValidator(t, spanMatcher{
+	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{
 		ExpectedSpans: []string{},
 	}))
 

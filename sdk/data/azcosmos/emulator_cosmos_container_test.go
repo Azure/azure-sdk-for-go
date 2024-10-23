@@ -10,7 +10,7 @@ import (
 
 func TestContainerCRUD(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
-	client := emulatorTests.getClient(t, newSpanValidator(t, spanMatcher{
+	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{
 		ExpectedSpans: []string{"create_container aContainer", "read_container aContainer", "replace_container aContainer", "read_container_throughput aContainer", "replace_container_throughput aContainer", "delete_container aContainer"},
 	}))
 
@@ -131,7 +131,7 @@ func TestContainerCRUD(t *testing.T) {
 
 func TestContainerAutoscaleCRUD(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
-	client := emulatorTests.getClient(t, newSpanValidator(t, spanMatcher{
+	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{
 		ExpectedSpans: []string{"create_container aContainer", "read_container aContainer", "read_container_throughput aContainer", "replace_container_throughput aContainer", "delete_container aContainer"},
 	}))
 

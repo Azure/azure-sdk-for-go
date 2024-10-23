@@ -530,7 +530,7 @@ func ExampleJobsClient_BeginCreateOrUpdate_createOrUpdateContainerAppsJob() {
 		Identity: &armappcontainers.ManagedServiceIdentity{
 			Type: to.Ptr(armappcontainers.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
 			UserAssignedIdentities: map[string]*armappcontainers.UserAssignedIdentity{
-				"/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity": &armappcontainers.UserAssignedIdentity{},
+				"/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity": {},
 			},
 		},
 		Properties: &armappcontainers.JobProperties{
@@ -874,7 +874,7 @@ func ExampleJobsClient_BeginCreateOrUpdate_createOrUpdateContainerAppsJobWithEve
 		Identity: &armappcontainers.ManagedServiceIdentity{
 			Type: to.Ptr(armappcontainers.ManagedServiceIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]*armappcontainers.UserAssignedIdentity{
-				"/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity": &armappcontainers.UserAssignedIdentity{},
+				"/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity": {},
 			},
 		},
 		Properties: &armappcontainers.JobProperties{

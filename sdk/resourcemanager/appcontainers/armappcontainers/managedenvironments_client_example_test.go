@@ -457,7 +457,7 @@ func ExampleManagedEnvironmentsClient_BeginCreateOrUpdate_createEnvironments() {
 		Identity: &armappcontainers.ManagedServiceIdentity{
 			Type: to.Ptr(armappcontainers.ManagedServiceIdentityType("SystemAssigned, UserAssigned")),
 			UserAssignedIdentities: map[string]*armappcontainers.UserAssignedIdentity{
-				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contoso-resources/providers/Microsoft.ManagedIdentity/userAssignedIdentities/contoso-identity": &armappcontainers.UserAssignedIdentity{},
+				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contoso-resources/providers/Microsoft.ManagedIdentity/userAssignedIdentities/contoso-identity": {},
 			},
 		},
 		Properties: &armappcontainers.ManagedEnvironmentProperties{

@@ -318,7 +318,7 @@ func ExampleBuildersClient_BeginCreateOrUpdate() {
 		Identity: &armappcontainers.ManagedServiceIdentity{
 			Type: to.Ptr(armappcontainers.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
 			UserAssignedIdentities: map[string]*armappcontainers.UserAssignedIdentity{
-				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1": &armappcontainers.UserAssignedIdentity{},
+				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1": {},
 			},
 		},
 		Properties: &armappcontainers.BuilderProperties{

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v7"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-03-01/examples/Volumes_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-07-01/examples/Volumes_List.json
 func ExampleVolumesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -64,7 +64,7 @@ func ExampleVolumesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-03-01/examples/Volumes_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-07-01/examples/Volumes_Get.json
 func ExampleVolumesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,7 +102,7 @@ func ExampleVolumesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-03-01/examples/Volumes_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-07-01/examples/Volumes_CreateOrUpdate.json
 func ExampleVolumesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -150,7 +150,7 @@ func ExampleVolumesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-03-01/examples/Volumes_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-07-01/examples/Volumes_Update.json
 func ExampleVolumesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -197,7 +197,7 @@ func ExampleVolumesClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-03-01/examples/Volumes_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-07-01/examples/Volumes_Delete.json
 func ExampleVolumesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -218,7 +218,7 @@ func ExampleVolumesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-03-01/examples/Volumes_PopulateAvailabilityZones.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-07-01/examples/Volumes_PopulateAvailabilityZones.json
 func ExampleVolumesClient_BeginPopulateAvailabilityZone() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -260,7 +260,7 @@ func ExampleVolumesClient_BeginPopulateAvailabilityZone() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-03-01/examples/Volumes_Revert.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-07-01/examples/Volumes_Revert.json
 func ExampleVolumesClient_BeginRevert() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -283,7 +283,7 @@ func ExampleVolumesClient_BeginRevert() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-03-01/examples/Volumes_ResetCifsPassword.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-07-01/examples/Volumes_ResetCifsPassword.json
 func ExampleVolumesClient_BeginResetCifsPassword() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -304,7 +304,7 @@ func ExampleVolumesClient_BeginResetCifsPassword() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-03-01/examples/Volumes_BreakFileLocks.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-07-01/examples/Volumes_BreakFileLocks.json
 func ExampleVolumesClient_BeginBreakFileLocks() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -329,7 +329,7 @@ func ExampleVolumesClient_BeginBreakFileLocks() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-03-01/examples/GroupIdListForLDAPUser.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-07-01/examples/GroupIdListForLDAPUser.json
 func ExampleVolumesClient_BeginListGetGroupIDListForLdapUser() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -360,7 +360,7 @@ func ExampleVolumesClient_BeginListGetGroupIDListForLdapUser() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-03-01/examples/Volumes_BreakReplication.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-07-01/examples/Volumes_BreakReplication.json
 func ExampleVolumesClient_BeginBreakReplication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -384,7 +384,7 @@ func ExampleVolumesClient_BeginBreakReplication() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-03-01/examples/Volumes_ReestablishReplication.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-07-01/examples/Volumes_ReestablishReplication.json
 func ExampleVolumesClient_BeginReestablishReplication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -407,7 +407,7 @@ func ExampleVolumesClient_BeginReestablishReplication() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-03-01/examples/Volumes_ReplicationStatus.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-07-01/examples/Volumes_ReplicationStatus.json
 func ExampleVolumesClient_ReplicationStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -434,7 +434,7 @@ func ExampleVolumesClient_ReplicationStatus() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-03-01/examples/Volumes_ListReplications.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-07-01/examples/Volumes_ListReplications.json
 func ExampleVolumesClient_NewListReplicationsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -467,7 +467,7 @@ func ExampleVolumesClient_NewListReplicationsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-03-01/examples/Volumes_ResyncReplication.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-07-01/examples/Volumes_ResyncReplication.json
 func ExampleVolumesClient_BeginResyncReplication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -488,7 +488,7 @@ func ExampleVolumesClient_BeginResyncReplication() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-03-01/examples/Volumes_DeleteReplication.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-07-01/examples/Volumes_DeleteReplication.json
 func ExampleVolumesClient_BeginDeleteReplication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -509,7 +509,7 @@ func ExampleVolumesClient_BeginDeleteReplication() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-03-01/examples/Volumes_AuthorizeReplication.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-07-01/examples/Volumes_AuthorizeReplication.json
 func ExampleVolumesClient_BeginAuthorizeReplication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -532,7 +532,7 @@ func ExampleVolumesClient_BeginAuthorizeReplication() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-03-01/examples/Volumes_ReInitializeReplication.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-07-01/examples/Volumes_ReInitializeReplication.json
 func ExampleVolumesClient_BeginReInitializeReplication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -553,7 +553,111 @@ func ExampleVolumesClient_BeginReInitializeReplication() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-03-01/examples/Volumes_PoolChange.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-07-01/examples/Volumes_PeerExternalCluster.json
+func ExampleVolumesClient_BeginPeerExternalCluster() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVolumesClient().BeginPeerExternalCluster(ctx, "myRG", "account1", "pool1", "volume1", armnetapp.PeerClusterForVolumeMigrationRequest{
+		PeerIPAddresses: []*string{
+			to.Ptr("0.0.0.1"),
+			to.Ptr("0.0.0.2"),
+			to.Ptr("0.0.0.3"),
+			to.Ptr("0.0.0.4"),
+			to.Ptr("0.0.0.5"),
+			to.Ptr("0.0.0.6")},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ClusterPeerCommandResponse = armnetapp.ClusterPeerCommandResponse{
+	// 	PeerAcceptCommand: to.Ptr("cluster peer create -ipspace replication -encryption-protocol-proposed tls-psk -passphrase passphraseString -peer-addrs 1.1.1.1,1.1.1.2,1.1.1.3,1.1.1.4,1.1.1.5,1.1.1.6"),
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-07-01/examples/Volumes_AuthorizeExternalReplication.json
+func ExampleVolumesClient_BeginAuthorizeExternalReplication() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVolumesClient().BeginAuthorizeExternalReplication(ctx, "myRG", "account1", "pool1", "volume1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.SvmPeerCommandResponse = armnetapp.SvmPeerCommandResponse{
+	// 	SvmPeeringCommand: to.Ptr("vserver peer accept -vserver OnPremSvm -peer-vserver AnfSvm"),
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-07-01/examples/Volumes_FinalizeExternalReplication.json
+func ExampleVolumesClient_BeginFinalizeExternalReplication() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVolumesClient().BeginFinalizeExternalReplication(ctx, "myRG", "account1", "pool1", "volume1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-07-01/examples/Volumes_PerformReplicationTransfer.json
+func ExampleVolumesClient_BeginPerformReplicationTransfer() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetapp.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVolumesClient().BeginPerformReplicationTransfer(ctx, "myRG", "account1", "pool1", "volume1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-07-01/examples/Volumes_PoolChange.json
 func ExampleVolumesClient_BeginPoolChange() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -576,7 +680,7 @@ func ExampleVolumesClient_BeginPoolChange() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-03-01/examples/Volumes_Relocate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-07-01/examples/Volumes_Relocate.json
 func ExampleVolumesClient_BeginRelocate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -597,7 +701,7 @@ func ExampleVolumesClient_BeginRelocate() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-03-01/examples/Volumes_FinalizeRelocation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-07-01/examples/Volumes_FinalizeRelocation.json
 func ExampleVolumesClient_BeginFinalizeRelocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -618,7 +722,7 @@ func ExampleVolumesClient_BeginFinalizeRelocation() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7b98b36e4023331545051284d8500adf98f02fe/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-03-01/examples/Volumes_RevertRelocation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-07-01/examples/Volumes_RevertRelocation.json
 func ExampleVolumesClient_BeginRevertRelocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

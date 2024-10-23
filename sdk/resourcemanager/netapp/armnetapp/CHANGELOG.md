@@ -1,5 +1,21 @@
 # Release History
 
+## 7.3.0 (2024-10-23)
+### Features Added
+
+- New function `*VolumesClient.BeginAuthorizeExternalReplication(context.Context, string, string, string, string, *VolumesClientBeginAuthorizeExternalReplicationOptions) (*runtime.Poller[VolumesClientAuthorizeExternalReplicationResponse], error)`
+- New function `*VolumesClient.BeginFinalizeExternalReplication(context.Context, string, string, string, string, *VolumesClientBeginFinalizeExternalReplicationOptions) (*runtime.Poller[VolumesClientFinalizeExternalReplicationResponse], error)`
+- New function `*VolumesClient.BeginPeerExternalCluster(context.Context, string, string, string, string, PeerClusterForVolumeMigrationRequest, *VolumesClientBeginPeerExternalClusterOptions) (*runtime.Poller[VolumesClientPeerExternalClusterResponse], error)`
+- New function `*VolumesClient.BeginPerformReplicationTransfer(context.Context, string, string, string, string, *VolumesClientBeginPerformReplicationTransferOptions) (*runtime.Poller[VolumesClientPerformReplicationTransferResponse], error)`
+- New struct `ClusterPeerCommandResponse`
+- New struct `PeerClusterForVolumeMigrationRequest`
+- New struct `RemotePath`
+- New struct `SvmPeerCommandResponse`
+- New field `AvailabilityZone` in struct `FilePathAvailabilityRequest`
+- New field `RemotePath` in struct `ReplicationObject`
+- New field `EffectiveNetworkFeatures` in struct `VolumeProperties`
+
+
 ## 7.2.0 (2024-08-23)
 ### Features Added
 

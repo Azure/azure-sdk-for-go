@@ -409,6 +409,13 @@ type VolumeQuotaRulesClientListByVolumeOptions struct {
 	// placeholder for future optional parameters
 }
 
+// VolumesClientBeginAuthorizeExternalReplicationOptions contains the optional parameters for the VolumesClient.BeginAuthorizeExternalReplication
+// method.
+type VolumesClientBeginAuthorizeExternalReplicationOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // VolumesClientBeginAuthorizeReplicationOptions contains the optional parameters for the VolumesClient.BeginAuthorizeReplication
 // method.
 type VolumesClientBeginAuthorizeReplicationOptions struct {
@@ -457,6 +464,13 @@ type VolumesClientBeginDeleteReplicationOptions struct {
 	ResumeToken string
 }
 
+// VolumesClientBeginFinalizeExternalReplicationOptions contains the optional parameters for the VolumesClient.BeginFinalizeExternalReplication
+// method.
+type VolumesClientBeginFinalizeExternalReplicationOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // VolumesClientBeginFinalizeRelocationOptions contains the optional parameters for the VolumesClient.BeginFinalizeRelocation
 // method.
 type VolumesClientBeginFinalizeRelocationOptions struct {
@@ -467,6 +481,20 @@ type VolumesClientBeginFinalizeRelocationOptions struct {
 // VolumesClientBeginListGetGroupIDListForLdapUserOptions contains the optional parameters for the VolumesClient.BeginListGetGroupIDListForLdapUser
 // method.
 type VolumesClientBeginListGetGroupIDListForLdapUserOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// VolumesClientBeginPeerExternalClusterOptions contains the optional parameters for the VolumesClient.BeginPeerExternalCluster
+// method.
+type VolumesClientBeginPeerExternalClusterOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// VolumesClientBeginPerformReplicationTransferOptions contains the optional parameters for the VolumesClient.BeginPerformReplicationTransfer
+// method.
+type VolumesClientBeginPerformReplicationTransferOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }

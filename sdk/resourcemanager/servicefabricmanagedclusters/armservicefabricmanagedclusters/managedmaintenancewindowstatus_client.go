@@ -46,7 +46,7 @@ func NewManagedMaintenanceWindowStatusClient(subscriptionID string, credential a
 // Get - Action to get Maintenance Window Status of the Service Fabric Managed Clusters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2024-06-01-preview
 //   - resourceGroupName - The name of the resource group.
 //   - clusterName - The name of the cluster resource.
 //   - options - ManagedMaintenanceWindowStatusClientGetOptions contains the optional parameters for the ManagedMaintenanceWindowStatusClient.Get
@@ -93,7 +93,7 @@ func (client *ManagedMaintenanceWindowStatusClient) getCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01")
+	reqQP.Set("api-version", "2024-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

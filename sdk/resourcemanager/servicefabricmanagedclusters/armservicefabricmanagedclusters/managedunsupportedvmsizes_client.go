@@ -46,7 +46,7 @@ func NewManagedUnsupportedVMSizesClient(subscriptionID string, credential azcore
 // Get - Get unsupported vm size for Service Fabric Managed Clusters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2024-06-01-preview
 //   - location - The location for the cluster code versions. This is different from cluster location.
 //   - vmSize - VM Size name.
 //   - options - ManagedUnsupportedVMSizesClientGetOptions contains the optional parameters for the ManagedUnsupportedVMSizesClient.Get
@@ -93,7 +93,7 @@ func (client *ManagedUnsupportedVMSizesClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01")
+	reqQP.Set("api-version", "2024-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -110,7 +110,7 @@ func (client *ManagedUnsupportedVMSizesClient) getHandleResponse(resp *http.Resp
 
 // NewListPager - Get the lists of unsupported vm sizes for Service Fabric Managed Clusters.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2024-06-01-preview
 //   - location - The location for the cluster code versions. This is different from cluster location.
 //   - options - ManagedUnsupportedVMSizesClientListOptions contains the optional parameters for the ManagedUnsupportedVMSizesClient.NewListPager
 //     method.
@@ -153,7 +153,7 @@ func (client *ManagedUnsupportedVMSizesClient) listCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01")
+	reqQP.Set("api-version", "2024-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

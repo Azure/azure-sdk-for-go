@@ -22,18 +22,47 @@ export-clients: true
 use: "@autorest/go@4.0.0-preview.65"
 ```
 
-### Add permissions in Listblob
-
+### Add permissions in ListBlobsInclude
 ``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-upn"]["/{shareName}/{directory}/{fileName}?include=permissions"]
-  transform: >
-    $.put.responses["200"].headers[""] = {
-        "type": "string",
-        "format": "owner-group-permissions-acl",
-        "description": "Returns the Owner, Group, Permissions, and Acl elements.  "
-    }
+directive:  
+- from: swagger-document    
+  where: $.parameters.ListBlobsInclude    
+  transform: >        
+    $.items["x-ms-enum"].values = [            
+      {              
+          "value": "permissions",            
+      },            
+      {              
+          "value": "copy",            
+      },             
+      {             
+          "value": "deleted",            
+      },            
+      {              
+          "value": "metadata",            
+      },            
+      {              
+          "value": "snapshots",            
+      },            
+      {              
+          "value": "uncommittedblobs",            
+      },            
+      {              
+          "value": "versions",            
+      },            
+      {              
+          "value": "tags",            
+      },            
+      {              
+          "value": "immutabilitypolicy",            
+      },            
+      {              
+      "value": "legalhold",            
+      },            
+      {              
+          "value": "deletedwithversions"            
+      },          
+    ];
 ```
 
 ### Updating service version to 2024-08-04

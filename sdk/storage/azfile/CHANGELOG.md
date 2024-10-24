@@ -1,6 +1,6 @@
 # Release History
 
-## 1.3.2 (Unreleased)
+## 1.4.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,16 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.4.0-beta.1 (2024-10-22)
+
+### Features Added
+* Add Paid Burst IOPS/Bandwidth support for Premium Files.
+* REST API for binary ACE in Azure Files.
+
+### Other Changes
+* Updated `azidentity` version to `1.8.0`
+* Updated `azcore` version to `1.16.0`
 
 ## 1.3.1 (2024-09-18)
 

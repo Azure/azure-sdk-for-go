@@ -10,7 +10,7 @@ import (
 
 func TestDatabaseCRUD(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
-	client := emulatorTests.getClient(t, newSpanValidator(t, spanMatcher{
+	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{
 		ExpectedSpans: []string{"create_database baseDbTest", "read_database baseDbTest", "delete_database baseDbTest", "read_database_throughput baseDbTest"},
 	}))
 
@@ -70,7 +70,7 @@ func TestDatabaseCRUD(t *testing.T) {
 
 func TestDatabaseWithOfferCRUD(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
-	client := emulatorTests.getClient(t, newSpanValidator(t, spanMatcher{
+	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{
 		ExpectedSpans: []string{"create_database baseDbTest", "read_database baseDbTest", "delete_database baseDbTest", "read_database_throughput baseDbTest", "replace_database_throughput baseDbTest"},
 	}))
 

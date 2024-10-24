@@ -19,6 +19,15 @@ package armelastic
 
 import "time"
 
+// BillingInfoResponse - Marketplace Subscription and Organization details to which resource gets billed into.
+type BillingInfoResponse struct {
+	// Marketplace Subscription details
+	MarketplaceSaasInfo *MarketplaceSaaSInfo
+
+	// Partner Billing Entity details: Organization Info
+	PartnerBillingEntity *PartnerBillingEntity
+}
+
 // CloudDeployment - Details of the user's elastic deployment associated with the monitor resource.
 type CloudDeployment struct {
 	// READ-ONLY; Associated Azure subscription Id for the elastic deployment.
@@ -73,6 +82,36 @@ type CompanyInfo struct {
 	State *string
 }
 
+// ConnectedPartnerResourceProperties - Connected Partner Resource Properties
+type ConnectedPartnerResourceProperties struct {
+	// The azure resource Id of the deployment.
+	AzureResourceID *string
+
+	// The location of the deployment.
+	Location *string
+
+	// Elastic deployment name
+	PartnerDeploymentName *string
+
+	// Deployment URL of the elasticsearch in Elastic cloud deployment.
+	PartnerDeploymentURI *string
+}
+
+// ConnectedPartnerResourcesListFormat - Connected Partner Resources List Format
+type ConnectedPartnerResourcesListFormat struct {
+	// Connected Partner Resource Properties
+	Properties *ConnectedPartnerResourceProperties
+}
+
+// ConnectedPartnerResourcesListResponse - List of all active elastic deployments.
+type ConnectedPartnerResourcesListResponse struct {
+	// Link to the next set of results, if any.
+	NextLink *string
+
+	// Results of a list operation.
+	Value []*ConnectedPartnerResourcesListFormat
+}
+
 // DeploymentInfoResponse - The properties of deployment in Elastic cloud corresponding to the Elastic monitor resource.
 type DeploymentInfoResponse struct {
 	// READ-ONLY; Deployment URL of the elasticsearch in Elastic cloud deployment.
@@ -80,6 +119,10 @@ type DeploymentInfoResponse struct {
 
 	// READ-ONLY; Disk capacity of the elasticsearch in Elastic cloud deployment.
 	DiskCapacity *string
+
+	// READ-ONLY; Elasticsearch endpoint in Elastic cloud deployment. This is either the aliasedendpoint if available, or the
+	// serviceurl otherwise.
+	ElasticsearchEndPoint *string
 
 	// READ-ONLY; Marketplace SaaS Info of the resource.
 	MarketplaceSaasInfo *MarketplaceSaaSInfo
@@ -163,14 +206,23 @@ type LogRules struct {
 
 // MarketplaceSaaSInfo - Marketplace SAAS Info of the resource.
 type MarketplaceSaaSInfo struct {
+	// The Azure Subscription ID to which the Marketplace Subscription belongs and gets billed into.
+	BilledAzureSubscriptionID *string
+
 	// Marketplace Subscription Details: SAAS Name
 	MarketplaceName *string
 
 	// Marketplace Subscription Details: Resource URI
 	MarketplaceResourceID *string
 
+	// Marketplace Subscription Details: SaaS Subscription Status
+	MarketplaceStatus *string
+
 	// Marketplace Subscription
 	MarketplaceSubscription *MarketplaceSaaSInfoMarketplaceSubscription
+
+	// Flag specifying if the Marketplace status is subscribed or not.
+	Subscribed *bool
 }
 
 // MarketplaceSaaSInfoMarketplaceSubscription - Marketplace Subscription
@@ -190,8 +242,23 @@ type MonitorProperties struct {
 	// Flag specifying if the resource monitoring is enabled or disabled.
 	MonitoringStatus *MonitoringStatus
 
+	// Plan details of the monitor resource.
+	PlanDetails *PlanDetails
+
 	// Provisioning state of the monitor resource.
 	ProvisioningState *ProvisioningState
+
+	// Status of Azure Subscription where Marketplace SaaS is located.
+	SaaSAzureSubscriptionStatus *string
+
+	// A unique identifier associated with the campaign.
+	SourceCampaignID *string
+
+	// Name of the marketing campaign.
+	SourceCampaignName *string
+
+	// State of the Azure Subscription containing the monitor resource
+	SubscriptionState *string
 
 	// User information.
 	UserInfo *UserInfo
@@ -314,6 +381,57 @@ type MonitoringTagRulesProperties struct {
 	ProvisioningState *ProvisioningState
 }
 
+// OpenAIIntegrationProperties - Open AI Integration details.
+type OpenAIIntegrationProperties struct {
+	// Value of API key for Open AI resource
+	Key *string
+
+	// The API endpoint for Open AI resource
+	OpenAIResourceEndpoint *string
+
+	// The resource name of Open AI resource
+	OpenAIResourceID *string
+
+	// READ-ONLY; Last Update Timestamp for key updation
+	LastRefreshAt *time.Time
+}
+
+// OpenAIIntegrationRPModel - Capture properties of Open AI resource Integration.
+type OpenAIIntegrationRPModel struct {
+	// Open AI Integration details.
+	Properties *OpenAIIntegrationProperties
+
+	// READ-ONLY; The id of the integration.
+	ID *string
+
+	// READ-ONLY; Name of the integration.
+	Name *string
+
+	// READ-ONLY; The type of the integration.
+	Type *string
+}
+
+// OpenAIIntegrationRPModelListResponse - Response of a list operation.
+type OpenAIIntegrationRPModelListResponse struct {
+	// Link to the next set of results, if any.
+	NextLink *string
+
+	// Results of a list operation.
+	Value []*OpenAIIntegrationRPModel
+}
+
+// OpenAIIntegrationStatusResponse - Status of the OpenAI Integration
+type OpenAIIntegrationStatusResponse struct {
+	// Status of the OpenAI Integration
+	Properties *OpenAIIntegrationStatusResponseProperties
+}
+
+// OpenAIIntegrationStatusResponseProperties - Status of the OpenAI Integration
+type OpenAIIntegrationStatusResponseProperties struct {
+	// Status of the OpenAI Integration
+	Status *string
+}
+
 // OperationDisplay - The object that represents the operation.
 type OperationDisplay struct {
 	// Description of the operation, e.g., 'Write monitors'.
@@ -351,6 +469,60 @@ type OperationResult struct {
 
 	// Origin of the operation
 	Origin *string
+}
+
+// OrganizationToAzureSubscriptionMappingResponse - The Azure Subscription ID to which the Organization of the logged in user
+// belongs and gets billed into.
+type OrganizationToAzureSubscriptionMappingResponse struct {
+	// The properties of Azure Subscription ID to which the Organization of the logged in user belongs and gets billed into.
+	Properties *OrganizationToAzureSubscriptionMappingResponseProperties
+}
+
+// OrganizationToAzureSubscriptionMappingResponseProperties - The properties of Azure Subscription ID to which the Organization
+// of the logged in user belongs and gets billed into.
+type OrganizationToAzureSubscriptionMappingResponseProperties struct {
+	// The Azure Subscription ID to which the Organization belongs and gets billed into. This is empty for a new user OR a user
+	// without an Elastic Organization.
+	BilledAzureSubscriptionID *string
+
+	// The Elastic Organization Id.
+	ElasticOrganizationID *string
+
+	// The Elastic Organization Name.
+	ElasticOrganizationName *string
+
+	// READ-ONLY; Marketplace SaaS Info of the resource.
+	MarketplaceSaasInfo *MarketplaceSaaSInfo
+}
+
+// PartnerBillingEntity - Partner Billing details associated with the resource.
+type PartnerBillingEntity struct {
+	// The Elastic Organization Id.
+	ID *string
+
+	// The Elastic Organization Name.
+	Name *string
+
+	// Link to the elastic organization page
+	PartnerEntityURI *string
+}
+
+// PlanDetails - Plan details of the monitor resource.
+type PlanDetails struct {
+	// Offer ID of the plan
+	OfferID *string
+
+	// Plan ID
+	PlanID *string
+
+	// Plan Name
+	PlanName *string
+
+	// Publisher ID of the plan
+	PublisherID *string
+
+	// Term ID of the plan
+	TermID *string
 }
 
 // Properties - Elastic Resource Properties.

@@ -3,6 +3,8 @@
 ## 1.1.1 (Unreleased)
 
 ### Features Added
+* Set all Telemetry spans to have the Kind of SpanKindClient
+* Set request_charge and status_code on all trace spans
 
 ### Breaking Changes
 

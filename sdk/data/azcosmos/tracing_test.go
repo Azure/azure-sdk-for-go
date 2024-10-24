@@ -13,8 +13,10 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+type spanContextKey struct{}
+
 // newSpanValidator creates a tracing.Provider that verifies a span was created that matches the specified SpanMatcher.
-func newSpanValidator(t *testing.T, matcher spanMatcher) tracing.Provider {
+func newSpanValidator(t *testing.T, matcher *spanMatcher) tracing.Provider {
 	return tracing.NewProvider(func(name, version string) tracing.Tracer {
 		tt := matchingTracer{
 			matcher: matcher,
@@ -23,7 +25,7 @@ func newSpanValidator(t *testing.T, matcher spanMatcher) tracing.Provider {
 		t.Cleanup(func() {
 			for _, expectedSpan := range matcher.ExpectedSpans {
 				found := false
-				for _, match := range tt.matches {
+				for _, match := range matcher.MatchedSpans {
 					if match.name == expectedSpan {
 						found = true
 						require.True(t, match.ended, "span %s wasn't ended", match.name)
@@ -40,18 +42,25 @@ func newSpanValidator(t *testing.T, matcher spanMatcher) tracing.Provider {
 				kind = options.Kind
 			}
 			return tt.Start(ctx, spanName, kind)
-		}, nil)
+		}, &tracing.TracerOptions{
+			SpanFromContext: func(ctx context.Context) tracing.Span {
+				if span, ok := ctx.Value(spanContextKey{}).(tracing.Span); ok {
+					return span
+				}
+				return tracing.Span{}
+			},
+		})
 	}, nil)
 }
 
 // SpanMatcher contains the values to match when a span is created.
 type spanMatcher struct {
 	ExpectedSpans []string
+	MatchedSpans  []*matchingSpan
 }
 
 type matchingTracer struct {
-	matcher spanMatcher
-	matches []*matchingSpan
+	matcher *spanMatcher
 }
 
 func (mt *matchingTracer) Start(ctx context.Context, spanName string, kind tracing.SpanKind) (context.Context, tracing.Span) {
@@ -63,18 +72,22 @@ func (mt *matchingTracer) Start(ctx context.Context, spanName string, kind traci
 	newSpan := &matchingSpan{
 		name: spanName,
 	}
-	mt.matches = append(mt.matches, newSpan)
-	return ctx, tracing.NewSpan(tracing.SpanImpl{
-		End:       newSpan.End,
-		SetStatus: newSpan.SetStatus,
+	mt.matcher.MatchedSpans = append(mt.matcher.MatchedSpans, newSpan)
+	tracingSpan := tracing.NewSpan(tracing.SpanImpl{
+		End:           newSpan.End,
+		SetStatus:     newSpan.SetStatus,
+		SetAttributes: newSpan.SetAttributes,
 	})
+	ctx = context.WithValue(ctx, spanContextKey{}, tracingSpan)
+	return ctx, tracingSpan
 }
 
 type matchingSpan struct {
-	name   string
-	status tracing.SpanStatus
-	desc   string
-	ended  bool
+	name       string
+	status     tracing.SpanStatus
+	desc       string
+	attributes []tracing.Attribute
+	ended      bool
 }
 
 func (s *matchingSpan) End() {
@@ -85,4 +98,20 @@ func (s *matchingSpan) SetStatus(code tracing.SpanStatus, desc string) {
 	s.status = code
 	s.desc = desc
 	s.ended = true
+}
+
+func (s *matchingSpan) SetAttributes(attrs ...tracing.Attribute) {
+	s.attributes = append(s.attributes, attrs...)
+}
+
+func attributeValueForKey(attributes []tracing.Attribute, key string) any {
+	i := slices.IndexFunc(attributes, func(attr tracing.Attribute) bool {
+		return attr.Key == key
+	})
+
+	if i < 0 {
+		return nil
+	}
+
+	return attributes[i].Value
 }

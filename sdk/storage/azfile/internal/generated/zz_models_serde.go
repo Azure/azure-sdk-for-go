@@ -182,6 +182,7 @@ func (s ShareFileRangeList) MarshalXML(enc *xml.Encoder, start xml.StartElement)
 // MarshalJSON implements the json.Marshaller interface for type SharePermission.
 func (s SharePermission) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "format", s.Format)
 	populate(objectMap, "permission", s.Permission)
 	return json.Marshal(objectMap)
 }
@@ -195,6 +196,9 @@ func (s *SharePermission) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "format":
+			err = unpopulate(val, "Format", &s.Format)
+			delete(rawMsg, key)
 		case "permission":
 			err = unpopulate(val, "Permission", &s.Permission)
 			delete(rawMsg, key)

@@ -11,7 +11,7 @@ import (
 
 func TestAAD(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
-	client := emulatorTests.getClient(t, newSpanValidator(t, spanMatcher{
+	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{
 		ExpectedSpans: []string{},
 	}))
 
@@ -29,7 +29,7 @@ func TestAAD(t *testing.T) {
 		t.Fatalf("Failed to create container: %v", err)
 	}
 
-	aadClient := emulatorTests.getAadClient(t, newSpanValidator(t, spanMatcher{
+	aadClient := emulatorTests.getAadClient(t, newSpanValidator(t, &spanMatcher{
 		ExpectedSpans: []string{"create_item aContainer", "read_item aContainer", "replace_item aContainer", "upsert_item aContainer", "delete_item aContainer"},
 	}))
 

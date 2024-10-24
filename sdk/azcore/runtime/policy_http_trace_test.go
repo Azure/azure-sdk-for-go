@@ -267,3 +267,30 @@ func TestStartSpanWithAttributes(t *testing.T) {
 	require.True(t, startCalled)
 	require.True(t, endCalled)
 }
+
+func TestStartSpanWithKind(t *testing.T) {
+	// span no error
+	var startCalled bool
+	var endCalled bool
+	tr := tracing.NewTracer(func(ctx context.Context, spanName string, options *tracing.SpanOptions) (context.Context, tracing.Span) {
+		startCalled = true
+		require.EqualValues(t, "TestStartSpan", spanName)
+		require.NotNil(t, options)
+		// The span kind should be passed through
+		require.EqualValues(t, tracing.SpanKindClient, options.Kind)
+		spanImpl := tracing.SpanImpl{
+			End: func() { endCalled = true },
+		}
+		return ctx, tracing.NewSpan(spanImpl)
+	}, nil)
+	ctx, end := StartSpan(context.Background(), "TestStartSpan", tr, &StartSpanOptions{
+		Kind: tracing.SpanKindClient,
+	})
+	end(nil)
+	ctxTr := ctx.Value(shared.CtxWithTracingTracer{})
+	require.NotNil(t, ctxTr)
+	_, ok := ctxTr.(tracing.Tracer)
+	require.True(t, ok)
+	require.True(t, startCalled)
+	require.True(t, endCalled)
+}

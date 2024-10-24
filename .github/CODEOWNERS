@@ -41,12 +41,12 @@
 # ServiceOwner: @Pilchie
 # ServiceLabel: %Cosmos
 # PRLabel: %Cosmos
-/sdk/data/azcosmos/           @kirankumarkolli @simorenoh @kushagraThapar @Pilchie
+/sdk/data/azcosmos/           @kirankumarkolli @simorenoh @kushagraThapar @Pilchie @analogrelay
 
 # AzureSDKOwners: @jhendrixMSFT
 # ServiceLabel: %Tables
 # PRLabel: %Tables
-/sdk/data/aztables/           @jhendrixMSFT
+/sdk/data/aztables/           @jhendrixMSFT @richardpark-msft
 
 # AzureSDKOwners: @gracewilcox
 # ServiceLabel: %KeyVault

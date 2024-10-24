@@ -254,6 +254,7 @@ type ShareFileRangeList struct {
 type SharePermission struct {
 	// REQUIRED; The permission in the Security Descriptor Definition Language (SDDL).
 	Permission *string
+	Format     *FilePermissionFormat
 }
 
 // ShareProperties - Properties of a share.
@@ -282,6 +283,9 @@ type ShareProperties struct {
 	// The current lease status of the share.
 	LeaseStatus                   *LeaseStatusType `xml:"LeaseStatus"`
 	NextAllowedQuotaDowngradeTime *time.Time       `xml:"NextAllowedQuotaDowngradeTime"`
+	PaidBurstingEnabled           *bool            `xml:"PaidBurstingEnabled"`
+	PaidBurstingMaxBandwidthMibps *int64           `xml:"PaidBurstingMaxBandwidthMibps"`
+	PaidBurstingMaxIops           *int64           `xml:"PaidBurstingMaxIops"`
 	ProvisionedBandwidthMiBps     *int32           `xml:"ProvisionedBandwidthMiBps"`
 	ProvisionedEgressMBps         *int32           `xml:"ProvisionedEgressMBps"`
 	ProvisionedIngressMBps        *int32           `xml:"ProvisionedIngressMBps"`

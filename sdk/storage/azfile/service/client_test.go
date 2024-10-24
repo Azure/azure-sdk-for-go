@@ -192,7 +192,7 @@ func (u userAgentTest) Do(req *policy.Request) (*http.Response, error) {
 
 	currentUserAgentHeader := req.Raw().Header.Get(userAgentHeader)
 	if !strings.HasPrefix(currentUserAgentHeader, "azsdk-go-azfile/"+exported.ModuleVersion) {
-		return nil, fmt.Errorf(currentUserAgentHeader + " user agent doesn't match expected agent: azsdk-go-azfile/vx.xx.x")
+		return nil, fmt.Errorf("%s user agent doesn't match expected agent: azsdk-go-azfile/vx.xx.x", currentUserAgentHeader)
 	}
 
 	return &http.Response{
@@ -558,35 +558,6 @@ func (s *ServiceRecordedTestsSuite) TestServiceCreateDeleteRestoreShare() {
 		sharesCnt += len(resp.Shares)
 	}
 	_require.Equal(sharesCnt, 1)
-}
-
-func (s *ServiceRecordedTestsSuite) TestServiceOAuthNegative() {
-	_require := require.New(s.T())
-
-	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
-	_require.Greater(len(accountName), 0)
-
-	cred, err := testcommon.GetGenericTokenCredential()
-	_require.NoError(err)
-
-	options := &service.ClientOptions{FileRequestIntent: to.Ptr(service.ShareTokenIntentBackup)}
-	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
-	svcClient, err := service.NewClient("https://"+accountName+".file.core.windows.net/", cred, options)
-	_require.NoError(err)
-
-	// service-level operations are not supported using token credential authentication.
-	_, err = svcClient.GetProperties(context.Background(), nil)
-	_require.Error(err)
-	testcommon.ValidateFileErrorCode(_require, err, fileerror.FileOAuthManagementAPIRestrictedToSRP)
-
-	_, err = svcClient.SetProperties(context.Background(), nil)
-	_require.Error(err)
-	testcommon.ValidateFileErrorCode(_require, err, fileerror.FileOAuthManagementAPIRestrictedToSRP)
-
-	pager := svcClient.NewListSharesPager(nil)
-	_, err = pager.NextPage(context.Background())
-	_require.Error(err)
-	testcommon.ValidateFileErrorCode(_require, err, fileerror.FileOAuthManagementAPIRestrictedToSRP)
 }
 
 func (s *ServiceRecordedTestsSuite) TestServiceCreateDeleteDirOAuth() {

@@ -20,6 +20,11 @@ func TestSpanForClient(t *testing.T) {
 	if aSpan.name != "query_databases test" {
 		t.Fatalf("Expected span name to be 'query_databases test', but got %s", aSpan.name)
 	}
+
+	if aSpan.options.Kind != tracing.SpanKindClient {
+		t.Fatalf("Expected span kind to be 'SpanKindClient (%v)', got %v", tracing.SpanKindClient, aSpan.options.Kind)
+	}
+
 	if len(aSpan.options.Attributes) == 0 {
 		t.Fatalf("Expected span options to have attributes, but got none")
 	}
@@ -64,6 +69,11 @@ func TestSpanForDatabases(t *testing.T) {
 	if aSpan.name != "create_database test" {
 		t.Fatalf("Expected span name to be 'create_database test', but got %s", aSpan.name)
 	}
+
+	if aSpan.options.Kind != tracing.SpanKindClient {
+		t.Fatalf("Expected span kind to be 'SpanKindClient (%v)', got %v", tracing.SpanKindClient, aSpan.options.Kind)
+	}
+
 	if len(aSpan.options.Attributes) == 0 {
 		t.Fatalf("Expected span options to have attributes, but got none")
 	}
@@ -113,6 +123,11 @@ func TestSpanForContainers(t *testing.T) {
 	if aSpan.name != "create_container test" {
 		t.Fatalf("Expected span name to be 'create_container test', but got %s", aSpan.name)
 	}
+
+	if aSpan.options.Kind != tracing.SpanKindClient {
+		t.Fatalf("Expected span kind to be 'SpanKindClient (%v)', got %v", tracing.SpanKindClient, aSpan.options.Kind)
+	}
+
 	if len(aSpan.options.Attributes) == 0 {
 		t.Fatalf("Expected span options to have attributes, but got none")
 	}

@@ -19,6 +19,7 @@ import (
 
 // ServerFactory is a fake server for instances of the armdns.ClientFactory type.
 type ServerFactory struct {
+	DnssecConfigsServer     DnssecConfigsServer
 	RecordSetsServer        RecordSetsServer
 	ResourceReferenceServer ResourceReferenceServer
 	ZonesServer             ZonesServer
@@ -38,6 +39,7 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 type ServerFactoryTransport struct {
 	srv                       *ServerFactory
 	trMu                      sync.Mutex
+	trDnssecConfigsServer     *DnssecConfigsServerTransport
 	trRecordSetsServer        *RecordSetsServerTransport
 	trResourceReferenceServer *ResourceReferenceServerTransport
 	trZonesServer             *ZonesServerTransport
@@ -56,6 +58,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "DnssecConfigsClient":
+		initServer(s, &s.trDnssecConfigsServer, func() *DnssecConfigsServerTransport {
+			return NewDnssecConfigsServerTransport(&s.srv.DnssecConfigsServer)
+		})
+		resp, err = s.trDnssecConfigsServer.Do(req)
 	case "RecordSetsClient":
 		initServer(s, &s.trRecordSetsServer, func() *RecordSetsServerTransport { return NewRecordSetsServerTransport(&s.srv.RecordSetsServer) })
 		resp, err = s.trRecordSetsServer.Do(req)

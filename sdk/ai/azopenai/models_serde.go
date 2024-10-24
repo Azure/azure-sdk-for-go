@@ -4488,7 +4488,7 @@ func (m *MongoDBChatExtensionParameters) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "AppName", &m.AppName)
 			delete(rawMsg, key)
 		case "authentication":
-			m.Authentication, err = unmarshalOnYourDataAuthenticationOptionsClassification(val)
+			err = unpopulate(val, "Authentication", &m.Authentication)
 			delete(rawMsg, key)
 		case "collection_name":
 			err = unpopulate(val, "CollectionName", &m.CollectionName)

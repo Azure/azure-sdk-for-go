@@ -38,7 +38,7 @@
         },
         {
             "Name": "azdatalake",
-            "CoverageGoal": 0.00
+            "CoverageGoal": 0.25
         },
         {
             "Name": "azfile",

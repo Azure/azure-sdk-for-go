@@ -2196,7 +2196,8 @@ func (s *RecordedTestSuite) TestDirSetMetadataWithCPKNegative() {
 	}
 	_, err = dirClient.SetMetadata(context.Background(), testcommon.BasicMetadata, opts)
 	_require.Error(err)
-	_require.ErrorContains(err, "PathDoesNotUseCustomerSpecifiedEncryption")
+	_require.ErrorContains(err, "BlobDoesNotUseCustomerSpecifiedEncryption")
+
 }
 
 func validatePropertiesSet(_require *require.Assertions, dirClient *directory.Client, disposition string) {

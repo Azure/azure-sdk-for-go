@@ -11,13 +11,14 @@ package armappcontainers
 import (
 	"context"
 	"errors"
+	"net/http"
+	"net/url"
+	"strings"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"net/http"
-	"net/url"
-	"strings"
 )
 
 // ManagedEnvironmentUsagesClient contains the methods for the ManagedEnvironmentUsages group.
@@ -28,7 +29,7 @@ type ManagedEnvironmentUsagesClient struct {
 }
 
 // NewManagedEnvironmentUsagesClient creates a new instance of ManagedEnvironmentUsagesClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewManagedEnvironmentUsagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedEnvironmentUsagesClient, error) {
@@ -45,7 +46,7 @@ func NewManagedEnvironmentUsagesClient(subscriptionID string, credential azcore.
 
 // NewListPager - Gets the current usage information as well as the limits for environment.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2024-08-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - environmentName - Name of the Environment.
 //   - options - ManagedEnvironmentUsagesClientListOptions contains the optional parameters for the ManagedEnvironmentUsagesClient.NewListPager
@@ -93,7 +94,7 @@ func (client *ManagedEnvironmentUsagesClient) listCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2024-08-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

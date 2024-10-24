@@ -28,41 +28,7 @@ directive:
 - from: swagger-document    
   where: $.parameters.ListBlobsInclude    
   transform: >        
-    $.items["x-ms-enum"].values = [            
-      {              
-          "value": "permissions",            
-      },            
-      {              
-          "value": "copy",            
-      },             
-      {             
-          "value": "deleted",            
-      },            
-      {              
-          "value": "metadata",            
-      },            
-      {              
-          "value": "snapshots",            
-      },            
-      {              
-          "value": "uncommittedblobs",            
-      },            
-      {              
-          "value": "versions",            
-      },            
-      {              
-          "value": "tags",            
-      },            
-      {              
-          "value": "immutabilitypolicy",            
-      },            
-      {              
-      "value": "legalhold",            
-      },            
-      {              
-          "value": "deletedwithversions"            
-      },          
-    ];
+    $.items.enum.push("permissions");
 ```
 
 ### Updating service version to 2024-11-04

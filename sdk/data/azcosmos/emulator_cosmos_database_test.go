@@ -11,7 +11,7 @@ import (
 func TestDatabaseCRUD(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
 	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{
-		ExpectedSpans: []string{"create_database baseDbTest", "read_database baseDbTest", "delete_database baseDbTest", "read_database_throughput baseDbTest"},
+		ExpectedSpans: []string{"create_database baseDbTest", "read_database baseDbTest", "query_databases localhost", "delete_database baseDbTest", "read_database_throughput baseDbTest"},
 	}))
 
 	database := DatabaseProperties{ID: "baseDbTest"}

@@ -18,8 +18,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerinstance/armcontainerinstance/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupsList.json
-func ExampleContainerGroupsClient_NewListPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupProfilesList.json
+func ExampleContainerGroupProfilesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleContainerGroupsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewContainerGroupsClient().NewListPager(nil)
+	pager := clientFactory.NewContainerGroupProfilesClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -40,111 +40,10 @@ func ExampleContainerGroupsClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.ContainerGroupListResult = armcontainerinstance.ContainerGroupListResult{
-		// 	Value: []*armcontainerinstance.ContainerGroup{
+		// page.ContainerGroupProfileListResult = armcontainerinstance.ContainerGroupProfileListResult{
+		// 	Value: []*armcontainerinstance.ContainerGroupProfile{
 		// 		{
-		// 			Properties: &armcontainerinstance.ContainerGroupPropertiesProperties{
-		// 				Containers: []*armcontainerinstance.Container{
-		// 					{
-		// 						Name: to.Ptr("demo1"),
-		// 						Properties: &armcontainerinstance.ContainerProperties{
-		// 							Command: []*string{
-		// 							},
-		// 							EnvironmentVariables: []*armcontainerinstance.EnvironmentVariable{
-		// 							},
-		// 							Image: to.Ptr("nginx"),
-		// 							InstanceView: &armcontainerinstance.ContainerPropertiesInstanceView{
-		// 								CurrentState: &armcontainerinstance.ContainerState{
-		// 									DetailStatus: to.Ptr(""),
-		// 									StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-17T17:27:21.000Z"); return t}()),
-		// 									State: to.Ptr("Running"),
-		// 								},
-		// 								Events: []*armcontainerinstance.Event{
-		// 								},
-		// 								RestartCount: to.Ptr[int32](0),
-		// 							},
-		// 							Ports: []*armcontainerinstance.ContainerPort{
-		// 								{
-		// 									Port: to.Ptr[int32](80),
-		// 							}},
-		// 							Resources: &armcontainerinstance.ResourceRequirements{
-		// 								Requests: &armcontainerinstance.ResourceRequests{
-		// 									CPU: to.Ptr[float64](1),
-		// 									MemoryInGB: to.Ptr[float64](1.5),
-		// 								},
-		// 							},
-		// 							VolumeMounts: []*armcontainerinstance.VolumeMount{
-		// 								{
-		// 									Name: to.Ptr("volume1"),
-		// 									MountPath: to.Ptr("/mnt/volume1"),
-		// 									ReadOnly: to.Ptr(false),
-		// 							}},
-		// 						},
-		// 				}},
-		// 				ImageRegistryCredentials: []*armcontainerinstance.ImageRegistryCredential{
-		// 					{
-		// 						Server: to.Ptr("azcloudconsoleregistry.azurecr.io"),
-		// 						Username: to.Ptr("azcloudconsoleregistry"),
-		// 				}},
-		// 				IPAddress: &armcontainerinstance.IPAddress{
-		// 					Type: to.Ptr(armcontainerinstance.ContainerGroupIPAddressTypePublic),
-		// 					IP: to.Ptr("10.0.0.1"),
-		// 					Ports: []*armcontainerinstance.Port{
-		// 						{
-		// 							Port: to.Ptr[int32](80),
-		// 							Protocol: to.Ptr(armcontainerinstance.ContainerGroupNetworkProtocolTCP),
-		// 					}},
-		// 				},
-		// 				IsCreatedFromStandbyPool: to.Ptr(false),
-		// 				OSType: to.Ptr(armcontainerinstance.OperatingSystemTypesLinux),
-		// 				ProvisioningState: to.Ptr("Succeeded"),
-		// 				Volumes: []*armcontainerinstance.Volume{
-		// 					{
-		// 						Name: to.Ptr("volume1"),
-		// 						AzureFile: &armcontainerinstance.AzureFileVolume{
-		// 							ReadOnly: to.Ptr(false),
-		// 							ShareName: to.Ptr("share1"),
-		// 							StorageAccountName: to.Ptr("storage1"),
-		// 						},
-		// 				}},
-		// 			},
-		// 			Name: to.Ptr("demo1"),
-		// 			Type: to.Ptr("Microsoft.ContainerInstance/containerGroups"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/demo/providers/Microsoft.ContainerInstance/containerGroups/demo1"),
-		// 			Location: to.Ptr("WestUs"),
-		// 			Zones: []*string{
-		// 				to.Ptr("1")},
-		// 		}},
-		// 	}
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupsListByResourceGroup.json
-func ExampleContainerGroupsClient_NewListByResourceGroupPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerinstance.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewContainerGroupsClient().NewListByResourceGroupPager("demo", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.ContainerGroupListResult = armcontainerinstance.ContainerGroupListResult{
-		// 	Value: []*armcontainerinstance.ContainerGroup{
-		// 		{
-		// 			Properties: &armcontainerinstance.ContainerGroupPropertiesProperties{
+		// 			Properties: &armcontainerinstance.ContainerGroupProfilePropertiesProperties{
 		// 				Containers: []*armcontainerinstance.Container{
 		// 					{
 		// 						Name: to.Ptr("demo1"),
@@ -186,9 +85,9 @@ func ExampleContainerGroupsClient_NewListByResourceGroupPager() {
 		// 							Protocol: to.Ptr(armcontainerinstance.ContainerGroupNetworkProtocolTCP),
 		// 					}},
 		// 				},
-		// 				IsCreatedFromStandbyPool: to.Ptr(false),
 		// 				OSType: to.Ptr(armcontainerinstance.OperatingSystemTypesLinux),
-		// 				ProvisioningState: to.Ptr("Succeeded"),
+		// 				Revision: to.Ptr[int32](1),
+		// 				SKU: to.Ptr(armcontainerinstance.ContainerGroupSKUStandard),
 		// 				Volumes: []*armcontainerinstance.Volume{
 		// 					{
 		// 						Name: to.Ptr("volume1"),
@@ -200,8 +99,8 @@ func ExampleContainerGroupsClient_NewListByResourceGroupPager() {
 		// 				}},
 		// 			},
 		// 			Name: to.Ptr("demo1"),
-		// 			Type: to.Ptr("Microsoft.ContainerInstance/containerGroups"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/demo/providers/Microsoft.ContainerInstance/containerGroups/demo1"),
+		// 			Type: to.Ptr("Microsoft.ContainerInstance/containerGroupProfiles"),
+		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/demo/providers/Microsoft.ContainerInstance/containerGroupProfiles/demo1"),
 		// 			Location: to.Ptr("WestUs"),
 		// 			Zones: []*string{
 		// 				to.Ptr("1")},
@@ -210,8 +109,8 @@ func ExampleContainerGroupsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupsGetPriority.json
-func ExampleContainerGroupsClient_Get_containerGroupsGetWithPriority() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupProfilesListByResourceGroup.json
+func ExampleContainerGroupProfilesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -221,94 +120,88 @@ func ExampleContainerGroupsClient_Get_containerGroupsGetWithPriority() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewContainerGroupsClient().Get(ctx, "demo", "demo1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
+	pager := clientFactory.NewContainerGroupProfilesClient().NewListByResourceGroupPager("demo", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.ContainerGroupProfileListResult = armcontainerinstance.ContainerGroupProfileListResult{
+		// 	Value: []*armcontainerinstance.ContainerGroupProfile{
+		// 		{
+		// 			Properties: &armcontainerinstance.ContainerGroupProfilePropertiesProperties{
+		// 				Containers: []*armcontainerinstance.Container{
+		// 					{
+		// 						Name: to.Ptr("demo1"),
+		// 						Properties: &armcontainerinstance.ContainerProperties{
+		// 							Command: []*string{
+		// 							},
+		// 							EnvironmentVariables: []*armcontainerinstance.EnvironmentVariable{
+		// 							},
+		// 							Image: to.Ptr("nginx"),
+		// 							Ports: []*armcontainerinstance.ContainerPort{
+		// 								{
+		// 									Port: to.Ptr[int32](80),
+		// 							}},
+		// 							Resources: &armcontainerinstance.ResourceRequirements{
+		// 								Requests: &armcontainerinstance.ResourceRequests{
+		// 									CPU: to.Ptr[float64](1),
+		// 									MemoryInGB: to.Ptr[float64](1.5),
+		// 								},
+		// 							},
+		// 							VolumeMounts: []*armcontainerinstance.VolumeMount{
+		// 								{
+		// 									Name: to.Ptr("volume1"),
+		// 									MountPath: to.Ptr("/mnt/volume1"),
+		// 									ReadOnly: to.Ptr(false),
+		// 							}},
+		// 						},
+		// 				}},
+		// 				ImageRegistryCredentials: []*armcontainerinstance.ImageRegistryCredential{
+		// 					{
+		// 						Server: to.Ptr("azcloudconsoleregistry.azurecr.io"),
+		// 						Username: to.Ptr("azcloudconsoleregistry"),
+		// 				}},
+		// 				IPAddress: &armcontainerinstance.IPAddress{
+		// 					Type: to.Ptr(armcontainerinstance.ContainerGroupIPAddressTypePublic),
+		// 					IP: to.Ptr("10.0.0.1"),
+		// 					Ports: []*armcontainerinstance.Port{
+		// 						{
+		// 							Port: to.Ptr[int32](80),
+		// 							Protocol: to.Ptr(armcontainerinstance.ContainerGroupNetworkProtocolTCP),
+		// 					}},
+		// 				},
+		// 				OSType: to.Ptr(armcontainerinstance.OperatingSystemTypesLinux),
+		// 				Revision: to.Ptr[int32](1),
+		// 				SKU: to.Ptr(armcontainerinstance.ContainerGroupSKUStandard),
+		// 				Volumes: []*armcontainerinstance.Volume{
+		// 					{
+		// 						Name: to.Ptr("volume1"),
+		// 						AzureFile: &armcontainerinstance.AzureFileVolume{
+		// 							ReadOnly: to.Ptr(false),
+		// 							ShareName: to.Ptr("share1"),
+		// 							StorageAccountName: to.Ptr("storage1"),
+		// 						},
+		// 				}},
+		// 			},
+		// 			Name: to.Ptr("demo1"),
+		// 			Type: to.Ptr("Microsoft.ContainerInstance/containerGroupProfiles"),
+		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/demo/providers/Microsoft.ContainerInstance/containerGroupProfiles/demo1"),
+		// 			Location: to.Ptr("WestUs"),
+		// 			Zones: []*string{
+		// 				to.Ptr("1")},
+		// 		}},
+		// 	}
 	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ContainerGroup = armcontainerinstance.ContainerGroup{
-	// 	Properties: &armcontainerinstance.ContainerGroupPropertiesProperties{
-	// 		Containers: []*armcontainerinstance.Container{
-	// 			{
-	// 				Name: to.Ptr("test-container-001"),
-	// 				Properties: &armcontainerinstance.ContainerProperties{
-	// 					Command: []*string{
-	// 						to.Ptr("/bin/sh"),
-	// 						to.Ptr("-c"),
-	// 						to.Ptr("sleep 10")},
-	// 						EnvironmentVariables: []*armcontainerinstance.EnvironmentVariable{
-	// 						},
-	// 						Image: to.Ptr("alpine:latest"),
-	// 						InstanceView: &armcontainerinstance.ContainerPropertiesInstanceView{
-	// 							CurrentState: &armcontainerinstance.ContainerState{
-	// 								DetailStatus: to.Ptr("Completed"),
-	// 								ExitCode: to.Ptr[int32](0),
-	// 								FinishTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-11T19:33:55.565Z"); return t}()),
-	// 								StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-11T19:33:44.217Z"); return t}()),
-	// 								State: to.Ptr("Terminated"),
-	// 							},
-	// 							Events: []*armcontainerinstance.Event{
-	// 								{
-	// 									Name: to.Ptr("Pulling"),
-	// 									Type: to.Ptr("Normal"),
-	// 									Count: to.Ptr[int32](2),
-	// 									FirstTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-11T19:28:22.000Z"); return t}()),
-	// 									LastTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-11T19:32:09.000Z"); return t}()),
-	// 									Message: to.Ptr("pulling image \"alpine@sha256:1304f174557314a7ed9eddb4eab12fed12cb0cd9809e4c28f29af86979a3c870\""),
-	// 								},
-	// 								{
-	// 									Name: to.Ptr("Pulled"),
-	// 									Type: to.Ptr("Normal"),
-	// 									Count: to.Ptr[int32](2),
-	// 									FirstTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-11T19:32:08.000Z"); return t}()),
-	// 									LastTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-11T19:32:38.000Z"); return t}()),
-	// 									Message: to.Ptr("Successfully pulled image \"alpine@sha256:1304f174557314a7ed9eddb4eab12fed12cb0cd9809e4c28f29af86979a3c870\""),
-	// 								},
-	// 								{
-	// 									Name: to.Ptr("Started"),
-	// 									Type: to.Ptr("Normal"),
-	// 									Count: to.Ptr[int32](1),
-	// 									FirstTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-11T19:33:44.000Z"); return t}()),
-	// 									LastTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-11T19:33:44.000Z"); return t}()),
-	// 									Message: to.Ptr("Started container"),
-	// 							}},
-	// 							RestartCount: to.Ptr[int32](0),
-	// 						},
-	// 						Ports: []*armcontainerinstance.ContainerPort{
-	// 						},
-	// 						Resources: &armcontainerinstance.ResourceRequirements{
-	// 							Requests: &armcontainerinstance.ResourceRequests{
-	// 								CPU: to.Ptr[float64](1),
-	// 								MemoryInGB: to.Ptr[float64](1),
-	// 							},
-	// 						},
-	// 					},
-	// 			}},
-	// 			InitContainers: []*armcontainerinstance.InitContainerDefinition{
-	// 			},
-	// 			InstanceView: &armcontainerinstance.ContainerGroupPropertiesInstanceView{
-	// 				Events: []*armcontainerinstance.Event{
-	// 				},
-	// 				State: to.Ptr("Succeeded"),
-	// 			},
-	// 			IsCreatedFromStandbyPool: to.Ptr(false),
-	// 			OSType: to.Ptr(armcontainerinstance.OperatingSystemTypesLinux),
-	// 			Priority: to.Ptr(armcontainerinstance.ContainerGroupPrioritySpot),
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			RestartPolicy: to.Ptr(armcontainerinstance.ContainerGroupRestartPolicyNever),
-	// 			SKU: to.Ptr(armcontainerinstance.ContainerGroupSKUStandard),
-	// 		},
-	// 		Name: to.Ptr("demo1"),
-	// 		Type: to.Ptr("Microsoft.ContainerInstance/containerGroups"),
-	// 		ID: to.Ptr("/subscriptions/subId/resourceGroups/demo/providers/Microsoft.ContainerInstance/containerGroups/demo1"),
-	// 		Location: to.Ptr("eastus"),
-	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupsGet_Failed.json
-func ExampleContainerGroupsClient_Get_containerGroupsGetFailed() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupProfilesGetPriority.json
+func ExampleContainerGroupProfilesClient_Get_containerGroupProfilesGetWithPriority() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -318,133 +211,15 @@ func ExampleContainerGroupsClient_Get_containerGroupsGetFailed() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewContainerGroupsClient().Get(ctx, "demo", "demo1", nil)
+	res, err := clientFactory.NewContainerGroupProfilesClient().Get(ctx, "demo", "demo1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ContainerGroup = armcontainerinstance.ContainerGroup{
-	// 	Properties: &armcontainerinstance.ContainerGroupPropertiesProperties{
-	// 		Containers: []*armcontainerinstance.Container{
-	// 			{
-	// 				Name: to.Ptr("demo1"),
-	// 				Properties: &armcontainerinstance.ContainerProperties{
-	// 					Command: []*string{
-	// 					},
-	// 					EnvironmentVariables: []*armcontainerinstance.EnvironmentVariable{
-	// 					},
-	// 					Image: to.Ptr("nginx"),
-	// 					InstanceView: &armcontainerinstance.ContainerPropertiesInstanceView{
-	// 						CurrentState: &armcontainerinstance.ContainerState{
-	// 							DetailStatus: to.Ptr(""),
-	// 							StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-08T00:09:10.000Z"); return t}()),
-	// 							State: to.Ptr("Waiting"),
-	// 						},
-	// 						Events: []*armcontainerinstance.Event{
-	// 							{
-	// 								Name: to.Ptr("Pulling"),
-	// 								Type: to.Ptr("Normal"),
-	// 								Count: to.Ptr[int32](1),
-	// 								FirstTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-08T00:09:01.000Z"); return t}()),
-	// 								LastTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-08T00:09:01.000Z"); return t}()),
-	// 								Message: to.Ptr("pulling image \"nginx\""),
-	// 							},
-	// 							{
-	// 								Name: to.Ptr("Pulled"),
-	// 								Type: to.Ptr("Normal"),
-	// 								Count: to.Ptr[int32](1),
-	// 								FirstTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-08T00:09:10.000Z"); return t}()),
-	// 								LastTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-08T00:09:10.000Z"); return t}()),
-	// 								Message: to.Ptr("Successfully pulled image \"nginx\""),
-	// 						}},
-	// 						RestartCount: to.Ptr[int32](0),
-	// 					},
-	// 					Ports: []*armcontainerinstance.ContainerPort{
-	// 						{
-	// 							Port: to.Ptr[int32](80),
-	// 					}},
-	// 					Resources: &armcontainerinstance.ResourceRequirements{
-	// 						Requests: &armcontainerinstance.ResourceRequests{
-	// 							CPU: to.Ptr[float64](1),
-	// 							MemoryInGB: to.Ptr[float64](1.5),
-	// 						},
-	// 					},
-	// 					VolumeMounts: []*armcontainerinstance.VolumeMount{
-	// 						{
-	// 							Name: to.Ptr("volume1"),
-	// 							MountPath: to.Ptr("/mnt/volume1"),
-	// 							ReadOnly: to.Ptr(false),
-	// 					}},
-	// 				},
-	// 		}},
-	// 		ImageRegistryCredentials: []*armcontainerinstance.ImageRegistryCredential{
-	// 			{
-	// 				Server: to.Ptr("azcloudconsoleregistry.azurecr.io"),
-	// 				Username: to.Ptr("azcloudconsoleregistry"),
-	// 		}},
-	// 		InstanceView: &armcontainerinstance.ContainerGroupPropertiesInstanceView{
-	// 			Events: []*armcontainerinstance.Event{
-	// 				{
-	// 					Name: to.Ptr("FailedMount"),
-	// 					Type: to.Ptr("Normal"),
-	// 					Count: to.Ptr[int32](1),
-	// 					FirstTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-08T00:19:10.000Z"); return t}()),
-	// 					LastTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-08T00:19:10.000Z"); return t}()),
-	// 					Message: to.Ptr("Output: mount error(2): Permission denied"),
-	// 			}},
-	// 			State: to.Ptr("Pending"),
-	// 		},
-	// 		IPAddress: &armcontainerinstance.IPAddress{
-	// 			Type: to.Ptr(armcontainerinstance.ContainerGroupIPAddressTypePublic),
-	// 			IP: to.Ptr("10.0.0.1"),
-	// 			Ports: []*armcontainerinstance.Port{
-	// 				{
-	// 					Port: to.Ptr[int32](80),
-	// 					Protocol: to.Ptr(armcontainerinstance.ContainerGroupNetworkProtocolTCP),
-	// 			}},
-	// 		},
-	// 		IsCreatedFromStandbyPool: to.Ptr(false),
-	// 		OSType: to.Ptr(armcontainerinstance.OperatingSystemTypesLinux),
-	// 		ProvisioningState: to.Ptr("Succeeded"),
-	// 		Volumes: []*armcontainerinstance.Volume{
-	// 			{
-	// 				Name: to.Ptr("volume1"),
-	// 				AzureFile: &armcontainerinstance.AzureFileVolume{
-	// 					ReadOnly: to.Ptr(false),
-	// 					ShareName: to.Ptr("share1"),
-	// 					StorageAccountName: to.Ptr("storage1"),
-	// 				},
-	// 		}},
-	// 	},
-	// 	Name: to.Ptr("demo1"),
-	// 	Type: to.Ptr("Microsoft.ContainerInstance/containerGroups"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/demo/providers/Microsoft.ContainerInstance/containerGroups/demo1"),
-	// 	Location: to.Ptr("WestUs"),
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupsGet_Succeeded.json
-func ExampleContainerGroupsClient_Get_containerGroupsGetSucceeded() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerinstance.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewContainerGroupsClient().Get(ctx, "demo", "demo1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ContainerGroup = armcontainerinstance.ContainerGroup{
-	// 	Properties: &armcontainerinstance.ContainerGroupPropertiesProperties{
+	// res.ContainerGroupProfile = armcontainerinstance.ContainerGroupProfile{
+	// 	Properties: &armcontainerinstance.ContainerGroupProfilePropertiesProperties{
 	// 		Containers: []*armcontainerinstance.Container{
 	// 			{
 	// 				Name: to.Ptr("demo1"),
@@ -486,9 +261,10 @@ func ExampleContainerGroupsClient_Get_containerGroupsGetSucceeded() {
 	// 					Protocol: to.Ptr(armcontainerinstance.ContainerGroupNetworkProtocolTCP),
 	// 			}},
 	// 		},
-	// 		IsCreatedFromStandbyPool: to.Ptr(false),
 	// 		OSType: to.Ptr(armcontainerinstance.OperatingSystemTypesLinux),
-	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		Priority: to.Ptr(armcontainerinstance.ContainerGroupPrioritySpot),
+	// 		Revision: to.Ptr[int32](1),
+	// 		SKU: to.Ptr(armcontainerinstance.ContainerGroupSKUStandard),
 	// 		Volumes: []*armcontainerinstance.Volume{
 	// 			{
 	// 				Name: to.Ptr("volume1"),
@@ -500,16 +276,16 @@ func ExampleContainerGroupsClient_Get_containerGroupsGetSucceeded() {
 	// 		}},
 	// 	},
 	// 	Name: to.Ptr("demo1"),
-	// 	Type: to.Ptr("Microsoft.ContainerInstance/containerGroups"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/demo/providers/Microsoft.ContainerInstance/containerGroups/demo1"),
+	// 	Type: to.Ptr("Microsoft.ContainerInstance/containerGroupProfiles"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/demo/providers/Microsoft.ContainerInstance/containerGroupProfiles/demo1"),
 	// 	Location: to.Ptr("WestUs"),
 	// 	Zones: []*string{
 	// 		to.Ptr("1")},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupCreateConfidential.json
-func ExampleContainerGroupsClient_BeginCreateOrUpdate_confidentialContainerGroup() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupProfilesGet.json
+func ExampleContainerGroupProfilesClient_Get_containerGroupProfilesGetSucceeded() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -519,8 +295,91 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_confidentialContainerGroup
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewContainerGroupsClient().BeginCreateOrUpdate(ctx, "demo", "demo1", armcontainerinstance.ContainerGroup{
-		Properties: &armcontainerinstance.ContainerGroupPropertiesProperties{
+	res, err := clientFactory.NewContainerGroupProfilesClient().Get(ctx, "demo", "demo1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ContainerGroupProfile = armcontainerinstance.ContainerGroupProfile{
+	// 	Properties: &armcontainerinstance.ContainerGroupProfilePropertiesProperties{
+	// 		Containers: []*armcontainerinstance.Container{
+	// 			{
+	// 				Name: to.Ptr("demo1"),
+	// 				Properties: &armcontainerinstance.ContainerProperties{
+	// 					Command: []*string{
+	// 					},
+	// 					EnvironmentVariables: []*armcontainerinstance.EnvironmentVariable{
+	// 					},
+	// 					Image: to.Ptr("nginx"),
+	// 					Ports: []*armcontainerinstance.ContainerPort{
+	// 						{
+	// 							Port: to.Ptr[int32](80),
+	// 					}},
+	// 					Resources: &armcontainerinstance.ResourceRequirements{
+	// 						Requests: &armcontainerinstance.ResourceRequests{
+	// 							CPU: to.Ptr[float64](1),
+	// 							MemoryInGB: to.Ptr[float64](1.5),
+	// 						},
+	// 					},
+	// 					VolumeMounts: []*armcontainerinstance.VolumeMount{
+	// 						{
+	// 							Name: to.Ptr("volume1"),
+	// 							MountPath: to.Ptr("/mnt/volume1"),
+	// 							ReadOnly: to.Ptr(false),
+	// 					}},
+	// 				},
+	// 		}},
+	// 		ImageRegistryCredentials: []*armcontainerinstance.ImageRegistryCredential{
+	// 			{
+	// 				Server: to.Ptr("azcloudconsoleregistry.azurecr.io"),
+	// 				Username: to.Ptr("azcloudconsoleregistry"),
+	// 		}},
+	// 		IPAddress: &armcontainerinstance.IPAddress{
+	// 			Type: to.Ptr(armcontainerinstance.ContainerGroupIPAddressTypePublic),
+	// 			IP: to.Ptr("10.0.0.1"),
+	// 			Ports: []*armcontainerinstance.Port{
+	// 				{
+	// 					Port: to.Ptr[int32](80),
+	// 					Protocol: to.Ptr(armcontainerinstance.ContainerGroupNetworkProtocolTCP),
+	// 			}},
+	// 		},
+	// 		OSType: to.Ptr(armcontainerinstance.OperatingSystemTypesLinux),
+	// 		Revision: to.Ptr[int32](1),
+	// 		SKU: to.Ptr(armcontainerinstance.ContainerGroupSKUStandard),
+	// 		Volumes: []*armcontainerinstance.Volume{
+	// 			{
+	// 				Name: to.Ptr("volume1"),
+	// 				AzureFile: &armcontainerinstance.AzureFileVolume{
+	// 					ReadOnly: to.Ptr(false),
+	// 					ShareName: to.Ptr("share1"),
+	// 					StorageAccountName: to.Ptr("storage1"),
+	// 				},
+	// 		}},
+	// 	},
+	// 	Name: to.Ptr("demo1"),
+	// 	Type: to.Ptr("Microsoft.ContainerInstance/containerGroupProfiles"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/demo/providers/Microsoft.ContainerInstance/containerGroupProfiles/demo1"),
+	// 	Location: to.Ptr("WestUs"),
+	// 	Zones: []*string{
+	// 		to.Ptr("1")},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupProfileCreateOrUpdate_CreateConfidential.json
+func ExampleContainerGroupProfilesClient_CreateOrUpdate_confidentialContainerGroupProfile() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerinstance.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewContainerGroupProfilesClient().CreateOrUpdate(ctx, "demo", "demo1", armcontainerinstance.ContainerGroupProfile{
+		Properties: &armcontainerinstance.ContainerGroupProfilePropertiesProperties{
 			ConfidentialComputeProperties: &armcontainerinstance.ConfidentialComputeProperties{
 				CcePolicy: to.Ptr("eyJhbGxvd19hbGwiOiB0cnVlLCAiY29udGFpbmVycyI6IHsibGVuZ3RoIjogMCwgImVsZW1lbnRzIjogbnVsbH19"),
 			},
@@ -563,19 +422,17 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_confidentialContainerGroup
 			SKU:    to.Ptr(armcontainerinstance.ContainerGroupSKUConfidential),
 		},
 		Location: to.Ptr("westeurope"),
+		Zones: []*string{
+			to.Ptr("1")},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ContainerGroup = armcontainerinstance.ContainerGroup{
-	// 	Properties: &armcontainerinstance.ContainerGroupPropertiesProperties{
+	// res.ContainerGroupProfile = armcontainerinstance.ContainerGroupProfile{
+	// 	Properties: &armcontainerinstance.ContainerGroupProfilePropertiesProperties{
 	// 		ConfidentialComputeProperties: &armcontainerinstance.ConfidentialComputeProperties{
 	// 			CcePolicy: to.Ptr("eyJhbGxvd19hbGwiOiB0cnVlLCAiY29udGFpbmVycyI6IHsibGVuZ3RoIjogMCwgImVsZW1lbnRzIjogbnVsbH19"),
 	// 		},
@@ -611,11 +468,6 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_confidentialContainerGroup
 	// 			},
 	// 			InitContainers: []*armcontainerinstance.InitContainerDefinition{
 	// 			},
-	// 			InstanceView: &armcontainerinstance.ContainerGroupPropertiesInstanceView{
-	// 				Events: []*armcontainerinstance.Event{
-	// 				},
-	// 				State: to.Ptr("Running"),
-	// 			},
 	// 			IPAddress: &armcontainerinstance.IPAddress{
 	// 				Type: to.Ptr(armcontainerinstance.ContainerGroupIPAddressTypePublic),
 	// 				Ports: []*armcontainerinstance.Port{
@@ -624,20 +476,21 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_confidentialContainerGroup
 	// 						Protocol: to.Ptr(armcontainerinstance.ContainerGroupNetworkProtocolTCP),
 	// 				}},
 	// 			},
-	// 			IsCreatedFromStandbyPool: to.Ptr(false),
 	// 			OSType: to.Ptr(armcontainerinstance.OperatingSystemTypesLinux),
-	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			Revision: to.Ptr[int32](0),
 	// 			SKU: to.Ptr(armcontainerinstance.ContainerGroupSKUConfidential),
 	// 		},
 	// 		Name: to.Ptr("demo1"),
-	// 		Type: to.Ptr("Microsoft.ContainerInstance/containerGroups"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-00000000/resourceGroups/test-rg/providers/Microsoft.ContainerInstance/containerGroups/demo1"),
+	// 		Type: to.Ptr("Microsoft.ContainerInstance/containerGroupProfiles"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-00000000/resourceGroups/test-rg/providers/Microsoft.ContainerInstance/containerGroupProfiles/demo1"),
 	// 		Location: to.Ptr("westeurope"),
-	// 	}
+	// 		Zones: []*string{
+	// 			to.Ptr("1")},
+	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupCreateOrUpdateStandbyPool.json
-func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupCreateOrUpdateWithStandbyPool() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupProfileCreateOrUpdate_Extensions.json
+func ExampleContainerGroupProfilesClient_CreateOrUpdate_containerGroupProfileCreateWithExtensions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -647,105 +500,8 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupCreateOrUpda
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewContainerGroupsClient().BeginCreateOrUpdate(ctx, "demo", "demo1", armcontainerinstance.ContainerGroup{
-		Properties: &armcontainerinstance.ContainerGroupPropertiesProperties{
-			ContainerGroupProfile: &armcontainerinstance.ContainerGroupProfileReferenceDefinition{
-				ID:       to.Ptr("/subscriptions/subid/resourceGroups/demo/providers/Microsoft.ContainerInstance/containerGroupProfiles/democgp"),
-				Revision: to.Ptr[int32](1),
-			},
-			Containers: []*armcontainerinstance.Container{
-				{
-					Name: to.Ptr("demo1"),
-					Properties: &armcontainerinstance.ContainerProperties{
-						ConfigMap: &armcontainerinstance.ConfigMap{
-							KeyValuePairs: map[string]*string{
-								"Newkey": to.Ptr("value"),
-							},
-						},
-					},
-				}},
-			StandbyPoolProfile: &armcontainerinstance.StandbyPoolProfileDefinition{
-				ID: to.Ptr("/subscriptions/subid/resourceGroups/demo/providers/Microsoft.StandbyPool/standbyContainerGroupPools/demopool"),
-			},
-		},
-		Location: to.Ptr("west us"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ContainerGroup = armcontainerinstance.ContainerGroup{
-	// 	Properties: &armcontainerinstance.ContainerGroupPropertiesProperties{
-	// 		ContainerGroupProfile: &armcontainerinstance.ContainerGroupProfileReferenceDefinition{
-	// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/demo/providers/Microsoft.ContainerInstance/containerGroupProfiles/democgp"),
-	// 			Revision: to.Ptr[int32](1),
-	// 		},
-	// 		Containers: []*armcontainerinstance.Container{
-	// 			{
-	// 				Name: to.Ptr("demo1"),
-	// 				Properties: &armcontainerinstance.ContainerProperties{
-	// 					Command: []*string{
-	// 					},
-	// 					ConfigMap: &armcontainerinstance.ConfigMap{
-	// 						KeyValuePairs: map[string]*string{
-	// 							"Newkey": to.Ptr("value"),
-	// 						},
-	// 					},
-	// 					EnvironmentVariables: []*armcontainerinstance.EnvironmentVariable{
-	// 					},
-	// 					Image: to.Ptr("nginx"),
-	// 					Ports: []*armcontainerinstance.ContainerPort{
-	// 						{
-	// 							Port: to.Ptr[int32](80),
-	// 					}},
-	// 					Resources: &armcontainerinstance.ResourceRequirements{
-	// 						Requests: &armcontainerinstance.ResourceRequests{
-	// 							CPU: to.Ptr[float64](1),
-	// 							MemoryInGB: to.Ptr[float64](1.5),
-	// 						},
-	// 					},
-	// 				},
-	// 		}},
-	// 		ImageRegistryCredentials: []*armcontainerinstance.ImageRegistryCredential{
-	// 		},
-	// 		InitContainers: []*armcontainerinstance.InitContainerDefinition{
-	// 		},
-	// 		InstanceView: &armcontainerinstance.ContainerGroupPropertiesInstanceView{
-	// 			Events: []*armcontainerinstance.Event{
-	// 			},
-	// 			State: to.Ptr("Running"),
-	// 		},
-	// 		IsCreatedFromStandbyPool: to.Ptr(true),
-	// 		OSType: to.Ptr(armcontainerinstance.OperatingSystemTypesLinux),
-	// 		ProvisioningState: to.Ptr("Succeeded"),
-	// 		SKU: to.Ptr(armcontainerinstance.ContainerGroupSKUStandard),
-	// 	},
-	// 	Name: to.Ptr("demo1"),
-	// 	Type: to.Ptr("Microsoft.ContainerInstance/containerGroups"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/demo/providers/Microsoft.ContainerInstance/containerGroups/demo1"),
-	// 	Location: to.Ptr("eastus2"),
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupExtensions.json
-func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupCreateWithExtensions() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerinstance.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewContainerGroupsClient().BeginCreateOrUpdate(ctx, "demo", "demo1", armcontainerinstance.ContainerGroup{
-		Properties: &armcontainerinstance.ContainerGroupPropertiesProperties{
+	res, err := clientFactory.NewContainerGroupProfilesClient().CreateOrUpdate(ctx, "demo", "demo1", armcontainerinstance.ContainerGroupProfile{
+		Properties: &armcontainerinstance.ContainerGroupProfilePropertiesProperties{
 			Containers: []*armcontainerinstance.Container{
 				{
 					Name: to.Ptr("demo1"),
@@ -775,10 +531,6 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupCreateWithEx
 					}},
 			},
 			OSType: to.Ptr(armcontainerinstance.OperatingSystemTypesLinux),
-			SubnetIDs: []*armcontainerinstance.ContainerGroupSubnetID{
-				{
-					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-00000000/resourceGroups/test-rg/providers/Microsoft.Network/virtualNetworks/test-rg-vnet/subnets/test-subnet"),
-				}},
 			Extensions: []*armcontainerinstance.DeploymentExtensionSpec{
 				{
 					Name: to.Ptr("kube-proxy"),
@@ -803,19 +555,17 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupCreateWithEx
 				}},
 		},
 		Location: to.Ptr("eastus2"),
+		Zones: []*string{
+			to.Ptr("1")},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ContainerGroup = armcontainerinstance.ContainerGroup{
-	// 	Properties: &armcontainerinstance.ContainerGroupPropertiesProperties{
+	// res.ContainerGroupProfile = armcontainerinstance.ContainerGroupProfile{
+	// 	Properties: &armcontainerinstance.ContainerGroupProfilePropertiesProperties{
 	// 		Containers: []*armcontainerinstance.Container{
 	// 			{
 	// 				Name: to.Ptr("demo1"),
@@ -841,19 +591,9 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupCreateWithEx
 	// 		},
 	// 		InitContainers: []*armcontainerinstance.InitContainerDefinition{
 	// 		},
-	// 		InstanceView: &armcontainerinstance.ContainerGroupPropertiesInstanceView{
-	// 			Events: []*armcontainerinstance.Event{
-	// 			},
-	// 			State: to.Ptr("Pending"),
-	// 		},
-	// 		IsCreatedFromStandbyPool: to.Ptr(false),
 	// 		OSType: to.Ptr(armcontainerinstance.OperatingSystemTypesLinux),
-	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		Revision: to.Ptr[int32](0),
 	// 		SKU: to.Ptr(armcontainerinstance.ContainerGroupSKUStandard),
-	// 		SubnetIDs: []*armcontainerinstance.ContainerGroupSubnetID{
-	// 			{
-	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-00000000/resourceGroups/test-rg/providers/Microsoft.Network/virtualNetworks/test-rg-vnet/subnets/test-subnet"),
-	// 		}},
 	// 		Extensions: []*armcontainerinstance.DeploymentExtensionSpec{
 	// 			{
 	// 				Name: to.Ptr("kube-proxy"),
@@ -875,14 +615,16 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupCreateWithEx
 	// 		}},
 	// 	},
 	// 	Name: to.Ptr("demo1"),
-	// 	Type: to.Ptr("Microsoft.ContainerInstance/containerGroups"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-00000000/resourceGroups/test-rg/providers/Microsoft.ContainerInstance/containerGroups/demo1"),
+	// 	Type: to.Ptr("Microsoft.ContainerInstance/containerGroupProfiles"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-00000000/resourceGroups/test-rg/providers/Microsoft.ContainerInstance/containerGroupProfiles/demo1"),
 	// 	Location: to.Ptr("eastus2"),
-	// }
+	// 	Zones: []*string{
+	// 		to.Ptr("1")},
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupEncryptionProperties.json
-func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupWithEncryptionProperties() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupProfileCreateOrUpdate_EncryptionProperties.json
+func ExampleContainerGroupProfilesClient_CreateOrUpdate_containerGroupProfileWithEncryptionProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -892,14 +634,8 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupWithEncrypti
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewContainerGroupsClient().BeginCreateOrUpdate(ctx, "demo", "demo1", armcontainerinstance.ContainerGroup{
-		Identity: &armcontainerinstance.ContainerGroupIdentity{
-			Type: to.Ptr(armcontainerinstance.ResourceIdentityTypeUserAssigned),
-			UserAssignedIdentities: map[string]*armcontainerinstance.UserAssignedIdentities{
-				"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/test-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/container-group-identity": {},
-			},
-		},
-		Properties: &armcontainerinstance.ContainerGroupPropertiesProperties{
+	res, err := clientFactory.NewContainerGroupProfilesClient().CreateOrUpdate(ctx, "demo", "demo1", armcontainerinstance.ContainerGroupProfile{
+		Properties: &armcontainerinstance.ContainerGroupProfilePropertiesProperties{
 			Containers: []*armcontainerinstance.Container{
 				{
 					Name: to.Ptr("demo1"),
@@ -937,29 +673,17 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupWithEncrypti
 			OSType: to.Ptr(armcontainerinstance.OperatingSystemTypesLinux),
 		},
 		Location: to.Ptr("eastus2"),
+		Zones: []*string{
+			to.Ptr("1")},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ContainerGroup = armcontainerinstance.ContainerGroup{
-	// 	Identity: &armcontainerinstance.ContainerGroupIdentity{
-	// 		Type: to.Ptr(armcontainerinstance.ResourceIdentityTypeUserAssigned),
-	// 		TenantID: to.Ptr("<tenant id>"),
-	// 		UserAssignedIdentities: map[string]*armcontainerinstance.UserAssignedIdentities{
-	// 			"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/test-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/container-group-identity": &armcontainerinstance.UserAssignedIdentities{
-	// 				ClientID: to.Ptr("<client id>"),
-	// 				PrincipalID: to.Ptr("<principal id>"),
-	// 			},
-	// 		},
-	// 	},
-	// 	Properties: &armcontainerinstance.ContainerGroupPropertiesProperties{
+	// res.ContainerGroupProfile = armcontainerinstance.ContainerGroupProfile{
+	// 	Properties: &armcontainerinstance.ContainerGroupProfilePropertiesProperties{
 	// 		Containers: []*armcontainerinstance.Container{
 	// 			{
 	// 				Name: to.Ptr("demo1"),
@@ -991,11 +715,6 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupWithEncrypti
 	// 		},
 	// 		InitContainers: []*armcontainerinstance.InitContainerDefinition{
 	// 		},
-	// 		InstanceView: &armcontainerinstance.ContainerGroupPropertiesInstanceView{
-	// 			Events: []*armcontainerinstance.Event{
-	// 			},
-	// 			State: to.Ptr("Pending"),
-	// 		},
 	// 		IPAddress: &armcontainerinstance.IPAddress{
 	// 			Type: to.Ptr(armcontainerinstance.ContainerGroupIPAddressTypePublic),
 	// 			Ports: []*armcontainerinstance.Port{
@@ -1004,20 +723,21 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupWithEncrypti
 	// 					Protocol: to.Ptr(armcontainerinstance.ContainerGroupNetworkProtocolTCP),
 	// 			}},
 	// 		},
-	// 		IsCreatedFromStandbyPool: to.Ptr(false),
 	// 		OSType: to.Ptr(armcontainerinstance.OperatingSystemTypesLinux),
-	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		Revision: to.Ptr[int32](0),
 	// 		SKU: to.Ptr(armcontainerinstance.ContainerGroupSKUStandard),
 	// 	},
 	// 	Name: to.Ptr("demo1"),
-	// 	Type: to.Ptr("Microsoft.ContainerInstance/containerGroups"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/test-rg/providers/Microsoft.ContainerInstance/containerGroups/demo1"),
+	// 	Type: to.Ptr("Microsoft.ContainerInstance/containerGroupProfiles"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/test-rg/providers/Microsoft.ContainerInstance/containerGroupProfiles/demo1"),
 	// 	Location: to.Ptr("eastus2"),
-	// }
+	// 	Zones: []*string{
+	// 		to.Ptr("1")},
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupsCreateOrUpdate.json
-func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupsCreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupProfilesCreateOrUpdate.json
+func ExampleContainerGroupProfilesClient_CreateOrUpdate_containerGroupProfilesCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1027,14 +747,8 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupsCreateOrUpd
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewContainerGroupsClient().BeginCreateOrUpdate(ctx, "demo", "demo1", armcontainerinstance.ContainerGroup{
-		Identity: &armcontainerinstance.ContainerGroupIdentity{
-			Type: to.Ptr(armcontainerinstance.ResourceIdentityTypeSystemAssignedUserAssigned),
-			UserAssignedIdentities: map[string]*armcontainerinstance.UserAssignedIdentities{
-				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-name": {},
-			},
-		},
-		Properties: &armcontainerinstance.ContainerGroupPropertiesProperties{
+	res, err := clientFactory.NewContainerGroupProfilesClient().CreateOrUpdate(ctx, "demo", "demo1", armcontainerinstance.ContainerGroupProfile{
+		Properties: &armcontainerinstance.ContainerGroupProfilePropertiesProperties{
 			Containers: []*armcontainerinstance.Container{
 				{
 					Name: to.Ptr("demo1"),
@@ -1078,24 +792,16 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupsCreateOrUpd
 				LogAnalytics: &armcontainerinstance.LogAnalytics{
 					LogType: to.Ptr(armcontainerinstance.LogAnalyticsLogTypeContainerInsights),
 					Metadata: map[string]*string{
-						"test-key": to.Ptr("test-metadata-value"),
+						"pod-uuid": to.Ptr("test-metadata-value"),
 					},
 					WorkspaceID:         to.Ptr("workspaceid"),
 					WorkspaceKey:        to.Ptr("workspaceKey"),
 					WorkspaceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg/providers/microsoft.operationalinsights/workspaces/workspace"),
 				},
 			},
-			DNSConfig: &armcontainerinstance.DNSConfiguration{
-				NameServers: []*string{
-					to.Ptr("1.1.1.1")},
-				Options:       to.Ptr("ndots:2"),
-				SearchDomains: to.Ptr("cluster.local svc.cluster.local"),
-			},
 			ImageRegistryCredentials: []*armcontainerinstance.ImageRegistryCredential{},
 			IPAddress: &armcontainerinstance.IPAddress{
-				Type:                              to.Ptr(armcontainerinstance.ContainerGroupIPAddressTypePublic),
-				AutoGeneratedDomainNameLabelScope: to.Ptr(armcontainerinstance.DNSNameLabelReusePolicyUnsecure),
-				DNSNameLabel:                      to.Ptr("dnsnamelabel1"),
+				Type: to.Ptr(armcontainerinstance.ContainerGroupIPAddressTypePublic),
 				Ports: []*armcontainerinstance.Port{
 					{
 						Port:     to.Ptr[int32](80),
@@ -1103,10 +809,6 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupsCreateOrUpd
 					}},
 			},
 			OSType: to.Ptr(armcontainerinstance.OperatingSystemTypesLinux),
-			SubnetIDs: []*armcontainerinstance.ContainerGroupSubnetID{
-				{
-					ID: to.Ptr("[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]"),
-				}},
 			Volumes: []*armcontainerinstance.Volume{
 				{
 					Name: to.Ptr("volume1"),
@@ -1129,19 +831,17 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupsCreateOrUpd
 				}},
 		},
 		Location: to.Ptr("west us"),
+		Zones: []*string{
+			to.Ptr("1")},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ContainerGroup = armcontainerinstance.ContainerGroup{
-	// 	Properties: &armcontainerinstance.ContainerGroupPropertiesProperties{
+	// res.ContainerGroupProfile = armcontainerinstance.ContainerGroupProfile{
+	// 	Properties: &armcontainerinstance.ContainerGroupProfilePropertiesProperties{
 	// 		Containers: []*armcontainerinstance.Container{
 	// 			{
 	// 				Name: to.Ptr("demo1"),
@@ -1185,62 +885,57 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupsCreateOrUpd
 	// 		}},
 	// 		Diagnostics: &armcontainerinstance.ContainerGroupDiagnostics{
 	// 			LogAnalytics: &armcontainerinstance.LogAnalytics{
+	// 				LogType: to.Ptr(armcontainerinstance.LogAnalyticsLogTypeContainerInsights),
+	// 				Metadata: map[string]*string{
+	// 					"pod-uuid": to.Ptr("test-metadata-value"),
+	// 				},
 	// 				WorkspaceID: to.Ptr("workspaceid"),
 	// 			},
 	// 		},
-	// 		DNSConfig: &armcontainerinstance.DNSConfiguration{
-	// 			NameServers: []*string{
-	// 				to.Ptr("1.1.1.1")},
-	// 				Options: to.Ptr("ndots:2"),
-	// 				SearchDomains: to.Ptr("cluster.local svc.cluster.local"),
-	// 			},
-	// 			ImageRegistryCredentials: []*armcontainerinstance.ImageRegistryCredential{
-	// 			},
-	// 			IPAddress: &armcontainerinstance.IPAddress{
-	// 				Type: to.Ptr(armcontainerinstance.ContainerGroupIPAddressTypePublic),
-	// 				AutoGeneratedDomainNameLabelScope: to.Ptr(armcontainerinstance.DNSNameLabelReusePolicyUnsecure),
-	// 				DNSNameLabel: to.Ptr("dnsnamelabel1"),
-	// 				Fqdn: to.Ptr("dnsnamelabel1.azure-container.io"),
-	// 				IP: to.Ptr("10.0.0.1"),
-	// 				Ports: []*armcontainerinstance.Port{
-	// 					{
-	// 						Port: to.Ptr[int32](80),
-	// 						Protocol: to.Ptr(armcontainerinstance.ContainerGroupNetworkProtocolTCP),
-	// 				}},
-	// 			},
-	// 			IsCreatedFromStandbyPool: to.Ptr(false),
-	// 			OSType: to.Ptr(armcontainerinstance.OperatingSystemTypesLinux),
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			Volumes: []*armcontainerinstance.Volume{
+	// 		ImageRegistryCredentials: []*armcontainerinstance.ImageRegistryCredential{
+	// 		},
+	// 		IPAddress: &armcontainerinstance.IPAddress{
+	// 			Type: to.Ptr(armcontainerinstance.ContainerGroupIPAddressTypePublic),
+	// 			IP: to.Ptr("10.0.0.1"),
+	// 			Ports: []*armcontainerinstance.Port{
 	// 				{
-	// 					Name: to.Ptr("volume1"),
-	// 					AzureFile: &armcontainerinstance.AzureFileVolume{
-	// 						ShareName: to.Ptr("shareName"),
-	// 						StorageAccountName: to.Ptr("accountName"),
-	// 					},
-	// 				},
-	// 				{
-	// 					Name: to.Ptr("volume2"),
-	// 					EmptyDir: map[string]any{
-	// 					},
-	// 				},
-	// 				{
-	// 					Name: to.Ptr("volume3"),
-	// 					Secret: map[string]*string{
-	// 					},
+	// 					Port: to.Ptr[int32](80),
+	// 					Protocol: to.Ptr(armcontainerinstance.ContainerGroupNetworkProtocolTCP),
 	// 			}},
 	// 		},
-	// 		Name: to.Ptr("demo1"),
-	// 		Type: to.Ptr("Microsoft.ContainerInstance/containerGroups"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/demo/providers/Microsoft.ContainerInstance/containerGroups/demo1"),
-	// 		Location: to.Ptr("WestUs"),
-	// 		Zones: []*string{
-	// 			to.Ptr("1")},
-	// 		}
+	// 		OSType: to.Ptr(armcontainerinstance.OperatingSystemTypesLinux),
+	// 		Revision: to.Ptr[int32](0),
+	// 		SKU: to.Ptr(armcontainerinstance.ContainerGroupSKUStandard),
+	// 		Volumes: []*armcontainerinstance.Volume{
+	// 			{
+	// 				Name: to.Ptr("volume1"),
+	// 				AzureFile: &armcontainerinstance.AzureFileVolume{
+	// 					ShareName: to.Ptr("shareName"),
+	// 					StorageAccountName: to.Ptr("accountName"),
+	// 				},
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("volume2"),
+	// 				EmptyDir: map[string]any{
+	// 				},
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("volume3"),
+	// 				Secret: map[string]*string{
+	// 				},
+	// 		}},
+	// 	},
+	// 	Name: to.Ptr("demo1"),
+	// 	Type: to.Ptr("Microsoft.ContainerInstance/containerGroupProfiles"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/demo/providers/Microsoft.ContainerInstance/containerGroupProfiles/demo1"),
+	// 	Location: to.Ptr("WestUs"),
+	// 	Zones: []*string{
+	// 		to.Ptr("1")},
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupsCreatePriority.json
-func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupsCreateWithPriority() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupsProfileCreateOrUpdate_CreatePriority.json
+func ExampleContainerGroupProfilesClient_CreateOrUpdate_containerGroupsCreateWithPriority() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1250,8 +945,8 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupsCreateWithP
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewContainerGroupsClient().BeginCreateOrUpdate(ctx, "demo", "demo1", armcontainerinstance.ContainerGroup{
-		Properties: &armcontainerinstance.ContainerGroupPropertiesProperties{
+	res, err := clientFactory.NewContainerGroupProfilesClient().CreateOrUpdate(ctx, "demo", "demo1", armcontainerinstance.ContainerGroupProfile{
+		Properties: &armcontainerinstance.ContainerGroupProfilePropertiesProperties{
 			Containers: []*armcontainerinstance.Container{
 				{
 					Name: to.Ptr("test-container-001"),
@@ -1279,15 +974,11 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupsCreateWithP
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ContainerGroup = armcontainerinstance.ContainerGroup{
-	// 	Properties: &armcontainerinstance.ContainerGroupPropertiesProperties{
+	// res.ContainerGroupProfile = armcontainerinstance.ContainerGroupProfile{
+	// 	Properties: &armcontainerinstance.ContainerGroupProfilePropertiesProperties{
 	// 		Containers: []*armcontainerinstance.Container{
 	// 			{
 	// 				Name: to.Ptr("test-container-001"),
@@ -1311,27 +1002,21 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupsCreateWithP
 	// 			}},
 	// 			InitContainers: []*armcontainerinstance.InitContainerDefinition{
 	// 			},
-	// 			InstanceView: &armcontainerinstance.ContainerGroupPropertiesInstanceView{
-	// 				Events: []*armcontainerinstance.Event{
-	// 				},
-	// 				State: to.Ptr("Succeeded"),
-	// 			},
-	// 			IsCreatedFromStandbyPool: to.Ptr(false),
 	// 			OSType: to.Ptr(armcontainerinstance.OperatingSystemTypesLinux),
 	// 			Priority: to.Ptr(armcontainerinstance.ContainerGroupPrioritySpot),
-	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			RestartPolicy: to.Ptr(armcontainerinstance.ContainerGroupRestartPolicyNever),
+	// 			Revision: to.Ptr[int32](0),
 	// 			SKU: to.Ptr(armcontainerinstance.ContainerGroupSKUStandard),
 	// 		},
 	// 		Name: to.Ptr("demo1"),
-	// 		Type: to.Ptr("Microsoft.ContainerInstance/containerGroups"),
-	// 		ID: to.Ptr("/subscriptions/subId/resourceGroups/demo/providers/Microsoft.ContainerInstance/containerGroups/demo1"),
+	// 		Type: to.Ptr("Microsoft.ContainerInstance/containerGroupProfiles"),
+	// 		ID: to.Ptr("/subscriptions/subId/resourceGroups/demo/providers/Microsoft.ContainerInstance/containerGroupProfiles/demo1"),
 	// 		Location: to.Ptr("eastus"),
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupsUpdate.json
-func ExampleContainerGroupsClient_Update() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupProfilesPatch.json
+func ExampleContainerGroupProfilesClient_Patch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1341,7 +1026,7 @@ func ExampleContainerGroupsClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewContainerGroupsClient().Update(ctx, "demoResource", "demo1", armcontainerinstance.Resource{
+	res, err := clientFactory.NewContainerGroupProfilesClient().Patch(ctx, "demoResource", "demo1", armcontainerinstance.ContainerGroupProfilePatch{
 		Tags: map[string]*string{
 			"tag1key": to.Ptr("tag1Value"),
 			"tag2key": to.Ptr("tag2Value"),
@@ -1353,8 +1038,8 @@ func ExampleContainerGroupsClient_Update() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ContainerGroup = armcontainerinstance.ContainerGroup{
-	// 	Properties: &armcontainerinstance.ContainerGroupPropertiesProperties{
+	// res.ContainerGroupProfile = armcontainerinstance.ContainerGroupProfile{
+	// 	Properties: &armcontainerinstance.ContainerGroupProfilePropertiesProperties{
 	// 		Containers: []*armcontainerinstance.Container{
 	// 			{
 	// 				Name: to.Ptr("demo1"),
@@ -1396,8 +1081,6 @@ func ExampleContainerGroupsClient_Update() {
 	// 		},
 	// 		IPAddress: &armcontainerinstance.IPAddress{
 	// 			Type: to.Ptr(armcontainerinstance.ContainerGroupIPAddressTypePublic),
-	// 			DNSNameLabel: to.Ptr("dnsnamelabel1"),
-	// 			Fqdn: to.Ptr("dnsnamelabel1.azure-container.io"),
 	// 			IP: to.Ptr("10.0.0.1"),
 	// 			Ports: []*armcontainerinstance.Port{
 	// 				{
@@ -1405,9 +1088,9 @@ func ExampleContainerGroupsClient_Update() {
 	// 					Protocol: to.Ptr(armcontainerinstance.ContainerGroupNetworkProtocolTCP),
 	// 			}},
 	// 		},
-	// 		IsCreatedFromStandbyPool: to.Ptr(false),
 	// 		OSType: to.Ptr(armcontainerinstance.OperatingSystemTypesLinux),
-	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		Revision: to.Ptr[int32](2),
+	// 		SKU: to.Ptr(armcontainerinstance.ContainerGroupSKUStandard),
 	// 		Volumes: []*armcontainerinstance.Volume{
 	// 			{
 	// 				Name: to.Ptr("volume1"),
@@ -1428,8 +1111,8 @@ func ExampleContainerGroupsClient_Update() {
 	// 		}},
 	// 	},
 	// 	Name: to.Ptr("demo1"),
-	// 	Type: to.Ptr("Microsoft.ContainerInstance/containerGroups"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/demoResource/providers/Microsoft.ContainerInstance/containerGroups/demo1"),
+	// 	Type: to.Ptr("Microsoft.ContainerInstance/containerGroupProfiles"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/demoResource/providers/Microsoft.ContainerInstance/containerGroupProfiles/demo1"),
 	// 	Location: to.Ptr("WestUs"),
 	// 	Tags: map[string]*string{
 	// 		"tag1key": to.Ptr("tag1Value"),
@@ -1438,8 +1121,8 @@ func ExampleContainerGroupsClient_Update() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupsDelete.json
-func ExampleContainerGroupsClient_BeginDelete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupProfilesDelete.json
+func ExampleContainerGroupProfilesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1449,137 +1132,8 @@ func ExampleContainerGroupsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewContainerGroupsClient().BeginDelete(ctx, "demo", "demo1", nil)
+	_, err = clientFactory.NewContainerGroupProfilesClient().Delete(ctx, "demo", "demo1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ContainerGroup = armcontainerinstance.ContainerGroup{
-	// 	Properties: &armcontainerinstance.ContainerGroupPropertiesProperties{
-	// 		Containers: []*armcontainerinstance.Container{
-	// 			{
-	// 				Name: to.Ptr("demo1"),
-	// 				Properties: &armcontainerinstance.ContainerProperties{
-	// 					Command: []*string{
-	// 					},
-	// 					EnvironmentVariables: []*armcontainerinstance.EnvironmentVariable{
-	// 					},
-	// 					Image: to.Ptr("nginx"),
-	// 					Ports: []*armcontainerinstance.ContainerPort{
-	// 						{
-	// 							Port: to.Ptr[int32](80),
-	// 					}},
-	// 					Resources: &armcontainerinstance.ResourceRequirements{
-	// 						Requests: &armcontainerinstance.ResourceRequests{
-	// 							CPU: to.Ptr[float64](1),
-	// 							MemoryInGB: to.Ptr[float64](1.5),
-	// 						},
-	// 					},
-	// 					VolumeMounts: []*armcontainerinstance.VolumeMount{
-	// 						{
-	// 							Name: to.Ptr("volume1"),
-	// 							MountPath: to.Ptr("/mnt/volume1"),
-	// 							ReadOnly: to.Ptr(false),
-	// 					}},
-	// 				},
-	// 		}},
-	// 		ImageRegistryCredentials: []*armcontainerinstance.ImageRegistryCredential{
-	// 			{
-	// 				Server: to.Ptr("azcloudconsoleregistry.azurecr.io"),
-	// 				Username: to.Ptr("azcloudconsoleregistry"),
-	// 		}},
-	// 		IPAddress: &armcontainerinstance.IPAddress{
-	// 			Type: to.Ptr(armcontainerinstance.ContainerGroupIPAddressTypePublic),
-	// 			IP: to.Ptr("10.0.0.1"),
-	// 			Ports: []*armcontainerinstance.Port{
-	// 				{
-	// 					Port: to.Ptr[int32](80),
-	// 					Protocol: to.Ptr(armcontainerinstance.ContainerGroupNetworkProtocolTCP),
-	// 			}},
-	// 		},
-	// 		IsCreatedFromStandbyPool: to.Ptr(false),
-	// 		OSType: to.Ptr(armcontainerinstance.OperatingSystemTypesLinux),
-	// 		ProvisioningState: to.Ptr("Succeeded"),
-	// 		Volumes: []*armcontainerinstance.Volume{
-	// 			{
-	// 				Name: to.Ptr("volume1"),
-	// 				AzureFile: &armcontainerinstance.AzureFileVolume{
-	// 					ReadOnly: to.Ptr(false),
-	// 					ShareName: to.Ptr("share1"),
-	// 					StorageAccountName: to.Ptr("storage1"),
-	// 				},
-	// 		}},
-	// 	},
-	// 	Name: to.Ptr("demo1"),
-	// 	Type: to.Ptr("Microsoft.ContainerInstance/containerGroups"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/demo/providers/Microsoft.ContainerInstance/containerGroups/demo1"),
-	// 	Location: to.Ptr("WestUs"),
-	// 	Zones: []*string{
-	// 		to.Ptr("1")},
-	// 	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupsRestart.json
-func ExampleContainerGroupsClient_BeginRestart() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerinstance.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewContainerGroupsClient().BeginRestart(ctx, "demo", "demo1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupsStop.json
-func ExampleContainerGroupsClient_Stop() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerinstance.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	_, err = clientFactory.NewContainerGroupsClient().Stop(ctx, "demo", "demo1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupsStart.json
-func ExampleContainerGroupsClient_BeginStart() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerinstance.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewContainerGroupsClient().BeginStart(ctx, "demo", "demo1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
 	}
 }

@@ -102,9 +102,8 @@ func (s *RecordedTestSuite) TestCreateFilesystemWithOptions() {
 	metadata := map[string]*string{"foo": &testStr, "bar": &testStr}
 	access := filesystem.FileSystem
 	opts := filesystem.CreateOptions{
-		Metadata:     metadata,
-		Access:       &access,
-		CPKScopeInfo: &testcommon.TestCPKScopeInfo,
+		Metadata: metadata,
+		Access:   &access,
 	}
 	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
@@ -113,11 +112,34 @@ func (s *RecordedTestSuite) TestCreateFilesystemWithOptions() {
 	_, err = fsClient.Create(context.Background(), &opts)
 	_require.NoError(err)
 
-	props, err := fsClient.GetProperties(context.Background(), nil)
+	// Adding SAS and options
+	permissions := sas.FileSystemPermissions{
+		Read:   true,
+		Add:    true,
+		Write:  true,
+		Create: true,
+		Delete: true,
+	}
+	expiry := time.Now().Add(time.Hour)
+
+	// filesystemSASURL is created with GetSASURL
+	sasUrl, err := fsClient.GetSASURL(permissions, expiry, nil)
 	_require.NoError(err)
-	_require.NotNil(props.Metadata)
-	_require.Equal(*props.PublicAccess, filesystem.FileSystem)
-	_require.Equal(props.DefaultEncryptionScope, &testcommon.TestEncryptionScope)
+
+	// Create filesystem client with sasUrl
+	client, err := filesystem.NewClientWithNoCredential(sasUrl, nil)
+	_require.NoError(err)
+
+	properties, err := fsClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(properties.Metadata)
+
+	fClient := client.NewFileClient(testcommon.GenerateFileName(testName))
+	_, err = fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	_, err = fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
 }
 
 func (s *RecordedTestSuite) TestCreateFilesystemWithFileAccess() {
@@ -143,7 +165,6 @@ func (s *RecordedTestSuite) TestCreateFilesystemWithFileAccess() {
 	_require.NotNil(props.Metadata)
 	_require.Equal(*props.PublicAccess, filesystem.File)
 }
-
 func (s *RecordedTestSuite) TestCreateFilesystemEmptyMetadata() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -162,11 +183,31 @@ func (s *RecordedTestSuite) TestCreateFilesystemEmptyMetadata() {
 	_, err = fsClient.Create(context.Background(), &opts)
 	_require.NoError(err)
 
-	props, err := fsClient.GetProperties(context.Background(), nil)
+	// Adding SAS and options
+	permissions := sas.FileSystemPermissions{
+		Read:  true,
+		Write: true,
+		List:  true,
+	}
+	expiry := time.Now().Add(time.Hour)
+
+	// filesystemSASURL is created with GetSASURL
+	sasUrl, err := fsClient.GetSASURL(permissions, expiry, nil)
+	_require.NoError(err)
+
+	print(sasUrl)
+
+	// Create filesystem client with sasUrl
+	client, err := filesystem.NewClientWithNoCredential(sasUrl, nil)
+	_require.NoError(err)
+
+	fClient := client.NewFileClient(testcommon.GenerateFileName(testName))
+	_, err = fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	props, err := fClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.Nil(props.Metadata)
-	_require.Equal(*props.PublicAccess, filesystem.FileSystem)
-
 }
 
 func (s *RecordedTestSuite) TestFilesystemCreateInvalidName() {

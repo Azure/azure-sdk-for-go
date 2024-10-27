@@ -96,14 +96,12 @@ func (s *RecordedTestSuite) TestCreateFilesystem() {
 func (s *RecordedTestSuite) TestCreateFilesystemWithOptions() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	s.T().Skip("this test is not needed as public access is disabled")
 	filesystemName := testcommon.GenerateFileSystemName(testName)
 	testStr := "hello"
 	metadata := map[string]*string{"foo": &testStr, "bar": &testStr}
-	access := filesystem.FileSystem
+
 	opts := filesystem.CreateOptions{
 		Metadata:     metadata,
-		Access:       &access,
 		CPKScopeInfo: &testcommon.TestCPKScopeInfo,
 	}
 	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
@@ -116,14 +114,13 @@ func (s *RecordedTestSuite) TestCreateFilesystemWithOptions() {
 	props, err := fsClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.NotNil(props.Metadata)
-	_require.Equal(*props.PublicAccess, filesystem.FileSystem)
 	_require.Equal(props.DefaultEncryptionScope, &testcommon.TestEncryptionScope)
 }
 
 func (s *RecordedTestSuite) TestCreateFilesystemWithFileAccess() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	s.T().Skip("this test is not needed as public access is disabled")
+	s.T().Skip("This test is not valid because public access is disabled")
 	filesystemName := testcommon.GenerateFileSystemName(testName)
 	testStr := "hello"
 	metadata := map[string]*string{"foo": &testStr, "bar": &testStr}
@@ -147,14 +144,10 @@ func (s *RecordedTestSuite) TestCreateFilesystemEmptyMetadata() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	s.T().Skip("this test is not needed as public access is disabled")
-
 	filesystemName := testcommon.GenerateFileSystemName(testName)
 	metadata := map[string]*string{"foo": nil, "bar": nil}
-	access := filesystem.FileSystem
 	opts := filesystem.CreateOptions{
 		Metadata: metadata,
-		Access:   &access,
 	}
 	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
@@ -166,7 +159,6 @@ func (s *RecordedTestSuite) TestCreateFilesystemEmptyMetadata() {
 	props, err := fsClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.Nil(props.Metadata)
-	_require.Equal(*props.PublicAccess, filesystem.FileSystem)
 
 }
 
@@ -264,7 +256,6 @@ func (s *RecordedTestSuite) TestFilesystemGetPropertiesWithLease() {
 	_, err = fsLeaseClient.ReleaseLease(context.Background(), nil)
 	_require.NoError(err)
 }
-
 func (s *RecordedTestSuite) TestFilesystemGetPropertiesDefaultEncryptionScopeAndOverride() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -276,35 +267,15 @@ func (s *RecordedTestSuite) TestFilesystemGetPropertiesDefaultEncryptionScopeAnd
 
 	testStr := "hello"
 	metadata := map[string]*string{"foo": &testStr, "bar": &testStr}
-	access := filesystem.FileSystem
 
 	opts := filesystem.CreateOptions{
 		Metadata:     metadata,
-		Access:       &access,
 		CPKScopeInfo: &testcommon.TestCPKScopeInfo,
 	}
 	_, err = fsClient.Create(context.Background(), &opts)
 	_require.NoError(err)
 
-	// Adding SAS and options
-	permissions := sas.FileSystemPermissions{
-		Read:   true,
-		Add:    true,
-		Write:  true,
-		Create: true,
-		Delete: true,
-	}
-	expiry := time.Now().Add(time.Hour)
-
-	// filesystemSASURL is created with GetSASURL
-	sasUrl, err := fsClient.GetSASURL(permissions, expiry, nil)
-	_require.NoError(err)
-
-	// Create filesystem client with sasUrl
-	client, err := filesystem.NewClientWithNoCredential(sasUrl, nil)
-	_require.NoError(err)
-
-	resp, err := client.GetProperties(context.Background(), nil)
+	resp, err := fsClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.Equal(resp.DenyEncryptionScopeOverride, to.Ptr(false))
 	_require.Equal(resp.DefaultEncryptionScope, &testcommon.TestEncryptionScope)
@@ -842,11 +813,11 @@ func (s *RecordedTestSuite) TestFilesystemGetPermissionsPublicAccessNotNone() {
 	_require.Equal(*resp.PublicAccess, filesystem.File)
 }
 
-// TODO: TestFilesystemSetPermissionsPublicAccessNone()
-
 func (s *RecordedTestSuite) TestFilesystemSetPermissionsPublicAccessTypeFile() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
+
+	s.T().Skip("this test is not needed as public access is disabled")
 
 	filesystemName := testcommon.GenerateFileSystemName(testName)
 	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
@@ -870,6 +841,7 @@ func (s *RecordedTestSuite) TestFilesystemSetPermissionsPublicAccessFilesystem()
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
+	s.T().Skip("this test is not needed as public access is disabled")
 	filesystemName := testcommon.GenerateFileSystemName(testName)
 	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
@@ -919,11 +891,9 @@ func (s *RecordedTestSuite) TestFilesystemSetPermissionsACLMoreThanFive() {
 		}
 	}
 
-	access := filesystem.File
 	setAccessPolicyOptions := filesystem.SetAccessPolicyOptions{
-		Access: &access,
+		FileSystemACL: permissions,
 	}
-	setAccessPolicyOptions.FileSystemACL = permissions
 	_, err = fsClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_require.Error(err)
 
@@ -960,11 +930,10 @@ func (s *RecordedTestSuite) TestFilesystemSetPermissionsDeleteAndModifyACL() {
 		}
 	}
 
-	access := filesystem.File
 	setAccessPolicyOptions := filesystem.SetAccessPolicyOptions{
-		Access: &access,
+		FileSystemACL: permissions,
 	}
-	setAccessPolicyOptions.FileSystemACL = permissions
+
 	_, err = fsClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_require.NoError(err)
 
@@ -976,9 +945,9 @@ func (s *RecordedTestSuite) TestFilesystemSetPermissionsDeleteAndModifyACL() {
 	newId := "0004"
 	permissions[0].ID = &newId // Modify the remaining policy which is at index 0 in the new slice
 	setAccessPolicyOptions1 := filesystem.SetAccessPolicyOptions{
-		Access: &access,
+		FileSystemACL: permissions,
 	}
-	setAccessPolicyOptions1.FileSystemACL = permissions
+
 	_, err = fsClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions1)
 	_require.NoError(err)
 
@@ -1019,9 +988,8 @@ func (s *RecordedTestSuite) TestFilesystemSetPermissionsDeleteAllPolicies() {
 	}
 
 	setAccessPolicyOptions := filesystem.SetAccessPolicyOptions{
-		Access: to.Ptr(filesystem.File),
+		FileSystemACL: permissions,
 	}
-	setAccessPolicyOptions.FileSystemACL = permissions
 	_, err = fsClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_require.NoError(err)
 
@@ -1031,9 +999,9 @@ func (s *RecordedTestSuite) TestFilesystemSetPermissionsDeleteAllPolicies() {
 	_require.EqualValues(resp.SignedIdentifiers, permissions)
 
 	setAccessPolicyOptions = filesystem.SetAccessPolicyOptions{
-		Access: to.Ptr(filesystem.File),
+		FileSystemACL: []*filesystem.SignedIdentifier{},
 	}
-	setAccessPolicyOptions.FileSystemACL = []*filesystem.SignedIdentifier{}
+
 	_, err = fsClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_require.NoError(err)
 
@@ -1074,9 +1042,8 @@ func (s *RecordedTestSuite) TestFilesystemSetPermissionsInvalidPolicyTimes() {
 	}
 
 	setAccessPolicyOptions := filesystem.SetAccessPolicyOptions{
-		Access: to.Ptr(filesystem.File),
+		FileSystemACL: permissions,
 	}
-	setAccessPolicyOptions.FileSystemACL = permissions
 	_, err = fsClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_require.NoError(err)
 }
@@ -1130,9 +1097,9 @@ func (s *RecordedTestSuite) TestFilesystemSetPermissionsSignedIdentifierTooLong(
 	}
 
 	setAccessPolicyOptions := filesystem.SetAccessPolicyOptions{
-		Access: to.Ptr(filesystem.File),
+		FileSystemACL: permissions,
 	}
-	setAccessPolicyOptions.FileSystemACL = permissions
+
 	_, err = fsClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_require.Error(err)
 

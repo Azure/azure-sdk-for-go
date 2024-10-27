@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/iotoperations/armiotoperations/TempTypeSpecFiles/IoTOperations.Management/examples/2024-11-01/BrokerAuthorization_CreateOrUpdate_Complex.json
+// Generated from example definition: 2024-11-01/BrokerAuthorization_CreateOrUpdate_Complex.json
 func ExampleBrokerAuthorizationClient_BeginCreateOrUpdate_brokerAuthorizationCreateOrUpdateComplex() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -181,7 +181,7 @@ func ExampleBrokerAuthorizationClient_BeginCreateOrUpdate_brokerAuthorizationCre
 	// }
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/iotoperations/armiotoperations/TempTypeSpecFiles/IoTOperations.Management/examples/2024-11-01/BrokerAuthorization_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-01/BrokerAuthorization_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleBrokerAuthorizationClient_BeginCreateOrUpdate_brokerAuthorizationCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -314,7 +314,7 @@ func ExampleBrokerAuthorizationClient_BeginCreateOrUpdate_brokerAuthorizationCre
 	// }
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/iotoperations/armiotoperations/TempTypeSpecFiles/IoTOperations.Management/examples/2024-11-01/BrokerAuthorization_CreateOrUpdate_Simple.json
+// Generated from example definition: 2024-11-01/BrokerAuthorization_CreateOrUpdate_Simple.json
 func ExampleBrokerAuthorizationClient_BeginCreateOrUpdate_brokerAuthorizationCreateOrUpdateSimple() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -445,7 +445,7 @@ func ExampleBrokerAuthorizationClient_BeginCreateOrUpdate_brokerAuthorizationCre
 	// }
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/iotoperations/armiotoperations/TempTypeSpecFiles/IoTOperations.Management/examples/2024-11-01/BrokerAuthorization_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-01/BrokerAuthorization_Delete_MaximumSet_Gen.json
 func ExampleBrokerAuthorizationClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -466,7 +466,7 @@ func ExampleBrokerAuthorizationClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/iotoperations/armiotoperations/TempTypeSpecFiles/IoTOperations.Management/examples/2024-11-01/BrokerAuthorization_Get_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-01/BrokerAuthorization_Get_MaximumSet_Gen.json
 func ExampleBrokerAuthorizationClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -548,7 +548,7 @@ func ExampleBrokerAuthorizationClient_Get() {
 	// }
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/iotoperations/armiotoperations/TempTypeSpecFiles/IoTOperations.Management/examples/2024-11-01/BrokerAuthorization_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-01/BrokerAuthorization_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleBrokerAuthorizationClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/iotoperations/armiotoperations/TempTypeSpecFiles/IoTOperations.Management/examples/2024-11-01/DataflowProfile_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-01/DataflowProfile_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleDataflowProfileClient_BeginCreateOrUpdate_dataflowProfileCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,7 @@ func ExampleDataflowProfileClient_BeginCreateOrUpdate_dataflowProfileCreateOrUpd
 	// }
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/iotoperations/armiotoperations/TempTypeSpecFiles/IoTOperations.Management/examples/2024-11-01/DataflowProfile_CreateOrUpdate_Minimal.json
+// Generated from example definition: 2024-11-01/DataflowProfile_CreateOrUpdate_Minimal.json
 func ExampleDataflowProfileClient_BeginCreateOrUpdate_dataflowProfileCreateOrUpdateMinimal() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -138,7 +138,7 @@ func ExampleDataflowProfileClient_BeginCreateOrUpdate_dataflowProfileCreateOrUpd
 	// }
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/iotoperations/armiotoperations/TempTypeSpecFiles/IoTOperations.Management/examples/2024-11-01/DataflowProfile_CreateOrUpdate_Multi.json
+// Generated from example definition: 2024-11-01/DataflowProfile_CreateOrUpdate_Multi.json
 func ExampleDataflowProfileClient_BeginCreateOrUpdate_dataflowProfileCreateOrUpdateMulti() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -193,7 +193,7 @@ func ExampleDataflowProfileClient_BeginCreateOrUpdate_dataflowProfileCreateOrUpd
 	// }
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/iotoperations/armiotoperations/TempTypeSpecFiles/IoTOperations.Management/examples/2024-11-01/DataflowProfile_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-01/DataflowProfile_Delete_MaximumSet_Gen.json
 func ExampleDataflowProfileClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -214,7 +214,7 @@ func ExampleDataflowProfileClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/iotoperations/armiotoperations/TempTypeSpecFiles/IoTOperations.Management/examples/2024-11-01/DataflowProfile_Get_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-01/DataflowProfile_Get_MaximumSet_Gen.json
 func ExampleDataflowProfileClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -265,7 +265,7 @@ func ExampleDataflowProfileClient_Get() {
 	// }
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/iotoperations/armiotoperations/TempTypeSpecFiles/IoTOperations.Management/examples/2024-11-01/DataflowProfile_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-01/DataflowProfile_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleDataflowProfileClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/iotoperations/armiotoperations/TempTypeSpecFiles/IoTOperations.Management/examples/2024-11-01/Instance_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-01/Instance_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleInstanceClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,7 +90,7 @@ func ExampleInstanceClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/iotoperations/armiotoperations/TempTypeSpecFiles/IoTOperations.Management/examples/2024-11-01/Instance_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-01/Instance_Delete_MaximumSet_Gen.json
 func ExampleInstanceClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,7 +111,7 @@ func ExampleInstanceClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/iotoperations/armiotoperations/TempTypeSpecFiles/IoTOperations.Management/examples/2024-11-01/Instance_Get_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-01/Instance_Get_MaximumSet_Gen.json
 func ExampleInstanceClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -168,7 +168,7 @@ func ExampleInstanceClient_Get() {
 	// }
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/iotoperations/armiotoperations/TempTypeSpecFiles/IoTOperations.Management/examples/2024-11-01/Instance_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-01/Instance_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleInstanceClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -235,7 +235,7 @@ func ExampleInstanceClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/iotoperations/armiotoperations/TempTypeSpecFiles/IoTOperations.Management/examples/2024-11-01/Instance_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-01/Instance_ListBySubscription_MaximumSet_Gen.json
 func ExampleInstanceClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -302,7 +302,7 @@ func ExampleInstanceClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/iotoperations/armiotoperations/TempTypeSpecFiles/IoTOperations.Management/examples/2024-11-01/Instance_Update_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-01/Instance_Update_MaximumSet_Gen.json
 func ExampleInstanceClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

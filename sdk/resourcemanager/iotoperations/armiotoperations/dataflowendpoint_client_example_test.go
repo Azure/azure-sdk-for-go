@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/iotoperations/armiotoperations/TempTypeSpecFiles/IoTOperations.Management/examples/2024-11-01/DataflowEndpoint_CreateOrUpdate_ADLSv2.json
+// Generated from example definition: 2024-11-01/DataflowEndpoint_CreateOrUpdate_ADLSv2.json
 func ExampleDataflowEndpointClient_BeginCreateOrUpdate_dataflowEndpointCreateOrUpdateAdlsv2() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -85,7 +85,7 @@ func ExampleDataflowEndpointClient_BeginCreateOrUpdate_dataflowEndpointCreateOrU
 	// }
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/iotoperations/armiotoperations/TempTypeSpecFiles/IoTOperations.Management/examples/2024-11-01/DataflowEndpoint_CreateOrUpdate_ADX.json
+// Generated from example definition: 2024-11-01/DataflowEndpoint_CreateOrUpdate_ADX.json
 func ExampleDataflowEndpointClient_BeginCreateOrUpdate_dataflowEndpointCreateOrUpdateAdx() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -165,7 +165,7 @@ func ExampleDataflowEndpointClient_BeginCreateOrUpdate_dataflowEndpointCreateOrU
 	// }
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/iotoperations/armiotoperations/TempTypeSpecFiles/IoTOperations.Management/examples/2024-11-01/DataflowEndpoint_CreateOrUpdate_AIO.json
+// Generated from example definition: 2024-11-01/DataflowEndpoint_CreateOrUpdate_AIO.json
 func ExampleDataflowEndpointClient_BeginCreateOrUpdate_dataflowEndpointCreateOrUpdateAio() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -244,7 +244,7 @@ func ExampleDataflowEndpointClient_BeginCreateOrUpdate_dataflowEndpointCreateOrU
 	// }
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/iotoperations/armiotoperations/TempTypeSpecFiles/IoTOperations.Management/examples/2024-11-01/DataflowEndpoint_CreateOrUpdate_EventGrid.json
+// Generated from example definition: 2024-11-01/DataflowEndpoint_CreateOrUpdate_EventGrid.json
 func ExampleDataflowEndpointClient_BeginCreateOrUpdate_dataflowEndpointCreateOrUpdateEventGrid() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -320,7 +320,7 @@ func ExampleDataflowEndpointClient_BeginCreateOrUpdate_dataflowEndpointCreateOrU
 	// }
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/iotoperations/armiotoperations/TempTypeSpecFiles/IoTOperations.Management/examples/2024-11-01/DataflowEndpoint_CreateOrUpdate_EventHub.json
+// Generated from example definition: 2024-11-01/DataflowEndpoint_CreateOrUpdate_EventHub.json
 func ExampleDataflowEndpointClient_BeginCreateOrUpdate_dataflowEndpointCreateOrUpdateEventHub() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -398,7 +398,7 @@ func ExampleDataflowEndpointClient_BeginCreateOrUpdate_dataflowEndpointCreateOrU
 	// }
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/iotoperations/armiotoperations/TempTypeSpecFiles/IoTOperations.Management/examples/2024-11-01/DataflowEndpoint_CreateOrUpdate_Fabric.json
+// Generated from example definition: 2024-11-01/DataflowEndpoint_CreateOrUpdate_Fabric.json
 func ExampleDataflowEndpointClient_BeginCreateOrUpdate_dataflowEndpointCreateOrUpdateFabric() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -478,7 +478,7 @@ func ExampleDataflowEndpointClient_BeginCreateOrUpdate_dataflowEndpointCreateOrU
 	// }
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/iotoperations/armiotoperations/TempTypeSpecFiles/IoTOperations.Management/examples/2024-11-01/DataflowEndpoint_CreateOrUpdate_Kafka.json
+// Generated from example definition: 2024-11-01/DataflowEndpoint_CreateOrUpdate_Kafka.json
 func ExampleDataflowEndpointClient_BeginCreateOrUpdate_dataflowEndpointCreateOrUpdateKafka() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -585,7 +585,7 @@ func ExampleDataflowEndpointClient_BeginCreateOrUpdate_dataflowEndpointCreateOrU
 	// }
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/iotoperations/armiotoperations/TempTypeSpecFiles/IoTOperations.Management/examples/2024-11-01/DataflowEndpoint_CreateOrUpdate_LocalStorage.json
+// Generated from example definition: 2024-11-01/DataflowEndpoint_CreateOrUpdate_LocalStorage.json
 func ExampleDataflowEndpointClient_BeginCreateOrUpdate_dataflowEndpointCreateOrUpdateLocalStorage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -646,7 +646,7 @@ func ExampleDataflowEndpointClient_BeginCreateOrUpdate_dataflowEndpointCreateOrU
 	// }
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/iotoperations/armiotoperations/TempTypeSpecFiles/IoTOperations.Management/examples/2024-11-01/DataflowEndpoint_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-01/DataflowEndpoint_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleDataflowEndpointClient_BeginCreateOrUpdate_dataflowEndpointCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -967,7 +967,7 @@ func ExampleDataflowEndpointClient_BeginCreateOrUpdate_dataflowEndpointCreateOrU
 	// }
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/iotoperations/armiotoperations/TempTypeSpecFiles/IoTOperations.Management/examples/2024-11-01/DataflowEndpoint_CreateOrUpdate_MQTT.json
+// Generated from example definition: 2024-11-01/DataflowEndpoint_CreateOrUpdate_MQTT.json
 func ExampleDataflowEndpointClient_BeginCreateOrUpdate_dataflowEndpointCreateOrUpdateMqtt() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1060,7 +1060,7 @@ func ExampleDataflowEndpointClient_BeginCreateOrUpdate_dataflowEndpointCreateOrU
 	// }
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/iotoperations/armiotoperations/TempTypeSpecFiles/IoTOperations.Management/examples/2024-11-01/DataflowEndpoint_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-01/DataflowEndpoint_Delete_MaximumSet_Gen.json
 func ExampleDataflowEndpointClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1081,7 +1081,7 @@ func ExampleDataflowEndpointClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/iotoperations/armiotoperations/TempTypeSpecFiles/IoTOperations.Management/examples/2024-11-01/DataflowEndpoint_Get_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-01/DataflowEndpoint_Get_MaximumSet_Gen.json
 func ExampleDataflowEndpointClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1257,7 +1257,7 @@ func ExampleDataflowEndpointClient_Get() {
 	// }
 }
 
-// Generated from example definition: D:/w/Azure/azure-sdk-for-go/sdk/resourcemanager/iotoperations/armiotoperations/TempTypeSpecFiles/IoTOperations.Management/examples/2024-11-01/DataflowEndpoint_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-01/DataflowEndpoint_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleDataflowEndpointClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

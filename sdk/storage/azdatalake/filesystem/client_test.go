@@ -118,9 +118,9 @@ func (s *RecordedTestSuite) TestCreateFilesystemWithOptions() {
 }
 
 func (s *RecordedTestSuite) TestCreateFilesystemWithFileAccess() {
+	s.T().Skip("This test is not valid because public access is disabled")
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	s.T().Skip("This test is not valid because public access is disabled")
 	filesystemName := testcommon.GenerateFileSystemName(testName)
 	testStr := "hello"
 	metadata := map[string]*string{"foo": &testStr, "bar": &testStr}
@@ -792,9 +792,9 @@ func (s *RecordedTestSuite) TestFilesystemGetSetPermissionsMultiplePolicies() {
 }
 
 func (s *RecordedTestSuite) TestFilesystemGetPermissionsPublicAccessNotNone() {
+	s.T().Skip("this test is not needed as public access is disabled")
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	s.T().Skip("this test is not needed as public access is disabled")
 	filesystemName := testcommon.GenerateFileSystemName(testName)
 	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
@@ -814,10 +814,9 @@ func (s *RecordedTestSuite) TestFilesystemGetPermissionsPublicAccessNotNone() {
 }
 
 func (s *RecordedTestSuite) TestFilesystemSetPermissionsPublicAccessTypeFile() {
+	s.T().Skip("this test is not needed as public access is disabled")
 	_require := require.New(s.T())
 	testName := s.T().Name()
-
-	s.T().Skip("this test is not needed as public access is disabled")
 
 	filesystemName := testcommon.GenerateFileSystemName(testName)
 	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
@@ -838,10 +837,10 @@ func (s *RecordedTestSuite) TestFilesystemSetPermissionsPublicAccessTypeFile() {
 }
 
 func (s *RecordedTestSuite) TestFilesystemSetPermissionsPublicAccessFilesystem() {
+	s.T().Skip("this test is not needed as public access is disabled")
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	s.T().Skip("this test is not needed as public access is disabled")
 	filesystemName := testcommon.GenerateFileSystemName(testName)
 	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)

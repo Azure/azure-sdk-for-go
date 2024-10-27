@@ -96,14 +96,15 @@ func (s *RecordedTestSuite) TestCreateFilesystem() {
 func (s *RecordedTestSuite) TestCreateFilesystemWithOptions() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-
+	s.T().Skip("this test is not needed as public access is disabled")
 	filesystemName := testcommon.GenerateFileSystemName(testName)
 	testStr := "hello"
 	metadata := map[string]*string{"foo": &testStr, "bar": &testStr}
 	access := filesystem.FileSystem
 	opts := filesystem.CreateOptions{
-		Metadata: metadata,
-		Access:   &access,
+		Metadata:     metadata,
+		Access:       &access,
+		CPKScopeInfo: &testcommon.TestCPKScopeInfo,
 	}
 	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
@@ -112,40 +113,17 @@ func (s *RecordedTestSuite) TestCreateFilesystemWithOptions() {
 	_, err = fsClient.Create(context.Background(), &opts)
 	_require.NoError(err)
 
-	// Adding SAS and options
-	permissions := sas.FileSystemPermissions{
-		Read:   true,
-		Add:    true,
-		Write:  true,
-		Create: true,
-		Delete: true,
-	}
-	expiry := time.Now().Add(time.Hour)
-
-	// filesystemSASURL is created with GetSASURL
-	sasUrl, err := fsClient.GetSASURL(permissions, expiry, nil)
+	props, err := fsClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
-
-	// Create filesystem client with sasUrl
-	client, err := filesystem.NewClientWithNoCredential(sasUrl, nil)
-	_require.NoError(err)
-
-	properties, err := fsClient.GetProperties(context.Background(), nil)
-	_require.NoError(err)
-	_require.NotNil(properties.Metadata)
-
-	fClient := client.NewFileClient(testcommon.GenerateFileName(testName))
-	_, err = fClient.Create(context.Background(), nil)
-	_require.NoError(err)
-
-	_, err = fClient.GetProperties(context.Background(), nil)
-	_require.NoError(err)
+	_require.NotNil(props.Metadata)
+	_require.Equal(*props.PublicAccess, filesystem.FileSystem)
+	_require.Equal(props.DefaultEncryptionScope, &testcommon.TestEncryptionScope)
 }
 
 func (s *RecordedTestSuite) TestCreateFilesystemWithFileAccess() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-
+	s.T().Skip("this test is not needed as public access is disabled")
 	filesystemName := testcommon.GenerateFileSystemName(testName)
 	testStr := "hello"
 	metadata := map[string]*string{"foo": &testStr, "bar": &testStr}
@@ -169,6 +147,8 @@ func (s *RecordedTestSuite) TestCreateFilesystemEmptyMetadata() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
+	s.T().Skip("this test is not needed as public access is disabled")
+
 	filesystemName := testcommon.GenerateFileSystemName(testName)
 	metadata := map[string]*string{"foo": nil, "bar": nil}
 	access := filesystem.FileSystem
@@ -183,31 +163,11 @@ func (s *RecordedTestSuite) TestCreateFilesystemEmptyMetadata() {
 	_, err = fsClient.Create(context.Background(), &opts)
 	_require.NoError(err)
 
-	// Adding SAS and options
-	permissions := sas.FileSystemPermissions{
-		Read:  true,
-		Write: true,
-		List:  true,
-	}
-	expiry := time.Now().Add(time.Hour)
-
-	// filesystemSASURL is created with GetSASURL
-	sasUrl, err := fsClient.GetSASURL(permissions, expiry, nil)
-	_require.NoError(err)
-
-	print(sasUrl)
-
-	// Create filesystem client with sasUrl
-	client, err := filesystem.NewClientWithNoCredential(sasUrl, nil)
-	_require.NoError(err)
-
-	fClient := client.NewFileClient(testcommon.GenerateFileName(testName))
-	_, err = fClient.Create(context.Background(), nil)
-	_require.NoError(err)
-
-	props, err := fClient.GetProperties(context.Background(), nil)
+	props, err := fsClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.Nil(props.Metadata)
+	_require.Equal(*props.PublicAccess, filesystem.FileSystem)
+
 }
 
 func (s *RecordedTestSuite) TestFilesystemCreateInvalidName() {
@@ -326,7 +286,25 @@ func (s *RecordedTestSuite) TestFilesystemGetPropertiesDefaultEncryptionScopeAnd
 	_, err = fsClient.Create(context.Background(), &opts)
 	_require.NoError(err)
 
-	resp, err := fsClient.GetProperties(context.Background(), nil)
+	// Adding SAS and options
+	permissions := sas.FileSystemPermissions{
+		Read:   true,
+		Add:    true,
+		Write:  true,
+		Create: true,
+		Delete: true,
+	}
+	expiry := time.Now().Add(time.Hour)
+
+	// filesystemSASURL is created with GetSASURL
+	sasUrl, err := fsClient.GetSASURL(permissions, expiry, nil)
+	_require.NoError(err)
+
+	// Create filesystem client with sasUrl
+	client, err := filesystem.NewClientWithNoCredential(sasUrl, nil)
+	_require.NoError(err)
+
+	resp, err := client.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.Equal(resp.DenyEncryptionScopeOverride, to.Ptr(false))
 	_require.Equal(resp.DefaultEncryptionScope, &testcommon.TestEncryptionScope)
@@ -845,7 +823,7 @@ func (s *RecordedTestSuite) TestFilesystemGetSetPermissionsMultiplePolicies() {
 func (s *RecordedTestSuite) TestFilesystemGetPermissionsPublicAccessNotNone() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-
+	s.T().Skip("this test is not needed as public access is disabled")
 	filesystemName := testcommon.GenerateFileSystemName(testName)
 	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)

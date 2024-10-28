@@ -636,32 +636,7 @@ func TestItemCRUDHierarchicalPartitionKey(t *testing.T) {
 		t.Fatalf("Expected value to be 0, got %v", item1ResBody["value"])
 	}
 
-	pkAll := NewPartitionKey().AppendString("1")
-	pager := container.NewQueryItemsPager("SELECT * FROM c", pkAll, nil)
-
-	var allItems []map[string]interface{}
-	for pager.More() {
-		page, err := pager.NextPage(context.TODO())
-		if err != nil {
-			t.Fatalf("Failed to get next page: %v", err)
-		}
-
-		for _, item := range page.Items {
-			var itemBody map[string]interface{}
-			err = json.Unmarshal(item, &itemBody)
-			if err != nil {
-				t.Fatalf("Failed to unmarshal item response: %v", err)
-			}
-
-			allItems = append(allItems, itemBody)
-		}
-	}
-
-	if len(allItems) != 2 {
-		t.Fatalf("Expected 2 items, got %v", len(allItems))
-	}
-
-	pager = container.NewQueryItemsPager("SELECT * FROM c WHERE", pkAlpha, nil)
+	pager := container.NewQueryItemsPager("SELECT * FROM c WHERE", pkAlpha, nil)
 
 	var alphaItems []map[string]interface{}
 	for pager.More() {

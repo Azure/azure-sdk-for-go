@@ -3,14 +3,14 @@ module github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiextensions
 go 1.21
 
 require (
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.14.0
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.16.0
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.10.0
 	github.com/stretchr/testify v1.9.0
 )
 
 require (
-	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.7.0
-	github.com/openai/openai-go v0.1.0-alpha.26
+	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.8.0
+	github.com/openai/openai-go v0.1.0-alpha.31
 )
 
 require (

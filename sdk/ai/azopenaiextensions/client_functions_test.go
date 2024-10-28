@@ -84,7 +84,7 @@ func TestGetChatCompletions_usingFunctions(t *testing.T) {
 		// all of these variants use the tool provided - auto just also works since we did provide
 		// a tool reference and ask a question to use it.
 		{Model: azureOpenAI.ChatCompletions.Model, ToolChoice: nil},
-		{Model: azureOpenAI.ChatCompletions.Model, ToolChoice: openai.ChatCompletionToolChoiceOptionStringAuto},
+		{Model: azureOpenAI.ChatCompletions.Model, ToolChoice: openai.ChatCompletionToolChoiceOptionBehaviorAuto},
 		{Model: azureOpenAI.ChatCompletions.Model, ToolChoice: openai.ChatCompletionNamedToolChoiceParam{
 			Type: openai.F(openai.ChatCompletionNamedToolChoiceTypeFunction),
 			Function: openai.F(openai.ChatCompletionNamedToolChoiceFunctionParam{

@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"errors"
 	"net/http"
+	"reflect"
 	"strings"
 	"sync"
 	"testing"
@@ -660,6 +661,10 @@ func TestItemCRUDHierarchicalPartitionKey(t *testing.T) {
 		t.Fatalf("Expected 1 item, got %v", len(alphaItems))
 	}
 
+	if !reflect.DeepEqual(alphaItems[0], item0ResBody) {
+		t.Fatalf("Expected %v, got %v", item0ResBody, alphaItems[0])
+	}
+
 	pager = container.NewQueryItemsPager("SELECT * FROM c WHERE", pkBeta, nil)
 
 	var betaItems []map[string]interface{}
@@ -682,6 +687,10 @@ func TestItemCRUDHierarchicalPartitionKey(t *testing.T) {
 
 	if len(betaItems) != 1 {
 		t.Fatalf("Expected 1 item, got %v", len(betaItems))
+	}
+
+	if !reflect.DeepEqual(betaItems[0], item1ResBody) {
+		t.Fatalf("Expected %v, got %v", item1ResBody, betaItems[0])
 	}
 }
 

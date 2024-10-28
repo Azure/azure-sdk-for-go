@@ -18,7 +18,7 @@ func ExampleServicesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcontainerorchestratorruntime.NewClientFactory(, cred, nil)
+	clientFactory, err := armcontainerorchestratorruntime.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -51,7 +51,7 @@ func ExampleServicesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcontainerorchestratorruntime.NewClientFactory(, cred, nil)
+	clientFactory, err := armcontainerorchestratorruntime.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -73,7 +73,7 @@ func ExampleServicesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcontainerorchestratorruntime.NewClientFactory(, cred, nil)
+	clientFactory, err := armcontainerorchestratorruntime.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -103,7 +103,7 @@ func ExampleServicesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcontainerorchestratorruntime.NewClientFactory(, cred, nil)
+	clientFactory, err := armcontainerorchestratorruntime.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}

@@ -19,7 +19,7 @@ func ExampleBgpPeersClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcontainerorchestratorruntime.NewClientFactory(, cred, nil)
+	clientFactory, err := armcontainerorchestratorruntime.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -62,7 +62,7 @@ func ExampleBgpPeersClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcontainerorchestratorruntime.NewClientFactory(, cred, nil)
+	clientFactory, err := armcontainerorchestratorruntime.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -84,7 +84,7 @@ func ExampleBgpPeersClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcontainerorchestratorruntime.NewClientFactory(, cred, nil)
+	clientFactory, err := armcontainerorchestratorruntime.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -117,7 +117,7 @@ func ExampleBgpPeersClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcontainerorchestratorruntime.NewClientFactory(, cred, nil)
+	clientFactory, err := armcontainerorchestratorruntime.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}

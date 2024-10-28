@@ -5,6 +5,7 @@
 ### Features Added
 * Set all Telemetry spans to have the Kind of SpanKindClient
 * Set request_charge and status_code on all trace spans
+* Set partition_key on Item based spans. See [PR 23664](https://github.com/Azure/azure-sdk-for-go/pull/23664)
 
 ### Breaking Changes
 

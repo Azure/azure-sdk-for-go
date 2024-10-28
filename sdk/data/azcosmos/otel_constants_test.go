@@ -172,3 +172,72 @@ func TestSpanForContainers(t *testing.T) {
 		t.Fatalf("Expected error, but got none")
 	}
 }
+
+func TestSpanForItems(t *testing.T) {
+	endpoint, _ := url.Parse("https://localhost:8081/")
+
+	pk := NewPartitionKeyString("aPartitionKey")
+
+	aSpan, err := getSpanNameForItems(endpoint, operationTypeCreate, "db", "test", pk)
+	if err != nil {
+		t.Fatalf("Failed to get span name: %v", err)
+	}
+	if aSpan.name != "create_item test" {
+		t.Fatalf("Expected span name to be 'create_item test', but got %s", aSpan.name)
+	}
+
+	if aSpan.options.Kind != tracing.SpanKindClient {
+		t.Fatalf("Expected span kind to be 'SpanKindClient (%v)', got %v", tracing.SpanKindClient, aSpan.options.Kind)
+	}
+
+	if len(aSpan.options.Attributes) == 0 {
+		t.Fatalf("Expected span options to have attributes, but got none")
+	}
+
+	idx := slices.IndexFunc(aSpan.options.Attributes, func(a tracing.Attribute) bool { return a.Key == "db.system" && a.Value == "cosmosdb" })
+	if idx == -1 {
+		t.Fatalf("Expected attribute 'db.system' with value 'cosmosdb', but got none")
+	}
+
+	idx = slices.IndexFunc(aSpan.options.Attributes, func(a tracing.Attribute) bool { return a.Key == "db.cosmosdb.connection_mode" && a.Value == "gateway" })
+	if idx == -1 {
+		t.Fatalf("Expected attribute 'db.cosmosdb.connection_mode' with value 'gateway', but got none")
+	}
+
+	idx = slices.IndexFunc(aSpan.options.Attributes, func(a tracing.Attribute) bool { return a.Key == "server.address" && a.Value == "localhost" })
+	if idx == -1 {
+		t.Fatalf("Expected attribute 'server.address' with value 'localhost', but got none")
+	}
+
+	idx = slices.IndexFunc(aSpan.options.Attributes, func(a tracing.Attribute) bool { return a.Key == "server.port" && a.Value == "8081" })
+	if idx == -1 {
+		t.Fatalf("Expected attribute 'server.port' with value '8081', but got none")
+	}
+
+	idx = slices.IndexFunc(aSpan.options.Attributes, func(a tracing.Attribute) bool { return a.Key == "db.operation.name" && a.Value == "create_item" })
+	if idx == -1 {
+		t.Fatalf("Expected attribute 'db.operation.name' with value 'create_item', but got none")
+	}
+
+	idx = slices.IndexFunc(aSpan.options.Attributes, func(a tracing.Attribute) bool { return a.Key == "db.namespace" && a.Value == "db" })
+	if idx == -1 {
+		t.Fatalf("Expected attribute 'db.namespace' with value 'db', but got none")
+	}
+
+	idx = slices.IndexFunc(aSpan.options.Attributes, func(a tracing.Attribute) bool { return a.Key == "db.collection.name" && a.Value == "test" })
+	if idx == -1 {
+		t.Fatalf("Expected attribute 'db.collection.name' with value 'test', but got none")
+	}
+
+	idx = slices.IndexFunc(aSpan.options.Attributes, func(a tracing.Attribute) bool {
+		return a.Key == "db.cosmosdb.partition_key" && a.Value == "[\"aPartitionKey\"]"
+	})
+	if idx == -1 {
+		t.Fatalf("Expected attribute 'db.cosmosdb.partition_key' with value '[\"aPartitionKey\"]', but got none")
+	}
+
+	aSpan, err = getSpanNameForItems(endpoint, -1, "db", "test", pk)
+	if err == nil {
+		t.Fatalf("Expected error, but got none")
+	}
+}

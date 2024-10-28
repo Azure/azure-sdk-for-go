@@ -229,7 +229,7 @@ func (c *ContainerClient) CreateItem(
 	item []byte,
 	o *ItemOptions) (ItemResponse, error) {
 	var err error
-	spanName, err := c.getSpanForItems(operationTypeCreate)
+	spanName, err := c.getSpanForItems(operationTypeCreate, partitionKey)
 	if err != nil {
 		return ItemResponse{}, err
 	}
@@ -282,7 +282,7 @@ func (c *ContainerClient) UpsertItem(
 	item []byte,
 	o *ItemOptions) (ItemResponse, error) {
 	var err error
-	spanName, err := c.getSpanForItems(operationTypeUpsert)
+	spanName, err := c.getSpanForItems(operationTypeUpsert, partitionKey)
 	if err != nil {
 		return ItemResponse{}, err
 	}
@@ -341,7 +341,7 @@ func (c *ContainerClient) ReplaceItem(
 	item []byte,
 	o *ItemOptions) (ItemResponse, error) {
 	var err error
-	spanName, err := c.getSpanForItems(operationTypeReplace)
+	spanName, err := c.getSpanForItems(operationTypeReplace, partitionKey)
 	if err != nil {
 		return ItemResponse{}, err
 	}
@@ -394,7 +394,7 @@ func (c *ContainerClient) ReadItem(
 	itemId string,
 	o *ItemOptions) (ItemResponse, error) {
 	var err error
-	spanName, err := c.getSpanForItems(operationTypeRead)
+	spanName, err := c.getSpanForItems(operationTypeRead, partitionKey)
 	if err != nil {
 		return ItemResponse{}, err
 	}
@@ -443,7 +443,7 @@ func (c *ContainerClient) DeleteItem(
 	itemId string,
 	o *ItemOptions) (ItemResponse, error) {
 	var err error
-	spanName, err := c.getSpanForItems(operationTypeDelete)
+	spanName, err := c.getSpanForItems(operationTypeDelete, partitionKey)
 	if err != nil {
 		return ItemResponse{}, err
 	}
@@ -516,7 +516,7 @@ func (c *ContainerClient) NewQueryItemsPager(query string, partitionKey Partitio
 		Fetcher: func(ctx context.Context, page *QueryItemsResponse) (QueryItemsResponse, error) {
 			var err error
 			// Move the span to the pager once https://github.com/Azure/azure-sdk-for-go/issues/23294 is fixed
-			spanName, err := c.getSpanForItems(operationTypeQuery)
+			spanName, err := c.getSpanForItems(operationTypeQuery, partitionKey)
 			if err != nil {
 				return QueryItemsResponse{}, err
 			}
@@ -561,7 +561,7 @@ func (c *ContainerClient) PatchItem(
 	ops PatchOperations,
 	o *ItemOptions) (ItemResponse, error) {
 	var err error
-	spanName, err := c.getSpanForItems(operationTypePatch)
+	spanName, err := c.getSpanForItems(operationTypePatch, partitionKey)
 	if err != nil {
 		return ItemResponse{}, err
 	}
@@ -684,6 +684,6 @@ func (c *ContainerClient) getSpanForContainer(operationType operationType, resou
 	return getSpanNameForContainers(c.database.client.accountEndpointUrl(), operationType, resourceType, c.database.id, id)
 }
 
-func (c *ContainerClient) getSpanForItems(operationType operationType) (span, error) {
-	return getSpanNameForItems(c.database.client.accountEndpointUrl(), operationType, c.database.id, c.id)
+func (c *ContainerClient) getSpanForItems(operationType operationType, pk PartitionKey) (span, error) {
+	return getSpanNameForItems(c.database.client.accountEndpointUrl(), operationType, c.database.id, c.id, pk)
 }

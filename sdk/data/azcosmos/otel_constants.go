@@ -116,7 +116,7 @@ func getSpanNameForContainers(endpoint *url.URL, operationType operationType, re
 	return span{name: fmt.Sprintf("%s %s", spanName, id), options: getSpanPropertiesForContainer(endpoint, spanName, database, id)}, nil
 }
 
-func getSpanNameForItems(endpoint *url.URL, operationType operationType, database string, id string) (span, error) {
+func getSpanNameForItems(endpoint *url.URL, operationType operationType, database string, id string, pk PartitionKey) (span, error) {
 	var spanName string
 	switch operationType {
 	case operationTypeCreate:
@@ -139,7 +139,13 @@ func getSpanNameForItems(endpoint *url.URL, operationType operationType, databas
 		return span{}, fmt.Errorf("undefined telemetry span for operationType %v and resourceType %v", operationType, resourceTypeDocument)
 	}
 
-	return span{name: fmt.Sprintf("%s %s", spanName, id), options: getSpanPropertiesForContainer(endpoint, spanName, database, id)}, nil
+	options := getSpanPropertiesForContainer(endpoint, spanName, database, id)
+
+	if pkString, err := pk.toJsonString(); err == nil {
+		options.Attributes = append(options.Attributes, tracing.Attribute{Key: "db.cosmosdb.partition_key", Value: pkString})
+	}
+
+	return span{name: fmt.Sprintf("%s %s", spanName, id), options: options}, nil
 }
 
 func getSpanPropertiesForClient(endpoint *url.URL, operationName string) runtime.StartSpanOptions {

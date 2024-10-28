@@ -26,7 +26,7 @@ func ExampleStorageClassClient_BeginCreateOrUpdate() {
 	poller, err := clientFactory.NewStorageClassClient().BeginCreateOrUpdate(ctx, "subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/example/providers/Microsoft.Kubernetes/connectedClusters/cluster1", "testrwx", armcontainerorchestratorruntime.StorageClassResource{
 		Properties: &armcontainerorchestratorruntime.StorageClassProperties{
 			TypeProperties: &armcontainerorchestratorruntime.RwxStorageClassTypeProperties{
-				Type: to.Ptr("RWX"),
+				Type: to.Ptr(armcontainerorchestratorruntime.SCType("RWX")),
 				BackingStorageClassName: to.Ptr("default"),
 			},
 		},

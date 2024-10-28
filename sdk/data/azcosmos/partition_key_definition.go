@@ -5,7 +5,6 @@ package azcosmos
 
 import (
 	"encoding/json"
-	"fmt"
 )
 
 // PartitionKeyKind represents the type of the partition key that is used in an Azure Cosmos DB container.
@@ -50,38 +49,4 @@ func (pkd PartitionKeyDefinition) MarshalJSON() ([]byte, error) {
 		Paths:   pkd.Paths,
 		Version: pkd.Version,
 	})
-
-}
-
-// UnmarshalJSON implements the json.Unmarshaler interface
-func (pkd *PartitionKeyDefinition) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", pkd, err)
-	}
-
-	for key, value := range rawMsg {
-		switch key {
-		case "kind":
-			if err := json.Unmarshal(value, &pkd.Kind); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", pkd, err)
-			}
-		case "paths":
-			if err := json.Unmarshal(value, &pkd.Paths); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", pkd, err)
-			}
-		case "version":
-			if err := json.Unmarshal(value, &pkd.Version); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", pkd, err)
-			}
-		}
-	}
-
-	if pkd.Kind == "" && len(pkd.Paths) == 1 {
-		pkd.Kind = PartitionKeyKindHash
-	} else if pkd.Kind == "" && len(pkd.Paths) > 1 {
-		pkd.Kind = PartitionKeyKindMultiHash
-	}
-
-	return nil
 }

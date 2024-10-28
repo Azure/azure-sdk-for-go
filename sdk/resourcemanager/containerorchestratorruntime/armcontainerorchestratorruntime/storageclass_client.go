@@ -94,7 +94,7 @@ func (client *StorageClassClient) createOrUpdateCreateRequest(ctx context.Contex
 	if resourceURI == "" {
 		return nil, errors.New("parameter resourceURI cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", url.PathEscape(resourceURI))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if storageClassName == "" {
 		return nil, errors.New("parameter storageClassName cannot be empty")
 	}
@@ -170,7 +170,7 @@ func (client *StorageClassClient) deleteCreateRequest(ctx context.Context, resou
 	if resourceURI == "" {
 		return nil, errors.New("parameter resourceURI cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", url.PathEscape(resourceURI))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if storageClassName == "" {
 		return nil, errors.New("parameter storageClassName cannot be empty")
 	}
@@ -221,7 +221,7 @@ func (client *StorageClassClient) getCreateRequest(ctx context.Context, resource
 	if resourceURI == "" {
 		return nil, errors.New("parameter resourceURI cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", url.PathEscape(resourceURI))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if storageClassName == "" {
 		return nil, errors.New("parameter storageClassName cannot be empty")
 	}
@@ -280,7 +280,7 @@ func (client *StorageClassClient) listCreateRequest(ctx context.Context, resourc
 	if resourceURI == "" {
 		return nil, errors.New("parameter resourceURI cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", url.PathEscape(resourceURI))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -358,7 +358,7 @@ func (client *StorageClassClient) updateCreateRequest(ctx context.Context, resou
 	if resourceURI == "" {
 		return nil, errors.New("parameter resourceURI cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", url.PathEscape(resourceURI))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if storageClassName == "" {
 		return nil, errors.New("parameter storageClassName cannot be empty")
 	}

@@ -94,7 +94,7 @@ func (client *BgpPeersClient) createOrUpdateCreateRequest(ctx context.Context, r
 	if resourceURI == "" {
 		return nil, errors.New("parameter resourceURI cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", url.PathEscape(resourceURI))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if bgpPeerName == "" {
 		return nil, errors.New("parameter bgpPeerName cannot be empty")
 	}
@@ -148,7 +148,7 @@ func (client *BgpPeersClient) deleteCreateRequest(ctx context.Context, resourceU
 	if resourceURI == "" {
 		return nil, errors.New("parameter resourceURI cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", url.PathEscape(resourceURI))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if bgpPeerName == "" {
 		return nil, errors.New("parameter bgpPeerName cannot be empty")
 	}
@@ -199,7 +199,7 @@ func (client *BgpPeersClient) getCreateRequest(ctx context.Context, resourceURI 
 	if resourceURI == "" {
 		return nil, errors.New("parameter resourceURI cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", url.PathEscape(resourceURI))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if bgpPeerName == "" {
 		return nil, errors.New("parameter bgpPeerName cannot be empty")
 	}
@@ -258,7 +258,7 @@ func (client *BgpPeersClient) listCreateRequest(ctx context.Context, resourceURI
 	if resourceURI == "" {
 		return nil, errors.New("parameter resourceURI cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", url.PathEscape(resourceURI))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err

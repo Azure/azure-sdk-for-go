@@ -94,7 +94,7 @@ func (client *LoadBalancersClient) createOrUpdateCreateRequest(ctx context.Conte
 	if resourceURI == "" {
 		return nil, errors.New("parameter resourceURI cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", url.PathEscape(resourceURI))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if loadBalancerName == "" {
 		return nil, errors.New("parameter loadBalancerName cannot be empty")
 	}
@@ -148,7 +148,7 @@ func (client *LoadBalancersClient) deleteCreateRequest(ctx context.Context, reso
 	if resourceURI == "" {
 		return nil, errors.New("parameter resourceURI cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", url.PathEscape(resourceURI))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if loadBalancerName == "" {
 		return nil, errors.New("parameter loadBalancerName cannot be empty")
 	}
@@ -199,7 +199,7 @@ func (client *LoadBalancersClient) getCreateRequest(ctx context.Context, resourc
 	if resourceURI == "" {
 		return nil, errors.New("parameter resourceURI cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", url.PathEscape(resourceURI))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if loadBalancerName == "" {
 		return nil, errors.New("parameter loadBalancerName cannot be empty")
 	}
@@ -258,7 +258,7 @@ func (client *LoadBalancersClient) listCreateRequest(ctx context.Context, resour
 	if resourceURI == "" {
 		return nil, errors.New("parameter resourceURI cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", url.PathEscape(resourceURI))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err

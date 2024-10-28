@@ -72,7 +72,7 @@ func (client *ServicesClient) createOrUpdateCreateRequest(ctx context.Context, r
 	if resourceURI == "" {
 		return nil, errors.New("parameter resourceURI cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", url.PathEscape(resourceURI))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if serviceName == "" {
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
@@ -135,7 +135,7 @@ func (client *ServicesClient) deleteCreateRequest(ctx context.Context, resourceU
 	if resourceURI == "" {
 		return nil, errors.New("parameter resourceURI cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", url.PathEscape(resourceURI))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if serviceName == "" {
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
@@ -186,7 +186,7 @@ func (client *ServicesClient) getCreateRequest(ctx context.Context, resourceURI 
 	if resourceURI == "" {
 		return nil, errors.New("parameter resourceURI cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", url.PathEscape(resourceURI))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if serviceName == "" {
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
@@ -245,7 +245,7 @@ func (client *ServicesClient) listCreateRequest(ctx context.Context, resourceURI
 	if resourceURI == "" {
 		return nil, errors.New("parameter resourceURI cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", url.PathEscape(resourceURI))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err

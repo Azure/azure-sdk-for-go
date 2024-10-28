@@ -26,11 +26,7 @@ extends:
     parameters:
       CloudConfig:
         Public:
-          ServiceConnection: azure-sdk-tests
-          SubscriptionConfigurationFilePaths:
-            - eng/common/TestResources/sub-config/AzurePublicMsft.json
           SubscriptionConfigurations:
-            - $(sub-config-azure-cloud-test-resources)
             - $(sub-config-identity-test-resources)
       EnableRaceDetector: true
       RunLiveTests: true

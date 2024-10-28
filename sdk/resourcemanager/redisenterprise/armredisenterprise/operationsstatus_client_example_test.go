@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a8698bb86e66e2d29ce5e8987b6aaa8fc7f7f04b/specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2024-03-01-preview/examples/OperationsStatusGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a287afb3721dee0d88f11502ec123470bc52a28/specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2024-09-01-preview/examples/OperationsStatusGet.json
 func ExampleOperationsStatusClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,7 +38,7 @@ func ExampleOperationsStatusClient_Get() {
 	// res.OperationStatus = armredisenterprise.OperationStatus{
 	// 	Name: to.Ptr("testoperationid"),
 	// 	EndTime: to.Ptr("2017-01-01T16:13:13.933Z"),
-	// 	ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Cache/locations/westus/operationsStatus/testoperationid"),
+	// 	ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/providers/Microsoft.Cache/locations/westus/operationsStatus/testoperationid"),
 	// 	StartTime: to.Ptr("2017-01-01T13:13:13.933Z"),
 	// 	Status: to.Ptr("Succeeded"),
 	// }

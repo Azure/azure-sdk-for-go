@@ -1,5 +1,25 @@
 # Release History
 
+## 1.16.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.16.0 (2024-10-17)
+
+### Features Added
+
+* Added field `Kind` to `runtime.StartSpanOptions` to allow a kind to be set when starting a span.
+
+### Bugs Fixed
+
+* `BearerTokenPolicy` now rewinds request bodies before retrying
+
 ## 1.15.0 (2024-10-14)
 
 ### Features Added

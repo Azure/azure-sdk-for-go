@@ -44,9 +44,9 @@ func (c *ClientFactory) NewExtensionMetadataClient() *ExtensionMetadataClient {
 	}
 }
 
-// NewGatewaysClient creates a new instance of GatewaysClient.
-func (c *ClientFactory) NewGatewaysClient() *GatewaysClient {
-	return &GatewaysClient{
+// NewLicenseProfilesClient creates a new instance of LicenseProfilesClient.
+func (c *ClientFactory) NewLicenseProfilesClient() *LicenseProfilesClient {
+	return &LicenseProfilesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -63,14 +63,6 @@ func (c *ClientFactory) NewLicensesClient() *LicensesClient {
 // NewMachineExtensionsClient creates a new instance of MachineExtensionsClient.
 func (c *ClientFactory) NewMachineExtensionsClient() *MachineExtensionsClient {
 	return &MachineExtensionsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewMachineRunCommandsClient creates a new instance of MachineRunCommandsClient.
-func (c *ClientFactory) NewMachineRunCommandsClient() *MachineRunCommandsClient {
-	return &MachineRunCommandsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -134,14 +126,6 @@ func (c *ClientFactory) NewPrivateLinkResourcesClient() *PrivateLinkResourcesCli
 // NewPrivateLinkScopesClient creates a new instance of PrivateLinkScopesClient.
 func (c *ClientFactory) NewPrivateLinkScopesClient() *PrivateLinkScopesClient {
 	return &PrivateLinkScopesClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewSettingsClient creates a new instance of SettingsClient.
-func (c *ClientFactory) NewSettingsClient() *SettingsClient {
-	return &SettingsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

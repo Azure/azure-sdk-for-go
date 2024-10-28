@@ -268,7 +268,7 @@ func (m *MachinesServerTransport) dispatchGet(req *http.Request) (*http.Response
 	if err != nil {
 		return nil, err
 	}
-	expandParam := getOptional(expandUnescaped)
+	expandParam := getOptional(armhybridcompute.InstanceViewTypes(expandUnescaped))
 	var options *armhybridcompute.MachinesClientGetOptions
 	if expandParam != nil {
 		options = &armhybridcompute.MachinesClientGetOptions{

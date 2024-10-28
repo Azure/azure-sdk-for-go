@@ -1131,6 +1131,7 @@ func (a ACSIncomingCallEventData) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "customContext", a.CustomContext)
 	populate(objectMap, "from", a.FromCommunicationIdentifier)
 	populate(objectMap, "incomingCallContext", a.IncomingCallContext)
+	populate(objectMap, "onBehalfOfCallee", a.OnBehalfOfCallee)
 	populate(objectMap, "serverCallId", a.ServerCallID)
 	populate(objectMap, "to", a.ToCommunicationIdentifier)
 	return json.Marshal(objectMap)
@@ -1159,6 +1160,9 @@ func (a *ACSIncomingCallEventData) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "incomingCallContext":
 			err = unpopulate(val, "IncomingCallContext", &a.IncomingCallContext)
+			delete(rawMsg, key)
+		case "onBehalfOfCallee":
+			err = unpopulate(val, "OnBehalfOfCallee", &a.OnBehalfOfCallee)
 			delete(rawMsg, key)
 		case "serverCallId":
 			err = unpopulate(val, "ServerCallID", &a.ServerCallID)

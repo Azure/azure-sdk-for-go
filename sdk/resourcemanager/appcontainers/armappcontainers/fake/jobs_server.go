@@ -12,15 +12,16 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/http"
+	"net/url"
+	"reflect"
+	"regexp"
+
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v3"
-	"net/http"
-	"net/url"
-	"reflect"
-	"regexp"
 )
 
 // JobsServer is a fake server for instances of the armappcontainers.JobsClient type.
@@ -61,6 +62,10 @@ type JobsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	ProxyGet func(ctx context.Context, resourceGroupName string, jobName string, apiName string, options *armappcontainers.JobsClientProxyGetOptions) (resp azfake.Responder[armappcontainers.JobsClientProxyGetResponse], errResp azfake.ErrorResponder)
 
+	// BeginResume is the fake for method JobsClient.BeginResume
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginResume func(ctx context.Context, resourceGroupName string, jobName string, options *armappcontainers.JobsClientBeginResumeOptions) (resp azfake.PollerResponder[armappcontainers.JobsClientResumeResponse], errResp azfake.ErrorResponder)
+
 	// BeginStart is the fake for method JobsClient.BeginStart
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginStart func(ctx context.Context, resourceGroupName string, jobName string, options *armappcontainers.JobsClientBeginStartOptions) (resp azfake.PollerResponder[armappcontainers.JobsClientStartResponse], errResp azfake.ErrorResponder)
@@ -72,6 +77,10 @@ type JobsServer struct {
 	// BeginStopMultipleExecutions is the fake for method JobsClient.BeginStopMultipleExecutions
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginStopMultipleExecutions func(ctx context.Context, resourceGroupName string, jobName string, options *armappcontainers.JobsClientBeginStopMultipleExecutionsOptions) (resp azfake.PollerResponder[armappcontainers.JobsClientStopMultipleExecutionsResponse], errResp azfake.ErrorResponder)
+
+	// BeginSuspend is the fake for method JobsClient.BeginSuspend
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginSuspend func(ctx context.Context, resourceGroupName string, jobName string, options *armappcontainers.JobsClientBeginSuspendOptions) (resp azfake.PollerResponder[armappcontainers.JobsClientSuspendResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdate is the fake for method JobsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
@@ -89,9 +98,11 @@ func NewJobsServerTransport(srv *JobsServer) *JobsServerTransport {
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armappcontainers.JobsClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armappcontainers.JobsClientListBySubscriptionResponse]](),
 		newListDetectorsPager:       newTracker[azfake.PagerResponder[armappcontainers.JobsClientListDetectorsResponse]](),
+		beginResume:                 newTracker[azfake.PollerResponder[armappcontainers.JobsClientResumeResponse]](),
 		beginStart:                  newTracker[azfake.PollerResponder[armappcontainers.JobsClientStartResponse]](),
 		beginStopExecution:          newTracker[azfake.PollerResponder[armappcontainers.JobsClientStopExecutionResponse]](),
 		beginStopMultipleExecutions: newTracker[azfake.PollerResponder[armappcontainers.JobsClientStopMultipleExecutionsResponse]](),
+		beginSuspend:                newTracker[azfake.PollerResponder[armappcontainers.JobsClientSuspendResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armappcontainers.JobsClientUpdateResponse]](),
 	}
 }
@@ -105,9 +116,11 @@ type JobsServerTransport struct {
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armappcontainers.JobsClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armappcontainers.JobsClientListBySubscriptionResponse]]
 	newListDetectorsPager       *tracker[azfake.PagerResponder[armappcontainers.JobsClientListDetectorsResponse]]
+	beginResume                 *tracker[azfake.PollerResponder[armappcontainers.JobsClientResumeResponse]]
 	beginStart                  *tracker[azfake.PollerResponder[armappcontainers.JobsClientStartResponse]]
 	beginStopExecution          *tracker[azfake.PollerResponder[armappcontainers.JobsClientStopExecutionResponse]]
 	beginStopMultipleExecutions *tracker[azfake.PollerResponder[armappcontainers.JobsClientStopMultipleExecutionsResponse]]
+	beginSuspend                *tracker[azfake.PollerResponder[armappcontainers.JobsClientSuspendResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armappcontainers.JobsClientUpdateResponse]]
 }
 
@@ -141,12 +154,16 @@ func (j *JobsServerTransport) Do(req *http.Request) (*http.Response, error) {
 		resp, err = j.dispatchListSecrets(req)
 	case "JobsClient.ProxyGet":
 		resp, err = j.dispatchProxyGet(req)
+	case "JobsClient.BeginResume":
+		resp, err = j.dispatchBeginResume(req)
 	case "JobsClient.BeginStart":
 		resp, err = j.dispatchBeginStart(req)
 	case "JobsClient.BeginStopExecution":
 		resp, err = j.dispatchBeginStopExecution(req)
 	case "JobsClient.BeginStopMultipleExecutions":
 		resp, err = j.dispatchBeginStopMultipleExecutions(req)
+	case "JobsClient.BeginSuspend":
+		resp, err = j.dispatchBeginSuspend(req)
 	case "JobsClient.BeginUpdate":
 		resp, err = j.dispatchBeginUpdate(req)
 	default:
@@ -503,6 +520,50 @@ func (j *JobsServerTransport) dispatchProxyGet(req *http.Request) (*http.Respons
 	return resp, nil
 }
 
+func (j *JobsServerTransport) dispatchBeginResume(req *http.Request) (*http.Response, error) {
+	if j.srv.BeginResume == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginResume not implemented")}
+	}
+	beginResume := j.beginResume.get(req)
+	if beginResume == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/jobs/(?P<jobName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resume`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		jobNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("jobName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := j.srv.BeginResume(req.Context(), resourceGroupNameParam, jobNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginResume = &respr
+		j.beginResume.add(req, beginResume)
+	}
+
+	resp, err := server.PollerResponderNext(beginResume, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		j.beginResume.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginResume) {
+		j.beginResume.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (j *JobsServerTransport) dispatchBeginStart(req *http.Request) (*http.Response, error) {
 	if j.srv.BeginStart == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginStart not implemented")}
@@ -644,6 +705,50 @@ func (j *JobsServerTransport) dispatchBeginStopMultipleExecutions(req *http.Requ
 	}
 	if !server.PollerResponderMore(beginStopMultipleExecutions) {
 		j.beginStopMultipleExecutions.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (j *JobsServerTransport) dispatchBeginSuspend(req *http.Request) (*http.Response, error) {
+	if j.srv.BeginSuspend == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginSuspend not implemented")}
+	}
+	beginSuspend := j.beginSuspend.get(req)
+	if beginSuspend == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/jobs/(?P<jobName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/suspend`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		jobNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("jobName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := j.srv.BeginSuspend(req.Context(), resourceGroupNameParam, jobNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginSuspend = &respr
+		j.beginSuspend.add(req, beginSuspend)
+	}
+
+	resp, err := server.PollerResponderNext(beginSuspend, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		j.beginSuspend.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginSuspend) {
+		j.beginSuspend.remove(req)
 	}
 
 	return resp, nil

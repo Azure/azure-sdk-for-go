@@ -10,6 +10,12 @@ package armelasticsan
 
 import "time"
 
+// AutoScaleProperties - The auto scale settings on Elastic San Appliance.
+type AutoScaleProperties struct {
+	// Scale up settings on Elastic San Appliance.
+	ScaleUpProperties *ScaleUpProperties
+}
+
 // ElasticSan - Response for ElasticSan request.
 type ElasticSan struct {
 	// REQUIRED; The geo-location where the resource lives
@@ -285,6 +291,9 @@ type Properties struct {
 	// REQUIRED; resource sku
 	SKU *SKU
 
+	// Auto Scale Properties for Elastic San Appliance.
+	AutoScaleProperties *AutoScaleProperties
+
 	// Logical zone for Elastic San resource; example: ["1"].
 	AvailabilityZones []*string
 
@@ -369,6 +378,21 @@ type SKULocationInfo struct {
 
 	// READ-ONLY; The zones.
 	Zones []*string
+}
+
+// ScaleUpProperties - Scale up properties on Elastic San Appliance.
+type ScaleUpProperties struct {
+	// Enable or Disable scale up setting on Elastic San Appliance.
+	AutoScalePolicyEnforcement *AutoScalePolicyEnforcement
+
+	// Maximum scale up size on Elastic San appliance in TiB.
+	CapacityUnitScaleUpLimitTiB *int64
+
+	// Unit to increase Capacity Unit on Elastic San appliance in TiB.
+	IncreaseCapacityUnitByTiB *int64
+
+	// Unused size on Elastic San appliance in TiB.
+	UnusedSizeTiB *int64
 }
 
 // Snapshot - Response for Volume Snapshot request.
@@ -461,6 +485,9 @@ type Update struct {
 
 // UpdateProperties - Elastic San update properties.
 type UpdateProperties struct {
+	// Auto Scale Properties for Elastic San Appliance.
+	AutoScaleProperties *AutoScaleProperties
+
 	// Base size of the Elastic San appliance in TiB.
 	BaseSizeTiB *int64
 

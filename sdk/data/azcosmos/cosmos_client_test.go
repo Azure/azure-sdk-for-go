@@ -681,6 +681,54 @@ func TestQueryDatabases(t *testing.T) {
 	}
 }
 
+func TestSpanResponseAttributes(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.SetResponse(
+		mock.WithStatusCode(200),
+		mock.WithHeader(cosmosHeaderRequestCharge, "13.42"),
+	)
+
+	matcher := &spanMatcher{
+		ExpectedSpans: []string{"test_span"},
+	}
+	tp := newSpanValidator(t, matcher)
+	internalClient, _ := azcore.NewClient(
+		"azcosmostest", "v1.0.0",
+		azruntime.PipelineOptions{Tracing: azruntime.TracingOptions{Namespace: "Microsoft.DocumentDB"}},
+		&policy.ClientOptions{Transport: srv, TracingProvider: tp},
+	)
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
+	operationContext := pipelineRequestOptions{
+		resourceType:    resourceTypeDatabase,
+		resourceAddress: "",
+	}
+
+	ctx := context.Background()
+	ctx, endSpan := azruntime.StartSpan(ctx, "test_span", client.internal.Tracer(), &azruntime.StartSpanOptions{})
+	_, err := client.sendGetRequest("/", ctx, operationContext, &DeleteDatabaseOptions{}, nil)
+	endSpan(err)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(matcher.MatchedSpans) != 1 {
+		t.Errorf("Unexpected number of spans")
+	}
+
+	span := matcher.MatchedSpans[0]
+	status_value := attributeValueForKey(span.attributes, "db.cosmosdb.status_code")
+	if status_value != 200 {
+		t.Fatalf("Expected db.cosmosdb.status_code attribute with 200 value, got %v", status_value)
+	}
+
+	charge_value := attributeValueForKey(span.attributes, "db.cosmosdb.request_charge")
+	if charge_value != float32(13.42) {
+		t.Fatalf("Expected db.cosmosdb.request_charge attribute with 13.42 value, got %v", charge_value)
+	}
+}
+
 type pipelineVerifier struct {
 	requests []pipelineVerifierRequest
 }

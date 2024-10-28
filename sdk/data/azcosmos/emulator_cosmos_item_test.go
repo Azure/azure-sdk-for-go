@@ -18,7 +18,7 @@ import (
 
 func TestItemCRUD(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
-	client := emulatorTests.getClient(t, newSpanValidator(t, spanMatcher{
+	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{
 		ExpectedSpans: []string{"create_item aContainer", "read_item aContainer", "replace_item aContainer", "upsert_item aContainer", "delete_item aContainer", "patch_item aContainer"},
 	}))
 
@@ -194,7 +194,7 @@ func TestItemCRUD(t *testing.T) {
 
 func TestItemCRUDforNullPartitionKey(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
-	client := emulatorTests.getClient(t, newSpanValidator(t, spanMatcher{
+	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{
 		ExpectedSpans: []string{"create_item aContainer", "read_item aContainer", "replace_item aContainer", "upsert_item aContainer", "delete_item aContainer", "patch_item aContainer"},
 	}))
 
@@ -371,7 +371,7 @@ func TestItemCRUDforNullPartitionKey(t *testing.T) {
 
 func TestItemConcurrent(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
-	client := emulatorTests.getClient(t, newSpanValidator(t, spanMatcher{
+	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{
 		ExpectedSpans: []string{},
 	}))
 
@@ -424,7 +424,7 @@ func TestItemConcurrent(t *testing.T) {
 
 func TestItemIdEncodingRoutingGW(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
-	client := emulatorTests.getClient(t, newSpanValidator(t, spanMatcher{
+	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{
 		ExpectedSpans: []string{},
 	}))
 
@@ -465,7 +465,7 @@ func TestItemIdEncodingRoutingGW(t *testing.T) {
 
 func TestItemIdEncodingComputeGW(t *testing.T) {
 	emulatorTests := newEmulatorTestsWithComputeGateway(t)
-	client := emulatorTests.getClient(t, newSpanValidator(t, spanMatcher{
+	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{
 		ExpectedSpans: []string{},
 	}))
 
@@ -506,7 +506,7 @@ func TestItemIdEncodingComputeGW(t *testing.T) {
 
 func TestItemCRUDHierarchicalPartitionKey(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
-	client := emulatorTests.getClient(t, newSpanValidator(t, spanMatcher{
+	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{
 		ExpectedSpans: []string{},
 	}))
 

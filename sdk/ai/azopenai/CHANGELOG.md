@@ -1,5 +1,17 @@
 # Release History
 
+## 0.7.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+- `MongoDBChatExtensionParameters.Authentication`'s type has been changed to a `OnYourDataUsernameAndPasswordAuthenticationOptions`. (PR#23620)
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 0.7.0 (2024-10-14)
 
 ### Features Added

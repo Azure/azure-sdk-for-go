@@ -8,6 +8,35 @@
 
 package armappcontainers
 
+// AppResiliencyClientCreateOrUpdateResponse contains the response from method AppResiliencyClient.CreateOrUpdate.
+type AppResiliencyClientCreateOrUpdateResponse struct {
+	// Configuration to setup App Resiliency
+	AppResiliency
+}
+
+// AppResiliencyClientDeleteResponse contains the response from method AppResiliencyClient.Delete.
+type AppResiliencyClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// AppResiliencyClientGetResponse contains the response from method AppResiliencyClient.Get.
+type AppResiliencyClientGetResponse struct {
+	// Configuration to setup App Resiliency
+	AppResiliency
+}
+
+// AppResiliencyClientListResponse contains the response from method AppResiliencyClient.NewListPager.
+type AppResiliencyClientListResponse struct {
+	// Collection of AppResiliency policies
+	AppResiliencyCollection
+}
+
+// AppResiliencyClientUpdateResponse contains the response from method AppResiliencyClient.Update.
+type AppResiliencyClientUpdateResponse struct {
+	// Configuration to setup App Resiliency
+	AppResiliency
+}
+
 // AvailableWorkloadProfilesClientGetResponse contains the response from method AvailableWorkloadProfilesClient.NewGetPager.
 type AvailableWorkloadProfilesClientGetResponse struct {
 	// Collection of available workload profiles in the location.
@@ -18,6 +47,70 @@ type AvailableWorkloadProfilesClientGetResponse struct {
 type BillingMetersClientGetResponse struct {
 	// Collection of billing meters.
 	BillingMeterCollection
+}
+
+// BuildAuthTokenClientListResponse contains the response from method BuildAuthTokenClient.List.
+type BuildAuthTokenClientListResponse struct {
+	// Build Auth Token.
+	BuildToken
+}
+
+// BuildersClientCreateOrUpdateResponse contains the response from method BuildersClient.BeginCreateOrUpdate.
+type BuildersClientCreateOrUpdateResponse struct {
+	// Information about the SourceToCloud builder resource.
+	BuilderResource
+}
+
+// BuildersClientDeleteResponse contains the response from method BuildersClient.BeginDelete.
+type BuildersClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// BuildersClientGetResponse contains the response from method BuildersClient.Get.
+type BuildersClientGetResponse struct {
+	// Information about the SourceToCloud builder resource.
+	BuilderResource
+}
+
+// BuildersClientListByResourceGroupResponse contains the response from method BuildersClient.NewListByResourceGroupPager.
+type BuildersClientListByResourceGroupResponse struct {
+	// The response of a BuilderResource list operation.
+	BuilderCollection
+}
+
+// BuildersClientListBySubscriptionResponse contains the response from method BuildersClient.NewListBySubscriptionPager.
+type BuildersClientListBySubscriptionResponse struct {
+	// The response of a BuilderResource list operation.
+	BuilderCollection
+}
+
+// BuildersClientUpdateResponse contains the response from method BuildersClient.BeginUpdate.
+type BuildersClientUpdateResponse struct {
+	// Information about the SourceToCloud builder resource.
+	BuilderResource
+}
+
+// BuildsByBuilderResourceClientListResponse contains the response from method BuildsByBuilderResourceClient.NewListPager.
+type BuildsByBuilderResourceClientListResponse struct {
+	// The response of a BuildResource list operation.
+	BuildCollection
+}
+
+// BuildsClientCreateOrUpdateResponse contains the response from method BuildsClient.BeginCreateOrUpdate.
+type BuildsClientCreateOrUpdateResponse struct {
+	// Information pertaining to an individual build.
+	BuildResource
+}
+
+// BuildsClientDeleteResponse contains the response from method BuildsClient.BeginDelete.
+type BuildsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// BuildsClientGetResponse contains the response from method BuildsClient.Get.
+type BuildsClientGetResponse struct {
+	// Information pertaining to an individual build.
+	BuildResource
 }
 
 // CertificatesClientCreateOrUpdateResponse contains the response from method CertificatesClient.CreateOrUpdate.
@@ -206,6 +299,23 @@ type ContainerAppsAuthConfigsClientListByContainerAppResponse struct {
 	AuthConfigCollection
 }
 
+// ContainerAppsBuildsByContainerAppClientListResponse contains the response from method ContainerAppsBuildsByContainerAppClient.NewListPager.
+type ContainerAppsBuildsByContainerAppClientListResponse struct {
+	// The response of a Container Apps Build Resource list operation.
+	ContainerAppsBuildCollection
+}
+
+// ContainerAppsBuildsClientDeleteResponse contains the response from method ContainerAppsBuildsClient.BeginDelete.
+type ContainerAppsBuildsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ContainerAppsBuildsClientGetResponse contains the response from method ContainerAppsBuildsClient.Get.
+type ContainerAppsBuildsClientGetResponse struct {
+	// Information pertaining to an individual build.
+	ContainerAppsBuildResource
+}
+
 // ContainerAppsClientCreateOrUpdateResponse contains the response from method ContainerAppsClient.BeginCreateOrUpdate.
 type ContainerAppsClientCreateOrUpdateResponse struct {
 	// Container App.
@@ -301,6 +411,34 @@ type ContainerAppsDiagnosticsClientListRevisionsResponse struct {
 	RevisionCollection
 }
 
+// ContainerAppsPatchesClientApplyResponse contains the response from method ContainerAppsPatchesClient.BeginApply.
+type ContainerAppsPatchesClientApplyResponse struct {
+	// Container App Patch
+	ContainerAppsPatchResource
+}
+
+// ContainerAppsPatchesClientDeleteResponse contains the response from method ContainerAppsPatchesClient.BeginDelete.
+type ContainerAppsPatchesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ContainerAppsPatchesClientGetResponse contains the response from method ContainerAppsPatchesClient.Get.
+type ContainerAppsPatchesClientGetResponse struct {
+	// Container App Patch
+	ContainerAppsPatchResource
+}
+
+// ContainerAppsPatchesClientListByContainerAppResponse contains the response from method ContainerAppsPatchesClient.NewListByContainerAppPager.
+type ContainerAppsPatchesClientListByContainerAppResponse struct {
+	// Container App patch collection
+	PatchCollection
+}
+
+// ContainerAppsPatchesClientSkipConfigureResponse contains the response from method ContainerAppsPatchesClient.BeginSkipConfigure.
+type ContainerAppsPatchesClientSkipConfigureResponse struct {
+	// placeholder for future response values
+}
+
 // ContainerAppsRevisionReplicasClientGetReplicaResponse contains the response from method ContainerAppsRevisionReplicasClient.GetReplica.
 type ContainerAppsRevisionReplicasClientGetReplicaResponse struct {
 	// Container App Revision Replica.
@@ -340,6 +478,41 @@ type ContainerAppsRevisionsClientRestartRevisionResponse struct {
 	// placeholder for future response values
 }
 
+// ContainerAppsSessionPoolsClientCreateOrUpdateResponse contains the response from method ContainerAppsSessionPoolsClient.BeginCreateOrUpdate.
+type ContainerAppsSessionPoolsClientCreateOrUpdateResponse struct {
+	// Container App session pool.
+	SessionPool
+}
+
+// ContainerAppsSessionPoolsClientDeleteResponse contains the response from method ContainerAppsSessionPoolsClient.BeginDelete.
+type ContainerAppsSessionPoolsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ContainerAppsSessionPoolsClientGetResponse contains the response from method ContainerAppsSessionPoolsClient.Get.
+type ContainerAppsSessionPoolsClientGetResponse struct {
+	// Container App session pool.
+	SessionPool
+}
+
+// ContainerAppsSessionPoolsClientListByResourceGroupResponse contains the response from method ContainerAppsSessionPoolsClient.NewListByResourceGroupPager.
+type ContainerAppsSessionPoolsClientListByResourceGroupResponse struct {
+	// Session pool collection Azure resource.
+	SessionPoolCollection
+}
+
+// ContainerAppsSessionPoolsClientListBySubscriptionResponse contains the response from method ContainerAppsSessionPoolsClient.NewListBySubscriptionPager.
+type ContainerAppsSessionPoolsClientListBySubscriptionResponse struct {
+	// Session pool collection Azure resource.
+	SessionPoolCollection
+}
+
+// ContainerAppsSessionPoolsClientUpdateResponse contains the response from method ContainerAppsSessionPoolsClient.BeginUpdate.
+type ContainerAppsSessionPoolsClientUpdateResponse struct {
+	// Container App session pool.
+	SessionPool
+}
+
 // ContainerAppsSourceControlsClientCreateOrUpdateResponse contains the response from method ContainerAppsSourceControlsClient.BeginCreateOrUpdate.
 type ContainerAppsSourceControlsClientCreateOrUpdateResponse struct {
 	// Container App SourceControl.
@@ -361,6 +534,29 @@ type ContainerAppsSourceControlsClientGetResponse struct {
 type ContainerAppsSourceControlsClientListByContainerAppResponse struct {
 	// SourceControl collection ARM resource.
 	SourceControlCollection
+}
+
+// DaprComponentResiliencyPoliciesClientCreateOrUpdateResponse contains the response from method DaprComponentResiliencyPoliciesClient.CreateOrUpdate.
+type DaprComponentResiliencyPoliciesClientCreateOrUpdateResponse struct {
+	// Dapr Component Resiliency Policy.
+	DaprComponentResiliencyPolicy
+}
+
+// DaprComponentResiliencyPoliciesClientDeleteResponse contains the response from method DaprComponentResiliencyPoliciesClient.Delete.
+type DaprComponentResiliencyPoliciesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// DaprComponentResiliencyPoliciesClientGetResponse contains the response from method DaprComponentResiliencyPoliciesClient.Get.
+type DaprComponentResiliencyPoliciesClientGetResponse struct {
+	// Dapr Component Resiliency Policy.
+	DaprComponentResiliencyPolicy
+}
+
+// DaprComponentResiliencyPoliciesClientListResponse contains the response from method DaprComponentResiliencyPoliciesClient.NewListPager.
+type DaprComponentResiliencyPoliciesClientListResponse struct {
+	// Dapr Component Resiliency Policies ARM resource.
+	DaprComponentResiliencyPoliciesCollection
 }
 
 // DaprComponentsClientCreateOrUpdateResponse contains the response from method DaprComponentsClient.CreateOrUpdate.
@@ -390,6 +586,92 @@ type DaprComponentsClientListResponse struct {
 type DaprComponentsClientListSecretsResponse struct {
 	// Dapr component Secrets Collection for ListSecrets Action.
 	DaprSecretsCollection
+}
+
+// DaprSubscriptionsClientCreateOrUpdateResponse contains the response from method DaprSubscriptionsClient.CreateOrUpdate.
+type DaprSubscriptionsClientCreateOrUpdateResponse struct {
+	// Dapr PubSub Event Subscription.
+	DaprSubscription
+}
+
+// DaprSubscriptionsClientDeleteResponse contains the response from method DaprSubscriptionsClient.Delete.
+type DaprSubscriptionsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// DaprSubscriptionsClientGetResponse contains the response from method DaprSubscriptionsClient.Get.
+type DaprSubscriptionsClientGetResponse struct {
+	// Dapr PubSub Event Subscription.
+	DaprSubscription
+}
+
+// DaprSubscriptionsClientListResponse contains the response from method DaprSubscriptionsClient.NewListPager.
+type DaprSubscriptionsClientListResponse struct {
+	// Dapr Subscriptions ARM resource.
+	DaprSubscriptionsCollection
+}
+
+// DotNetComponentsClientCreateOrUpdateResponse contains the response from method DotNetComponentsClient.BeginCreateOrUpdate.
+type DotNetComponentsClientCreateOrUpdateResponse struct {
+	// .NET Component.
+	DotNetComponent
+}
+
+// DotNetComponentsClientDeleteResponse contains the response from method DotNetComponentsClient.BeginDelete.
+type DotNetComponentsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// DotNetComponentsClientGetResponse contains the response from method DotNetComponentsClient.Get.
+type DotNetComponentsClientGetResponse struct {
+	// .NET Component.
+	DotNetComponent
+}
+
+// DotNetComponentsClientListResponse contains the response from method DotNetComponentsClient.NewListPager.
+type DotNetComponentsClientListResponse struct {
+	// .NET Components ARM resource.
+	DotNetComponentsCollection
+}
+
+// DotNetComponentsClientUpdateResponse contains the response from method DotNetComponentsClient.BeginUpdate.
+type DotNetComponentsClientUpdateResponse struct {
+	// .NET Component.
+	DotNetComponent
+}
+
+// FunctionsExtensionClientInvokeFunctionsHostResponse contains the response from method FunctionsExtensionClient.InvokeFunctionsHost.
+type FunctionsExtensionClientInvokeFunctionsHostResponse struct {
+	Value *string
+}
+
+// JavaComponentsClientCreateOrUpdateResponse contains the response from method JavaComponentsClient.BeginCreateOrUpdate.
+type JavaComponentsClientCreateOrUpdateResponse struct {
+	// Java Component.
+	JavaComponent
+}
+
+// JavaComponentsClientDeleteResponse contains the response from method JavaComponentsClient.BeginDelete.
+type JavaComponentsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// JavaComponentsClientGetResponse contains the response from method JavaComponentsClient.Get.
+type JavaComponentsClientGetResponse struct {
+	// Java Component.
+	JavaComponent
+}
+
+// JavaComponentsClientListResponse contains the response from method JavaComponentsClient.NewListPager.
+type JavaComponentsClientListResponse struct {
+	// Java Components ARM resource.
+	JavaComponentsCollection
+}
+
+// JavaComponentsClientUpdateResponse contains the response from method JavaComponentsClient.BeginUpdate.
+type JavaComponentsClientUpdateResponse struct {
+	// Java Component.
+	JavaComponent
 }
 
 // JobsClientCreateOrUpdateResponse contains the response from method JobsClient.BeginCreateOrUpdate.
@@ -445,6 +727,12 @@ type JobsClientProxyGetResponse struct {
 	Job
 }
 
+// JobsClientResumeResponse contains the response from method JobsClient.BeginResume.
+type JobsClientResumeResponse struct {
+	// Container App Job
+	Job
+}
+
 // JobsClientStartResponse contains the response from method JobsClient.BeginStart.
 type JobsClientStartResponse struct {
 	// Container App's Job execution name.
@@ -462,6 +750,12 @@ type JobsClientStopMultipleExecutionsResponse struct {
 	ContainerAppJobExecutions
 }
 
+// JobsClientSuspendResponse contains the response from method JobsClient.BeginSuspend.
+type JobsClientSuspendResponse struct {
+	// Container App Job
+	Job
+}
+
 // JobsClientUpdateResponse contains the response from method JobsClient.BeginUpdate.
 type JobsClientUpdateResponse struct {
 	// Container App Job
@@ -472,6 +766,52 @@ type JobsClientUpdateResponse struct {
 type JobsExecutionsClientListResponse struct {
 	// Container App executions collection ARM resource.
 	ContainerAppJobExecutions
+}
+
+// LogicAppsClientCreateOrUpdateResponse contains the response from method LogicAppsClient.CreateOrUpdate.
+type LogicAppsClientCreateOrUpdateResponse struct {
+	// A logic app extension resource
+	LogicApp
+}
+
+// LogicAppsClientDeleteResponse contains the response from method LogicAppsClient.Delete.
+type LogicAppsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// LogicAppsClientDeployWorkflowArtifactsResponse contains the response from method LogicAppsClient.DeployWorkflowArtifacts.
+type LogicAppsClientDeployWorkflowArtifactsResponse struct {
+	// placeholder for future response values
+}
+
+// LogicAppsClientGetResponse contains the response from method LogicAppsClient.Get.
+type LogicAppsClientGetResponse struct {
+	// A logic app extension resource
+	LogicApp
+}
+
+// LogicAppsClientGetWorkflowResponse contains the response from method LogicAppsClient.GetWorkflow.
+type LogicAppsClientGetWorkflowResponse struct {
+	// Workflow properties definition.
+	WorkflowEnvelope
+}
+
+// LogicAppsClientInvokeResponse contains the response from method LogicAppsClient.Invoke.
+type LogicAppsClientInvokeResponse struct {
+	// Anything
+	Interface any
+}
+
+// LogicAppsClientListWorkflowsConnectionsResponse contains the response from method LogicAppsClient.ListWorkflowsConnections.
+type LogicAppsClientListWorkflowsConnectionsResponse struct {
+	// Workflow properties definition.
+	WorkflowEnvelope
+}
+
+// LogicAppsClientListWorkflowsResponse contains the response from method LogicAppsClient.NewListWorkflowsPager.
+type LogicAppsClientListWorkflowsResponse struct {
+	// Collection of workflow information elements.
+	WorkflowEnvelopeCollection
 }
 
 // ManagedCertificatesClientCreateOrUpdateResponse contains the response from method ManagedCertificatesClient.BeginCreateOrUpdate.
@@ -513,6 +853,35 @@ type ManagedEnvironmentDiagnosticsClientGetDetectorResponse struct {
 type ManagedEnvironmentDiagnosticsClientListDetectorsResponse struct {
 	// Diagnostics data collection for a resource.
 	DiagnosticsCollection
+}
+
+// ManagedEnvironmentPrivateEndpointConnectionsClientCreateOrUpdateResponse contains the response from method ManagedEnvironmentPrivateEndpointConnectionsClient.BeginCreateOrUpdate.
+type ManagedEnvironmentPrivateEndpointConnectionsClientCreateOrUpdateResponse struct {
+	// The Private Endpoint Connection resource.
+	PrivateEndpointConnection
+}
+
+// ManagedEnvironmentPrivateEndpointConnectionsClientDeleteResponse contains the response from method ManagedEnvironmentPrivateEndpointConnectionsClient.BeginDelete.
+type ManagedEnvironmentPrivateEndpointConnectionsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ManagedEnvironmentPrivateEndpointConnectionsClientGetResponse contains the response from method ManagedEnvironmentPrivateEndpointConnectionsClient.Get.
+type ManagedEnvironmentPrivateEndpointConnectionsClientGetResponse struct {
+	// The Private Endpoint Connection resource.
+	PrivateEndpointConnection
+}
+
+// ManagedEnvironmentPrivateEndpointConnectionsClientListResponse contains the response from method ManagedEnvironmentPrivateEndpointConnectionsClient.NewListPager.
+type ManagedEnvironmentPrivateEndpointConnectionsClientListResponse struct {
+	// List of private endpoint connection associated with the specified resource
+	PrivateEndpointConnectionListResult
+}
+
+// ManagedEnvironmentPrivateLinkResourcesClientListResponse contains the response from method ManagedEnvironmentPrivateLinkResourcesClient.NewListPager.
+type ManagedEnvironmentPrivateLinkResourcesClientListResponse struct {
+	// A list of private link resources
+	PrivateLinkResourceListResult
 }
 
 // ManagedEnvironmentUsagesClientListResponse contains the response from method ManagedEnvironmentUsagesClient.NewListPager.

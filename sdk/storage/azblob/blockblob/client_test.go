@@ -10,13 +10,13 @@ import (
 	"bytes"
 	"context"
 	"crypto/md5"
+	"crypto/rand"
 	"encoding/base64"
 	"encoding/binary"
 	"errors"
 	"fmt"
 	"hash/crc64"
 	"io"
-	"math/rand"
 	"net/http"
 	"os"
 	"strconv"
@@ -367,15 +367,9 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlobCrcResponseHeader() {
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
-	accountName, accountKey := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
 	blobName := testName
-	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s", accountName, containerName, blobName)
 
-	cred, err := blob.NewSharedKeyCredential(accountName, accountKey)
-	_require.NoError(err)
-
-	bbClient, err := blockblob.NewClientWithSharedKeyCredential(blobURL, cred, nil)
-	_require.NoError(err)
+	bbClient := containerClient.NewBlockBlobClient(blobName)
 
 	contentSize := 4 * 1024 // 4 KB
 	r, sourceData := testcommon.GetDataAndReader(testName, contentSize)
@@ -771,6 +765,11 @@ func (s *BlockBlobRecordedTestsSuite) TestStageBlockWithGeneratedCRC64() {
 func (s *BlockBlobRecordedTestsSuite) TestStageBlockWithCRC64() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
+	var b [8]byte
+	_, err := rand.Read(b[:])
+	if err != nil {
+		return
+	}
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
@@ -796,7 +795,8 @@ func (s *BlockBlobRecordedTestsSuite) TestStageBlockWithCRC64() {
 	_require.EqualValues(binary.LittleEndian.Uint64(putResp.ContentCRC64), contentCrc64)
 
 	// test put block with bad CRC64 value
-	badContentCrc64 := rand.Uint64()
+	badContentCrc64 := binary.LittleEndian.Uint64(b[:])
+
 	_, _ = rsc.Seek(0, io.SeekStart)
 	blockID2 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 1)))
 	_, err = bbClient.StageBlock(context.Background(), blockID2, rsc, &blockblob.StageBlockOptions{
@@ -5143,7 +5143,10 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlobUploadStreamDownloadBuffer() {
 	const MiB = 1024 * 1024
 	testUploadDownload := func(contentSize int) {
 		content := make([]byte, contentSize)
-		_, _ = rand.Read(content)
+		_, err := rand.Read(content)
+		if err != nil {
+			return
+		}
 		contentMD5 := md5.Sum(content)
 		body := streaming.NopCloser(bytes.NewReader(content))
 
@@ -5882,7 +5885,8 @@ func (m serviceVersionTest) Do(req *policy.Request) (*http.Response, error) {
 
 	currentVersion := map[string][]string(req.Raw().Header)[versionHeader]
 	if currentVersion[0] != generated.ServiceVersion {
-		return nil, fmt.Errorf(currentVersion[0] + " service version doesn't match expected version: " + generated.ServiceVersion)
+		return nil, fmt.Errorf("%s service version doesn't match expected version: %s", currentVersion[0], generated.ServiceVersion)
+
 	}
 
 	return &http.Response{

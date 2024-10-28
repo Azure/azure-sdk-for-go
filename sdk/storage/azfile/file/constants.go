@@ -67,6 +67,19 @@ const (
 	RangeWriteTypeClear  RangeWriteType = generated.FileRangeWriteTypeClear
 )
 
+// PermissionFormat contains the format of the file permissions, Can be sddl (Default) or Binary.
+type PermissionFormat = generated.FilePermissionFormat
+
+const (
+	FilePermissionFormatBinary PermissionFormat = generated.FilePermissionFormatBinary
+	FilePermissionFormatSddl   PermissionFormat = generated.FilePermissionFormatSddl
+)
+
+// PossibleFilePermissionFormatValues returns the possible values for the FilePermissionFormat const type.
+func PossibleFilePermissionFormatValues() []PermissionFormat {
+	return generated.PossibleFilePermissionFormatValues()
+}
+
 // PossibleRangeWriteTypeValues returns the possible values for the RangeWriteType const type.
 func PossibleRangeWriteTypeValues() []RangeWriteType {
 	return generated.PossibleFileRangeWriteTypeValues()

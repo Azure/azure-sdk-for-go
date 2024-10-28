@@ -43,6 +43,24 @@ type APIErrorBase struct {
 	Target *string
 }
 
+// AdditionalCapabilities for VM.
+type AdditionalCapabilities struct {
+	// The flag that enables or disables hibernation capability on the VM.
+	HibernationEnabled *bool
+
+	// The flag that enables or disables a capability to have one or more managed data disks with UltraSSD_LRS storage account
+	// type on the VM or VMSS.
+	// Managed disks with storage account type UltraSSD_LRS can be added to a virtual machine or virtual machine scale set only
+	// if this property is enabled.
+	UltraSSDEnabled *bool
+}
+
+// AdditionalLocationsProfile - Represents the configuration for additional locations where Fleet resources may be deployed.
+type AdditionalLocationsProfile struct {
+	// REQUIRED; The list of location profiles.
+	LocationProfiles []*LocationProfile
+}
+
 // AdditionalUnattendContent - Specifies additional XML formatted information that can be included in the
 // Unattend.xml file, which is used by Windows Setup. Contents are defined by
 // setting name, component name, and the pass in which the content is applied.
@@ -172,6 +190,12 @@ type ComputeProfile struct {
 	// REQUIRED; Base Virtual Machine Profile Properties to be specified according to "specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/{computeApiVersion}/virtualMachineScaleSet.json#/definitions/VirtualMachineScaleSetVMProfile"
 	BaseVirtualMachineProfile *BaseVirtualMachineProfile
 
+	// Specifies VMSS and VM API entity models support two additional capabilities as of today: ultraSSDEnabled and hibernationEnabled.
+	// ultraSSDEnabled: Enables UltraSSD_LRS storage account type on the VMSS VMs.
+	// hibernationEnabled: Enables the hibernation capability on the VMSS VMs.
+	// Default value is null if not specified. This property cannot be updated once set.
+	AdditionalVirtualMachineCapabilities *AdditionalCapabilities
+
 	// Specifies the Microsoft.Compute API version to use when creating underlying Virtual Machine scale sets and Virtual Machines.
 	// The default value will be the latest supported computeApiVersion by Compute Fleet.
 	ComputeAPIVersion *string
@@ -277,11 +301,17 @@ type FleetProperties struct {
 	// REQUIRED; List of VM sizes supported for Compute Fleet
 	VMSizesProfile []*VMSizeProfile
 
+	// Represents the configuration for additional locations where Fleet resources may be deployed.
+	AdditionalLocationsProfile *AdditionalLocationsProfile
+
 	// Configuration Options for Regular instances in Compute Fleet.
 	RegularPriorityProfile *RegularPriorityProfile
 
 	// Configuration Options for Spot instances in Compute Fleet.
 	SpotPriorityProfile *SpotPriorityProfile
+
+	// Attribute based Fleet.
+	VMAttributes *VMAttributes
 
 	// READ-ONLY; The status of the last operation.
 	ProvisioningState *ProvisioningState
@@ -426,6 +456,18 @@ type LinuxVMGuestPatchAutomaticByPlatformSettings struct {
 	// Specifies the reboot setting for all AutomaticByPlatform patch installation
 	// operations.
 	RebootSetting *LinuxVMGuestPatchAutomaticByPlatformRebootSetting
+}
+
+// LocationProfile - Represents the profile for a single additional location in the Fleet. The location and the virtualMachineProfileOverride
+// (optional).
+type LocationProfile struct {
+	// REQUIRED; The ARM location name of the additional region. If LocationProfile is specified, then location is required.
+	Location *string
+
+	// An override for computeProfile.baseVirtualMachineProfile specific to this region.
+	// This override is merged with the base virtual machine profile to define the final virtual machine profile for the resources
+	// deployed in this location.
+	VirtualMachineProfileOverride *BaseVirtualMachineProfile
 }
 
 // ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
@@ -791,6 +833,104 @@ type UserAssignedIdentity struct {
 
 	// READ-ONLY; The principal ID of the assigned identity.
 	PrincipalID *string
+}
+
+// VMAttributeMinMaxDouble - VMAttributes using double values.
+type VMAttributeMinMaxDouble struct {
+	// Maximum value. Double.MaxValue(1.7976931348623157E+308)
+	Max *float64
+
+	// Minimum value. default 0. Double.MinValue()
+	Min *float64
+}
+
+// VMAttributeMinMaxInteger - While retrieving VMSizes from CRS, Min = 0 (uint.MinValue) if not specified, Max = 4294967295
+// (uint.MaxValue) if not specified. This allows to filter VMAttributes on all available VMSizes.
+type VMAttributeMinMaxInteger struct {
+	// Max VMSize from CRS, Max = 4294967295 (uint.MaxValue) if not specified.
+	Max *int32
+
+	// Min VMSize from CRS, Min = 0 (uint.MinValue) if not specified.
+	Min *int32
+}
+
+// VMAttributes that will be used to filter VMSizes which will be used to build Fleet.
+type VMAttributes struct {
+	// REQUIRED; The range of memory specified from Min to Max. Must be specified if VMAttributes are specified, either Min or
+	// Max is required if specified.
+	MemoryInGiB *VMAttributeMinMaxDouble
+
+	// REQUIRED; The range of vCpuCount specified from Min to Max. Must be specified if VMAttributes are specified, either Min
+	// or Max is required if specified.
+	VCPUCount *VMAttributeMinMaxInteger
+
+	// The range of accelerator count specified from min to max. Optional parameter. Either Min or Max is required if specified.
+	// acceleratorSupport should be set to "Included" or "Required" to use this VMAttribute.
+	// If acceleratorSupport is "Excluded", this VMAttribute can not be used.
+	AcceleratorCount *VMAttributeMinMaxInteger
+
+	// The accelerator manufacturers specified as a list.
+	// acceleratorSupport should be set to "Included" or "Required" to use this VMAttribute.
+	// If acceleratorSupport is "Excluded", this VMAttribute can not be used.
+	AcceleratorManufacturers []*AcceleratorManufacturer
+
+	// Specifies whether the VMSize supporting accelerator should be used to build Fleet or not.
+	// acceleratorSupport should be set to "Included" or "Required" to use this VMAttribute.
+	// If acceleratorSupport is "Excluded", this VMAttribute can not be used.
+	AcceleratorSupport *VMAttributeSupport
+
+	// The accelerator types specified as a list. acceleratorSupport should be set to "Included" or "Required" to use this VMAttribute.
+	// If acceleratorSupport is "Excluded", this VMAttribute can not be used.
+	AcceleratorTypes []*AcceleratorType
+
+	// The VM architecture types specified as a list. Optional parameter.
+	ArchitectureTypes []*ArchitectureType
+
+	// Specifies whether the VMSize supporting burstable capability should be used to build Fleet or not.
+	BurstableSupport *VMAttributeSupport
+
+	// The VM CPU manufacturers specified as a list. Optional parameter.
+	CPUManufacturers []*CPUManufacturer
+
+	// The range of data disk count specified from Min to Max. Optional parameter. Either Min or Max is required if specified.
+	DataDiskCount *VMAttributeMinMaxInteger
+
+	// Specifies which VMSizes should be excluded while building Fleet. Optional parameter.
+	ExcludedVMSizes []*string
+
+	// The local storage disk types specified as a list. LocalStorageSupport should be set to "Included" or "Required" to use
+	// this VMAttribute.
+	// If localStorageSupport is "Excluded", this VMAttribute can not be used.
+	LocalStorageDiskTypes []*LocalStorageDiskType
+
+	// LocalStorageSupport should be set to "Included" or "Required" to use this VMAttribute.
+	// If localStorageSupport is "Excluded", this VMAttribute can not be used.
+	LocalStorageInGiB *VMAttributeMinMaxDouble
+
+	// Specifies whether the VMSize supporting local storage should be used to build Fleet or not.
+	LocalStorageSupport *VMAttributeSupport
+
+	// The range of memory in GiB per vCPU specified from min to max. Optional parameter. Either Min or Max is required if specified.
+	MemoryInGiBPerVCpu *VMAttributeMinMaxDouble
+
+	// The range of network bandwidth in Mbps specified from Min to Max. Optional parameter. Either Min or Max is required if
+	// specified.
+	NetworkBandwidthInMbps *VMAttributeMinMaxDouble
+
+	// The range of network interface count specified from Min to Max. Optional parameter. Either Min or Max is required if specified.
+	NetworkInterfaceCount *VMAttributeMinMaxInteger
+
+	// The range of RDMA (Remote Direct Memory Access) network interface count specified from Min to Max. Optional parameter.
+	// Either Min or Max is required if specified.
+	// rdmaSupport should be set to "Included" or "Required" to use this VMAttribute.
+	// If rdmaSupport is "Excluded", this VMAttribute can not be used.
+	RdmaNetworkInterfaceCount *VMAttributeMinMaxInteger
+
+	// Specifies whether the VMSize supporting RDMA (Remote Direct Memory Access) should be used to build Fleet or not.
+	RdmaSupport *VMAttributeSupport
+
+	// The VM category specified as a list. Optional parameter.
+	VMCategories []*VMCategory
 }
 
 // VMDiskSecurityProfile - Specifies the security profile settings for the managed disk. **Note:** It can

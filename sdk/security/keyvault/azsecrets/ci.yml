@@ -27,6 +27,5 @@ extends:
   parameters:
     ServiceDirectory: 'security/keyvault/azsecrets'
     RunLiveTests: true
-    UseFederatedAuth: true
     UsePipelineProxy: false
     SupportedClouds: 'Public,UsGov,China'

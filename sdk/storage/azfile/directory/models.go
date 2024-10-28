@@ -37,6 +37,12 @@ type CreateOptions struct {
 	FilePermissions *file.Permissions
 	// A name-value pair to associate with a file storage object.
 	Metadata map[string]*string
+	// Optional. Available for version 2023-06-01 and later. Specifies the format in which the permission is returned. Acceptable
+	// values are SDDL or binary. If x-ms-file-permission-format is unspecified or
+	// explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is explicitly set to
+	// binary, the permission is returned as a base64 string representing the binary
+	// encoding of the permission
+	FilePermissionFormat *FilePermissionFormat
 }
 
 func (o *CreateOptions) format() *generated.DirectoryClientCreateOptions {
@@ -63,6 +69,12 @@ func (o *CreateOptions) format() *generated.DirectoryClientCreateOptions {
 		Metadata:          o.Metadata,
 	}
 
+	if permissionKey != nil && *permissionKey != shared.DefaultFilePermissionString {
+		createOptions.FilePermissionFormat = to.Ptr(FilePermissionFormat(shared.DefaultFilePermissionFormat))
+	} else if o.FilePermissionFormat != nil {
+		createOptions.FilePermissionFormat = to.Ptr(FilePermissionFormat(*o.FilePermissionFormat))
+	}
+
 	return createOptions
 }
 
@@ -85,6 +97,8 @@ type RenameOptions struct {
 	FileSMBProperties *file.SMBProperties
 	// FilePermissions contains the optional parameters for the permissions on the file.
 	FilePermissions *file.Permissions
+	// FilePermissionFormat contains the file permission format, sddl(Default) or Binary.
+	FilePermissionFormat *FilePermissionFormat
 	// IgnoreReadOnly specifies whether the ReadOnly attribute on a pre-existing destination file should be respected.
 	// If true, rename will succeed, otherwise, a previous file at the destination with the ReadOnly attribute set will cause rename to fail.
 	IgnoreReadOnly *bool
@@ -114,6 +128,12 @@ func (o *RenameOptions) format() (*generated.DirectoryClientRenameOptions, *gene
 		IgnoreReadOnly:    o.IgnoreReadOnly,
 		Metadata:          o.Metadata,
 		ReplaceIfExists:   o.ReplaceIfExists,
+	}
+
+	if permissionKey != nil && *permissionKey != shared.DefaultPreserveString {
+		renameOpts.FilePermissionFormat = to.Ptr(FilePermissionFormat(shared.DefaultFilePermissionFormat))
+	} else if o.FilePermissionFormat != nil {
+		renameOpts.FilePermissionFormat = to.Ptr(FilePermissionFormat(*o.FilePermissionFormat))
 	}
 
 	smbInfo := &generated.CopyFileSMBInfo{
@@ -152,6 +172,8 @@ type SetPropertiesOptions struct {
 	FileSMBProperties *file.SMBProperties
 	// The default value is 'preserve' for Permission field in file.Permissions.
 	FilePermissions *file.Permissions
+	// FilePermissionFormat contains the format of the file permissions, Can be sddl (Default) or Binary.
+	FilePermissionFormat *FilePermissionFormat
 }
 
 func (o *SetPropertiesOptions) format() *generated.DirectoryClientSetPropertiesOptions {
@@ -175,6 +197,12 @@ func (o *SetPropertiesOptions) format() *generated.DirectoryClientSetPropertiesO
 		FileLastWriteTime: fileLastWriteTime,
 		FilePermission:    permission,
 		FilePermissionKey: permissionKey,
+	}
+
+	if permissionKey != nil && *permissionKey != shared.DefaultPreserveString {
+		setPropertiesOptions.FilePermissionFormat = to.Ptr(FilePermissionFormat(shared.DefaultFilePermissionFormat))
+	} else if o.FilePermissionFormat != nil {
+		setPropertiesOptions.FilePermissionFormat = to.Ptr(FilePermissionFormat(*o.FilePermissionFormat))
 	}
 	return setPropertiesOptions
 }

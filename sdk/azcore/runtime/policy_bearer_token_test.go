@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/base64"
 	"fmt"
+	"io"
 	"strings"
 
 	"errors"
@@ -17,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/stretchr/testify/require"
@@ -529,6 +531,61 @@ func TestBearerTokenPolicy_RequiresHTTPS(t *testing.T) {
 	require.Error(t, err)
 	var nre errorinfo.NonRetriable
 	require.ErrorAs(t, err, &nre)
+}
+
+func TestBearerTokenPolicy_RewindsBeforeRetry(t *testing.T) {
+	const expected = "expected"
+	for _, test := range []struct {
+		challenge, desc string
+		onChallenge     bool
+	}{
+		{
+			desc:      "CAE challenge",
+			challenge: `Bearer error="insufficient_claims", claims="ey=="`,
+		},
+		{
+			desc:        "non-CAE challenge",
+			challenge:   `Bearer authorization_uri="https://login.windows.net/", error="invalid_token"`,
+			onChallenge: true,
+		},
+	} {
+		t.Run(test.desc, func(t *testing.T) {
+			read := func(r *http.Request) bool {
+				actual, err := io.ReadAll(r.Body)
+				require.NoError(t, err, "request should have body content")
+				require.EqualValues(t, expected, actual)
+				return true
+			}
+			srv, close := mock.NewTLSServer()
+			defer close()
+			srv.AppendResponse(
+				mock.WithHeader(shared.HeaderWWWAuthenticate, test.challenge),
+				mock.WithPredicate(read),
+				mock.WithStatusCode(http.StatusUnauthorized),
+			)
+			srv.AppendResponse()
+			srv.AppendResponse(mock.WithPredicate(read))
+			srv.AppendResponse()
+
+			called := false
+			o := &policy.BearerTokenOptions{}
+			if test.onChallenge {
+				o.AuthorizationHandler.OnChallenge = func(*policy.Request, *http.Response, func(policy.TokenRequestOptions) error) error {
+					called = true
+					return nil
+				}
+			}
+			b := NewBearerTokenPolicy(mockCredential{}, []string{scope}, o)
+			pl := newTestPipeline(&policy.ClientOptions{PerRetryPolicies: []policy.Policy{b}, Transport: srv})
+			req, err := NewRequest(context.Background(), http.MethodPost, srv.URL())
+			require.NoError(t, err)
+			require.NoError(t, req.SetBody(streaming.NopCloser(strings.NewReader(expected)), "text/plain"))
+
+			_, err = pl.Do(req)
+			require.NoError(t, err)
+			require.Equal(t, test.onChallenge, called, "policy should call OnChallenge when set")
+		})
+	}
 }
 
 func TestCheckHTTPSForAuth(t *testing.T) {

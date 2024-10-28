@@ -205,6 +205,25 @@ func (s *ShareUnrecordedTestsSuite) TestShareClientUsingSAS() {
 	_require.Equal(fileCtr, 1)
 }
 
+func (s *ShareUnrecordedTestsSuite) TestShareCreateDeleteUsingOAuth() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	shareName := testcommon.GenerateShareName(testName)
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	shareClientOAuth, err := share.NewClient("https://"+accountName+".file.core.windows.net/"+shareName, cred, nil)
+	_require.NoError(err)
+
+	_, err = shareClientOAuth.Delete(context.Background(), nil)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.ShareNotFound)
+
+}
+
 func (s *ShareRecordedTestsSuite) TestShareCreateDeleteNonDefault() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -315,7 +334,45 @@ func (s *ShareRecordedTestsSuite) TestShareCreateWithSnapshotVirtualDirectoryAcc
 	_require.Equal(response.EnableSnapshotVirtualDirectoryAccess, to.Ptr(true))
 }
 
-func (s *ShareRecordedTestsSuite) TestAuthenticationErrorDetailError() {
+func (s *ShareRecordedTestsSuite) TestShareCreatePaidBursting() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountPremium)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareURL := "https://" + cred.AccountName() + ".file.core.windows.net/" + shareName
+	options := &share.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	shareClient, err := share.NewClientWithSharedKeyCredential(shareURL, cred, options)
+	_require.NoError(err)
+
+	createOptions := &share.CreateOptions{
+		PaidBurstingEnabled:           to.Ptr(true),
+		PaidBurstingMaxIops:           to.Ptr(int64(5000)),
+		PaidBurstingMaxBandwidthMibps: to.Ptr(int64(1000)),
+	}
+
+	resp, err := shareClient.Create(context.Background(), createOptions)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	_require.NoError(err)
+	_require.NotNil(resp.ETag)
+	_require.NotNil(resp.RequestID)
+
+	props, err := shareClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(props.ETag)
+	_require.Equal(props.LastModified.IsZero(), false)
+	_require.NotNil(props.RequestID)
+	_require.NotNil(props.Version)
+	_require.Equal(props.PaidBurstingEnabled, to.Ptr(true))
+	_require.Equal(*props.PaidBurstingMaxIops, int64(5000))
+	_require.Equal(*props.PaidBurstingMaxBandwidthMibps, int64(1000))
+}
+
+func (s *ShareUnrecordedTestsSuite) TestAuthenticationErrorDetailError() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -472,16 +529,52 @@ func (s *ShareRecordedTestsSuite) TestShareGetSetPropertiesDefault() {
 	_require.Greater(*props.Quota, int32(0)) // When using service default quota, it could be any value
 }
 
+func (s *ShareUnrecordedTestsSuite) TestShareGetSetPropertiesOAuth() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	shareName := testcommon.GenerateShareName(testName)
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	shareClientOAuth, err := share.NewClient("https://"+accountName+".file.core.windows.net/"+shareName, cred, nil)
+	_require.NoError(err)
+
+	_, err = shareClientOAuth.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	sResp, err := shareClientOAuth.SetProperties(context.Background(), &share.SetPropertiesOptions{
+		AccessTier: to.Ptr(share.AccessTierCool),
+	})
+	_require.NoError(err)
+	_require.NotNil(sResp.ETag)
+	_require.Equal(sResp.LastModified.IsZero(), false)
+	_require.NotNil(sResp.RequestID)
+	_require.NotNil(sResp.Version)
+	_require.Equal(sResp.Date.IsZero(), false)
+
+	properties, err := shareClientOAuth.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(properties.ETag)
+	_require.Equal(*properties.AccessTier, string(share.AccessTierCool))
+
+}
+
 func (s *ShareRecordedTestsSuite) TestShareGetSetPropertiesWithSnapshotVirtualDirectory() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountPremium, nil)
 	_require.NoError(err)
 
 	shareName := testcommon.GenerateShareName(testName)
-	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	shareClient := testcommon.GetShareClient(shareName, svcClient)
 
-	_, err = shareClient.Create(context.Background(), nil)
+	_, err = shareClient.Create(context.Background(), &share.CreateOptions{EnabledProtocols: to.Ptr("NFS")})
+	_require.NoError(err)
+
 	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
 	_require.NoError(err)
 
@@ -493,6 +586,40 @@ func (s *ShareRecordedTestsSuite) TestShareGetSetPropertiesWithSnapshotVirtualDi
 	props, err := shareClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.Equal(*props.EnableSnapshotVirtualDirectoryAccess, true)
+}
+
+func (s *ShareRecordedTestsSuite) TestShareSetPropertiesPaidBursting() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountPremium, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	sResp, err := shareClient.SetProperties(context.Background(), &share.SetPropertiesOptions{
+		PaidBurstingEnabled:           to.Ptr(true),
+		PaidBurstingMaxIops:           to.Ptr(int64(5000)),
+		PaidBurstingMaxBandwidthMibps: to.Ptr(int64(1000)),
+	})
+	_require.NoError(err)
+	_require.NotNil(sResp.ETag)
+	_require.Equal(sResp.LastModified.IsZero(), false)
+	_require.NotNil(sResp.RequestID)
+	_require.NotNil(sResp.Version)
+	_require.Equal(sResp.Date.IsZero(), false)
+
+	props, err := shareClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(props.ETag)
+	_require.Equal(props.LastModified.IsZero(), false)
+	_require.NotNil(props.RequestID)
+	_require.NotNil(props.Version)
+	_require.Equal(props.Date.IsZero(), false)
+	_require.Equal(props.PaidBurstingEnabled, to.Ptr(true))
+	_require.Equal(*props.PaidBurstingMaxIops, int64(5000))
+	_require.Equal(*props.PaidBurstingMaxBandwidthMibps, int64(1000))
 }
 
 func (s *ShareRecordedTestsSuite) TestShareSetQuotaNegative() {
@@ -1582,39 +1709,6 @@ func (s *ShareRecordedTestsSuite) TestSASShareClientSignNegative() {
 	_require.Equal(err.Error(), "service SAS is missing at least one of these: ExpiryTime or Permissions")
 }
 
-func (s *ShareRecordedTestsSuite) TestShareOAuthNegative() {
-	_require := require.New(s.T())
-	testName := s.T().Name()
-
-	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
-	_require.Greater(len(accountName), 0)
-
-	cred, err := testcommon.GetGenericTokenCredential()
-	_require.NoError(err)
-
-	shareName := testcommon.GenerateShareName(testName)
-	options := &share.ClientOptions{FileRequestIntent: to.Ptr(share.TokenIntentBackup)}
-	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
-	shareClient, err := share.NewClient("https://"+accountName+".file.core.windows.net/"+shareName, cred, options)
-	_require.NoError(err)
-
-	_, err = shareClient.Create(context.Background(), nil)
-	_require.Error(err)
-	testcommon.ValidateFileErrorCode(_require, err, fileerror.FileOAuthManagementAPIRestrictedToSRP)
-
-	_, err = shareClient.GetProperties(context.Background(), nil)
-	_require.Error(err)
-	testcommon.ValidateFileErrorCode(_require, err, fileerror.FileOAuthManagementAPIRestrictedToSRP)
-
-	_, err = shareClient.SetProperties(context.Background(), nil)
-	_require.Error(err)
-	testcommon.ValidateFileErrorCode(_require, err, fileerror.FileOAuthManagementAPIRestrictedToSRP)
-
-	_, err = shareClient.Delete(context.Background(), nil)
-	_require.Error(err)
-	testcommon.ValidateFileErrorCode(_require, err, fileerror.FileOAuthManagementAPIRestrictedToSRP)
-}
-
 func (s *ShareRecordedTestsSuite) TestShareCreateAndGetPermissionOAuth() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -1816,7 +1910,7 @@ func (s *ShareRecordedTestsSuite) TestShareClientCustomAudience() {
 	_require.NotEmpty(*getResp.Permission)
 }
 
-func (s *ShareRecordedTestsSuite) TestShareClientAudienceNegative() {
+func (s *ShareUnrecordedTestsSuite) TestShareClientAudienceNegative() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1844,5 +1938,5 @@ func (s *ShareRecordedTestsSuite) TestShareClientAudienceNegative() {
 	// Create a permission and check that it's not empty.
 	_, err = shareClientAudience.CreatePermission(context.Background(), testcommon.SampleSDDL, nil)
 	_require.Error(err)
-	testcommon.ValidateFileErrorCode(_require, err, fileerror.AuthenticationFailed)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.InvalidAuthenticationInfo)
 }

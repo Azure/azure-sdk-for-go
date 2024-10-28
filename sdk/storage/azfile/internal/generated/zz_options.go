@@ -69,6 +69,13 @@ type DirectoryClientCreateOptions struct {
 	// or x-ms-file-permission-key should be specified.
 	FilePermission *string
 
+	// Optional. Available for version 2023-06-01 and later. Specifies the format in which the permission is returned. Acceptable
+	// values are SDDL or binary. If x-ms-file-permission-format is unspecified or
+	// explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is explicitly set to
+	// binary, the permission is returned as a base64 string representing the binary
+	// encoding of the permission
+	FilePermissionFormat *FilePermissionFormat
+
 	// Key of the permission to be set for the directory/file. Note: Only one of the x-ms-file-permission or x-ms-file-permission-key
 	// should be specified.
 	FilePermissionKey *string
@@ -178,6 +185,13 @@ type DirectoryClientRenameOptions struct {
 	// or x-ms-file-permission-key should be specified.
 	FilePermission *string
 
+	// Optional. Available for version 2023-06-01 and later. Specifies the format in which the permission is returned. Acceptable
+	// values are SDDL or binary. If x-ms-file-permission-format is unspecified or
+	// explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is explicitly set to
+	// binary, the permission is returned as a base64 string representing the binary
+	// encoding of the permission
+	FilePermissionFormat *FilePermissionFormat
+
 	// Key of the permission to be set for the directory/file. Note: Only one of the x-ms-file-permission or x-ms-file-permission-key
 	// should be specified.
 	FilePermissionKey *string
@@ -232,6 +246,13 @@ type DirectoryClientSetPropertiesOptions struct {
 	// value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the x-ms-file-permission
 	// or x-ms-file-permission-key should be specified.
 	FilePermission *string
+
+	// Optional. Available for version 2023-06-01 and later. Specifies the format in which the permission is returned. Acceptable
+	// values are SDDL or binary. If x-ms-file-permission-format is unspecified or
+	// explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is explicitly set to
+	// binary, the permission is returned as a base64 string representing the binary
+	// encoding of the permission
+	FilePermissionFormat *FilePermissionFormat
 
 	// Key of the permission to be set for the directory/file. Note: Only one of the x-ms-file-permission or x-ms-file-permission-key
 	// should be specified.
@@ -312,6 +333,13 @@ type FileClientCreateOptions struct {
 	// value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the x-ms-file-permission
 	// or x-ms-file-permission-key should be specified.
 	FilePermission *string
+
+	// Optional. Available for version 2023-06-01 and later. Specifies the format in which the permission is returned. Acceptable
+	// values are SDDL or binary. If x-ms-file-permission-format is unspecified or
+	// explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is explicitly set to
+	// binary, the permission is returned as a base64 string representing the binary
+	// encoding of the permission
+	FilePermissionFormat *FilePermissionFormat
 
 	// Key of the permission to be set for the directory/file. Note: Only one of the x-ms-file-permission or x-ms-file-permission-key
 	// should be specified.
@@ -434,6 +462,13 @@ type FileClientRenameOptions struct {
 	// or x-ms-file-permission-key should be specified.
 	FilePermission *string
 
+	// Optional. Available for version 2023-06-01 and later. Specifies the format in which the permission is returned. Acceptable
+	// values are SDDL or binary. If x-ms-file-permission-format is unspecified or
+	// explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is explicitly set to
+	// binary, the permission is returned as a base64 string representing the binary
+	// encoding of the permission
+	FilePermissionFormat *FilePermissionFormat
+
 	// Key of the permission to be set for the directory/file. Note: Only one of the x-ms-file-permission or x-ms-file-permission-key
 	// should be specified.
 	FilePermissionKey *string
@@ -482,6 +517,13 @@ type FileClientSetHTTPHeadersOptions struct {
 	// value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the x-ms-file-permission
 	// or x-ms-file-permission-key should be specified.
 	FilePermission *string
+
+	// Optional. Available for version 2023-06-01 and later. Specifies the format in which the permission is returned. Acceptable
+	// values are SDDL or binary. If x-ms-file-permission-format is unspecified or
+	// explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is explicitly set to
+	// binary, the permission is returned as a base64 string representing the binary
+	// encoding of the permission
+	FilePermissionFormat *FilePermissionFormat
 
 	// Key of the permission to be set for the directory/file. Note: Only one of the x-ms-file-permission or x-ms-file-permission-key
 	// should be specified.
@@ -673,6 +715,17 @@ type ShareClientCreateOptions struct {
 	// A name-value pair to associate with a file storage object.
 	Metadata map[string]*string
 
+	// Optional. Boolean. Default if not specified is false. This property enables paid bursting.
+	PaidBurstingEnabled *bool
+
+	// Optional. Integer. Default if not specified is the maximum throughput the file share can support. Current maximum for a
+	// file share is 10,340 MiB/sec.
+	PaidBurstingMaxBandwidthMibps *int64
+
+	// Optional. Integer. Default if not specified is the maximum IOPS the file share can support. Current maximum for a file
+	// share is 102,400 IOPS.
+	PaidBurstingMaxIops *int64
+
 	// Specifies the maximum size of the share, in gigabytes.
 	Quota *int32
 
@@ -723,6 +776,13 @@ type ShareClientGetAccessPolicyOptions struct {
 
 // ShareClientGetPermissionOptions contains the optional parameters for the ShareClient.GetPermission method.
 type ShareClientGetPermissionOptions struct {
+	// Optional. Available for version 2023-06-01 and later. Specifies the format in which the permission is returned. Acceptable
+	// values are SDDL or binary. If x-ms-file-permission-format is unspecified or
+	// explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is explicitly set to
+	// binary, the permission is returned as a base64 string representing the binary
+	// encoding of the permission
+	FilePermissionFormat *FilePermissionFormat
+
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
 	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
 	Timeout *int32
@@ -812,6 +872,17 @@ type ShareClientSetPropertiesOptions struct {
 	// Specifies the access tier of the share.
 	AccessTier                           *ShareAccessTier
 	EnableSnapshotVirtualDirectoryAccess *bool
+
+	// Optional. Boolean. Default if not specified is false. This property enables paid bursting.
+	PaidBurstingEnabled *bool
+
+	// Optional. Integer. Default if not specified is the maximum throughput the file share can support. Current maximum for a
+	// file share is 10,340 MiB/sec.
+	PaidBurstingMaxBandwidthMibps *int64
+
+	// Optional. Integer. Default if not specified is the maximum IOPS the file share can support. Current maximum for a file
+	// share is 102,400 IOPS.
+	PaidBurstingMaxIops *int64
 
 	// Specifies the maximum size of the share, in gigabytes.
 	Quota *int32

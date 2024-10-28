@@ -47,6 +47,8 @@ const (
 	// Inherit inherits permissions from the parent folder (default when creating files/folders)
 	DefaultFilePermissionString = "inherit"
 
+	DefaultFilePermissionFormat = "Sddl"
+
 	// DefaultCurrentTimeString sets creation/last write times to now
 	DefaultCurrentTimeString = "now"
 

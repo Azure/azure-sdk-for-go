@@ -20,6 +20,8 @@ import (
 func (a APIServerAccessProfile) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "enablePrivateCluster", a.EnablePrivateCluster)
+	populate(objectMap, "enableVnetIntegration", a.EnableVnetIntegration)
+	populate(objectMap, "subnetId", a.SubnetID)
 	return json.Marshal(objectMap)
 }
 
@@ -34,6 +36,12 @@ func (a *APIServerAccessProfile) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "enablePrivateCluster":
 			err = unpopulate(val, "EnablePrivateCluster", &a.EnablePrivateCluster)
+			delete(rawMsg, key)
+		case "enableVnetIntegration":
+			err = unpopulate(val, "EnableVnetIntegration", &a.EnableVnetIntegration)
+			delete(rawMsg, key)
+		case "subnetId":
+			err = unpopulate(val, "SubnetID", &a.SubnetID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -65,6 +73,154 @@ func (a *AgentProfile) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "vmSize":
 			err = unpopulate(val, "VMSize", &a.VMSize)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AutoUpgradeNodeImageSelection.
+func (a AutoUpgradeNodeImageSelection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "type", a.Type)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AutoUpgradeNodeImageSelection.
+func (a *AutoUpgradeNodeImageSelection) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "type":
+			err = unpopulate(val, "Type", &a.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AutoUpgradeProfile.
+func (a AutoUpgradeProfile) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "eTag", a.ETag)
+	populate(objectMap, "id", a.ID)
+	populate(objectMap, "name", a.Name)
+	populate(objectMap, "properties", a.Properties)
+	populate(objectMap, "systemData", a.SystemData)
+	populate(objectMap, "type", a.Type)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AutoUpgradeProfile.
+func (a *AutoUpgradeProfile) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "eTag":
+			err = unpopulate(val, "ETag", &a.ETag)
+			delete(rawMsg, key)
+		case "id":
+			err = unpopulate(val, "ID", &a.ID)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, "Name", &a.Name)
+			delete(rawMsg, key)
+		case "properties":
+			err = unpopulate(val, "Properties", &a.Properties)
+			delete(rawMsg, key)
+		case "systemData":
+			err = unpopulate(val, "SystemData", &a.SystemData)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, "Type", &a.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AutoUpgradeProfileListResult.
+func (a AutoUpgradeProfileListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "nextLink", a.NextLink)
+	populate(objectMap, "value", a.Value)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AutoUpgradeProfileListResult.
+func (a *AutoUpgradeProfileListResult) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "nextLink":
+			err = unpopulate(val, "NextLink", &a.NextLink)
+			delete(rawMsg, key)
+		case "value":
+			err = unpopulate(val, "Value", &a.Value)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AutoUpgradeProfileProperties.
+func (a AutoUpgradeProfileProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "channel", a.Channel)
+	populate(objectMap, "disabled", a.Disabled)
+	populate(objectMap, "nodeImageSelection", a.NodeImageSelection)
+	populate(objectMap, "provisioningState", a.ProvisioningState)
+	populate(objectMap, "updateStrategyId", a.UpdateStrategyID)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AutoUpgradeProfileProperties.
+func (a *AutoUpgradeProfileProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "channel":
+			err = unpopulate(val, "Channel", &a.Channel)
+			delete(rawMsg, key)
+		case "disabled":
+			err = unpopulate(val, "Disabled", &a.Disabled)
+			delete(rawMsg, key)
+		case "nodeImageSelection":
+			err = unpopulate(val, "NodeImageSelection", &a.NodeImageSelection)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, "ProvisioningState", &a.ProvisioningState)
+			delete(rawMsg, key)
+		case "updateStrategyId":
+			err = unpopulate(val, "UpdateStrategyID", &a.UpdateStrategyID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -832,6 +988,7 @@ func (m *MemberUpdateStatus) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type NodeImageSelection.
 func (n NodeImageSelection) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "customNodeImageVersions", n.CustomNodeImageVersions)
 	populate(objectMap, "type", n.Type)
 	return json.Marshal(objectMap)
 }
@@ -845,6 +1002,9 @@ func (n *NodeImageSelection) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "customNodeImageVersions":
+			err = unpopulate(val, "CustomNodeImageVersions", &n.CustomNodeImageVersions)
+			delete(rawMsg, key)
 		case "type":
 			err = unpopulate(val, "Type", &n.Type)
 			delete(rawMsg, key)

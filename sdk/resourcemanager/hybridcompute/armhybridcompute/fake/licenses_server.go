@@ -47,6 +47,10 @@ type LicensesServer struct {
 	// BeginUpdate is the fake for method LicensesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK
 	BeginUpdate func(ctx context.Context, resourceGroupName string, licenseName string, parameters armhybridcompute.LicenseUpdate, options *armhybridcompute.LicensesClientBeginUpdateOptions) (resp azfake.PollerResponder[armhybridcompute.LicensesClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// BeginValidateLicense is the fake for method LicensesClient.BeginValidateLicense
+	// HTTP status codes to indicate success: http.StatusOK
+	BeginValidateLicense func(ctx context.Context, parameters armhybridcompute.License, options *armhybridcompute.LicensesClientBeginValidateLicenseOptions) (resp azfake.PollerResponder[armhybridcompute.LicensesClientValidateLicenseResponse], errResp azfake.ErrorResponder)
 }
 
 // NewLicensesServerTransport creates a new instance of LicensesServerTransport with the provided implementation.
@@ -60,6 +64,7 @@ func NewLicensesServerTransport(srv *LicensesServer) *LicensesServerTransport {
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armhybridcompute.LicensesClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armhybridcompute.LicensesClientListBySubscriptionResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armhybridcompute.LicensesClientUpdateResponse]](),
+		beginValidateLicense:        newTracker[azfake.PollerResponder[armhybridcompute.LicensesClientValidateLicenseResponse]](),
 	}
 }
 
@@ -72,6 +77,7 @@ type LicensesServerTransport struct {
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armhybridcompute.LicensesClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armhybridcompute.LicensesClientListBySubscriptionResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armhybridcompute.LicensesClientUpdateResponse]]
+	beginValidateLicense        *tracker[azfake.PollerResponder[armhybridcompute.LicensesClientValidateLicenseResponse]]
 }
 
 // Do implements the policy.Transporter interface for LicensesServerTransport.
@@ -98,6 +104,8 @@ func (l *LicensesServerTransport) Do(req *http.Request) (*http.Response, error) 
 		resp, err = l.dispatchNewListBySubscriptionPager(req)
 	case "LicensesClient.BeginUpdate":
 		resp, err = l.dispatchBeginUpdate(req)
+	case "LicensesClient.BeginValidateLicense":
+		resp, err = l.dispatchBeginValidateLicense(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
 	}
@@ -347,6 +355,46 @@ func (l *LicensesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.
 	}
 	if !server.PollerResponderMore(beginUpdate) {
 		l.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (l *LicensesServerTransport) dispatchBeginValidateLicense(req *http.Request) (*http.Response, error) {
+	if l.srv.BeginValidateLicense == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginValidateLicense not implemented")}
+	}
+	beginValidateLicense := l.beginValidateLicense.get(req)
+	if beginValidateLicense == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridCompute/validateLicense`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 1 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armhybridcompute.License](req)
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := l.srv.BeginValidateLicense(req.Context(), body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginValidateLicense = &respr
+		l.beginValidateLicense.add(req, beginValidateLicense)
+	}
+
+	resp, err := server.PollerResponderNext(beginValidateLicense, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		l.beginValidateLicense.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginValidateLicense) {
+		l.beginValidateLicense.remove(req)
 	}
 
 	return resp, nil

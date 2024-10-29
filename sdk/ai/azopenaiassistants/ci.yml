@@ -35,6 +35,7 @@ extends:
       UsePipelineProxy: false
       CloudConfig:
         Public:
+          ServiceConnection: azure-sdk-tests-openai
           SubscriptionConfigurations:
             - $(sub-config-openai-test-resources) # TestSecrets-openai
       EnvVars:

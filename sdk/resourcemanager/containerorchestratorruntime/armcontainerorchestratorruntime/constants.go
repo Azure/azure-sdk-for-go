@@ -5,7 +5,7 @@
 package armcontainerorchestratorruntime
 
 const (
-	moduleName = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerorchestratorruntime/armcontainerorchestratorruntime"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerorchestratorruntime/armcontainerorchestratorruntime"
 	moduleVersion = "v0.1.0"
 )
 
@@ -13,15 +13,15 @@ const (
 type AccessMode string
 
 const (
-// AccessModeReadWriteMany - Read Write Many (RWX) access mode
+	// AccessModeReadWriteMany - Read Write Many (RWX) access mode
 	AccessModeReadWriteMany AccessMode = "ReadWriteMany"
-// AccessModeReadWriteOnce - Read Write Once (RWO) access mode
+	// AccessModeReadWriteOnce - Read Write Once (RWO) access mode
 	AccessModeReadWriteOnce AccessMode = "ReadWriteOnce"
 )
 
 // PossibleAccessModeValues returns the possible values for the AccessMode const type.
 func PossibleAccessModeValues() []AccessMode {
-	return []AccessMode{	
+	return []AccessMode{
 		AccessModeReadWriteMany,
 		AccessModeReadWriteOnce,
 	}
@@ -31,13 +31,13 @@ func PossibleAccessModeValues() []AccessMode {
 type ActionType string
 
 const (
-// ActionTypeInternal - Actions are for internal-only APIs.
+	// ActionTypeInternal - Actions are for internal-only APIs.
 	ActionTypeInternal ActionType = "Internal"
 )
 
 // PossibleActionTypeValues returns the possible values for the ActionType const type.
 func PossibleActionTypeValues() []ActionType {
-	return []ActionType{	
+	return []ActionType{
 		ActionTypeInternal,
 	}
 }
@@ -46,17 +46,17 @@ func PossibleActionTypeValues() []ActionType {
 type AdvertiseMode string
 
 const (
-// AdvertiseModeARP - ARP advertise mode
+	// AdvertiseModeARP - ARP advertise mode
 	AdvertiseModeARP AdvertiseMode = "ARP"
-// AdvertiseModeBGP - BGP advertise mode
+	// AdvertiseModeBGP - BGP advertise mode
 	AdvertiseModeBGP AdvertiseMode = "BGP"
-// AdvertiseModeBoth - both ARP and BGP advertise mode
+	// AdvertiseModeBoth - both ARP and BGP advertise mode
 	AdvertiseModeBoth AdvertiseMode = "Both"
 )
 
 // PossibleAdvertiseModeValues returns the possible values for the AdvertiseMode const type.
 func PossibleAdvertiseModeValues() []AdvertiseMode {
-	return []AdvertiseMode{	
+	return []AdvertiseMode{
 		AdvertiseModeARP,
 		AdvertiseModeBGP,
 		AdvertiseModeBoth,
@@ -67,19 +67,19 @@ func PossibleAdvertiseModeValues() []AdvertiseMode {
 type CreatedByType string
 
 const (
-// CreatedByTypeApplication - The entity was created by an application.
+	// CreatedByTypeApplication - The entity was created by an application.
 	CreatedByTypeApplication CreatedByType = "Application"
-// CreatedByTypeKey - The entity was created by a key.
+	// CreatedByTypeKey - The entity was created by a key.
 	CreatedByTypeKey CreatedByType = "Key"
-// CreatedByTypeManagedIdentity - The entity was created by a managed identity.
+	// CreatedByTypeManagedIdentity - The entity was created by a managed identity.
 	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
-// CreatedByTypeUser - The entity was created by a user.
+	// CreatedByTypeUser - The entity was created by a user.
 	CreatedByTypeUser CreatedByType = "User"
 )
 
 // PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
 func PossibleCreatedByTypeValues() []CreatedByType {
-	return []CreatedByType{	
+	return []CreatedByType{
 		CreatedByTypeApplication,
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
@@ -91,15 +91,15 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 type DataResilienceTier string
 
 const (
-// DataResilienceTierDataResilient - Data resilient
+	// DataResilienceTierDataResilient - Data resilient
 	DataResilienceTierDataResilient DataResilienceTier = "DataResilient"
-// DataResilienceTierNotDataResilient - Not data resilient
+	// DataResilienceTierNotDataResilient - Not data resilient
 	DataResilienceTierNotDataResilient DataResilienceTier = "NotDataResilient"
 )
 
 // PossibleDataResilienceTierValues returns the possible values for the DataResilienceTier const type.
 func PossibleDataResilienceTierValues() []DataResilienceTier {
-	return []DataResilienceTier{	
+	return []DataResilienceTier{
 		DataResilienceTierDataResilient,
 		DataResilienceTierNotDataResilient,
 	}
@@ -109,19 +109,19 @@ func PossibleDataResilienceTierValues() []DataResilienceTier {
 type FailoverTier string
 
 const (
-// FailoverTierFast - Fast Failover Tier
+	// FailoverTierFast - Fast Failover Tier
 	FailoverTierFast FailoverTier = "Fast"
-// FailoverTierNotAvailable - Not available Failover Tier
+	// FailoverTierNotAvailable - Not available Failover Tier
 	FailoverTierNotAvailable FailoverTier = "NotAvailable"
-// FailoverTierSlow - Slow Failover Tier
+	// FailoverTierSlow - Slow Failover Tier
 	FailoverTierSlow FailoverTier = "Slow"
-// FailoverTierSuper - Super Failover Tier
+	// FailoverTierSuper - Super Failover Tier
 	FailoverTierSuper FailoverTier = "Super"
 )
 
 // PossibleFailoverTierValues returns the possible values for the FailoverTier const type.
 func PossibleFailoverTierValues() []FailoverTier {
-	return []FailoverTier{	
+	return []FailoverTier{
 		FailoverTierFast,
 		FailoverTierNotAvailable,
 		FailoverTierSlow,
@@ -133,15 +133,15 @@ func PossibleFailoverTierValues() []FailoverTier {
 type NfsDirectoryActionOnVolumeDeletion string
 
 const (
-// NfsDirectoryActionOnVolumeDeletionDelete - When the volume is deleted, delete the directory
+	// NfsDirectoryActionOnVolumeDeletionDelete - When the volume is deleted, delete the directory
 	NfsDirectoryActionOnVolumeDeletionDelete NfsDirectoryActionOnVolumeDeletion = "Delete"
-// NfsDirectoryActionOnVolumeDeletionRetain - When the volume is deleted, retain the directory
+	// NfsDirectoryActionOnVolumeDeletionRetain - When the volume is deleted, retain the directory
 	NfsDirectoryActionOnVolumeDeletionRetain NfsDirectoryActionOnVolumeDeletion = "Retain"
 )
 
 // PossibleNfsDirectoryActionOnVolumeDeletionValues returns the possible values for the NfsDirectoryActionOnVolumeDeletion const type.
 func PossibleNfsDirectoryActionOnVolumeDeletionValues() []NfsDirectoryActionOnVolumeDeletion {
-	return []NfsDirectoryActionOnVolumeDeletion{	
+	return []NfsDirectoryActionOnVolumeDeletion{
 		NfsDirectoryActionOnVolumeDeletionDelete,
 		NfsDirectoryActionOnVolumeDeletionRetain,
 	}
@@ -152,17 +152,17 @@ func PossibleNfsDirectoryActionOnVolumeDeletionValues() []NfsDirectoryActionOnVo
 type Origin string
 
 const (
-// OriginSystem - Indicates the operation is initiated by a system.
+	// OriginSystem - Indicates the operation is initiated by a system.
 	OriginSystem Origin = "system"
-// OriginUser - Indicates the operation is initiated by a user.
+	// OriginUser - Indicates the operation is initiated by a user.
 	OriginUser Origin = "user"
-// OriginUserSystem - Indicates the operation is initiated by a user or system.
+	// OriginUserSystem - Indicates the operation is initiated by a user or system.
 	OriginUserSystem Origin = "user,system"
 )
 
 // PossibleOriginValues returns the possible values for the Origin const type.
 func PossibleOriginValues() []Origin {
-	return []Origin{	
+	return []Origin{
 		OriginSystem,
 		OriginUser,
 		OriginUserSystem,
@@ -173,21 +173,21 @@ func PossibleOriginValues() []Origin {
 type PerformanceTier string
 
 const (
-// PerformanceTierBasic - Basic Performance Tier
+	// PerformanceTierBasic - Basic Performance Tier
 	PerformanceTierBasic PerformanceTier = "Basic"
-// PerformanceTierPremium - Premium Performance Tier
+	// PerformanceTierPremium - Premium Performance Tier
 	PerformanceTierPremium PerformanceTier = "Premium"
-// PerformanceTierStandard - Standard Performance Tier
+	// PerformanceTierStandard - Standard Performance Tier
 	PerformanceTierStandard PerformanceTier = "Standard"
-// PerformanceTierUltra - Ultra Performance Tier
+	// PerformanceTierUltra - Ultra Performance Tier
 	PerformanceTierUltra PerformanceTier = "Ultra"
-// PerformanceTierUndefined - Undefined Performance Tier
+	// PerformanceTierUndefined - Undefined Performance Tier
 	PerformanceTierUndefined PerformanceTier = "Undefined"
 )
 
 // PossiblePerformanceTierValues returns the possible values for the PerformanceTier const type.
 func PossiblePerformanceTierValues() []PerformanceTier {
-	return []PerformanceTier{	
+	return []PerformanceTier{
 		PerformanceTierBasic,
 		PerformanceTierPremium,
 		PerformanceTierStandard,
@@ -200,25 +200,25 @@ func PossiblePerformanceTierValues() []PerformanceTier {
 type ProvisioningState string
 
 const (
-// ProvisioningStateAccepted - Change accepted for processing
+	// ProvisioningStateAccepted - Change accepted for processing
 	ProvisioningStateAccepted ProvisioningState = "Accepted"
-// ProvisioningStateCanceled - Resource creation was canceled.
+	// ProvisioningStateCanceled - Resource creation was canceled.
 	ProvisioningStateCanceled ProvisioningState = "Canceled"
-// ProvisioningStateDeleting - Deletion in progress
+	// ProvisioningStateDeleting - Deletion in progress
 	ProvisioningStateDeleting ProvisioningState = "Deleting"
-// ProvisioningStateFailed - Resource creation failed.
+	// ProvisioningStateFailed - Resource creation failed.
 	ProvisioningStateFailed ProvisioningState = "Failed"
-// ProvisioningStateProvisioning - Initial provisioning in progress
+	// ProvisioningStateProvisioning - Initial provisioning in progress
 	ProvisioningStateProvisioning ProvisioningState = "Provisioning"
-// ProvisioningStateSucceeded - Resource has been created.
+	// ProvisioningStateSucceeded - Resource has been created.
 	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
-// ProvisioningStateUpdating - Update in progress
+	// ProvisioningStateUpdating - Update in progress
 	ProvisioningStateUpdating ProvisioningState = "Updating"
 )
 
 // PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{	
+	return []ProvisioningState{
 		ProvisioningStateAccepted,
 		ProvisioningStateCanceled,
 		ProvisioningStateDeleting,
@@ -233,21 +233,21 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 type SCType string
 
 const (
-// SCTypeBlob - Blob storage class
+	// SCTypeBlob - Blob storage class
 	SCTypeBlob SCType = "Blob"
-// SCTypeNFS - NFS storage class
+	// SCTypeNFS - NFS storage class
 	SCTypeNFS SCType = "NFS"
-// SCTypeNative - Native storage class
+	// SCTypeNative - Native storage class
 	SCTypeNative SCType = "Native"
-// SCTypeRWX - RWX storage class
+	// SCTypeRWX - RWX storage class
 	SCTypeRWX SCType = "RWX"
-// SCTypeSMB - SMB storage class
+	// SCTypeSMB - SMB storage class
 	SCTypeSMB SCType = "SMB"
 )
 
 // PossibleSCTypeValues returns the possible values for the SCType const type.
 func PossibleSCTypeValues() []SCType {
-	return []SCType{	
+	return []SCType{
 		SCTypeBlob,
 		SCTypeNFS,
 		SCTypeNative,
@@ -260,15 +260,15 @@ func PossibleSCTypeValues() []SCType {
 type VolumeBindingMode string
 
 const (
-// VolumeBindingModeImmediate - Immediate binding mode
+	// VolumeBindingModeImmediate - Immediate binding mode
 	VolumeBindingModeImmediate VolumeBindingMode = "Immediate"
-// VolumeBindingModeWaitForFirstConsumer - Wait for first consumer binding mode
+	// VolumeBindingModeWaitForFirstConsumer - Wait for first consumer binding mode
 	VolumeBindingModeWaitForFirstConsumer VolumeBindingMode = "WaitForFirstConsumer"
 )
 
 // PossibleVolumeBindingModeValues returns the possible values for the VolumeBindingMode const type.
 func PossibleVolumeBindingModeValues() []VolumeBindingMode {
-	return []VolumeBindingMode{	
+	return []VolumeBindingMode{
 		VolumeBindingModeImmediate,
 		VolumeBindingModeWaitForFirstConsumer,
 	}
@@ -278,17 +278,16 @@ func PossibleVolumeBindingModeValues() []VolumeBindingMode {
 type VolumeExpansion string
 
 const (
-// VolumeExpansionAllow - Allow volume expansion
+	// VolumeExpansionAllow - Allow volume expansion
 	VolumeExpansionAllow VolumeExpansion = "Allow"
-// VolumeExpansionDisallow - Disallow volume expansion
+	// VolumeExpansionDisallow - Disallow volume expansion
 	VolumeExpansionDisallow VolumeExpansion = "Disallow"
 )
 
 // PossibleVolumeExpansionValues returns the possible values for the VolumeExpansion const type.
 func PossibleVolumeExpansionValues() []VolumeExpansion {
-	return []VolumeExpansion{	
+	return []VolumeExpansion{
 		VolumeExpansionAllow,
 		VolumeExpansionDisallow,
 	}
 }
-

@@ -261,4 +261,3 @@ func ExampleOperationsClient_NewListPager() {
 		// }
 	}
 }
-

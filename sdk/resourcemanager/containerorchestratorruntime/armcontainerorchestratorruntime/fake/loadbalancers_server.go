@@ -19,7 +19,7 @@ import (
 )
 
 // LoadBalancersServer is a fake server for instances of the armcontainerorchestratorruntime.LoadBalancersClient type.
-type LoadBalancersServer struct{
+type LoadBalancersServer struct {
 	// BeginCreateOrUpdate is the fake for method LoadBalancersClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceURI string, loadBalancerName string, resource armcontainerorchestratorruntime.LoadBalancer, options *armcontainerorchestratorruntime.LoadBalancersClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcontainerorchestratorruntime.LoadBalancersClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -35,7 +35,6 @@ type LoadBalancersServer struct{
 	// NewListPager is the fake for method LoadBalancersClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceURI string, options *armcontainerorchestratorruntime.LoadBalancersClientListOptions) (resp azfake.PagerResponder[armcontainerorchestratorruntime.LoadBalancersClientListResponse])
-
 }
 
 // NewLoadBalancersServerTransport creates a new instance of LoadBalancersServerTransport with the provided implementation.
@@ -43,18 +42,18 @@ type LoadBalancersServer struct{
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewLoadBalancersServerTransport(srv *LoadBalancersServer) *LoadBalancersServerTransport {
 	return &LoadBalancersServerTransport{
-		srv: srv,
+		srv:                 srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armcontainerorchestratorruntime.LoadBalancersClientCreateOrUpdateResponse]](),
-		newListPager: newTracker[azfake.PagerResponder[armcontainerorchestratorruntime.LoadBalancersClientListResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armcontainerorchestratorruntime.LoadBalancersClientListResponse]](),
 	}
 }
 
 // LoadBalancersServerTransport connects instances of armcontainerorchestratorruntime.LoadBalancersClient to instances of LoadBalancersServer.
 // Don't use this type directly, use NewLoadBalancersServerTransport instead.
 type LoadBalancersServerTransport struct {
-	srv *LoadBalancersServer
+	srv                 *LoadBalancersServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armcontainerorchestratorruntime.LoadBalancersClientCreateOrUpdateResponse]]
-	newListPager *tracker[azfake.PagerResponder[armcontainerorchestratorruntime.LoadBalancersClientListResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armcontainerorchestratorruntime.LoadBalancersClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for LoadBalancersServerTransport.
@@ -83,8 +82,8 @@ func (l *LoadBalancersServerTransport) dispatchToMethodFake(req *http.Request, m
 			res.resp, res.err = l.dispatchGet(req)
 		case "LoadBalancersClient.NewListPager":
 			res.resp, res.err = l.dispatchNewListPager(req)
-			default:
-		res.err = fmt.Errorf("unhandled API %s", method)
+		default:
+			res.err = fmt.Errorf("unhandled API %s", method)
 		}
 
 		select {
@@ -107,28 +106,28 @@ func (l *LoadBalancersServerTransport) dispatchBeginCreateOrUpdate(req *http.Req
 	}
 	beginCreateOrUpdate := l.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.KubernetesRuntime/loadBalancers/(?P<loadBalancerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armcontainerorchestratorruntime.LoadBalancer](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
-	loadBalancerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("loadBalancerName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := l.srv.BeginCreateOrUpdate(req.Context(), resourceURIParam, loadBalancerNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
+		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.KubernetesRuntime/loadBalancers/(?P<loadBalancerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcontainerorchestratorruntime.LoadBalancer](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
+		if err != nil {
+			return nil, err
+		}
+		loadBalancerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("loadBalancerName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := l.srv.BeginCreateOrUpdate(req.Context(), resourceURIParam, loadBalancerNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
 		beginCreateOrUpdate = &respr
 		l.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
@@ -221,17 +220,17 @@ func (l *LoadBalancersServerTransport) dispatchNewListPager(req *http.Request) (
 	}
 	newListPager := l.newListPager.get(req)
 	if newListPager == nil {
-	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.KubernetesRuntime/loadBalancers`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
-resp := l.srv.NewListPager(resourceURIParam, nil)
+		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.KubernetesRuntime/loadBalancers`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 1 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
+		if err != nil {
+			return nil, err
+		}
+		resp := l.srv.NewListPager(resourceURIParam, nil)
 		newListPager = &resp
 		l.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcontainerorchestratorruntime.LoadBalancersClientListResponse, createLink func() string) {
@@ -251,4 +250,3 @@ resp := l.srv.NewListPager(resourceURIParam, nil)
 	}
 	return resp, nil
 }
-

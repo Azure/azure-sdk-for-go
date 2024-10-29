@@ -174,4 +174,3 @@ func ExampleLoadBalancersClient_NewListPager() {
 		// }
 	}
 }
-

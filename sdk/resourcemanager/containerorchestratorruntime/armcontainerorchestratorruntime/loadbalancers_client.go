@@ -31,7 +31,7 @@ func NewLoadBalancersClient(credential azcore.TokenCredential, options *arm.Clie
 		return nil, err
 	}
 	client := &LoadBalancersClient{
-	internal: cl,
+		internal: cl,
 	}
 	return client, nil
 }
@@ -53,7 +53,7 @@ func (client *LoadBalancersClient) BeginCreateOrUpdate(ctx context.Context, reso
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LoadBalancersClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer: client.internal.Tracer(),
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -109,8 +109,8 @@ func (client *LoadBalancersClient) createOrUpdateCreateRequest(ctx context.Conte
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
-	return nil, err
-}
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -229,13 +229,13 @@ func (client *LoadBalancersClient) getHandleResponse(resp *http.Response) (LoadB
 // Generated from API version 2024-03-01
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - LoadBalancersClientListOptions contains the optional parameters for the LoadBalancersClient.NewListPager method.
-func (client *LoadBalancersClient) NewListPager(resourceURI string, options *LoadBalancersClientListOptions) (*runtime.Pager[LoadBalancersClientListResponse]) {
+func (client *LoadBalancersClient) NewListPager(resourceURI string, options *LoadBalancersClientListOptions) *runtime.Pager[LoadBalancersClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[LoadBalancersClientListResponse]{
 		More: func(page LoadBalancersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *LoadBalancersClientListResponse) (LoadBalancersClientListResponse, error) {
-		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "LoadBalancersClient.NewListPager")
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "LoadBalancersClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -247,7 +247,7 @@ func (client *LoadBalancersClient) NewListPager(resourceURI string, options *Loa
 				return LoadBalancersClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
-			},
+		},
 		Tracer: client.internal.Tracer(),
 	})
 }
@@ -278,4 +278,3 @@ func (client *LoadBalancersClient) listHandleResponse(resp *http.Response) (Load
 	}
 	return result, nil
 }
-

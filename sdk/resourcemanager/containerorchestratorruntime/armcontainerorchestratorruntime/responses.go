@@ -6,7 +6,7 @@ package armcontainerorchestratorruntime
 
 // BgpPeersClientCreateOrUpdateResponse contains the response from method BgpPeersClient.BeginCreateOrUpdate.
 type BgpPeersClientCreateOrUpdateResponse struct {
-// A BgpPeer resource for an Arc connected cluster (Microsoft.Kubernetes/connectedClusters)
+	// A BgpPeer resource for an Arc connected cluster (Microsoft.Kubernetes/connectedClusters)
 	BgpPeer
 }
 
@@ -17,19 +17,19 @@ type BgpPeersClientDeleteResponse struct {
 
 // BgpPeersClientGetResponse contains the response from method BgpPeersClient.Get.
 type BgpPeersClientGetResponse struct {
-// A BgpPeer resource for an Arc connected cluster (Microsoft.Kubernetes/connectedClusters)
+	// A BgpPeer resource for an Arc connected cluster (Microsoft.Kubernetes/connectedClusters)
 	BgpPeer
 }
 
 // BgpPeersClientListResponse contains the response from method BgpPeersClient.NewListPager.
 type BgpPeersClientListResponse struct {
-// The response of a BgpPeer list operation.
+	// The response of a BgpPeer list operation.
 	BgpPeerListResult
 }
 
 // LoadBalancersClientCreateOrUpdateResponse contains the response from method LoadBalancersClient.BeginCreateOrUpdate.
 type LoadBalancersClientCreateOrUpdateResponse struct {
-// A LoadBalancer resource for an Arc connected cluster (Microsoft.Kubernetes/connectedClusters)
+	// A LoadBalancer resource for an Arc connected cluster (Microsoft.Kubernetes/connectedClusters)
 	LoadBalancer
 }
 
@@ -40,25 +40,25 @@ type LoadBalancersClientDeleteResponse struct {
 
 // LoadBalancersClientGetResponse contains the response from method LoadBalancersClient.Get.
 type LoadBalancersClientGetResponse struct {
-// A LoadBalancer resource for an Arc connected cluster (Microsoft.Kubernetes/connectedClusters)
+	// A LoadBalancer resource for an Arc connected cluster (Microsoft.Kubernetes/connectedClusters)
 	LoadBalancer
 }
 
 // LoadBalancersClientListResponse contains the response from method LoadBalancersClient.NewListPager.
 type LoadBalancersClientListResponse struct {
-// The response of a LoadBalancer list operation.
+	// The response of a LoadBalancer list operation.
 	LoadBalancerListResult
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
-// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
+	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
 	OperationListResult
 }
 
 // ServicesClientCreateOrUpdateResponse contains the response from method ServicesClient.CreateOrUpdate.
 type ServicesClientCreateOrUpdateResponse struct {
-// A Service resource for an Arc connected cluster (Microsoft.Kubernetes/connectedClusters)
+	// A Service resource for an Arc connected cluster (Microsoft.Kubernetes/connectedClusters)
 	ServiceResource
 }
 
@@ -69,19 +69,19 @@ type ServicesClientDeleteResponse struct {
 
 // ServicesClientGetResponse contains the response from method ServicesClient.Get.
 type ServicesClientGetResponse struct {
-// A Service resource for an Arc connected cluster (Microsoft.Kubernetes/connectedClusters)
+	// A Service resource for an Arc connected cluster (Microsoft.Kubernetes/connectedClusters)
 	ServiceResource
 }
 
 // ServicesClientListResponse contains the response from method ServicesClient.NewListPager.
 type ServicesClientListResponse struct {
-// The response of a ServiceResource list operation.
+	// The response of a ServiceResource list operation.
 	ServiceResourceListResult
 }
 
 // StorageClassClientCreateOrUpdateResponse contains the response from method StorageClassClient.BeginCreateOrUpdate.
 type StorageClassClientCreateOrUpdateResponse struct {
-// A StorageClass resource for an Arc connected cluster (Microsoft.Kubernetes/connectedClusters)
+	// A StorageClass resource for an Arc connected cluster (Microsoft.Kubernetes/connectedClusters)
 	StorageClassResource
 }
 
@@ -92,19 +92,18 @@ type StorageClassClientDeleteResponse struct {
 
 // StorageClassClientGetResponse contains the response from method StorageClassClient.Get.
 type StorageClassClientGetResponse struct {
-// A StorageClass resource for an Arc connected cluster (Microsoft.Kubernetes/connectedClusters)
+	// A StorageClass resource for an Arc connected cluster (Microsoft.Kubernetes/connectedClusters)
 	StorageClassResource
 }
 
 // StorageClassClientListResponse contains the response from method StorageClassClient.NewListPager.
 type StorageClassClientListResponse struct {
-// The response of a StorageClassResource list operation.
+	// The response of a StorageClassResource list operation.
 	StorageClassResourceListResult
 }
 
 // StorageClassClientUpdateResponse contains the response from method StorageClassClient.BeginUpdate.
 type StorageClassClientUpdateResponse struct {
-// A StorageClass resource for an Arc connected cluster (Microsoft.Kubernetes/connectedClusters)
+	// A StorageClass resource for an Arc connected cluster (Microsoft.Kubernetes/connectedClusters)
 	StorageClassResource
 }
-

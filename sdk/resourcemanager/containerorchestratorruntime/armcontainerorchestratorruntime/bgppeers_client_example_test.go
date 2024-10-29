@@ -25,8 +25,8 @@ func ExampleBgpPeersClient_BeginCreateOrUpdate() {
 	}
 	poller, err := clientFactory.NewBgpPeersClient().BeginCreateOrUpdate(ctx, "subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/example/providers/Microsoft.Kubernetes/connectedClusters/cluster1", "testpeer", armcontainerorchestratorruntime.BgpPeer{
 		Properties: &armcontainerorchestratorruntime.BgpPeerProperties{
-			MyAsn: to.Ptr[int32](64500),
-			PeerAsn: to.Ptr[int32](64501),
+			MyAsn:       to.Ptr[int32](64500),
+			PeerAsn:     to.Ptr[int32](64501),
 			PeerAddress: to.Ptr("10.0.0.1"),
 		},
 	}, nil)
@@ -151,4 +151,3 @@ func ExampleBgpPeersClient_NewListPager() {
 		// }
 	}
 }
-

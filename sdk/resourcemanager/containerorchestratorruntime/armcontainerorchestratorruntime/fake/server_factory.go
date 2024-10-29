@@ -29,7 +29,6 @@ type ServerFactory struct {
 
 	// StorageClassServer contains the fakes for client StorageClassClient
 	StorageClassServer StorageClassServer
-
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -44,13 +43,13 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armcontainerorchestratorruntime.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv *ServerFactory
-	trMu sync.Mutex
-	trBgpPeersServer *BgpPeersServerTransport
+	srv                   *ServerFactory
+	trMu                  sync.Mutex
+	trBgpPeersServer      *BgpPeersServerTransport
 	trLoadBalancersServer *LoadBalancersServerTransport
-	trOperationsServer *OperationsServerTransport
-	trServicesServer *ServicesServerTransport
-	trStorageClassServer *StorageClassServerTransport
+	trOperationsServer    *OperationsServerTransport
+	trServicesServer      *ServicesServerTransport
+	trStorageClassServer  *StorageClassServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -70,7 +69,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 		initServer(s, &s.trBgpPeersServer, func() *BgpPeersServerTransport { return NewBgpPeersServerTransport(&s.srv.BgpPeersServer) })
 		resp, err = s.trBgpPeersServer.Do(req)
 	case "LoadBalancersClient":
-		initServer(s, &s.trLoadBalancersServer, func() *LoadBalancersServerTransport { return NewLoadBalancersServerTransport(&s.srv.LoadBalancersServer) })
+		initServer(s, &s.trLoadBalancersServer, func() *LoadBalancersServerTransport {
+			return NewLoadBalancersServerTransport(&s.srv.LoadBalancersServer)
+		})
 		resp, err = s.trLoadBalancersServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })

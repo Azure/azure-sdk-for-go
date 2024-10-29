@@ -19,7 +19,7 @@ type ClientFactory struct {
 // The parameter values will be propagated to any client created from this factory.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewClientFactory( credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
+func NewClientFactory(credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
 	internal, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -63,4 +63,3 @@ func (c *ClientFactory) NewStorageClassClient() *StorageClassClient {
 		internal: c.internal,
 	}
 }
-

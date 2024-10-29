@@ -6,7 +6,7 @@ package armcontainerorchestratorruntime
 
 // BgpPeersClientBeginCreateOrUpdateOptions contains the optional parameters for the BgpPeersClient.BeginCreateOrUpdate method.
 type BgpPeersClientBeginCreateOrUpdateOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -28,7 +28,7 @@ type BgpPeersClientListOptions struct {
 // LoadBalancersClientBeginCreateOrUpdateOptions contains the optional parameters for the LoadBalancersClient.BeginCreateOrUpdate
 // method.
 type LoadBalancersClientBeginCreateOrUpdateOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -75,19 +75,19 @@ type ServicesClientListOptions struct {
 // StorageClassClientBeginCreateOrUpdateOptions contains the optional parameters for the StorageClassClient.BeginCreateOrUpdate
 // method.
 type StorageClassClientBeginCreateOrUpdateOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // StorageClassClientBeginDeleteOptions contains the optional parameters for the StorageClassClient.BeginDelete method.
 type StorageClassClientBeginDeleteOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // StorageClassClientBeginUpdateOptions contains the optional parameters for the StorageClassClient.BeginUpdate method.
 type StorageClassClientBeginUpdateOptions struct {
-// Resumes the long-running operation from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -100,4 +100,3 @@ type StorageClassClientGetOptions struct {
 type StorageClassClientListOptions struct {
 	// placeholder for future optional parameters
 }
-

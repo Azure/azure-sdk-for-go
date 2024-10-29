@@ -23,8 +23,7 @@ func ExampleServicesClient_CreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewServicesClient().CreateOrUpdate(ctx, "subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/example/providers/Microsoft.Kubernetes/connectedClusters/cluster1", "storageclass", armcontainerorchestratorruntime.ServiceResource{
-		Properties: &armcontainerorchestratorruntime.ServiceProperties{
-		},
+		Properties: &armcontainerorchestratorruntime.ServiceProperties{},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -134,4 +133,3 @@ func ExampleServicesClient_NewListPager() {
 		// }
 	}
 }
-

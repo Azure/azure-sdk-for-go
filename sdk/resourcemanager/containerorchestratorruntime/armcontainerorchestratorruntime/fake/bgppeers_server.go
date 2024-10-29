@@ -19,7 +19,7 @@ import (
 )
 
 // BgpPeersServer is a fake server for instances of the armcontainerorchestratorruntime.BgpPeersClient type.
-type BgpPeersServer struct{
+type BgpPeersServer struct {
 	// BeginCreateOrUpdate is the fake for method BgpPeersClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceURI string, bgpPeerName string, resource armcontainerorchestratorruntime.BgpPeer, options *armcontainerorchestratorruntime.BgpPeersClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcontainerorchestratorruntime.BgpPeersClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -35,7 +35,6 @@ type BgpPeersServer struct{
 	// NewListPager is the fake for method BgpPeersClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceURI string, options *armcontainerorchestratorruntime.BgpPeersClientListOptions) (resp azfake.PagerResponder[armcontainerorchestratorruntime.BgpPeersClientListResponse])
-
 }
 
 // NewBgpPeersServerTransport creates a new instance of BgpPeersServerTransport with the provided implementation.
@@ -43,18 +42,18 @@ type BgpPeersServer struct{
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewBgpPeersServerTransport(srv *BgpPeersServer) *BgpPeersServerTransport {
 	return &BgpPeersServerTransport{
-		srv: srv,
+		srv:                 srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armcontainerorchestratorruntime.BgpPeersClientCreateOrUpdateResponse]](),
-		newListPager: newTracker[azfake.PagerResponder[armcontainerorchestratorruntime.BgpPeersClientListResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armcontainerorchestratorruntime.BgpPeersClientListResponse]](),
 	}
 }
 
 // BgpPeersServerTransport connects instances of armcontainerorchestratorruntime.BgpPeersClient to instances of BgpPeersServer.
 // Don't use this type directly, use NewBgpPeersServerTransport instead.
 type BgpPeersServerTransport struct {
-	srv *BgpPeersServer
+	srv                 *BgpPeersServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armcontainerorchestratorruntime.BgpPeersClientCreateOrUpdateResponse]]
-	newListPager *tracker[azfake.PagerResponder[armcontainerorchestratorruntime.BgpPeersClientListResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armcontainerorchestratorruntime.BgpPeersClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for BgpPeersServerTransport.
@@ -83,8 +82,8 @@ func (b *BgpPeersServerTransport) dispatchToMethodFake(req *http.Request, method
 			res.resp, res.err = b.dispatchGet(req)
 		case "BgpPeersClient.NewListPager":
 			res.resp, res.err = b.dispatchNewListPager(req)
-			default:
-		res.err = fmt.Errorf("unhandled API %s", method)
+		default:
+			res.err = fmt.Errorf("unhandled API %s", method)
 		}
 
 		select {
@@ -107,28 +106,28 @@ func (b *BgpPeersServerTransport) dispatchBeginCreateOrUpdate(req *http.Request)
 	}
 	beginCreateOrUpdate := b.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.KubernetesRuntime/bgpPeers/(?P<bgpPeerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armcontainerorchestratorruntime.BgpPeer](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
-	bgpPeerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("bgpPeerName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := b.srv.BeginCreateOrUpdate(req.Context(), resourceURIParam, bgpPeerNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
+		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.KubernetesRuntime/bgpPeers/(?P<bgpPeerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcontainerorchestratorruntime.BgpPeer](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
+		if err != nil {
+			return nil, err
+		}
+		bgpPeerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("bgpPeerName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := b.srv.BeginCreateOrUpdate(req.Context(), resourceURIParam, bgpPeerNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
 		beginCreateOrUpdate = &respr
 		b.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
@@ -221,17 +220,17 @@ func (b *BgpPeersServerTransport) dispatchNewListPager(req *http.Request) (*http
 	}
 	newListPager := b.newListPager.get(req)
 	if newListPager == nil {
-	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.KubernetesRuntime/bgpPeers`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
-resp := b.srv.NewListPager(resourceURIParam, nil)
+		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.KubernetesRuntime/bgpPeers`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 1 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
+		if err != nil {
+			return nil, err
+		}
+		resp := b.srv.NewListPager(resourceURIParam, nil)
 		newListPager = &resp
 		b.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcontainerorchestratorruntime.BgpPeersClientListResponse, createLink func() string) {
@@ -251,4 +250,3 @@ resp := b.srv.NewListPager(resourceURIParam, nil)
 	}
 	return resp, nil
 }
-

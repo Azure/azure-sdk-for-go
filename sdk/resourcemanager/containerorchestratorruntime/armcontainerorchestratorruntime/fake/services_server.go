@@ -19,7 +19,7 @@ import (
 )
 
 // ServicesServer is a fake server for instances of the armcontainerorchestratorruntime.ServicesClient type.
-type ServicesServer struct{
+type ServicesServer struct {
 	// CreateOrUpdate is the fake for method ServicesClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	CreateOrUpdate func(ctx context.Context, resourceURI string, serviceName string, resource armcontainerorchestratorruntime.ServiceResource, options *armcontainerorchestratorruntime.ServicesClientCreateOrUpdateOptions) (resp azfake.Responder[armcontainerorchestratorruntime.ServicesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -35,7 +35,6 @@ type ServicesServer struct{
 	// NewListPager is the fake for method ServicesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceURI string, options *armcontainerorchestratorruntime.ServicesClientListOptions) (resp azfake.PagerResponder[armcontainerorchestratorruntime.ServicesClientListResponse])
-
 }
 
 // NewServicesServerTransport creates a new instance of ServicesServerTransport with the provided implementation.
@@ -43,7 +42,7 @@ type ServicesServer struct{
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewServicesServerTransport(srv *ServicesServer) *ServicesServerTransport {
 	return &ServicesServerTransport{
-		srv: srv,
+		srv:          srv,
 		newListPager: newTracker[azfake.PagerResponder[armcontainerorchestratorruntime.ServicesClientListResponse]](),
 	}
 }
@@ -51,7 +50,7 @@ func NewServicesServerTransport(srv *ServicesServer) *ServicesServerTransport {
 // ServicesServerTransport connects instances of armcontainerorchestratorruntime.ServicesClient to instances of ServicesServer.
 // Don't use this type directly, use NewServicesServerTransport instead.
 type ServicesServerTransport struct {
-	srv *ServicesServer
+	srv          *ServicesServer
 	newListPager *tracker[azfake.PagerResponder[armcontainerorchestratorruntime.ServicesClientListResponse]]
 }
 
@@ -81,8 +80,8 @@ func (s *ServicesServerTransport) dispatchToMethodFake(req *http.Request, method
 			res.resp, res.err = s.dispatchGet(req)
 		case "ServicesClient.NewListPager":
 			res.resp, res.err = s.dispatchNewListPager(req)
-			default:
-		res.err = fmt.Errorf("unhandled API %s", method)
+		default:
+			res.err = fmt.Errorf("unhandled API %s", method)
 		}
 
 		select {
@@ -208,17 +207,17 @@ func (s *ServicesServerTransport) dispatchNewListPager(req *http.Request) (*http
 	}
 	newListPager := s.newListPager.get(req)
 	if newListPager == nil {
-	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.KubernetesRuntime/services`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
-resp := s.srv.NewListPager(resourceURIParam, nil)
+		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.KubernetesRuntime/services`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 1 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
+		if err != nil {
+			return nil, err
+		}
+		resp := s.srv.NewListPager(resourceURIParam, nil)
 		newListPager = &resp
 		s.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcontainerorchestratorruntime.ServicesClientListResponse, createLink func() string) {
@@ -238,4 +237,3 @@ resp := s.srv.NewListPager(resourceURIParam, nil)
 	}
 	return resp, nil
 }
-

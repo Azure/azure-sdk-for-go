@@ -31,7 +31,7 @@ func NewBgpPeersClient(credential azcore.TokenCredential, options *arm.ClientOpt
 		return nil, err
 	}
 	client := &BgpPeersClient{
-	internal: cl,
+		internal: cl,
 	}
 	return client, nil
 }
@@ -53,7 +53,7 @@ func (client *BgpPeersClient) BeginCreateOrUpdate(ctx context.Context, resourceU
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BgpPeersClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer: client.internal.Tracer(),
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -109,8 +109,8 @@ func (client *BgpPeersClient) createOrUpdateCreateRequest(ctx context.Context, r
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
-	return nil, err
-}
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -229,13 +229,13 @@ func (client *BgpPeersClient) getHandleResponse(resp *http.Response) (BgpPeersCl
 // Generated from API version 2024-03-01
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - BgpPeersClientListOptions contains the optional parameters for the BgpPeersClient.NewListPager method.
-func (client *BgpPeersClient) NewListPager(resourceURI string, options *BgpPeersClientListOptions) (*runtime.Pager[BgpPeersClientListResponse]) {
+func (client *BgpPeersClient) NewListPager(resourceURI string, options *BgpPeersClientListOptions) *runtime.Pager[BgpPeersClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[BgpPeersClientListResponse]{
 		More: func(page BgpPeersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *BgpPeersClientListResponse) (BgpPeersClientListResponse, error) {
-		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "BgpPeersClient.NewListPager")
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "BgpPeersClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -247,7 +247,7 @@ func (client *BgpPeersClient) NewListPager(resourceURI string, options *BgpPeers
 				return BgpPeersClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
-			},
+		},
 		Tracer: client.internal.Tracer(),
 	})
 }
@@ -278,4 +278,3 @@ func (client *BgpPeersClient) listHandleResponse(resp *http.Response) (BgpPeersC
 	}
 	return result, nil
 }
-

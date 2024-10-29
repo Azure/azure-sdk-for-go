@@ -16,11 +16,10 @@ import (
 )
 
 // OperationsServer is a fake server for instances of the armcontainerorchestratorruntime.OperationsClient type.
-type OperationsServer struct{
+type OperationsServer struct {
 	// NewListPager is the fake for method OperationsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(options *armcontainerorchestratorruntime.OperationsClientListOptions) (resp azfake.PagerResponder[armcontainerorchestratorruntime.OperationsClientListResponse])
-
 }
 
 // NewOperationsServerTransport creates a new instance of OperationsServerTransport with the provided implementation.
@@ -28,7 +27,7 @@ type OperationsServer struct{
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewOperationsServerTransport(srv *OperationsServer) *OperationsServerTransport {
 	return &OperationsServerTransport{
-		srv: srv,
+		srv:          srv,
 		newListPager: newTracker[azfake.PagerResponder[armcontainerorchestratorruntime.OperationsClientListResponse]](),
 	}
 }
@@ -36,7 +35,7 @@ func NewOperationsServerTransport(srv *OperationsServer) *OperationsServerTransp
 // OperationsServerTransport connects instances of armcontainerorchestratorruntime.OperationsClient to instances of OperationsServer.
 // Don't use this type directly, use NewOperationsServerTransport instead.
 type OperationsServerTransport struct {
-	srv *OperationsServer
+	srv          *OperationsServer
 	newListPager *tracker[azfake.PagerResponder[armcontainerorchestratorruntime.OperationsClientListResponse]]
 }
 
@@ -60,8 +59,8 @@ func (o *OperationsServerTransport) dispatchToMethodFake(req *http.Request, meth
 		switch method {
 		case "OperationsClient.NewListPager":
 			res.resp, res.err = o.dispatchNewListPager(req)
-			default:
-		res.err = fmt.Errorf("unhandled API %s", method)
+		default:
+			res.err = fmt.Errorf("unhandled API %s", method)
 		}
 
 		select {
@@ -84,7 +83,7 @@ func (o *OperationsServerTransport) dispatchNewListPager(req *http.Request) (*ht
 	}
 	newListPager := o.newListPager.get(req)
 	if newListPager == nil {
-resp := o.srv.NewListPager(nil)
+		resp := o.srv.NewListPager(nil)
 		newListPager = &resp
 		o.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcontainerorchestratorruntime.OperationsClientListResponse, createLink func() string) {
@@ -104,4 +103,3 @@ resp := o.srv.NewListPager(nil)
 	}
 	return resp, nil
 }
-

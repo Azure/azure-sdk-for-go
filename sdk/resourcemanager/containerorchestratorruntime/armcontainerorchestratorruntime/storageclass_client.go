@@ -31,7 +31,7 @@ func NewStorageClassClient(credential azcore.TokenCredential, options *arm.Clien
 		return nil, err
 	}
 	client := &StorageClassClient{
-	internal: cl,
+		internal: cl,
 	}
 	return client, nil
 }
@@ -53,7 +53,7 @@ func (client *StorageClassClient) BeginCreateOrUpdate(ctx context.Context, resou
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[StorageClassClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer: client.internal.Tracer(),
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -109,8 +109,8 @@ func (client *StorageClassClient) createOrUpdateCreateRequest(ctx context.Contex
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
-	return nil, err
-}
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -251,13 +251,13 @@ func (client *StorageClassClient) getHandleResponse(resp *http.Response) (Storag
 // Generated from API version 2024-03-01
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - StorageClassClientListOptions contains the optional parameters for the StorageClassClient.NewListPager method.
-func (client *StorageClassClient) NewListPager(resourceURI string, options *StorageClassClientListOptions) (*runtime.Pager[StorageClassClientListResponse]) {
+func (client *StorageClassClient) NewListPager(resourceURI string, options *StorageClassClientListOptions) *runtime.Pager[StorageClassClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[StorageClassClientListResponse]{
 		More: func(page StorageClassClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *StorageClassClientListResponse) (StorageClassClientListResponse, error) {
-		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "StorageClassClient.NewListPager")
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "StorageClassClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -269,7 +269,7 @@ func (client *StorageClassClient) NewListPager(resourceURI string, options *Stor
 				return StorageClassClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
-			},
+		},
 		Tracer: client.internal.Tracer(),
 	})
 }
@@ -373,8 +373,7 @@ func (client *StorageClassClient) updateCreateRequest(ctx context.Context, resou
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-	return nil, err
-}
+		return nil, err
+	}
 	return req, nil
 }
-

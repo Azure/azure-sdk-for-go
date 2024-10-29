@@ -8,56 +8,56 @@ import "time"
 
 // BgpPeer - A BgpPeer resource for an Arc connected cluster (Microsoft.Kubernetes/connectedClusters)
 type BgpPeer struct {
-// The resource-specific properties for this resource.
+	// The resource-specific properties for this resource.
 	Properties *BgpPeerProperties
 
-// READ-ONLY; The name of the BgpPeer
+	// READ-ONLY; The name of the BgpPeer
 	Name *string
 
-// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // BgpPeerListResult - The response of a BgpPeer list operation.
 type BgpPeerListResult struct {
-// REQUIRED; The BgpPeer items on this page
+	// REQUIRED; The BgpPeer items on this page
 	Value []*BgpPeer
 
-// The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 
 // BgpPeerProperties - Details of the BgpPeer.
 type BgpPeerProperties struct {
-// REQUIRED; My ASN
+	// REQUIRED; My ASN
 	MyAsn *int32
 
-// REQUIRED; Peer Address
+	// REQUIRED; Peer Address
 	PeerAddress *string
 
-// REQUIRED; Peer ASN
+	// REQUIRED; Peer ASN
 	PeerAsn *int32
 
-// READ-ONLY; Resource provision state
+	// READ-ONLY; Resource provision state
 	ProvisioningState *ProvisioningState
 }
 
 // BlobStorageClassTypeProperties - The properties of Blob StorageClass
 type BlobStorageClassTypeProperties struct {
-// REQUIRED; Azure Storage Account Key
+	// REQUIRED; Azure Storage Account Key
 	AzureStorageAccountKey *string
 
-// REQUIRED; Azure Storage Account Name
+	// REQUIRED; Azure Storage Account Name
 	AzureStorageAccountName *string
 
-// CONSTANT; Blob StorageClass
-// Field has constant value SCTypeBlob, any specified value is ignored.
+	// CONSTANT; Blob StorageClass
+	// Field has constant value SCTypeBlob, any specified value is ignored.
 	Type *SCType
 }
 
@@ -70,54 +70,54 @@ func (b *BlobStorageClassTypeProperties) GetStorageClassTypeProperties() *Storag
 
 // LoadBalancer - A LoadBalancer resource for an Arc connected cluster (Microsoft.Kubernetes/connectedClusters)
 type LoadBalancer struct {
-// The resource-specific properties for this resource.
+	// The resource-specific properties for this resource.
 	Properties *LoadBalancerProperties
 
-// READ-ONLY; The name of the LoadBalancer
+	// READ-ONLY; The name of the LoadBalancer
 	Name *string
 
-// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // LoadBalancerListResult - The response of a LoadBalancer list operation.
 type LoadBalancerListResult struct {
-// REQUIRED; The LoadBalancer items on this page
+	// REQUIRED; The LoadBalancer items on this page
 	Value []*LoadBalancer
 
-// The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 
 // LoadBalancerProperties - Details of the LoadBalancer.
 type LoadBalancerProperties struct {
-// REQUIRED; IP Range
+	// REQUIRED; IP Range
 	Addresses []*string
 
-// REQUIRED; Advertise Mode
+	// REQUIRED; Advertise Mode
 	AdvertiseMode *AdvertiseMode
 
-// The list of BGP peers it should advertise to. Null or empty means to advertise to all peers.
+	// The list of BGP peers it should advertise to. Null or empty means to advertise to all peers.
 	BgpPeers []*string
 
-// A dynamic label mapping to select related services. For instance, if you want to create a load balancer only for services
-// with label "a=b", then please specify {"a": "b"} in the field.
+	// A dynamic label mapping to select related services. For instance, if you want to create a load balancer only for services
+	// with label "a=b", then please specify {"a": "b"} in the field.
 	ServiceSelector map[string]*string
 
-// READ-ONLY; Resource provision state
+	// READ-ONLY; Resource provision state
 	ProvisioningState *ProvisioningState
 }
 
 // NativeStorageClassTypeProperties - The properties of Native StorageClass
 type NativeStorageClassTypeProperties struct {
-// CONSTANT; Native StorageClass
-// Field has constant value SCTypeNative, any specified value is ignored.
+	// CONSTANT; Native StorageClass
+	// Field has constant value SCTypeNative, any specified value is ignored.
 	Type *SCType
 }
 
@@ -130,23 +130,23 @@ func (n *NativeStorageClassTypeProperties) GetStorageClassTypeProperties() *Stor
 
 // NfsStorageClassTypeProperties - The properties of NFS StorageClass
 type NfsStorageClassTypeProperties struct {
-// REQUIRED; NFS Server
+	// REQUIRED; NFS Server
 	Server *string
 
-// REQUIRED; NFS share
+	// REQUIRED; NFS share
 	Share *string
 
-// CONSTANT; NFS StorageClass
-// Field has constant value SCTypeNFS, any specified value is ignored.
+	// CONSTANT; NFS StorageClass
+	// Field has constant value SCTypeNFS, any specified value is ignored.
 	Type *SCType
 
-// Mounted folder permissions. Default is 0. If set as non-zero, driver will perform `chmod` after mount
+	// Mounted folder permissions. Default is 0. If set as non-zero, driver will perform `chmod` after mount
 	MountPermissions *string
 
-// The action to take when a NFS volume is deleted. Default is Delete
+	// The action to take when a NFS volume is deleted. Default is Delete
 	OnDelete *NfsDirectoryActionOnVolumeDeletion
 
-// Sub directory under share. If the sub directory doesn't exist, driver will create it
+	// Sub directory under share. If the sub directory doesn't exist, driver will create it
 	SubDir *string
 }
 
@@ -159,60 +159,60 @@ func (n *NfsStorageClassTypeProperties) GetStorageClassTypeProperties() *Storage
 
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
-// Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+	// Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 	ActionType *ActionType
 
-// READ-ONLY; Localized display information for this particular operation.
+	// READ-ONLY; Localized display information for this particular operation.
 	Display *OperationDisplay
 
-// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for Azure
-// Resource Manager/control-plane operations.
+	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for Azure
+	// Resource Manager/control-plane operations.
 	IsDataAction *bool
 
-// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
-// "Microsoft.Compute/virtualMachines/capture/action"
+	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
+	// "Microsoft.Compute/virtualMachines/capture/action"
 	Name *string
 
-// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
-// value is "user,system"
+	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+	// value is "user,system"
 	Origin *Origin
 }
 
 // OperationDisplay - Localized display information for and operation.
 type OperationDisplay struct {
-// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
+	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
 	Description *string
 
-// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
-// Machine", "Restart Virtual Machine".
+	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
+	// Machine", "Restart Virtual Machine".
 	Operation *string
 
-// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
-// Compute".
+	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
+	// Compute".
 	Provider *string
 
-// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
-// Schedule Collections".
+	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
+	// Schedule Collections".
 	Resource *string
 }
 
 // OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
 // get the next set of results.
 type OperationListResult struct {
-// REQUIRED; The Operation items on this page
+	// REQUIRED; The Operation items on this page
 	Value []*Operation
 
-// The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 
 // RwxStorageClassTypeProperties - The properties of RWX StorageClass
 type RwxStorageClassTypeProperties struct {
-// REQUIRED; The backing storageclass used to create new storageclass
+	// REQUIRED; The backing storageclass used to create new storageclass
 	BackingStorageClassName *string
 
-// CONSTANT; RWX StorageClass
-// Field has constant value SCTypeRWX, any specified value is ignored.
+	// CONSTANT; RWX StorageClass
+	// Field has constant value SCTypeRWX, any specified value is ignored.
 	Type *SCType
 }
 
@@ -225,59 +225,59 @@ func (r *RwxStorageClassTypeProperties) GetStorageClassTypeProperties() *Storage
 
 // ServiceProperties - Properties for the service resource
 type ServiceProperties struct {
-// READ-ONLY; Resource provision state
+	// READ-ONLY; Resource provision state
 	ProvisioningState *ProvisioningState
 
-// READ-ONLY; The object id of the service principal of the RP provisioned in the tenant
+	// READ-ONLY; The object id of the service principal of the RP provisioned in the tenant
 	RpObjectID *string
 }
 
 // ServiceResource - A Service resource for an Arc connected cluster (Microsoft.Kubernetes/connectedClusters)
 type ServiceResource struct {
-// The resource-specific properties for this resource.
+	// The resource-specific properties for this resource.
 	Properties *ServiceProperties
 
-// READ-ONLY; The name of the the service
+	// READ-ONLY; The name of the the service
 	Name *string
 
-// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // ServiceResourceListResult - The response of a ServiceResource list operation.
 type ServiceResourceListResult struct {
-// REQUIRED; The ServiceResource items on this page
+	// REQUIRED; The ServiceResource items on this page
 	Value []*ServiceResource
 
-// The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 
 // SmbStorageClassTypeProperties - The properties of SMB StorageClass
 type SmbStorageClassTypeProperties struct {
-// REQUIRED; SMB Source
+	// REQUIRED; SMB Source
 	Source *string
 
-// CONSTANT; SMB StorageClass
-// Field has constant value SCTypeSMB, any specified value is ignored.
+	// CONSTANT; SMB StorageClass
+	// Field has constant value SCTypeSMB, any specified value is ignored.
 	Type *SCType
 
-// Server domain
+	// Server domain
 	Domain *string
 
-// Server password
+	// Server password
 	Password *string
 
-// Sub directory under share. If the sub directory doesn't exist, driver will create it
+	// Sub directory under share. If the sub directory doesn't exist, driver will create it
 	SubDir *string
 
-// Server username
+	// Server username
 	Username *string
 }
 
@@ -290,172 +290,173 @@ func (s *SmbStorageClassTypeProperties) GetStorageClassTypeProperties() *Storage
 
 // StorageClassProperties - Details of the StorageClass StorageClass.
 type StorageClassProperties struct {
-// REQUIRED; Properties of the StorageClass
+	// REQUIRED; Properties of the StorageClass
 	TypeProperties StorageClassTypePropertiesClassification
 
-// The access mode: [ReadWriteOnce, ReadWriteMany] or [ReadWriteOnce]
+	// The access mode: [ReadWriteOnce, ReadWriteMany] or [ReadWriteOnce]
 	AccessModes []*AccessMode
 
-// Volume can be expanded or not
+	// Volume can be expanded or not
 	AllowVolumeExpansion *VolumeExpansion
 
-// Allow single data node failure
+	// Allow single data node failure
 	DataResilience *DataResilienceTier
 
-// Failover speed: NA, Slow, Fast
+	// Failover speed: NA, Slow, Fast
 	FailoverSpeed *FailoverTier
 
-// Limitations of the storage class
+	// Limitations of the storage class
 	Limitations []*string
 
-// Additional mount options
+	// Additional mount options
 	MountOptions []*string
 
-// Performance tier
+	// Performance tier
 	Performance *PerformanceTier
 
-// Selection priority when multiple storage classes meet the criteria. 0: Highest, -1: Never use
+	// Selection priority when multiple storage classes meet the criteria. 0: Highest, -1: Never use
 	Priority *int64
 
-// Provisioner name
+	// Provisioner name
 	Provisioner *string
 
-// Binding mode of volumes: Immediate, WaitForFirstConsumer
+	// Binding mode of volumes: Immediate, WaitForFirstConsumer
 	VolumeBindingMode *VolumeBindingMode
 
-// READ-ONLY; Resource provision state
+	// READ-ONLY; Resource provision state
 	ProvisioningState *ProvisioningState
 }
 
 // StorageClassPropertiesUpdate - The model for updating storageClass properties
 type StorageClassPropertiesUpdate struct {
-// The access mode: [ReadWriteOnce, ReadWriteMany] or [ReadWriteOnce]
+	// The access mode: [ReadWriteOnce, ReadWriteMany] or [ReadWriteOnce]
 	AccessModes []*AccessMode
 
-// Volume can be expanded or not
+	// Volume can be expanded or not
 	AllowVolumeExpansion *VolumeExpansion
 
-// Allow single data node failure
+	// Allow single data node failure
 	DataResilience *DataResilienceTier
 
-// Failover speed: NA, Slow, Fast
+	// Failover speed: NA, Slow, Fast
 	FailoverSpeed *FailoverTier
 
-// Limitations of the storage class
+	// Limitations of the storage class
 	Limitations []*string
 
-// Additional mount options
+	// Additional mount options
 	MountOptions []*string
 
-// Performance tier
+	// Performance tier
 	Performance *PerformanceTier
 
-// Selection priority when multiple storage classes meet the criteria. 0: Highest, -1: Never use
+	// Selection priority when multiple storage classes meet the criteria. 0: Highest, -1: Never use
 	Priority *int64
 
-// New storage class type of storageClass
+	// New storage class type of storageClass
 	TypeProperties *StorageClassTypePropertiesUpdate
 }
 
 // StorageClassResource - A StorageClass resource for an Arc connected cluster (Microsoft.Kubernetes/connectedClusters)
 type StorageClassResource struct {
-// The resource-specific properties for this resource.
+	// The resource-specific properties for this resource.
 	Properties *StorageClassProperties
 
-// READ-ONLY; The name of the the storage class
+	// READ-ONLY; The name of the the storage class
 	Name *string
 
-// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // StorageClassResourceListResult - The response of a StorageClassResource list operation.
 type StorageClassResourceListResult struct {
-// REQUIRED; The StorageClassResource items on this page
+	// REQUIRED; The StorageClassResource items on this page
 	Value []*StorageClassResource
 
-// The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 
 // StorageClassResourceUpdate - The model for updating a storageClass
 type StorageClassResourceUpdate struct {
-// The properties of StorageClass
+	// The properties of StorageClass
 	Properties *StorageClassPropertiesUpdate
 }
 
 // StorageClassTypeProperties - The properties of storage class of the StorageClass
 type StorageClassTypeProperties struct {
-// REQUIRED; Type of the storage class.
+	// REQUIRED; Type of the storage class.
 	Type *SCType
 }
 
 // GetStorageClassTypeProperties implements the StorageClassTypePropertiesClassification interface for type StorageClassTypeProperties.
-func (s *StorageClassTypeProperties) GetStorageClassTypeProperties() *StorageClassTypeProperties { return s }
+func (s *StorageClassTypeProperties) GetStorageClassTypeProperties() *StorageClassTypeProperties {
+	return s
+}
 
 // StorageClassTypePropertiesUpdate - The model for update a storageClass
 type StorageClassTypePropertiesUpdate struct {
-// Azure Storage Account Key
+	// Azure Storage Account Key
 	AzureStorageAccountKey *string
 
-// Azure Storage Account Name
+	// Azure Storage Account Name
 	AzureStorageAccountName *string
 
-// The backing storageclass used to create new storageclass
+	// The backing storageclass used to create new storageclass
 	BackingStorageClassName *string
 
-// Server domain
+	// Server domain
 	Domain *string
 
-// Mounted folder permissions. Default is 0. If set as non-zero, driver will perform `chmod` after mount
+	// Mounted folder permissions. Default is 0. If set as non-zero, driver will perform `chmod` after mount
 	MountPermissions *string
 
-// The action to take when a NFS volume is deleted. Default is Delete
+	// The action to take when a NFS volume is deleted. Default is Delete
 	OnDelete *NfsDirectoryActionOnVolumeDeletion
 
-// Server password
+	// Server password
 	Password *string
 
-// NFS Server
+	// NFS Server
 	Server *string
 
-// NFS share
+	// NFS share
 	Share *string
 
-// SMB Source
+	// SMB Source
 	Source *string
 
-// Sub directory under share. If the sub directory doesn't exist, driver will create it
+	// Sub directory under share. If the sub directory doesn't exist, driver will create it
 	SubDir *string
 
-// Server username
+	// Server username
 	Username *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
-// The timestamp of resource creation (UTC).
+	// The timestamp of resource creation (UTC).
 	CreatedAt *time.Time
 
-// The identity that created the resource.
+	// The identity that created the resource.
 	CreatedBy *string
 
-// The type of identity that created the resource.
+	// The type of identity that created the resource.
 	CreatedByType *CreatedByType
 
-// The timestamp of resource last modification (UTC)
+	// The timestamp of resource last modification (UTC)
 	LastModifiedAt *time.Time
 
-// The identity that last modified the resource.
+	// The identity that last modified the resource.
 	LastModifiedBy *string
 
-// The type of identity that last modified the resource.
+	// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType
 }
-

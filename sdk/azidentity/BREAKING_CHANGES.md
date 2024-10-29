@@ -4,9 +4,9 @@
 
 ### New errors from `NewManagedIdentityCredential` in some environments
 
-`NewManagedIdentityCredential` now returns an error when `ManagedIdentityCredentialOptions.ID` is set on a platform whose managed identity API doesn't support user-assigned identities. `ManagedIdentityCredential.GetToken()` formerly logged a warning in these cases. Returning an error instead prevents the credential authenticating an unexpected identity, causing a client to act with unexpected privileges. The affected platforms are:
+`NewManagedIdentityCredential` now returns an error when `ManagedIdentityCredentialOptions.ID` is set in a hosting environment whose managed identity API doesn't support user-assigned identities. `ManagedIdentityCredential.GetToken()` formerly logged a warning in these cases. Returning an error instead prevents the credential authenticating an unexpected identity. The affected hosting environments are:
   * Azure Arc
-  * Azure ML (when a resource ID is specified; client IDs are supported)
+  * Azure ML (when a resource or object ID is specified; client IDs are supported)
   * Cloud Shell
   * Service Fabric
 

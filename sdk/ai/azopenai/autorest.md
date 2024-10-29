@@ -904,6 +904,16 @@ directive:
     transform: $["x-ms-client-name"] = "ListBatchesPage"; return $;
 ```
 
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.ChatCompletionsOptions.properties.stream_options
+    transform: $["$ref"] = "#/definitions/ChatCompletionStreamOptions"
+  - from: swagger-document
+    where: $.definitions.CompletionsOptions.properties.stream_options
+    transform: $["$ref"] = "#/definitions/ChatCompletionStreamOptions"
+```
+
 ## Doc updates
 
 Hoisting the description for an anonymous type.

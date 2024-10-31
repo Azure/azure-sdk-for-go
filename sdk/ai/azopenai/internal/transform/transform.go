@@ -207,7 +207,10 @@ func (t *Transformer) findStructRange(filename string, structName string) (start
 	return 0, 0, fmt.Errorf("struct %s not found in %s", structName, filename)
 }
 
-func (t *Transformer) ReadRange(filename string, start, end *int) ([]string, error) {
+func (t *Transformer) readRange(filename string, start, end *int, includeDocs bool) ([]string, error) {
+	if (start == nil || end == nil) && includeDocs {
+		return nil, fmt.Errorf("start and end must be provided when includeDocs is true")
+	}
 	file, err := os.Open(filename)
 	if err != nil {
 		return nil, fmt.Errorf("failed to open file: %v", err)
@@ -215,23 +218,37 @@ func (t *Transformer) ReadRange(filename string, start, end *int) ([]string, err
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
+	var comments []string
 	var lines []string
 	lineNumber := 0
 	for scanner.Scan() {
 		lineNumber++
+		line := scanner.Text()
+		if includeDocs && lineNumber < *start {
+			if strings.HasPrefix(strings.TrimSpace(line), "//") {
+				comments = append(comments, line)
+				continue
+			} else {
+				comments = nil
+			}
+		}
+
 		if start != nil && lineNumber < *start {
 			continue
 		}
 		if end != nil && lineNumber > *end {
 			break
 		}
-		lines = append(lines, scanner.Text())
+		lines = append(lines, line)
 	}
 
 	if err := scanner.Err(); err != nil {
 		return nil, fmt.Errorf("error reading file: %v", err)
 	}
 
+	if comments != nil {
+		lines = append(comments, lines...)
+	}
 	return lines, nil
 }
 
@@ -241,12 +258,18 @@ func (t *Transformer) CopyStruct(filename string, structName string, newStructNa
 		return err
 	}
 
-	lines, err := t.ReadRange(filename, &start, &end)
+	lines, err := t.readRange(filename, &start, &end, true)
 	if err != nil {
 		return err
 	}
 
-	lines[0] = strings.Replace(lines[0], structName, newStructName, 1)
+	for i, line := range lines {
+		if strings.HasPrefix(strings.TrimSpace(line), fmt.Sprintf("// %s", structName)) {
+			lines[i] = strings.Replace(line, structName, newStructName, 1)
+		} else if strings.HasPrefix(strings.TrimSpace(line), fmt.Sprintf("type %s struct", structName)) {
+			lines[i] = strings.Replace(line, structName, newStructName, 1)
+		}
+	}
 
 	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
@@ -274,7 +297,7 @@ func (t *Transformer) RemoveField(filename string, structName string, fieldName 
 		return err
 	}
 
-	lines, err := t.ReadRange(filename, nil, nil)
+	lines, err := t.readRange(filename, nil, nil, false)
 	if err != nil {
 		return err
 	}

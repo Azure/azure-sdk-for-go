@@ -2782,6 +2782,8 @@ type UploadPart struct {
 	AzureBlockID *string
 }
 
+// CompletionsOptions - The configuration information for a completions request. Completions support a wide variety of tasks
+// and generate text that continues from or "completes" provided prompt data.
 type CompletionsOptions struct {
 	// REQUIRED; The prompts to generate completions from.
 	Prompt []string
@@ -2857,6 +2859,8 @@ type CompletionsOptions struct {
 	User *string
 }
 
+// CompletionsStreamOptions - The configuration information for a completions request. Completions support a wide variety of tasks
+// and generate text that continues from or "completes" provided prompt data.
 type CompletionsStreamOptions struct {
 	// REQUIRED; The prompts to generate completions from.
 	Prompt []string
@@ -2935,6 +2939,8 @@ type CompletionsStreamOptions struct {
 	User *string
 }
 
+// ChatCompletionsOptions - The configuration information for a chat completions request. Completions support a wide variety
+// of tasks and generate text that continues from or "completes" provided prompt data.
 type ChatCompletionsOptions struct {
 	// REQUIRED; The collection of context messages associated with this chat completions request. Typical usage begins with a
 	// chat message for the System role that provides instructions for the behavior of the
@@ -3040,6 +3046,8 @@ type ChatCompletionsOptions struct {
 	User *string
 }
 
+// ChatCompletionsStreamOptions - The configuration information for a chat completions request. Completions support a wide variety
+// of tasks and generate text that continues from or "completes" provided prompt data.
 type ChatCompletionsStreamOptions struct {
 	// REQUIRED; The collection of context messages associated with this chat completions request. Typical usage begins with a
 	// chat message for the System role that provides instructions for the behavior of the

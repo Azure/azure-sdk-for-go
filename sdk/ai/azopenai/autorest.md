@@ -297,7 +297,7 @@ directive:
         '.+?)runtime\.JoinPaths\\(client\\.endpoint, urlPath\\)',
         'gs');
 
-      return $.replace(re, "$1client.formatURL(urlPath, getDeployment(body))");
+      return $.replace(re, "$1client.formatURL(urlPath, body.DeploymentName)");
   - from: client.go
     where: $
     transform: return $.replace(/runtime\.JoinPaths\(client\.endpoint, urlPath\)/g, "client.formatURL(urlPath, nil)");
@@ -322,14 +322,6 @@ directive:
   - from: swagger-document
     where: $.paths
     transform: delete $["/operations/images/{operationId}"]
-
-  # Remove stream property from CompletionsOptions and ChatCompletionsOptions
-  - from: swagger-document
-    where: $.definitions["CompletionsOptions"]
-    transform: delete $.properties.stream;
-  - from: swagger-document
-    where: $.definitions["ChatCompletionsOptions"]
-    transform: delete $.properties.stream;
 ```
 
 Changes for audio/whisper APIs.

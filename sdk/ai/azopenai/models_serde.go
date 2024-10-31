@@ -2158,7 +2158,7 @@ func (c *ChatCompletionsNamedToolSelection) UnmarshalJSON(data []byte) error {
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ChatCompletionsOptions.
-func (c ChatCompletionsOptions) MarshalJSON() ([]byte, error) {
+func (c chatCompletionsOptions) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "data_sources", c.AzureExtensionsOptions)
 	populate(objectMap, "enhancements", c.Enhancements)
@@ -2177,6 +2177,7 @@ func (c ChatCompletionsOptions) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "response_format", c.ResponseFormat)
 	populate(objectMap, "seed", c.Seed)
 	populate(objectMap, "stop", c.Stop)
+	populate(objectMap, "stream", c.Stream)
 	populate(objectMap, "stream_options", c.StreamOptions)
 	populate(objectMap, "temperature", c.Temperature)
 	populate(objectMap, "tool_choice", c.ToolChoice)
@@ -2188,7 +2189,7 @@ func (c ChatCompletionsOptions) MarshalJSON() ([]byte, error) {
 }
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type ChatCompletionsOptions.
-func (c *ChatCompletionsOptions) UnmarshalJSON(data []byte) error {
+func (c *chatCompletionsOptions) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", c, err)
@@ -2246,6 +2247,9 @@ func (c *ChatCompletionsOptions) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "stop":
 			err = unpopulate(val, "Stop", &c.Stop)
+			delete(rawMsg, key)
+		case "stream":
+			err = unpopulate(val, "Stream", &c.Stream)
 			delete(rawMsg, key)
 		case "stream_options":
 			err = unpopulate(val, "StreamOptions", &c.StreamOptions)
@@ -3103,7 +3107,7 @@ func (c *CompletionsLogProbabilityModel) UnmarshalJSON(data []byte) error {
 }
 
 // MarshalJSON implements the json.Marshaller interface for type CompletionsOptions.
-func (c CompletionsOptions) MarshalJSON() ([]byte, error) {
+func (c completionsOptions) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "best_of", c.BestOf)
 	populate(objectMap, "echo", c.Echo)
@@ -3117,6 +3121,7 @@ func (c CompletionsOptions) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "prompt", c.Prompt)
 	populate(objectMap, "seed", c.Seed)
 	populate(objectMap, "stop", c.Stop)
+	populate(objectMap, "stream", c.Stream)
 	populate(objectMap, "stream_options", c.StreamOptions)
 	populate(objectMap, "suffix", c.Suffix)
 	populate(objectMap, "temperature", c.Temperature)
@@ -3126,7 +3131,7 @@ func (c CompletionsOptions) MarshalJSON() ([]byte, error) {
 }
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type CompletionsOptions.
-func (c *CompletionsOptions) UnmarshalJSON(data []byte) error {
+func (c *completionsOptions) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", c, err)
@@ -3169,6 +3174,9 @@ func (c *CompletionsOptions) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "stop":
 			err = unpopulate(val, "Stop", &c.Stop)
+			delete(rawMsg, key)
+		case "stream":
+			err = unpopulate(val, "Stream", &c.Stream)
 			delete(rawMsg, key)
 		case "stream_options":
 			err = unpopulate(val, "StreamOptions", &c.StreamOptions)

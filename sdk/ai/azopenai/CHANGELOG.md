@@ -4,6 +4,10 @@
 
 ### Features Added
 
+- `StreamOptions` parameter added to `ChatCompletionsOptions` and `CompletionsOptions`.
+- `MaxCompletionTokens` parameter added to `ChatCompletionsOptions`.
+- `ParallelToolCalls` parameter added to `ChatCompletionsOptions`.
+
 ### Breaking Changes
 
 - `MongoDBChatExtensionParameters.Authentication`'s type has been changed to a `OnYourDataUsernameAndPasswordAuthenticationOptions`. (PR#23620)

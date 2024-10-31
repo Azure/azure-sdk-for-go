@@ -413,7 +413,7 @@ func (client *Client) GenerateSpeechFromText(ctx context.Context, body SpeechGen
 // generateSpeechFromTextCreateRequest creates the GenerateSpeechFromText request.
 func (client *Client) generateSpeechFromTextCreateRequest(ctx context.Context, body SpeechGenerationOptions, options *GenerateSpeechFromTextOptions) (*policy.Request, error) {
 	urlPath := "audio/speech"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, getDeployment(body)))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, body.DeploymentName))
 	if err != nil {
 		return nil, err
 	}
@@ -460,7 +460,7 @@ func (client *Client) getAudioTranscriptionInternal(ctx context.Context, file io
 // getAudioTranscriptionInternalCreateRequest creates the getAudioTranscriptionInternal request.
 func (client *Client) getAudioTranscriptionInternalCreateRequest(ctx context.Context, file io.ReadSeekCloser, body *getAudioTranscriptionInternalOptions) (*policy.Request, error) {
 	urlPath := "audio/transcriptions"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, getDeployment(body)))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, body.DeploymentName))
 	if err != nil {
 		return nil, err
 	}
@@ -515,7 +515,7 @@ func (client *Client) getAudioTranslationInternal(ctx context.Context, file io.R
 // getAudioTranslationInternalCreateRequest creates the getAudioTranslationInternal request.
 func (client *Client) getAudioTranslationInternalCreateRequest(ctx context.Context, file io.ReadSeekCloser, body *getAudioTranslationInternalOptions) (*policy.Request, error) {
 	urlPath := "audio/translations"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, getDeployment(body)))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, body.DeploymentName))
 	if err != nil {
 		return nil, err
 	}
@@ -586,15 +586,15 @@ func (client *Client) getBatchHandleResponse(resp *http.Response) (GetBatchRespo
 	return result, nil
 }
 
-// GetChatCompletions - Gets chat completions for the provided chat messages. Completions support a wide variety of tasks
+// getChatCompletions - Gets chat completions for the provided chat messages. Completions support a wide variety of tasks
 // and generate text that continues from or "completes" provided prompt data.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-10-01-preview
 //   - body - The configuration information for a chat completions request. Completions support a wide variety of tasks and generate
 //     text that continues from or "completes" provided prompt data.
-//   - options - GetChatCompletionsOptions contains the optional parameters for the Client.GetChatCompletions method.
-func (client *Client) GetChatCompletions(ctx context.Context, body ChatCompletionsOptions, options *GetChatCompletionsOptions) (GetChatCompletionsResponse, error) {
+//   - options - GetChatCompletionsOptions contains the optional parameters for the Client.getChatCompletions method.
+func (client *Client) getChatCompletions(ctx context.Context, body chatCompletionsOptions, options *GetChatCompletionsOptions) (GetChatCompletionsResponse, error) {
 	var err error
 	req, err := client.getChatCompletionsCreateRequest(ctx, body, options)
 	if err != nil {
@@ -613,9 +613,9 @@ func (client *Client) GetChatCompletions(ctx context.Context, body ChatCompletio
 }
 
 // getChatCompletionsCreateRequest creates the GetChatCompletions request.
-func (client *Client) getChatCompletionsCreateRequest(ctx context.Context, body ChatCompletionsOptions, options *GetChatCompletionsOptions) (*policy.Request, error) {
+func (client *Client) getChatCompletionsCreateRequest(ctx context.Context, body chatCompletionsOptions, options *GetChatCompletionsOptions) (*policy.Request, error) {
 	urlPath := "chat/completions"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, getDeployment(body)))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, body.DeploymentName))
 	if err != nil {
 		return nil, err
 	}
@@ -638,15 +638,15 @@ func (client *Client) getChatCompletionsHandleResponse(resp *http.Response) (Get
 	return result, nil
 }
 
-// GetCompletions - Gets completions for the provided input prompts. Completions support a wide variety of tasks and generate
+// getCompletions - Gets completions for the provided input prompts. Completions support a wide variety of tasks and generate
 // text that continues from or "completes" provided prompt data.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-10-01-preview
 //   - body - The configuration information for a completions request. Completions support a wide variety of tasks and generate
 //     text that continues from or "completes" provided prompt data.
-//   - options - GetCompletionsOptions contains the optional parameters for the Client.GetCompletions method.
-func (client *Client) GetCompletions(ctx context.Context, body CompletionsOptions, options *GetCompletionsOptions) (GetCompletionsResponse, error) {
+//   - options - GetCompletionsOptions contains the optional parameters for the Client.getCompletions method.
+func (client *Client) getCompletions(ctx context.Context, body completionsOptions, options *GetCompletionsOptions) (GetCompletionsResponse, error) {
 	var err error
 	req, err := client.getCompletionsCreateRequest(ctx, body, options)
 	if err != nil {
@@ -665,9 +665,9 @@ func (client *Client) GetCompletions(ctx context.Context, body CompletionsOption
 }
 
 // getCompletionsCreateRequest creates the GetCompletions request.
-func (client *Client) getCompletionsCreateRequest(ctx context.Context, body CompletionsOptions, options *GetCompletionsOptions) (*policy.Request, error) {
+func (client *Client) getCompletionsCreateRequest(ctx context.Context, body completionsOptions, options *GetCompletionsOptions) (*policy.Request, error) {
 	urlPath := "completions"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, getDeployment(body)))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, body.DeploymentName))
 	if err != nil {
 		return nil, err
 	}
@@ -718,7 +718,7 @@ func (client *Client) GetEmbeddings(ctx context.Context, body EmbeddingsOptions,
 // getEmbeddingsCreateRequest creates the GetEmbeddings request.
 func (client *Client) getEmbeddingsCreateRequest(ctx context.Context, body EmbeddingsOptions, options *GetEmbeddingsOptions) (*policy.Request, error) {
 	urlPath := "embeddings"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, getDeployment(body)))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, body.DeploymentName))
 	if err != nil {
 		return nil, err
 	}
@@ -864,7 +864,7 @@ func (client *Client) GetImageGenerations(ctx context.Context, body ImageGenerat
 // getImageGenerationsCreateRequest creates the GetImageGenerations request.
 func (client *Client) getImageGenerationsCreateRequest(ctx context.Context, body ImageGenerationOptions, options *GetImageGenerationsOptions) (*policy.Request, error) {
 	urlPath := "images/generations"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, getDeployment(body)))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, body.DeploymentName))
 	if err != nil {
 		return nil, err
 	}

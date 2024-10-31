@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* `New` no longer returns an error when called simultaneously in two processes
 
 ### Other Changes
 

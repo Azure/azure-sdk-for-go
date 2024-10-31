@@ -171,3 +171,16 @@ func (c *Client) WithClientName(clientName string) *Client {
 	}
 	return &Client{pl: c.pl, tr: tr, tp: c.tp, modVer: c.modVer, namespace: c.namespace}
 }
+
+// WithCoreName returns a shallow copy of the Client with its tracing client name changed to use azcore's module name and version.
+// This is intended for library consumers that want to have their own named tracer for client activities that are
+// Seperate from the Core HTTP tracing.
+// Note that the values for module name and version will be preserved from the source Client for use in the
+// HTTP UserAgent Header set by TelemetryPolicy
+func (c *Client) WithCoreTracerName() *Client {
+	tr := c.tp.NewTracer(shared.Module, shared.Version)
+	if tr.Enabled() && c.namespace != "" {
+		tr.SetAttributes(tracing.Attribute{Key: shared.TracingNamespaceAttrName, Value: c.namespace})
+	}
+	return &Client{pl: c.pl, tr: tr, tp: c.tp, modVer: c.modVer, namespace: c.namespace}
+}

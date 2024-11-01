@@ -2,6 +2,13 @@
 // Licensed under the MIT License. See License.txt in the project root for license information.
 package azopenai
 
+/**
+ * This file is required for the generated code to be valid. The difference between the files
+ * with a custom_ prefix and ones like this with an _extra suffix is that the _extra files are
+ * not modified by the customization scripts, so they can be run safely. Files with the custom_
+ * would change if they weren't ignored, so we have to keep them separate.
+ */
+
 import (
 	"encoding/json"
 	"errors"

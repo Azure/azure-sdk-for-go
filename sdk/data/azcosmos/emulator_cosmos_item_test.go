@@ -637,7 +637,7 @@ func TestItemCRUDHierarchicalPartitionKey(t *testing.T) {
 		t.Fatalf("Expected value to be 0, got %v", item1ResBody["value"])
 	}
 
-	pager := container.NewQueryItemsPager("SELECT * FROM c WHERE", pkAlpha, nil)
+	pager := container.NewQueryItemsPager("SELECT * FROM c", pkAlpha, nil)
 
 	var alphaItems []map[string]interface{}
 	for pager.More() {
@@ -665,7 +665,7 @@ func TestItemCRUDHierarchicalPartitionKey(t *testing.T) {
 		t.Fatalf("Expected %v, got %v", item0ResBody, alphaItems[0])
 	}
 
-	pager = container.NewQueryItemsPager("SELECT * FROM c WHERE", pkBeta, nil)
+	pager = container.NewQueryItemsPager("SELECT * FROM c", pkBeta, nil)
 
 	var betaItems []map[string]interface{}
 	for pager.More() {

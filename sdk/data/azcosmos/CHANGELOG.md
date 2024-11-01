@@ -3,13 +3,14 @@
 ## 1.1.1 (Unreleased)
 
 ### Features Added
-* Added API for creating Hierarchical PartitionKeys
-* Set all Telemetry spans to have the Kind of SpanKindClient
-* Set request_charge and status_code on all trace spans
+* Added API for creating Hierarchical PartitionKeys. See [PR 23577](https://github.com/Azure/azure-sdk-for-go/pull/23577)
+* Set all Telemetry spans to have the Kind of SpanKindClient. See [PR 23618](https://github.com/Azure/azure-sdk-for-go/pull/23618)
+* Set request_charge and status_code on all trace spans. See [PR 23652](https://github.com/Azure/azure-sdk-for-go/pull/23652)
 
 ### Breaking Changes
 
 ### Bugs Fixed
+* Pager Telemetry spans are now more consistent with the rest of the spans. See [PR 23658](https://github.com/Azure/azure-sdk-for-go/pull/23658)
 
 ### Other Changes
 

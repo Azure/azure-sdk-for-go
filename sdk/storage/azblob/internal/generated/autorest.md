@@ -31,6 +31,30 @@ directive:
     $.items.enum.push("permissions");
 ```
 
+### Add Owner,Group,Permissions,Acl,ResourceType in ListBlob Response
+``` yaml
+directive:  
+- from: swagger-document    
+  where: $.definitions
+  transform: >
+    $.BlobPropertiesInternal.properties["Owner"] = {
+    "type" : "string",
+    };
+    $.BlobPropertiesInternal.properties["Group"] = {
+    "type" : "string",
+    };
+    $.BlobPropertiesInternal.properties["Permissions"] = {
+    "type" : "string",
+    };
+    $.BlobPropertiesInternal.properties["Acl"] = {
+    "type" : "string",
+    };
+    $.BlobPropertiesInternal.properties["ResourceType"] = {
+    "type" : "string",
+    };
+
+```
+
 ### Updating service version to 2024-11-04
 ```yaml
 directive:

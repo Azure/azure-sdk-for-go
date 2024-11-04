@@ -22,15 +22,6 @@ export-clients: true
 use: "@autorest/go@4.0.0-preview.65"
 ```
 
-### Add permissions in ListBlobsInclude
-``` yaml
-directive:  
-- from: swagger-document    
-  where: $.parameters.ListBlobsInclude    
-  transform: >        
-    $.items.enum.push("permissions");
-```
-
 ### Add Owner,Group,Permissions,Acl,ResourceType in ListBlob Response
 ``` yaml
 directive:  
@@ -53,6 +44,15 @@ directive:
     "type" : "string",
     };
 
+```
+
+### Add permissions in ListBlobsInclude
+``` yaml
+directive:  
+- from: swagger-document    
+  where: $.parameters.ListBlobsInclude    
+  transform: >        
+    $.items.enum.push("permissions");
 ```
 
 ### Updating service version to 2024-11-04

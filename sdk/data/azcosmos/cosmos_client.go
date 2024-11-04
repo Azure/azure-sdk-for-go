@@ -278,7 +278,6 @@ func (c *Client) NewQueryDatabasesPager(query string, o *QueryDatabasesOptions) 
 		},
 		Fetcher: func(ctx context.Context, page *QueryDatabasesResponse) (QueryDatabasesResponse, error) {
 			var err error
-			// Move the span to the pager once https://github.com/Azure/azure-sdk-for-go/issues/23294 is fixed
 			spanName, err := getSpanNameForClient(c.accountEndpointUrl(), operationTypeQuery, resourceTypeDatabase, c.accountEndpointUrl().Hostname())
 			if err != nil {
 				return QueryDatabasesResponse{}, err
@@ -307,7 +306,6 @@ func (c *Client) NewQueryDatabasesPager(query string, o *QueryDatabasesOptions) 
 
 			return newDatabasesQueryResponse(azResponse)
 		},
-		Tracer: c.internal.Tracer(),
 	})
 }
 

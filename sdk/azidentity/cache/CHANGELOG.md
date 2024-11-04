@@ -1,6 +1,6 @@
 # Release History
 
-## 0.3.1 (2024-11-04)
+## 0.3.1 (2024-11-05)
 
 ### Bugs Fixed
 * `New` no longer returns an error when called simultaneously in two processes

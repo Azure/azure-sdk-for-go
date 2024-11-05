@@ -279,8 +279,8 @@ func (client *Client) listDeletedSecretPropertiesCreateRequest(ctx context.Conte
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "7.6-preview.1")
-	if options != nil && options.MaxResults != nil {
-		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
+	if options != nil && options.Maxresults != nil {
+		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
@@ -290,7 +290,7 @@ func (client *Client) listDeletedSecretPropertiesCreateRequest(ctx context.Conte
 // listDeletedSecretPropertiesHandleResponse handles the ListDeletedSecretProperties response.
 func (client *Client) listDeletedSecretPropertiesHandleResponse(resp *http.Response) (ListDeletedSecretPropertiesResponse, error) {
 	result := ListDeletedSecretPropertiesResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PagedDeletedSecretItem); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedSecretPropertiesListResult); err != nil {
 		return ListDeletedSecretPropertiesResponse{}, err
 	}
 	return result, nil
@@ -299,8 +299,7 @@ func (client *Client) listDeletedSecretPropertiesHandleResponse(resp *http.Respo
 // NewListSecretPropertiesPager - List secrets in a specified key vault.
 //
 // Generated from API version 7.6-preview.1
-//   - options - ListSecretPropertiesOptions contains the optional parameters for the Client.NewListSecretPropertiesPager
-//     method.
+//   - options - ListSecretPropertiesOptions contains the optional parameters for the Client.NewListSecretPropertiesPager method.
 func (client *Client) NewListSecretPropertiesPager(options *ListSecretPropertiesOptions) *runtime.Pager[ListSecretPropertiesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListSecretPropertiesResponse]{
 		More: func(page ListSecretPropertiesResponse) bool {
@@ -333,8 +332,8 @@ func (client *Client) listSecretPropertiesCreateRequest(ctx context.Context, opt
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "7.6-preview.1")
-	if options != nil && options.MaxResults != nil {
-		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
+	if options != nil && options.Maxresults != nil {
+		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
@@ -344,7 +343,7 @@ func (client *Client) listSecretPropertiesCreateRequest(ctx context.Context, opt
 // listSecretPropertiesHandleResponse handles the ListSecretProperties response.
 func (client *Client) listSecretPropertiesHandleResponse(resp *http.Response) (ListSecretPropertiesResponse, error) {
 	result := ListSecretPropertiesResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PagedSecretItem); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.SecretPropertiesListResult); err != nil {
 		return ListSecretPropertiesResponse{}, err
 	}
 	return result, nil

@@ -32,14 +32,14 @@ type GetSecretResponse struct {
 
 // ListDeletedSecretPropertiesResponse contains the response from method Client.NewListDeletedSecretPropertiesPager.
 type ListDeletedSecretPropertiesResponse struct {
-	// Paged collection of DeletedSecretItem items
-	PagedDeletedSecretItem
+	// The deleted secret list result
+	DeletedSecretPropertiesListResult
 }
 
 // ListSecretPropertiesResponse contains the response from method Client.NewListSecretPropertiesPager.
 type ListSecretPropertiesResponse struct {
-	// Paged collection of SecretItem items
-	PagedSecretItem
+	// The secret list result.
+	SecretPropertiesListResult
 }
 
 // ListSecretPropertiesVersionsResponse contains the response from method Client.NewListSecretPropertiesVersionsPager.

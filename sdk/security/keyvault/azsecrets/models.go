@@ -76,19 +76,10 @@ type DeletedSecretProperties struct {
 	ScheduledPurgeDate *time.Time
 }
 
-// PagedDeletedSecretItem - Paged collection of DeletedSecretItem items
-type PagedDeletedSecretItem struct {
+// DeletedSecretPropertiesListResult - The deleted secret list result
+type DeletedSecretPropertiesListResult struct {
 	// REQUIRED; The DeletedSecretItem items on this page
 	Value []DeletedSecretProperties
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// PagedSecretItem - Paged collection of SecretItem items
-type PagedSecretItem struct {
-	// REQUIRED; The SecretItem items on this page
-	Value []SecretProperties
 
 	// The link to the next page of items
 	NextLink *string

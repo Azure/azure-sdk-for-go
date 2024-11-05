@@ -149,10 +149,22 @@ op getSecret is Azure.Core.Foundations.Operation<
  * Individual secret versions are not listed in the response. This operation
  * requires the secrets/list permission.
  */
+#suppress "@azure-tools/typespec-azure-core/use-standard-operations" "Foundations.Operation is necessary for Key Vault"
 @summary("List secrets in a specified key vault.")
-op getSecrets is KeyVaultOperations.ResourceList<
-  SecretItem,
-  KeyVaultListParameters
+@route("/secrets")
+@get
+op getSecrets is Azure.Core.Foundations.Operation<
+  {
+    /**
+     * Maximum number of results to return in a page. If not specified the service
+     * will return up to 25 results.
+     */
+    @maxValue(25)
+    @minValue(1)
+    @query("maxresults")
+    maxresults?: int32;
+  },
+  SecretListResult
 >;
 
 /**
@@ -191,10 +203,22 @@ op getSecretVersions is Azure.Core.Foundations.Operation<
  * for a vault enabled for soft-delete. This operation requires the secrets/list
  * permission.
  */
+#suppress "@azure-tools/typespec-azure-core/use-standard-operations" "Foundations.Operation is necessary for Key Vault"
 @summary("Lists deleted secrets for the specified vault.")
-op getDeletedSecrets is KeyVaultOperations.ResourceList<
-  DeletedSecretItem,
-  KeyVaultListParameters
+@route("/deletedsecrets")
+@get
+op getDeletedSecrets is Azure.Core.Foundations.Operation<
+  {
+    /**
+     * Maximum number of results to return in a page. If not specified the service
+     * will return up to 25 results.
+     */
+    @maxValue(25)
+    @minValue(1)
+    @query("maxresults")
+    maxresults?: int32;
+  },
+  DeletedSecretListResult
 >;
 
 /**

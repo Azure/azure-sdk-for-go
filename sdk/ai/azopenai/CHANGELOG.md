@@ -11,6 +11,8 @@
 ### Breaking Changes
 
 - `MongoDBChatExtensionParameters.Authentication`'s type has been changed to a `OnYourDataUsernameAndPasswordAuthenticationOptions`. (PR#23620)
+- `GetCompletions` and `GetCompletionsStream` now receive different options (`CompletionsOptions` and `CompletionsStreamOptions` respectively)
+- `GetChatCompletions` and `GetChatCompletionsStream` now receive different options (`ChatCompletionsOptions` and `ChatCompletionsStreamOptions` respectively)
 
 ### Bugs Fixed
 

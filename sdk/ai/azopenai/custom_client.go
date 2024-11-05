@@ -14,7 +14,6 @@ package azopenai
 
 import (
 	"context"
-	"encoding/json"
 	"net/http"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -144,30 +143,6 @@ func (b *openAIPolicy) Do(req *policy.Request) (*http.Response, error) {
 	q := req.Raw().URL.Query()
 	q.Del("api-version")
 	return req.Next()
-}
-
-// Methods that return streaming response
-type streamCompletionsOptions struct {
-	// we strip out the 'stream' field from the options exposed to the customer so
-	// now we need to add it back in.
-	any
-	Stream bool `json:"stream"`
-}
-
-func (o streamCompletionsOptions) MarshalJSON() ([]byte, error) {
-	bytes, err := json.Marshal(o.any)
-
-	if err != nil {
-		return nil, err
-	}
-
-	objectMap := make(map[string]any)
-	err = json.Unmarshal(bytes, &objectMap)
-	if err != nil {
-		return nil, err
-	}
-	objectMap["stream"] = o.Stream
-	return json.Marshal(objectMap)
 }
 
 func (options *CompletionsOptions) toWireType() completionsOptions {

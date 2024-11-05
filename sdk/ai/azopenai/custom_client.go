@@ -277,7 +277,7 @@ func (client *Client) GetCompletionsStream(ctx context.Context, body Completions
 	}, nil
 }
 
-// getCompletions - Gets completions for the provided input prompts. Completions support a wide variety of tasks and generate
+// GetCompletions - Gets completions for the provided input prompts. Completions support a wide variety of tasks and generate
 // text that continues from or "completes" provided prompt data.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - body - The configuration information for a completions request. Completions support a wide variety of tasks and generate
@@ -313,7 +313,7 @@ func (client *Client) GetChatCompletionsStream(ctx context.Context, body ChatCom
 	}, nil
 }
 
-// getChatCompletions - Gets chat completions for the provided chat messages. Completions support a wide variety of tasks
+// GetChatCompletions - Gets chat completions for the provided chat messages. Completions support a wide variety of tasks
 // and generate text that continues from or "completes" provided prompt data.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - body - The configuration information for a chat completions request. Completions support a wide variety of tasks and generate

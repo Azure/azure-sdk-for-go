@@ -7,7 +7,7 @@ go: true
 clear-output-folder: false
 version: "^3.0.0"
 license-header: MICROSOFT_MIT_NO_VERSION
-input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/bb1b07077b624d1aa982430f9e19a90d553357c4/specification/storage/data-plane/Microsoft.FileStorage/stable/2024-11-04/file.json"
+input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/ae95eb6a4701d844bada7d1c4f5ecf4a7444e5b8/specification/storage/data-plane/Microsoft.FileStorage/stable/2025-01-05/file.json"
 credential-scope: "https://storage.azure.com/.default"
 output-folder: ../generated
 file-prefix: "zz_"
@@ -22,7 +22,7 @@ export-clients: true
 use: "@autorest/go@4.0.0-preview.61"
 ```
 
-### Updating service version to 2024-11-04
+### Updating service version to 2025-01-05
 
 ```yaml
 directive:

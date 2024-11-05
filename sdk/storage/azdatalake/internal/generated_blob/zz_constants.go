@@ -520,6 +520,7 @@ const (
 	StorageErrorCodeAuthorizationResourceTypeMismatch                 StorageErrorCode = "AuthorizationResourceTypeMismatch"
 	StorageErrorCodeAuthorizationServiceMismatch                      StorageErrorCode = "AuthorizationServiceMismatch"
 	StorageErrorCodeAuthorizationSourceIPMismatch                     StorageErrorCode = "AuthorizationSourceIPMismatch"
+	StorageErrorCodeBlobAccessTierNotSupportedForAccountType          StorageErrorCode = "BlobAccessTierNotSupportedForAccountType"
 	StorageErrorCodeBlobAlreadyExists                                 StorageErrorCode = "BlobAlreadyExists"
 	StorageErrorCodeBlobArchived                                      StorageErrorCode = "BlobArchived"
 	StorageErrorCodeBlobBeingRehydrated                               StorageErrorCode = "BlobBeingRehydrated"
@@ -638,6 +639,7 @@ func PossibleStorageErrorCodeValues() []StorageErrorCode {
 		StorageErrorCodeAuthorizationResourceTypeMismatch,
 		StorageErrorCodeAuthorizationServiceMismatch,
 		StorageErrorCodeAuthorizationSourceIPMismatch,
+		StorageErrorCodeBlobAccessTierNotSupportedForAccountType,
 		StorageErrorCodeBlobAlreadyExists,
 		StorageErrorCodeBlobArchived,
 		StorageErrorCodeBlobBeingRehydrated,

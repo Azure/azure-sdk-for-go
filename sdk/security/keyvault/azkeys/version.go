@@ -8,5 +8,5 @@ package azkeys
 
 const (
 	moduleName = "github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azkeys"
-	version    = "v1.3.0"
+	version    = "v1.3.1"
 )

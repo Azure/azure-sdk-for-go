@@ -139,7 +139,7 @@ type SecretAttributes struct {
 	// current vault. If it contains 'Purgeable', the secret can be permanently
 	// deleted by a privileged user; otherwise, only the system can purge the secret,
 	// at the end of the retention interval.
-	RecoveryLevel *DeletionRecoveryLevel
+	RecoveryLevel *string
 
 	// READ-ONLY; Last updated time in UTC.
 	Updated *time.Time

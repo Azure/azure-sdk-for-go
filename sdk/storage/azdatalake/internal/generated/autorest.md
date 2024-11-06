@@ -132,7 +132,7 @@ directive:
       return $.
         replace(/"strconv"/, `"strconv"\n\t"strings"`);
 ```
-### Add Missing Imports to zz_models_serde.go 
+### Add Missing Imports to zz_models_serde.go
 
 ``` yaml
 directive:
@@ -324,5 +324,5 @@ directive:
   where: $
   transform: >-
     return $.
-      replaceAll(`[]string{"2024-08-04"}`, `[]string{ServiceVersion}`).
+      replaceAll(`[]string{"2023-05-03"}`, `[]string{ServiceVersion}`);
 ```

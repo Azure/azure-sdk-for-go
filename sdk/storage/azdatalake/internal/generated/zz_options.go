@@ -211,6 +211,13 @@ type PathClientAppendDataOptions struct {
 	// analytics logging is enabled.
 	RequestID *string
 
+	// Required if the request body is a structured message. Specifies the message schema version and properties.
+	StructuredBodyType *string
+
+	// Required if the request body is a structured message. Specifies the length of the blob/file content inside the message
+	// body. Will always be smaller than Content-Length.
+	StructuredContentLength *int64
+
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for Blob Service Operations.
 	// [https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations]
 	Timeout *int32
@@ -618,6 +625,13 @@ type PathClientUpdateOptions struct {
 	// parameter allows data after the flush position to be retained for a future flush
 	// operation.
 	RetainUncommittedData *bool
+
+	// Required if the request body is a structured message. Specifies the message schema version and properties.
+	StructuredBodyType *string
+
+	// Required if the request body is a structured message. Specifies the length of the blob/file content inside the message
+	// body. Will always be smaller than Content-Length.
+	StructuredContentLength *int64
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for Blob Service Operations.
 	// [https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations]

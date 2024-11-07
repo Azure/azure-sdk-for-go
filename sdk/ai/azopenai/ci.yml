@@ -35,11 +35,8 @@ extends:
       UsePipelineProxy: false
       CloudConfig:
         Public:
+          ServiceConnection: azure-sdk-tests
           SubscriptionConfigurations:
             - $(sub-config-openai-test-resources) # TestSecrets-openai
       EnvVars:
         AZURE_TEST_RUN_LIVE: "true" # use when utilizing the New-TestResources Script
-        AZURE_CLIENT_ID: $(AZOPENAI_CLIENT_ID)
-        AZURE_CLIENT_SECRET: $(AZOPENAI_CLIENT_SECRET)
-        AZURE_TENANT_ID: $(AZOPENAI_TENANT_ID)
-        AZURE_SUBSCRIPTION_ID: $(AZOPENAI_SUBSCRIPTION_ID)

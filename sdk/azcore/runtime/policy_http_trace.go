@@ -18,18 +18,12 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
+	semconv "go.opentelemetry.io/otel/semconv/v1.18.0"
 )
 
 const (
-	attrHTTPMethod     = "http.method"
-	attrHTTPURL        = "http.url"
-	attrHTTPUserAgent  = "http.user_agent"
-	attrHTTPStatusCode = "http.status_code"
-
 	attrAZClientReqID  = "az.client_request_id"
 	attrAZServiceReqID = "az.service_request_id"
-
-	attrNetPeerName = "net.peer.name"
 )
 
 // newHTTPTracePolicy creates a new instance of the httpTracePolicy.
@@ -48,13 +42,13 @@ func (h *httpTracePolicy) Do(req *policy.Request) (resp *http.Response, err erro
 	rawTracer := req.Raw().Context().Value(shared.CtxWithTracingTracer{})
 	if tracer, ok := rawTracer.(tracing.Tracer); ok && tracer.Enabled() {
 		attributes := []tracing.Attribute{
-			{Key: attrHTTPMethod, Value: req.Raw().Method},
-			{Key: attrHTTPURL, Value: getSanitizedURL(*req.Raw().URL, h.allowedQP)},
-			{Key: attrNetPeerName, Value: req.Raw().URL.Host},
+			{Key: string(semconv.HTTPMethodKey), Value: req.Raw().Method},
+			{Key: string(semconv.HTTPURLKey), Value: getSanitizedURL(*req.Raw().URL, h.allowedQP)},
+			{Key: string(semconv.NetPeerNameKey), Value: req.Raw().URL.Host},
 		}
 
 		if ua := req.Raw().Header.Get(shared.HeaderUserAgent); ua != "" {
-			attributes = append(attributes, tracing.Attribute{Key: attrHTTPUserAgent, Value: ua})
+			attributes = append(attributes, tracing.Attribute{Key: string(semconv.HTTPUserAgentKey), Value: ua})
 		}
 		if reqID := req.Raw().Header.Get(shared.HeaderXMSClientRequestID); reqID != "" {
 			attributes = append(attributes, tracing.Attribute{Key: attrAZClientReqID, Value: reqID})
@@ -68,7 +62,7 @@ func (h *httpTracePolicy) Do(req *policy.Request) (resp *http.Response, err erro
 
 		defer func() {
 			if resp != nil {
-				span.SetAttributes(tracing.Attribute{Key: attrHTTPStatusCode, Value: resp.StatusCode})
+				span.SetAttributes(tracing.Attribute{Key: string(semconv.HTTPStatusCodeKey), Value: resp.StatusCode})
 				if resp.StatusCode > 399 {
 					span.SetStatus(tracing.SpanStatusError, resp.Status)
 				}

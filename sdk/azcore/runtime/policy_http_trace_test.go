@@ -21,6 +21,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/stretchr/testify/require"
+	semconv "go.opentelemetry.io/otel/semconv/v1.18.0"
 )
 
 func TestHTTPTracePolicy(t *testing.T) {
@@ -75,12 +76,12 @@ func TestHTTPTracePolicy(t *testing.T) {
 	require.EqualValues(t, "HTTP GET", fullSpanName)
 	require.EqualValues(t, tracing.SpanKindClient, spanKind)
 	require.Len(t, spanAttrs, 7)
-	require.Contains(t, spanAttrs, tracing.Attribute{Key: attrHTTPMethod, Value: http.MethodGet})
-	require.Contains(t, spanAttrs, tracing.Attribute{Key: attrHTTPURL, Value: srv.URL() + "?foo=REDACTED&visibleqp=bar"})
-	require.Contains(t, spanAttrs, tracing.Attribute{Key: attrNetPeerName, Value: srv.URL()[7:]}) // strip off the http://
-	require.Contains(t, spanAttrs, tracing.Attribute{Key: attrHTTPUserAgent, Value: "my-user-agent"})
+	require.Contains(t, spanAttrs, tracing.Attribute{Key: string(semconv.HTTPMethodKey), Value: http.MethodGet})
+	require.Contains(t, spanAttrs, tracing.Attribute{Key: string(semconv.HTTPURLKey), Value: srv.URL() + "?foo=REDACTED&visibleqp=bar"})
+	require.Contains(t, spanAttrs, tracing.Attribute{Key: string(semconv.NetPeerNameKey), Value: srv.URL()[7:]}) // strip off the http://
+	require.Contains(t, spanAttrs, tracing.Attribute{Key: string(semconv.HTTPUserAgentKey), Value: "my-user-agent"})
 	require.Contains(t, spanAttrs, tracing.Attribute{Key: attrAZClientReqID, Value: "my-client-request"})
-	require.Contains(t, spanAttrs, tracing.Attribute{Key: attrHTTPStatusCode, Value: http.StatusOK})
+	require.Contains(t, spanAttrs, tracing.Attribute{Key: string(semconv.HTTPStatusCodeKey), Value: http.StatusOK})
 	require.Contains(t, spanAttrs, tracing.Attribute{Key: attrAZServiceReqID, Value: "request-id"})
 
 	// HTTP bad request
@@ -91,7 +92,7 @@ func TestHTTPTracePolicy(t *testing.T) {
 	require.NoError(t, err)
 	require.EqualValues(t, tracing.SpanStatusError, spanStatus)
 	require.EqualValues(t, "400 Bad Request", spanStatusStr)
-	require.Contains(t, spanAttrs, tracing.Attribute{Key: attrHTTPStatusCode, Value: http.StatusBadRequest})
+	require.Contains(t, spanAttrs, tracing.Attribute{Key: string(semconv.HTTPStatusCodeKey), Value: http.StatusBadRequest})
 
 	// HTTP error
 	req, err = exported.NewRequest(context.WithValue(context.Background(), shared.CtxWithTracingTracer{}, tr), http.MethodGet, srv.URL())

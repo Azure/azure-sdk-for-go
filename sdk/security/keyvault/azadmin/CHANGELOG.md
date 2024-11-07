@@ -1,6 +1,6 @@
 ## Release History
 
-### 1.3.0 (2024-11-06)
+### 1.3.0 (2024-11-07)
 
 #### Features Added
 * Added API Version support. Users can now change the default API Version by setting ClientOptions.APIVersion

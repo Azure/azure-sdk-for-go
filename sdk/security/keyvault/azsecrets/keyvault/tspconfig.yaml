@@ -38,3 +38,4 @@ options:
     slice-elements-byval: true
     override-client-name: "Client"
     single-client: true
+    api-version: "7.5"

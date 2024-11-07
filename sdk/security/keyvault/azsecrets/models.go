@@ -50,14 +50,14 @@ type DeletedSecret struct {
 
 // DeletedSecretProperties - The deleted secret item containing metadata about the deleted secret.
 type DeletedSecretProperties struct {
-	// READ-ONLY; Secret identifier.
-	ID *ID
-
 	// The secret management attributes.
 	Attributes *SecretAttributes
 
 	// Type of the secret value such as a password.
 	ContentType *string
+
+	// Secret identifier.
+	ID *ID
 
 	// The url of the recovery object, used to identify and recover the deleted secret.
 	RecoveryID *string
@@ -147,14 +147,14 @@ type SecretAttributes struct {
 
 // SecretProperties - The secret item containing secret metadata.
 type SecretProperties struct {
-	// READ-ONLY; Secret identifier.
-	ID *ID
-
 	// The secret management attributes.
 	Attributes *SecretAttributes
 
 	// Type of the secret value such as a password.
 	ContentType *string
+
+	// Secret identifier.
+	ID *ID
 
 	// Application specific metadata in the form of key-value pairs.
 	Tags map[string]*string

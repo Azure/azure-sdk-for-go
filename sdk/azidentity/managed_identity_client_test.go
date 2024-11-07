@@ -50,7 +50,7 @@ func TestManagedIdentityClient_UserAgent(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	_, err = client.authenticate(context.Background(), nil, []string{liveTestScope})
+	_, err = client.authenticate(context.Background(), nil, []string{t.Name()})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -68,7 +68,7 @@ func TestManagedIdentityClient_ApplicationID(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	_, err = client.authenticate(context.Background(), nil, []string{liveTestScope})
+	_, err = client.authenticate(context.Background(), nil, []string{t.Name()})
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -26,6 +26,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/confidential"
+	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/managedidentity"
 )
 
 const (
@@ -41,7 +42,7 @@ const (
 	msiResID                 = "msi_res_id"
 	msiSecret                = "MSI_SECRET"
 	imdsAPIVersion           = "2018-02-01"
-	azureArcAPIVersion       = "2019-08-15"
+	azureArcAPIVersion       = "2020-06-01"
 	qpClientID               = "client_id"
 	serviceFabricAPIVersion  = "2019-07-01-preview"
 )
@@ -68,6 +69,7 @@ type managedIdentityClient struct {
 	// chained indicates whether the client is part of a credential chain. If true, the client will return
 	// a credentialUnavailableError instead of an AuthenticationFailedError for an unexpected IMDS response.
 	chained bool
+	msalClient *managedidentity.Client
 }
 
 // arcKeyDirectory returns the directory expected to contain Azure Arc keys
@@ -195,6 +197,23 @@ func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) (*manag
 	}
 	c.azClient = client
 
+	id := managedidentity.SystemAssigned()
+	if options.ID != nil {
+		switch s := options.ID.String(); options.ID.idKind() {
+		case miClientID:
+			id = managedidentity.UserAssignedClientID(s)
+		case miObjectID:
+			id = managedidentity.UserAssignedObjectID(s)
+		case miResourceID:
+			id = managedidentity.UserAssignedResourceID(s)
+		}
+	}
+	miClient, err := managedidentity.New(id, managedidentity.WithHTTPClient(&c), managedidentity.WithRetryPolicyDisabled())
+	if err != nil {
+		return nil, err
+	}
+	c.msalClient = &miClient
+
 	if log.Should(EventAuthentication) {
 		msg := fmt.Sprintf("%s will use %s managed identity", credNameManagedIdentity, env)
 		if options.ID != nil {
@@ -211,6 +230,14 @@ func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) (*manag
 	}
 
 	return &c, nil
+}
+
+func (*managedIdentityClient) CloseIdleConnections() {
+	// do nothing
+}
+
+func (c *managedIdentityClient) Do(r *http.Request) (*http.Response, error) {
+	return doForClient(c.azClient, r)
 }
 
 // provideToken acquires a token for MSAL's confidential.Client, which caches the token
@@ -246,6 +273,41 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKi
 		}
 		// send normal token requests from now on because something responded
 		c.probeIMDS = false
+	}
+
+	switch c.msiType {
+	case msiTypeAppService, msiTypeAzureArc, msiTypeAzureML, msiTypeCloudShell, msiTypeServiceFabric:
+		ar, err := c.msalClient.AcquireToken(ctx, scopes[0])
+		if err != nil {
+			err = newAuthenticationFailedErrorFromMSAL(credNameManagedIdentity, err)
+		}
+		return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
+	case msiTypeIMDS:
+		ar, err := c.msalClient.AcquireToken(ctx, scopes[0])
+		if err != nil {
+			resp := getResponseFromError(err)
+			if resp != nil {
+				switch resp.StatusCode {
+				case http.StatusBadRequest:
+					if c.id != nil {
+						return azcore.AccessToken{}, newAuthenticationFailedError(credNameManagedIdentity, "the requested identity isn't assigned to this resource", resp)
+					}
+					msg := "failed to authenticate a system assigned identity"
+					if body, err := azruntime.Payload(resp); err == nil && len(body) > 0 {
+						msg += fmt.Sprintf(". The endpoint responded with %s", body)
+					}
+					return azcore.AccessToken{}, newCredentialUnavailableError(credNameManagedIdentity, msg)
+				case http.StatusForbidden:
+					// Docker Desktop runs a proxy that responds 403 to IMDS token requests. If we get that response,
+					// we return credentialUnavailableError so credential chains continue to their next credential
+					body, err := azruntime.Payload(resp)
+					if err == nil && strings.Contains(string(body), "unreachable") {
+						return azcore.AccessToken{}, newCredentialUnavailableError(credNameManagedIdentity, fmt.Sprintf("unexpected response %q", string(body)))
+					}
+				}
+			}
+		}
+		return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 	}
 
 	msg, err := c.createAuthRequest(ctx, id, scopes)

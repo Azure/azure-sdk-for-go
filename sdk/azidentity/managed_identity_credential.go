@@ -110,8 +110,8 @@ type ManagedIdentityCredentialOptions struct {
 //
 // [Azure managed identity]: https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/overview
 type ManagedIdentityCredential struct {
-	client *confidentialClient
-	mic    *managedIdentityClient
+	client     *confidentialClient
+	mic        *managedIdentityClient
 }
 
 // NewManagedIdentityCredential creates a ManagedIdentityCredential. Pass nil to accept default options.
@@ -138,6 +138,7 @@ func NewManagedIdentityCredential(options *ManagedIdentityCredentialOptions) (*M
 	if err != nil {
 		return nil, err
 	}
+
 	return &ManagedIdentityCredential{client: c, mic: mic}, nil
 }
 
@@ -153,6 +154,7 @@ func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts policy.To
 	}
 	// managed identity endpoints require a Microsoft Entra ID v1 resource (i.e. token audience), not a v2 scope, so we remove "/.default" here
 	opts.Scopes = []string{strings.TrimSuffix(opts.Scopes[0], defaultSuffix)}
+
 	tk, err := c.client.GetToken(ctx, opts)
 	return tk, err
 }

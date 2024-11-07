@@ -138,7 +138,7 @@ func TestNewClientTracingEnabled(t *testing.T) {
 			Namespace: "Widget.Factory",
 		},
 	}, &policy.ClientOptions{
-		TracingProvider: tracing.NewProvider(func(name, version string) tracing.Tracer {
+		TracingProvider: tracing.NewProvider(func(name, version, schemaURL string) tracing.Tracer {
 			return tracing.NewTracer(func(ctx context.Context, spanName string, options *tracing.SpanOptions) (context.Context, tracing.Span) {
 				require.NotNil(t, options)
 				for _, attr := range options.Attributes {
@@ -179,7 +179,7 @@ func TestClientWithClientName(t *testing.T) {
 			Namespace: "Widget.Factory",
 		},
 	}, &policy.ClientOptions{
-		TracingProvider: tracing.NewProvider(func(name, version string) tracing.Tracer {
+		TracingProvider: tracing.NewProvider(func(name, version, schemaURL string) tracing.Tracer {
 			clientName = name
 			modVersion = version
 			return tracing.NewTracer(func(ctx context.Context, spanName string, options *tracing.SpanOptions) (context.Context, tracing.Span) {
@@ -232,7 +232,7 @@ func TestClientWithCoreName(t *testing.T) {
 			Namespace: "Widget.Factory",
 		},
 	}, &policy.ClientOptions{
-		TracingProvider: tracing.NewProvider(func(name, version string) tracing.Tracer {
+		TracingProvider: tracing.NewProvider(func(name, version, schemaURL string) tracing.Tracer {
 			clientName = name
 			modVersion = version
 			return tracing.NewTracer(func(ctx context.Context, spanName string, options *tracing.SpanOptions) (context.Context, tracing.Span) {

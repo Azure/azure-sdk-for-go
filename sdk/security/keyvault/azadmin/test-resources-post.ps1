@@ -104,8 +104,9 @@ $wrappingFiles = foreach ($i in 0..2) {
 }
 
 Log "Refreshing OIDC token"
-Connect-AzAccount -ServicePrincipal -Tenant $TenantId -ApplicationId $TestApplicationId -FederatedToken $env:ARM_OIDC_TOKEN -Environment $Environment
-Set-AzContext -Subscription $SubscriptionId
+az cloud set -n $Environment
+az login --federated-token $env:ARM_OIDC_TOKEN --service-principal -t $TenantId -u $TestApplicationId
+az account set --subscription $SubscriptionId
 
 Log "Downloading security domain from '$hsmUrl'"
 
@@ -115,12 +116,17 @@ if (Test-Path $sdpath) {
     Remove-Item $sdPath -Force
 }
 
-Export-AzKeyVaultSecurityDomain -Name $hsmName -Quorum 2 -Certificates $wrappingFiles -OutputPath $sdPath -ErrorAction SilentlyContinue -Verbose
-if ( !$? ) {
+az keyvault security-domain download `
+    --hsm-name "$hsmName" `
+    --sd-wrappingkey-file "$wrappingFiles" `
+    --sd-quorum 2 `
+    --sd-file "$sdPath" `
+    --verbose
+
+if ($LASTEXITCODE) {
     Write-Host $Error[0].Exception
     Write-Error $Error[0]
-
-    exit
+    exit $LASTEXITCODE
 }
 
 Log "Security domain downloaded to '$sdPath'; Managed HSM is now active at '$hsmUrl'"
@@ -132,7 +138,16 @@ Start-Sleep -Seconds 30
 $testApplicationOid = $DeploymentOutputs['CLIENT_OBJECTID']
 
 Log "Creating additional required role assignments for '$testApplicationOid'"
-$null = New-AzKeyVaultRoleAssignment -HsmName $hsmName -RoleDefinitionName 'Managed HSM Crypto Officer' -ObjectID $testApplicationOid
-$null = New-AzKeyVaultRoleAssignment -HsmName $hsmName -RoleDefinitionName 'Managed HSM Crypto User' -ObjectID $testApplicationOid
+az keyvault role assignment create `
+    --hsm-name "$hsmName" `
+    --role "Managed HSM Crypto Officer" `
+    --assignee-object-id "$testApplicationOid"
+if ($LASTEXITCODE) { exit $LASTEXITCODE }
+az keyvault role assignment create `
+    --hsm-name "$hsmName" `
+    --role "Managed HSM Crypto User" `
+    --assignee-object-id "$testApplicationOid"
+if ($LASTEXITCODE) { exit $LASTEXITCODE }
+
 
 Log "Role assignments created for '$testApplicationOid'"

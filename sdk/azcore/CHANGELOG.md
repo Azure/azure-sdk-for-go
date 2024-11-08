@@ -4,7 +4,11 @@
 
 ### Features Added
 
+* `Client` has a new method called `WithCoreTracerName` that can be used by consumers that wish to have the azcore http tracer's module name and version set to azcore's values instead of the consumer modules values
+
 ### Breaking Changes
+
+* `tracing.NewProvider`'s `newTracerFn` and `Provider.NewTracer` now take a schemaURL for their 3rd argument.
 
 ### Bugs Fixed
 

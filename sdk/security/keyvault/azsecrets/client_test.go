@@ -246,7 +246,7 @@ func TestListDeletedSecrets(t *testing.T) {
 		require.NoError(t, err)
 		testSerde(t, &page.DeletedSecretPropertiesListResult)
 		for _, secret := range page.Value {
-			testSerde(t, &secret)
+			testSerde(t, secret)
 			delete(expected, secret.ID.Name())
 			if len(expected) == 0 {
 				break
@@ -274,7 +274,7 @@ func TestListSecrets(t *testing.T) {
 		require.NoError(t, err)
 		testSerde(t, &page.SecretPropertiesListResult)
 		for _, secret := range page.Value {
-			testSerde(t, &secret)
+			testSerde(t, secret)
 			if strings.HasPrefix(secret.ID.Name(), "listsecrets") {
 				count--
 			}
@@ -311,7 +311,7 @@ func TestListSecretVersions(t *testing.T) {
 		require.NoError(t, err)
 		testSerde(t, &page.SecretPropertiesListResult)
 		for i, secret := range page.Value {
-			testSerde(t, &secret)
+			testSerde(t, secret)
 			if i > 0 {
 				require.NotEqual(t, page.Value[i-1].ID.Version(), secret.ID.Version())
 			}

@@ -79,7 +79,7 @@ type DeletedSecretProperties struct {
 // DeletedSecretPropertiesListResult - The deleted secret list result
 type DeletedSecretPropertiesListResult struct {
 	// REQUIRED; The DeletedSecretItem items on this page
-	Value []DeletedSecretProperties
+	Value []*DeletedSecretProperties
 
 	// The link to the next page of items
 	NextLink *string
@@ -167,7 +167,7 @@ type SecretProperties struct {
 // SecretPropertiesListResult - The secret list result.
 type SecretPropertiesListResult struct {
 	// REQUIRED; The SecretItem items on this page
-	Value []SecretProperties
+	Value []*SecretProperties
 
 	// The link to the next page of items
 	NextLink *string

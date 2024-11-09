@@ -27,24 +27,18 @@ type GetSecretOptions struct {
 // ListDeletedSecretPropertiesOptions contains the optional parameters for the Client.NewListDeletedSecretPropertiesPager
 // method.
 type ListDeletedSecretPropertiesOptions struct {
-	// Maximum number of results to return in a page. If not specified the service
-	// will return up to 25 results.
-	Maxresults *int32
+	// placeholder for future optional parameters
 }
 
 // ListSecretPropertiesOptions contains the optional parameters for the Client.NewListSecretPropertiesPager method.
 type ListSecretPropertiesOptions struct {
-	// Maximum number of results to return in a page. If not specified the service
-	// will return up to 25 results.
-	Maxresults *int32
+	// placeholder for future optional parameters
 }
 
 // ListSecretPropertiesVersionsOptions contains the optional parameters for the Client.NewListSecretPropertiesVersionsPager
 // method.
 type ListSecretPropertiesVersionsOptions struct {
-	// Maximum number of results to return in a page. If not specified the service
-	// will return up to 25 results.
-	MaxResults *int32
+	// placeholder for future optional parameters
 }
 
 // PurgeDeletedSecretOptions contains the optional parameters for the Client.PurgeDeletedSecret method.

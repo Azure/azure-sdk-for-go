@@ -13,94 +13,17 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+// C:\Users\v-liujudy\go\pkg\mod\github.com\!azure\azure-sdk-for-go\sdk\resourcemanager
 const (
 	SubscriptionID    = "faa080af-c1d8-40ad-9cce-e1a450ca5b57"
 	ResourceGroupName = "judytest02"
 	ResourceLocation  = "eastus2"
-	SqlServerName     = "sql-test001"
-	DatabaseName      = "test01"
+	SqlServerName     = "judy-sql-test002"
+	DatabaseName      = "test02"
 )
 
 func TestArmMysql(t *testing.T) {
 
-}
-
-func GetAzureCredentail() (cred *azidentity.DefaultAzureCredential) {
-	// get default credential
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		fmt.Println("get default credentail fail, error:", err.Error())
-		return
-	}
-	fmt.Println("get default credential")
-	return cred
-}
-
-func CreateAzureResourceGroup() (group *armresources.ResourceGroup, err error) {
-	cred := GetAzureCredentail()
-	clientFactory, err := armresources.NewClientFactory(SubscriptionID, cred, nil)
-	if err != nil {
-		fmt.Println("create resource client factory fail, error:", err.Error())
-		return
-	}
-	client := clientFactory.NewResourceGroupsClient()
-	createOrUpdateGroupResponse, err := client.CreateOrUpdate(context.TODO(), ResourceGroupName, armresources.ResourceGroup{
-		Location: to.Ptr(ResourceLocation),
-	}, nil)
-	if err != nil {
-		fmt.Println("create resource group fail, error:", err.Error())
-		return
-	}
-	group = &createOrUpdateGroupResponse.ResourceGroup
-	return
-}
-
-func createServer(ctx context.Context, serversClient *armsql.ServersClient) (*armsql.Server, error) {
-
-	pollerResp, err := serversClient.BeginCreateOrUpdate(
-		ctx,
-		resourceGroupName,
-		serverName,
-		armsql.Server{
-			Location: to.Ptr(location),
-			Properties: &armsql.ServerProperties{
-				AdministratorLogin:         to.Ptr("dummylogin"),
-				AdministratorLoginPassword: to.Ptr("QWE123!@#"),
-			},
-		},
-		nil,
-	)
-	if err != nil {
-		return nil, err
-	}
-	resp, err := pollerResp.PollUntilDone(ctx, nil)
-	if err != nil {
-		return nil, err
-	}
-	return &resp.Server, nil
-}
-
-func getServer(ctx context.Context, serversClient *armsql.ServersClient) (*armsql.Server, error) {
-
-	resp, err := serversClient.Get(ctx, ResourceGroupName, SqlServerName, nil)
-	if err != nil {
-		return nil, err
-	}
-	return &resp.Server, nil
-}
-
-func cleanup(ctx context.Context, resourceGroupClient *armresources.ResourceGroupsClient) error {
-
-	pollerResp, err := resourceGroupClient.BeginDelete(ctx, ResourceGroupName, nil)
-	if err != nil {
-		return err
-	}
-
-	_, err = pollerResp.PollUntilDone(ctx, nil)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 func TestCreateOrUpdateGroupOfSubscriptionId(t *testing.T) {
@@ -162,23 +85,33 @@ func TestCreateOrUpdateArmMysqlResourceOnGroup(t *testing.T) {
 
 	serverclient := sqlClientFactory.NewServersClient()
 	assert.NotNil(t, serverclient)
-	databasesClient := sqlClientFactory.NewDatabasesClient()
-	assert.NotNil(t, databasesClient)
 
 	// resourceGroup, err := CreateAzureResourceGroup()
 	// assert.Nil(t, err)
-	server, err := createServer(context.Background(), serverclient)
+	ctx := context.Background()
+	server, err := createServer(ctx, serverclient)
 	assert.Nil(t, err)
 	assert.NotNil(t, server)
 	fmt.Println("create serverId", *server.ID)
 
-	server, err = getServer(context.Background(), serverclient)
+	server, err = getServer(ctx, serverclient)
 	assert.Nil(t, err)
 	assert.NotNil(t, server)
 	fmt.Println("get server:", *server.ID)
 
+	// create database
+	databasesClient := sqlClientFactory.NewDatabasesClient()
+	assert.NotNil(t, databasesClient)
+	database, err := createDatabase(ctx, databasesClient)
+	assert.Nil(t, err)
+	assert.NotNil(t, database)
+	fmt.Println("database:", *database.ID)
+
 	// cleanup(context.Background(), resourceGroup)
-	// PUT https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}?api-version=2024-06-01-preview
+
+}
+
+func TestCreateDataBase(t *testing.T) {
 
 }
 
@@ -186,10 +119,126 @@ func TestGetListOfArmMysqlResourceOnGroup(t *testing.T) {
 
 }
 
-func TestDeleteArmMysqlResourceOnGroup(t *testing.T) {
+func TestCleanUpArmResourceGroup(t *testing.T) {
+	cred := GetAzureCredentail()
+	clientFactory, err := armresources.NewClientFactory(SubscriptionID, cred, nil)
+	assert.Nil(t, err)
+	assert.NotNil(t, clientFactory)
 
+	// clean up resource group
+	ctx := context.Background()
+	client := clientFactory.NewResourceGroupsClient()
+	err = cleanup(ctx, client)
+	assert.Nil(t, err)
+
+	// check group is cleaned up successfully
+	checkGroupExistResponse, err := client.CheckExistence(ctx, ResourceGroupName, nil)
+	assert.Nil(t, err)
+	assert.False(t, checkGroupExistResponse.Success)
 }
 
 func TestArmMysqlInstance(t *testing.T) {
 
+}
+
+func GetAzureCredentail() (cred *azidentity.DefaultAzureCredential) {
+	// get default credential
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		fmt.Println("get default credentail fail, error:", err.Error())
+		return
+	}
+	fmt.Println("get default credential")
+	return cred
+}
+
+func CreateAzureResourceGroup() (group *armresources.ResourceGroup, err error) {
+	cred := GetAzureCredentail()
+	clientFactory, err := armresources.NewClientFactory(SubscriptionID, cred, nil)
+	if err != nil {
+		fmt.Println("create resource client factory fail, error:", err.Error())
+		return
+	}
+	client := clientFactory.NewResourceGroupsClient()
+	createOrUpdateGroupResponse, err := client.CreateOrUpdate(context.TODO(), ResourceGroupName, armresources.ResourceGroup{
+		Location: to.Ptr(ResourceLocation),
+	}, nil)
+	if err != nil {
+		fmt.Println("create resource group fail, error:", err.Error())
+		return
+	}
+	group = &createOrUpdateGroupResponse.ResourceGroup
+	return
+}
+
+func createServer(ctx context.Context, serversClient *armsql.ServersClient) (*armsql.Server, error) {
+
+	pollerResp, err := serversClient.BeginCreateOrUpdate(
+		ctx,
+		ResourceGroupName,
+		SqlServerName,
+		armsql.Server{
+			Location: to.Ptr(ResourceLocation),
+			Properties: &armsql.ServerProperties{
+				AdministratorLogin:         to.Ptr("dummylogin"),
+				AdministratorLoginPassword: to.Ptr("QWE123!@#"),
+			},
+		},
+		nil,
+	)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := pollerResp.PollUntilDone(ctx, nil)
+	if err != nil {
+		return nil, err
+	}
+	return &resp.Server, nil
+}
+
+func getServer(ctx context.Context, serversClient *armsql.ServersClient) (*armsql.Server, error) {
+
+	resp, err := serversClient.Get(ctx, ResourceGroupName, SqlServerName, nil)
+	if err != nil {
+		return nil, err
+	}
+	return &resp.Server, nil
+}
+
+func cleanup(ctx context.Context, resourceGroupClient *armresources.ResourceGroupsClient) error {
+
+	pollerResp, err := resourceGroupClient.BeginDelete(ctx, ResourceGroupName, nil)
+	if err != nil {
+		return err
+	}
+	_, err = pollerResp.PollUntilDone(ctx, nil)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func createDatabase(ctx context.Context, databasesClient *armsql.DatabasesClient) (*armsql.Database, error) {
+
+	pollerResp, err := databasesClient.BeginCreateOrUpdate(
+		ctx,
+		ResourceGroupName,
+		SqlServerName,
+		DatabaseName,
+		armsql.Database{
+			Location: to.Ptr(ResourceLocation),
+			Properties: &armsql.DatabaseProperties{
+				ReadScale: to.Ptr(armsql.DatabaseReadScaleDisabled),
+			},
+		},
+		nil,
+	)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := pollerResp.PollUntilDone(ctx, nil)
+	if err != nil {
+		return nil, err
+	}
+	return &resp.Database, nil
 }

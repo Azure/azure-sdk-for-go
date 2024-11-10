@@ -8,6 +8,7 @@
 
 ### Bugs Fixed
 * User credential types inconsistently log access token scopes
+* Upgraded GO MSAL dependency to 1.3.1
 
 ### Other Changes
 

@@ -1,7 +1,7 @@
 # Release History
 
 ## 1.1.1 (2023-12-22)
-### Others Change
+### Others Changes
 
 - Fixed README.md
 

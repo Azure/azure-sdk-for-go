@@ -12,6 +12,12 @@ parameters:
   - name: SubscriptionConfigurationFilePaths
     type: object
     default: null
+  - name: EnvFromKeyvault
+    type: string
+    default: ''
+  - name: KeyvaultEnvPrefix
+    type: string
+    default: ''
 
 steps:
   - task: AzurePowerShell@5
@@ -34,20 +40,36 @@ steps:
         Write-Host "Setting pipeline subnet env variable PoolSubnet to '$poolSubnet'"
         Write-Host "##vso[task.setvariable variable=PoolSubnet;]$poolSubnet"
 
-  - pwsh: |
-      . ./eng/common/TestResources/SubConfig-Helpers.ps1
+  - ${{ if not(parameters.EnvFromKeyvault) }}:
+    - pwsh: |
+        . ./eng/common/TestResources/SubConfig-Helpers.ps1
 
-      $baseSubConfigJson = @'
-        ${{ parameters.SubscriptionConfiguration }}
-      '@.Trim()
+        $baseSubConfigJson = @'
+          ${{ parameters.SubscriptionConfiguration }}
+        '@.Trim()
 
-      $additionalSubConfigsJson = @'
-        ${{ convertToJson(parameters.SubscriptionConfigurations) }}
-      '@.Trim() -replace '"{', '{' -replace '}"', '}'
+        $additionalSubConfigsJson = @'
+          ${{ convertToJson(parameters.SubscriptionConfigurations) }}
+        '@.Trim() -replace '"{', '{' -replace '}"', '}'
 
-      $subConfigFilesJson = @'
-        ${{ convertToJson(parameters.SubscriptionConfigurationFilePaths) }}
-      '@.Trim()
+        $subConfigFilesJson = @'
+          ${{ convertToJson(parameters.SubscriptionConfigurationFilePaths) }}
+        '@.Trim()
 
-      BuildAndSetSubscriptionConfig $baseSubConfigJson $additionalSubConfigsJson $subConfigFilesJson
-    displayName: Merge subscription configurations
+        BuildAndSetSubscriptionConfig $baseSubConfigJson $additionalSubConfigsJson $subConfigFilesJson
+      displayName: Merge subscription configurations
+  - ${{ else }}:
+    - task: AzurePowerShell@5
+      displayName: Set env vars from kv ${{ parameters.EnvFromKeyvault }}
+      inputs:
+        azureSubscription: ${{ parameters.EnvFromKeyvault }}  # service connection name must match keyvault name
+        azurePowerShellVersion: LatestVersion
+        pwsh: true
+        ScriptType: InlineScript
+        Inline: |
+          . ./eng/common/scripts/Helpers/Keyvault-Helpers.ps1
+          Export-KeyvaultSecrets `
+            -Keyvault ${{ parameters.EnvFromKeyvault }} `
+            -Prefix ${{ parameters.KeyvaultEnvPrefix }} `
+            -CI
+

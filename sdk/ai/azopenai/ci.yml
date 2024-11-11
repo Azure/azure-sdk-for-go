@@ -33,10 +33,8 @@ extends:
       ServiceDirectory: "ai/azopenai"
       RunLiveTests: true
       UsePipelineProxy: false
-      CloudConfig:
-        Public:
-          SubscriptionConfigurations:
-            - $(sub-config-openai-test-resources) # TestSecrets-openai
+      EnvFromKeyvault: TestSecrets-openai
+      KeyvaultEnvPrefix: 'GO'
       EnvVars:
         AZURE_TEST_RUN_LIVE: "true" # use when utilizing the New-TestResources Script
         AZURE_CLIENT_ID: $(AZOPENAI_CLIENT_ID)

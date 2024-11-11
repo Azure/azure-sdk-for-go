@@ -87,6 +87,12 @@ parameters:
   - name: PersistOidcToken
     type: boolean
     default: false
+  - name: EnvFromKeyvault
+    type: string
+    default: ''
+  - name: KeyvaultEnvPrefix
+    type: string
+    default: ''
 
 extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml
@@ -183,6 +189,8 @@ extends:
                                   - ${{ parameters.PostSteps }}
                                 UseFederatedAuth: ${{ parameters.UseFederatedAuth }}
                                 PersistOidcToken: ${{ parameters.PersistOidcToken }}
+                                EnvFromKeyvault: ${{ parameters.EnvFromKeyvault }}
+                                KeyvaultEnvPrefix: ${{ parameters.KeyvaultEnvPrefix }}
                               MatrixConfigs:
                                 # Enumerate platforms and additional platforms based on supported clouds (sparse platform<-->cloud matrix).
                                 - ${{ each config in parameters.MatrixConfigs }}:

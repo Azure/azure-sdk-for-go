@@ -39,6 +39,12 @@ parameters:
   - name: PersistOidcToken
     type: boolean
     default: false
+  - name: EnvFromKeyvault
+    type: string
+    default: ''
+  - name: KeyvaultEnvPrefix
+    type: string
+    default: ''
 
 jobs:
   - job:
@@ -78,6 +84,8 @@ jobs:
 
       - template: /eng/common/TestResources/build-test-resource-config.yml
         parameters:
+          EnvFromKeyvault: ${{ parameters.EnvFromKeyvault }}
+          KeyvaultEnvPrefix: ${{ parameters.KeyvaultEnvPrefix }}
           SubscriptionConfiguration: ${{ parameters.CloudConfig.SubscriptionConfiguration }}
           SubscriptionConfigurations: ${{ parameters.CloudConfig.SubscriptionConfigurations }}
           SubscriptionConfigurationFilePaths: ${{ parameters.CloudConfig.SubscriptionConfigurationFilePaths }}

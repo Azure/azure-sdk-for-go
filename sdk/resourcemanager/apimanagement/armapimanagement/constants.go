@@ -10,7 +10,7 @@ package armapimanagement
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement"
-	moduleVersion = "v2.1.0"
+	moduleVersion = "v2.1.1"
 )
 
 // APIManagementSKUCapacityScaleType - The scale type applicable to the sku.

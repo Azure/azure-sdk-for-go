@@ -101,9 +101,9 @@ func (client *APIExportClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("format", string(formatParam))
-	reqQP.Set("export", string(export))
 	reqQP.Set("api-version", "2022-08-01")
+	reqQP.Set("export", string(export))
+	reqQP.Set("format", string(formatParam))
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

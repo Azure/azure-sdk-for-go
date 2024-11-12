@@ -5,6 +5,7 @@ package azopenaiassistants
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 )
 
@@ -150,4 +151,49 @@ func unmarshalStringOrObject[T any](jsonBytes []byte) (string, *T, error) {
 	}
 
 	return "", model, nil
+}
+
+// MessageAttachmentToolDefinition contains the content for a [ChatRequestToolMessage].
+// NOTE: This should be created using [azopenai.NewMessageAttachmentToolDefinition]
+type MessageAttachmentToolDefinition struct {
+	*CodeInterpreterToolDefinition
+	*FileSearchToolDefinition
+}
+
+// MarshalJSON implements the json.Marshaller interface for type MessageAttachmentToolDefinition.
+func (m MessageAttachmentToolDefinition) MarshalJSON() ([]byte, error) {
+	if m.CodeInterpreterToolDefinition != nil && m.FileSearchToolDefinition != nil {
+		return nil, errors.New("only one tool definition should be set in MessageAttachmentToolDefinition")
+	}
+
+	switch {
+	case m.CodeInterpreterToolDefinition != nil:
+		return json.Marshal(m.CodeInterpreterToolDefinition)
+	case m.FileSearchToolDefinition != nil:
+		return json.Marshal(m.FileSearchToolDefinition)
+	default:
+		return nil, errors.New("no tool definition was set in MessageAttachmentToolDefinition")
+	}
+}
+
+// UnmarshalJSON implements the json.Marshaller interface for type MessageAttachmentToolDefinition.
+func (m *MessageAttachmentToolDefinition) UnmarshalJSON(data []byte) error {
+	// There's only two types right now (CodeInterpreterToolDefinition and FileSearchToolDefinition)
+	// and CodeInterpreterToolDefinition is a subset of FileSearchToolDefinition
+	var toolDef *FileSearchToolDefinition
+
+	if err := json.Unmarshal(data, &toolDef); err != nil {
+		return err
+	}
+
+	switch *toolDef.Type {
+	case "code_interpreter":
+		m.CodeInterpreterToolDefinition = &CodeInterpreterToolDefinition{Type: toolDef.Type}
+		return nil
+	case "file_search":
+		m.FileSearchToolDefinition = toolDef
+		return nil
+	default:
+		return fmt.Errorf("unhandled tool definition type %s", *toolDef.Type)
+	}
 }

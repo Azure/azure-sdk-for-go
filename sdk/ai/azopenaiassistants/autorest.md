@@ -155,6 +155,22 @@ directive:
       return $;
 ```
 
+MessageAttachmentToolDefinition
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: |
+      // create the dummy type that I can use to point to my manually created union
+      $.MessageAttachmentToolDefinition = {
+        "x-ms-external": true,
+        "type": "object",
+        "properties": { "ignored": { "type": "string" } },
+        "x-ms-client-name": "MessageAttachmentToolDefinition"
+      };
+```
+
 ## Model -> DeploymentName
 
 ```yaml

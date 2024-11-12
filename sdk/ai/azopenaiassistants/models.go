@@ -560,7 +560,7 @@ type MessageAttachment struct {
 	FileID *string
 
 	// REQUIRED; The tools to add to this file.
-	Tools []any
+	Tools []MessageAttachmentToolDefinition
 }
 
 // MessageContent - An abstract representation of a single item of thread message content.

@@ -99,8 +99,8 @@ var azureOpenAI = func() testVars {
 	newTestVarsFn := func() testVars {
 		return testVars{
 			Assistants: endpointWithModel{
-				Endpoint: servers.SWECentral,
-				Model:    "gpt-4-1106-preview",
+				Endpoint: servers.USEast,
+				Model:    "gpt-4o-0806",
 			},
 			ChatCompletions: endpointWithModel{
 				Endpoint: servers.USEast,

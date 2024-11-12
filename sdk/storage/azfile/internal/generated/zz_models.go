@@ -273,6 +273,7 @@ type ShareProperties struct {
 	DeletedTime                          *time.Time `xml:"DeletedTime"`
 	EnableSnapshotVirtualDirectoryAccess *bool      `xml:"EnableSnapshotVirtualDirectoryAccess"`
 	EnabledProtocols                     *string    `xml:"EnabledProtocols"`
+	IncludedBurstIops                    *int64     `xml:"IncludedBurstIops"`
 
 	// When a share is leased, specifies whether the lease is of infinite or fixed duration.
 	LeaseDuration *LeaseDurationType `xml:"LeaseDuration"`
@@ -281,17 +282,20 @@ type ShareProperties struct {
 	LeaseState *LeaseStateType `xml:"LeaseState"`
 
 	// The current lease status of the share.
-	LeaseStatus                   *LeaseStatusType `xml:"LeaseStatus"`
-	NextAllowedQuotaDowngradeTime *time.Time       `xml:"NextAllowedQuotaDowngradeTime"`
-	PaidBurstingEnabled           *bool            `xml:"PaidBurstingEnabled"`
-	PaidBurstingMaxBandwidthMibps *int64           `xml:"PaidBurstingMaxBandwidthMibps"`
-	PaidBurstingMaxIops           *int64           `xml:"PaidBurstingMaxIops"`
-	ProvisionedBandwidthMiBps     *int32           `xml:"ProvisionedBandwidthMiBps"`
-	ProvisionedEgressMBps         *int32           `xml:"ProvisionedEgressMBps"`
-	ProvisionedIngressMBps        *int32           `xml:"ProvisionedIngressMBps"`
-	ProvisionedIops               *int32           `xml:"ProvisionedIops"`
-	RemainingRetentionDays        *int32           `xml:"RemainingRetentionDays"`
-	RootSquash                    *ShareRootSquash `xml:"RootSquash"`
+	LeaseStatus                                  *LeaseStatusType `xml:"LeaseStatus"`
+	MaxBurstCreditsForIops                       *int64           `xml:"MaxBurstCreditsForIops"`
+	NextAllowedProvisionedBandwidthDowngradeTime *time.Time       `xml:"NextAllowedProvisionedBandwidthDowngradeTime"`
+	NextAllowedProvisionedIopsDowngradeTime      *time.Time       `xml:"NextAllowedProvisionedIopsDowngradeTime"`
+	NextAllowedQuotaDowngradeTime                *time.Time       `xml:"NextAllowedQuotaDowngradeTime"`
+	PaidBurstingEnabled                          *bool            `xml:"PaidBurstingEnabled"`
+	PaidBurstingMaxBandwidthMibps                *int64           `xml:"PaidBurstingMaxBandwidthMibps"`
+	PaidBurstingMaxIops                          *int64           `xml:"PaidBurstingMaxIops"`
+	ProvisionedBandwidthMiBps                    *int32           `xml:"ProvisionedBandwidthMiBps"`
+	ProvisionedEgressMBps                        *int32           `xml:"ProvisionedEgressMBps"`
+	ProvisionedIngressMBps                       *int32           `xml:"ProvisionedIngressMBps"`
+	ProvisionedIops                              *int32           `xml:"ProvisionedIops"`
+	RemainingRetentionDays                       *int32           `xml:"RemainingRetentionDays"`
+	RootSquash                                   *ShareRootSquash `xml:"RootSquash"`
 }
 
 // ShareStats - Stats for the share.

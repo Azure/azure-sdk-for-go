@@ -298,6 +298,25 @@ func (s *ShareRecordedTestsSuite) TestShareCreateNilMetadata() {
 	_require.Len(response.Metadata, 0)
 }
 
+func (s *ShareRecordedTestsSuite) TestShareCreateAccessTierPremium() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountPremium, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := svcClient.NewShareClient(shareName)
+
+	_, err = shareClient.Create(context.Background(), &share.CreateOptions{
+		AccessTier: to.Ptr(share.AccessTierPremium),
+	})
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+	_require.NoError(err)
+	response, err := shareClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*response.AccessTier, string(share.AccessTierPremium))
+}
+
 func (s *ShareRecordedTestsSuite) TestShareCreateWithSnapshotVirtualDirectoryAccess() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -527,6 +546,26 @@ func (s *ShareRecordedTestsSuite) TestShareGetSetPropertiesDefault() {
 	_require.NotNil(props.Version)
 	_require.Equal(props.Date.IsZero(), false)
 	_require.Greater(*props.Quota, int32(0)) // When using service default quota, it could be any value
+}
+
+func (s *ShareRecordedTestsSuite) TestShareGetSetPropertiesAccessTierPremium() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	_, err = shareClient.SetProperties(context.Background(), &share.SetPropertiesOptions{
+		AccessTier: to.Ptr(share.AccessTierPremium),
+	})
+	_require.NoError(err)
+
+	props, err := shareClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*props.AccessTier, string(share.AccessTierPremium))
 }
 
 func (s *ShareUnrecordedTestsSuite) TestShareGetSetPropertiesOAuth() {

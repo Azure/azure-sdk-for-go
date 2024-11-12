@@ -216,6 +216,9 @@ type CreateAndRunThreadBody struct {
 	// values may be up to 512 characters in length.
 	Metadata map[string]*string
 
+	// Whether to enable parallel function calling during tool use.
+	ParallelToolCalls *bool
+
 	// Specifies the format that the model must output.
 	ResponseFormat *AssistantResponseFormat
 
@@ -388,6 +391,9 @@ type CreateRunBody struct {
 	// The overridden model name that the assistant should use to run the thread.
 	Model *string
 
+	// Whether to enable parallel function calling during tool use.
+	ParallelToolCalls *bool
+
 	// Specifies the format that the model must output.
 	ResponseFormat *AssistantResponseFormat
 
@@ -554,13 +560,7 @@ type MessageAttachment struct {
 	FileID *string
 
 	// REQUIRED; The tools to add to this file.
-	Tools []MessageAttachmentToolAssignment
-}
-
-// MessageAttachmentToolAssignment - The possible tools to which files will be added by this message
-type MessageAttachmentToolAssignment struct {
-	// REQUIRED; The type of the tool being selected.
-	Type *MessageAttachmentToolAssignmentType
+	Tools []any
 }
 
 // MessageContent - An abstract representation of a single item of thread message content.
@@ -1699,6 +1699,9 @@ type ThreadRun struct {
 
 	// REQUIRED; The object type, which is always 'thread.run'.
 	Object *string
+
+	// REQUIRED; Whether to enable parallel function calling during tool use.
+	ParallelToolCalls *bool
 
 	// REQUIRED; The response format of the tool calls used in this run.
 	ResponseFormat *AssistantResponseFormat

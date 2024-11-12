@@ -38,6 +38,19 @@ func newTestChatCompletionOptions(deployment string) azopenai.ChatCompletionsOpt
 	}
 }
 
+func newTestChatCompletionStreamOptions(deployment string) azopenai.ChatCompletionsStreamOptions {
+	return azopenai.ChatCompletionsStreamOptions{
+		Messages: []azopenai.ChatRequestMessageClassification{
+			&azopenai.ChatRequestUserMessage{
+				Content: azopenai.NewChatRequestUserMessageContent("Count to 10, with a comma between each number, no newlines and a period at the end. E.g., 1, 2, 3, ..."),
+			},
+		},
+		MaxTokens:      to.Ptr(int32(1024)),
+		Temperature:    to.Ptr(float32(0.0)),
+		DeploymentName: &deployment,
+	}
+}
+
 var expectedContent = "1, 2, 3, 4, 5, 6, 7, 8, 9, 10."
 var expectedRole = azopenai.ChatRoleAssistant
 
@@ -60,8 +73,20 @@ func TestClient_GetChatCompletions(t *testing.T) {
 				CompletionTokens: to.Ptr(int32(29)),
 				PromptTokens:     to.Ptr(int32(42)),
 				TotalTokens:      to.Ptr(int32(71)),
+				CompletionTokensDetails: &azopenai.CompletionsUsageCompletionTokensDetails{
+					ReasoningTokens: to.Ptr(int32(0)),
+				},
+				PromptTokensDetails: &azopenai.CompletionsUsagePromptTokensDetails{
+					CachedTokens: to.Ptr(int32(0)),
+				},
 			},
 			Model: &returnedModel,
+		}
+
+		if checkRAI {
+			// There is a discrepancy in how these are returned between Azure and OpenAI.
+			expected.Usage.CompletionTokensDetails = nil
+			expected.Usage.PromptTokensDetails = nil
 		}
 
 		resp, err := client.GetChatCompletions(context.Background(), newTestChatCompletionOptions(deployment), nil)
@@ -208,7 +233,7 @@ func TestClient_GetChatCompletions_LogitBias(t *testing.T) {
 
 func TestClient_GetChatCompletionsStream(t *testing.T) {
 	testFn := func(t *testing.T, client *azopenai.Client, deployment string, returnedDeployment string) {
-		streamResp, err := client.GetChatCompletionsStream(context.Background(), newTestChatCompletionOptions(deployment), nil)
+		streamResp, err := client.GetChatCompletionsStream(context.Background(), newTestChatCompletionStreamOptions(deployment), nil)
 
 		if respErr := (*azcore.ResponseError)(nil); errors.As(err, &respErr) && respErr.StatusCode == http.StatusTooManyRequests {
 			t.Skipf("OpenAI resource overloaded, skipping this test")
@@ -301,14 +326,14 @@ func TestClient_GetChatCompletionsStream_Error(t *testing.T) {
 
 	t.Run("AzureOpenAI", func(t *testing.T) {
 		client := newBogusAzureOpenAIClient(t)
-		streamResp, err := client.GetChatCompletionsStream(context.Background(), newTestChatCompletionOptions(azureOpenAI.ChatCompletions.Model), nil)
+		streamResp, err := client.GetChatCompletionsStream(context.Background(), newTestChatCompletionStreamOptions(azureOpenAI.ChatCompletions.Model), nil)
 		require.Empty(t, streamResp)
 		assertResponseIsError(t, err)
 	})
 
 	t.Run("OpenAI", func(t *testing.T) {
 		client := newBogusOpenAIClient(t)
-		streamResp, err := client.GetChatCompletionsStream(context.Background(), newTestChatCompletionOptions(openAI.ChatCompletions.Model), nil)
+		streamResp, err := client.GetChatCompletionsStream(context.Background(), newTestChatCompletionStreamOptions(openAI.ChatCompletions.Model), nil)
 		require.Empty(t, streamResp)
 		assertResponseIsError(t, err)
 	})

@@ -836,6 +836,14 @@ func (c *ChatCompletionRequestMessageContentPartText) GetChatCompletionRequestMe
 	}
 }
 
+// ChatCompletionStreamOptions - Options for streaming response. Only set this when you set stream: true.
+type ChatCompletionStreamOptions struct {
+	// If set, an additional chunk will be streamed before the data: [DONE] message. The usage field on this chunk shows the token
+	// usage statistics for the entire request, and the choices field will always
+	// be an empty array. All other chunks will also include a usage field, but with a null value.
+	IncludeUsage *bool
+}
+
 // ChatCompletions - Representation of the response data from a chat completions request. Completions support a wide variety
 // of tasks and generate text that continues from or "completes" provided prompt data.
 type ChatCompletions struct {
@@ -1035,9 +1043,9 @@ func (c *ChatCompletionsNamedToolSelection) GetChatCompletionsNamedToolSelection
 	return c
 }
 
-// ChatCompletionsOptions - The configuration information for a chat completions request. Completions support a wide variety
+// chatCompletionsOptions - The configuration information for a chat completions request. Completions support a wide variety
 // of tasks and generate text that continues from or "completes" provided prompt data.
-type ChatCompletionsOptions struct {
+type chatCompletionsOptions struct {
 	// REQUIRED; The collection of context messages associated with this chat completions request. Typical usage begins with a
 	// chat message for the System role that provides instructions for the behavior of the
 	// assistant, followed by alternating messages between the User and Assistant roles.
@@ -1077,7 +1085,13 @@ type ChatCompletionsOptions struct {
 	// on the gpt-4-vision-preview model.
 	LogProbs *bool
 
-	// The maximum number of tokens to generate.
+	// An upper bound for the number of tokens that can be generated for a completion, including visible output tokens and reasoning
+	// tokens.
+	MaxCompletionTokens *int32
+
+	// The maximum number of tokens allowed for the generated answer. By default, the number of tokens the model can return will
+	// be (4096 - prompt tokens).
+	// This value is now deprecated in favor of max_completion_tokens, and is not compatible with o1 series models.
 	MaxTokens *int32
 
 	// The model name to provide as part of this completions request. Not applicable to Azure OpenAI, where deployment information
@@ -1088,6 +1102,9 @@ type ChatCompletionsOptions struct {
 	// generate many completions, it may quickly consume your token quota. Use
 	// carefully and ensure reasonable settings for max_tokens and stop.
 	N *int32
+
+	// Whether to enable parallel function calling during tool use.
+	ParallelToolCalls *bool
 
 	// A value that influences the probability of generated tokens appearing based on their existing presence in generated text.
 	// Positive values will make tokens less likely to appear when they already exist
@@ -1104,6 +1121,12 @@ type ChatCompletionsOptions struct {
 
 	// A collection of textual sequences that will end completions generation.
 	Stop []string
+
+	// A value indicating whether chat completions should be streamed for this request.
+	Stream *bool
+
+	// Options for streaming response. Only set this when you set stream: true.
+	StreamOptions *ChatCompletionStreamOptions
 
 	// The sampling temperature to use that controls the apparent creativity of generated completions. Higher values will make
 	// output more random while lower values will make results more focused and
@@ -1521,9 +1544,9 @@ type CompletionsLogProbabilityModel struct {
 	TopLogProbs []map[string]*float32
 }
 
-// CompletionsOptions - The configuration information for a completions request. Completions support a wide variety of tasks
+// completionsOptions - The configuration information for a completions request. Completions support a wide variety of tasks
 // and generate text that continues from or "completes" provided prompt data.
-type CompletionsOptions struct {
+type completionsOptions struct {
 	// REQUIRED; The prompts to generate completions from.
 	Prompt []string
 
@@ -1578,6 +1601,12 @@ type CompletionsOptions struct {
 	// A collection of textual sequences that will end completions generation.
 	Stop []string
 
+	// A value indicating whether chat completions should be streamed for this request.
+	Stream *bool
+
+	// Options for streaming response. Only set this when you set stream: true.
+	StreamOptions *ChatCompletionStreamOptions
+
 	// The suffix that comes after a completion of inserted text
 	Suffix *string
 
@@ -1609,6 +1638,24 @@ type CompletionsUsage struct {
 
 	// REQUIRED; The total number of tokens processed for the completions request and response.
 	TotalTokens *int32
+
+	// Breakdown of tokens used in a completion.
+	CompletionTokensDetails *CompletionsUsageCompletionTokensDetails
+
+	// Details of the prompt tokens.
+	PromptTokensDetails *CompletionsUsagePromptTokensDetails
+}
+
+// CompletionsUsageCompletionTokensDetails - Breakdown of tokens used in a completion.
+type CompletionsUsageCompletionTokensDetails struct {
+	// Tokens generated by the model for reasoning.
+	ReasoningTokens *int32
+}
+
+// CompletionsUsagePromptTokensDetails - Details of the prompt tokens.
+type CompletionsUsagePromptTokensDetails struct {
+	// The number of cached prompt tokens.
+	CachedTokens *int32
 }
 
 // ContentFilterBlocklistIDResult - Represents the outcome of an evaluation against a custom blocklist as performed by content
@@ -1637,13 +1684,37 @@ type ContentFilterCitedDetectionResult struct {
 	URL *string
 }
 
-// ContentFilterDetailedResults - Represents a structured collection of result details for content filtering.
-type ContentFilterDetailedResults struct {
+// ContentFilterCompletionTextSpan - Describes a span within generated completion text. Offset 0 is the first UTF32 code point
+// of the completion text.
+type ContentFilterCompletionTextSpan struct {
+	// REQUIRED; Offset of the first UTF32 code point which is excluded from the span. This field is always equal to completionstartoffset
+	// for empty spans. This field is always larger than completionstartoffset for
+	// non-empty spans.
+	CompletionEndOffset *int32
+
+	// REQUIRED; Offset of the UTF32 code point which begins the span.
+	CompletionStartOffset *int32
+}
+
+// ContentFilterCompletionTextSpanResult - Describes a span within generated completion text.
+type ContentFilterCompletionTextSpanResult struct {
+	// REQUIRED; The collection of completion text spans.
+	Details []ContentFilterCompletionTextSpan
+
+	// REQUIRED; A value indicating whether detection occurred, irrespective of severity or whether the content was filtered.
+	Detected *bool
+
 	// REQUIRED; A value indicating whether or not the content has been filtered.
 	Filtered *bool
+}
 
-	// The collection of detailed blocklist result information.
+// ContentFilterDetailedResults - Represents a structured collection of result details for content filtering.
+type ContentFilterDetailedResults struct {
+	// REQUIRED; The collection of detailed blocklist result information.
 	Details []ContentFilterBlocklistIDResult
+
+	// REQUIRED; A value indicating whether or not the content has been filtered.
+	Filtered *bool
 }
 
 // ContentFilterDetectionResult - Represents the outcome of a detection operation performed by content filtering.
@@ -1702,6 +1773,9 @@ type ContentFilterResultDetailsForPrompt struct {
 
 // ContentFilterResultsForChoice - Information about content filtering evaluated against generated model output.
 type ContentFilterResultsForChoice struct {
+	// REQUIRED; Information about detection of ungrounded material.
+	UngroundedMaterial *ContentFilterCompletionTextSpanResult
+
 	// Describes detection results against configured custom blocklists.
 	CustomBlockLists *ContentFilterDetailedResults
 
@@ -2706,4 +2780,378 @@ type UploadPart struct {
 
 	// Azure only field.
 	AzureBlockID *string
+}
+
+// CompletionsOptions - The configuration information for a completions request. Completions support a wide variety of tasks
+// and generate text that continues from or "completes" provided prompt data.
+type CompletionsOptions struct {
+	// REQUIRED; The prompts to generate completions from.
+	Prompt []string
+
+	// A value that controls how many completions will be internally generated prior to response formulation. When used together
+	// with n, bestof controls the number of candidate completions and must be
+	// greater than n. Because this setting can generate many completions, it may quickly consume your token quota. Use carefully
+	// and ensure reasonable settings for maxtokens and stop.
+	BestOf *int32
+
+	// A value specifying whether completions responses should include input prompts as prefixes to their generated output.
+	Echo *bool
+
+	// A value that influences the probability of generated tokens appearing based on their cumulative frequency in generated
+	// text. Positive values will make tokens less likely to appear as their frequency
+	// increases and decrease the likelihood of the model repeating the same statements verbatim.
+	FrequencyPenalty *float32
+
+	// A map between GPT token IDs and bias scores that influences the probability of specific tokens appearing in a completions
+	// response. Token IDs are computed via external tokenizer tools, while bias
+	// scores reside in the range of -100 to 100 with minimum and maximum values corresponding to a full ban or exclusive selection
+	// of a token, respectively. The exact behavior of a given bias score varies
+	// by model.
+	LogitBias map[string]*int32
+
+	// A value that controls the emission of log probabilities for the provided number of most likely tokens within a completions
+	// response.
+	LogProbs *int32
+
+	// The maximum number of tokens to generate.
+	MaxTokens *int32
+
+	// The model name to provide as part of this completions request. Not applicable to Azure OpenAI, where deployment information
+	// should be included in the Azure resource URI that's connected to.
+	DeploymentName *string
+
+	// The number of completions choices that should be generated per provided prompt as part of an overall completions response.
+	// Because this setting can generate many completions, it may quickly consume
+	// your token quota. Use carefully and ensure reasonable settings for max_tokens and stop.
+	N *int32
+
+	// A value that influences the probability of generated tokens appearing based on their existing presence in generated text.
+	// Positive values will make tokens less likely to appear when they already exist
+	// and increase the model's likelihood to output new topics.
+	PresencePenalty *float32
+
+	// If specified, our system will make a best effort to sample deterministically, such that repeated requests with the same
+	// seed and parameters should return the same result.
+	// Determinism is not guaranteed, and you should refer to the system_fingerprint response parameter to monitor changes in
+	// the backend.
+	Seed *int32
+
+	// A collection of textual sequences that will end completions generation.
+	Stop []string
+
+	// The suffix that comes after a completion of inserted text
+	Suffix *string
+
+	// The sampling temperature to use that controls the apparent creativity of generated completions. Higher values will make
+	// output more random while lower values will make results more focused and
+	// deterministic. It is not recommended to modify temperature and top_p for the same completions request as the interaction
+	// of these two settings is difficult to predict.
+	Temperature *float32
+
+	// An alternative to sampling with temperature called nucleus sampling. This value causes the model to consider the results
+	// of tokens with the provided probability mass. As an example, a value of 0.15
+	// will cause only the tokens comprising the top 15% of probability mass to be considered. It is not recommended to modify
+	// temperature and top_p for the same completions request as the interaction of
+	// these two settings is difficult to predict.
+	TopP *float32
+
+	// An identifier for the caller or end user of the operation. This may be used for tracking or rate-limiting purposes.
+	User *string
+}
+
+// CompletionsStreamOptions - The configuration information for a completions request. Completions support a wide variety of tasks
+// and generate text that continues from or "completes" provided prompt data.
+type CompletionsStreamOptions struct {
+	// REQUIRED; The prompts to generate completions from.
+	Prompt []string
+
+	// A value that controls how many completions will be internally generated prior to response formulation. When used together
+	// with n, bestof controls the number of candidate completions and must be
+	// greater than n. Because this setting can generate many completions, it may quickly consume your token quota. Use carefully
+	// and ensure reasonable settings for maxtokens and stop.
+	BestOf *int32
+
+	// A value specifying whether completions responses should include input prompts as prefixes to their generated output.
+	Echo *bool
+
+	// A value that influences the probability of generated tokens appearing based on their cumulative frequency in generated
+	// text. Positive values will make tokens less likely to appear as their frequency
+	// increases and decrease the likelihood of the model repeating the same statements verbatim.
+	FrequencyPenalty *float32
+
+	// A map between GPT token IDs and bias scores that influences the probability of specific tokens appearing in a completions
+	// response. Token IDs are computed via external tokenizer tools, while bias
+	// scores reside in the range of -100 to 100 with minimum and maximum values corresponding to a full ban or exclusive selection
+	// of a token, respectively. The exact behavior of a given bias score varies
+	// by model.
+	LogitBias map[string]*int32
+
+	// A value that controls the emission of log probabilities for the provided number of most likely tokens within a completions
+	// response.
+	LogProbs *int32
+
+	// The maximum number of tokens to generate.
+	MaxTokens *int32
+
+	// The model name to provide as part of this completions request. Not applicable to Azure OpenAI, where deployment information
+	// should be included in the Azure resource URI that's connected to.
+	DeploymentName *string
+
+	// The number of completions choices that should be generated per provided prompt as part of an overall completions response.
+	// Because this setting can generate many completions, it may quickly consume
+	// your token quota. Use carefully and ensure reasonable settings for max_tokens and stop.
+	N *int32
+
+	// A value that influences the probability of generated tokens appearing based on their existing presence in generated text.
+	// Positive values will make tokens less likely to appear when they already exist
+	// and increase the model's likelihood to output new topics.
+	PresencePenalty *float32
+
+	// If specified, our system will make a best effort to sample deterministically, such that repeated requests with the same
+	// seed and parameters should return the same result.
+	// Determinism is not guaranteed, and you should refer to the system_fingerprint response parameter to monitor changes in
+	// the backend.
+	Seed *int32
+
+	// A collection of textual sequences that will end completions generation.
+	Stop []string
+
+	// Options for streaming response. Only set this when you set stream: true.
+	StreamOptions *ChatCompletionStreamOptions
+
+	// The suffix that comes after a completion of inserted text
+	Suffix *string
+
+	// The sampling temperature to use that controls the apparent creativity of generated completions. Higher values will make
+	// output more random while lower values will make results more focused and
+	// deterministic. It is not recommended to modify temperature and top_p for the same completions request as the interaction
+	// of these two settings is difficult to predict.
+	Temperature *float32
+
+	// An alternative to sampling with temperature called nucleus sampling. This value causes the model to consider the results
+	// of tokens with the provided probability mass. As an example, a value of 0.15
+	// will cause only the tokens comprising the top 15% of probability mass to be considered. It is not recommended to modify
+	// temperature and top_p for the same completions request as the interaction of
+	// these two settings is difficult to predict.
+	TopP *float32
+
+	// An identifier for the caller or end user of the operation. This may be used for tracking or rate-limiting purposes.
+	User *string
+}
+
+// ChatCompletionsOptions - The configuration information for a chat completions request. Completions support a wide variety
+// of tasks and generate text that continues from or "completes" provided prompt data.
+type ChatCompletionsOptions struct {
+	// REQUIRED; The collection of context messages associated with this chat completions request. Typical usage begins with a
+	// chat message for the System role that provides instructions for the behavior of the
+	// assistant, followed by alternating messages between the User and Assistant roles.
+	Messages []ChatRequestMessageClassification
+
+	// The configuration entries for Azure OpenAI chat extensions that use them. This additional specification is only compatible
+	// with Azure OpenAI.
+	AzureExtensionsOptions []AzureChatExtensionConfigurationClassification
+
+	// If provided, the configuration options for available Azure OpenAI chat enhancements.
+	Enhancements *AzureChatEnhancementConfiguration
+
+	// A value that influences the probability of generated tokens appearing based on their cumulative frequency in generated
+	// text. Positive values will make tokens less likely to appear as their frequency
+	// increases and decrease the likelihood of the model repeating the same statements verbatim.
+	FrequencyPenalty *float32
+
+	// Controls how the model responds to function calls. "none" means the model does not call a function, and responds to the
+	// end-user. "auto" means the model can pick between an end-user or calling a
+	// function. Specifying a particular function via {"name": "my_function"} forces the model to call that function. "none" is
+	// the default when no functions are present. "auto" is the default if functions
+	// are present.
+	FunctionCall *ChatCompletionsOptionsFunctionCall
+
+	// A list of functions the model may generate JSON inputs for.
+	Functions []FunctionDefinition
+
+	// A map between GPT token IDs and bias scores that influences the probability of specific tokens appearing in a completions
+	// response. Token IDs are computed via external tokenizer tools, while bias
+	// scores reside in the range of -100 to 100 with minimum and maximum values corresponding to a full ban or exclusive selection
+	// of a token, respectively. The exact behavior of a given bias score varies
+	// by model.
+	LogitBias map[string]*int32
+
+	// Whether to return log probabilities of the output tokens or not. If true, returns the log probabilities of each output
+	// token returned in the content of message. This option is currently not available
+	// on the gpt-4-vision-preview model.
+	LogProbs *bool
+
+	// An upper bound for the number of tokens that can be generated for a completion, including visible output tokens and reasoning
+	// tokens.
+	MaxCompletionTokens *int32
+
+	// The maximum number of tokens allowed for the generated answer. By default, the number of tokens the model can return will
+	// be (4096 - prompt tokens).
+	// This value is now deprecated in favor of max_completion_tokens, and is not compatible with o1 series models.
+	MaxTokens *int32
+
+	// The model name to provide as part of this completions request. Not applicable to Azure OpenAI, where deployment information
+	// should be included in the Azure resource URI that's connected to.
+	DeploymentName *string
+
+	// The number of chat completions choices that should be generated for a chat completions response. Because this setting can
+	// generate many completions, it may quickly consume your token quota. Use
+	// carefully and ensure reasonable settings for max_tokens and stop.
+	N *int32
+
+	// Whether to enable parallel function calling during tool use.
+	ParallelToolCalls *bool
+
+	// A value that influences the probability of generated tokens appearing based on their existing presence in generated text.
+	// Positive values will make tokens less likely to appear when they already exist
+	// and increase the model's likelihood to output new topics.
+	PresencePenalty *float32
+
+	// An object specifying the format that the model must output. Used to enable JSON mode.
+	ResponseFormat ChatCompletionsResponseFormatClassification
+
+	// If specified, the system will make a best effort to sample deterministically such that repeated requests with the same
+	// seed and parameters should return the same result. Determinism is not guaranteed,
+	// and you should refer to the system_fingerprint response parameter to monitor changes in the backend."
+	Seed *int64
+
+	// A collection of textual sequences that will end completions generation.
+	Stop []string
+
+	// The sampling temperature to use that controls the apparent creativity of generated completions. Higher values will make
+	// output more random while lower values will make results more focused and
+	// deterministic. It is not recommended to modify temperature and top_p for the same completions request as the interaction
+	// of these two settings is difficult to predict.
+	Temperature *float32
+
+	// If specified, the model will configure which of the provided tools it can use for the chat completions response.
+	ToolChoice *ChatCompletionsToolChoice
+
+	// The available tool definitions that the chat completions request can use, including caller-defined functions.
+	Tools []ChatCompletionsToolDefinitionClassification
+
+	// An integer between 0 and 5 specifying the number of most likely tokens to return at each token position, each with an associated
+	// log probability. logprobs must be set to true if this parameter is
+	// used.
+	TopLogProbs *int32
+
+	// An alternative to sampling with temperature called nucleus sampling. This value causes the model to consider the results
+	// of tokens with the provided probability mass. As an example, a value of 0.15
+	// will cause only the tokens comprising the top 15% of probability mass to be considered. It is not recommended to modify
+	// temperature and top_p for the same completions request as the interaction of
+	// these two settings is difficult to predict.
+	TopP *float32
+
+	// An identifier for the caller or end user of the operation. This may be used for tracking or rate-limiting purposes.
+	User *string
+}
+
+// ChatCompletionsStreamOptions - The configuration information for a chat completions request. Completions support a wide variety
+// of tasks and generate text that continues from or "completes" provided prompt data.
+type ChatCompletionsStreamOptions struct {
+	// REQUIRED; The collection of context messages associated with this chat completions request. Typical usage begins with a
+	// chat message for the System role that provides instructions for the behavior of the
+	// assistant, followed by alternating messages between the User and Assistant roles.
+	Messages []ChatRequestMessageClassification
+
+	// The configuration entries for Azure OpenAI chat extensions that use them. This additional specification is only compatible
+	// with Azure OpenAI.
+	AzureExtensionsOptions []AzureChatExtensionConfigurationClassification
+
+	// If provided, the configuration options for available Azure OpenAI chat enhancements.
+	Enhancements *AzureChatEnhancementConfiguration
+
+	// A value that influences the probability of generated tokens appearing based on their cumulative frequency in generated
+	// text. Positive values will make tokens less likely to appear as their frequency
+	// increases and decrease the likelihood of the model repeating the same statements verbatim.
+	FrequencyPenalty *float32
+
+	// Controls how the model responds to function calls. "none" means the model does not call a function, and responds to the
+	// end-user. "auto" means the model can pick between an end-user or calling a
+	// function. Specifying a particular function via {"name": "my_function"} forces the model to call that function. "none" is
+	// the default when no functions are present. "auto" is the default if functions
+	// are present.
+	FunctionCall *ChatCompletionsOptionsFunctionCall
+
+	// A list of functions the model may generate JSON inputs for.
+	Functions []FunctionDefinition
+
+	// A map between GPT token IDs and bias scores that influences the probability of specific tokens appearing in a completions
+	// response. Token IDs are computed via external tokenizer tools, while bias
+	// scores reside in the range of -100 to 100 with minimum and maximum values corresponding to a full ban or exclusive selection
+	// of a token, respectively. The exact behavior of a given bias score varies
+	// by model.
+	LogitBias map[string]*int32
+
+	// Whether to return log probabilities of the output tokens or not. If true, returns the log probabilities of each output
+	// token returned in the content of message. This option is currently not available
+	// on the gpt-4-vision-preview model.
+	LogProbs *bool
+
+	// An upper bound for the number of tokens that can be generated for a completion, including visible output tokens and reasoning
+	// tokens.
+	MaxCompletionTokens *int32
+
+	// The maximum number of tokens allowed for the generated answer. By default, the number of tokens the model can return will
+	// be (4096 - prompt tokens).
+	// This value is now deprecated in favor of max_completion_tokens, and is not compatible with o1 series models.
+	MaxTokens *int32
+
+	// The model name to provide as part of this completions request. Not applicable to Azure OpenAI, where deployment information
+	// should be included in the Azure resource URI that's connected to.
+	DeploymentName *string
+
+	// The number of chat completions choices that should be generated for a chat completions response. Because this setting can
+	// generate many completions, it may quickly consume your token quota. Use
+	// carefully and ensure reasonable settings for max_tokens and stop.
+	N *int32
+
+	// Whether to enable parallel function calling during tool use.
+	ParallelToolCalls *bool
+
+	// A value that influences the probability of generated tokens appearing based on their existing presence in generated text.
+	// Positive values will make tokens less likely to appear when they already exist
+	// and increase the model's likelihood to output new topics.
+	PresencePenalty *float32
+
+	// An object specifying the format that the model must output. Used to enable JSON mode.
+	ResponseFormat ChatCompletionsResponseFormatClassification
+
+	// If specified, the system will make a best effort to sample deterministically such that repeated requests with the same
+	// seed and parameters should return the same result. Determinism is not guaranteed,
+	// and you should refer to the system_fingerprint response parameter to monitor changes in the backend."
+	Seed *int64
+
+	// A collection of textual sequences that will end completions generation.
+	Stop []string
+
+	// Options for streaming response. Only set this when you set stream: true.
+	StreamOptions *ChatCompletionStreamOptions
+
+	// The sampling temperature to use that controls the apparent creativity of generated completions. Higher values will make
+	// output more random while lower values will make results more focused and
+	// deterministic. It is not recommended to modify temperature and top_p for the same completions request as the interaction
+	// of these two settings is difficult to predict.
+	Temperature *float32
+
+	// If specified, the model will configure which of the provided tools it can use for the chat completions response.
+	ToolChoice *ChatCompletionsToolChoice
+
+	// The available tool definitions that the chat completions request can use, including caller-defined functions.
+	Tools []ChatCompletionsToolDefinitionClassification
+
+	// An integer between 0 and 5 specifying the number of most likely tokens to return at each token position, each with an associated
+	// log probability. logprobs must be set to true if this parameter is
+	// used.
+	TopLogProbs *int32
+
+	// An alternative to sampling with temperature called nucleus sampling. This value causes the model to consider the results
+	// of tokens with the provided probability mass. As an example, a value of 0.15
+	// will cause only the tokens comprising the top 15% of probability mass to be considered. It is not recommended to modify
+	// temperature and top_p for the same completions request as the interaction of
+	// these two settings is difficult to predict.
+	TopP *float32
+
+	// An identifier for the caller or end user of the operation. This may be used for tracking or rate-limiting purposes.
+	User *string
 }

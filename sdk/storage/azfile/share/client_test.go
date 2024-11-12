@@ -551,7 +551,7 @@ func (s *ShareRecordedTestsSuite) TestShareGetSetPropertiesDefault() {
 func (s *ShareRecordedTestsSuite) TestShareGetSetPropertiesAccessTierPremium() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountPremium, nil)
 	_require.NoError(err)
 
 	shareName := testcommon.GenerateShareName(testName)

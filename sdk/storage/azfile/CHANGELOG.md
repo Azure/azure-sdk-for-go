@@ -3,6 +3,7 @@
 ## 1.4.0-beta.2 (Unreleased)
 
 ### Features Added
+* Add Premium access tier to Files Shares
 
 ### Breaking Changes
 

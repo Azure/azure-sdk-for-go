@@ -57,30 +57,30 @@ func TestCanResume(t *testing.T) {
 }
 
 func TestNew(t *testing.T) {
-	poller, err := New[struct{}](exported.Pipeline{}, nil, "")
+	poller, err := New[struct{}](exported.Pipeline{}, nil, "", "")
 	require.NoError(t, err)
 	require.Empty(t, poller.CurState)
 
-	poller, err = New[struct{}](exported.Pipeline{}, &http.Response{Header: http.Header{}}, "")
+	poller, err = New[struct{}](exported.Pipeline{}, &http.Response{Header: http.Header{}}, "", "")
 	require.Error(t, err)
 	require.Nil(t, poller)
 
 	resp := initialResponse(http.MethodPut, http.NoBody)
 	resp.Header.Set(shared.HeaderOperationLocation, "this is an invalid polling URL")
-	poller, err = New[struct{}](exported.Pipeline{}, resp, "")
+	poller, err = New[struct{}](exported.Pipeline{}, resp, "", "")
 	require.Error(t, err)
 	require.Nil(t, poller)
 
 	resp = initialResponse(http.MethodPut, http.NoBody)
 	resp.Header.Set(shared.HeaderOperationLocation, fakePollingURL)
 	resp.Header.Set(shared.HeaderLocation, "this is an invalid polling URL")
-	poller, err = New[struct{}](exported.Pipeline{}, resp, "")
+	poller, err = New[struct{}](exported.Pipeline{}, resp, "", "")
 	require.Error(t, err)
 	require.Nil(t, poller)
 
 	resp = initialResponse(http.MethodPut, strings.NewReader(`{ "status": "Updating" }`))
 	resp.Header.Set(shared.HeaderOperationLocation, fakePollingURL)
-	poller, err = New[struct{}](exported.Pipeline{}, resp, "")
+	poller, err = New[struct{}](exported.Pipeline{}, resp, "", "")
 	require.NoError(t, err)
 	require.Equal(t, "Updating", poller.CurState)
 	require.False(t, poller.Done())
@@ -108,7 +108,7 @@ func TestFinalStateViaLocation(t *testing.T) {
 		} else {
 			return nil, fmt.Errorf("test bug, unhandled URL %s", surl)
 		}
-	})), resp, pollers.FinalStateViaLocation)
+	})), resp, pollers.FinalStateViaLocation, "")
 	require.NoError(t, err)
 	require.False(t, poller.Done())
 	resp, err = poller.Poll(context.Background())
@@ -129,7 +129,28 @@ func TestFinalStateViaOperationLocationWithPost(t *testing.T) {
 			StatusCode: http.StatusOK,
 			Body:       io.NopCloser(strings.NewReader(`{ "status": "succeeded", "result": { "shape": "rhombus" } }`)),
 		}, nil
-	})), resp, pollers.FinalStateViaOpLocation)
+	})), resp, pollers.FinalStateViaOpLocation, "result")
+	require.NoError(t, err)
+	require.False(t, poller.Done())
+	resp, err = poller.Poll(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, http.StatusOK, resp.StatusCode)
+	require.True(t, poller.Done())
+	var result widget
+	err = poller.Result(context.Background(), &result)
+	require.NoError(t, err)
+	require.Equal(t, "rhombus", result.Shape)
+}
+
+func TestFinalStateViaOperationLocationWithPostNoResultPath(t *testing.T) {
+	resp := initialResponse(http.MethodPost, strings.NewReader(`{ "status": "Updating" }`))
+	resp.Header.Set(shared.HeaderOperationLocation, fakePollingURL)
+	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+		return &http.Response{
+			StatusCode: http.StatusOK,
+			Body:       io.NopCloser(strings.NewReader(`{ "status": "succeeded", "shape": "rhombus" }`)),
+		}, nil
+	})), resp, pollers.FinalStateViaOpLocation, "")
 	require.NoError(t, err)
 	require.False(t, poller.Done())
 	resp, err = poller.Poll(context.Background())
@@ -159,7 +180,7 @@ func TestFinalStateViaResourceLocation(t *testing.T) {
 		} else {
 			return nil, fmt.Errorf("test bug, unhandled URL %s", surl)
 		}
-	})), resp, pollers.FinalStateViaLocation)
+	})), resp, pollers.FinalStateViaLocation, "")
 	require.NoError(t, err)
 	require.False(t, poller.Done())
 	resp, err = poller.Poll(context.Background())
@@ -189,7 +210,7 @@ func TestResultForPatch(t *testing.T) {
 		} else {
 			return nil, fmt.Errorf("test bug, unhandled URL %s", surl)
 		}
-	})), resp, "")
+	})), resp, "", "")
 	require.NoError(t, err)
 	require.False(t, poller.Done())
 	resp, err = poller.Poll(context.Background())
@@ -220,7 +241,7 @@ func TestPostWithLocation(t *testing.T) {
 		} else {
 			return nil, fmt.Errorf("test bug, unhandled URL %s", surl)
 		}
-	})), resp, "")
+	})), resp, "", "")
 	require.NoError(t, err)
 	require.False(t, poller.Done())
 	resp, err = poller.Poll(context.Background())
@@ -241,7 +262,7 @@ func TestOperationFailed(t *testing.T) {
 			StatusCode: http.StatusOK,
 			Body:       io.NopCloser(strings.NewReader(`{ "status": "Failed", "error": { "code": "InvalidSomething" } }`)),
 		}, nil
-	})), resp, pollers.FinalStateViaLocation)
+	})), resp, pollers.FinalStateViaLocation, "")
 	require.NoError(t, err)
 	require.False(t, poller.Done())
 	resp, err = poller.Poll(context.Background())
@@ -261,7 +282,7 @@ func TestPollFailed(t *testing.T) {
 	resp.Header.Set(shared.HeaderOperationLocation, fakePollingURL)
 	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
 		return nil, errors.New("failed")
-	})), resp, pollers.FinalStateViaLocation)
+	})), resp, pollers.FinalStateViaLocation, "")
 	require.NoError(t, err)
 	require.False(t, poller.Done())
 	resp, err = poller.Poll(context.Background())
@@ -279,7 +300,7 @@ func TestPollError(t *testing.T) {
 			Header:     http.Header{},
 			Body:       io.NopCloser(strings.NewReader(`{ "error": { "code": "NotFound", "message": "the item doesn't exist" } }`)),
 		}, nil
-	})), resp, pollers.FinalStateViaLocation)
+	})), resp, pollers.FinalStateViaLocation, "")
 	require.NoError(t, err)
 	require.False(t, poller.Done())
 	resp, err = poller.Poll(context.Background())
@@ -299,7 +320,7 @@ func TestMissingStatus(t *testing.T) {
 			StatusCode: http.StatusOK,
 			Body:       io.NopCloser(strings.NewReader(`{ "shape": "square" }`)),
 		}, nil
-	})), resp, "")
+	})), resp, "", "")
 	require.NoError(t, err)
 	require.False(t, poller.Done())
 	resp, err = poller.Poll(context.Background())

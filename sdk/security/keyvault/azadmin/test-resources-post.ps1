@@ -12,8 +12,25 @@ using namespace System.Security.Cryptography.X509Certificates
 # Use same parameter names as declared in eng/New-TestResources.ps1 (assume validation therein).
 [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'Medium')]
 param (
-    [Parameter()]
-    [hashtable] $DeploymentOutputs,
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string] $SubscriptionId,
+
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string] $TenantId,
+
+    [Parameter(Mandatory = $true)]
+    [ValidatePattern('^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$')]
+    [string] $TestApplicationId,
+
+    [Parameter(Mandatory = $true)]
+    [ValidatePattern('^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$')]
+    [string] $TestApplicationOid,
+
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string] $Environment,
 
     # Captures any arguments from eng/New-TestResources.ps1 not declared here (no parameter errors).
     [Parameter(ValueFromRemainingArguments = $true)]
@@ -80,7 +97,7 @@ Log 'Creating 3 X509 certificates to activate security domain'
 $wrappingFiles = foreach ($i in 0..2) {
     $certificate = New-X509Certificate2 "CN=$($hsmUrl.Host)"
 
-    $baseName = "$PSScriptRoot\$hsmName-certificate$i"
+    $baseName = "$PSScriptRoot/$hsmName-certificate$i"
     Export-X509Certificate2 "$baseName.pfx" $certificate
     Export-X509Certificate2PEM "$baseName.cer" $certificate
 
@@ -89,18 +106,23 @@ $wrappingFiles = foreach ($i in 0..2) {
 
 Log "Downloading security domain from '$hsmUrl'"
 
-$sdPath = "$PSScriptRoot\$hsmName-security-domain.key"
+$sdPath = "$PSScriptRoot/$hsmName-security-domain.key"
 if (Test-Path $sdpath) {
     Log "Deleting old security domain: $sdPath"
     Remove-Item $sdPath -Force
 }
 
-Export-AzKeyVaultSecurityDomain -Name $hsmName -Quorum 2 -Certificates $wrappingFiles -OutputPath $sdPath -ErrorAction SilentlyContinue -Verbose
-if ( !$? ) {
+az keyvault security-domain download `
+    --hsm-name "$hsmName" `
+    --sd-wrapping-keys $wrappingFiles `
+    --sd-quorum 2 `
+    --security-domain-file "$sdPath" `
+    --verbose
+
+if ($LASTEXITCODE) {
     Write-Host $Error[0].Exception
     Write-Error $Error[0]
-
-    exit
+    exit $LASTEXITCODE
 }
 
 Log "Security domain downloaded to '$sdPath'; Managed HSM is now active at '$hsmUrl'"
@@ -109,10 +131,19 @@ Log "Security domain downloaded to '$sdPath'; Managed HSM is now active at '$hsm
 Log 'Sleeping for 30 seconds to allow activation to propagate...'
 Start-Sleep -Seconds 30
 
-$testApplicationOid = $DeploymentOutputs['CLIENT_OBJECTID']
+Log "Creating additional required role assignments for '$TestApplicationOid'"
+az keyvault role assignment create `
+    --hsm-name "$hsmName" `
+    --role "Managed HSM Crypto Officer" `
+    --assignee-object-id "$TestApplicationOid" `
+    --scope "/"
+if ($LASTEXITCODE) { exit $LASTEXITCODE }
+az keyvault role assignment create `
+    --hsm-name "$hsmName" `
+    --role "Managed HSM Crypto User" `
+    --assignee-object-id "$TestApplicationOid" `
+    --scope "/"
+if ($LASTEXITCODE) { exit $LASTEXITCODE }
 
-Log "Creating additional required role assignments for '$testApplicationOid'"
-$null = New-AzKeyVaultRoleAssignment -HsmName $hsmName -RoleDefinitionName 'Managed HSM Crypto Officer' -ObjectID $testApplicationOid
-$null = New-AzKeyVaultRoleAssignment -HsmName $hsmName -RoleDefinitionName 'Managed HSM Crypto User' -ObjectID $testApplicationOid
 
-Log "Role assignments created for '$testApplicationOid'"
+Log "Role assignments created for '$TestApplicationOid'"

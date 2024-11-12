@@ -344,7 +344,7 @@ func ExampleClient_GetChatCompletionsStream() {
 		// from here you'd keep iterating, sending responses back from ChatGPT
 	}
 
-	resp, err := client.GetChatCompletionsStream(context.TODO(), azopenai.ChatCompletionsOptions{
+	resp, err := client.GetChatCompletionsStream(context.TODO(), azopenai.ChatCompletionsStreamOptions{
 		// This is a conversation in progress.
 		// NOTE: all messages count against token usage for this API.
 		Messages:       messages,

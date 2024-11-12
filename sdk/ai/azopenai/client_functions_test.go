@@ -216,7 +216,7 @@ func TestGetChatCompletions_usingFunctions_streaming(t *testing.T) {
 	require.NoError(t, err)
 
 	testFn := func(t *testing.T, epm endpointWithModel) {
-		body := azopenai.ChatCompletionsOptions{
+		body := azopenai.ChatCompletionsStreamOptions{
 			DeploymentName: &epm.Model,
 			Messages: []azopenai.ChatRequestMessageClassification{
 				&azopenai.ChatRequestAssistantMessage{

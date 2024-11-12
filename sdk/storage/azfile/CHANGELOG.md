@@ -3,6 +3,7 @@
 ## 1.4.1 (Unreleased)
 
 ### Features Added
+* Add Premium access tier to Files Shares
 
 ### Breaking Changes
 

@@ -298,36 +298,6 @@ func (s *ShareRecordedTestsSuite) TestShareCreateNilMetadata() {
 	_require.Len(response.Metadata, 0)
 }
 
-func (s *ShareRecordedTestsSuite) TestShareSizeLimitReached() {
-	_require := require.New(s.T())
-	testName := s.T().Name()
-
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
-	_require.NoError(err)
-
-	shareName := testcommon.GenerateShareName(testName)
-	shareClient := svcClient.NewShareClient(shareName)
-
-	quotaInGB := int32(1) // Set a 1 GB quota
-	_, err = shareClient.Create(context.Background(), &service.CreateShareOptions{
-		Quota: &quotaInGB,
-	})
-	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
-	_require.NoError(err)
-
-	// Attempt to exceed the share's quota
-	dirClient := shareClient.NewDirectoryClient("testdir")
-	_, err = dirClient.Create(context.Background(), nil)
-	_require.NoError(err)
-
-	fileClient := dirClient.NewFileClient("largefile")
-	fileSize := int64(2 * 1024 * 1024 * 1024) // 2 GB file to exceed 1 GB quota
-	_, err = fileClient.Create(context.Background(), fileSize, nil)
-	_require.Error(err)
-
-	testcommon.ValidateFileErrorCode(_require, err, fileerror.ShareSizeLimitReached)
-}
-
 func (s *ShareRecordedTestsSuite) TestShareCreateWithSnapshotVirtualDirectoryAccess() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

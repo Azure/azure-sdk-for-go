@@ -1,8 +1,7 @@
 # Azure Compute Schedule Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/computeschedule/armcomputeschedule)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/computeschedule/armcomputeschedule)
-
 Microsoft Azure Compute Schedule allows customers to schedule one off operations on their virtual machines. These operations include:
+
 - Start
 - Deallocate
 - Hibernate
@@ -35,7 +34,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/computeschedule/arm
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Compute Schedule.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Compute Schedule. The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -64,7 +63,7 @@ clientFactory, err := armcomputeschedule.NewClientFactory(<subscription ID>, cre
 
 ## Clients
 
-A client groups a set of related APIs, providing access to its functionality.  Create one or more clients to access the APIs you require using client factory.
+A client groups a set of related APIs, providing access to its functionality. Create one or more clients to access the APIs you require using client factory.
 
 ```go
 client := clientFactory.NewScheduledActionsClient()

@@ -10,7 +10,7 @@ package armhardwaresecuritymodules
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hardwaresecuritymodules/armhardwaresecuritymodules"
-	moduleVersion = "v2.0.0-beta.1"
+	moduleVersion = "v2.0.0-beta.2"
 )
 
 // CloudHsmClusterSKUFamily - Sku family of the Cloud HSM Cluster

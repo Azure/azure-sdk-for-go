@@ -10,7 +10,7 @@ package armdevopsinfrastructure
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devopsinfrastructure/armdevopsinfrastructure"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v0.2.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -245,11 +245,14 @@ func PossibleResourcePredictionsProfileTypeValues() []ResourcePredictionsProfile
 	}
 }
 
+// ResourceSKURestrictionsReasonCode - Describes the reason for SKU restriction.
 type ResourceSKURestrictionsReasonCode string
 
 const (
+	// ResourceSKURestrictionsReasonCodeNotAvailableForSubscription - The restriction is not available for this subscription.
 	ResourceSKURestrictionsReasonCodeNotAvailableForSubscription ResourceSKURestrictionsReasonCode = "NotAvailableForSubscription"
-	ResourceSKURestrictionsReasonCodeQuotaID                     ResourceSKURestrictionsReasonCode = "QuotaId"
+	// ResourceSKURestrictionsReasonCodeQuotaID - The restriction is due to exceeding a quota limitation.
+	ResourceSKURestrictionsReasonCodeQuotaID ResourceSKURestrictionsReasonCode = "QuotaId"
 )
 
 // PossibleResourceSKURestrictionsReasonCodeValues returns the possible values for the ResourceSKURestrictionsReasonCode const type.
@@ -260,11 +263,14 @@ func PossibleResourceSKURestrictionsReasonCodeValues() []ResourceSKURestrictions
 	}
 }
 
+// ResourceSKURestrictionsType - Describes the kind of SKU restrictions that can exist
 type ResourceSKURestrictionsType string
 
 const (
+	// ResourceSKURestrictionsTypeLocation - SKU restricted by location.
 	ResourceSKURestrictionsTypeLocation ResourceSKURestrictionsType = "Location"
-	ResourceSKURestrictionsTypeZone     ResourceSKURestrictionsType = "Zone"
+	// ResourceSKURestrictionsTypeZone - SKU restricted by availability zone.
+	ResourceSKURestrictionsTypeZone ResourceSKURestrictionsType = "Zone"
 )
 
 // PossibleResourceSKURestrictionsTypeValues returns the possible values for the ResourceSKURestrictionsType const type.

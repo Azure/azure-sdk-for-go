@@ -64,8 +64,8 @@ type SKUClientListByLocationOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SubscriptionUsagesClientListByLocationOptions contains the optional parameters for the SubscriptionUsagesClient.NewListByLocationPager
+// SubscriptionUsagesClientUsagesOptions contains the optional parameters for the SubscriptionUsagesClient.NewUsagesPager
 // method.
-type SubscriptionUsagesClientListByLocationOptions struct {
+type SubscriptionUsagesClientUsagesOptions struct {
 	// placeholder for future optional parameters
 }

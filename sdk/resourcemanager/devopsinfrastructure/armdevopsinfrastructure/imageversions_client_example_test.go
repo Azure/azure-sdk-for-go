@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devopsinfrastructure/armdevopsinfrastructure"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/devopsinfrastructure/resource-manager/Microsoft.DevOpsInfrastructure/preview/2024-04-04-preview/examples/ImageVersions_ListByImage.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/07c0f76f53ae661897e5eb3b47ec151dc2990c6b/specification/devopsinfrastructure/resource-manager/Microsoft.DevOpsInfrastructure/preview/2024-04-04-preview/examples/ImageVersions_ListByImage.json
 func ExampleImageVersionsClient_NewListByImagePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

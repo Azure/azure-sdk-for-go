@@ -33,29 +33,6 @@ func unmarshalAgentProfileClassification(rawMsg json.RawMessage) (AgentProfileCl
 	return b, nil
 }
 
-func unmarshalAgentProfileUpdateClassification(rawMsg json.RawMessage) (AgentProfileUpdateClassification, error) {
-	if rawMsg == nil || string(rawMsg) == "null" {
-		return nil, nil
-	}
-	var m map[string]any
-	if err := json.Unmarshal(rawMsg, &m); err != nil {
-		return nil, err
-	}
-	var b AgentProfileUpdateClassification
-	switch m["kind"] {
-	case "Stateful":
-		b = &StatefulUpdate{}
-	case "Stateless":
-		b = &StatelessAgentProfileUpdate{}
-	default:
-		b = &AgentProfileUpdate{}
-	}
-	if err := json.Unmarshal(rawMsg, b); err != nil {
-		return nil, err
-	}
-	return b, nil
-}
-
 func unmarshalFabricProfileClassification(rawMsg json.RawMessage) (FabricProfileClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
@@ -116,29 +93,6 @@ func unmarshalResourcePredictionsProfileClassification(rawMsg json.RawMessage) (
 		b = &ManualResourcePredictionsProfile{}
 	default:
 		b = &ResourcePredictionsProfile{}
-	}
-	if err := json.Unmarshal(rawMsg, b); err != nil {
-		return nil, err
-	}
-	return b, nil
-}
-
-func unmarshalResourcePredictionsProfileUpdateClassification(rawMsg json.RawMessage) (ResourcePredictionsProfileUpdateClassification, error) {
-	if rawMsg == nil || string(rawMsg) == "null" {
-		return nil, nil
-	}
-	var m map[string]any
-	if err := json.Unmarshal(rawMsg, &m); err != nil {
-		return nil, err
-	}
-	var b ResourcePredictionsProfileUpdateClassification
-	switch m["kind"] {
-	case string(ResourcePredictionsProfileTypeAutomatic):
-		b = &AutomaticResourcePredictionsProfileUpdate{}
-	case string(ResourcePredictionsProfileTypeManual):
-		b = &ManualResourcePredictionsProfileUpdate{}
-	default:
-		b = &ResourcePredictionsProfileUpdate{}
 	}
 	if err := json.Unmarshal(rawMsg, b); err != nil {
 		return nil, err

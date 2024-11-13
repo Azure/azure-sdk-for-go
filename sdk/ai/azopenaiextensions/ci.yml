@@ -35,8 +35,8 @@ extends:
     UsePipelineProxy: false
     ExcludeGoNMinus2: true
     CloudConfig:
-    Public:
-      ServiceConnection: azure-sdk-tests-openai    
+      Public:
+        ServiceConnection: azure-sdk-tests-openai    
     EnvVars:
       AZURE_TEST_RUN_LIVE: "true" # use when utilizing the New-TestResources Script
       AZURE_CLIENT_ID: $(AZOPENAIEXTENSIONS_CLIENT_ID)

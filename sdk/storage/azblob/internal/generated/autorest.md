@@ -22,6 +22,30 @@ export-clients: true
 use: "@autorest/go@4.0.0-preview.65"
 ```
 
+### Add Owner,Group,Permissions,Acl,ResourceType in ListBlob Response
+``` yaml
+directive:  
+- from: swagger-document    
+  where: $.definitions
+  transform: >
+    $.BlobPropertiesInternal.properties["Owner"] = {
+    "type" : "string",
+    };
+    $.BlobPropertiesInternal.properties["Group"] = {
+    "type" : "string",
+    };
+    $.BlobPropertiesInternal.properties["Permissions"] = {
+    "type" : "string",
+    };
+    $.BlobPropertiesInternal.properties["Acl"] = {
+    "type" : "string",
+    };
+    $.BlobPropertiesInternal.properties["ResourceType"] = {
+    "type" : "string",
+    };
+
+```
+
 ### Add permissions in ListBlobsInclude
 ``` yaml
 directive:  

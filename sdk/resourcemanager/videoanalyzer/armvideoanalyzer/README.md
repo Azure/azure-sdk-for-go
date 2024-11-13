@@ -1,7 +1,5 @@
 # Azure Video Analyzer Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/videoanalyzer/armvideoanalyzer)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/videoanalyzer/armvideoanalyzer)
-
 The `armvideoanalyzer` module provides operations for working with Azure Video Analyzer.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/videoanalyzer/armvideoanalyzer)
@@ -25,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/videoanalyzer/armvi
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Video Analyzer.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Video Analyzer. The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -35,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Clients
 
-Azure Video Analyzer modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your credential.
+Azure Video Analyzer modules consist of one or more clients. A client groups a set of related APIs, providing access to its functionality within the specified subscription. Create one or more clients to access the APIs you require using your credential.
 
 ```go
 client, err := armvideoanalyzer.NewVideoAnalyzersClient(<subscription ID>, cred, nil)

@@ -144,7 +144,7 @@ func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) (*manag
 		if _, ok := os.LookupEnv(identityHeader); ok {
 			if _, ok := os.LookupEnv(identityServerThumbprint); ok {
 				if options.ID != nil {
-					return nil, errors.New("the Service Fabric API doesn't support specifying a user-assigned managed identity at runtime")
+					return nil, errors.New("the Service Fabric API doesn't support specifying a user-assigned identity at runtime. The identity is determined by cluster resource configuration. See https://aka.ms/servicefabricmi")
 				}
 				env = "Service Fabric"
 				c.endpoint = endpoint

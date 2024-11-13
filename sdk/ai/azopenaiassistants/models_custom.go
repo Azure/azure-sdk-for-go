@@ -153,8 +153,7 @@ func unmarshalStringOrObject[T any](jsonBytes []byte) (string, *T, error) {
 	return "", model, nil
 }
 
-// MessageAttachmentToolDefinition contains the content for a [ChatRequestToolMessage].
-// NOTE: This should be created using [azopenai.NewMessageAttachmentToolDefinition]
+// MessageAttachmentToolDefinition allows you to specify tools for use with a message attachment.
 type MessageAttachmentToolDefinition struct {
 	*CodeInterpreterToolDefinition
 	*FileSearchToolDefinition

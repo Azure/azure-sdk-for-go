@@ -1,14 +1,10 @@
 # Release History
 
-## 1.5.0-beta.2 (Unreleased)
+## 1.5.0 (2024-11-13)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+* Fix compareHeaders custom sorting algorithm for String To Sign.
+* Added permissions & resourcetype parameters in listblob response.
 
 ## 1.5.0-beta.1 (2024-10-22)
 

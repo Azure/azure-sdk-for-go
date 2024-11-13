@@ -200,6 +200,7 @@ type PollingHandler[T any] interface {
 }
 
 // Poller encapsulates a long-running operation, providing polling facilities until the operation reaches a terminal state.
+// Methods on this type are not safe for concurrent use.
 type Poller[T any] struct {
 	op     PollingHandler[T]
 	resp   *http.Response

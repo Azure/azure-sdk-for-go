@@ -9,12 +9,15 @@ package settings_test
 import (
 	"context"
 	"errors"
+	"net/http"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	azcred "github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin/settings"
 	"github.com/stretchr/testify/require"
 )
@@ -122,4 +125,34 @@ func TestUpdateSetting_InvalidSettingName(t *testing.T) {
 	require.Nil(t, res.Value)
 	var httpErr *azcore.ResponseError
 	require.ErrorAs(t, err, &httpErr)
+}
+
+func TestAPIVersion(t *testing.T) {
+	apiVersion := "7.3"
+	var requireVersion = func(t *testing.T) func(req *http.Request) bool {
+		return func(r *http.Request) bool {
+			version := r.URL.Query().Get("api-version")
+			require.Equal(t, version, apiVersion)
+			return true
+		}
+	}
+	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer close()
+	srv.AppendResponse(
+		mock.WithStatusCode(200),
+		mock.WithPredicate(requireVersion(t)),
+	)
+	srv.AppendResponse(mock.WithStatusCode(http.StatusInternalServerError))
+
+	opts := &settings.ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			Transport:  srv,
+			APIVersion: apiVersion,
+		},
+	}
+	client, err := settings.NewClient(hsmURL, &azcred.Fake{}, opts)
+	require.NoError(t, err)
+
+	_, err = client.GetSetting(context.Background(), "name", nil)
+	require.NoError(t, err)
 }

@@ -1,8 +1,6 @@
-# Azure Computefleet Module for Go
+# Azure Compute Fleet Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/computefleet/armcomputefleet)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/computefleet/armcomputefleet)
-
-The `armcomputefleet` module provides operations for working with Azure Computefleet.
+The `armcomputefleet` module provides operations for working with Azure Compute Fleet.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/computefleet/armcomputefleet)
 
@@ -17,7 +15,7 @@ The `armcomputefleet` module provides operations for working with Azure Computef
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Computefleet module:
+Install the Azure Compute Fleet module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/computefleet/armcomputefleet
@@ -25,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/computefleet/armcom
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Computefleet.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Compute Fleet. The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -35,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Computefleet module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure Compute Fleet module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armcomputefleet.NewClientFactory(<subscription ID>, cred, nil)
@@ -54,7 +52,7 @@ clientFactory, err := armcomputefleet.NewClientFactory(<subscription ID>, cred, 
 
 ## Clients
 
-A client groups a set of related APIs, providing access to its functionality.  Create one or more clients to access the APIs you require using client factory.
+A client groups a set of related APIs, providing access to its functionality. Create one or more clients to access the APIs you require using client factory.
 
 ```go
 client := clientFactory.NewFleetsClient()
@@ -70,7 +68,7 @@ Please see https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/samples/fakes
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please
-[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Computefleet` label.
+[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Compute Fleet` label.
 
 # Contributing
 

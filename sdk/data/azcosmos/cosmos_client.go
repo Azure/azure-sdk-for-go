@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
@@ -277,7 +278,6 @@ func (c *Client) NewQueryDatabasesPager(query string, o *QueryDatabasesOptions) 
 		},
 		Fetcher: func(ctx context.Context, page *QueryDatabasesResponse) (QueryDatabasesResponse, error) {
 			var err error
-			// Move the span to the pager once https://github.com/Azure/azure-sdk-for-go/issues/23294 is fixed
 			spanName, err := getSpanNameForClient(c.accountEndpointUrl(), operationTypeQuery, resourceTypeDatabase, c.accountEndpointUrl().Hostname())
 			if err != nil {
 				return QueryDatabasesResponse{}, err
@@ -306,7 +306,6 @@ func (c *Client) NewQueryDatabasesPager(query string, o *QueryDatabasesOptions) 
 
 			return newDatabasesQueryResponse(azResponse)
 		},
-		Tracer: c.internal.Tracer(),
 	})
 }
 
@@ -327,7 +326,7 @@ func (c *Client) sendPostRequest(
 		return nil, err
 	}
 
-	return c.executeAndEnsureSuccessResponse(req)
+	return c.executeAndEnsureSuccessResponse(ctx, req)
 }
 
 func (c *Client) sendQueryRequest(
@@ -356,7 +355,7 @@ func (c *Client) sendQueryRequest(
 	// Override content type for query
 	req.Raw().Header.Set(headerContentType, cosmosHeaderValuesQuery)
 
-	return c.executeAndEnsureSuccessResponse(req)
+	return c.executeAndEnsureSuccessResponse(ctx, req)
 }
 
 func (c *Client) sendPutRequest(
@@ -376,7 +375,7 @@ func (c *Client) sendPutRequest(
 		return nil, err
 	}
 
-	return c.executeAndEnsureSuccessResponse(req)
+	return c.executeAndEnsureSuccessResponse(ctx, req)
 }
 
 func (c *Client) sendGetRequest(
@@ -390,7 +389,7 @@ func (c *Client) sendGetRequest(
 		return nil, err
 	}
 
-	return c.executeAndEnsureSuccessResponse(req)
+	return c.executeAndEnsureSuccessResponse(ctx, req)
 }
 
 func (c *Client) sendDeleteRequest(
@@ -404,7 +403,7 @@ func (c *Client) sendDeleteRequest(
 		return nil, err
 	}
 
-	return c.executeAndEnsureSuccessResponse(req)
+	return c.executeAndEnsureSuccessResponse(ctx, req)
 }
 
 func (c *Client) sendBatchRequest(
@@ -424,7 +423,7 @@ func (c *Client) sendBatchRequest(
 		return nil, err
 	}
 
-	return c.executeAndEnsureSuccessResponse(req)
+	return c.executeAndEnsureSuccessResponse(ctx, req)
 }
 
 func (c *Client) sendPatchRequest(
@@ -444,7 +443,7 @@ func (c *Client) sendPatchRequest(
 		return nil, err
 	}
 
-	return c.executeAndEnsureSuccessResponse(req)
+	return c.executeAndEnsureSuccessResponse(ctx, req)
 }
 
 func (c *Client) createRequest(
@@ -507,12 +506,14 @@ func (c *Client) attachContent(content interface{}, req *policy.Request) error {
 	return nil
 }
 
-func (c *Client) executeAndEnsureSuccessResponse(request *policy.Request) (*http.Response, error) {
+func (c *Client) executeAndEnsureSuccessResponse(ctx context.Context, request *policy.Request) (*http.Response, error) {
 	log.Write(azlog.EventResponse, fmt.Sprintf("\n===== Client preferred regions:\n%v\n=====\n", c.gem.preferredLocations))
 	response, err := c.internal.Pipeline().Do(request)
 	if err != nil {
 		return nil, err
 	}
+
+	c.addResponseValuesToSpan(ctx, response)
 
 	successResponse := (response.StatusCode >= 200 && response.StatusCode < 300) || response.StatusCode == 304
 	if successResponse {
@@ -524,6 +525,14 @@ func (c *Client) executeAndEnsureSuccessResponse(request *policy.Request) (*http
 
 func (c *Client) accountEndpointUrl() *url.URL {
 	return c.endpointUrl
+}
+
+func (c *Client) addResponseValuesToSpan(ctx context.Context, resp *http.Response) {
+	span := c.internal.Tracer().SpanFromContext(ctx)
+	span.SetAttributes(
+		tracing.Attribute{Key: "db.cosmosdb.request_charge", Value: newResponse(resp).RequestCharge},
+		tracing.Attribute{Key: "db.cosmosdb.status_code", Value: resp.StatusCode},
+	)
 }
 
 type pipelineRequestOptions struct {

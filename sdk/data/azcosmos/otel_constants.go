@@ -143,12 +143,15 @@ func getSpanNameForItems(endpoint *url.URL, operationType operationType, databas
 }
 
 func getSpanPropertiesForClient(endpoint *url.URL, operationName string) runtime.StartSpanOptions {
-	options := runtime.StartSpanOptions{Attributes: []tracing.Attribute{
-		{Key: "db.system", Value: "cosmosdb"},
-		{Key: "db.cosmosdb.connection_mode", Value: "gateway"},
-		{Key: "db.operation.name", Value: operationName},
-		{Key: "server.address", Value: endpoint.Hostname()},
-	}}
+	options := runtime.StartSpanOptions{
+		Kind: tracing.SpanKindClient,
+		Attributes: []tracing.Attribute{
+			{Key: "db.system", Value: "cosmosdb"},
+			{Key: "db.cosmosdb.connection_mode", Value: "gateway"},
+			{Key: "db.operation.name", Value: operationName},
+			{Key: "server.address", Value: endpoint.Hostname()},
+		},
+	}
 
 	if endpoint.Port() != "443" {
 		options.Attributes = append(options.Attributes, tracing.Attribute{Key: "server.port", Value: endpoint.Port()})
@@ -158,13 +161,16 @@ func getSpanPropertiesForClient(endpoint *url.URL, operationName string) runtime
 }
 
 func getSpanPropertiesForDatabase(endpoint *url.URL, operationName string, id string) runtime.StartSpanOptions {
-	options := runtime.StartSpanOptions{Attributes: []tracing.Attribute{
-		{Key: "db.system", Value: "cosmosdb"},
-		{Key: "db.cosmosdb.connection_mode", Value: "gateway"},
-		{Key: "db.namespace", Value: id},
-		{Key: "db.operation.name", Value: operationName},
-		{Key: "server.address", Value: endpoint.Hostname()},
-	}}
+	options := runtime.StartSpanOptions{
+		Kind: tracing.SpanKindClient,
+		Attributes: []tracing.Attribute{
+			{Key: "db.system", Value: "cosmosdb"},
+			{Key: "db.cosmosdb.connection_mode", Value: "gateway"},
+			{Key: "db.namespace", Value: id},
+			{Key: "db.operation.name", Value: operationName},
+			{Key: "server.address", Value: endpoint.Hostname()},
+		},
+	}
 
 	if endpoint.Port() != "443" {
 		options.Attributes = append(options.Attributes, tracing.Attribute{Key: "server.port", Value: endpoint.Port()})
@@ -174,14 +180,17 @@ func getSpanPropertiesForDatabase(endpoint *url.URL, operationName string, id st
 }
 
 func getSpanPropertiesForContainer(endpoint *url.URL, operationName string, database string, id string) runtime.StartSpanOptions {
-	options := runtime.StartSpanOptions{Attributes: []tracing.Attribute{
-		{Key: "db.system", Value: "cosmosdb"},
-		{Key: "db.cosmosdb.connection_mode", Value: "gateway"},
-		{Key: "db.namespace", Value: database},
-		{Key: "db.collection.name", Value: id},
-		{Key: "db.operation.name", Value: operationName},
-		{Key: "server.address", Value: endpoint.Hostname()},
-	}}
+	options := runtime.StartSpanOptions{
+		Kind: tracing.SpanKindClient,
+		Attributes: []tracing.Attribute{
+			{Key: "db.system", Value: "cosmosdb"},
+			{Key: "db.cosmosdb.connection_mode", Value: "gateway"},
+			{Key: "db.namespace", Value: database},
+			{Key: "db.collection.name", Value: id},
+			{Key: "db.operation.name", Value: operationName},
+			{Key: "server.address", Value: endpoint.Hostname()},
+		},
+	}
 
 	if endpoint.Port() != "443" {
 		options.Attributes = append(options.Attributes, tracing.Attribute{Key: "server.port", Value: endpoint.Port()})

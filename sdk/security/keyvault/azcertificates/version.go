@@ -8,5 +8,5 @@ package azcertificates
 
 const (
 	moduleName = "github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azcertificates"
-	version    = "v1.2.1"
+	version    = "v1.3.1"
 )

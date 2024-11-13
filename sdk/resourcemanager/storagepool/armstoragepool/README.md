@@ -1,7 +1,5 @@
 # Azure Storage Pool Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagepool/armstoragepool)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagepool/armstoragepool)
-
 The `armstoragepool` module provides operations for working with Azure Storage Pool.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/storagepool/armstoragepool)
@@ -25,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagepool/armstor
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Storage Pool.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Storage Pool. The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -54,7 +52,7 @@ clientFactory, err := armstoragepool.NewClientFactory(<subscription ID>, cred, &
 
 ## Clients
 
-A client groups a set of related APIs, providing access to its functionality.  Create one or more clients to access the APIs you require using client factory.
+A client groups a set of related APIs, providing access to its functionality. Create one or more clients to access the APIs you require using client factory.
 
 ```go
 client := clientFactory.NewDiskPoolsClient()

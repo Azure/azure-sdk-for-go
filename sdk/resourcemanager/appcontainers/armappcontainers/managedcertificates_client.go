@@ -11,13 +11,14 @@ package armappcontainers
 import (
 	"context"
 	"errors"
+	"net/http"
+	"net/url"
+	"strings"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"net/http"
-	"net/url"
-	"strings"
 )
 
 // ManagedCertificatesClient contains the methods for the ManagedCertificates group.
@@ -28,7 +29,7 @@ type ManagedCertificatesClient struct {
 }
 
 // NewManagedCertificatesClient creates a new instance of ManagedCertificatesClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewManagedCertificatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedCertificatesClient, error) {
@@ -46,7 +47,7 @@ func NewManagedCertificatesClient(subscriptionID string, credential azcore.Token
 // BeginCreateOrUpdate - Create or Update a Managed Certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2024-08-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - environmentName - Name of the Managed Environment.
 //   - managedCertificateName - Name of the Managed Certificate.
@@ -73,7 +74,7 @@ func (client *ManagedCertificatesClient) BeginCreateOrUpdate(ctx context.Context
 // CreateOrUpdate - Create or Update a Managed Certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2024-08-02-preview
 func (client *ManagedCertificatesClient) createOrUpdate(ctx context.Context, resourceGroupName string, environmentName string, managedCertificateName string, options *ManagedCertificatesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedCertificatesClient.BeginCreateOrUpdate"
@@ -119,7 +120,7 @@ func (client *ManagedCertificatesClient) createOrUpdateCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2024-08-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ManagedCertificateEnvelope != nil {
@@ -134,7 +135,7 @@ func (client *ManagedCertificatesClient) createOrUpdateCreateRequest(ctx context
 // Delete - Deletes the specified Managed Certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2024-08-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - environmentName - Name of the Managed Environment.
 //   - managedCertificateName - Name of the Managed Certificate.
@@ -185,7 +186,7 @@ func (client *ManagedCertificatesClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2024-08-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -194,7 +195,7 @@ func (client *ManagedCertificatesClient) deleteCreateRequest(ctx context.Context
 // Get - Get the specified Managed Certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2024-08-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - environmentName - Name of the Managed Environment.
 //   - managedCertificateName - Name of the Managed Certificate.
@@ -245,7 +246,7 @@ func (client *ManagedCertificatesClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2024-08-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -262,7 +263,7 @@ func (client *ManagedCertificatesClient) getHandleResponse(resp *http.Response) 
 
 // NewListPager - Get the Managed Certificates in a given managed environment.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2024-08-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - environmentName - Name of the Managed Environment.
 //   - options - ManagedCertificatesClientListOptions contains the optional parameters for the ManagedCertificatesClient.NewListPager
@@ -310,7 +311,7 @@ func (client *ManagedCertificatesClient) listCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2024-08-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -328,7 +329,7 @@ func (client *ManagedCertificatesClient) listHandleResponse(resp *http.Response)
 // Update - Patches a managed certificate. Oly patching of tags is supported
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2024-08-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - environmentName - Name of the Managed Environment.
 //   - managedCertificateName - Name of the Managed Certificate.
@@ -381,7 +382,7 @@ func (client *ManagedCertificatesClient) updateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2024-08-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, managedCertificateEnvelope); err != nil {

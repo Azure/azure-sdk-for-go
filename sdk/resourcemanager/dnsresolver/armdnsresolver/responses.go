@@ -90,6 +90,70 @@ type DNSResolversClientUpdateResponse struct {
 	DNSResolver
 }
 
+// DNSSecurityRulesClientCreateOrUpdateResponse contains the response from method DNSSecurityRulesClient.BeginCreateOrUpdate.
+type DNSSecurityRulesClientCreateOrUpdateResponse struct {
+	// Describes a DNS security rule.
+	DNSSecurityRule
+}
+
+// DNSSecurityRulesClientDeleteResponse contains the response from method DNSSecurityRulesClient.BeginDelete.
+type DNSSecurityRulesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// DNSSecurityRulesClientGetResponse contains the response from method DNSSecurityRulesClient.Get.
+type DNSSecurityRulesClientGetResponse struct {
+	// Describes a DNS security rule.
+	DNSSecurityRule
+}
+
+// DNSSecurityRulesClientListResponse contains the response from method DNSSecurityRulesClient.NewListPager.
+type DNSSecurityRulesClientListResponse struct {
+	// The response to an enumeration operation on DNS security rules within a DNS resolver policy.
+	DNSSecurityRuleListResult
+}
+
+// DNSSecurityRulesClientUpdateResponse contains the response from method DNSSecurityRulesClient.BeginUpdate.
+type DNSSecurityRulesClientUpdateResponse struct {
+	// Describes a DNS security rule.
+	DNSSecurityRule
+}
+
+// DomainListsClientCreateOrUpdateResponse contains the response from method DomainListsClient.BeginCreateOrUpdate.
+type DomainListsClientCreateOrUpdateResponse struct {
+	// Describes a DNS resolver domain list.
+	DomainList
+}
+
+// DomainListsClientDeleteResponse contains the response from method DomainListsClient.BeginDelete.
+type DomainListsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// DomainListsClientGetResponse contains the response from method DomainListsClient.Get.
+type DomainListsClientGetResponse struct {
+	// Describes a DNS resolver domain list.
+	DomainList
+}
+
+// DomainListsClientListByResourceGroupResponse contains the response from method DomainListsClient.NewListByResourceGroupPager.
+type DomainListsClientListByResourceGroupResponse struct {
+	// The response to an enumeration operation on DNS resolver domain lists.
+	DomainListResult
+}
+
+// DomainListsClientListResponse contains the response from method DomainListsClient.NewListPager.
+type DomainListsClientListResponse struct {
+	// The response to an enumeration operation on DNS resolver domain lists.
+	DomainListResult
+}
+
+// DomainListsClientUpdateResponse contains the response from method DomainListsClient.BeginUpdate.
+type DomainListsClientUpdateResponse struct {
+	// Describes a DNS resolver domain list.
+	DomainList
+}
+
 // ForwardingRulesClientCreateOrUpdateResponse contains the response from method ForwardingRulesClient.CreateOrUpdate.
 type ForwardingRulesClientCreateOrUpdateResponse struct {
 	// Describes a forwarding rule within a DNS forwarding ruleset.
@@ -175,6 +239,76 @@ type OutboundEndpointsClientListResponse struct {
 type OutboundEndpointsClientUpdateResponse struct {
 	// Describes an outbound endpoint for a DNS resolver.
 	OutboundEndpoint
+}
+
+// PoliciesClientCreateOrUpdateResponse contains the response from method PoliciesClient.BeginCreateOrUpdate.
+type PoliciesClientCreateOrUpdateResponse struct {
+	// Describes a DNS resolver policy.
+	Policy
+}
+
+// PoliciesClientDeleteResponse contains the response from method PoliciesClient.BeginDelete.
+type PoliciesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// PoliciesClientGetResponse contains the response from method PoliciesClient.Get.
+type PoliciesClientGetResponse struct {
+	// Describes a DNS resolver policy.
+	Policy
+}
+
+// PoliciesClientListByResourceGroupResponse contains the response from method PoliciesClient.NewListByResourceGroupPager.
+type PoliciesClientListByResourceGroupResponse struct {
+	// The response to an enumeration operation on DNS resolver policies.
+	PolicyListResult
+}
+
+// PoliciesClientListByVirtualNetworkResponse contains the response from method PoliciesClient.NewListByVirtualNetworkPager.
+type PoliciesClientListByVirtualNetworkResponse struct {
+	// The response to an enumeration operation on sub-resources.
+	SubResourceListResult
+}
+
+// PoliciesClientListResponse contains the response from method PoliciesClient.NewListPager.
+type PoliciesClientListResponse struct {
+	// The response to an enumeration operation on DNS resolver policies.
+	PolicyListResult
+}
+
+// PoliciesClientUpdateResponse contains the response from method PoliciesClient.BeginUpdate.
+type PoliciesClientUpdateResponse struct {
+	// Describes a DNS resolver policy.
+	Policy
+}
+
+// PolicyVirtualNetworkLinksClientCreateOrUpdateResponse contains the response from method PolicyVirtualNetworkLinksClient.BeginCreateOrUpdate.
+type PolicyVirtualNetworkLinksClientCreateOrUpdateResponse struct {
+	// Describes a DNS resolver policy virtual network link.
+	PolicyVirtualNetworkLink
+}
+
+// PolicyVirtualNetworkLinksClientDeleteResponse contains the response from method PolicyVirtualNetworkLinksClient.BeginDelete.
+type PolicyVirtualNetworkLinksClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// PolicyVirtualNetworkLinksClientGetResponse contains the response from method PolicyVirtualNetworkLinksClient.Get.
+type PolicyVirtualNetworkLinksClientGetResponse struct {
+	// Describes a DNS resolver policy virtual network link.
+	PolicyVirtualNetworkLink
+}
+
+// PolicyVirtualNetworkLinksClientListResponse contains the response from method PolicyVirtualNetworkLinksClient.NewListPager.
+type PolicyVirtualNetworkLinksClientListResponse struct {
+	// The response to an enumeration operation on DNS resolver policy virtual network links.
+	PolicyVirtualNetworkLinkListResult
+}
+
+// PolicyVirtualNetworkLinksClientUpdateResponse contains the response from method PolicyVirtualNetworkLinksClient.BeginUpdate.
+type PolicyVirtualNetworkLinksClientUpdateResponse struct {
+	// Describes a DNS resolver policy virtual network link.
+	PolicyVirtualNetworkLink
 }
 
 // VirtualNetworkLinksClientCreateOrUpdateResponse contains the response from method VirtualNetworkLinksClient.BeginCreateOrUpdate.

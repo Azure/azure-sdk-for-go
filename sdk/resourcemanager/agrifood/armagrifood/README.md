@@ -1,7 +1,5 @@
 # Azure AgriFood Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/agrifood/armagrifood)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/agrifood/armagrifood)
-
 The `armagrifood` module provides operations for working with Azure AgriFood.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/agrifood/armagrifood)
@@ -25,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/agrifood/armagrifoo
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure AgriFood.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure AgriFood. The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -54,7 +52,7 @@ clientFactory, err := armagrifood.NewClientFactory(<subscription ID>, cred, &opt
 
 ## Clients
 
-A client groups a set of related APIs, providing access to its functionality.  Create one or more clients to access the APIs you require using client factory.
+A client groups a set of related APIs, providing access to its functionality. Create one or more clients to access the APIs you require using client factory.
 
 ```go
 client := clientFactory.NewExtensionsClient()

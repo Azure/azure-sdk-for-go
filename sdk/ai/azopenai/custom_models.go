@@ -283,26 +283,3 @@ func NewMongoDBChatExtensionParametersEmbeddingDependency[T OnYourDataDeployment
 func (c MongoDBChatExtensionParametersEmbeddingDependency) MarshalJSON() ([]byte, error) {
 	return json.Marshal(c.value)
 }
-
-// MessageAttachmentToolDefinition contains the content for a [ChatRequestToolMessage].
-// NOTE: This should be created using [azopenai.NewMessageAttachmentToolDefinition]
-type MessageAttachmentToolDefinition struct {
-	value any
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MessageAttachmentToolDefinition.
-func (c MessageAttachmentToolDefinition) MarshalJSON() ([]byte, error) {
-	return json.Marshal(c.value)
-}
-
-// NewMessageAttachmentToolDefinition creates a [azopenai.MessageAttachmentToolDefinition].
-func NewMessageAttachmentToolDefinition[T CodeInterpreterToolDefinition | FileSearchToolDefinition](value T) *MessageAttachmentToolDefinition {
-	switch any(value).(type) {
-	case []CodeInterpreterToolDefinition:
-		return &MessageAttachmentToolDefinition{value: value}
-	case FileSearchToolDefinition:
-		return &MessageAttachmentToolDefinition{value: value}
-	default:
-		panic(fmt.Sprintf("Invalid type %T for MessageAttachmentToolDefinition", value))
-	}
-}

@@ -187,7 +187,15 @@ var azureOpenAI = func() testVars {
 	return azureTestVars
 }()
 
+type stainlessTestClientOptions struct {
+	UseAPIKey bool
+}
+
 func newStainlessTestClient(t *testing.T, ep endpoint) *openai.Client {
+	return newStainlessTestClientWithOptions(t, ep, nil)
+}
+
+func newStainlessTestClientWithOptions(t *testing.T, ep endpoint, options *stainlessTestClientOptions) *openai.Client {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		t.Skip("Skipping tests in playback mode")
 		return nil
@@ -195,6 +203,13 @@ func newStainlessTestClient(t *testing.T, ep endpoint) *openai.Client {
 
 	tokenCredential, err := credential.New(nil)
 	require.NoError(t, err)
+
+	if options != nil && options.UseAPIKey {
+		return openai.NewClient(
+			azure.WithEndpoint(ep.URL, apiVersion),
+			azure.WithAPIKey(ep.APIKey),
+		)
+	}
 
 	return openai.NewClient(
 		azure.WithEndpoint(ep.URL, apiVersion),

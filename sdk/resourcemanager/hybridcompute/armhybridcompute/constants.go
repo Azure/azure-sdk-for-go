@@ -10,7 +10,7 @@ package armhybridcompute
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute"
-	moduleVersion = "v2.0.0"
+	moduleVersion = "v2.0.1"
 )
 
 // AccessMode - Property that impacts a resource's logging behavior and its connectivity with other resources and public networks.

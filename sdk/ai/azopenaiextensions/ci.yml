@@ -1,4 +1,7 @@
 # NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+## ai-extensions
+
 trigger:
   branches:
     include:
@@ -36,7 +39,8 @@ extends:
     ExcludeGoNMinus2: true
     CloudConfig:
       Public:
-        ServiceConnection: azure-sdk-tests-openai    
+        SubscriptionConfigurations:
+          - $(sub-config-openai-test-resources) # TestSecrets-openai
     EnvVars:
       AZURE_TEST_RUN_LIVE: "true" # use when utilizing the New-TestResources Script
       AZURE_CLIENT_ID: $(AZOPENAIEXTENSIONS_CLIENT_ID)

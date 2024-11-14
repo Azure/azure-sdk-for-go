@@ -9,7 +9,6 @@ package azopenaiextensions_test
 import (
 	"context"
 	"fmt"
-	"os"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -85,11 +84,6 @@ func TestAssistants(t *testing.T) {
 	})
 
 	t.Run("TokenCredential", func(t *testing.T) {
-		// TODO: there's an issue using the test credential in our pipelines. Just using AzureCLICredential
-		// locally works fine, however. Filed as issue #23734 to track the investigation.
-		if os.Getenv("AZURE_TEST_RUN_LIVE") != "" {
-			t.Skip("Skipping TokenCredential test, see issue #23734")
-		}
 		testFn(t, false)
 	})
 }
@@ -155,11 +149,6 @@ func TestAssistantsThreads(t *testing.T) {
 	})
 
 	t.Run("TokenCredential", func(t *testing.T) {
-		// TODO: there's an issue using the test credential in our pipelines. Just using AzureCLICredential
-		// locally works fine, however. Filed as issue #23734 to track the investigation.
-		if os.Getenv("AZURE_TEST_RUN_LIVE") != "" {
-			t.Skip("Skipping TokenCredential test, see issue #23734")
-		}
 		testFn(t, false)
 	})
 }
@@ -237,11 +226,6 @@ func TestAssistantRun(t *testing.T) {
 	})
 
 	t.Run("TokenCredential", func(t *testing.T) {
-		// TODO: there's an issue using the test credential in our pipelines. Just using AzureCLICredential
-		// locally works fine, however. Filed as issue #23734 to track the investigation.
-		if os.Getenv("AZURE_TEST_RUN_LIVE") != "" {
-			t.Skip("Skipping TokenCredential test, see issue #23734")
-		}
 		testFn(t, false)
 	})
 }

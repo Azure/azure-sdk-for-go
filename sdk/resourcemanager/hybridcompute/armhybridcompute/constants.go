@@ -10,7 +10,7 @@ package armhybridcompute
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute"
-	moduleVersion = "v2.0.0"
+	moduleVersion = "v2.1.0-beta.1"
 )
 
 // AccessMode - Property that impacts a resource's logging behavior and its connectivity with other resources and public networks.
@@ -178,6 +178,64 @@ func PossibleEsuServerTypeValues() []EsuServerType {
 	return []EsuServerType{
 		EsuServerTypeDatacenter,
 		EsuServerTypeStandard,
+	}
+}
+
+// ExecutionState - Script execution status.
+type ExecutionState string
+
+const (
+	ExecutionStateCanceled  ExecutionState = "Canceled"
+	ExecutionStateFailed    ExecutionState = "Failed"
+	ExecutionStatePending   ExecutionState = "Pending"
+	ExecutionStateRunning   ExecutionState = "Running"
+	ExecutionStateSucceeded ExecutionState = "Succeeded"
+	ExecutionStateTimedOut  ExecutionState = "TimedOut"
+	ExecutionStateUnknown   ExecutionState = "Unknown"
+)
+
+// PossibleExecutionStateValues returns the possible values for the ExecutionState const type.
+func PossibleExecutionStateValues() []ExecutionState {
+	return []ExecutionState{
+		ExecutionStateCanceled,
+		ExecutionStateFailed,
+		ExecutionStatePending,
+		ExecutionStateRunning,
+		ExecutionStateSucceeded,
+		ExecutionStateTimedOut,
+		ExecutionStateUnknown,
+	}
+}
+
+// ExtensionsStatusLevelTypes - The level code.
+type ExtensionsStatusLevelTypes string
+
+const (
+	ExtensionsStatusLevelTypesError   ExtensionsStatusLevelTypes = "Error"
+	ExtensionsStatusLevelTypesInfo    ExtensionsStatusLevelTypes = "Info"
+	ExtensionsStatusLevelTypesWarning ExtensionsStatusLevelTypes = "Warning"
+)
+
+// PossibleExtensionsStatusLevelTypesValues returns the possible values for the ExtensionsStatusLevelTypes const type.
+func PossibleExtensionsStatusLevelTypesValues() []ExtensionsStatusLevelTypes {
+	return []ExtensionsStatusLevelTypes{
+		ExtensionsStatusLevelTypesError,
+		ExtensionsStatusLevelTypesInfo,
+		ExtensionsStatusLevelTypesWarning,
+	}
+}
+
+// GatewayType - The type of the Gateway resource.
+type GatewayType string
+
+const (
+	GatewayTypePublic GatewayType = "Public"
+)
+
+// PossibleGatewayTypeValues returns the possible values for the GatewayType const type.
+func PossibleGatewayTypeValues() []GatewayType {
+	return []GatewayType{
+		GatewayTypePublic,
 	}
 }
 

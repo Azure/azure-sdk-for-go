@@ -46,7 +46,7 @@ func NewNetworkSecurityPerimeterConfigurationsClient(subscriptionID string, cred
 // GetByPrivateLinkScope - Gets the network security perimeter configuration for a private link scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-10
+// Generated from API version 2024-07-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - scopeName - The name of the Azure Arc PrivateLinkScope resource.
 //   - perimeterName - The name, in the format {perimeterGuid}.{associationName}, of the Network Security Perimeter resource.
@@ -98,7 +98,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) getByPrivateLinkScop
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-10")
+	reqQP.Set("api-version", "2024-07-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -115,7 +115,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) getByPrivateLinkScop
 
 // NewListByPrivateLinkScopePager - Lists the network security perimeter configurations for a private link scope.
 //
-// Generated from API version 2024-07-10
+// Generated from API version 2024-07-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - scopeName - The name of the Azure Arc PrivateLinkScope resource.
 //   - options - NetworkSecurityPerimeterConfigurationsClientListByPrivateLinkScopeOptions contains the optional parameters for
@@ -163,7 +163,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) listByPrivateLinkSco
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-10")
+	reqQP.Set("api-version", "2024-07-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -181,7 +181,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) listByPrivateLinkSco
 // BeginReconcileForPrivateLinkScope - Forces the network security perimeter configuration to refresh for a private link scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-10
+// Generated from API version 2024-07-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - scopeName - The name of the Azure Arc PrivateLinkScope resource.
 //   - perimeterName - The name, in the format {perimeterGuid}.{associationName}, of the Network Security Perimeter resource.
@@ -207,7 +207,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) BeginReconcileForPri
 // ReconcileForPrivateLinkScope - Forces the network security perimeter configuration to refresh for a private link scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-10
+// Generated from API version 2024-07-31-preview
 func (client *NetworkSecurityPerimeterConfigurationsClient) reconcileForPrivateLinkScope(ctx context.Context, resourceGroupName string, scopeName string, perimeterName string, options *NetworkSecurityPerimeterConfigurationsClientBeginReconcileForPrivateLinkScopeOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkSecurityPerimeterConfigurationsClient.BeginReconcileForPrivateLinkScope"
@@ -253,7 +253,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) reconcileForPrivateL
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-10")
+	reqQP.Set("api-version", "2024-07-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

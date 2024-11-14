@@ -10,7 +10,7 @@ package armcontainerservice
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice"
-	moduleVersion = "v6.2.0"
+	moduleVersion = "v6.3.0"
 )
 
 // AgentPoolMode - A cluster must have at least one 'System' Agent Pool at all times. For additional information on agent
@@ -725,6 +725,25 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 		ResourceIdentityTypeNone,
 		ResourceIdentityTypeSystemAssigned,
 		ResourceIdentityTypeUserAssigned,
+	}
+}
+
+// RestrictionLevel - The restriction level applied to the cluster's node resource group. If not specified, the default is
+// 'Unrestricted'
+type RestrictionLevel string
+
+const (
+	// RestrictionLevelReadOnly - Only */read RBAC permissions allowed on the managed node resource group
+	RestrictionLevelReadOnly RestrictionLevel = "ReadOnly"
+	// RestrictionLevelUnrestricted - All RBAC permissions are allowed on the managed node resource group
+	RestrictionLevelUnrestricted RestrictionLevel = "Unrestricted"
+)
+
+// PossibleRestrictionLevelValues returns the possible values for the RestrictionLevel const type.
+func PossibleRestrictionLevelValues() []RestrictionLevel {
+	return []RestrictionLevel{
+		RestrictionLevelReadOnly,
+		RestrictionLevelUnrestricted,
 	}
 }
 

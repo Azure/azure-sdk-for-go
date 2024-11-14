@@ -319,7 +319,16 @@ func (m *ManagedClustersServerTransport) dispatchBeginCreateOrUpdate(req *http.R
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := m.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, resourceNameParam, body, nil)
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armcontainerservice.ManagedClustersClientBeginCreateOrUpdateOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armcontainerservice.ManagedClustersClientBeginCreateOrUpdateOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := m.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, resourceNameParam, body, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -363,7 +372,14 @@ func (m *ManagedClustersServerTransport) dispatchBeginDelete(req *http.Request) 
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := m.srv.BeginDelete(req.Context(), resourceGroupNameParam, resourceNameParam, nil)
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		var options *armcontainerservice.ManagedClustersClientBeginDeleteOptions
+		if ifMatchParam != nil {
+			options = &armcontainerservice.ManagedClustersClientBeginDeleteOptions{
+				IfMatch: ifMatchParam,
+			}
+		}
+		respr, errRespr := m.srv.BeginDelete(req.Context(), resourceGroupNameParam, resourceNameParam, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -1303,7 +1319,14 @@ func (m *ManagedClustersServerTransport) dispatchBeginUpdateTags(req *http.Reque
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := m.srv.BeginUpdateTags(req.Context(), resourceGroupNameParam, resourceNameParam, body, nil)
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		var options *armcontainerservice.ManagedClustersClientBeginUpdateTagsOptions
+		if ifMatchParam != nil {
+			options = &armcontainerservice.ManagedClustersClientBeginUpdateTagsOptions{
+				IfMatch: ifMatchParam,
+			}
+		}
+		respr, errRespr := m.srv.BeginUpdateTags(req.Context(), resourceGroupNameParam, resourceNameParam, body, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

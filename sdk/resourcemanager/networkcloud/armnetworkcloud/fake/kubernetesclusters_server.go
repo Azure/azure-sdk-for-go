@@ -45,7 +45,7 @@ type KubernetesClustersServer struct {
 	NewListBySubscriptionPager func(options *armnetworkcloud.KubernetesClustersClientListBySubscriptionOptions) (resp azfake.PagerResponder[armnetworkcloud.KubernetesClustersClientListBySubscriptionResponse])
 
 	// BeginRestartNode is the fake for method KubernetesClustersClient.BeginRestartNode
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginRestartNode func(ctx context.Context, resourceGroupName string, kubernetesClusterName string, kubernetesClusterRestartNodeParameters armnetworkcloud.KubernetesClusterRestartNodeParameters, options *armnetworkcloud.KubernetesClustersClientBeginRestartNodeOptions) (resp azfake.PollerResponder[armnetworkcloud.KubernetesClustersClientRestartNodeResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdate is the fake for method KubernetesClustersClient.BeginUpdate
@@ -349,9 +349,9 @@ func (k *KubernetesClustersServerTransport) dispatchBeginRestartNode(req *http.R
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		k.beginRestartNode.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginRestartNode) {
 		k.beginRestartNode.remove(req)

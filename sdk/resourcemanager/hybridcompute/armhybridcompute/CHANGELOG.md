@@ -1,5 +1,55 @@
 # Release History
 
+## 2.1.0-beta.1 (2024-11-14)
+### Features Added
+
+- New enum type `ExecutionState` with values `ExecutionStateCanceled`, `ExecutionStateFailed`, `ExecutionStatePending`, `ExecutionStateRunning`, `ExecutionStateSucceeded`, `ExecutionStateTimedOut`, `ExecutionStateUnknown`
+- New enum type `ExtensionsStatusLevelTypes` with values `ExtensionsStatusLevelTypesError`, `ExtensionsStatusLevelTypesInfo`, `ExtensionsStatusLevelTypesWarning`
+- New enum type `GatewayType` with values `GatewayTypePublic`
+- New function `*ClientFactory.NewGatewaysClient() *GatewaysClient`
+- New function `*ClientFactory.NewMachineRunCommandsClient() *MachineRunCommandsClient`
+- New function `*ClientFactory.NewSettingsClient() *SettingsClient`
+- New function `NewGatewaysClient(string, azcore.TokenCredential, *arm.ClientOptions) (*GatewaysClient, error)`
+- New function `*GatewaysClient.BeginCreateOrUpdate(context.Context, string, string, Gateway, *GatewaysClientBeginCreateOrUpdateOptions) (*runtime.Poller[GatewaysClientCreateOrUpdateResponse], error)`
+- New function `*GatewaysClient.BeginDelete(context.Context, string, string, *GatewaysClientBeginDeleteOptions) (*runtime.Poller[GatewaysClientDeleteResponse], error)`
+- New function `*GatewaysClient.Get(context.Context, string, string, *GatewaysClientGetOptions) (GatewaysClientGetResponse, error)`
+- New function `*GatewaysClient.NewListByResourceGroupPager(string, *GatewaysClientListByResourceGroupOptions) *runtime.Pager[GatewaysClientListByResourceGroupResponse]`
+- New function `*GatewaysClient.NewListBySubscriptionPager(*GatewaysClientListBySubscriptionOptions) *runtime.Pager[GatewaysClientListBySubscriptionResponse]`
+- New function `*GatewaysClient.Update(context.Context, string, string, GatewayUpdate, *GatewaysClientUpdateOptions) (GatewaysClientUpdateResponse, error)`
+- New function `NewMachineRunCommandsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*MachineRunCommandsClient, error)`
+- New function `*MachineRunCommandsClient.BeginCreateOrUpdate(context.Context, string, string, string, MachineRunCommand, *MachineRunCommandsClientBeginCreateOrUpdateOptions) (*runtime.Poller[MachineRunCommandsClientCreateOrUpdateResponse], error)`
+- New function `*MachineRunCommandsClient.BeginDelete(context.Context, string, string, string, *MachineRunCommandsClientBeginDeleteOptions) (*runtime.Poller[MachineRunCommandsClientDeleteResponse], error)`
+- New function `*MachineRunCommandsClient.Get(context.Context, string, string, string, *MachineRunCommandsClientGetOptions) (MachineRunCommandsClientGetResponse, error)`
+- New function `*MachineRunCommandsClient.NewListPager(string, string, *MachineRunCommandsClientListOptions) *runtime.Pager[MachineRunCommandsClientListResponse]`
+- New function `NewSettingsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*SettingsClient, error)`
+- New function `*SettingsClient.Get(context.Context, string, string, string, string, string, *SettingsClientGetOptions) (SettingsClientGetResponse, error)`
+- New function `*SettingsClient.Patch(context.Context, string, string, string, string, string, Settings, *SettingsClientPatchOptions) (SettingsClientPatchResponse, error)`
+- New function `*SettingsClient.Update(context.Context, string, string, string, string, string, Settings, *SettingsClientUpdateOptions) (SettingsClientUpdateResponse, error)`
+- New struct `Disk`
+- New struct `ExtensionsResourceStatus`
+- New struct `FirmwareProfile`
+- New struct `Gateway`
+- New struct `GatewayProperties`
+- New struct `GatewayUpdate`
+- New struct `GatewayUpdateProperties`
+- New struct `GatewaysListResult`
+- New struct `HardwareProfile`
+- New struct `MachineRunCommand`
+- New struct `MachineRunCommandInstanceView`
+- New struct `MachineRunCommandProperties`
+- New struct `MachineRunCommandScriptSource`
+- New struct `MachineRunCommandsListResult`
+- New struct `Processor`
+- New struct `RunCommandInputParameter`
+- New struct `RunCommandManagedIdentity`
+- New struct `Settings`
+- New struct `SettingsGatewayProperties`
+- New struct `SettingsProperties`
+- New struct `StorageProfile`
+- New field `FirmwareProfile`, `HardwareProfile`, `StorageProfile` in struct `MachineProperties`
+- New field `ID`, `MacAddress`, `Name` in struct `NetworkInterface`
+
+
 ## 2.0.0 (2024-10-11)
 ### Breaking Changes
 

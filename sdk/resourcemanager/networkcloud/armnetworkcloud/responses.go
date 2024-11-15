@@ -16,7 +16,8 @@ type AgentPoolsClientCreateOrUpdateResponse struct {
 
 // AgentPoolsClientDeleteResponse contains the response from method AgentPoolsClient.BeginDelete.
 type AgentPoolsClientDeleteResponse struct {
-	// placeholder for future response values
+	// The current status of an async operation.
+	OperationStatusResult
 }
 
 // AgentPoolsClientGetResponse contains the response from method AgentPoolsClient.Get.
@@ -45,7 +46,8 @@ type BareMetalMachineKeySetsClientCreateOrUpdateResponse struct {
 
 // BareMetalMachineKeySetsClientDeleteResponse contains the response from method BareMetalMachineKeySetsClient.BeginDelete.
 type BareMetalMachineKeySetsClientDeleteResponse struct {
-	// placeholder for future response values
+	// The current status of an async operation.
+	OperationStatusResult
 }
 
 // BareMetalMachineKeySetsClientGetResponse contains the response from method BareMetalMachineKeySetsClient.Get.
@@ -80,7 +82,8 @@ type BareMetalMachinesClientCreateOrUpdateResponse struct {
 
 // BareMetalMachinesClientDeleteResponse contains the response from method BareMetalMachinesClient.BeginDelete.
 type BareMetalMachinesClientDeleteResponse struct {
-	// placeholder for future response values
+	// The current status of an async operation.
+	OperationStatusResult
 }
 
 // BareMetalMachinesClientGetResponse contains the response from method BareMetalMachinesClient.Get.
@@ -169,7 +172,8 @@ type BmcKeySetsClientCreateOrUpdateResponse struct {
 
 // BmcKeySetsClientDeleteResponse contains the response from method BmcKeySetsClient.BeginDelete.
 type BmcKeySetsClientDeleteResponse struct {
-	// placeholder for future response values
+	// The current status of an async operation.
+	OperationStatusResult
 }
 
 // BmcKeySetsClientGetResponse contains the response from method BmcKeySetsClient.Get.
@@ -201,7 +205,8 @@ type CloudServicesNetworksClientCreateOrUpdateResponse struct {
 
 // CloudServicesNetworksClientDeleteResponse contains the response from method CloudServicesNetworksClient.BeginDelete.
 type CloudServicesNetworksClientDeleteResponse struct {
-	// placeholder for future response values
+	// The current status of an async operation.
+	OperationStatusResult
 }
 
 // CloudServicesNetworksClientGetResponse contains the response from method CloudServicesNetworksClient.Get.
@@ -242,7 +247,8 @@ type ClusterManagersClientCreateOrUpdateResponse struct {
 
 // ClusterManagersClientDeleteResponse contains the response from method ClusterManagersClient.BeginDelete.
 type ClusterManagersClientDeleteResponse struct {
-	// placeholder for future response values
+	// The current status of an async operation.
+	OperationStatusResult
 }
 
 // ClusterManagersClientGetResponse contains the response from method ClusterManagersClient.Get.
@@ -269,6 +275,12 @@ type ClusterManagersClientUpdateResponse struct {
 	ClusterManager
 }
 
+// ClustersClientContinueUpdateVersionResponse contains the response from method ClustersClient.BeginContinueUpdateVersion.
+type ClustersClientContinueUpdateVersionResponse struct {
+	// The current status of an async operation.
+	OperationStatusResult
+}
+
 // ClustersClientCreateOrUpdateResponse contains the response from method ClustersClient.BeginCreateOrUpdate.
 type ClustersClientCreateOrUpdateResponse struct {
 	// Cluster represents the on-premises Network Cloud cluster.
@@ -277,7 +289,8 @@ type ClustersClientCreateOrUpdateResponse struct {
 
 // ClustersClientDeleteResponse contains the response from method ClustersClient.BeginDelete.
 type ClustersClientDeleteResponse struct {
-	// placeholder for future response values
+	// The current status of an async operation.
+	OperationStatusResult
 }
 
 // ClustersClientDeployResponse contains the response from method ClustersClient.BeginDeploy.
@@ -304,6 +317,12 @@ type ClustersClientListBySubscriptionResponse struct {
 	ClusterList
 }
 
+// ClustersClientScanRuntimeResponse contains the response from method ClustersClient.BeginScanRuntime.
+type ClustersClientScanRuntimeResponse struct {
+	// The current status of an async operation.
+	OperationStatusResult
+}
+
 // ClustersClientUpdateResponse contains the response from method ClustersClient.BeginUpdate.
 type ClustersClientUpdateResponse struct {
 	// Cluster represents the on-premises Network Cloud cluster.
@@ -324,7 +343,8 @@ type ConsolesClientCreateOrUpdateResponse struct {
 
 // ConsolesClientDeleteResponse contains the response from method ConsolesClient.BeginDelete.
 type ConsolesClientDeleteResponse struct {
-	// placeholder for future response values
+	// The current status of an async operation.
+	OperationStatusResult
 }
 
 // ConsolesClientGetResponse contains the response from method ConsolesClient.Get.
@@ -345,6 +365,36 @@ type ConsolesClientUpdateResponse struct {
 	Console
 }
 
+// KubernetesClusterFeaturesClientCreateOrUpdateResponse contains the response from method KubernetesClusterFeaturesClient.BeginCreateOrUpdate.
+type KubernetesClusterFeaturesClientCreateOrUpdateResponse struct {
+	// KubernetesClusterFeature represents the feature of a Kubernetes cluster.
+	KubernetesClusterFeature
+}
+
+// KubernetesClusterFeaturesClientDeleteResponse contains the response from method KubernetesClusterFeaturesClient.BeginDelete.
+type KubernetesClusterFeaturesClientDeleteResponse struct {
+	// The current status of an async operation.
+	OperationStatusResult
+}
+
+// KubernetesClusterFeaturesClientGetResponse contains the response from method KubernetesClusterFeaturesClient.Get.
+type KubernetesClusterFeaturesClientGetResponse struct {
+	// KubernetesClusterFeature represents the feature of a Kubernetes cluster.
+	KubernetesClusterFeature
+}
+
+// KubernetesClusterFeaturesClientListByKubernetesClusterResponse contains the response from method KubernetesClusterFeaturesClient.NewListByKubernetesClusterPager.
+type KubernetesClusterFeaturesClientListByKubernetesClusterResponse struct {
+	// KubernetesClusterFeatureList represents the list of Kubernetes cluster feature resources.
+	KubernetesClusterFeatureList
+}
+
+// KubernetesClusterFeaturesClientUpdateResponse contains the response from method KubernetesClusterFeaturesClient.BeginUpdate.
+type KubernetesClusterFeaturesClientUpdateResponse struct {
+	// KubernetesClusterFeature represents the feature of a Kubernetes cluster.
+	KubernetesClusterFeature
+}
+
 // KubernetesClustersClientCreateOrUpdateResponse contains the response from method KubernetesClustersClient.BeginCreateOrUpdate.
 type KubernetesClustersClientCreateOrUpdateResponse struct {
 	// KubernetesCluster represents the Kubernetes cluster hosted on Network Cloud.
@@ -353,7 +403,8 @@ type KubernetesClustersClientCreateOrUpdateResponse struct {
 
 // KubernetesClustersClientDeleteResponse contains the response from method KubernetesClustersClient.BeginDelete.
 type KubernetesClustersClientDeleteResponse struct {
-	// placeholder for future response values
+	// The current status of an async operation.
+	OperationStatusResult
 }
 
 // KubernetesClustersClientGetResponse contains the response from method KubernetesClustersClient.Get.
@@ -394,7 +445,8 @@ type L2NetworksClientCreateOrUpdateResponse struct {
 
 // L2NetworksClientDeleteResponse contains the response from method L2NetworksClient.BeginDelete.
 type L2NetworksClientDeleteResponse struct {
-	// placeholder for future response values
+	// The current status of an async operation.
+	OperationStatusResult
 }
 
 // L2NetworksClientGetResponse contains the response from method L2NetworksClient.Get.
@@ -429,7 +481,8 @@ type L3NetworksClientCreateOrUpdateResponse struct {
 
 // L3NetworksClientDeleteResponse contains the response from method L3NetworksClient.BeginDelete.
 type L3NetworksClientDeleteResponse struct {
-	// placeholder for future response values
+	// The current status of an async operation.
+	OperationStatusResult
 }
 
 // L3NetworksClientGetResponse contains the response from method L3NetworksClient.Get.
@@ -464,7 +517,8 @@ type MetricsConfigurationsClientCreateOrUpdateResponse struct {
 
 // MetricsConfigurationsClientDeleteResponse contains the response from method MetricsConfigurationsClient.BeginDelete.
 type MetricsConfigurationsClientDeleteResponse struct {
-	// placeholder for future response values
+	// The current status of an async operation.
+	OperationStatusResult
 }
 
 // MetricsConfigurationsClientGetResponse contains the response from method MetricsConfigurationsClient.Get.
@@ -511,7 +565,8 @@ type RacksClientCreateOrUpdateResponse struct {
 
 // RacksClientDeleteResponse contains the response from method RacksClient.BeginDelete.
 type RacksClientDeleteResponse struct {
-	// placeholder for future response values
+	// The current status of an async operation.
+	OperationStatusResult
 }
 
 // RacksClientGetResponse contains the response from method RacksClient.Get.
@@ -546,7 +601,8 @@ type StorageAppliancesClientCreateOrUpdateResponse struct {
 
 // StorageAppliancesClientDeleteResponse contains the response from method StorageAppliancesClient.BeginDelete.
 type StorageAppliancesClientDeleteResponse struct {
-	// placeholder for future response values
+	// The current status of an async operation.
+	OperationStatusResult
 }
 
 // StorageAppliancesClientDisableRemoteVendorManagementResponse contains the response from method StorageAppliancesClient.BeginDisableRemoteVendorManagement.
@@ -593,7 +649,8 @@ type TrunkedNetworksClientCreateOrUpdateResponse struct {
 
 // TrunkedNetworksClientDeleteResponse contains the response from method TrunkedNetworksClient.BeginDelete.
 type TrunkedNetworksClientDeleteResponse struct {
-	// placeholder for future response values
+	// The current status of an async operation.
+	OperationStatusResult
 }
 
 // TrunkedNetworksClientGetResponse contains the response from method TrunkedNetworksClient.Get.
@@ -628,7 +685,8 @@ type VirtualMachinesClientCreateOrUpdateResponse struct {
 
 // VirtualMachinesClientDeleteResponse contains the response from method VirtualMachinesClient.BeginDelete.
 type VirtualMachinesClientDeleteResponse struct {
-	// placeholder for future response values
+	// The current status of an async operation.
+	OperationStatusResult
 }
 
 // VirtualMachinesClientGetResponse contains the response from method VirtualMachinesClient.Get.
@@ -687,7 +745,8 @@ type VolumesClientCreateOrUpdateResponse struct {
 
 // VolumesClientDeleteResponse contains the response from method VolumesClient.BeginDelete.
 type VolumesClientDeleteResponse struct {
-	// placeholder for future response values
+	// The current status of an async operation.
+	OperationStatusResult
 }
 
 // VolumesClientGetResponse contains the response from method VolumesClient.Get.

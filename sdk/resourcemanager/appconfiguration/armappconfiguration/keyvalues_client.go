@@ -43,7 +43,8 @@ func NewKeyValuesClient(subscriptionID string, credential azcore.TokenCredential
 	return client, nil
 }
 
-// CreateOrUpdate - Creates a key-value.
+// CreateOrUpdate - Creates a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
+// scenarios involving App Configuration key-values the data plane API should be used instead.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-03-01
@@ -119,7 +120,8 @@ func (client *KeyValuesClient) createOrUpdateHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// BeginDelete - Deletes a key-value.
+// BeginDelete - Deletes a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
+// scenarios involving App Configuration key-values the data plane API should be used instead.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-03-01
@@ -144,7 +146,8 @@ func (client *KeyValuesClient) BeginDelete(ctx context.Context, resourceGroupNam
 	}
 }
 
-// Delete - Deletes a key-value.
+// Delete - Deletes a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other scenarios
+// involving App Configuration key-values the data plane API should be used instead.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-03-01
@@ -199,7 +202,9 @@ func (client *KeyValuesClient) deleteCreateRequest(ctx context.Context, resource
 	return req, nil
 }
 
-// Get - Gets the properties of the specified key-value.
+// Get - Gets the properties of the specified key-value. NOTE: This operation is intended for use in ARM Template deployments.
+// For all other scenarios involving App Configuration key-values the data plane API
+// should be used instead.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-03-01

@@ -37,6 +37,12 @@ type AdministratorConfiguration struct {
 	SSHPublicKeys []*SSHPublicKey
 }
 
+// AdministratorConfigurationPatch represents the patching capabilities for the administrator configuration.
+type AdministratorConfigurationPatch struct {
+	// SshPublicKey represents the public key used to authenticate with a resource through SSH.
+	SSHPublicKeys []*SSHPublicKey
+}
+
 // AgentOptions are configurations that will be applied to each agent in an agent pool.
 type AgentOptions struct {
 	// REQUIRED; The number of hugepages to allocate.
@@ -93,6 +99,9 @@ type AgentPoolPatchParameters struct {
 
 // AgentPoolPatchProperties represents the properties of an agent pool that can be modified.
 type AgentPoolPatchProperties struct {
+	// The configuration of administrator credentials for the control plane nodes.
+	AdministratorConfiguration *NodePoolAdministratorConfigurationPatch
+
 	// The number of virtual machines that use this configuration.
 	Count *int64
 
@@ -150,11 +159,23 @@ type AgentPoolProperties struct {
 
 // AgentPoolUpgradeSettings specifies the upgrade settings for an agent pool.
 type AgentPoolUpgradeSettings struct {
+	// The maximum time in seconds that is allowed for a node drain to complete before proceeding with the upgrade of the agent
+	// pool. If not specified during creation, a value of 1800 seconds is used.
+	DrainTimeout *int64
+
 	// The maximum number or percentage of nodes that are surged during upgrade. This can either be set to an integer (e.g. '5')
 	// or a percentage (e.g. '50%'). If a percentage is specified, it is the
 	// percentage of the total agent pool size at the time of the upgrade. For percentages, fractional nodes are rounded up. If
-	// not specified, the default is 1.
+	// not specified during creation, a value of 1 is used. One of MaxSurge and
+	// MaxUnavailable must be greater than 0.
 	MaxSurge *string
+
+	// The maximum number or percentage of nodes that can be unavailable during upgrade. This can either be set to an integer
+	// (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it is the
+	// percentage of the total agent pool size at the time of the upgrade. For percentages, fractional nodes are rounded up. If
+	// not specified during creation, a value of 0 is used. One of MaxSurge and
+	// MaxUnavailable must be greater than 0.
+	MaxUnavailable *string
 }
 
 // AttachedNetworkConfiguration represents the set of workload networks to attach to a resource.
@@ -407,6 +428,9 @@ type BareMetalMachineProperties struct {
 	// REQUIRED; The serial number of the bare metal machine.
 	SerialNumber *string
 
+	// The cluster version that has been applied to this machine during deployment or a version update.
+	MachineClusterVersion *string
+
 	// READ-ONLY; The list of resource IDs for the other Microsoft.NetworkCloud resources that have attached this network.
 	AssociatedResourceIDs []*string
 
@@ -438,6 +462,9 @@ type BareMetalMachineProperties struct {
 	// READ-ONLY; The version of Kubernetes running on this machine.
 	KubernetesVersion *string
 
+	// READ-ONLY; The list of roles that are assigned to the cluster node running on this machine.
+	MachineRoles []*string
+
 	// READ-ONLY; The image that is currently provisioned to the OS disk.
 	OSImage *string
 
@@ -455,6 +482,12 @@ type BareMetalMachineProperties struct {
 
 	// READ-ONLY; The indicator of whether the bare metal machine is ready to receive workloads.
 	ReadyState *BareMetalMachineReadyState
+
+	// READ-ONLY; The runtime protection status of the bare metal machine.
+	RuntimeProtectionStatus *RuntimeProtectionStatus
+
+	// READ-ONLY; The list of statuses that represent secret rotation activity.
+	SecretRotationStatus []*SecretRotationStatus
 
 	// READ-ONLY; The discovered value of the machine's service tag.
 	ServiceTag *string
@@ -549,7 +582,7 @@ type BgpServiceLoadBalancerConfiguration struct {
 	// The indicator to specify if the load balancer peers with the network fabric.
 	FabricPeeringEnabled *FabricPeeringEnabled
 
-	// The list of pools of IP addresses that can be allocated to Load Balancer services.
+	// The list of pools of IP addresses that can be allocated to load balancer services.
 	IPAddressPools []*IPAddressPool
 }
 
@@ -745,6 +778,9 @@ type Cluster struct {
 	// REQUIRED; The list of the resource properties.
 	Properties *ClusterProperties
 
+	// The identity for the resource.
+	Identity *ManagedServiceIdentity
+
 	// Resource tags.
 	Tags map[string]*string
 
@@ -793,29 +829,35 @@ type ClusterAvailableVersion struct {
 
 // ClusterCapacity represents various details regarding compute capacity.
 type ClusterCapacity struct {
-	// The remaining appliance-based storage in GB available for workload use.
+	// The remaining appliance-based storage in GB available for workload use. Measured in gibibytes.
 	AvailableApplianceStorageGB *int64
 
 	// The remaining number of cores that are available in this cluster for workload use.
 	AvailableCoreCount *int64
 
-	// The remaining machine or host-based storage in GB available for workload use.
+	// The remaining machine or host-based storage in GB available for workload use. Measured in gibibytes.
 	AvailableHostStorageGB *int64
 
-	// The remaining memory in GB that are available in this cluster for workload use.
+	// The remaining memory in GB that are available in this cluster for workload use. Measured in gibibytes.
 	AvailableMemoryGB *int64
 
-	// The total appliance-based storage in GB supported by this cluster for workload use.
+	// The total appliance-based storage in GB supported by this cluster for workload use. Measured in gibibytes.
 	TotalApplianceStorageGB *int64
 
 	// The total number of cores that are supported by this cluster for workload use.
 	TotalCoreCount *int64
 
-	// The total machine or host-based storage in GB supported by this cluster for workload use.
+	// The total machine or host-based storage in GB supported by this cluster for workload use. Measured in gibibytes.
 	TotalHostStorageGB *int64
 
-	// The total memory supported by this cluster for workload use.
+	// The total memory supported by this cluster for workload use. Measured in gibibytes.
 	TotalMemoryGB *int64
+}
+
+// ClusterContinueUpdateVersionParameters represents the body of the request to continue the update of a cluster version.
+type ClusterContinueUpdateVersionParameters struct {
+	// The mode by which the cluster will target the next grouping of servers to continue the update.
+	MachineGroupTargetingMode *ClusterContinueUpdateVersionMachineGroupTargetingMode
 }
 
 // ClusterDeployParameters represents the body of the request to deploy cluster.
@@ -840,6 +882,9 @@ type ClusterManager struct {
 
 	// REQUIRED; The list of the resource properties.
 	Properties *ClusterManagerProperties
+
+	// The identity of the cluster manager.
+	Identity *ManagedServiceIdentity
 
 	// Resource tags.
 	Tags map[string]*string
@@ -868,6 +913,9 @@ type ClusterManagerList struct {
 
 // ClusterManagerPatchParameters represents the body of the request to patch the cluster properties.
 type ClusterManagerPatchParameters struct {
+	// The identity for the resource.
+	Identity *ManagedServiceIdentity
+
 	// The Azure resource tags that will replace the existing ones.
 	Tags map[string]*string
 }
@@ -988,6 +1036,9 @@ type ClusterMetricsConfigurationProperties struct {
 
 // ClusterPatchParameters represents the body of the request to patch the cluster properties.
 type ClusterPatchParameters struct {
+	// The identity for the resource.
+	Identity *ManagedServiceIdentity
+
 	// The list of the resource properties.
 	Properties *ClusterPatchProperties
 
@@ -1007,11 +1058,23 @@ type ClusterPatchProperties struct {
 	// The service principal to be used by the cluster during Arc Appliance installation.
 	ClusterServicePrincipal *ServicePrincipalInformation
 
+	// The settings for commands run in this cluster, such as bare metal machine run read only commands and data extracts.
+	CommandOutputSettings *CommandOutputSettings
+
 	// The validation threshold indicating the allowable failures of compute machines during environment validation and deployment.
 	ComputeDeploymentThreshold *ValidationThreshold
 
 	// The list of rack definitions for the compute racks in a multi-rack cluster, or an empty list in a single-rack cluster.
 	ComputeRackDefinitions []*RackDefinition
+
+	// The settings for cluster runtime protection.
+	RuntimeProtectionConfiguration *RuntimeProtectionConfiguration
+
+	// The configuration for use of a key vault to store secrets for later retrieval by the operator.
+	SecretArchive *ClusterSecretArchive
+
+	// The strategy for updating the cluster.
+	UpdateStrategy *ClusterUpdateStrategy
 }
 
 // ClusterProperties represents the properties of a cluster.
@@ -1038,6 +1101,9 @@ type ClusterProperties struct {
 	// The service principal to be used by the cluster during Arc Appliance installation.
 	ClusterServicePrincipal *ServicePrincipalInformation
 
+	// The settings for commands run in this cluster, such as bare metal machine run read only commands and data extracts.
+	CommandOutputSettings *CommandOutputSettings
+
 	// The validation threshold indicating the allowable failures of compute machines during environment validation and deployment.
 	ComputeDeploymentThreshold *ValidationThreshold
 
@@ -1046,6 +1112,15 @@ type ClusterProperties struct {
 
 	// The configuration of the managed resource group associated with the resource.
 	ManagedResourceGroupConfiguration *ManagedResourceGroupConfiguration
+
+	// The settings for cluster runtime protection.
+	RuntimeProtectionConfiguration *RuntimeProtectionConfiguration
+
+	// The configuration for use of a key vault to store secrets for later retrieval by the operator.
+	SecretArchive *ClusterSecretArchive
+
+	// The strategy for updating the cluster.
+	UpdateStrategy *ClusterUpdateStrategy
 
 	// READ-ONLY; The list of cluster runtime version upgrades available for this cluster.
 	AvailableUpgradeVersions []*ClusterAvailableUpgradeVersion
@@ -1092,10 +1167,56 @@ type ClusterProperties struct {
 	WorkloadResourceIDs []*string
 }
 
+// ClusterScanRuntimeParameters defines the parameters for the cluster scan runtime operation.
+type ClusterScanRuntimeParameters struct {
+	// The choice of if the scan operation should run the scan.
+	ScanActivity *ClusterScanRuntimeParametersScanActivity
+}
+
+// ClusterSecretArchive configures the key vault to archive the secrets of the cluster for later retrieval.
+type ClusterSecretArchive struct {
+	// REQUIRED; The resource ID of the key vault to archive the secrets of the cluster.
+	KeyVaultID *string
+
+	// The indicator if the specified key vault should be used to archive the secrets of the cluster.
+	UseKeyVault *ClusterSecretArchiveEnabled
+}
+
+// ClusterUpdateStrategy represents the strategy for updating the cluster.
+type ClusterUpdateStrategy struct {
+	// REQUIRED; The mode of operation for runtime protection.
+	StrategyType *ClusterUpdateStrategyType
+
+	// REQUIRED; Selection of how the threshold should be evaluated.
+	ThresholdType *ValidationThresholdType
+
+	// REQUIRED; The numeric threshold value.
+	ThresholdValue *int64
+
+	// The maximum number of worker nodes that can be offline within the increment of update, e.g., rack-by-rack. Limited by the
+	// maximum number of machines in the increment. Defaults to the whole increment
+	// size.
+	MaxUnavailable *int64
+
+	// The time to wait between the increments of update defined by the strategy.
+	WaitTimeMinutes *int64
+}
+
 // ClusterUpdateVersionParameters represents the body of the request to update cluster version.
 type ClusterUpdateVersionParameters struct {
 	// REQUIRED; The version to be applied to the cluster during update.
 	TargetClusterVersion *string
+}
+
+// CommandOutputSettings represents the settings for commands run within the cluster such as bare metal machine run read-only
+// commands.
+type CommandOutputSettings struct {
+	// The selection of the managed identity to use with this storage account container. The identity type must be either system
+	// assigned or user assigned.
+	AssociatedIdentity *IdentitySelector
+
+	// The URL of the storage account container that is to be used by the specified identities.
+	ContainerURL *string
 }
 
 // Console represents the console of an on-premises Network Cloud virtual machine.
@@ -1145,7 +1266,7 @@ type ConsolePatchParameters struct {
 
 // ConsolePatchProperties represents the properties of the virtual machine console that can be patched.
 type ConsolePatchProperties struct {
-	// The credentials used to login to the image repository that has access to the specified image.
+	// The indicator of whether the console access is enabled.
 	Enabled *ConsoleEnabled
 
 	// The date and time after which the key will be disallowed access.
@@ -1204,6 +1325,9 @@ type ControlPlaneNodeConfiguration struct {
 // ControlPlaneNodePatchConfiguration represents the properties of the control plane that can be patched for this Kubernetes
 // cluster.
 type ControlPlaneNodePatchConfiguration struct {
+	// The configuration of administrator credentials for the control plane nodes.
+	AdministratorConfiguration *AdministratorConfigurationPatch
+
 	// The number of virtual machines that use this configuration.
 	Count *int64
 }
@@ -1322,7 +1446,8 @@ type HardwareValidationStatus struct {
 // IPAddressPool - IpAddressPool represents a pool of IP addresses that can be allocated to a service.
 type IPAddressPool struct {
 	// REQUIRED; The list of IP address ranges. Each range can be a either a subnet in CIDR format or an explicit start-end range
-	// of IP addresses.
+	// of IP addresses. For a BGP service load balancer configuration, only CIDR format is
+	// supported and excludes /32 (IPv4) and /128 (IPv6) prefixes.
 	Addresses []*string
 
 	// REQUIRED; The name used to identify this IP address pool for association with a BGP advertisement.
@@ -1334,6 +1459,15 @@ type IPAddressPool struct {
 	// The indicator to prevent the use of IP addresses ending with .0 and .255 for this pool. Enabling this option will only
 	// use IP addresses between .1 and .254 inclusive.
 	OnlyUseHostIPs *BfdEnabled
+}
+
+// IdentitySelector represents the selection of a managed identity for use.
+type IdentitySelector struct {
+	// The type of managed identity that is being selected.
+	IdentityType *ManagedServiceIdentitySelectorType
+
+	// The user assigned managed identity resource ID to use. Mutually exclusive with a system assigned identity type.
+	UserAssignedIdentityResourceID *string
 }
 
 // ImageRepositoryCredentials represents the credentials used to login to the image repository.
@@ -1399,6 +1533,9 @@ type KeySetUser struct {
 
 	// The free-form description for this user.
 	Description *string
+
+	// The user principal name (email format) used to validate this user's group membership.
+	UserPrincipalName *string
 }
 
 // KeySetUserStatus represents the status of the key set user.
@@ -1440,6 +1577,79 @@ type KubernetesCluster struct {
 	Type *string
 }
 
+// KubernetesClusterFeature represents the feature of a Kubernetes cluster.
+type KubernetesClusterFeature struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The list of the resource properties.
+	Properties *KubernetesClusterFeatureProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// KubernetesClusterFeatureList represents the list of Kubernetes cluster feature resources.
+type KubernetesClusterFeatureList struct {
+	// The link used to get the next page of operations.
+	NextLink *string
+
+	// The list of Kubernetes cluster features.
+	Value []*KubernetesClusterFeature
+}
+
+// KubernetesClusterFeaturePatchParameters represents the body of the request to patch the Kubernetes cluster feature.
+type KubernetesClusterFeaturePatchParameters struct {
+	// The list of the resource properties.
+	Properties *KubernetesClusterFeaturePatchProperties
+
+	// The Azure resource tags that will replace the existing ones.
+	Tags map[string]*string
+}
+
+// KubernetesClusterFeaturePatchProperties represents the Kubernetes cluster feature properties for patching.
+type KubernetesClusterFeaturePatchProperties struct {
+	// The configured options for the feature.
+	Options []*StringKeyValuePair
+}
+
+// KubernetesClusterFeatureProperties represents the properties of a Kubernetes cluster feature.
+type KubernetesClusterFeatureProperties struct {
+	// The configured options for the feature.
+	Options []*StringKeyValuePair
+
+	// READ-ONLY; The lifecycle indicator of the feature.
+	AvailabilityLifecycle *KubernetesClusterFeatureAvailabilityLifecycle
+
+	// READ-ONLY; The detailed status of the feature.
+	DetailedStatus *KubernetesClusterFeatureDetailedStatus
+
+	// READ-ONLY; The descriptive message for the detailed status of the feature.
+	DetailedStatusMessage *string
+
+	// READ-ONLY; The provisioning state of the Kubernetes cluster feature.
+	ProvisioningState *KubernetesClusterFeatureProvisioningState
+
+	// READ-ONLY; The indicator of if the feature is required or optional. Optional features may be deleted by the user, while
+	// required features are managed with the kubernetes cluster lifecycle.
+	Required *KubernetesClusterFeatureRequired
+
+	// READ-ONLY; The version of the feature.
+	Version *string
+}
+
 // KubernetesClusterList represents a list of Kubernetes clusters.
 type KubernetesClusterList struct {
 	// The link used to get the next page of operations.
@@ -1470,7 +1680,7 @@ type KubernetesClusterNode struct {
 	// READ-ONLY; The descriptive message about the current detailed status.
 	DetailedStatusMessage *string
 
-	// READ-ONLY; The size of the disk configured for this node.
+	// READ-ONLY; The size of the disk configured for this node. Allocations are measured in gibibytes.
 	DiskSizeGB *int64
 
 	// READ-ONLY; The machine image used to deploy this node.
@@ -1482,7 +1692,8 @@ type KubernetesClusterNode struct {
 	// READ-ONLY; The list of labels on this node that have been assigned to the agent pool containing this node.
 	Labels []*KubernetesLabel
 
-	// READ-ONLY; The amount of memory configured for this node, derived from the vm SKU specified.
+	// READ-ONLY; The amount of memory configured for this node, derived from the vm SKU specified. Allocations are measured in
+	// gibibytes.
 	MemorySizeGB *int64
 
 	// READ-ONLY; The mode of the agent pool containing this node. Not applicable for control plane nodes.
@@ -1518,11 +1729,13 @@ type KubernetesClusterPatchParameters struct {
 
 // KubernetesClusterPatchProperties represents the properties of the Kubernetes cluster that can be patched.
 type KubernetesClusterPatchProperties struct {
+	// The configuration of the default administrator credentials.
+	AdministratorConfiguration *AdministratorConfigurationPatch
+
 	// The defining characteristics of the control plane that can be patched for this Kubernetes cluster.
 	ControlPlaneNodeConfiguration *ControlPlaneNodePatchConfiguration
 
-	// The Kubernetes version for this cluster. Accepts n.n, n.n.n, and n.n.n-n format. The interpreted version used will be resolved
-	// into this field after creation or update.
+	// The Kubernetes version for this cluster.
 	KubernetesVersion *string
 }
 
@@ -1537,8 +1750,7 @@ type KubernetesClusterProperties struct {
 	// sub-resource.
 	InitialAgentPoolConfigurations []*InitialAgentPoolConfiguration
 
-	// REQUIRED; The Kubernetes version for this cluster. Accepts n.n, n.n.n, and n.n.n-n format. The interpreted version used
-	// will be resolved into this field after creation or update.
+	// REQUIRED; The Kubernetes version for this cluster.
 	KubernetesVersion *string
 
 	// REQUIRED; The configuration of the Kubernetes cluster networking, including the attachment of networks that span the cluster.
@@ -1689,6 +1901,12 @@ type L2NetworkProperties struct {
 	VirtualMachinesAssociatedIDs []*string
 }
 
+// L2ServiceLoadBalancerConfiguration represents the configuration of a layer 2 service load balancer.
+type L2ServiceLoadBalancerConfiguration struct {
+	// The list of pools of IP addresses that can be allocated to load balancer services.
+	IPAddressPools []*IPAddressPool
+}
+
 // L3Network represents a network that utilizes a single isolation domain set up for layer-3 resources.
 type L3Network struct {
 	// REQUIRED; The extended location of the cluster associated with the resource.
@@ -1815,7 +2033,7 @@ type LldpNeighbor struct {
 
 // MachineDisk - Disk represents the properties of the disk.
 type MachineDisk struct {
-	// READ-ONLY; The maximum amount of storage in GB.
+	// READ-ONLY; The maximum amount of storage. Measured in gibibytes.
 	CapacityGB *int64
 
 	// READ-ONLY; The connection type of the rack SKU resource.
@@ -1845,7 +2063,7 @@ type MachineSKUProperties struct {
 	// READ-ONLY; The hardware version of the machine.
 	HardwareVersion *string
 
-	// READ-ONLY; The maximum amount of memory in GB.
+	// READ-ONLY; The maximum amount of memory. Measured in gibibytes.
 	MemoryCapacityGB *int64
 
 	// READ-ONLY; The model of the machine.
@@ -1877,6 +2095,26 @@ type ManagedResourceGroupConfiguration struct {
 
 	// The name for the managed resource group. If not specified, the unique name is automatically generated.
 	Name *string
+}
+
+// ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
+type ManagedServiceIdentity struct {
+	// REQUIRED; Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+	Type *ManagedServiceIdentityType
+
+	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
+	// resource ids in the form:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+	// The dictionary values can be empty objects ({}) in
+	// requests.
+	UserAssignedIdentities map[string]*UserAssignedIdentity
+
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
+	PrincipalID *string
+
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *string
 }
 
 // NetworkAttachment represents the single network attachment.
@@ -1928,12 +2166,17 @@ type NetworkConfiguration struct {
 	// The configuration of networks being attached to the cluster for use by the workloads that run on this Kubernetes cluster.
 	AttachedNetworkConfiguration *AttachedNetworkConfiguration
 
-	// The configuration of the BGP service load balancer for this Kubernetes cluster.
+	// The configuration of the BGP service load balancer for this Kubernetes cluster. A maximum of one service load balancer
+	// may be specified, either Layer 2 or BGP.
 	BgpServiceLoadBalancerConfiguration *BgpServiceLoadBalancerConfiguration
 
 	// The IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service address range specified
 	// in service CIDR.
 	DNSServiceIP *string
+
+	// The configuration of the Layer 2 service load balancer for this Kubernetes cluster. A maximum of one service load balancer
+	// may be specified, either Layer 2 or BGP.
+	L2ServiceLoadBalancerConfiguration *L2ServiceLoadBalancerConfiguration
 
 	// The CIDR notation IP ranges from which to assign pod IPs. One IPv4 CIDR is expected for single-stack networking. Two CIDRs,
 	// one for each IP family (IPv4/IPv6), is expected for dual-stack networking.
@@ -1962,7 +2205,7 @@ type NetworkInterface struct {
 	// READ-ONLY; The number of ports on the device.
 	PortCount *int64
 
-	// READ-ONLY; The maximum amount of data in GB that the line card transmits through a port at any given second.
+	// READ-ONLY; The maximum amount of data in gigabits that the line card transmits through a port at any given second.
 	PortSpeed *int64
 
 	// READ-ONLY; The vendor name of the device.
@@ -1979,6 +2222,12 @@ type Nic struct {
 
 	// READ-ONLY; The name of the NIC/interface.
 	Name *string
+}
+
+// NodePoolAdministratorConfigurationPatch represents the patching capabilities for the administrator configuration.
+type NodePoolAdministratorConfigurationPatch struct {
+	// SshPublicKey represents the public key used to authenticate with a resource through SSH.
+	SSHPublicKeys []*SSHPublicKey
 }
 
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API
@@ -2035,34 +2284,52 @@ type OperationStatusResult struct {
 	// REQUIRED; Operation status.
 	Status *string
 
-	// The end time of the operation.
+	// The additional properties of the operation status result.
+	Properties *OperationStatusResultProperties
+
+	// READ-ONLY; The end time of the operation.
 	EndTime *time.Time
 
-	// If present, details of the operation error.
+	// READ-ONLY; If present, details of the operation error.
 	Error *ErrorDetail
 
-	// Fully qualified ID for the async operation.
+	// READ-ONLY; Fully qualified ID for the async operation.
 	ID *string
 
-	// Name of the async operation.
+	// READ-ONLY; Name of the async operation.
 	Name *string
 
-	// The operations list.
+	// READ-ONLY; The operations list.
 	Operations []*OperationStatusResult
 
-	// Percent of the operation that is complete.
+	// READ-ONLY; Percent of the operation that is complete.
 	PercentComplete *float32
-
-	// The start time of the operation.
-	StartTime *time.Time
 
 	// READ-ONLY; Fully qualified ID of the resource against which the original async operation was started.
 	ResourceID *string
+
+	// READ-ONLY; The start time of the operation.
+	StartTime *time.Time
+}
+
+// OperationStatusResultProperties represents additional properties of the operation status result.
+type OperationStatusResultProperties struct {
+	// READ-ONLY; For actions that run commands or scripts, the exit code of the script execution.
+	ExitCode *string
+
+	// READ-ONLY; For actions that run commands or scripts, the leading bytes of the output of the script execution.
+	OutputHead *string
+
+	// READ-ONLY; For actions that run commands or scripts, a reference to the location of the result.
+	ResultRef *string
+
+	// READ-ONLY; For actions that run commands or scripts, the URL where the full output of the script output can be retrieved.
+	ResultURL *string
 }
 
 // OsDisk represents configuration of the boot disk.
 type OsDisk struct {
-	// REQUIRED; The size of the disk in gigabytes. Required if the createOption is Ephemeral.
+	// REQUIRED; The size of the disk. Required if the createOption is Ephemeral. Allocations are measured in gibibytes.
 	DiskSizeGB *int64
 
 	// The strategy for creating the OS disk.
@@ -2236,10 +2503,64 @@ type RacksPatchProperties struct {
 	RackSerialNumber *string
 }
 
+// RuntimeProtectionConfiguration represents the runtime protection configuration for the cluster.
+type RuntimeProtectionConfiguration struct {
+	// The mode of operation for runtime protection.
+	EnforcementLevel *RuntimeProtectionEnforcementLevel
+}
+
+// RuntimeProtectionStatus represents the runtime protection status of the bare metal machine.
+type RuntimeProtectionStatus struct {
+	// READ-ONLY; The timestamp when the malware definitions were last updated.
+	DefinitionsLastUpdated *time.Time
+
+	// READ-ONLY; The version of the malware definitions.
+	DefinitionsVersion *string
+
+	// READ-ONLY; The timestamp of the most recently completed scan, or empty if there has never been a scan.
+	ScanCompletedTime *time.Time
+
+	// READ-ONLY; The timestamp of the most recently scheduled scan, or empty if no scan has been scheduled.
+	ScanScheduledTime *time.Time
+
+	// READ-ONLY; The timestamp of the most recently started scan, or empty if there has never been a scan.
+	ScanStartedTime *time.Time
+}
+
 // SSHPublicKey - SshPublicKey represents the public key used to authenticate with a resource through SSH.
 type SSHPublicKey struct {
 	// REQUIRED; The SSH public key data.
 	KeyData *string
+}
+
+// SecretArchiveReference represents the reference to a secret in a key vault.
+type SecretArchiveReference struct {
+	// READ-ONLY; The resource ID of the key vault containing the secret.
+	KeyVaultID *string
+
+	// READ-ONLY; The name of the secret in the key vault.
+	SecretName *string
+
+	// READ-ONLY; The version of the secret in the key vault.
+	SecretVersion *string
+}
+
+// SecretRotationStatus represents the status of a secret rotation.
+type SecretRotationStatus struct {
+	// READ-ONLY; The maximum number of days the secret may be used before it must be changed.
+	ExpirePeriodDays *int64
+
+	// READ-ONLY; The date and time when the secret was last changed.
+	LastRotationTime *time.Time
+
+	// READ-ONLY; The number of days a secret exists before rotations will be attempted.
+	RotationPeriodDays *int64
+
+	// READ-ONLY; The reference to the secret in a key vault.
+	SecretArchiveReference *SecretArchiveReference
+
+	// READ-ONLY; The type name used to identify the purpose of the secret.
+	SecretType *string
 }
 
 // ServiceLoadBalancerBgpPeer represents the configuration of the BGP service load balancer for the Kubernetes cluster.
@@ -2259,10 +2580,14 @@ type ServiceLoadBalancerBgpPeer struct {
 	// The indicator to enable multi-hop peering support.
 	BgpMultiHop *BgpMultiHop
 
-	// The requested BGP hold time value. This field uses ISO 8601 duration format, for example P1H.
+	// Field Deprecated. The field was previously optional, now it will have no defined behavior and will be ignored. The requested
+	// BGP hold time value. This field uses ISO 8601 duration format, for example
+	// P1H.
 	HoldTime *string
 
-	// The requested BGP keepalive time value. This field uses ISO 8601 duration format, for example P1H.
+	// Field Deprecated. The field was previously optional, now it will have no defined behavior and will be ignored. The requested
+	// BGP keepalive time value. This field uses ISO 8601 duration format, for
+	// example P1H.
 	KeepAliveTime *string
 
 	// The autonomous system number used for the local end of the BGP session.
@@ -2401,6 +2726,12 @@ type StorageApplianceProperties struct {
 	// READ-ONLY; The endpoint for the management interface of the storage appliance.
 	ManagementIPv4Address *string
 
+	// READ-ONLY; The manufacturer of the storage appliance.
+	Manufacturer *string
+
+	// READ-ONLY; The model of the storage appliance.
+	Model *string
+
 	// READ-ONLY; The provisioning state of the storage appliance.
 	ProvisioningState *StorageApplianceProvisioningState
 
@@ -2410,11 +2741,17 @@ type StorageApplianceProperties struct {
 	// READ-ONLY; The indicator of whether the remote vendor management feature is enabled or disabled, or unsupported if it is
 	// an unsupported feature.
 	RemoteVendorManagementStatus *RemoteVendorManagementStatus
+
+	// READ-ONLY; The list of statuses that represent secret rotation activity.
+	SecretRotationStatus []*SecretRotationStatus
+
+	// READ-ONLY; The version of the storage appliance.
+	Version *string
 }
 
 // StorageApplianceSKUProperties - StorageApplianceSkuProperties represents the properties of the storage appliance SKU.
 type StorageApplianceSKUProperties struct {
-	// READ-ONLY; The maximum capacity of the storage appliance.
+	// READ-ONLY; The maximum capacity of the storage appliance. Measured in gibibytes.
 	CapacityGB *int64
 
 	// READ-ONLY; The model of the storage appliance.
@@ -2437,6 +2774,15 @@ type StorageProfile struct {
 
 	// The resource IDs of volumes that are requested to be attached to the virtual machine.
 	VolumeAttachments []*string
+}
+
+// StringKeyValuePair represents a single entry in a mapping of keys to values.
+type StringKeyValuePair struct {
+	// REQUIRED; The key to the mapped value.
+	Key *string
+
+	// REQUIRED; The value of the mapping key.
+	Value *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -2552,6 +2898,15 @@ type TrunkedNetworkProperties struct {
 	VirtualMachinesAssociatedIDs []*string
 }
 
+// UserAssignedIdentity - User assigned identity properties
+type UserAssignedIdentity struct {
+	// READ-ONLY; The client ID of the assigned identity.
+	ClientID *string
+
+	// READ-ONLY; The principal ID of the assigned identity.
+	PrincipalID *string
+}
+
 // ValidationThreshold indicates allowed machine and node hardware and deployment failures.
 type ValidationThreshold struct {
 	// REQUIRED; Selection of how the type evaluation is applied to the cluster calculation.
@@ -2649,7 +3004,7 @@ type VirtualMachineProperties struct {
 	// REQUIRED; The cloud service network that provides platform-level services for the virtual machine.
 	CloudServicesNetworkAttachment *NetworkAttachment
 
-	// REQUIRED; The memory size of the virtual machine in GB.
+	// REQUIRED; The memory size of the virtual machine. Allocations are measured in gibibytes.
 	MemorySizeGB *int64
 
 	// REQUIRED; The storage profile that specifies size and other parameters about the disks related to the virtual machine.
@@ -2694,7 +3049,7 @@ type VirtualMachineProperties struct {
 	// READ-ONLY; The cluster availability zone containing this virtual machine.
 	AvailabilityZone *string
 
-	// READ-ONLY; The resource ID of the bare metal machine the virtual machine has landed to.
+	// READ-ONLY; The resource ID of the bare metal machine that hosts the virtual machine.
 	BareMetalMachineID *string
 
 	// READ-ONLY; The resource ID of the cluster the virtual machine is created for.

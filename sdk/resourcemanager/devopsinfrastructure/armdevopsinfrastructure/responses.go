@@ -67,8 +67,8 @@ type SKUClientListByLocationResponse struct {
 	ResourceSKUListResult
 }
 
-// SubscriptionUsagesClientListByLocationResponse contains the response from method SubscriptionUsagesClient.NewListByLocationPager.
-type SubscriptionUsagesClientListByLocationResponse struct {
-	// The response of a Quota list operation.
-	QuotaListResult
+// SubscriptionUsagesClientUsagesResponse contains the response from method SubscriptionUsagesClient.NewUsagesPager.
+type SubscriptionUsagesClientUsagesResponse struct {
+	// Paged collection of Quota items
+	PagedQuota
 }

@@ -17,15 +17,6 @@ type AgentProfileClassification interface {
 	GetAgentProfile() *AgentProfile
 }
 
-// AgentProfileUpdateClassification provides polymorphic access to related types.
-// Call the interface's GetAgentProfileUpdate() method to access the common type.
-// Use a type switch to determine the concrete type.  The possible types are:
-// - *AgentProfileUpdate, *StatefulUpdate, *StatelessAgentProfileUpdate
-type AgentProfileUpdateClassification interface {
-	// GetAgentProfileUpdate returns the AgentProfileUpdate content of the underlying type.
-	GetAgentProfileUpdate() *AgentProfileUpdate
-}
-
 // FabricProfileClassification provides polymorphic access to related types.
 // Call the interface's GetFabricProfile() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -51,13 +42,4 @@ type OrganizationProfileClassification interface {
 type ResourcePredictionsProfileClassification interface {
 	// GetResourcePredictionsProfile returns the ResourcePredictionsProfile content of the underlying type.
 	GetResourcePredictionsProfile() *ResourcePredictionsProfile
-}
-
-// ResourcePredictionsProfileUpdateClassification provides polymorphic access to related types.
-// Call the interface's GetResourcePredictionsProfileUpdate() method to access the common type.
-// Use a type switch to determine the concrete type.  The possible types are:
-// - *AutomaticResourcePredictionsProfileUpdate, *ManualResourcePredictionsProfileUpdate, *ResourcePredictionsProfileUpdate
-type ResourcePredictionsProfileUpdateClassification interface {
-	// GetResourcePredictionsProfileUpdate returns the ResourcePredictionsProfileUpdate content of the underlying type.
-	GetResourcePredictionsProfileUpdate() *ResourcePredictionsProfileUpdate
 }

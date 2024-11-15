@@ -16,8 +16,7 @@ import (
 // ClientFactory is a client factory used to create any client in this module.
 // Don't use this type directly, use NewClientFactory instead.
 type ClientFactory struct {
-	credential azcore.TokenCredential
-	options    *arm.ClientOptions
+	internal *arm.Client
 }
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
@@ -25,30 +24,32 @@ type ClientFactory struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
+	internal, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	return &ClientFactory{
-		credential: credential,
-		options:    options.Clone(),
+		internal: internal,
 	}, nil
 }
 
 // NewEndpointsClient creates a new instance of EndpointsClient.
 func (c *ClientFactory) NewEndpointsClient() *EndpointsClient {
-	subClient, _ := NewEndpointsClient(c.credential, c.options)
-	return subClient
+	return &EndpointsClient{
+		internal: c.internal,
+	}
 }
 
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
-	subClient, _ := NewOperationsClient(c.credential, c.options)
-	return subClient
+	return &OperationsClient{
+		internal: c.internal,
+	}
 }
 
 // NewServiceConfigurationsClient creates a new instance of ServiceConfigurationsClient.
 func (c *ClientFactory) NewServiceConfigurationsClient() *ServiceConfigurationsClient {
-	subClient, _ := NewServiceConfigurationsClient(c.credential, c.options)
-	return subClient
+	return &ServiceConfigurationsClient{
+		internal: c.internal,
+	}
 }

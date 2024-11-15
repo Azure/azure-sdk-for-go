@@ -5,9 +5,9 @@
 ``` yaml
 azure-arm: true
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/hybridconnectivity/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/hybridconnectivity/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/ff7b8e12e78b352561e2e470dd045be310a313fa/specification/hybridconnectivity/resource-manager/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/ff7b8e12e78b352561e2e470dd045be310a313fa/specification/hybridconnectivity/resource-manager/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 1.1.0
+module-version: 1.1.1
 tag: package-2023-03
 ```

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridconnectivity/armhybridconnectivity"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/hybridconnectivity/resource-manager/Microsoft.HybridConnectivity/stable/2023-03-15/examples/ServiceConfigurationsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ff7b8e12e78b352561e2e470dd045be310a313fa/specification/hybridconnectivity/resource-manager/Microsoft.HybridConnectivity/stable/2023-03-15/examples/ServiceConfigurationsList.json
 func ExampleServiceConfigurationsClient_NewListByEndpointResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -62,7 +62,7 @@ func ExampleServiceConfigurationsClient_NewListByEndpointResourcePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/hybridconnectivity/resource-manager/Microsoft.HybridConnectivity/stable/2023-03-15/examples/ServiceConfigurationsGetSSH.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ff7b8e12e78b352561e2e470dd045be310a313fa/specification/hybridconnectivity/resource-manager/Microsoft.HybridConnectivity/stable/2023-03-15/examples/ServiceConfigurationsGetSSH.json
 func ExampleServiceConfigurationsClient_Get_hybridConnectivityEndpointsServiceconfigurationsGetSsh() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,7 +90,7 @@ func ExampleServiceConfigurationsClient_Get_hybridConnectivityEndpointsServiceco
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/hybridconnectivity/resource-manager/Microsoft.HybridConnectivity/stable/2023-03-15/examples/ServiceConfigurationsGetWAC.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ff7b8e12e78b352561e2e470dd045be310a313fa/specification/hybridconnectivity/resource-manager/Microsoft.HybridConnectivity/stable/2023-03-15/examples/ServiceConfigurationsGetWAC.json
 func ExampleServiceConfigurationsClient_Get_hybridConnectivityEndpointsServiceconfigurationsGetWac() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,7 +118,7 @@ func ExampleServiceConfigurationsClient_Get_hybridConnectivityEndpointsServiceco
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/hybridconnectivity/resource-manager/Microsoft.HybridConnectivity/stable/2023-03-15/examples/ServiceConfigurationsPutSSH.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ff7b8e12e78b352561e2e470dd045be310a313fa/specification/hybridconnectivity/resource-manager/Microsoft.HybridConnectivity/stable/2023-03-15/examples/ServiceConfigurationsPutSSH.json
 func ExampleServiceConfigurationsClient_CreateOrupdate_serviceConfigurationsPutSsh() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -152,7 +152,7 @@ func ExampleServiceConfigurationsClient_CreateOrupdate_serviceConfigurationsPutS
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/hybridconnectivity/resource-manager/Microsoft.HybridConnectivity/stable/2023-03-15/examples/ServiceConfigurationsPutWAC.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ff7b8e12e78b352561e2e470dd045be310a313fa/specification/hybridconnectivity/resource-manager/Microsoft.HybridConnectivity/stable/2023-03-15/examples/ServiceConfigurationsPutWAC.json
 func ExampleServiceConfigurationsClient_CreateOrupdate_serviceConfigurationsPutWac() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -186,7 +186,7 @@ func ExampleServiceConfigurationsClient_CreateOrupdate_serviceConfigurationsPutW
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/hybridconnectivity/resource-manager/Microsoft.HybridConnectivity/stable/2023-03-15/examples/ServiceConfigurationsPatchSSH.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ff7b8e12e78b352561e2e470dd045be310a313fa/specification/hybridconnectivity/resource-manager/Microsoft.HybridConnectivity/stable/2023-03-15/examples/ServiceConfigurationsPatchSSH.json
 func ExampleServiceConfigurationsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -217,7 +217,7 @@ func ExampleServiceConfigurationsClient_Update() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/hybridconnectivity/resource-manager/Microsoft.HybridConnectivity/stable/2023-03-15/examples/ServiceConfigurationsDeleteSSH.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ff7b8e12e78b352561e2e470dd045be310a313fa/specification/hybridconnectivity/resource-manager/Microsoft.HybridConnectivity/stable/2023-03-15/examples/ServiceConfigurationsDeleteSSH.json
 func ExampleServiceConfigurationsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

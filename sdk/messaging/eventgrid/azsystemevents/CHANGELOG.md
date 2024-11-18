@@ -4,9 +4,16 @@
 
 ### Features Added
 
+- A new system event has been added: `ResourceNotificationsContainerServiceEventResourcesScheduledEventData`
+- A new field: `StorageLifecyclePolicyCompletedEventData.PolicyRunSummary`
+
 ### Breaking Changes
 
+- Models, that were not system events, have been removed. Any fields from those types are incorporated into their corresponding system event type.
+
 ### Bugs Fixed
+
+- ACSMessageDeliveryStatusUpdatedEventData.Error has been corrected to use an exported type.
 
 ### Other Changes
 

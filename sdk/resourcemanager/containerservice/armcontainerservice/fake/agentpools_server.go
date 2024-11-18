@@ -206,7 +206,16 @@ func (a *AgentPoolsServerTransport) dispatchBeginCreateOrUpdate(req *http.Reques
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := a.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, resourceNameParam, agentPoolNameParam, body, nil)
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armcontainerservice.AgentPoolsClientBeginCreateOrUpdateOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armcontainerservice.AgentPoolsClientBeginCreateOrUpdateOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := a.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, resourceNameParam, agentPoolNameParam, body, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -263,10 +272,12 @@ func (a *AgentPoolsServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 		if err != nil {
 			return nil, err
 		}
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
 		var options *armcontainerservice.AgentPoolsClientBeginDeleteOptions
-		if ignorePodDisruptionBudgetParam != nil {
+		if ignorePodDisruptionBudgetParam != nil || ifMatchParam != nil {
 			options = &armcontainerservice.AgentPoolsClientBeginDeleteOptions{
 				IgnorePodDisruptionBudget: ignorePodDisruptionBudgetParam,
+				IfMatch:                   ifMatchParam,
 			}
 		}
 		respr, errRespr := a.srv.BeginDelete(req.Context(), resourceGroupNameParam, resourceNameParam, agentPoolNameParam, options)

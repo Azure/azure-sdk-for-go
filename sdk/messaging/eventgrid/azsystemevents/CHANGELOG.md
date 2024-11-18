@@ -1,6 +1,6 @@
 # Release History
 
-## 0.4.4 (Unreleased)
+## 0.4.4 (2024-11-19)
 
 ### Features Added
 
@@ -14,8 +14,6 @@
 ### Bugs Fixed
 
 - ACSMessageDeliveryStatusUpdatedEventData.Error has been corrected to use an exported type.
-
-### Other Changes
 
 ## 0.4.3 (2024-10-14)
 

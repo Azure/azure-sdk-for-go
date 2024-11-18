@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hardwaresecuritymodules/armhardwaresecuritymodules/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/18b5c820705ab69735b7e1e2e0da5e37ca6e1969/specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/DedicatedHsm_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e838027e88cca634c1545e744630de9262a6e72a/specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/preview/2024-06-30-preview/examples/DedicatedHsm_CreateOrUpdate.json
 func ExampleDedicatedHsmClient_BeginCreateOrUpdate_createANewOrUpdateAnExistingDedicatedHsm() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,9 +31,6 @@ func ExampleDedicatedHsmClient_BeginCreateOrUpdate_createANewOrUpdateAnExistingD
 	}
 	poller, err := clientFactory.NewDedicatedHsmClient().BeginCreateOrUpdate(ctx, "hsm-group", "hsm1", armhardwaresecuritymodules.DedicatedHsm{
 		Location: to.Ptr("westus"),
-		SKU: &armhardwaresecuritymodules.SKU{
-			Name: to.Ptr(armhardwaresecuritymodules.SKUNameSafeNetLunaNetworkHSMA790),
-		},
 		Tags: map[string]*string{
 			"Dept":        to.Ptr("hsm"),
 			"Environment": to.Ptr("dogfood"),
@@ -45,10 +42,13 @@ func ExampleDedicatedHsmClient_BeginCreateOrUpdate_createANewOrUpdateAnExistingD
 						PrivateIPAddress: to.Ptr("1.0.0.1"),
 					}},
 				Subnet: &armhardwaresecuritymodules.APIEntityReference{
-					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
+					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
 				},
 			},
 			StampID: to.Ptr("stamp01"),
+		},
+		SKU: &armhardwaresecuritymodules.SKU{
+			Name: to.Ptr(armhardwaresecuritymodules.SKUNameSafeNetLunaNetworkHSMA790),
 		},
 	}, nil)
 	if err != nil {
@@ -66,9 +66,6 @@ func ExampleDedicatedHsmClient_BeginCreateOrUpdate_createANewOrUpdateAnExistingD
 	// 	Type: to.Ptr("Microsoft.HardwareSecurityModules/dedicatedHSMs"),
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/hsm1"),
 	// 	Location: to.Ptr("westus"),
-	// 	SKU: &armhardwaresecuritymodules.SKU{
-	// 		Name: to.Ptr(armhardwaresecuritymodules.SKUNameSafeNetLunaNetworkHSMA790),
-	// 	},
 	// 	Tags: map[string]*string{
 	// 		"Dept": to.Ptr("hsm"),
 	// 		"Environment": to.Ptr("dogfood"),
@@ -77,21 +74,24 @@ func ExampleDedicatedHsmClient_BeginCreateOrUpdate_createANewOrUpdateAnExistingD
 	// 		NetworkProfile: &armhardwaresecuritymodules.NetworkProfile{
 	// 			NetworkInterfaces: []*armhardwaresecuritymodules.NetworkInterface{
 	// 				{
-	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm_vnic"),
 	// 					PrivateIPAddress: to.Ptr("1.0.0.1"),
+	// 					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm_vnic"),
 	// 			}},
 	// 			Subnet: &armhardwaresecuritymodules.APIEntityReference{
-	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
 	// 			},
 	// 		},
 	// 		ProvisioningState: to.Ptr(armhardwaresecuritymodules.JSONWebKeyTypeSucceeded),
 	// 		StampID: to.Ptr("stamp01"),
 	// 		StatusMessage: to.Ptr("DedicatedHsm device is functional."),
 	// 	},
+	// 	SKU: &armhardwaresecuritymodules.SKU{
+	// 		Name: to.Ptr(armhardwaresecuritymodules.SKUNameSafeNetLunaNetworkHSMA790),
+	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/18b5c820705ab69735b7e1e2e0da5e37ca6e1969/specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/PaymentHsm_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e838027e88cca634c1545e744630de9262a6e72a/specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/preview/2024-06-30-preview/examples/PaymentHsm_CreateOrUpdate.json
 func ExampleDedicatedHsmClient_BeginCreateOrUpdate_createANewOrUpdateAnExistingPaymentHsm() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,9 +104,6 @@ func ExampleDedicatedHsmClient_BeginCreateOrUpdate_createANewOrUpdateAnExistingP
 	}
 	poller, err := clientFactory.NewDedicatedHsmClient().BeginCreateOrUpdate(ctx, "hsm-group", "hsm1", armhardwaresecuritymodules.DedicatedHsm{
 		Location: to.Ptr("westus"),
-		SKU: &armhardwaresecuritymodules.SKU{
-			Name: to.Ptr(armhardwaresecuritymodules.SKUNamePayShield10KLMK1CPS60),
-		},
 		Tags: map[string]*string{
 			"Dept":        to.Ptr("hsm"),
 			"Environment": to.Ptr("dogfood"),
@@ -118,10 +115,13 @@ func ExampleDedicatedHsmClient_BeginCreateOrUpdate_createANewOrUpdateAnExistingP
 						PrivateIPAddress: to.Ptr("1.0.0.1"),
 					}},
 				Subnet: &armhardwaresecuritymodules.APIEntityReference{
-					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
+					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
 				},
 			},
 			StampID: to.Ptr("stamp01"),
+		},
+		SKU: &armhardwaresecuritymodules.SKU{
+			Name: to.Ptr(armhardwaresecuritymodules.SKUNamePayShield10KLMK1CPS60),
 		},
 	}, nil)
 	if err != nil {
@@ -138,10 +138,15 @@ func ExampleDedicatedHsmClient_BeginCreateOrUpdate_createANewOrUpdateAnExistingP
 	// 	Name: to.Ptr("hsm1"),
 	// 	Type: to.Ptr("Microsoft.HardwareSecurityModules/dedicatedHSMs"),
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/hsm1"),
-	// 	Location: to.Ptr("westus"),
-	// 	SKU: &armhardwaresecuritymodules.SKU{
-	// 		Name: to.Ptr(armhardwaresecuritymodules.SKUNamePayShield10KLMK1CPS60),
+	// 	SystemData: &armhardwaresecuritymodules.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
+	// 		CreatedBy: to.Ptr("user1"),
+	// 		CreatedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("user2"),
+	// 		LastModifiedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
 	// 	},
+	// 	Location: to.Ptr("westus"),
 	// 	Tags: map[string]*string{
 	// 		"Dept": to.Ptr("hsm"),
 	// 		"Environment": to.Ptr("dogfood"),
@@ -150,39 +155,34 @@ func ExampleDedicatedHsmClient_BeginCreateOrUpdate_createANewOrUpdateAnExistingP
 	// 		ManagementNetworkProfile: &armhardwaresecuritymodules.NetworkProfile{
 	// 			NetworkInterfaces: []*armhardwaresecuritymodules.NetworkInterface{
 	// 				{
-	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm1_HSMMgmtNic"),
 	// 					PrivateIPAddress: to.Ptr("1.0.0.2"),
+	// 					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm1_HSMMgmtNic"),
 	// 			}},
 	// 			Subnet: &armhardwaresecuritymodules.APIEntityReference{
-	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
 	// 			},
 	// 		},
 	// 		NetworkProfile: &armhardwaresecuritymodules.NetworkProfile{
 	// 			NetworkInterfaces: []*armhardwaresecuritymodules.NetworkInterface{
 	// 				{
-	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm1_HSMHost1Nic"),
 	// 					PrivateIPAddress: to.Ptr("1.0.0.1"),
+	// 					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm1_HSMHost1Nic"),
 	// 			}},
 	// 			Subnet: &armhardwaresecuritymodules.APIEntityReference{
-	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
 	// 			},
 	// 		},
 	// 		ProvisioningState: to.Ptr(armhardwaresecuritymodules.JSONWebKeyTypeSucceeded),
 	// 		StampID: to.Ptr("stamp01"),
 	// 		StatusMessage: to.Ptr("DedicatedHsm device is functional."),
 	// 	},
-	// 	SystemData: &armhardwaresecuritymodules.DedicatedHsmSystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
-	// 		CreatedBy: to.Ptr("user1"),
-	// 		CreatedByType: to.Ptr(armhardwaresecuritymodules.IdentityTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("user2"),
-	// 		LastModifiedByType: to.Ptr(armhardwaresecuritymodules.IdentityTypeUser),
+	// 	SKU: &armhardwaresecuritymodules.SKU{
+	// 		Name: to.Ptr(armhardwaresecuritymodules.SKUNamePayShield10KLMK1CPS60),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/18b5c820705ab69735b7e1e2e0da5e37ca6e1969/specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/PaymentHsm_CreateOrUpdate_WithManagementProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e838027e88cca634c1545e744630de9262a6e72a/specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/preview/2024-06-30-preview/examples/PaymentHsm_CreateOrUpdate_WithManagementProfile.json
 func ExampleDedicatedHsmClient_BeginCreateOrUpdate_createANewOrUpdateAnExistingPaymentHsmWithManagementProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -195,9 +195,6 @@ func ExampleDedicatedHsmClient_BeginCreateOrUpdate_createANewOrUpdateAnExistingP
 	}
 	poller, err := clientFactory.NewDedicatedHsmClient().BeginCreateOrUpdate(ctx, "hsm-group", "hsm1", armhardwaresecuritymodules.DedicatedHsm{
 		Location: to.Ptr("westus"),
-		SKU: &armhardwaresecuritymodules.SKU{
-			Name: to.Ptr(armhardwaresecuritymodules.SKUNamePayShield10KLMK1CPS60),
-		},
 		Tags: map[string]*string{
 			"Dept":        to.Ptr("hsm"),
 			"Environment": to.Ptr("dogfood"),
@@ -209,7 +206,7 @@ func ExampleDedicatedHsmClient_BeginCreateOrUpdate_createANewOrUpdateAnExistingP
 						PrivateIPAddress: to.Ptr("1.0.0.2"),
 					}},
 				Subnet: &armhardwaresecuritymodules.APIEntityReference{
-					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
+					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
 				},
 			},
 			NetworkProfile: &armhardwaresecuritymodules.NetworkProfile{
@@ -218,10 +215,13 @@ func ExampleDedicatedHsmClient_BeginCreateOrUpdate_createANewOrUpdateAnExistingP
 						PrivateIPAddress: to.Ptr("1.0.0.1"),
 					}},
 				Subnet: &armhardwaresecuritymodules.APIEntityReference{
-					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
+					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
 				},
 			},
 			StampID: to.Ptr("stamp01"),
+		},
+		SKU: &armhardwaresecuritymodules.SKU{
+			Name: to.Ptr(armhardwaresecuritymodules.SKUNamePayShield10KLMK1CPS60),
 		},
 	}, nil)
 	if err != nil {
@@ -238,10 +238,15 @@ func ExampleDedicatedHsmClient_BeginCreateOrUpdate_createANewOrUpdateAnExistingP
 	// 	Name: to.Ptr("hsm1"),
 	// 	Type: to.Ptr("Microsoft.HardwareSecurityModules/dedicatedHSMs"),
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/hsm1"),
-	// 	Location: to.Ptr("westus"),
-	// 	SKU: &armhardwaresecuritymodules.SKU{
-	// 		Name: to.Ptr(armhardwaresecuritymodules.SKUNamePayShield10KLMK1CPS60),
+	// 	SystemData: &armhardwaresecuritymodules.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
+	// 		CreatedBy: to.Ptr("user1"),
+	// 		CreatedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("user2"),
+	// 		LastModifiedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
 	// 	},
+	// 	Location: to.Ptr("westus"),
 	// 	Tags: map[string]*string{
 	// 		"Dept": to.Ptr("hsm"),
 	// 		"Environment": to.Ptr("dogfood"),
@@ -250,39 +255,34 @@ func ExampleDedicatedHsmClient_BeginCreateOrUpdate_createANewOrUpdateAnExistingP
 	// 		ManagementNetworkProfile: &armhardwaresecuritymodules.NetworkProfile{
 	// 			NetworkInterfaces: []*armhardwaresecuritymodules.NetworkInterface{
 	// 				{
-	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm1_HSMMgmtNic"),
 	// 					PrivateIPAddress: to.Ptr("1.0.0.2"),
+	// 					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm1_HSMMgmtNic"),
 	// 			}},
 	// 			Subnet: &armhardwaresecuritymodules.APIEntityReference{
-	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
 	// 			},
 	// 		},
 	// 		NetworkProfile: &armhardwaresecuritymodules.NetworkProfile{
 	// 			NetworkInterfaces: []*armhardwaresecuritymodules.NetworkInterface{
 	// 				{
-	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm1_HSMHost1Nic"),
 	// 					PrivateIPAddress: to.Ptr("1.0.0.1"),
+	// 					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm1_HSMHost1Nic"),
 	// 			}},
 	// 			Subnet: &armhardwaresecuritymodules.APIEntityReference{
-	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
 	// 			},
 	// 		},
 	// 		ProvisioningState: to.Ptr(armhardwaresecuritymodules.JSONWebKeyTypeSucceeded),
 	// 		StampID: to.Ptr("stamp01"),
 	// 		StatusMessage: to.Ptr("DedicatedHsm device is functional."),
 	// 	},
-	// 	SystemData: &armhardwaresecuritymodules.DedicatedHsmSystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
-	// 		CreatedBy: to.Ptr("user1"),
-	// 		CreatedByType: to.Ptr(armhardwaresecuritymodules.IdentityTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("user2"),
-	// 		LastModifiedByType: to.Ptr(armhardwaresecuritymodules.IdentityTypeUser),
+	// 	SKU: &armhardwaresecuritymodules.SKU{
+	// 		Name: to.Ptr(armhardwaresecuritymodules.SKUNamePayShield10KLMK1CPS60),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/18b5c820705ab69735b7e1e2e0da5e37ca6e1969/specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/DedicatedHsm_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e838027e88cca634c1545e744630de9262a6e72a/specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/preview/2024-06-30-preview/examples/DedicatedHsm_Update.json
 func ExampleDedicatedHsmClient_BeginUpdate_updateAnExistingDedicatedHsm() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -315,9 +315,6 @@ func ExampleDedicatedHsmClient_BeginUpdate_updateAnExistingDedicatedHsm() {
 	// 	Type: to.Ptr("Microsoft.HardwareSecurityModules/dedicatedHSMs"),
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/hsm1"),
 	// 	Location: to.Ptr("westus"),
-	// 	SKU: &armhardwaresecuritymodules.SKU{
-	// 		Name: to.Ptr(armhardwaresecuritymodules.SKUNameSafeNetLunaNetworkHSMA790),
-	// 	},
 	// 	Tags: map[string]*string{
 	// 		"Dept": to.Ptr("hsm"),
 	// 		"Environment": to.Ptr("dogfood"),
@@ -327,21 +324,24 @@ func ExampleDedicatedHsmClient_BeginUpdate_updateAnExistingDedicatedHsm() {
 	// 		NetworkProfile: &armhardwaresecuritymodules.NetworkProfile{
 	// 			NetworkInterfaces: []*armhardwaresecuritymodules.NetworkInterface{
 	// 				{
-	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm_vnic"),
 	// 					PrivateIPAddress: to.Ptr("1.0.0.1"),
+	// 					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm_vnic"),
 	// 			}},
 	// 			Subnet: &armhardwaresecuritymodules.APIEntityReference{
-	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
 	// 			},
 	// 		},
 	// 		ProvisioningState: to.Ptr(armhardwaresecuritymodules.JSONWebKeyTypeSucceeded),
 	// 		StampID: to.Ptr("stamp01"),
 	// 		StatusMessage: to.Ptr("DedicatedHsm device is functional."),
 	// 	},
+	// 	SKU: &armhardwaresecuritymodules.SKU{
+	// 		Name: to.Ptr(armhardwaresecuritymodules.SKUNameSafeNetLunaNetworkHSMA790),
+	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/18b5c820705ab69735b7e1e2e0da5e37ca6e1969/specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/PaymentHsm_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e838027e88cca634c1545e744630de9262a6e72a/specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/preview/2024-06-30-preview/examples/PaymentHsm_Update.json
 func ExampleDedicatedHsmClient_BeginUpdate_updateAnExistingPaymentHsm() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -373,10 +373,15 @@ func ExampleDedicatedHsmClient_BeginUpdate_updateAnExistingPaymentHsm() {
 	// 	Name: to.Ptr("hsm1"),
 	// 	Type: to.Ptr("Microsoft.HardwareSecurityModules/dedicatedHSMs"),
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/hsm1"),
-	// 	Location: to.Ptr("westus"),
-	// 	SKU: &armhardwaresecuritymodules.SKU{
-	// 		Name: to.Ptr(armhardwaresecuritymodules.SKUNamePayShield10KLMK1CPS60),
+	// 	SystemData: &armhardwaresecuritymodules.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
+	// 		CreatedBy: to.Ptr("user1"),
+	// 		CreatedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("user2"),
+	// 		LastModifiedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
 	// 	},
+	// 	Location: to.Ptr("westus"),
 	// 	Tags: map[string]*string{
 	// 		"Dept": to.Ptr("hsm"),
 	// 		"Environment": to.Ptr("dogfood"),
@@ -386,39 +391,34 @@ func ExampleDedicatedHsmClient_BeginUpdate_updateAnExistingPaymentHsm() {
 	// 		ManagementNetworkProfile: &armhardwaresecuritymodules.NetworkProfile{
 	// 			NetworkInterfaces: []*armhardwaresecuritymodules.NetworkInterface{
 	// 				{
-	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm1_HSMMgmtNic"),
 	// 					PrivateIPAddress: to.Ptr("1.0.0.2"),
+	// 					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm1_HSMMgmtNic"),
 	// 			}},
 	// 			Subnet: &armhardwaresecuritymodules.APIEntityReference{
-	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
 	// 			},
 	// 		},
 	// 		NetworkProfile: &armhardwaresecuritymodules.NetworkProfile{
 	// 			NetworkInterfaces: []*armhardwaresecuritymodules.NetworkInterface{
 	// 				{
-	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm1_HSMHost1Nic"),
 	// 					PrivateIPAddress: to.Ptr("1.0.0.1"),
+	// 					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm1_HSMHost1Nic"),
 	// 			}},
 	// 			Subnet: &armhardwaresecuritymodules.APIEntityReference{
-	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
 	// 			},
 	// 		},
 	// 		ProvisioningState: to.Ptr(armhardwaresecuritymodules.JSONWebKeyTypeSucceeded),
 	// 		StampID: to.Ptr("stamp01"),
 	// 		StatusMessage: to.Ptr("DedicatedHsm device is functional."),
 	// 	},
-	// 	SystemData: &armhardwaresecuritymodules.DedicatedHsmSystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
-	// 		CreatedBy: to.Ptr("user1"),
-	// 		CreatedByType: to.Ptr(armhardwaresecuritymodules.IdentityTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("user2"),
-	// 		LastModifiedByType: to.Ptr(armhardwaresecuritymodules.IdentityTypeUser),
+	// 	SKU: &armhardwaresecuritymodules.SKU{
+	// 		Name: to.Ptr(armhardwaresecuritymodules.SKUNamePayShield10KLMK1CPS60),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/18b5c820705ab69735b7e1e2e0da5e37ca6e1969/specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/DedicatedHsm_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e838027e88cca634c1545e744630de9262a6e72a/specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/preview/2024-06-30-preview/examples/DedicatedHsm_Delete.json
 func ExampleDedicatedHsmClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -439,7 +439,7 @@ func ExampleDedicatedHsmClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/18b5c820705ab69735b7e1e2e0da5e37ca6e1969/specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/DedicatedHsm_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e838027e88cca634c1545e744630de9262a6e72a/specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/preview/2024-06-30-preview/examples/DedicatedHsm_Get.json
 func ExampleDedicatedHsmClient_Get_getADedicatedHsm() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -462,9 +462,6 @@ func ExampleDedicatedHsmClient_Get_getADedicatedHsm() {
 	// 	Type: to.Ptr("Microsoft.HardwareSecurityModules/dedicatedHSMs"),
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/hsm1"),
 	// 	Location: to.Ptr("westus"),
-	// 	SKU: &armhardwaresecuritymodules.SKU{
-	// 		Name: to.Ptr(armhardwaresecuritymodules.SKUNameSafeNetLunaNetworkHSMA790),
-	// 	},
 	// 	Tags: map[string]*string{
 	// 		"Dept": to.Ptr("hsm"),
 	// 		"Environment": to.Ptr("dogfood"),
@@ -474,21 +471,24 @@ func ExampleDedicatedHsmClient_Get_getADedicatedHsm() {
 	// 		NetworkProfile: &armhardwaresecuritymodules.NetworkProfile{
 	// 			NetworkInterfaces: []*armhardwaresecuritymodules.NetworkInterface{
 	// 				{
-	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm_vnic"),
 	// 					PrivateIPAddress: to.Ptr("1.0.0.1"),
+	// 					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm_vnic"),
 	// 			}},
 	// 			Subnet: &armhardwaresecuritymodules.APIEntityReference{
-	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
 	// 			},
 	// 		},
 	// 		ProvisioningState: to.Ptr(armhardwaresecuritymodules.JSONWebKeyTypeSucceeded),
 	// 		StampID: to.Ptr("stamp01"),
 	// 		StatusMessage: to.Ptr("DedicatedHsm device is functional."),
 	// 	},
+	// 	SKU: &armhardwaresecuritymodules.SKU{
+	// 		Name: to.Ptr(armhardwaresecuritymodules.SKUNameSafeNetLunaNetworkHSMA790),
+	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/18b5c820705ab69735b7e1e2e0da5e37ca6e1969/specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/PaymentHsm_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e838027e88cca634c1545e744630de9262a6e72a/specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/preview/2024-06-30-preview/examples/PaymentHsm_Get.json
 func ExampleDedicatedHsmClient_Get_getAPaymentHsm() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -510,10 +510,15 @@ func ExampleDedicatedHsmClient_Get_getAPaymentHsm() {
 	// 	Name: to.Ptr("hsm1"),
 	// 	Type: to.Ptr("Microsoft.HardwareSecurityModules/dedicatedHSMs"),
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/hsm1"),
-	// 	Location: to.Ptr("westus"),
-	// 	SKU: &armhardwaresecuritymodules.SKU{
-	// 		Name: to.Ptr(armhardwaresecuritymodules.SKUNamePayShield10KLMK1CPS60),
+	// 	SystemData: &armhardwaresecuritymodules.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
+	// 		CreatedBy: to.Ptr("user1"),
+	// 		CreatedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("user2"),
+	// 		LastModifiedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
 	// 	},
+	// 	Location: to.Ptr("westus"),
 	// 	Tags: map[string]*string{
 	// 		"Dept": to.Ptr("hsm"),
 	// 		"Environment": to.Ptr("dogfood"),
@@ -523,39 +528,34 @@ func ExampleDedicatedHsmClient_Get_getAPaymentHsm() {
 	// 		ManagementNetworkProfile: &armhardwaresecuritymodules.NetworkProfile{
 	// 			NetworkInterfaces: []*armhardwaresecuritymodules.NetworkInterface{
 	// 				{
-	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm1_HSMMgmtNic"),
 	// 					PrivateIPAddress: to.Ptr("1.0.0.2"),
+	// 					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm1_HSMMgmtNic"),
 	// 			}},
 	// 			Subnet: &armhardwaresecuritymodules.APIEntityReference{
-	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
 	// 			},
 	// 		},
 	// 		NetworkProfile: &armhardwaresecuritymodules.NetworkProfile{
 	// 			NetworkInterfaces: []*armhardwaresecuritymodules.NetworkInterface{
 	// 				{
-	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm1_HSMHost1Nic"),
 	// 					PrivateIPAddress: to.Ptr("1.0.0.1"),
+	// 					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm1_HSMHost1Nic"),
 	// 			}},
 	// 			Subnet: &armhardwaresecuritymodules.APIEntityReference{
-	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
 	// 			},
 	// 		},
 	// 		ProvisioningState: to.Ptr(armhardwaresecuritymodules.JSONWebKeyTypeSucceeded),
 	// 		StampID: to.Ptr("stamp01"),
 	// 		StatusMessage: to.Ptr("DedicatedHsm device is functional."),
 	// 	},
-	// 	SystemData: &armhardwaresecuritymodules.DedicatedHsmSystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
-	// 		CreatedBy: to.Ptr("user1"),
-	// 		CreatedByType: to.Ptr(armhardwaresecuritymodules.IdentityTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("user2"),
-	// 		LastModifiedByType: to.Ptr(armhardwaresecuritymodules.IdentityTypeUser),
+	// 	SKU: &armhardwaresecuritymodules.SKU{
+	// 		Name: to.Ptr(armhardwaresecuritymodules.SKUNamePayShield10KLMK1CPS60),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/18b5c820705ab69735b7e1e2e0da5e37ca6e1969/specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/PaymentHsm_Get_With_2018-10-31Preview_Version.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e838027e88cca634c1545e744630de9262a6e72a/specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/preview/2024-06-30-preview/examples/PaymentHsm_Get_With_2018-10-31Preview_Version.json
 func ExampleDedicatedHsmClient_Get_getAPaymentHsmWith20181031PreviewApiVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -578,9 +578,6 @@ func ExampleDedicatedHsmClient_Get_getAPaymentHsmWith20181031PreviewApiVersion()
 	// 	Type: to.Ptr("Microsoft.HardwareSecurityModules/dedicatedHSMs"),
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/hsm1"),
 	// 	Location: to.Ptr("westus"),
-	// 	SKU: &armhardwaresecuritymodules.SKU{
-	// 		Name: to.Ptr(armhardwaresecuritymodules.SKUNamePayShield10KLMK1CPS60),
-	// 	},
 	// 	Tags: map[string]*string{
 	// 		"Dept": to.Ptr("hsm"),
 	// 		"Environment": to.Ptr("dogfood"),
@@ -590,21 +587,24 @@ func ExampleDedicatedHsmClient_Get_getAPaymentHsmWith20181031PreviewApiVersion()
 	// 		NetworkProfile: &armhardwaresecuritymodules.NetworkProfile{
 	// 			NetworkInterfaces: []*armhardwaresecuritymodules.NetworkInterface{
 	// 				{
-	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm1_HSMHost1Nic"),
 	// 					PrivateIPAddress: to.Ptr("1.0.0.1"),
+	// 					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm1_HSMHost1Nic"),
 	// 			}},
 	// 			Subnet: &armhardwaresecuritymodules.APIEntityReference{
-	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
 	// 			},
 	// 		},
 	// 		ProvisioningState: to.Ptr(armhardwaresecuritymodules.JSONWebKeyTypeSucceeded),
 	// 		StampID: to.Ptr("stamp01"),
 	// 		StatusMessage: to.Ptr("DedicatedHsm device is functional."),
 	// 	},
+	// 	SKU: &armhardwaresecuritymodules.SKU{
+	// 		Name: to.Ptr(armhardwaresecuritymodules.SKUNamePayShield10KLMK1CPS60),
+	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/18b5c820705ab69735b7e1e2e0da5e37ca6e1969/specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/DedicatedHsm_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e838027e88cca634c1545e744630de9262a6e72a/specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/preview/2024-06-30-preview/examples/DedicatedHsm_ListByResourceGroup.json
 func ExampleDedicatedHsmClient_NewListByResourceGroupPager_listDedicatedHsmDevicesInAResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -633,9 +633,6 @@ func ExampleDedicatedHsmClient_NewListByResourceGroupPager_listDedicatedHsmDevic
 		// 			Type: to.Ptr("Microsoft.HardwareSecurityModules/dedicatedHSMs"),
 		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/hsm1"),
 		// 			Location: to.Ptr("westus"),
-		// 			SKU: &armhardwaresecuritymodules.SKU{
-		// 				Name: to.Ptr(armhardwaresecuritymodules.SKUNameSafeNetLunaNetworkHSMA790),
-		// 			},
 		// 			Tags: map[string]*string{
 		// 				"Dept": to.Ptr("hsm"),
 		// 				"Environment": to.Ptr("dogfood"),
@@ -645,16 +642,19 @@ func ExampleDedicatedHsmClient_NewListByResourceGroupPager_listDedicatedHsmDevic
 		// 				NetworkProfile: &armhardwaresecuritymodules.NetworkProfile{
 		// 					NetworkInterfaces: []*armhardwaresecuritymodules.NetworkInterface{
 		// 						{
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm_vnic"),
 		// 							PrivateIPAddress: to.Ptr("1.0.0.1"),
+		// 							ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm_vnic"),
 		// 					}},
 		// 					Subnet: &armhardwaresecuritymodules.APIEntityReference{
-		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
+		// 						ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
 		// 					},
 		// 				},
 		// 				ProvisioningState: to.Ptr(armhardwaresecuritymodules.JSONWebKeyTypeSucceeded),
 		// 				StampID: to.Ptr("stamp01"),
 		// 				StatusMessage: to.Ptr("DedicatedHsm device is functional."),
+		// 			},
+		// 			SKU: &armhardwaresecuritymodules.SKU{
+		// 				Name: to.Ptr(armhardwaresecuritymodules.SKUNameSafeNetLunaNetworkHSMA790),
 		// 			},
 		// 		},
 		// 		{
@@ -662,9 +662,6 @@ func ExampleDedicatedHsmClient_NewListByResourceGroupPager_listDedicatedHsmDevic
 		// 			Type: to.Ptr("Microsoft.HardwareSecurityModules/dedicatedHSMs"),
 		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/hsm2"),
 		// 			Location: to.Ptr("westus"),
-		// 			SKU: &armhardwaresecuritymodules.SKU{
-		// 				Name: to.Ptr(armhardwaresecuritymodules.SKUNameSafeNetLunaNetworkHSMA790),
-		// 			},
 		// 			Tags: map[string]*string{
 		// 				"Dept": to.Ptr("hsm"),
 		// 				"Environment": to.Ptr("dogfood"),
@@ -674,23 +671,26 @@ func ExampleDedicatedHsmClient_NewListByResourceGroupPager_listDedicatedHsmDevic
 		// 				NetworkProfile: &armhardwaresecuritymodules.NetworkProfile{
 		// 					NetworkInterfaces: []*armhardwaresecuritymodules.NetworkInterface{
 		// 						{
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm_vnic"),
 		// 							PrivateIPAddress: to.Ptr("1.0.0.2"),
+		// 							ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm_vnic"),
 		// 					}},
 		// 					Subnet: &armhardwaresecuritymodules.APIEntityReference{
-		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
+		// 						ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
 		// 					},
 		// 				},
 		// 				ProvisioningState: to.Ptr(armhardwaresecuritymodules.JSONWebKeyTypeSucceeded),
 		// 				StampID: to.Ptr("stamp01"),
 		// 				StatusMessage: to.Ptr("DedicatedHsm device is functional."),
 		// 			},
+		// 			SKU: &armhardwaresecuritymodules.SKU{
+		// 				Name: to.Ptr(armhardwaresecuritymodules.SKUNameSafeNetLunaNetworkHSMA790),
+		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/18b5c820705ab69735b7e1e2e0da5e37ca6e1969/specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/PaymentHsm_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e838027e88cca634c1545e744630de9262a6e72a/specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/preview/2024-06-30-preview/examples/PaymentHsm_ListByResourceGroup.json
 func ExampleDedicatedHsmClient_NewListByResourceGroupPager_listDedicatedHsmDevicesInAResourceGroupIncludingPaymentHsm() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -718,10 +718,15 @@ func ExampleDedicatedHsmClient_NewListByResourceGroupPager_listDedicatedHsmDevic
 		// 			Name: to.Ptr("hsm1"),
 		// 			Type: to.Ptr("Microsoft.HardwareSecurityModules/dedicatedHSMs"),
 		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/hsm1"),
-		// 			Location: to.Ptr("westus"),
-		// 			SKU: &armhardwaresecuritymodules.SKU{
-		// 				Name: to.Ptr(armhardwaresecuritymodules.SKUNamePayShield10KLMK1CPS60),
+		// 			SystemData: &armhardwaresecuritymodules.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
+		// 				CreatedBy: to.Ptr("user1"),
+		// 				CreatedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("user2"),
+		// 				LastModifiedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
 		// 			},
+		// 			Location: to.Ptr("westus"),
 		// 			Tags: map[string]*string{
 		// 				"Dept": to.Ptr("hsm"),
 		// 				"Environment": to.Ptr("dogfood"),
@@ -731,44 +736,44 @@ func ExampleDedicatedHsmClient_NewListByResourceGroupPager_listDedicatedHsmDevic
 		// 				ManagementNetworkProfile: &armhardwaresecuritymodules.NetworkProfile{
 		// 					NetworkInterfaces: []*armhardwaresecuritymodules.NetworkInterface{
 		// 						{
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm1_HSMMgmtNic"),
 		// 							PrivateIPAddress: to.Ptr("1.0.0.2"),
+		// 							ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm1_HSMMgmtNic"),
 		// 					}},
 		// 					Subnet: &armhardwaresecuritymodules.APIEntityReference{
-		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
+		// 						ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
 		// 					},
 		// 				},
 		// 				NetworkProfile: &armhardwaresecuritymodules.NetworkProfile{
 		// 					NetworkInterfaces: []*armhardwaresecuritymodules.NetworkInterface{
 		// 						{
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm1_HSMHost1Nic"),
 		// 							PrivateIPAddress: to.Ptr("1.0.0.1"),
+		// 							ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm1_HSMHost1Nic"),
 		// 					}},
 		// 					Subnet: &armhardwaresecuritymodules.APIEntityReference{
-		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
+		// 						ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
 		// 					},
 		// 				},
 		// 				ProvisioningState: to.Ptr(armhardwaresecuritymodules.JSONWebKeyTypeSucceeded),
 		// 				StampID: to.Ptr("stamp01"),
 		// 				StatusMessage: to.Ptr("DedicatedHsm device is functional."),
 		// 			},
-		// 			SystemData: &armhardwaresecuritymodules.DedicatedHsmSystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
-		// 				CreatedBy: to.Ptr("user1"),
-		// 				CreatedByType: to.Ptr(armhardwaresecuritymodules.IdentityTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("user2"),
-		// 				LastModifiedByType: to.Ptr(armhardwaresecuritymodules.IdentityTypeUser),
+		// 			SKU: &armhardwaresecuritymodules.SKU{
+		// 				Name: to.Ptr(armhardwaresecuritymodules.SKUNamePayShield10KLMK1CPS60),
 		// 			},
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("hsm2"),
 		// 			Type: to.Ptr("Microsoft.HardwareSecurityModules/dedicatedHSMs"),
 		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/hsm2"),
-		// 			Location: to.Ptr("westus"),
-		// 			SKU: &armhardwaresecuritymodules.SKU{
-		// 				Name: to.Ptr(armhardwaresecuritymodules.SKUNamePayShield10KLMK1CPS60),
+		// 			SystemData: &armhardwaresecuritymodules.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
+		// 				CreatedBy: to.Ptr("user1"),
+		// 				CreatedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("user2"),
+		// 				LastModifiedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
 		// 			},
+		// 			Location: to.Ptr("westus"),
 		// 			Tags: map[string]*string{
 		// 				"Dept": to.Ptr("hsm"),
 		// 				"Environment": to.Ptr("dogfood"),
@@ -778,41 +783,36 @@ func ExampleDedicatedHsmClient_NewListByResourceGroupPager_listDedicatedHsmDevic
 		// 				ManagementNetworkProfile: &armhardwaresecuritymodules.NetworkProfile{
 		// 					NetworkInterfaces: []*armhardwaresecuritymodules.NetworkInterface{
 		// 						{
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm2_HSMMgmtNic"),
 		// 							PrivateIPAddress: to.Ptr("1.0.0.4"),
+		// 							ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm2_HSMMgmtNic"),
 		// 					}},
 		// 					Subnet: &armhardwaresecuritymodules.APIEntityReference{
-		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
+		// 						ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
 		// 					},
 		// 				},
 		// 				NetworkProfile: &armhardwaresecuritymodules.NetworkProfile{
 		// 					NetworkInterfaces: []*armhardwaresecuritymodules.NetworkInterface{
 		// 						{
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm2_HSMHost1Nic"),
 		// 							PrivateIPAddress: to.Ptr("1.0.0.3"),
+		// 							ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm2_HSMHost1Nic"),
 		// 					}},
 		// 					Subnet: &armhardwaresecuritymodules.APIEntityReference{
-		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
+		// 						ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
 		// 					},
 		// 				},
 		// 				ProvisioningState: to.Ptr(armhardwaresecuritymodules.JSONWebKeyTypeSucceeded),
 		// 				StampID: to.Ptr("stamp01"),
 		// 				StatusMessage: to.Ptr("DedicatedHsm device is functional."),
 		// 			},
-		// 			SystemData: &armhardwaresecuritymodules.DedicatedHsmSystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
-		// 				CreatedBy: to.Ptr("user1"),
-		// 				CreatedByType: to.Ptr(armhardwaresecuritymodules.IdentityTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("user2"),
-		// 				LastModifiedByType: to.Ptr(armhardwaresecuritymodules.IdentityTypeUser),
+		// 			SKU: &armhardwaresecuritymodules.SKU{
+		// 				Name: to.Ptr(armhardwaresecuritymodules.SKUNamePayShield10KLMK1CPS60),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/18b5c820705ab69735b7e1e2e0da5e37ca6e1969/specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/DedicatedHsm_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e838027e88cca634c1545e744630de9262a6e72a/specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/preview/2024-06-30-preview/examples/DedicatedHsm_ListBySubscription.json
 func ExampleDedicatedHsmClient_NewListBySubscriptionPager_listDedicatedHsmDevicesInASubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -841,9 +841,6 @@ func ExampleDedicatedHsmClient_NewListBySubscriptionPager_listDedicatedHsmDevice
 		// 			Type: to.Ptr("Microsoft.HardwareSecurityModules/dedicatedHSMs"),
 		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/hsm1"),
 		// 			Location: to.Ptr("westus"),
-		// 			SKU: &armhardwaresecuritymodules.SKU{
-		// 				Name: to.Ptr(armhardwaresecuritymodules.SKUNameSafeNetLunaNetworkHSMA790),
-		// 			},
 		// 			Tags: map[string]*string{
 		// 				"Dept": to.Ptr("hsm"),
 		// 				"Environment": to.Ptr("dogfood"),
@@ -853,16 +850,19 @@ func ExampleDedicatedHsmClient_NewListBySubscriptionPager_listDedicatedHsmDevice
 		// 				NetworkProfile: &armhardwaresecuritymodules.NetworkProfile{
 		// 					NetworkInterfaces: []*armhardwaresecuritymodules.NetworkInterface{
 		// 						{
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm_vnic"),
 		// 							PrivateIPAddress: to.Ptr("1.0.0.1"),
+		// 							ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm_vnic"),
 		// 					}},
 		// 					Subnet: &armhardwaresecuritymodules.APIEntityReference{
-		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
+		// 						ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
 		// 					},
 		// 				},
 		// 				ProvisioningState: to.Ptr(armhardwaresecuritymodules.JSONWebKeyTypeSucceeded),
 		// 				StampID: to.Ptr("stamp01"),
 		// 				StatusMessage: to.Ptr("DedicatedHsm device is functional."),
+		// 			},
+		// 			SKU: &armhardwaresecuritymodules.SKU{
+		// 				Name: to.Ptr(armhardwaresecuritymodules.SKUNameSafeNetLunaNetworkHSMA790),
 		// 			},
 		// 		},
 		// 		{
@@ -870,9 +870,6 @@ func ExampleDedicatedHsmClient_NewListBySubscriptionPager_listDedicatedHsmDevice
 		// 			Type: to.Ptr("Microsoft.HardwareSecurityModules/dedicatedHSMs"),
 		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/hsm2"),
 		// 			Location: to.Ptr("westus"),
-		// 			SKU: &armhardwaresecuritymodules.SKU{
-		// 				Name: to.Ptr(armhardwaresecuritymodules.SKUNameSafeNetLunaNetworkHSMA790),
-		// 			},
 		// 			Tags: map[string]*string{
 		// 				"Dept": to.Ptr("hsm"),
 		// 				"Environment": to.Ptr("dogfood"),
@@ -882,23 +879,26 @@ func ExampleDedicatedHsmClient_NewListBySubscriptionPager_listDedicatedHsmDevice
 		// 				NetworkProfile: &armhardwaresecuritymodules.NetworkProfile{
 		// 					NetworkInterfaces: []*armhardwaresecuritymodules.NetworkInterface{
 		// 						{
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm_vnic"),
 		// 							PrivateIPAddress: to.Ptr("1.0.0.2"),
+		// 							ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm_vnic"),
 		// 					}},
 		// 					Subnet: &armhardwaresecuritymodules.APIEntityReference{
-		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
+		// 						ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
 		// 					},
 		// 				},
 		// 				ProvisioningState: to.Ptr(armhardwaresecuritymodules.JSONWebKeyTypeSucceeded),
 		// 				StampID: to.Ptr("stamp01"),
 		// 				StatusMessage: to.Ptr("DedicatedHsm device is functional."),
 		// 			},
+		// 			SKU: &armhardwaresecuritymodules.SKU{
+		// 				Name: to.Ptr(armhardwaresecuritymodules.SKUNameSafeNetLunaNetworkHSMA790),
+		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/18b5c820705ab69735b7e1e2e0da5e37ca6e1969/specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/PaymentHsm_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e838027e88cca634c1545e744630de9262a6e72a/specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/preview/2024-06-30-preview/examples/PaymentHsm_ListBySubscription.json
 func ExampleDedicatedHsmClient_NewListBySubscriptionPager_listDedicatedHsmDevicesInASubscriptionIncludingPaymentHsm() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -926,10 +926,15 @@ func ExampleDedicatedHsmClient_NewListBySubscriptionPager_listDedicatedHsmDevice
 		// 			Name: to.Ptr("hsm1"),
 		// 			Type: to.Ptr("Microsoft.HardwareSecurityModules/dedicatedHSMs"),
 		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/hsm1"),
-		// 			Location: to.Ptr("westus"),
-		// 			SKU: &armhardwaresecuritymodules.SKU{
-		// 				Name: to.Ptr(armhardwaresecuritymodules.SKUNamePayShield10KLMK1CPS60),
+		// 			SystemData: &armhardwaresecuritymodules.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
+		// 				CreatedBy: to.Ptr("user1"),
+		// 				CreatedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("user2"),
+		// 				LastModifiedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
 		// 			},
+		// 			Location: to.Ptr("westus"),
 		// 			Tags: map[string]*string{
 		// 				"Dept": to.Ptr("hsm1"),
 		// 				"Environment": to.Ptr("dogfood"),
@@ -939,44 +944,44 @@ func ExampleDedicatedHsmClient_NewListBySubscriptionPager_listDedicatedHsmDevice
 		// 				ManagementNetworkProfile: &armhardwaresecuritymodules.NetworkProfile{
 		// 					NetworkInterfaces: []*armhardwaresecuritymodules.NetworkInterface{
 		// 						{
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm1_HSMMgmtNic"),
 		// 							PrivateIPAddress: to.Ptr("1.0.0.2"),
+		// 							ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm1_HSMMgmtNic"),
 		// 					}},
 		// 					Subnet: &armhardwaresecuritymodules.APIEntityReference{
-		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
+		// 						ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
 		// 					},
 		// 				},
 		// 				NetworkProfile: &armhardwaresecuritymodules.NetworkProfile{
 		// 					NetworkInterfaces: []*armhardwaresecuritymodules.NetworkInterface{
 		// 						{
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm1_HSMHost1Nic"),
 		// 							PrivateIPAddress: to.Ptr("1.0.0.1"),
+		// 							ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm1_HSMHost1Nic"),
 		// 					}},
 		// 					Subnet: &armhardwaresecuritymodules.APIEntityReference{
-		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
+		// 						ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
 		// 					},
 		// 				},
 		// 				ProvisioningState: to.Ptr(armhardwaresecuritymodules.JSONWebKeyTypeSucceeded),
 		// 				StampID: to.Ptr("stamp01"),
 		// 				StatusMessage: to.Ptr("DedicatedHsm device is functional."),
 		// 			},
-		// 			SystemData: &armhardwaresecuritymodules.DedicatedHsmSystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
-		// 				CreatedBy: to.Ptr("user1"),
-		// 				CreatedByType: to.Ptr(armhardwaresecuritymodules.IdentityTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("user2"),
-		// 				LastModifiedByType: to.Ptr(armhardwaresecuritymodules.IdentityTypeUser),
+		// 			SKU: &armhardwaresecuritymodules.SKU{
+		// 				Name: to.Ptr(armhardwaresecuritymodules.SKUNamePayShield10KLMK1CPS60),
 		// 			},
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("hsm2"),
 		// 			Type: to.Ptr("Microsoft.HardwareSecurityModules/dedicatedHSMs"),
 		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/hsm2"),
-		// 			Location: to.Ptr("westus"),
-		// 			SKU: &armhardwaresecuritymodules.SKU{
-		// 				Name: to.Ptr(armhardwaresecuritymodules.SKUNamePayShield10KLMK1CPS60),
+		// 			SystemData: &armhardwaresecuritymodules.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
+		// 				CreatedBy: to.Ptr("user1"),
+		// 				CreatedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("user2"),
+		// 				LastModifiedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
 		// 			},
+		// 			Location: to.Ptr("westus"),
 		// 			Tags: map[string]*string{
 		// 				"Dept": to.Ptr("hsm"),
 		// 				"Environment": to.Ptr("dogfood"),
@@ -986,41 +991,36 @@ func ExampleDedicatedHsmClient_NewListBySubscriptionPager_listDedicatedHsmDevice
 		// 				ManagementNetworkProfile: &armhardwaresecuritymodules.NetworkProfile{
 		// 					NetworkInterfaces: []*armhardwaresecuritymodules.NetworkInterface{
 		// 						{
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm2_HSMMgmtNic"),
 		// 							PrivateIPAddress: to.Ptr("1.0.0.4"),
+		// 							ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm2_HSMMgmtNic"),
 		// 					}},
 		// 					Subnet: &armhardwaresecuritymodules.APIEntityReference{
-		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
+		// 						ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
 		// 					},
 		// 				},
 		// 				NetworkProfile: &armhardwaresecuritymodules.NetworkProfile{
 		// 					NetworkInterfaces: []*armhardwaresecuritymodules.NetworkInterface{
 		// 						{
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm2_HSMHost1Nic"),
 		// 							PrivateIPAddress: to.Ptr("1.0.0.3"),
+		// 							ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/networkInterfaces/hsm2_HSMHost1Nic"),
 		// 					}},
 		// 					Subnet: &armhardwaresecuritymodules.APIEntityReference{
-		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
+		// 						ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"),
 		// 					},
 		// 				},
 		// 				ProvisioningState: to.Ptr(armhardwaresecuritymodules.JSONWebKeyTypeSucceeded),
 		// 				StampID: to.Ptr("stamp01"),
 		// 				StatusMessage: to.Ptr("DedicatedHsm device is functional."),
 		// 			},
-		// 			SystemData: &armhardwaresecuritymodules.DedicatedHsmSystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
-		// 				CreatedBy: to.Ptr("user1"),
-		// 				CreatedByType: to.Ptr(armhardwaresecuritymodules.IdentityTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("user2"),
-		// 				LastModifiedByType: to.Ptr(armhardwaresecuritymodules.IdentityTypeUser),
+		// 			SKU: &armhardwaresecuritymodules.SKU{
+		// 				Name: to.Ptr(armhardwaresecuritymodules.SKUNamePayShield10KLMK1CPS60),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/18b5c820705ab69735b7e1e2e0da5e37ca6e1969/specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/GetOutboundNetworkDependenciesEndpointsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e838027e88cca634c1545e744630de9262a6e72a/specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/preview/2024-06-30-preview/examples/GetOutboundNetworkDependenciesEndpointsList.json
 func ExampleDedicatedHsmClient_NewListOutboundNetworkDependenciesEndpointsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

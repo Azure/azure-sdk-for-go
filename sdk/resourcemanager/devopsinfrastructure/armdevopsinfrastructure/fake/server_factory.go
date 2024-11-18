@@ -49,7 +49,6 @@ type ServerFactoryTransport struct {
 	srv                        *ServerFactory
 	trMu                       sync.Mutex
 	trImageVersionsServer      *ImageVersionsServerTransport
-	// trOperationsServer         *OperationsServerTransport
 	trPoolsServer              *PoolsServerTransport
 	trResourceDetailsServer    *ResourceDetailsServerTransport
 	trSKUServer                *SKUServerTransport

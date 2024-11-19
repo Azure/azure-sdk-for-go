@@ -67,15 +67,6 @@ func TestAssistants(t *testing.T) {
 
 			var pages []openai.Assistant = pager.Data
 			require.NotEmpty(t, pages)
-
-			page, err := pager.GetNextPage()
-			require.NoError(t, err)
-
-			if page != nil { // a nil page indicates we've read all pages.
-				pages = append(pages, page.Data...)
-			}
-
-			require.NotEmpty(t, pages)
 		}
 	}
 

@@ -84,28 +84,28 @@ type ImportCertificateResponse struct {
 	Certificate
 }
 
-// ListCertificatePropertiesResponse contains the response from method Client.ListCertificateProperties.
+// ListCertificatePropertiesResponse contains the response from method Client.NewListCertificatePropertiesPager.
 type ListCertificatePropertiesResponse struct {
 	// The certificate list result.
 	CertificatePropertiesListResult
 }
 
-// ListCertificatePropertiesVersionsResponse contains the response from method Client.ListCertificatePropertiesVersions.
+// ListCertificatePropertiesVersionsResponse contains the response from method Client.NewListCertificatePropertiesVersionsPager.
 type ListCertificatePropertiesVersionsResponse struct {
 	// The certificate list result.
 	CertificatePropertiesListResult
 }
 
-// ListDeletedCertificatePropertiesResponse contains the response from method Client.ListDeletedCertificateProperties.
+// ListDeletedCertificatePropertiesResponse contains the response from method Client.NewListDeletedCertificatePropertiesPager.
 type ListDeletedCertificatePropertiesResponse struct {
 	// A list of certificates that have been deleted in this vault.
 	DeletedCertificatePropertiesListResult
 }
 
-// ListIssuerPropertiesResponse contains the response from method Client.ListIssuerProperties.
+// ListIssuerPropertiesResponse contains the response from method Client.NewListIssuerPropertiesPager.
 type ListIssuerPropertiesResponse struct {
 	// The certificate issuer list result.
-	CertificateIssuerListResult
+	IssuerPropertiesListResult
 }
 
 // MergeCertificateResponse contains the response from method Client.MergeCertificate.

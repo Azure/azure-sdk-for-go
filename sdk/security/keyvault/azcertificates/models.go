@@ -86,17 +86,6 @@ type CertificateAttributes struct {
 	Updated *time.Time
 }
 
-// CertificateIssuerListResult - The certificate issuer list result.
-type CertificateIssuerListResult struct {
-	// READ-ONLY; The URL to get the next set of certificate issuers.
-	NextLink *string
-
-	// READ-ONLY; A response message containing a list of certificate issuers in the key vault along with a link to the next page
-	// of
-	// certificate issuers.
-	Value []*IssuerProperties
-}
-
 // CertificateOperation - A certificate operation is returned in case of asynchronous requests.
 type CertificateOperation struct {
 	// The certificate signing request (CSR) that is being used in the certificate
@@ -382,6 +371,17 @@ type IssuerProperties struct {
 	Provider *string
 }
 
+// IssuerPropertiesListResult - The certificate issuer list result.
+type IssuerPropertiesListResult struct {
+	// READ-ONLY; The URL to get the next set of certificate issuers.
+	NextLink *string
+
+	// READ-ONLY; A response message containing a list of certificate issuers in the key vault along with a link to the next page
+	// of
+	// certificate issuers.
+	Value []*IssuerProperties
+}
+
 // KeyProperties - Properties of the key pair backing a certificate.
 type KeyProperties struct {
 	// Elliptic curve name. For valid values, see JsonWebKeyCurveName.
@@ -399,12 +399,6 @@ type KeyProperties struct {
 
 	// Indicates if the same key pair will be used on certificate renewal.
 	ReuseKey *bool
-}
-
-// KeyVaultError - The key vault error exception.
-type KeyVaultError struct {
-	// READ-ONLY; The key vault server error.
-	Error *Error
 }
 
 // LifetimeAction - Action and its trigger that will be performed by Key Vault over the lifetime of

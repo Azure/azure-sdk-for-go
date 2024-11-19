@@ -69,25 +69,25 @@ type ImportCertificateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ListCertificatePropertiesOptions contains the optional parameters for the Client.ListCertificateProperties method.
+// ListCertificatePropertiesOptions contains the optional parameters for the Client.NewListCertificatePropertiesPager method.
 type ListCertificatePropertiesOptions struct {
 	// Specifies whether to include certificates which are not completely provisioned.
 	IncludePending *bool
 }
 
-// ListCertificatePropertiesVersionsOptions contains the optional parameters for the Client.ListCertificatePropertiesVersions
+// ListCertificatePropertiesVersionsOptions contains the optional parameters for the Client.NewListCertificatePropertiesVersionsPager
 // method.
 type ListCertificatePropertiesVersionsOptions struct {
 }
 
-// ListDeletedCertificatePropertiesOptions contains the optional parameters for the Client.ListDeletedCertificateProperties
+// ListDeletedCertificatePropertiesOptions contains the optional parameters for the Client.NewListDeletedCertificatePropertiesPager
 // method.
 type ListDeletedCertificatePropertiesOptions struct {
 	// Specifies whether to include certificates which are not completely provisioned.
 	IncludePending *bool
 }
 
-// ListIssuerPropertiesOptions contains the optional parameters for the Client.ListIssuerProperties method.
+// ListIssuerPropertiesOptions contains the optional parameters for the Client.NewListIssuerPropertiesPager method.
 type ListIssuerPropertiesOptions struct {
 }
 

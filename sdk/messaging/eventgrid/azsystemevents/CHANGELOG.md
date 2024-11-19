@@ -1,14 +1,19 @@
 # Release History
 
-## 0.4.4 (Unreleased)
+## 0.5.0 (2024-11-19)
 
 ### Features Added
 
+- A new system event has been added: `ResourceNotificationsContainerServiceEventResourcesScheduledEventData`
+- A new field: `StorageLifecyclePolicyCompletedEventData.PolicyRunSummary`
+
 ### Breaking Changes
+
+- Models, that were not system events, have been removed. Any fields from those types are incorporated into their corresponding system event type.
 
 ### Bugs Fixed
 
-### Other Changes
+- ACSMessageDeliveryStatusUpdatedEventData.Error has been corrected to use an exported type.
 
 ## 0.4.3 (2024-10-14)
 

@@ -19,8 +19,10 @@ import (
 
 // ServerFactory is a fake server for instances of the armhardwaresecuritymodules.ClientFactory type.
 type ServerFactory struct {
+	CloudHsmClusterBackupStatusServer               CloudHsmClusterBackupStatusServer
 	CloudHsmClusterPrivateEndpointConnectionsServer CloudHsmClusterPrivateEndpointConnectionsServer
 	CloudHsmClusterPrivateLinkResourcesServer       CloudHsmClusterPrivateLinkResourcesServer
+	CloudHsmClusterRestoreStatusServer              CloudHsmClusterRestoreStatusServer
 	CloudHsmClustersServer                          CloudHsmClustersServer
 	DedicatedHsmServer                              DedicatedHsmServer
 	OperationsServer                                OperationsServer
@@ -41,8 +43,10 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 type ServerFactoryTransport struct {
 	srv                                               *ServerFactory
 	trMu                                              sync.Mutex
+	trCloudHsmClusterBackupStatusServer               *CloudHsmClusterBackupStatusServerTransport
 	trCloudHsmClusterPrivateEndpointConnectionsServer *CloudHsmClusterPrivateEndpointConnectionsServerTransport
 	trCloudHsmClusterPrivateLinkResourcesServer       *CloudHsmClusterPrivateLinkResourcesServerTransport
+	trCloudHsmClusterRestoreStatusServer              *CloudHsmClusterRestoreStatusServerTransport
 	trCloudHsmClustersServer                          *CloudHsmClustersServerTransport
 	trDedicatedHsmServer                              *DedicatedHsmServerTransport
 	trOperationsServer                                *OperationsServerTransport
@@ -62,6 +66,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "CloudHsmClusterBackupStatusClient":
+		initServer(s, &s.trCloudHsmClusterBackupStatusServer, func() *CloudHsmClusterBackupStatusServerTransport {
+			return NewCloudHsmClusterBackupStatusServerTransport(&s.srv.CloudHsmClusterBackupStatusServer)
+		})
+		resp, err = s.trCloudHsmClusterBackupStatusServer.Do(req)
 	case "CloudHsmClusterPrivateEndpointConnectionsClient":
 		initServer(s, &s.trCloudHsmClusterPrivateEndpointConnectionsServer, func() *CloudHsmClusterPrivateEndpointConnectionsServerTransport {
 			return NewCloudHsmClusterPrivateEndpointConnectionsServerTransport(&s.srv.CloudHsmClusterPrivateEndpointConnectionsServer)
@@ -72,6 +81,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewCloudHsmClusterPrivateLinkResourcesServerTransport(&s.srv.CloudHsmClusterPrivateLinkResourcesServer)
 		})
 		resp, err = s.trCloudHsmClusterPrivateLinkResourcesServer.Do(req)
+	case "CloudHsmClusterRestoreStatusClient":
+		initServer(s, &s.trCloudHsmClusterRestoreStatusServer, func() *CloudHsmClusterRestoreStatusServerTransport {
+			return NewCloudHsmClusterRestoreStatusServerTransport(&s.srv.CloudHsmClusterRestoreStatusServer)
+		})
+		resp, err = s.trCloudHsmClusterRestoreStatusServer.Do(req)
 	case "CloudHsmClustersClient":
 		initServer(s, &s.trCloudHsmClustersServer, func() *CloudHsmClustersServerTransport {
 			return NewCloudHsmClustersServerTransport(&s.srv.CloudHsmClustersServer)

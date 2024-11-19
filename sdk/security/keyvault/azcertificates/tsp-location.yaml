@@ -1,0 +1,5 @@
+directory: specification/keyvault/Security.KeyVault.Certificates
+commit: 5c1ad27e0a0b47c00a984b650ac1e137cd0d2dd7
+repo: Azure/azure-rest-api-specs
+additionalDirectories: 
+# https://github.com/Azure/azure-rest-api-specs/pull/28708

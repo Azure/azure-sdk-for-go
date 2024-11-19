@@ -8,6 +8,18 @@
 
 package armhardwaresecuritymodules
 
+// CloudHsmClusterBackupStatusClientGetResponse contains the response from method CloudHsmClusterBackupStatusClient.Get.
+type CloudHsmClusterBackupStatusClientGetResponse struct {
+	// Backup operation Result
+	BackupResult
+
+	// Location contains the information returned from the Location header response.
+	Location *string
+
+	// XMSRequestID contains the information returned from the x-ms-request-id header response.
+	XMSRequestID *string
+}
+
 // CloudHsmClusterPrivateEndpointConnectionsClientCreateResponse contains the response from method CloudHsmClusterPrivateEndpointConnectionsClient.Create.
 type CloudHsmClusterPrivateEndpointConnectionsClientCreateResponse struct {
 	// The private endpoint connection resource.
@@ -25,10 +37,28 @@ type CloudHsmClusterPrivateEndpointConnectionsClientGetResponse struct {
 	PrivateEndpointConnection
 }
 
-// CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterResponse contains the response from method CloudHsmClusterPrivateLinkResourcesClient.ListByCloudHsmCluster.
+// CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterResponse contains the response from method CloudHsmClusterPrivateLinkResourcesClient.NewListByCloudHsmClusterPager.
 type CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterResponse struct {
 	// A list of private link resources.
 	PrivateLinkResourceListResult
+}
+
+// CloudHsmClusterRestoreStatusClientGetResponse contains the response from method CloudHsmClusterRestoreStatusClient.Get.
+type CloudHsmClusterRestoreStatusClientGetResponse struct {
+	// Restore operation properties
+	RestoreResult
+
+	// Location contains the information returned from the Location header response.
+	Location *string
+
+	// XMSRequestID contains the information returned from the x-ms-request-id header response.
+	XMSRequestID *string
+}
+
+// CloudHsmClustersClientBackupResponse contains the response from method CloudHsmClustersClient.BeginBackup.
+type CloudHsmClustersClientBackupResponse struct {
+	// Backup operation Result
+	BackupResult
 }
 
 // CloudHsmClustersClientCreateOrUpdateResponse contains the response from method CloudHsmClustersClient.BeginCreateOrUpdate.
@@ -60,10 +90,28 @@ type CloudHsmClustersClientListBySubscriptionResponse struct {
 	CloudHsmClusterListResult
 }
 
+// CloudHsmClustersClientRestoreResponse contains the response from method CloudHsmClustersClient.BeginRestore.
+type CloudHsmClustersClientRestoreResponse struct {
+	// Restore operation properties
+	RestoreResult
+}
+
 // CloudHsmClustersClientUpdateResponse contains the response from method CloudHsmClustersClient.BeginUpdate.
 type CloudHsmClustersClientUpdateResponse struct {
 	// Resource information with extended details.
 	CloudHsmCluster
+}
+
+// CloudHsmClustersClientValidateBackupPropertiesResponse contains the response from method CloudHsmClustersClient.BeginValidateBackupProperties.
+type CloudHsmClustersClientValidateBackupPropertiesResponse struct {
+	// Backup operation Result
+	BackupResult
+}
+
+// CloudHsmClustersClientValidateRestorePropertiesResponse contains the response from method CloudHsmClustersClient.BeginValidateRestoreProperties.
+type CloudHsmClustersClientValidateRestorePropertiesResponse struct {
+	// Restore operation properties
+	RestoreResult
 }
 
 // DedicatedHsmClientCreateOrUpdateResponse contains the response from method DedicatedHsmClient.BeginCreateOrUpdate.
@@ -109,8 +157,8 @@ type DedicatedHsmClientUpdateResponse struct {
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
-	// Result of the request to list Dedicated HSM Provider operations. It contains a list of operations.
-	DedicatedHsmOperationListResult
+	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
+	OperationListResult
 }
 
 // PrivateEndpointConnectionsClientListByCloudHsmClusterResponse contains the response from method PrivateEndpointConnectionsClient.NewListByCloudHsmClusterPager.

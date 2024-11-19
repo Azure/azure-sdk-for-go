@@ -10,6 +10,8 @@
 
 ### Other Changes
 
+- Updating to `v0.1.0-alpha.37` of the [OpenAI go module](https://github.com/openai/openai-go).
+
 ## 0.1.0 (2024-10-14)
 
 ### Features Added

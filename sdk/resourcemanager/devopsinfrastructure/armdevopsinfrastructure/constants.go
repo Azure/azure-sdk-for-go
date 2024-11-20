@@ -9,6 +9,21 @@ const (
 	moduleVersion = "v1.0.0"
 )
 
+// ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+type ActionType string
+
+const (
+	// ActionTypeInternal - Actions are for internal-only APIs.
+	ActionTypeInternal ActionType = "Internal"
+)
+
+// PossibleActionTypeValues returns the possible values for the ActionType const type.
+func PossibleActionTypeValues() []ActionType {
+	return []ActionType{
+		ActionTypeInternal,
+	}
+}
+
 // AzureDevOpsPermissionType - Determines who has admin permissions to the Azure DevOps pool.
 type AzureDevOpsPermissionType string
 
@@ -114,6 +129,28 @@ func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 		ManagedServiceIdentityTypeSystemAssigned,
 		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
 		ManagedServiceIdentityTypeUserAssigned,
+	}
+}
+
+// Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+// value is "user,system"
+type Origin string
+
+const (
+	// OriginSystem - Indicates the operation is initiated by a system.
+	OriginSystem Origin = "system"
+	// OriginUser - Indicates the operation is initiated by a user.
+	OriginUser Origin = "user"
+	// OriginUserSystem - Indicates the operation is initiated by a user or system.
+	OriginUserSystem Origin = "user,system"
+)
+
+// PossibleOriginValues returns the possible values for the Origin const type.
+func PossibleOriginValues() []Origin {
+	return []Origin{
+		OriginSystem,
+		OriginUser,
+		OriginUserSystem,
 	}
 }
 
@@ -321,42 +358,5 @@ func PossibleStorageAccountTypeValues() []StorageAccountType {
 		StorageAccountTypeStandardLRS,
 		StorageAccountTypeStandardSSDLRS,
 		StorageAccountTypeStandardSSDZRS,
-	}
-}
-
-// actionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
-type actionType string
-
-const (
-	// actionTypeInternal - Actions are for internal-only APIs.
-	actionTypeInternal actionType = "Internal"
-)
-
-// PossibleactionTypeValues returns the possible values for the actionType const type.
-func PossibleactionTypeValues() []actionType {
-	return []actionType{
-		actionTypeInternal,
-	}
-}
-
-// origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
-// value is "user,system"
-type origin string
-
-const (
-	// originSystem - Indicates the operation is initiated by a system.
-	originSystem origin = "system"
-	// originUser - Indicates the operation is initiated by a user.
-	originUser origin = "user"
-	// originUserSystem - Indicates the operation is initiated by a user or system.
-	originUserSystem origin = "user,system"
-)
-
-// PossibleoriginValues returns the possible values for the origin const type.
-func PossibleoriginValues() []origin {
-	return []origin{
-		originSystem,
-		originUser,
-		originUserSystem,
 	}
 }

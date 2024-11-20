@@ -12,7 +12,7 @@ import (
 )
 
 // Generated from example definition: 2024-10-19/ListOperations.json
-func ExampleOperationsClient_NewlistMethodPager() {
+func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -22,7 +22,7 @@ func ExampleOperationsClient_NewlistMethodPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewOperationsClient().NewlistMethodPager(nil)
+	pager := clientFactory.NewOperationsClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -33,8 +33,8 @@ func ExampleOperationsClient_NewlistMethodPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armdevopsinfrastructure.operationsClientlistMethodResponse{
-		// 	operationListResult: armdevopsinfrastructure.operationListResult{
+		// page = armdevopsinfrastructure.OperationsClientListResponse{
+		// 	OperationListResult: armdevopsinfrastructure.OperationListResult{
 		// 	},
 		// }
 	}

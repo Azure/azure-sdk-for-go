@@ -1,7 +1,5 @@
 # Azure Terraform Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/terraform/armterraform)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/terraform/armterraform)
-
 The `armterraform` module provides operations for working with Azure Terraform.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/terraform/armterraform)

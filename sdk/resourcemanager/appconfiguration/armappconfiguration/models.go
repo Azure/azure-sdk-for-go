@@ -94,6 +94,9 @@ type ConfigurationStoreProperties struct {
 	// Indicates whether the configuration store need to be recovered.
 	CreateMode *CreateMode
 
+	// Property specifying the configuration of data plane proxy for Azure Resource Manager (ARM).
+	DataPlaneProxy *DataPlaneProxyProperties
+
 	// Disables all authentication methods other than AAD authentication.
 	DisableLocalAuth *bool
 
@@ -124,6 +127,9 @@ type ConfigurationStoreProperties struct {
 
 // ConfigurationStorePropertiesUpdateParameters - The properties for updating a configuration store.
 type ConfigurationStorePropertiesUpdateParameters struct {
+	// Property specifying the configuration of data plane proxy for Azure Resource Manager (ARM).
+	DataPlaneProxy *DataPlaneProxyProperties
+
 	// Disables all authentication methods other than AAD authentication.
 	DisableLocalAuth *bool
 
@@ -150,6 +156,16 @@ type ConfigurationStoreUpdateParameters struct {
 
 	// The ARM resource tags.
 	Tags map[string]*string
+}
+
+// DataPlaneProxyProperties - The data plane proxy settings for a configuration store.
+type DataPlaneProxyProperties struct {
+	// The data plane proxy authentication mode. This property manages the authentication mode of request to the data plane resources.
+	AuthenticationMode *AuthenticationMode
+
+	// The data plane proxy private link delegation. This property manages if a request from delegated Azure Resource Manager
+	// (ARM) private link is allowed when the data plane resource requires private link.
+	PrivateLinkDelegation *PrivateLinkDelegation
 }
 
 // DeletedConfigurationStore - Deleted configuration store information with extended details.
@@ -203,34 +219,6 @@ type EncryptionProperties struct {
 	KeyVaultProperties *KeyVaultProperties
 }
 
-// ErrorAdditionalInfo - The resource management error additional info.
-type ErrorAdditionalInfo struct {
-	// READ-ONLY; The additional info.
-	Info any
-
-	// READ-ONLY; The additional info type.
-	Type *string
-}
-
-// ErrorDetails - The details of the error.
-type ErrorDetails struct {
-	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo
-
-	// READ-ONLY; Error code.
-	Code *string
-
-	// READ-ONLY; Error message indicating why the operation failed.
-	Message *string
-}
-
-// ErrorResponse - Error response indicates that the service is not able to process the incoming request. The reason is provided
-// in the error message.
-type ErrorResponse struct {
-	// The details of the error.
-	Error *ErrorDetails
-}
-
 // KeyValue - The key-value resource along with all resource properties.
 type KeyValue struct {
 	// All key-value properties.
@@ -246,13 +234,13 @@ type KeyValue struct {
 	Type *string
 }
 
-// KeyValueListResult - The result of a request to list key-values.
-type KeyValueListResult struct {
-	// The URI that can be used to request the next set of paged results.
-	NextLink *string
+// KeyValueFilter - Enables filtering of key-values.
+type KeyValueFilter struct {
+	// REQUIRED; Filters key-values by their key field.
+	Key *string
 
-	// The collection value.
-	Value []*KeyValue
+	// Filters key-values by their label field.
+	Label *string
 }
 
 // KeyValueProperties - All key-value properties.
@@ -553,18 +541,6 @@ type ReplicaProperties struct {
 	ProvisioningState *ReplicaProvisioningState
 }
 
-// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
-type Resource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
 // ResourceIdentity - An identity that can be associated with a resource.
 type ResourceIdentity struct {
 	// The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity
@@ -600,6 +576,61 @@ type ServiceSpecification struct {
 	MetricSpecifications []*MetricSpecification
 }
 
+// Snapshot - The snapshot resource.
+type Snapshot struct {
+	// All snapshot properties.
+	Properties *SnapshotProperties
+
+	// READ-ONLY; The resource ID.
+	ID *string
+
+	// READ-ONLY; The name of the snapshot.
+	Name *string
+
+	// READ-ONLY; The type of the resource.
+	Type *string
+}
+
+// SnapshotProperties - All snapshot properties.
+type SnapshotProperties struct {
+	// REQUIRED; A list of filters used to filter the key-values included in the snapshot.
+	Filters []*KeyValueFilter
+
+	// The composition type describes how the key-values within the snapshot are composed. The 'key' composition type ensures
+	// there are no two key-values containing the same key. The 'key_label' composition
+	// type ensures there are no two key-values containing the same key and label.
+	CompositionType *CompositionType
+
+	// The amount of time, in seconds, that a snapshot will remain in the archived state before expiring. This property is only
+	// writable during the creation of a snapshot. If not specified, the default
+	// lifetime of key-value revisions will be used.
+	RetentionPeriod *int64
+
+	// The tags of the snapshot. NOTE: These are data plane tags, not Azure Resource Manager (ARM) tags.
+	Tags map[string]*string
+
+	// READ-ONLY; The time that the snapshot was created.
+	Created *time.Time
+
+	// READ-ONLY; A value representing the current state of the snapshot.
+	Etag *string
+
+	// READ-ONLY; The time that the snapshot will expire.
+	Expires *time.Time
+
+	// READ-ONLY; The amount of key-values in the snapshot.
+	ItemsCount *int64
+
+	// READ-ONLY; The provisioning state of the snapshot.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; The size in bytes of the snapshot.
+	Size *int64
+
+	// READ-ONLY; The current status of the snapshot.
+	Status *SnapshotStatus
+}
+
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
@@ -619,25 +650,6 @@ type SystemData struct {
 
 	// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType
-}
-
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
-// and a 'location'
-type TrackedResource struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
 }
 
 // UserIdentity - A resource identity that is managed by the user of the service.

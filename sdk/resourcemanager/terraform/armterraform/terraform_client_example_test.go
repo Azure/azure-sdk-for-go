@@ -23,10 +23,12 @@ func ExampleTerraformClient_BeginExportTerraform() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewTerraformClient().BeginExportTerraform(ctx, armterraform.ExportResourceGroup{
-		Type:              to.Ptr(armterraform.TypeExportResourceGroup),
-		ResourceGroupName: to.Ptr("rg1"),
-	}, nil)
+	// armterraform.ExportResourceGroup{
+	// 	Type:              to.Ptr(armterraform.TypeExportResourceGroup),
+	// 	ResourceGroupName: to.Ptr("rg1"),
+	// }
+	var b armterraform.BaseExportModelClassification
+	poller, err := clientFactory.NewTerraformClient().BeginExportTerraform(ctx, b, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

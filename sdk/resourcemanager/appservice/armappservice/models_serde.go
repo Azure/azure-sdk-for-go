@@ -19748,6 +19748,7 @@ func (s SiteProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "defaultHostName", s.DefaultHostName)
 	populate(objectMap, "enabled", s.Enabled)
 	populate(objectMap, "enabledHostNames", s.EnabledHostNames)
+	populate(objectMap, "endToEndEncryptionEnabled", s.EndToEndEncryptionEnabled)
 	populate(objectMap, "functionAppConfig", s.FunctionAppConfig)
 	populate(objectMap, "httpsOnly", s.HTTPSOnly)
 	populate(objectMap, "hostNameSslStates", s.HostNameSSLStates)
@@ -19839,6 +19840,9 @@ func (s *SiteProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "enabledHostNames":
 			err = unpopulate(val, "EnabledHostNames", &s.EnabledHostNames)
+			delete(rawMsg, key)
+		case "endToEndEncryptionEnabled":
+			err = unpopulate(val, "EndToEndEncryptionEnabled", &s.EndToEndEncryptionEnabled)
 			delete(rawMsg, key)
 		case "functionAppConfig":
 			err = unpopulate(val, "FunctionAppConfig", &s.FunctionAppConfig)

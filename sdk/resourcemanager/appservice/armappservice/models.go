@@ -8112,6 +8112,9 @@ type SiteProperties struct {
 	// true if the app is enabled; otherwise, false. Setting this value to false disables the app (takes the app offline).
 	Enabled *bool
 
+	// Whether to use end to end encryption between the FrontEnd and the Worker
+	EndToEndEncryptionEnabled *bool
+
 	// Configuration specific of the Azure Function app.
 	FunctionAppConfig *FunctionAppConfig
 

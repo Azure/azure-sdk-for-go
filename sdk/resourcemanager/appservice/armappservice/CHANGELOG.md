@@ -1,5 +1,11 @@
 # Release History
 
+## 4.1.0 (2024-11-20)
+### Features Added
+
+- New field `EndToEndEncryptionEnabled` in struct `SiteProperties`
+
+
 ## 4.0.0 (2024-08-08)
 ### Breaking Changes
 

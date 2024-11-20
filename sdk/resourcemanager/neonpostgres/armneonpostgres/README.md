@@ -1,6 +1,6 @@
-# Azure Neonpostgres Module for Go
+# Azure Neon Postgres Module for Go
 
-The `armneonpostgres` module provides operations for working with Azure Neonpostgres.
+The `armneonpostgres` module provides operations for working with Azure Neon Postgres.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/neonpostgres/armneonpostgres)
 
@@ -15,7 +15,7 @@ The `armneonpostgres` module provides operations for working with Azure Neonpost
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Neonpostgres module:
+Install the Azure Neon Postgres module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/neonpostgres/armneonpostgres
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/neonpostgres/armneo
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Neonpostgres.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Neon Postgres.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Neonpostgres module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure Neon Postgres module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armneonpostgres.NewClientFactory(<subscription ID>, cred, nil)
@@ -68,7 +68,7 @@ Please see https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/samples/fakes
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please
-[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Neonpostgres` label.
+[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Neon Postgres` label.
 
 # Contributing
 

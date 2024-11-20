@@ -37,6 +37,18 @@ func TestAssistants(t *testing.T) {
 			require.NoError(t, err)
 		})
 
+		junkAssistant, err := assistantClient.New(context.Background(), openai.BetaAssistantNewParams{
+			Model:        openai.F(azureOpenAI.Assistants.Model),
+			Instructions: openai.String("Answer questions in any manner possible"),
+		})
+		require.NoError(t, err)
+
+		// ensure there's at least one assistant "after" what we request
+		t.Cleanup(func() {
+			_, err := assistantClient.Delete(context.Background(), junkAssistant.ID)
+			require.NoError(t, err)
+		})
+
 		const desc = "This is a newly updated description"
 
 		// update the assistant's description

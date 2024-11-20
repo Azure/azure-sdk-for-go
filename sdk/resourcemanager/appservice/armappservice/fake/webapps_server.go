@@ -1606,6 +1606,10 @@ type WebAppsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	UpdateHybridConnectionSlot func(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, slot string, connectionEnvelope armappservice.HybridConnection, options *armappservice.WebAppsClientUpdateHybridConnectionSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateHybridConnectionSlotResponse], errResp azfake.ErrorResponder)
 
+	// UpdateMachineKey is the fake for method WebAppsClient.UpdateMachineKey
+	// HTTP status codes to indicate success: http.StatusOK
+	UpdateMachineKey func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientUpdateMachineKeyOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateMachineKeyResponse], errResp azfake.ErrorResponder)
+
 	// UpdateMetadata is the fake for method WebAppsClient.UpdateMetadata
 	// HTTP status codes to indicate success: http.StatusOK
 	UpdateMetadata func(ctx context.Context, resourceGroupName string, name string, metadata armappservice.StringDictionary, options *armappservice.WebAppsClientUpdateMetadataOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateMetadataResponse], errResp azfake.ErrorResponder)
@@ -2714,6 +2718,8 @@ func (w *WebAppsServerTransport) Do(req *http.Request) (*http.Response, error) {
 		resp, err = w.dispatchUpdateHybridConnection(req)
 	case "WebAppsClient.UpdateHybridConnectionSlot":
 		resp, err = w.dispatchUpdateHybridConnectionSlot(req)
+	case "WebAppsClient.UpdateMachineKey":
+		resp, err = w.dispatchUpdateMachineKey(req)
 	case "WebAppsClient.UpdateMetadata":
 		resp, err = w.dispatchUpdateMetadata(req)
 	case "WebAppsClient.UpdateMetadataSlot":
@@ -19236,6 +19242,39 @@ func (w *WebAppsServerTransport) dispatchUpdateHybridConnectionSlot(req *http.Re
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).HybridConnection, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WebAppsServerTransport) dispatchUpdateMachineKey(req *http.Request) (*http.Response, error) {
+	if w.srv.UpdateMachineKey == nil {
+		return nil, &nonRetriableError{errors.New("fake for method UpdateMachineKey not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/sites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updatemachinekey`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.UpdateMachineKey(req.Context(), resourceGroupNameParam, nameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Interface, req)
 	if err != nil {
 		return nil, err
 	}

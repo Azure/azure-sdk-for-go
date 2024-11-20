@@ -1,7 +1,5 @@
 # Azure Neonpostgres Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/neonpostgres/armneonpostgres)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/neonpostgres/armneonpostgres)
-
 The `armneonpostgres` module provides operations for working with Azure Neonpostgres.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/neonpostgres/armneonpostgres)

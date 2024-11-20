@@ -1,7 +1,5 @@
 # Azure Connectedcache Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedcache/armconnectedcache)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedcache/armconnectedcache)
-
 The `armconnectedcache` module provides operations for working with Azure Connectedcache.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/connectedcache/armconnectedcache)

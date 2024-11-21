@@ -102,9 +102,6 @@ function installModule([string]$moduleName, [string]$version, $repoUrl) {
     throw "Failed to install module $moduleName with version $version"
   }
 
-  Write-Host "Bebroder debug unregister $repoUrl"
-  Unregister-PSRepository -Name $repoUrl
-
   return $modules[0]
 }
 

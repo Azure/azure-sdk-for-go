@@ -201,15 +201,15 @@ func newStainlessTestClientWithOptions(t *testing.T, ep endpoint, options *stain
 		return nil
 	}
 
-	tokenCredential, err := credential.New(nil)
-	require.NoError(t, err)
-
 	if options != nil && options.UseAPIKey {
 		return openai.NewClient(
 			azure.WithEndpoint(ep.URL, apiVersion),
 			azure.WithAPIKey(ep.APIKey),
 		)
 	}
+
+	tokenCredential, err := credential.New(nil)
+	require.NoError(t, err)
 
 	return openai.NewClient(
 		azure.WithEndpoint(ep.URL, apiVersion),

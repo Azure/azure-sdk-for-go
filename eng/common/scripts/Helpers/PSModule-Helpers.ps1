@@ -103,7 +103,7 @@ function installModule([string]$moduleName, [string]$version, $repoUrl) {
   }
 
   Write-Host "Bebroder debug unregister $repoUrl"
-  Unregister-PSRepository -Name $repoUrl -SourceLocation $repoUrl -InstallationPolicy Trusted
+  Unregister-PSRepository -Name $repoUrl
 
   return $modules[0]
 }

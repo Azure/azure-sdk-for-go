@@ -1,5 +1,32 @@
 # Release History
 
+## 7.4.0-beta.1 (2024-11-18)
+### Features Added
+
+- New value `ServiceLevelFlexible` added to enum type `ServiceLevel`
+- New enum type `AcceptGrowCapacityPoolForShortTermCloneSplit` with values `AcceptGrowCapacityPoolForShortTermCloneSplitAccepted`, `AcceptGrowCapacityPoolForShortTermCloneSplitDeclined`
+- New enum type `ReplicationType` with values `ReplicationTypeCrossRegionReplication`, `ReplicationTypeCrossZoneReplication`
+- New enum type `VolumeLanguage` with values `VolumeLanguageAr`, `VolumeLanguageArUTF8`, `VolumeLanguageC`, `VolumeLanguageCUTF8`, `VolumeLanguageCs`, `VolumeLanguageCsUTF8`, `VolumeLanguageDa`, `VolumeLanguageDaUTF8`, `VolumeLanguageDe`, `VolumeLanguageDeUTF8`, `VolumeLanguageEn`, `VolumeLanguageEnUTF8`, `VolumeLanguageEnUs`, `VolumeLanguageEnUsUTF8`, `VolumeLanguageEs`, `VolumeLanguageEsUTF8`, `VolumeLanguageFi`, `VolumeLanguageFiUTF8`, `VolumeLanguageFr`, `VolumeLanguageFrUTF8`, `VolumeLanguageHe`, `VolumeLanguageHeUTF8`, `VolumeLanguageHr`, `VolumeLanguageHrUTF8`, `VolumeLanguageHu`, `VolumeLanguageHuUTF8`, `VolumeLanguageIt`, `VolumeLanguageItUTF8`, `VolumeLanguageJa`, `VolumeLanguageJaJp932`, `VolumeLanguageJaJp932UTF8`, `VolumeLanguageJaJpPck`, `VolumeLanguageJaJpPckUTF8`, `VolumeLanguageJaJpPckV2`, `VolumeLanguageJaJpPckV2UTF8`, `VolumeLanguageJaUTF8`, `VolumeLanguageJaV1`, `VolumeLanguageJaV1UTF8`, `VolumeLanguageKo`, `VolumeLanguageKoUTF8`, `VolumeLanguageNl`, `VolumeLanguageNlUTF8`, `VolumeLanguageNo`, `VolumeLanguageNoUTF8`, `VolumeLanguagePl`, `VolumeLanguagePlUTF8`, `VolumeLanguagePt`, `VolumeLanguagePtUTF8`, `VolumeLanguageRo`, `VolumeLanguageRoUTF8`, `VolumeLanguageRu`, `VolumeLanguageRuUTF8`, `VolumeLanguageSk`, `VolumeLanguageSkUTF8`, `VolumeLanguageSl`, `VolumeLanguageSlUTF8`, `VolumeLanguageSv`, `VolumeLanguageSvUTF8`, `VolumeLanguageTr`, `VolumeLanguageTrUTF8`, `VolumeLanguageUTF8Mb4`, `VolumeLanguageZh`, `VolumeLanguageZhGbk`, `VolumeLanguageZhGbkUTF8`, `VolumeLanguageZhTw`, `VolumeLanguageZhTwBig5`, `VolumeLanguageZhTwBig5UTF8`, `VolumeLanguageZhTwUTF8`, `VolumeLanguageZhUTF8`
+- New function `*AccountsClient.BeginChangeKeyVault(context.Context, string, string, *AccountsClientBeginChangeKeyVaultOptions) (*runtime.Poller[AccountsClientChangeKeyVaultResponse], error)`
+- New function `*AccountsClient.BeginGetChangeKeyVaultInformation(context.Context, string, string, *AccountsClientBeginGetChangeKeyVaultInformationOptions) (*runtime.Poller[AccountsClientGetChangeKeyVaultInformationResponse], error)`
+- New function `*AccountsClient.BeginTransitionToCmk(context.Context, string, string, *AccountsClientBeginTransitionToCmkOptions) (*runtime.Poller[AccountsClientTransitionToCmkResponse], error)`
+- New function `*VolumesClient.BeginListQuotaReport(context.Context, string, string, string, string, *VolumesClientBeginListQuotaReportOptions) (*runtime.Poller[VolumesClientListQuotaReportResponse], error)`
+- New function `*VolumesClient.BeginSplitCloneFromParent(context.Context, string, string, string, string, *VolumesClientBeginSplitCloneFromParentOptions) (*runtime.Poller[VolumesClientSplitCloneFromParentResponse], error)`
+- New struct `ChangeKeyVault`
+- New struct `DestinationReplication`
+- New struct `EncryptionTransitionRequest`
+- New struct `KeyVaultPrivateEndpoint`
+- New struct `ListQuotaReportResponse`
+- New struct `QuotaReport`
+- New field `IsMultiAdEnabled`, `NfsV4IDDomain` in struct `AccountProperties`
+- New field `IsLargeVolume` in struct `BackupProperties`
+- New field `FederatedClientID` in struct `EncryptionIdentity`
+- New field `CustomThroughputMibps` in struct `PoolPatchProperties`
+- New field `CustomThroughputMibps` in struct `PoolProperties`
+- New field `DestinationReplications` in struct `ReplicationObject`
+- New field `AcceptGrowCapacityPoolForShortTermCloneSplit`, `InheritedSizeInBytes`, `Language` in struct `VolumeProperties`
+
+
 ## 7.3.0 (2024-10-23)
 ### Features Added
 

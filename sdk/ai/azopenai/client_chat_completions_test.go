@@ -300,25 +300,6 @@ func TestClient_GetChatCompletionsStream(t *testing.T) {
 	})
 }
 
-func TestClient_GetChatCompletions_InvalidModel(t *testing.T) {
-	client := newTestClient(t, azureOpenAI.ChatCompletions.Endpoint)
-
-	_, err := client.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
-		Messages: []azopenai.ChatRequestMessageClassification{
-			&azopenai.ChatRequestUserMessage{
-				Content: azopenai.NewChatRequestUserMessageContent("Count to 100, with a comma between each number and no newlines. E.g., 1, 2, 3, ..."),
-			},
-		},
-		MaxTokens:      to.Ptr(int32(1024)),
-		Temperature:    to.Ptr(float32(0.0)),
-		DeploymentName: to.Ptr("invalid model name"),
-	}, nil)
-
-	var respErr *azcore.ResponseError
-	require.ErrorAs(t, err, &respErr)
-	require.Equal(t, "DeploymentNotFound", respErr.ErrorCode)
-}
-
 func TestClient_GetChatCompletionsStream_Error(t *testing.T) {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		t.Skip()

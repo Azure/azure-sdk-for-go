@@ -184,3 +184,14 @@ type ReplicasClientListByConfigurationStoreOptions struct {
 	// skipToken parameter that specifies a starting point to use for subsequent calls.
 	SkipToken *string
 }
+
+// SnapshotsClientBeginCreateOptions contains the optional parameters for the SnapshotsClient.BeginCreate method.
+type SnapshotsClientBeginCreateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// SnapshotsClientGetOptions contains the optional parameters for the SnapshotsClient.Get method.
+type SnapshotsClientGetOptions struct {
+	// placeholder for future optional parameters
+}

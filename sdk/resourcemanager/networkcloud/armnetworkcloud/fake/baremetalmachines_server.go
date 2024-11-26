@@ -26,7 +26,7 @@ import (
 // BareMetalMachinesServer is a fake server for instances of the armnetworkcloud.BareMetalMachinesClient type.
 type BareMetalMachinesServer struct {
 	// BeginCordon is the fake for method BareMetalMachinesClient.BeginCordon
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginCordon func(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *armnetworkcloud.BareMetalMachinesClientBeginCordonOptions) (resp azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientCordonResponse], errResp azfake.ErrorResponder)
 
 	// BeginCreateOrUpdate is the fake for method BareMetalMachinesClient.BeginCreateOrUpdate
@@ -50,39 +50,39 @@ type BareMetalMachinesServer struct {
 	NewListBySubscriptionPager func(options *armnetworkcloud.BareMetalMachinesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armnetworkcloud.BareMetalMachinesClientListBySubscriptionResponse])
 
 	// BeginPowerOff is the fake for method BareMetalMachinesClient.BeginPowerOff
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginPowerOff func(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *armnetworkcloud.BareMetalMachinesClientBeginPowerOffOptions) (resp azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientPowerOffResponse], errResp azfake.ErrorResponder)
 
 	// BeginReimage is the fake for method BareMetalMachinesClient.BeginReimage
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginReimage func(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *armnetworkcloud.BareMetalMachinesClientBeginReimageOptions) (resp azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientReimageResponse], errResp azfake.ErrorResponder)
 
 	// BeginReplace is the fake for method BareMetalMachinesClient.BeginReplace
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginReplace func(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *armnetworkcloud.BareMetalMachinesClientBeginReplaceOptions) (resp azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientReplaceResponse], errResp azfake.ErrorResponder)
 
 	// BeginRestart is the fake for method BareMetalMachinesClient.BeginRestart
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginRestart func(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *armnetworkcloud.BareMetalMachinesClientBeginRestartOptions) (resp azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientRestartResponse], errResp azfake.ErrorResponder)
 
 	// BeginRunCommand is the fake for method BareMetalMachinesClient.BeginRunCommand
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginRunCommand func(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineRunCommandParameters armnetworkcloud.BareMetalMachineRunCommandParameters, options *armnetworkcloud.BareMetalMachinesClientBeginRunCommandOptions) (resp azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientRunCommandResponse], errResp azfake.ErrorResponder)
 
 	// BeginRunDataExtracts is the fake for method BareMetalMachinesClient.BeginRunDataExtracts
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginRunDataExtracts func(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineRunDataExtractsParameters armnetworkcloud.BareMetalMachineRunDataExtractsParameters, options *armnetworkcloud.BareMetalMachinesClientBeginRunDataExtractsOptions) (resp azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientRunDataExtractsResponse], errResp azfake.ErrorResponder)
 
 	// BeginRunReadCommands is the fake for method BareMetalMachinesClient.BeginRunReadCommands
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginRunReadCommands func(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineRunReadCommandsParameters armnetworkcloud.BareMetalMachineRunReadCommandsParameters, options *armnetworkcloud.BareMetalMachinesClientBeginRunReadCommandsOptions) (resp azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientRunReadCommandsResponse], errResp azfake.ErrorResponder)
 
 	// BeginStart is the fake for method BareMetalMachinesClient.BeginStart
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginStart func(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *armnetworkcloud.BareMetalMachinesClientBeginStartOptions) (resp azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientStartResponse], errResp azfake.ErrorResponder)
 
 	// BeginUncordon is the fake for method BareMetalMachinesClient.BeginUncordon
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUncordon func(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *armnetworkcloud.BareMetalMachinesClientBeginUncordonOptions) (resp azfake.PollerResponder[armnetworkcloud.BareMetalMachinesClientUncordonResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdate is the fake for method BareMetalMachinesClient.BeginUpdate
@@ -233,9 +233,9 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginCordon(req *http.Request
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		b.beginCordon.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginCordon) {
 		b.beginCordon.remove(req)
@@ -482,9 +482,9 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginPowerOff(req *http.Reque
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		b.beginPowerOff.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginPowerOff) {
 		b.beginPowerOff.remove(req)
@@ -526,9 +526,9 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginReimage(req *http.Reques
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		b.beginReimage.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginReimage) {
 		b.beginReimage.remove(req)
@@ -580,9 +580,9 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginReplace(req *http.Reques
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		b.beginReplace.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginReplace) {
 		b.beginReplace.remove(req)
@@ -624,9 +624,9 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginRestart(req *http.Reques
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		b.beginRestart.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginRestart) {
 		b.beginRestart.remove(req)
@@ -672,9 +672,9 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginRunCommand(req *http.Req
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		b.beginRunCommand.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginRunCommand) {
 		b.beginRunCommand.remove(req)
@@ -720,9 +720,9 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginRunDataExtracts(req *htt
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		b.beginRunDataExtracts.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginRunDataExtracts) {
 		b.beginRunDataExtracts.remove(req)
@@ -768,9 +768,9 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginRunReadCommands(req *htt
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		b.beginRunReadCommands.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginRunReadCommands) {
 		b.beginRunReadCommands.remove(req)
@@ -812,9 +812,9 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginStart(req *http.Request)
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		b.beginStart.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginStart) {
 		b.beginStart.remove(req)
@@ -856,9 +856,9 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginUncordon(req *http.Reque
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		b.beginUncordon.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginUncordon) {
 		b.beginUncordon.remove(req)

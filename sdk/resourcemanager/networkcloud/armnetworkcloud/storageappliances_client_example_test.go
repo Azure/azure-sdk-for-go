@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/StorageAppliances_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/98d74b2db60e46ceb7e3b75755e51519cd500485/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/StorageAppliances_ListBySubscription.json
 func ExampleStorageAppliancesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,20 +73,35 @@ func ExampleStorageAppliancesClient_NewListBySubscriptionPager() {
 		// 				DetailedStatus: to.Ptr(armnetworkcloud.StorageApplianceDetailedStatusAvailable),
 		// 				DetailedStatusMessage: to.Ptr("Storage appliance is up and running"),
 		// 				ManagementIPv4Address: to.Ptr("192.0.2.2"),
+		// 				Manufacturer: to.Ptr("Contoso Storage"),
+		// 				Model: to.Ptr("ArrayStore-Flash70"),
 		// 				ProvisioningState: to.Ptr(armnetworkcloud.StorageApplianceProvisioningStateSucceeded),
 		// 				RackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/racks/rackName"),
 		// 				RackSlot: to.Ptr[int64](1),
 		// 				RemoteVendorManagementFeature: to.Ptr(armnetworkcloud.RemoteVendorManagementFeatureSupported),
 		// 				RemoteVendorManagementStatus: to.Ptr(armnetworkcloud.RemoteVendorManagementStatusEnabled),
+		// 				SecretRotationStatus: []*armnetworkcloud.SecretRotationStatus{
+		// 					{
+		// 						ExpirePeriodDays: to.Ptr[int64](90),
+		// 						LastRotationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-30T13:27:23.103Z"); return t}()),
+		// 						RotationPeriodDays: to.Ptr[int64](60),
+		// 						SecretArchiveReference: &armnetworkcloud.SecretArchiveReference{
+		// 							KeyVaultID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.KeyVault/vaults/keyVaultName"),
+		// 							SecretName: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff-resource-group-cluster-1679871-storage-appliance-credential-manager-ffffffff"),
+		// 							SecretVersion: to.Ptr("02ab6c1f9c0f4982b0632b0d5d74a33b"),
+		// 						},
+		// 						SecretType: to.Ptr("Storage Appliance User"),
+		// 				}},
 		// 				SerialNumber: to.Ptr("BM1219XXX"),
 		// 				StorageApplianceSKUID: to.Ptr("684E-3B16-399E"),
+		// 				Version: to.Ptr("9.9.9"),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/StorageAppliances_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/98d74b2db60e46ceb7e3b75755e51519cd500485/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/StorageAppliances_ListByResourceGroup.json
 func ExampleStorageAppliancesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -141,20 +156,35 @@ func ExampleStorageAppliancesClient_NewListByResourceGroupPager() {
 		// 				DetailedStatus: to.Ptr(armnetworkcloud.StorageApplianceDetailedStatusAvailable),
 		// 				DetailedStatusMessage: to.Ptr("Storage appliance is up and running"),
 		// 				ManagementIPv4Address: to.Ptr("192.0.2.2"),
+		// 				Manufacturer: to.Ptr("Contoso Storage"),
+		// 				Model: to.Ptr("ArrayStore-Flash70"),
 		// 				ProvisioningState: to.Ptr(armnetworkcloud.StorageApplianceProvisioningStateSucceeded),
 		// 				RackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/racks/rackName"),
 		// 				RackSlot: to.Ptr[int64](1),
 		// 				RemoteVendorManagementFeature: to.Ptr(armnetworkcloud.RemoteVendorManagementFeatureSupported),
 		// 				RemoteVendorManagementStatus: to.Ptr(armnetworkcloud.RemoteVendorManagementStatusEnabled),
+		// 				SecretRotationStatus: []*armnetworkcloud.SecretRotationStatus{
+		// 					{
+		// 						ExpirePeriodDays: to.Ptr[int64](90),
+		// 						LastRotationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-30T13:27:23.103Z"); return t}()),
+		// 						RotationPeriodDays: to.Ptr[int64](60),
+		// 						SecretArchiveReference: &armnetworkcloud.SecretArchiveReference{
+		// 							KeyVaultID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.KeyVault/vaults/keyVaultName"),
+		// 							SecretName: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff-resource-group-cluster-1679871-storage-appliance-credential-manager-ffffffff"),
+		// 							SecretVersion: to.Ptr("02ab6c1f9c0f4982b0632b0d5d74a33b"),
+		// 						},
+		// 						SecretType: to.Ptr("Storage Appliance User"),
+		// 				}},
 		// 				SerialNumber: to.Ptr("BM1219XXX"),
 		// 				StorageApplianceSKUID: to.Ptr("684E-3B16-399E"),
+		// 				Version: to.Ptr("9.9.9"),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/StorageAppliances_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/98d74b2db60e46ceb7e3b75755e51519cd500485/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/StorageAppliances_Get.json
 func ExampleStorageAppliancesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -203,18 +233,33 @@ func ExampleStorageAppliancesClient_Get() {
 	// 		DetailedStatus: to.Ptr(armnetworkcloud.StorageApplianceDetailedStatusAvailable),
 	// 		DetailedStatusMessage: to.Ptr("Storage appliance is up and running"),
 	// 		ManagementIPv4Address: to.Ptr("192.0.2.2"),
+	// 		Manufacturer: to.Ptr("Contoso Storage"),
+	// 		Model: to.Ptr("ArrayStore-Flash70"),
 	// 		ProvisioningState: to.Ptr(armnetworkcloud.StorageApplianceProvisioningStateSucceeded),
 	// 		RackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/racks/rackName"),
 	// 		RackSlot: to.Ptr[int64](1),
 	// 		RemoteVendorManagementFeature: to.Ptr(armnetworkcloud.RemoteVendorManagementFeatureSupported),
 	// 		RemoteVendorManagementStatus: to.Ptr(armnetworkcloud.RemoteVendorManagementStatusEnabled),
+	// 		SecretRotationStatus: []*armnetworkcloud.SecretRotationStatus{
+	// 			{
+	// 				ExpirePeriodDays: to.Ptr[int64](90),
+	// 				LastRotationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-30T13:27:23.103Z"); return t}()),
+	// 				RotationPeriodDays: to.Ptr[int64](60),
+	// 				SecretArchiveReference: &armnetworkcloud.SecretArchiveReference{
+	// 					KeyVaultID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.KeyVault/vaults/keyVaultName"),
+	// 					SecretName: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff-resource-group-cluster-1679871-storage-appliance-credential-manager-ffffffff"),
+	// 					SecretVersion: to.Ptr("02ab6c1f9c0f4982b0632b0d5d74a33b"),
+	// 				},
+	// 				SecretType: to.Ptr("Storage Appliance User"),
+	// 		}},
 	// 		SerialNumber: to.Ptr("BM1219XXX"),
 	// 		StorageApplianceSKUID: to.Ptr("684E-3B16-399E"),
+	// 		Version: to.Ptr("9.9.9"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/StorageAppliances_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/98d74b2db60e46ceb7e3b75755e51519cd500485/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/StorageAppliances_Create.json
 func ExampleStorageAppliancesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -287,18 +332,33 @@ func ExampleStorageAppliancesClient_BeginCreateOrUpdate() {
 	// 		DetailedStatus: to.Ptr(armnetworkcloud.StorageApplianceDetailedStatusAvailable),
 	// 		DetailedStatusMessage: to.Ptr("Storage appliance is up and running"),
 	// 		ManagementIPv4Address: to.Ptr("192.0.2.2"),
+	// 		Manufacturer: to.Ptr("Contoso Storage"),
+	// 		Model: to.Ptr("ArrayStore-Flash70"),
 	// 		ProvisioningState: to.Ptr(armnetworkcloud.StorageApplianceProvisioningStateSucceeded),
 	// 		RackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/racks/rackName"),
 	// 		RackSlot: to.Ptr[int64](1),
 	// 		RemoteVendorManagementFeature: to.Ptr(armnetworkcloud.RemoteVendorManagementFeatureSupported),
 	// 		RemoteVendorManagementStatus: to.Ptr(armnetworkcloud.RemoteVendorManagementStatusEnabled),
+	// 		SecretRotationStatus: []*armnetworkcloud.SecretRotationStatus{
+	// 			{
+	// 				ExpirePeriodDays: to.Ptr[int64](90),
+	// 				LastRotationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-30T13:27:23.103Z"); return t}()),
+	// 				RotationPeriodDays: to.Ptr[int64](60),
+	// 				SecretArchiveReference: &armnetworkcloud.SecretArchiveReference{
+	// 					KeyVaultID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.KeyVault/vaults/keyVaultName"),
+	// 					SecretName: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff-resource-group-cluster-1679871-storage-appliance-credential-manager-ffffffff"),
+	// 					SecretVersion: to.Ptr("02ab6c1f9c0f4982b0632b0d5d74a33b"),
+	// 				},
+	// 				SecretType: to.Ptr("Storage Appliance User"),
+	// 		}},
 	// 		SerialNumber: to.Ptr("BM1219XXX"),
 	// 		StorageApplianceSKUID: to.Ptr("684E-3B16-399E"),
+	// 		Version: to.Ptr("9.9.9"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/StorageAppliances_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/98d74b2db60e46ceb7e3b75755e51519cd500485/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/StorageAppliances_Delete.json
 func ExampleStorageAppliancesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -319,7 +379,7 @@ func ExampleStorageAppliancesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/StorageAppliances_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/98d74b2db60e46ceb7e3b75755e51519cd500485/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/StorageAppliances_Patch.json
 func ExampleStorageAppliancesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -380,18 +440,33 @@ func ExampleStorageAppliancesClient_BeginUpdate() {
 	// 		DetailedStatus: to.Ptr(armnetworkcloud.StorageApplianceDetailedStatusAvailable),
 	// 		DetailedStatusMessage: to.Ptr("Storage appliance is up and running"),
 	// 		ManagementIPv4Address: to.Ptr("192.0.2.2"),
+	// 		Manufacturer: to.Ptr("Contoso Storage"),
+	// 		Model: to.Ptr("ArrayStore-Flash70"),
 	// 		ProvisioningState: to.Ptr(armnetworkcloud.StorageApplianceProvisioningStateSucceeded),
 	// 		RackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/racks/rackName"),
 	// 		RackSlot: to.Ptr[int64](1),
 	// 		RemoteVendorManagementFeature: to.Ptr(armnetworkcloud.RemoteVendorManagementFeatureSupported),
 	// 		RemoteVendorManagementStatus: to.Ptr(armnetworkcloud.RemoteVendorManagementStatusEnabled),
+	// 		SecretRotationStatus: []*armnetworkcloud.SecretRotationStatus{
+	// 			{
+	// 				ExpirePeriodDays: to.Ptr[int64](90),
+	// 				LastRotationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-30T13:27:23.103Z"); return t}()),
+	// 				RotationPeriodDays: to.Ptr[int64](60),
+	// 				SecretArchiveReference: &armnetworkcloud.SecretArchiveReference{
+	// 					KeyVaultID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.KeyVault/vaults/keyVaultName"),
+	// 					SecretName: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff-resource-group-cluster-1679871-storage-appliance-credential-manager-ffffffff"),
+	// 					SecretVersion: to.Ptr("02ab6c1f9c0f4982b0632b0d5d74a33b"),
+	// 				},
+	// 				SecretType: to.Ptr("Storage Appliance User"),
+	// 		}},
 	// 		SerialNumber: to.Ptr("BM1219XXX"),
 	// 		StorageApplianceSKUID: to.Ptr("684E-3B16-399E"),
+	// 		Version: to.Ptr("9.9.9"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/StorageAppliances_DisableRemoteVendorManagement.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/98d74b2db60e46ceb7e3b75755e51519cd500485/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/StorageAppliances_DisableRemoteVendorManagement.json
 func ExampleStorageAppliancesClient_BeginDisableRemoteVendorManagement() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -412,7 +487,7 @@ func ExampleStorageAppliancesClient_BeginDisableRemoteVendorManagement() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/StorageAppliances_EnableRemoteVendorManagement.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/98d74b2db60e46ceb7e3b75755e51519cd500485/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/StorageAppliances_EnableRemoteVendorManagement.json
 func ExampleStorageAppliancesClient_BeginEnableRemoteVendorManagement() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

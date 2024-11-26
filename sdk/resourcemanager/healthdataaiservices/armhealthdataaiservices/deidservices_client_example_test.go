@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/925b1febaaebc3e1d602c765168e8ddabc7153a5/specification/healthdataaiservices/HealthDataAIServices.Management/examples/2024-02-28-preview/DeidServices_Create_MaximumSet_Gen.json
+// Generated from example definition: 2024-09-20/DeidServices_Create_MaximumSet_Gen.json
 func ExampleDeidServicesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,7 +105,7 @@ func ExampleDeidServicesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/925b1febaaebc3e1d602c765168e8ddabc7153a5/specification/healthdataaiservices/HealthDataAIServices.Management/examples/2024-02-28-preview/DeidServices_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2024-09-20/DeidServices_Delete_MaximumSet_Gen.json
 func ExampleDeidServicesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -126,7 +126,7 @@ func ExampleDeidServicesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/925b1febaaebc3e1d602c765168e8ddabc7153a5/specification/healthdataaiservices/HealthDataAIServices.Management/examples/2024-02-28-preview/DeidServices_Get_MaximumSet_Gen.json
+// Generated from example definition: 2024-09-20/DeidServices_Get_MaximumSet_Gen.json
 func ExampleDeidServicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -205,7 +205,7 @@ func ExampleDeidServicesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/925b1febaaebc3e1d602c765168e8ddabc7153a5/specification/healthdataaiservices/HealthDataAIServices.Management/examples/2024-02-28-preview/DeidServices_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2024-09-20/DeidServices_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleDeidServicesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -294,7 +294,7 @@ func ExampleDeidServicesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/925b1febaaebc3e1d602c765168e8ddabc7153a5/specification/healthdataaiservices/HealthDataAIServices.Management/examples/2024-02-28-preview/DeidServices_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2024-09-20/DeidServices_ListBySubscription_MaximumSet_Gen.json
 func ExampleDeidServicesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -383,7 +383,7 @@ func ExampleDeidServicesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/925b1febaaebc3e1d602c765168e8ddabc7153a5/specification/healthdataaiservices/HealthDataAIServices.Management/examples/2024-02-28-preview/DeidServices_Update_MaximumSet_Gen.json
+// Generated from example definition: 2024-09-20/DeidServices_Update_MaximumSet_Gen.json
 func ExampleDeidServicesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

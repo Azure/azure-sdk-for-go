@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f41d0c9332078cb2ef07b749081d94915255ada5/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2024-07-10/examples/networkSecurityPerimeterConfiguration/NetworkSecurityPerimeterConfigurationGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63d530d0def1c624f5d42d39170ff4ac196522e2/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-07-31-preview/examples/networkSecurityPerimeterConfiguration/NetworkSecurityPerimeterConfigurationGet.json
 func ExampleNetworkSecurityPerimeterConfigurationsClient_GetByPrivateLinkScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleNetworkSecurityPerimeterConfigurationsClient_GetByPrivateLinkScope()
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f41d0c9332078cb2ef07b749081d94915255ada5/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2024-07-10/examples/networkSecurityPerimeterConfiguration/NetworkSecurityPerimeterConfigurationList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63d530d0def1c624f5d42d39170ff4ac196522e2/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-07-31-preview/examples/networkSecurityPerimeterConfiguration/NetworkSecurityPerimeterConfigurationList.json
 func ExampleNetworkSecurityPerimeterConfigurationsClient_NewListByPrivateLinkScopePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -176,7 +176,7 @@ func ExampleNetworkSecurityPerimeterConfigurationsClient_NewListByPrivateLinkSco
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f41d0c9332078cb2ef07b749081d94915255ada5/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2024-07-10/examples/networkSecurityPerimeterConfiguration/NetworkSecurityPerimeterConfigurationReconcile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63d530d0def1c624f5d42d39170ff4ac196522e2/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-07-31-preview/examples/networkSecurityPerimeterConfiguration/NetworkSecurityPerimeterConfigurationReconcile.json
 func ExampleNetworkSecurityPerimeterConfigurationsClient_BeginReconcileForPrivateLinkScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

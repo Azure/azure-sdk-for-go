@@ -1,6 +1,6 @@
 # Release History
 
-## 1.4.0-beta.2 (Unreleased)
+## 1.4.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,11 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.4.0 (2024-11-13)
+
+### Features Added
+* Fix compareHeaders custom sorting algorithm for String To Sign.
 
 ## 1.4.0-beta.1 (2024-10-22)
 

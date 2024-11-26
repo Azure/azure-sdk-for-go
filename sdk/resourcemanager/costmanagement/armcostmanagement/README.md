@@ -1,7 +1,5 @@
 # Azure Costmanagement Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement/v2)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement/v2)
-
 The `armcostmanagement` module provides operations for working with Azure Costmanagement.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/costmanagement/armcostmanagement)
@@ -25,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armc
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Costmanagement.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Costmanagement. The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -54,7 +52,7 @@ clientFactory, err := armcostmanagement.NewClientFactory(<subscription ID>, cred
 
 ## Clients
 
-A client groups a set of related APIs, providing access to its functionality.  Create one or more clients to access the APIs you require using client factory.
+A client groups a set of related APIs, providing access to its functionality. Create one or more clients to access the APIs you require using client factory.
 
 ```go
 client := clientFactory.NewAlertsClient()

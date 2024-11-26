@@ -17,8 +17,7 @@ import (
 // Don't use this type directly, use NewClientFactory instead.
 type ClientFactory struct {
 	subscriptionID string
-	credential     azcore.TokenCredential
-	options        *arm.ClientOptions
+	internal       *arm.Client
 }
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
@@ -27,126 +26,171 @@ type ClientFactory struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
+	internal, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	return &ClientFactory{
-		subscriptionID: subscriptionID, credential: credential,
-		options: options.Clone(),
+		subscriptionID: subscriptionID,
+		internal:       internal,
 	}, nil
 }
 
 // NewAgentPoolsClient creates a new instance of AgentPoolsClient.
 func (c *ClientFactory) NewAgentPoolsClient() *AgentPoolsClient {
-	subClient, _ := NewAgentPoolsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &AgentPoolsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewBareMetalMachineKeySetsClient creates a new instance of BareMetalMachineKeySetsClient.
 func (c *ClientFactory) NewBareMetalMachineKeySetsClient() *BareMetalMachineKeySetsClient {
-	subClient, _ := NewBareMetalMachineKeySetsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &BareMetalMachineKeySetsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewBareMetalMachinesClient creates a new instance of BareMetalMachinesClient.
 func (c *ClientFactory) NewBareMetalMachinesClient() *BareMetalMachinesClient {
-	subClient, _ := NewBareMetalMachinesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &BareMetalMachinesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewBmcKeySetsClient creates a new instance of BmcKeySetsClient.
 func (c *ClientFactory) NewBmcKeySetsClient() *BmcKeySetsClient {
-	subClient, _ := NewBmcKeySetsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &BmcKeySetsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewCloudServicesNetworksClient creates a new instance of CloudServicesNetworksClient.
 func (c *ClientFactory) NewCloudServicesNetworksClient() *CloudServicesNetworksClient {
-	subClient, _ := NewCloudServicesNetworksClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &CloudServicesNetworksClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewClusterManagersClient creates a new instance of ClusterManagersClient.
 func (c *ClientFactory) NewClusterManagersClient() *ClusterManagersClient {
-	subClient, _ := NewClusterManagersClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &ClusterManagersClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewClustersClient creates a new instance of ClustersClient.
 func (c *ClientFactory) NewClustersClient() *ClustersClient {
-	subClient, _ := NewClustersClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &ClustersClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewConsolesClient creates a new instance of ConsolesClient.
 func (c *ClientFactory) NewConsolesClient() *ConsolesClient {
-	subClient, _ := NewConsolesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &ConsolesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewKubernetesClusterFeaturesClient creates a new instance of KubernetesClusterFeaturesClient.
+func (c *ClientFactory) NewKubernetesClusterFeaturesClient() *KubernetesClusterFeaturesClient {
+	return &KubernetesClusterFeaturesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewKubernetesClustersClient creates a new instance of KubernetesClustersClient.
 func (c *ClientFactory) NewKubernetesClustersClient() *KubernetesClustersClient {
-	subClient, _ := NewKubernetesClustersClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &KubernetesClustersClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewL2NetworksClient creates a new instance of L2NetworksClient.
 func (c *ClientFactory) NewL2NetworksClient() *L2NetworksClient {
-	subClient, _ := NewL2NetworksClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &L2NetworksClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewL3NetworksClient creates a new instance of L3NetworksClient.
 func (c *ClientFactory) NewL3NetworksClient() *L3NetworksClient {
-	subClient, _ := NewL3NetworksClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &L3NetworksClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewMetricsConfigurationsClient creates a new instance of MetricsConfigurationsClient.
 func (c *ClientFactory) NewMetricsConfigurationsClient() *MetricsConfigurationsClient {
-	subClient, _ := NewMetricsConfigurationsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &MetricsConfigurationsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
-	subClient, _ := NewOperationsClient(c.credential, c.options)
-	return subClient
+	return &OperationsClient{
+		internal: c.internal,
+	}
 }
 
 // NewRackSKUsClient creates a new instance of RackSKUsClient.
 func (c *ClientFactory) NewRackSKUsClient() *RackSKUsClient {
-	subClient, _ := NewRackSKUsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &RackSKUsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewRacksClient creates a new instance of RacksClient.
 func (c *ClientFactory) NewRacksClient() *RacksClient {
-	subClient, _ := NewRacksClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &RacksClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewStorageAppliancesClient creates a new instance of StorageAppliancesClient.
 func (c *ClientFactory) NewStorageAppliancesClient() *StorageAppliancesClient {
-	subClient, _ := NewStorageAppliancesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &StorageAppliancesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewTrunkedNetworksClient creates a new instance of TrunkedNetworksClient.
 func (c *ClientFactory) NewTrunkedNetworksClient() *TrunkedNetworksClient {
-	subClient, _ := NewTrunkedNetworksClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &TrunkedNetworksClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewVirtualMachinesClient creates a new instance of VirtualMachinesClient.
 func (c *ClientFactory) NewVirtualMachinesClient() *VirtualMachinesClient {
-	subClient, _ := NewVirtualMachinesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &VirtualMachinesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewVolumesClient creates a new instance of VolumesClient.
 func (c *ClientFactory) NewVolumesClient() *VolumesClient {
-	subClient, _ := NewVolumesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &VolumesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }

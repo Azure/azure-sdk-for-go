@@ -34,11 +34,11 @@ type StorageAppliancesServer struct {
 	BeginDelete func(ctx context.Context, resourceGroupName string, storageApplianceName string, options *armnetworkcloud.StorageAppliancesClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetworkcloud.StorageAppliancesClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// BeginDisableRemoteVendorManagement is the fake for method StorageAppliancesClient.BeginDisableRemoteVendorManagement
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginDisableRemoteVendorManagement func(ctx context.Context, resourceGroupName string, storageApplianceName string, options *armnetworkcloud.StorageAppliancesClientBeginDisableRemoteVendorManagementOptions) (resp azfake.PollerResponder[armnetworkcloud.StorageAppliancesClientDisableRemoteVendorManagementResponse], errResp azfake.ErrorResponder)
 
 	// BeginEnableRemoteVendorManagement is the fake for method StorageAppliancesClient.BeginEnableRemoteVendorManagement
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginEnableRemoteVendorManagement func(ctx context.Context, resourceGroupName string, storageApplianceName string, options *armnetworkcloud.StorageAppliancesClientBeginEnableRemoteVendorManagementOptions) (resp azfake.PollerResponder[armnetworkcloud.StorageAppliancesClientEnableRemoteVendorManagementResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method StorageAppliancesClient.Get
@@ -251,9 +251,9 @@ func (s *StorageAppliancesServerTransport) dispatchBeginDisableRemoteVendorManag
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		s.beginDisableRemoteVendorManagement.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginDisableRemoteVendorManagement) {
 		s.beginDisableRemoteVendorManagement.remove(req)
@@ -305,9 +305,9 @@ func (s *StorageAppliancesServerTransport) dispatchBeginEnableRemoteVendorManage
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		s.beginEnableRemoteVendorManagement.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginEnableRemoteVendorManagement) {
 		s.beginEnableRemoteVendorManagement.remove(req)

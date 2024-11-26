@@ -26,7 +26,7 @@ const typeSpecDir = "../testdata/TempTypeSpecFiles/OpenAI.Inference"
 
 const modelsGoFile = "../models.go"
 
-var goModelsFiles = []string{modelsGoFile, "../custom_models.go", "../custom_client_embeddings.go"}
+var goModelsFiles = []string{modelsGoFile, "../custom_models.go", "../models_extra.go"}
 
 var typeSpecModelRE = regexp.MustCompile(`(?m)^model\s+([^\s]+)`)
 var goModelRE = regexp.MustCompile(`(?m)^type\s+([^\s]+)\s+struct`)

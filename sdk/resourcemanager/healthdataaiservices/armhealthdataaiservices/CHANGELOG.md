@@ -1,5 +1,15 @@
 # Release History
 
+## 1.0.0 (2024-11-20)
+### Breaking Changes
+
+- `ManagedServiceIdentityTypeSystemAndUserAssigned` from enum `ManagedServiceIdentityType` has been removed
+
+### Features Added
+
+- New value `ManagedServiceIdentityTypeSystemAssignedUserAssigned` added to enum type `ManagedServiceIdentityType`
+
+
 ## 0.1.0 (2024-08-15)
 ### Other Changes
 

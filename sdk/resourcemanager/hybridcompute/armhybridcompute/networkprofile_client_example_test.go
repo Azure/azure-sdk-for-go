@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f41d0c9332078cb2ef07b749081d94915255ada5/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2024-07-10/examples/NetworkProfile_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63d530d0def1c624f5d42d39170ff4ac196522e2/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-07-31-preview/examples/NetworkProfile_Get.json
 func ExampleNetworkProfileClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,6 +38,8 @@ func ExampleNetworkProfileClient_Get() {
 	// res.NetworkProfile = armhybridcompute.NetworkProfile{
 	// 	NetworkInterfaces: []*armhybridcompute.NetworkInterface{
 	// 		{
+	// 			Name: to.Ptr("Wi-Fi"),
+	// 			ID: to.Ptr("8"),
 	// 			IPAddresses: []*armhybridcompute.IPAddress{
 	// 				{
 	// 					Address: to.Ptr("192.168.12.345"),
@@ -46,8 +48,11 @@ func ExampleNetworkProfileClient_Get() {
 	// 						AddressPrefix: to.Ptr("192.168.12.0/24"),
 	// 					},
 	// 			}},
+	// 			MacAddress: to.Ptr("3c:49:6e:13:0e:73"),
 	// 		},
 	// 		{
+	// 			Name: to.Ptr("Ethernet"),
+	// 			ID: to.Ptr("23"),
 	// 			IPAddresses: []*armhybridcompute.IPAddress{
 	// 				{
 	// 					Address: to.Ptr("1001:0:34aa:5000:1234:aaaa:bbbb:cccc"),
@@ -56,6 +61,7 @@ func ExampleNetworkProfileClient_Get() {
 	// 						AddressPrefix: to.Ptr("1001:0:34aa:5000::/64"),
 	// 					},
 	// 			}},
+	// 			MacAddress: to.Ptr("10:15:5c:52:f9:b8"),
 	// 	}},
 	// }
 }

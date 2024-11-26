@@ -4084,6 +4084,11 @@ type WebAppsClientUpdateHybridConnectionSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
+// WebAppsClientUpdateMachineKeyOptions contains the optional parameters for the WebAppsClient.UpdateMachineKey method.
+type WebAppsClientUpdateMachineKeyOptions struct {
+	// placeholder for future optional parameters
+}
+
 // WebAppsClientUpdateMetadataOptions contains the optional parameters for the WebAppsClient.UpdateMetadata method.
 type WebAppsClientUpdateMetadataOptions struct {
 	// placeholder for future optional parameters

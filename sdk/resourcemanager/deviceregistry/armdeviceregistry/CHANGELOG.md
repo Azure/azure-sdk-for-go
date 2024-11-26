@@ -1,6 +1,7 @@
 # Release History
 
 ## 0.1.0 (2024-04-26)
+### Other Changes
 
 The package of `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceregistry/armdeviceregistry` is using our [next generation design principles](https://azure.github.io/azure-sdk/general_introduction.html).
 

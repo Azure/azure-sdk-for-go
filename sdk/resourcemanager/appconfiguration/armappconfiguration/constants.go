@@ -10,7 +10,7 @@ package armappconfiguration
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appconfiguration/armappconfiguration"
-	moduleVersion = "v2.1.0"
+	moduleVersion = "v2.2.0"
 )
 
 // ActionsRequired - Any action that is required beyond basic workflow (approve/ reject/ disconnect)
@@ -26,6 +26,46 @@ func PossibleActionsRequiredValues() []ActionsRequired {
 	return []ActionsRequired{
 		ActionsRequiredNone,
 		ActionsRequiredRecreate,
+	}
+}
+
+// AuthenticationMode - The data plane proxy authentication mode. This property manages the authentication mode of request
+// to the data plane resources.
+type AuthenticationMode string
+
+const (
+	// AuthenticationModeLocal - The local authentication mode. Users are not required to have data plane permissions if local
+	// authentication is not disabled.
+	AuthenticationModeLocal AuthenticationMode = "Local"
+	// AuthenticationModePassThrough - The pass-through authentication mode. User identity will be passed through from Azure Resource
+	// Manager (ARM), requiring user to have data plane action permissions (Available via App Configuration Data Owner/ App Configuration
+	// Data Reader).
+	AuthenticationModePassThrough AuthenticationMode = "Pass-through"
+)
+
+// PossibleAuthenticationModeValues returns the possible values for the AuthenticationMode const type.
+func PossibleAuthenticationModeValues() []AuthenticationMode {
+	return []AuthenticationMode{
+		AuthenticationModeLocal,
+		AuthenticationModePassThrough,
+	}
+}
+
+// CompositionType - The composition type describes how the key-values within the snapshot are composed. The 'key' composition
+// type ensures there are no two key-values containing the same key. The 'key_label' composition
+// type ensures there are no two key-values containing the same key and label.
+type CompositionType string
+
+const (
+	CompositionTypeKey      CompositionType = "Key"
+	CompositionTypeKeyLabel CompositionType = "Key_Label"
+)
+
+// PossibleCompositionTypeValues returns the possible values for the CompositionType const type.
+func PossibleCompositionTypeValues() []CompositionType {
+	return []CompositionType{
+		CompositionTypeKey,
+		CompositionTypeKeyLabel,
 	}
 }
 
@@ -121,6 +161,26 @@ func PossibleIdentityTypeValues() []IdentityType {
 	}
 }
 
+// PrivateLinkDelegation - The data plane proxy private link delegation. This property manages if a request from delegated
+// Azure Resource Manager (ARM) private link is allowed when the data plane resource requires private link.
+type PrivateLinkDelegation string
+
+const (
+	// PrivateLinkDelegationDisabled - Request is denied if the resource requires private link.
+	PrivateLinkDelegationDisabled PrivateLinkDelegation = "Disabled"
+	// PrivateLinkDelegationEnabled - Azure Resource Manager (ARM) private endpoint is required if the resource requires private
+	// link.
+	PrivateLinkDelegationEnabled PrivateLinkDelegation = "Enabled"
+)
+
+// PossiblePrivateLinkDelegationValues returns the possible values for the PrivateLinkDelegation const type.
+func PossiblePrivateLinkDelegationValues() []PrivateLinkDelegation {
+	return []PrivateLinkDelegation{
+		PrivateLinkDelegationDisabled,
+		PrivateLinkDelegationEnabled,
+	}
+}
+
 // ProvisioningState - The provisioning state of the configuration store.
 type ProvisioningState string
 
@@ -180,5 +240,25 @@ func PossibleReplicaProvisioningStateValues() []ReplicaProvisioningState {
 		ReplicaProvisioningStateDeleting,
 		ReplicaProvisioningStateFailed,
 		ReplicaProvisioningStateSucceeded,
+	}
+}
+
+// SnapshotStatus - The current status of the snapshot.
+type SnapshotStatus string
+
+const (
+	SnapshotStatusArchived     SnapshotStatus = "Archived"
+	SnapshotStatusFailed       SnapshotStatus = "Failed"
+	SnapshotStatusProvisioning SnapshotStatus = "Provisioning"
+	SnapshotStatusReady        SnapshotStatus = "Ready"
+)
+
+// PossibleSnapshotStatusValues returns the possible values for the SnapshotStatus const type.
+func PossibleSnapshotStatusValues() []SnapshotStatus {
+	return []SnapshotStatus{
+		SnapshotStatusArchived,
+		SnapshotStatusFailed,
+		SnapshotStatusProvisioning,
+		SnapshotStatusReady,
 	}
 }

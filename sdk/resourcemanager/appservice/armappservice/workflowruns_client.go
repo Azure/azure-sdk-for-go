@@ -47,7 +47,7 @@ func NewWorkflowRunsClient(subscriptionID string, credential azcore.TokenCredent
 // Cancel - Cancels a workflow run.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-12-01
+// Generated from API version 2024-04-01
 //   - resourceGroupName - Name of the resource group to which the resource belongs.
 //   - name - Site name.
 //   - workflowName - The workflow name.
@@ -102,7 +102,7 @@ func (client *WorkflowRunsClient) cancelCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -111,7 +111,7 @@ func (client *WorkflowRunsClient) cancelCreateRequest(ctx context.Context, resou
 // Get - Gets a workflow run.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-12-01
+// Generated from API version 2024-04-01
 //   - resourceGroupName - Name of the resource group to which the resource belongs.
 //   - name - Site name.
 //   - workflowName - The workflow name.
@@ -167,7 +167,7 @@ func (client *WorkflowRunsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -184,7 +184,7 @@ func (client *WorkflowRunsClient) getHandleResponse(resp *http.Response) (Workfl
 
 // NewListPager - Gets a list of workflow runs.
 //
-// Generated from API version 2023-12-01
+// Generated from API version 2024-04-01
 //   - resourceGroupName - Name of the resource group to which the resource belongs.
 //   - name - Site name.
 //   - workflowName - The workflow name.
@@ -242,7 +242,7 @@ func (client *WorkflowRunsClient) listCreateRequest(ctx context.Context, resourc
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2023-12-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

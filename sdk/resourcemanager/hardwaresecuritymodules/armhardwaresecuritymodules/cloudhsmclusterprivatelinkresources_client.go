@@ -43,35 +43,35 @@ func NewCloudHsmClusterPrivateLinkResourcesClient(subscriptionID string, credent
 	return client, nil
 }
 
-// ListByCloudHsmCluster - Gets the private link resources supported for the Cloud Hsm Cluster.
-// If the operation fails it returns an *azcore.ResponseError type.
+// NewListByCloudHsmClusterPager - Gets the private link resources supported for the Cloud Hsm Cluster.
 //
-// Generated from API version 2023-12-10-preview
+// Generated from API version 2024-06-30-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cloudHsmClusterName - The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM Cluster names must
-//     be between 3 and 24 characters in length.
+//     be between 3 and 23 characters in length.
 //   - options - CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterOptions contains the optional parameters for the
-//     CloudHsmClusterPrivateLinkResourcesClient.ListByCloudHsmCluster method.
-func (client *CloudHsmClusterPrivateLinkResourcesClient) ListByCloudHsmCluster(ctx context.Context, resourceGroupName string, cloudHsmClusterName string, options *CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterOptions) (CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterResponse, error) {
-	var err error
-	const operationName = "CloudHsmClusterPrivateLinkResourcesClient.ListByCloudHsmCluster"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listByCloudHsmClusterCreateRequest(ctx, resourceGroupName, cloudHsmClusterName, options)
-	if err != nil {
-		return CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterResponse{}, err
-	}
-	resp, err := client.listByCloudHsmClusterHandleResponse(httpResp)
-	return resp, err
+//     CloudHsmClusterPrivateLinkResourcesClient.NewListByCloudHsmClusterPager method.
+func (client *CloudHsmClusterPrivateLinkResourcesClient) NewListByCloudHsmClusterPager(resourceGroupName string, cloudHsmClusterName string, options *CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterOptions) *runtime.Pager[CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterResponse] {
+	return runtime.NewPager(runtime.PagingHandler[CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterResponse]{
+		More: func(page CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterResponse) (CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CloudHsmClusterPrivateLinkResourcesClient.NewListByCloudHsmClusterPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByCloudHsmClusterCreateRequest(ctx, resourceGroupName, cloudHsmClusterName, options)
+			}, nil)
+			if err != nil {
+				return CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterResponse{}, err
+			}
+			return client.listByCloudHsmClusterHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
 }
 
 // listByCloudHsmClusterCreateRequest creates the ListByCloudHsmCluster request.
@@ -94,7 +94,7 @@ func (client *CloudHsmClusterPrivateLinkResourcesClient) listByCloudHsmClusterCr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-10-preview")
+	reqQP.Set("api-version", "2024-06-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

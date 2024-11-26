@@ -25,7 +25,7 @@ type DeidServicesServer struct {
 	BeginCreate func(ctx context.Context, resourceGroupName string, deidServiceName string, resource armhealthdataaiservices.DeidService, options *armhealthdataaiservices.DeidServicesClientBeginCreateOptions) (resp azfake.PollerResponder[armhealthdataaiservices.DeidServicesClientCreateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method DeidServicesClient.BeginDelete
-	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, deidServiceName string, options *armhealthdataaiservices.DeidServicesClientBeginDeleteOptions) (resp azfake.PollerResponder[armhealthdataaiservices.DeidServicesClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method DeidServicesClient.Get
@@ -82,27 +82,46 @@ func (d *DeidServicesServerTransport) Do(req *http.Request) (*http.Response, err
 }
 
 func (d *DeidServicesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	var resp *http.Response
-	var err error
+	resultChan := make(chan result)
+	defer close(resultChan)
 
-	switch method {
-	case "DeidServicesClient.BeginCreate":
-		resp, err = d.dispatchBeginCreate(req)
-	case "DeidServicesClient.BeginDelete":
-		resp, err = d.dispatchBeginDelete(req)
-	case "DeidServicesClient.Get":
-		resp, err = d.dispatchGet(req)
-	case "DeidServicesClient.NewListByResourceGroupPager":
-		resp, err = d.dispatchNewListByResourceGroupPager(req)
-	case "DeidServicesClient.NewListBySubscriptionPager":
-		resp, err = d.dispatchNewListBySubscriptionPager(req)
-	case "DeidServicesClient.BeginUpdate":
-		resp, err = d.dispatchBeginUpdate(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+	go func() {
+		var intercepted bool
+		var res result
+		if deidServicesServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = deidServicesServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "DeidServicesClient.BeginCreate":
+				res.resp, res.err = d.dispatchBeginCreate(req)
+			case "DeidServicesClient.BeginDelete":
+				res.resp, res.err = d.dispatchBeginDelete(req)
+			case "DeidServicesClient.Get":
+				res.resp, res.err = d.dispatchGet(req)
+			case "DeidServicesClient.NewListByResourceGroupPager":
+				res.resp, res.err = d.dispatchNewListByResourceGroupPager(req)
+			case "DeidServicesClient.NewListBySubscriptionPager":
+				res.resp, res.err = d.dispatchNewListBySubscriptionPager(req)
+			case "DeidServicesClient.BeginUpdate":
+				res.resp, res.err = d.dispatchBeginUpdate(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	return resp, err
 }
 
 func (d *DeidServicesServerTransport) dispatchBeginCreate(req *http.Request) (*http.Response, error) {
@@ -186,9 +205,9 @@ func (d *DeidServicesServerTransport) dispatchBeginDelete(req *http.Request) (*h
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		d.beginDelete.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		d.beginDelete.remove(req)
@@ -346,4 +365,10 @@ func (d *DeidServicesServerTransport) dispatchBeginUpdate(req *http.Request) (*h
 	}
 
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to DeidServicesServerTransport
+var deidServicesServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

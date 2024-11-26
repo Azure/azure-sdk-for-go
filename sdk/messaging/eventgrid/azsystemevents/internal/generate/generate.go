@@ -26,11 +26,6 @@ func main() {
 			return err
 		}
 
-		// remove extraneous types
-		if err := doRemove(); err != nil {
-			return err
-		}
-
 		if err := generateSystemEventEnum(); err != nil {
 			return err
 		}
@@ -40,7 +35,7 @@ func main() {
 	}
 
 	if err := fn(); err != nil {
-		fmt.Printf("Failed with error: %s\n", err)
+		fmt.Printf("./internal/generate: Failed with error: %s\n", err)
 		os.Exit(1)
 	}
 
@@ -57,12 +52,35 @@ func swapErrorTypes() error {
 		return err
 	}
 
+	// NOTE: the renaming of the error type is done in the propertyNameOverrideGo.tsp (AcsMessageChannelEventError)
+
+	// NOTE: there appears to be a bug where my type name is automatically being capitalized, even though I marked it as internal.
+	// Filed as https://github.com/Azure/autorest.go/issues/1467.
+	if err := gopls.Rename(syms.Get("InternalACSMessageChannelEventError"), "internalACSMessageChannelEventError"); err != nil {
+		return err
+	}
+
+	if err := gopls.Rename(syms.Get("InternalACSRouterCommunicationError"), "internalACSRouterCommunicationError"); err != nil {
+		return err
+	}
+
+	// TODO: do I really need to handle these myself? Can I not use TypeSpec to do it?
 	{
 		if err := SwapType(syms.Get("AcsMessageReceivedEventData.Error"), "*Error"); err != nil {
 			return err
 		}
 
 		if err := UseCustomUnpopulate(modelsSerdeGoFile, "ACSMessageReceivedEventData.Error", "unmarshalInternalACSMessageChannelEventError"); err != nil {
+			return err
+		}
+	}
+
+	{
+		if err := SwapType(syms.Get("ACSMessageDeliveryStatusUpdatedEventData.Error"), "*Error"); err != nil {
+			return err
+		}
+
+		if err := UseCustomUnpopulate(modelsSerdeGoFile, "ACSMessageDeliveryStatusUpdatedEventData.Error", "unmarshalInternalACSMessageChannelEventError"); err != nil {
 			return err
 		}
 	}
@@ -93,7 +111,7 @@ func swapErrorTypes() error {
 		}
 
 		if strings.HasSuffix(sym.Name, "Error") && !strings.HasPrefix(sym.Name, "internal") && sym.Type == "Struct" {
-			return fmt.Errorf("found redundant unhandled error type %s\n", sym.Name)
+			return fmt.Errorf("found error type which should have been deleted/renamed %q", sym.Name)
 		}
 	}
 
@@ -133,39 +151,4 @@ func deleteUnneededFiles() {
 			_ = os.Remove(file)
 		}
 	}
-}
-
-func doRemove() error {
-	modelsToRemove := []string{
-		// These types are base objects of some of our system events in the TypeSpec, giving them a simple way to share fields.
-		// Our generator handles this parent/child relationship by just inlining those properties into the children, so the base struct is just vestigial.
-		// Note that these have been annotated with @output, which is why they're not just clipped out using our normal "unused/unreferenced" type logic
-		// in the Go emitter.
-		"ACSChatEventBaseProperties",
-		"ACSChatEventInThreadBaseProperties",
-		"ACSChatMessageEventBaseProperties",
-		"ACSChatMessageEventInThreadBaseProperties",
-		"ACSChatThreadEventBaseProperties",
-		"ACSChatThreadEventInThreadBaseProperties",
-		"ACSRouterEventData",
-		"ACSRouterJobEventData",
-		"ACSRouterWorkerEventData",
-		"ACSSmsEventBaseProperties",
-		"AppConfigurationSnapshotEventData",
-		"AVSClusterEventData",
-		"AVSPrivateCloudEventData",
-		"AVSScriptExecutionEventData",
-		"ContainerServiceClusterSupportEventData",
-		"ContainerServiceNodePoolRollingEventData",
-		"ResourceNotificationsResourceDeletedEventData",
-		"ResourceNotificationsResourceUpdatedEventData",
-	}
-
-	for _, m := range modelsToRemove {
-		if err := DeleteType(m); err != nil {
-			return err
-		}
-	}
-
-	return nil
 }

@@ -20,7 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/BareMetalMachineKeySets_ListByCluster.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/98d74b2db60e46ceb7e3b75755e51519cd500485/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/BareMetalMachineKeySets_ListByCluster.json
 func ExampleBareMetalMachineKeySetsClient_NewListByClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -68,7 +68,7 @@ func ExampleBareMetalMachineKeySetsClient_NewListByClusterPager() {
 		// 			Properties: &armnetworkcloud.BareMetalMachineKeySetProperties{
 		// 				AzureGroupID: to.Ptr("f110271b-XXXX-4163-9b99-214d91660f0e"),
 		// 				DetailedStatus: to.Ptr(armnetworkcloud.BareMetalMachineKeySetDetailedStatusSomeInvalid),
-		// 				DetailedStatusMessage: to.Ptr("Inalid Azure user(s) were provided: userXYZ"),
+		// 				DetailedStatusMessage: to.Ptr("Invalid Azure user(s) were provided: userXYZ"),
 		// 				Expiration: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-31T23:59:59.008Z"); return t}()),
 		// 				JumpHostsAllowed: []*string{
 		// 					to.Ptr("192.0.2.1"),
@@ -84,6 +84,7 @@ func ExampleBareMetalMachineKeySetsClient_NewListByClusterPager() {
 		// 							SSHPublicKey: &armnetworkcloud.SSHPublicKey{
 		// 								KeyData: to.Ptr("ssh-rsa AAtsE3njSONzDYRIZv/WLjVuMfrUSByHp+jfaaOLHTIIB4fJvo6dQUZxE20w2iDHV3tEkmnTo84eba97VMueQD6OzJPEyWZMRpz8UYWOd0IXeRqiFu1lawNblZhwNT/ojNZfpB3af/YDzwQCZgTcTRyNNhL4o/blKUmug0daSsSXISTRnIDpcf5qytjs1Xo+yYyJMvzLL59mhAyb3p/cD+Y3/s3WhAx+l0XOKpzXnblrv9d3q4c2tWmm/SyFqthaqd0= admin@vm"),
 		// 							},
+		// 							UserPrincipalName: to.Ptr("userABC@contoso.com"),
 		// 						},
 		// 						{
 		// 							Description: to.Ptr("Needs access for troubleshooting as a part of the support team"),
@@ -91,6 +92,7 @@ func ExampleBareMetalMachineKeySetsClient_NewListByClusterPager() {
 		// 							SSHPublicKey: &armnetworkcloud.SSHPublicKey{
 		// 								KeyData: to.Ptr("ssh-rsa AAtsE3njSONzDYRIZv/WLjVuMfrUSByHp+jfaaOLHTIIB4fJvo6dQUZxE20w2iDHV3tEkmnTo84eba97VMueQD6OzJPEyWZMRpz8UYWOd0IXeRqiFu1lawNblZhwNT/ojNZfpB3af/YDzwQCZgTcTRyNNhL4o/blKUmug0daSsSXISTRnIDpcf5qytjs1Xo+yYyJMvzLL59mhAyb3p/cD+Y3/s3WhAx+l0XOKpzXnblrv9d3q4c2tWmm/SyFqthaqd0= admin@vm"),
 		// 							},
+		// 							UserPrincipalName: to.Ptr("userABC@contoso.com"),
 		// 					}},
 		// 					UserListStatus: []*armnetworkcloud.KeySetUserStatus{
 		// 						{
@@ -109,7 +111,7 @@ func ExampleBareMetalMachineKeySetsClient_NewListByClusterPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/BareMetalMachineKeySets_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/98d74b2db60e46ceb7e3b75755e51519cd500485/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/BareMetalMachineKeySets_Get.json
 func ExampleBareMetalMachineKeySetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -151,7 +153,7 @@ func ExampleBareMetalMachineKeySetsClient_Get() {
 	// 	Properties: &armnetworkcloud.BareMetalMachineKeySetProperties{
 	// 		AzureGroupID: to.Ptr("f110271b-XXXX-4163-9b99-214d91660f0e"),
 	// 		DetailedStatus: to.Ptr(armnetworkcloud.BareMetalMachineKeySetDetailedStatusSomeInvalid),
-	// 		DetailedStatusMessage: to.Ptr("Inalid Azure user(s) were provided: userXYZ"),
+	// 		DetailedStatusMessage: to.Ptr("Invalid Azure user(s) were provided: userXYZ"),
 	// 		Expiration: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-31T23:59:59.008Z"); return t}()),
 	// 		JumpHostsAllowed: []*string{
 	// 			to.Ptr("192.0.2.1"),
@@ -167,6 +169,7 @@ func ExampleBareMetalMachineKeySetsClient_Get() {
 	// 					SSHPublicKey: &armnetworkcloud.SSHPublicKey{
 	// 						KeyData: to.Ptr("ssh-rsa AAtsE3njSONzDYRIZv/WLjVuMfrUSByHp+jfaaOLHTIIB4fJvo6dQUZxE20w2iDHV3tEkmnTo84eba97VMueQD6OzJPEyWZMRpz8UYWOd0IXeRqiFu1lawNblZhwNT/ojNZfpB3af/YDzwQCZgTcTRyNNhL4o/blKUmug0daSsSXISTRnIDpcf5qytjs1Xo+yYyJMvzLL59mhAyb3p/cD+Y3/s3WhAx+l0XOKpzXnblrv9d3q4c2tWmm/SyFqthaqd0= admin@vm"),
 	// 					},
+	// 					UserPrincipalName: to.Ptr("userABC@contoso.com"),
 	// 				},
 	// 				{
 	// 					Description: to.Ptr("Needs access for troubleshooting as a part of the support team"),
@@ -174,6 +177,7 @@ func ExampleBareMetalMachineKeySetsClient_Get() {
 	// 					SSHPublicKey: &armnetworkcloud.SSHPublicKey{
 	// 						KeyData: to.Ptr("ssh-rsa AAtsE3njSONzDYRIZv/WLjVuMfrUSByHp+jfaaOLHTIIB4fJvo6dQUZxE20w2iDHV3tEkmnTo84eba97VMueQD6OzJPEyWZMRpz8UYWOd0IXeRqiFu1lawNblZhwNT/ojNZfpB3af/YDzwQCZgTcTRyNNhL4o/blKUmug0daSsSXISTRnIDpcf5qytjs1Xo+yYyJMvzLL59mhAyb3p/cD+Y3/s3WhAx+l0XOKpzXnblrv9d3q4c2tWmm/SyFqthaqd0= admin@vm"),
 	// 					},
+	// 					UserPrincipalName: to.Ptr("userABC@contoso.com"),
 	// 			}},
 	// 			UserListStatus: []*armnetworkcloud.KeySetUserStatus{
 	// 				{
@@ -190,7 +194,7 @@ func ExampleBareMetalMachineKeySetsClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/BareMetalMachineKeySets_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/98d74b2db60e46ceb7e3b75755e51519cd500485/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/BareMetalMachineKeySets_Create.json
 func ExampleBareMetalMachineKeySetsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -226,6 +230,7 @@ func ExampleBareMetalMachineKeySetsClient_BeginCreateOrUpdate() {
 					SSHPublicKey: &armnetworkcloud.SSHPublicKey{
 						KeyData: to.Ptr("ssh-rsa AAtsE3njSONzDYRIZv/WLjVuMfrUSByHp+jfaaOLHTIIB4fJvo6dQUZxE20w2iDHV3tEkmnTo84eba97VMueQD6OzJPEyWZMRpz8UYWOd0IXeRqiFu1lawNblZhwNT/ojNZfpB3af/YDzwQCZgTcTRyNNhL4o/blKUmug0daSsSXISTRnIDpcf5qytjs1Xo+yYyJMvzLL59mhAyb3p/cD+Y3/s3WhAx+l0XOKpzXnblrv9d3q4c2tWmm/SyFqthaqd0= admin@vm"),
 					},
+					UserPrincipalName: to.Ptr("userABC@contoso.com"),
 				},
 				{
 					Description:   to.Ptr("Needs access for troubleshooting as a part of the support team"),
@@ -233,6 +238,7 @@ func ExampleBareMetalMachineKeySetsClient_BeginCreateOrUpdate() {
 					SSHPublicKey: &armnetworkcloud.SSHPublicKey{
 						KeyData: to.Ptr("ssh-rsa AAtsE3njSONzDYRIZv/WLjVuMfrUSByHp+jfaaOLHTIIB4fJvo6dQUZxE20w2iDHV3tEkmnTo84eba97VMueQD6OzJPEyWZMRpz8UYWOd0IXeRqiFu1lawNblZhwNT/ojNZfpB3af/YDzwQCZgTcTRyNNhL4o/blKUmug0daSsSXISTRnIDpcf5qytjs1Xo+yYyJMvzLL59mhAyb3p/cD+Y3/s3WhAx+l0XOKpzXnblrv9d3q4c2tWmm/SyFqthaqd0= admin@vm"),
 					},
+					UserPrincipalName: to.Ptr("userABC@contoso.com"),
 				}},
 		},
 	}, nil)
@@ -270,7 +276,7 @@ func ExampleBareMetalMachineKeySetsClient_BeginCreateOrUpdate() {
 	// 	Properties: &armnetworkcloud.BareMetalMachineKeySetProperties{
 	// 		AzureGroupID: to.Ptr("f110271b-XXXX-4163-9b99-214d91660f0e"),
 	// 		DetailedStatus: to.Ptr(armnetworkcloud.BareMetalMachineKeySetDetailedStatusSomeInvalid),
-	// 		DetailedStatusMessage: to.Ptr("Inalid Azure user(s) were provided: userXYZ"),
+	// 		DetailedStatusMessage: to.Ptr("Invalid Azure user(s) were provided: userXYZ"),
 	// 		Expiration: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-31T23:59:59.008Z"); return t}()),
 	// 		JumpHostsAllowed: []*string{
 	// 			to.Ptr("192.0.2.1"),
@@ -286,6 +292,7 @@ func ExampleBareMetalMachineKeySetsClient_BeginCreateOrUpdate() {
 	// 					SSHPublicKey: &armnetworkcloud.SSHPublicKey{
 	// 						KeyData: to.Ptr("ssh-rsa AAtsE3njSONzDYRIZv/WLjVuMfrUSByHp+jfaaOLHTIIB4fJvo6dQUZxE20w2iDHV3tEkmnTo84eba97VMueQD6OzJPEyWZMRpz8UYWOd0IXeRqiFu1lawNblZhwNT/ojNZfpB3af/YDzwQCZgTcTRyNNhL4o/blKUmug0daSsSXISTRnIDpcf5qytjs1Xo+yYyJMvzLL59mhAyb3p/cD+Y3/s3WhAx+l0XOKpzXnblrv9d3q4c2tWmm/SyFqthaqd0= admin@vm"),
 	// 					},
+	// 					UserPrincipalName: to.Ptr("userABC@contoso.com"),
 	// 				},
 	// 				{
 	// 					Description: to.Ptr("Needs access for troubleshooting as a part of the support team"),
@@ -293,6 +300,7 @@ func ExampleBareMetalMachineKeySetsClient_BeginCreateOrUpdate() {
 	// 					SSHPublicKey: &armnetworkcloud.SSHPublicKey{
 	// 						KeyData: to.Ptr("ssh-rsa AAtsE3njSONzDYRIZv/WLjVuMfrUSByHp+jfaaOLHTIIB4fJvo6dQUZxE20w2iDHV3tEkmnTo84eba97VMueQD6OzJPEyWZMRpz8UYWOd0IXeRqiFu1lawNblZhwNT/ojNZfpB3af/YDzwQCZgTcTRyNNhL4o/blKUmug0daSsSXISTRnIDpcf5qytjs1Xo+yYyJMvzLL59mhAyb3p/cD+Y3/s3WhAx+l0XOKpzXnblrv9d3q4c2tWmm/SyFqthaqd0= admin@vm"),
 	// 					},
+	// 					UserPrincipalName: to.Ptr("userABC@contoso.com"),
 	// 			}},
 	// 			UserListStatus: []*armnetworkcloud.KeySetUserStatus{
 	// 				{
@@ -309,7 +317,7 @@ func ExampleBareMetalMachineKeySetsClient_BeginCreateOrUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/BareMetalMachineKeySets_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/98d74b2db60e46ceb7e3b75755e51519cd500485/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/BareMetalMachineKeySets_Delete.json
 func ExampleBareMetalMachineKeySetsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -330,7 +338,7 @@ func ExampleBareMetalMachineKeySetsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/BareMetalMachineKeySets_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/98d74b2db60e46ceb7e3b75755e51519cd500485/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/BareMetalMachineKeySets_Patch.json
 func ExampleBareMetalMachineKeySetsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -354,6 +362,7 @@ func ExampleBareMetalMachineKeySetsClient_BeginUpdate() {
 					SSHPublicKey: &armnetworkcloud.SSHPublicKey{
 						KeyData: to.Ptr("ssh-rsa AAtsE3njSONzDYRIZv/WLjVuMfrUSByHp+jfaaOLHTIIB4fJvo6dQUZxE20w2iDHV3tEkmnTo84eba97VMueQD6OzJPEyWZMRpz8UYWOd0IXeRqiFu1lawNblZhwNT/ojNZfpB3af/YDzwQCZgTcTRyNNhL4o/blKUmug0daSsSXISTRnIDpcf5qytjs1Xo+yYyJMvzLL59mhAyb3p/cD+Y3/s3WhAx+l0XOKpzXnblrv9d3q4c2tWmm/SyFqthaqd0= admin@vm"),
 					},
+					UserPrincipalName: to.Ptr("userABC@contoso.com"),
 				},
 				{
 					Description:   to.Ptr("Needs access for troubleshooting as a part of the support team"),
@@ -361,6 +370,7 @@ func ExampleBareMetalMachineKeySetsClient_BeginUpdate() {
 					SSHPublicKey: &armnetworkcloud.SSHPublicKey{
 						KeyData: to.Ptr("ssh-rsa AAtsE3njSONzDYRIZv/WLjVuMfrUSByHp+jfaaOLHTIIB4fJvo6dQUZxE20w2iDHV3tEkmnTo84eba97VMueQD6OzJPEyWZMRpz8UYWOd0IXeRqiFu1lawNblZhwNT/ojNZfpB3af/YDzwQCZgTcTRyNNhL4o/blKUmug0daSsSXISTRnIDpcf5qytjs1Xo+yYyJMvzLL59mhAyb3p/cD+Y3/s3WhAx+l0XOKpzXnblrv9d3q4c2tWmm/SyFqthaqd0= admin@vm"),
 					},
+					UserPrincipalName: to.Ptr("userABC@contoso.com"),
 				}},
 		},
 		Tags: map[string]*string{
@@ -402,7 +412,7 @@ func ExampleBareMetalMachineKeySetsClient_BeginUpdate() {
 	// 	Properties: &armnetworkcloud.BareMetalMachineKeySetProperties{
 	// 		AzureGroupID: to.Ptr("f110271b-XXXX-4163-9b99-214d91660f0e"),
 	// 		DetailedStatus: to.Ptr(armnetworkcloud.BareMetalMachineKeySetDetailedStatusSomeInvalid),
-	// 		DetailedStatusMessage: to.Ptr("Inalid Azure user(s) were provided: userXYZ"),
+	// 		DetailedStatusMessage: to.Ptr("Invalid Azure user(s) were provided: userXYZ"),
 	// 		Expiration: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-31T23:59:59.008Z"); return t}()),
 	// 		JumpHostsAllowed: []*string{
 	// 			to.Ptr("192.0.2.1"),
@@ -418,6 +428,7 @@ func ExampleBareMetalMachineKeySetsClient_BeginUpdate() {
 	// 					SSHPublicKey: &armnetworkcloud.SSHPublicKey{
 	// 						KeyData: to.Ptr("ssh-rsa AAtsE3njSONzDYRIZv/WLjVuMfrUSByHp+jfaaOLHTIIB4fJvo6dQUZxE20w2iDHV3tEkmnTo84eba97VMueQD6OzJPEyWZMRpz8UYWOd0IXeRqiFu1lawNblZhwNT/ojNZfpB3af/YDzwQCZgTcTRyNNhL4o/blKUmug0daSsSXISTRnIDpcf5qytjs1Xo+yYyJMvzLL59mhAyb3p/cD+Y3/s3WhAx+l0XOKpzXnblrv9d3q4c2tWmm/SyFqthaqd0= admin@vm"),
 	// 					},
+	// 					UserPrincipalName: to.Ptr("userABC@contoso.com"),
 	// 				},
 	// 				{
 	// 					Description: to.Ptr("Needs access for troubleshooting as a part of the support team"),
@@ -425,6 +436,7 @@ func ExampleBareMetalMachineKeySetsClient_BeginUpdate() {
 	// 					SSHPublicKey: &armnetworkcloud.SSHPublicKey{
 	// 						KeyData: to.Ptr("ssh-rsa AAtsE3njSONzDYRIZv/WLjVuMfrUSByHp+jfaaOLHTIIB4fJvo6dQUZxE20w2iDHV3tEkmnTo84eba97VMueQD6OzJPEyWZMRpz8UYWOd0IXeRqiFu1lawNblZhwNT/ojNZfpB3af/YDzwQCZgTcTRyNNhL4o/blKUmug0daSsSXISTRnIDpcf5qytjs1Xo+yYyJMvzLL59mhAyb3p/cD+Y3/s3WhAx+l0XOKpzXnblrv9d3q4c2tWmm/SyFqthaqd0= admin@vm"),
 	// 					},
+	// 					UserPrincipalName: to.Ptr("userABC@contoso.com"),
 	// 			}},
 	// 			UserListStatus: []*armnetworkcloud.KeySetUserStatus{
 	// 				{

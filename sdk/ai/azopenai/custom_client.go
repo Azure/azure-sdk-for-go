@@ -14,13 +14,12 @@ package azopenai
 
 import (
 	"context"
-	"encoding/json"
 	"net/http"
-	"net/url"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 )
 
 const (
@@ -35,7 +34,7 @@ type ClientOptions struct {
 	azcore.ClientOptions
 }
 
-const apiVersion = "2024-08-01-preview"
+const apiVersion = "2024-10-01-preview"
 
 // NewClient creates a new instance of Client that connects to an Azure OpenAI endpoint.
 //   - endpoint - Azure OpenAI service endpoint, for example: https://{your-resource-name}.openai.azure.com
@@ -146,51 +145,124 @@ func (b *openAIPolicy) Do(req *policy.Request) (*http.Response, error) {
 	return req.Next()
 }
 
-// Methods that return streaming response
-type streamCompletionsOptions struct {
-	// we strip out the 'stream' field from the options exposed to the customer so
-	// now we need to add it back in.
-	any
-	Stream bool `json:"stream"`
+func (options *CompletionsOptions) toWireType() completionsOptions {
+	return completionsOptions{
+		Stream:           to.Ptr(false),
+		StreamOptions:    nil,
+		Prompt:           options.Prompt,
+		BestOf:           options.BestOf,
+		MaxTokens:        options.MaxTokens,
+		Temperature:      options.Temperature,
+		TopP:             options.TopP,
+		FrequencyPenalty: options.FrequencyPenalty,
+		PresencePenalty:  options.PresencePenalty,
+		Stop:             options.Stop,
+		Echo:             options.Echo,
+		LogitBias:        options.LogitBias,
+		LogProbs:         options.LogProbs,
+		DeploymentName:   options.DeploymentName,
+		N:                options.N,
+		Seed:             options.Seed,
+		Suffix:           options.Suffix,
+		User:             options.User,
+	}
 }
 
-func (o streamCompletionsOptions) MarshalJSON() ([]byte, error) {
-	bytes, err := json.Marshal(o.any)
-
-	if err != nil {
-		return nil, err
+func (options *CompletionsStreamOptions) toWireType() completionsOptions {
+	return completionsOptions{
+		Stream:           to.Ptr(true),
+		StreamOptions:    options.StreamOptions,
+		Prompt:           options.Prompt,
+		BestOf:           options.BestOf,
+		MaxTokens:        options.MaxTokens,
+		Temperature:      options.Temperature,
+		TopP:             options.TopP,
+		FrequencyPenalty: options.FrequencyPenalty,
+		PresencePenalty:  options.PresencePenalty,
+		Stop:             options.Stop,
+		Echo:             options.Echo,
+		LogitBias:        options.LogitBias,
+		LogProbs:         options.LogProbs,
+		DeploymentName:   options.DeploymentName,
+		N:                options.N,
+		Seed:             options.Seed,
+		Suffix:           options.Suffix,
+		User:             options.User,
 	}
+}
 
-	objectMap := make(map[string]any)
-	err = json.Unmarshal(bytes, &objectMap)
-	if err != nil {
-		return nil, err
+func (options *ChatCompletionsOptions) toWireType() chatCompletionsOptions {
+	return chatCompletionsOptions{
+		Stream:                 to.Ptr(false),
+		StreamOptions:          nil,
+		Messages:               options.Messages,
+		AzureExtensionsOptions: options.AzureExtensionsOptions,
+		Enhancements:           options.Enhancements,
+		FrequencyPenalty:       options.FrequencyPenalty,
+		FunctionCall:           options.FunctionCall,
+		Functions:              options.Functions,
+		LogitBias:              options.LogitBias,
+		LogProbs:               options.LogProbs,
+		MaxCompletionTokens:    options.MaxCompletionTokens,
+		MaxTokens:              options.MaxTokens,
+		DeploymentName:         options.DeploymentName,
+		N:                      options.N,
+		ParallelToolCalls:      options.ParallelToolCalls,
+		PresencePenalty:        options.PresencePenalty,
+		ResponseFormat:         options.ResponseFormat,
+		Seed:                   options.Seed,
+		Stop:                   options.Stop,
+		Temperature:            options.Temperature,
+		ToolChoice:             options.ToolChoice,
+		Tools:                  options.Tools,
+		TopLogProbs:            options.TopLogProbs,
+		TopP:                   options.TopP,
+		User:                   options.User,
 	}
-	objectMap["stream"] = o.Stream
-	return json.Marshal(objectMap)
+}
+
+func (options *ChatCompletionsStreamOptions) toWireType() chatCompletionsOptions {
+	return chatCompletionsOptions{
+		Stream:                 to.Ptr(true),
+		StreamOptions:          options.StreamOptions,
+		Messages:               options.Messages,
+		AzureExtensionsOptions: options.AzureExtensionsOptions,
+		Enhancements:           options.Enhancements,
+		FrequencyPenalty:       options.FrequencyPenalty,
+		FunctionCall:           options.FunctionCall,
+		Functions:              options.Functions,
+		LogitBias:              options.LogitBias,
+		LogProbs:               options.LogProbs,
+		MaxCompletionTokens:    options.MaxCompletionTokens,
+		MaxTokens:              options.MaxTokens,
+		DeploymentName:         options.DeploymentName,
+		N:                      options.N,
+		ParallelToolCalls:      options.ParallelToolCalls,
+		PresencePenalty:        options.PresencePenalty,
+		ResponseFormat:         options.ResponseFormat,
+		Seed:                   options.Seed,
+		Stop:                   options.Stop,
+		Temperature:            options.Temperature,
+		ToolChoice:             options.ToolChoice,
+		Tools:                  options.Tools,
+		TopLogProbs:            options.TopLogProbs,
+		TopP:                   options.TopP,
+		User:                   options.User,
+	}
 }
 
 // GetCompletionsStream - Return the completions for a given prompt as a sequence of events.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - options - GetCompletionsOptions contains the optional parameters for the Client.GetCompletions method.
-func (client *Client) GetCompletionsStream(ctx context.Context, body CompletionsOptions, options *GetCompletionsStreamOptions) (GetCompletionsStreamResponse, error) {
-	req, err := client.getCompletionsCreateRequest(ctx, body, &GetCompletionsOptions{})
-
+func (client *Client) GetCompletionsStream(ctx context.Context, body CompletionsStreamOptions, options *GetCompletionsStreamOptions) (GetCompletionsStreamResponse, error) {
+	req, err := client.getCompletionsCreateRequest(ctx, body.toWireType(), &GetCompletionsOptions{})
 	if err != nil {
-		return GetCompletionsStreamResponse{}, err
-	}
-
-	if err := runtime.MarshalAsJSON(req, streamCompletionsOptions{
-		any:    body,
-		Stream: true,
-	}); err != nil {
 		return GetCompletionsStreamResponse{}, err
 	}
 
 	runtime.SkipBodyDownload(req)
 
 	resp, err := client.internal.Pipeline().Do(req)
-
 	if err != nil {
 		return GetCompletionsStreamResponse{}, err
 	}
@@ -205,27 +277,28 @@ func (client *Client) GetCompletionsStream(ctx context.Context, body Completions
 	}, nil
 }
 
+// GetCompletions - Gets completions for the provided input prompts. Completions support a wide variety of tasks and generate
+// text that continues from or "completes" provided prompt data.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - body - The configuration information for a completions request. Completions support a wide variety of tasks and generate
+//     text that continues from or "completes" provided prompt data.
+//   - options - GetCompletionsOptions contains the optional parameters for the Client.getCompletions method.
+func (client *Client) GetCompletions(ctx context.Context, body CompletionsOptions, options *GetCompletionsOptions) (GetCompletionsResponse, error) {
+	return client.getCompletions(ctx, body.toWireType(), options)
+}
+
 // GetChatCompletionsStream - Return the chat completions for a given prompt as a sequence of events.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - options - GetCompletionsOptions contains the optional parameters for the Client.GetCompletions method.
-func (client *Client) GetChatCompletionsStream(ctx context.Context, body ChatCompletionsOptions, options *GetChatCompletionsStreamOptions) (GetChatCompletionsStreamResponse, error) {
-	req, err := client.getChatCompletionsCreateRequest(ctx, body, &GetChatCompletionsOptions{})
-
+func (client *Client) GetChatCompletionsStream(ctx context.Context, body ChatCompletionsStreamOptions, options *GetChatCompletionsStreamOptions) (GetChatCompletionsStreamResponse, error) {
+	req, err := client.getChatCompletionsCreateRequest(ctx, body.toWireType(), &GetChatCompletionsOptions{})
 	if err != nil {
-		return GetChatCompletionsStreamResponse{}, err
-	}
-
-	if err := runtime.MarshalAsJSON(req, streamCompletionsOptions{
-		any:    body,
-		Stream: true,
-	}); err != nil {
 		return GetChatCompletionsStreamResponse{}, err
 	}
 
 	runtime.SkipBodyDownload(req)
 
 	resp, err := client.internal.Pipeline().Do(req)
-
 	if err != nil {
 		return GetChatCompletionsStreamResponse{}, err
 	}
@@ -240,84 +313,14 @@ func (client *Client) GetChatCompletionsStream(ctx context.Context, body ChatCom
 	}, nil
 }
 
-func (client *Client) formatURL(path string, deployment *string) string {
-	switch path {
-	// https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#image-generation
-	case "/images/generations:submit":
-		return runtime.JoinPaths(client.endpoint, path)
-	default:
-		if client.azure {
-			if deployment != nil {
-				escapedDeplID := url.PathEscape(*deployment)
-				return runtime.JoinPaths(client.endpoint, "openai", "deployments", escapedDeplID, path)
-			} else {
-				return runtime.JoinPaths(client.endpoint, "openai", path)
-			}
-		}
-
-		return runtime.JoinPaths(client.endpoint, path)
-	}
-}
-
-func (client *Client) newError(resp *http.Response) error {
-	return newContentFilterResponseError(resp)
-}
-
-type clientData struct {
-	endpoint string
-	azure    bool
-}
-
-func getDeployment[T SpeechGenerationOptions | AudioTranscriptionOptions | AudioTranslationOptions | ChatCompletionsOptions | CompletionsOptions | EmbeddingsOptions | *getAudioTranscriptionInternalOptions | *getAudioTranslationInternalOptions | ImageGenerationOptions](v T) *string {
-	switch a := any(v).(type) {
-	case AudioTranscriptionOptions:
-		return a.DeploymentName
-	case AudioTranslationOptions:
-		return a.DeploymentName
-	case ChatCompletionsOptions:
-		return a.DeploymentName
-	case CompletionsOptions:
-		return a.DeploymentName
-	case EmbeddingsOptions:
-		return a.DeploymentName
-	case *getAudioTranscriptionInternalOptions:
-		return a.DeploymentName
-	case *getAudioTranslationInternalOptions:
-		return a.DeploymentName
-	case ImageGenerationOptions:
-		return a.DeploymentName
-	}
-
-	return nil
-}
-
-// ChatRequestUserMessageContent contains the user prompt - either as a single string
-// or as a []ChatCompletionRequestMessageContentPart, enabling images and text as input.
-//
-// NOTE: This should be created using [azopenai.NewChatRequestUserMessageContent]
-type ChatRequestUserMessageContent struct {
-	value any
-}
-
-// NewChatRequestUserMessageContent creates a [azopenai.ChatRequestUserMessageContent].
-func NewChatRequestUserMessageContent[T string | []ChatCompletionRequestMessageContentPartClassification](v T) *ChatRequestUserMessageContent {
-	switch actualV := any(v).(type) {
-	case string:
-		return &ChatRequestUserMessageContent{value: &actualV}
-	case []ChatCompletionRequestMessageContentPartClassification:
-		return &ChatRequestUserMessageContent{value: actualV}
-	}
-	return &ChatRequestUserMessageContent{}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Error.
-func (c ChatRequestUserMessageContent) MarshalJSON() ([]byte, error) {
-	return json.Marshal(c.value)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ChatRequestUserMessageContent.
-func (c *ChatRequestUserMessageContent) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &c.value)
+// GetChatCompletions - Gets chat completions for the provided chat messages. Completions support a wide variety of tasks
+// and generate text that continues from or "completes" provided prompt data.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - body - The configuration information for a chat completions request. Completions support a wide variety of tasks and generate
+//     text that continues from or "completes" provided prompt data.
+//   - options - GetChatCompletionsOptions contains the optional parameters for the Client.getChatCompletions method.
+func (client *Client) GetChatCompletions(ctx context.Context, body ChatCompletionsOptions, options *GetChatCompletionsOptions) (GetChatCompletionsResponse, error) {
+	return client.getChatCompletions(ctx, body.toWireType(), options)
 }
 
 func allowInsecure(options *ClientOptions) bool {

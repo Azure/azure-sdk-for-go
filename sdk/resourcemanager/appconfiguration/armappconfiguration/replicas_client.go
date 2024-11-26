@@ -46,7 +46,7 @@ func NewReplicasClient(subscriptionID string, credential azcore.TokenCredential,
 // BeginCreate - Creates a replica with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2024-05-01
 //   - resourceGroupName - The name of the resource group to which the container registry belongs.
 //   - configStoreName - The name of the configuration store.
 //   - replicaName - The name of the replica.
@@ -73,7 +73,7 @@ func (client *ReplicasClient) BeginCreate(ctx context.Context, resourceGroupName
 // Create - Creates a replica with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2024-05-01
 func (client *ReplicasClient) create(ctx context.Context, resourceGroupName string, configStoreName string, replicaName string, replicaCreationParameters Replica, options *ReplicasClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicasClient.BeginCreate"
@@ -119,7 +119,7 @@ func (client *ReplicasClient) createCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2024-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, replicaCreationParameters); err != nil {
@@ -131,7 +131,7 @@ func (client *ReplicasClient) createCreateRequest(ctx context.Context, resourceG
 // BeginDelete - Deletes a replica.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2024-05-01
 //   - resourceGroupName - The name of the resource group to which the container registry belongs.
 //   - configStoreName - The name of the configuration store.
 //   - replicaName - The name of the replica.
@@ -157,7 +157,7 @@ func (client *ReplicasClient) BeginDelete(ctx context.Context, resourceGroupName
 // Delete - Deletes a replica.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2024-05-01
 func (client *ReplicasClient) deleteOperation(ctx context.Context, resourceGroupName string, configStoreName string, replicaName string, options *ReplicasClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicasClient.BeginDelete"
@@ -203,7 +203,7 @@ func (client *ReplicasClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2024-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -212,7 +212,7 @@ func (client *ReplicasClient) deleteCreateRequest(ctx context.Context, resourceG
 // Get - Gets the properties of the specified replica.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2024-05-01
 //   - resourceGroupName - The name of the resource group to which the container registry belongs.
 //   - configStoreName - The name of the configuration store.
 //   - replicaName - The name of the replica.
@@ -263,7 +263,7 @@ func (client *ReplicasClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2024-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -280,7 +280,7 @@ func (client *ReplicasClient) getHandleResponse(resp *http.Response) (ReplicasCl
 
 // NewListByConfigurationStorePager - Lists the replicas for a given configuration store.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2024-05-01
 //   - resourceGroupName - The name of the resource group to which the container registry belongs.
 //   - configStoreName - The name of the configuration store.
 //   - options - ReplicasClientListByConfigurationStoreOptions contains the optional parameters for the ReplicasClient.NewListByConfigurationStorePager
@@ -328,10 +328,10 @@ func (client *ReplicasClient) listByConfigurationStoreCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
+	reqQP.Set("api-version", "2024-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

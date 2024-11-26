@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appconfiguration/armappconfiguration/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2023-03-01/examples/ConfigurationStoresList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d477c7caa09bf82e22c419be0a99d170552b5892/specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2024-05-01/examples/ConfigurationStoresList.json
 func ExampleConfigurationStoresClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -120,7 +120,7 @@ func ExampleConfigurationStoresClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2023-03-01/examples/ConfigurationStoresListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d477c7caa09bf82e22c419be0a99d170552b5892/specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2024-05-01/examples/ConfigurationStoresListByResourceGroup.json
 func ExampleConfigurationStoresClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -212,7 +212,7 @@ func ExampleConfigurationStoresClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2023-03-01/examples/ConfigurationStoresGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d477c7caa09bf82e22c419be0a99d170552b5892/specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2024-05-01/examples/ConfigurationStoresGet.json
 func ExampleConfigurationStoresClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -269,7 +269,7 @@ func ExampleConfigurationStoresClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2023-03-01/examples/ConfigurationStoresCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d477c7caa09bf82e22c419be0a99d170552b5892/specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2024-05-01/examples/ConfigurationStoresCreate.json
 func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -335,7 +335,77 @@ func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2023-03-01/examples/ConfigurationStoresCreateWithIdentity.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d477c7caa09bf82e22c419be0a99d170552b5892/specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2024-05-01/examples/ConfigurationStoresCreateWithDataPlaneProxy.json
+func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreateWithDataPlaneProxy() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappconfiguration.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewConfigurationStoresClient().BeginCreate(ctx, "myResourceGroup", "contoso", armappconfiguration.ConfigurationStore{
+		Location: to.Ptr("westus"),
+		Properties: &armappconfiguration.ConfigurationStoreProperties{
+			DataPlaneProxy: &armappconfiguration.DataPlaneProxyProperties{
+				AuthenticationMode:    to.Ptr(armappconfiguration.AuthenticationModePassThrough),
+				PrivateLinkDelegation: to.Ptr(armappconfiguration.PrivateLinkDelegationEnabled),
+			},
+		},
+		SKU: &armappconfiguration.SKU{
+			Name: to.Ptr("Standard"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ConfigurationStore = armappconfiguration.ConfigurationStore{
+	// 	Name: to.Ptr("contoso"),
+	// 	Type: to.Ptr("Microsoft.AppConfiguration/configurationStores"),
+	// 	ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/Microsoft.AppConfiguration/configurationStores/contoso"),
+	// 	Location: to.Ptr("westus"),
+	// 	Tags: map[string]*string{
+	// 	},
+	// 	Properties: &armappconfiguration.ConfigurationStoreProperties{
+	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55.000Z"); return t}()),
+	// 		DataPlaneProxy: &armappconfiguration.DataPlaneProxyProperties{
+	// 			AuthenticationMode: to.Ptr(armappconfiguration.AuthenticationModePassThrough),
+	// 			PrivateLinkDelegation: to.Ptr(armappconfiguration.PrivateLinkDelegationEnabled),
+	// 		},
+	// 		DisableLocalAuth: to.Ptr(false),
+	// 		Encryption: &armappconfiguration.EncryptionProperties{
+	// 			KeyVaultProperties: &armappconfiguration.KeyVaultProperties{
+	// 			},
+	// 		},
+	// 		Endpoint: to.Ptr("https://contoso.azconfig.io"),
+	// 		PrivateEndpointConnections: []*armappconfiguration.PrivateEndpointConnectionReference{
+	// 		},
+	// 		ProvisioningState: to.Ptr(armappconfiguration.ProvisioningStateSucceeded),
+	// 	},
+	// 	SKU: &armappconfiguration.SKU{
+	// 		Name: to.Ptr("Standard"),
+	// 	},
+	// 	SystemData: &armappconfiguration.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55.000Z"); return t}()),
+	// 		CreatedBy: to.Ptr("foo@contoso.com"),
+	// 		CreatedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55.000Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("foo@contoso.com"),
+	// 		LastModifiedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d477c7caa09bf82e22c419be0a99d170552b5892/specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2024-05-01/examples/ConfigurationStoresCreateWithIdentity.json
 func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreateWithIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -416,7 +486,7 @@ func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreateWithI
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2023-03-01/examples/ConfigurationStoresCreateWithLocalAuthDisabled.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d477c7caa09bf82e22c419be0a99d170552b5892/specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2024-05-01/examples/ConfigurationStoresCreateWithLocalAuthDisabled.json
 func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreateWithLocalAuthDisabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -479,7 +549,7 @@ func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreateWithL
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2023-03-01/examples/ConfigurationStoresDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d477c7caa09bf82e22c419be0a99d170552b5892/specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2024-05-01/examples/ConfigurationStoresDelete.json
 func ExampleConfigurationStoresClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -500,7 +570,7 @@ func ExampleConfigurationStoresClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2023-03-01/examples/ConfigurationStoresUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d477c7caa09bf82e22c419be0a99d170552b5892/specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2024-05-01/examples/ConfigurationStoresUpdate.json
 func ExampleConfigurationStoresClient_BeginUpdate_configurationStoresUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -564,7 +634,7 @@ func ExampleConfigurationStoresClient_BeginUpdate_configurationStoresUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2023-03-01/examples/ConfigurationStoresUpdateDisableLocalAuth.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d477c7caa09bf82e22c419be0a99d170552b5892/specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2024-05-01/examples/ConfigurationStoresUpdateDisableLocalAuth.json
 func ExampleConfigurationStoresClient_BeginUpdate_configurationStoresUpdateDisableLocalAuth() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -627,7 +697,7 @@ func ExampleConfigurationStoresClient_BeginUpdate_configurationStoresUpdateDisab
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2023-03-01/examples/ConfigurationStoresUpdateWithIdentity.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d477c7caa09bf82e22c419be0a99d170552b5892/specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2024-05-01/examples/ConfigurationStoresUpdateWithIdentity.json
 func ExampleConfigurationStoresClient_BeginUpdate_configurationStoresUpdateWithIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -708,7 +778,7 @@ func ExampleConfigurationStoresClient_BeginUpdate_configurationStoresUpdateWithI
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2023-03-01/examples/ConfigurationStoresListKeys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d477c7caa09bf82e22c419be0a99d170552b5892/specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2024-05-01/examples/ConfigurationStoresListKeys.json
 func ExampleConfigurationStoresClient_NewListKeysPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -768,7 +838,7 @@ func ExampleConfigurationStoresClient_NewListKeysPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2023-03-01/examples/ConfigurationStoresRegenerateKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d477c7caa09bf82e22c419be0a99d170552b5892/specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2024-05-01/examples/ConfigurationStoresRegenerateKey.json
 func ExampleConfigurationStoresClient_RegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -798,7 +868,7 @@ func ExampleConfigurationStoresClient_RegenerateKey() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2023-03-01/examples/DeletedConfigurationStoresList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d477c7caa09bf82e22c419be0a99d170552b5892/specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2024-05-01/examples/DeletedConfigurationStoresList.json
 func ExampleConfigurationStoresClient_NewListDeletedPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -840,7 +910,7 @@ func ExampleConfigurationStoresClient_NewListDeletedPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2023-03-01/examples/DeletedConfigurationStoresGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d477c7caa09bf82e22c419be0a99d170552b5892/specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2024-05-01/examples/DeletedConfigurationStoresGet.json
 func ExampleConfigurationStoresClient_GetDeleted() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -874,7 +944,7 @@ func ExampleConfigurationStoresClient_GetDeleted() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2023-03-01/examples/DeletedConfigurationStoresPurge.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d477c7caa09bf82e22c419be0a99d170552b5892/specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2024-05-01/examples/DeletedConfigurationStoresPurge.json
 func ExampleConfigurationStoresClient_BeginPurgeDeleted() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

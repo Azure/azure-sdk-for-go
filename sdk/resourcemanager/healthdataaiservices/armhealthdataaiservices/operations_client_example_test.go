@@ -11,8 +11,8 @@ import (
 	"log"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/925b1febaaebc3e1d602c765168e8ddabc7153a5/specification/healthdataaiservices/HealthDataAIServices.Management/examples/2024-02-28-preview/Operations_List_MaximumSet_Gen.json
-func ExampleOperationsClient_NewListPager_operationsListMaximumSetGeneratedByMaximumSetRuleGeneratedByMaximumSetRule() {
+// Generated from example definition: 2024-09-20/Operations_List_MaximumSet_Gen.json
+func ExampleOperationsClient_NewListPager_operationsListMaximumSetGeneratedByMaximumSetRuleStable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -55,8 +55,8 @@ func ExampleOperationsClient_NewListPager_operationsListMaximumSetGeneratedByMax
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/925b1febaaebc3e1d602c765168e8ddabc7153a5/specification/healthdataaiservices/HealthDataAIServices.Management/examples/2024-02-28-preview/Operations_List_MinimumSet_Gen.json
-func ExampleOperationsClient_NewListPager_operationsListMaximumSetGeneratedByMaximumSetRuleGeneratedByMinimumSetRule() {
+// Generated from example definition: 2024-09-20/Operations_List_MinimumSet_Gen.json
+func ExampleOperationsClient_NewListPager_operationsListMinimumSetGeneratedByMinimumSetRuleStable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)

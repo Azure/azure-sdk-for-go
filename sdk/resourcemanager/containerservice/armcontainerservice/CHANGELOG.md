@@ -1,5 +1,25 @@
 # Release History
 
+## 6.3.0 (2024-11-18)
+### Features Added
+
+- New enum type `RestrictionLevel` with values `RestrictionLevelReadOnly`, `RestrictionLevelUnrestricted`
+- New struct `AdvancedNetworking`
+- New struct `AdvancedNetworkingObservability`
+- New struct `AdvancedNetworkingSecurity`
+- New struct `ManagedClusterNodeResourceGroupProfile`
+- New field `IfMatch`, `IfNoneMatch` in struct `AgentPoolsClientBeginCreateOrUpdateOptions`
+- New field `IfMatch` in struct `AgentPoolsClientBeginDeleteOptions`
+- New field `ETag` in struct `ManagedCluster`
+- New field `ETag` in struct `ManagedClusterAgentPoolProfile`
+- New field `ETag` in struct `ManagedClusterAgentPoolProfileProperties`
+- New field `NodeResourceGroupProfile` in struct `ManagedClusterProperties`
+- New field `IfMatch`, `IfNoneMatch` in struct `ManagedClustersClientBeginCreateOrUpdateOptions`
+- New field `IfMatch` in struct `ManagedClustersClientBeginDeleteOptions`
+- New field `IfMatch` in struct `ManagedClustersClientBeginUpdateTagsOptions`
+- New field `AdvancedNetworking` in struct `NetworkProfile`
+
+
 ## 6.2.0 (2024-10-24)
 ### Features Added
 

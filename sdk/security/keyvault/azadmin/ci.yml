@@ -27,6 +27,7 @@ extends:
     TimeoutInMinutes: 120
     ServiceDirectory: 'security/keyvault/azadmin'
     UsePipelineProxy: false
+    PersistOidcToken: true
 
     # Due to the high cost of Managed HSMs, which keyvault-admin requires, we only want to run
     # the live tests weekly or for releases (manual builds).

@@ -3,8 +3,6 @@
 Deprecated: The service backing this library is retired on November 30th, 2022. At that point, this library will no longer work. Please migrate to Azure Monitor Log Alerts API in module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor.
 For more details on the Azure VM Insights Guest Health retirement, please visit: https://azure.microsoft.com/updates/transition-to-azure-monitor-log-alerts-for-vm-guest-health-by-30-november-2022
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloadmonitor/armworkloadmonitor)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloadmonitor/armworkloadmonitor)
-
 The `armworkloadmonitor` module provides operations for working with Azure Workload Monitor.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/workloadmonitor/armworkloadmonitor)
@@ -28,7 +26,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloadmonitor/arm
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Workload Monitor.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Workload Monitor. The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -38,7 +36,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Clients
 
-Azure Workload Monitor modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your credential.
+Azure Workload Monitor modules consist of one or more clients. A client groups a set of related APIs, providing access to its functionality within the specified subscription. Create one or more clients to access the APIs you require using your credential.
 
 ```go
 client, err := armworkloadmonitor.NewHealthMonitorsClient(<subscription ID>, cred, nil)

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/Racks_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/98d74b2db60e46ceb7e3b75755e51519cd500485/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/Racks_ListBySubscription.json
 func ExampleRacksClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,14 +71,14 @@ func ExampleRacksClient_NewListBySubscriptionPager() {
 		// 				ProvisioningState: to.Ptr(armnetworkcloud.RackProvisioningStateSucceeded),
 		// 				RackLocation: to.Ptr("Rack 28"),
 		// 				RackSerialNumber: to.Ptr("RACK_SERIAL_NUMBER"),
-		// 				RackSKUID: to.Ptr("RACK-TYPE-1"),
+		// 				RackSKUID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/Racks_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/98d74b2db60e46ceb7e3b75755e51519cd500485/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/Racks_ListByResourceGroup.json
 func ExampleRacksClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,14 +131,14 @@ func ExampleRacksClient_NewListByResourceGroupPager() {
 		// 				ProvisioningState: to.Ptr(armnetworkcloud.RackProvisioningStateSucceeded),
 		// 				RackLocation: to.Ptr("Rack 28"),
 		// 				RackSerialNumber: to.Ptr("RACK_SERIAL_NUMBER"),
-		// 				RackSKUID: to.Ptr("RACK-TYPE-1"),
+		// 				RackSKUID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/Racks_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/98d74b2db60e46ceb7e3b75755e51519cd500485/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/Racks_Get.json
 func ExampleRacksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -185,12 +185,12 @@ func ExampleRacksClient_Get() {
 	// 		ProvisioningState: to.Ptr(armnetworkcloud.RackProvisioningStateSucceeded),
 	// 		RackLocation: to.Ptr("Rack 28"),
 	// 		RackSerialNumber: to.Ptr("RACK_SERIAL_NUMBER"),
-	// 		RackSKUID: to.Ptr("RACK-TYPE-1"),
+	// 		RackSKUID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/Racks_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/98d74b2db60e46ceb7e3b75755e51519cd500485/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/Racks_Create.json
 func ExampleRacksClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -215,7 +215,7 @@ func ExampleRacksClient_BeginCreateOrUpdate() {
 			AvailabilityZone: to.Ptr("1"),
 			RackLocation:     to.Ptr("Rack 28"),
 			RackSerialNumber: to.Ptr("RACK_SERIAL_NUMBER"),
-			RackSKUID:        to.Ptr("RACK-TYPE-1"),
+			RackSKUID:        to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
 		},
 	}, nil)
 	if err != nil {
@@ -257,12 +257,12 @@ func ExampleRacksClient_BeginCreateOrUpdate() {
 	// 		ProvisioningState: to.Ptr(armnetworkcloud.RackProvisioningStateSucceeded),
 	// 		RackLocation: to.Ptr("Rack 28"),
 	// 		RackSerialNumber: to.Ptr("RACK_SERIAL_NUMBER"),
-	// 		RackSKUID: to.Ptr("RACK-TYPE-1"),
+	// 		RackSKUID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/Racks_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/98d74b2db60e46ceb7e3b75755e51519cd500485/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/Racks_Delete.json
 func ExampleRacksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -283,7 +283,7 @@ func ExampleRacksClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/Racks_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/98d74b2db60e46ceb7e3b75755e51519cd500485/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/Racks_Patch.json
 func ExampleRacksClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -343,7 +343,7 @@ func ExampleRacksClient_BeginUpdate() {
 	// 		ProvisioningState: to.Ptr(armnetworkcloud.RackProvisioningStateSucceeded),
 	// 		RackLocation: to.Ptr("Rack 28"),
 	// 		RackSerialNumber: to.Ptr("RACK_SERIAL_NUMBER"),
-	// 		RackSKUID: to.Ptr("RACK-TYPE-1"),
+	// 		RackSKUID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
 	// 	},
 	// }
 }

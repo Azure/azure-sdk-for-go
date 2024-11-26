@@ -43,7 +43,7 @@ func TestChatCompletions_extensions_bringYourOwnData(t *testing.T) {
 func TestChatExtensionsStreaming_extensions_bringYourOwnData(t *testing.T) {
 	client := newTestClient(t, azureOpenAI.ChatCompletionsOYD.Endpoint)
 
-	streamResp, err := client.GetChatCompletionsStream(context.Background(), azopenai.ChatCompletionsOptions{
+	streamResp, err := client.GetChatCompletionsStream(context.Background(), azopenai.ChatCompletionsStreamOptions{
 		Messages: []azopenai.ChatRequestMessageClassification{
 			&azopenai.ChatRequestUserMessage{Content: azopenai.NewChatRequestUserMessageContent("What does PR complete mean?")},
 		},

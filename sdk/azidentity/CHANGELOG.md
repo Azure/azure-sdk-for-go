@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* User credential types inconsistently log access token scopes
 
 ### Other Changes
 

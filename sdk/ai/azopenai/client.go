@@ -35,7 +35,7 @@ type Client struct {
 // Upload.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-08-01-preview
+// Generated from API version 2024-10-01-preview
 //   - uploadID - The ID of the upload associated with this operation.
 //   - data - The chunk of bytes for this Part.
 //   - options - AddUploadPartOptions contains the optional parameters for the Client.AddUploadPart method.
@@ -89,7 +89,7 @@ func (client *Client) addUploadPartHandleResponse(resp *http.Response) (AddUploa
 // CancelBatch - Gets details for a single batch specified by the given batchID.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-08-01-preview
+// Generated from API version 2024-10-01-preview
 //   - batchID - The identifier of the batch.
 //   - options - CancelBatchOptions contains the optional parameters for the Client.CancelBatch method.
 func (client *Client) CancelBatch(ctx context.Context, batchID string, options *CancelBatchOptions) (CancelBatchResponse, error) {
@@ -137,7 +137,7 @@ func (client *Client) cancelBatchHandleResponse(resp *http.Response) (CancelBatc
 // CancelUpload - Cancels the Upload. No Parts may be added after an Upload is cancelled.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-08-01-preview
+// Generated from API version 2024-10-01-preview
 //   - uploadID - The ID of the upload associated with this operation.
 //   - options - CancelUploadOptions contains the optional parameters for the Client.CancelUpload method.
 func (client *Client) CancelUpload(ctx context.Context, uploadID string, options *CancelUploadOptions) (CancelUploadResponse, error) {
@@ -189,7 +189,7 @@ func (client *Client) cancelUploadHandleResponse(resp *http.Response) (CancelUpl
 // object. No Parts may be added after an Upload is completed.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-08-01-preview
+// Generated from API version 2024-10-01-preview
 //   - uploadID - The ID of the upload associated with this operation.
 //   - requestBody - The request body for the completion operation.
 //   - options - CompleteUploadOptions contains the optional parameters for the Client.CompleteUpload method.
@@ -242,7 +242,7 @@ func (client *Client) completeUploadHandleResponse(resp *http.Response) (Complet
 // job including job status. The ID of the result file is added to the response once complete.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-08-01-preview
+// Generated from API version 2024-10-01-preview
 //   - createBatchRequest - The specification of the batch to create and execute.
 //   - options - CreateBatchOptions contains the optional parameters for the Client.CreateBatch method.
 func (client *Client) CreateBatch(ctx context.Context, createBatchRequest BatchCreateRequest, options *CreateBatchOptions) (CreateBatchResponse, error) {
@@ -295,7 +295,7 @@ func (client *Client) createBatchHandleResponse(resp *http.Response) (CreateBatc
 // For guidance on the proper filename extensions for each purpose, please follow the documentation on creating a File.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-08-01-preview
+// Generated from API version 2024-10-01-preview
 //   - requestBody - The request body for the operation options.
 //   - options - CreateUploadOptions contains the optional parameters for the Client.CreateUpload method.
 func (client *Client) CreateUpload(ctx context.Context, requestBody CreateUploadRequest, options *CreateUploadOptions) (CreateUploadResponse, error) {
@@ -342,7 +342,7 @@ func (client *Client) createUploadHandleResponse(resp *http.Response) (CreateUpl
 // DeleteFile - Delete a previously uploaded file.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-08-01-preview
+// Generated from API version 2024-10-01-preview
 //   - fileID - The ID of the file to delete.
 //   - options - DeleteFileOptions contains the optional parameters for the Client.DeleteFile method.
 func (client *Client) DeleteFile(ctx context.Context, fileID string, options *DeleteFileOptions) (DeleteFileResponse, error) {
@@ -390,7 +390,7 @@ func (client *Client) deleteFileHandleResponse(resp *http.Response) (DeleteFileR
 // GenerateSpeechFromText - Generates text-to-speech audio from the input text.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-08-01-preview
+// Generated from API version 2024-10-01-preview
 //   - body - A representation of the request options that control the behavior of a text-to-speech operation.
 //   - options - GenerateSpeechFromTextOptions contains the optional parameters for the Client.GenerateSpeechFromText method.
 func (client *Client) GenerateSpeechFromText(ctx context.Context, body SpeechGenerationOptions, options *GenerateSpeechFromTextOptions) (GenerateSpeechFromTextResponse, error) {
@@ -413,12 +413,12 @@ func (client *Client) GenerateSpeechFromText(ctx context.Context, body SpeechGen
 // generateSpeechFromTextCreateRequest creates the GenerateSpeechFromText request.
 func (client *Client) generateSpeechFromTextCreateRequest(ctx context.Context, body SpeechGenerationOptions, options *GenerateSpeechFromTextOptions) (*policy.Request, error) {
 	urlPath := "audio/speech"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, getDeployment(body)))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, body.DeploymentName))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01-preview")
+	reqQP.Set("api-version", "2024-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	runtime.SkipBodyDownload(req)
 	req.Raw().Header["Accept"] = []string{"application/octet-stream, application/json"}
@@ -432,7 +432,7 @@ func (client *Client) generateSpeechFromTextCreateRequest(ctx context.Context, b
 // be transcribed in the written language corresponding to the language it was spoken in.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-08-01-preview
+// Generated from API version 2024-10-01-preview
 //   - deploymentID - Specifies either the model deployment name (when using Azure OpenAI) or model name (when using non-Azure
 //     OpenAI) to use for this request.
 //   - file - The audio data to transcribe. This must be the binary content of a file in one of the supported media formats: flac,
@@ -460,12 +460,12 @@ func (client *Client) getAudioTranscriptionInternal(ctx context.Context, file io
 // getAudioTranscriptionInternalCreateRequest creates the getAudioTranscriptionInternal request.
 func (client *Client) getAudioTranscriptionInternalCreateRequest(ctx context.Context, file io.ReadSeekCloser, body *getAudioTranscriptionInternalOptions) (*policy.Request, error) {
 	urlPath := "audio/transcriptions"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, getDeployment(body)))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, body.DeploymentName))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01-preview")
+	reqQP.Set("api-version", "2024-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := setMultipartFormData(req, file, *body); err != nil {
@@ -487,7 +487,7 @@ func (client *Client) getAudioTranscriptionInternalHandleResponse(resp *http.Res
 // data.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-08-01-preview
+// Generated from API version 2024-10-01-preview
 //   - deploymentID - Specifies either the model deployment name (when using Azure OpenAI) or model name (when using non-Azure
 //     OpenAI) to use for this request.
 //   - file - The audio data to translate. This must be the binary content of a file in one of the supported media formats: flac,
@@ -515,12 +515,12 @@ func (client *Client) getAudioTranslationInternal(ctx context.Context, file io.R
 // getAudioTranslationInternalCreateRequest creates the getAudioTranslationInternal request.
 func (client *Client) getAudioTranslationInternalCreateRequest(ctx context.Context, file io.ReadSeekCloser, body *getAudioTranslationInternalOptions) (*policy.Request, error) {
 	urlPath := "audio/translations"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, getDeployment(body)))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, body.DeploymentName))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01-preview")
+	reqQP.Set("api-version", "2024-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := setMultipartFormData(req, file, *body); err != nil {
@@ -541,7 +541,7 @@ func (client *Client) getAudioTranslationInternalHandleResponse(resp *http.Respo
 // GetBatch - Gets details for a single batch specified by the given batchID.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-08-01-preview
+// Generated from API version 2024-10-01-preview
 //   - batchID - The identifier of the batch.
 //   - options - GetBatchOptions contains the optional parameters for the Client.GetBatch method.
 func (client *Client) GetBatch(ctx context.Context, batchID string, options *GetBatchOptions) (GetBatchResponse, error) {
@@ -586,15 +586,15 @@ func (client *Client) getBatchHandleResponse(resp *http.Response) (GetBatchRespo
 	return result, nil
 }
 
-// GetChatCompletions - Gets chat completions for the provided chat messages. Completions support a wide variety of tasks
+// getChatCompletions - Gets chat completions for the provided chat messages. Completions support a wide variety of tasks
 // and generate text that continues from or "completes" provided prompt data.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-08-01-preview
+// Generated from API version 2024-10-01-preview
 //   - body - The configuration information for a chat completions request. Completions support a wide variety of tasks and generate
 //     text that continues from or "completes" provided prompt data.
-//   - options - GetChatCompletionsOptions contains the optional parameters for the Client.GetChatCompletions method.
-func (client *Client) GetChatCompletions(ctx context.Context, body ChatCompletionsOptions, options *GetChatCompletionsOptions) (GetChatCompletionsResponse, error) {
+//   - options - GetChatCompletionsOptions contains the optional parameters for the Client.getChatCompletions method.
+func (client *Client) getChatCompletions(ctx context.Context, body chatCompletionsOptions, options *GetChatCompletionsOptions) (GetChatCompletionsResponse, error) {
 	var err error
 	req, err := client.getChatCompletionsCreateRequest(ctx, body, options)
 	if err != nil {
@@ -613,14 +613,14 @@ func (client *Client) GetChatCompletions(ctx context.Context, body ChatCompletio
 }
 
 // getChatCompletionsCreateRequest creates the GetChatCompletions request.
-func (client *Client) getChatCompletionsCreateRequest(ctx context.Context, body ChatCompletionsOptions, options *GetChatCompletionsOptions) (*policy.Request, error) {
+func (client *Client) getChatCompletionsCreateRequest(ctx context.Context, body chatCompletionsOptions, options *GetChatCompletionsOptions) (*policy.Request, error) {
 	urlPath := "chat/completions"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, getDeployment(body)))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, body.DeploymentName))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01-preview")
+	reqQP.Set("api-version", "2024-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -638,15 +638,15 @@ func (client *Client) getChatCompletionsHandleResponse(resp *http.Response) (Get
 	return result, nil
 }
 
-// GetCompletions - Gets completions for the provided input prompts. Completions support a wide variety of tasks and generate
+// getCompletions - Gets completions for the provided input prompts. Completions support a wide variety of tasks and generate
 // text that continues from or "completes" provided prompt data.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-08-01-preview
+// Generated from API version 2024-10-01-preview
 //   - body - The configuration information for a completions request. Completions support a wide variety of tasks and generate
 //     text that continues from or "completes" provided prompt data.
-//   - options - GetCompletionsOptions contains the optional parameters for the Client.GetCompletions method.
-func (client *Client) GetCompletions(ctx context.Context, body CompletionsOptions, options *GetCompletionsOptions) (GetCompletionsResponse, error) {
+//   - options - GetCompletionsOptions contains the optional parameters for the Client.getCompletions method.
+func (client *Client) getCompletions(ctx context.Context, body completionsOptions, options *GetCompletionsOptions) (GetCompletionsResponse, error) {
 	var err error
 	req, err := client.getCompletionsCreateRequest(ctx, body, options)
 	if err != nil {
@@ -665,14 +665,14 @@ func (client *Client) GetCompletions(ctx context.Context, body CompletionsOption
 }
 
 // getCompletionsCreateRequest creates the GetCompletions request.
-func (client *Client) getCompletionsCreateRequest(ctx context.Context, body CompletionsOptions, options *GetCompletionsOptions) (*policy.Request, error) {
+func (client *Client) getCompletionsCreateRequest(ctx context.Context, body completionsOptions, options *GetCompletionsOptions) (*policy.Request, error) {
 	urlPath := "completions"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, getDeployment(body)))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, body.DeploymentName))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01-preview")
+	reqQP.Set("api-version", "2024-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -693,7 +693,7 @@ func (client *Client) getCompletionsHandleResponse(resp *http.Response) (GetComp
 // GetEmbeddings - Return the embeddings for a given prompt.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-08-01-preview
+// Generated from API version 2024-10-01-preview
 //   - body - The configuration information for an embeddings request. Embeddings measure the relatedness of text strings and
 //     are commonly used for search, clustering, recommendations, and other similar scenarios.
 //   - options - GetEmbeddingsOptions contains the optional parameters for the Client.GetEmbeddings method.
@@ -718,12 +718,12 @@ func (client *Client) GetEmbeddings(ctx context.Context, body EmbeddingsOptions,
 // getEmbeddingsCreateRequest creates the GetEmbeddings request.
 func (client *Client) getEmbeddingsCreateRequest(ctx context.Context, body EmbeddingsOptions, options *GetEmbeddingsOptions) (*policy.Request, error) {
 	urlPath := "embeddings"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, getDeployment(body)))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, body.DeploymentName))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01-preview")
+	reqQP.Set("api-version", "2024-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -744,7 +744,7 @@ func (client *Client) getEmbeddingsHandleResponse(resp *http.Response) (GetEmbed
 // GetFile - Returns information about a specific file. Does not retrieve file content.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-08-01-preview
+// Generated from API version 2024-10-01-preview
 //   - fileID - The ID of the file to retrieve.
 //   - options - GetFileOptions contains the optional parameters for the Client.GetFile method.
 func (client *Client) GetFile(ctx context.Context, fileID string, options *GetFileOptions) (GetFileResponse, error) {
@@ -792,7 +792,7 @@ func (client *Client) getFileHandleResponse(resp *http.Response) (GetFileRespons
 // GetFileContent - Returns information about a specific file. Does not retrieve file content.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-08-01-preview
+// Generated from API version 2024-10-01-preview
 //   - fileID - The ID of the file to retrieve.
 //   - options - GetFileContentOptions contains the optional parameters for the Client.GetFileContent method.
 func (client *Client) GetFileContent(ctx context.Context, fileID string, options *GetFileContentOptions) (GetFileContentResponse, error) {
@@ -840,7 +840,7 @@ func (client *Client) getFileContentHandleResponse(resp *http.Response) (GetFile
 // GetImageGenerations - Creates an image given a prompt.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-08-01-preview
+// Generated from API version 2024-10-01-preview
 //   - body - Represents the request data used to generate images.
 //   - options - GetImageGenerationsOptions contains the optional parameters for the Client.GetImageGenerations method.
 func (client *Client) GetImageGenerations(ctx context.Context, body ImageGenerationOptions, options *GetImageGenerationsOptions) (GetImageGenerationsResponse, error) {
@@ -864,12 +864,12 @@ func (client *Client) GetImageGenerations(ctx context.Context, body ImageGenerat
 // getImageGenerationsCreateRequest creates the GetImageGenerations request.
 func (client *Client) getImageGenerationsCreateRequest(ctx context.Context, body ImageGenerationOptions, options *GetImageGenerationsOptions) (*policy.Request, error) {
 	urlPath := "images/generations"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, getDeployment(body)))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, body.DeploymentName))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01-preview")
+	reqQP.Set("api-version", "2024-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -890,7 +890,7 @@ func (client *Client) getImageGenerationsHandleResponse(resp *http.Response) (Ge
 // listBatches - Gets a list of all batches owned by the Azure OpenAI resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-08-01-preview
+// Generated from API version 2024-10-01-preview
 //   - options - ListBatchesOptions contains the optional parameters for the Client.listBatches method.
 func (client *Client) listBatches(ctx context.Context, options *ListBatchesOptions) (ListBatchesResponse, error) {
 	var err error
@@ -941,7 +941,7 @@ func (client *Client) listBatchesHandleResponse(resp *http.Response) (ListBatche
 // ListFiles - Gets a list of previously uploaded files.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-08-01-preview
+// Generated from API version 2024-10-01-preview
 //   - options - ListFilesOptions contains the optional parameters for the Client.ListFiles method.
 func (client *Client) ListFiles(ctx context.Context, options *ListFilesOptions) (ListFilesResponse, error) {
 	var err error
@@ -989,7 +989,7 @@ func (client *Client) listFilesHandleResponse(resp *http.Response) (ListFilesRes
 // UploadFile - Uploads a file for use by other operations.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-08-01-preview
+// Generated from API version 2024-10-01-preview
 //   - file - The file data (not filename) to upload.
 //   - purpose - The intended purpose of the file.
 //   - options - UploadFileOptions contains the optional parameters for the Client.UploadFile method.

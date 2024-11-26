@@ -1,5 +1,16 @@
 # Release History
 
+## 1.5.1-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+* Fix FilterBlob API if Query contains a space character. Fixes [#23546](https://github.com/Azure/azure-sdk-for-go/issues/23546)
+
+### Other Changes
+
 ## 1.5.0 (2024-11-13)
 * Fix compareHeaders custom sorting algorithm for String To Sign.
 * Added permissions & resourcetype parameters in listblob response.

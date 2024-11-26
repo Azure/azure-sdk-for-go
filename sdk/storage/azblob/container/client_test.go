@@ -2479,7 +2479,8 @@ func (s *ContainerUnrecordedTestsSuite) TestFilterBlobsByTags() {
 	time.Sleep(10 * time.Second)
 
 	// Use container client to filter blobs by tag
-	where := "\"azure\"='blob'"
+	where := "\"go\"='i am written in golang'"
+
 	opts := container.FilterBlobsOptions{MaxResults: to.Ptr(int32(10)), Marker: to.Ptr("")}
 	lResp, err := containerSasClient.FilterBlobs(context.Background(), where, &opts)
 	_require.NoError(err)

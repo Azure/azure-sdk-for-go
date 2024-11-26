@@ -20,7 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f41d0c9332078cb2ef07b749081d94915255ada5/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2024-07-10/examples/machine/Machines_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63d530d0def1c624f5d42d39170ff4ac196522e2/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-07-31-preview/examples/machine/Machines_CreateOrUpdate.json
 func ExampleMachinesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -144,7 +144,7 @@ func ExampleMachinesClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f41d0c9332078cb2ef07b749081d94915255ada5/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2024-07-10/examples/machine/Machines_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63d530d0def1c624f5d42d39170ff4ac196522e2/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-07-31-preview/examples/machine/Machines_Update.json
 func ExampleMachinesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -269,7 +269,7 @@ func ExampleMachinesClient_Update() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f41d0c9332078cb2ef07b749081d94915255ada5/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2024-07-10/examples/machine/Machines_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63d530d0def1c624f5d42d39170ff4ac196522e2/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-07-31-preview/examples/machine/Machines_Delete.json
 func ExampleMachinesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -286,7 +286,7 @@ func ExampleMachinesClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f41d0c9332078cb2ef07b749081d94915255ada5/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2024-07-10/examples/machine/Machines_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63d530d0def1c624f5d42d39170ff4ac196522e2/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-07-31-preview/examples/machine/Machines_Get.json
 func ExampleMachinesClient_Get_getMachine() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -332,6 +332,19 @@ func ExampleMachinesClient_Get_getMachine() {
 	// 					"cloudprovider": to.Ptr("N/A"),
 	// 					"manufacturer": to.Ptr("Microsoft Corporation"),
 	// 					"model": to.Ptr("Virtual Machine"),
+	// 				},
+	// 				FirmwareProfile: &armhybridcompute.FirmwareProfile{
+	// 					Type: to.Ptr("BIOS"),
+	// 					SerialNumber: to.Ptr("007f0232-1c2e-4978-8604-ea44e7a5f5a0"),
+	// 				},
+	// 				HardwareProfile: &armhybridcompute.HardwareProfile{
+	// 					NumberOfCPUSockets: to.Ptr[int32](2),
+	// 					Processors: []*armhybridcompute.Processor{
+	// 						{
+	// 							Name: to.Ptr("Intel(R) Core(TM) i7-10610U CPU @ 1.80GHz"),
+	// 							NumberOfCores: to.Ptr[int32](4),
+	// 					}},
+	// 					TotalPhysicalMemoryInBytes: to.Ptr[int64](34359738368),
 	// 				},
 	// 				LicenseProfile: &armhybridcompute.LicenseProfileMachineInstanceView{
 	// 					EsuProfile: &armhybridcompute.LicenseProfileMachineInstanceViewEsuProperties{
@@ -381,6 +394,8 @@ func ExampleMachinesClient_Get_getMachine() {
 	// 				NetworkProfile: &armhybridcompute.NetworkProfile{
 	// 					NetworkInterfaces: []*armhybridcompute.NetworkInterface{
 	// 						{
+	// 							Name: to.Ptr("Wi-Fi"),
+	// 							ID: to.Ptr("8"),
 	// 							IPAddresses: []*armhybridcompute.IPAddress{
 	// 								{
 	// 									Address: to.Ptr("192.168.12.345"),
@@ -389,8 +404,11 @@ func ExampleMachinesClient_Get_getMachine() {
 	// 										AddressPrefix: to.Ptr("192.168.12.0/24"),
 	// 									},
 	// 							}},
+	// 							MacAddress: to.Ptr("3c:49:6e:13:0e:73"),
 	// 						},
 	// 						{
+	// 							Name: to.Ptr("Ethernet"),
+	// 							ID: to.Ptr("23"),
 	// 							IPAddresses: []*armhybridcompute.IPAddress{
 	// 								{
 	// 									Address: to.Ptr("1001:0:34aa:5000:1234:aaaa:bbbb:cccc"),
@@ -399,6 +417,7 @@ func ExampleMachinesClient_Get_getMachine() {
 	// 										AddressPrefix: to.Ptr("1001:0:34aa:5000::/64"),
 	// 									},
 	// 							}},
+	// 							MacAddress: to.Ptr("10:15:5c:52:f9:b8"),
 	// 					}},
 	// 				},
 	// 				OSEdition: to.Ptr("Standard"),
@@ -429,6 +448,18 @@ func ExampleMachinesClient_Get_getMachine() {
 	// 						Status: to.Ptr("Running"),
 	// 					},
 	// 				},
+	// 				StorageProfile: &armhybridcompute.StorageProfile{
+	// 					Disks: []*armhybridcompute.Disk{
+	// 						{
+	// 							Name: to.Ptr("Windows"),
+	// 							Path: to.Ptr("C:/"),
+	// 							DiskType: to.Ptr("Fixed"),
+	// 							GeneratedID: to.Ptr("94318602-6e46-4eaa-997e-0e528afe3d17"),
+	// 							ID: to.Ptr("2"),
+	// 							MaxSizeInBytes: to.Ptr[int64](1022870155264),
+	// 							UsedSpaceInBytes: to.Ptr[int64](435501297664),
+	// 					}},
+	// 				},
 	// 				VMID: to.Ptr("b7a098cc-b0b8-46e8-a205-62f301a62a8f"),
 	// 			},
 	// 			Resources: []*armhybridcompute.MachineExtension{
@@ -436,7 +467,7 @@ func ExampleMachinesClient_Get_getMachine() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f41d0c9332078cb2ef07b749081d94915255ada5/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2024-07-10/examples/machine/Machines_Get_LicenseProfileInstanceView.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63d530d0def1c624f5d42d39170ff4ac196522e2/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-07-31-preview/examples/machine/Machines_Get_LicenseProfileInstanceView.json
 func ExampleMachinesClient_Get_getMachineWithLicenseProfileInstanceView() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -482,6 +513,19 @@ func ExampleMachinesClient_Get_getMachineWithLicenseProfileInstanceView() {
 	// 					"cloudprovider": to.Ptr("N/A"),
 	// 					"manufacturer": to.Ptr("Microsoft Corporation"),
 	// 					"model": to.Ptr("Virtual Machine"),
+	// 				},
+	// 				FirmwareProfile: &armhybridcompute.FirmwareProfile{
+	// 					Type: to.Ptr("BIOS"),
+	// 					SerialNumber: to.Ptr("007f0232-1c2e-4978-8604-ea44e7a5f5a0"),
+	// 				},
+	// 				HardwareProfile: &armhybridcompute.HardwareProfile{
+	// 					NumberOfCPUSockets: to.Ptr[int32](2),
+	// 					Processors: []*armhybridcompute.Processor{
+	// 						{
+	// 							Name: to.Ptr("Intel(R) Core(TM) i7-10610U CPU @ 1.80GHz"),
+	// 							NumberOfCores: to.Ptr[int32](4),
+	// 					}},
+	// 					TotalPhysicalMemoryInBytes: to.Ptr[int64](34359738368),
 	// 				},
 	// 				LicenseProfile: &armhybridcompute.LicenseProfileMachineInstanceView{
 	// 					EsuProfile: &armhybridcompute.LicenseProfileMachineInstanceViewEsuProperties{
@@ -550,6 +594,8 @@ func ExampleMachinesClient_Get_getMachineWithLicenseProfileInstanceView() {
 	// 				NetworkProfile: &armhybridcompute.NetworkProfile{
 	// 					NetworkInterfaces: []*armhybridcompute.NetworkInterface{
 	// 						{
+	// 							Name: to.Ptr("Wi-Fi"),
+	// 							ID: to.Ptr("8"),
 	// 							IPAddresses: []*armhybridcompute.IPAddress{
 	// 								{
 	// 									Address: to.Ptr("192.168.12.345"),
@@ -558,8 +604,11 @@ func ExampleMachinesClient_Get_getMachineWithLicenseProfileInstanceView() {
 	// 										AddressPrefix: to.Ptr("192.168.12.0/24"),
 	// 									},
 	// 							}},
+	// 							MacAddress: to.Ptr("3c:49:6e:13:0e:73"),
 	// 						},
 	// 						{
+	// 							Name: to.Ptr("Ethernet"),
+	// 							ID: to.Ptr("23"),
 	// 							IPAddresses: []*armhybridcompute.IPAddress{
 	// 								{
 	// 									Address: to.Ptr("1001:0:34aa:5000:1234:aaaa:bbbb:cccc"),
@@ -568,6 +617,7 @@ func ExampleMachinesClient_Get_getMachineWithLicenseProfileInstanceView() {
 	// 										AddressPrefix: to.Ptr("1001:0:34aa:5000::/64"),
 	// 									},
 	// 							}},
+	// 							MacAddress: to.Ptr("10:15:5c:52:f9:b8"),
 	// 					}},
 	// 				},
 	// 				OSEdition: to.Ptr("Standard"),
@@ -598,6 +648,18 @@ func ExampleMachinesClient_Get_getMachineWithLicenseProfileInstanceView() {
 	// 						Status: to.Ptr("Running"),
 	// 					},
 	// 				},
+	// 				StorageProfile: &armhybridcompute.StorageProfile{
+	// 					Disks: []*armhybridcompute.Disk{
+	// 						{
+	// 							Name: to.Ptr("Windows"),
+	// 							Path: to.Ptr("C:/"),
+	// 							DiskType: to.Ptr("Fixed"),
+	// 							GeneratedID: to.Ptr("94318602-6e46-4eaa-997e-0e528afe3d17"),
+	// 							ID: to.Ptr("2"),
+	// 							MaxSizeInBytes: to.Ptr[int64](1022870155264),
+	// 							UsedSpaceInBytes: to.Ptr[int64](435501297664),
+	// 					}},
+	// 				},
 	// 				VMID: to.Ptr("b7a098cc-b0b8-46e8-a205-62f301a62a8f"),
 	// 			},
 	// 			Resources: []*armhybridcompute.MachineExtension{
@@ -605,7 +667,7 @@ func ExampleMachinesClient_Get_getMachineWithLicenseProfileInstanceView() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f41d0c9332078cb2ef07b749081d94915255ada5/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2024-07-10/examples/machine/Machine_AssessPatches.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63d530d0def1c624f5d42d39170ff4ac196522e2/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-07-31-preview/examples/machine/Machine_AssessPatches.json
 func ExampleMachinesClient_BeginAssessPatches() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -648,7 +710,7 @@ func ExampleMachinesClient_BeginAssessPatches() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f41d0c9332078cb2ef07b749081d94915255ada5/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2024-07-10/examples/machine/Machine_InstallPatches.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63d530d0def1c624f5d42d39170ff4ac196522e2/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-07-31-preview/examples/machine/Machine_InstallPatches.json
 func ExampleMachinesClient_BeginInstallPatches() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -696,7 +758,7 @@ func ExampleMachinesClient_BeginInstallPatches() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f41d0c9332078cb2ef07b749081d94915255ada5/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2024-07-10/examples/machine/Machines_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63d530d0def1c624f5d42d39170ff4ac196522e2/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-07-31-preview/examples/machine/Machines_ListByResourceGroup.json
 func ExampleMachinesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -909,7 +971,7 @@ func ExampleMachinesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f41d0c9332078cb2ef07b749081d94915255ada5/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2024-07-10/examples/machine/Machines_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63d530d0def1c624f5d42d39170ff4ac196522e2/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-07-31-preview/examples/machine/Machines_ListBySubscription.json
 func ExampleMachinesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

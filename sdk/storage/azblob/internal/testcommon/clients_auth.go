@@ -82,6 +82,7 @@ var BasicBlobTagsMap = map[string]string{
 	"azure": "blob",
 	"blob":  "sdk",
 	"sdk":   "go",
+	"go":    "i am written in golang",
 }
 
 var SpecialCharBlobTagsMap = map[string]string{

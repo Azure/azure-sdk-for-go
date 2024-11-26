@@ -99,8 +99,8 @@ var azureOpenAI = func() testVars {
 	newTestVarsFn := func() testVars {
 		return testVars{
 			Assistants: endpointWithModel{
-				Endpoint: servers.SWECentral,
-				Model:    "gpt-4-1106-preview",
+				Endpoint: servers.USEast,
+				Model:    "gpt-4o-0806",
 			},
 			ChatCompletions: endpointWithModel{
 				Endpoint: servers.USEast,
@@ -187,10 +187,25 @@ var azureOpenAI = func() testVars {
 	return azureTestVars
 }()
 
+type stainlessTestClientOptions struct {
+	UseAPIKey bool
+}
+
 func newStainlessTestClient(t *testing.T, ep endpoint) *openai.Client {
+	return newStainlessTestClientWithOptions(t, ep, nil)
+}
+
+func newStainlessTestClientWithOptions(t *testing.T, ep endpoint, options *stainlessTestClientOptions) *openai.Client {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		t.Skip("Skipping tests in playback mode")
 		return nil
+	}
+
+	if options != nil && options.UseAPIKey {
+		return openai.NewClient(
+			azure.WithEndpoint(ep.URL, apiVersion),
+			azure.WithAPIKey(ep.APIKey),
+		)
 	}
 
 	tokenCredential, err := credential.New(nil)

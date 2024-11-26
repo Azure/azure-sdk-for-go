@@ -21,7 +21,6 @@ import (
 
 // C:\Users\v-liujudy\go\pkg\mod\github.com\!azure\azure-sdk-for-go\sdk\resourcemanager
 const (
-	SubscriptionID   = "faa080af-c1d8-40ad-9cce-e1a450ca5b57"
 	ResourceLocation = "eastus2"
 )
 

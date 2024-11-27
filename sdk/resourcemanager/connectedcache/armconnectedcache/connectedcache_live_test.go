@@ -9,6 +9,8 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"math/rand"
+	"strconv"
 	"testing"
 	"time"
 
@@ -33,6 +35,7 @@ type ConnectedCacheTestSuite struct {
 	ctx               context.Context
 	cred              azcore.TokenCredential
 	options           *arm.ClientOptions
+	armEndpoint       string
 	location          string
 	resourceGroupName string
 	subscriptionId    string
@@ -42,12 +45,13 @@ func (testsuite *ConnectedCacheTestSuite) SetupSuite() {
 	testutil.StartRecording(testsuite.T(), pathToPackage)
 	fmt.Println("start recording~~~~~~~")
 	testsuite.ctx = context.Background()
+	testsuite.armEndpoint = "https://management.azure.com"
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
 	testsuite.location = recording.GetEnvVariable("LOCATION", ResourceLocation)
 	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
 	testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 
-	testsuite.resourceGroupName = "sadafsdfsdb"
+	testsuite.resourceGroupName = "sadafsdfsdb-" + strconv.Itoa(rand.Intn(100))
 	fmt.Println("testsuite.resourceGroupName:", testsuite.resourceGroupName)
 	testsuite.Prepare()
 }
@@ -110,11 +114,11 @@ func (testsuite *ConnectedCacheTestSuite) TestCreateIspCustomersClient() {
 			// 	CustomerEntitlementSKUGUID:    to.Ptr("rvzmdpxyflgqetvpwupnfaxsweiiz"),
 			// 	CustomerEntitlementSKUName:    to.Ptr("waaqfijr"),
 			// 	CustomerEntitlementExpiration: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.773Z"); return t }()),
-			// 	OptionalProperty1:             to.Ptr("qhmwxza"),
-			// 	OptionalProperty2:             to.Ptr("l"),
-			// 	OptionalProperty3:             to.Ptr("mblwwvbie"),
-			// 	OptionalProperty4:             to.Ptr("vzuek"),
-			// 	OptionalProperty5:             to.Ptr("fzjodscdfcdr"),
+			// 	// OptionalProperty1:             to.Ptr("qhmwxza"),
+			// OptionalProperty2:             to.Ptr("l"),
+			// OptionalProperty3:             to.Ptr("mblwwvbie"),
+			// OptionalProperty4:             to.Ptr("vzuek"),
+			// OptionalProperty5:             to.Ptr("fzjodscdfcdr"),
 			// },
 			Error: &armconnectedcache.ErrorDetail{},
 		},
@@ -160,6 +164,8 @@ func (testsuite *ConnectedCacheTestSuite) Prepare() {
 	testsuite.Require().NoError(err)
 	client := clientFactory.NewResourceGroupsClient()
 	ctx := context.Background()
+
+	testsuite.Require().NoError(err)
 	// check whether create new group successfully
 	res, err := client.CheckExistence(ctx, testsuite.resourceGroupName, nil)
 	testsuite.Require().NoError(err)

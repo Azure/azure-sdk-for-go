@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"os"
 	"testing"
 	"time"
 
@@ -19,12 +18,11 @@ import (
 	"github.com/stretchr/testify/suite"
 )
 
-// C:\Users\v-liujudy\go\pkg\mod\github.com\!azure\azure-sdk-for-go\sdk\resourcemanager
 const (
 	ResourceLocation = "eastus2"
 )
 
-type AppConnectedCacheTestSuite struct {
+type ConnectedCacheTestSuite struct {
 	suite.Suite
 	ctx               context.Context
 	cred              azcore.TokenCredential
@@ -35,22 +33,22 @@ type AppConnectedCacheTestSuite struct {
 	subscriptionId    string
 }
 
-func (testsuite *AppConnectedCacheTestSuite) SetupSuite() {
+func (testsuite *ConnectedCacheTestSuite) SetupSuite() {
 	testutil.StartRecording(testsuite.T(), pathToPackage)
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
 	testsuite.armEndpoint = "https://management.azure.com"
-	testsuite.location = recording.GetEnvVariable("LOCATION", "westus")
+	testsuite.location = recording.GetEnvVariable("LOCATION", "eastus2")
 	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
 	testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 	testsuite.Prepare()
 }
 
 func TestConnectedCacheTestSuite(t *testing.T) {
-	suite.Run(t, new(AppConnectedCacheTestSuite))
+	suite.Run(t, new(ConnectedCacheTestSuite))
 }
 
-func (testsuite *AppConnectedCacheTestSuite) TestClear() {
+func (testsuite *ConnectedCacheTestSuite) TestClear() {
 	clientFactory, err := armresources.NewClientFactory(testsuite.subscriptionId, testsuite.cred, nil)
 	testsuite.Require().NoError(err)
 	resourceGroupsClientDeleteResponse, err := clientFactory.NewResourceGroupsClient().BeginDelete(testsuite.ctx, testsuite.resourceGroupName, nil)
@@ -61,7 +59,7 @@ func (testsuite *AppConnectedCacheTestSuite) TestClear() {
 	fmt.Println("delete resource group successfully")
 }
 
-func (testsuite *AppConnectedCacheTestSuite) TestGetIspCustomersClient() {
+func (testsuite *ConnectedCacheTestSuite) TestGetIspCustomersClient() {
 	// make sure that the group has been created
 	ResourceName := recording.GetEnvVariable("RESOURCE_NAME", "scenarioTestTempClient")
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -78,9 +76,9 @@ func (testsuite *AppConnectedCacheTestSuite) TestGetIspCustomersClient() {
 	fmt.Println("TestGetIspCustomersClient over")
 }
 
-func (testsuite *AppConnectedCacheTestSuite) Prepare() {
-	resoureGroupName := os.Getenv("RESOURCE_GROUP_NAME")
-	subsriptionId := os.Getenv("AZURE_SUBSCRIPTION_ID")
+func (testsuite *ConnectedCacheTestSuite) Prepare() {
+	resoureGroupName := recording.GetEnvVariable("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
+	subsriptionId := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 	// get default credential
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	testsuite.Require().NoError(err)

@@ -2,5 +2,5 @@
     "AssetsRepo":  "Azure/azure-sdk-assets",
     "AssetsRepoPrefixPath":  "go",
     "TagPrefix":  "go/resourcemanager/sql/armsql",
-    "Tag": "go/resourcemanager/sql/armsql_cbcc7e41aa"
+    "Tag": "go/resourcemanager/sql/armsql_9c445ae63e"
 }

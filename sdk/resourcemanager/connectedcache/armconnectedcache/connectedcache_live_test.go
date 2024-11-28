@@ -9,8 +9,6 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"math/rand"
-	"strconv"
 	"testing"
 	"time"
 
@@ -43,7 +41,6 @@ type ConnectedCacheTestSuite struct {
 
 func (testsuite *ConnectedCacheTestSuite) SetupSuite() {
 	testutil.StartRecording(testsuite.T(), pathToPackage)
-	fmt.Println("start recording~~~~~~~")
 	testsuite.ctx = context.Background()
 	testsuite.armEndpoint = "https://management.azure.com"
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
@@ -51,15 +48,17 @@ func (testsuite *ConnectedCacheTestSuite) SetupSuite() {
 	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
 	testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 
-	testsuite.resourceGroupName = "sadafsdfsdb-" + strconv.Itoa(rand.Intn(100))
+	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
+	testsuite.Require().NoError(err)
+	testsuite.resourceGroupName = *resourceGroup.Name
 	fmt.Println("testsuite.resourceGroupName:", testsuite.resourceGroupName)
 	testsuite.Prepare()
 }
 
 func (testsuite *ConnectedCacheTestSuite) TearDownSuite() {
 	testsuite.Cleanup()
-	// _, err := testutil.DeleteResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName)
-	// testsuite.Require().NoError(err)
+	_, err := testutil.DeleteResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName)
+	testsuite.Require().NoError(err)
 	time.Sleep(time.Second * 3)
 	testutil.StopRecording(testsuite.T())
 }
@@ -69,11 +68,17 @@ func TestConnectedCacheTestSuite(t *testing.T) {
 }
 
 func (testsuite *ConnectedCacheTestSuite) Cleanup() {
-	clientFactory, err := armresources.NewClientFactory(testsuite.subscriptionId, testsuite.cred, nil)
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	clientFactory, err := armconnectedcache.NewClientFactory(recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000"), cred, testsuite.options)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	IspCustomersClientDeleteResponsePoller, err := clientFactory.NewIspCustomersClient().BeginDelete(testsuite.ctx, testsuite.resourceGroupName, "MccRPTest2", nil)
 	testsuite.Require().NoError(err)
-	resourceGroupsClientDeleteResponse, err := clientFactory.NewResourceGroupsClient().BeginDelete(testsuite.ctx, testsuite.resourceGroupName, nil)
-	testsuite.Require().NoError(err)
-	_, err = resourceGroupsClientDeleteResponse.Poll(testsuite.ctx)
+	_, err = testutil.PollForTest(testsuite.ctx, IspCustomersClientDeleteResponsePoller)
 	testsuite.Require().NoError(err)
 }
 
@@ -82,13 +87,11 @@ func (testsuite *ConnectedCacheTestSuite) TestCreateIspCustomersClient() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	fmt.Println("start TestCreateIspCustomersClient====")
-	ctx := context.Background()
-	clientFactory, err := armconnectedcache.NewClientFactory(recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000"), cred, nil)
+	clientFactory, err := armconnectedcache.NewClientFactory(recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000"), cred, testsuite.options)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewIspCustomersClient().BeginCreateOrUpdate(ctx, testsuite.resourceGroupName, "MccRPTest2", armconnectedcache.IspCustomerResource{
+	poller, err := clientFactory.NewIspCustomersClient().BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, "MccRPTest2", armconnectedcache.IspCustomerResource{
 		Location: to.Ptr(testsuite.location),
 		Properties: &armconnectedcache.CustomerProperty{
 			// Customer: &armconnectedcache.CustomerEntity{
@@ -129,10 +132,8 @@ func (testsuite *ConnectedCacheTestSuite) TestCreateIspCustomersClient() {
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
+	_, err = testutil.PollForTest(testsuite.ctx, poller)
+	testsuite.Require().NoError(err)
 	fmt.Println("finish TestCreateIspCustomersClient====")
 }
 
@@ -143,10 +144,9 @@ func (testsuite *ConnectedCacheTestSuite) TestGetIspCustomersClient() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	ctx := context.Background()
-	clientFactory, err := armconnectedcache.NewClientFactory(testsuite.subscriptionId, cred, nil)
+	clientFactory, err := armconnectedcache.NewClientFactory(testsuite.subscriptionId, cred, testsuite.options)
 
-	_, err1 := clientFactory.NewIspCustomersClient().Get(ctx, testsuite.resourceGroupName, ResourceName, nil)
+	_, err1 := clientFactory.NewIspCustomersClient().Get(testsuite.ctx, testsuite.resourceGroupName, ResourceName, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err1)
 	}
@@ -160,7 +160,7 @@ func (testsuite *ConnectedCacheTestSuite) Prepare() {
 	// new client factory
 
 	fmt.Println("subscriptionId", testsuite.subscriptionId, "groupName", testsuite.resourceGroupName, "location", testsuite.location)
-	clientFactory, err := armresources.NewClientFactory(testsuite.subscriptionId, cred, nil)
+	clientFactory, err := armresources.NewClientFactory(testsuite.subscriptionId, cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	client := clientFactory.NewResourceGroupsClient()
 	ctx := context.Background()

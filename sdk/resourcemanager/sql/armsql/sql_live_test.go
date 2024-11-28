@@ -8,8 +8,6 @@ package armsql_test
 import (
 	"context"
 	"fmt"
-	"math/rand"
-	"strconv"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -17,15 +15,12 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
 	"github.com/stretchr/testify/suite"
 )
 
 const (
 	ResourceLocation = "eastus2"
-	DatabaseName     = "test01"
-	PathToPackage    = "sdk/resourcemanager/sql/armsql/testdata"
 )
 
 type SqlAccessTestSuite struct {
@@ -40,50 +35,20 @@ type SqlAccessTestSuite struct {
 }
 
 func (testsuite *SqlAccessTestSuite) SetupSuite() {
-	testutil.StartRecording(testsuite.T(), PathToPackage)
+	testutil.StartRecording(testsuite.T(), pathToPackage)
+
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
 	testsuite.location = recording.GetEnvVariable("LOCATION", ResourceLocation)
 	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "sqlscenarioTestTempGroup")
 	testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
-	testsuite.sqlServersName = "sql-test-" + strconv.Itoa(rand.Intn(1000))
-	clientFactory, err := armresources.NewClientFactory(testsuite.subscriptionId, testsuite.cred, nil)
-	client := clientFactory.NewResourceGroupsClient()
-	ctx := context.Background()
+	testsuite.sqlServersName = "sqlserverasdsfsdfds-test"
 
-	testsuite.resourceGroupName = "sqltestgroup-" + strconv.Itoa(rand.Intn(1000))
-	_, err = client.CreateOrUpdate(ctx, testsuite.resourceGroupName, armresources.ResourceGroup{
-		Location: to.Ptr(ResourceLocation),
-	}, nil)
+	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)
+	testsuite.resourceGroupName = *resourceGroup.Name
 
 	fmt.Println("create new resource group ", testsuite.resourceGroupName, " of ", testsuite.subscriptionId, "successfully")
-}
-
-func (testsuite *SqlAccessTestSuite) TestCreateServer() {
-	fmt.Println("start to create sql server~")
-	// create new msql resource under group
-	sqlClientFactory, err := armsql.NewClientFactory(testsuite.subscriptionId, testsuite.cred, nil)
-	testsuite.Require().NoError(err)
-	serverclient := sqlClientFactory.NewServersClient()
-
-	ctx := context.Background()
-	server, err := testsuite.createServer(testsuite.ctx, serverclient)
-	testsuite.Require().NoError(err)
-	fmt.Println("create serverId", *server.ID)
-
-	server, err = testsuite.getServer(ctx, serverclient)
-	testsuite.Require().NoError(err)
-	fmt.Println("get server:", *server.ID)
-
-	// create database
-	databasesClient := sqlClientFactory.NewDatabasesClient()
-	testsuite.Require().NotNil(databasesClient)
-	database, err := testsuite.createDatabase(ctx, databasesClient)
-	testsuite.Require().NoError(err)
-	testsuite.Require().NotNil(database)
-
-	fmt.Println("database:", *database.ID)
 }
 
 func TestSqlAccessTestSuite(t *testing.T) {
@@ -91,15 +56,18 @@ func TestSqlAccessTestSuite(t *testing.T) {
 }
 
 func (testsuite *SqlAccessTestSuite) TearDownSuite() {
+	testsuite.Cleanup()
 	_, err := testutil.DeleteResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName)
 	testsuite.Require().NoError(err)
 	testutil.StopRecording(testsuite.T())
 }
 
-func (testsuite *SqlAccessTestSuite) createServer(ctx context.Context, serversClient *armsql.ServersClient) (*armsql.Server, error) {
-
+func (testsuite *SqlAccessTestSuite) TestCreateServer() {
+	sqlClientFactory, err := armsql.NewClientFactory(testsuite.subscriptionId, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
+	serversClient := sqlClientFactory.NewServersClient()
 	pollerResp, err := serversClient.BeginCreateOrUpdate(
-		ctx,
+		testsuite.ctx,
 		testsuite.resourceGroupName,
 		testsuite.sqlServersName,
 		armsql.Server{
@@ -111,46 +79,28 @@ func (testsuite *SqlAccessTestSuite) createServer(ctx context.Context, serversCl
 		},
 		nil,
 	)
-	if err != nil {
-		return nil, err
-	}
-	resp, err := pollerResp.PollUntilDone(ctx, nil)
-	if err != nil {
-		return nil, err
-	}
-	return &resp.Server, nil
+	testsuite.Require().NoError(err)
+	_, err = testutil.PollForTest(testsuite.ctx, pollerResp)
+	testsuite.Require().NoError(err)
 }
 
-func (testsuite *SqlAccessTestSuite) getServer(ctx context.Context, serversClient *armsql.ServersClient) (*armsql.Server, error) {
-
-	resp, err := serversClient.Get(ctx, testsuite.resourceGroupName, testsuite.sqlServersName, nil)
-	if err != nil {
-		return nil, err
-	}
-	return &resp.Server, nil
+func (testsuite *SqlAccessTestSuite) TestGetServer() {
+	sqlClientFactory, err := armsql.NewClientFactory(testsuite.subscriptionId, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
+	serversClient := sqlClientFactory.NewServersClient()
+	resp, err := serversClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.sqlServersName, nil)
+	testsuite.Require().NoError(err)
+	fmt.Println("get server:", *resp.Server.ID)
 }
 
-func (testsuite *SqlAccessTestSuite) createDatabase(ctx context.Context, databasesClient *armsql.DatabasesClient) (*armsql.Database, error) {
-
-	pollerResp, err := databasesClient.BeginCreateOrUpdate(
-		ctx,
-		testsuite.resourceGroupName,
-		testsuite.sqlServersName,
-		DatabaseName,
-		armsql.Database{
-			Location: to.Ptr(ResourceLocation),
-			Properties: &armsql.DatabaseProperties{
-				ReadScale: to.Ptr(armsql.DatabaseReadScaleDisabled),
-			},
-		},
-		nil,
-	)
-	if err != nil {
-		return nil, err
-	}
-	resp, err := pollerResp.PollUntilDone(ctx, nil)
-	if err != nil {
-		return nil, err
-	}
-	return &resp.Database, nil
+func (testsuite *SqlAccessTestSuite) Cleanup() {
+	var err error
+	// From step CapacityReservationGroups_Delete
+	fmt.Println("Call operation: CapacityReservationGroups_Delete")
+	sqlClientFactory, err := armsql.NewClientFactory(testsuite.subscriptionId, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
+	pollerResp, err := sqlClientFactory.NewServersClient().BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.sqlServersName, nil)
+	testsuite.Require().NoError(err)
+	_, err = testutil.PollForTest(testsuite.ctx, pollerResp)
+	testsuite.Require().NoError(err)
 }

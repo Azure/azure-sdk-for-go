@@ -26,3 +26,4 @@ extends:
   parameters:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/neonpostgres/armneonpostgres'
+    UsePipelineProxy: false

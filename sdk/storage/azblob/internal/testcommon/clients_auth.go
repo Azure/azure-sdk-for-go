@@ -82,7 +82,6 @@ var BasicBlobTagsMap = map[string]string{
 	"azure": "blob",
 	"blob":  "sdk",
 	"sdk":   "go",
-	"go":    "i am written in golang",
 }
 
 var SpecialCharBlobTagsMap = map[string]string{
@@ -91,7 +90,7 @@ var SpecialCharBlobTagsMap = map[string]string{
 	"+-./:=_1":        "+-./:=_",
 	"Microsoft Azure": "Azure Storage",
 	"Storage+SDK":     "SDK/GO",
-	"GO ":             ".Net",
+	"go":              "written in golang",
 }
 
 func SetClientOptions(t *testing.T, opts *azcore.ClientOptions) {

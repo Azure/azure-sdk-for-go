@@ -2471,7 +2471,7 @@ func (s *ContainerUnrecordedTestsSuite) TestFilterBlobsByTags() {
 	abClient := containerSasClient.NewAppendBlobClient(testcommon.GenerateBlobName(testName))
 
 	createAppendBlobOptions := appendblob.CreateOptions{
-		Tags: testcommon.BasicBlobTagsMap,
+		Tags: testcommon.SpecialCharBlobTagsMap,
 	}
 	createResp, err := abClient.Create(context.Background(), &createAppendBlobOptions)
 	_require.NoError(err)
@@ -2479,14 +2479,15 @@ func (s *ContainerUnrecordedTestsSuite) TestFilterBlobsByTags() {
 	time.Sleep(10 * time.Second)
 
 	// Use container client to filter blobs by tag
-	where := "\"go\"='i am written in golang'"
-
-	opts := container.FilterBlobsOptions{MaxResults: to.Ptr(int32(10)), Marker: to.Ptr("")}
+	//where := "\"go\"='i am written in golang'"
+	//where := "\"azure\"='blob'"
+	where := "\"go\"='written in golang'"
+	opts := container.FilterBlobsOptions{MaxResults: to.Ptr(int32(10))}
 	lResp, err := containerSasClient.FilterBlobs(context.Background(), where, &opts)
 	_require.NoError(err)
 	_require.Len(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet, 1)
-	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Key, "azure")
-	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Value, "blob")
+	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Key, "go")
+	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Value, "written in golang")
 }
 
 func (s *ContainerUnrecordedTestsSuite) TestFilterBlobsByTagsNegative() {

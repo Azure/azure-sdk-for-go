@@ -19,25 +19,26 @@ import (
 
 // ServerFactory is a fake server for instances of the armnetworkcloud.ClientFactory type.
 type ServerFactory struct {
-	AgentPoolsServer              AgentPoolsServer
-	BareMetalMachineKeySetsServer BareMetalMachineKeySetsServer
-	BareMetalMachinesServer       BareMetalMachinesServer
-	BmcKeySetsServer              BmcKeySetsServer
-	CloudServicesNetworksServer   CloudServicesNetworksServer
-	ClusterManagersServer         ClusterManagersServer
-	ClustersServer                ClustersServer
-	ConsolesServer                ConsolesServer
-	KubernetesClustersServer      KubernetesClustersServer
-	L2NetworksServer              L2NetworksServer
-	L3NetworksServer              L3NetworksServer
-	MetricsConfigurationsServer   MetricsConfigurationsServer
-	OperationsServer              OperationsServer
-	RackSKUsServer                RackSKUsServer
-	RacksServer                   RacksServer
-	StorageAppliancesServer       StorageAppliancesServer
-	TrunkedNetworksServer         TrunkedNetworksServer
-	VirtualMachinesServer         VirtualMachinesServer
-	VolumesServer                 VolumesServer
+	AgentPoolsServer                AgentPoolsServer
+	BareMetalMachineKeySetsServer   BareMetalMachineKeySetsServer
+	BareMetalMachinesServer         BareMetalMachinesServer
+	BmcKeySetsServer                BmcKeySetsServer
+	CloudServicesNetworksServer     CloudServicesNetworksServer
+	ClusterManagersServer           ClusterManagersServer
+	ClustersServer                  ClustersServer
+	ConsolesServer                  ConsolesServer
+	KubernetesClusterFeaturesServer KubernetesClusterFeaturesServer
+	KubernetesClustersServer        KubernetesClustersServer
+	L2NetworksServer                L2NetworksServer
+	L3NetworksServer                L3NetworksServer
+	MetricsConfigurationsServer     MetricsConfigurationsServer
+	OperationsServer                OperationsServer
+	RackSKUsServer                  RackSKUsServer
+	RacksServer                     RacksServer
+	StorageAppliancesServer         StorageAppliancesServer
+	TrunkedNetworksServer           TrunkedNetworksServer
+	VirtualMachinesServer           VirtualMachinesServer
+	VolumesServer                   VolumesServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -52,27 +53,28 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armnetworkcloud.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                             *ServerFactory
-	trMu                            sync.Mutex
-	trAgentPoolsServer              *AgentPoolsServerTransport
-	trBareMetalMachineKeySetsServer *BareMetalMachineKeySetsServerTransport
-	trBareMetalMachinesServer       *BareMetalMachinesServerTransport
-	trBmcKeySetsServer              *BmcKeySetsServerTransport
-	trCloudServicesNetworksServer   *CloudServicesNetworksServerTransport
-	trClusterManagersServer         *ClusterManagersServerTransport
-	trClustersServer                *ClustersServerTransport
-	trConsolesServer                *ConsolesServerTransport
-	trKubernetesClustersServer      *KubernetesClustersServerTransport
-	trL2NetworksServer              *L2NetworksServerTransport
-	trL3NetworksServer              *L3NetworksServerTransport
-	trMetricsConfigurationsServer   *MetricsConfigurationsServerTransport
-	trOperationsServer              *OperationsServerTransport
-	trRackSKUsServer                *RackSKUsServerTransport
-	trRacksServer                   *RacksServerTransport
-	trStorageAppliancesServer       *StorageAppliancesServerTransport
-	trTrunkedNetworksServer         *TrunkedNetworksServerTransport
-	trVirtualMachinesServer         *VirtualMachinesServerTransport
-	trVolumesServer                 *VolumesServerTransport
+	srv                               *ServerFactory
+	trMu                              sync.Mutex
+	trAgentPoolsServer                *AgentPoolsServerTransport
+	trBareMetalMachineKeySetsServer   *BareMetalMachineKeySetsServerTransport
+	trBareMetalMachinesServer         *BareMetalMachinesServerTransport
+	trBmcKeySetsServer                *BmcKeySetsServerTransport
+	trCloudServicesNetworksServer     *CloudServicesNetworksServerTransport
+	trClusterManagersServer           *ClusterManagersServerTransport
+	trClustersServer                  *ClustersServerTransport
+	trConsolesServer                  *ConsolesServerTransport
+	trKubernetesClusterFeaturesServer *KubernetesClusterFeaturesServerTransport
+	trKubernetesClustersServer        *KubernetesClustersServerTransport
+	trL2NetworksServer                *L2NetworksServerTransport
+	trL3NetworksServer                *L3NetworksServerTransport
+	trMetricsConfigurationsServer     *MetricsConfigurationsServerTransport
+	trOperationsServer                *OperationsServerTransport
+	trRackSKUsServer                  *RackSKUsServerTransport
+	trRacksServer                     *RacksServerTransport
+	trStorageAppliancesServer         *StorageAppliancesServerTransport
+	trTrunkedNetworksServer           *TrunkedNetworksServerTransport
+	trVirtualMachinesServer           *VirtualMachinesServerTransport
+	trVolumesServer                   *VolumesServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -120,6 +122,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "ConsolesClient":
 		initServer(s, &s.trConsolesServer, func() *ConsolesServerTransport { return NewConsolesServerTransport(&s.srv.ConsolesServer) })
 		resp, err = s.trConsolesServer.Do(req)
+	case "KubernetesClusterFeaturesClient":
+		initServer(s, &s.trKubernetesClusterFeaturesServer, func() *KubernetesClusterFeaturesServerTransport {
+			return NewKubernetesClusterFeaturesServerTransport(&s.srv.KubernetesClusterFeaturesServer)
+		})
+		resp, err = s.trKubernetesClusterFeaturesServer.Do(req)
 	case "KubernetesClustersClient":
 		initServer(s, &s.trKubernetesClustersServer, func() *KubernetesClustersServerTransport {
 			return NewKubernetesClustersServerTransport(&s.srv.KubernetesClustersServer)

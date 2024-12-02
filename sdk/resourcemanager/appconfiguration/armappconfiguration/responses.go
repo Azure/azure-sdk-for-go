@@ -167,3 +167,15 @@ type ReplicasClientListByConfigurationStoreResponse struct {
 	// The result of a request to list replicas.
 	ReplicaListResult
 }
+
+// SnapshotsClientCreateResponse contains the response from method SnapshotsClient.BeginCreate.
+type SnapshotsClientCreateResponse struct {
+	// The snapshot resource.
+	Snapshot
+}
+
+// SnapshotsClientGetResponse contains the response from method SnapshotsClient.Get.
+type SnapshotsClientGetResponse struct {
+	// The snapshot resource.
+	Snapshot
+}

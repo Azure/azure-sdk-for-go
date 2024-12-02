@@ -71,6 +71,9 @@ $aciName = "azidentity-test"
 az container create -g $rg -n $aciName --image $image `
   --acr-identity $($DeploymentOutputs['AZIDENTITY_USER_ASSIGNED_IDENTITY']) `
   --assign-identity [system] $($DeploymentOutputs['AZIDENTITY_USER_ASSIGNED_IDENTITY']) `
+  --cpu 1 `
+  --memory 1.0 `
+  --os-type Linux `
   --role "Storage Blob Data Reader" `
   --scope $($DeploymentOutputs['AZIDENTITY_STORAGE_ID']) `
   -e AZIDENTITY_STORAGE_NAME=$($DeploymentOutputs['AZIDENTITY_STORAGE_NAME']) `

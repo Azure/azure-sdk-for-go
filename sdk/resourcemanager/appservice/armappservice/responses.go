@@ -3903,6 +3903,12 @@ type WebAppsClientUpdateHybridConnectionSlotResponse struct {
 	HybridConnection
 }
 
+// WebAppsClientUpdateMachineKeyResponse contains the response from method WebAppsClient.UpdateMachineKey.
+type WebAppsClientUpdateMachineKeyResponse struct {
+	// Anything
+	Interface any
+}
+
 // WebAppsClientUpdateMetadataResponse contains the response from method WebAppsClient.UpdateMetadata.
 type WebAppsClientUpdateMetadataResponse struct {
 	// String dictionary resource.

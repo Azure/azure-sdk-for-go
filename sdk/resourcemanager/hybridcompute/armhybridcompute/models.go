@@ -59,13 +59,13 @@ type AgentConfiguration struct {
 
 // AgentUpgrade - The info w.r.t Agent Upgrade.
 type AgentUpgrade struct {
-	// The correlation ID passed in from RSM per upgrade.
+	// The correlation ID associated with an agent upgrade operation.
 	CorrelationID *string
 
 	// Specifies the version info w.r.t AgentUpgrade for the machine.
 	DesiredVersion *string
 
-	// Specifies if RSM should try to upgrade this machine
+	// Specifies if the machine's agent should be upgraded
 	EnableAutomaticUpgrade *bool
 
 	// READ-ONLY; Specifies the version of the last attempt
@@ -141,6 +141,30 @@ type ConnectionDetail struct {
 
 	// READ-ONLY; The private endpoint connection private ip address
 	PrivateIPAddress *string
+}
+
+// Disk - Describes a disk on the machine
+type Disk struct {
+	// The type of the disk.
+	DiskType *string
+
+	// The generated ID of the disk.
+	GeneratedID *string
+
+	// The ID of the disk.
+	ID *string
+
+	// The size of the disk, in bytes
+	MaxSizeInBytes *int64
+
+	// The name of the disk.
+	Name *string
+
+	// The path of the disk.
+	Path *string
+
+	// The amount of space used on the disk, in bytes
+	UsedSpaceInBytes *int64
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
@@ -226,6 +250,111 @@ type ExtensionValueProperties struct {
 
 	// READ-ONLY; The version of the Extension being received.
 	Version *string
+}
+
+// ExtensionsResourceStatus - Instance view status.
+type ExtensionsResourceStatus struct {
+	// The status code.
+	Code *string
+
+	// The short localizable label for the status.
+	DisplayStatus *string
+
+	// The level code.
+	Level *ExtensionsStatusLevelTypes
+
+	// The detailed status message, including for alerts and error messages.
+	Message *string
+
+	// The time of the status.
+	Time *time.Time
+}
+
+// FirmwareProfile - Describes the firmware of the machine
+type FirmwareProfile struct {
+	// READ-ONLY; The serial number of the firmware
+	SerialNumber *string
+
+	// READ-ONLY; The type of the firmware
+	Type *string
+}
+
+// Gateway - Describes an Arc Gateway.
+type Gateway struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Hybrid Compute Gateway properties
+	Properties *GatewayProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GatewayProperties - Describes the properties of a Gateway Profile.
+type GatewayProperties struct {
+	// Specifies the list of features that are enabled for this Gateway.
+	AllowedFeatures []*string
+
+	// The type of the Gateway resource.
+	GatewayType *GatewayType
+
+	// READ-ONLY; The endpoint fqdn for the Gateway.
+	GatewayEndpoint *string
+
+	// READ-ONLY; A unique, immutable, identifier for the Gateway.
+	GatewayID *string
+
+	// READ-ONLY; The provisioning state, which only appears in the response.
+	ProvisioningState *ProvisioningState
+}
+
+// GatewayUpdate - Describes a License Update.
+type GatewayUpdate struct {
+	// Gateway Update properties
+	Properties *GatewayUpdateProperties
+
+	// Resource tags
+	Tags map[string]*string
+}
+
+// GatewayUpdateProperties - Describes the Update properties of a Gateway Profile.
+type GatewayUpdateProperties struct {
+	// Specifies the list of features that are enabled for this Gateway.
+	AllowedFeatures []*string
+}
+
+// GatewaysListResult - The List license operation response.
+type GatewaysListResult struct {
+	// REQUIRED; The list of Gateways.
+	Value []*Gateway
+
+	// The URI to fetch the next page of Gateways. Call ListNext() with this URI to fetch the next page of Gateways.
+	NextLink *string
+}
+
+// HardwareProfile - Describes the hardware of the machine
+type HardwareProfile struct {
+	// READ-ONLY; The total number of CPU sockets available on the machine
+	NumberOfCPUSockets *int32
+
+	// READ-ONLY; The physical processors of the machine.
+	Processors []*Processor
+
+	// READ-ONLY; The total physical memory on the machine
+	TotalPhysicalMemoryInBytes *int64
 }
 
 // IPAddress - Describes properties of the IP address.
@@ -912,6 +1041,12 @@ type MachineProperties struct {
 	// READ-ONLY; Details about the error state.
 	ErrorDetails []*ErrorDetail
 
+	// READ-ONLY; Information about the machine's firmware
+	FirmwareProfile *FirmwareProfile
+
+	// READ-ONLY; Information about the machine's hardware
+	HardwareProfile *HardwareProfile
+
 	// READ-ONLY; The time of the last status change.
 	LastStatusChange *time.Time
 
@@ -939,8 +1074,144 @@ type MachineProperties struct {
 	// READ-ONLY; The status of the hybrid machine agent.
 	Status *StatusTypes
 
+	// READ-ONLY; Information about the machine's storage
+	StorageProfile *StorageProfile
+
 	// READ-ONLY; Specifies the Arc Machine's unique SMBIOS ID
 	VMUUID *string
+}
+
+// MachineRunCommand - Describes a Run Command
+type MachineRunCommand struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Describes Run Command Properties
+	Properties *MachineRunCommandProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// MachineRunCommandInstanceView - The instance view of a machine run command.
+type MachineRunCommandInstanceView struct {
+	// Script end time.
+	EndTime *time.Time
+
+	// Script error stream.
+	Error *string
+
+	// Communicate script configuration errors or execution messages.
+	ExecutionMessage *string
+
+	// Script execution status.
+	ExecutionState *ExecutionState
+
+	// Exit code returned from script execution.
+	ExitCode *int32
+
+	// Script output stream.
+	Output *string
+
+	// Script start time.
+	StartTime *time.Time
+
+	// The status information.
+	Statuses []*ExtensionsResourceStatus
+}
+
+// MachineRunCommandProperties - Describes the properties of a run command.
+type MachineRunCommandProperties struct {
+	// Optional. If set to true, provisioning will complete as soon as script starts and will not wait for script to complete.
+	AsyncExecution *bool
+
+	// User-assigned managed identity that has access to errorBlobUri storage blob. Use an empty object in case of system-assigned
+	// identity. Make sure managed identity has been given access to blob's
+	// container with 'Storage Blob Data Contributor' role assignment. In case of user-assigned identity, make sure you add it
+	// under VM's identity. For more info on managed identity and Run Command, refer
+	// https://aka.ms/ManagedIdentity and https://aka.ms/RunCommandManaged
+	ErrorBlobManagedIdentity *RunCommandManagedIdentity
+
+	// Specifies the Azure storage blob where script error stream will be uploaded. Use a SAS URI with read, append, create, write
+	// access OR use managed identity to provide the VM access to the blob. Refer
+	// errorBlobManagedIdentity parameter.
+	ErrorBlobURI *string
+
+	// User-assigned managed identity that has access to outputBlobUri storage blob. Use an empty object in case of system-assigned
+	// identity. Make sure managed identity has been given access to blob's
+	// container with 'Storage Blob Data Contributor' role assignment. In case of user-assigned identity, make sure you add it
+	// under VM's identity. For more info on managed identity and Run Command, refer
+	// https://aka.ms/ManagedIdentity and https://aka.ms/RunCommandManaged
+	OutputBlobManagedIdentity *RunCommandManagedIdentity
+
+	// Specifies the Azure storage blob where script output stream will be uploaded. Use a SAS URI with read, append, create,
+	// write access OR use managed identity to provide the VM access to the blob. Refer
+	// outputBlobManagedIdentity parameter.
+	OutputBlobURI *string
+
+	// The parameters used by the script.
+	Parameters []*RunCommandInputParameter
+
+	// The parameters used by the script.
+	ProtectedParameters []*RunCommandInputParameter
+
+	// Specifies the user account password on the machine when executing the run command.
+	RunAsPassword *string
+
+	// Specifies the user account on the machine when executing the run command.
+	RunAsUser *string
+
+	// The source of the run command script.
+	Source *MachineRunCommandScriptSource
+
+	// The timeout in seconds to execute the run command.
+	TimeoutInSeconds *int32
+
+	// READ-ONLY; The machine run command instance view.
+	InstanceView *MachineRunCommandInstanceView
+
+	// READ-ONLY; The provisioning state, which only appears in the response.
+	ProvisioningState *string
+}
+
+// MachineRunCommandScriptSource - Describes the script sources for run command. Use only one of script, scriptUri, commandId.
+type MachineRunCommandScriptSource struct {
+	// Specifies the commandId of predefined built-in script.
+	CommandID *string
+
+	// Specifies the script content to be executed on the machine.
+	Script *string
+
+	// Specifies the script download location. It can be either SAS URI of an Azure storage blob with read access or public URI.
+	ScriptURI *string
+
+	// User-assigned managed identity that has access to scriptUri in case of Azure storage blob. Use an empty object in case
+	// of system-assigned identity. Make sure the Azure storage blob exists, and managed
+	// identity has been given access to blob's container with 'Storage Blob Data Reader' role assignment. In case of user-assigned
+	// identity, make sure you add it under VM's identity. For more info on
+	// managed identity and Run Command, refer https://aka.ms/ManagedIdentity and https://aka.ms/RunCommandManaged.
+	ScriptURIManagedIdentity *RunCommandManagedIdentity
+}
+
+// MachineRunCommandsListResult - Describes the Run Commands List Result.
+type MachineRunCommandsListResult struct {
+	// The uri to fetch the next page of run commands. Call ListNext() with this to fetch the next page of run commands.
+	NextLink *string
+
+	// The list of run commands
+	Value []*MachineRunCommand
 }
 
 // MachineUpdate - Describes a hybrid machine Update.
@@ -981,8 +1252,17 @@ type MachineUpdateProperties struct {
 
 // NetworkInterface - Describes a network interface.
 type NetworkInterface struct {
+	// Represents the ID of the network interface.
+	ID *string
+
 	// The list of IP addresses in this interface.
 	IPAddresses []*IPAddress
+
+	// Represents MAC address of the network interface.
+	MacAddress *string
+
+	// Represents the name of the network interface.
+	Name *string
 }
 
 // NetworkProfile - Describes the network information on this machine.
@@ -1332,6 +1612,15 @@ type PrivateLinkServiceConnectionStateProperty struct {
 	ActionsRequired *string
 }
 
+// Processor - Describes the firmware of the machine
+type Processor struct {
+	// READ-ONLY; The name of the processor.
+	Name *string
+
+	// READ-ONLY; The total number of physical cores on the processor.
+	NumberOfCores *int32
+}
+
 // ProductFeature - Product Feature
 type ProductFeature struct {
 	// Product feature name.
@@ -1413,6 +1702,30 @@ type ResourceAssociation struct {
 	Name *string
 }
 
+// RunCommandInputParameter - Describes the properties of a run command parameter.
+type RunCommandInputParameter struct {
+	// REQUIRED; The run command parameter name.
+	Name *string
+
+	// REQUIRED; The run command parameter value.
+	Value *string
+}
+
+// RunCommandManagedIdentity - Contains clientId or objectId (use only one, not both) of a user-assigned managed identity
+// that has access to storage blob used in Run Command. Use an empty RunCommandManagedIdentity object in case of
+// system-assigned identity. Make sure the Azure storage blob exists in case of scriptUri, and managed identity has been given
+// access to blob's container with 'Storage Blob Data Reader' role assignment
+// with scriptUri blob and 'Storage Blob Data Contributor' for Append blobs(outputBlobUri, errorBlobUri). In case of user
+// assigned identity, make sure you add it under VM's identity. For more info on
+// managed identity and Run Command, refer https://aka.ms/ManagedIdentity and https://aka.ms/RunCommandManaged.
+type RunCommandManagedIdentity struct {
+	// Client Id (GUID value) of the user-assigned managed identity. ObjectId should not be used if this is provided.
+	ClientID *string
+
+	// Object Id (GUID value) of the user-assigned managed identity. ClientId should not be used if this is provided.
+	ObjectID *string
+}
+
 // ServiceStatus - Describes the status and behavior of a service.
 type ServiceStatus struct {
 	// The behavior of the service when the Arc-enabled machine starts up.
@@ -1429,6 +1742,44 @@ type ServiceStatuses struct {
 
 	// The state of the guest configuration service on the Arc-enabled machine.
 	GuestConfigurationService *ServiceStatus
+}
+
+type Settings struct {
+	// Settings properties
+	Properties *SettingsProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// SettingsGatewayProperties - Settings Gateway properties
+type SettingsGatewayProperties struct {
+	// Associated Gateway Resource Id
+	GatewayResourceID *string
+}
+
+// SettingsProperties - Settings properties
+type SettingsProperties struct {
+	// Settings Gateway properties
+	GatewayProperties *SettingsGatewayProperties
+
+	// READ-ONLY; Azure resource tenant Id
+	TenantID *string
+}
+
+// StorageProfile - Describes the storage configuration of the machine
+type StorageProfile struct {
+	// The disks on the machine.
+	Disks []*Disk
 }
 
 // Subnet - Describes the subnet.

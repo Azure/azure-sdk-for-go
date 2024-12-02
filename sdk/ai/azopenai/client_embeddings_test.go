@@ -12,22 +12,9 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/stretchr/testify/require"
 )
-
-func TestClient_GetEmbeddings_InvalidModel(t *testing.T) {
-	client := newTestClient(t, azureOpenAI.Embeddings.Endpoint)
-
-	_, err := client.GetEmbeddings(context.Background(), azopenai.EmbeddingsOptions{
-		DeploymentName: to.Ptr("thisdoesntexist"),
-	}, nil)
-
-	var respErr *azcore.ResponseError
-	require.ErrorAs(t, err, &respErr)
-	require.Equal(t, "DeploymentNotFound", respErr.ErrorCode)
-}
 
 func TestClient_GetEmbeddings(t *testing.T) {
 	testFn := func(t *testing.T, epm endpointWithModel) {

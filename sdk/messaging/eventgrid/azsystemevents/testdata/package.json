@@ -7,11 +7,11 @@
     "build": "tsp compile ./TempTypeSpecFiles/Azure.Messaging.EventGrid.SystemEvents/client.tsp"
   },
   "dependencies": {
-    "@azure-tools/typespec-azure-core": "^0.45.0",
-    "@azure-tools/typespec-client-generator-core": "^0.45.2",
-    "@azure-tools/typespec-go": "^0.3.1",
-    "@typespec/compiler": "^0.59.1",
-    "@typespec/versioning": "^0.59.0",
+    "@azure-tools/typespec-azure-core": "0.48.0",
+    "@azure-tools/typespec-client-generator-core": "0.48.1",
+    "@typespec/compiler": "0.62.0",
+    "@typespec/versioning": "0.62.0",
+    "@azure-tools/typespec-go": "^0.3.2",
     "testdata": "^0.1.4"
   },
   "overrides": {

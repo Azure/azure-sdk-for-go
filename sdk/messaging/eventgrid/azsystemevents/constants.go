@@ -1181,6 +1181,27 @@ func PossibleStorageBlobAccessTierValues() []StorageBlobAccessTier {
 	}
 }
 
+// StorageLifecycleCompletionStatus - The status for a LCM policy.
+type StorageLifecycleCompletionStatus string
+
+const (
+	// StorageLifecycleCompletionStatusCompleted - Completed
+	StorageLifecycleCompletionStatusCompleted StorageLifecycleCompletionStatus = "Completed"
+	// StorageLifecycleCompletionStatusCompletedWithError - CompletedWithError
+	StorageLifecycleCompletionStatusCompletedWithError StorageLifecycleCompletionStatus = "CompletedWithError"
+	// StorageLifecycleCompletionStatusIncomplete - Incomplete
+	StorageLifecycleCompletionStatusIncomplete StorageLifecycleCompletionStatus = "Incomplete"
+)
+
+// PossibleStorageLifecycleCompletionStatusValues returns the possible values for the StorageLifecycleCompletionStatus const type.
+func PossibleStorageLifecycleCompletionStatusValues() []StorageLifecycleCompletionStatus {
+	return []StorageLifecycleCompletionStatus{
+		StorageLifecycleCompletionStatusCompleted,
+		StorageLifecycleCompletionStatusCompletedWithError,
+		StorageLifecycleCompletionStatusIncomplete,
+	}
+}
+
 // StorageTaskAssignmentCompletedStatus - The status for a storage task.
 type StorageTaskAssignmentCompletedStatus string
 

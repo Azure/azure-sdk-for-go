@@ -138,17 +138,11 @@ func (testsuite *NeonpostgresTestSuite) TestCreateOrUpdate() {
 
 func (testsuite *NeonpostgresTestSuite) CleanUp() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
+	testsuite.Require().NoError(err)
 	clientFactory, err := armneonpostgres.NewClientFactory(testsuite.subscriptionId, cred, testsuite.options)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
+	testsuite.Require().NoError(err)
 	poller, err := clientFactory.NewOrganizationsClient().BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.organizationName, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
+	testsuite.Require().NoError(err)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, poller)
 	testsuite.Require().NoError(err)

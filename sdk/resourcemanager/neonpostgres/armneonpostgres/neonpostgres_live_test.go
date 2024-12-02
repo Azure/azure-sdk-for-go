@@ -11,7 +11,6 @@ import (
 	"fmt"
 	"log"
 	"testing"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
@@ -20,6 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/neonpostgres/armneonpostgres"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -52,13 +52,13 @@ func (testsuite *NeonpostgresTestSuite) SetupSuite() {
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name
 	fmt.Println("testsuite.resourceGroupName:", testsuite.resourceGroupName)
+	testsuite.Prepare()
 }
 
 func (testsuite *NeonpostgresTestSuite) TearDownSuite() {
 	testsuite.CleanUp()
 	_, err := testutil.DeleteResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName)
 	testsuite.Require().NoError(err)
-	time.Sleep(time.Second * 3)
 	testutil.StopRecording(testsuite.T())
 }
 
@@ -68,55 +68,22 @@ func TestNeonpostgresTestSuite(t *testing.T) {
 
 func (testsuite *NeonpostgresTestSuite) TestOptionList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
+	testsuite.Require().NoError(err)
 	ctx := context.Background()
 	clientFactory, err := armneonpostgres.NewClientFactory(testsuite.subscriptionId, cred, testsuite.options)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
+	testsuite.Require().NoError(err)
 	pager := clientFactory.NewOperationsClient().NewListPager(nil)
 	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			fmt.Println("page value", v)
-		}
-		page = armneonpostgres.OperationsClientListResponse{
-			OperationListResult: armneonpostgres.OperationListResult{
-				Value: []*armneonpostgres.Operation{
-					{
-						Name:         to.Ptr("ekvuojrpbuyogrikfuzyghio"),
-						IsDataAction: to.Ptr(true),
-						Display: &armneonpostgres.OperationDisplay{
-							Provider:    to.Ptr("lvppuskqcdcoejwuvsqrloczvnouy"),
-							Resource:    to.Ptr("rvvd"),
-							Operation:   to.Ptr("odjjqnodcgszczpsdrhrpwmqssrybr"),
-							Description: to.Ptr("bwmstukaiaoisiu"),
-						},
-						Origin:     to.Ptr(armneonpostgres.OriginUser),
-						ActionType: to.Ptr(armneonpostgres.ActionTypeInternal),
-					},
-				},
-				NextLink: to.Ptr("https://contoso.com/nextlink"),
-			},
-		}
+		_, err := pager.NextPage(ctx)
+		testsuite.Require().NoError(err)
 	}
 }
 
 func (testsuite *NeonpostgresTestSuite) TestCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
+	testsuite.Require().NoError(err)
 	clientFactory, err := armneonpostgres.NewClientFactory(testsuite.subscriptionId, cred, testsuite.options)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-
+	testsuite.Require().NoError(err)
 	_, err = clientFactory.NewOrganizationsClient().BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.organizationName, armneonpostgres.OrganizationResource{
 		Properties: &armneonpostgres.OrganizationProperties{
 			MarketplaceDetails: &armneonpostgres.MarketplaceDetails{
@@ -185,4 +152,30 @@ func (testsuite *NeonpostgresTestSuite) CleanUp() {
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, poller)
 	testsuite.Require().NoError(err)
+}
+
+func (testsuite *NeonpostgresTestSuite) Prepare() {
+	// get default credential
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	testsuite.Require().NoError(err)
+	// new client factory
+
+	fmt.Println("subscriptionId", testsuite.subscriptionId, "groupName", testsuite.resourceGroupName, "location", testsuite.location)
+	clientFactory, err := armresources.NewClientFactory(testsuite.subscriptionId, cred, testsuite.options)
+	testsuite.Require().NoError(err)
+	client := clientFactory.NewResourceGroupsClient()
+	ctx := context.Background()
+
+	testsuite.Require().NoError(err)
+	// check whether create new group successfully
+	res, err := client.CheckExistence(ctx, testsuite.resourceGroupName, nil)
+	testsuite.Require().NoError(err)
+	if !res.Success {
+		_, err = client.CreateOrUpdate(ctx, testsuite.resourceGroupName, armresources.ResourceGroup{
+			Location: to.Ptr(testsuite.location),
+		}, nil)
+		testsuite.Require().NoError(err)
+	}
+
+	fmt.Println("create new resource group ", testsuite.resourceGroupName, " of ", testsuite.subscriptionId, "successfully")
 }

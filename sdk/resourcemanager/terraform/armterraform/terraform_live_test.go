@@ -8,7 +8,6 @@ package armterraform_test
 import (
 	"context"
 	"fmt"
-	"log"
 	"testing"
 	"time"
 
@@ -68,48 +67,13 @@ func TestTerraformTestSuite(t *testing.T) {
 
 func (testsuite *TerraformTestSuite) TestOptionList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
+	testsuite.Require().NoError(err)
 	clientFactory, err := armterraform.NewClientFactory(testsuite.subscriptionId, cred, testsuite.options)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
+	testsuite.Require().NoError(err)
 	pager := clientFactory.NewOperationsClient().NewListPager(nil)
 	for pager.More() {
-		page, err := pager.NextPage(testsuite.ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			fmt.Println("v.ActionType", v.ActionType)
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		page = armterraform.OperationsClientListResponse{
-			OperationListResult: armterraform.OperationListResult{
-				Value: []*armterraform.Operation{
-					{
-						Name: to.Ptr("Microsoft.AzureTerraform/operations/read"),
-						Display: &armterraform.OperationDisplay{
-							Provider:    to.Ptr("Microsoft AzureTerraform"),
-							Resource:    to.Ptr("Azure Terraform Resource Provider"),
-							Operation:   to.Ptr("ListOperations"),
-							Description: to.Ptr("Lists all of the available RP operations."),
-						},
-					},
-					{
-						Name: to.Ptr("Microsoft.AzureTerraform/exportTerraform/action"),
-						Display: &armterraform.OperationDisplay{
-							Provider:    to.Ptr("Microsoft AzureTerraform"),
-							Resource:    to.Ptr("Azure Terraform Resource Provider"),
-							Operation:   to.Ptr("ExportTerraform"),
-							Description: to.Ptr("Exports the Terraform configuration used for the specified scope."),
-						},
-					},
-				},
-			},
-		}
+		_, err := pager.NextPage(testsuite.ctx)
+		testsuite.Require().NoError(err)
 	}
 }
 
@@ -123,14 +87,13 @@ func (testsuite *TerraformTestSuite) Prepare() {
 	clientFactory, err := armresources.NewClientFactory(testsuite.subscriptionId, cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	client := clientFactory.NewResourceGroupsClient()
-	ctx := context.Background()
 
 	testsuite.Require().NoError(err)
 	// check whether create new group successfully
-	res, err := client.CheckExistence(ctx, testsuite.resourceGroupName, nil)
+	res, err := client.CheckExistence(testsuite.ctx, testsuite.resourceGroupName, nil)
 	testsuite.Require().NoError(err)
 	if !res.Success {
-		_, err = client.CreateOrUpdate(ctx, testsuite.resourceGroupName, armresources.ResourceGroup{
+		_, err = client.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, armresources.ResourceGroup{
 			Location: to.Ptr(testsuite.location),
 		}, nil)
 		testsuite.Require().NoError(err)

@@ -9,7 +9,6 @@ package armneonpostgres_test
 import (
 	"context"
 	"fmt"
-	"log"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -158,14 +157,13 @@ func (testsuite *NeonpostgresTestSuite) Prepare() {
 	clientFactory, err := armresources.NewClientFactory(testsuite.subscriptionId, cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	client := clientFactory.NewResourceGroupsClient()
-	ctx := context.Background()
 
 	testsuite.Require().NoError(err)
 	// check whether create new group successfully
-	res, err := client.CheckExistence(ctx, testsuite.resourceGroupName, nil)
+	res, err := client.CheckExistence(testsuite.ctx, testsuite.resourceGroupName, nil)
 	testsuite.Require().NoError(err)
 	if !res.Success {
-		_, err = client.CreateOrUpdate(ctx, testsuite.resourceGroupName, armresources.ResourceGroup{
+		_, err = client.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, armresources.ResourceGroup{
 			Location: to.Ptr(testsuite.location),
 		}, nil)
 		testsuite.Require().NoError(err)

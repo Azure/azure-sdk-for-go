@@ -52,7 +52,6 @@ func (testsuite *NeonpostgresTestSuite) SetupSuite() {
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name
 	fmt.Println("testsuite.resourceGroupName:", testsuite.resourceGroupName)
-	testsuite.Prepare()
 }
 
 func (testsuite *NeonpostgresTestSuite) TearDownSuite() {
@@ -108,7 +107,7 @@ func (testsuite *NeonpostgresTestSuite) TestOptionList() {
 	}
 }
 
-func (testsuite *NeonpostgresTestSuite) Prepare() {
+func (testsuite *NeonpostgresTestSuite) TestCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -167,8 +166,6 @@ func (testsuite *NeonpostgresTestSuite) Prepare() {
 		Name:     to.Ptr(testsuite.organizationName),
 	}, nil)
 	testsuite.Require().NoError(err)
-	// _, err = testutil.PollForTest(testsuite.ctx, poller)
-	// testsuite.Require().NoError(err)
 
 }
 

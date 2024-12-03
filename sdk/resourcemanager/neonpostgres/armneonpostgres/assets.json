@@ -1,0 +1,6 @@
+{
+    "AssetsRepo":  "Azure/azure-sdk-assets",
+    "AssetsRepoPrefixPath":  "go",
+    "TagPrefix":  "go/resourcemanager/neonpostgres/armneonpostgres",
+    "Tag": "go/resourcemanager/neonpostgres/armneonpostgres_9ffad5f62a"
+}

@@ -30,11 +30,10 @@ func regexReplace(fileName string, regex string, replace string) {
 }
 
 func main() {
-	// // delete the version path param check (version == "" is legal for Key Vault but indescribable by OpenAPI)
-	// regexReplace("client.go", `\sif version == "" \{\s+.+version cannot be empty"\)\s+\}\s`, "")
+	// delete the version path param check (version == "" is legal for Key Vault but indescribable by OpenAPI)
+	regexReplace("client.go", `\sif version == "" \{\s+.+version cannot be empty"\)\s+\}\s`, "")
 
 	// make secret IDs a convenience type so we can add parsing methods
-	regexReplace("models.go", `\sID \*string(\s+.*)`, "ID *ID$1")
 	regexReplace("models.go", `\sKID \*string(\s+.*)`, "KID *ID$1")
 
 	// remove Max Results parameter

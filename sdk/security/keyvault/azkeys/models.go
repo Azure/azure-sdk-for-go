@@ -334,7 +334,7 @@ type KeyRotationPolicy struct {
 	LifetimeActions []*LifetimeAction
 
 	// READ-ONLY; The key policy id.
-	ID *ID
+	ID *string
 }
 
 // KeyRotationPolicyAttributes - The key rotation policy attributes.

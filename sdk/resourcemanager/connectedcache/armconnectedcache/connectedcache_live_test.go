@@ -82,7 +82,7 @@ func (testsuite *ConnectedCacheTestSuite) Cleanup() {
 	testsuite.Require().NoError(err)
 }
 
-func (testsuite *ConnectedCacheTestSuite) TestIspCustomersCreate() {
+func (testsuite *ConnectedCacheTestSuite) TestIspCustomersCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)

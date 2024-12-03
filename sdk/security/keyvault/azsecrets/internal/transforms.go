@@ -43,4 +43,6 @@ func main() {
 	// remove Max Results parameter
 	regexReplace("options.go", `(?:\/\/.*\s)+\sMaxresults \*int32`, `// placeholder for future optional parameters`)
 	regexReplace("client.go", `\sif options != nil && options.Maxresults != nil \{\s+.+\)\s+\}\s`, "")
+
+	regexReplace("client.go", `"strconv"`, "")
 }

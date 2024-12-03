@@ -78,11 +78,13 @@ type DeletedSecretProperties struct {
 
 // DeletedSecretPropertiesListResult - The deleted secret list result
 type DeletedSecretPropertiesListResult struct {
-	// REQUIRED; The DeletedSecretItem items on this page
-	Value []*DeletedSecretProperties
-
-	// The link to the next page of items
+	// READ-ONLY; The URL to get the next set of deleted secrets.
 	NextLink *string
+
+	// READ-ONLY; A response message containing a list of deleted secrets in the key vault along with a link to the next page
+	// of
+	// deleted secrets.
+	Value []*DeletedSecretProperties
 }
 
 // RestoreSecretParameters - The secret restore parameters.
@@ -166,11 +168,12 @@ type SecretProperties struct {
 
 // SecretPropertiesListResult - The secret list result.
 type SecretPropertiesListResult struct {
-	// REQUIRED; The SecretItem items on this page
-	Value []*SecretProperties
-
-	// The link to the next page of items
+	// READ-ONLY; The URL to get the next set of secrets.
 	NextLink *string
+
+	// READ-ONLY; A response message containing a list of secrets in the key vault along with a link to the next page of
+	// secrets.
+	Value []*SecretProperties
 }
 
 // SetSecretParameters - The secret set parameters.

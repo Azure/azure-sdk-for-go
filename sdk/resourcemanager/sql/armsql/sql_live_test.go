@@ -87,7 +87,7 @@ func (testsuite *SqlAccessTestSuite) TestCreateServer() {
 	testsuite.Require().NoError(err)
 }
 
-func (testsuite *SqlAccessTestSuite) TestGetServer() {
+func (testsuite *SqlAccessTestSuite) TestServerGet() {
 	sqlClientFactory, err := armsql.NewClientFactory(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	serversClient := sqlClientFactory.NewServersClient()

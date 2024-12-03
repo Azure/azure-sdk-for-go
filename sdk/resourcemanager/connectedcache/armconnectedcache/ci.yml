@@ -26,3 +26,4 @@ extends:
   parameters:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/connectedcache/armconnectedcache'
+    UsePipelineProxy: false

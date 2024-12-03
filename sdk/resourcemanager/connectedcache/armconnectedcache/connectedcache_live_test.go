@@ -82,7 +82,7 @@ func (testsuite *ConnectedCacheTestSuite) Cleanup() {
 	testsuite.Require().NoError(err)
 }
 
-func (testsuite *ConnectedCacheTestSuite) TestCreateIspCustomersClient() {
+func (testsuite *ConnectedCacheTestSuite) TestIspCustomersCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -108,7 +108,7 @@ func (testsuite *ConnectedCacheTestSuite) TestCreateIspCustomersClient() {
 	fmt.Println("finish TestCreateIspCustomersClient====")
 }
 
-func (testsuite *ConnectedCacheTestSuite) TestGetIspCustomersClient() {
+func (testsuite *ConnectedCacheTestSuite) TestIspCustomersGet() {
 	// make sure that the group has been created
 	ResourceName := recording.GetEnvVariable("RESOURCE_NAME", "MccRPTest2")
 	cred, err := azidentity.NewDefaultAzureCredential(nil)

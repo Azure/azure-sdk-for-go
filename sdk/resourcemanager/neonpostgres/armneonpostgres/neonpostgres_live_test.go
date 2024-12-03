@@ -65,7 +65,7 @@ func TestNeonpostgresTestSuite(t *testing.T) {
 	suite.Run(t, new(NeonpostgresTestSuite))
 }
 
-func (testsuite *NeonpostgresTestSuite) TestOptionList() {
+func (testsuite *NeonpostgresTestSuite) TestOperationsList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	testsuite.Require().NoError(err)
 	ctx := context.Background()
@@ -78,7 +78,7 @@ func (testsuite *NeonpostgresTestSuite) TestOptionList() {
 	}
 }
 
-func (testsuite *NeonpostgresTestSuite) TestCreateOrUpdate() {
+func (testsuite *NeonpostgresTestSuite) TestOrganizationsCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	testsuite.Require().NoError(err)
 	clientFactory, err := armneonpostgres.NewClientFactory(testsuite.subscriptionId, cred, testsuite.options)

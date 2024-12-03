@@ -157,9 +157,9 @@ func TestAssistantMessages(t *testing.T) {
 			Attachments: []azopenaiassistants.MessageAttachment{
 				{
 					FileID: uploadResp.ID,
-					Tools: []azopenaiassistants.MessageAttachmentToolAssignment{
-						{Type: to.Ptr(azopenaiassistants.MessageAttachmentToolAssignmentTypeCodeInterpreter)},
-						{Type: to.Ptr(azopenaiassistants.MessageAttachmentToolAssignmentTypeFileSearch)},
+					Tools: []azopenaiassistants.MessageAttachmentToolDefinition{
+						{CodeInterpreterToolDefinition: &azopenaiassistants.CodeInterpreterToolDefinition{}},
+						{FileSearchToolDefinition: &azopenaiassistants.FileSearchToolDefinition{}},
 					},
 				},
 			},
@@ -169,17 +169,12 @@ func TestAssistantMessages(t *testing.T) {
 		attachmentTools := messageResp.Attachments[0].Tools
 
 		// just trying to keep a consistent ordering of the tools for our checks.
-		if *attachmentTools[0].Type == azopenaiassistants.MessageAttachmentToolAssignmentTypeFileSearch {
+		if attachmentTools[0].FileSearchToolDefinition != nil {
 			attachmentTools[0], attachmentTools[1] = attachmentTools[1], attachmentTools[0]
 		}
 
-		require.Equal(t, azopenaiassistants.MessageAttachmentToolAssignment{
-			Type: to.Ptr(azopenaiassistants.MessageAttachmentToolAssignmentType("code_interpreter")),
-		}, attachmentTools[0])
-
-		require.Equal(t, azopenaiassistants.MessageAttachmentToolAssignment{
-			Type: to.Ptr(azopenaiassistants.MessageAttachmentToolAssignmentType("file_search")),
-		}, attachmentTools[1])
+		require.NotNil(t, attachmentTools[0].CodeInterpreterToolDefinition)
+		require.NotNil(t, attachmentTools[1].FileSearchToolDefinition)
 
 		messageID := messageResp.ID
 

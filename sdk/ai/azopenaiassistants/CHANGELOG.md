@@ -1,5 +1,15 @@
 # Release History
 
+## 0.3.0 (2024-12-03)
+
+### Features Added
+
+- Added support for the `ParallelToolCalls` option.
+
+### Breaking Changes
+
+- `MessageAttachmentToolAssignment` is now `MessageAttachmentToolDefinition`.
+
 ## 0.2.1 (2024-09-10)
 
 ### Features Added
@@ -23,7 +33,6 @@
 ### Bugs Fixed
 
 - ThreadRun.RequiredAction was deserialized incorrectly, making it impossible to actually resubmit a tool output. (PR#22834)
-
 ## 0.1.0 (2024-03-05)
 
 * Initial release of the `azopenaiassistants` library

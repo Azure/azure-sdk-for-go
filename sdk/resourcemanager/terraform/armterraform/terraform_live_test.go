@@ -65,7 +65,7 @@ func TestTerraformTestSuite(t *testing.T) {
 	suite.Run(t, new(TerraformTestSuite))
 }
 
-func (testsuite *TerraformTestSuite) TestOptionList() {
+func (testsuite *TerraformTestSuite) TestOperationsList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	testsuite.Require().NoError(err)
 	clientFactory, err := armterraform.NewClientFactory(testsuite.subscriptionId, cred, testsuite.options)

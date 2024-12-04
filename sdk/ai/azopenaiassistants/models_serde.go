@@ -426,6 +426,7 @@ func (c CreateAndRunThreadBody) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "max_completion_tokens", c.MaxCompletionTokens)
 	populate(objectMap, "max_prompt_tokens", c.MaxPromptTokens)
 	populate(objectMap, "metadata", c.Metadata)
+	populate(objectMap, "parallel_tool_calls", c.ParallelToolCalls)
 	populate(objectMap, "response_format", c.ResponseFormat)
 	populate(objectMap, "stream", c.stream)
 	populate(objectMap, "temperature", c.Temperature)
@@ -464,6 +465,9 @@ func (c *CreateAndRunThreadBody) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "metadata":
 			err = unpopulate(val, "Metadata", &c.Metadata)
+			delete(rawMsg, key)
+		case "parallel_tool_calls":
+			err = unpopulate(val, "ParallelToolCalls", &c.ParallelToolCalls)
 			delete(rawMsg, key)
 		case "response_format":
 			err = unpopulate(val, "ResponseFormat", &c.ResponseFormat)
@@ -737,6 +741,7 @@ func (c CreateRunBody) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "max_prompt_tokens", c.MaxPromptTokens)
 	populate(objectMap, "metadata", c.Metadata)
 	populate(objectMap, "model", c.Model)
+	populate(objectMap, "parallel_tool_calls", c.ParallelToolCalls)
 	populate(objectMap, "response_format", c.ResponseFormat)
 	populate(objectMap, "stream", c.stream)
 	populate(objectMap, "temperature", c.Temperature)
@@ -779,6 +784,9 @@ func (c *CreateRunBody) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "model":
 			err = unpopulate(val, "Model", &c.Model)
+			delete(rawMsg, key)
+		case "parallel_tool_calls":
+			err = unpopulate(val, "ParallelToolCalls", &c.ParallelToolCalls)
 			delete(rawMsg, key)
 		case "response_format":
 			err = unpopulate(val, "ResponseFormat", &c.ResponseFormat)
@@ -1203,33 +1211,6 @@ func (m *MessageAttachment) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "tools":
 			err = unpopulate(val, "Tools", &m.Tools)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", m, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MessageAttachmentToolAssignment.
-func (m MessageAttachmentToolAssignment) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "type", m.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type MessageAttachmentToolAssignment.
-func (m *MessageAttachmentToolAssignment) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", m, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "type":
-			err = unpopulate(val, "Type", &m.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -3740,6 +3721,7 @@ func (t ThreadRun) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "metadata", t.Metadata)
 	populate(objectMap, "model", t.Model)
 	objectMap["object"] = "thread.run"
+	populate(objectMap, "parallel_tool_calls", t.ParallelToolCalls)
 	populate(objectMap, "required_action", t.RequiredAction)
 	populate(objectMap, "response_format", t.ResponseFormat)
 	populateTimeUnix(objectMap, "started_at", t.StartedAt)
@@ -3807,6 +3789,9 @@ func (t *ThreadRun) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "object":
 			err = unpopulate(val, "Object", &t.Object)
+			delete(rawMsg, key)
+		case "parallel_tool_calls":
+			err = unpopulate(val, "ParallelToolCalls", &t.ParallelToolCalls)
 			delete(rawMsg, key)
 		case "required_action":
 			t.RequiredAction, err = unmarshalRequiredActionClassification(val)

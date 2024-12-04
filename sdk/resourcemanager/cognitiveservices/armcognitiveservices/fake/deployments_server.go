@@ -39,6 +39,14 @@ type DeploymentsServer struct {
 	// NewListPager is the fake for method DeploymentsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, accountName string, options *armcognitiveservices.DeploymentsClientListOptions) (resp azfake.PagerResponder[armcognitiveservices.DeploymentsClientListResponse])
+
+	// NewListSKUsPager is the fake for method DeploymentsClient.NewListSKUsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListSKUsPager func(resourceGroupName string, accountName string, deploymentName string, options *armcognitiveservices.DeploymentsClientListSKUsOptions) (resp azfake.PagerResponder[armcognitiveservices.DeploymentsClientListSKUsResponse])
+
+	// BeginUpdate is the fake for method DeploymentsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, deployment armcognitiveservices.PatchResourceTagsAndSKU, options *armcognitiveservices.DeploymentsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcognitiveservices.DeploymentsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewDeploymentsServerTransport creates a new instance of DeploymentsServerTransport with the provided implementation.
@@ -50,6 +58,8 @@ func NewDeploymentsServerTransport(srv *DeploymentsServer) *DeploymentsServerTra
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armcognitiveservices.DeploymentsClientCreateOrUpdateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armcognitiveservices.DeploymentsClientDeleteResponse]](),
 		newListPager:        newTracker[azfake.PagerResponder[armcognitiveservices.DeploymentsClientListResponse]](),
+		newListSKUsPager:    newTracker[azfake.PagerResponder[armcognitiveservices.DeploymentsClientListSKUsResponse]](),
+		beginUpdate:         newTracker[azfake.PollerResponder[armcognitiveservices.DeploymentsClientUpdateResponse]](),
 	}
 }
 
@@ -60,6 +70,8 @@ type DeploymentsServerTransport struct {
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armcognitiveservices.DeploymentsClientCreateOrUpdateResponse]]
 	beginDelete         *tracker[azfake.PollerResponder[armcognitiveservices.DeploymentsClientDeleteResponse]]
 	newListPager        *tracker[azfake.PagerResponder[armcognitiveservices.DeploymentsClientListResponse]]
+	newListSKUsPager    *tracker[azfake.PagerResponder[armcognitiveservices.DeploymentsClientListSKUsResponse]]
+	beginUpdate         *tracker[azfake.PollerResponder[armcognitiveservices.DeploymentsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for DeploymentsServerTransport.
@@ -82,6 +94,10 @@ func (d *DeploymentsServerTransport) Do(req *http.Request) (*http.Response, erro
 		resp, err = d.dispatchGet(req)
 	case "DeploymentsClient.NewListPager":
 		resp, err = d.dispatchNewListPager(req)
+	case "DeploymentsClient.NewListSKUsPager":
+		resp, err = d.dispatchNewListSKUsPager(req)
+	case "DeploymentsClient.BeginUpdate":
+		resp, err = d.dispatchBeginUpdate(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
 	}
@@ -268,5 +284,102 @@ func (d *DeploymentsServerTransport) dispatchNewListPager(req *http.Request) (*h
 	if !server.PagerResponderMore(newListPager) {
 		d.newListPager.remove(req)
 	}
+	return resp, nil
+}
+
+func (d *DeploymentsServerTransport) dispatchNewListSKUsPager(req *http.Request) (*http.Response, error) {
+	if d.srv.NewListSKUsPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListSKUsPager not implemented")}
+	}
+	newListSKUsPager := d.newListSKUsPager.get(req)
+	if newListSKUsPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/skus`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := d.srv.NewListSKUsPager(resourceGroupNameParam, accountNameParam, deploymentNameParam, nil)
+		newListSKUsPager = &resp
+		d.newListSKUsPager.add(req, newListSKUsPager)
+		server.PagerResponderInjectNextLinks(newListSKUsPager, req, func(page *armcognitiveservices.DeploymentsClientListSKUsResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListSKUsPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListSKUsPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListSKUsPager) {
+		d.newListSKUsPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (d *DeploymentsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := d.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcognitiveservices.PatchResourceTagsAndSKU](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := d.srv.BeginUpdate(req.Context(), resourceGroupNameParam, accountNameParam, deploymentNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		d.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		d.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		d.beginUpdate.remove(req)
+	}
+
 	return resp, nil
 }

@@ -23,64 +23,64 @@ import (
 	"regexp"
 )
 
-// SAPApplicationServerInstancesServer is a fake server for instances of the armworkloadssapvirtualinstance.SAPApplicationServerInstancesClient type.
-type SAPApplicationServerInstancesServer struct {
-	// BeginCreate is the fake for method SAPApplicationServerInstancesClient.BeginCreate
+// SapApplicationServerInstancesServer is a fake server for instances of the armworkloadssapvirtualinstance.SapApplicationServerInstancesClient type.
+type SapApplicationServerInstancesServer struct {
+	// BeginCreate is the fake for method SapApplicationServerInstancesClient.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreate func(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, applicationInstanceName string, body armworkloadssapvirtualinstance.SAPApplicationServerInstance, options *armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientBeginCreateOptions) (resp azfake.PollerResponder[armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientCreateResponse], errResp azfake.ErrorResponder)
+	BeginCreate func(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, applicationInstanceName string, resource armworkloadssapvirtualinstance.SAPApplicationServerInstance, options *armworkloadssapvirtualinstance.SapApplicationServerInstancesClientBeginCreateOptions) (resp azfake.PollerResponder[armworkloadssapvirtualinstance.SapApplicationServerInstancesClientCreateResponse], errResp azfake.ErrorResponder)
 
-	// BeginDelete is the fake for method SAPApplicationServerInstancesClient.BeginDelete
+	// BeginDelete is the fake for method SapApplicationServerInstancesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, applicationInstanceName string, options *armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientBeginDeleteOptions) (resp azfake.PollerResponder[armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, applicationInstanceName string, options *armworkloadssapvirtualinstance.SapApplicationServerInstancesClientBeginDeleteOptions) (resp azfake.PollerResponder[armworkloadssapvirtualinstance.SapApplicationServerInstancesClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method SAPApplicationServerInstancesClient.Get
+	// Get is the fake for method SapApplicationServerInstancesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, applicationInstanceName string, options *armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientGetOptions) (resp azfake.Responder[armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, applicationInstanceName string, options *armworkloadssapvirtualinstance.SapApplicationServerInstancesClientGetOptions) (resp azfake.Responder[armworkloadssapvirtualinstance.SapApplicationServerInstancesClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method SAPApplicationServerInstancesClient.NewListPager
+	// NewListPager is the fake for method SapApplicationServerInstancesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, sapVirtualInstanceName string, options *armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientListOptions) (resp azfake.PagerResponder[armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientListResponse])
+	NewListPager func(resourceGroupName string, sapVirtualInstanceName string, options *armworkloadssapvirtualinstance.SapApplicationServerInstancesClientListOptions) (resp azfake.PagerResponder[armworkloadssapvirtualinstance.SapApplicationServerInstancesClientListResponse])
 
-	// BeginStartInstance is the fake for method SAPApplicationServerInstancesClient.BeginStartInstance
+	// BeginStart is the fake for method SapApplicationServerInstancesClient.BeginStart
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginStartInstance func(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, applicationInstanceName string, options *armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientBeginStartInstanceOptions) (resp azfake.PollerResponder[armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientStartInstanceResponse], errResp azfake.ErrorResponder)
+	BeginStart func(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, applicationInstanceName string, options *armworkloadssapvirtualinstance.SapApplicationServerInstancesClientBeginStartOptions) (resp azfake.PollerResponder[armworkloadssapvirtualinstance.SapApplicationServerInstancesClientStartResponse], errResp azfake.ErrorResponder)
 
-	// BeginStopInstance is the fake for method SAPApplicationServerInstancesClient.BeginStopInstance
+	// BeginStop is the fake for method SapApplicationServerInstancesClient.BeginStop
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginStopInstance func(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, applicationInstanceName string, options *armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientBeginStopInstanceOptions) (resp azfake.PollerResponder[armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientStopInstanceResponse], errResp azfake.ErrorResponder)
+	BeginStop func(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, applicationInstanceName string, options *armworkloadssapvirtualinstance.SapApplicationServerInstancesClientBeginStopOptions) (resp azfake.PollerResponder[armworkloadssapvirtualinstance.SapApplicationServerInstancesClientStopResponse], errResp azfake.ErrorResponder)
 
-	// Update is the fake for method SAPApplicationServerInstancesClient.Update
+	// Update is the fake for method SapApplicationServerInstancesClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
-	Update func(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, applicationInstanceName string, body armworkloadssapvirtualinstance.UpdateSAPApplicationInstanceRequest, options *armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientUpdateOptions) (resp azfake.Responder[armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientUpdateResponse], errResp azfake.ErrorResponder)
+	Update func(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, applicationInstanceName string, properties armworkloadssapvirtualinstance.UpdateSAPApplicationInstanceRequest, options *armworkloadssapvirtualinstance.SapApplicationServerInstancesClientUpdateOptions) (resp azfake.Responder[armworkloadssapvirtualinstance.SapApplicationServerInstancesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
-// NewSAPApplicationServerInstancesServerTransport creates a new instance of SAPApplicationServerInstancesServerTransport with the provided implementation.
-// The returned SAPApplicationServerInstancesServerTransport instance is connected to an instance of armworkloadssapvirtualinstance.SAPApplicationServerInstancesClient via the
+// NewSapApplicationServerInstancesServerTransport creates a new instance of SapApplicationServerInstancesServerTransport with the provided implementation.
+// The returned SapApplicationServerInstancesServerTransport instance is connected to an instance of armworkloadssapvirtualinstance.SapApplicationServerInstancesClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewSAPApplicationServerInstancesServerTransport(srv *SAPApplicationServerInstancesServer) *SAPApplicationServerInstancesServerTransport {
-	return &SAPApplicationServerInstancesServerTransport{
-		srv:                srv,
-		beginCreate:        newTracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientCreateResponse]](),
-		beginDelete:        newTracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientDeleteResponse]](),
-		newListPager:       newTracker[azfake.PagerResponder[armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientListResponse]](),
-		beginStartInstance: newTracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientStartInstanceResponse]](),
-		beginStopInstance:  newTracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientStopInstanceResponse]](),
+func NewSapApplicationServerInstancesServerTransport(srv *SapApplicationServerInstancesServer) *SapApplicationServerInstancesServerTransport {
+	return &SapApplicationServerInstancesServerTransport{
+		srv:          srv,
+		beginCreate:  newTracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SapApplicationServerInstancesClientCreateResponse]](),
+		beginDelete:  newTracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SapApplicationServerInstancesClientDeleteResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armworkloadssapvirtualinstance.SapApplicationServerInstancesClientListResponse]](),
+		beginStart:   newTracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SapApplicationServerInstancesClientStartResponse]](),
+		beginStop:    newTracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SapApplicationServerInstancesClientStopResponse]](),
 	}
 }
 
-// SAPApplicationServerInstancesServerTransport connects instances of armworkloadssapvirtualinstance.SAPApplicationServerInstancesClient to instances of SAPApplicationServerInstancesServer.
-// Don't use this type directly, use NewSAPApplicationServerInstancesServerTransport instead.
-type SAPApplicationServerInstancesServerTransport struct {
-	srv                *SAPApplicationServerInstancesServer
-	beginCreate        *tracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientCreateResponse]]
-	beginDelete        *tracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientDeleteResponse]]
-	newListPager       *tracker[azfake.PagerResponder[armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientListResponse]]
-	beginStartInstance *tracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientStartInstanceResponse]]
-	beginStopInstance  *tracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientStopInstanceResponse]]
+// SapApplicationServerInstancesServerTransport connects instances of armworkloadssapvirtualinstance.SapApplicationServerInstancesClient to instances of SapApplicationServerInstancesServer.
+// Don't use this type directly, use NewSapApplicationServerInstancesServerTransport instead.
+type SapApplicationServerInstancesServerTransport struct {
+	srv          *SapApplicationServerInstancesServer
+	beginCreate  *tracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SapApplicationServerInstancesClientCreateResponse]]
+	beginDelete  *tracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SapApplicationServerInstancesClientDeleteResponse]]
+	newListPager *tracker[azfake.PagerResponder[armworkloadssapvirtualinstance.SapApplicationServerInstancesClientListResponse]]
+	beginStart   *tracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SapApplicationServerInstancesClientStartResponse]]
+	beginStop    *tracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SapApplicationServerInstancesClientStopResponse]]
 }
 
-// Do implements the policy.Transporter interface for SAPApplicationServerInstancesServerTransport.
-func (s *SAPApplicationServerInstancesServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for SapApplicationServerInstancesServerTransport.
+func (s *SapApplicationServerInstancesServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
@@ -91,19 +91,19 @@ func (s *SAPApplicationServerInstancesServerTransport) Do(req *http.Request) (*h
 	var err error
 
 	switch method {
-	case "SAPApplicationServerInstancesClient.BeginCreate":
+	case "SapApplicationServerInstancesClient.BeginCreate":
 		resp, err = s.dispatchBeginCreate(req)
-	case "SAPApplicationServerInstancesClient.BeginDelete":
+	case "SapApplicationServerInstancesClient.BeginDelete":
 		resp, err = s.dispatchBeginDelete(req)
-	case "SAPApplicationServerInstancesClient.Get":
+	case "SapApplicationServerInstancesClient.Get":
 		resp, err = s.dispatchGet(req)
-	case "SAPApplicationServerInstancesClient.NewListPager":
+	case "SapApplicationServerInstancesClient.NewListPager":
 		resp, err = s.dispatchNewListPager(req)
-	case "SAPApplicationServerInstancesClient.BeginStartInstance":
-		resp, err = s.dispatchBeginStartInstance(req)
-	case "SAPApplicationServerInstancesClient.BeginStopInstance":
-		resp, err = s.dispatchBeginStopInstance(req)
-	case "SAPApplicationServerInstancesClient.Update":
+	case "SapApplicationServerInstancesClient.BeginStart":
+		resp, err = s.dispatchBeginStart(req)
+	case "SapApplicationServerInstancesClient.BeginStop":
+		resp, err = s.dispatchBeginStop(req)
+	case "SapApplicationServerInstancesClient.Update":
 		resp, err = s.dispatchUpdate(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
@@ -116,7 +116,7 @@ func (s *SAPApplicationServerInstancesServerTransport) Do(req *http.Request) (*h
 	return resp, nil
 }
 
-func (s *SAPApplicationServerInstancesServerTransport) dispatchBeginCreate(req *http.Request) (*http.Response, error) {
+func (s *SapApplicationServerInstancesServerTransport) dispatchBeginCreate(req *http.Request) (*http.Response, error) {
 	if s.srv.BeginCreate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreate not implemented")}
 	}
@@ -168,7 +168,7 @@ func (s *SAPApplicationServerInstancesServerTransport) dispatchBeginCreate(req *
 	return resp, nil
 }
 
-func (s *SAPApplicationServerInstancesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
+func (s *SapApplicationServerInstancesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
 	if s.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
@@ -216,7 +216,7 @@ func (s *SAPApplicationServerInstancesServerTransport) dispatchBeginDelete(req *
 	return resp, nil
 }
 
-func (s *SAPApplicationServerInstancesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+func (s *SapApplicationServerInstancesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
@@ -253,7 +253,7 @@ func (s *SAPApplicationServerInstancesServerTransport) dispatchGet(req *http.Req
 	return resp, nil
 }
 
-func (s *SAPApplicationServerInstancesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+func (s *SapApplicationServerInstancesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if s.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
@@ -276,7 +276,7 @@ func (s *SAPApplicationServerInstancesServerTransport) dispatchNewListPager(req 
 		resp := s.srv.NewListPager(resourceGroupNameParam, sapVirtualInstanceNameParam, nil)
 		newListPager = &resp
 		s.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientListResponse, createLink func() string) {
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armworkloadssapvirtualinstance.SapApplicationServerInstancesClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -294,12 +294,12 @@ func (s *SAPApplicationServerInstancesServerTransport) dispatchNewListPager(req 
 	return resp, nil
 }
 
-func (s *SAPApplicationServerInstancesServerTransport) dispatchBeginStartInstance(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginStartInstance == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginStartInstance not implemented")}
+func (s *SapApplicationServerInstancesServerTransport) dispatchBeginStart(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginStart == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginStart not implemented")}
 	}
-	beginStartInstance := s.beginStartInstance.get(req)
-	if beginStartInstance == nil {
+	beginStart := s.beginStart.get(req)
+	if beginStart == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Workloads/sapVirtualInstances/(?P<sapVirtualInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/applicationInstances/(?P<applicationInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/start`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -322,42 +322,42 @@ func (s *SAPApplicationServerInstancesServerTransport) dispatchBeginStartInstanc
 		if err != nil {
 			return nil, err
 		}
-		var options *armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientBeginStartInstanceOptions
+		var options *armworkloadssapvirtualinstance.SapApplicationServerInstancesClientBeginStartOptions
 		if !reflect.ValueOf(body).IsZero() {
-			options = &armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientBeginStartInstanceOptions{
+			options = &armworkloadssapvirtualinstance.SapApplicationServerInstancesClientBeginStartOptions{
 				Body: &body,
 			}
 		}
-		respr, errRespr := s.srv.BeginStartInstance(req.Context(), resourceGroupNameParam, sapVirtualInstanceNameParam, applicationInstanceNameParam, options)
+		respr, errRespr := s.srv.BeginStart(req.Context(), resourceGroupNameParam, sapVirtualInstanceNameParam, applicationInstanceNameParam, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		beginStartInstance = &respr
-		s.beginStartInstance.add(req, beginStartInstance)
+		beginStart = &respr
+		s.beginStart.add(req, beginStart)
 	}
 
-	resp, err := server.PollerResponderNext(beginStartInstance, req)
+	resp, err := server.PollerResponderNext(beginStart, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		s.beginStartInstance.remove(req)
+		s.beginStart.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(beginStartInstance) {
-		s.beginStartInstance.remove(req)
+	if !server.PollerResponderMore(beginStart) {
+		s.beginStart.remove(req)
 	}
 
 	return resp, nil
 }
 
-func (s *SAPApplicationServerInstancesServerTransport) dispatchBeginStopInstance(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginStopInstance == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginStopInstance not implemented")}
+func (s *SapApplicationServerInstancesServerTransport) dispatchBeginStop(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginStop == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginStop not implemented")}
 	}
-	beginStopInstance := s.beginStopInstance.get(req)
-	if beginStopInstance == nil {
+	beginStop := s.beginStop.get(req)
+	if beginStop == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Workloads/sapVirtualInstances/(?P<sapVirtualInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/applicationInstances/(?P<applicationInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/stop`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -380,37 +380,37 @@ func (s *SAPApplicationServerInstancesServerTransport) dispatchBeginStopInstance
 		if err != nil {
 			return nil, err
 		}
-		var options *armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientBeginStopInstanceOptions
+		var options *armworkloadssapvirtualinstance.SapApplicationServerInstancesClientBeginStopOptions
 		if !reflect.ValueOf(body).IsZero() {
-			options = &armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientBeginStopInstanceOptions{
+			options = &armworkloadssapvirtualinstance.SapApplicationServerInstancesClientBeginStopOptions{
 				Body: &body,
 			}
 		}
-		respr, errRespr := s.srv.BeginStopInstance(req.Context(), resourceGroupNameParam, sapVirtualInstanceNameParam, applicationInstanceNameParam, options)
+		respr, errRespr := s.srv.BeginStop(req.Context(), resourceGroupNameParam, sapVirtualInstanceNameParam, applicationInstanceNameParam, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		beginStopInstance = &respr
-		s.beginStopInstance.add(req, beginStopInstance)
+		beginStop = &respr
+		s.beginStop.add(req, beginStop)
 	}
 
-	resp, err := server.PollerResponderNext(beginStopInstance, req)
+	resp, err := server.PollerResponderNext(beginStop, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		s.beginStopInstance.remove(req)
+		s.beginStop.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(beginStopInstance) {
-		s.beginStopInstance.remove(req)
+	if !server.PollerResponderMore(beginStop) {
+		s.beginStop.remove(req)
 	}
 
 	return resp, nil
 }
 
-func (s *SAPApplicationServerInstancesServerTransport) dispatchUpdate(req *http.Request) (*http.Response, error) {
+func (s *SapApplicationServerInstancesServerTransport) dispatchUpdate(req *http.Request) (*http.Response, error) {
 	if s.srv.Update == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
 	}

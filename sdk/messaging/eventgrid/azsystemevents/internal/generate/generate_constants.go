@@ -103,7 +103,7 @@ func getConstantValues(reader io.ReadCloser) (map[string]constant, error) {
 			}
 
 			if !ignorable {
-				log.Printf("===========> DIDN'T MATCH REGEX: %q ", comment)
+				log.Fatalf("Non-system event type not classified: %q ", comment)
 			}
 		}
 

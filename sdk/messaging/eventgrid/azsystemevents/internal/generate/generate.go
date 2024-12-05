@@ -9,6 +9,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"regexp"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/azsystemevents/internal/gopls"
@@ -26,6 +27,10 @@ func main() {
 			return err
 		}
 
+		if err := deleteUnneededTypes(); err != nil {
+			return err
+		}
+
 		if err := generateSystemEventEnum(); err != nil {
 			return err
 		}
@@ -40,6 +45,71 @@ func main() {
 	}
 
 	fmt.Printf("DONE\n")
+}
+
+// deleteUnneededTypes deletes types that are vestigial. Event Grid system events, in TypeSpec,
+// use inheritance. We model this by pushing the parent properties into the child objects, so the
+// parent object is not needed.
+// NOTE: this is a workaround, I'm running into some conflicting behavior as I move between tsp-client
+// and my "homebrew" version calling the powershell scripts directly.
+func deleteUnneededTypes() error {
+	typesToDelete := []string{
+		"ACSChatEventBaseProperties",
+		"ACSChatEventInThreadBaseProperties",
+		"ACSChatMessageEventBaseProperties",
+		"ACSChatMessageEventInThreadBaseProperties",
+		"ACSChatThreadEventBaseProperties",
+		"ACSChatThreadEventInThreadBaseProperties",
+		"ACSMessageEventData",
+		"ACSRouterEventData",
+		"ACSRouterJobEventData",
+		"ACSRouterWorkerEventData",
+		"ACSSmsEventBaseProperties",
+		"AppConfigurationSnapshotEventData",
+		"AVSClusterEventData",
+		"AVSPrivateCloudEventData",
+		"AVSScriptExecutionEventData",
+		"ContainerRegistryArtifactEventData",
+		"ContainerRegistryEventData",
+		"ContainerServiceClusterSupportEventData",
+		"ContainerServiceNodePoolRollingEventData",
+		"DeviceConnectionStateEventProperties",
+		"DeviceLifeCycleEventProperties",
+		"DeviceTelemetryEventProperties",
+		"EventGridMQTTClientEventData",
+		"MapsGeofenceEventProperties",
+		"ResourceNotificationsResourceDeletedEventData",
+		"ResourceNotificationsResourceUpdatedEventData",
+	}
+
+	for _, typeToDelete := range typesToDelete {
+		// ex: // ACSChatEventBaseProperties - Schema of common properties of all chat events
+		if err := replaceAll("models.go", fmt.Sprintf("(?is)// %s.+?\n}\n", typeToDelete), ""); err != nil {
+			return err
+		}
+
+		// ex: // MarshalJSON implements the json.Marshaller interface for type ACSChatEventBaseProperties.
+		// ex: // UnmarshalJSON implements the json.Unmarshaller interface for type ACSChatEventBaseProperties.
+		if err := replaceAll("models_serde.go",
+			fmt.Sprintf("(?is)// (?:Marshal|Unmarshal)JSON\\s*implements\\s*the\\s*json\\.(?:Marshaller|Unmarshaller)\\s*interface\\s*for\\s*type\\s*%s.+?\n}\n", typeToDelete), ""); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func replaceAll(filename string, re string, replacement string) error {
+	buff, err := os.ReadFile(filename)
+
+	if err != nil {
+		return err
+	}
+
+	modelsRE := regexp.MustCompile(re)
+	buff = modelsRE.ReplaceAll(buff, []byte(replacement))
+
+	return os.WriteFile(filename, buff, 0600)
 }
 
 // swapErrorTypes handles turning most of the auto-generated errors into a single consistent error type.

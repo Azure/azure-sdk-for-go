@@ -37,11 +37,6 @@ func main() {
 		panic(err)
 	}
 
-	fmt.Printf("transformError...\n")
-	if err := transformError(); err != nil {
-		panic(err)
-	}
-
 	// fix result types
 	fmt.Printf("fix result types...\n")
 	if err := fixResultTypes(); err != nil {
@@ -224,49 +219,6 @@ func replaceAllInFile(file string, re *regexp.Regexp, replacement []byte) error 
 
 	if err := os.WriteFile(file, newBytes, 0600); err != nil {
 		return err
-	}
-
-	return nil
-}
-
-func transformError() error {
-	// clip out some of the internal fields
-	err := replaceAllInFile("models.go", regexp.MustCompile(`(?s)// [^/]+?\s+(Innererror \*InnerError|Details \[\]Error|Target \*string)\n`), nil)
-
-	if err != nil {
-		return fmt.Errorf("failed to splice out the error fields in models.go: %w", err)
-	}
-
-	// delete these lines from the marshallers and ummarshallers
-	/*
-		populate(objectMap, "details", e.Details)
-		populate(objectMap, "innererror", e.Innererror)
-		populate(objectMap, "target", e.Target)
-	*/
-
-	err = replaceAllInFile("models_serde.go", regexp.MustCompile(`(?m)^\s+populate\(objectMap, "(details|innererror|target)", e\.(Details|Innererror|Target)\)$`), nil)
-
-	if err != nil {
-		return fmt.Errorf("removing Error populate lines: %w", err)
-	}
-
-	/*
-		case "details":
-			err = unpopulate(val, "Details", &e.Details)
-			delete(rawMsg, key)
-		case "innererror":
-			err = unpopulate(val, "Innererror", &e.Innererror)
-			delete(rawMsg, key)
-		case "target":
-			err = unpopulate(val, "Target", &e.Target)
-			delete(rawMsg, key)
-		}
-	*/
-
-	err = replaceAllInFile("models_serde.go", regexp.MustCompile(`(?s)case "(details|innererror|target)":.+?delete\(rawMsg, key\)\n`), nil)
-
-	if err != nil {
-		return fmt.Errorf("removing Error unpopulate lines: %w", err)
 	}
 
 	return nil

@@ -23,16 +23,19 @@ type remoteValidator struct {
 
 func (v *remoteValidator) Validate(cfg config.Config) error {
 	var errResult error
+	invalidTrack2Requests := map[string]struct{}{}
 	for readme, infoMap := range cfg.Track2Requests {
 		// first we validate whether the readme exists
 		file, err := v.validateReadmeExistence(readme)
 		if err != nil {
 			errResult = errors.Join(errResult, err)
+			invalidTrack2Requests[readme] = struct{}{}
 			continue // readme file does not exist, we could just skip all of the other steps of validations
 		}
 		// get content of the readme
 		contentOfReadme, err := file.GetContent()
 		if err != nil {
+			invalidTrack2Requests[readme] = struct{}{}
 			errResult = errors.Join(errResult, fmt.Errorf("cannot get readme.md content: %+v", err))
 			continue
 		}
@@ -46,6 +49,7 @@ func (v *remoteValidator) Validate(cfg config.Config) error {
 		contentOfReadmeGo, err := fileGo.GetContent()
 		if err != nil {
 			errResult = errors.Join(errResult, fmt.Errorf("cannot get readme.go.md content: %+v", err))
+			invalidTrack2Requests[readme] = struct{}{}
 			continue
 		}
 		// get the keys from infoMap, which is the tags
@@ -55,12 +59,17 @@ func (v *remoteValidator) Validate(cfg config.Config) error {
 		}).ToSlice(&tags)
 		// check the tags one by one
 		if err := validateTagsInReadme([]byte(contentOfReadme), readme, tags...); err != nil {
+			invalidTrack2Requests[readme] = struct{}{}
 			errResult = errors.Join(errResult, err)
 		}
 		// check module-name exist
 		if err := validateModuleNameInReadmeGo([]byte(contentOfReadmeGo), readme); err != nil {
+			invalidTrack2Requests[readme] = struct{}{}
 			errResult = errors.Join(errResult, err)
 		}
+	}
+	for readme, _ := range invalidTrack2Requests {
+		delete(cfg.Track2Requests, readme)
 	}
 	return errResult
 }

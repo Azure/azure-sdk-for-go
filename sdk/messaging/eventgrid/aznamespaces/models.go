@@ -25,15 +25,6 @@ type BrokerProperties struct {
 	LockToken *string
 }
 
-// Error - The error object.
-type Error struct {
-	// REQUIRED; One of a server-defined set of error codes.
-	Code *string
-
-	// REQUIRED; A human-readable representation of the error.
-	Message *string
-}
-
 // FailedLockToken - Failed LockToken information.
 type FailedLockToken struct {
 	// REQUIRED; Error information of the failed operation result for the lock token in the request.

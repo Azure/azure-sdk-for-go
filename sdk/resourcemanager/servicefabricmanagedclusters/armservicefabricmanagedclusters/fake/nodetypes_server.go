@@ -52,9 +52,9 @@ type NodeTypesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginRestart func(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters armservicefabricmanagedclusters.NodeTypeActionParameters, options *armservicefabricmanagedclusters.NodeTypesClientBeginRestartOptions) (resp azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientRestartResponse], errResp azfake.ErrorResponder)
 
-	// Update is the fake for method NodeTypesClient.Update
-	// HTTP status codes to indicate success: http.StatusOK
-	Update func(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters armservicefabricmanagedclusters.NodeTypeUpdateParameters, options *armservicefabricmanagedclusters.NodeTypesClientUpdateOptions) (resp azfake.Responder[armservicefabricmanagedclusters.NodeTypesClientUpdateResponse], errResp azfake.ErrorResponder)
+	// BeginUpdate is the fake for method NodeTypesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters armservicefabricmanagedclusters.NodeTypeUpdateParameters, options *armservicefabricmanagedclusters.NodeTypesClientBeginUpdateOptions) (resp azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewNodeTypesServerTransport creates a new instance of NodeTypesServerTransport with the provided implementation.
@@ -69,6 +69,7 @@ func NewNodeTypesServerTransport(srv *NodeTypesServer) *NodeTypesServerTransport
 		newListByManagedClustersPager: newTracker[azfake.PagerResponder[armservicefabricmanagedclusters.NodeTypesClientListByManagedClustersResponse]](),
 		beginReimage:                  newTracker[azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientReimageResponse]](),
 		beginRestart:                  newTracker[azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientRestartResponse]](),
+		beginUpdate:                   newTracker[azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientUpdateResponse]](),
 	}
 }
 
@@ -82,6 +83,7 @@ type NodeTypesServerTransport struct {
 	newListByManagedClustersPager *tracker[azfake.PagerResponder[armservicefabricmanagedclusters.NodeTypesClientListByManagedClustersResponse]]
 	beginReimage                  *tracker[azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientReimageResponse]]
 	beginRestart                  *tracker[azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientRestartResponse]]
+	beginUpdate                   *tracker[azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for NodeTypesServerTransport.
@@ -110,8 +112,8 @@ func (n *NodeTypesServerTransport) Do(req *http.Request) (*http.Response, error)
 		resp, err = n.dispatchBeginReimage(req)
 	case "NodeTypesClient.BeginRestart":
 		resp, err = n.dispatchBeginRestart(req)
-	case "NodeTypesClient.Update":
-		resp, err = n.dispatchUpdate(req)
+	case "NodeTypesClient.BeginUpdate":
+		resp, err = n.dispatchBeginUpdate(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
 	}
@@ -457,43 +459,54 @@ func (n *NodeTypesServerTransport) dispatchBeginRestart(req *http.Request) (*htt
 	return resp, nil
 }
 
-func (n *NodeTypesServerTransport) dispatchUpdate(req *http.Request) (*http.Response, error) {
-	if n.srv.Update == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
+func (n *NodeTypesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if n.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ServiceFabric/managedClusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/nodeTypes/(?P<nodeTypeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	beginUpdate := n.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ServiceFabric/managedClusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/nodeTypes/(?P<nodeTypeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armservicefabricmanagedclusters.NodeTypeUpdateParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		nodeTypeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("nodeTypeName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := n.srv.BeginUpdate(req.Context(), resourceGroupNameParam, clusterNameParam, nodeTypeNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		n.beginUpdate.add(req, beginUpdate)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armservicefabricmanagedclusters.NodeTypeUpdateParameters](req)
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
 	if err != nil {
 		return nil, err
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		n.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-	if err != nil {
-		return nil, err
+	if !server.PollerResponderMore(beginUpdate) {
+		n.beginUpdate.remove(req)
 	}
-	nodeTypeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("nodeTypeName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := n.srv.Update(req.Context(), resourceGroupNameParam, clusterNameParam, nodeTypeNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NodeType, req)
-	if err != nil {
-		return nil, err
-	}
+
 	return resp, nil
 }

@@ -1495,32 +1495,32 @@ type ACSUserDisconnectedEventData struct {
 // APICenterAPIDefinitionAddedEventData - Schema of the data property of an EventGridEvent for a Microsoft.ApiCenter.ApiDefinitionAdded
 // event.
 type APICenterAPIDefinitionAddedEventData struct {
-	// REQUIRED; API definition specification.
-	Specification *APICenterAPISpecification
+	// REQUIRED; API definition title.
+	Title *string
 
 	// API definition description.
 	Description *string
 
-	// API definition title.
-	Title *string
+	// API definition specification.
+	Specification *APICenterAPISpecification
 }
 
 // APICenterAPIDefinitionUpdatedEventData - Schema of the data property of an EventGridEvent for a Microsoft.ApiCenter.ApiDefinitionUpdated
 // event.
 type APICenterAPIDefinitionUpdatedEventData struct {
-	// REQUIRED; API definition specification.
-	Specification *APICenterAPISpecification
+	// REQUIRED; API definition title.
+	Title *string
 
 	// API definition description.
 	Description *string
 
-	// API definition title.
-	Title *string
+	// API definition specification.
+	Specification *APICenterAPISpecification
 }
 
 // APICenterAPISpecification - API specification details.
 type APICenterAPISpecification struct {
-	// Specification name.
+	// REQUIRED; Specification name.
 	Name *string
 
 	// Specification version.
@@ -2256,85 +2256,89 @@ type ContainerServiceNodePoolRollingSucceededEventData struct {
 // DataBoxCopyCompletedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.DataBox.CopyCompleted
 // event.
 type DataBoxCopyCompletedEventData struct {
+	// REQUIRED; Serial Number of the device associated with the event. The list is comma separated if more than one serial number
+	// is associated.
+	SerialNumber *string
+
 	// REQUIRED; Name of the current Stage
 	StageName *DataBoxStageName
 
 	// REQUIRED; The time at which the stage happened.
 	StageTime *time.Time
-
-	// Serial Number of the device associated with the event. The list is comma separated if more than one serial number is associated.
-	SerialNumber *string
 }
 
 // DataBoxCopyStartedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.DataBox.CopyStarted event.
 type DataBoxCopyStartedEventData struct {
+	// REQUIRED; Serial Number of the device associated with the event. The list is comma separated if more than one serial number
+	// is associated.
+	SerialNumber *string
+
 	// REQUIRED; Name of the current Stage
 	StageName *DataBoxStageName
 
 	// REQUIRED; The time at which the stage happened.
 	StageTime *time.Time
-
-	// Serial Number of the device associated with the event. The list is comma separated if more than one serial number is associated.
-	SerialNumber *string
 }
 
 // DataBoxOrderCompletedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.DataBox.OrderCompleted
 // event.
 type DataBoxOrderCompletedEventData struct {
+	// REQUIRED; Serial Number of the device associated with the event. The list is comma separated if more than one serial number
+	// is associated.
+	SerialNumber *string
+
 	// REQUIRED; Name of the current Stage
 	StageName *DataBoxStageName
 
 	// REQUIRED; The time at which the stage happened.
 	StageTime *time.Time
-
-	// Serial Number of the device associated with the event. The list is comma separated if more than one serial number is associated.
-	SerialNumber *string
 }
 
 // DeviceConnectionStateEventInfo - Information about the device connection state event.
 type DeviceConnectionStateEventInfo struct {
-	// Sequence number is string representation of a hexadecimal number. string compare can be used to identify the larger number
-	// because both in ASCII and HEX numbers come after alphabets. If you are converting the string to hex, then the number is
-	// a 256 bit number.
+	// REQUIRED; Sequence number is string representation of a hexadecimal number. string compare can be used to identify the
+	// larger number because both in ASCII and HEX numbers come after alphabets. If you are converting the string to hex, then
+	// the number is a 256 bit number.
 	SequenceNumber *string
 }
 
 // DeviceTwinInfo - Information about the device twin, which is the cloud representation of application device metadata.
 type DeviceTwinInfo struct {
+	// REQUIRED; Authentication type used for this device: either SAS, SelfSigned, or CertificateAuthority.
+	AuthenticationType *string
+
+	// REQUIRED; Count of cloud to device messages sent to this device.
+	CloudToDeviceMessageCount *float32
+
+	// REQUIRED; Whether the device is connected or disconnected.
+	ConnectionState *string
+
+	// REQUIRED; The unique identifier of the device twin.
+	DeviceID *string
+
+	// REQUIRED; A piece of information that describes the content of the device twin. Each etag is guaranteed to be unique per
+	// device twin.
+	Etag *string
+
+	// REQUIRED; The ISO8601 timestamp of the last activity.
+	LastActivityTime *string
+
 	// REQUIRED; Properties JSON element.
 	Properties *DeviceTwinInfoProperties
+
+	// REQUIRED; Whether the device twin is enabled or disabled.
+	Status *string
+
+	// REQUIRED; The ISO8601 timestamp of the last device twin status update.
+	StatusUpdateTime *string
+
+	// REQUIRED; An integer that is incremented by one each time the device twin is updated.
+	Version *float32
 
 	// REQUIRED; The thumbprint is a unique value for the x509 certificate, commonly used to find a particular certificate in
 	// a certificate store. The thumbprint is dynamically generated using the SHA1 algorithm, and does not physically exist in
 	// the certificate.
 	X509Thumbprint *DeviceTwinInfoX509Thumbprint
-
-	// Authentication type used for this device: either SAS, SelfSigned, or CertificateAuthority.
-	AuthenticationType *string
-
-	// Count of cloud to device messages sent to this device.
-	CloudToDeviceMessageCount *float32
-
-	// Whether the device is connected or disconnected.
-	ConnectionState *string
-
-	// The unique identifier of the device twin.
-	DeviceID *string
-
-	// A piece of information that describes the content of the device twin. Each etag is guaranteed to be unique per device twin.
-	Etag *string
-
-	// The ISO8601 timestamp of the last activity.
-	LastActivityTime *string
-
-	// Whether the device twin is enabled or disabled.
-	Status *string
-
-	// The ISO8601 timestamp of the last device twin status update.
-	StatusUpdateTime *string
-
-	// An integer that is incremented by one each time the device twin is updated.
-	Version *float32
 }
 
 // DeviceTwinInfoProperties - Properties JSON element.
@@ -2350,16 +2354,16 @@ type DeviceTwinInfoProperties struct {
 // certificate in a certificate store. The thumbprint is dynamically generated using the SHA1 algorithm, and does not physically
 // exist in the certificate.
 type DeviceTwinInfoX509Thumbprint struct {
-	// Primary thumbprint for the x509 certificate.
+	// REQUIRED; Primary thumbprint for the x509 certificate.
 	PrimaryThumbprint *string
 
-	// Secondary thumbprint for the x509 certificate.
+	// REQUIRED; Secondary thumbprint for the x509 certificate.
 	SecondaryThumbprint *string
 }
 
 // DeviceTwinMetadata - Metadata information for the properties JSON document.
 type DeviceTwinMetadata struct {
-	// The ISO8601 timestamp of the last time the properties were updated.
+	// REQUIRED; The ISO8601 timestamp of the last time the properties were updated.
 	LastUpdated *string
 }
 
@@ -2369,7 +2373,7 @@ type DeviceTwinProperties struct {
 	// REQUIRED; Metadata information for the properties JSON document.
 	Metadata *DeviceTwinMetadata
 
-	// Version of device twin properties.
+	// REQUIRED; Version of device twin properties.
 	Version *float32
 }
 
@@ -2378,8 +2382,19 @@ type EventGridMQTTClientCreatedOrUpdatedEventData struct {
 	// REQUIRED; The key-value attributes that are assigned to the client resource.
 	Attributes map[string]*string
 
+	// REQUIRED; Unique identifier for the MQTT client that the client presents to the service
+	// for authentication. This case-sensitive string can be up to 128 characters
+	// long, and supports UTF-8 characters.
+	ClientAuthenticationName *string
+
+	// REQUIRED; Name of the client resource in the Event Grid namespace.
+	ClientName *string
+
 	// REQUIRED; Time the client resource is created based on the provider's UTC time.
 	CreatedOn *time.Time
+
+	// REQUIRED; Name of the Event Grid namespace where the MQTT client was created or updated.
+	NamespaceName *string
 
 	// REQUIRED; Configured state of the client. The value could be Enabled or Disabled
 	State *EventGridMQTTClientState
@@ -2388,51 +2403,40 @@ type EventGridMQTTClientCreatedOrUpdatedEventData struct {
 	// the client resource was never updated, this value is identical to the value of
 	// the 'createdOn' property.
 	UpdatedOn *time.Time
-
-	// Unique identifier for the MQTT client that the client presents to the service
-	// for authentication. This case-sensitive string can be up to 128 characters
-	// long, and supports UTF-8 characters.
-	ClientAuthenticationName *string
-
-	// Name of the client resource in the Event Grid namespace.
-	ClientName *string
-
-	// Name of the Event Grid namespace where the MQTT client was created or updated.
-	NamespaceName *string
 }
 
 // EventGridMQTTClientDeletedEventData - Event data for Microsoft.EventGrid.MQTTClientDeleted event.
 type EventGridMQTTClientDeletedEventData struct {
-	// Unique identifier for the MQTT client that the client presents to the service
+	// REQUIRED; Unique identifier for the MQTT client that the client presents to the service
 	// for authentication. This case-sensitive string can be up to 128 characters
 	// long, and supports UTF-8 characters.
 	ClientAuthenticationName *string
 
-	// Name of the client resource in the Event Grid namespace.
+	// REQUIRED; Name of the client resource in the Event Grid namespace.
 	ClientName *string
 
-	// Name of the Event Grid namespace where the MQTT client was created or updated.
+	// REQUIRED; Name of the Event Grid namespace where the MQTT client was created or updated.
 	NamespaceName *string
 }
 
 // EventGridMQTTClientSessionConnectedEventData - Event data for Microsoft.EventGrid.MQTTClientSessionConnected event.
 type EventGridMQTTClientSessionConnectedEventData struct {
-	// Unique identifier for the MQTT client that the client presents to the service
+	// REQUIRED; Unique identifier for the MQTT client that the client presents to the service
 	// for authentication. This case-sensitive string can be up to 128 characters
 	// long, and supports UTF-8 characters.
 	ClientAuthenticationName *string
 
-	// Name of the client resource in the Event Grid namespace.
+	// REQUIRED; Name of the client resource in the Event Grid namespace.
 	ClientName *string
 
-	// Unique identifier for the MQTT client's session. This case-sensitive string can
+	// REQUIRED; Unique identifier for the MQTT client's session. This case-sensitive string can
 	// be up to 128 characters long, and supports UTF-8 characters.
 	ClientSessionName *string
 
-	// Name of the Event Grid namespace where the MQTT client was created or updated.
+	// REQUIRED; Name of the Event Grid namespace where the MQTT client was created or updated.
 	NamespaceName *string
 
-	// A number that helps indicate order of MQTT client session connected or
+	// REQUIRED; A number that helps indicate order of MQTT client session connected or
 	// disconnected events. Latest event will have a sequence number that is higher
 	// than the previous event.
 	SequenceNumber *int64
@@ -2440,26 +2444,26 @@ type EventGridMQTTClientSessionConnectedEventData struct {
 
 // EventGridMQTTClientSessionDisconnectedEventData - Event data for Microsoft.EventGrid.MQTTClientSessionDisconnected event.
 type EventGridMQTTClientSessionDisconnectedEventData struct {
-	// REQUIRED; Reason for the disconnection of the MQTT client's session. The value could be
-	// one of the values in the disconnection reasons table.
-	DisconnectionReason *EventGridMQTTClientDisconnectionReason
-
-	// Unique identifier for the MQTT client that the client presents to the service
+	// REQUIRED; Unique identifier for the MQTT client that the client presents to the service
 	// for authentication. This case-sensitive string can be up to 128 characters
 	// long, and supports UTF-8 characters.
 	ClientAuthenticationName *string
 
-	// Name of the client resource in the Event Grid namespace.
+	// REQUIRED; Name of the client resource in the Event Grid namespace.
 	ClientName *string
 
-	// Unique identifier for the MQTT client's session. This case-sensitive string can
+	// REQUIRED; Unique identifier for the MQTT client's session. This case-sensitive string can
 	// be up to 128 characters long, and supports UTF-8 characters.
 	ClientSessionName *string
 
-	// Name of the Event Grid namespace where the MQTT client was created or updated.
+	// REQUIRED; Reason for the disconnection of the MQTT client's session. The value could be
+	// one of the values in the disconnection reasons table.
+	DisconnectionReason *EventGridMQTTClientDisconnectionReason
+
+	// REQUIRED; Name of the Event Grid namespace where the MQTT client was created or updated.
 	NamespaceName *string
 
-	// A number that helps indicate order of MQTT client session connected or
+	// REQUIRED; A number that helps indicate order of MQTT client session connected or
 	// disconnected events. Latest event will have a sequence number that is higher
 	// than the previous event.
 	SequenceNumber *int64
@@ -2499,117 +2503,117 @@ type EventHubCaptureFileCreatedEventData struct {
 // HealthcareDicomImageCreatedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.HealthcareApis.DicomImageCreated
 // event.
 type HealthcareDicomImageCreatedEventData struct {
-	// Unique identifier for the Series
+	// REQUIRED; Unique identifier for the Series
 	ImageSeriesInstanceUID *string
 
-	// Unique identifier for the DICOM Image
+	// REQUIRED; Unique identifier for the DICOM Image
 	ImageSopInstanceUID *string
 
-	// Unique identifier for the Study
+	// REQUIRED; Unique identifier for the Study
 	ImageStudyInstanceUID *string
 
-	// Data partition name
+	// REQUIRED; Data partition name
 	PartitionName *string
 
-	// Sequence number of the DICOM Service within Azure Health Data Services. It is unique for every image creation and deletion
-	// within the service.
+	// REQUIRED; Sequence number of the DICOM Service within Azure Health Data Services. It is unique for every image creation
+	// and deletion within the service.
 	SequenceNumber *int64
 
-	// Domain name of the DICOM account for this image.
+	// REQUIRED; Domain name of the DICOM account for this image.
 	ServiceHostName *string
 }
 
 // HealthcareDicomImageDeletedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.HealthcareApis.DicomImageDeleted
 // event.
 type HealthcareDicomImageDeletedEventData struct {
-	// Unique identifier for the Series
+	// REQUIRED; Unique identifier for the Series
 	ImageSeriesInstanceUID *string
 
-	// Unique identifier for the DICOM Image
+	// REQUIRED; Unique identifier for the DICOM Image
 	ImageSopInstanceUID *string
 
-	// Unique identifier for the Study
+	// REQUIRED; Unique identifier for the Study
 	ImageStudyInstanceUID *string
 
-	// Data partition name
+	// REQUIRED; Data partition name
 	PartitionName *string
 
-	// Sequence number of the DICOM Service within Azure Health Data Services. It is unique for every image creation and deletion
-	// within the service.
+	// REQUIRED; Sequence number of the DICOM Service within Azure Health Data Services. It is unique for every image creation
+	// and deletion within the service.
 	SequenceNumber *int64
 
-	// Host name of the DICOM account for this image.
+	// REQUIRED; Host name of the DICOM account for this image.
 	ServiceHostName *string
 }
 
 // HealthcareDicomImageUpdatedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.HealthcareApis.DicomImageUpdated
 // event.
 type HealthcareDicomImageUpdatedEventData struct {
-	// Unique identifier for the Series
+	// REQUIRED; Unique identifier for the Series
 	ImageSeriesInstanceUID *string
 
-	// Unique identifier for the DICOM Image
+	// REQUIRED; Unique identifier for the DICOM Image
 	ImageSopInstanceUID *string
 
-	// Unique identifier for the Study
+	// REQUIRED; Unique identifier for the Study
 	ImageStudyInstanceUID *string
 
-	// Data partition name
+	// REQUIRED; Data partition name
 	PartitionName *string
 
-	// Sequence number of the DICOM Service within Azure Health Data Services. It is unique for every image creation, updation
-	// and deletion within the service.
+	// REQUIRED; Sequence number of the DICOM Service within Azure Health Data Services. It is unique for every image creation,
+	// updation and deletion within the service.
 	SequenceNumber *int64
 
-	// Domain name of the DICOM account for this image.
+	// REQUIRED; Domain name of the DICOM account for this image.
 	ServiceHostName *string
 }
 
 // HealthcareFHIRResourceCreatedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.HealthcareApis.FhirResourceCreated
 // event.
 type HealthcareFHIRResourceCreatedEventData struct {
+	// REQUIRED; Id of HL7 FHIR resource.
+	FHIRResourceID *string
+
 	// REQUIRED; Type of HL7 FHIR resource.
 	FHIRResourceType *HealthcareFhirResourceType
 
-	// Id of HL7 FHIR resource.
-	FHIRResourceID *string
-
-	// VersionId of HL7 FHIR resource. It changes when the resource is created, updated, or deleted(soft-deletion).
+	// REQUIRED; VersionId of HL7 FHIR resource. It changes when the resource is created, updated, or deleted(soft-deletion).
 	FHIRResourceVersionID *int64
 
-	// Domain name of FHIR account for this resource.
+	// REQUIRED; Domain name of FHIR account for this resource.
 	FHIRServiceHostName *string
 }
 
 // HealthcareFHIRResourceDeletedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.HealthcareApis.FhirResourceDeleted
 // event.
 type HealthcareFHIRResourceDeletedEventData struct {
+	// REQUIRED; Id of HL7 FHIR resource.
+	FHIRResourceID *string
+
 	// REQUIRED; Type of HL7 FHIR resource.
 	FHIRResourceType *HealthcareFhirResourceType
 
-	// Id of HL7 FHIR resource.
-	FHIRResourceID *string
-
-	// VersionId of HL7 FHIR resource. It changes when the resource is created, updated, or deleted(soft-deletion).
+	// REQUIRED; VersionId of HL7 FHIR resource. It changes when the resource is created, updated, or deleted(soft-deletion).
 	FHIRResourceVersionID *int64
 
-	// Domain name of FHIR account for this resource.
+	// REQUIRED; Domain name of FHIR account for this resource.
 	FHIRServiceHostName *string
 }
 
 // HealthcareFHIRResourceUpdatedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.HealthcareApis.FhirResourceUpdated
 // event.
 type HealthcareFHIRResourceUpdatedEventData struct {
+	// REQUIRED; Id of HL7 FHIR resource.
+	FHIRResourceID *string
+
 	// REQUIRED; Type of HL7 FHIR resource.
 	FHIRResourceType *HealthcareFhirResourceType
 
-	// Id of HL7 FHIR resource.
-	FHIRResourceID *string
-
-	// VersionId of HL7 FHIR resource. It changes when the resource is created, updated, or deleted(soft-deletion).
+	// REQUIRED; VersionId of HL7 FHIR resource. It changes when the resource is created, updated, or deleted(soft-deletion).
 	FHIRResourceVersionID *int64
 
-	// Domain name of FHIR account for this resource.
+	// REQUIRED; Domain name of FHIR account for this resource.
 	FHIRServiceHostName *string
 }
 
@@ -2618,11 +2622,11 @@ type IOTHubDeviceConnectedEventData struct {
 	// REQUIRED; Information about the device connection state event.
 	DeviceConnectionStateEventInfo *DeviceConnectionStateEventInfo
 
-	// The unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit
-	// alphanumeric characters plus the following special characters: - : . + % _ &#35; * ? ! ( ) , = `@` ; $ '.
+	// REQUIRED; The unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports
+	// ASCII 7-bit alphanumeric characters plus the following special characters: - : . + % _ &#35; * ? ! ( ) , = `@` ; $ '.
 	DeviceID *string
 
-	// Name of the IoT Hub where the device was created or deleted.
+	// REQUIRED; Name of the IoT Hub where the device was created or deleted.
 	HubName *string
 
 	// The unique identifier of the module. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit
@@ -2632,28 +2636,28 @@ type IOTHubDeviceConnectedEventData struct {
 
 // IOTHubDeviceCreatedEventData - Event data for Microsoft.Devices.DeviceCreated event.
 type IOTHubDeviceCreatedEventData struct {
-	// REQUIRED; Information about the device twin, which is the cloud representation of application device metadata.
-	Twin *DeviceTwinInfo
-
-	// The unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit
-	// alphanumeric characters plus the following special characters: - : . + % _ &#35; * ? ! ( ) , = `@` ; $ '.
+	// REQUIRED; The unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports
+	// ASCII 7-bit alphanumeric characters plus the following special characters: - : . + % _ &#35; * ? ! ( ) , = `@` ; $ '.
 	DeviceID *string
 
-	// Name of the IoT Hub where the device was created or deleted.
+	// REQUIRED; Name of the IoT Hub where the device was created or deleted.
 	HubName *string
+
+	// REQUIRED; Information about the device twin, which is the cloud representation of application device metadata.
+	Twin *DeviceTwinInfo
 }
 
 // IOTHubDeviceDeletedEventData - Event data for Microsoft.Devices.DeviceDeleted event.
 type IOTHubDeviceDeletedEventData struct {
-	// REQUIRED; Information about the device twin, which is the cloud representation of application device metadata.
-	Twin *DeviceTwinInfo
-
-	// The unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit
-	// alphanumeric characters plus the following special characters: - : . + % _ &#35; * ? ! ( ) , = `@` ; $ '.
+	// REQUIRED; The unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports
+	// ASCII 7-bit alphanumeric characters plus the following special characters: - : . + % _ &#35; * ? ! ( ) , = `@` ; $ '.
 	DeviceID *string
 
-	// Name of the IoT Hub where the device was created or deleted.
+	// REQUIRED; Name of the IoT Hub where the device was created or deleted.
 	HubName *string
+
+	// REQUIRED; Information about the device twin, which is the cloud representation of application device metadata.
+	Twin *DeviceTwinInfo
 }
 
 // IOTHubDeviceDisconnectedEventData - Event data for Microsoft.Devices.DeviceDisconnected event.
@@ -2661,11 +2665,11 @@ type IOTHubDeviceDisconnectedEventData struct {
 	// REQUIRED; Information about the device connection state event.
 	DeviceConnectionStateEventInfo *DeviceConnectionStateEventInfo
 
-	// The unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit
-	// alphanumeric characters plus the following special characters: - : . + % _ &#35; * ? ! ( ) , = `@` ; $ '.
+	// REQUIRED; The unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports
+	// ASCII 7-bit alphanumeric characters plus the following special characters: - : . + % _ &#35; * ? ! ( ) , = `@` ; $ '.
 	DeviceID *string
 
-	// Name of the IoT Hub where the device was created or deleted.
+	// REQUIRED; Name of the IoT Hub where the device was created or deleted.
 	HubName *string
 
 	// The unique identifier of the module. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit
@@ -2715,249 +2719,249 @@ type internalACSRouterCommunicationError struct {
 // KeyVaultAccessPolicyChangedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.KeyVault.VaultAccessPolicyChanged
 // event.
 type KeyVaultAccessPolicyChangedEventData struct {
-	// The expiration date of the object that triggered this event
+	// REQUIRED; The expiration date of the object that triggered this event
 	EXP *float32
 
-	// The id of the object that triggered this event.
+	// REQUIRED; The id of the object that triggered this event.
 	ID *string
 
-	// Not before date of the object that triggered this event
+	// REQUIRED; Not before date of the object that triggered this event
 	NBF *float32
 
-	// The name of the object that triggered this event
+	// REQUIRED; The name of the object that triggered this event
 	ObjectName *string
 
-	// The type of the object that triggered this event
+	// REQUIRED; The type of the object that triggered this event
 	ObjectType *string
 
-	// Key vault name of the object that triggered this event.
+	// REQUIRED; Key vault name of the object that triggered this event.
 	VaultName *string
 
-	// The version of the object that triggered this event
+	// REQUIRED; The version of the object that triggered this event
 	Version *string
 }
 
 // KeyVaultCertificateExpiredEventData - Schema of the Data property of an EventGridEvent for a Microsoft.KeyVault.CertificateExpired
 // event.
 type KeyVaultCertificateExpiredEventData struct {
-	// The expiration date of the object that triggered this event
+	// REQUIRED; The expiration date of the object that triggered this event
 	EXP *float32
 
-	// The id of the object that triggered this event.
+	// REQUIRED; The id of the object that triggered this event.
 	ID *string
 
-	// Not before date of the object that triggered this event
+	// REQUIRED; Not before date of the object that triggered this event
 	NBF *float32
 
-	// The name of the object that triggered this event
+	// REQUIRED; The name of the object that triggered this event
 	ObjectName *string
 
-	// The type of the object that triggered this event
+	// REQUIRED; The type of the object that triggered this event
 	ObjectType *string
 
-	// Key vault name of the object that triggered this event.
+	// REQUIRED; Key vault name of the object that triggered this event.
 	VaultName *string
 
-	// The version of the object that triggered this event
+	// REQUIRED; The version of the object that triggered this event
 	Version *string
 }
 
 // KeyVaultCertificateNearExpiryEventData - Schema of the Data property of an EventGridEvent for a Microsoft.KeyVault.CertificateNearExpiry
 // event.
 type KeyVaultCertificateNearExpiryEventData struct {
-	// The expiration date of the object that triggered this event
+	// REQUIRED; The expiration date of the object that triggered this event
 	EXP *float32
 
-	// The id of the object that triggered this event.
+	// REQUIRED; The id of the object that triggered this event.
 	ID *string
 
-	// Not before date of the object that triggered this event
+	// REQUIRED; Not before date of the object that triggered this event
 	NBF *float32
 
-	// The name of the object that triggered this event
+	// REQUIRED; The name of the object that triggered this event
 	ObjectName *string
 
-	// The type of the object that triggered this event
+	// REQUIRED; The type of the object that triggered this event
 	ObjectType *string
 
-	// Key vault name of the object that triggered this event.
+	// REQUIRED; Key vault name of the object that triggered this event.
 	VaultName *string
 
-	// The version of the object that triggered this event
+	// REQUIRED; The version of the object that triggered this event
 	Version *string
 }
 
 // KeyVaultCertificateNewVersionCreatedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.KeyVault.CertificateNewVersionCreated
 // event.
 type KeyVaultCertificateNewVersionCreatedEventData struct {
-	// The expiration date of the object that triggered this event
+	// REQUIRED; The expiration date of the object that triggered this event
 	EXP *float32
 
-	// The id of the object that triggered this event.
+	// REQUIRED; The id of the object that triggered this event.
 	ID *string
 
-	// Not before date of the object that triggered this event
+	// REQUIRED; Not before date of the object that triggered this event
 	NBF *float32
 
-	// The name of the object that triggered this event
+	// REQUIRED; The name of the object that triggered this event
 	ObjectName *string
 
-	// The type of the object that triggered this event
+	// REQUIRED; The type of the object that triggered this event
 	ObjectType *string
 
-	// Key vault name of the object that triggered this event.
+	// REQUIRED; Key vault name of the object that triggered this event.
 	VaultName *string
 
-	// The version of the object that triggered this event
+	// REQUIRED; The version of the object that triggered this event
 	Version *string
 }
 
 // KeyVaultKeyExpiredEventData - Schema of the Data property of an EventGridEvent for a Microsoft.KeyVault.KeyExpired event.
 type KeyVaultKeyExpiredEventData struct {
-	// The expiration date of the object that triggered this event
+	// REQUIRED; The expiration date of the object that triggered this event
 	EXP *float32
 
-	// The id of the object that triggered this event.
+	// REQUIRED; The id of the object that triggered this event.
 	ID *string
 
-	// Not before date of the object that triggered this event
+	// REQUIRED; Not before date of the object that triggered this event
 	NBF *float32
 
-	// The name of the object that triggered this event
+	// REQUIRED; The name of the object that triggered this event
 	ObjectName *string
 
-	// The type of the object that triggered this event
+	// REQUIRED; The type of the object that triggered this event
 	ObjectType *string
 
-	// Key vault name of the object that triggered this event.
+	// REQUIRED; Key vault name of the object that triggered this event.
 	VaultName *string
 
-	// The version of the object that triggered this event
+	// REQUIRED; The version of the object that triggered this event
 	Version *string
 }
 
 // KeyVaultKeyNearExpiryEventData - Schema of the Data property of an EventGridEvent for a Microsoft.KeyVault.KeyNearExpiry
 // event.
 type KeyVaultKeyNearExpiryEventData struct {
-	// The expiration date of the object that triggered this event
+	// REQUIRED; The expiration date of the object that triggered this event
 	EXP *float32
 
-	// The id of the object that triggered this event.
+	// REQUIRED; The id of the object that triggered this event.
 	ID *string
 
-	// Not before date of the object that triggered this event
+	// REQUIRED; Not before date of the object that triggered this event
 	NBF *float32
 
-	// The name of the object that triggered this event
+	// REQUIRED; The name of the object that triggered this event
 	ObjectName *string
 
-	// The type of the object that triggered this event
+	// REQUIRED; The type of the object that triggered this event
 	ObjectType *string
 
-	// Key vault name of the object that triggered this event.
+	// REQUIRED; Key vault name of the object that triggered this event.
 	VaultName *string
 
-	// The version of the object that triggered this event
+	// REQUIRED; The version of the object that triggered this event
 	Version *string
 }
 
 // KeyVaultKeyNewVersionCreatedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.KeyVault.KeyNewVersionCreated
 // event.
 type KeyVaultKeyNewVersionCreatedEventData struct {
-	// The expiration date of the object that triggered this event
+	// REQUIRED; The expiration date of the object that triggered this event
 	EXP *float32
 
-	// The id of the object that triggered this event.
+	// REQUIRED; The id of the object that triggered this event.
 	ID *string
 
-	// Not before date of the object that triggered this event
+	// REQUIRED; Not before date of the object that triggered this event
 	NBF *float32
 
-	// The name of the object that triggered this event
+	// REQUIRED; The name of the object that triggered this event
 	ObjectName *string
 
-	// The type of the object that triggered this event
+	// REQUIRED; The type of the object that triggered this event
 	ObjectType *string
 
-	// Key vault name of the object that triggered this event.
+	// REQUIRED; Key vault name of the object that triggered this event.
 	VaultName *string
 
-	// The version of the object that triggered this event
+	// REQUIRED; The version of the object that triggered this event
 	Version *string
 }
 
 // KeyVaultSecretExpiredEventData - Schema of the Data property of an EventGridEvent for a Microsoft.KeyVault.SecretExpired
 // event.
 type KeyVaultSecretExpiredEventData struct {
-	// The expiration date of the object that triggered this event
+	// REQUIRED; The expiration date of the object that triggered this event
 	EXP *float32
 
-	// The id of the object that triggered this event.
+	// REQUIRED; The id of the object that triggered this event.
 	ID *string
 
-	// Not before date of the object that triggered this event
+	// REQUIRED; Not before date of the object that triggered this event
 	NBF *float32
 
-	// The name of the object that triggered this event
+	// REQUIRED; The name of the object that triggered this event
 	ObjectName *string
 
-	// The type of the object that triggered this event
+	// REQUIRED; The type of the object that triggered this event
 	ObjectType *string
 
-	// Key vault name of the object that triggered this event.
+	// REQUIRED; Key vault name of the object that triggered this event.
 	VaultName *string
 
-	// The version of the object that triggered this event
+	// REQUIRED; The version of the object that triggered this event
 	Version *string
 }
 
 // KeyVaultSecretNearExpiryEventData - Schema of the Data property of an EventGridEvent for a Microsoft.KeyVault.SecretNearExpiry
 // event.
 type KeyVaultSecretNearExpiryEventData struct {
-	// The expiration date of the object that triggered this event
+	// REQUIRED; The expiration date of the object that triggered this event
 	EXP *float32
 
-	// The id of the object that triggered this event.
+	// REQUIRED; The id of the object that triggered this event.
 	ID *string
 
-	// Not before date of the object that triggered this event
+	// REQUIRED; Not before date of the object that triggered this event
 	NBF *float32
 
-	// The name of the object that triggered this event
+	// REQUIRED; The name of the object that triggered this event
 	ObjectName *string
 
-	// The type of the object that triggered this event
+	// REQUIRED; The type of the object that triggered this event
 	ObjectType *string
 
-	// Key vault name of the object that triggered this event.
+	// REQUIRED; Key vault name of the object that triggered this event.
 	VaultName *string
 
-	// The version of the object that triggered this event
+	// REQUIRED; The version of the object that triggered this event
 	Version *string
 }
 
 // KeyVaultSecretNewVersionCreatedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.KeyVault.SecretNewVersionCreated
 // event.
 type KeyVaultSecretNewVersionCreatedEventData struct {
-	// The expiration date of the object that triggered this event
+	// REQUIRED; The expiration date of the object that triggered this event
 	EXP *float32
 
-	// The id of the object that triggered this event.
+	// REQUIRED; The id of the object that triggered this event.
 	ID *string
 
-	// Not before date of the object that triggered this event
+	// REQUIRED; Not before date of the object that triggered this event
 	NBF *float32
 
-	// The name of the object that triggered this event
+	// REQUIRED; The name of the object that triggered this event
 	ObjectName *string
 
-	// The type of the object that triggered this event
+	// REQUIRED; The type of the object that triggered this event
 	ObjectType *string
 
-	// Key vault name of the object that triggered this event.
+	// REQUIRED; Key vault name of the object that triggered this event.
 	VaultName *string
 
-	// The version of the object that triggered this event
+	// REQUIRED; The version of the object that triggered this event
 	Version *string
 }
 
@@ -3148,500 +3152,6 @@ type MapsGeofenceResultEventData struct {
 	IsEventPublished *bool
 }
 
-// MediaJobCanceledEventData - Job canceled event data. Schema of the data property of an EventGridEvent for a
-// Microsoft.Media.JobCanceled event.
-type MediaJobCanceledEventData struct {
-	// REQUIRED; Gets the Job correlation data.
-	CorrelationData map[string]*string
-
-	// REQUIRED; Gets the Job outputs.
-	Outputs []MediaJobOutputClassification
-
-	// REQUIRED; The previous state of the Job.
-	PreviousState *MediaJobState
-
-	// REQUIRED; The new state of the Job.
-	State *MediaJobState
-}
-
-// MediaJobCancelingEventData - Job canceling event data. Schema of the data property of an EventGridEvent for
-// a Microsoft.Media.JobCanceling event.
-type MediaJobCancelingEventData struct {
-	// REQUIRED; Gets the Job correlation data.
-	CorrelationData map[string]*string
-
-	// REQUIRED; The previous state of the Job.
-	PreviousState *MediaJobState
-
-	// REQUIRED; The new state of the Job.
-	State *MediaJobState
-}
-
-// MediaJobError - Details of JobOutput errors.
-type MediaJobError struct {
-	// REQUIRED; Helps with categorization of errors.
-	Category *MediaJobErrorCategory
-
-	// REQUIRED; Error code describing the error.
-	Code *MediaJobErrorCode
-
-	// REQUIRED; An array of details about specific errors that led to this reported error.
-	Details []MediaJobErrorDetail
-
-	// REQUIRED; Indicates that it may be possible to retry the Job. If retry is unsuccessful, please contact Azure support via
-	// Azure Portal.
-	Retry *MediaJobRetry
-
-	// A human-readable language-dependent representation of the error.
-	Message *string
-}
-
-// MediaJobErrorDetail - Details of JobOutput errors.
-type MediaJobErrorDetail struct {
-	// Code describing the error detail.
-	Code *string
-
-	// A human-readable representation of the error.
-	Message *string
-}
-
-// MediaJobErroredEventData - Job error state event data. Schema of the data property of an EventGridEvent
-// for a Microsoft.Media.JobErrored event.
-type MediaJobErroredEventData struct {
-	// REQUIRED; Gets the Job correlation data.
-	CorrelationData map[string]*string
-
-	// REQUIRED; Gets the Job outputs.
-	Outputs []MediaJobOutputClassification
-
-	// REQUIRED; The previous state of the Job.
-	PreviousState *MediaJobState
-
-	// REQUIRED; The new state of the Job.
-	State *MediaJobState
-}
-
-// MediaJobFinishedEventData - Job finished event data. Schema of the data property of an EventGridEvent for a
-// Microsoft.Media.JobFinished event.
-type MediaJobFinishedEventData struct {
-	// REQUIRED; Gets the Job correlation data.
-	CorrelationData map[string]*string
-
-	// REQUIRED; Gets the Job outputs.
-	Outputs []MediaJobOutputClassification
-
-	// REQUIRED; The previous state of the Job.
-	PreviousState *MediaJobState
-
-	// REQUIRED; The new state of the Job.
-	State *MediaJobState
-}
-
-// MediaJobOutput - The event data for a Job output.
-type MediaJobOutput struct {
-	// REQUIRED; Gets the Job output error.
-	Error *MediaJobError
-
-	// REQUIRED; The discriminator for derived types.
-	ODataType *string
-
-	// REQUIRED; Gets the Job output progress.
-	Progress *int64
-
-	// REQUIRED; Gets the Job output state.
-	State *MediaJobState
-
-	// Gets the Job output label.
-	Label *string
-}
-
-// GetMediaJobOutput implements the MediaJobOutputClassification interface for type MediaJobOutput.
-func (m *MediaJobOutput) GetMediaJobOutput() *MediaJobOutput { return m }
-
-// MediaJobOutputAsset - The event data for a Job output asset.
-type MediaJobOutputAsset struct {
-	// REQUIRED; Gets the Job output error.
-	Error *MediaJobError
-
-	// REQUIRED; The discriminator for derived types.
-	ODataType *string
-
-	// REQUIRED; Gets the Job output progress.
-	Progress *int64
-
-	// REQUIRED; Gets the Job output state.
-	State *MediaJobState
-
-	// Gets the Job output asset name.
-	AssetName *string
-
-	// Gets the Job output label.
-	Label *string
-}
-
-// GetMediaJobOutput implements the MediaJobOutputClassification interface for type MediaJobOutputAsset.
-func (m *MediaJobOutputAsset) GetMediaJobOutput() *MediaJobOutput {
-	return &MediaJobOutput{
-		Error:     m.Error,
-		Label:     m.Label,
-		ODataType: m.ODataType,
-		Progress:  m.Progress,
-		State:     m.State,
-	}
-}
-
-// MediaJobOutputCanceledEventData - Job output canceled event data. Schema of the data property of an
-// EventGridEvent for a Microsoft.Media.JobOutputCanceled event.
-type MediaJobOutputCanceledEventData struct {
-	// REQUIRED; Gets the Job correlation data.
-	JobCorrelationData map[string]*string
-
-	// REQUIRED; Gets the output.
-	Output MediaJobOutputClassification
-
-	// REQUIRED; The previous state of the Job.
-	PreviousState *MediaJobState
-}
-
-// MediaJobOutputCancelingEventData - Job output canceling event data. Schema of the data property of an
-// EventGridEvent for a Microsoft.Media.JobOutputCanceling event.
-type MediaJobOutputCancelingEventData struct {
-	// REQUIRED; Gets the Job correlation data.
-	JobCorrelationData map[string]*string
-
-	// REQUIRED; Gets the output.
-	Output MediaJobOutputClassification
-
-	// REQUIRED; The previous state of the Job.
-	PreviousState *MediaJobState
-}
-
-// MediaJobOutputErroredEventData - Job output error event data. Schema of the data property of an EventGridEvent
-// for a Microsoft.Media.JobOutputErrored event.
-type MediaJobOutputErroredEventData struct {
-	// REQUIRED; Gets the Job correlation data.
-	JobCorrelationData map[string]*string
-
-	// REQUIRED; Gets the output.
-	Output MediaJobOutputClassification
-
-	// REQUIRED; The previous state of the Job.
-	PreviousState *MediaJobState
-}
-
-// MediaJobOutputFinishedEventData - Job output finished event data. Schema of the data property of an
-// EventGridEvent for a Microsoft.Media.JobOutputFinished event.
-type MediaJobOutputFinishedEventData struct {
-	// REQUIRED; Gets the Job correlation data.
-	JobCorrelationData map[string]*string
-
-	// REQUIRED; Gets the output.
-	Output MediaJobOutputClassification
-
-	// REQUIRED; The previous state of the Job.
-	PreviousState *MediaJobState
-}
-
-// MediaJobOutputProcessingEventData - Job output processing event data. Schema of the data property of an
-// EventGridEvent for a Microsoft.Media.JobOutputProcessing event.
-type MediaJobOutputProcessingEventData struct {
-	// REQUIRED; Gets the Job correlation data.
-	JobCorrelationData map[string]*string
-
-	// REQUIRED; Gets the output.
-	Output MediaJobOutputClassification
-
-	// REQUIRED; The previous state of the Job.
-	PreviousState *MediaJobState
-}
-
-// MediaJobOutputProgressEventData - Job Output Progress Event Data. Schema of the Data property of an
-// EventGridEvent for a Microsoft.Media.JobOutputProgress event.
-type MediaJobOutputProgressEventData struct {
-	// REQUIRED; Gets the Job correlation data.
-	JobCorrelationData map[string]*string
-
-	// Gets the Job output label.
-	Label *string
-
-	// Gets the Job output progress.
-	Progress *int64
-}
-
-// MediaJobOutputScheduledEventData - Job output scheduled event data. Schema of the data property of an
-// EventGridEvent for a Microsoft.Media.JobOutputScheduled event.
-type MediaJobOutputScheduledEventData struct {
-	// REQUIRED; Gets the Job correlation data.
-	JobCorrelationData map[string]*string
-
-	// REQUIRED; Gets the output.
-	Output MediaJobOutputClassification
-
-	// REQUIRED; The previous state of the Job.
-	PreviousState *MediaJobState
-}
-
-// MediaJobProcessingEventData - Job processing event data. Schema of the data property of an EventGridEvent for
-// a Microsoft.Media.JobProcessing event.
-type MediaJobProcessingEventData struct {
-	// REQUIRED; Gets the Job correlation data.
-	CorrelationData map[string]*string
-
-	// REQUIRED; The previous state of the Job.
-	PreviousState *MediaJobState
-
-	// REQUIRED; The new state of the Job.
-	State *MediaJobState
-}
-
-// MediaJobScheduledEventData - Job scheduled event data. Schema of the data property of an EventGridEvent for
-// a Microsoft.Media.JobScheduled event.
-type MediaJobScheduledEventData struct {
-	// REQUIRED; Gets the Job correlation data.
-	CorrelationData map[string]*string
-
-	// REQUIRED; The previous state of the Job.
-	PreviousState *MediaJobState
-
-	// REQUIRED; The new state of the Job.
-	State *MediaJobState
-}
-
-// MediaLiveEventChannelArchiveHeartbeatEventData - Channel Archive heartbeat event data. Schema of the data property of an
-// EventGridEvent for a Microsoft.Media.LiveEventChannelArchiveHeartbeat event.
-type MediaLiveEventChannelArchiveHeartbeatEventData struct {
-	// REQUIRED; Gets the channel latency in ms.
-	ChannelLatencyMS *string
-
-	// REQUIRED; Gets the latency result code.
-	LatencyResultCode *string
-}
-
-// MediaLiveEventConnectionRejectedEventData - Encoder connection rejected event data. Schema of the data property of an EventGridEvent
-// for a Microsoft.Media.LiveEventConnectionRejected event.
-type MediaLiveEventConnectionRejectedEventData struct {
-	// Gets the remote IP.
-	EncoderIP *string
-
-	// Gets the remote port.
-	EncoderPort *string
-
-	// Gets the ingest URL provided by the live event.
-	IngestURL *string
-
-	// Gets the result code.
-	ResultCode *string
-
-	// Gets the stream Id.
-	StreamID *string
-}
-
-// MediaLiveEventEncoderConnectedEventData - Encoder connect event data. Schema of the data property of an EventGridEvent
-// for a Microsoft.Media.LiveEventEncoderConnected event.
-type MediaLiveEventEncoderConnectedEventData struct {
-	// Gets the remote IP.
-	EncoderIP *string
-
-	// Gets the remote port.
-	EncoderPort *string
-
-	// Gets the ingest URL provided by the live event.
-	IngestURL *string
-
-	// Gets the stream Id.
-	StreamID *string
-}
-
-// MediaLiveEventEncoderDisconnectedEventData - Encoder disconnected event data. Schema of the Data property of an EventGridEvent
-// for a Microsoft.Media.LiveEventEncoderDisconnected event.
-type MediaLiveEventEncoderDisconnectedEventData struct {
-	// Gets the remote IP.
-	EncoderIP *string
-
-	// Gets the remote port.
-	EncoderPort *string
-
-	// Gets the ingest URL provided by the live event.
-	IngestURL *string
-
-	// Gets the result code.
-	ResultCode *string
-
-	// Gets the stream Id.
-	StreamID *string
-}
-
-// MediaLiveEventIncomingDataChunkDroppedEventData - Ingest fragment dropped event data. Schema of the data property of an
-// EventGridEvent for a Microsoft.Media.LiveEventIncomingDataChunkDropped event.
-type MediaLiveEventIncomingDataChunkDroppedEventData struct {
-	// Gets the bitrate of the track.
-	Bitrate *int64
-
-	// Gets the result code for fragment drop operation.
-	ResultCode *string
-
-	// Gets the timescale of the Timestamp.
-	Timescale *string
-
-	// Gets the timestamp of the data chunk dropped.
-	Timestamp *string
-
-	// Gets the name of the track for which fragment is dropped.
-	TrackName *string
-
-	// Gets the type of the track (Audio / Video).
-	TrackType *string
-}
-
-// MediaLiveEventIncomingStreamReceivedEventData - Encoder connect event data. Schema of the data property of an EventGridEvent
-// for a Microsoft.Media.LiveEventIncomingStreamReceived event.
-type MediaLiveEventIncomingStreamReceivedEventData struct {
-	// Gets the bitrate of the track.
-	Bitrate *int64
-
-	// Gets the duration of the first data chunk.
-	Duration *string
-
-	// Gets the remote IP.
-	EncoderIP *string
-
-	// Gets the remote port.
-	EncoderPort *string
-
-	// Gets the ingest URL provided by the live event.
-	IngestURL *string
-
-	// Gets the timescale in which timestamp is represented.
-	Timescale *string
-
-	// Gets the first timestamp of the data chunk received.
-	Timestamp *string
-
-	// Gets the track name.
-	TrackName *string
-
-	// Gets the type of the track (Audio / Video).
-	TrackType *string
-}
-
-// MediaLiveEventIncomingStreamsOutOfSyncEventData - Incoming streams out of sync event data. Schema of the data property
-// of an EventGridEvent for a Microsoft.Media.LiveEventIncomingStreamsOutOfSync event.
-type MediaLiveEventIncomingStreamsOutOfSyncEventData struct {
-	// Gets the maximum timestamp among all the tracks (audio or video).
-	MaxLastTimestamp *string
-
-	// Gets the minimum last timestamp received.
-	MinLastTimestamp *string
-
-	// Gets the timescale in which \"MaxLastTimestamp\" is represented.
-	TimescaleOfMaxLastTimestamp *string
-
-	// Gets the timescale in which \"MinLastTimestamp\" is represented.
-	TimescaleOfMinLastTimestamp *string
-
-	// Gets the type of stream with maximum last timestamp.
-	TypeOfStreamWithMaxLastTimestamp *string
-
-	// Gets the type of stream with minimum last timestamp.
-	TypeOfStreamWithMinLastTimestamp *string
-}
-
-// MediaLiveEventIncomingVideoStreamsOutOfSyncEventData - Incoming video stream out of sync event data. Schema of the data
-// property of an EventGridEvent for a Microsoft.Media.LiveEventIncomingVideoStreamsOutOfSync event.
-type MediaLiveEventIncomingVideoStreamsOutOfSyncEventData struct {
-	// Gets the duration of the data chunk with first timestamp.
-	FirstDuration *string
-
-	// Gets the first timestamp received for one of the quality levels.
-	FirstTimestamp *string
-
-	// Gets the duration of the data chunk with second timestamp.
-	SecondDuration *string
-
-	// Gets the timestamp received for some other quality levels.
-	SecondTimestamp *string
-
-	// Gets the timescale in which both the timestamps and durations are represented.
-	Timescale *string
-}
-
-// MediaLiveEventIngestHeartbeatEventData - Ingest heartbeat event data. Schema of the data property of an EventGridEvent
-// for a Microsoft.Media.LiveEventIngestHeartbeat event.
-type MediaLiveEventIngestHeartbeatEventData struct {
-	// Gets the bitrate of the track.
-	Bitrate *int64
-
-	// Gets the fragment Discontinuity count.
-	DiscontinuityCount *int64
-
-	// Gets a value indicating whether preview is healthy or not.
-	Healthy *bool
-
-	// Gets the incoming bitrate.
-	IncomingBitrate *int64
-
-	// Gets the track ingest drift value.
-	IngestDriftValue *string
-
-	// Gets the arrival UTC time of the last fragment.
-	LastFragmentArrivalTime *string
-
-	// Gets the last timestamp.
-	LastTimestamp *string
-
-	// Gets Non increasing count.
-	NonincreasingCount *int64
-
-	// Gets the fragment Overlap count.
-	OverlapCount *int64
-
-	// Gets the state of the live event.
-	State *string
-
-	// Gets the timescale of the last timestamp.
-	Timescale *string
-
-	// Gets the track name.
-	TrackName *string
-
-	// Gets the type of the track (Audio / Video).
-	TrackType *string
-
-	// Gets the Live Transcription language.
-	TranscriptionLanguage *string
-
-	// Gets the Live Transcription state.
-	TranscriptionState *string
-
-	// Gets a value indicating whether unexpected bitrate is present or not.
-	UnexpectedBitrate *bool
-}
-
-// MediaLiveEventTrackDiscontinuityDetectedEventData - Ingest track discontinuity detected event data. Schema of the data
-// property of an EventGridEvent for a Microsoft.Media.LiveEventTrackDiscontinuityDetected event.
-type MediaLiveEventTrackDiscontinuityDetectedEventData struct {
-	// Gets the bitrate.
-	Bitrate *int64
-
-	// Gets the discontinuity gap between PreviousTimestamp and NewTimestamp.
-	DiscontinuityGap *string
-
-	// Gets the timestamp of the current fragment.
-	NewTimestamp *string
-
-	// Gets the timestamp of the previous fragment.
-	PreviousTimestamp *string
-
-	// Gets the timescale in which both timestamps and discontinuity gap are represented.
-	Timescale *string
-
-	// Gets the track name.
-	TrackName *string
-
-	// Gets the type of the track (Audio / Video).
-	TrackType *string
-}
-
 // MicrosoftTeamsAppIdentifierModel - A Microsoft Teams application.
 type MicrosoftTeamsAppIdentifierModel struct {
 	// REQUIRED; The Id of the Microsoft Teams application
@@ -3672,131 +3182,131 @@ type PhoneNumberIdentifierModel struct {
 // PolicyInsightsPolicyStateChangedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.PolicyInsights.PolicyStateChanged
 // event.
 type PolicyInsightsPolicyStateChangedEventData struct {
-	// REQUIRED; The time that the resource was scanned by Azure Policy in the Universal ISO 8601 DateTime format yyyy-MM-ddTHH:mm:ss.fffffffZ.
-	Timestamp *time.Time
-
-	// The compliance reason code. May be empty.
+	// REQUIRED; The compliance reason code. May be empty.
 	ComplianceReasonCode *string
 
-	// The compliance state of the resource with respect to the policy assignment.
+	// REQUIRED; The compliance state of the resource with respect to the policy assignment.
 	ComplianceState *string
 
-	// The resource ID of the policy assignment.
+	// REQUIRED; The resource ID of the policy assignment.
 	PolicyAssignmentID *string
 
-	// The resource ID of the policy definition.
+	// REQUIRED; The resource ID of the policy definition.
 	PolicyDefinitionID *string
 
-	// The reference ID for the policy definition inside the initiative definition, if the policy assignment is for an initiative.
-	// May be empty.
+	// REQUIRED; The reference ID for the policy definition inside the initiative definition, if the policy assignment is for
+	// an initiative. May be empty.
 	PolicyDefinitionReferenceID *string
 
-	// The subscription ID of the resource.
+	// REQUIRED; The subscription ID of the resource.
 	SubscriptionID *string
+
+	// REQUIRED; The time that the resource was scanned by Azure Policy in the Universal ISO 8601 DateTime format yyyy-MM-ddTHH:mm:ss.fffffffZ.
+	Timestamp *time.Time
 }
 
 // PolicyInsightsPolicyStateCreatedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.PolicyInsights.PolicyStateCreated
 // event.
 type PolicyInsightsPolicyStateCreatedEventData struct {
-	// REQUIRED; The time that the resource was scanned by Azure Policy in the Universal ISO 8601 DateTime format yyyy-MM-ddTHH:mm:ss.fffffffZ.
-	Timestamp *time.Time
-
-	// The compliance reason code. May be empty.
+	// REQUIRED; The compliance reason code. May be empty.
 	ComplianceReasonCode *string
 
-	// The compliance state of the resource with respect to the policy assignment.
+	// REQUIRED; The compliance state of the resource with respect to the policy assignment.
 	ComplianceState *string
 
-	// The resource ID of the policy assignment.
+	// REQUIRED; The resource ID of the policy assignment.
 	PolicyAssignmentID *string
 
-	// The resource ID of the policy definition.
+	// REQUIRED; The resource ID of the policy definition.
 	PolicyDefinitionID *string
 
-	// The reference ID for the policy definition inside the initiative definition, if the policy assignment is for an initiative.
-	// May be empty.
+	// REQUIRED; The reference ID for the policy definition inside the initiative definition, if the policy assignment is for
+	// an initiative. May be empty.
 	PolicyDefinitionReferenceID *string
 
-	// The subscription ID of the resource.
+	// REQUIRED; The subscription ID of the resource.
 	SubscriptionID *string
+
+	// REQUIRED; The time that the resource was scanned by Azure Policy in the Universal ISO 8601 DateTime format yyyy-MM-ddTHH:mm:ss.fffffffZ.
+	Timestamp *time.Time
 }
 
 // PolicyInsightsPolicyStateDeletedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.PolicyInsights.PolicyStateDeleted
 // event.
 type PolicyInsightsPolicyStateDeletedEventData struct {
-	// REQUIRED; The time that the resource was scanned by Azure Policy in the Universal ISO 8601 DateTime format yyyy-MM-ddTHH:mm:ss.fffffffZ.
-	Timestamp *time.Time
-
-	// The compliance reason code. May be empty.
+	// REQUIRED; The compliance reason code. May be empty.
 	ComplianceReasonCode *string
 
-	// The compliance state of the resource with respect to the policy assignment.
+	// REQUIRED; The compliance state of the resource with respect to the policy assignment.
 	ComplianceState *string
 
-	// The resource ID of the policy assignment.
+	// REQUIRED; The resource ID of the policy assignment.
 	PolicyAssignmentID *string
 
-	// The resource ID of the policy definition.
+	// REQUIRED; The resource ID of the policy definition.
 	PolicyDefinitionID *string
 
-	// The reference ID for the policy definition inside the initiative definition, if the policy assignment is for an initiative.
-	// May be empty.
+	// REQUIRED; The reference ID for the policy definition inside the initiative definition, if the policy assignment is for
+	// an initiative. May be empty.
 	PolicyDefinitionReferenceID *string
 
-	// The subscription ID of the resource.
+	// REQUIRED; The subscription ID of the resource.
 	SubscriptionID *string
+
+	// REQUIRED; The time that the resource was scanned by Azure Policy in the Universal ISO 8601 DateTime format yyyy-MM-ddTHH:mm:ss.fffffffZ.
+	Timestamp *time.Time
 }
 
 // RedisExportRDBCompletedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.Cache.ExportRDBCompleted
 // event.
 type RedisExportRDBCompletedEventData struct {
-	// REQUIRED; The time at which the event occurred.
-	Timestamp *time.Time
-
 	// The name of this event.
 	Name *string
 
 	// The status of this event. Failed or succeeded
 	Status *string
+
+	// The time at which the event occurred.
+	Timestamp *time.Time
 }
 
 // RedisImportRDBCompletedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.Cache.ImportRDBCompleted
 // event.
 type RedisImportRDBCompletedEventData struct {
-	// REQUIRED; The time at which the event occurred.
-	Timestamp *time.Time
-
 	// The name of this event.
 	Name *string
 
 	// The status of this event. Failed or succeeded
 	Status *string
+
+	// The time at which the event occurred.
+	Timestamp *time.Time
 }
 
 // RedisPatchingCompletedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.Cache.PatchingCompleted
 // event.
 type RedisPatchingCompletedEventData struct {
-	// REQUIRED; The time at which the event occurred.
-	Timestamp *time.Time
-
 	// The name of this event.
 	Name *string
 
 	// The status of this event. Failed or succeeded
 	Status *string
+
+	// The time at which the event occurred.
+	Timestamp *time.Time
 }
 
 // RedisScalingCompletedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.Cache.ScalingCompleted
 // event.
 type RedisScalingCompletedEventData struct {
-	// REQUIRED; The time at which the event occurred.
-	Timestamp *time.Time
-
 	// The name of this event.
 	Name *string
 
 	// The status of this event. Failed or succeeded
 	Status *string
+
+	// The time at which the event occurred.
+	Timestamp *time.Time
 }
 
 // ResourceActionCancelEventData - Schema of the Data property of an EventGridEvent for a Microsoft.Resources.ResourceActionCancel
@@ -4268,92 +3778,96 @@ type ResourceWriteSuccessEventData struct {
 // ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData - Schema of the Data property of an EventGridEvent for
 // a Microsoft.ServiceBus.ActiveMessagesAvailablePeriodicNotifications event.
 type ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData struct {
-	// The entity type of the Microsoft.ServiceBus resource. Could be one of 'queue' or 'subscriber'.
+	// REQUIRED; The entity type of the Microsoft.ServiceBus resource. Could be one of 'queue' or 'subscriber'.
 	EntityType *string
 
-	// The namespace name of the Microsoft.ServiceBus resource.
+	// REQUIRED; The namespace name of the Microsoft.ServiceBus resource.
 	NamespaceName *string
 
-	// The name of the Microsoft.ServiceBus queue. If the entity type is of type 'subscriber', then this value will be null.
+	// REQUIRED; The name of the Microsoft.ServiceBus queue. If the entity type is of type 'subscriber', then this value will
+	// be null.
 	QueueName *string
 
-	// The endpoint of the Microsoft.ServiceBus resource.
+	// REQUIRED; The endpoint of the Microsoft.ServiceBus resource.
 	RequestURI *string
 
-	// The name of the Microsoft.ServiceBus topic's subscription. If the entity type is of type 'queue', then this value will
-	// be null.
+	// REQUIRED; The name of the Microsoft.ServiceBus topic's subscription. If the entity type is of type 'queue', then this value
+	// will be null.
 	SubscriptionName *string
 
-	// The name of the Microsoft.ServiceBus topic. If the entity type is of type 'queue', then this value will be null.
+	// REQUIRED; The name of the Microsoft.ServiceBus topic. If the entity type is of type 'queue', then this value will be null.
 	TopicName *string
 }
 
 // ServiceBusActiveMessagesAvailableWithNoListenersEventData - Schema of the Data property of an EventGridEvent for a Microsoft.ServiceBus.ActiveMessagesAvailableWithNoListeners
 // event.
 type ServiceBusActiveMessagesAvailableWithNoListenersEventData struct {
-	// The entity type of the Microsoft.ServiceBus resource. Could be one of 'queue' or 'subscriber'.
+	// REQUIRED; The entity type of the Microsoft.ServiceBus resource. Could be one of 'queue' or 'subscriber'.
 	EntityType *string
 
-	// The namespace name of the Microsoft.ServiceBus resource.
+	// REQUIRED; The namespace name of the Microsoft.ServiceBus resource.
 	NamespaceName *string
 
-	// The name of the Microsoft.ServiceBus queue. If the entity type is of type 'subscriber', then this value will be null.
+	// REQUIRED; The name of the Microsoft.ServiceBus queue. If the entity type is of type 'subscriber', then this value will
+	// be null.
 	QueueName *string
 
-	// The endpoint of the Microsoft.ServiceBus resource.
+	// REQUIRED; The endpoint of the Microsoft.ServiceBus resource.
 	RequestURI *string
 
-	// The name of the Microsoft.ServiceBus topic's subscription. If the entity type is of type 'queue', then this value will
-	// be null.
+	// REQUIRED; The name of the Microsoft.ServiceBus topic's subscription. If the entity type is of type 'queue', then this value
+	// will be null.
 	SubscriptionName *string
 
-	// The name of the Microsoft.ServiceBus topic. If the entity type is of type 'queue', then this value will be null.
+	// REQUIRED; The name of the Microsoft.ServiceBus topic. If the entity type is of type 'queue', then this value will be null.
 	TopicName *string
 }
 
 // ServiceBusDeadletterMessagesAvailablePeriodicNotificationsEventData - Schema of the Data property of an EventGridEvent
 // for a Microsoft.ServiceBus.DeadletterMessagesAvailablePeriodicNotifications event.
 type ServiceBusDeadletterMessagesAvailablePeriodicNotificationsEventData struct {
-	// The entity type of the Microsoft.ServiceBus resource. Could be one of 'queue' or 'subscriber'.
+	// REQUIRED; The entity type of the Microsoft.ServiceBus resource. Could be one of 'queue' or 'subscriber'.
 	EntityType *string
 
-	// The namespace name of the Microsoft.ServiceBus resource.
+	// REQUIRED; The namespace name of the Microsoft.ServiceBus resource.
 	NamespaceName *string
 
-	// The name of the Microsoft.ServiceBus queue. If the entity type is of type 'subscriber', then this value will be null.
+	// REQUIRED; The name of the Microsoft.ServiceBus queue. If the entity type is of type 'subscriber', then this value will
+	// be null.
 	QueueName *string
 
-	// The endpoint of the Microsoft.ServiceBus resource.
+	// REQUIRED; The endpoint of the Microsoft.ServiceBus resource.
 	RequestURI *string
 
-	// The name of the Microsoft.ServiceBus topic's subscription. If the entity type is of type 'queue', then this value will
-	// be null.
+	// REQUIRED; The name of the Microsoft.ServiceBus topic's subscription. If the entity type is of type 'queue', then this value
+	// will be null.
 	SubscriptionName *string
 
-	// The name of the Microsoft.ServiceBus topic. If the entity type is of type 'queue', then this value will be null.
+	// REQUIRED; The name of the Microsoft.ServiceBus topic. If the entity type is of type 'queue', then this value will be null.
 	TopicName *string
 }
 
 // ServiceBusDeadletterMessagesAvailableWithNoListenersEventData - Schema of the Data property of an EventGridEvent for a
 // Microsoft.ServiceBus.DeadletterMessagesAvailableWithNoListeners event.
 type ServiceBusDeadletterMessagesAvailableWithNoListenersEventData struct {
-	// The entity type of the Microsoft.ServiceBus resource. Could be one of 'queue' or 'subscriber'.
+	// REQUIRED; The entity type of the Microsoft.ServiceBus resource. Could be one of 'queue' or 'subscriber'.
 	EntityType *string
 
-	// The namespace name of the Microsoft.ServiceBus resource.
+	// REQUIRED; The namespace name of the Microsoft.ServiceBus resource.
 	NamespaceName *string
 
-	// The name of the Microsoft.ServiceBus queue. If the entity type is of type 'subscriber', then this value will be null.
+	// REQUIRED; The name of the Microsoft.ServiceBus queue. If the entity type is of type 'subscriber', then this value will
+	// be null.
 	QueueName *string
 
-	// The endpoint of the Microsoft.ServiceBus resource.
+	// REQUIRED; The endpoint of the Microsoft.ServiceBus resource.
 	RequestURI *string
 
-	// The name of the Microsoft.ServiceBus topic's subscription. If the entity type is of type 'queue', then this value will
-	// be null.
+	// REQUIRED; The name of the Microsoft.ServiceBus topic's subscription. If the entity type is of type 'queue', then this value
+	// will be null.
 	SubscriptionName *string
 
-	// The name of the Microsoft.ServiceBus topic. If the entity type is of type 'queue', then this value will be null.
+	// REQUIRED; The name of the Microsoft.ServiceBus topic. If the entity type is of type 'queue', then this value will be null.
 	TopicName *string
 }
 
@@ -4791,20 +4305,20 @@ type StorageTaskQueuedEventData struct {
 // SubscriptionDeletedEventData - Schema of the Data property of an EventGridEvent for a
 // Microsoft.EventGrid.SubscriptionDeletedEvent event.
 type SubscriptionDeletedEventData struct {
-	// The Azure resource ID of the deleted event subscription.
+	// REQUIRED; The Azure resource ID of the deleted event subscription.
 	EventSubscriptionID *string
 }
 
 // SubscriptionValidationEventData - Schema of the Data property of an EventGridEvent for a Microsoft.EventGrid.SubscriptionValidationEvent
 // event.
 type SubscriptionValidationEventData struct {
-	// The validation code sent by Azure Event Grid to validate an event subscription.
+	// REQUIRED; The validation code sent by Azure Event Grid to validate an event subscription.
 	// To complete the validation handshake, the subscriber must either respond with this validation code as part of the validation
 	// response,
 	// or perform a GET request on the validationUrl (available starting version 2018-05-01-preview).
 	ValidationCode *string
 
-	// The validation URL sent by Azure Event Grid (available starting version 2018-05-01-preview).
+	// REQUIRED; The validation URL sent by Azure Event Grid (available starting version 2018-05-01-preview).
 	// To complete the validation handshake, the subscriber must either respond with the validationCode as part of the validation
 	// response,
 	// or perform a GET request on the validationUrl (available starting version 2018-05-01-preview).
@@ -4816,7 +4330,7 @@ type SubscriptionValidationEventData struct {
 // SubscriptionValidationEvent. When the validationCode is used, the
 // SubscriptionValidationResponse can be used to build the response.
 type SubscriptionValidationResponse struct {
-	// The validation response sent by the subscriber to Azure Event Grid to complete the validation of an event subscription.
+	// REQUIRED; The validation response sent by the subscriber to Azure Event Grid to complete the validation of an event subscription.
 	ValidationResponse *string
 }
 

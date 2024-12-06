@@ -46,7 +46,7 @@ func NewDeploymentsClient(subscriptionID string, credential azcore.TokenCredenti
 // BeginCreateOrUpdate - Update the state of specified deployments associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2024-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - deploymentName - The name of the deployment associated with the Cognitive Services Account
@@ -74,7 +74,7 @@ func (client *DeploymentsClient) BeginCreateOrUpdate(ctx context.Context, resour
 // CreateOrUpdate - Update the state of specified deployments associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2024-10-01
 func (client *DeploymentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, deployment Deployment, options *DeploymentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DeploymentsClient.BeginCreateOrUpdate"
@@ -120,7 +120,7 @@ func (client *DeploymentsClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2024-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, deployment); err != nil {
@@ -132,7 +132,7 @@ func (client *DeploymentsClient) createOrUpdateCreateRequest(ctx context.Context
 // BeginDelete - Deletes the specified deployment associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2024-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - deploymentName - The name of the deployment associated with the Cognitive Services Account
@@ -157,7 +157,7 @@ func (client *DeploymentsClient) BeginDelete(ctx context.Context, resourceGroupN
 // Delete - Deletes the specified deployment associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2024-10-01
 func (client *DeploymentsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, options *DeploymentsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DeploymentsClient.BeginDelete"
@@ -203,7 +203,7 @@ func (client *DeploymentsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2024-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -212,7 +212,7 @@ func (client *DeploymentsClient) deleteCreateRequest(ctx context.Context, resour
 // Get - Gets the specified deployments associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2024-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - deploymentName - The name of the deployment associated with the Cognitive Services Account
@@ -263,7 +263,7 @@ func (client *DeploymentsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2024-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -280,7 +280,7 @@ func (client *DeploymentsClient) getHandleResponse(resp *http.Response) (Deploym
 
 // NewListPager - Gets the deployments associated with the Cognitive Services account.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2024-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - options - DeploymentsClientListOptions contains the optional parameters for the DeploymentsClient.NewListPager method.
@@ -327,7 +327,7 @@ func (client *DeploymentsClient) listCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2024-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -340,4 +340,159 @@ func (client *DeploymentsClient) listHandleResponse(resp *http.Response) (Deploy
 		return DeploymentsClientListResponse{}, err
 	}
 	return result, nil
+}
+
+// NewListSKUsPager - Lists the specified deployments skus associated with the Cognitive Services account.
+//
+// Generated from API version 2024-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of Cognitive Services account.
+//   - deploymentName - The name of the deployment associated with the Cognitive Services Account
+//   - options - DeploymentsClientListSKUsOptions contains the optional parameters for the DeploymentsClient.NewListSKUsPager
+//     method.
+func (client *DeploymentsClient) NewListSKUsPager(resourceGroupName string, accountName string, deploymentName string, options *DeploymentsClientListSKUsOptions) *runtime.Pager[DeploymentsClientListSKUsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[DeploymentsClientListSKUsResponse]{
+		More: func(page DeploymentsClientListSKUsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *DeploymentsClientListSKUsResponse) (DeploymentsClientListSKUsResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DeploymentsClient.NewListSKUsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listSKUsCreateRequest(ctx, resourceGroupName, accountName, deploymentName, options)
+			}, nil)
+			if err != nil {
+				return DeploymentsClientListSKUsResponse{}, err
+			}
+			return client.listSKUsHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listSKUsCreateRequest creates the ListSKUs request.
+func (client *DeploymentsClient) listSKUsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, options *DeploymentsClientListSKUsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/deployments/{deploymentName}/skus"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if deploymentName == "" {
+		return nil, errors.New("parameter deploymentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listSKUsHandleResponse handles the ListSKUs response.
+func (client *DeploymentsClient) listSKUsHandleResponse(resp *http.Response) (DeploymentsClientListSKUsResponse, error) {
+	result := DeploymentsClientListSKUsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentSKUListResult); err != nil {
+		return DeploymentsClientListSKUsResponse{}, err
+	}
+	return result, nil
+}
+
+// BeginUpdate - Update specified deployments associated with the Cognitive Services account.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of Cognitive Services account.
+//   - deploymentName - The name of the deployment associated with the Cognitive Services Account
+//   - deployment - The deployment properties.
+//   - options - DeploymentsClientBeginUpdateOptions contains the optional parameters for the DeploymentsClient.BeginUpdate method.
+func (client *DeploymentsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, deployment PatchResourceTagsAndSKU, options *DeploymentsClientBeginUpdateOptions) (*runtime.Poller[DeploymentsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, accountName, deploymentName, deployment, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DeploymentsClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DeploymentsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// Update - Update specified deployments associated with the Cognitive Services account.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-10-01
+func (client *DeploymentsClient) update(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, deployment PatchResourceTagsAndSKU, options *DeploymentsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "DeploymentsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, deploymentName, deployment, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the Update request.
+func (client *DeploymentsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, deployment PatchResourceTagsAndSKU, options *DeploymentsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/deployments/{deploymentName}"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if deploymentName == "" {
+		return nil, errors.New("parameter deploymentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, deployment); err != nil {
+		return nil, err
+	}
+	return req, nil
 }

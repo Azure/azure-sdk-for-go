@@ -17,8 +17,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2024-10-01/examples/ListUsages.json
-func ExampleUsagesClient_NewListPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2024-10-01/examples/ListLocationBasedModelCapacities.json
+func ExampleLocationBasedModelCapacitiesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -28,7 +28,7 @@ func ExampleUsagesClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewUsagesClient().NewListPager("WestUS", &armcognitiveservices.UsagesClientListOptions{Filter: nil})
+	pager := clientFactory.NewLocationBasedModelCapacitiesClient().NewListPager("WestUS", "OpenAI", "ada", "1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -39,16 +39,23 @@ func ExampleUsagesClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.UsageListResult = armcognitiveservices.UsageListResult{
-		// 	Value: []*armcognitiveservices.Usage{
+		// page.ModelCapacityListResult = armcognitiveservices.ModelCapacityListResult{
+		// 	Value: []*armcognitiveservices.ModelCapacityListResultValueItem{
 		// 		{
-		// 			Name: &armcognitiveservices.MetricName{
-		// 				LocalizedValue: to.Ptr("Cognitive Services total account limit"),
-		// 				Value: to.Ptr("AccountCount"),
+		// 			Name: to.Ptr("Standard"),
+		// 			Type: to.Ptr("Microsoft.CognitiveServices/locations/models/skuCapacities"),
+		// 			ID: to.Ptr("/subscriptions/{subscriptionContext.SubscriptionId}/providers/Microsoft.CognitiveServices/locations/WestUS/models/OpenAI.ada.1/skuCapacities/Standard"),
+		// 			Location: to.Ptr("WestUS"),
+		// 			Properties: &armcognitiveservices.ModelSKUCapacityProperties{
+		// 				AvailableCapacity: to.Ptr[float32](300),
+		// 				AvailableFinetuneCapacity: to.Ptr[float32](20),
+		// 				Model: &armcognitiveservices.DeploymentModel{
+		// 					Name: to.Ptr("ada"),
+		// 					Format: to.Ptr("OpenAI"),
+		// 					Version: to.Ptr("1"),
+		// 				},
+		// 				SKUName: to.Ptr("Standard"),
 		// 			},
-		// 			CurrentValue: to.Ptr[float64](3),
-		// 			Limit: to.Ptr[float64](200),
-		// 			Unit: to.Ptr(armcognitiveservices.UnitTypeCount),
 		// 	}},
 		// }
 	}

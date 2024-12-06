@@ -7,7 +7,7 @@
 
 ### Breaking Changes
 
-- Azure Media services has been retired - all related system events have been removed. See the [retirement announcement](https://azure.microsoft.com/en-us/updates?id=retirement-notice-azure-media-services-is-being-retired-on-30-june-2024) for more details.
+- Azure Media services has been retired - all related system events have been removed. See the [retirement announcement](https://azure.microsoft.com/updates?id=retirement-notice-azure-media-services-is-being-retired-on-30-june-2024) for more details.
 
 ### Bugs Fixed
 

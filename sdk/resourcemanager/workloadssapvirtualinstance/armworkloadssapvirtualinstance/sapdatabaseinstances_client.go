@@ -20,23 +20,23 @@ import (
 	"strings"
 )
 
-// SAPDatabaseInstancesClient contains the methods for the SAPDatabaseInstances group.
-// Don't use this type directly, use NewSAPDatabaseInstancesClient() instead.
-type SAPDatabaseInstancesClient struct {
+// SapDatabaseInstancesClient contains the methods for the SapDatabaseInstances group.
+// Don't use this type directly, use NewSapDatabaseInstancesClient() instead.
+type SapDatabaseInstancesClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewSAPDatabaseInstancesClient creates a new instance of SAPDatabaseInstancesClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+// NewSapDatabaseInstancesClient creates a new instance of SapDatabaseInstancesClient with the specified values.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewSAPDatabaseInstancesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SAPDatabaseInstancesClient, error) {
+func NewSapDatabaseInstancesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SapDatabaseInstancesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &SAPDatabaseInstancesClient{
+	client := &SapDatabaseInstancesClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
@@ -47,26 +47,26 @@ func NewSAPDatabaseInstancesClient(subscriptionID string, credential azcore.Toke
 // This will be used by service only. PUT by end user will return a Bad Request error.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sapVirtualInstanceName - The name of the Virtual Instances for SAP solutions resource
 //   - databaseInstanceName - Database resource name string modeled as parameter for auto generation to work correctly.
-//   - body - Request body of Database resource of a SAP system.
-//   - options - SAPDatabaseInstancesClientBeginCreateOptions contains the optional parameters for the SAPDatabaseInstancesClient.BeginCreate
+//   - resource - Request body of Database resource of a SAP system.
+//   - options - SapDatabaseInstancesClientBeginCreateOptions contains the optional parameters for the SapDatabaseInstancesClient.BeginCreate
 //     method.
-func (client *SAPDatabaseInstancesClient) BeginCreate(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, databaseInstanceName string, body SAPDatabaseInstance, options *SAPDatabaseInstancesClientBeginCreateOptions) (*runtime.Poller[SAPDatabaseInstancesClientCreateResponse], error) {
+func (client *SapDatabaseInstancesClient) BeginCreate(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, databaseInstanceName string, resource SAPDatabaseInstance, options *SapDatabaseInstancesClientBeginCreateOptions) (*runtime.Poller[SapDatabaseInstancesClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.create(ctx, resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body, options)
+		resp, err := client.create(ctx, resourceGroupName, sapVirtualInstanceName, databaseInstanceName, resource, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SAPDatabaseInstancesClientCreateResponse]{
-			FinalStateVia: runtime.FinalStateViaLocation,
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SapDatabaseInstancesClientCreateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SAPDatabaseInstancesClientCreateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SapDatabaseInstancesClientCreateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
@@ -76,14 +76,14 @@ func (client *SAPDatabaseInstancesClient) BeginCreate(ctx context.Context, resou
 // This will be used by service only. PUT by end user will return a Bad Request error.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
-func (client *SAPDatabaseInstancesClient) create(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, databaseInstanceName string, body SAPDatabaseInstance, options *SAPDatabaseInstancesClientBeginCreateOptions) (*http.Response, error) {
+// Generated from API version 2024-09-01
+func (client *SapDatabaseInstancesClient) create(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, databaseInstanceName string, resource SAPDatabaseInstance, options *SapDatabaseInstancesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "SAPDatabaseInstancesClient.BeginCreate"
+	const operationName = "SapDatabaseInstancesClient.BeginCreate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createCreateRequest(ctx, resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body, options)
+	req, err := client.createCreateRequest(ctx, resourceGroupName, sapVirtualInstanceName, databaseInstanceName, resource, options)
 	if err != nil {
 		return nil, err
 	}
@@ -99,7 +99,7 @@ func (client *SAPDatabaseInstancesClient) create(ctx context.Context, resourceGr
 }
 
 // createCreateRequest creates the Create request.
-func (client *SAPDatabaseInstancesClient) createCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, databaseInstanceName string, body SAPDatabaseInstance, options *SAPDatabaseInstancesClientBeginCreateOptions) (*policy.Request, error) {
+func (client *SapDatabaseInstancesClient) createCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, databaseInstanceName string, resource SAPDatabaseInstance, options *SapDatabaseInstancesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/databaseInstances/{databaseInstanceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -122,10 +122,10 @@ func (client *SAPDatabaseInstancesClient) createCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2024-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
+	if err := runtime.MarshalAsJSON(req, resource); err != nil {
 		return nil, err
 	}
 	return req, nil
@@ -135,25 +135,25 @@ func (client *SAPDatabaseInstancesClient) createCreateRequest(ctx context.Contex
 // This will be used by service only. Delete by end user will return a Bad Request error.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sapVirtualInstanceName - The name of the Virtual Instances for SAP solutions resource
 //   - databaseInstanceName - Database resource name string modeled as parameter for auto generation to work correctly.
-//   - options - SAPDatabaseInstancesClientBeginDeleteOptions contains the optional parameters for the SAPDatabaseInstancesClient.BeginDelete
+//   - options - SapDatabaseInstancesClientBeginDeleteOptions contains the optional parameters for the SapDatabaseInstancesClient.BeginDelete
 //     method.
-func (client *SAPDatabaseInstancesClient) BeginDelete(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, databaseInstanceName string, options *SAPDatabaseInstancesClientBeginDeleteOptions) (*runtime.Poller[SAPDatabaseInstancesClientDeleteResponse], error) {
+func (client *SapDatabaseInstancesClient) BeginDelete(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, databaseInstanceName string, options *SapDatabaseInstancesClientBeginDeleteOptions) (*runtime.Poller[SapDatabaseInstancesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, sapVirtualInstanceName, databaseInstanceName, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SAPDatabaseInstancesClientDeleteResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SapDatabaseInstancesClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SAPDatabaseInstancesClientDeleteResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SapDatabaseInstancesClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
@@ -163,10 +163,10 @@ func (client *SAPDatabaseInstancesClient) BeginDelete(ctx context.Context, resou
 // This will be used by service only. Delete by end user will return a Bad Request error.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
-func (client *SAPDatabaseInstancesClient) deleteOperation(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, databaseInstanceName string, options *SAPDatabaseInstancesClientBeginDeleteOptions) (*http.Response, error) {
+// Generated from API version 2024-09-01
+func (client *SapDatabaseInstancesClient) deleteOperation(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, databaseInstanceName string, options *SapDatabaseInstancesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "SAPDatabaseInstancesClient.BeginDelete"
+	const operationName = "SapDatabaseInstancesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -186,7 +186,7 @@ func (client *SAPDatabaseInstancesClient) deleteOperation(ctx context.Context, r
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SAPDatabaseInstancesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, databaseInstanceName string, options *SAPDatabaseInstancesClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *SapDatabaseInstancesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, databaseInstanceName string, options *SapDatabaseInstancesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/databaseInstances/{databaseInstanceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -209,7 +209,7 @@ func (client *SAPDatabaseInstancesClient) deleteCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2024-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -218,36 +218,36 @@ func (client *SAPDatabaseInstancesClient) deleteCreateRequest(ctx context.Contex
 // Get - Gets the SAP Database Instance resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sapVirtualInstanceName - The name of the Virtual Instances for SAP solutions resource
 //   - databaseInstanceName - Database resource name string modeled as parameter for auto generation to work correctly.
-//   - options - SAPDatabaseInstancesClientGetOptions contains the optional parameters for the SAPDatabaseInstancesClient.Get
+//   - options - SapDatabaseInstancesClientGetOptions contains the optional parameters for the SapDatabaseInstancesClient.Get
 //     method.
-func (client *SAPDatabaseInstancesClient) Get(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, databaseInstanceName string, options *SAPDatabaseInstancesClientGetOptions) (SAPDatabaseInstancesClientGetResponse, error) {
+func (client *SapDatabaseInstancesClient) Get(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, databaseInstanceName string, options *SapDatabaseInstancesClientGetOptions) (SapDatabaseInstancesClientGetResponse, error) {
 	var err error
-	const operationName = "SAPDatabaseInstancesClient.Get"
+	const operationName = "SapDatabaseInstancesClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, sapVirtualInstanceName, databaseInstanceName, options)
 	if err != nil {
-		return SAPDatabaseInstancesClientGetResponse{}, err
+		return SapDatabaseInstancesClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return SAPDatabaseInstancesClientGetResponse{}, err
+		return SapDatabaseInstancesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return SAPDatabaseInstancesClientGetResponse{}, err
+		return SapDatabaseInstancesClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *SAPDatabaseInstancesClient) getCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, databaseInstanceName string, options *SAPDatabaseInstancesClientGetOptions) (*policy.Request, error) {
+func (client *SapDatabaseInstancesClient) getCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, databaseInstanceName string, options *SapDatabaseInstancesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/databaseInstances/{databaseInstanceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -270,35 +270,35 @@ func (client *SAPDatabaseInstancesClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2024-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *SAPDatabaseInstancesClient) getHandleResponse(resp *http.Response) (SAPDatabaseInstancesClientGetResponse, error) {
-	result := SAPDatabaseInstancesClientGetResponse{}
+func (client *SapDatabaseInstancesClient) getHandleResponse(resp *http.Response) (SapDatabaseInstancesClientGetResponse, error) {
+	result := SapDatabaseInstancesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SAPDatabaseInstance); err != nil {
-		return SAPDatabaseInstancesClientGetResponse{}, err
+		return SapDatabaseInstancesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
 // NewListPager - Lists the Database resources associated with a Virtual Instance for SAP solutions resource.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sapVirtualInstanceName - The name of the Virtual Instances for SAP solutions resource
-//   - options - SAPDatabaseInstancesClientListOptions contains the optional parameters for the SAPDatabaseInstancesClient.NewListPager
+//   - options - SapDatabaseInstancesClientListOptions contains the optional parameters for the SapDatabaseInstancesClient.NewListPager
 //     method.
-func (client *SAPDatabaseInstancesClient) NewListPager(resourceGroupName string, sapVirtualInstanceName string, options *SAPDatabaseInstancesClientListOptions) *runtime.Pager[SAPDatabaseInstancesClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[SAPDatabaseInstancesClientListResponse]{
-		More: func(page SAPDatabaseInstancesClientListResponse) bool {
+func (client *SapDatabaseInstancesClient) NewListPager(resourceGroupName string, sapVirtualInstanceName string, options *SapDatabaseInstancesClientListOptions) *runtime.Pager[SapDatabaseInstancesClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[SapDatabaseInstancesClientListResponse]{
+		More: func(page SapDatabaseInstancesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *SAPDatabaseInstancesClientListResponse) (SAPDatabaseInstancesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SAPDatabaseInstancesClient.NewListPager")
+		Fetcher: func(ctx context.Context, page *SapDatabaseInstancesClientListResponse) (SapDatabaseInstancesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SapDatabaseInstancesClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -307,7 +307,7 @@ func (client *SAPDatabaseInstancesClient) NewListPager(resourceGroupName string,
 				return client.listCreateRequest(ctx, resourceGroupName, sapVirtualInstanceName, options)
 			}, nil)
 			if err != nil {
-				return SAPDatabaseInstancesClientListResponse{}, err
+				return SapDatabaseInstancesClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -316,7 +316,7 @@ func (client *SAPDatabaseInstancesClient) NewListPager(resourceGroupName string,
 }
 
 // listCreateRequest creates the List request.
-func (client *SAPDatabaseInstancesClient) listCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *SAPDatabaseInstancesClientListOptions) (*policy.Request, error) {
+func (client *SapDatabaseInstancesClient) listCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *SapDatabaseInstancesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/databaseInstances"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -335,59 +335,59 @@ func (client *SAPDatabaseInstancesClient) listCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2024-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *SAPDatabaseInstancesClient) listHandleResponse(resp *http.Response) (SAPDatabaseInstancesClientListResponse, error) {
-	result := SAPDatabaseInstancesClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SAPDatabaseInstanceList); err != nil {
-		return SAPDatabaseInstancesClientListResponse{}, err
+func (client *SapDatabaseInstancesClient) listHandleResponse(resp *http.Response) (SapDatabaseInstancesClientListResponse, error) {
+	result := SapDatabaseInstancesClientListResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SAPDatabaseInstanceListResult); err != nil {
+		return SapDatabaseInstancesClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// BeginStartInstance - Starts the database instance of the SAP system.
+// BeginStart - Starts the database instance of the SAP system.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sapVirtualInstanceName - The name of the Virtual Instances for SAP solutions resource
 //   - databaseInstanceName - Database resource name string modeled as parameter for auto generation to work correctly.
-//   - options - SAPDatabaseInstancesClientBeginStartInstanceOptions contains the optional parameters for the SAPDatabaseInstancesClient.BeginStartInstance
+//   - options - SapDatabaseInstancesClientBeginStartOptions contains the optional parameters for the SapDatabaseInstancesClient.BeginStart
 //     method.
-func (client *SAPDatabaseInstancesClient) BeginStartInstance(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, databaseInstanceName string, options *SAPDatabaseInstancesClientBeginStartInstanceOptions) (*runtime.Poller[SAPDatabaseInstancesClientStartInstanceResponse], error) {
+func (client *SapDatabaseInstancesClient) BeginStart(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, databaseInstanceName string, options *SapDatabaseInstancesClientBeginStartOptions) (*runtime.Poller[SapDatabaseInstancesClientStartResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.startInstance(ctx, resourceGroupName, sapVirtualInstanceName, databaseInstanceName, options)
+		resp, err := client.start(ctx, resourceGroupName, sapVirtualInstanceName, databaseInstanceName, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SAPDatabaseInstancesClientStartInstanceResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SapDatabaseInstancesClientStartResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SAPDatabaseInstancesClientStartInstanceResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SapDatabaseInstancesClientStartResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// StartInstance - Starts the database instance of the SAP system.
+// Start - Starts the database instance of the SAP system.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
-func (client *SAPDatabaseInstancesClient) startInstance(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, databaseInstanceName string, options *SAPDatabaseInstancesClientBeginStartInstanceOptions) (*http.Response, error) {
+// Generated from API version 2024-09-01
+func (client *SapDatabaseInstancesClient) start(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, databaseInstanceName string, options *SapDatabaseInstancesClientBeginStartOptions) (*http.Response, error) {
 	var err error
-	const operationName = "SAPDatabaseInstancesClient.BeginStartInstance"
+	const operationName = "SapDatabaseInstancesClient.BeginStart"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.startInstanceCreateRequest(ctx, resourceGroupName, sapVirtualInstanceName, databaseInstanceName, options)
+	req, err := client.startCreateRequest(ctx, resourceGroupName, sapVirtualInstanceName, databaseInstanceName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -402,8 +402,8 @@ func (client *SAPDatabaseInstancesClient) startInstance(ctx context.Context, res
 	return httpResp, nil
 }
 
-// startInstanceCreateRequest creates the StartInstance request.
-func (client *SAPDatabaseInstancesClient) startInstanceCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, databaseInstanceName string, options *SAPDatabaseInstancesClientBeginStartInstanceOptions) (*policy.Request, error) {
+// startCreateRequest creates the Start request.
+func (client *SapDatabaseInstancesClient) startCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, databaseInstanceName string, options *SapDatabaseInstancesClientBeginStartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/databaseInstances/{databaseInstanceName}/start"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -426,7 +426,7 @@ func (client *SAPDatabaseInstancesClient) startInstanceCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2024-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
@@ -438,44 +438,44 @@ func (client *SAPDatabaseInstancesClient) startInstanceCreateRequest(ctx context
 	return req, nil
 }
 
-// BeginStopInstance - Stops the database instance of the SAP system.
+// BeginStop - Stops the database instance of the SAP system.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sapVirtualInstanceName - The name of the Virtual Instances for SAP solutions resource
 //   - databaseInstanceName - Database resource name string modeled as parameter for auto generation to work correctly.
-//   - options - SAPDatabaseInstancesClientBeginStopInstanceOptions contains the optional parameters for the SAPDatabaseInstancesClient.BeginStopInstance
+//   - options - SapDatabaseInstancesClientBeginStopOptions contains the optional parameters for the SapDatabaseInstancesClient.BeginStop
 //     method.
-func (client *SAPDatabaseInstancesClient) BeginStopInstance(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, databaseInstanceName string, options *SAPDatabaseInstancesClientBeginStopInstanceOptions) (*runtime.Poller[SAPDatabaseInstancesClientStopInstanceResponse], error) {
+func (client *SapDatabaseInstancesClient) BeginStop(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, databaseInstanceName string, options *SapDatabaseInstancesClientBeginStopOptions) (*runtime.Poller[SapDatabaseInstancesClientStopResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.stopInstance(ctx, resourceGroupName, sapVirtualInstanceName, databaseInstanceName, options)
+		resp, err := client.stop(ctx, resourceGroupName, sapVirtualInstanceName, databaseInstanceName, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SAPDatabaseInstancesClientStopInstanceResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SapDatabaseInstancesClientStopResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SAPDatabaseInstancesClientStopInstanceResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SapDatabaseInstancesClientStopResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// StopInstance - Stops the database instance of the SAP system.
+// Stop - Stops the database instance of the SAP system.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
-func (client *SAPDatabaseInstancesClient) stopInstance(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, databaseInstanceName string, options *SAPDatabaseInstancesClientBeginStopInstanceOptions) (*http.Response, error) {
+// Generated from API version 2024-09-01
+func (client *SapDatabaseInstancesClient) stop(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, databaseInstanceName string, options *SapDatabaseInstancesClientBeginStopOptions) (*http.Response, error) {
 	var err error
-	const operationName = "SAPDatabaseInstancesClient.BeginStopInstance"
+	const operationName = "SapDatabaseInstancesClient.BeginStop"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.stopInstanceCreateRequest(ctx, resourceGroupName, sapVirtualInstanceName, databaseInstanceName, options)
+	req, err := client.stopCreateRequest(ctx, resourceGroupName, sapVirtualInstanceName, databaseInstanceName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -490,8 +490,8 @@ func (client *SAPDatabaseInstancesClient) stopInstance(ctx context.Context, reso
 	return httpResp, nil
 }
 
-// stopInstanceCreateRequest creates the StopInstance request.
-func (client *SAPDatabaseInstancesClient) stopInstanceCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, databaseInstanceName string, options *SAPDatabaseInstancesClientBeginStopInstanceOptions) (*policy.Request, error) {
+// stopCreateRequest creates the Stop request.
+func (client *SapDatabaseInstancesClient) stopCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, databaseInstanceName string, options *SapDatabaseInstancesClientBeginStopOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/databaseInstances/{databaseInstanceName}/stop"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -514,7 +514,7 @@ func (client *SAPDatabaseInstancesClient) stopInstanceCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2024-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
@@ -526,40 +526,40 @@ func (client *SAPDatabaseInstancesClient) stopInstanceCreateRequest(ctx context.
 	return req, nil
 }
 
-// Update - Updates the Database instance resource. This can be used to update tags on the resource.
+// Update - Updates the Database resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sapVirtualInstanceName - The name of the Virtual Instances for SAP solutions resource
 //   - databaseInstanceName - Database resource name string modeled as parameter for auto generation to work correctly.
-//   - body - Database resource update request body.
-//   - options - SAPDatabaseInstancesClientUpdateOptions contains the optional parameters for the SAPDatabaseInstancesClient.Update
+//   - properties - Database resource update request body.
+//   - options - SapDatabaseInstancesClientUpdateOptions contains the optional parameters for the SapDatabaseInstancesClient.Update
 //     method.
-func (client *SAPDatabaseInstancesClient) Update(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, databaseInstanceName string, body UpdateSAPDatabaseInstanceRequest, options *SAPDatabaseInstancesClientUpdateOptions) (SAPDatabaseInstancesClientUpdateResponse, error) {
+func (client *SapDatabaseInstancesClient) Update(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, databaseInstanceName string, properties UpdateSAPDatabaseInstanceRequest, options *SapDatabaseInstancesClientUpdateOptions) (SapDatabaseInstancesClientUpdateResponse, error) {
 	var err error
-	const operationName = "SAPDatabaseInstancesClient.Update"
+	const operationName = "SapDatabaseInstancesClient.Update"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body, options)
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, sapVirtualInstanceName, databaseInstanceName, properties, options)
 	if err != nil {
-		return SAPDatabaseInstancesClientUpdateResponse{}, err
+		return SapDatabaseInstancesClientUpdateResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return SAPDatabaseInstancesClientUpdateResponse{}, err
+		return SapDatabaseInstancesClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return SAPDatabaseInstancesClientUpdateResponse{}, err
+		return SapDatabaseInstancesClientUpdateResponse{}, err
 	}
 	resp, err := client.updateHandleResponse(httpResp)
 	return resp, err
 }
 
 // updateCreateRequest creates the Update request.
-func (client *SAPDatabaseInstancesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, databaseInstanceName string, body UpdateSAPDatabaseInstanceRequest, options *SAPDatabaseInstancesClientUpdateOptions) (*policy.Request, error) {
+func (client *SapDatabaseInstancesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, databaseInstanceName string, properties UpdateSAPDatabaseInstanceRequest, options *SapDatabaseInstancesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/databaseInstances/{databaseInstanceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -582,20 +582,20 @@ func (client *SAPDatabaseInstancesClient) updateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2024-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
 		return nil, err
 	}
 	return req, nil
 }
 
 // updateHandleResponse handles the Update response.
-func (client *SAPDatabaseInstancesClient) updateHandleResponse(resp *http.Response) (SAPDatabaseInstancesClientUpdateResponse, error) {
-	result := SAPDatabaseInstancesClientUpdateResponse{}
+func (client *SapDatabaseInstancesClient) updateHandleResponse(resp *http.Response) (SapDatabaseInstancesClientUpdateResponse, error) {
+	result := SapDatabaseInstancesClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SAPDatabaseInstance); err != nil {
-		return SAPDatabaseInstancesClientUpdateResponse{}, err
+		return SapDatabaseInstancesClientUpdateResponse{}, err
 	}
 	return result, nil
 }

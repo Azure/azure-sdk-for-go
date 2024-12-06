@@ -145,8 +145,8 @@ Take a look into the [profile generator documentation](https://github.com/Azure/
    ```json
       {
         "dryRun": false,
-        "specFolder": "LOCAL_AZURE-REST-API-SPECS_REPO_ROOT", // e.g "C:\git\azure-sdk-for-go"
-        "headSha": "SHA_OF_AZURE-REST-API-SPECS_REPO", // use ' git rev-parse HEAD '
+        "specFolder": "LOCAL_AZURE-REST-API-SPECS_REPO_ROOT", // e.g. "C:/git/azure-rest-api-specs"
+        "headSha": "SHA_OF_AZURE-REST-API-SPECS_REPO", // use ' git rev-parse HEAD ' on the local azure-rest-api-specs repo root 
         "repoHttpsUrl": "https://github.com/Azure/azure-rest-api-specs",
         "relatedTypeSpecProjectFolder": [
           "specification/SERVICE_DIRECTORY_NAME/PACKAGE_DIRECTORY_NAME/" // e.g specification/contosowidgetmanager/Contoso.Management
@@ -161,13 +161,3 @@ Take a look into the [profile generator documentation](https://github.com/Azure/
    
 5. View information about the generated SDK in `generateOutput.json`
 6. Prepare your SDK for release. The necessary approvals, guidance for testing, documentation, and release pipelines is described in your release plan. More information about the Azure SDK Release Tool is [here](https://eng.ms/docs/products/azure-developer-experience/plan/release-plan)
-
-
-
-
-
-
-
-
-
-

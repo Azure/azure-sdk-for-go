@@ -90,6 +90,28 @@ func Example_enablingLogging() {
 	)
 }
 
+func ExampleNewClient_usingCustomEndpoint() {
+	// NOTE: If you'd like to authenticate using a Service Bus connection string
+	// look at `NewClientFromConnectionString` instead.
+
+	// `DefaultAzureCredential` tries several common credential types. For more credential types
+	// see this link: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#readme-credential-types.
+	credential, err := azidentity.NewDefaultAzureCredential(nil)
+
+	if err != nil {
+		panic(err)
+	}
+
+	client, err = azservicebus.NewClient("<ex: myservicebus.servicebus.windows.net>", credential, &azservicebus.ClientOptions{
+		// A custom endpoint can be used when you need to connect to a TCP proxy.
+		CustomEndpoint: "<address/hostname of TCP proxy>",
+	})
+
+	if err != nil {
+		panic(err)
+	}
+}
+
 // fakes for examples
 var endpoint string
 var tokenCredential azcore.TokenCredential

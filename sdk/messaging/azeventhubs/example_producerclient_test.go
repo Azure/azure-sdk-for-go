@@ -180,3 +180,22 @@ func ExampleProducerClient_GetPartitionProperties() {
 	fmt.Printf("First sequence number for partition ID %s: %d\n", partitionProps.PartitionID, partitionProps.BeginningSequenceNumber)
 	fmt.Printf("Last sequence number for partition ID %s: %d\n", partitionProps.PartitionID, partitionProps.LastEnqueuedSequenceNumber)
 }
+
+func ExampleNewProducerClient_usingCustomEndpoint() {
+	// `DefaultAzureCredential` tries several common credential types. For more credential types
+	// see this link: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#readme-credential-types.
+	defaultAzureCred, err := azidentity.NewDefaultAzureCredential(nil)
+
+	if err != nil {
+		panic(err)
+	}
+
+	producerClient, err = azeventhubs.NewProducerClient("<ex: myeventhubnamespace.servicebus.windows.net>", "eventhub-name", defaultAzureCred, &azeventhubs.ProducerClientOptions{
+		// A custom endpoint can be used when you need to connect to a TCP proxy.
+		CustomEndpoint: "<address/hostname of TCP proxy>",
+	})
+
+	if err != nil {
+		panic(err)
+	}
+}

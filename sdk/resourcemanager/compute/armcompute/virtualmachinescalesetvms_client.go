@@ -681,7 +681,8 @@ func (client *VirtualMachineScaleSetVMsClient) performMaintenanceCreateRequest(c
 
 // BeginPowerOff - Power off (stop) a virtual machine in a VM scale set. Note that resources are still attached and you are
 // getting charged for the resources. Instead, use deallocate to release resources and avoid
-// charges.
+// charges. Additionally, this operation is not allowed on a virtual machine that is being deallocated or already has been
+// deallocated.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-07-01
@@ -709,7 +710,8 @@ func (client *VirtualMachineScaleSetVMsClient) BeginPowerOff(ctx context.Context
 
 // PowerOff - Power off (stop) a virtual machine in a VM scale set. Note that resources are still attached and you are getting
 // charged for the resources. Instead, use deallocate to release resources and avoid
-// charges.
+// charges. Additionally, this operation is not allowed on a virtual machine that is being deallocated or already has been
+// deallocated.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-07-01

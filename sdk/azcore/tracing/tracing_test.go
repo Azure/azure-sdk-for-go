@@ -15,7 +15,7 @@ import (
 
 func TestProviderZeroValues(t *testing.T) {
 	pr := Provider{}
-	tr := pr.NewTracer("name", "version")
+	tr := pr.NewTracer("name", "version", "")
 	require.Zero(t, tr)
 	require.False(t, tr.Enabled())
 	tr.SetAttributes()
@@ -37,7 +37,7 @@ func TestProvider(t *testing.T) {
 	var setStatusCalled bool
 	var spanFromContextCalled bool
 
-	pr := NewProvider(func(name, version string) Tracer {
+	pr := NewProvider(func(name, version, schemaURL string) Tracer {
 		return NewTracer(func(context.Context, string, *SpanOptions) (context.Context, Span) {
 			return nil, NewSpan(SpanImpl{
 				AddEvent:      func(string, ...Attribute) { addEventCalled = true },
@@ -52,7 +52,7 @@ func TestProvider(t *testing.T) {
 			},
 		})
 	}, nil)
-	tr := pr.NewTracer("name", "version")
+	tr := pr.NewTracer("name", "version", "")
 	require.NotZero(t, tr)
 	require.True(t, tr.Enabled())
 	sp := tr.SpanFromContext(context.Background())

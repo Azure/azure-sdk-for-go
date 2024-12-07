@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
+	semconv "go.opentelemetry.io/otel/semconv/v1.18.0"
 )
 
 // ClientOptions contains configuration settings for a client's pipeline.
@@ -52,7 +53,7 @@ func NewClient(moduleName, moduleVersion string, cred azcore.TokenCredential, op
 		return nil, err
 	}
 
-	tr := options.TracingProvider.NewTracer(moduleName, moduleVersion)
+	tr := options.TracingProvider.NewTracer(moduleName, moduleVersion, semconv.SchemaURL)
 	return &Client{ep: ep, pl: pl, tr: tr}, nil
 }
 

@@ -15,6 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
+	semconv "go.opentelemetry.io/otel/semconv/v1.18.0"
 )
 
 // AccessToken represents an Azure service bearer access token with expiry information.
@@ -137,7 +138,7 @@ func NewClient(moduleName, moduleVersion string, plOpts runtime.PipelineOptions,
 
 	pl := runtime.NewPipeline(moduleName, moduleVersion, plOpts, options)
 
-	tr := options.TracingProvider.NewTracer(moduleName, moduleVersion)
+	tr := options.TracingProvider.NewTracer(moduleName, moduleVersion, semconv.SchemaURL)
 	if tr.Enabled() && plOpts.Tracing.Namespace != "" {
 		tr.SetAttributes(tracing.Attribute{Key: shared.TracingNamespaceAttrName, Value: plOpts.Tracing.Namespace})
 	}
@@ -165,7 +166,20 @@ func (c *Client) Tracer() tracing.Tracer {
 // Note that the values for module name and version will be preserved from the source Client.
 //   - clientName - the fully qualified name of the client ("package.Client"); this is used by the tracing provider when creating spans
 func (c *Client) WithClientName(clientName string) *Client {
-	tr := c.tp.NewTracer(clientName, c.modVer)
+	tr := c.tp.NewTracer(clientName, c.modVer, semconv.SchemaURL)
+	if tr.Enabled() && c.namespace != "" {
+		tr.SetAttributes(tracing.Attribute{Key: shared.TracingNamespaceAttrName, Value: c.namespace})
+	}
+	return &Client{pl: c.pl, tr: tr, tp: c.tp, modVer: c.modVer, namespace: c.namespace}
+}
+
+// WithCoreName returns a shallow copy of the Client with its tracing client name changed to use azcore's module name and version.
+// This is intended for library consumers that want to have their own named tracer for client activities that are
+// Seperate from the Core HTTP tracing.
+// Note that the values for module name and version will be preserved from the source Client for use in the
+// HTTP UserAgent Header set by TelemetryPolicy
+func (c *Client) WithCoreTracerName() *Client {
+	tr := c.tp.NewTracer(shared.Module, shared.Version, semconv.SchemaURL)
 	if tr.Enabled() && c.namespace != "" {
 		tr.SetAttributes(tracing.Attribute{Key: shared.TracingNamespaceAttrName, Value: c.namespace})
 	}

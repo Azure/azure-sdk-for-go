@@ -19,7 +19,7 @@ type ProviderOptions struct {
 // NewProvider creates a new Provider with the specified values.
 //   - newTracerFn is the underlying implementation for creating Tracer instances
 //   - options contains optional values; pass nil to accept the default value
-func NewProvider(newTracerFn func(name, version string) Tracer, options *ProviderOptions) Provider {
+func NewProvider(newTracerFn func(name, version, schemaURL string) Tracer, options *ProviderOptions) Provider {
 	return Provider{
 		newTracerFn: newTracerFn,
 	}
@@ -28,15 +28,16 @@ func NewProvider(newTracerFn func(name, version string) Tracer, options *Provide
 // Provider is the factory that creates Tracer instances.
 // It defaults to a no-op provider.
 type Provider struct {
-	newTracerFn func(name, version string) Tracer
+	newTracerFn func(name, version, schemaURL string) Tracer
 }
 
 // NewTracer creates a new Tracer for the specified module name and version.
 //   - module - the fully qualified name of the module
 //   - version - the version of the module
-func (p Provider) NewTracer(module, version string) (tracer Tracer) {
+//   - schemaURL - the url for the schema used for the tracing span names
+func (p Provider) NewTracer(module, version, schemaURL string) (tracer Tracer) {
 	if p.newTracerFn != nil {
-		tracer = p.newTracerFn(module, version)
+		tracer = p.newTracerFn(module, version, schemaURL)
 	}
 	return
 }

@@ -50,7 +50,7 @@ type ControlActivityClassification interface {
 // - *AvroSink, *AzureBlobFSSink, *AzureDataExplorerSink, *AzureDataLakeStoreSink, *AzureDatabricksDeltaLakeSink, *AzureMySQLSink,
 // - *AzurePostgreSQLSink, *AzureQueueSink, *AzureSQLSink, *AzureSearchIndexSink, *AzureTableSink, *BinarySink, *BlobSink,
 // - *CommonDataServiceForAppsSink, *CopySink, *CosmosDbMongoDbAPISink, *CosmosDbSQLAPISink, *DelimitedTextSink, *DocumentDbCollectionSink,
-// - *DynamicsCrmSink, *DynamicsSink, *FileSystemSink, *InformixSink, *JSONSink, *LakeHouseTableSink, *MicrosoftAccessSink,
+// - *DynamicsCrmSink, *DynamicsSink, *FileSystemSink, *IcebergSink, *InformixSink, *JSONSink, *LakeHouseTableSink, *MicrosoftAccessSink,
 // - *MongoDbAtlasSink, *MongoDbV2Sink, *OdbcSink, *OracleSink, *OrcSink, *ParquetSink, *RestSink, *SQLDWSink, *SQLMISink,
 // - *SQLServerSink, *SQLSink, *SalesforceServiceCloudSink, *SalesforceServiceCloudV2Sink, *SalesforceSink, *SalesforceV2Sink,
 // - *SapCloudForCustomerSink, *SnowflakeSink, *SnowflakeV2Sink, *WarehouseSink
@@ -121,18 +121,19 @@ type DataFlowClassification interface {
 // - *CouchbaseTableDataset, *CustomDataset, *Dataset, *Db2TableDataset, *DelimitedTextDataset, *DocumentDbCollectionDataset,
 // - *DrillTableDataset, *DynamicsAXResourceDataset, *DynamicsCrmEntityDataset, *DynamicsEntityDataset, *EloquaObjectDataset,
 // - *ExcelDataset, *FileShareDataset, *GoogleAdWordsObjectDataset, *GoogleBigQueryObjectDataset, *GoogleBigQueryV2ObjectDataset,
-// - *GreenplumTableDataset, *HBaseObjectDataset, *HTTPDataset, *HiveObjectDataset, *HubspotObjectDataset, *ImpalaObjectDataset,
-// - *InformixTableDataset, *JSONDataset, *JiraObjectDataset, *LakeHouseTableDataset, *MagentoObjectDataset, *MariaDBTableDataset,
-// - *MarketoObjectDataset, *MicrosoftAccessTableDataset, *MongoDbAtlasCollectionDataset, *MongoDbCollectionDataset, *MongoDbV2CollectionDataset,
-// - *MySQLTableDataset, *NetezzaTableDataset, *ODataResourceDataset, *OdbcTableDataset, *Office365Dataset, *OracleServiceCloudObjectDataset,
-// - *OracleTableDataset, *OrcDataset, *ParquetDataset, *PaypalObjectDataset, *PhoenixObjectDataset, *PostgreSQLTableDataset,
-// - *PostgreSQLV2TableDataset, *PrestoObjectDataset, *QuickBooksObjectDataset, *RelationalTableDataset, *ResponsysObjectDataset,
-// - *RestResourceDataset, *SQLServerTableDataset, *SalesforceMarketingCloudObjectDataset, *SalesforceObjectDataset, *SalesforceServiceCloudObjectDataset,
-// - *SalesforceServiceCloudV2ObjectDataset, *SalesforceV2ObjectDataset, *SapBwCubeDataset, *SapCloudForCustomerResourceDataset,
-// - *SapEccResourceDataset, *SapHanaTableDataset, *SapOdpResourceDataset, *SapOpenHubTableDataset, *SapTableResourceDataset,
-// - *ServiceNowObjectDataset, *ServiceNowV2ObjectDataset, *SharePointOnlineListResourceDataset, *ShopifyObjectDataset, *SnowflakeDataset,
-// - *SnowflakeV2Dataset, *SparkObjectDataset, *SquareObjectDataset, *SybaseTableDataset, *TeradataTableDataset, *VerticaTableDataset,
-// - *WarehouseTableDataset, *WebTableDataset, *XMLDataset, *XeroObjectDataset, *ZohoObjectDataset
+// - *GreenplumTableDataset, *HBaseObjectDataset, *HTTPDataset, *HiveObjectDataset, *HubspotObjectDataset, *IcebergDataset,
+// - *ImpalaObjectDataset, *InformixTableDataset, *JSONDataset, *JiraObjectDataset, *LakeHouseTableDataset, *MagentoObjectDataset,
+// - *MariaDBTableDataset, *MarketoObjectDataset, *MicrosoftAccessTableDataset, *MongoDbAtlasCollectionDataset, *MongoDbCollectionDataset,
+// - *MongoDbV2CollectionDataset, *MySQLTableDataset, *NetezzaTableDataset, *ODataResourceDataset, *OdbcTableDataset, *Office365Dataset,
+// - *OracleServiceCloudObjectDataset, *OracleTableDataset, *OrcDataset, *ParquetDataset, *PaypalObjectDataset, *PhoenixObjectDataset,
+// - *PostgreSQLTableDataset, *PostgreSQLV2TableDataset, *PrestoObjectDataset, *QuickBooksObjectDataset, *RelationalTableDataset,
+// - *ResponsysObjectDataset, *RestResourceDataset, *SQLServerTableDataset, *SalesforceMarketingCloudObjectDataset, *SalesforceObjectDataset,
+// - *SalesforceServiceCloudObjectDataset, *SalesforceServiceCloudV2ObjectDataset, *SalesforceV2ObjectDataset, *SapBwCubeDataset,
+// - *SapCloudForCustomerResourceDataset, *SapEccResourceDataset, *SapHanaTableDataset, *SapOdpResourceDataset, *SapOpenHubTableDataset,
+// - *SapTableResourceDataset, *ServiceNowObjectDataset, *ServiceNowV2ObjectDataset, *SharePointOnlineListResourceDataset,
+// - *ShopifyObjectDataset, *SnowflakeDataset, *SnowflakeV2Dataset, *SparkObjectDataset, *SquareObjectDataset, *SybaseTableDataset,
+// - *TeradataTableDataset, *VerticaTableDataset, *WarehouseTableDataset, *WebTableDataset, *XMLDataset, *XeroObjectDataset,
+// - *ZohoObjectDataset
 type DatasetClassification interface {
 	// GetDataset returns the Dataset content of the underlying type.
 	GetDataset() *Dataset
@@ -212,7 +213,8 @@ type FormatReadSettingsClassification interface {
 // FormatWriteSettingsClassification provides polymorphic access to related types.
 // Call the interface's GetFormatWriteSettings() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AvroWriteSettings, *DelimitedTextWriteSettings, *FormatWriteSettings, *JSONWriteSettings, *OrcWriteSettings, *ParquetWriteSettings
+// - *AvroWriteSettings, *DelimitedTextWriteSettings, *FormatWriteSettings, *IcebergWriteSettings, *JSONWriteSettings, *OrcWriteSettings,
+// - *ParquetWriteSettings
 type FormatWriteSettingsClassification interface {
 	// GetFormatWriteSettings returns the FormatWriteSettings content of the underlying type.
 	GetFormatWriteSettings() *FormatWriteSettings

@@ -514,7 +514,9 @@ func TestOpPollerWithWidgetPOST(t *testing.T) {
 		},
 	}
 	pl := newTestPipeline(&policy.ClientOptions{Transport: srv})
-	lro, err := NewPoller[widget](firstResp, pl, nil)
+	lro, err := NewPoller(firstResp, pl, &NewPollerOptions[widget]{
+		OperationLocationResultPath: "result",
+	})
 	if err != nil {
 		t.Fatal(err)
 	}

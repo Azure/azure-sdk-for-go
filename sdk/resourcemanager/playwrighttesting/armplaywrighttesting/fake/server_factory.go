@@ -19,9 +19,10 @@ import (
 
 // ServerFactory is a fake server for instances of the armplaywrighttesting.ClientFactory type.
 type ServerFactory struct {
-	AccountsServer   AccountsServer
-	OperationsServer OperationsServer
-	QuotasServer     QuotasServer
+	AccountQuotasServer AccountQuotasServer
+	AccountsServer      AccountsServer
+	OperationsServer    OperationsServer
+	QuotasServer        QuotasServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -36,11 +37,12 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armplaywrighttesting.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                *ServerFactory
-	trMu               sync.Mutex
-	trAccountsServer   *AccountsServerTransport
-	trOperationsServer *OperationsServerTransport
-	trQuotasServer     *QuotasServerTransport
+	srv                   *ServerFactory
+	trMu                  sync.Mutex
+	trAccountQuotasServer *AccountQuotasServerTransport
+	trAccountsServer      *AccountsServerTransport
+	trOperationsServer    *OperationsServerTransport
+	trQuotasServer        *QuotasServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -56,6 +58,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "AccountQuotasClient":
+		initServer(s, &s.trAccountQuotasServer, func() *AccountQuotasServerTransport {
+			return NewAccountQuotasServerTransport(&s.srv.AccountQuotasServer)
+		})
+		resp, err = s.trAccountQuotasServer.Do(req)
 	case "AccountsClient":
 		initServer(s, &s.trAccountsServer, func() *AccountsServerTransport { return NewAccountsServerTransport(&s.srv.AccountsServer) })
 		resp, err = s.trAccountsServer.Do(req)

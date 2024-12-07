@@ -8,9 +8,27 @@
 
 package armplaywrighttesting
 
+// AccountQuotasClientGetResponse contains the response from method AccountQuotasClient.Get.
+type AccountQuotasClientGetResponse struct {
+	// A quota resource for a Playwright service account.
+	AccountQuota
+}
+
+// AccountQuotasClientListByAccountResponse contains the response from method AccountQuotasClient.NewListByAccountPager.
+type AccountQuotasClientListByAccountResponse struct {
+	// The response of a AccountQuota list operation.
+	AccountQuotaListResult
+}
+
+// AccountsClientCheckNameAvailabilityResponse contains the response from method AccountsClient.CheckNameAvailability.
+type AccountsClientCheckNameAvailabilityResponse struct {
+	// The check availability result.
+	CheckNameAvailabilityResponse
+}
+
 // AccountsClientCreateOrUpdateResponse contains the response from method AccountsClient.BeginCreateOrUpdate.
 type AccountsClientCreateOrUpdateResponse struct {
-	// An account resource
+	// A Playwright service account resource.
 	Account
 }
 
@@ -21,7 +39,7 @@ type AccountsClientDeleteResponse struct {
 
 // AccountsClientGetResponse contains the response from method AccountsClient.Get.
 type AccountsClientGetResponse struct {
-	// An account resource
+	// A Playwright service account resource.
 	Account
 }
 
@@ -39,7 +57,7 @@ type AccountsClientListBySubscriptionResponse struct {
 
 // AccountsClientUpdateResponse contains the response from method AccountsClient.Update.
 type AccountsClientUpdateResponse struct {
-	// An account resource
+	// A Playwright service account resource.
 	Account
 }
 
@@ -51,7 +69,7 @@ type OperationsClientListResponse struct {
 
 // QuotasClientGetResponse contains the response from method QuotasClient.Get.
 type QuotasClientGetResponse struct {
-	// A quota resource
+	// A subscription quota resource.
 	Quota
 }
 

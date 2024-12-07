@@ -50,7 +50,7 @@ func NewClient(vaultURL string, credential azcore.TokenCredential, options *Clie
 	if err != nil {
 		return nil, err
 	}
-	return &Client{endpoint: vaultURL, internal: azcoreClient}, nil
+	return &Client{vaultBaseUrl: vaultURL, internal: azcoreClient}, nil
 }
 
 // ID is a key's unique ID, containing its version, if any, and name.

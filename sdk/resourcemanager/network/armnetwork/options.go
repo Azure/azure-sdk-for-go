@@ -1541,6 +1541,58 @@ type InterfacesClientUpdateTagsOptions struct {
 	// placeholder for future optional parameters
 }
 
+// IpamPoolsClientBeginCreateOptions contains the optional parameters for the IpamPoolsClient.BeginCreate method.
+type IpamPoolsClientBeginCreateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// IpamPoolsClientBeginDeleteOptions contains the optional parameters for the IpamPoolsClient.BeginDelete method.
+type IpamPoolsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// IpamPoolsClientGetOptions contains the optional parameters for the IpamPoolsClient.Get method.
+type IpamPoolsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// IpamPoolsClientGetPoolUsageOptions contains the optional parameters for the IpamPoolsClient.GetPoolUsage method.
+type IpamPoolsClientGetPoolUsageOptions struct {
+	// placeholder for future optional parameters
+}
+
+// IpamPoolsClientListAssociatedResourcesOptions contains the optional parameters for the IpamPoolsClient.NewListAssociatedResourcesPager
+// method.
+type IpamPoolsClientListAssociatedResourcesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// IpamPoolsClientListOptions contains the optional parameters for the IpamPoolsClient.NewListPager method.
+type IpamPoolsClientListOptions struct {
+	// Optional num entries to skip.
+	Skip *int32
+
+	// Optional skip token.
+	SkipToken *string
+
+	// Optional key by which to sort.
+	SortKey *string
+
+	// Optional sort value for pagination.
+	SortValue *string
+
+	// Optional num entries to show.
+	Top *int32
+}
+
+// IpamPoolsClientUpdateOptions contains the optional parameters for the IpamPoolsClient.Update method.
+type IpamPoolsClientUpdateOptions struct {
+	// Pool resource object to update partially.
+	Body *IpamPoolUpdate
+}
+
 // LoadBalancerBackendAddressPoolsClientBeginCreateOrUpdateOptions contains the optional parameters for the LoadBalancerBackendAddressPoolsClient.BeginCreateOrUpdate
 // method.
 type LoadBalancerBackendAddressPoolsClientBeginCreateOrUpdateOptions struct {
@@ -1577,6 +1629,13 @@ type LoadBalancerFrontendIPConfigurationsClientGetOptions struct {
 // method.
 type LoadBalancerFrontendIPConfigurationsClientListOptions struct {
 	// placeholder for future optional parameters
+}
+
+// LoadBalancerLoadBalancingRulesClientBeginHealthOptions contains the optional parameters for the LoadBalancerLoadBalancingRulesClient.BeginHealth
+// method.
+type LoadBalancerLoadBalancingRulesClientBeginHealthOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // LoadBalancerLoadBalancingRulesClientGetOptions contains the optional parameters for the LoadBalancerLoadBalancingRulesClient.Get
@@ -2387,6 +2446,80 @@ type PublicIPPrefixesClientUpdateTagsOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ReachabilityAnalysisIntentsClientCreateOptions contains the optional parameters for the ReachabilityAnalysisIntentsClient.Create
+// method.
+type ReachabilityAnalysisIntentsClientCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ReachabilityAnalysisIntentsClientDeleteOptions contains the optional parameters for the ReachabilityAnalysisIntentsClient.Delete
+// method.
+type ReachabilityAnalysisIntentsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ReachabilityAnalysisIntentsClientGetOptions contains the optional parameters for the ReachabilityAnalysisIntentsClient.Get
+// method.
+type ReachabilityAnalysisIntentsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ReachabilityAnalysisIntentsClientListOptions contains the optional parameters for the ReachabilityAnalysisIntentsClient.NewListPager
+// method.
+type ReachabilityAnalysisIntentsClientListOptions struct {
+	// Optional num entries to skip.
+	Skip *int32
+
+	// Optional skip token.
+	SkipToken *string
+
+	// Optional key by which to sort.
+	SortKey *string
+
+	// Optional sort value for pagination.
+	SortValue *string
+
+	// Optional num entries to show.
+	Top *int32
+}
+
+// ReachabilityAnalysisRunsClientBeginDeleteOptions contains the optional parameters for the ReachabilityAnalysisRunsClient.BeginDelete
+// method.
+type ReachabilityAnalysisRunsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ReachabilityAnalysisRunsClientCreateOptions contains the optional parameters for the ReachabilityAnalysisRunsClient.Create
+// method.
+type ReachabilityAnalysisRunsClientCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ReachabilityAnalysisRunsClientGetOptions contains the optional parameters for the ReachabilityAnalysisRunsClient.Get method.
+type ReachabilityAnalysisRunsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ReachabilityAnalysisRunsClientListOptions contains the optional parameters for the ReachabilityAnalysisRunsClient.NewListPager
+// method.
+type ReachabilityAnalysisRunsClientListOptions struct {
+	// Optional num entries to skip.
+	Skip *int32
+
+	// Optional skip token.
+	SkipToken *string
+
+	// Optional key by which to sort.
+	SortKey *string
+
+	// Optional sort value for pagination.
+	SortValue *string
+
+	// Optional num entries to show.
+	Top *int32
+}
+
 // ResourceNavigationLinksClientListOptions contains the optional parameters for the ResourceNavigationLinksClient.List method.
 type ResourceNavigationLinksClientListOptions struct {
 	// placeholder for future optional parameters
@@ -2961,6 +3094,41 @@ type ServiceTagsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// StaticCidrsClientBeginDeleteOptions contains the optional parameters for the StaticCidrsClient.BeginDelete method.
+type StaticCidrsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// StaticCidrsClientCreateOptions contains the optional parameters for the StaticCidrsClient.Create method.
+type StaticCidrsClientCreateOptions struct {
+	// StaticCidr resource object to create/update.
+	Body *StaticCidr
+}
+
+// StaticCidrsClientGetOptions contains the optional parameters for the StaticCidrsClient.Get method.
+type StaticCidrsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StaticCidrsClientListOptions contains the optional parameters for the StaticCidrsClient.NewListPager method.
+type StaticCidrsClientListOptions struct {
+	// Optional num entries to skip.
+	Skip *int32
+
+	// Optional skip token.
+	SkipToken *string
+
+	// Optional key by which to sort.
+	SortKey *string
+
+	// Optional sort value for pagination.
+	SortValue *string
+
+	// Optional num entries to show.
+	Top *int32
+}
+
 // StaticMembersClientCreateOrUpdateOptions contains the optional parameters for the StaticMembersClient.CreateOrUpdate method.
 type StaticMembersClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
@@ -3310,6 +3478,47 @@ type VPNSitesClientUpdateTagsOptions struct {
 type VPNSitesConfigurationClientBeginDownloadOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
+}
+
+// VerifierWorkspacesClientBeginDeleteOptions contains the optional parameters for the VerifierWorkspacesClient.BeginDelete
+// method.
+type VerifierWorkspacesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// VerifierWorkspacesClientCreateOptions contains the optional parameters for the VerifierWorkspacesClient.Create method.
+type VerifierWorkspacesClientCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VerifierWorkspacesClientGetOptions contains the optional parameters for the VerifierWorkspacesClient.Get method.
+type VerifierWorkspacesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VerifierWorkspacesClientListOptions contains the optional parameters for the VerifierWorkspacesClient.NewListPager method.
+type VerifierWorkspacesClientListOptions struct {
+	// Optional num entries to skip.
+	Skip *int32
+
+	// Optional skip token.
+	SkipToken *string
+
+	// Optional key by which to sort.
+	SortKey *string
+
+	// Optional sort value for pagination.
+	SortValue *string
+
+	// Optional num entries to show.
+	Top *int32
+}
+
+// VerifierWorkspacesClientUpdateOptions contains the optional parameters for the VerifierWorkspacesClient.Update method.
+type VerifierWorkspacesClientUpdateOptions struct {
+	// Verifier Workspace object to create/update.
+	Body *VerifierWorkspaceUpdate
 }
 
 // VipSwapClientBeginCreateOptions contains the optional parameters for the VipSwapClient.BeginCreate method.
@@ -3746,6 +3955,20 @@ type VirtualNetworkGatewaysClientBeginGetBgpPeerStatusOptions struct {
 	ResumeToken string
 }
 
+// VirtualNetworkGatewaysClientBeginGetFailoverAllTestDetailsOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginGetFailoverAllTestDetails
+// method.
+type VirtualNetworkGatewaysClientBeginGetFailoverAllTestDetailsOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// VirtualNetworkGatewaysClientBeginGetFailoverSingleTestDetailsOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginGetFailoverSingleTestDetails
+// method.
+type VirtualNetworkGatewaysClientBeginGetFailoverSingleTestDetailsOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // VirtualNetworkGatewaysClientBeginGetLearnedRoutesOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginGetLearnedRoutes
 // method.
 type VirtualNetworkGatewaysClientBeginGetLearnedRoutesOptions struct {
@@ -3798,12 +4021,26 @@ type VirtualNetworkGatewaysClientBeginSetVpnclientIPSecParametersOptions struct 
 	ResumeToken string
 }
 
+// VirtualNetworkGatewaysClientBeginStartExpressRouteSiteFailoverSimulationOptions contains the optional parameters for the
+// VirtualNetworkGatewaysClient.BeginStartExpressRouteSiteFailoverSimulation method.
+type VirtualNetworkGatewaysClientBeginStartExpressRouteSiteFailoverSimulationOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // VirtualNetworkGatewaysClientBeginStartPacketCaptureOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginStartPacketCapture
 // method.
 type VirtualNetworkGatewaysClientBeginStartPacketCaptureOptions struct {
 	// Virtual network gateway packet capture parameters supplied to start packet capture on gateway.
 	Parameters *VPNPacketCaptureStartParameters
 
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// VirtualNetworkGatewaysClientBeginStopExpressRouteSiteFailoverSimulationOptions contains the optional parameters for the
+// VirtualNetworkGatewaysClient.BeginStopExpressRouteSiteFailoverSimulation method.
+type VirtualNetworkGatewaysClientBeginStopExpressRouteSiteFailoverSimulationOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }

@@ -10,7 +10,7 @@ package armcognitiveservices
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices"
-	moduleVersion = "v1.6.0"
+	moduleVersion = "v1.7.0"
 )
 
 // AbusePenaltyAction - The action of AbusePenalty.
@@ -43,6 +43,22 @@ func PossibleActionTypeValues() []ActionType {
 	}
 }
 
+// ByPassSelection - Setting for trusted services.
+type ByPassSelection string
+
+const (
+	ByPassSelectionAzureServices ByPassSelection = "AzureServices"
+	ByPassSelectionNone          ByPassSelection = "None"
+)
+
+// PossibleByPassSelectionValues returns the possible values for the ByPassSelection const type.
+func PossibleByPassSelectionValues() []ByPassSelection {
+	return []ByPassSelection{
+		ByPassSelectionAzureServices,
+		ByPassSelectionNone,
+	}
+}
+
 // CommitmentPlanProvisioningState - Gets the status of the resource at the time the operation was called.
 type CommitmentPlanProvisioningState string
 
@@ -69,6 +85,24 @@ func PossibleCommitmentPlanProvisioningStateValues() []CommitmentPlanProvisionin
 	}
 }
 
+// ContentLevel - Level at which content is filtered.
+type ContentLevel string
+
+const (
+	ContentLevelHigh   ContentLevel = "High"
+	ContentLevelLow    ContentLevel = "Low"
+	ContentLevelMedium ContentLevel = "Medium"
+)
+
+// PossibleContentLevelValues returns the possible values for the ContentLevel const type.
+func PossibleContentLevelValues() []ContentLevel {
+	return []ContentLevel{
+		ContentLevelHigh,
+		ContentLevelLow,
+		ContentLevelMedium,
+	}
+}
+
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
 
@@ -86,6 +120,22 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
+	}
+}
+
+// DefenderForAISettingState - Defender for AI state on the AI resource.
+type DefenderForAISettingState string
+
+const (
+	DefenderForAISettingStateDisabled DefenderForAISettingState = "Disabled"
+	DefenderForAISettingStateEnabled  DefenderForAISettingState = "Enabled"
+)
+
+// PossibleDefenderForAISettingStateValues returns the possible values for the DefenderForAISettingState const type.
+func PossibleDefenderForAISettingStateValues() []DefenderForAISettingState {
+	return []DefenderForAISettingState{
+		DefenderForAISettingStateDisabled,
+		DefenderForAISettingStateEnabled,
 	}
 }
 
@@ -151,6 +201,48 @@ func PossibleDeploymentScaleTypeValues() []DeploymentScaleType {
 	}
 }
 
+// EncryptionScopeProvisioningState - Gets the status of the resource at the time the operation was called.
+type EncryptionScopeProvisioningState string
+
+const (
+	EncryptionScopeProvisioningStateAccepted  EncryptionScopeProvisioningState = "Accepted"
+	EncryptionScopeProvisioningStateCanceled  EncryptionScopeProvisioningState = "Canceled"
+	EncryptionScopeProvisioningStateCreating  EncryptionScopeProvisioningState = "Creating"
+	EncryptionScopeProvisioningStateDeleting  EncryptionScopeProvisioningState = "Deleting"
+	EncryptionScopeProvisioningStateFailed    EncryptionScopeProvisioningState = "Failed"
+	EncryptionScopeProvisioningStateMoving    EncryptionScopeProvisioningState = "Moving"
+	EncryptionScopeProvisioningStateSucceeded EncryptionScopeProvisioningState = "Succeeded"
+)
+
+// PossibleEncryptionScopeProvisioningStateValues returns the possible values for the EncryptionScopeProvisioningState const type.
+func PossibleEncryptionScopeProvisioningStateValues() []EncryptionScopeProvisioningState {
+	return []EncryptionScopeProvisioningState{
+		EncryptionScopeProvisioningStateAccepted,
+		EncryptionScopeProvisioningStateCanceled,
+		EncryptionScopeProvisioningStateCreating,
+		EncryptionScopeProvisioningStateDeleting,
+		EncryptionScopeProvisioningStateFailed,
+		EncryptionScopeProvisioningStateMoving,
+		EncryptionScopeProvisioningStateSucceeded,
+	}
+}
+
+// EncryptionScopeState - The encryptionScope state.
+type EncryptionScopeState string
+
+const (
+	EncryptionScopeStateDisabled EncryptionScopeState = "Disabled"
+	EncryptionScopeStateEnabled  EncryptionScopeState = "Enabled"
+)
+
+// PossibleEncryptionScopeStateValues returns the possible values for the EncryptionScopeState const type.
+func PossibleEncryptionScopeStateValues() []EncryptionScopeState {
+	return []EncryptionScopeState{
+		EncryptionScopeStateDisabled,
+		EncryptionScopeStateEnabled,
+	}
+}
+
 // HostingModel - Account hosting model.
 type HostingModel string
 
@@ -207,15 +299,21 @@ func PossibleKeySourceValues() []KeySource {
 type ModelLifecycleStatus string
 
 const (
+	ModelLifecycleStatusDeprecated         ModelLifecycleStatus = "Deprecated"
+	ModelLifecycleStatusDeprecating        ModelLifecycleStatus = "Deprecating"
 	ModelLifecycleStatusGenerallyAvailable ModelLifecycleStatus = "GenerallyAvailable"
 	ModelLifecycleStatusPreview            ModelLifecycleStatus = "Preview"
+	ModelLifecycleStatusStable             ModelLifecycleStatus = "Stable"
 )
 
 // PossibleModelLifecycleStatusValues returns the possible values for the ModelLifecycleStatus const type.
 func PossibleModelLifecycleStatusValues() []ModelLifecycleStatus {
 	return []ModelLifecycleStatus{
+		ModelLifecycleStatusDeprecated,
+		ModelLifecycleStatusDeprecating,
 		ModelLifecycleStatusGenerallyAvailable,
 		ModelLifecycleStatusPreview,
+		ModelLifecycleStatusStable,
 	}
 }
 
@@ -233,6 +331,22 @@ func PossibleNetworkRuleActionValues() []NetworkRuleAction {
 	return []NetworkRuleAction{
 		NetworkRuleActionAllow,
 		NetworkRuleActionDeny,
+	}
+}
+
+// NspAccessRuleDirection - Direction of Access Rule
+type NspAccessRuleDirection string
+
+const (
+	NspAccessRuleDirectionInbound  NspAccessRuleDirection = "Inbound"
+	NspAccessRuleDirectionOutbound NspAccessRuleDirection = "Outbound"
+)
+
+// PossibleNspAccessRuleDirectionValues returns the possible values for the NspAccessRuleDirection const type.
+func PossibleNspAccessRuleDirectionValues() []NspAccessRuleDirection {
+	return []NspAccessRuleDirection{
+		NspAccessRuleDirectionInbound,
+		NspAccessRuleDirectionOutbound,
 	}
 }
 
@@ -352,6 +466,60 @@ func PossibleQuotaUsageStatusValues() []QuotaUsageStatus {
 		QuotaUsageStatusInOverage,
 		QuotaUsageStatusIncluded,
 		QuotaUsageStatusUnknown,
+	}
+}
+
+// RaiPolicyContentSource - Content source to apply the Content Filters.
+type RaiPolicyContentSource string
+
+const (
+	RaiPolicyContentSourceCompletion RaiPolicyContentSource = "Completion"
+	RaiPolicyContentSourcePrompt     RaiPolicyContentSource = "Prompt"
+)
+
+// PossibleRaiPolicyContentSourceValues returns the possible values for the RaiPolicyContentSource const type.
+func PossibleRaiPolicyContentSourceValues() []RaiPolicyContentSource {
+	return []RaiPolicyContentSource{
+		RaiPolicyContentSourceCompletion,
+		RaiPolicyContentSourcePrompt,
+	}
+}
+
+// RaiPolicyMode - Rai policy mode. The enum value mapping is as below: Default = 0, Deferred=1, Blocking=2, Asynchronousfilter
+// =3. Please use 'Asynchronousfilter' after 2024-10-01. It is the same as 'Deferred' in
+// previous version.
+type RaiPolicyMode string
+
+const (
+	RaiPolicyModeAsynchronousFilter RaiPolicyMode = "Asynchronous_filter"
+	RaiPolicyModeBlocking           RaiPolicyMode = "Blocking"
+	RaiPolicyModeDefault            RaiPolicyMode = "Default"
+	RaiPolicyModeDeferred           RaiPolicyMode = "Deferred"
+)
+
+// PossibleRaiPolicyModeValues returns the possible values for the RaiPolicyMode const type.
+func PossibleRaiPolicyModeValues() []RaiPolicyMode {
+	return []RaiPolicyMode{
+		RaiPolicyModeAsynchronousFilter,
+		RaiPolicyModeBlocking,
+		RaiPolicyModeDefault,
+		RaiPolicyModeDeferred,
+	}
+}
+
+// RaiPolicyType - Content Filters policy type.
+type RaiPolicyType string
+
+const (
+	RaiPolicyTypeSystemManaged RaiPolicyType = "SystemManaged"
+	RaiPolicyTypeUserManaged   RaiPolicyType = "UserManaged"
+)
+
+// PossibleRaiPolicyTypeValues returns the possible values for the RaiPolicyType const type.
+func PossibleRaiPolicyTypeValues() []RaiPolicyType {
+	return []RaiPolicyType{
+		RaiPolicyTypeSystemManaged,
+		RaiPolicyTypeUserManaged,
 	}
 }
 

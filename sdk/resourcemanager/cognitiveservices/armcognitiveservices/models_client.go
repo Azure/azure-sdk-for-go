@@ -45,7 +45,7 @@ func NewModelsClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // NewListPager - List Models.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2024-10-01
 //   - location - Resource location.
 //   - options - ModelsClientListOptions contains the optional parameters for the ModelsClient.NewListPager method.
 func (client *ModelsClient) NewListPager(location string, options *ModelsClientListOptions) *runtime.Pager[ModelsClientListResponse] {
@@ -87,7 +87,7 @@ func (client *ModelsClient) listCreateRequest(ctx context.Context, location stri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2024-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

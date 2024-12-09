@@ -1454,6 +1454,47 @@ type InterfacesClientUpdateTagsResponse struct {
 	Interface
 }
 
+// IpamPoolsClientCreateResponse contains the response from method IpamPoolsClient.BeginCreate.
+type IpamPoolsClientCreateResponse struct {
+	// Instance of Pool resource.
+	IpamPool
+}
+
+// IpamPoolsClientDeleteResponse contains the response from method IpamPoolsClient.BeginDelete.
+type IpamPoolsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// IpamPoolsClientGetPoolUsageResponse contains the response from method IpamPoolsClient.GetPoolUsage.
+type IpamPoolsClientGetPoolUsageResponse struct {
+	// IpamPool usage information.
+	PoolUsage
+}
+
+// IpamPoolsClientGetResponse contains the response from method IpamPoolsClient.Get.
+type IpamPoolsClientGetResponse struct {
+	// Instance of Pool resource.
+	IpamPool
+}
+
+// IpamPoolsClientListAssociatedResourcesResponse contains the response from method IpamPoolsClient.NewListAssociatedResourcesPager.
+type IpamPoolsClientListAssociatedResourcesResponse struct {
+	// List of PoolAssociation
+	PoolAssociationList
+}
+
+// IpamPoolsClientListResponse contains the response from method IpamPoolsClient.NewListPager.
+type IpamPoolsClientListResponse struct {
+	// List of IpamPool
+	IpamPoolList
+}
+
+// IpamPoolsClientUpdateResponse contains the response from method IpamPoolsClient.Update.
+type IpamPoolsClientUpdateResponse struct {
+	// Instance of Pool resource.
+	IpamPool
+}
+
 // LoadBalancerBackendAddressPoolsClientCreateOrUpdateResponse contains the response from method LoadBalancerBackendAddressPoolsClient.BeginCreateOrUpdate.
 type LoadBalancerBackendAddressPoolsClientCreateOrUpdateResponse struct {
 	// Pool of backend IP addresses.
@@ -1493,6 +1534,12 @@ type LoadBalancerFrontendIPConfigurationsClientListResponse struct {
 type LoadBalancerLoadBalancingRulesClientGetResponse struct {
 	// A load balancing rule for a load balancer.
 	LoadBalancingRule
+}
+
+// LoadBalancerLoadBalancingRulesClientHealthResponse contains the response from method LoadBalancerLoadBalancingRulesClient.BeginHealth.
+type LoadBalancerLoadBalancingRulesClientHealthResponse struct {
+	// The response for a Health API.
+	LoadBalancerHealthPerRule
 }
 
 // LoadBalancerLoadBalancingRulesClientListResponse contains the response from method LoadBalancerLoadBalancingRulesClient.NewListPager.
@@ -2247,6 +2294,52 @@ type PublicIPPrefixesClientUpdateTagsResponse struct {
 	PublicIPPrefix
 }
 
+// ReachabilityAnalysisIntentsClientCreateResponse contains the response from method ReachabilityAnalysisIntentsClient.Create.
+type ReachabilityAnalysisIntentsClientCreateResponse struct {
+	// Configuration information or intent on which to do the analysis on.
+	ReachabilityAnalysisIntent
+}
+
+// ReachabilityAnalysisIntentsClientDeleteResponse contains the response from method ReachabilityAnalysisIntentsClient.Delete.
+type ReachabilityAnalysisIntentsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ReachabilityAnalysisIntentsClientGetResponse contains the response from method ReachabilityAnalysisIntentsClient.Get.
+type ReachabilityAnalysisIntentsClientGetResponse struct {
+	// Configuration information or intent on which to do the analysis on.
+	ReachabilityAnalysisIntent
+}
+
+// ReachabilityAnalysisIntentsClientListResponse contains the response from method ReachabilityAnalysisIntentsClient.NewListPager.
+type ReachabilityAnalysisIntentsClientListResponse struct {
+	// A list of Reachability Analysis Intents.
+	ReachabilityAnalysisIntentListResult
+}
+
+// ReachabilityAnalysisRunsClientCreateResponse contains the response from method ReachabilityAnalysisRunsClient.Create.
+type ReachabilityAnalysisRunsClientCreateResponse struct {
+	// Configuration information for analysis run.
+	ReachabilityAnalysisRun
+}
+
+// ReachabilityAnalysisRunsClientDeleteResponse contains the response from method ReachabilityAnalysisRunsClient.BeginDelete.
+type ReachabilityAnalysisRunsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ReachabilityAnalysisRunsClientGetResponse contains the response from method ReachabilityAnalysisRunsClient.Get.
+type ReachabilityAnalysisRunsClientGetResponse struct {
+	// Configuration information for analysis run.
+	ReachabilityAnalysisRun
+}
+
+// ReachabilityAnalysisRunsClientListResponse contains the response from method ReachabilityAnalysisRunsClient.NewListPager.
+type ReachabilityAnalysisRunsClientListResponse struct {
+	// A list of Reachability Analysis Run
+	ReachabilityAnalysisRunListResult
+}
+
 // ResourceNavigationLinksClientListResponse contains the response from method ResourceNavigationLinksClient.List.
 type ResourceNavigationLinksClientListResponse struct {
 	// Response for ResourceNavigationLinks_List operation.
@@ -2746,6 +2839,29 @@ type ServiceTagsClientListResponse struct {
 	ServiceTagsListResult
 }
 
+// StaticCidrsClientCreateResponse contains the response from method StaticCidrsClient.Create.
+type StaticCidrsClientCreateResponse struct {
+	// Instance of StaticCidr resource.
+	StaticCidr
+}
+
+// StaticCidrsClientDeleteResponse contains the response from method StaticCidrsClient.BeginDelete.
+type StaticCidrsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// StaticCidrsClientGetResponse contains the response from method StaticCidrsClient.Get.
+type StaticCidrsClientGetResponse struct {
+	// Instance of StaticCidr resource.
+	StaticCidr
+}
+
+// StaticCidrsClientListResponse contains the response from method StaticCidrsClient.NewListPager.
+type StaticCidrsClientListResponse struct {
+	// List of StaticCidr
+	StaticCidrList
+}
+
 // StaticMembersClientCreateOrUpdateResponse contains the response from method StaticMembersClient.CreateOrUpdate.
 type StaticMembersClientCreateOrUpdateResponse struct {
 	// StaticMember Item.
@@ -3084,6 +3200,35 @@ type VPNSitesClientUpdateTagsResponse struct {
 // VPNSitesConfigurationClientDownloadResponse contains the response from method VPNSitesConfigurationClient.BeginDownload.
 type VPNSitesConfigurationClientDownloadResponse struct {
 	// placeholder for future response values
+}
+
+// VerifierWorkspacesClientCreateResponse contains the response from method VerifierWorkspacesClient.Create.
+type VerifierWorkspacesClientCreateResponse struct {
+	// Instance of Verifier Workspace.
+	VerifierWorkspace
+}
+
+// VerifierWorkspacesClientDeleteResponse contains the response from method VerifierWorkspacesClient.BeginDelete.
+type VerifierWorkspacesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// VerifierWorkspacesClientGetResponse contains the response from method VerifierWorkspacesClient.Get.
+type VerifierWorkspacesClientGetResponse struct {
+	// Instance of Verifier Workspace.
+	VerifierWorkspace
+}
+
+// VerifierWorkspacesClientListResponse contains the response from method VerifierWorkspacesClient.NewListPager.
+type VerifierWorkspacesClientListResponse struct {
+	// A list of Verifier Workspace
+	VerifierWorkspaceListResult
+}
+
+// VerifierWorkspacesClientUpdateResponse contains the response from method VerifierWorkspacesClient.Update.
+type VerifierWorkspacesClientUpdateResponse struct {
+	// Instance of Verifier Workspace.
+	VerifierWorkspace
 }
 
 // VipSwapClientCreateResponse contains the response from method VipSwapClient.BeginCreate.
@@ -3502,6 +3647,28 @@ type VirtualNetworkGatewaysClientGetBgpPeerStatusResponse struct {
 	BgpPeerStatusListResult
 }
 
+// VirtualNetworkGatewaysClientGetFailoverAllTestDetailsResponse contains the response from method VirtualNetworkGatewaysClient.BeginGetFailoverAllTestDetails.
+type VirtualNetworkGatewaysClientGetFailoverAllTestDetailsResponse struct {
+	// Gateway Failover All Test Details
+	ExpressRouteFailoverTestDetailsArray []*ExpressRouteFailoverTestDetails
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualNetworkGatewaysClientGetFailoverAllTestDetailsResponse.
+func (v *VirtualNetworkGatewaysClientGetFailoverAllTestDetailsResponse) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &v.ExpressRouteFailoverTestDetailsArray)
+}
+
+// VirtualNetworkGatewaysClientGetFailoverSingleTestDetailsResponse contains the response from method VirtualNetworkGatewaysClient.BeginGetFailoverSingleTestDetails.
+type VirtualNetworkGatewaysClientGetFailoverSingleTestDetailsResponse struct {
+	// Gateway Failover Single Test Details Object
+	ExpressRouteFailoverSingleTestDetailsArray []*ExpressRouteFailoverSingleTestDetails
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualNetworkGatewaysClientGetFailoverSingleTestDetailsResponse.
+func (v *VirtualNetworkGatewaysClientGetFailoverSingleTestDetailsResponse) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &v.ExpressRouteFailoverSingleTestDetailsArray)
+}
+
 // VirtualNetworkGatewaysClientGetLearnedRoutesResponse contains the response from method VirtualNetworkGatewaysClient.BeginGetLearnedRoutes.
 type VirtualNetworkGatewaysClientGetLearnedRoutesResponse struct {
 	// List of virtual network gateway routes.
@@ -3565,6 +3732,16 @@ type VirtualNetworkGatewaysClientSetVpnclientIPSecParametersResponse struct {
 	VPNClientIPsecParameters
 }
 
+// VirtualNetworkGatewaysClientStartExpressRouteSiteFailoverSimulationResponse contains the response from method VirtualNetworkGatewaysClient.BeginStartExpressRouteSiteFailoverSimulation.
+type VirtualNetworkGatewaysClientStartExpressRouteSiteFailoverSimulationResponse struct {
+	Value *string
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualNetworkGatewaysClientStartExpressRouteSiteFailoverSimulationResponse.
+func (v *VirtualNetworkGatewaysClientStartExpressRouteSiteFailoverSimulationResponse) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &v.Value)
+}
+
 // VirtualNetworkGatewaysClientStartPacketCaptureResponse contains the response from method VirtualNetworkGatewaysClient.BeginStartPacketCapture.
 type VirtualNetworkGatewaysClientStartPacketCaptureResponse struct {
 	Value *string
@@ -3572,6 +3749,16 @@ type VirtualNetworkGatewaysClientStartPacketCaptureResponse struct {
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type VirtualNetworkGatewaysClientStartPacketCaptureResponse.
 func (v *VirtualNetworkGatewaysClientStartPacketCaptureResponse) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &v.Value)
+}
+
+// VirtualNetworkGatewaysClientStopExpressRouteSiteFailoverSimulationResponse contains the response from method VirtualNetworkGatewaysClient.BeginStopExpressRouteSiteFailoverSimulation.
+type VirtualNetworkGatewaysClientStopExpressRouteSiteFailoverSimulationResponse struct {
+	Value *string
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualNetworkGatewaysClientStopExpressRouteSiteFailoverSimulationResponse.
+func (v *VirtualNetworkGatewaysClientStopExpressRouteSiteFailoverSimulationResponse) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &v.Value)
 }
 

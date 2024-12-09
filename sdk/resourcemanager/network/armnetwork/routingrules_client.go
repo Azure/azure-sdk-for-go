@@ -48,7 +48,7 @@ func NewRoutingRulesClient(subscriptionID string, credential azcore.TokenCredent
 // CreateOrUpdate - Creates or updates an routing rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2024-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkManagerName - The name of the network manager.
 //   - configurationName - The name of the network manager Routing Configuration.
@@ -111,7 +111,7 @@ func (client *RoutingRulesClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2024-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, routingRule); err != nil {
@@ -132,7 +132,7 @@ func (client *RoutingRulesClient) createOrUpdateHandleResponse(resp *http.Respon
 // BeginDelete - Deletes a routing rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2024-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkManagerName - The name of the network manager.
 //   - configurationName - The name of the network manager Routing Configuration.
@@ -161,7 +161,7 @@ func (client *RoutingRulesClient) BeginDelete(ctx context.Context, resourceGroup
 // Delete - Deletes a routing rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2024-05-01
 func (client *RoutingRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, ruleCollectionName string, ruleName string, options *RoutingRulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RoutingRulesClient.BeginDelete"
@@ -215,7 +215,7 @@ func (client *RoutingRulesClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2024-05-01")
 	if options != nil && options.Force != nil {
 		reqQP.Set("force", strconv.FormatBool(*options.Force))
 	}
@@ -227,7 +227,7 @@ func (client *RoutingRulesClient) deleteCreateRequest(ctx context.Context, resou
 // Get - Gets a network manager routing configuration routing rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2024-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkManagerName - The name of the network manager.
 //   - configurationName - The name of the network manager Routing Configuration.
@@ -288,7 +288,7 @@ func (client *RoutingRulesClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2024-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -305,7 +305,7 @@ func (client *RoutingRulesClient) getHandleResponse(resp *http.Response) (Routin
 
 // NewListPager - List all network manager routing configuration routing rules.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2024-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkManagerName - The name of the network manager.
 //   - configurationName - The name of the network manager Routing Configuration.
@@ -368,7 +368,7 @@ func (client *RoutingRulesClient) listCreateRequest(ctx context.Context, resourc
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2024-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

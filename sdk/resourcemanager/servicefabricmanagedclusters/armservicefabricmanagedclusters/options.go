@@ -238,6 +238,12 @@ type NodeTypesClientBeginRestartOptions struct {
 	ResumeToken string
 }
 
+// NodeTypesClientBeginUpdateOptions contains the optional parameters for the NodeTypesClient.BeginUpdate method.
+type NodeTypesClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // NodeTypesClientGetOptions contains the optional parameters for the NodeTypesClient.Get method.
 type NodeTypesClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -246,11 +252,6 @@ type NodeTypesClientGetOptions struct {
 // NodeTypesClientListByManagedClustersOptions contains the optional parameters for the NodeTypesClient.NewListByManagedClustersPager
 // method.
 type NodeTypesClientListByManagedClustersOptions struct {
-	// placeholder for future optional parameters
-}
-
-// NodeTypesClientUpdateOptions contains the optional parameters for the NodeTypesClient.Update method.
-type NodeTypesClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 

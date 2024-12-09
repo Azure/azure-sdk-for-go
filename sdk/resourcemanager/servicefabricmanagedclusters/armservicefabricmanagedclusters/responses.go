@@ -242,7 +242,7 @@ type NodeTypesClientRestartResponse struct {
 	// placeholder for future response values
 }
 
-// NodeTypesClientUpdateResponse contains the response from method NodeTypesClient.Update.
+// NodeTypesClientUpdateResponse contains the response from method NodeTypesClient.BeginUpdate.
 type NodeTypesClientUpdateResponse struct {
 	// Describes a node type in the cluster, each node type represents sub set of nodes in the cluster.
 	NodeType

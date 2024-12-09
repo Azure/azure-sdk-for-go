@@ -21,6 +21,7 @@ import (
 type ServerFactory struct {
 	AssetEndpointProfilesServer AssetEndpointProfilesServer
 	AssetsServer                AssetsServer
+	BillingContainersServer     BillingContainersServer
 	OperationStatusServer       OperationStatusServer
 	OperationsServer            OperationsServer
 }
@@ -41,6 +42,7 @@ type ServerFactoryTransport struct {
 	trMu                          sync.Mutex
 	trAssetEndpointProfilesServer *AssetEndpointProfilesServerTransport
 	trAssetsServer                *AssetsServerTransport
+	trBillingContainersServer     *BillingContainersServerTransport
 	trOperationStatusServer       *OperationStatusServerTransport
 	trOperationsServer            *OperationsServerTransport
 }
@@ -66,6 +68,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "AssetsClient":
 		initServer(s, &s.trAssetsServer, func() *AssetsServerTransport { return NewAssetsServerTransport(&s.srv.AssetsServer) })
 		resp, err = s.trAssetsServer.Do(req)
+	case "BillingContainersClient":
+		initServer(s, &s.trBillingContainersServer, func() *BillingContainersServerTransport {
+			return NewBillingContainersServerTransport(&s.srv.BillingContainersServer)
+		})
+		resp, err = s.trBillingContainersServer.Do(req)
 	case "OperationStatusClient":
 		initServer(s, &s.trOperationStatusServer, func() *OperationStatusServerTransport {
 			return NewOperationStatusServerTransport(&s.srv.OperationStatusServer)

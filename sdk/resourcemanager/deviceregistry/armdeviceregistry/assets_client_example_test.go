@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceregistry/armdeviceregistry"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c77bbf822be2deaac1b690270c6cd03a52df0e37/specification/deviceregistry/resource-manager/Microsoft.DeviceRegistry/preview/2023-11-01-preview/examples/List_Assets_Subscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/deviceregistry/resource-manager/Microsoft.DeviceRegistry/stable/2024-11-01/examples/List_Assets_Subscription.json
 func ExampleAssetsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -64,38 +64,54 @@ func ExampleAssetsClient_NewListBySubscriptionPager() {
 		// 			},
 		// 			Properties: &armdeviceregistry.AssetProperties{
 		// 				Description: to.Ptr("This is a sample Asset"),
-		// 				AssetEndpointProfileURI: to.Ptr("https://www.example.com/myAssetEndpointProfile"),
-		// 				AssetType: to.Ptr("MyAssetType"),
-		// 				DataPoints: []*armdeviceregistry.DataPoint{
+		// 				AssetEndpointProfileRef: to.Ptr("myAssetEndpointProfile"),
+		// 				Datasets: []*armdeviceregistry.Dataset{
 		// 					{
-		// 						CapabilityID: to.Ptr("dtmi:com:example:Thermostat:__temperature;1"),
-		// 						DataPointConfiguration: to.Ptr("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}"),
-		// 						DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt1"),
-		// 						ObservabilityMode: to.Ptr(armdeviceregistry.DataPointsObservabilityModeCounter),
-		// 					},
-		// 					{
-		// 						CapabilityID: to.Ptr("dtmi:com:example:Thermostat:__pressure;1"),
-		// 						DataPointConfiguration: to.Ptr("{\"publishingInterval\":4,\"samplingInterval\":4,\"queueSize\":7}"),
-		// 						DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt2"),
-		// 						ObservabilityMode: to.Ptr(armdeviceregistry.DataPointsObservabilityModeNone),
+		// 						Name: to.Ptr("dataset1"),
+		// 						DataPoints: []*armdeviceregistry.DataPoint{
+		// 							{
+		// 								Name: to.Ptr("dataPoint1"),
+		// 								DataPointConfiguration: to.Ptr("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}"),
+		// 								DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt1"),
+		// 								ObservabilityMode: to.Ptr(armdeviceregistry.DataPointObservabilityModeCounter),
+		// 							},
+		// 							{
+		// 								Name: to.Ptr("dataPoint2"),
+		// 								DataPointConfiguration: to.Ptr("{\"publishingInterval\":4,\"samplingInterval\":4,\"queueSize\":7}"),
+		// 								DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt2"),
+		// 								ObservabilityMode: to.Ptr(armdeviceregistry.DataPointObservabilityModeNone),
+		// 						}},
+		// 						DatasetConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+		// 						Topic: &armdeviceregistry.Topic{
+		// 							Path: to.Ptr("/path/dataset1"),
+		// 							Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+		// 						},
 		// 				}},
-		// 				DefaultDataPointsConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+		// 				DefaultDatasetsConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
 		// 				DefaultEventsConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+		// 				DefaultTopic: &armdeviceregistry.Topic{
+		// 					Path: to.Ptr("/path/defaultTopic"),
+		// 					Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+		// 				},
 		// 				DisplayName: to.Ptr("AssetDisplayName"),
 		// 				DocumentationURI: to.Ptr("https://www.example.com/manual"),
 		// 				Enabled: to.Ptr(true),
 		// 				Events: []*armdeviceregistry.Event{
 		// 					{
-		// 						CapabilityID: to.Ptr("dtmi:com:example:Thermostat:__temperature;1"),
+		// 						Name: to.Ptr("event1"),
 		// 						EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}"),
 		// 						EventNotifier: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3"),
-		// 						ObservabilityMode: to.Ptr(armdeviceregistry.EventsObservabilityModeNone),
+		// 						Topic: &armdeviceregistry.Topic{
+		// 							Path: to.Ptr("/path/event1"),
+		// 							Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+		// 						},
+		// 						ObservabilityMode: to.Ptr(armdeviceregistry.EventObservabilityModeNone),
 		// 					},
 		// 					{
-		// 						CapabilityID: to.Ptr("dtmi:com:example:Thermostat:__pressure;1"),
+		// 						Name: to.Ptr("event2"),
 		// 						EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":8,\"queueSize\":4}"),
 		// 						EventNotifier: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt4"),
-		// 						ObservabilityMode: to.Ptr(armdeviceregistry.EventsObservabilityModeLog),
+		// 						ObservabilityMode: to.Ptr(armdeviceregistry.EventObservabilityModeLog),
 		// 				}},
 		// 				ExternalAssetID: to.Ptr("8ZBA6LRHU0A458969"),
 		// 				HardwareRevision: to.Ptr("1.0"),
@@ -107,7 +123,7 @@ func ExampleAssetsClient_NewListBySubscriptionPager() {
 		// 				SerialNumber: to.Ptr("64-103816-519918-8"),
 		// 				SoftwareRevision: to.Ptr("2.0"),
 		// 				UUID: to.Ptr("0796f7c1-f2c8-44d7-9f5b-9a6f9522a85d"),
-		// 				Version: to.Ptr[int32](73766),
+		// 				Version: to.Ptr[int64](73766),
 		// 			},
 		// 		},
 		// 		{
@@ -132,38 +148,54 @@ func ExampleAssetsClient_NewListBySubscriptionPager() {
 		// 			},
 		// 			Properties: &armdeviceregistry.AssetProperties{
 		// 				Description: to.Ptr("This is a sample Asset 1"),
-		// 				AssetEndpointProfileURI: to.Ptr("https://www.example.com/myAssetEndpointProfile1"),
-		// 				AssetType: to.Ptr("MyAssetType"),
-		// 				DataPoints: []*armdeviceregistry.DataPoint{
+		// 				AssetEndpointProfileRef: to.Ptr("myAssetEndpointProfile"),
+		// 				Datasets: []*armdeviceregistry.Dataset{
 		// 					{
-		// 						CapabilityID: to.Ptr("dtmi:com:example:Thermostat:__temperature;1"),
-		// 						DataPointConfiguration: to.Ptr("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}"),
-		// 						DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt10"),
-		// 						ObservabilityMode: to.Ptr(armdeviceregistry.DataPointsObservabilityModeCounter),
-		// 					},
-		// 					{
-		// 						CapabilityID: to.Ptr("dtmi:com:example:Thermostat:__pressure;1"),
-		// 						DataPointConfiguration: to.Ptr("{\"publishingInterval\":4,\"samplingInterval\":4,\"queueSize\":7}"),
-		// 						DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt20"),
-		// 						ObservabilityMode: to.Ptr(armdeviceregistry.DataPointsObservabilityModeNone),
+		// 						Name: to.Ptr("dataset1"),
+		// 						DataPoints: []*armdeviceregistry.DataPoint{
+		// 							{
+		// 								Name: to.Ptr("dataPoint1"),
+		// 								DataPointConfiguration: to.Ptr("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}"),
+		// 								DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt1"),
+		// 								ObservabilityMode: to.Ptr(armdeviceregistry.DataPointObservabilityModeCounter),
+		// 							},
+		// 							{
+		// 								Name: to.Ptr("dataPoint2"),
+		// 								DataPointConfiguration: to.Ptr("{\"publishingInterval\":4,\"samplingInterval\":4,\"queueSize\":7}"),
+		// 								DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt2"),
+		// 								ObservabilityMode: to.Ptr(armdeviceregistry.DataPointObservabilityModeNone),
+		// 						}},
+		// 						DatasetConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+		// 						Topic: &armdeviceregistry.Topic{
+		// 							Path: to.Ptr("/path/dataset1"),
+		// 							Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+		// 						},
 		// 				}},
-		// 				DefaultDataPointsConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+		// 				DefaultDatasetsConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
 		// 				DefaultEventsConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+		// 				DefaultTopic: &armdeviceregistry.Topic{
+		// 					Path: to.Ptr("/path/defaultTopic"),
+		// 					Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+		// 				},
 		// 				DisplayName: to.Ptr("AssetDisplayName 1"),
 		// 				DocumentationURI: to.Ptr("https://www.example.com/manual"),
 		// 				Enabled: to.Ptr(true),
 		// 				Events: []*armdeviceregistry.Event{
 		// 					{
-		// 						CapabilityID: to.Ptr("dtmi:com:example:Thermostat:__temperature;1"),
+		// 						Name: to.Ptr("event1"),
 		// 						EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}"),
-		// 						EventNotifier: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt30"),
-		// 						ObservabilityMode: to.Ptr(armdeviceregistry.EventsObservabilityModeNone),
+		// 						EventNotifier: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3"),
+		// 						Topic: &armdeviceregistry.Topic{
+		// 							Path: to.Ptr("/path/event1"),
+		// 							Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+		// 						},
+		// 						ObservabilityMode: to.Ptr(armdeviceregistry.EventObservabilityModeNone),
 		// 					},
 		// 					{
-		// 						CapabilityID: to.Ptr("dtmi:com:example:Thermostat:__pressure;1"),
+		// 						Name: to.Ptr("event2"),
 		// 						EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":8,\"queueSize\":4}"),
-		// 						EventNotifier: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt40"),
-		// 						ObservabilityMode: to.Ptr(armdeviceregistry.EventsObservabilityModeLog),
+		// 						EventNotifier: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt4"),
+		// 						ObservabilityMode: to.Ptr(armdeviceregistry.EventObservabilityModeLog),
 		// 				}},
 		// 				ExternalAssetID: to.Ptr("9AVD7KLPU03377981"),
 		// 				HardwareRevision: to.Ptr("1.0"),
@@ -175,14 +207,14 @@ func ExampleAssetsClient_NewListBySubscriptionPager() {
 		// 				SerialNumber: to.Ptr("12-984302-792341-8"),
 		// 				SoftwareRevision: to.Ptr("2.0"),
 		// 				UUID: to.Ptr("7824a74f-21e1-4458-ae06-604d3a241d2c"),
-		// 				Version: to.Ptr[int32](73766),
+		// 				Version: to.Ptr[int64](73766),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c77bbf822be2deaac1b690270c6cd03a52df0e37/specification/deviceregistry/resource-manager/Microsoft.DeviceRegistry/preview/2023-11-01-preview/examples/List_Assets_ResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/deviceregistry/resource-manager/Microsoft.DeviceRegistry/stable/2024-11-01/examples/List_Assets_ResourceGroup.json
 func ExampleAssetsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -228,38 +260,54 @@ func ExampleAssetsClient_NewListByResourceGroupPager() {
 		// 			},
 		// 			Properties: &armdeviceregistry.AssetProperties{
 		// 				Description: to.Ptr("This is a sample Asset"),
-		// 				AssetEndpointProfileURI: to.Ptr("https://www.example.com/myAssetEndpointProfile"),
-		// 				AssetType: to.Ptr("MyAssetType"),
-		// 				DataPoints: []*armdeviceregistry.DataPoint{
+		// 				AssetEndpointProfileRef: to.Ptr("myAssetEndpointProfile"),
+		// 				Datasets: []*armdeviceregistry.Dataset{
 		// 					{
-		// 						CapabilityID: to.Ptr("dtmi:com:example:Thermostat:__temperature;1"),
-		// 						DataPointConfiguration: to.Ptr("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}"),
-		// 						DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt1"),
-		// 						ObservabilityMode: to.Ptr(armdeviceregistry.DataPointsObservabilityModeCounter),
-		// 					},
-		// 					{
-		// 						CapabilityID: to.Ptr("dtmi:com:example:Thermostat:__pressure;1"),
-		// 						DataPointConfiguration: to.Ptr("{\"publishingInterval\":4,\"samplingInterval\":4,\"queueSize\":7}"),
-		// 						DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt2"),
-		// 						ObservabilityMode: to.Ptr(armdeviceregistry.DataPointsObservabilityModeNone),
+		// 						Name: to.Ptr("dataset1"),
+		// 						DataPoints: []*armdeviceregistry.DataPoint{
+		// 							{
+		// 								Name: to.Ptr("dataPoint1"),
+		// 								DataPointConfiguration: to.Ptr("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}"),
+		// 								DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt1"),
+		// 								ObservabilityMode: to.Ptr(armdeviceregistry.DataPointObservabilityModeCounter),
+		// 							},
+		// 							{
+		// 								Name: to.Ptr("dataPoint2"),
+		// 								DataPointConfiguration: to.Ptr("{\"publishingInterval\":4,\"samplingInterval\":4,\"queueSize\":7}"),
+		// 								DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt2"),
+		// 								ObservabilityMode: to.Ptr(armdeviceregistry.DataPointObservabilityModeNone),
+		// 						}},
+		// 						DatasetConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+		// 						Topic: &armdeviceregistry.Topic{
+		// 							Path: to.Ptr("/path/dataset1"),
+		// 							Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+		// 						},
 		// 				}},
-		// 				DefaultDataPointsConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+		// 				DefaultDatasetsConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
 		// 				DefaultEventsConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+		// 				DefaultTopic: &armdeviceregistry.Topic{
+		// 					Path: to.Ptr("/path/defaultTopic"),
+		// 					Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+		// 				},
 		// 				DisplayName: to.Ptr("AssetDisplayName"),
 		// 				DocumentationURI: to.Ptr("https://www.example.com/manual"),
 		// 				Enabled: to.Ptr(true),
 		// 				Events: []*armdeviceregistry.Event{
 		// 					{
-		// 						CapabilityID: to.Ptr("dtmi:com:example:Thermostat:__temperature;1"),
+		// 						Name: to.Ptr("event1"),
 		// 						EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}"),
 		// 						EventNotifier: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3"),
-		// 						ObservabilityMode: to.Ptr(armdeviceregistry.EventsObservabilityModeNone),
+		// 						Topic: &armdeviceregistry.Topic{
+		// 							Path: to.Ptr("/path/event1"),
+		// 							Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+		// 						},
+		// 						ObservabilityMode: to.Ptr(armdeviceregistry.EventObservabilityModeNone),
 		// 					},
 		// 					{
-		// 						CapabilityID: to.Ptr("dtmi:com:example:Thermostat:__pressure;1"),
+		// 						Name: to.Ptr("event2"),
 		// 						EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":8,\"queueSize\":4}"),
 		// 						EventNotifier: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt4"),
-		// 						ObservabilityMode: to.Ptr(armdeviceregistry.EventsObservabilityModeLog),
+		// 						ObservabilityMode: to.Ptr(armdeviceregistry.EventObservabilityModeLog),
 		// 				}},
 		// 				ExternalAssetID: to.Ptr("8ZBA6LRHU0A458969"),
 		// 				HardwareRevision: to.Ptr("1.0"),
@@ -271,7 +319,7 @@ func ExampleAssetsClient_NewListByResourceGroupPager() {
 		// 				SerialNumber: to.Ptr("64-103816-519918-8"),
 		// 				SoftwareRevision: to.Ptr("2.0"),
 		// 				UUID: to.Ptr("0796f7c1-f2c8-44d7-9f5b-9a6f9522a85d"),
-		// 				Version: to.Ptr[int32](73766),
+		// 				Version: to.Ptr[int64](73766),
 		// 			},
 		// 		},
 		// 		{
@@ -296,38 +344,54 @@ func ExampleAssetsClient_NewListByResourceGroupPager() {
 		// 			},
 		// 			Properties: &armdeviceregistry.AssetProperties{
 		// 				Description: to.Ptr("This is a sample Asset 1"),
-		// 				AssetEndpointProfileURI: to.Ptr("https://www.example.com/myAssetEndpointProfile1"),
-		// 				AssetType: to.Ptr("MyAssetType"),
-		// 				DataPoints: []*armdeviceregistry.DataPoint{
+		// 				AssetEndpointProfileRef: to.Ptr("myAssetEndpointProfile"),
+		// 				Datasets: []*armdeviceregistry.Dataset{
 		// 					{
-		// 						CapabilityID: to.Ptr("dtmi:com:example:Thermostat:__temperature;1"),
-		// 						DataPointConfiguration: to.Ptr("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}"),
-		// 						DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt10"),
-		// 						ObservabilityMode: to.Ptr(armdeviceregistry.DataPointsObservabilityModeCounter),
-		// 					},
-		// 					{
-		// 						CapabilityID: to.Ptr("dtmi:com:example:Thermostat:__pressure;1"),
-		// 						DataPointConfiguration: to.Ptr("{\"publishingInterval\":4,\"samplingInterval\":4,\"queueSize\":7}"),
-		// 						DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt20"),
-		// 						ObservabilityMode: to.Ptr(armdeviceregistry.DataPointsObservabilityModeNone),
+		// 						Name: to.Ptr("dataset1"),
+		// 						DataPoints: []*armdeviceregistry.DataPoint{
+		// 							{
+		// 								Name: to.Ptr("dataPoint1"),
+		// 								DataPointConfiguration: to.Ptr("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}"),
+		// 								DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt1"),
+		// 								ObservabilityMode: to.Ptr(armdeviceregistry.DataPointObservabilityModeCounter),
+		// 							},
+		// 							{
+		// 								Name: to.Ptr("dataPoint2"),
+		// 								DataPointConfiguration: to.Ptr("{\"publishingInterval\":4,\"samplingInterval\":4,\"queueSize\":7}"),
+		// 								DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt2"),
+		// 								ObservabilityMode: to.Ptr(armdeviceregistry.DataPointObservabilityModeNone),
+		// 						}},
+		// 						DatasetConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+		// 						Topic: &armdeviceregistry.Topic{
+		// 							Path: to.Ptr("/path/dataset1"),
+		// 							Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+		// 						},
 		// 				}},
-		// 				DefaultDataPointsConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+		// 				DefaultDatasetsConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
 		// 				DefaultEventsConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+		// 				DefaultTopic: &armdeviceregistry.Topic{
+		// 					Path: to.Ptr("/path/defaultTopic"),
+		// 					Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+		// 				},
 		// 				DisplayName: to.Ptr("AssetDisplayName 1"),
 		// 				DocumentationURI: to.Ptr("https://www.example.com/manual"),
 		// 				Enabled: to.Ptr(true),
 		// 				Events: []*armdeviceregistry.Event{
 		// 					{
-		// 						CapabilityID: to.Ptr("dtmi:com:example:Thermostat:__temperature;1"),
+		// 						Name: to.Ptr("event1"),
 		// 						EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}"),
-		// 						EventNotifier: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt30"),
-		// 						ObservabilityMode: to.Ptr(armdeviceregistry.EventsObservabilityModeNone),
+		// 						EventNotifier: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3"),
+		// 						Topic: &armdeviceregistry.Topic{
+		// 							Path: to.Ptr("/path/event1"),
+		// 							Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+		// 						},
+		// 						ObservabilityMode: to.Ptr(armdeviceregistry.EventObservabilityModeNone),
 		// 					},
 		// 					{
-		// 						CapabilityID: to.Ptr("dtmi:com:example:Thermostat:__pressure;1"),
+		// 						Name: to.Ptr("event2"),
 		// 						EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":8,\"queueSize\":4}"),
-		// 						EventNotifier: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt40"),
-		// 						ObservabilityMode: to.Ptr(armdeviceregistry.EventsObservabilityModeLog),
+		// 						EventNotifier: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt4"),
+		// 						ObservabilityMode: to.Ptr(armdeviceregistry.EventObservabilityModeLog),
 		// 				}},
 		// 				ExternalAssetID: to.Ptr("9AVD7KLPU03377981"),
 		// 				HardwareRevision: to.Ptr("1.0"),
@@ -339,15 +403,15 @@ func ExampleAssetsClient_NewListByResourceGroupPager() {
 		// 				SerialNumber: to.Ptr("12-984302-792341-8"),
 		// 				SoftwareRevision: to.Ptr("2.0"),
 		// 				UUID: to.Ptr("7824a74f-21e1-4458-ae06-604d3a241d2c"),
-		// 				Version: to.Ptr[int32](73766),
+		// 				Version: to.Ptr[int64](73766),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c77bbf822be2deaac1b690270c6cd03a52df0e37/specification/deviceregistry/resource-manager/Microsoft.DeviceRegistry/preview/2023-11-01-preview/examples/Get_Asset.json
-func ExampleAssetsClient_Get_getAnAsset() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/deviceregistry/resource-manager/Microsoft.DeviceRegistry/stable/2024-11-01/examples/Get_Asset.json
+func ExampleAssetsClient_Get_getAsset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -386,38 +450,54 @@ func ExampleAssetsClient_Get_getAnAsset() {
 	// 	},
 	// 	Properties: &armdeviceregistry.AssetProperties{
 	// 		Description: to.Ptr("This is a sample Asset"),
-	// 		AssetEndpointProfileURI: to.Ptr("https://www.example.com/myAssetEndpointProfile"),
-	// 		AssetType: to.Ptr("MyAssetType"),
-	// 		DataPoints: []*armdeviceregistry.DataPoint{
+	// 		AssetEndpointProfileRef: to.Ptr("myAssetEndpointProfile"),
+	// 		Datasets: []*armdeviceregistry.Dataset{
 	// 			{
-	// 				CapabilityID: to.Ptr("dtmi:com:example:Thermostat:__temperature;1"),
-	// 				DataPointConfiguration: to.Ptr("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}"),
-	// 				DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt1"),
-	// 				ObservabilityMode: to.Ptr(armdeviceregistry.DataPointsObservabilityModeCounter),
-	// 			},
-	// 			{
-	// 				CapabilityID: to.Ptr("dtmi:com:example:Thermostat:__pressure;1"),
-	// 				DataPointConfiguration: to.Ptr("{\"publishingInterval\":4,\"samplingInterval\":4,\"queueSize\":7}"),
-	// 				DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt2"),
-	// 				ObservabilityMode: to.Ptr(armdeviceregistry.DataPointsObservabilityModeNone),
+	// 				Name: to.Ptr("dataset1"),
+	// 				DataPoints: []*armdeviceregistry.DataPoint{
+	// 					{
+	// 						Name: to.Ptr("dataPoint1"),
+	// 						DataPointConfiguration: to.Ptr("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}"),
+	// 						DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt1"),
+	// 						ObservabilityMode: to.Ptr(armdeviceregistry.DataPointObservabilityModeCounter),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("dataPoint2"),
+	// 						DataPointConfiguration: to.Ptr("{\"publishingInterval\":4,\"samplingInterval\":4,\"queueSize\":7}"),
+	// 						DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt2"),
+	// 						ObservabilityMode: to.Ptr(armdeviceregistry.DataPointObservabilityModeNone),
+	// 				}},
+	// 				DatasetConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+	// 				Topic: &armdeviceregistry.Topic{
+	// 					Path: to.Ptr("/path/dataset1"),
+	// 					Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+	// 				},
 	// 		}},
-	// 		DefaultDataPointsConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+	// 		DefaultDatasetsConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
 	// 		DefaultEventsConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+	// 		DefaultTopic: &armdeviceregistry.Topic{
+	// 			Path: to.Ptr("/path/defaultTopic"),
+	// 			Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+	// 		},
 	// 		DisplayName: to.Ptr("AssetDisplayName"),
 	// 		DocumentationURI: to.Ptr("https://www.example.com/manual"),
 	// 		Enabled: to.Ptr(true),
 	// 		Events: []*armdeviceregistry.Event{
 	// 			{
-	// 				CapabilityID: to.Ptr("dtmi:com:example:Thermostat:__temperature;1"),
+	// 				Name: to.Ptr("event1"),
 	// 				EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}"),
 	// 				EventNotifier: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3"),
-	// 				ObservabilityMode: to.Ptr(armdeviceregistry.EventsObservabilityModeNone),
+	// 				Topic: &armdeviceregistry.Topic{
+	// 					Path: to.Ptr("/path/event1"),
+	// 					Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+	// 				},
+	// 				ObservabilityMode: to.Ptr(armdeviceregistry.EventObservabilityModeNone),
 	// 			},
 	// 			{
-	// 				CapabilityID: to.Ptr("dtmi:com:example:Thermostat:__pressure;1"),
+	// 				Name: to.Ptr("event2"),
 	// 				EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":8,\"queueSize\":4}"),
 	// 				EventNotifier: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt4"),
-	// 				ObservabilityMode: to.Ptr(armdeviceregistry.EventsObservabilityModeLog),
+	// 				ObservabilityMode: to.Ptr(armdeviceregistry.EventObservabilityModeLog),
 	// 		}},
 	// 		ExternalAssetID: to.Ptr("8ZBA6LRHU0A458969"),
 	// 		HardwareRevision: to.Ptr("1.0"),
@@ -429,13 +509,13 @@ func ExampleAssetsClient_Get_getAnAsset() {
 	// 		SerialNumber: to.Ptr("64-103816-519918-8"),
 	// 		SoftwareRevision: to.Ptr("2.0"),
 	// 		UUID: to.Ptr("0796f7c1-f2c8-44d7-9f5b-9a6f9522a85d"),
-	// 		Version: to.Ptr[int32](73766),
+	// 		Version: to.Ptr[int64](73766),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c77bbf822be2deaac1b690270c6cd03a52df0e37/specification/deviceregistry/resource-manager/Microsoft.DeviceRegistry/preview/2023-11-01-preview/examples/Get_Asset_With_SyncStatus.json
-func ExampleAssetsClient_Get_getAnAssetWithSyncStatus() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/deviceregistry/resource-manager/Microsoft.DeviceRegistry/stable/2024-11-01/examples/Get_Asset_With_SyncStatus.json
+func ExampleAssetsClient_Get_getAssetWithSyncStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -474,38 +554,54 @@ func ExampleAssetsClient_Get_getAnAssetWithSyncStatus() {
 	// 	},
 	// 	Properties: &armdeviceregistry.AssetProperties{
 	// 		Description: to.Ptr("This is a sample Asset"),
-	// 		AssetEndpointProfileURI: to.Ptr("https://www.example.com/myAssetEndpointProfile"),
-	// 		AssetType: to.Ptr("MyAssetType"),
-	// 		DataPoints: []*armdeviceregistry.DataPoint{
+	// 		AssetEndpointProfileRef: to.Ptr("myAssetEndpointProfile"),
+	// 		Datasets: []*armdeviceregistry.Dataset{
 	// 			{
-	// 				CapabilityID: to.Ptr("dtmi:com:example:Thermostat:__temperature;1"),
-	// 				DataPointConfiguration: to.Ptr("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}"),
-	// 				DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt1"),
-	// 				ObservabilityMode: to.Ptr(armdeviceregistry.DataPointsObservabilityModeCounter),
-	// 			},
-	// 			{
-	// 				CapabilityID: to.Ptr("dtmi:com:example:Thermostat:__pressure;1"),
-	// 				DataPointConfiguration: to.Ptr("{\"publishingInterval\":4,\"samplingInterval\":4,\"queueSize\":7}"),
-	// 				DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt2"),
-	// 				ObservabilityMode: to.Ptr(armdeviceregistry.DataPointsObservabilityModeNone),
+	// 				Name: to.Ptr("dataset1"),
+	// 				DataPoints: []*armdeviceregistry.DataPoint{
+	// 					{
+	// 						Name: to.Ptr("dataPoint1"),
+	// 						DataPointConfiguration: to.Ptr("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}"),
+	// 						DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt1"),
+	// 						ObservabilityMode: to.Ptr(armdeviceregistry.DataPointObservabilityModeCounter),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("dataPoint2"),
+	// 						DataPointConfiguration: to.Ptr("{\"publishingInterval\":4,\"samplingInterval\":4,\"queueSize\":7}"),
+	// 						DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt2"),
+	// 						ObservabilityMode: to.Ptr(armdeviceregistry.DataPointObservabilityModeNone),
+	// 				}},
+	// 				DatasetConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+	// 				Topic: &armdeviceregistry.Topic{
+	// 					Path: to.Ptr("/path/dataset1"),
+	// 					Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+	// 				},
 	// 		}},
-	// 		DefaultDataPointsConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+	// 		DefaultDatasetsConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
 	// 		DefaultEventsConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+	// 		DefaultTopic: &armdeviceregistry.Topic{
+	// 			Path: to.Ptr("/path/defaultTopic"),
+	// 			Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+	// 		},
 	// 		DisplayName: to.Ptr("AssetDisplayName"),
 	// 		DocumentationURI: to.Ptr("https://www.example.com/manual"),
 	// 		Enabled: to.Ptr(true),
 	// 		Events: []*armdeviceregistry.Event{
 	// 			{
-	// 				CapabilityID: to.Ptr("dtmi:com:example:Thermostat:__temperature;1"),
+	// 				Name: to.Ptr("event1"),
 	// 				EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}"),
 	// 				EventNotifier: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3"),
-	// 				ObservabilityMode: to.Ptr(armdeviceregistry.EventsObservabilityModeNone),
+	// 				Topic: &armdeviceregistry.Topic{
+	// 					Path: to.Ptr("/path/event1"),
+	// 					Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+	// 				},
+	// 				ObservabilityMode: to.Ptr(armdeviceregistry.EventObservabilityModeNone),
 	// 			},
 	// 			{
-	// 				CapabilityID: to.Ptr("dtmi:com:example:Thermostat:__pressure;1"),
+	// 				Name: to.Ptr("event2"),
 	// 				EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":8,\"queueSize\":4}"),
 	// 				EventNotifier: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt4"),
-	// 				ObservabilityMode: to.Ptr(armdeviceregistry.EventsObservabilityModeLog),
+	// 				ObservabilityMode: to.Ptr(armdeviceregistry.EventObservabilityModeLog),
 	// 		}},
 	// 		ExternalAssetID: to.Ptr("8ZBA6LRHU0A458969"),
 	// 		HardwareRevision: to.Ptr("1.0"),
@@ -517,21 +613,39 @@ func ExampleAssetsClient_Get_getAnAssetWithSyncStatus() {
 	// 		SerialNumber: to.Ptr("64-103816-519918-8"),
 	// 		SoftwareRevision: to.Ptr("2.0"),
 	// 		Status: &armdeviceregistry.AssetStatus{
+	// 			Datasets: []*armdeviceregistry.AssetStatusDataset{
+	// 				{
+	// 					Name: to.Ptr("dataset1"),
+	// 					MessageSchemaReference: &armdeviceregistry.MessageSchemaReference{
+	// 						SchemaName: to.Ptr("schema1"),
+	// 						SchemaRegistryNamespace: to.Ptr("schemans"),
+	// 						SchemaVersion: to.Ptr("1.0.0"),
+	// 					},
+	// 			}},
 	// 			Errors: []*armdeviceregistry.AssetStatusError{
 	// 				{
 	// 					Code: to.Ptr[int32](500),
 	// 					Message: to.Ptr("Internal Server Error"),
 	// 			}},
-	// 			Version: to.Ptr[int32](1),
+	// 			Events: []*armdeviceregistry.AssetStatusEvent{
+	// 				{
+	// 					Name: to.Ptr("event1"),
+	// 					MessageSchemaReference: &armdeviceregistry.MessageSchemaReference{
+	// 						SchemaName: to.Ptr("schema2"),
+	// 						SchemaRegistryNamespace: to.Ptr("schemans"),
+	// 						SchemaVersion: to.Ptr("1.0.0"),
+	// 					},
+	// 			}},
+	// 			Version: to.Ptr[int64](1),
 	// 		},
 	// 		UUID: to.Ptr("0796f7c1-f2c8-44d7-9f5b-9a6f9522a85d"),
-	// 		Version: to.Ptr[int32](73766),
+	// 		Version: to.Ptr[int64](73766),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c77bbf822be2deaac1b690270c6cd03a52df0e37/specification/deviceregistry/resource-manager/Microsoft.DeviceRegistry/preview/2023-11-01-preview/examples/Create_Asset_With_ExternalAssetId.json
-func ExampleAssetsClient_BeginCreateOrReplace_createAnAssetWithExternalAssetId() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/deviceregistry/resource-manager/Microsoft.DeviceRegistry/stable/2024-11-01/examples/Create_Asset_With_DiscoveredAssetRef.json
+func ExampleAssetsClient_BeginCreateOrReplace_createAssetWithDiscoveredAssetRefs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -552,38 +666,57 @@ func ExampleAssetsClient_BeginCreateOrReplace_createAnAssetWithExternalAssetId()
 		},
 		Properties: &armdeviceregistry.AssetProperties{
 			Description:             to.Ptr("This is a sample Asset"),
-			AssetEndpointProfileURI: to.Ptr("https://www.example.com/myAssetEndpointProfile"),
-			AssetType:               to.Ptr("MyAssetType"),
-			DataPoints: []*armdeviceregistry.DataPoint{
+			AssetEndpointProfileRef: to.Ptr("myAssetEndpointProfile"),
+			Datasets: []*armdeviceregistry.Dataset{
 				{
-					CapabilityID:           to.Ptr("dtmi:com:example:Thermostat:__temperature;1"),
-					DataPointConfiguration: to.Ptr("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}"),
-					DataSource:             to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt1"),
-					ObservabilityMode:      to.Ptr(armdeviceregistry.DataPointsObservabilityModeCounter),
-				},
-				{
-					CapabilityID:           to.Ptr("dtmi:com:example:Thermostat:__pressure;1"),
-					DataPointConfiguration: to.Ptr("{\"publishingInterval\":4,\"samplingInterval\":4,\"queueSize\":7}"),
-					DataSource:             to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt2"),
-					ObservabilityMode:      to.Ptr(armdeviceregistry.DataPointsObservabilityModeNone),
+					Name: to.Ptr("dataset1"),
+					DataPoints: []*armdeviceregistry.DataPoint{
+						{
+							Name:                   to.Ptr("dataPoint1"),
+							DataPointConfiguration: to.Ptr("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}"),
+							DataSource:             to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt1"),
+							ObservabilityMode:      to.Ptr(armdeviceregistry.DataPointObservabilityModeCounter),
+						},
+						{
+							Name:                   to.Ptr("dataPoint2"),
+							DataPointConfiguration: to.Ptr("{\"publishingInterval\":4,\"samplingInterval\":4,\"queueSize\":7}"),
+							DataSource:             to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt2"),
+							ObservabilityMode:      to.Ptr(armdeviceregistry.DataPointObservabilityModeNone),
+						}},
+					DatasetConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+					Topic: &armdeviceregistry.Topic{
+						Path:   to.Ptr("/path/dataset1"),
+						Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+					},
 				}},
-			DefaultDataPointsConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
-			DefaultEventsConfiguration:     to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
-			DisplayName:                    to.Ptr("AssetDisplayName"),
-			DocumentationURI:               to.Ptr("https://www.example.com/manual"),
-			Enabled:                        to.Ptr(true),
+			DefaultDatasetsConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+			DefaultEventsConfiguration:   to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+			DefaultTopic: &armdeviceregistry.Topic{
+				Path:   to.Ptr("/path/defaultTopic"),
+				Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+			},
+			DiscoveredAssetRefs: []*string{
+				to.Ptr("discoveredAsset1"),
+				to.Ptr("discoveredAsset2")},
+			DisplayName:      to.Ptr("AssetDisplayName"),
+			DocumentationURI: to.Ptr("https://www.example.com/manual"),
+			Enabled:          to.Ptr(true),
 			Events: []*armdeviceregistry.Event{
 				{
-					CapabilityID:       to.Ptr("dtmi:com:example:Thermostat:__temperature;1"),
+					Name:               to.Ptr("event1"),
 					EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}"),
 					EventNotifier:      to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3"),
-					ObservabilityMode:  to.Ptr(armdeviceregistry.EventsObservabilityModeNone),
+					Topic: &armdeviceregistry.Topic{
+						Path:   to.Ptr("/path/event1"),
+						Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+					},
+					ObservabilityMode: to.Ptr(armdeviceregistry.EventObservabilityModeNone),
 				},
 				{
-					CapabilityID:       to.Ptr("dtmi:com:example:Thermostat:__pressure;1"),
+					Name:               to.Ptr("event2"),
 					EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":8,\"queueSize\":4}"),
 					EventNotifier:      to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt4"),
-					ObservabilityMode:  to.Ptr(armdeviceregistry.EventsObservabilityModeLog),
+					ObservabilityMode:  to.Ptr(armdeviceregistry.EventObservabilityModeLog),
 				}},
 			ExternalAssetID:  to.Ptr("8ZBA6LRHU0A458969"),
 			HardwareRevision: to.Ptr("1.0"),
@@ -627,56 +760,75 @@ func ExampleAssetsClient_BeginCreateOrReplace_createAnAssetWithExternalAssetId()
 	// 	},
 	// 	Properties: &armdeviceregistry.AssetProperties{
 	// 		Description: to.Ptr("This is a sample Asset"),
-	// 		AssetEndpointProfileURI: to.Ptr("https://www.example.com/myAssetEndpointProfile"),
-	// 		AssetType: to.Ptr("MyAssetType"),
-	// 		DataPoints: []*armdeviceregistry.DataPoint{
+	// 		AssetEndpointProfileRef: to.Ptr("myAssetEndpointProfile"),
+	// 		Datasets: []*armdeviceregistry.Dataset{
 	// 			{
-	// 				CapabilityID: to.Ptr("dtmi:com:example:Thermostat:__temperature;1"),
-	// 				DataPointConfiguration: to.Ptr("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}"),
-	// 				DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt1"),
-	// 				ObservabilityMode: to.Ptr(armdeviceregistry.DataPointsObservabilityModeCounter),
-	// 			},
-	// 			{
-	// 				CapabilityID: to.Ptr("dtmi:com:example:Thermostat:__pressure;1"),
-	// 				DataPointConfiguration: to.Ptr("{\"publishingInterval\":4,\"samplingInterval\":4,\"queueSize\":7}"),
-	// 				DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt2"),
-	// 				ObservabilityMode: to.Ptr(armdeviceregistry.DataPointsObservabilityModeNone),
+	// 				Name: to.Ptr("dataset1"),
+	// 				DataPoints: []*armdeviceregistry.DataPoint{
+	// 					{
+	// 						Name: to.Ptr("dataPoint1"),
+	// 						DataPointConfiguration: to.Ptr("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}"),
+	// 						DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt1"),
+	// 						ObservabilityMode: to.Ptr(armdeviceregistry.DataPointObservabilityModeCounter),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("dataPoint2"),
+	// 						DataPointConfiguration: to.Ptr("{\"publishingInterval\":4,\"samplingInterval\":4,\"queueSize\":7}"),
+	// 						DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt2"),
+	// 						ObservabilityMode: to.Ptr(armdeviceregistry.DataPointObservabilityModeNone),
+	// 				}},
+	// 				DatasetConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+	// 				Topic: &armdeviceregistry.Topic{
+	// 					Path: to.Ptr("/path/dataset1"),
+	// 					Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+	// 				},
 	// 		}},
-	// 		DefaultDataPointsConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+	// 		DefaultDatasetsConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
 	// 		DefaultEventsConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
-	// 		DisplayName: to.Ptr("AssetDisplayName"),
-	// 		DocumentationURI: to.Ptr("https://www.example.com/manual"),
-	// 		Enabled: to.Ptr(true),
-	// 		Events: []*armdeviceregistry.Event{
-	// 			{
-	// 				CapabilityID: to.Ptr("dtmi:com:example:Thermostat:__temperature;1"),
-	// 				EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}"),
-	// 				EventNotifier: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3"),
-	// 				ObservabilityMode: to.Ptr(armdeviceregistry.EventsObservabilityModeNone),
-	// 			},
-	// 			{
-	// 				CapabilityID: to.Ptr("dtmi:com:example:Thermostat:__pressure;1"),
-	// 				EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":8,\"queueSize\":4}"),
-	// 				EventNotifier: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt4"),
-	// 				ObservabilityMode: to.Ptr(armdeviceregistry.EventsObservabilityModeLog),
-	// 		}},
-	// 		ExternalAssetID: to.Ptr("8ZBA6LRHU0A458969"),
-	// 		HardwareRevision: to.Ptr("1.0"),
-	// 		Manufacturer: to.Ptr("Contoso"),
-	// 		ManufacturerURI: to.Ptr("https://www.contoso.com/manufacturerUri"),
-	// 		Model: to.Ptr("ContosoModel"),
-	// 		ProductCode: to.Ptr("SA34VDG"),
-	// 		ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
-	// 		SerialNumber: to.Ptr("64-103816-519918-8"),
-	// 		SoftwareRevision: to.Ptr("2.0"),
-	// 		UUID: to.Ptr("0796f7c1-f2c8-44d7-9f5b-9a6f9522a85d"),
-	// 		Version: to.Ptr[int32](73766),
-	// 	},
-	// }
+	// 		DefaultTopic: &armdeviceregistry.Topic{
+	// 			Path: to.Ptr("/path/defaultTopic"),
+	// 			Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+	// 		},
+	// 		DiscoveredAssetRefs: []*string{
+	// 			to.Ptr("discoveredAsset1"),
+	// 			to.Ptr("discoveredAsset2")},
+	// 			DisplayName: to.Ptr("AssetDisplayName"),
+	// 			DocumentationURI: to.Ptr("https://www.example.com/manual"),
+	// 			Enabled: to.Ptr(true),
+	// 			Events: []*armdeviceregistry.Event{
+	// 				{
+	// 					Name: to.Ptr("event1"),
+	// 					EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}"),
+	// 					EventNotifier: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3"),
+	// 					Topic: &armdeviceregistry.Topic{
+	// 						Path: to.Ptr("/path/event1"),
+	// 						Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+	// 					},
+	// 					ObservabilityMode: to.Ptr(armdeviceregistry.EventObservabilityModeNone),
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("event2"),
+	// 					EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":8,\"queueSize\":4}"),
+	// 					EventNotifier: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt4"),
+	// 					ObservabilityMode: to.Ptr(armdeviceregistry.EventObservabilityModeLog),
+	// 			}},
+	// 			ExternalAssetID: to.Ptr("8ZBA6LRHU0A458969"),
+	// 			HardwareRevision: to.Ptr("1.0"),
+	// 			Manufacturer: to.Ptr("Contoso"),
+	// 			ManufacturerURI: to.Ptr("https://www.contoso.com/manufacturerUri"),
+	// 			Model: to.Ptr("ContosoModel"),
+	// 			ProductCode: to.Ptr("SA34VDG"),
+	// 			ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
+	// 			SerialNumber: to.Ptr("64-103816-519918-8"),
+	// 			SoftwareRevision: to.Ptr("2.0"),
+	// 			UUID: to.Ptr("0796f7c1-f2c8-44d7-9f5b-9a6f9522a85d"),
+	// 			Version: to.Ptr[int64](73766),
+	// 		},
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c77bbf822be2deaac1b690270c6cd03a52df0e37/specification/deviceregistry/resource-manager/Microsoft.DeviceRegistry/preview/2023-11-01-preview/examples/Create_Asset_Without_DisplayName.json
-func ExampleAssetsClient_BeginCreateOrReplace_createAnAssetWithoutDisplayName() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/deviceregistry/resource-manager/Microsoft.DeviceRegistry/stable/2024-11-01/examples/Create_Asset_With_ExternalAssetId.json
+func ExampleAssetsClient_BeginCreateOrReplace_createAssetWithExternalAssetId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -697,37 +849,54 @@ func ExampleAssetsClient_BeginCreateOrReplace_createAnAssetWithoutDisplayName() 
 		},
 		Properties: &armdeviceregistry.AssetProperties{
 			Description:             to.Ptr("This is a sample Asset"),
-			AssetEndpointProfileURI: to.Ptr("https://www.example.com/myAssetEndpointProfile"),
-			AssetType:               to.Ptr("MyAssetType"),
-			DataPoints: []*armdeviceregistry.DataPoint{
+			AssetEndpointProfileRef: to.Ptr("myAssetEndpointProfile"),
+			Datasets: []*armdeviceregistry.Dataset{
 				{
-					CapabilityID:           to.Ptr("dtmi:com:example:Thermostat:__temperature;1"),
-					DataPointConfiguration: to.Ptr("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}"),
-					DataSource:             to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt1"),
-					ObservabilityMode:      to.Ptr(armdeviceregistry.DataPointsObservabilityModeCounter),
-				},
-				{
-					CapabilityID:           to.Ptr("dtmi:com:example:Thermostat:__pressure;1"),
-					DataPointConfiguration: to.Ptr("{\"publishingInterval\":4,\"samplingInterval\":4,\"queueSize\":7}"),
-					DataSource:             to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt2"),
-					ObservabilityMode:      to.Ptr(armdeviceregistry.DataPointsObservabilityModeNone),
+					Name: to.Ptr("dataset1"),
+					DataPoints: []*armdeviceregistry.DataPoint{
+						{
+							Name:                   to.Ptr("dataPoint1"),
+							DataPointConfiguration: to.Ptr("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}"),
+							DataSource:             to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt1"),
+							ObservabilityMode:      to.Ptr(armdeviceregistry.DataPointObservabilityModeCounter),
+						},
+						{
+							Name:                   to.Ptr("dataPoint2"),
+							DataPointConfiguration: to.Ptr("{\"publishingInterval\":4,\"samplingInterval\":4,\"queueSize\":7}"),
+							DataSource:             to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt2"),
+							ObservabilityMode:      to.Ptr(armdeviceregistry.DataPointObservabilityModeNone),
+						}},
+					DatasetConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+					Topic: &armdeviceregistry.Topic{
+						Path:   to.Ptr("/path/dataset1"),
+						Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+					},
 				}},
-			DefaultDataPointsConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
-			DefaultEventsConfiguration:     to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
-			DocumentationURI:               to.Ptr("https://www.example.com/manual"),
-			Enabled:                        to.Ptr(true),
+			DefaultDatasetsConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+			DefaultEventsConfiguration:   to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+			DefaultTopic: &armdeviceregistry.Topic{
+				Path:   to.Ptr("/path/defaultTopic"),
+				Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+			},
+			DisplayName:      to.Ptr("AssetDisplayName"),
+			DocumentationURI: to.Ptr("https://www.example.com/manual"),
+			Enabled:          to.Ptr(true),
 			Events: []*armdeviceregistry.Event{
 				{
-					CapabilityID:       to.Ptr("dtmi:com:example:Thermostat:__temperature;1"),
+					Name:               to.Ptr("event1"),
 					EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}"),
 					EventNotifier:      to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3"),
-					ObservabilityMode:  to.Ptr(armdeviceregistry.EventsObservabilityModeNone),
+					Topic: &armdeviceregistry.Topic{
+						Path:   to.Ptr("/path/event1"),
+						Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+					},
+					ObservabilityMode: to.Ptr(armdeviceregistry.EventObservabilityModeNone),
 				},
 				{
-					CapabilityID:       to.Ptr("dtmi:com:example:Thermostat:__pressure;1"),
+					Name:               to.Ptr("event2"),
 					EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":8,\"queueSize\":4}"),
 					EventNotifier:      to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt4"),
-					ObservabilityMode:  to.Ptr(armdeviceregistry.EventsObservabilityModeLog),
+					ObservabilityMode:  to.Ptr(armdeviceregistry.EventObservabilityModeLog),
 				}},
 			ExternalAssetID:  to.Ptr("8ZBA6LRHU0A458969"),
 			HardwareRevision: to.Ptr("1.0"),
@@ -771,38 +940,54 @@ func ExampleAssetsClient_BeginCreateOrReplace_createAnAssetWithoutDisplayName() 
 	// 	},
 	// 	Properties: &armdeviceregistry.AssetProperties{
 	// 		Description: to.Ptr("This is a sample Asset"),
-	// 		AssetEndpointProfileURI: to.Ptr("https://www.example.com/myAssetEndpointProfile"),
-	// 		AssetType: to.Ptr("MyAssetType"),
-	// 		DataPoints: []*armdeviceregistry.DataPoint{
+	// 		AssetEndpointProfileRef: to.Ptr("myAssetEndpointProfile"),
+	// 		Datasets: []*armdeviceregistry.Dataset{
 	// 			{
-	// 				CapabilityID: to.Ptr("dtmi:com:example:Thermostat:__temperature;1"),
-	// 				DataPointConfiguration: to.Ptr("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}"),
-	// 				DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt1"),
-	// 				ObservabilityMode: to.Ptr(armdeviceregistry.DataPointsObservabilityModeCounter),
-	// 			},
-	// 			{
-	// 				CapabilityID: to.Ptr("dtmi:com:example:Thermostat:__pressure;1"),
-	// 				DataPointConfiguration: to.Ptr("{\"publishingInterval\":4,\"samplingInterval\":4,\"queueSize\":7}"),
-	// 				DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt2"),
-	// 				ObservabilityMode: to.Ptr(armdeviceregistry.DataPointsObservabilityModeNone),
+	// 				Name: to.Ptr("dataset1"),
+	// 				DataPoints: []*armdeviceregistry.DataPoint{
+	// 					{
+	// 						Name: to.Ptr("dataPoint1"),
+	// 						DataPointConfiguration: to.Ptr("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}"),
+	// 						DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt1"),
+	// 						ObservabilityMode: to.Ptr(armdeviceregistry.DataPointObservabilityModeCounter),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("dataPoint2"),
+	// 						DataPointConfiguration: to.Ptr("{\"publishingInterval\":4,\"samplingInterval\":4,\"queueSize\":7}"),
+	// 						DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt2"),
+	// 						ObservabilityMode: to.Ptr(armdeviceregistry.DataPointObservabilityModeNone),
+	// 				}},
+	// 				DatasetConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+	// 				Topic: &armdeviceregistry.Topic{
+	// 					Path: to.Ptr("/path/dataset1"),
+	// 					Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+	// 				},
 	// 		}},
-	// 		DefaultDataPointsConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+	// 		DefaultDatasetsConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
 	// 		DefaultEventsConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
-	// 		DisplayName: to.Ptr("myAsset"),
+	// 		DefaultTopic: &armdeviceregistry.Topic{
+	// 			Path: to.Ptr("/path/defaultTopic"),
+	// 			Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+	// 		},
+	// 		DisplayName: to.Ptr("AssetDisplayName"),
 	// 		DocumentationURI: to.Ptr("https://www.example.com/manual"),
 	// 		Enabled: to.Ptr(true),
 	// 		Events: []*armdeviceregistry.Event{
 	// 			{
-	// 				CapabilityID: to.Ptr("dtmi:com:example:Thermostat:__temperature;1"),
+	// 				Name: to.Ptr("event1"),
 	// 				EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}"),
 	// 				EventNotifier: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3"),
-	// 				ObservabilityMode: to.Ptr(armdeviceregistry.EventsObservabilityModeNone),
+	// 				Topic: &armdeviceregistry.Topic{
+	// 					Path: to.Ptr("/path/event1"),
+	// 					Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+	// 				},
+	// 				ObservabilityMode: to.Ptr(armdeviceregistry.EventObservabilityModeNone),
 	// 			},
 	// 			{
-	// 				CapabilityID: to.Ptr("dtmi:com:example:Thermostat:__pressure;1"),
+	// 				Name: to.Ptr("event2"),
 	// 				EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":8,\"queueSize\":4}"),
 	// 				EventNotifier: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt4"),
-	// 				ObservabilityMode: to.Ptr(armdeviceregistry.EventsObservabilityModeLog),
+	// 				ObservabilityMode: to.Ptr(armdeviceregistry.EventObservabilityModeLog),
 	// 		}},
 	// 		ExternalAssetID: to.Ptr("8ZBA6LRHU0A458969"),
 	// 		HardwareRevision: to.Ptr("1.0"),
@@ -814,13 +999,13 @@ func ExampleAssetsClient_BeginCreateOrReplace_createAnAssetWithoutDisplayName() 
 	// 		SerialNumber: to.Ptr("64-103816-519918-8"),
 	// 		SoftwareRevision: to.Ptr("2.0"),
 	// 		UUID: to.Ptr("0796f7c1-f2c8-44d7-9f5b-9a6f9522a85d"),
-	// 		Version: to.Ptr[int32](73766),
+	// 		Version: to.Ptr[int64](73766),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c77bbf822be2deaac1b690270c6cd03a52df0e37/specification/deviceregistry/resource-manager/Microsoft.DeviceRegistry/preview/2023-11-01-preview/examples/Create_Asset_Without_ExternalAssetId.json
-func ExampleAssetsClient_BeginCreateOrReplace_createAnAssetWithoutExternalAssetId() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/deviceregistry/resource-manager/Microsoft.DeviceRegistry/stable/2024-11-01/examples/Create_Asset_Without_DisplayName.json
+func ExampleAssetsClient_BeginCreateOrReplace_createAssetWithoutDisplayName() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -841,38 +1026,230 @@ func ExampleAssetsClient_BeginCreateOrReplace_createAnAssetWithoutExternalAssetI
 		},
 		Properties: &armdeviceregistry.AssetProperties{
 			Description:             to.Ptr("This is a sample Asset"),
-			AssetEndpointProfileURI: to.Ptr("https://www.example.com/myAssetEndpointProfile"),
-			AssetType:               to.Ptr("MyAssetType"),
-			DataPoints: []*armdeviceregistry.DataPoint{
+			AssetEndpointProfileRef: to.Ptr("myAssetEndpointProfile"),
+			Datasets: []*armdeviceregistry.Dataset{
 				{
-					CapabilityID:           to.Ptr("dtmi:com:example:Thermostat:__temperature;1"),
-					DataPointConfiguration: to.Ptr("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}"),
-					DataSource:             to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt1"),
-					ObservabilityMode:      to.Ptr(armdeviceregistry.DataPointsObservabilityModeCounter),
-				},
-				{
-					CapabilityID:           to.Ptr("dtmi:com:example:Thermostat:__pressure;1"),
-					DataPointConfiguration: to.Ptr("{\"publishingInterval\":4,\"samplingInterval\":4,\"queueSize\":7}"),
-					DataSource:             to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt2"),
-					ObservabilityMode:      to.Ptr(armdeviceregistry.DataPointsObservabilityModeNone),
+					Name: to.Ptr("dataset1"),
+					DataPoints: []*armdeviceregistry.DataPoint{
+						{
+							Name:                   to.Ptr("dataPoint1"),
+							DataPointConfiguration: to.Ptr("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}"),
+							DataSource:             to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt1"),
+							ObservabilityMode:      to.Ptr(armdeviceregistry.DataPointObservabilityModeCounter),
+						},
+						{
+							Name:                   to.Ptr("dataPoint2"),
+							DataPointConfiguration: to.Ptr("{\"publishingInterval\":4,\"samplingInterval\":4,\"queueSize\":7}"),
+							DataSource:             to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt2"),
+							ObservabilityMode:      to.Ptr(armdeviceregistry.DataPointObservabilityModeNone),
+						}},
+					DatasetConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+					Topic: &armdeviceregistry.Topic{
+						Path:   to.Ptr("/path/dataset1"),
+						Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+					},
 				}},
-			DefaultDataPointsConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
-			DefaultEventsConfiguration:     to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
-			DisplayName:                    to.Ptr("AssetDisplayName"),
-			DocumentationURI:               to.Ptr("https://www.example.com/manual"),
-			Enabled:                        to.Ptr(true),
+			DefaultDatasetsConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+			DefaultEventsConfiguration:   to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+			DefaultTopic: &armdeviceregistry.Topic{
+				Path:   to.Ptr("/path/defaultTopic"),
+				Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+			},
+			DocumentationURI: to.Ptr("https://www.example.com/manual"),
+			Enabled:          to.Ptr(true),
 			Events: []*armdeviceregistry.Event{
 				{
-					CapabilityID:       to.Ptr("dtmi:com:example:Thermostat:__temperature;1"),
+					Name:               to.Ptr("event1"),
 					EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}"),
 					EventNotifier:      to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3"),
-					ObservabilityMode:  to.Ptr(armdeviceregistry.EventsObservabilityModeNone),
+					Topic: &armdeviceregistry.Topic{
+						Path:   to.Ptr("/path/event1"),
+						Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+					},
+					ObservabilityMode: to.Ptr(armdeviceregistry.EventObservabilityModeNone),
 				},
 				{
-					CapabilityID:       to.Ptr("dtmi:com:example:Thermostat:__pressure;1"),
+					Name:               to.Ptr("event2"),
 					EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":8,\"queueSize\":4}"),
 					EventNotifier:      to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt4"),
-					ObservabilityMode:  to.Ptr(armdeviceregistry.EventsObservabilityModeLog),
+					ObservabilityMode:  to.Ptr(armdeviceregistry.EventObservabilityModeLog),
+				}},
+			ExternalAssetID:  to.Ptr("8ZBA6LRHU0A458969"),
+			HardwareRevision: to.Ptr("1.0"),
+			Manufacturer:     to.Ptr("Contoso"),
+			ManufacturerURI:  to.Ptr("https://www.contoso.com/manufacturerUri"),
+			Model:            to.Ptr("ContosoModel"),
+			ProductCode:      to.Ptr("SA34VDG"),
+			SerialNumber:     to.Ptr("64-103816-519918-8"),
+			SoftwareRevision: to.Ptr("2.0"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Asset = armdeviceregistry.Asset{
+	// 	Name: to.Ptr("my-asset"),
+	// 	Type: to.Ptr("Microsoft.DeviceRegistry/assets"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/assets/my-asset"),
+	// 	SystemData: &armdeviceregistry.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T00:36:43.251Z"); return t}()),
+	// 		CreatedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
+	// 		CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T01:37:16.092Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
+	// 		LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
+	// 	},
+	// 	Location: to.Ptr("West Europe"),
+	// 	Tags: map[string]*string{
+	// 		"site": to.Ptr("building-1"),
+	// 	},
+	// 	ExtendedLocation: &armdeviceregistry.ExtendedLocation{
+	// 		Name: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/microsoft.extendedlocation/customlocations/location1"),
+	// 		Type: to.Ptr("CustomLocation"),
+	// 	},
+	// 	Properties: &armdeviceregistry.AssetProperties{
+	// 		Description: to.Ptr("This is a sample Asset"),
+	// 		AssetEndpointProfileRef: to.Ptr("myAssetEndpointProfile"),
+	// 		Datasets: []*armdeviceregistry.Dataset{
+	// 			{
+	// 				Name: to.Ptr("dataset1"),
+	// 				DataPoints: []*armdeviceregistry.DataPoint{
+	// 					{
+	// 						Name: to.Ptr("dataPoint1"),
+	// 						DataPointConfiguration: to.Ptr("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}"),
+	// 						DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt1"),
+	// 						ObservabilityMode: to.Ptr(armdeviceregistry.DataPointObservabilityModeCounter),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("dataPoint2"),
+	// 						DataPointConfiguration: to.Ptr("{\"publishingInterval\":4,\"samplingInterval\":4,\"queueSize\":7}"),
+	// 						DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt2"),
+	// 						ObservabilityMode: to.Ptr(armdeviceregistry.DataPointObservabilityModeNone),
+	// 				}},
+	// 				DatasetConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+	// 				Topic: &armdeviceregistry.Topic{
+	// 					Path: to.Ptr("/path/dataset1"),
+	// 					Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+	// 				},
+	// 		}},
+	// 		DefaultDatasetsConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+	// 		DefaultEventsConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+	// 		DefaultTopic: &armdeviceregistry.Topic{
+	// 			Path: to.Ptr("/path/defaultTopic"),
+	// 			Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+	// 		},
+	// 		DisplayName: to.Ptr("my-asset"),
+	// 		DocumentationURI: to.Ptr("https://www.example.com/manual"),
+	// 		Enabled: to.Ptr(true),
+	// 		Events: []*armdeviceregistry.Event{
+	// 			{
+	// 				Name: to.Ptr("event1"),
+	// 				EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}"),
+	// 				EventNotifier: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3"),
+	// 				Topic: &armdeviceregistry.Topic{
+	// 					Path: to.Ptr("/path/event1"),
+	// 					Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+	// 				},
+	// 				ObservabilityMode: to.Ptr(armdeviceregistry.EventObservabilityModeNone),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("event2"),
+	// 				EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":8,\"queueSize\":4}"),
+	// 				EventNotifier: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt4"),
+	// 				ObservabilityMode: to.Ptr(armdeviceregistry.EventObservabilityModeLog),
+	// 		}},
+	// 		ExternalAssetID: to.Ptr("8ZBA6LRHU0A458969"),
+	// 		HardwareRevision: to.Ptr("1.0"),
+	// 		Manufacturer: to.Ptr("Contoso"),
+	// 		ManufacturerURI: to.Ptr("https://www.contoso.com/manufacturerUri"),
+	// 		Model: to.Ptr("ContosoModel"),
+	// 		ProductCode: to.Ptr("SA34VDG"),
+	// 		ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
+	// 		SerialNumber: to.Ptr("64-103816-519918-8"),
+	// 		SoftwareRevision: to.Ptr("2.0"),
+	// 		UUID: to.Ptr("0796f7c1-f2c8-44d7-9f5b-9a6f9522a85d"),
+	// 		Version: to.Ptr[int64](73766),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/deviceregistry/resource-manager/Microsoft.DeviceRegistry/stable/2024-11-01/examples/Create_Asset_Without_ExternalAssetId.json
+func ExampleAssetsClient_BeginCreateOrReplace_createAssetWithoutExternalAssetId() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdeviceregistry.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAssetsClient().BeginCreateOrReplace(ctx, "myResourceGroup", "my-asset", armdeviceregistry.Asset{
+		Location: to.Ptr("West Europe"),
+		Tags: map[string]*string{
+			"site": to.Ptr("building-1"),
+		},
+		ExtendedLocation: &armdeviceregistry.ExtendedLocation{
+			Name: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/microsoft.extendedlocation/customlocations/location1"),
+			Type: to.Ptr("CustomLocation"),
+		},
+		Properties: &armdeviceregistry.AssetProperties{
+			Description:             to.Ptr("This is a sample Asset"),
+			AssetEndpointProfileRef: to.Ptr("myAssetEndpointProfile"),
+			Datasets: []*armdeviceregistry.Dataset{
+				{
+					Name: to.Ptr("dataset1"),
+					DataPoints: []*armdeviceregistry.DataPoint{
+						{
+							Name:                   to.Ptr("dataPoint1"),
+							DataPointConfiguration: to.Ptr("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}"),
+							DataSource:             to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt1"),
+							ObservabilityMode:      to.Ptr(armdeviceregistry.DataPointObservabilityModeCounter),
+						},
+						{
+							Name:                   to.Ptr("dataPoint2"),
+							DataPointConfiguration: to.Ptr("{\"publishingInterval\":4,\"samplingInterval\":4,\"queueSize\":7}"),
+							DataSource:             to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt2"),
+							ObservabilityMode:      to.Ptr(armdeviceregistry.DataPointObservabilityModeNone),
+						}},
+					DatasetConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+					Topic: &armdeviceregistry.Topic{
+						Path:   to.Ptr("/path/dataset1"),
+						Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+					},
+				}},
+			DefaultDatasetsConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+			DefaultEventsConfiguration:   to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+			DefaultTopic: &armdeviceregistry.Topic{
+				Path:   to.Ptr("/path/defaultTopic"),
+				Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+			},
+			DisplayName:      to.Ptr("AssetDisplayName"),
+			DocumentationURI: to.Ptr("https://www.example.com/manual"),
+			Enabled:          to.Ptr(true),
+			Events: []*armdeviceregistry.Event{
+				{
+					Name:               to.Ptr("event1"),
+					EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}"),
+					EventNotifier:      to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3"),
+					Topic: &armdeviceregistry.Topic{
+						Path:   to.Ptr("/path/event1"),
+						Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+					},
+					ObservabilityMode: to.Ptr(armdeviceregistry.EventObservabilityModeNone),
+				},
+				{
+					Name:               to.Ptr("event2"),
+					EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":8,\"queueSize\":4}"),
+					EventNotifier:      to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt4"),
+					ObservabilityMode:  to.Ptr(armdeviceregistry.EventObservabilityModeLog),
 				}},
 			HardwareRevision: to.Ptr("1.0"),
 			Manufacturer:     to.Ptr("Contoso"),
@@ -915,38 +1292,54 @@ func ExampleAssetsClient_BeginCreateOrReplace_createAnAssetWithoutExternalAssetI
 	// 	},
 	// 	Properties: &armdeviceregistry.AssetProperties{
 	// 		Description: to.Ptr("This is a sample Asset"),
-	// 		AssetEndpointProfileURI: to.Ptr("https://www.example.com/myAssetEndpointProfile"),
-	// 		AssetType: to.Ptr("MyAssetType"),
-	// 		DataPoints: []*armdeviceregistry.DataPoint{
+	// 		AssetEndpointProfileRef: to.Ptr("myAssetEndpointProfile"),
+	// 		Datasets: []*armdeviceregistry.Dataset{
 	// 			{
-	// 				CapabilityID: to.Ptr("dtmi:com:example:Thermostat:__temperature;1"),
-	// 				DataPointConfiguration: to.Ptr("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}"),
-	// 				DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt1"),
-	// 				ObservabilityMode: to.Ptr(armdeviceregistry.DataPointsObservabilityModeCounter),
-	// 			},
-	// 			{
-	// 				CapabilityID: to.Ptr("dtmi:com:example:Thermostat:__pressure;1"),
-	// 				DataPointConfiguration: to.Ptr("{\"publishingInterval\":4,\"samplingInterval\":4,\"queueSize\":7}"),
-	// 				DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt2"),
-	// 				ObservabilityMode: to.Ptr(armdeviceregistry.DataPointsObservabilityModeNone),
+	// 				Name: to.Ptr("dataset1"),
+	// 				DataPoints: []*armdeviceregistry.DataPoint{
+	// 					{
+	// 						Name: to.Ptr("dataPoint1"),
+	// 						DataPointConfiguration: to.Ptr("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}"),
+	// 						DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt1"),
+	// 						ObservabilityMode: to.Ptr(armdeviceregistry.DataPointObservabilityModeCounter),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("dataPoint2"),
+	// 						DataPointConfiguration: to.Ptr("{\"publishingInterval\":4,\"samplingInterval\":4,\"queueSize\":7}"),
+	// 						DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt2"),
+	// 						ObservabilityMode: to.Ptr(armdeviceregistry.DataPointObservabilityModeNone),
+	// 				}},
+	// 				DatasetConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+	// 				Topic: &armdeviceregistry.Topic{
+	// 					Path: to.Ptr("/path/dataset1"),
+	// 					Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+	// 				},
 	// 		}},
-	// 		DefaultDataPointsConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+	// 		DefaultDatasetsConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
 	// 		DefaultEventsConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+	// 		DefaultTopic: &armdeviceregistry.Topic{
+	// 			Path: to.Ptr("/path/defaultTopic"),
+	// 			Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+	// 		},
 	// 		DisplayName: to.Ptr("AssetDisplayName"),
 	// 		DocumentationURI: to.Ptr("https://www.example.com/manual"),
 	// 		Enabled: to.Ptr(true),
 	// 		Events: []*armdeviceregistry.Event{
 	// 			{
-	// 				CapabilityID: to.Ptr("dtmi:com:example:Thermostat:__temperature;1"),
+	// 				Name: to.Ptr("event1"),
 	// 				EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}"),
 	// 				EventNotifier: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3"),
-	// 				ObservabilityMode: to.Ptr(armdeviceregistry.EventsObservabilityModeNone),
+	// 				Topic: &armdeviceregistry.Topic{
+	// 					Path: to.Ptr("/path/event1"),
+	// 					Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+	// 				},
+	// 				ObservabilityMode: to.Ptr(armdeviceregistry.EventObservabilityModeNone),
 	// 			},
 	// 			{
-	// 				CapabilityID: to.Ptr("dtmi:com:example:Thermostat:__pressure;1"),
+	// 				Name: to.Ptr("event2"),
 	// 				EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":8,\"queueSize\":4}"),
 	// 				EventNotifier: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt4"),
-	// 				ObservabilityMode: to.Ptr(armdeviceregistry.EventsObservabilityModeLog),
+	// 				ObservabilityMode: to.Ptr(armdeviceregistry.EventObservabilityModeLog),
 	// 		}},
 	// 		ExternalAssetID: to.Ptr("0796f7c1-f2c8-44d7-9f5b-9a6f9522a85d"),
 	// 		HardwareRevision: to.Ptr("1.0"),
@@ -958,12 +1351,12 @@ func ExampleAssetsClient_BeginCreateOrReplace_createAnAssetWithoutExternalAssetI
 	// 		SerialNumber: to.Ptr("64-103816-519918-8"),
 	// 		SoftwareRevision: to.Ptr("2.0"),
 	// 		UUID: to.Ptr("0796f7c1-f2c8-44d7-9f5b-9a6f9522a85d"),
-	// 		Version: to.Ptr[int32](73766),
+	// 		Version: to.Ptr[int64](73766),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c77bbf822be2deaac1b690270c6cd03a52df0e37/specification/deviceregistry/resource-manager/Microsoft.DeviceRegistry/preview/2023-11-01-preview/examples/Update_Asset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/deviceregistry/resource-manager/Microsoft.DeviceRegistry/stable/2024-11-01/examples/Update_Asset.json
 func ExampleAssetsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1012,38 +1405,54 @@ func ExampleAssetsClient_BeginUpdate() {
 	// 	},
 	// 	Properties: &armdeviceregistry.AssetProperties{
 	// 		Description: to.Ptr("This is a sample Asset"),
-	// 		AssetEndpointProfileURI: to.Ptr("https://www.example.com/myAssetEndpointProfile"),
-	// 		AssetType: to.Ptr("MyAssetType"),
-	// 		DataPoints: []*armdeviceregistry.DataPoint{
+	// 		AssetEndpointProfileRef: to.Ptr("myAssetEndpointProfile"),
+	// 		Datasets: []*armdeviceregistry.Dataset{
 	// 			{
-	// 				CapabilityID: to.Ptr("dtmi:com:example:Thermostat:__temperature;1"),
-	// 				DataPointConfiguration: to.Ptr("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}"),
-	// 				DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt1"),
-	// 				ObservabilityMode: to.Ptr(armdeviceregistry.DataPointsObservabilityModeCounter),
-	// 			},
-	// 			{
-	// 				CapabilityID: to.Ptr("dtmi:com:example:Thermostat:__pressure;1"),
-	// 				DataPointConfiguration: to.Ptr("{\"publishingInterval\":4,\"samplingInterval\":4,\"queueSize\":7}"),
-	// 				DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt2"),
-	// 				ObservabilityMode: to.Ptr(armdeviceregistry.DataPointsObservabilityModeNone),
+	// 				Name: to.Ptr("dataset1"),
+	// 				DataPoints: []*armdeviceregistry.DataPoint{
+	// 					{
+	// 						Name: to.Ptr("dataPoint1"),
+	// 						DataPointConfiguration: to.Ptr("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}"),
+	// 						DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt1"),
+	// 						ObservabilityMode: to.Ptr(armdeviceregistry.DataPointObservabilityModeCounter),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("dataPoint2"),
+	// 						DataPointConfiguration: to.Ptr("{\"publishingInterval\":4,\"samplingInterval\":4,\"queueSize\":7}"),
+	// 						DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt2"),
+	// 						ObservabilityMode: to.Ptr(armdeviceregistry.DataPointObservabilityModeNone),
+	// 				}},
+	// 				DatasetConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+	// 				Topic: &armdeviceregistry.Topic{
+	// 					Path: to.Ptr("/path/dataset1"),
+	// 					Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+	// 				},
 	// 		}},
-	// 		DefaultDataPointsConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+	// 		DefaultDatasetsConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
 	// 		DefaultEventsConfiguration: to.Ptr("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}"),
+	// 		DefaultTopic: &armdeviceregistry.Topic{
+	// 			Path: to.Ptr("/path/defaultTopic"),
+	// 			Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+	// 		},
 	// 		DisplayName: to.Ptr("NewAssetDisplayName"),
 	// 		DocumentationURI: to.Ptr("https://www.example.com/manual"),
 	// 		Enabled: to.Ptr(true),
 	// 		Events: []*armdeviceregistry.Event{
 	// 			{
-	// 				CapabilityID: to.Ptr("dtmi:com:example:Thermostat:__temperature;1"),
+	// 				Name: to.Ptr("event1"),
 	// 				EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}"),
 	// 				EventNotifier: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3"),
-	// 				ObservabilityMode: to.Ptr(armdeviceregistry.EventsObservabilityModeNone),
+	// 				Topic: &armdeviceregistry.Topic{
+	// 					Path: to.Ptr("/path/event1"),
+	// 					Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+	// 				},
+	// 				ObservabilityMode: to.Ptr(armdeviceregistry.EventObservabilityModeNone),
 	// 			},
 	// 			{
-	// 				CapabilityID: to.Ptr("dtmi:com:example:Thermostat:__pressure;1"),
+	// 				Name: to.Ptr("event2"),
 	// 				EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":8,\"queueSize\":4}"),
 	// 				EventNotifier: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt4"),
-	// 				ObservabilityMode: to.Ptr(armdeviceregistry.EventsObservabilityModeLog),
+	// 				ObservabilityMode: to.Ptr(armdeviceregistry.EventObservabilityModeLog),
 	// 		}},
 	// 		ExternalAssetID: to.Ptr("8ZBA6LRHU0A458969"),
 	// 		HardwareRevision: to.Ptr("1.0"),
@@ -1055,12 +1464,12 @@ func ExampleAssetsClient_BeginUpdate() {
 	// 		SerialNumber: to.Ptr("64-103816-519918-8"),
 	// 		SoftwareRevision: to.Ptr("2.0"),
 	// 		UUID: to.Ptr("0796f7c1-f2c8-44d7-9f5b-9a6f9522a85d"),
-	// 		Version: to.Ptr[int32](73766),
+	// 		Version: to.Ptr[int64](73766),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c77bbf822be2deaac1b690270c6cd03a52df0e37/specification/deviceregistry/resource-manager/Microsoft.DeviceRegistry/preview/2023-11-01-preview/examples/Delete_Asset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/deviceregistry/resource-manager/Microsoft.DeviceRegistry/stable/2024-11-01/examples/Delete_Asset.json
 func ExampleAssetsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

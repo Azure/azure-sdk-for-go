@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceregistry/armdeviceregistry"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c77bbf822be2deaac1b690270c6cd03a52df0e37/specification/deviceregistry/resource-manager/Microsoft.DeviceRegistry/preview/2023-11-01-preview/examples/List_AssetEndpointProfiles_Subscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/deviceregistry/resource-manager/Microsoft.DeviceRegistry/stable/2024-11-01/examples/List_AssetEndpointProfiles_Subscription.json
 func ExampleAssetEndpointProfilesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -63,11 +63,12 @@ func ExampleAssetEndpointProfilesClient_NewListBySubscriptionPager() {
 		// 				Type: to.Ptr("CustomLocation"),
 		// 			},
 		// 			Properties: &armdeviceregistry.AssetEndpointProfileProperties{
+		// 				Authentication: &armdeviceregistry.Authentication{
+		// 					Method: to.Ptr(armdeviceregistry.AuthenticationMethodAnonymous),
+		// 				},
+		// 				EndpointProfileType: to.Ptr("myEndpointProfileType"),
 		// 				ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
 		// 				TargetAddress: to.Ptr("https://www.example.com/myTargetAddress"),
-		// 				UserAuthentication: &armdeviceregistry.UserAuthentication{
-		// 					Mode: to.Ptr(armdeviceregistry.UserAuthenticationModeAnonymous),
-		// 				},
 		// 				UUID: to.Ptr("0796f7c1-f2c8-44d7-9f5b-9a6f9522a85d"),
 		// 			},
 		// 		},
@@ -92,14 +93,15 @@ func ExampleAssetEndpointProfilesClient_NewListBySubscriptionPager() {
 		// 				Type: to.Ptr("CustomLocation"),
 		// 			},
 		// 			Properties: &armdeviceregistry.AssetEndpointProfileProperties{
-		// 				ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
-		// 				TargetAddress: to.Ptr("https://www.example.com/myTargetAddress1"),
-		// 				UserAuthentication: &armdeviceregistry.UserAuthentication{
-		// 					Mode: to.Ptr(armdeviceregistry.UserAuthenticationModeCertificate),
+		// 				Authentication: &armdeviceregistry.Authentication{
+		// 					Method: to.Ptr(armdeviceregistry.AuthenticationMethodCertificate),
 		// 					X509Credentials: &armdeviceregistry.X509Credentials{
-		// 						CertificateReference: to.Ptr("certificatRef"),
+		// 						CertificateSecretName: to.Ptr("certificatRef"),
 		// 					},
 		// 				},
+		// 				EndpointProfileType: to.Ptr("myEndpointProfileType"),
+		// 				ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
+		// 				TargetAddress: to.Ptr("https://www.example.com/myTargetAddress1"),
 		// 				UUID: to.Ptr("7824a74f-21e1-4458-ae06-604d3a241d2c"),
 		// 			},
 		// 		},
@@ -124,23 +126,16 @@ func ExampleAssetEndpointProfilesClient_NewListBySubscriptionPager() {
 		// 				Type: to.Ptr("CustomLocation"),
 		// 			},
 		// 			Properties: &armdeviceregistry.AssetEndpointProfileProperties{
-		// 				ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
-		// 				TargetAddress: to.Ptr("https://www.example.com/myTargetAddress2"),
-		// 				TransportAuthentication: &armdeviceregistry.TransportAuthentication{
-		// 					OwnCertificates: []*armdeviceregistry.OwnCertificate{
-		// 						{
-		// 							CertPasswordReference: to.Ptr("passwordRef"),
-		// 							CertSecretReference: to.Ptr("secretRef"),
-		// 							CertThumbprint: to.Ptr("myThumbprint"),
-		// 					}},
-		// 				},
-		// 				UserAuthentication: &armdeviceregistry.UserAuthentication{
-		// 					Mode: to.Ptr(armdeviceregistry.UserAuthenticationModeUsernamePassword),
+		// 				Authentication: &armdeviceregistry.Authentication{
+		// 					Method: to.Ptr(armdeviceregistry.AuthenticationMethodUsernamePassword),
 		// 					UsernamePasswordCredentials: &armdeviceregistry.UsernamePasswordCredentials{
-		// 						PasswordReference: to.Ptr("passwordRef"),
-		// 						UsernameReference: to.Ptr("usernameRef"),
+		// 						PasswordSecretName: to.Ptr("passwordRef"),
+		// 						UsernameSecretName: to.Ptr("usernameRef"),
 		// 					},
 		// 				},
+		// 				EndpointProfileType: to.Ptr("myEndpointProfileType"),
+		// 				ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
+		// 				TargetAddress: to.Ptr("https://www.example.com/myTargetAddress2"),
 		// 				UUID: to.Ptr("1824a74f-21e1-4458-ae07-604d3a241d2e"),
 		// 			},
 		// 	}},
@@ -148,7 +143,7 @@ func ExampleAssetEndpointProfilesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c77bbf822be2deaac1b690270c6cd03a52df0e37/specification/deviceregistry/resource-manager/Microsoft.DeviceRegistry/preview/2023-11-01-preview/examples/List_AssetEndpointProfiles_ResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/deviceregistry/resource-manager/Microsoft.DeviceRegistry/stable/2024-11-01/examples/List_AssetEndpointProfiles_ResourceGroup.json
 func ExampleAssetEndpointProfilesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -193,11 +188,12 @@ func ExampleAssetEndpointProfilesClient_NewListByResourceGroupPager() {
 		// 				Type: to.Ptr("CustomLocation"),
 		// 			},
 		// 			Properties: &armdeviceregistry.AssetEndpointProfileProperties{
+		// 				Authentication: &armdeviceregistry.Authentication{
+		// 					Method: to.Ptr(armdeviceregistry.AuthenticationMethodAnonymous),
+		// 				},
+		// 				EndpointProfileType: to.Ptr("myEndpointProfileType"),
 		// 				ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
 		// 				TargetAddress: to.Ptr("https://www.example.com/myTargetAddress"),
-		// 				UserAuthentication: &armdeviceregistry.UserAuthentication{
-		// 					Mode: to.Ptr(armdeviceregistry.UserAuthenticationModeAnonymous),
-		// 				},
 		// 				UUID: to.Ptr("0796f7c1-f2c8-44d7-9f5b-9a6f9522a85d"),
 		// 			},
 		// 		},
@@ -222,14 +218,15 @@ func ExampleAssetEndpointProfilesClient_NewListByResourceGroupPager() {
 		// 				Type: to.Ptr("CustomLocation"),
 		// 			},
 		// 			Properties: &armdeviceregistry.AssetEndpointProfileProperties{
-		// 				ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
-		// 				TargetAddress: to.Ptr("https://www.example.com/myTargetAddress1"),
-		// 				UserAuthentication: &armdeviceregistry.UserAuthentication{
-		// 					Mode: to.Ptr(armdeviceregistry.UserAuthenticationModeCertificate),
+		// 				Authentication: &armdeviceregistry.Authentication{
+		// 					Method: to.Ptr(armdeviceregistry.AuthenticationMethodCertificate),
 		// 					X509Credentials: &armdeviceregistry.X509Credentials{
-		// 						CertificateReference: to.Ptr("certificatRef"),
+		// 						CertificateSecretName: to.Ptr("certificatRef"),
 		// 					},
 		// 				},
+		// 				EndpointProfileType: to.Ptr("myEndpointProfileType"),
+		// 				ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
+		// 				TargetAddress: to.Ptr("https://www.example.com/myTargetAddress1"),
 		// 				UUID: to.Ptr("7824a74f-21e1-4458-ae06-604d3a241d2c"),
 		// 			},
 		// 		},
@@ -254,23 +251,16 @@ func ExampleAssetEndpointProfilesClient_NewListByResourceGroupPager() {
 		// 				Type: to.Ptr("CustomLocation"),
 		// 			},
 		// 			Properties: &armdeviceregistry.AssetEndpointProfileProperties{
-		// 				ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
-		// 				TargetAddress: to.Ptr("https://www.example.com/myTargetAddress2"),
-		// 				TransportAuthentication: &armdeviceregistry.TransportAuthentication{
-		// 					OwnCertificates: []*armdeviceregistry.OwnCertificate{
-		// 						{
-		// 							CertPasswordReference: to.Ptr("passwordRef"),
-		// 							CertSecretReference: to.Ptr("secretRef"),
-		// 							CertThumbprint: to.Ptr("myThumbprint"),
-		// 					}},
-		// 				},
-		// 				UserAuthentication: &armdeviceregistry.UserAuthentication{
-		// 					Mode: to.Ptr(armdeviceregistry.UserAuthenticationModeUsernamePassword),
+		// 				Authentication: &armdeviceregistry.Authentication{
+		// 					Method: to.Ptr(armdeviceregistry.AuthenticationMethodUsernamePassword),
 		// 					UsernamePasswordCredentials: &armdeviceregistry.UsernamePasswordCredentials{
-		// 						PasswordReference: to.Ptr("passwordRef"),
-		// 						UsernameReference: to.Ptr("usernameRef"),
+		// 						PasswordSecretName: to.Ptr("passwordRef"),
+		// 						UsernameSecretName: to.Ptr("usernameRef"),
 		// 					},
 		// 				},
+		// 				EndpointProfileType: to.Ptr("myEndpointProfileType"),
+		// 				ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
+		// 				TargetAddress: to.Ptr("https://www.example.com/myTargetAddress2"),
 		// 				UUID: to.Ptr("1824a74f-21e1-4458-ae07-604d3a241d2e"),
 		// 			},
 		// 	}},
@@ -278,8 +268,8 @@ func ExampleAssetEndpointProfilesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c77bbf822be2deaac1b690270c6cd03a52df0e37/specification/deviceregistry/resource-manager/Microsoft.DeviceRegistry/preview/2023-11-01-preview/examples/Get_AssetEndpointProfile.json
-func ExampleAssetEndpointProfilesClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/deviceregistry/resource-manager/Microsoft.DeviceRegistry/stable/2024-11-01/examples/Get_AssetEndpointProfile.json
+func ExampleAssetEndpointProfilesClient_Get_getAssetEndpointProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -317,30 +307,84 @@ func ExampleAssetEndpointProfilesClient_Get() {
 	// 		Type: to.Ptr("CustomLocation"),
 	// 	},
 	// 	Properties: &armdeviceregistry.AssetEndpointProfileProperties{
-	// 		ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
-	// 		TargetAddress: to.Ptr("https://www.example.com/myTargetAddress"),
-	// 		TransportAuthentication: &armdeviceregistry.TransportAuthentication{
-	// 			OwnCertificates: []*armdeviceregistry.OwnCertificate{
-	// 				{
-	// 					CertPasswordReference: to.Ptr("passwordRef"),
-	// 					CertSecretReference: to.Ptr("secretRef"),
-	// 					CertThumbprint: to.Ptr("myThumbprint"),
-	// 			}},
-	// 		},
-	// 		UserAuthentication: &armdeviceregistry.UserAuthentication{
-	// 			Mode: to.Ptr(armdeviceregistry.UserAuthenticationModeUsernamePassword),
+	// 		Authentication: &armdeviceregistry.Authentication{
+	// 			Method: to.Ptr(armdeviceregistry.AuthenticationMethodUsernamePassword),
 	// 			UsernamePasswordCredentials: &armdeviceregistry.UsernamePasswordCredentials{
-	// 				PasswordReference: to.Ptr("passwordRef"),
-	// 				UsernameReference: to.Ptr("usernameRef"),
+	// 				PasswordSecretName: to.Ptr("passwordRef"),
+	// 				UsernameSecretName: to.Ptr("usernameRef"),
 	// 			},
 	// 		},
+	// 		EndpointProfileType: to.Ptr("myEndpointProfileType"),
+	// 		ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
+	// 		TargetAddress: to.Ptr("https://www.example.com/myTargetAddress"),
 	// 		UUID: to.Ptr("1824a74f-21e1-4458-ae07-604d3a241d2e"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c77bbf822be2deaac1b690270c6cd03a52df0e37/specification/deviceregistry/resource-manager/Microsoft.DeviceRegistry/preview/2023-11-01-preview/examples/Create_AssetEndpointProfile.json
-func ExampleAssetEndpointProfilesClient_BeginCreateOrReplace() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/deviceregistry/resource-manager/Microsoft.DeviceRegistry/stable/2024-11-01/examples/Get_AssetEndpointProfile_With_SyncStatus.json
+func ExampleAssetEndpointProfilesClient_Get_getAssetEndpointProfileWithSyncStatus() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdeviceregistry.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAssetEndpointProfilesClient().Get(ctx, "myResourceGroup", "my-assetendpointprofile", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.AssetEndpointProfile = armdeviceregistry.AssetEndpointProfile{
+	// 	Name: to.Ptr("my-assetendpointprofile"),
+	// 	Type: to.Ptr("Microsoft.DeviceRegistry/assetEndpointProfiles"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/assetEndpointProfiles/my-assetendpointprofile"),
+	// 	SystemData: &armdeviceregistry.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T00:36:43.251Z"); return t}()),
+	// 		CreatedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
+	// 		CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T01:37:16.092Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
+	// 		LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
+	// 	},
+	// 	Location: to.Ptr("West Europe"),
+	// 	Tags: map[string]*string{
+	// 		"site": to.Ptr("building-1"),
+	// 	},
+	// 	ExtendedLocation: &armdeviceregistry.ExtendedLocation{
+	// 		Name: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/microsoft.extendedlocation/customlocations/location1"),
+	// 		Type: to.Ptr("CustomLocation"),
+	// 	},
+	// 	Properties: &armdeviceregistry.AssetEndpointProfileProperties{
+	// 		Authentication: &armdeviceregistry.Authentication{
+	// 			Method: to.Ptr(armdeviceregistry.AuthenticationMethodUsernamePassword),
+	// 			UsernamePasswordCredentials: &armdeviceregistry.UsernamePasswordCredentials{
+	// 				PasswordSecretName: to.Ptr("passwordRef"),
+	// 				UsernameSecretName: to.Ptr("usernameRef"),
+	// 			},
+	// 		},
+	// 		EndpointProfileType: to.Ptr("myEndpointProfileType"),
+	// 		ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
+	// 		Status: &armdeviceregistry.AssetEndpointProfileStatus{
+	// 			Errors: []*armdeviceregistry.AssetEndpointProfileStatusError{
+	// 				{
+	// 					Code: to.Ptr[int32](500),
+	// 					Message: to.Ptr("Internal Server Error"),
+	// 			}},
+	// 		},
+	// 		TargetAddress: to.Ptr("https://www.example.com/myTargetAddress"),
+	// 		UUID: to.Ptr("1824a74f-21e1-4458-ae07-604d3a241d2e"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/deviceregistry/resource-manager/Microsoft.DeviceRegistry/stable/2024-11-01/examples/Create_AssetEndpointProfile.json
+func ExampleAssetEndpointProfilesClient_BeginCreateOrReplace_createAssetEndpointProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -360,10 +404,11 @@ func ExampleAssetEndpointProfilesClient_BeginCreateOrReplace() {
 			Type: to.Ptr("CustomLocation"),
 		},
 		Properties: &armdeviceregistry.AssetEndpointProfileProperties{
-			TargetAddress: to.Ptr("https://www.example.com/myTargetAddress"),
-			UserAuthentication: &armdeviceregistry.UserAuthentication{
-				Mode: to.Ptr(armdeviceregistry.UserAuthenticationModeAnonymous),
+			Authentication: &armdeviceregistry.Authentication{
+				Method: to.Ptr(armdeviceregistry.AuthenticationMethodAnonymous),
 			},
+			EndpointProfileType: to.Ptr("myEndpointProfileType"),
+			TargetAddress:       to.Ptr("https://www.example.com/myTargetAddress"),
 		},
 	}, nil)
 	if err != nil {
@@ -397,17 +442,90 @@ func ExampleAssetEndpointProfilesClient_BeginCreateOrReplace() {
 	// 		Type: to.Ptr("CustomLocation"),
 	// 	},
 	// 	Properties: &armdeviceregistry.AssetEndpointProfileProperties{
+	// 		Authentication: &armdeviceregistry.Authentication{
+	// 			Method: to.Ptr(armdeviceregistry.AuthenticationMethodAnonymous),
+	// 		},
+	// 		EndpointProfileType: to.Ptr("myEndpointProfileType"),
 	// 		ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
 	// 		TargetAddress: to.Ptr("https://www.example.com/myTargetAddress"),
-	// 		UserAuthentication: &armdeviceregistry.UserAuthentication{
-	// 			Mode: to.Ptr(armdeviceregistry.UserAuthenticationModeAnonymous),
-	// 		},
 	// 		UUID: to.Ptr("0796f7c1-f2c8-44d7-9f5b-9a6f9522a85d"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c77bbf822be2deaac1b690270c6cd03a52df0e37/specification/deviceregistry/resource-manager/Microsoft.DeviceRegistry/preview/2023-11-01-preview/examples/Update_AssetEndpointProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/deviceregistry/resource-manager/Microsoft.DeviceRegistry/stable/2024-11-01/examples/Create_AssetEndpointProfile_With_DiscoveredAepRef.json
+func ExampleAssetEndpointProfilesClient_BeginCreateOrReplace_createAssetEndpointProfileWithDiscoveredAepRef() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdeviceregistry.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAssetEndpointProfilesClient().BeginCreateOrReplace(ctx, "myResourceGroup", "my-assetendpointprofile", armdeviceregistry.AssetEndpointProfile{
+		Location: to.Ptr("West Europe"),
+		Tags: map[string]*string{
+			"site": to.Ptr("building-1"),
+		},
+		ExtendedLocation: &armdeviceregistry.ExtendedLocation{
+			Name: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/microsoft.extendedlocation/customlocations/location1"),
+			Type: to.Ptr("CustomLocation"),
+		},
+		Properties: &armdeviceregistry.AssetEndpointProfileProperties{
+			Authentication: &armdeviceregistry.Authentication{
+				Method: to.Ptr(armdeviceregistry.AuthenticationMethodAnonymous),
+			},
+			DiscoveredAssetEndpointProfileRef: to.Ptr("discoveredAssetEndpointProfile1"),
+			EndpointProfileType:               to.Ptr("myEndpointProfileType"),
+			TargetAddress:                     to.Ptr("https://www.example.com/myTargetAddress"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.AssetEndpointProfile = armdeviceregistry.AssetEndpointProfile{
+	// 	Name: to.Ptr("my-assetendpointprofile"),
+	// 	Type: to.Ptr("Microsoft.DeviceRegistry/assetEndpointProfiles"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/assetEndpointProfiles/my-assetendpointprofile"),
+	// 	SystemData: &armdeviceregistry.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T00:36:43.251Z"); return t}()),
+	// 		CreatedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
+	// 		CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T01:37:16.092Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
+	// 		LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
+	// 	},
+	// 	Location: to.Ptr("West Europe"),
+	// 	Tags: map[string]*string{
+	// 		"site": to.Ptr("building-1"),
+	// 	},
+	// 	ExtendedLocation: &armdeviceregistry.ExtendedLocation{
+	// 		Name: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/microsoft.extendedlocation/customlocations/location1"),
+	// 		Type: to.Ptr("CustomLocation"),
+	// 	},
+	// 	Properties: &armdeviceregistry.AssetEndpointProfileProperties{
+	// 		Authentication: &armdeviceregistry.Authentication{
+	// 			Method: to.Ptr(armdeviceregistry.AuthenticationMethodAnonymous),
+	// 		},
+	// 		DiscoveredAssetEndpointProfileRef: to.Ptr("discoveredAssetEndpointProfile1"),
+	// 		EndpointProfileType: to.Ptr("myEndpointProfileType"),
+	// 		ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
+	// 		TargetAddress: to.Ptr("https://www.example.com/myTargetAddress"),
+	// 		UUID: to.Ptr("0796f7c1-f2c8-44d7-9f5b-9a6f9522a85d"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/deviceregistry/resource-manager/Microsoft.DeviceRegistry/stable/2024-11-01/examples/Update_AssetEndpointProfile.json
 func ExampleAssetEndpointProfilesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -454,17 +572,18 @@ func ExampleAssetEndpointProfilesClient_BeginUpdate() {
 	// 		Type: to.Ptr("CustomLocation"),
 	// 	},
 	// 	Properties: &armdeviceregistry.AssetEndpointProfileProperties{
+	// 		Authentication: &armdeviceregistry.Authentication{
+	// 			Method: to.Ptr(armdeviceregistry.AuthenticationMethodAnonymous),
+	// 		},
+	// 		EndpointProfileType: to.Ptr("myEndpointProfileType"),
 	// 		ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
 	// 		TargetAddress: to.Ptr("https://www.example.com/myTargetAddress"),
-	// 		UserAuthentication: &armdeviceregistry.UserAuthentication{
-	// 			Mode: to.Ptr(armdeviceregistry.UserAuthenticationModeAnonymous),
-	// 		},
 	// 		UUID: to.Ptr("0796f7c1-f2c8-44d7-9f5b-9a6f9522a85d"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c77bbf822be2deaac1b690270c6cd03a52df0e37/specification/deviceregistry/resource-manager/Microsoft.DeviceRegistry/preview/2023-11-01-preview/examples/Delete_AssetEndpointProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/deviceregistry/resource-manager/Microsoft.DeviceRegistry/stable/2024-11-01/examples/Delete_AssetEndpointProfile.json
 func ExampleAssetEndpointProfilesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

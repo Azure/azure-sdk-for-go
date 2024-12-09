@@ -81,6 +81,17 @@ type AssetsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
+// BillingContainersClientGetOptions contains the optional parameters for the BillingContainersClient.Get method.
+type BillingContainersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BillingContainersClientListBySubscriptionOptions contains the optional parameters for the BillingContainersClient.NewListBySubscriptionPager
+// method.
+type BillingContainersClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
 // OperationStatusClientGetOptions contains the optional parameters for the OperationStatusClient.Get method.
 type OperationStatusClientGetOptions struct {
 	// placeholder for future optional parameters

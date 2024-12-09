@@ -24,7 +24,7 @@ type Asset struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -51,7 +51,7 @@ type AssetEndpointProfile struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -75,30 +75,54 @@ type AssetEndpointProfileListResult struct {
 
 // AssetEndpointProfileProperties - Defines the Asset Endpoint Profile properties.
 type AssetEndpointProfileProperties struct {
+	// REQUIRED; Defines the configuration for the connector type that is being used with the endpoint profile.
+	EndpointProfileType *string
+
 	// REQUIRED; The local valid URI specifying the network address/DNS name of a southbound device. The scheme part of the targetAddress
 	// URI specifies the type of the device. The additionalConfiguration field holds
 	// further connector type specific configuration.
 	TargetAddress *string
 
-	// Contains connectivity type specific further configuration (e.g. OPC UA, Modbus, ONVIF).
+	// Stringified JSON that contains connectivity type specific further configuration (e.g. OPC UA, Modbus, ONVIF).
 	AdditionalConfiguration *string
 
-	// Defines the authentication mechanism for the southbound connector connecting to the shop floor/OT device.
-	TransportAuthentication *TransportAuthentication
-
 	// Defines the client authentication mechanism to the server.
-	UserAuthentication *UserAuthentication
+	Authentication *Authentication
+
+	// Reference to a discovered asset endpoint profile. Populated only if the asset endpoint profile has been created from discovery
+	// flow. Discovered asset endpoint profile name must be provided.
+	DiscoveredAssetEndpointProfileRef *string
 
 	// READ-ONLY; Provisioning state of the resource.
 	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Read only object to reflect changes that have occurred on the Edge. Similar to Kubernetes status property for
+	// custom resources.
+	Status *AssetEndpointProfileStatus
 
 	// READ-ONLY; Globally unique, immutable, non-reusable id.
 	UUID *string
 }
 
+// AssetEndpointProfileStatus - Defines the asset endpoint profile status properties.
+type AssetEndpointProfileStatus struct {
+	// READ-ONLY; Array object to transfer and persist errors that originate from the Edge.
+	Errors []*AssetEndpointProfileStatusError
+}
+
+// AssetEndpointProfileStatusError - Defines the asset endpoint profile status error properties.
+type AssetEndpointProfileStatusError struct {
+	// READ-ONLY; Error code for classification of errors (ex: 400, 404, 500, etc.).
+	Code *int32
+
+	// READ-ONLY; Human readable helpful error message to provide additional context for error (ex: “targetAddress 'foo' is not
+	// a valid url”).
+	Message *string
+}
+
 // AssetEndpointProfileUpdate - The type used for update operations of the AssetEndpointProfile.
 type AssetEndpointProfileUpdate struct {
-	// The updatable properties of the AssetEndpointProfile.
+	// The resource-specific properties for this resource.
 	Properties *AssetEndpointProfileUpdateProperties
 
 	// Resource tags.
@@ -107,19 +131,19 @@ type AssetEndpointProfileUpdate struct {
 
 // AssetEndpointProfileUpdateProperties - The updatable properties of the AssetEndpointProfile.
 type AssetEndpointProfileUpdateProperties struct {
-	// Contains connectivity type specific further configuration (e.g. OPC UA, Modbus, ONVIF).
+	// Stringified JSON that contains connectivity type specific further configuration (e.g. OPC UA, Modbus, ONVIF).
 	AdditionalConfiguration *string
+
+	// Defines the client authentication mechanism to the server.
+	Authentication *AuthenticationUpdate
+
+	// Defines the configuration for the connector type that is being used with the endpoint profile.
+	EndpointProfileType *string
 
 	// The local valid URI specifying the network address/DNS name of a southbound device. The scheme part of the targetAddress
 	// URI specifies the type of the device. The additionalConfiguration field holds
 	// further connector type specific configuration.
 	TargetAddress *string
-
-	// Defines the authentication mechanism for the southbound connector connecting to the shop floor/OT device.
-	TransportAuthentication *TransportAuthenticationUpdate
-
-	// Defines the client authentication mechanism to the server.
-	UserAuthentication *UserAuthenticationUpdate
 }
 
 // AssetListResult - The response of a Asset list operation.
@@ -134,31 +158,32 @@ type AssetListResult struct {
 // AssetProperties - Defines the asset properties.
 type AssetProperties struct {
 	// REQUIRED; A reference to the asset endpoint profile (connection information) used by brokers to connect to an endpoint
-	// that provides data points for this asset. Must have the format /.
-	AssetEndpointProfileURI *string
-
-	// Resource path to asset type (model) definition.
-	AssetType *string
+	// that provides data points for this asset. Must provide asset endpoint profile name.
+	AssetEndpointProfileRef *string
 
 	// A set of key-value pairs that contain custom attributes set by the customer.
 	Attributes map[string]any
 
-	// Array of data points that are part of the asset. Each data point can reference an asset type capability and have per-data
-	// point configuration. See below for more details for the definition of the
-	// dataPoints element.
-	DataPoints []*DataPoint
+	// Array of datasets that are part of the asset. Each dataset describes the data points that make up the set.
+	Datasets []*Dataset
 
-	// Protocol-specific default configuration for all data points. Each data point can have its own configuration that overrides
-	// the default settings here. This assumes that each asset instance has one
-	// protocol.
-	DefaultDataPointsConfiguration *string
+	// Stringified JSON that contains connector-specific default configuration for all datasets. Each dataset can have its own
+	// configuration that overrides the default settings here.
+	DefaultDatasetsConfiguration *string
 
-	// Protocol-specific default configuration for all events. Each event can have its own configuration that overrides the default
-	// settings here. This assumes that each asset instance has one protocol.
+	// Stringified JSON that contains connector-specific default configuration for all events. Each event can have its own configuration
+	// that overrides the default settings here.
 	DefaultEventsConfiguration *string
+
+	// Object that describes the default topic information for the asset.
+	DefaultTopic *Topic
 
 	// Human-readable description of the asset.
 	Description *string
+
+	// Reference to a list of discovered assets. Populated only if the asset has been created from discovery flow. Discovered
+	// asset names must be provided.
+	DiscoveredAssetRefs []*string
 
 	// Human-readable display name.
 	DisplayName *string
@@ -169,8 +194,7 @@ type AssetProperties struct {
 	// Enabled/Disabled status of the asset.
 	Enabled *bool
 
-	// Array of events that are part of the asset. Each event can reference an asset type capability and have per-event configuration.
-	// See below for more details about the definition of the events element.
+	// Array of events that are part of the asset. Each event can have per-event configuration.
 	Events []*Event
 
 	// Asset id provided by the customer.
@@ -208,32 +232,59 @@ type AssetProperties struct {
 	UUID *string
 
 	// READ-ONLY; An integer that is incremented each time the resource is modified.
-	Version *int32
+	Version *int64
 }
 
 // AssetStatus - Defines the asset status properties.
 type AssetStatus struct {
-	// Array object to transfer and persist errors that originate from the Edge.
+	// READ-ONLY; Array of dataset statuses that describe the status of each dataset.
+	Datasets []*AssetStatusDataset
+
+	// READ-ONLY; Array object to transfer and persist errors that originate from the Edge.
 	Errors []*AssetStatusError
 
-	// A read only incremental counter indicating the number of times the configuration has been modified from the perspective
-	// of the current actual (Edge) state of the Asset. Edge would be the only writer
+	// READ-ONLY; Array of event statuses that describe the status of each event.
+	Events []*AssetStatusEvent
+
+	// READ-ONLY; A read only incremental counter indicating the number of times the configuration has been modified from the
+	// perspective of the current actual (Edge) state of the Asset. Edge would be the only writer
 	// of this value and would sync back up to the cloud. In steady state, this should equal version.
-	Version *int32
+	Version *int64
+}
+
+// AssetStatusDataset - Defines the asset status dataset properties.
+type AssetStatusDataset struct {
+	// READ-ONLY; The name of the dataset. Must be unique within the status.datasets array. This name is used to correlate between
+	// the spec and status dataset information.
+	Name *string
+
+	// READ-ONLY; The message schema reference object.
+	MessageSchemaReference *MessageSchemaReference
 }
 
 // AssetStatusError - Defines the asset status error properties.
 type AssetStatusError struct {
-	// Error code for classification of errors (ex: 400, 404, 500, etc.).
+	// READ-ONLY; Error code for classification of errors (ex: 400, 404, 500, etc.).
 	Code *int32
 
-	// Human readable helpful error message to provide additional context for error (ex: “capability Id 'foo' does not exist”).
+	// READ-ONLY; Human readable helpful error message to provide additional context for error (ex: “capability Id 'foo' does
+	// not exist”).
 	Message *string
+}
+
+// AssetStatusEvent - Defines the asset status event properties.
+type AssetStatusEvent struct {
+	// READ-ONLY; The name of the event. Must be unique within the status.events array. This name is used to correlate between
+	// the spec and status event information.
+	Name *string
+
+	// READ-ONLY; The message schema reference object.
+	MessageSchemaReference *MessageSchemaReference
 }
 
 // AssetUpdate - The type used for update operations of the Asset.
 type AssetUpdate struct {
-	// The updatable properties of the Asset.
+	// The resource-specific properties for this resource.
 	Properties *AssetUpdateProperties
 
 	// Resource tags.
@@ -242,25 +293,22 @@ type AssetUpdate struct {
 
 // AssetUpdateProperties - The updatable properties of the Asset.
 type AssetUpdateProperties struct {
-	// Resource path to asset type (model) definition.
-	AssetType *string
-
 	// A set of key-value pairs that contain custom attributes set by the customer.
 	Attributes map[string]any
 
-	// Array of data points that are part of the asset. Each data point can reference an asset type capability and have per-data
-	// point configuration. See below for more details for the definition of the
-	// dataPoints element.
-	DataPoints []*DataPoint
+	// Array of datasets that are part of the asset. Each dataset describes the data points that make up the set.
+	Datasets []*Dataset
 
-	// Protocol-specific default configuration for all data points. Each data point can have its own configuration that overrides
-	// the default settings here. This assumes that each asset instance has one
-	// protocol.
-	DefaultDataPointsConfiguration *string
+	// Stringified JSON that contains connector-specific default configuration for all datasets. Each dataset can have its own
+	// configuration that overrides the default settings here.
+	DefaultDatasetsConfiguration *string
 
-	// Protocol-specific default configuration for all events. Each event can have its own configuration that overrides the default
-	// settings here. This assumes that each asset instance has one protocol.
+	// Stringified JSON that contains connector-specific default configuration for all events. Each event can have its own configuration
+	// that overrides the default settings here.
 	DefaultEventsConfiguration *string
+
+	// Object that describes the default topic information for the asset.
+	DefaultTopic *TopicUpdate
 
 	// Human-readable description of the asset.
 	Description *string
@@ -274,8 +322,7 @@ type AssetUpdateProperties struct {
 	// Enabled/Disabled status of the asset.
 	Enabled *bool
 
-	// Array of events that are part of the asset. Each event can reference an asset type capability and have per-event configuration.
-	// See below for more details about the definition of the events element.
+	// Array of events that are part of the asset. Each event can have per-event configuration.
 	Events []*Event
 
 	// Revision number of the hardware.
@@ -300,24 +347,97 @@ type AssetUpdateProperties struct {
 	SoftwareRevision *string
 }
 
+// Authentication - Definition of the client authentication mechanism to the server.
+type Authentication struct {
+	// REQUIRED; Defines the method to authenticate the user of the client at the server.
+	Method *AuthenticationMethod
+
+	// Defines the username and password references when UsernamePassword user authentication mode is selected.
+	UsernamePasswordCredentials *UsernamePasswordCredentials
+
+	// Defines the certificate reference when Certificate user authentication mode is selected.
+	X509Credentials *X509Credentials
+}
+
+// AuthenticationUpdate - Definition of the client authentication mechanism to the server.
+type AuthenticationUpdate struct {
+	// Defines the method to authenticate the user of the client at the server.
+	Method *AuthenticationMethod
+
+	// Defines the username and password references when UsernamePassword user authentication mode is selected.
+	UsernamePasswordCredentials *UsernamePasswordCredentialsUpdate
+
+	// Defines the certificate reference when Certificate user authentication mode is selected.
+	X509Credentials *X509CredentialsUpdate
+}
+
+// BillingContainer - billingContainer Model as Azure resource whose sole purpose is to keep track of billables resources
+// under a subscription.
+type BillingContainer struct {
+	// The resource-specific properties for this resource.
+	Properties *BillingContainerProperties
+
+	// READ-ONLY; Resource ETag
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// BillingContainerListResult - The response of a BillingContainer list operation.
+type BillingContainerListResult struct {
+	// REQUIRED; The BillingContainer items on this page
+	Value []*BillingContainer
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// BillingContainerProperties - Defines the billingContainer properties.
+type BillingContainerProperties struct {
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *ProvisioningState
+}
+
 // DataPoint - Defines the data point properties.
 type DataPoint struct {
 	// REQUIRED; The address of the source of the data in the asset (e.g. URL) so that a client can access the data source on
 	// the asset.
 	DataSource *string
 
-	// The path to the type definition of the capability (e.g. DTMI, OPC UA information model node id, etc.), for example dtmi:com:example:Robot:contents:_prop1;1.
-	CapabilityID *string
-
-	// Protocol-specific configuration for the data point. For OPC UA, this could include configuration like, publishingInterval,
-	// samplingInterval, and queueSize.
-	DataPointConfiguration *string
-
-	// The name of the data point.
+	// REQUIRED; The name of the data point.
 	Name *string
 
+	// Stringified JSON that contains connector-specific configuration for the data point. For OPC UA, this could include configuration
+	// like, publishingInterval, samplingInterval, and queueSize.
+	DataPointConfiguration *string
+
 	// An indication of how the data point should be mapped to OpenTelemetry.
-	ObservabilityMode *DataPointsObservabilityMode
+	ObservabilityMode *DataPointObservabilityMode
+}
+
+// Dataset - Defines the dataset properties.
+type Dataset struct {
+	// REQUIRED; Name of the dataset.
+	Name *string
+
+	// Array of data points that are part of the dataset. Each data point can have per-data point configuration.
+	DataPoints []*DataPoint
+
+	// Stringified JSON that contains connector-specific JSON string that describes configuration for the specific dataset.
+	DatasetConfiguration *string
+
+	// Object that describes the topic information for the specific dataset.
+	Topic *Topic
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
@@ -353,18 +473,18 @@ type Event struct {
 	// asset.
 	EventNotifier *string
 
-	// The path to the type definition of the capability (e.g. DTMI, OPC UA information model node id, etc.), for example dtmi:com:example:Robot:contents:_prop1;1.
-	CapabilityID *string
-
-	// Protocol-specific configuration for the event. For OPC UA, this could include configuration like, publishingInterval, samplingInterval,
-	// and queueSize.
-	EventConfiguration *string
-
-	// The name of the event.
+	// REQUIRED; The name of the event.
 	Name *string
 
+	// Stringified JSON that contains connector-specific configuration for the event. For OPC UA, this could include configuration
+	// like, publishingInterval, samplingInterval, and queueSize.
+	EventConfiguration *string
+
 	// An indication of how the event should be mapped to OpenTelemetry.
-	ObservabilityMode *EventsObservabilityMode
+	ObservabilityMode *EventObservabilityMode
+
+	// Object that describes the topic information for the specific event.
+	Topic *Topic
 }
 
 // ExtendedLocation - The extended location.
@@ -374,6 +494,18 @@ type ExtendedLocation struct {
 
 	// REQUIRED; The extended location type.
 	Type *string
+}
+
+// MessageSchemaReference - Defines the message schema reference properties.
+type MessageSchemaReference struct {
+	// READ-ONLY; The message schema name.
+	SchemaName *string
+
+	// READ-ONLY; The message schema registry namespace.
+	SchemaRegistryNamespace *string
+
+	// READ-ONLY; The message schema version.
+	SchemaVersion *string
 }
 
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API
@@ -450,19 +582,9 @@ type OperationStatusResult struct {
 
 	// The start time of the operation.
 	StartTime *time.Time
-}
 
-// OwnCertificate - Certificate or private key that can be used by the southbound connector connecting to the shop floor/OT
-// device. The accepted extensions are .der for certificates and .pfx/.pem for private keys.
-type OwnCertificate struct {
-	// Secret Reference Name (Pfx or Pem password).
-	CertPasswordReference *string
-
-	// Secret Reference name (cert and private key).
-	CertSecretReference *string
-
-	// Certificate thumbprint.
-	CertThumbprint *string
+	// READ-ONLY; Fully qualified ID of the resource against which the original async operation was started.
+	ResourceID *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -486,72 +608,50 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType
 }
 
-// TransportAuthentication - Definition of the authentication mechanism for the southbound connector.
-type TransportAuthentication struct {
-	// REQUIRED; Defines a reference to a secret which contains all certificates and private keys that can be used by the southbound
-	// connector connecting to the shop floor/OT device. The accepted extensions are .der
-	// for certificates and .pfx/.pem for private keys.
-	OwnCertificates []*OwnCertificate
+// Topic - Object that describes the topic information.
+type Topic struct {
+	// REQUIRED; The topic path for messages published to an MQTT broker.
+	Path *string
+
+	// When set to 'Keep', messages published to an MQTT broker will have the retain flag set. Default: 'Never'.
+	Retain *TopicRetainType
 }
 
-// TransportAuthenticationUpdate - Definition of the authentication mechanism for the southbound connector.
-type TransportAuthenticationUpdate struct {
-	// Defines a reference to a secret which contains all certificates and private keys that can be used by the southbound connector
-	// connecting to the shop floor/OT device. The accepted extensions are .der
-	// for certificates and .pfx/.pem for private keys.
-	OwnCertificates []*OwnCertificate
-}
+// TopicUpdate - Object that describes the topic information.
+type TopicUpdate struct {
+	// The topic path for messages published to an MQTT broker.
+	Path *string
 
-// UserAuthentication - Definition of the client authentication mechanism to the server.
-type UserAuthentication struct {
-	// REQUIRED; Defines the mode to authenticate the user of the client at the server.
-	Mode *UserAuthenticationMode
-
-	// Defines the username and password references when UsernamePassword user authentication mode is selected.
-	UsernamePasswordCredentials *UsernamePasswordCredentials
-
-	// Defines the certificate reference when Certificate user authentication mode is selected.
-	X509Credentials *X509Credentials
-}
-
-// UserAuthenticationUpdate - Definition of the client authentication mechanism to the server.
-type UserAuthenticationUpdate struct {
-	// Defines the mode to authenticate the user of the client at the server.
-	Mode *UserAuthenticationMode
-
-	// Defines the username and password references when UsernamePassword user authentication mode is selected.
-	UsernamePasswordCredentials *UsernamePasswordCredentialsUpdate
-
-	// Defines the certificate reference when Certificate user authentication mode is selected.
-	X509Credentials *X509CredentialsUpdate
+	// When set to 'Keep', messages published to an MQTT broker will have the retain flag set. Default: 'Never'.
+	Retain *TopicRetainType
 }
 
 // UsernamePasswordCredentials - The credentials for authentication mode UsernamePassword.
 type UsernamePasswordCredentials struct {
-	// REQUIRED; A reference to secret containing the password.
-	PasswordReference *string
+	// REQUIRED; The name of the secret containing the password.
+	PasswordSecretName *string
 
-	// REQUIRED; A reference to secret containing the username.
-	UsernameReference *string
+	// REQUIRED; The name of the secret containing the username.
+	UsernameSecretName *string
 }
 
 // UsernamePasswordCredentialsUpdate - The credentials for authentication mode UsernamePassword.
 type UsernamePasswordCredentialsUpdate struct {
-	// A reference to secret containing the password.
-	PasswordReference *string
+	// The name of the secret containing the password.
+	PasswordSecretName *string
 
-	// A reference to secret containing the username.
-	UsernameReference *string
+	// The name of the secret containing the username.
+	UsernameSecretName *string
 }
 
 // X509Credentials - The x509 certificate for authentication mode Certificate.
 type X509Credentials struct {
-	// REQUIRED; A reference to secret containing the certificate and private key (e.g. stored as .der/.pem or .der/.pfx).
-	CertificateReference *string
+	// REQUIRED; The name of the secret containing the certificate and private key (e.g. stored as .der/.pem or .der/.pfx).
+	CertificateSecretName *string
 }
 
 // X509CredentialsUpdate - The x509 certificate for authentication mode Certificate.
 type X509CredentialsUpdate struct {
-	// A reference to secret containing the certificate and private key (e.g. stored as .der/.pem or .der/.pfx).
-	CertificateReference *string
+	// The name of the secret containing the certificate and private key (e.g. stored as .der/.pem or .der/.pfx).
+	CertificateSecretName *string
 }

@@ -78,6 +78,18 @@ type AssetsClientUpdateResponse struct {
 	Asset
 }
 
+// BillingContainersClientGetResponse contains the response from method BillingContainersClient.Get.
+type BillingContainersClientGetResponse struct {
+	// billingContainer Model as Azure resource whose sole purpose is to keep track of billables resources under a subscription.
+	BillingContainer
+}
+
+// BillingContainersClientListBySubscriptionResponse contains the response from method BillingContainersClient.NewListBySubscriptionPager.
+type BillingContainersClientListBySubscriptionResponse struct {
+	// The response of a BillingContainer list operation.
+	BillingContainerListResult
+}
+
 // OperationStatusClientGetResponse contains the response from method OperationStatusClient.Get.
 type OperationStatusClientGetResponse struct {
 	// The current status of an async operation.

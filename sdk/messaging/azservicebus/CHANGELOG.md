@@ -1,8 +1,10 @@
 # Release History
 
-## 1.7.4 (Unreleased)
+## 1.8.0 (Unreleased)
 
 ### Features Added
+
+- Client allows the endpoint to be overridden with CustomEndpoint, allowing the use of TCP proxies with AMQP.
 
 ### Breaking Changes
 

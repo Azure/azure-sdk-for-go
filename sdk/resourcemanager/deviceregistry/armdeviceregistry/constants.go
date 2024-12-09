@@ -10,7 +10,7 @@ package armdeviceregistry
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceregistry/armdeviceregistry"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v1.0.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -24,6 +24,27 @@ const (
 func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
+	}
+}
+
+// AuthenticationMethod - Defines the method to authenticate the user of the client at the server.
+type AuthenticationMethod string
+
+const (
+	// AuthenticationMethodAnonymous - The user authentication method is anonymous.
+	AuthenticationMethodAnonymous AuthenticationMethod = "Anonymous"
+	// AuthenticationMethodCertificate - The user authentication method is an x509 certificate.
+	AuthenticationMethodCertificate AuthenticationMethod = "Certificate"
+	// AuthenticationMethodUsernamePassword - The user authentication method is a username and password.
+	AuthenticationMethodUsernamePassword AuthenticationMethod = "UsernamePassword"
+)
+
+// PossibleAuthenticationMethodValues returns the possible values for the AuthenticationMethod const type.
+func PossibleAuthenticationMethodValues() []AuthenticationMethod {
+	return []AuthenticationMethod{
+		AuthenticationMethodAnonymous,
+		AuthenticationMethodCertificate,
+		AuthenticationMethodUsernamePassword,
 	}
 }
 
@@ -47,48 +68,48 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// DataPointsObservabilityMode - An indication of how the data point should be mapped to OpenTelemetry.
-type DataPointsObservabilityMode string
+// DataPointObservabilityMode - An indication of how the data point should be mapped to OpenTelemetry.
+type DataPointObservabilityMode string
 
 const (
-	// DataPointsObservabilityModeCounter - Map as counter to OpenTelemetry.
-	DataPointsObservabilityModeCounter DataPointsObservabilityMode = "counter"
-	// DataPointsObservabilityModeGauge - Map as gauge to OpenTelemetry.
-	DataPointsObservabilityModeGauge DataPointsObservabilityMode = "gauge"
-	// DataPointsObservabilityModeHistogram - Map as histogram to OpenTelemetry.
-	DataPointsObservabilityModeHistogram DataPointsObservabilityMode = "histogram"
-	// DataPointsObservabilityModeLog - Map as log to OpenTelemetry.
-	DataPointsObservabilityModeLog DataPointsObservabilityMode = "log"
-	// DataPointsObservabilityModeNone - No mapping to OpenTelemetry.
-	DataPointsObservabilityModeNone DataPointsObservabilityMode = "none"
+	// DataPointObservabilityModeCounter - Map as counter to OpenTelemetry.
+	DataPointObservabilityModeCounter DataPointObservabilityMode = "Counter"
+	// DataPointObservabilityModeGauge - Map as gauge to OpenTelemetry.
+	DataPointObservabilityModeGauge DataPointObservabilityMode = "Gauge"
+	// DataPointObservabilityModeHistogram - Map as histogram to OpenTelemetry.
+	DataPointObservabilityModeHistogram DataPointObservabilityMode = "Histogram"
+	// DataPointObservabilityModeLog - Map as log to OpenTelemetry.
+	DataPointObservabilityModeLog DataPointObservabilityMode = "Log"
+	// DataPointObservabilityModeNone - No mapping to OpenTelemetry.
+	DataPointObservabilityModeNone DataPointObservabilityMode = "None"
 )
 
-// PossibleDataPointsObservabilityModeValues returns the possible values for the DataPointsObservabilityMode const type.
-func PossibleDataPointsObservabilityModeValues() []DataPointsObservabilityMode {
-	return []DataPointsObservabilityMode{
-		DataPointsObservabilityModeCounter,
-		DataPointsObservabilityModeGauge,
-		DataPointsObservabilityModeHistogram,
-		DataPointsObservabilityModeLog,
-		DataPointsObservabilityModeNone,
+// PossibleDataPointObservabilityModeValues returns the possible values for the DataPointObservabilityMode const type.
+func PossibleDataPointObservabilityModeValues() []DataPointObservabilityMode {
+	return []DataPointObservabilityMode{
+		DataPointObservabilityModeCounter,
+		DataPointObservabilityModeGauge,
+		DataPointObservabilityModeHistogram,
+		DataPointObservabilityModeLog,
+		DataPointObservabilityModeNone,
 	}
 }
 
-// EventsObservabilityMode - An indication of how the event should be mapped to OpenTelemetry.
-type EventsObservabilityMode string
+// EventObservabilityMode - An indication of how the event should be mapped to OpenTelemetry.
+type EventObservabilityMode string
 
 const (
-	// EventsObservabilityModeLog - Map as log to OpenTelemetry.
-	EventsObservabilityModeLog EventsObservabilityMode = "log"
-	// EventsObservabilityModeNone - No mapping to OpenTelemetry.
-	EventsObservabilityModeNone EventsObservabilityMode = "none"
+	// EventObservabilityModeLog - Map as log to OpenTelemetry.
+	EventObservabilityModeLog EventObservabilityMode = "Log"
+	// EventObservabilityModeNone - No mapping to OpenTelemetry.
+	EventObservabilityModeNone EventObservabilityMode = "None"
 )
 
-// PossibleEventsObservabilityModeValues returns the possible values for the EventsObservabilityMode const type.
-func PossibleEventsObservabilityModeValues() []EventsObservabilityMode {
-	return []EventsObservabilityMode{
-		EventsObservabilityModeLog,
-		EventsObservabilityModeNone,
+// PossibleEventObservabilityModeValues returns the possible values for the EventObservabilityMode const type.
+func PossibleEventObservabilityModeValues() []EventObservabilityMode {
+	return []EventObservabilityMode{
+		EventObservabilityModeLog,
+		EventObservabilityModeNone,
 	}
 }
 
@@ -119,6 +140,8 @@ const (
 	ProvisioningStateAccepted ProvisioningState = "Accepted"
 	// ProvisioningStateCanceled - Resource creation was canceled.
 	ProvisioningStateCanceled ProvisioningState = "Canceled"
+	// ProvisioningStateDeleting - Resource is deleting.
+	ProvisioningStateDeleting ProvisioningState = "Deleting"
 	// ProvisioningStateFailed - Resource creation failed.
 	ProvisioningStateFailed ProvisioningState = "Failed"
 	// ProvisioningStateSucceeded - Resource has been created.
@@ -130,28 +153,26 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	return []ProvisioningState{
 		ProvisioningStateAccepted,
 		ProvisioningStateCanceled,
+		ProvisioningStateDeleting,
 		ProvisioningStateFailed,
 		ProvisioningStateSucceeded,
 	}
 }
 
-// UserAuthenticationMode - Defines the mode to authenticate the user of the client at the server.
-type UserAuthenticationMode string
+// TopicRetainType - When set to 'Keep', messages published to an MQTT broker will have the retain flag set. Default: 'Never'.
+type TopicRetainType string
 
 const (
-	// UserAuthenticationModeAnonymous - The user authentication mode is anonymous.
-	UserAuthenticationModeAnonymous UserAuthenticationMode = "Anonymous"
-	// UserAuthenticationModeCertificate - The user authentication mode is an x509 certificate.
-	UserAuthenticationModeCertificate UserAuthenticationMode = "Certificate"
-	// UserAuthenticationModeUsernamePassword - The user authentication mode is a username and password.
-	UserAuthenticationModeUsernamePassword UserAuthenticationMode = "UsernamePassword"
+	// TopicRetainTypeKeep - Retain the messages.
+	TopicRetainTypeKeep TopicRetainType = "Keep"
+	// TopicRetainTypeNever - Never retain messages.
+	TopicRetainTypeNever TopicRetainType = "Never"
 )
 
-// PossibleUserAuthenticationModeValues returns the possible values for the UserAuthenticationMode const type.
-func PossibleUserAuthenticationModeValues() []UserAuthenticationMode {
-	return []UserAuthenticationMode{
-		UserAuthenticationModeAnonymous,
-		UserAuthenticationModeCertificate,
-		UserAuthenticationModeUsernamePassword,
+// PossibleTopicRetainTypeValues returns the possible values for the TopicRetainType const type.
+func PossibleTopicRetainTypeValues() []TopicRetainType {
+	return []TopicRetainType{
+		TopicRetainTypeKeep,
+		TopicRetainTypeNever,
 	}
 }

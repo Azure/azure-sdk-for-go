@@ -28,7 +28,7 @@ type OperationStatusClient struct {
 }
 
 // NewOperationStatusClient creates a new instance of OperationStatusClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewOperationStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationStatusClient, error) {
@@ -46,8 +46,8 @@ func NewOperationStatusClient(subscriptionID string, credential azcore.TokenCred
 // Get - Returns the current status of an async operation.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01-preview
-//   - location - The name of Azure region.
+// Generated from API version 2024-11-01
+//   - location - The name of the Azure region.
 //   - operationID - The ID of an ongoing async operation.
 //   - options - OperationStatusClientGetOptions contains the optional parameters for the OperationStatusClient.Get method.
 func (client *OperationStatusClient) Get(ctx context.Context, location string, operationID string, options *OperationStatusClientGetOptions) (OperationStatusClientGetResponse, error) {
@@ -92,7 +92,7 @@ func (client *OperationStatusClient) getCreateRequest(ctx context.Context, locat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01-preview")
+	reqQP.Set("api-version", "2024-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

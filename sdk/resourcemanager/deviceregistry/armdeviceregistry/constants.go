@@ -10,7 +10,7 @@ package armdeviceregistry
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceregistry/armdeviceregistry"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v0.1.1"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -135,15 +135,15 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// UserAuthenticationMode - Defines the mode to authenticate the user of the client at the server.
+// UserAuthenticationMode - Defines the method to authenticate the user of the client at the server.
 type UserAuthenticationMode string
 
 const (
-	// UserAuthenticationModeAnonymous - The user authentication mode is anonymous.
+	// UserAuthenticationModeAnonymous - The user authentication method is anonymous.
 	UserAuthenticationModeAnonymous UserAuthenticationMode = "Anonymous"
-	// UserAuthenticationModeCertificate - The user authentication mode is an x509 certificate.
+	// UserAuthenticationModeCertificate - The user authentication method is an x509 certificate.
 	UserAuthenticationModeCertificate UserAuthenticationMode = "Certificate"
-	// UserAuthenticationModeUsernamePassword - The user authentication mode is a username and password.
+	// UserAuthenticationModeUsernamePassword - The user authentication method is a username and password.
 	UserAuthenticationModeUsernamePassword UserAuthenticationMode = "UsernamePassword"
 )
 

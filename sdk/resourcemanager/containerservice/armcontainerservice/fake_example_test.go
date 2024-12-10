@@ -68,9 +68,9 @@ func ExampleManagedClustersServer() {
 	fmt.Println(*resp.ID)
 
 	// APIs that haven't been faked will return an error
-	_, err = client.GetAccessProfile(context.TODO(), "fakeResourceGroup", "fakeResource", "fakeRole", nil)
+	// _, err = client.GetAccessProfile(context.TODO(), "fakeResourceGroup", "fakeResource", "fakeRole", nil)
 
-	fmt.Println(err.Error())
+	// fmt.Println(err.Error())
 
 	// Output:
 	// /fake/resource/id

@@ -377,7 +377,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 
 func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*GenerateResult, error) {
 	// packagePath := filepath.Join(ctx.SDKPath, "sdk", "resourcemanager", generateParam.RPName, generateParam.NamespaceName)
-	packagePath := filepath.Join(ctx.SDKPath, "messaging", "resourcemanager", generateParam.RPName, generateParam.NamespaceName)
+	packagePath := filepath.Join(ctx.SDKPath, "sdk", "messaging", generateParam.RPName, generateParam.NamespaceName)
 	changelogPath := filepath.Join(packagePath, ChangelogFileName)
 
 	version, err := semver.NewVersion("0.1.0")

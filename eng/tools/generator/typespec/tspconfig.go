@@ -177,8 +177,8 @@ func (tc TypeSpecConfig) GetModuleName() ([2]string, error) {
 	if l != 7 {
 		return [2]string{}, fmt.Errorf("module is invalid and must be in the format of `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/{rpName}/{packageName}`")
 	}
-	if !strings.Contains(s[l-1], "arm") {
-		return [2]string{}, fmt.Errorf("packageName is invalid and must start with `arm`")
+	if !strings.Contains(s[l-1], "arm") && !strings.Contains(s[l-1], "az") {
+		return [2]string{}, fmt.Errorf("packageName is invalid and must start with `arm` or `az`")
 	}
 
 	return [2]string{s[l-2], s[l-1]}, nil

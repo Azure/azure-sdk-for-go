@@ -80,7 +80,7 @@ type AssetEndpointProfileProperties struct {
 	// further connector type specific configuration.
 	TargetAddress *string
 
-	// Contains connectivity type specific further configuration (e.g. OPC UA, Modbus, ONVIF).
+	// Stringified JSON that contains connectivity type specific further configuration (e.g. OPC UA, Modbus, ONVIF).
 	AdditionalConfiguration *string
 
 	// Defines the authentication mechanism for the southbound connector connecting to the shop floor/OT device.
@@ -98,7 +98,7 @@ type AssetEndpointProfileProperties struct {
 
 // AssetEndpointProfileUpdate - The type used for update operations of the AssetEndpointProfile.
 type AssetEndpointProfileUpdate struct {
-	// The updatable properties of the AssetEndpointProfile.
+	// The resource-specific properties for this resource.
 	Properties *AssetEndpointProfileUpdateProperties
 
 	// Resource tags.
@@ -107,7 +107,7 @@ type AssetEndpointProfileUpdate struct {
 
 // AssetEndpointProfileUpdateProperties - The updatable properties of the AssetEndpointProfile.
 type AssetEndpointProfileUpdateProperties struct {
-	// Contains connectivity type specific further configuration (e.g. OPC UA, Modbus, ONVIF).
+	// Stringified JSON that contains connectivity type specific further configuration (e.g. OPC UA, Modbus, ONVIF).
 	AdditionalConfiguration *string
 
 	// The local valid URI specifying the network address/DNS name of a southbound device. The scheme part of the targetAddress
@@ -144,17 +144,15 @@ type AssetProperties struct {
 	Attributes map[string]any
 
 	// Array of data points that are part of the asset. Each data point can reference an asset type capability and have per-data
-	// point configuration. See below for more details for the definition of the
-	// dataPoints element.
+	// point configuration.
 	DataPoints []*DataPoint
 
-	// Protocol-specific default configuration for all data points. Each data point can have its own configuration that overrides
-	// the default settings here. This assumes that each asset instance has one
-	// protocol.
+	// Stringified JSON that contains protocol-specific default configuration for all data points. Each data point can have its
+	// own configuration that overrides the default settings here.
 	DefaultDataPointsConfiguration *string
 
-	// Protocol-specific default configuration for all events. Each event can have its own configuration that overrides the default
-	// settings here. This assumes that each asset instance has one protocol.
+	// Stringified JSON that contains connector-specific default configuration for all events. Each event can have its own configuration
+	// that overrides the default settings here.
 	DefaultEventsConfiguration *string
 
 	// Human-readable description of the asset.
@@ -169,8 +167,7 @@ type AssetProperties struct {
 	// Enabled/Disabled status of the asset.
 	Enabled *bool
 
-	// Array of events that are part of the asset. Each event can reference an asset type capability and have per-event configuration.
-	// See below for more details about the definition of the events element.
+	// Array of events that are part of the asset. Each event can have per-event configuration.
 	Events []*Event
 
 	// Asset id provided by the customer.
@@ -213,27 +210,28 @@ type AssetProperties struct {
 
 // AssetStatus - Defines the asset status properties.
 type AssetStatus struct {
-	// Array object to transfer and persist errors that originate from the Edge.
+	// READ-ONLY; Array object to transfer and persist errors that originate from the Edge.
 	Errors []*AssetStatusError
 
-	// A read only incremental counter indicating the number of times the configuration has been modified from the perspective
-	// of the current actual (Edge) state of the Asset. Edge would be the only writer
+	// READ-ONLY; A read only incremental counter indicating the number of times the configuration has been modified from the
+	// perspective of the current actual (Edge) state of the Asset. Edge would be the only writer
 	// of this value and would sync back up to the cloud. In steady state, this should equal version.
 	Version *int32
 }
 
 // AssetStatusError - Defines the asset status error properties.
 type AssetStatusError struct {
-	// Error code for classification of errors (ex: 400, 404, 500, etc.).
+	// READ-ONLY; Error code for classification of errors (ex: 400, 404, 500, etc.).
 	Code *int32
 
-	// Human readable helpful error message to provide additional context for error (ex: “capability Id 'foo' does not exist”).
+	// READ-ONLY; Human readable helpful error message to provide additional context for error (ex: “capability Id 'foo' does
+	// not exist”).
 	Message *string
 }
 
 // AssetUpdate - The type used for update operations of the Asset.
 type AssetUpdate struct {
-	// The updatable properties of the Asset.
+	// The resource-specific properties for this resource.
 	Properties *AssetUpdateProperties
 
 	// Resource tags.
@@ -249,17 +247,15 @@ type AssetUpdateProperties struct {
 	Attributes map[string]any
 
 	// Array of data points that are part of the asset. Each data point can reference an asset type capability and have per-data
-	// point configuration. See below for more details for the definition of the
-	// dataPoints element.
+	// point configuration.
 	DataPoints []*DataPoint
 
-	// Protocol-specific default configuration for all data points. Each data point can have its own configuration that overrides
-	// the default settings here. This assumes that each asset instance has one
-	// protocol.
+	// Stringified JSON that contains protocol-specific default configuration for all data points. Each data point can have its
+	// own configuration that overrides the default settings here.
 	DefaultDataPointsConfiguration *string
 
-	// Protocol-specific default configuration for all events. Each event can have its own configuration that overrides the default
-	// settings here. This assumes that each asset instance has one protocol.
+	// Stringified JSON that contains connector-specific default configuration for all events. Each event can have its own configuration
+	// that overrides the default settings here.
 	DefaultEventsConfiguration *string
 
 	// Human-readable description of the asset.
@@ -274,8 +270,7 @@ type AssetUpdateProperties struct {
 	// Enabled/Disabled status of the asset.
 	Enabled *bool
 
-	// Array of events that are part of the asset. Each event can reference an asset type capability and have per-event configuration.
-	// See below for more details about the definition of the events element.
+	// Array of events that are part of the asset. Each event can have per-event configuration.
 	Events []*Event
 
 	// Revision number of the hardware.
@@ -309,8 +304,8 @@ type DataPoint struct {
 	// The path to the type definition of the capability (e.g. DTMI, OPC UA information model node id, etc.), for example dtmi:com:example:Robot:contents:_prop1;1.
 	CapabilityID *string
 
-	// Protocol-specific configuration for the data point. For OPC UA, this could include configuration like, publishingInterval,
-	// samplingInterval, and queueSize.
+	// Stringified JSON that contains connector-specific configuration for the data point. For OPC UA, this could include configuration
+	// like, publishingInterval, samplingInterval, and queueSize.
 	DataPointConfiguration *string
 
 	// The name of the data point.
@@ -356,8 +351,8 @@ type Event struct {
 	// The path to the type definition of the capability (e.g. DTMI, OPC UA information model node id, etc.), for example dtmi:com:example:Robot:contents:_prop1;1.
 	CapabilityID *string
 
-	// Protocol-specific configuration for the event. For OPC UA, this could include configuration like, publishingInterval, samplingInterval,
-	// and queueSize.
+	// Stringified JSON that contains connector-specific configuration for the event. For OPC UA, this could include configuration
+	// like, publishingInterval, samplingInterval, and queueSize.
 	EventConfiguration *string
 
 	// The name of the event.
@@ -504,7 +499,7 @@ type TransportAuthenticationUpdate struct {
 
 // UserAuthentication - Definition of the client authentication mechanism to the server.
 type UserAuthentication struct {
-	// REQUIRED; Defines the mode to authenticate the user of the client at the server.
+	// REQUIRED; Defines the method to authenticate the user of the client at the server.
 	Mode *UserAuthenticationMode
 
 	// Defines the username and password references when UsernamePassword user authentication mode is selected.
@@ -516,7 +511,7 @@ type UserAuthentication struct {
 
 // UserAuthenticationUpdate - Definition of the client authentication mechanism to the server.
 type UserAuthenticationUpdate struct {
-	// Defines the mode to authenticate the user of the client at the server.
+	// Defines the method to authenticate the user of the client at the server.
 	Mode *UserAuthenticationMode
 
 	// Defines the username and password references when UsernamePassword user authentication mode is selected.

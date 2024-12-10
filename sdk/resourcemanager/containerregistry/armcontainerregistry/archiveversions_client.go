@@ -46,7 +46,7 @@ func NewArchiveVersionsClient(subscriptionID string, credential azcore.TokenCred
 // BeginCreate - Creates a archive for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01-preview
+// Generated from API version 2024-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - packageType - The type of the package resource.
@@ -75,7 +75,7 @@ func (client *ArchiveVersionsClient) BeginCreate(ctx context.Context, resourceGr
 // Create - Creates a archive for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01-preview
+// Generated from API version 2024-11-01-preview
 func (client *ArchiveVersionsClient) create(ctx context.Context, resourceGroupName string, registryName string, packageType string, archiveName string, archiveVersionName string, options *ArchiveVersionsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ArchiveVersionsClient.BeginCreate"
@@ -129,7 +129,7 @@ func (client *ArchiveVersionsClient) createCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01-preview")
+	reqQP.Set("api-version", "2024-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -138,7 +138,7 @@ func (client *ArchiveVersionsClient) createCreateRequest(ctx context.Context, re
 // BeginDelete - Deletes a archive version from a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01-preview
+// Generated from API version 2024-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - packageType - The type of the package resource.
@@ -167,7 +167,7 @@ func (client *ArchiveVersionsClient) BeginDelete(ctx context.Context, resourceGr
 // Delete - Deletes a archive version from a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01-preview
+// Generated from API version 2024-11-01-preview
 func (client *ArchiveVersionsClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, packageType string, archiveName string, archiveVersionName string, options *ArchiveVersionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ArchiveVersionsClient.BeginDelete"
@@ -221,7 +221,7 @@ func (client *ArchiveVersionsClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01-preview")
+	reqQP.Set("api-version", "2024-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -230,7 +230,7 @@ func (client *ArchiveVersionsClient) deleteCreateRequest(ctx context.Context, re
 // Get - Gets the properties of the archive version.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01-preview
+// Generated from API version 2024-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - packageType - The type of the package resource.
@@ -291,7 +291,7 @@ func (client *ArchiveVersionsClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01-preview")
+	reqQP.Set("api-version", "2024-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -308,7 +308,7 @@ func (client *ArchiveVersionsClient) getHandleResponse(resp *http.Response) (Arc
 
 // NewListPager - Lists all archive versions for the specified container registry, repository type and archive name.
 //
-// Generated from API version 2023-11-01-preview
+// Generated from API version 2024-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - packageType - The type of the package resource.
@@ -366,7 +366,7 @@ func (client *ArchiveVersionsClient) listCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01-preview")
+	reqQP.Set("api-version", "2024-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

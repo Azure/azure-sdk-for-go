@@ -46,7 +46,7 @@ func NewConnectedRegistriesClient(subscriptionID string, credential azcore.Token
 // BeginCreate - Creates a connected registry for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01-preview
+// Generated from API version 2024-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - connectedRegistryName - The name of the connected registry.
@@ -74,7 +74,7 @@ func (client *ConnectedRegistriesClient) BeginCreate(ctx context.Context, resour
 // Create - Creates a connected registry for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01-preview
+// Generated from API version 2024-11-01-preview
 func (client *ConnectedRegistriesClient) create(ctx context.Context, resourceGroupName string, registryName string, connectedRegistryName string, connectedRegistryCreateParameters ConnectedRegistry, options *ConnectedRegistriesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConnectedRegistriesClient.BeginCreate"
@@ -120,7 +120,7 @@ func (client *ConnectedRegistriesClient) createCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01-preview")
+	reqQP.Set("api-version", "2024-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, connectedRegistryCreateParameters); err != nil {
@@ -132,7 +132,7 @@ func (client *ConnectedRegistriesClient) createCreateRequest(ctx context.Context
 // BeginDeactivate - Deactivates the connected registry instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01-preview
+// Generated from API version 2024-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - connectedRegistryName - The name of the connected registry.
@@ -159,7 +159,7 @@ func (client *ConnectedRegistriesClient) BeginDeactivate(ctx context.Context, re
 // Deactivate - Deactivates the connected registry instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01-preview
+// Generated from API version 2024-11-01-preview
 func (client *ConnectedRegistriesClient) deactivate(ctx context.Context, resourceGroupName string, registryName string, connectedRegistryName string, options *ConnectedRegistriesClientBeginDeactivateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConnectedRegistriesClient.BeginDeactivate"
@@ -205,7 +205,7 @@ func (client *ConnectedRegistriesClient) deactivateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01-preview")
+	reqQP.Set("api-version", "2024-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -214,7 +214,7 @@ func (client *ConnectedRegistriesClient) deactivateCreateRequest(ctx context.Con
 // BeginDelete - Deletes a connected registry from a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01-preview
+// Generated from API version 2024-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - connectedRegistryName - The name of the connected registry.
@@ -241,7 +241,7 @@ func (client *ConnectedRegistriesClient) BeginDelete(ctx context.Context, resour
 // Delete - Deletes a connected registry from a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01-preview
+// Generated from API version 2024-11-01-preview
 func (client *ConnectedRegistriesClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, connectedRegistryName string, options *ConnectedRegistriesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConnectedRegistriesClient.BeginDelete"
@@ -287,7 +287,7 @@ func (client *ConnectedRegistriesClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01-preview")
+	reqQP.Set("api-version", "2024-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -296,7 +296,7 @@ func (client *ConnectedRegistriesClient) deleteCreateRequest(ctx context.Context
 // Get - Gets the properties of the connected registry.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01-preview
+// Generated from API version 2024-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - connectedRegistryName - The name of the connected registry.
@@ -347,7 +347,7 @@ func (client *ConnectedRegistriesClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01-preview")
+	reqQP.Set("api-version", "2024-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -364,7 +364,7 @@ func (client *ConnectedRegistriesClient) getHandleResponse(resp *http.Response) 
 
 // NewListPager - Lists all connected registries for the specified container registry.
 //
-// Generated from API version 2023-11-01-preview
+// Generated from API version 2024-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - options - ConnectedRegistriesClientListOptions contains the optional parameters for the ConnectedRegistriesClient.NewListPager
@@ -412,10 +412,10 @@ func (client *ConnectedRegistriesClient) listCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
+	reqQP.Set("api-version", "2024-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -433,7 +433,7 @@ func (client *ConnectedRegistriesClient) listHandleResponse(resp *http.Response)
 // BeginUpdate - Updates a connected registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01-preview
+// Generated from API version 2024-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - connectedRegistryName - The name of the connected registry.
@@ -461,7 +461,7 @@ func (client *ConnectedRegistriesClient) BeginUpdate(ctx context.Context, resour
 // Update - Updates a connected registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01-preview
+// Generated from API version 2024-11-01-preview
 func (client *ConnectedRegistriesClient) update(ctx context.Context, resourceGroupName string, registryName string, connectedRegistryName string, connectedRegistryUpdateParameters ConnectedRegistryUpdateParameters, options *ConnectedRegistriesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConnectedRegistriesClient.BeginUpdate"
@@ -507,7 +507,7 @@ func (client *ConnectedRegistriesClient) updateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01-preview")
+	reqQP.Set("api-version", "2024-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, connectedRegistryUpdateParameters); err != nil {

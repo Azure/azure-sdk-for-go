@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-11-01-preview/examples/ConnectedRegistryList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/300ff7c27c481d7074af06cd95a152aaea80ed2b/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2024-11-01-preview/examples/ConnectedRegistryList.json
 func ExampleConnectedRegistriesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,6 +52,10 @@ func ExampleConnectedRegistriesClient_NewListPager() {
 		// 				},
 		// 				ClientTokenIDs: []*string{
 		// 					to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/tokens/client1Token")},
+		// 					GarbageCollection: &armcontainerregistry.GarbageCollectionProperties{
+		// 						Enabled: to.Ptr(true),
+		// 						Schedule: to.Ptr("0 5 * * *"),
+		// 					},
 		// 					Logging: &armcontainerregistry.LoggingProperties{
 		// 						AuditLogStatus: to.Ptr(armcontainerregistry.AuditLogStatusDisabled),
 		// 						LogLevel: to.Ptr(armcontainerregistry.LogLevelInformation),
@@ -74,7 +78,7 @@ func ExampleConnectedRegistriesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-11-01-preview/examples/ConnectedRegistryGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/300ff7c27c481d7074af06cd95a152aaea80ed2b/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2024-11-01-preview/examples/ConnectedRegistryGet.json
 func ExampleConnectedRegistriesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,6 +106,10 @@ func ExampleConnectedRegistriesClient_Get() {
 	// 		},
 	// 		ClientTokenIDs: []*string{
 	// 			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/tokens/client1Token")},
+	// 			GarbageCollection: &armcontainerregistry.GarbageCollectionProperties{
+	// 				Enabled: to.Ptr(true),
+	// 				Schedule: to.Ptr("0 5 * * *"),
+	// 			},
 	// 			Logging: &armcontainerregistry.LoggingProperties{
 	// 				AuditLogStatus: to.Ptr(armcontainerregistry.AuditLogStatusDisabled),
 	// 				LogLevel: to.Ptr(armcontainerregistry.LogLevelInformation),
@@ -122,7 +130,7 @@ func ExampleConnectedRegistriesClient_Get() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-11-01-preview/examples/ConnectedRegistryCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/300ff7c27c481d7074af06cd95a152aaea80ed2b/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2024-11-01-preview/examples/ConnectedRegistryCreate.json
 func ExampleConnectedRegistriesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,6 +145,10 @@ func ExampleConnectedRegistriesClient_BeginCreate() {
 		Properties: &armcontainerregistry.ConnectedRegistryProperties{
 			ClientTokenIDs: []*string{
 				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/tokens/client1Token")},
+			GarbageCollection: &armcontainerregistry.GarbageCollectionProperties{
+				Enabled:  to.Ptr(true),
+				Schedule: to.Ptr("0 5 * * *"),
+			},
 			Mode: to.Ptr(armcontainerregistry.ConnectedRegistryModeReadWrite),
 			NotificationsList: []*string{
 				to.Ptr("hello-world:*:*"),
@@ -171,6 +183,10 @@ func ExampleConnectedRegistriesClient_BeginCreate() {
 	// 		},
 	// 		ClientTokenIDs: []*string{
 	// 			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/tokens/client1Token")},
+	// 			GarbageCollection: &armcontainerregistry.GarbageCollectionProperties{
+	// 				Enabled: to.Ptr(true),
+	// 				Schedule: to.Ptr("0 5 * * *"),
+	// 			},
 	// 			Logging: &armcontainerregistry.LoggingProperties{
 	// 				AuditLogStatus: to.Ptr(armcontainerregistry.AuditLogStatusDisabled),
 	// 				LogLevel: to.Ptr(armcontainerregistry.LogLevelInformation),
@@ -191,7 +207,7 @@ func ExampleConnectedRegistriesClient_BeginCreate() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-11-01-preview/examples/ConnectedRegistryDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/300ff7c27c481d7074af06cd95a152aaea80ed2b/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2024-11-01-preview/examples/ConnectedRegistryDelete.json
 func ExampleConnectedRegistriesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -212,7 +228,7 @@ func ExampleConnectedRegistriesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-11-01-preview/examples/ConnectedRegistryUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/300ff7c27c481d7074af06cd95a152aaea80ed2b/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2024-11-01-preview/examples/ConnectedRegistryUpdate.json
 func ExampleConnectedRegistriesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -228,6 +244,10 @@ func ExampleConnectedRegistriesClient_BeginUpdate() {
 			ClientTokenIDs: []*string{
 				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/tokens/client1Token"),
 				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/tokens/client2Token")},
+			GarbageCollection: &armcontainerregistry.GarbageCollectionProperties{
+				Enabled:  to.Ptr(true),
+				Schedule: to.Ptr("0 5 * * *"),
+			},
 			Logging: &armcontainerregistry.LoggingProperties{
 				AuditLogStatus: to.Ptr(armcontainerregistry.AuditLogStatusEnabled),
 				LogLevel:       to.Ptr(armcontainerregistry.LogLevelDebug),
@@ -260,6 +280,10 @@ func ExampleConnectedRegistriesClient_BeginUpdate() {
 	// 		ClientTokenIDs: []*string{
 	// 			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/tokens/client1Token"),
 	// 			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/tokens/client2Token")},
+	// 			GarbageCollection: &armcontainerregistry.GarbageCollectionProperties{
+	// 				Enabled: to.Ptr(true),
+	// 				Schedule: to.Ptr("0 5 * * *"),
+	// 			},
 	// 			Logging: &armcontainerregistry.LoggingProperties{
 	// 				AuditLogStatus: to.Ptr(armcontainerregistry.AuditLogStatusEnabled),
 	// 				LogLevel: to.Ptr(armcontainerregistry.LogLevelDebug),
@@ -280,7 +304,7 @@ func ExampleConnectedRegistriesClient_BeginUpdate() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-11-01-preview/examples/ConnectedRegistryDeactivate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/300ff7c27c481d7074af06cd95a152aaea80ed2b/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2024-11-01-preview/examples/ConnectedRegistryDeactivate.json
 func ExampleConnectedRegistriesClient_BeginDeactivate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

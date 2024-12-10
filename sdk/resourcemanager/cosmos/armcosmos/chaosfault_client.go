@@ -28,7 +28,7 @@ type ChaosFaultClient struct {
 }
 
 // NewChaosFaultClient creates a new instance of ChaosFaultClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewChaosFaultClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ChaosFaultClient, error) {
@@ -46,7 +46,7 @@ func NewChaosFaultClient(subscriptionID string, credential azcore.TokenCredentia
 // BeginEnableDisable - Enable, disable Chaos Fault in a CosmosDB account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-09-01-preview
+// Generated from API version 2024-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - chaosFault - The name of the ChaosFault.
@@ -74,7 +74,7 @@ func (client *ChaosFaultClient) BeginEnableDisable(ctx context.Context, resource
 // EnableDisable - Enable, disable Chaos Fault in a CosmosDB account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-09-01-preview
+// Generated from API version 2024-12-01-preview
 func (client *ChaosFaultClient) enableDisable(ctx context.Context, resourceGroupName string, accountName string, chaosFault string, chaosFaultRequest ChaosFaultResource, options *ChaosFaultClientBeginEnableDisableOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ChaosFaultClient.BeginEnableDisable"
@@ -120,7 +120,7 @@ func (client *ChaosFaultClient) enableDisableCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01-preview")
+	reqQP.Set("api-version", "2024-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, chaosFaultRequest); err != nil {
@@ -132,7 +132,7 @@ func (client *ChaosFaultClient) enableDisableCreateRequest(ctx context.Context, 
 // Get - Get Chaos Fault for a CosmosdB account for a particular Chaos Fault.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-09-01-preview
+// Generated from API version 2024-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - chaosFault - The name of the ChaosFault.
@@ -183,7 +183,7 @@ func (client *ChaosFaultClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01-preview")
+	reqQP.Set("api-version", "2024-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -200,7 +200,7 @@ func (client *ChaosFaultClient) getHandleResponse(resp *http.Response) (ChaosFau
 
 // NewListPager - List Chaos Faults for CosmosDB account.
 //
-// Generated from API version 2024-09-01-preview
+// Generated from API version 2024-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - options - ChaosFaultClientListOptions contains the optional parameters for the ChaosFaultClient.NewListPager method.
@@ -247,7 +247,7 @@ func (client *ChaosFaultClient) listCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01-preview")
+	reqQP.Set("api-version", "2024-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

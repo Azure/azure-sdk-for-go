@@ -1473,9 +1473,37 @@ type TableResourcesClientBeginCreateUpdateTableOptions struct {
 	ResumeToken string
 }
 
+// TableResourcesClientBeginCreateUpdateTableRoleAssignmentOptions contains the optional parameters for the TableResourcesClient.BeginCreateUpdateTableRoleAssignment
+// method.
+type TableResourcesClientBeginCreateUpdateTableRoleAssignmentOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// TableResourcesClientBeginCreateUpdateTableRoleDefinitionOptions contains the optional parameters for the TableResourcesClient.BeginCreateUpdateTableRoleDefinition
+// method.
+type TableResourcesClientBeginCreateUpdateTableRoleDefinitionOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // TableResourcesClientBeginDeleteTableOptions contains the optional parameters for the TableResourcesClient.BeginDeleteTable
 // method.
 type TableResourcesClientBeginDeleteTableOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// TableResourcesClientBeginDeleteTableRoleAssignmentOptions contains the optional parameters for the TableResourcesClient.BeginDeleteTableRoleAssignment
+// method.
+type TableResourcesClientBeginDeleteTableRoleAssignmentOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// TableResourcesClientBeginDeleteTableRoleDefinitionOptions contains the optional parameters for the TableResourcesClient.BeginDeleteTableRoleDefinition
+// method.
+type TableResourcesClientBeginDeleteTableRoleDefinitionOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -1513,9 +1541,33 @@ type TableResourcesClientGetTableOptions struct {
 	// placeholder for future optional parameters
 }
 
+// TableResourcesClientGetTableRoleAssignmentOptions contains the optional parameters for the TableResourcesClient.GetTableRoleAssignment
+// method.
+type TableResourcesClientGetTableRoleAssignmentOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TableResourcesClientGetTableRoleDefinitionOptions contains the optional parameters for the TableResourcesClient.GetTableRoleDefinition
+// method.
+type TableResourcesClientGetTableRoleDefinitionOptions struct {
+	// placeholder for future optional parameters
+}
+
 // TableResourcesClientGetTableThroughputOptions contains the optional parameters for the TableResourcesClient.GetTableThroughput
 // method.
 type TableResourcesClientGetTableThroughputOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TableResourcesClientListTableRoleAssignmentsOptions contains the optional parameters for the TableResourcesClient.NewListTableRoleAssignmentsPager
+// method.
+type TableResourcesClientListTableRoleAssignmentsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TableResourcesClientListTableRoleDefinitionsOptions contains the optional parameters for the TableResourcesClient.NewListTableRoleDefinitionsPager
+// method.
+type TableResourcesClientListTableRoleDefinitionsOptions struct {
 	// placeholder for future optional parameters
 }
 

@@ -54,17 +54,7 @@ The `azidentity` module focuses on OAuth authentication with Microsoft Entra ID.
 
 ### DefaultAzureCredential
 
-`DefaultAzureCredential` simplifies authentication while developing applications that deploy to Azure by combining credentials used in Azure hosting environments and credentials used in local development. In production, it's better to use a specific credential type so authentication is more predictable and easier to debug. `DefaultAzureCredential` attempts to authenticate via the following mechanisms in this order, stopping when one succeeds:
-
-![DefaultAzureCredential authentication flow](img/mermaidjs/DefaultAzureCredentialAuthFlow.svg)
-
-1. **Environment** - `DefaultAzureCredential` will read account information specified via [environment variables](#environment-variables) and use it to authenticate.
-1. **Workload Identity** - If the app is deployed on Kubernetes with environment variables set by the workload identity webhook, `DefaultAzureCredential` will authenticate the configured identity.
-1. **Managed Identity** - If the app is deployed to an Azure host with managed identity enabled, `DefaultAzureCredential` will authenticate with it.
-1. **Azure CLI** - If a user or service principal has authenticated via the Azure CLI `az login` command, `DefaultAzureCredential` will authenticate that identity.
-1. **Azure Developer CLI** - If the developer has authenticated via the Azure Developer CLI `azd auth login` command, the `DefaultAzureCredential` will authenticate with that account.
-
-> Note: `DefaultAzureCredential` is intended to simplify getting started with the SDK by handling common scenarios with reasonable default behaviors. Developers who want more control or whose scenario isn't served by the default settings should use other credential types.
+`DefaultAzureCredential` simplifies authentication while developing apps that deploy to Azure by combining credentials used in Azure hosting environments with credentials used in local development. For more information, see [DefaultAzureCredential overview](https://aka.ms/azsdk/go/identity/credential-chains#defaultazurecredential-overview).
 
 ## Managed Identity
 

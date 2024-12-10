@@ -54,7 +54,7 @@ The `azidentity` module focuses on OAuth authentication with Microsoft Entra ID.
 
 ### DefaultAzureCredential
 
-`DefaultAzureCredential` simplifies authentication while developing apps that deploy to Azure by combining credentials used in Azure hosting environments with credentials used in local development. For more information, see [DefaultAzureCredential overview](https://aka.ms/azsdk/go/identity/credential-chains#defaultazurecredential-overview).
+`DefaultAzureCredential` simplifies authentication while developing apps that deploy to Azure by combining credentials used in Azure hosting environments with credentials used in local development. For more information, see [DefaultAzureCredential overview][dac_overview].
 
 ## Managed Identity
 
@@ -118,10 +118,10 @@ client := armresources.NewResourceGroupsClient("subscription ID", chain, nil)
 
 ### Credential chains
 
-|Credential|Usage
-|-|-
-|[DefaultAzureCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#DefaultAzureCredential)|Simplified authentication experience for getting started developing Azure apps
-|[ChainedTokenCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#ChainedTokenCredential)|Define custom authentication flows, composing multiple credentials
+|Credential|Usage|Reference
+|-|-|-
+|[DefaultAzureCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#DefaultAzureCredential)|Simplified authentication experience for getting started developing Azure apps|[DefaultAzureCredential overview][dac_overview]|
+|[ChainedTokenCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#ChainedTokenCredential)|Define custom authentication flows, composing multiple credentials|[ChainedTokenCredential overview][ctc_overview]|
 
 ### Authenticating Azure-Hosted Applications
 
@@ -249,5 +249,9 @@ For more information, see the
 [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/)
 or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any
 additional questions or comments.
+
+<!-- LINKS -->
+[ctc_overview]: https://aka.ms/azsdk/go/identity/credential-chains#chainedtokencredential-overview
+[dac_overview]: https://aka.ms/azsdk/go/identity/credential-chains#defaultazurecredential-overview
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-go%2Fsdk%2Fazidentity%2FREADME.png)

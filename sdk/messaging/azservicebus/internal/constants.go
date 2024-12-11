@@ -3,5 +3,7 @@
 
 package internal
 
+const ModuleName = "azservicebus"
+
 // Version is the semantic version number
 const Version = "v1.7.4"

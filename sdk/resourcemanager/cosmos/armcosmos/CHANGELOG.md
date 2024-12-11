@@ -1,5 +1,23 @@
 # Release History
 
+## 3.2.0 (2024-12-10)
+### Features Added
+
+- New enum type `DistanceFunction` with values `DistanceFunctionCosine`, `DistanceFunctionDotproduct`, `DistanceFunctionEuclidean`
+- New enum type `VectorDataType` with values `VectorDataTypeFloat32`, `VectorDataTypeInt8`, `VectorDataTypeUint8`
+- New enum type `VectorIndexType` with values `VectorIndexTypeDiskANN`, `VectorIndexTypeFlat`, `VectorIndexTypeQuantizedFlat`
+- New struct `VectorEmbedding`
+- New struct `VectorEmbeddingPolicy`
+- New struct `VectorIndex`
+- New field `EnablePerRegionPerPartitionAutoscale` in struct `DatabaseAccountCreateUpdateProperties`
+- New field `EnablePerRegionPerPartitionAutoscale` in struct `DatabaseAccountGetProperties`
+- New field `EnablePerRegionPerPartitionAutoscale` in struct `DatabaseAccountUpdateProperties`
+- New field `VectorIndexes` in struct `IndexingPolicy`
+- New field `VectorEmbeddingPolicy` in struct `RestorableSQLContainerPropertiesResourceContainer`
+- New field `VectorEmbeddingPolicy` in struct `SQLContainerGetPropertiesResource`
+- New field `VectorEmbeddingPolicy` in struct `SQLContainerResource`
+
+
 ## 4.0.0-beta.1 (2024-09-27)
 ### Breaking Changes
 

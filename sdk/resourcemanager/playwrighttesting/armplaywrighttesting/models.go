@@ -10,7 +10,7 @@ package armplaywrighttesting
 
 import "time"
 
-// Account - An account resource
+// Account - A Playwright service account resource.
 type Account struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
@@ -21,7 +21,7 @@ type Account struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -34,6 +34,24 @@ type Account struct {
 	Type *string
 }
 
+// AccountFreeTrialProperties - The Playwright service account quota resource free-trial properties.
+type AccountFreeTrialProperties struct {
+	// READ-ONLY; The free-trial allocated limit value eg. allocated free minutes.
+	AllocatedValue *int32
+
+	// READ-ONLY; The free-trial createdAt utcDateTime.
+	CreatedAt *time.Time
+
+	// READ-ONLY; The free-trial expiryAt utcDateTime.
+	ExpiryAt *time.Time
+
+	// READ-ONLY; The free-trial percentage used.
+	PercentageUsed *float32
+
+	// READ-ONLY; The free-trial used value eg. used free minutes.
+	UsedValue *int32
+}
+
 // AccountListResult - The response of a Account list operation.
 type AccountListResult struct {
 	// REQUIRED; The Account items on this page
@@ -43,8 +61,11 @@ type AccountListResult struct {
 	NextLink *string
 }
 
-// AccountProperties - Account properties
+// AccountProperties - Account resource properties.
 type AccountProperties struct {
+	// When enabled, this feature allows the workspace to use local auth(through access key) for authentication of test runs.
+	LocalAuth *EnablementStatus
+
 	// This property sets the connection region for Playwright client workers to cloud-hosted browsers. If enabled, workers connect
 	// to browsers in the closest Azure region, ensuring lower latency. If
 	// disabled, workers connect to browsers in the Azure region in which the workspace was initially created.
@@ -66,9 +87,45 @@ type AccountProperties struct {
 	ProvisioningState *ProvisioningState
 }
 
+// AccountQuota - A quota resource for a Playwright service account.
+type AccountQuota struct {
+	// The resource-specific properties for this resource.
+	Properties *AccountQuotaProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// AccountQuotaListResult - The response of a AccountQuota list operation.
+type AccountQuotaListResult struct {
+	// REQUIRED; The AccountQuota items on this page
+	Value []*AccountQuota
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// AccountQuotaProperties - The Playwright service account quota resource properties.
+type AccountQuotaProperties struct {
+	// The Playwright service account quota resource free-trial properties.
+	FreeTrial *AccountFreeTrialProperties
+
+	// READ-ONLY; The status of the last operation.
+	ProvisioningState *ProvisioningState
+}
+
 // AccountUpdate - The type used for update operations of the Account.
 type AccountUpdate struct {
-	// The updatable properties of the Account.
+	// The resource-specific properties for this resource.
 	Properties *AccountUpdateProperties
 
 	// Resource tags.
@@ -77,6 +134,9 @@ type AccountUpdate struct {
 
 // AccountUpdateProperties - The updatable properties of the Account.
 type AccountUpdateProperties struct {
+	// When enabled, this feature allows the workspace to use local auth(through access key) for authentication of test runs.
+	LocalAuth *EnablementStatus
+
 	// This property sets the connection region for Playwright client workers to cloud-hosted browsers. If enabled, workers connect
 	// to browsers in the closest Azure region, ensuring lower latency. If
 	// disabled, workers connect to browsers in the Azure region in which the workspace was initially created.
@@ -92,28 +152,34 @@ type AccountUpdateProperties struct {
 	ScalableExecution *EnablementStatus
 }
 
-// FreeTrialProperties - The free-trial properties
+// CheckNameAvailabilityRequest - The check availability request body.
+type CheckNameAvailabilityRequest struct {
+	// The name of the resource for which availability needs to be checked.
+	Name *string
+
+	// The resource type.
+	Type *string
+}
+
+// CheckNameAvailabilityResponse - The check availability result.
+type CheckNameAvailabilityResponse struct {
+	// Detailed reason why the given name is available.
+	Message *string
+
+	// Indicates if the resource name is available.
+	NameAvailable *bool
+
+	// The reason why the given name is not available.
+	Reason *CheckNameAvailabilityReason
+}
+
+// FreeTrialProperties - The subscription quota resource free-trial properties.
 type FreeTrialProperties struct {
-	// READ-ONLY; The playwright account id.
+	// READ-ONLY; The Playwright service account id.
 	AccountID *string
-
-	// READ-ONLY; The free-trial allocated limit value eg. allocated free minutes.
-	AllocatedValue *int32
-
-	// READ-ONLY; The free-trial createdAt utcDateTime.
-	CreatedAt *time.Time
-
-	// READ-ONLY; The free-trial expiryAt utcDateTime.
-	ExpiryAt *time.Time
-
-	// READ-ONLY; The free-trial percentage used.
-	PercentageUsed *float64
 
 	// READ-ONLY; The free-trial state.
 	State *FreeTrialState
-
-	// READ-ONLY; The free-trial used value eg. used free minutes.
-	UsedValue *int32
 }
 
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API
@@ -165,12 +231,12 @@ type OperationListResult struct {
 	Value []*Operation
 }
 
-// Quota - A quota resource
+// Quota - A subscription quota resource.
 type Quota struct {
 	// The resource-specific properties for this resource.
 	Properties *QuotaProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -192,10 +258,13 @@ type QuotaListResult struct {
 	NextLink *string
 }
 
-// QuotaProperties - Quota properties
+// QuotaProperties - The subscription quota resource properties.
 type QuotaProperties struct {
-	// The free-trial quota.
+	// The subscription quota resource free-trial properties.
 	FreeTrial *FreeTrialProperties
+
+	// READ-ONLY; Indicates the offering type for the subscription.
+	OfferingType *OfferingType
 
 	// READ-ONLY; The status of the last operation.
 	ProvisioningState *ProvisioningState

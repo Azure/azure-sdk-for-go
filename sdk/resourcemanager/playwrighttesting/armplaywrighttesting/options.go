@@ -8,6 +8,17 @@
 
 package armplaywrighttesting
 
+// AccountQuotasClientGetOptions contains the optional parameters for the AccountQuotasClient.Get method.
+type AccountQuotasClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccountQuotasClientListByAccountOptions contains the optional parameters for the AccountQuotasClient.NewListByAccountPager
+// method.
+type AccountQuotasClientListByAccountOptions struct {
+	// placeholder for future optional parameters
+}
+
 // AccountsClientBeginCreateOrUpdateOptions contains the optional parameters for the AccountsClient.BeginCreateOrUpdate method.
 type AccountsClientBeginCreateOrUpdateOptions struct {
 	// Resumes the LRO from the provided token.
@@ -18,6 +29,12 @@ type AccountsClientBeginCreateOrUpdateOptions struct {
 type AccountsClientBeginDeleteOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
+}
+
+// AccountsClientCheckNameAvailabilityOptions contains the optional parameters for the AccountsClient.CheckNameAvailability
+// method.
+type AccountsClientCheckNameAvailabilityOptions struct {
+	// placeholder for future optional parameters
 }
 
 // AccountsClientGetOptions contains the optional parameters for the AccountsClient.Get method.

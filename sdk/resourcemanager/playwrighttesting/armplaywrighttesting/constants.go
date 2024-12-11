@@ -10,7 +10,7 @@ package armplaywrighttesting
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/playwrighttesting/armplaywrighttesting"
-	moduleVersion = "v0.2.0"
+	moduleVersion = "v1.0.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -24,6 +24,22 @@ const (
 func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
+	}
+}
+
+// CheckNameAvailabilityReason - The reason why the given name is not available.
+type CheckNameAvailabilityReason string
+
+const (
+	CheckNameAvailabilityReasonAlreadyExists CheckNameAvailabilityReason = "AlreadyExists"
+	CheckNameAvailabilityReasonInvalid       CheckNameAvailabilityReason = "Invalid"
+)
+
+// PossibleCheckNameAvailabilityReasonValues returns the possible values for the CheckNameAvailabilityReason const type.
+func PossibleCheckNameAvailabilityReasonValues() []CheckNameAvailabilityReason {
+	return []CheckNameAvailabilityReason{
+		CheckNameAvailabilityReasonAlreadyExists,
+		CheckNameAvailabilityReasonInvalid,
 	}
 }
 
@@ -47,7 +63,9 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// EnablementStatus - The enablement status of a feature.
+// EnablementStatus - This property sets the connection region for Playwright client workers to cloud-hosted browsers. If
+// enabled, workers connect to browsers in the closest Azure region, ensuring lower latency. If
+// disabled, workers connect to browsers in the Azure region in which the workspace was initially created.
 type EnablementStatus string
 
 const (
@@ -73,6 +91,10 @@ const (
 	FreeTrialStateActive FreeTrialState = "Active"
 	// FreeTrialStateExpired - The free-trial is Expired.
 	FreeTrialStateExpired FreeTrialState = "Expired"
+	// FreeTrialStateNotEligible - The free-trial is Not Eligible.
+	FreeTrialStateNotEligible FreeTrialState = "NotEligible"
+	// FreeTrialStateNotRegistered - The free-trial is Not Registered.
+	FreeTrialStateNotRegistered FreeTrialState = "NotRegistered"
 )
 
 // PossibleFreeTrialStateValues returns the possible values for the FreeTrialState const type.
@@ -80,6 +102,32 @@ func PossibleFreeTrialStateValues() []FreeTrialState {
 	return []FreeTrialState{
 		FreeTrialStateActive,
 		FreeTrialStateExpired,
+		FreeTrialStateNotEligible,
+		FreeTrialStateNotRegistered,
+	}
+}
+
+// OfferingType - Offering type state.
+type OfferingType string
+
+const (
+	// OfferingTypeGeneralAvailability - The offeringType is GeneralAvailability.
+	OfferingTypeGeneralAvailability OfferingType = "GeneralAvailability"
+	// OfferingTypeNotApplicable - The offeringType is NotApplicable.
+	OfferingTypeNotApplicable OfferingType = "NotApplicable"
+	// OfferingTypePrivatePreview - The offeringType is PrivatePreview.
+	OfferingTypePrivatePreview OfferingType = "PrivatePreview"
+	// OfferingTypePublicPreview - The offeringType is PublicPreview.
+	OfferingTypePublicPreview OfferingType = "PublicPreview"
+)
+
+// PossibleOfferingTypeValues returns the possible values for the OfferingType const type.
+func PossibleOfferingTypeValues() []OfferingType {
+	return []OfferingType{
+		OfferingTypeGeneralAvailability,
+		OfferingTypeNotApplicable,
+		OfferingTypePrivatePreview,
+		OfferingTypePublicPreview,
 	}
 }
 
@@ -106,11 +154,13 @@ func PossibleOriginValues() []Origin {
 type ProvisioningState string
 
 const (
-	// ProvisioningStateAccepted - Change accepted for processing
+	// ProvisioningStateAccepted - Change accepted for processing..
 	ProvisioningStateAccepted ProvisioningState = "Accepted"
 	// ProvisioningStateCanceled - Resource creation was canceled.
 	ProvisioningStateCanceled ProvisioningState = "Canceled"
-	// ProvisioningStateDeleting - Deletion in progress
+	// ProvisioningStateCreating - Creation in progress..
+	ProvisioningStateCreating ProvisioningState = "Creating"
+	// ProvisioningStateDeleting - Deletion in progress..
 	ProvisioningStateDeleting ProvisioningState = "Deleting"
 	// ProvisioningStateFailed - Resource creation failed.
 	ProvisioningStateFailed ProvisioningState = "Failed"
@@ -123,6 +173,7 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	return []ProvisioningState{
 		ProvisioningStateAccepted,
 		ProvisioningStateCanceled,
+		ProvisioningStateCreating,
 		ProvisioningStateDeleting,
 		ProvisioningStateFailed,
 		ProvisioningStateSucceeded,
@@ -132,6 +183,10 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 type QuotaNames string
 
 const (
+	// QuotaNamesReporting - The quota details for reporting feature. When enabled, Playwright client will be able to upload and
+	// display test results, including artifacts like traces and screenshots, in the Playwright portal. This enables faster and
+	// more efficient troubleshooting.
+	QuotaNamesReporting QuotaNames = "Reporting"
 	// QuotaNamesScalableExecution - The quota details for scalable execution feature. When enabled, Playwright client workers
 	// can connect to cloud-hosted browsers. This can increase the number of parallel workers for a test run, significantly minimizing
 	// test completion durations.
@@ -141,6 +196,7 @@ const (
 // PossibleQuotaNamesValues returns the possible values for the QuotaNames const type.
 func PossibleQuotaNamesValues() []QuotaNames {
 	return []QuotaNames{
+		QuotaNamesReporting,
 		QuotaNamesScalableExecution,
 	}
 }

@@ -214,7 +214,7 @@ directive:
   where: $
   transform: >-
     return $.
-      replace(/req.Raw\(\).URL.RawQuery \= reqQP.Encode\(\)/, `req.Raw().URL.RawQuery = strings.Replace(reqQP.Encode(), "+", "%20", -1)`);
+      replace(/req.Raw\(\).URL.RawQuery \= reqQP.Encode\(\)/g, `req.Raw().URL.RawQuery = strings.Replace(reqQP.Encode(), "+", "%20", -1)`);
 ```
 
 ### Change `Duration` parameter in leases to be required

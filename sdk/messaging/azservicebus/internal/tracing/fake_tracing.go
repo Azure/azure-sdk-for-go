@@ -56,7 +56,6 @@ type SpanMatcher struct {
 
 type matchingTracer struct {
 	matcher SpanMatcher
-	attrs   []Attribute
 	match   *span
 }
 

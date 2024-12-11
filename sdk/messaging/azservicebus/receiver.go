@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/go-amqp"
 )
@@ -44,6 +45,7 @@ const (
 
 // Receiver receives messages using pull based functions (ReceiveMessages).
 type Receiver struct {
+	tracer                   tracing.Tracer
 	amqpLinks                internal.AMQPLinks
 	cancelReleaser           *atomic.Value
 	cleanupOnClose           func()
@@ -110,6 +112,7 @@ func applyReceiverOptions(receiver *Receiver, entity *entity, options *ReceiverO
 }
 
 type newReceiverArgs struct {
+	tracer              tracing.Tracer
 	ns                  internal.NamespaceForAMQPLinks
 	entity              entity
 	cleanupOnClose      func()
@@ -128,6 +131,7 @@ func newReceiver(args newReceiverArgs, options *ReceiverOptions) (*Receiver, err
 	}
 
 	receiver := &Receiver{
+		tracer:                   args.tracer,
 		cancelReleaser:           &atomic.Value{},
 		cleanupOnClose:           args.cleanupOnClose,
 		lastPeekedSequenceNumber: 0,

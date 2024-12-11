@@ -14,12 +14,12 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/sas"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/stretchr/testify/require"
 	"nhooyr.io/websocket"
 )
@@ -473,24 +473,45 @@ func TestNewClientUnitTests(t *testing.T) {
 	})
 
 	t.Run("TracerIsSetUp", func(t *testing.T) {
+		hostName := "fake.servicebus.windows.net"
 		// when tracing provider is not set, use a no-op tracer.
-		client, err := NewClient("fake.something", struct{ azcore.TokenCredential }{}, nil)
+		client, err := NewClient(hostName, struct{ azcore.TokenCredential }{}, nil)
 		require.NoError(t, err)
 		require.Zero(t, client.tracer)
 		require.False(t, client.tracer.Enabled())
 
 		// when tracing provider is set, the tracer is set up with the provider.
-		provider := tracing.NewProvider(func(name, version string) tracing.Tracer {
-			return tracing.NewTracer(func(context.Context, string, *tracing.SpanOptions) (context.Context, tracing.Span) {
-				return nil, tracing.NewSpan(tracing.SpanImpl{})
-			}, nil)
-		}, nil)
-		client, err = NewClient("fake.something", struct{ azcore.TokenCredential }{}, &ClientOptions{
+		provider := tracing.NewSpanValidator(t, tracing.SpanMatcher{
+			Name:   "TestSpan",
+			Status: tracing.SpanStatusUnset,
+			Attributes: []tracing.Attribute{
+				{Key: tracing.MessagingSystem, Value: "servicebus"},
+				{Key: tracing.ServerAddress, Value: hostName},
+			},
+		})
+		client, err = NewClient(hostName, struct{ azcore.TokenCredential }{}, &ClientOptions{
 			TracingProvider: provider,
 		})
 		require.NoError(t, err)
 		require.NotZero(t, client.tracer)
 		require.True(t, client.tracer.Enabled())
+
+		// ensure attributes are set up correctly.
+		_, endSpan := tracing.StartSpan(context.Background(), "TestSpan", client.tracer, nil)
+		endSpan(nil)
+
+		// attributes should be set up when using a connection string.
+		fakeConnectionString := "Endpoint=sb://fake.servicebus.windows.net/;SharedAccessKeyName=TestName;SharedAccessKey=TestKey"
+		client, err = NewClientFromConnectionString(fakeConnectionString, &ClientOptions{
+			TracingProvider: provider,
+		})
+		require.NoError(t, err)
+		require.NotZero(t, client.tracer)
+		require.True(t, client.tracer.Enabled())
+
+		// ensure attributes are set up correctly.
+		_, endSpan = tracing.StartSpan(context.Background(), "TestSpan", client.tracer, nil)
+		endSpan(nil)
 	})
 
 	t.Run("RetryOptionsArePropagated", func(t *testing.T) {

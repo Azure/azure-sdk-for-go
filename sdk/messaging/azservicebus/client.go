@@ -8,6 +8,7 @@ import (
 	"crypto/tls"
 	"errors"
 	"net"
+	"strings"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -17,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 )
 
 // Client provides methods to create Sender and Receiver
@@ -31,6 +33,7 @@ type Client struct {
 
 	linksMu      *sync.Mutex
 	links        map[uint64]amqpwrap.Closeable
+	tracer       tracing.Tracer
 	creds        clientCreds
 	namespace    internal.NamespaceForAMQPLinks
 	retryOptions RetryOptions
@@ -52,6 +55,10 @@ type ClientOptions struct {
 	// NewWebSocketConn is a function that can create a net.Conn for use with websockets.
 	// For an example, see ExampleNewClient_usingWebsockets() function in example_client_test.go.
 	NewWebSocketConn func(ctx context.Context, args NewWebSocketConnArgs) (net.Conn, error)
+
+	// TracingProvider configures the tracing provider.
+	// It defaults to a no-op tracer.
+	TracingProvider tracing.Provider
 
 	// RetryOptions controls how often operations are retried from this client and any
 	// Receivers and Senders created from this client.
@@ -133,6 +140,7 @@ func newClientImpl(creds clientCreds, args clientImplArgs) (*Client, error) {
 	}
 
 	var err error
+	var tracingProvider = tracing.Provider{}
 	var nsOptions []internal.NamespaceOption
 
 	if client.creds.connectionString != "" {
@@ -146,6 +154,7 @@ func newClientImpl(creds clientCreds, args clientImplArgs) (*Client, error) {
 	}
 
 	if args.ClientOptions != nil {
+		tracingProvider = args.ClientOptions.TracingProvider
 		client.retryOptions = args.ClientOptions.RetryOptions
 
 		if args.ClientOptions.TLSConfig != nil {
@@ -166,6 +175,10 @@ func newClientImpl(creds clientCreds, args clientImplArgs) (*Client, error) {
 	nsOptions = append(nsOptions, args.NSOptions...)
 
 	client.namespace, err = internal.NewNamespace(nsOptions...)
+
+	hostName := getHostName(creds)
+	client.tracer = newTracer(tracingProvider, hostName)
+
 	return client, err
 }
 
@@ -192,6 +205,7 @@ func (client *Client) NewReceiverForQueue(queueName string, options *ReceiverOpt
 func (client *Client) NewReceiverForSubscription(topicName string, subscriptionName string, options *ReceiverOptions) (*Receiver, error) {
 	id, cleanupOnClose := client.getCleanupForCloseable()
 	receiver, err := newReceiver(newReceiverArgs{
+		tracer:              client.tracer,
 		cleanupOnClose:      cleanupOnClose,
 		ns:                  client.namespace,
 		entity:              entity{Topic: topicName, Subscription: subscriptionName},
@@ -216,6 +230,7 @@ type NewSenderOptions struct {
 func (client *Client) NewSender(queueOrTopic string, options *NewSenderOptions) (*Sender, error) {
 	id, cleanupOnClose := client.getCleanupForCloseable()
 	sender, err := newSender(newSenderArgs{
+		tracer:         client.tracer,
 		ns:             client.namespace,
 		queueOrTopic:   queueOrTopic,
 		cleanupOnClose: cleanupOnClose,
@@ -368,4 +383,19 @@ func (client *Client) getCleanupForCloseable() (uint64, func()) {
 		delete(client.links, id)
 		client.linksMu.Unlock()
 	}
+}
+
+// getHostName returns fullyQualifiedNamespace if it is set, otherwise it returns the host name from the connection string.
+// If the connection string is not in the expected format, it returns an empty string.
+func getHostName(creds clientCreds) string {
+	if creds.fullyQualifiedNamespace != "" {
+		return creds.fullyQualifiedNamespace
+	}
+
+	parts := strings.Split(creds.connectionString, "/")
+	if len(parts) < 3 {
+		return ""
+	}
+
+	return parts[2]
 }

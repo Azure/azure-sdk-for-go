@@ -14,6 +14,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
@@ -469,6 +470,27 @@ func TestNewClientUnitTests(t *testing.T) {
 			fakeTokenCredential)(ns))
 
 		require.EqualValues(t, ns.FQDN, "mysb.windows.servicebus.net")
+	})
+
+	t.Run("TracerIsSetUp", func(t *testing.T) {
+		// when tracing provider is not set, use a no-op tracer.
+		client, err := NewClient("fake.something", struct{ azcore.TokenCredential }{}, nil)
+		require.NoError(t, err)
+		require.Zero(t, client.tracer)
+		require.False(t, client.tracer.Enabled())
+
+		// when tracing provider is set, the tracer is set up with the provider.
+		provider := tracing.NewProvider(func(name, version string) tracing.Tracer {
+			return tracing.NewTracer(func(context.Context, string, *tracing.SpanOptions) (context.Context, tracing.Span) {
+				return nil, tracing.NewSpan(tracing.SpanImpl{})
+			}, nil)
+		}, nil)
+		client, err = NewClient("fake.something", struct{ azcore.TokenCredential }{}, &ClientOptions{
+			TracingProvider: provider,
+		})
+		require.NoError(t, err)
+		require.NotZero(t, client.tracer)
+		require.True(t, client.tracer.Enabled())
 	})
 
 	t.Run("RetryOptionsArePropagated", func(t *testing.T) {

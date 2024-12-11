@@ -90,6 +90,7 @@ var SpecialCharBlobTagsMap = map[string]string{
 	"+-./:=_1":        "+-./:=_",
 	"Microsoft Azure": "Azure Storage",
 	"Storage+SDK":     "SDK/GO",
+	"GO ":             ".Net",
 	"go":              "written in golang",
 }
 

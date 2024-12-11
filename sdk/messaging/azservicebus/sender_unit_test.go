@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/mock/emulation"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/go-amqp"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
@@ -45,14 +46,45 @@ func TestSender_UserFacingError(t *testing.T) {
 
 	var asSBError *Error
 
-	err = sender.SendMessage(context.Background(), &Message{}, nil)
+	msgID := "testID"
+	sender.tracer = tracing.NewSpanValidator(t, tracing.SpanMatcher{
+		Name:   "Sender.SendMessage",
+		Status: tracing.SpanStatusError,
+		Attributes: []tracing.Attribute{
+			{Key: tracing.DestinationName, Value: "queue"},
+			{Key: tracing.OperationName, Value: "send"},
+			{Key: tracing.OperationType, Value: "send"},
+			{Key: tracing.MessageID, Value: msgID},
+		},
+	}).NewTracer("module", "version")
+	err = sender.SendMessage(context.Background(), &Message{MessageID: &msgID}, nil)
 	require.ErrorAs(t, err, &asSBError)
 	require.Equal(t, CodeConnectionLost, asSBError.Code)
 
+	sender.tracer = tracing.NewSpanValidator(t, tracing.SpanMatcher{
+		Name:   "Sender.CancelScheduledMessages",
+		Status: tracing.SpanStatusError,
+		Attributes: []tracing.Attribute{
+			{Key: tracing.DestinationName, Value: "queue"},
+			{Key: tracing.OperationName, Value: "cancel_scheduled"},
+			{Key: tracing.OperationType, Value: "send"},
+			{Key: tracing.BatchMessageCount, Value: int64(1)},
+		},
+	}).NewTracer("module", "version")
 	err = sender.CancelScheduledMessages(context.Background(), []int64{1}, nil)
 	require.ErrorAs(t, err, &asSBError)
 	require.Equal(t, CodeConnectionLost, asSBError.Code)
 
+	sender.tracer = tracing.NewSpanValidator(t, tracing.SpanMatcher{
+		Name:   "Sender.ScheduleMessages",
+		Status: tracing.SpanStatusError,
+		Attributes: []tracing.Attribute{
+			{Key: tracing.DestinationName, Value: "queue"},
+			{Key: tracing.OperationName, Value: "schedule"},
+			{Key: tracing.OperationType, Value: "send"},
+			{Key: tracing.BatchMessageCount, Value: int64(0)},
+		},
+	}).NewTracer("module", "version")
 	seqNumbers, err := sender.ScheduleMessages(context.Background(), []*Message{}, time.Now(), nil)
 	require.Empty(t, seqNumbers)
 	require.ErrorAs(t, err, &asSBError)
@@ -67,6 +99,16 @@ func TestSender_UserFacingError(t *testing.T) {
 	}, nil)
 	require.NoError(t, err)
 
+	sender.tracer = tracing.NewSpanValidator(t, tracing.SpanMatcher{
+		Name:   "Sender.SendMessageBatch",
+		Status: tracing.SpanStatusError,
+		Attributes: []tracing.Attribute{
+			{Key: tracing.DestinationName, Value: "queue"},
+			{Key: tracing.OperationName, Value: "send"},
+			{Key: tracing.OperationType, Value: "send"},
+			{Key: tracing.BatchMessageCount, Value: int64(1)},
+		},
+	}).NewTracer("module", "version")
 	err = sender.SendMessageBatch(context.Background(), batch, nil)
 	require.ErrorAs(t, err, &asSBError)
 	require.Equal(t, CodeConnectionLost, asSBError.Code)

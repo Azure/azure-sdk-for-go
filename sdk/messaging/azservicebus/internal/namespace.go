@@ -21,6 +21,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/conn"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/sbauth"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/go-amqp"
 )
@@ -419,7 +420,8 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 				return
 			case <-time.After(nextClaimAt):
 				for {
-					err := utils.Retry(refreshCtx, exported.EventAuth, "NegotiateClaimRefresh", func(ctx context.Context, args *utils.RetryFnArgs) error {
+					// use a no
+					err := utils.Retry(refreshCtx, tracing.NewNoOpTracer(), exported.EventAuth, "NegotiateClaimRefresh", func(ctx context.Context, args *utils.RetryFnArgs) error {
 						tmpExpiresOn, err := refreshClaim(ctx)
 
 						if err != nil {
@@ -428,7 +430,7 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 
 						expiresOn = tmpExpiresOn
 						return nil
-					}, IsFatalSBError, ns.RetryOptions)
+					}, IsFatalSBError, ns.RetryOptions, nil)
 
 					if err == nil {
 						break

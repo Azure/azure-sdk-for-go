@@ -26,23 +26,6 @@ func TestNewTracer(t *testing.T) {
 	require.NotNil(t, tracer)
 	require.True(t, tracer.Enabled())
 
-	_, endSpan := tracing.StartSpan(context.Background(), "TestSpan", tracer, nil)
+	_, endSpan := tracing.StartSpan(context.Background(), tracer, tracing.NewSpanOptions("TestSpan"))
 	defer func() { endSpan(nil) }()
-}
-
-func TestSpanAttributesForMessage(t *testing.T) {
-	attrs := getSpanAttributesForMessage(nil)
-	require.Empty(t, attrs)
-
-	msgID := "messageID"
-	message := &Message{
-		MessageID: &msgID,
-	}
-	attrs = getSpanAttributesForMessage(message)
-	require.Equal(t, 1, len(attrs))
-
-	correlationID := "correlationID"
-	message.CorrelationID = &correlationID
-	attrs = getSpanAttributesForMessage(message)
-	require.Equal(t, 2, len(attrs))
 }

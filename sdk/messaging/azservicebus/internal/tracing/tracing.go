@@ -11,11 +11,36 @@ import (
 )
 
 type Attribute = tracing.Attribute
+type SpanKind = tracing.SpanKind
 type Tracer = tracing.Tracer
 type Provider = tracing.Provider
 
-type StartSpanOptions = runtime.StartSpanOptions
-
-func StartSpan(ctx context.Context, spanName string, tracer Tracer, options *StartSpanOptions) (context.Context, func(error)) {
-	return runtime.StartSpan(ctx, spanName, tracer, options)
+func NewNoOpTracer() Tracer {
+	return Tracer{}
 }
+
+type SpanOptions struct {
+	name       MessagingSpanName
+	attributes []Attribute
+}
+
+type SetAttributesFn func([]Attribute) []Attribute
+
+func NewSpanOptions(name MessagingSpanName, options ...SetAttributesFn) *SpanOptions {
+	so := &SpanOptions{name: name}
+	for _, fn := range options {
+		so.attributes = fn(so.attributes)
+	}
+	return so
+}
+
+// StartSpan creates a span with the specified name and attributes.
+// If no span name is provided, no span is created.
+func StartSpan(ctx context.Context, tracer Tracer, so *SpanOptions) (context.Context, func(error)) {
+	if so == nil || so.name == "" {
+		return ctx, func(error) {}
+	}
+	return runtime.StartSpan(ctx, string(so.name), tracer, &StartSpanOptions{Attributes: so.attributes})
+}
+
+type StartSpanOptions = runtime.StartSpanOptions

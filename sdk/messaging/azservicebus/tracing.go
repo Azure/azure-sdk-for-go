@@ -28,15 +28,37 @@ func newTracer(provider tracing.Provider, hostName string) tracing.Tracer {
 	return tracer
 }
 
-func getSpanAttributesForMessage(message *Message) []tracing.Attribute {
-	attrs := []tracing.Attribute{}
-	if message != nil {
-		if message.MessageID != nil {
-			attrs = append(attrs, tracing.Attribute{Key: tracing.MessageID, Value: *message.MessageID})
-		}
-		if message.CorrelationID != nil {
-			attrs = append(attrs, tracing.Attribute{Key: tracing.ConversationID, Value: *message.CorrelationID})
-		}
+func setSenderSpanAttributes(queueOrTopic string, operationName tracing.MessagingOperationName) tracing.SetAttributesFn {
+	return func(attrs []tracing.Attribute) []tracing.Attribute {
+		attrs = append(attrs,
+			tracing.Attribute{Key: tracing.DestinationName, Value: queueOrTopic},
+			tracing.Attribute{Key: tracing.OperationType, Value: string(tracing.SendOperationType)},
+			tracing.Attribute{Key: tracing.OperationName, Value: string(operationName)},
+		)
+		return attrs
 	}
-	return attrs
+}
+
+func setMessageSpanAttributes(message amqpCompatibleMessage) tracing.SetAttributesFn {
+	return func(attrs []tracing.Attribute) []tracing.Attribute {
+		if message != nil {
+			amqpMessage := message.toAMQPMessage()
+			if amqpMessage != nil && amqpMessage.Properties != nil {
+				if amqpMessage.Properties.MessageID != nil {
+					attrs = append(attrs, tracing.Attribute{Key: tracing.MessageID, Value: amqpMessage.Properties.MessageID})
+				}
+				if amqpMessage.Properties.CorrelationID != nil {
+					attrs = append(attrs, tracing.Attribute{Key: tracing.ConversationID, Value: amqpMessage.Properties.CorrelationID})
+				}
+			}
+		}
+		return attrs
+	}
+}
+
+func setMessageBatchSpanAttributes(size int) tracing.SetAttributesFn {
+	return func(attrs []tracing.Attribute) []tracing.Attribute {
+		attrs = append(attrs, tracing.Attribute{Key: tracing.BatchMessageCount, Value: int64(size)})
+		return attrs
+	}
 }

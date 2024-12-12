@@ -14,6 +14,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/stretchr/testify/require"
 )
@@ -186,10 +187,11 @@ func deleteSubscription(t *testing.T, ac *admin.Client, topicName string, subscr
 // and fails tests otherwise.
 func peekSingleMessageForTest(t *testing.T, receiver *Receiver) *ReceivedMessage {
 	var msg *ReceivedMessage
+	// TODO
 
 	// Peek, unlike Receive, doesn't block until at least one message has arrived, so we have to poll
 	// to get a similar effect.
-	err := utils.Retry(context.Background(), EventReceiver, "peekSingleForTest", func(ctx context.Context, args *utils.RetryFnArgs) error {
+	err := utils.Retry(context.Background(), tracing.NewNoOpTracer(), EventReceiver, "peekSingleForTest", func(ctx context.Context, args *utils.RetryFnArgs) error {
 		peekedMessages, err := receiver.PeekMessages(context.Background(), 1, nil)
 		require.NoError(t, err)
 
@@ -201,7 +203,7 @@ func peekSingleMessageForTest(t *testing.T, receiver *Receiver) *ReceivedMessage
 		}
 	}, func(err error) bool {
 		return false
-	}, RetryOptions{})
+	}, RetryOptions{}, nil)
 
 	require.NoError(t, err)
 

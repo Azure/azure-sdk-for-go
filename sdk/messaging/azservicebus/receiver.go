@@ -236,7 +236,7 @@ func (r *Receiver) ReceiveDeferredMessages(ctx context.Context, sequenceNumbers 
 		}
 
 		return nil
-	}, r.retryOptions)
+	}, r.retryOptions, nil)
 
 	return receivedMessages, internal.TransformError(err)
 }
@@ -290,7 +290,7 @@ func (r *Receiver) PeekMessages(ctx context.Context, maxMessageCount int, option
 		}
 
 		return nil
-	}, r.retryOptions)
+	}, r.retryOptions, nil)
 
 	return receivedMessages, internal.TransformError(err)
 }
@@ -314,7 +314,7 @@ func (r *Receiver) RenewMessageLock(ctx context.Context, msg *ReceivedMessage, o
 
 		msg.LockedUntil = &newExpirationTime[0]
 		return nil
-	}, r.retryOptions)
+	}, r.retryOptions, nil)
 
 	return internal.TransformError(err)
 }
@@ -379,7 +379,7 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 	err := r.amqpLinks.Retry(ctx, EventReceiver, "receiveMessages.getlinks", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		linksWithID = lwid
 		return nil
-	}, r.retryOptions)
+	}, r.retryOptions, nil)
 
 	if err != nil {
 		return nil, err

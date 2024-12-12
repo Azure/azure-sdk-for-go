@@ -8,7 +8,6 @@ import (
 	"crypto/tls"
 	"errors"
 	"net"
-	"strings"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -17,6 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/conn"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 )
@@ -175,9 +175,7 @@ func newClientImpl(creds clientCreds, args clientImplArgs) (*Client, error) {
 	nsOptions = append(nsOptions, args.NSOptions...)
 
 	client.namespace, err = internal.NewNamespace(nsOptions...)
-
-	hostName := getHostName(creds)
-	client.tracer = newTracer(tracingProvider, hostName)
+	client.tracer = newTracer(tracingProvider, getHostName(creds))
 
 	return client, err
 }
@@ -186,6 +184,7 @@ func newClientImpl(creds clientCreds, args clientImplArgs) (*Client, error) {
 func (client *Client) NewReceiverForQueue(queueName string, options *ReceiverOptions) (*Receiver, error) {
 	id, cleanupOnClose := client.getCleanupForCloseable()
 	receiver, err := newReceiver(newReceiverArgs{
+		tracer:              client.tracer,
 		cleanupOnClose:      cleanupOnClose,
 		ns:                  client.namespace,
 		entity:              entity{Queue: queueName},
@@ -385,17 +384,16 @@ func (client *Client) getCleanupForCloseable() (uint64, func()) {
 	}
 }
 
-// getHostName returns fullyQualifiedNamespace if it is set, otherwise it returns the host name from the connection string.
-// If the connection string is not in the expected format, it returns an empty string.
+// getHostName returns fullyQualifiedNamespace from clientCreds if it is set.
+// Otherwise, it parses the connection string and returns the FullyQualifiedNamespace from it.
+// If both are empty, it returns an empty string.
 func getHostName(creds clientCreds) string {
 	if creds.fullyQualifiedNamespace != "" {
 		return creds.fullyQualifiedNamespace
 	}
-
-	parts := strings.Split(creds.connectionString, "/")
-	if len(parts) < 3 {
+	csp, err := conn.ParseConnectionString(creds.connectionString)
+	if err != nil {
 		return ""
 	}
-
-	return parts[2]
+	return csp.FullyQualifiedNamespace
 }

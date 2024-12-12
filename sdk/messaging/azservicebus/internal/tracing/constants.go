@@ -3,8 +3,18 @@
 
 package tracing
 
+type MessagingSpanName string
+
+const (
+	SendSpanName            MessagingSpanName = "Sender.SendMessage"
+	SendBatchSpanName       MessagingSpanName = "Sender.SendMessageBatch"
+	ScheduleSpanName        MessagingSpanName = "Sender.ScheduleMessages"
+	CancelScheduledSpanName MessagingSpanName = "Sender.CancelScheduledMessages"
+)
+
 // OTel-specific messaging attributes
 const (
+	ServerAddress     = "server.address"
 	MessagingSystem   = "messaging.system"
 	OperationName     = "messaging.operation.name"
 	BatchMessageCount = "messaging.batch.message_count"
@@ -16,9 +26,6 @@ const (
 	ConversationID    = "messaging.message.conversation_id"
 	MessageID         = "messaging.message.id"
 	EnqueuedTime      = "messaging.servicebus.message.enqueued_time"
-
-	ServerAddress = "server.address"
-	ServerPort    = "server.port"
 )
 
 type MessagingOperationType string

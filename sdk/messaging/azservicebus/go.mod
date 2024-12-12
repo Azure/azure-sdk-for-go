@@ -40,3 +40,6 @@ require (
 	golang.org/x/text v0.18.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
+
+// TODO: remove this
+replace github.com/Azure/azure-sdk-for-go/sdk/internal => github.com/karenychen/azure-sdk-for-go/sdk/internal v0.0.0-20241211234035-1be63f7dd659

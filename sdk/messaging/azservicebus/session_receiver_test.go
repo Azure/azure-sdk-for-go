@@ -13,7 +13,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
+	internal_errors "github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
 	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/require"
@@ -139,7 +139,7 @@ func TestSessionReceiver_acceptSessionButAlreadyLocked(t *testing.T) {
 	// messages where the lock token is not a predefined value)
 	receiver, err = client.AcceptSessionForQueue(ctx, queueName, "session-1", nil)
 
-	require.EqualValues(t, internal.RecoveryKindFatal, internal.GetRecoveryKind(err))
+	require.EqualValues(t, internal_errors.RecoveryKindFatal, internal_errors.GetRecoveryKind(err))
 	require.Nil(t, receiver)
 }
 

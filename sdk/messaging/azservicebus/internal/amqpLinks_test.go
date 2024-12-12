@@ -455,7 +455,7 @@ func TestAMQPLinksCBSLinkStillOpen(t *testing.T) {
 	}, exported.RetryOptions{
 		RetryDelay:    -1,
 		MaxRetryDelay: time.Millisecond,
-	})
+	}, nil)
 
 	defer func() {
 		err := links.Close(context.Background(), true)
@@ -629,7 +629,7 @@ func TestAMQPLinksRetry(t *testing.T) {
 		// we do setDefaults() before we run.
 		RetryDelay:    time.Millisecond,
 		MaxRetryDelay: time.Millisecond,
-	})
+	}, nil)
 
 	var connErr *amqp.ConnError
 	require.ErrorAs(t, err, &connErr)

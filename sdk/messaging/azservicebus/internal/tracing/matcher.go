@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package telemetry
+package tracing
 
 import (
 	"context"
@@ -11,9 +11,17 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+const (
+	SpanStatusUnset = tracing.SpanStatusUnset
+	SpanStatusError = tracing.SpanStatusError
+	SpanStatusOK    = tracing.SpanStatusOK
+)
+
+type SpanStatus = tracing.SpanStatus
+
 // NewSpanValidator creates a Provider that verifies a span was created that matches the specified SpanMatcher.
-func NewSpanValidator(t *testing.T, matcher SpanMatcher) tracing.Provider {
-	return tracing.NewProvider(func(name, version string) tracing.Tracer {
+func NewSpanValidator(t *testing.T, matcher SpanMatcher) Provider {
+	return tracing.NewProvider(func(name, version string) Tracer {
 		tt := matchingTracer{
 			matcher: matcher,
 		}
@@ -27,7 +35,7 @@ func NewSpanValidator(t *testing.T, matcher SpanMatcher) tracing.Provider {
 
 		return tracing.NewTracer(func(ctx context.Context, spanName string, options *tracing.SpanOptions) (context.Context, tracing.Span) {
 			kind := tracing.SpanKindInternal
-			attrs := []tracing.Attribute{}
+			attrs := []Attribute{}
 			if options != nil {
 				kind = options.Kind
 				attrs = append(attrs, options.Attributes...)
@@ -40,8 +48,8 @@ func NewSpanValidator(t *testing.T, matcher SpanMatcher) tracing.Provider {
 // SpanMatcher contains the values to match when a span is created.
 type SpanMatcher struct {
 	Name       string
-	Status     tracing.SpanStatus
-	Attributes []tracing.Attribute
+	Status     SpanStatus
+	Attributes []Attribute
 }
 
 type matchingTracer struct {
@@ -49,7 +57,7 @@ type matchingTracer struct {
 	match   *span
 }
 
-func (mt *matchingTracer) Start(ctx context.Context, spanName string, kind tracing.SpanKind, attrs []tracing.Attribute) (context.Context, tracing.Span) {
+func (mt *matchingTracer) Start(ctx context.Context, spanName string, kind tracing.SpanKind, attrs []Attribute) (context.Context, tracing.Span) {
 	if spanName != mt.matcher.Name {
 		return ctx, tracing.Span{}
 	}
@@ -59,16 +67,17 @@ func (mt *matchingTracer) Start(ctx context.Context, spanName string, kind traci
 		attrs: attrs,
 	}
 	return ctx, tracing.NewSpan(tracing.SpanImpl{
-		End:       mt.match.End,
-		SetStatus: mt.match.SetStatus,
+		End:           mt.match.End,
+		SetStatus:     mt.match.SetStatus,
+		SetAttributes: mt.match.SetAttributes,
 	})
 }
 
 type span struct {
 	name   string
-	status tracing.SpanStatus
+	status SpanStatus
 	desc   string
-	attrs  []tracing.Attribute
+	attrs  []Attribute
 	ended  bool
 }
 
@@ -76,7 +85,11 @@ func (s *span) End() {
 	s.ended = true
 }
 
-func (s *span) SetStatus(code tracing.SpanStatus, desc string) {
+func (s *span) SetAttributes(attrs ...Attribute) {
+	s.attrs = append(s.attrs, attrs...)
+}
+
+func (s *span) SetStatus(code SpanStatus, desc string) {
 	s.status = code
 	s.desc = desc
 	s.ended = true

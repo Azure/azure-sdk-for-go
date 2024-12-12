@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	error2 "github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
 	"github.com/stretchr/testify/require"
 )
@@ -110,10 +110,10 @@ func TestMessageSettlementUsingReceiverWithReceiveAndDelete(t *testing.T) {
 	require.NoError(t, err)
 	require.NotEmpty(t, messages)
 
-	require.EqualValues(t, error2.RecoveryKindFatal, error2.GetRecoveryKind(receiver.AbandonMessage(ctx, messages[0], nil)))
-	require.EqualValues(t, error2.RecoveryKindFatal, error2.GetRecoveryKind(receiver.CompleteMessage(ctx, messages[0], nil)))
-	require.EqualValues(t, error2.RecoveryKindFatal, error2.GetRecoveryKind(receiver.DeferMessage(ctx, messages[0], nil)))
-	require.EqualValues(t, error2.RecoveryKindFatal, error2.GetRecoveryKind(receiver.DeadLetterMessage(ctx, messages[0], nil)))
+	require.EqualValues(t, internal.RecoveryKindFatal, internal.GetRecoveryKind(receiver.AbandonMessage(ctx, messages[0], nil)))
+	require.EqualValues(t, internal.RecoveryKindFatal, internal.GetRecoveryKind(receiver.CompleteMessage(ctx, messages[0], nil)))
+	require.EqualValues(t, internal.RecoveryKindFatal, internal.GetRecoveryKind(receiver.DeferMessage(ctx, messages[0], nil)))
+	require.EqualValues(t, internal.RecoveryKindFatal, internal.GetRecoveryKind(receiver.DeadLetterMessage(ctx, messages[0], nil)))
 
 	require.EqualError(t, receiver.DeadLetterMessage(ctx, messages[0], nil), "messages that are received in `ReceiveModeReceiveAndDelete` mode are not settleable")
 }

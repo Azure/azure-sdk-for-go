@@ -8,8 +8,8 @@ require (
 )
 
 require (
-	golang.org/x/net v0.29.0 // indirect
-	golang.org/x/text v0.18.0 // indirect
+	golang.org/x/net v0.32.0 // indirect
+	golang.org/x/text v0.21.0 // indirect
 )
 
 replace github.com/Azure/azure-sdk-for-go/sdk/azcore => ../../

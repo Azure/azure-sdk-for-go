@@ -420,7 +420,6 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 				return
 			case <-time.After(nextClaimAt):
 				for {
-					// use a no
 					err := utils.Retry(refreshCtx, tracing.NewNoOpTracer(), exported.EventAuth, "NegotiateClaimRefresh", func(ctx context.Context, args *utils.RetryFnArgs) error {
 						tmpExpiresOn, err := refreshClaim(ctx)
 

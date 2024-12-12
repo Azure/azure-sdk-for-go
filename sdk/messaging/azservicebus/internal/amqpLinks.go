@@ -43,7 +43,7 @@ type AMQPLinks interface {
 	Get(ctx context.Context) (*LinksWithID, error)
 
 	// Retry will run your callback, recovering links when necessary.
-	Retry(ctx context.Context, name log.Event, operation string, fn RetryWithLinksFn, o exported.RetryOptions, so *tracing.SpanOptions) error
+	Retry(ctx context.Context, name log.Event, operation string, fn RetryWithLinksFn, o exported.RetryOptions, sc *tracing.SpanConfig) error
 
 	// RecoverIfNeeded will check if an error requires recovery, and will recover
 	// the link or, possibly, the connection.
@@ -67,6 +67,9 @@ type AMQPLinks interface {
 
 	// Prefix is the current logging prefix, usable for logging and continuity.
 	Prefix() string
+
+	// Tracer returns the tracer for the AMQPLinks instance.
+	Tracer() tracing.Tracer
 
 	// SetTracer sets the tracer for the AMQPLinks instance.
 	SetTracer(tracing.Tracer)
@@ -151,6 +154,10 @@ func NewAMQPLinks(args NewAMQPLinksArgs) AMQPLinks {
 	}
 
 	return l
+}
+
+func (links *AMQPLinksImpl) Tracer() tracing.Tracer {
+	return links.tracer
 }
 
 func (links *AMQPLinksImpl) SetTracer(tracer tracing.Tracer) {
@@ -327,7 +334,7 @@ func (l *AMQPLinksImpl) Get(ctx context.Context) (*LinksWithID, error) {
 	}, nil
 }
 
-func (links *AMQPLinksImpl) Retry(ctx context.Context, eventName log.Event, operation string, fn RetryWithLinksFn, o exported.RetryOptions, so *tracing.SpanOptions) error {
+func (links *AMQPLinksImpl) Retry(ctx context.Context, eventName log.Event, operation string, fn RetryWithLinksFn, o exported.RetryOptions, sc *tracing.SpanConfig) error {
 	var lastID LinkID
 
 	didQuickRetry := false
@@ -378,7 +385,7 @@ func (links *AMQPLinksImpl) Retry(ctx context.Context, eventName log.Event, oper
 		}
 
 		return nil
-	}, isFatalErrorFunc, o, so)
+	}, isFatalErrorFunc, o, sc)
 }
 
 // EntityPath is the full entity path for the queue/topic/subscription.

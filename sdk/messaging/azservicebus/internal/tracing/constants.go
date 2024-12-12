@@ -3,13 +3,23 @@
 
 package tracing
 
-type MessagingSpanName string
+type SpanName string
 
 const (
-	SendSpanName            MessagingSpanName = "Sender.SendMessage"
-	SendBatchSpanName       MessagingSpanName = "Sender.SendMessageBatch"
-	ScheduleSpanName        MessagingSpanName = "Sender.ScheduleMessages"
-	CancelScheduledSpanName MessagingSpanName = "Sender.CancelScheduledMessages"
+	SendSpanName            SpanName = "Sender.SendMessage"
+	SendBatchSpanName       SpanName = "Sender.SendMessageBatch"
+	ScheduleSpanName        SpanName = "Sender.ScheduleMessages"
+	CancelScheduledSpanName SpanName = "Sender.CancelScheduledMessages"
+
+	ReceiveSpanName          SpanName = "Receiver.ReceiveMessages"
+	PeekSpanName             SpanName = "Receiver.PeekMessages"
+	ReceiveDeferredSpanName  SpanName = "Receiver.ReceiveDeferredMessages"
+	RenewMessageLockSpanName SpanName = "Receiver.RenewMessageLock"
+
+	CompleteSpanName   SpanName = "Receiver.CompleteMessage"
+	AbandonSpanName    SpanName = "Receiver.AbandonMessage"
+	DeferSpanName      SpanName = "Receiver.DeferMessage"
+	DeadLetterSpanName SpanName = "Receiver.DeadLetterMessage"
 )
 
 // OTel-specific messaging attributes
@@ -51,6 +61,10 @@ const (
 	AbandonOperationName    MessagingOperationName = "abandon"
 	CompleteOperationName   MessagingOperationName = "complete"
 	DeferOperationName      MessagingOperationName = "defer"
-	DeadLetterOperationName MessagingOperationName = "deadletter"
-	DeleteOperationName     MessagingOperationName = "delete"
+	DeadLetterOperationName MessagingOperationName = "dead_letter"
+
+	AcceptSessionOperationName    MessagingOperationName = "accept_session"
+	GetSessionStateOperationName  MessagingOperationName = "get_session_state"
+	SetSessionStateOperationName  MessagingOperationName = "set_session_state"
+	RenewSessionLockOperationName MessagingOperationName = "renew_session_lock"
 )

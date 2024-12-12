@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/mock/emulation"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/go-amqp"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
@@ -345,18 +346,48 @@ func TestReceiver_UserFacingErrors(t *testing.T) {
 
 	var asSBError *Error
 
+	receiver.amqpLinks.SetTracer(tracing.NewSpanValidator(t, tracing.SpanMatcher{
+		Name:   "Receiver.PeekMessages",
+		Status: tracing.SpanStatusError,
+		Attributes: []tracing.Attribute{
+			{Key: tracing.DestinationName, Value: "queue"},
+			{Key: tracing.OperationName, Value: "peek"},
+			{Key: tracing.OperationType, Value: "receive"},
+			{Key: tracing.BatchMessageCount, Value: int64(1)},
+		},
+	}).NewTracer("module", "version"))
 	receiveErr = &amqp.LinkError{}
 	messages, err := receiver.PeekMessages(context.Background(), 1, nil)
 	require.Empty(t, messages)
 	require.ErrorAs(t, err, &asSBError)
 	require.Equal(t, CodeConnectionLost, asSBError.Code)
 
+	receiver.amqpLinks.SetTracer(tracing.NewSpanValidator(t, tracing.SpanMatcher{
+		Name:   "Receiver.ReceiveDeferredMessages",
+		Status: tracing.SpanStatusError,
+		Attributes: []tracing.Attribute{
+			{Key: tracing.DestinationName, Value: "queue"},
+			{Key: tracing.OperationName, Value: "receive_deferred"},
+			{Key: tracing.OperationType, Value: "receive"},
+			{Key: tracing.BatchMessageCount, Value: int64(1)},
+		},
+	}).NewTracer("module", "version"))
 	receiveErr = &amqp.ConnError{}
 	messages, err = receiver.ReceiveDeferredMessages(context.Background(), []int64{1}, nil)
 	require.Empty(t, messages)
 	require.ErrorAs(t, err, &asSBError)
 	require.Equal(t, CodeConnectionLost, asSBError.Code)
 
+	receiver.amqpLinks.SetTracer(tracing.NewSpanValidator(t, tracing.SpanMatcher{
+		Name:   "Receiver.ReceiveMessages",
+		Status: tracing.SpanStatusUnset,
+		Attributes: []tracing.Attribute{
+			{Key: tracing.DestinationName, Value: "queue"},
+			{Key: tracing.OperationName, Value: "receive"},
+			{Key: tracing.OperationType, Value: "receive"},
+			{Key: tracing.BatchMessageCount, Value: int64(1)},
+		},
+	}).NewTracer("module", "version"))
 	receiveErr = &amqp.ConnError{}
 	messages, err = receiver.ReceiveMessages(context.Background(), 1, nil)
 	require.NoError(t, err)
@@ -376,26 +407,80 @@ func TestReceiver_UserFacingErrors(t *testing.T) {
 		settleOnMgmtLink: true,
 	}
 
+	receiver.amqpLinks.SetTracer(tracing.NewSpanValidator(t, tracing.SpanMatcher{
+		Name:   "Receiver.AbandonMessage",
+		Status: tracing.SpanStatusError,
+		Attributes: []tracing.Attribute{
+			{Key: tracing.DestinationName, Value: "queue"},
+			{Key: tracing.OperationName, Value: "abandon"},
+			{Key: tracing.DispositionStatus, Value: "abandon"},
+			{Key: tracing.OperationType, Value: "settle"},
+			{Key: tracing.DeliveryCount, Value: int64(0)},
+		},
+	}).NewTracer("module", "version"))
 	err = receiver.AbandonMessage(context.Background(), msg, nil)
 	require.Empty(t, messages)
 	require.ErrorAs(t, err, &asSBError)
 	require.Equal(t, CodeLockLost, asSBError.Code)
 
+	receiver.amqpLinks.SetTracer(tracing.NewSpanValidator(t, tracing.SpanMatcher{
+		Name:   "Receiver.CompleteMessage",
+		Status: tracing.SpanStatusError,
+		Attributes: []tracing.Attribute{
+			{Key: tracing.DestinationName, Value: "queue"},
+			{Key: tracing.OperationName, Value: "complete"},
+			{Key: tracing.DispositionStatus, Value: "complete"},
+			{Key: tracing.OperationType, Value: "settle"},
+			{Key: tracing.DeliveryCount, Value: int64(0)},
+		},
+	}).NewTracer("module", "version"))
 	err = receiver.CompleteMessage(context.Background(), msg, nil)
 	require.Empty(t, messages)
 	require.ErrorAs(t, err, &asSBError)
 	require.Equal(t, CodeLockLost, asSBError.Code)
 
+	receiver.amqpLinks.SetTracer(tracing.NewSpanValidator(t, tracing.SpanMatcher{
+		Name:   "Receiver.DeadLetterMessage",
+		Status: tracing.SpanStatusError,
+		Attributes: []tracing.Attribute{
+			{Key: tracing.DestinationName, Value: "queue"},
+			{Key: tracing.OperationName, Value: "dead_letter"},
+			{Key: tracing.DispositionStatus, Value: "dead_letter"},
+			{Key: tracing.OperationType, Value: "settle"},
+			{Key: tracing.DeliveryCount, Value: int64(0)},
+		},
+	}).NewTracer("module", "version"))
 	err = receiver.DeadLetterMessage(context.Background(), msg, nil)
 	require.Empty(t, messages)
 	require.ErrorAs(t, err, &asSBError)
 	require.Equal(t, CodeLockLost, asSBError.Code)
 
+	receiver.amqpLinks.SetTracer(tracing.NewSpanValidator(t, tracing.SpanMatcher{
+		Name:   "Receiver.DeferMessage",
+		Status: tracing.SpanStatusError,
+		Attributes: []tracing.Attribute{
+			{Key: tracing.DestinationName, Value: "queue"},
+			{Key: tracing.OperationName, Value: "defer"},
+			{Key: tracing.DispositionStatus, Value: "defer"},
+			{Key: tracing.OperationType, Value: "settle"},
+			{Key: tracing.DeliveryCount, Value: int64(0)},
+		},
+	}).NewTracer("module", "version"))
 	err = receiver.DeferMessage(context.Background(), msg, nil)
 	require.Empty(t, messages)
 	require.ErrorAs(t, err, &asSBError)
 	require.Equal(t, CodeLockLost, asSBError.Code)
 
+	receiver.amqpLinks.SetTracer(tracing.NewSpanValidator(t, tracing.SpanMatcher{
+		Name:   "Receiver.RenewMessageLock",
+		Status: tracing.SpanStatusError,
+		Attributes: []tracing.Attribute{
+			{Key: tracing.DestinationName, Value: "queue"},
+			{Key: tracing.OperationName, Value: "renew_message_lock"},
+			{Key: tracing.OperationType, Value: "receive"},
+			{Key: tracing.DeliveryCount, Value: int64(0)},
+		},
+	}).NewTracer("module", "version"))
 	err = receiver.RenewMessageLock(context.Background(), msg, nil)
 	require.Empty(t, messages)
 	require.ErrorAs(t, err, &asSBError)

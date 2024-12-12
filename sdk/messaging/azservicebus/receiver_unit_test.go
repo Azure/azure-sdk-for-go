@@ -14,12 +14,22 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/require"
 )
 
 func TestReceiver_ReceiveMessages_AMQPLinksFailure(t *testing.T) {
 	fakeAMQPLinks := &internal.FakeAMQPLinks{
+		Tr: tracing.NewSpanValidator(t, tracing.SpanMatcher{
+			Name:   "Receiver.ReceiveMessages",
+			Status: tracing.SpanStatusError,
+			Attributes: []tracing.Attribute{
+				{Key: tracing.OperationName, Value: "receive"},
+				{Key: tracing.OperationType, Value: "receive"},
+				{Key: tracing.BatchMessageCount, Value: int64(1)},
+			},
+		}).NewTracer("module", "version"),
 		Err: internal.NewErrNonRetriable("failed to create links"),
 	}
 
@@ -62,6 +72,15 @@ func TestReceiverCancellationUnitTests(t *testing.T) {
 	t.Run("ImmediatelyCancelled", func(t *testing.T) {
 		r := &Receiver{
 			amqpLinks: &internal.FakeAMQPLinks{
+				Tr: tracing.NewSpanValidator(t, tracing.SpanMatcher{
+					Name:   "Receiver.ReceiveMessages",
+					Status: tracing.SpanStatusError,
+					Attributes: []tracing.Attribute{
+						{Key: tracing.OperationName, Value: "receive"},
+						{Key: tracing.OperationType, Value: "receive"},
+						{Key: tracing.BatchMessageCount, Value: int64(95)},
+					},
+				}).NewTracer("module", "version"),
 				Receiver: &internal.FakeAMQPReceiver{},
 			},
 			cancelReleaser:    &atomic.Value{},
@@ -83,6 +102,15 @@ func TestReceiverCancellationUnitTests(t *testing.T) {
 
 		r := &Receiver{
 			amqpLinks: &internal.FakeAMQPLinks{
+				Tr: tracing.NewSpanValidator(t, tracing.SpanMatcher{
+					Name:   "Receiver.ReceiveMessages",
+					Status: tracing.SpanStatusError,
+					Attributes: []tracing.Attribute{
+						{Key: tracing.OperationName, Value: "receive"},
+						{Key: tracing.OperationType, Value: "receive"},
+						{Key: tracing.BatchMessageCount, Value: int64(95)},
+					},
+				}).NewTracer("module", "version"),
 				Receiver: &internal.FakeAMQPReceiver{
 					ReceiveFn: func(ctx context.Context) (*amqp.Message, error) {
 						cancel()

@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microscft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
 package tracing
@@ -19,28 +19,28 @@ func NewNoOpTracer() Tracer {
 	return Tracer{}
 }
 
-type SpanOptions struct {
-	name       MessagingSpanName
+type SpanConfig struct {
+	name       SpanName
 	attributes []Attribute
 }
 
 type SetAttributesFn func([]Attribute) []Attribute
 
-func NewSpanOptions(name MessagingSpanName, options ...SetAttributesFn) *SpanOptions {
-	so := &SpanOptions{name: name}
+func NewSpanConfig(name SpanName, options ...SetAttributesFn) *SpanConfig {
+	sc := &SpanConfig{name: name}
 	for _, fn := range options {
-		so.attributes = fn(so.attributes)
+		sc.attributes = fn(sc.attributes)
 	}
-	return so
+	return sc
 }
 
 // StartSpan creates a span with the specified name and attributes.
 // If no span name is provided, no span is created.
-func StartSpan(ctx context.Context, tracer Tracer, so *SpanOptions) (context.Context, func(error)) {
-	if so == nil || so.name == "" {
+func StartSpan(ctx context.Context, tracer Tracer, sc *SpanConfig) (context.Context, func(error)) {
+	if sc == nil || sc.name == "" {
 		return ctx, func(error) {}
 	}
-	return runtime.StartSpan(ctx, string(so.name), tracer, &StartSpanOptions{Attributes: so.attributes})
+	return runtime.StartSpan(ctx, string(sc.name), tracer, &StartSpanOptions{Attributes: sc.attributes})
 }
 
 type StartSpanOptions = runtime.StartSpanOptions

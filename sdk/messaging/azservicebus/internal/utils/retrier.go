@@ -38,7 +38,7 @@ func (rf *RetryFnArgs) ResetAttempts() {
 
 // Retry runs a standard retry loop. It executes your passed in fn as the body of the loop.
 // It returns if it exceeds the number of configured retry options or if 'isFatal' returns true.
-func Retry(ctx context.Context, tracer tracing.Tracer, eventName log.Event, operation string, fn func(ctx context.Context, args *RetryFnArgs) error, isFatalFn func(err error) bool, o exported.RetryOptions, so *tracing.SpanOptions) error {
+func Retry(ctx context.Context, tracer tracing.Tracer, eventName log.Event, operation string, fn func(ctx context.Context, args *RetryFnArgs) error, isFatalFn func(err error) bool, o exported.RetryOptions, sc *tracing.SpanConfig) error {
 	if isFatalFn == nil {
 		panic("isFatalFn is nil, errors would panic")
 	}
@@ -47,7 +47,7 @@ func Retry(ctx context.Context, tracer tracing.Tracer, eventName log.Event, oper
 	setDefaults(&ro)
 
 	var err error
-	ctx, endSpan := tracing.StartSpan(ctx, tracer, so)
+	ctx, endSpan := tracing.StartSpan(ctx, tracer, sc)
 	defer func() { endSpan(err) }()
 
 	for i := int32(0); i <= ro.MaxRetries; i++ {

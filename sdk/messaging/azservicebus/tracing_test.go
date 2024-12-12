@@ -26,6 +26,6 @@ func TestNewTracer(t *testing.T) {
 	require.NotNil(t, tracer)
 	require.True(t, tracer.Enabled())
 
-	_, endSpan := tracing.StartSpan(context.Background(), tracer, tracing.NewSpanOptions("TestSpan"))
+	_, endSpan := tracing.StartSpan(context.Background(), tracer, tracing.NewSpanConfig("TestSpan"))
 	defer func() { endSpan(nil) }()
 }

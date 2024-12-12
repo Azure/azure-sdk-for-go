@@ -806,6 +806,14 @@ func TestSessionReceiverUserFacingErrors_Methods(t *testing.T) {
 
 	// we'll return valid responses for the mgmt link since we need
 	// that to get a session receiver.
+	client.tracer = tracing.NewSpanValidator(t, tracing.SpanMatcher{
+		Name:   "SessionReceiver.AcceptSession",
+		Status: tracing.SpanStatusUnset,
+		Attributes: []tracing.Attribute{
+			{Key: tracing.DestinationName, Value: "queue"},
+			{Key: tracing.OperationName, Value: "accept_session"},
+			{Key: tracing.OperationType, Value: "session"},
+		}}).NewTracer("module", "version")
 	receiver, err := client.AcceptSessionForQueue(context.Background(), "queue", "session ID", nil)
 	require.NoError(t, err)
 
@@ -814,15 +822,39 @@ func TestSessionReceiverUserFacingErrors_Methods(t *testing.T) {
 
 	lockLost = true
 
+	receiver.inner.amqpLinks.SetTracer(tracing.NewSpanValidator(t, tracing.SpanMatcher{
+		Name:   "SessionReceiver.GetSessionState",
+		Status: tracing.SpanStatusError,
+		Attributes: []tracing.Attribute{
+			{Key: tracing.DestinationName, Value: "queue"},
+			{Key: tracing.OperationName, Value: "get_session_state"},
+			{Key: tracing.OperationType, Value: "session"},
+		}}).NewTracer("module", "version"))
 	state, err := receiver.GetSessionState(context.Background(), nil)
 	require.Nil(t, state)
 	require.ErrorAs(t, err, &asSBError)
 	require.Equal(t, CodeLockLost, asSBError.Code)
 
+	receiver.inner.amqpLinks.SetTracer(tracing.NewSpanValidator(t, tracing.SpanMatcher{
+		Name:   "SessionReceiver.SetSessionState",
+		Status: tracing.SpanStatusError,
+		Attributes: []tracing.Attribute{
+			{Key: tracing.DestinationName, Value: "queue"},
+			{Key: tracing.OperationName, Value: "set_session_state"},
+			{Key: tracing.OperationType, Value: "session"},
+		}}).NewTracer("module", "version"))
 	err = receiver.SetSessionState(context.Background(), []byte{}, nil)
 	require.ErrorAs(t, err, &asSBError)
 	require.Equal(t, CodeLockLost, asSBError.Code)
 
+	receiver.inner.amqpLinks.SetTracer(tracing.NewSpanValidator(t, tracing.SpanMatcher{
+		Name:   "SessionReceiver.RenewSessionLock",
+		Status: tracing.SpanStatusError,
+		Attributes: []tracing.Attribute{
+			{Key: tracing.DestinationName, Value: "queue"},
+			{Key: tracing.OperationName, Value: "renew_session_lock"},
+			{Key: tracing.OperationType, Value: "session"},
+		}}).NewTracer("module", "version"))
 	err = receiver.RenewSessionLock(context.Background(), nil)
 	require.ErrorAs(t, err, &asSBError)
 	require.Equal(t, CodeLockLost, asSBError.Code)

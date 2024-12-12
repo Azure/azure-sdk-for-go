@@ -43,6 +43,7 @@ func setSenderSpanAttributes(queueOrTopic string, operationName tracing.Messagin
 
 func setReceiverSpanAttributes(entityPath string, operationName tracing.MessagingOperationName) tracing.SetAttributesFn {
 	return func(attrs []tracing.Attribute) []tracing.Attribute {
+		attrs = setEntityPathAttributes(entityPath)(attrs)
 		attrs = append(attrs, tracing.Attribute{Key: tracing.OperationName, Value: string(operationName)})
 
 		if operationName == tracing.CompleteOperationName || operationName == tracing.AbandonOperationName ||
@@ -53,13 +54,15 @@ func setReceiverSpanAttributes(entityPath string, operationName tracing.Messagin
 			attrs = append(attrs, tracing.Attribute{Key: tracing.OperationType, Value: string(tracing.ReceiveOperationType)})
 		}
 
-		queueOrTopic, subscription := splitEntityPath(entityPath)
-		if queueOrTopic != "" {
-			attrs = append(attrs, tracing.Attribute{Key: tracing.DestinationName, Value: queueOrTopic})
-		}
-		if subscription != "" {
-			attrs = append(attrs, tracing.Attribute{Key: tracing.SubscriptionName, Value: subscription})
-		}
+		return attrs
+	}
+}
+
+func setSessionSpanAttributes(entityPath string, operationName tracing.MessagingOperationName) tracing.SetAttributesFn {
+	return func(attrs []tracing.Attribute) []tracing.Attribute {
+		attrs = setEntityPathAttributes(entityPath)(attrs)
+		attrs = append(attrs, tracing.Attribute{Key: tracing.OperationName, Value: string(operationName)})
+		attrs = append(attrs, tracing.Attribute{Key: tracing.OperationType, Value: string(tracing.SessionOperationType)})
 		return attrs
 	}
 }
@@ -98,6 +101,19 @@ func setReceivedMessageSpanAttributes(receivedMessage *ReceivedMessage) tracing.
 func setMessageBatchSpanAttributes(size int) tracing.SetAttributesFn {
 	return func(attrs []tracing.Attribute) []tracing.Attribute {
 		attrs = append(attrs, tracing.Attribute{Key: tracing.BatchMessageCount, Value: int64(size)})
+		return attrs
+	}
+}
+
+func setEntityPathAttributes(entityPath string) tracing.SetAttributesFn {
+	return func(attrs []tracing.Attribute) []tracing.Attribute {
+		queueOrTopic, subscription := splitEntityPath(entityPath)
+		if queueOrTopic != "" {
+			attrs = append(attrs, tracing.Attribute{Key: tracing.DestinationName, Value: queueOrTopic})
+		}
+		if subscription != "" {
+			attrs = append(attrs, tracing.Attribute{Key: tracing.SubscriptionName, Value: subscription})
+		}
 		return attrs
 	}
 }

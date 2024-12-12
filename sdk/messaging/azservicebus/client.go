@@ -175,7 +175,7 @@ func newClientImpl(creds clientCreds, args clientImplArgs) (*Client, error) {
 	nsOptions = append(nsOptions, args.NSOptions...)
 
 	client.namespace, err = internal.NewNamespace(nsOptions...)
-	client.tracer = newTracer(tracingProvider, getHostName(creds))
+	client.tracer = newTracer(tracingProvider, getFullyQualifiedNamespace(creds))
 
 	return client, err
 }
@@ -252,6 +252,7 @@ func (client *Client) AcceptSessionForQueue(ctx context.Context, queueName strin
 	sessionReceiver, err := newSessionReceiver(
 		ctx,
 		newSessionReceiverArgs{
+			tracer:         client.tracer,
 			sessionID:      &sessionID,
 			ns:             client.namespace,
 			entity:         entity{Queue: queueName},
@@ -279,6 +280,7 @@ func (client *Client) AcceptSessionForSubscription(ctx context.Context, topicNam
 	sessionReceiver, err := newSessionReceiver(
 		ctx,
 		newSessionReceiverArgs{
+			tracer:         client.tracer,
 			sessionID:      &sessionID,
 			ns:             client.namespace,
 			entity:         entity{Topic: topicName, Subscription: subscriptionName},
@@ -348,6 +350,7 @@ func (client *Client) acceptNextSessionForEntity(ctx context.Context, entity ent
 	sessionReceiver, err := newSessionReceiver(
 		ctx,
 		newSessionReceiverArgs{
+			tracer:            client.tracer,
 			sessionID:         nil,
 			ns:                client.namespace,
 			entity:            entity,
@@ -384,10 +387,10 @@ func (client *Client) getCleanupForCloseable() (uint64, func()) {
 	}
 }
 
-// getHostName returns fullyQualifiedNamespace from clientCreds if it is set.
+// getFullyQualifiedNamespace returns fullyQualifiedNamespace from clientCreds if it is set.
 // Otherwise, it parses the connection string and returns the FullyQualifiedNamespace from it.
 // If both are empty, it returns an empty string.
-func getHostName(creds clientCreds) string {
+func getFullyQualifiedNamespace(creds clientCreds) string {
 	if creds.fullyQualifiedNamespace != "" {
 		return creds.fullyQualifiedNamespace
 	}

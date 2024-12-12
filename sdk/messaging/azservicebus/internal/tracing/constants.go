@@ -20,6 +20,11 @@ const (
 	AbandonSpanName    SpanName = "Receiver.AbandonMessage"
 	DeferSpanName      SpanName = "Receiver.DeferMessage"
 	DeadLetterSpanName SpanName = "Receiver.DeadLetterMessage"
+
+	AcceptSessionSpanName    SpanName = "SessionReceiver.AcceptSession"
+	GetSessionStateSpanName  SpanName = "SessionReceiver.GetSessionState"
+	SetSessionStateSpanName  SpanName = "SessionReceiver.SetSessionState"
+	RenewSessionLockSpanName SpanName = "SessionReceiver.RenewSessionLock"
 )
 
 // OTel-specific messaging attributes
@@ -44,6 +49,7 @@ const (
 	SendOperationType    MessagingOperationType = "send"
 	ReceiveOperationType MessagingOperationType = "receive"
 	SettleOperationType  MessagingOperationType = "settle"
+	SessionOperationType MessagingOperationType = "session"
 )
 
 type MessagingOperationName string

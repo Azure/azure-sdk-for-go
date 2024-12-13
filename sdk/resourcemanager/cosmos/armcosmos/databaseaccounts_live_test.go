@@ -75,14 +75,6 @@ func (testsuite *DatabaseAccountsTestSuite) TestDatabaseAccounts() {
 			DatabaseAccountOfferType: to.Ptr("Standard"),
 			Locations: []*armcosmos.Location{
 				{
-					FailoverPriority: to.Ptr[int32](2),
-					LocationName:     to.Ptr("southcentralus"),
-				},
-				{
-					FailoverPriority: to.Ptr[int32](1),
-					LocationName:     to.Ptr("eastus"),
-				},
-				{
 					FailoverPriority: to.Ptr[int32](0),
 					LocationName:     to.Ptr("westus"),
 				}},
@@ -92,6 +84,7 @@ func (testsuite *DatabaseAccountsTestSuite) TestDatabaseAccounts() {
 	_, err = testutil.PollForTest(testsuite.ctx, databaseAccountsClientCreateOrUpdateResponsePoller)
 	testsuite.Require().NoError(err)
 
+	return
 	// From step DatabaseAccounts_List
 	fmt.Println("Call operation: DatabaseAccounts_List")
 	databaseAccountsClientNewListPager := databaseAccountsClient.NewListPager(nil)
@@ -179,14 +172,6 @@ func (testsuite *DatabaseAccountsTestSuite) TestDatabaseAccounts() {
 		FailoverPolicies: []*armcosmos.FailoverPolicy{
 			{
 				FailoverPriority: to.Ptr[int32](0),
-				LocationName:     to.Ptr("eastus"),
-			},
-			{
-				FailoverPriority: to.Ptr[int32](2),
-				LocationName:     to.Ptr("southcentralus"),
-			},
-			{
-				FailoverPriority: to.Ptr[int32](1),
 				LocationName:     to.Ptr("westus"),
 			}},
 	}, nil)

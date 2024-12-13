@@ -1,6 +1,6 @@
-# Azure Durabletask Module for Go
+# Azure Durable Task Module for Go
 
-The `armdurabletask` module provides operations for working with Azure Durabletask.
+The `armdurabletask` module provides operations for working with Azure Durable Task.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/durabletask/armdurabletask)
 
@@ -15,7 +15,7 @@ The `armdurabletask` module provides operations for working with Azure Durableta
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Durabletask module:
+Install the Azure Durable Task module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/durabletask/armdurabletask
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/durabletask/armdura
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Durabletask.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Durable Task.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Durabletask module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure Durable Task module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armdurabletask.NewClientFactory(<subscription ID>, cred, nil)
@@ -68,7 +68,7 @@ Please see https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/samples/fakes
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please
-[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Durabletask` label.
+[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Durable Task` label.
 
 # Contributing
 

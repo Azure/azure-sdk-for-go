@@ -1219,7 +1219,8 @@ func (client *VirtualMachinesClient) performMaintenanceCreateRequest(ctx context
 }
 
 // BeginPowerOff - The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
-// provisioned resources. You are still charged for this virtual machine.
+// provisioned resources. You are still charged for this virtual machine. NOTE: This operation is
+// not allowed on a virtual machine that is being deallocated or has already been deallocated.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-07-01
@@ -1245,7 +1246,8 @@ func (client *VirtualMachinesClient) BeginPowerOff(ctx context.Context, resource
 }
 
 // PowerOff - The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same provisioned
-// resources. You are still charged for this virtual machine.
+// resources. You are still charged for this virtual machine. NOTE: This operation is
+// not allowed on a virtual machine that is being deallocated or has already been deallocated.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-07-01

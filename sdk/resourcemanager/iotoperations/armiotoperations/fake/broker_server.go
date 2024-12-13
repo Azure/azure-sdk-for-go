@@ -25,7 +25,7 @@ type BrokerServer struct {
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, instanceName string, brokerName string, resource armiotoperations.BrokerResource, options *armiotoperations.BrokerClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armiotoperations.BrokerClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method BrokerClient.BeginDelete
-	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, instanceName string, brokerName string, options *armiotoperations.BrokerClientBeginDeleteOptions) (resp azfake.PollerResponder[armiotoperations.BrokerClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method BrokerClient.Get
@@ -70,23 +70,42 @@ func (b *BrokerServerTransport) Do(req *http.Request) (*http.Response, error) {
 }
 
 func (b *BrokerServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	var resp *http.Response
-	var err error
+	resultChan := make(chan result)
+	defer close(resultChan)
 
-	switch method {
-	case "BrokerClient.BeginCreateOrUpdate":
-		resp, err = b.dispatchBeginCreateOrUpdate(req)
-	case "BrokerClient.BeginDelete":
-		resp, err = b.dispatchBeginDelete(req)
-	case "BrokerClient.Get":
-		resp, err = b.dispatchGet(req)
-	case "BrokerClient.NewListByResourceGroupPager":
-		resp, err = b.dispatchNewListByResourceGroupPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+	go func() {
+		var intercepted bool
+		var res result
+		if brokerServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = brokerServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "BrokerClient.BeginCreateOrUpdate":
+				res.resp, res.err = b.dispatchBeginCreateOrUpdate(req)
+			case "BrokerClient.BeginDelete":
+				res.resp, res.err = b.dispatchBeginDelete(req)
+			case "BrokerClient.Get":
+				res.resp, res.err = b.dispatchGet(req)
+			case "BrokerClient.NewListByResourceGroupPager":
+				res.resp, res.err = b.dispatchNewListByResourceGroupPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	return resp, err
 }
 
 func (b *BrokerServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -178,9 +197,9 @@ func (b *BrokerServerTransport) dispatchBeginDelete(req *http.Request) (*http.Re
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		b.beginDelete.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		b.beginDelete.remove(req)
@@ -265,4 +284,10 @@ func (b *BrokerServerTransport) dispatchNewListByResourceGroupPager(req *http.Re
 		b.newListByResourceGroupPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to BrokerServerTransport
+var brokerServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

@@ -19,18 +19,27 @@ import (
 
 // ServerFactory is a fake server for instances of the armcognitiveservices.ClientFactory type.
 type ServerFactory struct {
-	AccountsServer                   AccountsServer
-	CommitmentPlansServer            CommitmentPlansServer
-	CommitmentTiersServer            CommitmentTiersServer
-	DeletedAccountsServer            DeletedAccountsServer
-	DeploymentsServer                DeploymentsServer
-	ManagementServer                 ManagementServer
-	ModelsServer                     ModelsServer
-	OperationsServer                 OperationsServer
-	PrivateEndpointConnectionsServer PrivateEndpointConnectionsServer
-	PrivateLinkResourcesServer       PrivateLinkResourcesServer
-	ResourceSKUsServer               ResourceSKUsServer
-	UsagesServer                     UsagesServer
+	AccountsServer                               AccountsServer
+	CommitmentPlansServer                        CommitmentPlansServer
+	CommitmentTiersServer                        CommitmentTiersServer
+	DefenderForAISettingsServer                  DefenderForAISettingsServer
+	DeletedAccountsServer                        DeletedAccountsServer
+	DeploymentsServer                            DeploymentsServer
+	EncryptionScopesServer                       EncryptionScopesServer
+	LocationBasedModelCapacitiesServer           LocationBasedModelCapacitiesServer
+	ManagementServer                             ManagementServer
+	ModelCapacitiesServer                        ModelCapacitiesServer
+	ModelsServer                                 ModelsServer
+	NetworkSecurityPerimeterConfigurationsServer NetworkSecurityPerimeterConfigurationsServer
+	OperationsServer                             OperationsServer
+	PrivateEndpointConnectionsServer             PrivateEndpointConnectionsServer
+	PrivateLinkResourcesServer                   PrivateLinkResourcesServer
+	RaiBlocklistItemsServer                      RaiBlocklistItemsServer
+	RaiBlocklistsServer                          RaiBlocklistsServer
+	RaiContentFiltersServer                      RaiContentFiltersServer
+	RaiPoliciesServer                            RaiPoliciesServer
+	ResourceSKUsServer                           ResourceSKUsServer
+	UsagesServer                                 UsagesServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -45,20 +54,29 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armcognitiveservices.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                                *ServerFactory
-	trMu                               sync.Mutex
-	trAccountsServer                   *AccountsServerTransport
-	trCommitmentPlansServer            *CommitmentPlansServerTransport
-	trCommitmentTiersServer            *CommitmentTiersServerTransport
-	trDeletedAccountsServer            *DeletedAccountsServerTransport
-	trDeploymentsServer                *DeploymentsServerTransport
-	trManagementServer                 *ManagementServerTransport
-	trModelsServer                     *ModelsServerTransport
-	trOperationsServer                 *OperationsServerTransport
-	trPrivateEndpointConnectionsServer *PrivateEndpointConnectionsServerTransport
-	trPrivateLinkResourcesServer       *PrivateLinkResourcesServerTransport
-	trResourceSKUsServer               *ResourceSKUsServerTransport
-	trUsagesServer                     *UsagesServerTransport
+	srv                                            *ServerFactory
+	trMu                                           sync.Mutex
+	trAccountsServer                               *AccountsServerTransport
+	trCommitmentPlansServer                        *CommitmentPlansServerTransport
+	trCommitmentTiersServer                        *CommitmentTiersServerTransport
+	trDefenderForAISettingsServer                  *DefenderForAISettingsServerTransport
+	trDeletedAccountsServer                        *DeletedAccountsServerTransport
+	trDeploymentsServer                            *DeploymentsServerTransport
+	trEncryptionScopesServer                       *EncryptionScopesServerTransport
+	trLocationBasedModelCapacitiesServer           *LocationBasedModelCapacitiesServerTransport
+	trManagementServer                             *ManagementServerTransport
+	trModelCapacitiesServer                        *ModelCapacitiesServerTransport
+	trModelsServer                                 *ModelsServerTransport
+	trNetworkSecurityPerimeterConfigurationsServer *NetworkSecurityPerimeterConfigurationsServerTransport
+	trOperationsServer                             *OperationsServerTransport
+	trPrivateEndpointConnectionsServer             *PrivateEndpointConnectionsServerTransport
+	trPrivateLinkResourcesServer                   *PrivateLinkResourcesServerTransport
+	trRaiBlocklistItemsServer                      *RaiBlocklistItemsServerTransport
+	trRaiBlocklistsServer                          *RaiBlocklistsServerTransport
+	trRaiContentFiltersServer                      *RaiContentFiltersServerTransport
+	trRaiPoliciesServer                            *RaiPoliciesServerTransport
+	trResourceSKUsServer                           *ResourceSKUsServerTransport
+	trUsagesServer                                 *UsagesServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -87,6 +105,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewCommitmentTiersServerTransport(&s.srv.CommitmentTiersServer)
 		})
 		resp, err = s.trCommitmentTiersServer.Do(req)
+	case "DefenderForAISettingsClient":
+		initServer(s, &s.trDefenderForAISettingsServer, func() *DefenderForAISettingsServerTransport {
+			return NewDefenderForAISettingsServerTransport(&s.srv.DefenderForAISettingsServer)
+		})
+		resp, err = s.trDefenderForAISettingsServer.Do(req)
 	case "DeletedAccountsClient":
 		initServer(s, &s.trDeletedAccountsServer, func() *DeletedAccountsServerTransport {
 			return NewDeletedAccountsServerTransport(&s.srv.DeletedAccountsServer)
@@ -95,12 +118,32 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "DeploymentsClient":
 		initServer(s, &s.trDeploymentsServer, func() *DeploymentsServerTransport { return NewDeploymentsServerTransport(&s.srv.DeploymentsServer) })
 		resp, err = s.trDeploymentsServer.Do(req)
+	case "EncryptionScopesClient":
+		initServer(s, &s.trEncryptionScopesServer, func() *EncryptionScopesServerTransport {
+			return NewEncryptionScopesServerTransport(&s.srv.EncryptionScopesServer)
+		})
+		resp, err = s.trEncryptionScopesServer.Do(req)
+	case "LocationBasedModelCapacitiesClient":
+		initServer(s, &s.trLocationBasedModelCapacitiesServer, func() *LocationBasedModelCapacitiesServerTransport {
+			return NewLocationBasedModelCapacitiesServerTransport(&s.srv.LocationBasedModelCapacitiesServer)
+		})
+		resp, err = s.trLocationBasedModelCapacitiesServer.Do(req)
 	case "ManagementClient":
 		initServer(s, &s.trManagementServer, func() *ManagementServerTransport { return NewManagementServerTransport(&s.srv.ManagementServer) })
 		resp, err = s.trManagementServer.Do(req)
+	case "ModelCapacitiesClient":
+		initServer(s, &s.trModelCapacitiesServer, func() *ModelCapacitiesServerTransport {
+			return NewModelCapacitiesServerTransport(&s.srv.ModelCapacitiesServer)
+		})
+		resp, err = s.trModelCapacitiesServer.Do(req)
 	case "ModelsClient":
 		initServer(s, &s.trModelsServer, func() *ModelsServerTransport { return NewModelsServerTransport(&s.srv.ModelsServer) })
 		resp, err = s.trModelsServer.Do(req)
+	case "NetworkSecurityPerimeterConfigurationsClient":
+		initServer(s, &s.trNetworkSecurityPerimeterConfigurationsServer, func() *NetworkSecurityPerimeterConfigurationsServerTransport {
+			return NewNetworkSecurityPerimeterConfigurationsServerTransport(&s.srv.NetworkSecurityPerimeterConfigurationsServer)
+		})
+		resp, err = s.trNetworkSecurityPerimeterConfigurationsServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
@@ -114,6 +157,24 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewPrivateLinkResourcesServerTransport(&s.srv.PrivateLinkResourcesServer)
 		})
 		resp, err = s.trPrivateLinkResourcesServer.Do(req)
+	case "RaiBlocklistItemsClient":
+		initServer(s, &s.trRaiBlocklistItemsServer, func() *RaiBlocklistItemsServerTransport {
+			return NewRaiBlocklistItemsServerTransport(&s.srv.RaiBlocklistItemsServer)
+		})
+		resp, err = s.trRaiBlocklistItemsServer.Do(req)
+	case "RaiBlocklistsClient":
+		initServer(s, &s.trRaiBlocklistsServer, func() *RaiBlocklistsServerTransport {
+			return NewRaiBlocklistsServerTransport(&s.srv.RaiBlocklistsServer)
+		})
+		resp, err = s.trRaiBlocklistsServer.Do(req)
+	case "RaiContentFiltersClient":
+		initServer(s, &s.trRaiContentFiltersServer, func() *RaiContentFiltersServerTransport {
+			return NewRaiContentFiltersServerTransport(&s.srv.RaiContentFiltersServer)
+		})
+		resp, err = s.trRaiContentFiltersServer.Do(req)
+	case "RaiPoliciesClient":
+		initServer(s, &s.trRaiPoliciesServer, func() *RaiPoliciesServerTransport { return NewRaiPoliciesServerTransport(&s.srv.RaiPoliciesServer) })
+		resp, err = s.trRaiPoliciesServer.Do(req)
 	case "ResourceSKUsClient":
 		initServer(s, &s.trResourceSKUsServer, func() *ResourceSKUsServerTransport { return NewResourceSKUsServerTransport(&s.srv.ResourceSKUsServer) })
 		resp, err = s.trResourceSKUsServer.Do(req)

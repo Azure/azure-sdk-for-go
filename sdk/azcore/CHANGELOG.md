@@ -4,6 +4,8 @@
 
 ### Features Added
 
+* Added field `OperationLocationResultPath` to `runtime.NewPollerOptions[T]` for LROs that use the `Operation-Location` pattern.
+
 ### Breaking Changes
 
 ### Bugs Fixed

@@ -213,7 +213,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 	if !onBoard {
 		log.Printf("Get ori exports for changelog generation...")
 
-		tags, err := GetAllVersionTags(generateParam.RPName, generateParam.NamespaceName, "sdk/resourcemanager/"+generateParam.RPName+"/"+generateParam.NamespaceName)
+		tags, err := GetAllVersionTags("sdk/resourcemanager/"+generateParam.RPName+"/"+generateParam.NamespaceName)
 		if err != nil {
 			return nil, err
 		}
@@ -448,7 +448,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam, re
 	if !onBoard {
 		log.Printf("Get ori exports for changelog generation...")
 
-		tags, err := GetAllVersionTags(generateParam.RPName, generateParam.NamespaceName, relativePath)
+		tags, err := GetAllVersionTags(relativePath)
 		if err != nil {
 			return nil, err
 		}

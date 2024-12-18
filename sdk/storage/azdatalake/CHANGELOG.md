@@ -1,5 +1,16 @@
 # Release History
 
+## 1.3.0-beta.2 (Unreleased)
+
+### Features Added
+*  Added a method to generate User Delegation Sas Url for DataLakeFileClient.
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.3.0-beta.1 (2024-10-23)
 
 ### Other Changes

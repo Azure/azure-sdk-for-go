@@ -5629,7 +5629,7 @@ func (s *RecordedTestSuite) TestFileClientDefaultAudience() {
 	_require.NoError(err)
 }
 
-func (s *UnrecordedTestSuite) TestContainerBlobBatchSetTierUsingUserDelegationSAS() {
+func (s *UnrecordedTestSuite) TestCreateSASUsingUserDelegationKeyFile() {
 	_require := require.New(s.T())
 	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
 	_require.Greater(len(accountName), 0)

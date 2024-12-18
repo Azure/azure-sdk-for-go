@@ -117,6 +117,10 @@ func ParseTypeSpecConfig(tspconfigPath string) (*TypeSpecConfig, error) {
 	return &tspConfig, err
 }
 
+func (tsc *TypeSpecConfig) GetRelativePath() string {
+	return tsc.Options["@azure-tools/typespec-go"].(map[string]interface{})["service-dir"].(string) + "/" + tsc.Options["@azure-tools/typespec-go"].(map[string]interface{})["package-dir"].(string)
+}
+
 func (tc *TypeSpecConfig) EditOptions(emit string, option map[string]any, append bool) {
 	if tc.Options == nil {
 		tc.Options = make(map[string]any)

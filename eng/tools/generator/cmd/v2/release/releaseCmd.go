@@ -194,7 +194,7 @@ func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash str
 			GoVersion:            c.flags.GoVersion,
 			TypeSpecEmitOption:   c.flags.TypeSpecGoOption,
 			TspClientOptions:     c.flags.TspClientOption,
-		}, "")
+		}, generateCtx.TypeSpecConfig.GetRelativePath())
 	} else {
 		log.Printf("Generate SDK through AutoRest...")
 		result, err = generateCtx.GenerateForSingleRPNamespace(&common.GenerateParam{

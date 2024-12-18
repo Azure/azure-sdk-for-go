@@ -131,7 +131,7 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 				errorBuilder.add(err)
 				continue
 			}
-			packageRelativePath := tsc.Options["@azure-tools/typespec-go"].(map[string]interface{})["service-dir"].(string) + "/" + tsc.Options["@azure-tools/typespec-go"].(map[string]interface{})["package-dir"].(string)
+			packageRelativePath := tsc.GetRelativePath()
 			namespaceResult, err := generateCtx.GenerateForTypeSpec(&common.GenerateParam{
 				RPName:              module[0],
 				NamespaceName:       module[1],

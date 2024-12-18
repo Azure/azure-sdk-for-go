@@ -131,14 +131,14 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 				errorBuilder.add(err)
 				continue
 			}
-
+			packageRelativePath := tsc.Options["@azure-tools/typespec-go"].(map[string]interface{})["service-dir"].(string) + "/" + tsc.Options["@azure-tools/typespec-go"].(map[string]interface{})["package-dir"].(string)
 			namespaceResult, err := generateCtx.GenerateForTypeSpec(&common.GenerateParam{
 				RPName:              module[0],
 				NamespaceName:       module[1],
 				SkipGenerateExample: true,
 				GoVersion:           ctx.goVersion,
 				TspClientOptions:    []string{"--debug"},
-			})
+			}, packageRelativePath)
 			if err != nil {
 				errorBuilder.add(err)
 				continue
@@ -147,8 +147,8 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 				breaking := namespaceResult.Changelog.HasBreakingChanges()
 				breakingChangeItems := namespaceResult.Changelog.GetBreakingChangeItems()
 
-				srcFolder := filepath.Join(sdkRepo.Root(), "sdk", "resourcemanager", namespaceResult.RPName, namespaceResult.PackageName)
-				apiViewArtifact := filepath.Join(sdkRepo.Root(), "sdk", "resourcemanager", namespaceResult.RPName, namespaceResult.PackageName+".gosource")
+				srcFolder := filepath.Join(sdkRepo.Root(), packageRelativePath)
+				apiViewArtifact := filepath.Join(sdkRepo.Root(), packageRelativePath+".gosource")
 				err := zipDirectory(srcFolder, apiViewArtifact)
 				if err != nil {
 					fmt.Println(err)
@@ -156,16 +156,16 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 
 				results = append(results, pipeline.PackageResult{
 					Version:         namespaceResult.Version,
-					PackageName:     fmt.Sprintf("sdk/resourcemanager/%s/%s", namespaceResult.RPName, namespaceResult.PackageName),
-					Path:            []string{fmt.Sprintf("sdk/resourcemanager/%s/%s", namespaceResult.RPName, namespaceResult.PackageName)},
-					PackageFolder:   fmt.Sprintf("sdk/resourcemanager/%s/%s", namespaceResult.RPName, namespaceResult.PackageName),
+					PackageName:     packageRelativePath,
+					Path:            []string{packageRelativePath},
+					PackageFolder:   packageRelativePath,
 					TypespecProject: []string{tspProjectFolder},
 					Changelog: &pipeline.Changelog{
 						Content:             &content,
 						HasBreakingChange:   &breaking,
 						BreakingChangeItems: &breakingChangeItems,
 					},
-					APIViewArtifact: fmt.Sprintf("sdk/resourcemanager/%s/%s", namespaceResult.RPName, namespaceResult.PackageName+".gosource"),
+					APIViewArtifact: packageRelativePath + ".gosource",
 					Language:        "Go",
 				})
 

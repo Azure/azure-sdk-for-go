@@ -51,7 +51,8 @@ func GetAllVersionTags(rpName, namespaceName string) ([]string, error) {
 	versionTag := make(map[string]string)
 	for _, tag := range result {
 		tagName := tag["ref"].(string)
-		if strings.Contains(tagName, "sdk/resourcemanager/"+rpName+"/"+namespaceName+"/v") {
+		// if strings.Contains(tagName, "sdk/resourcemanager/"+rpName+"/"+namespaceName+"/v") {
+		if strings.Contains(tagName, "sdk/messaging/"+rpName+"/"+namespaceName+"/v") {
 			m := regexp.MustCompile(semver.SemVerRegex).FindString(tagName)
 			versions = append(versions, m)
 			versionTag[m] = tagName

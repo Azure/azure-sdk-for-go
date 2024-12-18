@@ -103,8 +103,7 @@ func (ctx *GenerateContext) GenerateForAutomation(readme, repo, goVersion string
 }
 
 func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateParam) (*GenerateResult, error) {
-	// packagePath := filepath.Join(ctx.SDKPath, "sdk", "resourcemanager", generateParam.RPName, generateParam.NamespaceName)
-	packagePath := filepath.Join(ctx.SDKPath, "sdk", "messaging", generateParam.RPName, generateParam.NamespaceName)
+	packagePath := filepath.Join(ctx.SDKPath, "sdk", "resourcemanager", generateParam.RPName, generateParam.NamespaceName)
 	changelogPath := filepath.Join(packagePath, ChangelogFileName)
 
 	onBoard := false
@@ -375,9 +374,8 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 	}
 }
 
-func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*GenerateResult, error) {
-	// packagePath := filepath.Join(ctx.SDKPath, "sdk", "resourcemanager", generateParam.RPName, generateParam.NamespaceName)
-	packagePath := filepath.Join(ctx.SDKPath, "sdk", "messaging", generateParam.RPName, generateParam.NamespaceName)
+func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam, relativePath string) (*GenerateResult, error) {
+	packagePath := filepath.Join(ctx.SDKPath, relativePath)
 	changelogPath := filepath.Join(packagePath, ChangelogFileName)
 
 	version, err := semver.NewVersion("0.1.0")
@@ -456,7 +454,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 		}
 
 		if len(tags) == 0 {
-			return nil, fmt.Errorf("github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/%s/%s hasn't been released, it's supposed to OnBoard", generateParam.RPName, generateParam.NamespaceName)
+			return nil, fmt.Errorf("github.com/Azure/azure-sdk-for-go/%s hasn't been released, it's supposed to OnBoard", relativePath)
 		}
 
 		previousVersionTag := GetPreviousVersionTag(isCurrentPreview, tags)

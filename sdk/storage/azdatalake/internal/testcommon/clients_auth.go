@@ -10,7 +10,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 
@@ -270,4 +272,33 @@ func GetServiceClientNoCredential(t *testing.T, sasUrl string, options *service.
 
 func GetGenericTokenCredential() (azcore.TokenCredential, error) {
 	return credential.New(nil)
+}
+
+func GetUserDelegationSAS(svcClient *service.Client, filePath string, permissions sas.FilePermissions) (string, error) {
+	// Set current and past time and create key
+	now := time.Now().UTC().Add(-10 * time.Second)
+	expiry := now.Add(2 * time.Hour)
+	info := service.KeyInfo{
+		Start:  to.Ptr(now.UTC().Format(sas.TimeFormat)),
+		Expiry: to.Ptr(expiry.UTC().Format(sas.TimeFormat)),
+	}
+
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	if err != nil {
+		return "", err
+	}
+
+	// Create Blob Signature Values with desired permissions and sign with user delegation credential
+	sasQueryParams, err := sas.DatalakeSignatureValues{
+		Protocol:    sas.ProtocolHTTPS,
+		StartTime:   time.Now().UTC().Add(time.Second * -10),
+		ExpiryTime:  time.Now().UTC().Add(15 * time.Minute),
+		Permissions: permissions.String(),
+		FilePath:    filePath,
+	}.SignWithUserDelegation(udc)
+	if err != nil {
+		return "", err
+	}
+
+	return sasQueryParams.Encode(), nil
 }

@@ -3,7 +3,6 @@
 ## 1.3.0-beta.2 (Unreleased)
 
 ### Features Added
-*  Added a method to generate User Delegation Sas Url for DataLakeFileClient.
 
 ### Breaking Changes
 

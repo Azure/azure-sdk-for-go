@@ -16,6 +16,7 @@
 ### Features Added
 * Fix compareHeaders custom sorting algorithm for String To Sign.
 * Added permissions & resourcetype parameters in listblob response.
+* Added BlobProperties field in BlobPrefix definition in listblob response.
 
 ## 1.5.0-beta.1 (2024-10-22)
 

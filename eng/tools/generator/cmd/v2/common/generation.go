@@ -561,7 +561,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam, re
 			return nil, err
 		}
 
-		baseModule := fmt.Sprintf("%s/%s/%s", MgmtSDKModulePrefix, generateParam.RPName, generateParam.NamespaceName)
+		baseModule := fmt.Sprintf("%s/%s", MgmtSDKModulePrefix, relativePath)
 		if _, err := os.Stat(filepath.Join(packagePath, "fake")); !os.IsNotExist(err) && oldModuleVersion.Major() != version.Major() {
 			log.Printf("Replace fake module v2+...")
 			if err = ReplaceModule(version, packagePath, baseModule, ".go"); err != nil {

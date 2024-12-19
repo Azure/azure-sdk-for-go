@@ -5628,3 +5628,23 @@ func (s *RecordedTestSuite) TestFileClientDefaultAudience() {
 	_, err = fClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 }
+
+func (s *UnrecordedTestSuite) TestCreateSASUsingUserDelegationKeyFile() {
+	_require := require.New(s.T())
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	udSAS, err := testcommon.GetUserDelegationSAS(svcClient, "testfile", sas.FilePermissions{Read: true, Create: true, Write: true, List: true})
+	_require.NoError(err)
+
+	serviceClient, err := file.NewClientWithNoCredential(svcClient.DFSURL()+"/testfile?"+udSAS, nil)
+	_require.NoError(err)
+	_require.NotNil(serviceClient)
+
+}

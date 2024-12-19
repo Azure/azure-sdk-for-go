@@ -25,7 +25,7 @@ type BrokerAuthenticationServer struct {
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, instanceName string, brokerName string, authenticationName string, resource armiotoperations.BrokerAuthenticationResource, options *armiotoperations.BrokerAuthenticationClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armiotoperations.BrokerAuthenticationClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method BrokerAuthenticationClient.BeginDelete
-	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, instanceName string, brokerName string, authenticationName string, options *armiotoperations.BrokerAuthenticationClientBeginDeleteOptions) (resp azfake.PollerResponder[armiotoperations.BrokerAuthenticationClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method BrokerAuthenticationClient.Get
@@ -70,23 +70,42 @@ func (b *BrokerAuthenticationServerTransport) Do(req *http.Request) (*http.Respo
 }
 
 func (b *BrokerAuthenticationServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	var resp *http.Response
-	var err error
+	resultChan := make(chan result)
+	defer close(resultChan)
 
-	switch method {
-	case "BrokerAuthenticationClient.BeginCreateOrUpdate":
-		resp, err = b.dispatchBeginCreateOrUpdate(req)
-	case "BrokerAuthenticationClient.BeginDelete":
-		resp, err = b.dispatchBeginDelete(req)
-	case "BrokerAuthenticationClient.Get":
-		resp, err = b.dispatchGet(req)
-	case "BrokerAuthenticationClient.NewListByResourceGroupPager":
-		resp, err = b.dispatchNewListByResourceGroupPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+	go func() {
+		var intercepted bool
+		var res result
+		if brokerAuthenticationServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = brokerAuthenticationServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "BrokerAuthenticationClient.BeginCreateOrUpdate":
+				res.resp, res.err = b.dispatchBeginCreateOrUpdate(req)
+			case "BrokerAuthenticationClient.BeginDelete":
+				res.resp, res.err = b.dispatchBeginDelete(req)
+			case "BrokerAuthenticationClient.Get":
+				res.resp, res.err = b.dispatchGet(req)
+			case "BrokerAuthenticationClient.NewListByResourceGroupPager":
+				res.resp, res.err = b.dispatchNewListByResourceGroupPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	return resp, err
 }
 
 func (b *BrokerAuthenticationServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -186,9 +205,9 @@ func (b *BrokerAuthenticationServerTransport) dispatchBeginDelete(req *http.Requ
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		b.beginDelete.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		b.beginDelete.remove(req)
@@ -281,4 +300,10 @@ func (b *BrokerAuthenticationServerTransport) dispatchNewListByResourceGroupPage
 		b.newListByResourceGroupPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to BrokerAuthenticationServerTransport
+var brokerAuthenticationServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

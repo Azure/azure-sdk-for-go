@@ -78,6 +78,7 @@ type ServerFactory struct {
 	InterfaceLoadBalancersServer                          InterfaceLoadBalancersServer
 	InterfaceTapConfigurationsServer                      InterfaceTapConfigurationsServer
 	InterfacesServer                                      InterfacesServer
+	IpamPoolsServer                                       IpamPoolsServer
 	LoadBalancerBackendAddressPoolsServer                 LoadBalancerBackendAddressPoolsServer
 	LoadBalancerFrontendIPConfigurationsServer            LoadBalancerFrontendIPConfigurationsServer
 	LoadBalancerLoadBalancingRulesServer                  LoadBalancerLoadBalancingRulesServer
@@ -104,6 +105,8 @@ type ServerFactory struct {
 	ProfilesServer                                        ProfilesServer
 	PublicIPAddressesServer                               PublicIPAddressesServer
 	PublicIPPrefixesServer                                PublicIPPrefixesServer
+	ReachabilityAnalysisIntentsServer                     ReachabilityAnalysisIntentsServer
+	ReachabilityAnalysisRunsServer                        ReachabilityAnalysisRunsServer
 	ResourceNavigationLinksServer                         ResourceNavigationLinksServer
 	RouteFilterRulesServer                                RouteFilterRulesServer
 	RouteFiltersServer                                    RouteFiltersServer
@@ -126,6 +129,7 @@ type ServerFactory struct {
 	ServiceEndpointPolicyDefinitionsServer                ServiceEndpointPolicyDefinitionsServer
 	ServiceTagInformationServer                           ServiceTagInformationServer
 	ServiceTagsServer                                     ServiceTagsServer
+	StaticCidrsServer                                     StaticCidrsServer
 	StaticMembersServer                                   StaticMembersServer
 	SubnetsServer                                         SubnetsServer
 	SubscriptionNetworkManagerConnectionsServer           SubscriptionNetworkManagerConnectionsServer
@@ -139,6 +143,7 @@ type ServerFactory struct {
 	VPNSiteLinksServer                                    VPNSiteLinksServer
 	VPNSitesServer                                        VPNSitesServer
 	VPNSitesConfigurationServer                           VPNSitesConfigurationServer
+	VerifierWorkspacesServer                              VerifierWorkspacesServer
 	VipSwapServer                                         VipSwapServer
 	VirtualApplianceConnectionsServer                     VirtualApplianceConnectionsServer
 	VirtualApplianceSKUsServer                            VirtualApplianceSKUsServer
@@ -236,6 +241,7 @@ type ServerFactoryTransport struct {
 	trInterfaceLoadBalancersServer                          *InterfaceLoadBalancersServerTransport
 	trInterfaceTapConfigurationsServer                      *InterfaceTapConfigurationsServerTransport
 	trInterfacesServer                                      *InterfacesServerTransport
+	trIpamPoolsServer                                       *IpamPoolsServerTransport
 	trLoadBalancerBackendAddressPoolsServer                 *LoadBalancerBackendAddressPoolsServerTransport
 	trLoadBalancerFrontendIPConfigurationsServer            *LoadBalancerFrontendIPConfigurationsServerTransport
 	trLoadBalancerLoadBalancingRulesServer                  *LoadBalancerLoadBalancingRulesServerTransport
@@ -262,6 +268,8 @@ type ServerFactoryTransport struct {
 	trProfilesServer                                        *ProfilesServerTransport
 	trPublicIPAddressesServer                               *PublicIPAddressesServerTransport
 	trPublicIPPrefixesServer                                *PublicIPPrefixesServerTransport
+	trReachabilityAnalysisIntentsServer                     *ReachabilityAnalysisIntentsServerTransport
+	trReachabilityAnalysisRunsServer                        *ReachabilityAnalysisRunsServerTransport
 	trResourceNavigationLinksServer                         *ResourceNavigationLinksServerTransport
 	trRouteFilterRulesServer                                *RouteFilterRulesServerTransport
 	trRouteFiltersServer                                    *RouteFiltersServerTransport
@@ -284,6 +292,7 @@ type ServerFactoryTransport struct {
 	trServiceEndpointPolicyDefinitionsServer                *ServiceEndpointPolicyDefinitionsServerTransport
 	trServiceTagInformationServer                           *ServiceTagInformationServerTransport
 	trServiceTagsServer                                     *ServiceTagsServerTransport
+	trStaticCidrsServer                                     *StaticCidrsServerTransport
 	trStaticMembersServer                                   *StaticMembersServerTransport
 	trSubnetsServer                                         *SubnetsServerTransport
 	trSubscriptionNetworkManagerConnectionsServer           *SubscriptionNetworkManagerConnectionsServerTransport
@@ -297,6 +306,7 @@ type ServerFactoryTransport struct {
 	trVPNSiteLinksServer                                    *VPNSiteLinksServerTransport
 	trVPNSitesServer                                        *VPNSitesServerTransport
 	trVPNSitesConfigurationServer                           *VPNSitesConfigurationServerTransport
+	trVerifierWorkspacesServer                              *VerifierWorkspacesServerTransport
 	trVipSwapServer                                         *VipSwapServerTransport
 	trVirtualApplianceConnectionsServer                     *VirtualApplianceConnectionsServerTransport
 	trVirtualApplianceSKUsServer                            *VirtualApplianceSKUsServerTransport
@@ -617,6 +627,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "InterfacesClient":
 		initServer(s, &s.trInterfacesServer, func() *InterfacesServerTransport { return NewInterfacesServerTransport(&s.srv.InterfacesServer) })
 		resp, err = s.trInterfacesServer.Do(req)
+	case "IpamPoolsClient":
+		initServer(s, &s.trIpamPoolsServer, func() *IpamPoolsServerTransport { return NewIpamPoolsServerTransport(&s.srv.IpamPoolsServer) })
+		resp, err = s.trIpamPoolsServer.Do(req)
 	case "LoadBalancerBackendAddressPoolsClient":
 		initServer(s, &s.trLoadBalancerBackendAddressPoolsServer, func() *LoadBalancerBackendAddressPoolsServerTransport {
 			return NewLoadBalancerBackendAddressPoolsServerTransport(&s.srv.LoadBalancerBackendAddressPoolsServer)
@@ -735,6 +748,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewPublicIPPrefixesServerTransport(&s.srv.PublicIPPrefixesServer)
 		})
 		resp, err = s.trPublicIPPrefixesServer.Do(req)
+	case "ReachabilityAnalysisIntentsClient":
+		initServer(s, &s.trReachabilityAnalysisIntentsServer, func() *ReachabilityAnalysisIntentsServerTransport {
+			return NewReachabilityAnalysisIntentsServerTransport(&s.srv.ReachabilityAnalysisIntentsServer)
+		})
+		resp, err = s.trReachabilityAnalysisIntentsServer.Do(req)
+	case "ReachabilityAnalysisRunsClient":
+		initServer(s, &s.trReachabilityAnalysisRunsServer, func() *ReachabilityAnalysisRunsServerTransport {
+			return NewReachabilityAnalysisRunsServerTransport(&s.srv.ReachabilityAnalysisRunsServer)
+		})
+		resp, err = s.trReachabilityAnalysisRunsServer.Do(req)
 	case "ResourceNavigationLinksClient":
 		initServer(s, &s.trResourceNavigationLinksServer, func() *ResourceNavigationLinksServerTransport {
 			return NewResourceNavigationLinksServerTransport(&s.srv.ResourceNavigationLinksServer)
@@ -833,6 +856,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "ServiceTagsClient":
 		initServer(s, &s.trServiceTagsServer, func() *ServiceTagsServerTransport { return NewServiceTagsServerTransport(&s.srv.ServiceTagsServer) })
 		resp, err = s.trServiceTagsServer.Do(req)
+	case "StaticCidrsClient":
+		initServer(s, &s.trStaticCidrsServer, func() *StaticCidrsServerTransport { return NewStaticCidrsServerTransport(&s.srv.StaticCidrsServer) })
+		resp, err = s.trStaticCidrsServer.Do(req)
 	case "StaticMembersClient":
 		initServer(s, &s.trStaticMembersServer, func() *StaticMembersServerTransport {
 			return NewStaticMembersServerTransport(&s.srv.StaticMembersServer)
@@ -888,6 +914,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewVPNSitesConfigurationServerTransport(&s.srv.VPNSitesConfigurationServer)
 		})
 		resp, err = s.trVPNSitesConfigurationServer.Do(req)
+	case "VerifierWorkspacesClient":
+		initServer(s, &s.trVerifierWorkspacesServer, func() *VerifierWorkspacesServerTransport {
+			return NewVerifierWorkspacesServerTransport(&s.srv.VerifierWorkspacesServer)
+		})
+		resp, err = s.trVerifierWorkspacesServer.Do(req)
 	case "VipSwapClient":
 		initServer(s, &s.trVipSwapServer, func() *VipSwapServerTransport { return NewVipSwapServerTransport(&s.srv.VipSwapServer) })
 		resp, err = s.trVipSwapServer.Do(req)

@@ -509,6 +509,14 @@ func (c *ClientFactory) NewInterfacesClient() *InterfacesClient {
 	}
 }
 
+// NewIpamPoolsClient creates a new instance of IpamPoolsClient.
+func (c *ClientFactory) NewIpamPoolsClient() *IpamPoolsClient {
+	return &IpamPoolsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewLoadBalancerBackendAddressPoolsClient creates a new instance of LoadBalancerBackendAddressPoolsClient.
 func (c *ClientFactory) NewLoadBalancerBackendAddressPoolsClient() *LoadBalancerBackendAddressPoolsClient {
 	return &LoadBalancerBackendAddressPoolsClient{
@@ -715,6 +723,22 @@ func (c *ClientFactory) NewPublicIPPrefixesClient() *PublicIPPrefixesClient {
 	}
 }
 
+// NewReachabilityAnalysisIntentsClient creates a new instance of ReachabilityAnalysisIntentsClient.
+func (c *ClientFactory) NewReachabilityAnalysisIntentsClient() *ReachabilityAnalysisIntentsClient {
+	return &ReachabilityAnalysisIntentsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewReachabilityAnalysisRunsClient creates a new instance of ReachabilityAnalysisRunsClient.
+func (c *ClientFactory) NewReachabilityAnalysisRunsClient() *ReachabilityAnalysisRunsClient {
+	return &ReachabilityAnalysisRunsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewResourceNavigationLinksClient creates a new instance of ResourceNavigationLinksClient.
 func (c *ClientFactory) NewResourceNavigationLinksClient() *ResourceNavigationLinksClient {
 	return &ResourceNavigationLinksClient{
@@ -891,6 +915,14 @@ func (c *ClientFactory) NewServiceTagsClient() *ServiceTagsClient {
 	}
 }
 
+// NewStaticCidrsClient creates a new instance of StaticCidrsClient.
+func (c *ClientFactory) NewStaticCidrsClient() *StaticCidrsClient {
+	return &StaticCidrsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewStaticMembersClient creates a new instance of StaticMembersClient.
 func (c *ClientFactory) NewStaticMembersClient() *StaticMembersClient {
 	return &StaticMembersClient{
@@ -990,6 +1022,14 @@ func (c *ClientFactory) NewVPNSitesClient() *VPNSitesClient {
 // NewVPNSitesConfigurationClient creates a new instance of VPNSitesConfigurationClient.
 func (c *ClientFactory) NewVPNSitesConfigurationClient() *VPNSitesConfigurationClient {
 	return &VPNSitesConfigurationClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewVerifierWorkspacesClient creates a new instance of VerifierWorkspacesClient.
+func (c *ClientFactory) NewVerifierWorkspacesClient() *VerifierWorkspacesClient {
+	return &VerifierWorkspacesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

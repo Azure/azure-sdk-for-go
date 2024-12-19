@@ -213,7 +213,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 	if !onBoard {
 		log.Printf("Get ori exports for changelog generation...")
 
-		tags, err := GetAllVersionTags("sdk/resourcemanager/"+generateParam.RPName+"/"+generateParam.NamespaceName)
+		tags, err := GetAllVersionTags("sdk/resourcemanager/" + generateParam.RPName + "/" + generateParam.NamespaceName)
 		if err != nil {
 			return nil, err
 		}
@@ -308,7 +308,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 		}
 
 		log.Printf("Update module definition if v2+...")
-		err = UpdateModuleDefinition(packagePath, generateParam.RPName, generateParam.NamespaceName, version)
+		err = UpdateModuleDefinition(packagePath, filepath.Join("sdk/resourcemanager", generateParam.RPName, generateParam.NamespaceName), version)
 		if err != nil {
 			return nil, err
 		}
@@ -341,7 +341,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 		}
 
 		log.Printf("Replace README.md module...")
-		if err = replaceReadmeModule(packagePath, generateParam.RPName, generateParam.NamespaceName, version.String()); err != nil {
+		if err = replaceReadmeModule(packagePath, filepath.Join("sdk/resourcemanager", generateParam.RPName, generateParam.NamespaceName), version.String()); err != nil {
 			return nil, err
 		}
 
@@ -546,7 +546,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam, re
 		}
 
 		log.Printf("Update module definition if v2+...")
-		err = UpdateModuleDefinition(packagePath, generateParam.RPName, generateParam.NamespaceName, version)
+		err = UpdateModuleDefinition(packagePath, relativePath, version)
 		if err != nil {
 			return nil, err
 		}
@@ -578,7 +578,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam, re
 		}
 
 		log.Printf("Replace README.md module...")
-		if err = replaceReadmeModule(packagePath, generateParam.RPName, generateParam.NamespaceName, version.String()); err != nil {
+		if err = replaceReadmeModule(packagePath, relativePath, version.String()); err != nil {
 			return nil, err
 		}
 

@@ -7,7 +7,9 @@ Goal: Generate and release Azure SDK for Go package from Swagger or TypeSpec.
 * [Prerequisites](#Prerequisites)
 * [Release Process](#Release-Process)
 * [Update existing RP](#Update-existing-RP)
+* [Special case in PR](#Special-case-in-PR)
 * [Releases new service](#Releases-new-service)
+* [Add live test and record](#Add-live-test-and-record)
 * [Breaking change review](#Breaking-change-review)
 
 ## Prerequisites
@@ -24,9 +26,10 @@ Goal: Generate and release Azure SDK for Go package from Swagger or TypeSpec.
   - https://github.com/Azure/azure-rest-api-specs
   - https://github.com/Azure/azure-sdk-for-go 
 * Install the necessary tools by:
-  - Generator tool, run: `go get github.com/Azure/azure-sdk-for-go/tools/generator`
+  - Generator tool, run: `go get github.com/Azure/azure-sdk-for-go/tools/generator`，if this command does not work,  run：`cd eng/tools/generator && go install`,referenced from  (https://github.com/Azure/azure-sdk-for-go/blob/72fe46870cff900262d54be73aa9a1eccfde12f2/documentation/code-generation.md#L46)
   - Test-proxy, check: https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/README.md#installation
   - Tsp-client, run: `npm install -g @azure-tools/typespec-client-generator-cli`
+  NOTE：node version: v20.18.0，download url: https://nodejs.org/en/download/prebuilt-installer
 
 ## Release Process
 
@@ -51,6 +54,7 @@ generator release-v2 <azure-sdk-for-go path> <azure-rest-api-specs path> <RP nam
       - RP name: service name, should be the same as one in the spec repo, e.g. apimanagement
       - package name: release package name, e.g. armapimanagement 
       - path to tspconfig.yaml: Path to the TSP config file of target RP in at local. e.g. D:\Azure\azure -rest-api-specs\specification\azurefleet\AzureFleet.Management\tspconfig.yaml
+      - before running the command to generate code, you should make sure that there is `readme.go.md` under path `specification/xxxx/resource-manager` or there is node `"@azure-tools/typespec-go"` config in `tspconfig.yaml` file,[referenced from](https://github.com/Azure/azure-rest-api-specs/blob/main/specification/liftrneon/Neon.Postgres.Management/tspconfig.yaml) 
     - b)	If the issue doesn’t have the `TypeSpec`label, update the commit id and the tag in the autorest.md with the one in the release request, like:
         ```go
             azure-arm: true
@@ -63,17 +67,8 @@ generator release-v2 <azure-sdk-for-go path> <azure-rest-api-specs path> <RP nam
             https://github.com/Azure/sdk-release-request/issues/5569
         ```
  
-        Check the link’s commit id and the new tag, the autorest.md should be changed to:
-        ```go
-            azure-arm: true
-            require:
-                - https://github.com/Azure/azure-rest-api-specs/blob/ 655f4c80528b2aa2d5e52767e9a1bf7dd2a0655a/specification/containerinstance/resource-manager/readme.md
-                - https://github.com/Azure/azure-rest-api-specs/blob/655f4c80528b2aa2d5e52767e9a1bf7dd2a0655a /specification/containerinstance/resource-manager/readme.go.md
-            license-header: MICROSOFT_MIT_NO_VERSION
-            module-version: 2.4.0
-            tag: package-preview-2024-05
-        ```
-
+        update the link’s commit id and the  tag in the file  autorest.md , tag should be changed to the tag mentioned in `sdk-release-request/issues/xxx` which showed as `"Readme Tag"` [to see detais](https://github.com/Azure/sdk-release-request/issues/5759) , commit id should be change to the lastes commit id in the `"link"`
+    
         Then, run following generate command:
             - generator release-v2 <azure-sdk-for-go path> <azure-rest-api-specs path> <RP name> <package name> --update-spec-version=false
 3.	Fix the generated code if there are any issues.
@@ -92,8 +87,13 @@ generator release-v2 <azure-sdk-for-go path> <azure-rest-api-specs path> <RP nam
 8.	Wait for the PR to get approved and merged.
 9.	Search for the corresponding service’s pipeline in [Pipelines](https://dev.azure.com/azure-sdk/internal/_build?definitionScope=%5Cgo), wait for the automatic merge to complete, there will be a run in the pipeline. If not, manually click "Run Pipeline" to start a new run.
 10.	When the Pipelines reports a broken link error, click and index the broken link and then start a new pipeline.
-11.	After the pipeline completes, go to "Stages", select the rightmost node, and click "Approve".
+11.	After the pipeline completes, go to "Review", select the rightmost node, and click "Approve".
 12.	Leave a comment on the corresponding issue in azure-sdk-request repo and close the issue (e.g.<https://github.com/Azure/sdk-release-request/issues/5369#issuecomment-2301398185>)
+
+## Special case in PR
+1.	If a service has multiple version to release at same window process, you need to release the service order by the version in ascending order.that means the small version needs to be released first, and then the next version should be generated auomatically again depending the released code.
+2.	If the current version is `FirstGA` and the last version is `FirstBeta`,after generating,no codes will be changed, only the file `changelog.md` will be modified
+
 
 ## Releases new service 
 
@@ -104,8 +104,8 @@ If the service hasn’t released a package before, the service team would like t
 2.	Create a folder under azure-sdk-for-go\sdk\resourcemanager with the same name in the spec repo. Then create another folder under it, with the name armxxxxx, for instance armmonitor.
 3.	Copy the template from the aztemplate directory[https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/template/aztemplate]. Be sure to update the contents as required, replacing all occurrences of template/aztemplate with the correct values.
 4.	Run the generator 
-5.	(Chenjie Fill)
-6.	
+5.	service name check for readme,file path:sdk/resourcemanager/xxxxrservice/armxxxservice/README.md. if service name is made up multi words `test service`, the service name auto generated in readme.md file may be changed to `TestService`,we need to replace `TestService` to `Test Service`
+6.	update file:sdk/resourcemanager/xxxxrservice/armxxxservice/ci.yml, add `UsePipelineProxy: false` under `extends->parameters` if not exist
 7.	Check the PR pipeline and handle the errors:
     - a.	When a broken link error appears in the CI of a new major version or a new project's PR, leave a comment in PR: '/check-enforcer override'.
     - b.	When PR is a new project and the CI check is minimal, leave the comment '/azp run prepare-pipelines' to create new pipelines.
@@ -115,6 +115,31 @@ If the service hasn’t released a package before, the service team would like t
 10.	When the Pipelines reports a broken link error, click and index the broken link and then start a new pipeline.
 11.	After the pipeline completes, go to "Stages", select the rightmost node, and click "Approve".
 12.	Leave a comment on the corresponding issue in azure-sdk-request repo and close the issue (e.g.<https://github.com/Azure/sdk-release-request/issues/5369#issuecomment-2301398185>)
+
+## Add live test and record
+1. Using following commands to install the script(Do not directly download from GitHub, may have execution issues):
+    ```cmd
+     1)`Invoke-WebRequest -OutFile "generate-assets-json.ps1" https://raw.githubusercontent.com/Azure/azure-sdk-tools/main/eng/common/testproxy/onboarding/generate-assets-json.ps1`
+    Or
+    `wget https://raw.githubusercontent.com/Azure/azure-sdk-tools/main/eng/common/testproxy/onboarding/generate-assets-json.ps1 -o generate-assets-json.ps1`
+    
+   2) `Invoke-WebRequest -OutFile "generate-assets-json.ps1" https://raw.githubusercontent.com/Azure/azure-sdk-tools/main/eng/common/testproxy/onboarding/common-asset-functions.ps1`
+    Or
+    `wget https://raw.githubusercontent.com/Azure/azure-sdk-tools/main/eng/common/testproxy/onboarding/generate-assets-json.ps1 -o common-asset-functions.ps1`
+    ```
+    then you downloaded two files: `common-asset-functions.ps1` and `generate-assets-json.ps1`
+2. Run `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass` to disable unsigned check
+3. Run the script under the service path:`sdk/resourcemanager/xxx/armxxx`,you can copy these two files into this path,and run `.\generate-assets-json.ps1  -InitialPush`, and then the file `assets.json` will be auto generated f under the path .
+ Explain(With - InitialPush parameter, the script will do):
+    - Create a config file under service path.(Details see below)
+    - Remove all the recording files inside the service.
+    - Generate a unique ID and added to the config file, push the recording files to Azure SDK Assets repo, stored as a Tag with that ID
+    - Without - InitialPush, the script will only create config file. We still need to manually call test-proxy push -a <path-to-assets.json>  to finish rest of the steps.
+4. before creating a live test file, you need to create file named `utils_test.go`,which is the entrance of live test,referenced from [`the example`](https://github.com/jliusan/azure-sdk-for-go/blob/sdk-release-guideline/sdk/resourcemanager/compute/armcompute/utils_test.go),change the `"package"` name and const `"pathToPackage"` to the current service
+5. the you can create a live test file named like `_live_test.go`,referenced from [`the example`](https://github.com/jliusan/azure-sdk-for-go/blob/sdk-release-guideline/sdk/resourcemanager/compute/armcompute/virtualmachineextensionimage_live_test.go)
+6. before you run the test cases under the mode `"live"`, you need to set `$ENV:AZURE_RECORD_MODE="live"`,[to see details](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/developer_setup.md#write-tests)
+7. if all the test cases pass, you still need to change the test mode to `"playback"`, and ensure that test cases pass too under the test mode `"playback"`,otherwise the service ci pipeline will get failure in a new PR
+8. at last, you need to run `test-proxy push --assets-json-path assets.json` under the service path
 
 ## Breaking change review
 

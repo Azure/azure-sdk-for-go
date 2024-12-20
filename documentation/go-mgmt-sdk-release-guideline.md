@@ -5,10 +5,10 @@ Goal: Generate and release Azure SDK for Go package from Swagger or TypeSpec.
 ## Table of contents
 
 * [Prerequisites](#Prerequisites)
-* [Release Process](#Release Process)
-* [Update existing RP](#Update existing RP)
-* [Releases new service](#Releases new service)
-* [Breaking change review](#Breaking change review)
+* [Release Process](#Release-Process)
+* [Update existing RP](#Update-existing-RP)
+* [Releases new service](#Releases-new-service)
+* [Breaking change review](#Breaking-change-review)
 
 ## Prerequisites
 

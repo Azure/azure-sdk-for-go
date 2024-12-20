@@ -29,7 +29,7 @@ Goal: Generate and release Azure SDK for Go package from Swagger or TypeSpec.
   - Generator tool, run: `go get github.com/Azure/azure-sdk-for-go/tools/generator`，if this command does not work,  run：`cd eng/tools/generator && go install`,referenced from  (https://github.com/Azure/azure-sdk-for-go/blob/72fe46870cff900262d54be73aa9a1eccfde12f2/documentation/code-generation.md#L46)
   - Test-proxy, check: https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/README.md#installation
   - Tsp-client, run: `npm install -g @azure-tools/typespec-client-generator-cli`
-  NOTE：node version: v20.18.0，download url: https://nodejs.org/en/download/prebuilt-installer
+  - `ETA：node version: v20.18.0，download url: https://nodejs.org/en/download/prebuilt-installer`
 
 ## Release Process
 
@@ -151,3 +151,5 @@ We’ll need to check if the breaking changes in the PR are expected.
 2.	If there is a PR under the issue, go to the PR. Try finding the approved PR in the PR comments section.
 Otherwise, go to the corresponding path in the azure-rest-api-specs Code and find the readme.md (e.g., azure-rest-api-specs/specification/{corresponding folder}/resource-manager/readme.md). Under #basic information, find the tag (e.g., package-2024-07), and go to the corresponding folder (e.g., azure-rest-api-specs/specification/{corresponding folder}/resource-manager/Microsoft.Batch/stable/2018-07-01). Click on History on the right, find the Commit where the Breaking Change occurred, and click on the number next to the Commit to enter the corresponding PR.Refine the the CHANGELOG.md of the corresponding azure-sdk-for-go if needed. There are two ways to determine if the breaking change was introduced by this PR.(changes related to "resource" could be ignored).
 [example to see details](https://github.com/Azure/azure-sdk-for-go/pull/23343)
+
+

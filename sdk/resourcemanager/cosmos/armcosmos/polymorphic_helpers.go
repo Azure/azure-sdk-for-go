@@ -33,6 +33,37 @@ func unmarshalBackupPolicyClassification(rawMsg json.RawMessage) (BackupPolicyCl
 	return b, nil
 }
 
+func unmarshalDataTransferDataSourceSinkClassification(rawMsg json.RawMessage) (DataTransferDataSourceSinkClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b DataTransferDataSourceSinkClassification
+	switch m["component"] {
+	case "BaseCosmosDataTransferDataSourceSink":
+		b = &BaseCosmosDataTransferDataSourceSink{}
+	case string(DataTransferComponentAzureBlobStorage):
+		b = &AzureBlobDataTransferDataSourceSink{}
+	case string(DataTransferComponentCosmosDBCassandra):
+		b = &CassandraDataTransferDataSourceSink{}
+	case string(DataTransferComponentCosmosDBMongo):
+		b = &MongoDataTransferDataSourceSink{}
+	case string(DataTransferComponentCosmosDBMongoVCore):
+		b = &MongoVCoreDataTransferDataSourceSink{}
+	case string(DataTransferComponentCosmosDBSQL):
+		b = &SQLDataTransferDataSourceSink{}
+	default:
+		b = &DataTransferDataSourceSink{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
 func unmarshalServiceResourceCreateUpdatePropertiesClassification(rawMsg json.RawMessage) (ServiceResourceCreateUpdatePropertiesClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil

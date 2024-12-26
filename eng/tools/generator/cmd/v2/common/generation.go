@@ -213,7 +213,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 	if !onBoard {
 		log.Printf("Get ori exports for changelog generation...")
 
-		tags, err := GetAllVersionTags(filepath.Join("sdk/resourcemanager", generateParam.RPName, generateParam.NamespaceName))
+		tags, err := GetAllVersionTags("sdk/resourcemanager" + "/" + generateParam.RPName + "/" + generateParam.NamespaceName)
 		if err != nil {
 			return nil, err
 		}
@@ -341,7 +341,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 		}
 
 		log.Printf("Replace README.md module...")
-		if err = replaceReadmeModule(packagePath, filepath.Join("sdk/resourcemanager", generateParam.RPName, generateParam.NamespaceName), version.String()); err != nil {
+		if err = replaceReadmeModule(packagePath, "sdk/resourcemanager"+"/"+generateParam.RPName+"/"+generateParam.NamespaceName, version.String()); err != nil {
 			return nil, err
 		}
 

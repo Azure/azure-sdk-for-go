@@ -46,7 +46,7 @@ func NewNodeTypesClient(subscriptionID string, credential azcore.TokenCredential
 // BeginCreateOrUpdate - Create or update a Service Fabric node type of a given managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-06-01-preview
+// Generated from API version 2024-09-01-preview
 //   - resourceGroupName - The name of the resource group.
 //   - clusterName - The name of the cluster resource.
 //   - nodeTypeName - The name of the node type.
@@ -74,7 +74,7 @@ func (client *NodeTypesClient) BeginCreateOrUpdate(ctx context.Context, resource
 // CreateOrUpdate - Create or update a Service Fabric node type of a given managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-06-01-preview
+// Generated from API version 2024-09-01-preview
 func (client *NodeTypesClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters NodeType, options *NodeTypesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NodeTypesClient.BeginCreateOrUpdate"
@@ -120,7 +120,7 @@ func (client *NodeTypesClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-06-01-preview")
+	reqQP.Set("api-version", "2024-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -132,7 +132,7 @@ func (client *NodeTypesClient) createOrUpdateCreateRequest(ctx context.Context, 
 // BeginDelete - Delete a Service Fabric node type of a given managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-06-01-preview
+// Generated from API version 2024-09-01-preview
 //   - resourceGroupName - The name of the resource group.
 //   - clusterName - The name of the cluster resource.
 //   - nodeTypeName - The name of the node type.
@@ -158,7 +158,7 @@ func (client *NodeTypesClient) BeginDelete(ctx context.Context, resourceGroupNam
 // Delete - Delete a Service Fabric node type of a given managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-06-01-preview
+// Generated from API version 2024-09-01-preview
 func (client *NodeTypesClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, options *NodeTypesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NodeTypesClient.BeginDelete"
@@ -204,7 +204,7 @@ func (client *NodeTypesClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-06-01-preview")
+	reqQP.Set("api-version", "2024-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -214,7 +214,7 @@ func (client *NodeTypesClient) deleteCreateRequest(ctx context.Context, resource
 // VMs and removes the state from the cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-06-01-preview
+// Generated from API version 2024-09-01-preview
 //   - resourceGroupName - The name of the resource group.
 //   - clusterName - The name of the cluster resource.
 //   - nodeTypeName - The name of the node type.
@@ -243,7 +243,7 @@ func (client *NodeTypesClient) BeginDeleteNode(ctx context.Context, resourceGrou
 // and removes the state from the cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-06-01-preview
+// Generated from API version 2024-09-01-preview
 func (client *NodeTypesClient) deleteNode(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters NodeTypeActionParameters, options *NodeTypesClientBeginDeleteNodeOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NodeTypesClient.BeginDeleteNode"
@@ -289,7 +289,7 @@ func (client *NodeTypesClient) deleteNodeCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-06-01-preview")
+	reqQP.Set("api-version", "2024-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -301,7 +301,7 @@ func (client *NodeTypesClient) deleteNodeCreateRequest(ctx context.Context, reso
 // Get - Get a Service Fabric node type of a given managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-06-01-preview
+// Generated from API version 2024-09-01-preview
 //   - resourceGroupName - The name of the resource group.
 //   - clusterName - The name of the cluster resource.
 //   - nodeTypeName - The name of the node type.
@@ -352,7 +352,7 @@ func (client *NodeTypesClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-06-01-preview")
+	reqQP.Set("api-version", "2024-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -369,7 +369,7 @@ func (client *NodeTypesClient) getHandleResponse(resp *http.Response) (NodeTypes
 
 // NewListByManagedClustersPager - Gets all Node types of the specified managed cluster.
 //
-// Generated from API version 2024-06-01-preview
+// Generated from API version 2024-09-01-preview
 //   - resourceGroupName - The name of the resource group.
 //   - clusterName - The name of the cluster resource.
 //   - options - NodeTypesClientListByManagedClustersOptions contains the optional parameters for the NodeTypesClient.NewListByManagedClustersPager
@@ -417,7 +417,7 @@ func (client *NodeTypesClient) listByManagedClustersCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-06-01-preview")
+	reqQP.Set("api-version", "2024-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -436,7 +436,7 @@ func (client *NodeTypesClient) listByManagedClustersHandleResponse(resp *http.Re
 // VMs and activate the nodes back again.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-06-01-preview
+// Generated from API version 2024-09-01-preview
 //   - resourceGroupName - The name of the resource group.
 //   - clusterName - The name of the cluster resource.
 //   - nodeTypeName - The name of the node type.
@@ -464,7 +464,7 @@ func (client *NodeTypesClient) BeginReimage(ctx context.Context, resourceGroupNa
 // activate the nodes back again.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-06-01-preview
+// Generated from API version 2024-09-01-preview
 func (client *NodeTypesClient) reimage(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters NodeTypeActionParameters, options *NodeTypesClientBeginReimageOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NodeTypesClient.BeginReimage"
@@ -510,7 +510,7 @@ func (client *NodeTypesClient) reimageCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-06-01-preview")
+	reqQP.Set("api-version", "2024-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -523,7 +523,7 @@ func (client *NodeTypesClient) reimageCreateRequest(ctx context.Context, resourc
 // VMs and activate the nodes back again.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-06-01-preview
+// Generated from API version 2024-09-01-preview
 //   - resourceGroupName - The name of the resource group.
 //   - clusterName - The name of the cluster resource.
 //   - nodeTypeName - The name of the node type.
@@ -551,7 +551,7 @@ func (client *NodeTypesClient) BeginRestart(ctx context.Context, resourceGroupNa
 // activate the nodes back again.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-06-01-preview
+// Generated from API version 2024-09-01-preview
 func (client *NodeTypesClient) restart(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters NodeTypeActionParameters, options *NodeTypesClientBeginRestartOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NodeTypesClient.BeginRestart"
@@ -597,7 +597,7 @@ func (client *NodeTypesClient) restartCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-06-01-preview")
+	reqQP.Set("api-version", "2024-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -606,39 +606,60 @@ func (client *NodeTypesClient) restartCreateRequest(ctx context.Context, resourc
 	return req, nil
 }
 
-// Update - Update the configuration of a node type of a given managed cluster, only updating tags.
+// BeginUpdate - Update the configuration of a node type of a given managed cluster, only updating tags.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-06-01-preview
+// Generated from API version 2024-09-01-preview
 //   - resourceGroupName - The name of the resource group.
 //   - clusterName - The name of the cluster resource.
 //   - nodeTypeName - The name of the node type.
 //   - parameters - The parameters to update the node type configuration.
-//   - options - NodeTypesClientUpdateOptions contains the optional parameters for the NodeTypesClient.Update method.
-func (client *NodeTypesClient) Update(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters NodeTypeUpdateParameters, options *NodeTypesClientUpdateOptions) (NodeTypesClientUpdateResponse, error) {
+//   - options - NodeTypesClientBeginUpdateOptions contains the optional parameters for the NodeTypesClient.BeginUpdate method.
+func (client *NodeTypesClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters NodeTypeUpdateParameters, options *NodeTypesClientBeginUpdateOptions) (*runtime.Poller[NodeTypesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, clusterName, nodeTypeName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NodeTypesClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NodeTypesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// Update - Update the configuration of a node type of a given managed cluster, only updating tags.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-09-01-preview
+func (client *NodeTypesClient) update(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters NodeTypeUpdateParameters, options *NodeTypesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "NodeTypesClient.Update"
+	const operationName = "NodeTypesClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterName, nodeTypeName, parameters, options)
 	if err != nil {
-		return NodeTypesClientUpdateResponse{}, err
+		return nil, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return NodeTypesClientUpdateResponse{}, err
+		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
 		err = runtime.NewResponseError(httpResp)
-		return NodeTypesClientUpdateResponse{}, err
+		return nil, err
 	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return httpResp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *NodeTypesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters NodeTypeUpdateParameters, options *NodeTypesClientUpdateOptions) (*policy.Request, error) {
+func (client *NodeTypesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters NodeTypeUpdateParameters, options *NodeTypesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -661,20 +682,11 @@ func (client *NodeTypesClient) updateCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-06-01-preview")
+	reqQP.Set("api-version", "2024-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
 	}
 	return req, nil
-}
-
-// updateHandleResponse handles the Update response.
-func (client *NodeTypesClient) updateHandleResponse(resp *http.Response) (NodeTypesClientUpdateResponse, error) {
-	result := NodeTypesClientUpdateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.NodeType); err != nil {
-		return NodeTypesClientUpdateResponse{}, err
-	}
-	return result, nil
 }

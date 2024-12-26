@@ -213,6 +213,22 @@ func (c *ClientFactory) NewGalleryImagesClient() *GalleryImagesClient {
 	}
 }
 
+// NewGalleryInVMAccessControlProfileVersionsClient creates a new instance of GalleryInVMAccessControlProfileVersionsClient.
+func (c *ClientFactory) NewGalleryInVMAccessControlProfileVersionsClient() *GalleryInVMAccessControlProfileVersionsClient {
+	return &GalleryInVMAccessControlProfileVersionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewGalleryInVMAccessControlProfilesClient creates a new instance of GalleryInVMAccessControlProfilesClient.
+func (c *ClientFactory) NewGalleryInVMAccessControlProfilesClient() *GalleryInVMAccessControlProfilesClient {
+	return &GalleryInVMAccessControlProfilesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewGallerySharingProfileClient creates a new instance of GallerySharingProfileClient.
 func (c *ClientFactory) NewGallerySharingProfileClient() *GallerySharingProfileClient {
 	return &GallerySharingProfileClient{
@@ -311,6 +327,14 @@ func (c *ClientFactory) NewSharedGalleryImagesClient() *SharedGalleryImagesClien
 // NewSnapshotsClient creates a new instance of SnapshotsClient.
 func (c *ClientFactory) NewSnapshotsClient() *SnapshotsClient {
 	return &SnapshotsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewSoftDeletedResourceClient creates a new instance of SoftDeletedResourceClient.
+func (c *ClientFactory) NewSoftDeletedResourceClient() *SoftDeletedResourceClient {
+	return &SoftDeletedResourceClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

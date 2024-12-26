@@ -26,7 +26,7 @@ import (
 type QuotasServer struct {
 	// Get is the fake for method QuotasClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, location string, name armplaywrighttesting.QuotaNames, options *armplaywrighttesting.QuotasClientGetOptions) (resp azfake.Responder[armplaywrighttesting.QuotasClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, location string, quotaName armplaywrighttesting.QuotaNames, options *armplaywrighttesting.QuotasClientGetOptions) (resp azfake.Responder[armplaywrighttesting.QuotasClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListBySubscriptionPager is the fake for method QuotasClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -81,7 +81,7 @@ func (q *QuotasServerTransport) dispatchGet(req *http.Request) (*http.Response, 
 	if q.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzurePlaywrightService/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/quotas/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzurePlaywrightService/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/quotas/(?P<quotaName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
@@ -91,7 +91,7 @@ func (q *QuotasServerTransport) dispatchGet(req *http.Request) (*http.Response, 
 	if err != nil {
 		return nil, err
 	}
-	nameParam, err := parseWithCast(matches[regex.SubexpIndex("name")], func(v string) (armplaywrighttesting.QuotaNames, error) {
+	quotaNameParam, err := parseWithCast(matches[regex.SubexpIndex("quotaName")], func(v string) (armplaywrighttesting.QuotaNames, error) {
 		p, unescapeErr := url.PathUnescape(v)
 		if unescapeErr != nil {
 			return "", unescapeErr
@@ -101,7 +101,7 @@ func (q *QuotasServerTransport) dispatchGet(req *http.Request) (*http.Response, 
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := q.srv.Get(req.Context(), locationParam, nameParam, nil)
+	respr, errRespr := q.srv.Get(req.Context(), locationParam, quotaNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

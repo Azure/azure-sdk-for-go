@@ -6,7 +6,10 @@
 
 package resource
 
-import "testing"
+import (
+	"encoding"
+	"testing"
+)
 
 func TestParseResourceIdentifier(t *testing.T) {
 	testData := map[string]*ResourceID{
@@ -217,6 +220,26 @@ func TestParseResourceIdentifier(t *testing.T) {
 		if !equals(id, expected) {
 			t.Fatalf("resource id not identical, get %v, expected %v", *id, *expected)
 		}
+	}
+}
+
+// Ensure ResourceID implements these interfaces
+var _ encoding.TextMarshaler = (*ResourceID)(nil)
+var _ encoding.TextUnmarshaler = (*ResourceID)(nil)
+
+func TestMarshalResourceIdentifier(t *testing.T) {
+	resourceID := &ResourceID{}
+	input := []byte("/subscriptions/17fecd63-33d8-4e43-ac6f-0aafa111b38d/resourceGroups/myRg/providers/Microsoft.ApiManagement/service/myServiceName/subscriptions/mySubs")
+	err := resourceID.UnmarshalText(input)
+	if err != nil {
+		t.Fatalf("unexpected error: %+v", err)
+	}
+	output, err := resourceID.MarshalText()
+	if err != nil {
+		t.Fatalf("unexpected error: %+v", err)
+	}
+	if string(output) != string(input) {
+		t.Fatalf("resource id changed, got %v, expected %v", string(output), string(input))
 	}
 }
 

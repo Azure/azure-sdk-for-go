@@ -28,7 +28,7 @@ type QuotasClient struct {
 }
 
 // NewQuotasClient creates a new instance of QuotasClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewQuotasClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*QuotasClient, error) {
@@ -43,20 +43,20 @@ func NewQuotasClient(subscriptionID string, credential azcore.TokenCredential, o
 	return client, nil
 }
 
-// Get - Get quota by name.
+// Get - Get subscription quota by name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2024-12-01
 //   - location - The location of quota in ARM Normalized format like eastus, southeastasia etc.
-//   - name - The quota name.
+//   - quotaName - The quota name.
 //   - options - QuotasClientGetOptions contains the optional parameters for the QuotasClient.Get method.
-func (client *QuotasClient) Get(ctx context.Context, location string, name QuotaNames, options *QuotasClientGetOptions) (QuotasClientGetResponse, error) {
+func (client *QuotasClient) Get(ctx context.Context, location string, quotaName QuotaNames, options *QuotasClientGetOptions) (QuotasClientGetResponse, error) {
 	var err error
 	const operationName = "QuotasClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, location, name, options)
+	req, err := client.getCreateRequest(ctx, location, quotaName, options)
 	if err != nil {
 		return QuotasClientGetResponse{}, err
 	}
@@ -73,8 +73,8 @@ func (client *QuotasClient) Get(ctx context.Context, location string, name Quota
 }
 
 // getCreateRequest creates the Get request.
-func (client *QuotasClient) getCreateRequest(ctx context.Context, location string, name QuotaNames, options *QuotasClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AzurePlaywrightService/locations/{location}/quotas/{name}"
+func (client *QuotasClient) getCreateRequest(ctx context.Context, location string, quotaName QuotaNames, options *QuotasClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AzurePlaywrightService/locations/{location}/quotas/{quotaName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -83,16 +83,16 @@ func (client *QuotasClient) getCreateRequest(ctx context.Context, location strin
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
+	if quotaName == "" {
+		return nil, errors.New("parameter quotaName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(string(name)))
+	urlPath = strings.ReplaceAll(urlPath, "{quotaName}", url.PathEscape(string(quotaName)))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2024-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -109,7 +109,7 @@ func (client *QuotasClient) getHandleResponse(resp *http.Response) (QuotasClient
 
 // NewListBySubscriptionPager - List quotas for a given subscription Id.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2024-12-01
 //   - location - The location of quota in ARM Normalized format like eastus, southeastasia etc.
 //   - options - QuotasClientListBySubscriptionOptions contains the optional parameters for the QuotasClient.NewListBySubscriptionPager
 //     method.
@@ -152,7 +152,7 @@ func (client *QuotasClient) listBySubscriptionCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2024-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

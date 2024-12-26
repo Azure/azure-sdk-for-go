@@ -46,7 +46,7 @@ func NewVPNLinkConnectionsClient(subscriptionID string, credential azcore.TokenC
 
 // NewGetAllSharedKeysPager - Lists all shared keys of VpnLink connection specified.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2024-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - gatewayName - The name of the gateway.
 //   - connectionName - The name of the vpn connection.
@@ -104,7 +104,7 @@ func (client *VPNLinkConnectionsClient) getAllSharedKeysCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2024-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -122,7 +122,7 @@ func (client *VPNLinkConnectionsClient) getAllSharedKeysHandleResponse(resp *htt
 // GetDefaultSharedKey - Gets the shared key of VpnLink connection specified.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2024-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - gatewayName - The name of the gateway.
 //   - connectionName - The name of the vpn connection.
@@ -179,7 +179,7 @@ func (client *VPNLinkConnectionsClient) getDefaultSharedKeyCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2024-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -197,7 +197,7 @@ func (client *VPNLinkConnectionsClient) getDefaultSharedKeyHandleResponse(resp *
 // BeginGetIkeSas - Lists IKE Security Associations for Vpn Site Link Connection in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2024-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - gatewayName - The name of the gateway.
 //   - connectionName - The name of the vpn connection.
@@ -225,7 +225,7 @@ func (client *VPNLinkConnectionsClient) BeginGetIkeSas(ctx context.Context, reso
 // GetIkeSas - Lists IKE Security Associations for Vpn Site Link Connection in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2024-05-01
 func (client *VPNLinkConnectionsClient) getIkeSas(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, linkConnectionName string, options *VPNLinkConnectionsClientBeginGetIkeSasOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VPNLinkConnectionsClient.BeginGetIkeSas"
@@ -275,7 +275,7 @@ func (client *VPNLinkConnectionsClient) getIkeSasCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2024-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -283,7 +283,7 @@ func (client *VPNLinkConnectionsClient) getIkeSasCreateRequest(ctx context.Conte
 
 // NewListByVPNConnectionPager - Retrieves all vpn site link connections for a particular virtual wan vpn gateway vpn connection.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2024-05-01
 //   - resourceGroupName - The resource group name of the vpn gateway.
 //   - gatewayName - The name of the gateway.
 //   - connectionName - The name of the vpn connection.
@@ -336,7 +336,7 @@ func (client *VPNLinkConnectionsClient) listByVPNConnectionCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2024-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -354,7 +354,7 @@ func (client *VPNLinkConnectionsClient) listByVPNConnectionHandleResponse(resp *
 // ListDefaultSharedKey - Gets the value of the shared key of VpnLink connection specified.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2024-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - gatewayName - The name of the gateway.
 //   - connectionName - The name of the vpn connection.
@@ -411,7 +411,7 @@ func (client *VPNLinkConnectionsClient) listDefaultSharedKeyCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2024-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -429,7 +429,7 @@ func (client *VPNLinkConnectionsClient) listDefaultSharedKeyHandleResponse(resp 
 // BeginResetConnection - Resets the VpnLink connection specified.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2024-05-01
 //   - resourceGroupName - The name of the resource group.
 //   - gatewayName - The name of the gateway.
 //   - connectionName - The name of the vpn connection.
@@ -457,7 +457,7 @@ func (client *VPNLinkConnectionsClient) BeginResetConnection(ctx context.Context
 // ResetConnection - Resets the VpnLink connection specified.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2024-05-01
 func (client *VPNLinkConnectionsClient) resetConnection(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, linkConnectionName string, options *VPNLinkConnectionsClientBeginResetConnectionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VPNLinkConnectionsClient.BeginResetConnection"
@@ -507,7 +507,7 @@ func (client *VPNLinkConnectionsClient) resetConnectionCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2024-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -518,7 +518,7 @@ func (client *VPNLinkConnectionsClient) resetConnectionCreateRequest(ctx context
 // pre-defined length.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2024-05-01
 //   - resourceGroupName - The resource group name of the VpnGateway.
 //   - gatewayName - The name of the gateway.
 //   - connectionName - The name of the connection.
@@ -549,7 +549,7 @@ func (client *VPNLinkConnectionsClient) BeginSetOrInitDefaultSharedKey(ctx conte
 // pre-defined length.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2024-05-01
 func (client *VPNLinkConnectionsClient) setOrInitDefaultSharedKey(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, linkConnectionName string, connectionSharedKeyParameters ConnectionSharedKeyResult, options *VPNLinkConnectionsClientBeginSetOrInitDefaultSharedKeyOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VPNLinkConnectionsClient.BeginSetOrInitDefaultSharedKey"
@@ -599,7 +599,7 @@ func (client *VPNLinkConnectionsClient) setOrInitDefaultSharedKeyCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2024-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, connectionSharedKeyParameters); err != nil {

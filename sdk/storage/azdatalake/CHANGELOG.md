@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Fix FilterBlob API if Query contains a space character. Fixes [#23546](https://github.com/Azure/azure-sdk-for-go/issues/23546)
 
 ### Other Changes
 

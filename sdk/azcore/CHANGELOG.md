@@ -5,6 +5,7 @@
 ### Features Added
 
 * Added field `OperationLocationResultPath` to `runtime.NewPollerOptions[T]` for LROs that use the `Operation-Location` pattern.
+* Support `encoding.TextMarshaler` and `encoding.TextUnmarshaler` interfaces in `arm.ResourceID`.
 
 ### Breaking Changes
 

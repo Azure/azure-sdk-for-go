@@ -32,7 +32,6 @@ const (
 
 func GetAllVersionTags(relativePath string) ([]string, error) {
 	arr := strings.Split(relativePath, "/")
-	fmt.Println("relativePath", relativePath, arr)
 	log.Printf("Fetching all release tags from GitHub for RP: '%s' Package: '%s' ...", arr[len(arr)-2], arr[len(arr)-1])
 	client := http.Client{}
 	res, err := client.Get(sdk_tag_fetch_url)

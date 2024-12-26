@@ -131,14 +131,14 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 				errorBuilder.add(err)
 				continue
 			}
-			packageRelativePath := tsc.GetRelativePath()
+			packageModuleRelativePath := tsc.GetModuleRelativePath()
 			namespaceResult, err := generateCtx.GenerateForTypeSpec(&common.GenerateParam{
 				RPName:              module[0],
 				NamespaceName:       module[1],
 				SkipGenerateExample: true,
 				GoVersion:           ctx.goVersion,
 				TspClientOptions:    []string{"--debug"},
-			}, packageRelativePath)
+			}, packageModuleRelativePath)
 			if err != nil {
 				errorBuilder.add(err)
 				continue
@@ -147,8 +147,8 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 				breaking := namespaceResult.Changelog.HasBreakingChanges()
 				breakingChangeItems := namespaceResult.Changelog.GetBreakingChangeItems()
 
-				srcFolder := filepath.Join(sdkRepo.Root(), packageRelativePath)
-				apiViewArtifact := filepath.Join(sdkRepo.Root(), packageRelativePath+".gosource")
+				srcFolder := filepath.Join(sdkRepo.Root(), packageModuleRelativePath)
+				apiViewArtifact := filepath.Join(sdkRepo.Root(), packageModuleRelativePath+".gosource")
 				err := zipDirectory(srcFolder, apiViewArtifact)
 				if err != nil {
 					fmt.Println(err)
@@ -156,16 +156,16 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 
 				results = append(results, pipeline.PackageResult{
 					Version:         namespaceResult.Version,
-					PackageName:     packageRelativePath,
-					Path:            []string{packageRelativePath},
-					PackageFolder:   packageRelativePath,
+					PackageName:     packageModuleRelativePath,
+					Path:            []string{packageModuleRelativePath},
+					PackageFolder:   packageModuleRelativePath,
 					TypespecProject: []string{tspProjectFolder},
 					Changelog: &pipeline.Changelog{
 						Content:             &content,
 						HasBreakingChange:   &breaking,
 						BreakingChangeItems: &breakingChangeItems,
 					},
-					APIViewArtifact: packageRelativePath + ".gosource",
+					APIViewArtifact: packageModuleRelativePath + ".gosource",
 					Language:        "Go",
 				})
 

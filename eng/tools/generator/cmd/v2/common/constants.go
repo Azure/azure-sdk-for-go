@@ -4,6 +4,5 @@
 package common
 
 const (
-	ChangelogFileName   = "CHANGELOG.md"
-	MgmtSDKModulePrefix = "github.com/Azure/azure-sdk-for-go"
+	ChangelogFileName = "CHANGELOG.md"
 )

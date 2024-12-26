@@ -213,7 +213,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 	if !onBoard {
 		log.Printf("Get ori exports for changelog generation...")
 
-		tags, err := GetAllVersionTags("sdk/resourcemanager/" + generateParam.RPName + "/" + generateParam.NamespaceName)
+		tags, err := GetAllVersionTags(filepath.Join("sdk/resourcemanager", generateParam.RPName, generateParam.NamespaceName))
 		if err != nil {
 			return nil, err
 		}
@@ -374,8 +374,8 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 	}
 }
 
-func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam, relativePath string) (*GenerateResult, error) {
-	packagePath := filepath.Join(ctx.SDKPath, relativePath)
+func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam, moduleRelativePath string) (*GenerateResult, error) {
+	packagePath := filepath.Join(ctx.SDKPath, moduleRelativePath)
 	changelogPath := filepath.Join(packagePath, ChangelogFileName)
 
 	version, err := semver.NewVersion("0.1.0")
@@ -448,13 +448,13 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam, re
 	if !onBoard {
 		log.Printf("Get ori exports for changelog generation...")
 
-		tags, err := GetAllVersionTags(relativePath)
+		tags, err := GetAllVersionTags(moduleRelativePath)
 		if err != nil {
 			return nil, err
 		}
 
 		if len(tags) == 0 {
-			return nil, fmt.Errorf("github.com/Azure/azure-sdk-for-go/%s hasn't been released, it's supposed to OnBoard", relativePath)
+			return nil, fmt.Errorf("github.com/Azure/azure-sdk-for-go/%s hasn't been released, it's supposed to OnBoard", moduleRelativePath)
 		}
 
 		previousVersionTag := GetPreviousVersionTag(isCurrentPreview, tags)
@@ -546,7 +546,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam, re
 		}
 
 		log.Printf("Update module definition if v2+...")
-		err = UpdateModuleDefinition(packagePath, relativePath, version)
+		err = UpdateModuleDefinition(packagePath, moduleRelativePath, version)
 		if err != nil {
 			return nil, err
 		}
@@ -561,7 +561,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam, re
 			return nil, err
 		}
 
-		baseModule := fmt.Sprintf("%s/%s", MgmtSDKModulePrefix, relativePath)
+		baseModule := fmt.Sprintf("%s/%s", "github.com/Azure/azure-sdk-for-go", moduleRelativePath)
 		if _, err := os.Stat(filepath.Join(packagePath, "fake")); !os.IsNotExist(err) && oldModuleVersion.Major() != version.Major() {
 			log.Printf("Replace fake module v2+...")
 			if err = ReplaceModule(version, packagePath, baseModule, ".go"); err != nil {
@@ -578,7 +578,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam, re
 		}
 
 		log.Printf("Replace README.md module...")
-		if err = replaceReadmeModule(packagePath, relativePath, version.String()); err != nil {
+		if err = replaceReadmeModule(packagePath, moduleRelativePath, version.String()); err != nil {
 			return nil, err
 		}
 

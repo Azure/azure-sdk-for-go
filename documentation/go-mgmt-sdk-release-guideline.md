@@ -42,7 +42,7 @@ Goal: Generate and release Azure SDK for Go package from Swagger or TypeSpec.
         - We could get the target issues by query like: `is:issue state:open label:Go -label:HoldOn created:2024-09-27..2024-10-15`
  - `ETA:All the release requests must be finished before the fourth Fridays of the current month.`
  - `ETA:All the release requests must be labelized with "ReadyForApiTest"`, that means that the service to release is ready
-
+ - `ETA:All the services must be "API Availability Check" ` pass before releasing, according to the notebook doc monthly
 ## Update existing RP 
 Normally we deal with the RP which already have released packages before, for this kind of release request, please follow the steps:
 1.	If the issue doesn’t have the `PRready` label. We’ll need to manually create a PR for it. Usually, this kind of issues will also have `Inconsistent` tag, which means we’ll need to update the version tag in autorest.md. Go to Step 2 
@@ -95,6 +95,23 @@ generator release-v2 <azure-sdk-for-go path> <azure-rest-api-specs path> <RP nam
 ## Special case in PR
 1.	If a service has multiple version to release at same window process, you need to release the service order by the version in ascending order.that means the small version needs to be released first, and then the next version should be generated auomatically again depending the released code.
 2.	If the current version is `FirstGA` and the last version is `FirstBeta`,after generating,no codes will be changed, only the file `changelog.md` will be modified
+3.	swagger name can be  different from go package name , [example referenced from](https://github.com/Azure/azure-rest-api-specs/blob/main/specification/resources/resource-manager/readme.go.md),as seen,the namespace `armlinks` is different with the `resource`,so when we start code generation,wo should run the command like `"generator release-v2  xxx(sdk-for-go path)   xxx(azure-rest-api-specs path) resources armlinks" `
+    ```md
+    license-header: MICROSOFT_MIT_NO_VERSION
+    module-name: sdk/resourcemanager/resources/armlinks
+    module: github.com/Azure/azure-sdk-for-go/$(module-name)
+    output-folder: $(go-sdk-folder)/$(module-name)
+    azure-arm: true
+    ```
+4.  deal with special swagger config, e.g., resources, [package-databoundaries](https://github.com/Azure/azure-rest-api-specs/blob/main/specification/resources/resource-manager/readme.go.md) resource type need special config in autorest.go.md, we should append line  `package-databoundaries:true` to file autorest.go.md, and the code generation command is differnt from the normal. it needs addtional parameter `--spec-rp-name resources`, the full command may be like `generator release-v2 --spec-rp-name resources xxx(sdk-for-go path)   xxx(azure-rest-api-specs path) databoundaries armdataboundaries `
+      ```md
+     license-header: MICROSOFT_MIT_NO_VERSION
+    module-name: sdk/resourcemanager/databoundaries/armdataboundaries
+    module: github.com/Azure/azure-sdk-for-go/$(module-name)
+    output-folder: $(go-sdk-folder)/$(module-name)
+    azure-arm: true
+      ```
+
 
 
 ## Releases new service 

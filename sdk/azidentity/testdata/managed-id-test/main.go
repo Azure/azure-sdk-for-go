@@ -81,7 +81,6 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	logs.Reset()
 	log.Print("received a request")
 	if missingConfig != "" {
-		w.WriteHeader(http.StatusInternalServerError)
 		fmt.Fprint(w, "need a value for "+missingConfig)
 		return
 	}
@@ -121,15 +120,13 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	if err == nil {
-		fmt.Fprint(w, "test passed")
-		log.Print("test passed")
-	} else {
-		w.WriteHeader(http.StatusInternalServerError)
+	msg := "test passed"
+	if err != nil {
 		logs.WriteString("\n*** test failed with error: " + err.Error() + "\n")
-		fmt.Fprint(w, logs.String())
-		log.Print(logs.String())
+		msg = logs.String()
 	}
+	fmt.Fprint(w, msg)
+	log.Print(msg)
 }
 
 func main() {

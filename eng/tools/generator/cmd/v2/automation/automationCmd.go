@@ -131,7 +131,7 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 				errorBuilder.add(err)
 				continue
 			}
-			packageModuleRelativePath := tsc.GetModuleRelativePath()
+			packageModuleRelativePath := tsc.GetPackageModuleRelativePath()
 			namespaceResult, err := generateCtx.GenerateForTypeSpec(&common.GenerateParam{
 				RPName:              module[0],
 				NamespaceName:       module[1],

@@ -416,7 +416,7 @@ func ReplaceNewClientNamePlaceholder(packageRootPath string, exports exports.Con
 	return os.WriteFile(path, []byte(content), 0644)
 }
 
-func UpdateModuleDefinition(packageRootPath, relativePath string, version *semver.Version) error {
+func UpdateModuleDefinition(packageRootPath, packageModuleRelativePath string, version *semver.Version) error {
 	if version.Major() > 1 {
 		path := filepath.Join(packageRootPath, "go.mod")
 
@@ -431,7 +431,7 @@ func UpdateModuleDefinition(packageRootPath, relativePath string, version *semve
 				line = strings.TrimRight(line, "\r")
 				parts := strings.Split(line, "/")
 				if parts[len(parts)-1] != fmt.Sprintf("v%d", version.Major()) {
-					lines[i] = fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/%s/v%d", relativePath, version.Major())
+					lines[i] = fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/%s/v%d", packageModuleRelativePath, version.Major())
 				}
 				break
 			}
@@ -621,13 +621,13 @@ func existSuffixFile(path, suffix string) bool {
 	return existed
 }
 
-func replaceReadmeModule(path, relativePath, currentVersion string) error {
+func replaceReadmeModule(path, packageModuleRelativePath, currentVersion string) error {
 	readmeFile, err := os.ReadFile(filepath.Join(path, "README.md"))
 	if err != nil {
 		return err
 	}
 
-	module := fmt.Sprintf("github.com/Azure/azure-sdk-for-go/%s", relativePath)
+	module := fmt.Sprintf("github.com/Azure/azure-sdk-for-go/%s", packageModuleRelativePath)
 
 	readmeModule := module
 	match := regexp.MustCompile(fmt.Sprintf(`%s/v\d+`, module))

@@ -117,7 +117,7 @@ func ParseTypeSpecConfig(tspconfigPath string) (*TypeSpecConfig, error) {
 	return &tspConfig, err
 }
 
-func (tc *TypeSpecConfig) GetModuleRelativePath() string {
+func (tc *TypeSpecConfig) GetPackageModuleRelativePath() string {
 	return tc.Options["@azure-tools/typespec-go"].(map[string]interface{})["service-dir"].(string) + "/" + tc.Options["@azure-tools/typespec-go"].(map[string]interface{})["package-dir"].(string)
 }
 

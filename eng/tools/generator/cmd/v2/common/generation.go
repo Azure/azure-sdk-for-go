@@ -374,8 +374,8 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 	}
 }
 
-func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam, moduleRelativePath string) (*GenerateResult, error) {
-	packagePath := filepath.Join(ctx.SDKPath, moduleRelativePath)
+func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam, packageModuleRelativePath string) (*GenerateResult, error) {
+	packagePath := filepath.Join(ctx.SDKPath, packageModuleRelativePath)
 	changelogPath := filepath.Join(packagePath, ChangelogFileName)
 
 	version, err := semver.NewVersion("0.1.0")
@@ -448,13 +448,13 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam, mo
 	if !onBoard {
 		log.Printf("Get ori exports for changelog generation...")
 
-		tags, err := GetAllVersionTags(moduleRelativePath)
+		tags, err := GetAllVersionTags(packageModuleRelativePath)
 		if err != nil {
 			return nil, err
 		}
 
 		if len(tags) == 0 {
-			return nil, fmt.Errorf("github.com/Azure/azure-sdk-for-go/%s hasn't been released, it's supposed to OnBoard", moduleRelativePath)
+			return nil, fmt.Errorf("github.com/Azure/azure-sdk-for-go/%s hasn't been released, it's supposed to OnBoard", packageModuleRelativePath)
 		}
 
 		previousVersionTag := GetPreviousVersionTag(isCurrentPreview, tags)
@@ -546,7 +546,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam, mo
 		}
 
 		log.Printf("Update module definition if v2+...")
-		err = UpdateModuleDefinition(packagePath, moduleRelativePath, version)
+		err = UpdateModuleDefinition(packagePath, packageModuleRelativePath, version)
 		if err != nil {
 			return nil, err
 		}
@@ -561,7 +561,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam, mo
 			return nil, err
 		}
 
-		baseModule := fmt.Sprintf("%s/%s", "github.com/Azure/azure-sdk-for-go", moduleRelativePath)
+		baseModule := fmt.Sprintf("%s/%s", "github.com/Azure/azure-sdk-for-go", packageModuleRelativePath)
 		if _, err := os.Stat(filepath.Join(packagePath, "fake")); !os.IsNotExist(err) && oldModuleVersion.Major() != version.Major() {
 			log.Printf("Replace fake module v2+...")
 			if err = ReplaceModule(version, packagePath, baseModule, ".go"); err != nil {
@@ -578,7 +578,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam, mo
 		}
 
 		log.Printf("Replace README.md module...")
-		if err = replaceReadmeModule(packagePath, moduleRelativePath, version.String()); err != nil {
+		if err = replaceReadmeModule(packagePath, packageModuleRelativePath, version.String()); err != nil {
 			return nil, err
 		}
 

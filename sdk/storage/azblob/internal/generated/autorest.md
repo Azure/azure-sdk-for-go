@@ -22,17 +22,17 @@ export-clients: true
 use: "@autorest/go@4.0.0-preview.65"
 ```
 
-### Add a "Properties" field to the "BlobPrefix" definition
+### Add a Properties field to the BlobPrefix definition
 ```yaml
 directive:
 - from: swagger-document
   where: $.definitions
   transform: >
     $.BlobPrefix.properties["Properties"] = {
-    "type" : "object",
-    "$ref": "#/definitions/BlobPropertiesInternal",
+      "type": "object",
+      "$ref": "#/definitions/BlobPropertiesInternal"
     };
-``` 
+```
 
 ### Add Owner,Group,Permissions,Acl,ResourceType in ListBlob Response
 ``` yaml
@@ -41,19 +41,19 @@ directive:
   where: $.definitions
   transform: >
     $.BlobPropertiesInternal.properties["Owner"] = {
-    "type" : "string",
+      "type" : "string",
     };
     $.BlobPropertiesInternal.properties["Group"] = {
-    "type" : "string",
+      "type" : "string",
     };
     $.BlobPropertiesInternal.properties["Permissions"] = {
-    "type" : "string",
+      "type" : "string",
     };
     $.BlobPropertiesInternal.properties["Acl"] = {
-    "type" : "string",
+      "type" : "string",
     };
     $.BlobPropertiesInternal.properties["ResourceType"] = {
-    "type" : "string",
+      "type" : "string",
     };
 
 ```
@@ -446,13 +446,11 @@ directive:
 
 ``` yaml
 directive:
-- from: 
-  - zz_service_client.go
-  - zz_container_client.go
-  where: $
-  transform: >-
-    return $.
-      replace(/req.Raw\(\).URL.RawQuery \= reqQP.Encode\(\)/g, `req.Raw().URL.RawQuery = strings.Replace(reqQP.Encode(), "+", "%20", -1)`);
+  - from: zz_service_client.go
+    where: $
+    transform: >-
+      return $.
+        replace(/req.Raw\(\).URL.RawQuery \= reqQP.Encode\(\)/, `req.Raw().URL.RawQuery = strings.Replace(reqQP.Encode(), "+", "%20", -1)`)
 ```
 
 ### Change `where` parameter in blob filtering to be required

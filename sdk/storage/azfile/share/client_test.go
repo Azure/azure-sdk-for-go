@@ -317,6 +317,26 @@ func (s *ShareRecordedTestsSuite) TestShareCreateAccessTierPremium() {
 	_require.Equal(*response.AccessTier, string(share.AccessTierPremium))
 }
 
+func (s *ShareRecordedTestsSuite) TestShareCreateWithOptions() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := svcClient.NewShareClient(shareName)
+
+	response, err := shareClient.Create(context.Background(), &share.CreateOptions{
+		ShareProvisionedIops:           to.Ptr(int64(500)),
+		ShareProvisionedBandwidthMibps: to.Ptr(int64(125)),
+	})
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+	_require.NoError(err)
+	_require.Equal(response.ShareProvisionedIops, to.Ptr(int64(500)))
+	_require.Equal(response.ShareProvisionedBandwidthMibps, to.Ptr(int64(125)))
+
+}
+
 func (s *ShareRecordedTestsSuite) TestShareCreateWithSnapshotVirtualDirectoryAccess() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -499,8 +519,9 @@ func (s *ShareRecordedTestsSuite) TestShareGetSetPropertiesNonDefault() {
 	newQuota := int32(1234)
 
 	sResp, err := shareClient.SetProperties(context.Background(), &share.SetPropertiesOptions{
-		Quota:      to.Ptr(newQuota),
-		AccessTier: to.Ptr(share.AccessTierHot),
+		Quota:                          to.Ptr(newQuota),
+		ShareProvisionedIops:           to.Ptr(int64(1007)),
+		ShareProvisionedBandwidthMibps: to.Ptr(int64(61)),
 	})
 	_require.NoError(err)
 	_require.NotNil(sResp.ETag)
@@ -508,16 +529,18 @@ func (s *ShareRecordedTestsSuite) TestShareGetSetPropertiesNonDefault() {
 	_require.NotNil(sResp.RequestID)
 	_require.NotNil(sResp.Version)
 	_require.Equal(sResp.Date.IsZero(), false)
+	_require.Equal(*sResp.ProvisionedIops, int64(1007))
+	_require.Equal(*sResp.ProvisionedBandwidthMibps, int64(61))
 
 	props, err := shareClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
+	_require.NotNil(props)
 	_require.NotNil(props.ETag)
 	_require.Equal(props.LastModified.IsZero(), false)
 	_require.NotNil(props.RequestID)
 	_require.NotNil(props.Version)
 	_require.Equal(props.Date.IsZero(), false)
 	_require.Equal(*props.Quota, newQuota)
-	_require.Equal(*props.AccessTier, string(share.AccessTierHot))
 }
 
 func (s *ShareRecordedTestsSuite) TestShareGetSetPropertiesDefault() {

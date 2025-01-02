@@ -890,6 +890,21 @@ func (f *FileRecordedTestsSuite) TestFileSetMetadataInvalidField() {
 	_require.Error(err)
 }
 
+func (f *FileRecordedTestsSuite) TestFileDelete() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+
+	response, err := shareClient.Delete(context.Background(), &share.DeleteOptions{DeleteSnapshots: to.Ptr(share.DeleteSnapshotsOptionTypeInclude)})
+	_require.NoError(err)
+	_require.NotNil(response.XMSFileShareUsageBytes)
+	_require.NotNil(response.XMSFileShareSnapshotUsageBytes)
+}
+
 func (f *FileRecordedTestsSuite) TestStartCopyDefault() {
 	_require := require.New(f.T())
 	testName := f.T().Name()

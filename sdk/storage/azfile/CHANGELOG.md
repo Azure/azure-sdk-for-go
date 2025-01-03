@@ -4,6 +4,7 @@
 
 ### Features Added
 * Add Premium access tier to Files Shares
+* Provisioned v2 billing model for Azure files
 
 ### Breaking Changes
 

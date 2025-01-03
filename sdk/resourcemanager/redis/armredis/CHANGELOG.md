@@ -1,5 +1,14 @@
 # Release History
 
+## 3.3.0 (2025-01-23)
+### Features Added
+
+- New enum type `ZonalAllocationPolicy` with values `ZonalAllocationPolicyAutomatic`, `ZonalAllocationPolicyNoZones`, `ZonalAllocationPolicyUserDefined`
+- New field `ZonalAllocationPolicy` in struct `CreateProperties`
+- New field `ZonalAllocationPolicy` in struct `Properties`
+- New field `ZonalAllocationPolicy` in struct `UpdateProperties`
+
+
 ## 3.2.0 (2024-07-25)
 ### Features Added
 

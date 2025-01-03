@@ -465,6 +465,7 @@ func (c CreateProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "subnetId", c.SubnetID)
 	populate(objectMap, "tenantSettings", c.TenantSettings)
 	populate(objectMap, "updateChannel", c.UpdateChannel)
+	populate(objectMap, "zonalAllocationPolicy", c.ZonalAllocationPolicy)
 	return json.Marshal(objectMap)
 }
 
@@ -518,6 +519,9 @@ func (c *CreateProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "updateChannel":
 			err = unpopulate(val, "UpdateChannel", &c.UpdateChannel)
+			delete(rawMsg, key)
+		case "zonalAllocationPolicy":
+			err = unpopulate(val, "ZonalAllocationPolicy", &c.ZonalAllocationPolicy)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1751,6 +1755,7 @@ func (p Properties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "subnetId", p.SubnetID)
 	populate(objectMap, "tenantSettings", p.TenantSettings)
 	populate(objectMap, "updateChannel", p.UpdateChannel)
+	populate(objectMap, "zonalAllocationPolicy", p.ZonalAllocationPolicy)
 	return json.Marshal(objectMap)
 }
 
@@ -1828,6 +1833,9 @@ func (p *Properties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "updateChannel":
 			err = unpopulate(val, "UpdateChannel", &p.UpdateChannel)
+			delete(rawMsg, key)
+		case "zonalAllocationPolicy":
+			err = unpopulate(val, "ZonalAllocationPolicy", &p.ZonalAllocationPolicy)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -2101,6 +2109,7 @@ func (u UpdateProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "shardCount", u.ShardCount)
 	populate(objectMap, "tenantSettings", u.TenantSettings)
 	populate(objectMap, "updateChannel", u.UpdateChannel)
+	populate(objectMap, "zonalAllocationPolicy", u.ZonalAllocationPolicy)
 	return json.Marshal(objectMap)
 }
 
@@ -2148,6 +2157,9 @@ func (u *UpdateProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "updateChannel":
 			err = unpopulate(val, "UpdateChannel", &u.UpdateChannel)
+			delete(rawMsg, key)
+		case "zonalAllocationPolicy":
+			err = unpopulate(val, "ZonalAllocationPolicy", &u.ZonalAllocationPolicy)
 			delete(rawMsg, key)
 		}
 		if err != nil {

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/redis/resource-manager/Microsoft.Cache/stable/2024-03-01/examples/RedisCacheCheckNameAvailability.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/45374f48f560b3337ed55735038f1e9bf8cbea65/specification/redis/resource-manager/Microsoft.Cache/stable/2024-11-01/examples/RedisCacheCheckNameAvailability.json
 func ExampleClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,7 +38,7 @@ func ExampleClient_CheckNameAvailability() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/redis/resource-manager/Microsoft.Cache/stable/2024-03-01/examples/RedisCacheListUpgradeNotifications.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/45374f48f560b3337ed55735038f1e9bf8cbea65/specification/redis/resource-manager/Microsoft.Cache/stable/2024-11-01/examples/RedisCacheListUpgradeNotifications.json
 func ExampleClient_NewListUpgradeNotificationsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +72,7 @@ func ExampleClient_NewListUpgradeNotificationsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/redis/resource-manager/Microsoft.Cache/stable/2024-03-01/examples/RedisCacheCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/45374f48f560b3337ed55735038f1e9bf8cbea65/specification/redis/resource-manager/Microsoft.Cache/stable/2024-11-01/examples/RedisCacheCreate.json
 func ExampleClient_BeginCreate_redisCacheCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,7 +84,7 @@ func ExampleClient_BeginCreate_redisCacheCreate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewClient().BeginCreate(ctx, "rg1", "cache1", armredis.CreateParameters{
-		Location: to.Ptr("West US"),
+		Location: to.Ptr("East US"),
 		Properties: &armredis.CreateProperties{
 			EnableNonSSLPort:  to.Ptr(true),
 			MinimumTLSVersion: to.Ptr(armredis.TLSVersionOne2),
@@ -134,6 +134,7 @@ func ExampleClient_BeginCreate_redisCacheCreate() {
 	// 		ReplicasPerMaster: to.Ptr[int32](2),
 	// 		ReplicasPerPrimary: to.Ptr[int32](2),
 	// 		UpdateChannel: to.Ptr(armredis.UpdateChannelStable),
+	// 		ZonalAllocationPolicy: to.Ptr(armredis.ZonalAllocationPolicyUserDefined),
 	// 		SKU: &armredis.SKU{
 	// 			Name: to.Ptr(armredis.SKUNamePremium),
 	// 			Capacity: to.Ptr[int32](1),
@@ -202,7 +203,129 @@ func ExampleClient_BeginCreate_redisCacheCreate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/redis/resource-manager/Microsoft.Cache/stable/2024-03-01/examples/RedisCacheCreateDefaultVersion.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/45374f48f560b3337ed55735038f1e9bf8cbea65/specification/redis/resource-manager/Microsoft.Cache/stable/2024-11-01/examples/RedisCacheCreateAutomaticZonalAllocationPolicy.json
+func ExampleClient_BeginCreate_redisCacheCreateAutomaticZonalAllocationPolicy() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armredis.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewClient().BeginCreate(ctx, "rg1", "cache1", armredis.CreateParameters{
+		Location: to.Ptr("East US"),
+		Properties: &armredis.CreateProperties{
+			EnableNonSSLPort:  to.Ptr(true),
+			MinimumTLSVersion: to.Ptr(armredis.TLSVersionOne2),
+			RedisConfiguration: &armredis.CommonPropertiesRedisConfiguration{
+				MaxmemoryPolicy: to.Ptr("allkeys-lru"),
+			},
+			ReplicasPerPrimary:    to.Ptr[int32](2),
+			ShardCount:            to.Ptr[int32](2),
+			ZonalAllocationPolicy: to.Ptr(armredis.ZonalAllocationPolicyAutomatic),
+			SKU: &armredis.SKU{
+				Name:     to.Ptr(armredis.SKUNamePremium),
+				Capacity: to.Ptr[int32](1),
+				Family:   to.Ptr(armredis.SKUFamilyP),
+			},
+			StaticIP: to.Ptr("192.168.0.5"),
+			SubnetID: to.Ptr("/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/virtualNetworks/network1/subnets/subnet1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ResourceInfo = armredis.ResourceInfo{
+	// 	Name: to.Ptr("cache1"),
+	// 	Type: to.Ptr("Microsoft.Cache/Redis"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Cache/Redis/cache1"),
+	// 	Location: to.Ptr("East US"),
+	// 	Tags: map[string]*string{
+	// 	},
+	// 	Properties: &armredis.Properties{
+	// 		EnableNonSSLPort: to.Ptr(true),
+	// 		MinimumTLSVersion: to.Ptr(armredis.TLSVersionOne2),
+	// 		RedisConfiguration: &armredis.CommonPropertiesRedisConfiguration{
+	// 			Maxclients: to.Ptr("1000"),
+	// 			MaxmemoryDelta: to.Ptr("50"),
+	// 			MaxmemoryReserved: to.Ptr("50"),
+	// 		},
+	// 		RedisVersion: to.Ptr("6.0"),
+	// 		ReplicasPerMaster: to.Ptr[int32](2),
+	// 		ReplicasPerPrimary: to.Ptr[int32](2),
+	// 		ShardCount: to.Ptr[int32](2),
+	// 		UpdateChannel: to.Ptr(armredis.UpdateChannelStable),
+	// 		ZonalAllocationPolicy: to.Ptr(armredis.ZonalAllocationPolicyAutomatic),
+	// 		SKU: &armredis.SKU{
+	// 			Name: to.Ptr(armredis.SKUNamePremium),
+	// 			Capacity: to.Ptr[int32](1),
+	// 			Family: to.Ptr(armredis.SKUFamilyP),
+	// 		},
+	// 		AccessKeys: &armredis.AccessKeys{
+	// 			PrimaryKey: to.Ptr("<primaryKey>"),
+	// 			SecondaryKey: to.Ptr("<secondaryKey>"),
+	// 		},
+	// 		HostName: to.Ptr("cache1.redis.cache.windows.net"),
+	// 		Instances: []*armredis.InstanceDetails{
+	// 			{
+	// 				IsMaster: to.Ptr(true),
+	// 				IsPrimary: to.Ptr(true),
+	// 				NonSSLPort: to.Ptr[int32](13000),
+	// 				ShardID: to.Ptr[int32](0),
+	// 				SSLPort: to.Ptr[int32](15000),
+	// 			},
+	// 			{
+	// 				IsMaster: to.Ptr(false),
+	// 				IsPrimary: to.Ptr(false),
+	// 				NonSSLPort: to.Ptr[int32](13001),
+	// 				ShardID: to.Ptr[int32](0),
+	// 				SSLPort: to.Ptr[int32](15001),
+	// 			},
+	// 			{
+	// 				IsMaster: to.Ptr(false),
+	// 				IsPrimary: to.Ptr(false),
+	// 				NonSSLPort: to.Ptr[int32](13002),
+	// 				ShardID: to.Ptr[int32](0),
+	// 				SSLPort: to.Ptr[int32](15002),
+	// 			},
+	// 			{
+	// 				IsMaster: to.Ptr(true),
+	// 				IsPrimary: to.Ptr(true),
+	// 				NonSSLPort: to.Ptr[int32](13003),
+	// 				ShardID: to.Ptr[int32](1),
+	// 				SSLPort: to.Ptr[int32](15003),
+	// 			},
+	// 			{
+	// 				IsMaster: to.Ptr(false),
+	// 				IsPrimary: to.Ptr(false),
+	// 				NonSSLPort: to.Ptr[int32](13004),
+	// 				ShardID: to.Ptr[int32](1),
+	// 				SSLPort: to.Ptr[int32](15004),
+	// 			},
+	// 			{
+	// 				IsMaster: to.Ptr(false),
+	// 				IsPrimary: to.Ptr(false),
+	// 				NonSSLPort: to.Ptr[int32](13005),
+	// 				ShardID: to.Ptr[int32](1),
+	// 				SSLPort: to.Ptr[int32](15005),
+	// 		}},
+	// 		Port: to.Ptr[int32](6379),
+	// 		ProvisioningState: to.Ptr(armredis.ProvisioningStateSucceeded),
+	// 		SSLPort: to.Ptr[int32](6380),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/45374f48f560b3337ed55735038f1e9bf8cbea65/specification/redis/resource-manager/Microsoft.Cache/stable/2024-11-01/examples/RedisCacheCreateDefaultVersion.json
 func ExampleClient_BeginCreate_redisCacheCreateDefaultVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -214,7 +337,7 @@ func ExampleClient_BeginCreate_redisCacheCreateDefaultVersion() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewClient().BeginCreate(ctx, "rg1", "cache1", armredis.CreateParameters{
-		Location: to.Ptr("West US"),
+		Location: to.Ptr("East US"),
 		Properties: &armredis.CreateProperties{
 			EnableNonSSLPort:  to.Ptr(true),
 			MinimumTLSVersion: to.Ptr(armredis.TLSVersionOne2),
@@ -263,6 +386,7 @@ func ExampleClient_BeginCreate_redisCacheCreateDefaultVersion() {
 	// 		ReplicasPerMaster: to.Ptr[int32](2),
 	// 		ReplicasPerPrimary: to.Ptr[int32](2),
 	// 		UpdateChannel: to.Ptr(armredis.UpdateChannelStable),
+	// 		ZonalAllocationPolicy: to.Ptr(armredis.ZonalAllocationPolicyUserDefined),
 	// 		SKU: &armredis.SKU{
 	// 			Name: to.Ptr(armredis.SKUNamePremium),
 	// 			Capacity: to.Ptr[int32](1),
@@ -331,7 +455,7 @@ func ExampleClient_BeginCreate_redisCacheCreateDefaultVersion() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/redis/resource-manager/Microsoft.Cache/stable/2024-03-01/examples/RedisCacheCreateLatestVersion.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/45374f48f560b3337ed55735038f1e9bf8cbea65/specification/redis/resource-manager/Microsoft.Cache/stable/2024-11-01/examples/RedisCacheCreateLatestVersion.json
 func ExampleClient_BeginCreate_redisCacheCreateLatestVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -343,7 +467,7 @@ func ExampleClient_BeginCreate_redisCacheCreateLatestVersion() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewClient().BeginCreate(ctx, "rg1", "cache1", armredis.CreateParameters{
-		Location: to.Ptr("West US"),
+		Location: to.Ptr("East US"),
 		Properties: &armredis.CreateProperties{
 			EnableNonSSLPort:  to.Ptr(true),
 			MinimumTLSVersion: to.Ptr(armredis.TLSVersionOne2),
@@ -393,6 +517,7 @@ func ExampleClient_BeginCreate_redisCacheCreateLatestVersion() {
 	// 		ReplicasPerMaster: to.Ptr[int32](2),
 	// 		ReplicasPerPrimary: to.Ptr[int32](2),
 	// 		UpdateChannel: to.Ptr(armredis.UpdateChannelStable),
+	// 		ZonalAllocationPolicy: to.Ptr(armredis.ZonalAllocationPolicyUserDefined),
 	// 		SKU: &armredis.SKU{
 	// 			Name: to.Ptr(armredis.SKUNamePremium),
 	// 			Capacity: to.Ptr[int32](1),
@@ -461,7 +586,261 @@ func ExampleClient_BeginCreate_redisCacheCreateLatestVersion() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/redis/resource-manager/Microsoft.Cache/stable/2024-03-01/examples/RedisCacheUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/45374f48f560b3337ed55735038f1e9bf8cbea65/specification/redis/resource-manager/Microsoft.Cache/stable/2024-11-01/examples/RedisCacheCreateNoZonesZonalAllocationPolicy.json
+func ExampleClient_BeginCreate_redisCacheCreateNoZonesZonalAllocationPolicy() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armredis.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewClient().BeginCreate(ctx, "rg1", "cache1", armredis.CreateParameters{
+		Location: to.Ptr("East US"),
+		Properties: &armredis.CreateProperties{
+			EnableNonSSLPort:  to.Ptr(true),
+			MinimumTLSVersion: to.Ptr(armredis.TLSVersionOne2),
+			RedisConfiguration: &armredis.CommonPropertiesRedisConfiguration{
+				MaxmemoryPolicy: to.Ptr("allkeys-lru"),
+			},
+			ReplicasPerPrimary:    to.Ptr[int32](2),
+			ShardCount:            to.Ptr[int32](2),
+			ZonalAllocationPolicy: to.Ptr(armredis.ZonalAllocationPolicyNoZones),
+			SKU: &armredis.SKU{
+				Name:     to.Ptr(armredis.SKUNamePremium),
+				Capacity: to.Ptr[int32](1),
+				Family:   to.Ptr(armredis.SKUFamilyP),
+			},
+			StaticIP: to.Ptr("192.168.0.5"),
+			SubnetID: to.Ptr("/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/virtualNetworks/network1/subnets/subnet1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ResourceInfo = armredis.ResourceInfo{
+	// 	Name: to.Ptr("cache1"),
+	// 	Type: to.Ptr("Microsoft.Cache/Redis"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Cache/Redis/cache1"),
+	// 	Location: to.Ptr("East US"),
+	// 	Tags: map[string]*string{
+	// 	},
+	// 	Properties: &armredis.Properties{
+	// 		EnableNonSSLPort: to.Ptr(true),
+	// 		MinimumTLSVersion: to.Ptr(armredis.TLSVersionOne2),
+	// 		RedisConfiguration: &armredis.CommonPropertiesRedisConfiguration{
+	// 			Maxclients: to.Ptr("1000"),
+	// 			MaxmemoryDelta: to.Ptr("50"),
+	// 			MaxmemoryReserved: to.Ptr("50"),
+	// 		},
+	// 		RedisVersion: to.Ptr("6.0"),
+	// 		ReplicasPerMaster: to.Ptr[int32](2),
+	// 		ReplicasPerPrimary: to.Ptr[int32](2),
+	// 		ShardCount: to.Ptr[int32](2),
+	// 		UpdateChannel: to.Ptr(armredis.UpdateChannelStable),
+	// 		ZonalAllocationPolicy: to.Ptr(armredis.ZonalAllocationPolicyNoZones),
+	// 		SKU: &armredis.SKU{
+	// 			Name: to.Ptr(armredis.SKUNamePremium),
+	// 			Capacity: to.Ptr[int32](1),
+	// 			Family: to.Ptr(armredis.SKUFamilyP),
+	// 		},
+	// 		AccessKeys: &armredis.AccessKeys{
+	// 			PrimaryKey: to.Ptr("<primaryKey>"),
+	// 			SecondaryKey: to.Ptr("<secondaryKey>"),
+	// 		},
+	// 		HostName: to.Ptr("cache1.redis.cache.windows.net"),
+	// 		Instances: []*armredis.InstanceDetails{
+	// 			{
+	// 				IsMaster: to.Ptr(true),
+	// 				IsPrimary: to.Ptr(true),
+	// 				NonSSLPort: to.Ptr[int32](13000),
+	// 				ShardID: to.Ptr[int32](0),
+	// 				SSLPort: to.Ptr[int32](15000),
+	// 			},
+	// 			{
+	// 				IsMaster: to.Ptr(false),
+	// 				IsPrimary: to.Ptr(false),
+	// 				NonSSLPort: to.Ptr[int32](13001),
+	// 				ShardID: to.Ptr[int32](0),
+	// 				SSLPort: to.Ptr[int32](15001),
+	// 			},
+	// 			{
+	// 				IsMaster: to.Ptr(false),
+	// 				IsPrimary: to.Ptr(false),
+	// 				NonSSLPort: to.Ptr[int32](13002),
+	// 				ShardID: to.Ptr[int32](0),
+	// 				SSLPort: to.Ptr[int32](15002),
+	// 			},
+	// 			{
+	// 				IsMaster: to.Ptr(true),
+	// 				IsPrimary: to.Ptr(true),
+	// 				NonSSLPort: to.Ptr[int32](13003),
+	// 				ShardID: to.Ptr[int32](1),
+	// 				SSLPort: to.Ptr[int32](15003),
+	// 			},
+	// 			{
+	// 				IsMaster: to.Ptr(false),
+	// 				IsPrimary: to.Ptr(false),
+	// 				NonSSLPort: to.Ptr[int32](13004),
+	// 				ShardID: to.Ptr[int32](1),
+	// 				SSLPort: to.Ptr[int32](15004),
+	// 			},
+	// 			{
+	// 				IsMaster: to.Ptr(false),
+	// 				IsPrimary: to.Ptr(false),
+	// 				NonSSLPort: to.Ptr[int32](13005),
+	// 				ShardID: to.Ptr[int32](1),
+	// 				SSLPort: to.Ptr[int32](15005),
+	// 		}},
+	// 		Port: to.Ptr[int32](6379),
+	// 		ProvisioningState: to.Ptr(armredis.ProvisioningStateSucceeded),
+	// 		SSLPort: to.Ptr[int32](6380),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/45374f48f560b3337ed55735038f1e9bf8cbea65/specification/redis/resource-manager/Microsoft.Cache/stable/2024-11-01/examples/RedisCacheCreateUserDefinedZonalAllocationPolicy.json
+func ExampleClient_BeginCreate_redisCacheCreateUserDefinedZonalAllocationPolicy() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armredis.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewClient().BeginCreate(ctx, "rg1", "cache1", armredis.CreateParameters{
+		Location: to.Ptr("East US"),
+		Properties: &armredis.CreateProperties{
+			EnableNonSSLPort:  to.Ptr(true),
+			MinimumTLSVersion: to.Ptr(armredis.TLSVersionOne2),
+			RedisConfiguration: &armredis.CommonPropertiesRedisConfiguration{
+				MaxmemoryPolicy: to.Ptr("allkeys-lru"),
+			},
+			RedisVersion:          to.Ptr("Latest"),
+			ReplicasPerPrimary:    to.Ptr[int32](2),
+			ShardCount:            to.Ptr[int32](2),
+			ZonalAllocationPolicy: to.Ptr(armredis.ZonalAllocationPolicyUserDefined),
+			SKU: &armredis.SKU{
+				Name:     to.Ptr(armredis.SKUNamePremium),
+				Capacity: to.Ptr[int32](1),
+				Family:   to.Ptr(armredis.SKUFamilyP),
+			},
+			StaticIP: to.Ptr("192.168.0.5"),
+			SubnetID: to.Ptr("/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/virtualNetworks/network1/subnets/subnet1"),
+		},
+		Zones: []*string{
+			to.Ptr("1")},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ResourceInfo = armredis.ResourceInfo{
+	// 	Name: to.Ptr("cache1"),
+	// 	Type: to.Ptr("Microsoft.Cache/Redis"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Cache/Redis/cache1"),
+	// 	Location: to.Ptr("East US"),
+	// 	Tags: map[string]*string{
+	// 	},
+	// 	Properties: &armredis.Properties{
+	// 		EnableNonSSLPort: to.Ptr(false),
+	// 		MinimumTLSVersion: to.Ptr(armredis.TLSVersionOne2),
+	// 		RedisConfiguration: &armredis.CommonPropertiesRedisConfiguration{
+	// 			Maxclients: to.Ptr("1000"),
+	// 			MaxmemoryDelta: to.Ptr("50"),
+	// 			MaxmemoryReserved: to.Ptr("50"),
+	// 		},
+	// 		RedisVersion: to.Ptr("6.0.14"),
+	// 		ReplicasPerMaster: to.Ptr[int32](2),
+	// 		ReplicasPerPrimary: to.Ptr[int32](2),
+	// 		UpdateChannel: to.Ptr(armredis.UpdateChannelStable),
+	// 		ZonalAllocationPolicy: to.Ptr(armredis.ZonalAllocationPolicyUserDefined),
+	// 		SKU: &armredis.SKU{
+	// 			Name: to.Ptr(armredis.SKUNamePremium),
+	// 			Capacity: to.Ptr[int32](1),
+	// 			Family: to.Ptr(armredis.SKUFamilyP),
+	// 		},
+	// 		AccessKeys: &armredis.AccessKeys{
+	// 			PrimaryKey: to.Ptr("<primaryKey>"),
+	// 			SecondaryKey: to.Ptr("<secondaryKey>"),
+	// 		},
+	// 		HostName: to.Ptr("cache1.redis.cache.windows.net"),
+	// 		Instances: []*armredis.InstanceDetails{
+	// 			{
+	// 				IsMaster: to.Ptr(true),
+	// 				IsPrimary: to.Ptr(true),
+	// 				NonSSLPort: to.Ptr[int32](13000),
+	// 				ShardID: to.Ptr[int32](0),
+	// 				SSLPort: to.Ptr[int32](15000),
+	// 				Zone: to.Ptr("1"),
+	// 			},
+	// 			{
+	// 				IsMaster: to.Ptr(false),
+	// 				IsPrimary: to.Ptr(false),
+	// 				NonSSLPort: to.Ptr[int32](13001),
+	// 				ShardID: to.Ptr[int32](0),
+	// 				SSLPort: to.Ptr[int32](15001),
+	// 				Zone: to.Ptr("1"),
+	// 			},
+	// 			{
+	// 				IsMaster: to.Ptr(false),
+	// 				IsPrimary: to.Ptr(false),
+	// 				NonSSLPort: to.Ptr[int32](13002),
+	// 				ShardID: to.Ptr[int32](0),
+	// 				SSLPort: to.Ptr[int32](15002),
+	// 				Zone: to.Ptr("1"),
+	// 			},
+	// 			{
+	// 				IsMaster: to.Ptr(true),
+	// 				IsPrimary: to.Ptr(true),
+	// 				NonSSLPort: to.Ptr[int32](13003),
+	// 				ShardID: to.Ptr[int32](1),
+	// 				SSLPort: to.Ptr[int32](15003),
+	// 				Zone: to.Ptr("1"),
+	// 			},
+	// 			{
+	// 				IsMaster: to.Ptr(false),
+	// 				IsPrimary: to.Ptr(false),
+	// 				NonSSLPort: to.Ptr[int32](13004),
+	// 				ShardID: to.Ptr[int32](1),
+	// 				SSLPort: to.Ptr[int32](15004),
+	// 				Zone: to.Ptr("1"),
+	// 			},
+	// 			{
+	// 				IsMaster: to.Ptr(false),
+	// 				IsPrimary: to.Ptr(false),
+	// 				NonSSLPort: to.Ptr[int32](13005),
+	// 				ShardID: to.Ptr[int32](1),
+	// 				SSLPort: to.Ptr[int32](15005),
+	// 				Zone: to.Ptr("1"),
+	// 		}},
+	// 		Port: to.Ptr[int32](6379),
+	// 		ProvisioningState: to.Ptr(armredis.ProvisioningStateSucceeded),
+	// 		SSLPort: to.Ptr[int32](6380),
+	// 	},
+	// 	Zones: []*string{
+	// 		to.Ptr("1")},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/45374f48f560b3337ed55735038f1e9bf8cbea65/specification/redis/resource-manager/Microsoft.Cache/stable/2024-11-01/examples/RedisCacheUpdate.json
 func ExampleClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -492,7 +871,7 @@ func ExampleClient_BeginUpdate() {
 	// 	Name: to.Ptr("cache1"),
 	// 	Type: to.Ptr("Microsoft.Cache/Redis"),
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Cache/Redis/cache1"),
-	// 	Location: to.Ptr("West US"),
+	// 	Location: to.Ptr("East US"),
 	// 	Tags: map[string]*string{
 	// 	},
 	// 	Properties: &armredis.Properties{
@@ -506,6 +885,7 @@ func ExampleClient_BeginUpdate() {
 	// 		ReplicasPerMaster: to.Ptr[int32](2),
 	// 		ReplicasPerPrimary: to.Ptr[int32](2),
 	// 		UpdateChannel: to.Ptr(armredis.UpdateChannelStable),
+	// 		ZonalAllocationPolicy: to.Ptr(armredis.ZonalAllocationPolicyAutomatic),
 	// 		SKU: &armredis.SKU{
 	// 			Name: to.Ptr(armredis.SKUNamePremium),
 	// 			Capacity: to.Ptr[int32](1),
@@ -542,7 +922,7 @@ func ExampleClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/redis/resource-manager/Microsoft.Cache/stable/2024-03-01/examples/RedisCacheDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/45374f48f560b3337ed55735038f1e9bf8cbea65/specification/redis/resource-manager/Microsoft.Cache/stable/2024-11-01/examples/RedisCacheDelete.json
 func ExampleClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -563,7 +943,7 @@ func ExampleClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/redis/resource-manager/Microsoft.Cache/stable/2024-03-01/examples/RedisCacheGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/45374f48f560b3337ed55735038f1e9bf8cbea65/specification/redis/resource-manager/Microsoft.Cache/stable/2024-11-01/examples/RedisCacheGet.json
 func ExampleClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -585,7 +965,7 @@ func ExampleClient_Get() {
 	// 	Name: to.Ptr("cache1"),
 	// 	Type: to.Ptr("Microsoft.Cache/Redis"),
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Cache/Redis/cache1"),
-	// 	Location: to.Ptr("West US"),
+	// 	Location: to.Ptr("East US"),
 	// 	Tags: map[string]*string{
 	// 	},
 	// 	Properties: &armredis.Properties{
@@ -597,6 +977,7 @@ func ExampleClient_Get() {
 	// 		ReplicasPerMaster: to.Ptr[int32](2),
 	// 		ReplicasPerPrimary: to.Ptr[int32](2),
 	// 		UpdateChannel: to.Ptr(armredis.UpdateChannelStable),
+	// 		ZonalAllocationPolicy: to.Ptr(armredis.ZonalAllocationPolicyAutomatic),
 	// 		SKU: &armredis.SKU{
 	// 			Name: to.Ptr(armredis.SKUNamePremium),
 	// 			Capacity: to.Ptr[int32](3),
@@ -647,7 +1028,7 @@ func ExampleClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/redis/resource-manager/Microsoft.Cache/stable/2024-03-01/examples/RedisCacheListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/45374f48f560b3337ed55735038f1e9bf8cbea65/specification/redis/resource-manager/Microsoft.Cache/stable/2024-11-01/examples/RedisCacheListByResourceGroup.json
 func ExampleClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -675,7 +1056,7 @@ func ExampleClient_NewListByResourceGroupPager() {
 		// 			Name: to.Ptr("cache1"),
 		// 			Type: to.Ptr("Microsoft.Cache/Redis"),
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Cache/Redis/cache1"),
-		// 			Location: to.Ptr("West US"),
+		// 			Location: to.Ptr("East US"),
 		// 			Tags: map[string]*string{
 		// 			},
 		// 			Properties: &armredis.Properties{
@@ -683,6 +1064,7 @@ func ExampleClient_NewListByResourceGroupPager() {
 		// 				RedisConfiguration: &armredis.CommonPropertiesRedisConfiguration{
 		// 				},
 		// 				RedisVersion: to.Ptr("3.2"),
+		// 				ZonalAllocationPolicy: to.Ptr(armredis.ZonalAllocationPolicyAutomatic),
 		// 				SKU: &armredis.SKU{
 		// 					Name: to.Ptr(armredis.SKUNameStandard),
 		// 					Capacity: to.Ptr[int32](6),
@@ -698,7 +1080,7 @@ func ExampleClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/redis/resource-manager/Microsoft.Cache/stable/2024-03-01/examples/RedisCacheList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/45374f48f560b3337ed55735038f1e9bf8cbea65/specification/redis/resource-manager/Microsoft.Cache/stable/2024-11-01/examples/RedisCacheList.json
 func ExampleClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -726,7 +1108,7 @@ func ExampleClient_NewListBySubscriptionPager() {
 		// 			Name: to.Ptr("cache1"),
 		// 			Type: to.Ptr("Microsoft.Cache/Redis"),
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Cache/Redis/cache1"),
-		// 			Location: to.Ptr("West US"),
+		// 			Location: to.Ptr("East US"),
 		// 			Tags: map[string]*string{
 		// 			},
 		// 			Properties: &armredis.Properties{
@@ -737,6 +1119,7 @@ func ExampleClient_NewListBySubscriptionPager() {
 		// 				ReplicasPerMaster: to.Ptr[int32](2),
 		// 				ReplicasPerPrimary: to.Ptr[int32](2),
 		// 				UpdateChannel: to.Ptr(armredis.UpdateChannelStable),
+		// 				ZonalAllocationPolicy: to.Ptr(armredis.ZonalAllocationPolicyAutomatic),
 		// 				SKU: &armredis.SKU{
 		// 					Name: to.Ptr(armredis.SKUNameStandard),
 		// 					Capacity: to.Ptr[int32](6),
@@ -771,7 +1154,7 @@ func ExampleClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/redis/resource-manager/Microsoft.Cache/stable/2024-03-01/examples/RedisCacheListKeys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/45374f48f560b3337ed55735038f1e9bf8cbea65/specification/redis/resource-manager/Microsoft.Cache/stable/2024-11-01/examples/RedisCacheListKeys.json
 func ExampleClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -795,7 +1178,7 @@ func ExampleClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/redis/resource-manager/Microsoft.Cache/stable/2024-03-01/examples/RedisCacheRegenerateKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/45374f48f560b3337ed55735038f1e9bf8cbea65/specification/redis/resource-manager/Microsoft.Cache/stable/2024-11-01/examples/RedisCacheRegenerateKey.json
 func ExampleClient_RegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -821,7 +1204,7 @@ func ExampleClient_RegenerateKey() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/redis/resource-manager/Microsoft.Cache/stable/2024-03-01/examples/RedisCacheForceReboot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/45374f48f560b3337ed55735038f1e9bf8cbea65/specification/redis/resource-manager/Microsoft.Cache/stable/2024-11-01/examples/RedisCacheForceReboot.json
 func ExampleClient_ForceReboot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -850,7 +1233,7 @@ func ExampleClient_ForceReboot() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/redis/resource-manager/Microsoft.Cache/stable/2024-03-01/examples/RedisCacheImport.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/45374f48f560b3337ed55735038f1e9bf8cbea65/specification/redis/resource-manager/Microsoft.Cache/stable/2024-11-01/examples/RedisCacheImport.json
 func ExampleClient_BeginImportData() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -876,7 +1259,7 @@ func ExampleClient_BeginImportData() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/redis/resource-manager/Microsoft.Cache/stable/2024-03-01/examples/RedisCacheExport.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/45374f48f560b3337ed55735038f1e9bf8cbea65/specification/redis/resource-manager/Microsoft.Cache/stable/2024-11-01/examples/RedisCacheExport.json
 func ExampleClient_BeginExportData() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -902,7 +1285,7 @@ func ExampleClient_BeginExportData() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/redis/resource-manager/Microsoft.Cache/stable/2024-03-01/examples/RedisCacheFlush.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/45374f48f560b3337ed55735038f1e9bf8cbea65/specification/redis/resource-manager/Microsoft.Cache/stable/2024-11-01/examples/RedisCacheFlush.json
 func ExampleClient_BeginFlushCache() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

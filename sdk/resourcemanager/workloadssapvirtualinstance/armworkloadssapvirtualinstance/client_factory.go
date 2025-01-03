@@ -22,7 +22,7 @@ type ClientFactory struct {
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
 // The parameter values will be propagated to any client created from this factory.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
@@ -43,41 +43,33 @@ func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	}
 }
 
-// NewSAPApplicationServerInstancesClient creates a new instance of SAPApplicationServerInstancesClient.
-func (c *ClientFactory) NewSAPApplicationServerInstancesClient() *SAPApplicationServerInstancesClient {
-	return &SAPApplicationServerInstancesClient{
+// NewSapApplicationServerInstancesClient creates a new instance of SapApplicationServerInstancesClient.
+func (c *ClientFactory) NewSapApplicationServerInstancesClient() *SapApplicationServerInstancesClient {
+	return &SapApplicationServerInstancesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
 }
 
-// NewSAPCentralInstancesClient creates a new instance of SAPCentralInstancesClient.
-func (c *ClientFactory) NewSAPCentralInstancesClient() *SAPCentralInstancesClient {
-	return &SAPCentralInstancesClient{
+// NewSapCentralServerInstancesClient creates a new instance of SapCentralServerInstancesClient.
+func (c *ClientFactory) NewSapCentralServerInstancesClient() *SapCentralServerInstancesClient {
+	return &SapCentralServerInstancesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
 }
 
-// NewSAPDatabaseInstancesClient creates a new instance of SAPDatabaseInstancesClient.
-func (c *ClientFactory) NewSAPDatabaseInstancesClient() *SAPDatabaseInstancesClient {
-	return &SAPDatabaseInstancesClient{
+// NewSapDatabaseInstancesClient creates a new instance of SapDatabaseInstancesClient.
+func (c *ClientFactory) NewSapDatabaseInstancesClient() *SapDatabaseInstancesClient {
+	return &SapDatabaseInstancesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
 }
 
-// NewSAPVirtualInstancesClient creates a new instance of SAPVirtualInstancesClient.
-func (c *ClientFactory) NewSAPVirtualInstancesClient() *SAPVirtualInstancesClient {
-	return &SAPVirtualInstancesClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewWorkloadsClient creates a new instance of WorkloadsClient.
-func (c *ClientFactory) NewWorkloadsClient() *WorkloadsClient {
-	return &WorkloadsClient{
+// NewSapVirtualInstancesClient creates a new instance of SapVirtualInstancesClient.
+func (c *ClientFactory) NewSapVirtualInstancesClient() *SapVirtualInstancesClient {
+	return &SapVirtualInstancesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

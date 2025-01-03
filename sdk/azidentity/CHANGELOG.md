@@ -8,6 +8,7 @@
 
 ### Bugs Fixed
 * User credential types inconsistently log access token scopes
+* `DefaultAzureCredential` skips managed identity in Azure Container Instances
 
 ### Other Changes
 

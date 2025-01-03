@@ -230,16 +230,19 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKi
 			}
 			return azcore.AccessToken{}, newCredentialUnavailableError(credNameManagedIdentity, msg)
 		}
-		// because IMDS always responds with JSON, assume a non-JSON response is from something else, such
-		// as a proxy, and return credentialUnavailableError so DefaultAzureCredential continues iterating
+		// Determine whether the response is from IMDS, a service whose managed identity API imitates IMDS such as Azure
+		// Container Instances (ACI), or something other than a managed identity API. Assume a JSON response is from IMDS.
+		// If the response is not JSON, check for a known ACI error message. If the response is neither JSON nor an ACI
+		// error, assume it's from something like a proxy and return credentialUnavailableError so DefaultAzureCredential
+		// continues to its next credential.
 		b, err := azruntime.Payload(res)
 		if err != nil {
 			return azcore.AccessToken{}, newCredentialUnavailableError(credNameManagedIdentity, fmt.Sprintf("failed to read IMDS probe response: %s", err))
 		}
-		if !json.Valid(b) {
+		if !json.Valid(b) && !strings.HasPrefix(string(b), "Required metadata header") {
 			return azcore.AccessToken{}, newCredentialUnavailableError(credNameManagedIdentity, "unexpected response to IMDS probe")
 		}
-		// send normal token requests from now on because IMDS responded
+		// send normal token requests from now on because IMDS, or something imitating it, responded
 		c.probeIMDS = false
 	}
 

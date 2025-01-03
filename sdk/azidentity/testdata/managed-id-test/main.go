@@ -9,9 +9,12 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"regexp"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 )
@@ -37,15 +40,31 @@ var (
 		workloadID:              os.Getenv("AZIDENTITY_USE_WORKLOAD_IDENTITY") != "",
 	}
 
+	// jwtRegex is used to redact JWTs (e.g. access tokens) in log output sent to a test client, although
+	// that output should never contain tokens because it's sent only when a test fails i.e., the request
+	// handler couldn't obtain an access token
+	jwtRegex   = regexp.MustCompile(`ey\S+\.\S+\.\S+`)
+	logOptions = policy.LogOptions{
+		AllowedQueryParams: []string{"client_id", "msi_res_id", "object_id", "resource"},
+		IncludeBody:        true,
+	}
+	// logs collects log output from a test run to help debug failures. Note that its usage isn't
+	// concurrency-safe and that's okay because live managed identity tests targeting this server
+	// don't send concurrent requests.
+	logs          strings.Builder
 	missingConfig string
 )
 
 func credential(id azidentity.ManagedIDKind) (azcore.TokenCredential, error) {
+	co := azcore.ClientOptions{Logging: logOptions}
 	if config.workloadID {
 		// the identity is determined by service account configuration
-		return azidentity.NewWorkloadIdentityCredential(nil)
+		return azidentity.NewWorkloadIdentityCredential(&azidentity.WorkloadIdentityCredentialOptions{ClientOptions: co})
 	}
-	return azidentity.NewManagedIdentityCredential(&azidentity.ManagedIdentityCredentialOptions{ID: id})
+	return azidentity.NewManagedIdentityCredential(&azidentity.ManagedIdentityCredentialOptions{
+		ClientOptions: co,
+		ID:            id,
+	})
 }
 
 func listContainers(account string, cred azcore.TokenCredential) error {
@@ -59,6 +78,7 @@ func listContainers(account string, cred azcore.TokenCredential) error {
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
+	logs.Reset()
 	log.Print("received a request")
 	if missingConfig != "" {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -68,6 +88,11 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 	cred, err := credential(nil)
 	if err == nil {
+		name := "ManagedIdentityCredential"
+		if config.workloadID {
+			name = "WorkloadIdentityCredential"
+		}
+		logs.WriteString("\n*** testing " + name + "\n\n")
 		err = listContainers(config.storageName, cred)
 	}
 	if err == nil && !config.workloadID {
@@ -83,16 +108,35 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err == nil {
-		fmt.Fprint(w, "test passed")
-		log.Print("test passed")
-	} else {
-		w.WriteHeader(http.StatusInternalServerError)
-		fmt.Fprint(w, err)
-		log.Print(err)
+		// discard logs from the successful tests above
+		logs.Reset()
+		logs.WriteString("*** testing DefaultAzureCredential\n\n")
+		cred, err = azidentity.NewDefaultAzureCredential(
+			&azidentity.DefaultAzureCredentialOptions{
+				ClientOptions: azcore.ClientOptions{Logging: logOptions},
+			},
+		)
+		if err == nil {
+			err = listContainers(config.storageName, cred)
+		}
 	}
+
+	msg := "test passed"
+	if err != nil {
+		logs.WriteString("\n*** test failed with error: " + err.Error() + "\n")
+		msg = logs.String()
+	}
+	fmt.Fprint(w, msg)
+	log.Print(msg)
 }
 
 func main() {
+	azlog.SetListener(func(_ azlog.Event, msg string) {
+		msg = jwtRegex.ReplaceAllString(msg, "***")
+		logs.WriteString(msg + "\n\n")
+	})
+	azlog.SetEvents(azidentity.EventAuthentication, azlog.EventRequest, azlog.EventResponse)
+
 	v := []string{}
 	if config.storageName == "" {
 		v = append(v, "AZIDENTITY_STORAGE_NAME")

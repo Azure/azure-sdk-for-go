@@ -31,6 +31,17 @@ type AdministratorsClientListByServerResponse struct {
 	AdministratorListResult
 }
 
+// BackupsClientCreateResponse contains the response from method BackupsClient.BeginCreate.
+type BackupsClientCreateResponse struct {
+	// Server backup properties
+	ServerBackup
+}
+
+// BackupsClientDeleteResponse contains the response from method BackupsClient.BeginDelete.
+type BackupsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
 // BackupsClientGetResponse contains the response from method BackupsClient.Get.
 type BackupsClientGetResponse struct {
 	// Server backup properties
@@ -205,8 +216,8 @@ type OperationsClientListResponse struct {
 	OperationListResult
 }
 
-// PostgreSQLManagementClientCheckMigrationNameAvailabilityResponse contains the response from method PostgreSQLManagementClient.CheckMigrationNameAvailability.
-type PostgreSQLManagementClientCheckMigrationNameAvailabilityResponse struct {
+// PostgreSQLServerManagementClientCheckMigrationNameAvailabilityResponse contains the response from method PostgreSQLServerManagementClient.CheckMigrationNameAvailability.
+type PostgreSQLServerManagementClientCheckMigrationNameAvailabilityResponse struct {
 	// Represents a migration name's availability.
 	MigrationNameAvailabilityResource
 }
@@ -244,12 +255,6 @@ type PrivateLinkResourcesClientGetResponse struct {
 type PrivateLinkResourcesClientListByServerResponse struct {
 	// A list of private link resources
 	PrivateLinkResourceListResult
-}
-
-// QuotaUsagesClientListResponse contains the response from method QuotaUsagesClient.NewListPager.
-type QuotaUsagesClientListResponse struct {
-	// Capability for the PostgreSQL server
-	QuotaUsagesListResult
 }
 
 // ReplicasClientListByServerResponse contains the response from method ReplicasClient.NewListByServerPager.

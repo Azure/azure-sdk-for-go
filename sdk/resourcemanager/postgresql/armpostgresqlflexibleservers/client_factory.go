@@ -145,9 +145,9 @@ func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	}
 }
 
-// NewPostgreSQLManagementClient creates a new instance of PostgreSQLManagementClient.
-func (c *ClientFactory) NewPostgreSQLManagementClient() *PostgreSQLManagementClient {
-	return &PostgreSQLManagementClient{
+// NewPostgreSQLServerManagementClient creates a new instance of PostgreSQLServerManagementClient.
+func (c *ClientFactory) NewPostgreSQLServerManagementClient() *PostgreSQLServerManagementClient {
+	return &PostgreSQLServerManagementClient{
 		internal: c.internal,
 	}
 }
@@ -171,14 +171,6 @@ func (c *ClientFactory) NewPrivateEndpointConnectionsClient() *PrivateEndpointCo
 // NewPrivateLinkResourcesClient creates a new instance of PrivateLinkResourcesClient.
 func (c *ClientFactory) NewPrivateLinkResourcesClient() *PrivateLinkResourcesClient {
 	return &PrivateLinkResourcesClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewQuotaUsagesClient creates a new instance of QuotaUsagesClient.
-func (c *ClientFactory) NewQuotaUsagesClient() *QuotaUsagesClient {
-	return &QuotaUsagesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

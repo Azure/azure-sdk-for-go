@@ -18,8 +18,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/CheckMigrationNameAvailability.json
-func ExamplePostgreSQLManagementClient_CheckMigrationNameAvailability() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10925e3dec73699b950f256576cd6983947faaa3/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/CheckMigrationNameAvailability.json
+func ExamplePostgreSQLServerManagementClient_CheckMigrationNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExamplePostgreSQLManagementClient_CheckMigrationNameAvailability() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewPostgreSQLManagementClient().CheckMigrationNameAvailability(ctx, "ffffffff-ffff-ffff-ffff-ffffffffffff", "testrg", "testtarget", armpostgresqlflexibleservers.MigrationNameAvailabilityResource{
+	res, err := clientFactory.NewPostgreSQLServerManagementClient().CheckMigrationNameAvailability(ctx, "ffffffff-ffff-ffff-ffff-ffffffffffff", "testrg", "testtarget", armpostgresqlflexibleservers.MigrationNameAvailabilityResource{
 		Name: to.Ptr("name1"),
 		Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/migrations"),
 	}, nil)

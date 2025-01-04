@@ -24,6 +24,14 @@ import (
 
 // BackupsServer is a fake server for instances of the armpostgresqlflexibleservers.BackupsClient type.
 type BackupsServer struct {
+	// BeginCreate is the fake for method BackupsClient.BeginCreate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
+	BeginCreate func(ctx context.Context, resourceGroupName string, serverName string, backupName string, options *armpostgresqlflexibleservers.BackupsClientBeginCreateOptions) (resp azfake.PollerResponder[armpostgresqlflexibleservers.BackupsClientCreateResponse], errResp azfake.ErrorResponder)
+
+	// BeginDelete is the fake for method BackupsClient.BeginDelete
+	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
+	BeginDelete func(ctx context.Context, resourceGroupName string, serverName string, backupName string, options *armpostgresqlflexibleservers.BackupsClientBeginDeleteOptions) (resp azfake.PollerResponder[armpostgresqlflexibleservers.BackupsClientDeleteResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method BackupsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, serverName string, backupName string, options *armpostgresqlflexibleservers.BackupsClientGetOptions) (resp azfake.Responder[armpostgresqlflexibleservers.BackupsClientGetResponse], errResp azfake.ErrorResponder)
@@ -39,6 +47,8 @@ type BackupsServer struct {
 func NewBackupsServerTransport(srv *BackupsServer) *BackupsServerTransport {
 	return &BackupsServerTransport{
 		srv:                  srv,
+		beginCreate:          newTracker[azfake.PollerResponder[armpostgresqlflexibleservers.BackupsClientCreateResponse]](),
+		beginDelete:          newTracker[azfake.PollerResponder[armpostgresqlflexibleservers.BackupsClientDeleteResponse]](),
 		newListByServerPager: newTracker[azfake.PagerResponder[armpostgresqlflexibleservers.BackupsClientListByServerResponse]](),
 	}
 }
@@ -47,6 +57,8 @@ func NewBackupsServerTransport(srv *BackupsServer) *BackupsServerTransport {
 // Don't use this type directly, use NewBackupsServerTransport instead.
 type BackupsServerTransport struct {
 	srv                  *BackupsServer
+	beginCreate          *tracker[azfake.PollerResponder[armpostgresqlflexibleservers.BackupsClientCreateResponse]]
+	beginDelete          *tracker[azfake.PollerResponder[armpostgresqlflexibleservers.BackupsClientDeleteResponse]]
 	newListByServerPager *tracker[azfake.PagerResponder[armpostgresqlflexibleservers.BackupsClientListByServerResponse]]
 }
 
@@ -62,6 +74,10 @@ func (b *BackupsServerTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch method {
+	case "BackupsClient.BeginCreate":
+		resp, err = b.dispatchBeginCreate(req)
+	case "BackupsClient.BeginDelete":
+		resp, err = b.dispatchBeginDelete(req)
 	case "BackupsClient.Get":
 		resp, err = b.dispatchGet(req)
 	case "BackupsClient.NewListByServerPager":
@@ -72,6 +88,102 @@ func (b *BackupsServerTransport) Do(req *http.Request) (*http.Response, error) {
 
 	if err != nil {
 		return nil, err
+	}
+
+	return resp, nil
+}
+
+func (b *BackupsServerTransport) dispatchBeginCreate(req *http.Request) (*http.Response, error) {
+	if b.srv.BeginCreate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreate not implemented")}
+	}
+	beginCreate := b.beginCreate.get(req)
+	if beginCreate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/backups/(?P<backupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+		if err != nil {
+			return nil, err
+		}
+		backupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("backupName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := b.srv.BeginCreate(req.Context(), resourceGroupNameParam, serverNameParam, backupNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCreate = &respr
+		b.beginCreate.add(req, beginCreate)
+	}
+
+	resp, err := server.PollerResponderNext(beginCreate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusCreated, http.StatusAccepted}, resp.StatusCode) {
+		b.beginCreate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginCreate) {
+		b.beginCreate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (b *BackupsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
+	if b.srv.BeginDelete == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
+	}
+	beginDelete := b.beginDelete.get(req)
+	if beginDelete == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/backups/(?P<backupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+		if err != nil {
+			return nil, err
+		}
+		backupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("backupName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := b.srv.BeginDelete(req.Context(), resourceGroupNameParam, serverNameParam, backupNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDelete = &respr
+		b.beginDelete.add(req, beginDelete)
+	}
+
+	resp, err := server.PollerResponderNext(beginDelete, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		b.beginDelete.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginDelete) {
+		b.beginDelete.remove(req)
 	}
 
 	return resp, nil

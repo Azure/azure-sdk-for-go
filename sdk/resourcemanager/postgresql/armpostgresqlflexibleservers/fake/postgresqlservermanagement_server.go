@@ -21,28 +21,28 @@ import (
 	"regexp"
 )
 
-// PostgreSQLManagementServer is a fake server for instances of the armpostgresqlflexibleservers.PostgreSQLManagementClient type.
-type PostgreSQLManagementServer struct {
-	// CheckMigrationNameAvailability is the fake for method PostgreSQLManagementClient.CheckMigrationNameAvailability
+// PostgreSQLServerManagementServer is a fake server for instances of the armpostgresqlflexibleservers.PostgreSQLServerManagementClient type.
+type PostgreSQLServerManagementServer struct {
+	// CheckMigrationNameAvailability is the fake for method PostgreSQLServerManagementClient.CheckMigrationNameAvailability
 	// HTTP status codes to indicate success: http.StatusOK
-	CheckMigrationNameAvailability func(ctx context.Context, subscriptionID string, resourceGroupName string, targetDbServerName string, parameters armpostgresqlflexibleservers.MigrationNameAvailabilityResource, options *armpostgresqlflexibleservers.PostgreSQLManagementClientCheckMigrationNameAvailabilityOptions) (resp azfake.Responder[armpostgresqlflexibleservers.PostgreSQLManagementClientCheckMigrationNameAvailabilityResponse], errResp azfake.ErrorResponder)
+	CheckMigrationNameAvailability func(ctx context.Context, subscriptionID string, resourceGroupName string, targetDbServerName string, parameters armpostgresqlflexibleservers.MigrationNameAvailabilityResource, options *armpostgresqlflexibleservers.PostgreSQLServerManagementClientCheckMigrationNameAvailabilityOptions) (resp azfake.Responder[armpostgresqlflexibleservers.PostgreSQLServerManagementClientCheckMigrationNameAvailabilityResponse], errResp azfake.ErrorResponder)
 }
 
-// NewPostgreSQLManagementServerTransport creates a new instance of PostgreSQLManagementServerTransport with the provided implementation.
-// The returned PostgreSQLManagementServerTransport instance is connected to an instance of armpostgresqlflexibleservers.PostgreSQLManagementClient via the
+// NewPostgreSQLServerManagementServerTransport creates a new instance of PostgreSQLServerManagementServerTransport with the provided implementation.
+// The returned PostgreSQLServerManagementServerTransport instance is connected to an instance of armpostgresqlflexibleservers.PostgreSQLServerManagementClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewPostgreSQLManagementServerTransport(srv *PostgreSQLManagementServer) *PostgreSQLManagementServerTransport {
-	return &PostgreSQLManagementServerTransport{srv: srv}
+func NewPostgreSQLServerManagementServerTransport(srv *PostgreSQLServerManagementServer) *PostgreSQLServerManagementServerTransport {
+	return &PostgreSQLServerManagementServerTransport{srv: srv}
 }
 
-// PostgreSQLManagementServerTransport connects instances of armpostgresqlflexibleservers.PostgreSQLManagementClient to instances of PostgreSQLManagementServer.
-// Don't use this type directly, use NewPostgreSQLManagementServerTransport instead.
-type PostgreSQLManagementServerTransport struct {
-	srv *PostgreSQLManagementServer
+// PostgreSQLServerManagementServerTransport connects instances of armpostgresqlflexibleservers.PostgreSQLServerManagementClient to instances of PostgreSQLServerManagementServer.
+// Don't use this type directly, use NewPostgreSQLServerManagementServerTransport instead.
+type PostgreSQLServerManagementServerTransport struct {
+	srv *PostgreSQLServerManagementServer
 }
 
-// Do implements the policy.Transporter interface for PostgreSQLManagementServerTransport.
-func (p *PostgreSQLManagementServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for PostgreSQLServerManagementServerTransport.
+func (p *PostgreSQLServerManagementServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
@@ -53,7 +53,7 @@ func (p *PostgreSQLManagementServerTransport) Do(req *http.Request) (*http.Respo
 	var err error
 
 	switch method {
-	case "PostgreSQLManagementClient.CheckMigrationNameAvailability":
+	case "PostgreSQLServerManagementClient.CheckMigrationNameAvailability":
 		resp, err = p.dispatchCheckMigrationNameAvailability(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
@@ -66,7 +66,7 @@ func (p *PostgreSQLManagementServerTransport) Do(req *http.Request) (*http.Respo
 	return resp, nil
 }
 
-func (p *PostgreSQLManagementServerTransport) dispatchCheckMigrationNameAvailability(req *http.Request) (*http.Response, error) {
+func (p *PostgreSQLServerManagementServerTransport) dispatchCheckMigrationNameAvailability(req *http.Request) (*http.Response, error) {
 	if p.srv.CheckMigrationNameAvailability == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckMigrationNameAvailability not implemented")}
 	}

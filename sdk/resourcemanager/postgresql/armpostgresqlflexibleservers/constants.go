@@ -10,7 +10,7 @@ package armpostgresqlflexibleservers
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers"
-	moduleVersion = "v4.0.0-beta.5"
+	moduleVersion = "v4.0.0"
 )
 
 // ActiveDirectoryAuthEnum - If Enabled, Azure Active Directory authentication is enabled.
@@ -347,14 +347,16 @@ func PossibleHighAvailabilityModeValues() []HighAvailabilityMode {
 type IdentityType string
 
 const (
-	IdentityTypeNone         IdentityType = "None"
-	IdentityTypeUserAssigned IdentityType = "UserAssigned"
+	IdentityTypeNone           IdentityType = "None"
+	IdentityTypeSystemAssigned IdentityType = "SystemAssigned"
+	IdentityTypeUserAssigned   IdentityType = "UserAssigned"
 )
 
 // PossibleIdentityTypeValues returns the possible values for the IdentityType const type.
 func PossibleIdentityTypeValues() []IdentityType {
 	return []IdentityType{
 		IdentityTypeNone,
+		IdentityTypeSystemAssigned,
 		IdentityTypeUserAssigned,
 	}
 }
@@ -598,12 +600,14 @@ func PossibleOperationOriginValues() []OperationOrigin {
 type Origin string
 
 const (
-	OriginFull Origin = "Full"
+	OriginCustomerOnDemand Origin = "Customer On-Demand"
+	OriginFull             Origin = "Full"
 )
 
 // PossibleOriginValues returns the possible values for the Origin const type.
 func PossibleOriginValues() []Origin {
 	return []Origin{
+		OriginCustomerOnDemand,
 		OriginFull,
 	}
 }

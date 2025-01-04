@@ -20,21 +20,21 @@ import (
 	"strings"
 )
 
-// PostgreSQLManagementClient contains the methods for the PostgreSQLManagementClient group.
-// Don't use this type directly, use NewPostgreSQLManagementClient() instead.
-type PostgreSQLManagementClient struct {
+// PostgreSQLServerManagementClient contains the methods for the PostgreSQLServerManagementClient group.
+// Don't use this type directly, use NewPostgreSQLServerManagementClient() instead.
+type PostgreSQLServerManagementClient struct {
 	internal *arm.Client
 }
 
-// NewPostgreSQLManagementClient creates a new instance of PostgreSQLManagementClient with the specified values.
+// NewPostgreSQLServerManagementClient creates a new instance of PostgreSQLServerManagementClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewPostgreSQLManagementClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*PostgreSQLManagementClient, error) {
+func NewPostgreSQLServerManagementClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*PostgreSQLServerManagementClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &PostgreSQLManagementClient{
+	client := &PostgreSQLServerManagementClient{
 		internal: cl,
 	}
 	return client, nil
@@ -43,37 +43,37 @@ func NewPostgreSQLManagementClient(credential azcore.TokenCredential, options *a
 // CheckMigrationNameAvailability - This method checks whether a proposed migration name is valid and available.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-12-01-preview
+// Generated from API version 2024-08-01
 //   - subscriptionID - The subscription ID of the target database server.
 //   - resourceGroupName - The resource group name of the target database server.
 //   - targetDbServerName - The name of the target database server.
 //   - parameters - The required parameters for checking if a migration name is available.
-//   - options - PostgreSQLManagementClientCheckMigrationNameAvailabilityOptions contains the optional parameters for the PostgreSQLManagementClient.CheckMigrationNameAvailability
-//     method.
-func (client *PostgreSQLManagementClient) CheckMigrationNameAvailability(ctx context.Context, subscriptionID string, resourceGroupName string, targetDbServerName string, parameters MigrationNameAvailabilityResource, options *PostgreSQLManagementClientCheckMigrationNameAvailabilityOptions) (PostgreSQLManagementClientCheckMigrationNameAvailabilityResponse, error) {
+//   - options - PostgreSQLServerManagementClientCheckMigrationNameAvailabilityOptions contains the optional parameters for the
+//     PostgreSQLServerManagementClient.CheckMigrationNameAvailability method.
+func (client *PostgreSQLServerManagementClient) CheckMigrationNameAvailability(ctx context.Context, subscriptionID string, resourceGroupName string, targetDbServerName string, parameters MigrationNameAvailabilityResource, options *PostgreSQLServerManagementClientCheckMigrationNameAvailabilityOptions) (PostgreSQLServerManagementClientCheckMigrationNameAvailabilityResponse, error) {
 	var err error
-	const operationName = "PostgreSQLManagementClient.CheckMigrationNameAvailability"
+	const operationName = "PostgreSQLServerManagementClient.CheckMigrationNameAvailability"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.checkMigrationNameAvailabilityCreateRequest(ctx, subscriptionID, resourceGroupName, targetDbServerName, parameters, options)
 	if err != nil {
-		return PostgreSQLManagementClientCheckMigrationNameAvailabilityResponse{}, err
+		return PostgreSQLServerManagementClientCheckMigrationNameAvailabilityResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return PostgreSQLManagementClientCheckMigrationNameAvailabilityResponse{}, err
+		return PostgreSQLServerManagementClientCheckMigrationNameAvailabilityResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return PostgreSQLManagementClientCheckMigrationNameAvailabilityResponse{}, err
+		return PostgreSQLServerManagementClientCheckMigrationNameAvailabilityResponse{}, err
 	}
 	resp, err := client.checkMigrationNameAvailabilityHandleResponse(httpResp)
 	return resp, err
 }
 
 // checkMigrationNameAvailabilityCreateRequest creates the CheckMigrationNameAvailability request.
-func (client *PostgreSQLManagementClient) checkMigrationNameAvailabilityCreateRequest(ctx context.Context, subscriptionID string, resourceGroupName string, targetDbServerName string, parameters MigrationNameAvailabilityResource, options *PostgreSQLManagementClientCheckMigrationNameAvailabilityOptions) (*policy.Request, error) {
+func (client *PostgreSQLServerManagementClient) checkMigrationNameAvailabilityCreateRequest(ctx context.Context, subscriptionID string, resourceGroupName string, targetDbServerName string, parameters MigrationNameAvailabilityResource, options *PostgreSQLServerManagementClientCheckMigrationNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{targetDbServerName}/checkMigrationNameAvailability"
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -92,7 +92,7 @@ func (client *PostgreSQLManagementClient) checkMigrationNameAvailabilityCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-01-preview")
+	reqQP.Set("api-version", "2024-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -102,10 +102,10 @@ func (client *PostgreSQLManagementClient) checkMigrationNameAvailabilityCreateRe
 }
 
 // checkMigrationNameAvailabilityHandleResponse handles the CheckMigrationNameAvailability response.
-func (client *PostgreSQLManagementClient) checkMigrationNameAvailabilityHandleResponse(resp *http.Response) (PostgreSQLManagementClientCheckMigrationNameAvailabilityResponse, error) {
-	result := PostgreSQLManagementClientCheckMigrationNameAvailabilityResponse{}
+func (client *PostgreSQLServerManagementClient) checkMigrationNameAvailabilityHandleResponse(resp *http.Response) (PostgreSQLServerManagementClientCheckMigrationNameAvailabilityResponse, error) {
+	result := PostgreSQLServerManagementClientCheckMigrationNameAvailabilityResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MigrationNameAvailabilityResource); err != nil {
-		return PostgreSQLManagementClientCheckMigrationNameAvailabilityResponse{}, err
+		return PostgreSQLServerManagementClientCheckMigrationNameAvailabilityResponse{}, err
 	}
 	return result, nil
 }

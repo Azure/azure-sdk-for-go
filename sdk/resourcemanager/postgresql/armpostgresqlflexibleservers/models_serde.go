@@ -2182,37 +2182,6 @@ func (n *NameAvailability) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type NameProperty.
-func (n NameProperty) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "localizedValue", n.LocalizedValue)
-	populate(objectMap, "value", n.Value)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type NameProperty.
-func (n *NameProperty) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", n, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "localizedValue":
-			err = unpopulate(val, "LocalizedValue", &n.LocalizedValue)
-			delete(rawMsg, key)
-		case "value":
-			err = unpopulate(val, "Value", &n.Value)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", n, err)
-		}
-	}
-	return nil
-}
-
 // MarshalJSON implements the json.Marshaller interface for type Network.
 func (n Network) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -2640,80 +2609,6 @@ func (p *PrivateLinkServiceConnectionState) UnmarshalJSON(data []byte) error {
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", p, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type QuotaUsage.
-func (q QuotaUsage) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "currentValue", q.CurrentValue)
-	populate(objectMap, "id", q.ID)
-	populate(objectMap, "limit", q.Limit)
-	populate(objectMap, "name", q.Name)
-	populate(objectMap, "unit", q.Unit)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type QuotaUsage.
-func (q *QuotaUsage) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", q, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "currentValue":
-			err = unpopulate(val, "CurrentValue", &q.CurrentValue)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, "ID", &q.ID)
-			delete(rawMsg, key)
-		case "limit":
-			err = unpopulate(val, "Limit", &q.Limit)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, "Name", &q.Name)
-			delete(rawMsg, key)
-		case "unit":
-			err = unpopulate(val, "Unit", &q.Unit)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", q, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type QuotaUsagesListResult.
-func (q QuotaUsagesListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "nextLink", q.NextLink)
-	populate(objectMap, "value", q.Value)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type QuotaUsagesListResult.
-func (q *QuotaUsagesListResult) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", q, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "nextLink":
-			err = unpopulate(val, "NextLink", &q.NextLink)
-			delete(rawMsg, key)
-		case "value":
-			err = unpopulate(val, "Value", &q.Value)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", q, err)
 		}
 	}
 	return nil
@@ -3172,6 +3067,7 @@ func (s *ServerProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ServerPropertiesForUpdate.
 func (s ServerPropertiesForUpdate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "administratorLogin", s.AdministratorLogin)
 	populate(objectMap, "administratorLoginPassword", s.AdministratorLoginPassword)
 	populate(objectMap, "authConfig", s.AuthConfig)
 	populate(objectMap, "backup", s.Backup)
@@ -3196,6 +3092,9 @@ func (s *ServerPropertiesForUpdate) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "administratorLogin":
+			err = unpopulate(val, "AdministratorLogin", &s.AdministratorLogin)
+			delete(rawMsg, key)
 		case "administratorLoginPassword":
 			err = unpopulate(val, "AdministratorLoginPassword", &s.AdministratorLoginPassword)
 			delete(rawMsg, key)

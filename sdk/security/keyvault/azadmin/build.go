@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 //go:generate tsp-client update --output-dir ./settings
 //go:generate tsp-client update --output-dir ./rbac
 //go:generate tsp-client update --output-dir ./backup

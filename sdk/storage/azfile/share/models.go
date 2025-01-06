@@ -180,6 +180,8 @@ func (o *SetPropertiesOptions) format() (*generated.ShareClientSetPropertiesOpti
 		PaidBurstingEnabled:                  o.PaidBurstingEnabled,
 		PaidBurstingMaxBandwidthMibps:        o.PaidBurstingMaxBandwidthMibps,
 		PaidBurstingMaxIops:                  o.PaidBurstingMaxIops,
+		ShareProvisionedIops:                 o.ShareProvisionedIops,
+		ShareProvisionedBandwidthMibps:       o.ShareProvisionedBandwidthMibps,
 	}, o.LeaseAccessConditions
 }
 

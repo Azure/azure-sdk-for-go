@@ -12,8 +12,8 @@ type BackupSecretResult struct {
 	Value []byte
 }
 
-// DeletedSecret - A Deleted Secret consisting of its previous id, attributes and its tags, as
-// well as information on when it will be purged.
+// DeletedSecret - A Deleted Secret consisting of its previous id, attributes and its tags, as well as information on when
+// it will be purged.
 type DeletedSecret struct {
 	// The secret management attributes.
 	Attributes *SecretAttributes
@@ -36,12 +36,12 @@ type DeletedSecret struct {
 	// READ-ONLY; The time when the secret was deleted, in UTC
 	DeletedDate *time.Time
 
-	// READ-ONLY; If this is a secret backing a KV certificate, then this field specifies the
-	// corresponding key backing the KV certificate.
+	// READ-ONLY; If this is a secret backing a KV certificate, then this field specifies the corresponding key backing the KV
+	// certificate.
 	KID *ID
 
-	// READ-ONLY; True if the secret's lifetime is managed by key vault. If this is a secret
-	// backing a certificate, then managed will be true.
+	// READ-ONLY; True if the secret's lifetime is managed by key vault. If this is a secret backing a certificate, then managed
+	// will be true.
 	Managed *bool
 
 	// READ-ONLY; The time when the secret is scheduled to be purged, in UTC
@@ -68,8 +68,8 @@ type DeletedSecretProperties struct {
 	// READ-ONLY; The time when the secret was deleted, in UTC
 	DeletedDate *time.Time
 
-	// READ-ONLY; True if the secret's lifetime is managed by key vault. If this is a key backing
-	// a certificate, then managed will be true.
+	// READ-ONLY; True if the secret's lifetime is managed by key vault. If this is a key backing a certificate, then managed
+	// will be true.
 	Managed *bool
 
 	// READ-ONLY; The time when the secret is scheduled to be purged, in UTC
@@ -82,8 +82,7 @@ type DeletedSecretPropertiesListResult struct {
 	NextLink *string
 
 	// READ-ONLY; A response message containing a list of deleted secrets in the key vault along with a link to the next page
-	// of
-	// deleted secrets.
+	// of deleted secrets.
 	Value []*DeletedSecretProperties
 }
 
@@ -110,12 +109,12 @@ type Secret struct {
 	// The secret value.
 	Value *string
 
-	// READ-ONLY; If this is a secret backing a KV certificate, then this field specifies the
-	// corresponding key backing the KV certificate.
+	// READ-ONLY; If this is a secret backing a KV certificate, then this field specifies the corresponding key backing the KV
+	// certificate.
 	KID *ID
 
-	// READ-ONLY; True if the secret's lifetime is managed by key vault. If this is a secret
-	// backing a certificate, then managed will be true.
+	// READ-ONLY; True if the secret's lifetime is managed by key vault. If this is a secret backing a certificate, then managed
+	// will be true.
 	Managed *bool
 }
 
@@ -133,14 +132,12 @@ type SecretAttributes struct {
 	// READ-ONLY; Creation time in UTC.
 	Created *time.Time
 
-	// READ-ONLY; softDelete data retention days. Value should be >=7 and <=90 when softDelete
-	// enabled, otherwise 0.
+	// READ-ONLY; softDelete data retention days. Value should be >=7 and <=90 when softDelete enabled, otherwise 0.
 	RecoverableDays *int32
 
-	// READ-ONLY; Reflects the deletion recovery level currently in effect for secrets in the
-	// current vault. If it contains 'Purgeable', the secret can be permanently
-	// deleted by a privileged user; otherwise, only the system can purge the secret,
-	// at the end of the retention interval.
+	// READ-ONLY; Reflects the deletion recovery level currently in effect for secrets in the current vault. If it contains 'Purgeable',
+	// the secret can be permanently deleted by a privileged user; otherwise, only the system can purge the secret, at the end
+	// of the retention interval.
 	RecoveryLevel *string
 
 	// READ-ONLY; Last updated time in UTC.
@@ -161,8 +158,8 @@ type SecretProperties struct {
 	// Application specific metadata in the form of key-value pairs.
 	Tags map[string]*string
 
-	// READ-ONLY; True if the secret's lifetime is managed by key vault. If this is a key backing
-	// a certificate, then managed will be true.
+	// READ-ONLY; True if the secret's lifetime is managed by key vault. If this is a key backing a certificate, then managed
+	// will be true.
 	Managed *bool
 }
 
@@ -171,8 +168,7 @@ type SecretPropertiesListResult struct {
 	// READ-ONLY; The URL to get the next set of secrets.
 	NextLink *string
 
-	// READ-ONLY; A response message containing a list of secrets in the key vault along with a link to the next page of
-	// secrets.
+	// READ-ONLY; A response message containing a list of secrets in the key vault along with a link to the next page of secrets.
 	Value []*SecretProperties
 }
 

@@ -16,8 +16,7 @@ import (
 	"strings"
 )
 
-// Client - The key vault client performs cryptographic key operations and vault operations
-// against the Key Vault service.
+// Client - The key vault client performs cryptographic key operations and vault operations against the Key Vault service.
 // Don't use this type directly, use a constructor function instead.
 type Client struct {
 	internal     *azcore.Client
@@ -26,9 +25,8 @@ type Client struct {
 
 // BackupSecret - Backs up the specified secret.
 //
-// Requests that a backup of the specified secret be downloaded to the client. All
-// versions of the secret will be downloaded. This operation requires the
-// secrets/backup permission.
+// Requests that a backup of the specified secret be downloaded to the client. All versions of the secret will be downloaded.
+// This operation requires the secrets/backup permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 7.5
@@ -85,9 +83,8 @@ func (client *Client) backupSecretHandleResponse(resp *http.Response) (BackupSec
 
 // DeleteSecret - Deletes a secret from a specified key vault.
 //
-// The DELETE operation applies to any secret stored in Azure Key Vault. DELETE
-// cannot be applied to an individual version of a secret. This operation requires
-// the secrets/delete permission.
+// The DELETE operation applies to any secret stored in Azure Key Vault. DELETE cannot be applied to an individual version
+// of a secret. This operation requires the secrets/delete permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 7.5
@@ -144,8 +141,8 @@ func (client *Client) deleteSecretHandleResponse(resp *http.Response) (DeleteSec
 
 // GetDeletedSecret - Gets the specified deleted secret.
 //
-// The Get Deleted Secret operation returns the specified deleted secret along
-// with its attributes. This operation requires the secrets/get permission.
+// The Get Deleted Secret operation returns the specified deleted secret along with its attributes. This operation requires
+// the secrets/get permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 7.5
@@ -202,14 +199,13 @@ func (client *Client) getDeletedSecretHandleResponse(resp *http.Response) (GetDe
 
 // GetSecret - Get a specified secret from a given key vault.
 //
-// The GET operation is applicable to any secret stored in Azure Key Vault. This
-// operation requires the secrets/get permission.
+// The GET operation is applicable to any secret stored in Azure Key Vault. This operation requires the secrets/get permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 7.5
 //   - name - The name of the secret.
-//   - version - The version of the secret. This URI fragment is optional. If not specified, the
-//     latest version of the secret is returned.
+//   - version - The version of the secret. This URI fragment is optional. If not specified, the latest version of the secret
+//     is returned.
 //   - options - GetSecretOptions contains the optional parameters for the Client.GetSecret method.
 func (client *Client) GetSecret(ctx context.Context, name string, version string, options *GetSecretOptions) (GetSecretResponse, error) {
 	var err error
@@ -263,9 +259,8 @@ func (client *Client) getSecretHandleResponse(resp *http.Response) (GetSecretRes
 
 // NewListDeletedSecretPropertiesPager - Lists deleted secrets for the specified vault.
 //
-// The Get Deleted Secrets operation returns the secrets that have been deleted
-// for a vault enabled for soft-delete. This operation requires the secrets/list
-// permission.
+// The Get Deleted Secrets operation returns the secrets that have been deleted for a vault enabled for soft-delete. This
+// operation requires the secrets/list permission.
 //
 // Generated from API version 7.5
 //   - options - ListDeletedSecretPropertiesOptions contains the optional parameters for the Client.NewListDeletedSecretPropertiesPager
@@ -319,10 +314,9 @@ func (client *Client) listDeletedSecretPropertiesHandleResponse(resp *http.Respo
 
 // NewListSecretPropertiesPager - List secrets in a specified key vault.
 //
-// The Get Secrets operation is applicable to the entire vault. However, only the
-// base secret identifier and its attributes are provided in the response.
-// Individual secret versions are not listed in the response. This operation
-// requires the secrets/list permission.
+// The Get Secrets operation is applicable to the entire vault. However, only the base secret identifier and its attributes
+// are provided in the response. Individual secret versions are not listed in the response. This operation requires the secrets/list
+// permission.
 //
 // Generated from API version 7.5
 //   - options - ListSecretPropertiesOptions contains the optional parameters for the Client.NewListSecretPropertiesPager method.
@@ -375,9 +369,8 @@ func (client *Client) listSecretPropertiesHandleResponse(resp *http.Response) (L
 
 // NewListSecretPropertiesVersionsPager - List all versions of the specified secret.
 //
-// The full secret identifier and attributes are provided in the response. No
-// values are returned for the secrets. This operations requires the secrets/list
-// permission.
+// The full secret identifier and attributes are provided in the response. No values are returned for the secrets. This operations
+// requires the secrets/list permission.
 //
 // Generated from API version 7.5
 //   - name - The name of the secret.
@@ -436,9 +429,8 @@ func (client *Client) listSecretPropertiesVersionsHandleResponse(resp *http.Resp
 
 // PurgeDeletedSecret - Permanently deletes the specified secret.
 //
-// The purge deleted secret operation removes the secret permanently, without the
-// possibility of recovery. This operation can only be enabled on a soft-delete
-// enabled vault. This operation requires the secrets/purge permission.
+// The purge deleted secret operation removes the secret permanently, without the possibility of recovery. This operation
+// can only be enabled on a soft-delete enabled vault. This operation requires the secrets/purge permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 7.5
@@ -485,9 +477,8 @@ func (client *Client) purgeDeletedSecretCreateRequest(ctx context.Context, name 
 
 // RecoverDeletedSecret - Recovers the deleted secret to the latest version.
 //
-// Recovers the deleted secret in the specified vault. This operation can only be
-// performed on a soft-delete enabled vault. This operation requires the
-// secrets/recover permission.
+// Recovers the deleted secret in the specified vault. This operation can only be performed on a soft-delete enabled vault.
+// This operation requires the secrets/recover permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 7.5
@@ -544,8 +535,7 @@ func (client *Client) recoverDeletedSecretHandleResponse(resp *http.Response) (R
 
 // RestoreSecret - Restores a backed up secret to a vault.
 //
-// Restores a backed up secret, and all its versions, to a vault. This operation
-// requires the secrets/restore permission.
+// Restores a backed up secret, and all its versions, to a vault. This operation requires the secrets/restore permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 7.5
@@ -602,15 +592,13 @@ func (client *Client) restoreSecretHandleResponse(resp *http.Response) (RestoreS
 
 // SetSecret - Sets a secret in a specified key vault.
 //
-// The SET operation adds a secret to the Azure Key Vault. If the named secret
-// already exists, Azure Key Vault creates a new version of that secret. This
-// operation requires the secrets/set permission.
+// The SET operation adds a secret to the Azure Key Vault. If the named secret already exists, Azure Key Vault creates a new
+// version of that secret. This operation requires the secrets/set permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 7.5
-//   - name - The name of the secret. The value you provide may be copied globally for the
-//     purpose of running the service. The value provided should not include
-//     personally identifiable or sensitive information.
+//   - name - The name of the secret. The value you provide may be copied globally for the purpose of running the service. The
+//     value provided should not include personally identifiable or sensitive information.
 //   - parameters - The parameters for setting the secret.
 //   - options - SetSecretOptions contains the optional parameters for the Client.SetSecret method.
 func (client *Client) SetSecret(ctx context.Context, name string, parameters SetSecretParameters, options *SetSecretOptions) (SetSecretResponse, error) {
@@ -668,10 +656,8 @@ func (client *Client) setSecretHandleResponse(resp *http.Response) (SetSecretRes
 
 // UpdateSecretProperties - Updates the attributes associated with a specified secret in a given key vault.
 //
-// The UPDATE operation changes specified attributes of an existing stored secret.
-// Attributes that are not specified in the request are left unchanged. The value
-// of a secret itself cannot be changed. This operation requires the secrets/set
-// permission.
+// The UPDATE operation changes specified attributes of an existing stored secret. Attributes that are not specified in the
+// request are left unchanged. The value of a secret itself cannot be changed. This operation requires the secrets/set permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 7.5

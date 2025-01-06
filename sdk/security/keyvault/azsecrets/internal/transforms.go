@@ -11,16 +11,12 @@ import (
 
 // removing client prefix from types
 func regexReplace(fileName string, regex string, replace string) {
-	r, err := regexp.Compile(regex)
-	if err != nil {
-		panic(err)
-	}
-
 	file, err := os.ReadFile(fileName)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
+	r := regexp.MustCompile(regex)
 	file = r.ReplaceAll(file, []byte(replace))
 
 	err = os.WriteFile(fileName, file, 0644)
@@ -44,5 +40,6 @@ func main() {
 	regexReplace("options.go", `(?:\/\/.*\s)+\sMaxresults \*int32`, `// placeholder for future optional parameters`)
 	regexReplace("client.go", `\sif options != nil && options.Maxresults != nil \{\s+.+\)\s+\}\s`, "")
 
+	// remove extra import
 	regexReplace("client.go", `"strconv"`, "")
 }

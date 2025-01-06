@@ -12,15 +12,13 @@ type BackupSecretResponse struct {
 
 // DeleteSecretResponse contains the response from method Client.DeleteSecret.
 type DeleteSecretResponse struct {
-	// A Deleted Secret consisting of its previous id, attributes and its tags, as
-	// well as information on when it will be purged.
+	// A Deleted Secret consisting of its previous id, attributes and its tags, as well as information on when it will be purged.
 	DeletedSecret
 }
 
 // GetDeletedSecretResponse contains the response from method Client.GetDeletedSecret.
 type GetDeletedSecretResponse struct {
-	// A Deleted Secret consisting of its previous id, attributes and its tags, as
-	// well as information on when it will be purged.
+	// A Deleted Secret consisting of its previous id, attributes and its tags, as well as information on when it will be purged.
 	DeletedSecret
 }
 

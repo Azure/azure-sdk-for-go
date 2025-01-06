@@ -24,8 +24,8 @@ type DeleteCertificateOperationResponse struct {
 
 // DeleteCertificateResponse contains the response from method Client.DeleteCertificate.
 type DeleteCertificateResponse struct {
-	// A Deleted Certificate consisting of its previous id, attributes and its tags,
-	// as well as information on when it will be purged.
+	// A Deleted Certificate consisting of its previous id, attributes and its tags, as well as information on when it will be
+	// purged.
 	DeletedCertificate
 }
 
@@ -67,8 +67,8 @@ type GetContactsResponse struct {
 
 // GetDeletedCertificateResponse contains the response from method Client.GetDeletedCertificate.
 type GetDeletedCertificateResponse struct {
-	// A Deleted Certificate consisting of its previous id, attributes and its tags,
-	// as well as information on when it will be purged.
+	// A Deleted Certificate consisting of its previous id, attributes and its tags, as well as information on when it will be
+	// purged.
 	DeletedCertificate
 }
 

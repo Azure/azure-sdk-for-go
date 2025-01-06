@@ -35,8 +35,7 @@ type Certificate struct {
 	// CER contents of x509 certificate.
 	CER []byte
 
-	// The content type of the secret. eg. 'application/x-pem-file' or
-	// 'application/x-pkcs12',
+	// The content type of the secret. eg. 'application/x-pem-file' or 'application/x-pkcs12',
 	ContentType *string
 
 	// Application specific metadata in the form of key-value pairs
@@ -72,14 +71,12 @@ type CertificateAttributes struct {
 	// READ-ONLY; Creation time in UTC.
 	Created *time.Time
 
-	// READ-ONLY; softDelete data retention days. Value should be >=7 and <=90 when softDelete
-	// enabled, otherwise 0.
+	// READ-ONLY; softDelete data retention days. Value should be >=7 and <=90 when softDelete enabled, otherwise 0.
 	RecoverableDays *int32
 
-	// READ-ONLY; Reflects the deletion recovery level currently in effect for certificates in
-	// the current vault. If it contains 'Purgeable', the certificate can be
-	// permanently deleted by a privileged user; otherwise, only the system can purge
-	// the certificate, at the end of the retention interval.
+	// READ-ONLY; Reflects the deletion recovery level currently in effect for certificates in the current vault. If it contains
+	// 'Purgeable', the certificate can be permanently deleted by a privileged user; otherwise, only the system can purge the
+	// certificate, at the end of the retention interval.
 	RecoveryLevel *string
 
 	// READ-ONLY; Last updated time in UTC.
@@ -88,15 +85,14 @@ type CertificateAttributes struct {
 
 // CertificateOperation - A certificate operation is returned in case of asynchronous requests.
 type CertificateOperation struct {
-	// The certificate signing request (CSR) that is being used in the certificate
-	// operation.
+	// The certificate signing request (CSR) that is being used in the certificate operation.
 	CSR []byte
 
 	// Indicates if cancellation was requested on the certificate operation.
 	CancellationRequested *bool
 
 	// Error encountered, if any, during the certificate operation.
-	Error *Error
+	Error *ErrorInfo
 
 	// Parameters for the issuer of the X509 component of a certificate.
 	IssuerParameters *IssuerParameters
@@ -184,7 +180,7 @@ type Contacts struct {
 	ContactList []*Contact
 
 	// READ-ONLY; Identifier for the contacts collection.
-	ID *ID
+	ID *string
 }
 
 // CreateCertificateParameters - The certificate create parameters.
@@ -199,8 +195,8 @@ type CreateCertificateParameters struct {
 	Tags map[string]*string
 }
 
-// DeletedCertificate - A Deleted Certificate consisting of its previous id, attributes and its tags,
-// as well as information on when it will be purged.
+// DeletedCertificate - A Deleted Certificate consisting of its previous id, attributes and its tags, as well as information
+// on when it will be purged.
 type DeletedCertificate struct {
 	// The certificate attributes.
 	Attributes *CertificateAttributes
@@ -208,12 +204,10 @@ type DeletedCertificate struct {
 	// CER contents of x509 certificate.
 	CER []byte
 
-	// The content type of the secret. eg. 'application/x-pem-file' or
-	// 'application/x-pkcs12',
+	// The content type of the secret. eg. 'application/x-pem-file' or 'application/x-pkcs12',
 	ContentType *string
 
-	// The url of the recovery object, used to identify and recover the deleted
-	// certificate.
+	// The url of the recovery object, used to identify and recover the deleted certificate.
 	RecoveryID *string
 
 	// Application specific metadata in the form of key-value pairs
@@ -271,27 +265,14 @@ type DeletedCertificatePropertiesListResult struct {
 	NextLink *string
 
 	// READ-ONLY; A response message containing a list of deleted certificates in the vault along with a link to the next page
-	// of
-	// deleted certificates.
+	// of deleted certificates.
 	Value []*DeletedCertificateProperties
-}
-
-// Error - The key vault server error.
-type Error struct {
-	// READ-ONLY; The error code.
-	Code *string
-
-	// READ-ONLY; The key vault server error.
-	InnerError *Error
-
-	// READ-ONLY; The error message.
-	Message *string
 }
 
 // ImportCertificateParameters - The certificate import parameters.
 type ImportCertificateParameters struct {
-	// REQUIRED; Base64 encoded representation of the certificate object to import. This
-	// certificate needs to contain the private key.
+	// REQUIRED; Base64 encoded representation of the certificate object to import. This certificate needs to contain the private
+	// key.
 	Base64EncodedCertificate *string
 
 	// The attributes of the certificate (optional).
@@ -300,8 +281,7 @@ type ImportCertificateParameters struct {
 	// The management policy for the certificate.
 	CertificatePolicy *CertificatePolicy
 
-	// If the private key in base64EncodedCertificate is encrypted, the password used
-	// for encryption.
+	// If the private key in base64EncodedCertificate is encrypted, the password used for encryption.
 	Password *string
 
 	// Application specific metadata in the form of key-value pairs.
@@ -323,7 +303,7 @@ type Issuer struct {
 	Provider *string
 
 	// READ-ONLY; Identifier for the issuer object.
-	ID *ID
+	ID *string
 }
 
 // IssuerAttributes - The attributes of an issuer managed by the Key Vault service.
@@ -349,23 +329,20 @@ type IssuerCredentials struct {
 
 // IssuerParameters - Parameters for the issuer of the X509 component of a certificate.
 type IssuerParameters struct {
-	// Indicates if the certificates generated under this policy should be published
-	// to certificate transparency logs.
+	// Indicates if the certificates generated under this policy should be published to certificate transparency logs.
 	CertificateTransparency *bool
 
-	// Certificate type as supported by the provider (optional); for example 'OV-SSL',
-	// 'EV-SSL'
+	// Certificate type as supported by the provider (optional); for example 'OV-SSL', 'EV-SSL'
 	CertificateType *string
 
-	// Name of the referenced issuer object or reserved names; for example, 'Self' or
-	// 'Unknown'.
+	// Name of the referenced issuer object or reserved names; for example, 'Self' or 'Unknown'.
 	Name *string
 }
 
 // IssuerProperties - The certificate issuer item containing certificate issuer metadata.
 type IssuerProperties struct {
 	// Certificate Identifier.
-	ID *ID
+	ID *string
 
 	// The issuer provider.
 	Provider *string
@@ -377,8 +354,7 @@ type IssuerPropertiesListResult struct {
 	NextLink *string
 
 	// READ-ONLY; A response message containing a list of certificate issuers in the key vault along with a link to the next page
-	// of
-	// certificate issuers.
+	// of certificate issuers.
 	Value []*IssuerProperties
 }
 
@@ -387,8 +363,8 @@ type KeyProperties struct {
 	// Elliptic curve name. For valid values, see JsonWebKeyCurveName.
 	Curve *CurveName
 
-	// Indicates if the private key can be exported. Release policy must be provided
-	// when creating the first version of an exportable key.
+	// Indicates if the private key can be exported. Release policy must be provided when creating the first version of an exportable
+	// key.
 	Exportable *bool
 
 	// The key size in bits. For example: 2048, 3072, or 4096 for RSA.
@@ -401,8 +377,7 @@ type KeyProperties struct {
 	ReuseKey *bool
 }
 
-// LifetimeAction - Action and its trigger that will be performed by Key Vault over the lifetime of
-// a certificate.
+// LifetimeAction - Action and its trigger that will be performed by Key Vault over the lifetime of a certificate.
 type LifetimeAction struct {
 	// The action that will be executed.
 	Action *LifetimeActionType
@@ -413,9 +388,8 @@ type LifetimeAction struct {
 
 // LifetimeActionTrigger - A condition to be satisfied for an action to be executed.
 type LifetimeActionTrigger struct {
-	// Days before expiry to attempt renewal. Value should be between 1 and
-	// validity_in_months multiplied by 27. If validity_in_months is 36, then value
-	// should be between 1 and 972 (36 * 27).
+	// Days before expiry to attempt renewal. Value should be between 1 and validity_in_months multiplied by 27. If validity_in_months
+	// is 36, then value should be between 1 and 972 (36 * 27).
 	DaysBeforeExpiry *int32
 
 	// Percentage of lifetime at which to trigger. Value should be between 1 and 99.
@@ -446,7 +420,7 @@ type OrganizationDetails struct {
 	AdminContacts []*AdministratorContact
 
 	// Id of the organization.
-	ID *ID
+	ID *string
 }
 
 // RestoreCertificateParameters - The certificate restore parameters.

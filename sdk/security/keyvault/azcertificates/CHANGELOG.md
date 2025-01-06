@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+* Generated module using typespec
 
 ## 1.3.0 (2024-11-06)
 

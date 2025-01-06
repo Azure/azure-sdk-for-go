@@ -23,6 +23,10 @@ import (
 
 // ManagementServer is a fake server for instances of the armcognitiveservices.ManagementClient type.
 type ManagementServer struct {
+	// CalculateModelCapacity is the fake for method ManagementClient.CalculateModelCapacity
+	// HTTP status codes to indicate success: http.StatusOK
+	CalculateModelCapacity func(ctx context.Context, parameters armcognitiveservices.CalculateModelCapacityParameter, options *armcognitiveservices.ManagementClientCalculateModelCapacityOptions) (resp azfake.Responder[armcognitiveservices.ManagementClientCalculateModelCapacityResponse], errResp azfake.ErrorResponder)
+
 	// CheckDomainAvailability is the fake for method ManagementClient.CheckDomainAvailability
 	// HTTP status codes to indicate success: http.StatusOK
 	CheckDomainAvailability func(ctx context.Context, parameters armcognitiveservices.CheckDomainAvailabilityParameter, options *armcognitiveservices.ManagementClientCheckDomainAvailabilityOptions) (resp azfake.Responder[armcognitiveservices.ManagementClientCheckDomainAvailabilityResponse], errResp azfake.ErrorResponder)
@@ -57,6 +61,8 @@ func (m *ManagementServerTransport) Do(req *http.Request) (*http.Response, error
 	var err error
 
 	switch method {
+	case "ManagementClient.CalculateModelCapacity":
+		resp, err = m.dispatchCalculateModelCapacity(req)
 	case "ManagementClient.CheckDomainAvailability":
 		resp, err = m.dispatchCheckDomainAvailability(req)
 	case "ManagementClient.CheckSKUAvailability":
@@ -69,6 +75,35 @@ func (m *ManagementServerTransport) Do(req *http.Request) (*http.Response, error
 		return nil, err
 	}
 
+	return resp, nil
+}
+
+func (m *ManagementServerTransport) dispatchCalculateModelCapacity(req *http.Request) (*http.Response, error) {
+	if m.srv.CalculateModelCapacity == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CalculateModelCapacity not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/calculateModelCapacity`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 1 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcognitiveservices.CalculateModelCapacityParameter](req)
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := m.srv.CalculateModelCapacity(req.Context(), body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CalculateModelCapacityResult, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

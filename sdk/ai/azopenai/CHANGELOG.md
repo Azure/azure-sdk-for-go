@@ -1,16 +1,28 @@
 # Release History
 
-## 0.7.1 (Unreleased)
+## 0.7.2 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
-- `MongoDBChatExtensionParameters.Authentication`'s type has been changed to a `OnYourDataUsernameAndPasswordAuthenticationOptions`. (PR#23620)
-
 ### Bugs Fixed
 
 ### Other Changes
+
+## 0.7.1 (2024-11-13)
+
+### Features Added
+
+- `StreamOptions` parameter added to `ChatCompletionsOptions` and `CompletionsOptions`.
+- `MaxCompletionTokens` parameter added to `ChatCompletionsOptions`.
+- `ParallelToolCalls` parameter added to `ChatCompletionsOptions`.
+
+### Breaking Changes
+
+- `MongoDBChatExtensionParameters.Authentication`'s type has been changed to a `OnYourDataUsernameAndPasswordAuthenticationOptions`. (PR#23620)
+- `GetCompletions` and `GetCompletionsStream` now receive different options (`CompletionsOptions` and `CompletionsStreamOptions` respectively)
+- `GetChatCompletions` and `GetChatCompletionsStream` now receive different options (`ChatCompletionsOptions` and `ChatCompletionsStreamOptions` respectively)
 
 ## 0.7.0 (2024-10-14)
 

@@ -1,5 +1,33 @@
 # Release History
 
+## 1.0.0 (2024-12-26)
+### Breaking Changes
+
+- Field `AllocatedValue`, `CreatedAt`, `ExpiryAt`, `PercentageUsed`, `UsedValue` of struct `FreeTrialProperties` has been removed
+
+### Features Added
+
+- New value `FreeTrialStateNotEligible`, `FreeTrialStateNotRegistered` added to enum type `FreeTrialState`
+- New value `ProvisioningStateCreating` added to enum type `ProvisioningState`
+- New value `QuotaNamesReporting` added to enum type `QuotaNames`
+- New enum type `CheckNameAvailabilityReason` with values `CheckNameAvailabilityReasonAlreadyExists`, `CheckNameAvailabilityReasonInvalid`
+- New enum type `OfferingType` with values `OfferingTypeGeneralAvailability`, `OfferingTypeNotApplicable`, `OfferingTypePrivatePreview`, `OfferingTypePublicPreview`
+- New function `NewAccountQuotasClient(string, azcore.TokenCredential, *arm.ClientOptions) (*AccountQuotasClient, error)`
+- New function `*AccountQuotasClient.Get(context.Context, string, string, QuotaNames, *AccountQuotasClientGetOptions) (AccountQuotasClientGetResponse, error)`
+- New function `*AccountQuotasClient.NewListByAccountPager(string, string, *AccountQuotasClientListByAccountOptions) *runtime.Pager[AccountQuotasClientListByAccountResponse]`
+- New function `*AccountsClient.CheckNameAvailability(context.Context, CheckNameAvailabilityRequest, *AccountsClientCheckNameAvailabilityOptions) (AccountsClientCheckNameAvailabilityResponse, error)`
+- New function `*ClientFactory.NewAccountQuotasClient() *AccountQuotasClient`
+- New struct `AccountFreeTrialProperties`
+- New struct `AccountQuota`
+- New struct `AccountQuotaListResult`
+- New struct `AccountQuotaProperties`
+- New struct `CheckNameAvailabilityRequest`
+- New struct `CheckNameAvailabilityResponse`
+- New field `LocalAuth` in struct `AccountProperties`
+- New field `LocalAuth` in struct `AccountUpdateProperties`
+- New field `OfferingType` in struct `QuotaProperties`
+
+
 ## 0.2.0 (2023-11-24)
 ### Features Added
 

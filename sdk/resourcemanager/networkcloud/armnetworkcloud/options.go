@@ -288,6 +288,13 @@ type ClusterManagersClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ClustersClientBeginContinueUpdateVersionOptions contains the optional parameters for the ClustersClient.BeginContinueUpdateVersion
+// method.
+type ClustersClientBeginContinueUpdateVersionOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // ClustersClientBeginCreateOrUpdateOptions contains the optional parameters for the ClustersClient.BeginCreateOrUpdate method.
 type ClustersClientBeginCreateOrUpdateOptions struct {
 	// Resumes the LRO from the provided token.
@@ -304,6 +311,15 @@ type ClustersClientBeginDeleteOptions struct {
 type ClustersClientBeginDeployOptions struct {
 	// The request body.
 	ClusterDeployParameters *ClusterDeployParameters
+
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ClustersClientBeginScanRuntimeOptions contains the optional parameters for the ClustersClient.BeginScanRuntime method.
+type ClustersClientBeginScanRuntimeOptions struct {
+	// The request body.
+	ClusterScanRuntimeParameters *ClusterScanRuntimeParameters
 
 	// Resumes the LRO from the provided token.
 	ResumeToken string
@@ -364,6 +380,39 @@ type ConsolesClientGetOptions struct {
 // ConsolesClientListByVirtualMachineOptions contains the optional parameters for the ConsolesClient.NewListByVirtualMachinePager
 // method.
 type ConsolesClientListByVirtualMachineOptions struct {
+	// placeholder for future optional parameters
+}
+
+// KubernetesClusterFeaturesClientBeginCreateOrUpdateOptions contains the optional parameters for the KubernetesClusterFeaturesClient.BeginCreateOrUpdate
+// method.
+type KubernetesClusterFeaturesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// KubernetesClusterFeaturesClientBeginDeleteOptions contains the optional parameters for the KubernetesClusterFeaturesClient.BeginDelete
+// method.
+type KubernetesClusterFeaturesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// KubernetesClusterFeaturesClientBeginUpdateOptions contains the optional parameters for the KubernetesClusterFeaturesClient.BeginUpdate
+// method.
+type KubernetesClusterFeaturesClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// KubernetesClusterFeaturesClientGetOptions contains the optional parameters for the KubernetesClusterFeaturesClient.Get
+// method.
+type KubernetesClusterFeaturesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// KubernetesClusterFeaturesClientListByKubernetesClusterOptions contains the optional parameters for the KubernetesClusterFeaturesClient.NewListByKubernetesClusterPager
+// method.
+type KubernetesClusterFeaturesClientListByKubernetesClusterOptions struct {
 	// placeholder for future optional parameters
 }
 

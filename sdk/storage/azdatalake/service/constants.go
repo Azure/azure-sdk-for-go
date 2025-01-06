@@ -14,6 +14,7 @@ import (
 // PublicAccessType defines values for AccessType - private (default) or file or filesystem.
 type PublicAccessType = filesystem.PublicAccessType
 
+// Not to be used anymore as public access is disabled.
 const (
 	File       PublicAccessType = filesystem.File
 	FileSystem PublicAccessType = filesystem.FileSystem

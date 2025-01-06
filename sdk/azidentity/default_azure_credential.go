@@ -39,7 +39,7 @@ type DefaultAzureCredentialOptions struct {
 // DefaultAzureCredential simplifies authentication while developing applications that deploy to Azure by
 // combining credentials used in Azure hosting environments and credentials used in local development. In
 // production, it's better to use a specific credential type so authentication is more predictable and easier
-// to debug.
+// to debug. For more information, see [DefaultAzureCredential overview].
 //
 // DefaultAzureCredential attempts to authenticate with each of these credential types, in the following order,
 // stopping when one provides a token:
@@ -55,6 +55,8 @@ type DefaultAzureCredentialOptions struct {
 // Consult the documentation for these credential types for more information on how they authenticate.
 // Once a credential has successfully authenticated, DefaultAzureCredential will use that credential for
 // every subsequent authentication.
+//
+// [DefaultAzureCredential overview]: https://aka.ms/azsdk/go/identity/credential-chains#defaultazurecredential-overview
 type DefaultAzureCredential struct {
 	chain *ChainedTokenCredential
 }

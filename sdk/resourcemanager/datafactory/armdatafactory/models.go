@@ -4825,8 +4825,18 @@ func (a *AzurePostgreSQLLinkedService) GetLinkedService() *LinkedService {
 
 // AzurePostgreSQLLinkedServiceTypeProperties - Azure PostgreSQL linked service properties.
 type AzurePostgreSQLLinkedServiceTypeProperties struct {
+	// The time to wait (in seconds) while trying to execute a command before terminating the attempt and generating an error.
+	// Set to zero for infinity. Type: integer.
+	CommandTimeout any
+
 	// An ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
 	ConnectionString any
+
+	// Database name for connection. Type: string.
+	Database any
+
+	// Gets or sets the .NET encoding that will be used to encode/decode PostgreSQL string data. Type: string
+	Encoding any
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string.
@@ -4834,6 +4844,33 @@ type AzurePostgreSQLLinkedServiceTypeProperties struct {
 
 	// The Azure key vault secret reference of password in connection string.
 	Password *AzureKeyVaultSecretReference
+
+	// The port for the connection. Type: integer.
+	Port any
+
+	// Determines the size of the internal buffer uses when reading. Increasing may improve performance if transferring large
+	// values from the database. Type: integer.
+	ReadBufferSize any
+
+	// SSL mode for connection. Type: integer. 0: disable, 1:allow, 2: prefer, 3: require, 4: verify-ca, 5: verify-full. Type:
+	// integer.
+	SSLMode any
+
+	// Server name for connection. Type: string.
+	Server any
+
+	// The time to wait (in seconds) while trying to establish a connection before terminating the attempt and generating an error.
+	// Type: integer.
+	Timeout any
+
+	// Gets or sets the session timezone. Type: string.
+	Timezone any
+
+	// Whether to trust the server certificate without validating it. Type: boolean.
+	TrustServerCertificate any
+
+	// Username for authentication. Type: string.
+	Username any
 }
 
 // AzurePostgreSQLSink - A copy activity Azure PostgreSQL sink.
@@ -15850,6 +15887,125 @@ func (h *HubspotSource) GetTabularSource() *TabularSource {
 	}
 }
 
+// IcebergDataset - Iceberg dataset.
+type IcebergDataset struct {
+	// REQUIRED; Linked service reference.
+	LinkedServiceName *LinkedServiceReference
+
+	// REQUIRED; Type of dataset.
+	Type *string
+
+	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
+	AdditionalProperties map[string]any
+
+	// List of tags that can be used for describing the Dataset.
+	Annotations []any
+
+	// Dataset description.
+	Description *string
+
+	// The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder
+
+	// Parameters for dataset.
+	Parameters map[string]*ParameterSpecification
+
+	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
+	// DatasetSchemaDataElement.
+	Schema any
+
+	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
+	Structure any
+
+	// Iceberg dataset properties.
+	TypeProperties *IcebergDatasetTypeProperties
+}
+
+// GetDataset implements the DatasetClassification interface for type IcebergDataset.
+func (i *IcebergDataset) GetDataset() *Dataset {
+	return &Dataset{
+		AdditionalProperties: i.AdditionalProperties,
+		Annotations:          i.Annotations,
+		Description:          i.Description,
+		Folder:               i.Folder,
+		LinkedServiceName:    i.LinkedServiceName,
+		Parameters:           i.Parameters,
+		Schema:               i.Schema,
+		Structure:            i.Structure,
+		Type:                 i.Type,
+	}
+}
+
+// IcebergDatasetTypeProperties - Iceberg dataset properties.
+type IcebergDatasetTypeProperties struct {
+	// REQUIRED; The location of the iceberg storage. Setting a file name is not allowed for iceberg format.
+	Location DatasetLocationClassification
+}
+
+// IcebergSink - A copy activity Iceberg sink.
+type IcebergSink struct {
+	// REQUIRED; Copy sink type.
+	Type *string
+
+	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
+	AdditionalProperties map[string]any
+
+	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
+	DisableMetricsCollection any
+
+	// Iceberg format settings.
+	FormatSettings *IcebergWriteSettings
+
+	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
+	MaxConcurrentConnections any
+
+	// Sink retry count. Type: integer (or Expression with resultType integer).
+	SinkRetryCount any
+
+	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+	SinkRetryWait any
+
+	// Iceberg store settings.
+	StoreSettings StoreWriteSettingsClassification
+
+	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
+	WriteBatchSize any
+
+	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+	WriteBatchTimeout any
+}
+
+// GetCopySink implements the CopySinkClassification interface for type IcebergSink.
+func (i *IcebergSink) GetCopySink() *CopySink {
+	return &CopySink{
+		AdditionalProperties:     i.AdditionalProperties,
+		DisableMetricsCollection: i.DisableMetricsCollection,
+		MaxConcurrentConnections: i.MaxConcurrentConnections,
+		SinkRetryCount:           i.SinkRetryCount,
+		SinkRetryWait:            i.SinkRetryWait,
+		Type:                     i.Type,
+		WriteBatchSize:           i.WriteBatchSize,
+		WriteBatchTimeout:        i.WriteBatchTimeout,
+	}
+}
+
+// IcebergWriteSettings - Iceberg write settings.
+type IcebergWriteSettings struct {
+	// REQUIRED; The write setting type.
+	Type *string
+
+	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
+	AdditionalProperties map[string]any
+}
+
+// GetFormatWriteSettings implements the FormatWriteSettingsClassification interface for type IcebergWriteSettings.
+func (i *IcebergWriteSettings) GetFormatWriteSettings() *FormatWriteSettings {
+	return &FormatWriteSettings{
+		AdditionalProperties: i.AdditionalProperties,
+		Type:                 i.Type,
+	}
+}
+
 // IfConditionActivity - This activity evaluates a boolean expression and executes either the activities under the ifTrueActivities
 // property or the ifFalseActivities property depending on the result of the expression.
 type IfConditionActivity struct {
@@ -18437,7 +18593,8 @@ type MariaDBLinkedServiceTypeProperties struct {
 	Database any
 
 	// The version of the MariaDB driver. Type: string. V1 or empty for legacy driver, V2 for new driver. V1 can support connection
-	// string and property bag, V2 can only support connection string.
+	// string and property bag, V2 can only support connection string. The legacy
+	// driver is scheduled for deprecation by October 2024.
 	DriverVersion any
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
@@ -18450,8 +18607,17 @@ type MariaDBLinkedServiceTypeProperties struct {
 	// The port for the connection. Type: integer.
 	Port any
 
+	// This option specifies whether the driver uses TLS encryption and verification when connecting to MariaDB. E.g., SSLMode=.
+	// Options: DISABLED (0) / PREFERRED (1) (Default) / REQUIRED (2) / VERIFYCA (3)
+	// / VERIFYIDENTITY (4), REQUIRED (2) is recommended to only allow connections encrypted with SSL/TLS.
+	SSLMode any
+
 	// Server name for connection. Type: string.
 	Server any
+
+	// This option specifies whether to use a CA certificate from the system trust store, or from a specified PEM file. E.g. UseSystemTrustStore=;
+	// Options: Enabled (1) / Disabled (0) (Default)
+	UseSystemTrustStore any
 
 	// Username for authentication. Type: string.
 	Username any
@@ -19629,8 +19795,18 @@ func (m *MySQLLinkedService) GetLinkedService() *LinkedService {
 
 // MySQLLinkedServiceTypeProperties - MySQL linked service properties.
 type MySQLLinkedServiceTypeProperties struct {
+	// This allows the special “zero” date value 0000-00-00 to be retrieved from the database. Type: boolean.
+	AllowZeroDateTime any
+
 	// The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
 	ConnectionString any
+
+	// The length of time (in seconds) to wait for a connection to the server before terminating the attempt and generating an
+	// error. Type: integer.
+	ConnectionTimeout any
+
+	// True to return DateTime.MinValue for date or datetime columns that have disallowed values. Type: boolean.
+	ConvertZeroDateTime any
 
 	// Database name for connection. Type: string.
 	Database any
@@ -19643,17 +19819,31 @@ type MySQLLinkedServiceTypeProperties struct {
 	// Type: string.
 	EncryptedCredential *string
 
+	// Determines which column type (if any) should be read as a GUID. Type: string. None: No column types are automatically read
+	// as a Guid; Char36: All CHAR(36) columns are read/written as a Guid using
+	// lowercase hex with hyphens, which matches UUID.
+	GUIDFormat any
+
 	// The Azure key vault secret reference of password in connection string.
 	Password *AzureKeyVaultSecretReference
 
 	// The port for the connection. Type: integer.
 	Port any
 
+	// The path to the client’s SSL certificate file in PEM format. SslKey must also be specified. Type: string.
+	SSLCert any
+
+	// The path to the client’s SSL private key in PEM format. SslCert must also be specified. Type: string.
+	SSLKey any
+
 	// SSL mode for connection. Type: integer. 0: disable, 1: prefer, 2: require, 3: verify-ca, 4: verify-full.
 	SSLMode any
 
 	// Server name for connection. Type: string.
 	Server any
+
+	// When set to true, TINYINT(1) values are returned as booleans. Type: bool.
+	TreatTinyAsBoolean any
 
 	// Use system trust store for connection. Type: integer. 0: enable, 1: disable.
 	UseSystemTrustStore any
@@ -22448,6 +22638,9 @@ func (p *PostgreSQLV2LinkedService) GetLinkedService() *LinkedService {
 
 // PostgreSQLV2LinkedServiceTypeProperties - PostgreSqlV2 linked service properties.
 type PostgreSQLV2LinkedServiceTypeProperties struct {
+	// REQUIRED; The authentication type to use. Type: string.
+	AuthenticationType any
+
 	// REQUIRED; Database name for connection. Type: string.
 	Database any
 
@@ -26115,6 +26308,10 @@ type SalesforceV2Source struct {
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
 	MaxConcurrentConnections any
 
+	// Page size for each http request, too large pageSize will caused timeout, default 300,000. Type: integer (or Expression
+	// with resultType integer).
+	PageSize any
+
 	// You can only use Salesforce Object Query Language (SOQL) query with limitations. For SOQL limitations, see this article:
 	// https://developer.salesforce.com/docs/atlas.en-us.apiasynch.meta/api
 	// asynch/queries.htm#SOQL%20Considerations. If query is not specified, all the data of the Salesforce object specified in
@@ -28393,6 +28590,9 @@ type ServiceNowV2Source struct {
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
 	MaxConcurrentConnections any
 
+	// Page size of the result. Type: integer (or Expression with resultType integer).
+	PageSize any
+
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	QueryTimeout any
 
@@ -29349,6 +29549,9 @@ type SnowflakeLinkedV2ServiceTypeProperties struct {
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string.
 	EncryptedCredential *string
+
+	// The host name of the Snowflake account.
+	Host any
 
 	// The Azure key vault secret reference of password in connection string.
 	Password SecretBaseClassification

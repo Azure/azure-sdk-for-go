@@ -53,7 +53,18 @@ func GetReadmePathFromChangedFiles(ctx context.Context, client *query.Client, fi
 		readmeFiles[readme] = true
 	}
 	if len(readmeFiles) > 1 {
-		return "", fmt.Errorf("cannot determine which RP to release because we have the following readme files involved: %+v", getMapKeys(readmeFiles))
+		// filter specification/xxx/resource-manager/readme.md
+		rmReadmeFile := make(map[Readme]bool)
+		for readmePath, _ := range readmeFiles {
+			if strings.Contains(string(readmePath), "resource-manager/readme.md") {
+				rmReadmeFile[readmePath] = true
+			}
+		}
+		if len(rmReadmeFile) == 1 {
+			readmeFiles = rmReadmeFile
+		} else {
+			return "", fmt.Errorf("cannot determine which RP to release because we have the following readme files involved: %+v", getMapKeys(readmeFiles))
+		}
 	}
 	if len(readmeFiles) == 0 {
 		return "", fmt.Errorf("cannot get any readme files from these changed files: [%s]", strings.Join(files, ", "))

@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
-// SenderClient contains the methods for the Microsoft.EventGrid namespace.
+// SenderClient contains the methods for the Sender group.
 // Don't use this type directly, use a constructor function instead.
 type SenderClient struct {
 	data senderData

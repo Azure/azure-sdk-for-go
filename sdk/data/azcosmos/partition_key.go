@@ -19,6 +19,13 @@ var NullPartitionKey PartitionKey = PartitionKey{
 	values: []interface{}{nil},
 }
 
+// NewPartitionKey creates a new partition key.
+func NewPartitionKey() PartitionKey {
+	return PartitionKey{
+		values: []interface{}{},
+	}
+}
+
 // NewPartitionKeyString creates a partition key with a string value.
 func NewPartitionKeyString(value string) PartitionKey {
 	components := []interface{}{value}
@@ -41,6 +48,30 @@ func NewPartitionKeyNumber(value float64) PartitionKey {
 	return PartitionKey{
 		values: components,
 	}
+}
+
+// AppendString appends a string value to the partition key.
+func (pk PartitionKey) AppendString(value string) PartitionKey {
+	pk.values = append(pk.values, value)
+	return pk
+}
+
+// AppendBool appends a boolean value to the partition key.
+func (pk PartitionKey) AppendBool(value bool) PartitionKey {
+	pk.values = append(pk.values, value)
+	return pk
+}
+
+// AppendNumber appends a numeric value to the partition key.
+func (pk PartitionKey) AppendNumber(value float64) PartitionKey {
+	pk.values = append(pk.values, value)
+	return pk
+}
+
+// AppendNull appends a null value to the partition key.
+func (pk PartitionKey) AppendNull() PartitionKey {
+	pk.values = append(pk.values, nil)
+	return pk
 }
 
 func (pk *PartitionKey) toJsonString() (string, error) {

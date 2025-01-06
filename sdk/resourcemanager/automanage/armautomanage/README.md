@@ -1,7 +1,5 @@
 # Azure Automanage Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automanage/armautomanage)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automanage/armautomanage)
-
 The `armautomanage` module provides operations for working with Azure Automanage.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/automanage/armautomanage)
@@ -35,7 +33,7 @@ import (
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Automanage.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Automanage. The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -64,7 +62,7 @@ clientFactory, err := armautomanage.NewClientFactory(<subscription ID>, cred, &o
 
 ## Clients
 
-A client groups a set of related APIs, providing access to its functionality.  Create one or more clients to access the APIs you require using client factory.
+A client groups a set of related APIs, providing access to its functionality. Create one or more clients to access the APIs you require using client factory.
 
 ```go
 reportsClient := clientFactory.NewReportsClient()
@@ -103,7 +101,7 @@ properties := armautomanage.ConfigurationProfileProperties{
 location := "eastus"
 environment := "dev"
 
-// tags may be omitted 
+// tags may be omitted
 tags := make(map[string]*string)
 tags["environment"] = &environment
 
@@ -116,7 +114,6 @@ profile := armautomanage.ConfigurationProfile{
 newProfile, err := configProfilesClient.CreateOrUpdate(context.Background(), configurationProfileName, "resourceGroupName", profile, nil)
 ```
 
-
 ## Get an Automanage Configuration Profile
 
 ```go
@@ -126,13 +123,11 @@ data, err := json.MarshalIndent(profile, "", "   ")
 fmt.Println(string(data))
 ```
 
-
 ## Delete an Automanage Configuration Profile
 
 ```go
 _, err := configProfilesClient.Delete(context.Background(), "resourceGroupName", "configurationProfileName", nil)
 ```
-
 
 ## Get an Automanage Profile Assignment
 
@@ -141,7 +136,6 @@ assignment, err := assignmentClient.Get(context.Background(), "resourceGroupName
 data, err := json.MarshalIndent(assignment, "", "   ")
 fmt.Println(string(data))
 ```
-
 
 ## Create an Assignment between a VM and an Automanage Best Practices Production Configuration Profile
 
@@ -160,7 +154,6 @@ assignment := armautomanage.ConfigurationProfileAssignment{
 newAssignment, err = assignmentClient.CreateOrUpdate(context.Background(), "default", "resourceGroupName", "vmName", assignment, nil)
 ```
 
-
 ## Create an Assignment between a VM and a Custom Automanage Configuration Profile
 
 ```go
@@ -177,7 +170,6 @@ assignment := armautomanage.ConfigurationProfileAssignment{
 // assignment name must be 'default'
 newAssignment, err = assignmentClient.CreateOrUpdate(context.Background(), "default", "resourceGroupName", "vmName", assignment, nil)
 ```
-
 
 ## Provide Feedback
 

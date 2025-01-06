@@ -6,8 +6,8 @@ package internal
 // Constants to identify the module
 const (
 	// ModuleName is the module name that shows in telemetry.
-	ModuleName = "azsystemevents"
+	ModuleName = "github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/azsystemevents"
 
 	// ModuleVersion is the semantic version (see http://semver.org) of this module.
-	ModuleVersion = "v0.4.4"
+	ModuleVersion = "v0.6.0"
 )

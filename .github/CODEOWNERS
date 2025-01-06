@@ -540,7 +540,7 @@
 #/<NotInRepo>/          @shahbj79 @mit2nil @aygoya @ganganarayanan
 
 # ServiceLabel: %Synapse
-#/<NotInRepo>/          @wonner @zesluo
+#/<NotInRepo>/          @zesluo
 
 # ServiceLabel: %Tables
 #/<NotInRepo>/          @klaaslanghout
@@ -624,6 +624,11 @@
 # Add owners for go sdk tool
 /eng/tools/generator          @ArcturusZhang @lirenhe @tadelesh
 /eng/tools/internal           @ArcturusZhang @lirenhe @tadelesh
+
+# Add owners for typespec emitter config
+/eng/emitter-package-lock.json  @ArcturusZhang @lirenhe @tadelesh @richardpark-msft @jhendrixMSFT @rickwinter @chlowell @gracewilcox
+/eng/emitter-package.json       @ArcturusZhang @lirenhe @tadelesh @richardpark-msft @jhendrixMSFT @rickwinter @chlowell @gracewilcox
+
 
 # Add owners for notifications for specific pipelines
 /eng/common/pipelines/codeowners-linter.yml       @rickwinter

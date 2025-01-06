@@ -8,6 +8,7 @@ package azsystemevents_test
 
 import (
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/azsystemevents"
@@ -102,7 +103,7 @@ func TestConsumeCloudEventAcsRouterJobReceivedEvent(t *testing.T) {
 			"ttlSeconds": 36
 			}
 		],
-		"scheduledOn": "2007-03-28T19:13:50+00:00",
+		"scheduledOn": "2022-02-17T00:55:25.1736293Z",		
 		"unavailableForMatching": false
 		},
 		"type": "Microsoft.Communication.RouterJobReceived",
@@ -110,13 +111,15 @@ func TestConsumeCloudEventAcsRouterJobReceivedEvent(t *testing.T) {
 		"time": "2022-02-17T00:55:25.1736293Z"
 	}`
 
-	// TODO: formatting for the time is different - not ISO.
-	// "scheduledOn": "3/28/2007 7:13:50 PM +00:00",
-
 	event := parseCloudEvent(t, requestContent)
 
 	sysEvent := deserializeSystemEvent[azsystemevents.ACSRouterJobReceivedEventData](t, event.Data)
 	require.Equal(t, azsystemevents.ACSRouterJobStatusPendingClassification, *sysEvent.JobStatus)
+
+	expectedTime, err := time.Parse(time.RFC3339Nano, "2022-02-17T00:55:25.1736293Z")
+	require.NoError(t, err)
+
+	require.Equal(t, expectedTime, *sysEvent.ScheduledOn)
 }
 
 // Health Data Services events

@@ -42,6 +42,8 @@ const (
 	developerSignOnClientID = "04b07795-8ddb-461a-bbee-02f9e1bf7b46"
 	defaultSuffix           = "/.default"
 
+	scopeLogFmt = "%s.GetToken() acquired a token for scope %q"
+
 	traceNamespace      = "Microsoft.Entra"
 	traceOpGetToken     = "GetToken"
 	traceOpAuthenticate = "Authenticate"

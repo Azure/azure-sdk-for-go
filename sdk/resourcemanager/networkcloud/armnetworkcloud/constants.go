@@ -10,7 +10,7 @@ package armnetworkcloud
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud"
-	moduleVersion = "v1.1.0"
+	moduleVersion = "v1.2.0-beta.1"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -506,17 +506,34 @@ func PossibleCloudServicesNetworkProvisioningStateValues() []CloudServicesNetwor
 type ClusterConnectionStatus string
 
 const (
-	ClusterConnectionStatusConnected ClusterConnectionStatus = "Connected"
-	ClusterConnectionStatusTimeout   ClusterConnectionStatus = "Timeout"
-	ClusterConnectionStatusUndefined ClusterConnectionStatus = "Undefined"
+	ClusterConnectionStatusConnected    ClusterConnectionStatus = "Connected"
+	ClusterConnectionStatusDisconnected ClusterConnectionStatus = "Disconnected"
+	ClusterConnectionStatusTimeout      ClusterConnectionStatus = "Timeout"
+	ClusterConnectionStatusUndefined    ClusterConnectionStatus = "Undefined"
 )
 
 // PossibleClusterConnectionStatusValues returns the possible values for the ClusterConnectionStatus const type.
 func PossibleClusterConnectionStatusValues() []ClusterConnectionStatus {
 	return []ClusterConnectionStatus{
 		ClusterConnectionStatusConnected,
+		ClusterConnectionStatusDisconnected,
 		ClusterConnectionStatusTimeout,
 		ClusterConnectionStatusUndefined,
+	}
+}
+
+// ClusterContinueUpdateVersionMachineGroupTargetingMode - The mode by which the cluster will target the next grouping of
+// servers to continue the update.
+type ClusterContinueUpdateVersionMachineGroupTargetingMode string
+
+const (
+	ClusterContinueUpdateVersionMachineGroupTargetingModeAlphaByRack ClusterContinueUpdateVersionMachineGroupTargetingMode = "AlphaByRack"
+)
+
+// PossibleClusterContinueUpdateVersionMachineGroupTargetingModeValues returns the possible values for the ClusterContinueUpdateVersionMachineGroupTargetingMode const type.
+func PossibleClusterContinueUpdateVersionMachineGroupTargetingModeValues() []ClusterContinueUpdateVersionMachineGroupTargetingMode {
+	return []ClusterContinueUpdateVersionMachineGroupTargetingMode{
+		ClusterContinueUpdateVersionMachineGroupTargetingModeAlphaByRack,
 	}
 }
 
@@ -531,6 +548,7 @@ const (
 	ClusterDetailedStatusFailed            ClusterDetailedStatus = "Failed"
 	ClusterDetailedStatusPendingDeployment ClusterDetailedStatus = "PendingDeployment"
 	ClusterDetailedStatusRunning           ClusterDetailedStatus = "Running"
+	ClusterDetailedStatusUpdatePaused      ClusterDetailedStatus = "UpdatePaused"
 	ClusterDetailedStatusUpdating          ClusterDetailedStatus = "Updating"
 )
 
@@ -544,6 +562,7 @@ func PossibleClusterDetailedStatusValues() []ClusterDetailedStatus {
 		ClusterDetailedStatusFailed,
 		ClusterDetailedStatusPendingDeployment,
 		ClusterDetailedStatusRunning,
+		ClusterDetailedStatusUpdatePaused,
 		ClusterDetailedStatusUpdating,
 	}
 }
@@ -676,6 +695,38 @@ func PossibleClusterProvisioningStateValues() []ClusterProvisioningState {
 	}
 }
 
+// ClusterScanRuntimeParametersScanActivity - The choice of if the scan operation should run the scan.
+type ClusterScanRuntimeParametersScanActivity string
+
+const (
+	ClusterScanRuntimeParametersScanActivityScan ClusterScanRuntimeParametersScanActivity = "Scan"
+	ClusterScanRuntimeParametersScanActivitySkip ClusterScanRuntimeParametersScanActivity = "Skip"
+)
+
+// PossibleClusterScanRuntimeParametersScanActivityValues returns the possible values for the ClusterScanRuntimeParametersScanActivity const type.
+func PossibleClusterScanRuntimeParametersScanActivityValues() []ClusterScanRuntimeParametersScanActivity {
+	return []ClusterScanRuntimeParametersScanActivity{
+		ClusterScanRuntimeParametersScanActivityScan,
+		ClusterScanRuntimeParametersScanActivitySkip,
+	}
+}
+
+// ClusterSecretArchiveEnabled - The indicator if the specified key vault should be used to archive the secrets of the cluster.
+type ClusterSecretArchiveEnabled string
+
+const (
+	ClusterSecretArchiveEnabledFalse ClusterSecretArchiveEnabled = "False"
+	ClusterSecretArchiveEnabledTrue  ClusterSecretArchiveEnabled = "True"
+)
+
+// PossibleClusterSecretArchiveEnabledValues returns the possible values for the ClusterSecretArchiveEnabled const type.
+func PossibleClusterSecretArchiveEnabledValues() []ClusterSecretArchiveEnabled {
+	return []ClusterSecretArchiveEnabled{
+		ClusterSecretArchiveEnabledFalse,
+		ClusterSecretArchiveEnabledTrue,
+	}
+}
+
 // ClusterType - The type of rack configuration for the cluster.
 type ClusterType string
 
@@ -689,6 +740,22 @@ func PossibleClusterTypeValues() []ClusterType {
 	return []ClusterType{
 		ClusterTypeMultiRack,
 		ClusterTypeSingleRack,
+	}
+}
+
+// ClusterUpdateStrategyType - The mode of operation for runtime protection.
+type ClusterUpdateStrategyType string
+
+const (
+	ClusterUpdateStrategyTypePauseAfterRack ClusterUpdateStrategyType = "PauseAfterRack"
+	ClusterUpdateStrategyTypeRack           ClusterUpdateStrategyType = "Rack"
+)
+
+// PossibleClusterUpdateStrategyTypeValues returns the possible values for the ClusterUpdateStrategyType const type.
+func PossibleClusterUpdateStrategyTypeValues() []ClusterUpdateStrategyType {
+	return []ClusterUpdateStrategyType{
+		ClusterUpdateStrategyTypePauseAfterRack,
+		ClusterUpdateStrategyTypeRack,
 	}
 }
 
@@ -708,7 +775,7 @@ func PossibleConsoleDetailedStatusValues() []ConsoleDetailedStatus {
 	}
 }
 
-// ConsoleEnabled - The credentials used to login to the image repository that has access to the specified image.
+// ConsoleEnabled - The indicator of whether the console access is enabled.
 type ConsoleEnabled string
 
 const (
@@ -952,6 +1019,81 @@ func PossibleKubernetesClusterDetailedStatusValues() []KubernetesClusterDetailed
 	}
 }
 
+// KubernetesClusterFeatureAvailabilityLifecycle - The lifecycle indicator of the feature.
+type KubernetesClusterFeatureAvailabilityLifecycle string
+
+const (
+	KubernetesClusterFeatureAvailabilityLifecycleGenerallyAvailable KubernetesClusterFeatureAvailabilityLifecycle = "GenerallyAvailable"
+	KubernetesClusterFeatureAvailabilityLifecyclePreview            KubernetesClusterFeatureAvailabilityLifecycle = "Preview"
+)
+
+// PossibleKubernetesClusterFeatureAvailabilityLifecycleValues returns the possible values for the KubernetesClusterFeatureAvailabilityLifecycle const type.
+func PossibleKubernetesClusterFeatureAvailabilityLifecycleValues() []KubernetesClusterFeatureAvailabilityLifecycle {
+	return []KubernetesClusterFeatureAvailabilityLifecycle{
+		KubernetesClusterFeatureAvailabilityLifecycleGenerallyAvailable,
+		KubernetesClusterFeatureAvailabilityLifecyclePreview,
+	}
+}
+
+// KubernetesClusterFeatureDetailedStatus - The detailed status of the feature.
+type KubernetesClusterFeatureDetailedStatus string
+
+const (
+	KubernetesClusterFeatureDetailedStatusError        KubernetesClusterFeatureDetailedStatus = "Error"
+	KubernetesClusterFeatureDetailedStatusInstalled    KubernetesClusterFeatureDetailedStatus = "Installed"
+	KubernetesClusterFeatureDetailedStatusProvisioning KubernetesClusterFeatureDetailedStatus = "Provisioning"
+)
+
+// PossibleKubernetesClusterFeatureDetailedStatusValues returns the possible values for the KubernetesClusterFeatureDetailedStatus const type.
+func PossibleKubernetesClusterFeatureDetailedStatusValues() []KubernetesClusterFeatureDetailedStatus {
+	return []KubernetesClusterFeatureDetailedStatus{
+		KubernetesClusterFeatureDetailedStatusError,
+		KubernetesClusterFeatureDetailedStatusInstalled,
+		KubernetesClusterFeatureDetailedStatusProvisioning,
+	}
+}
+
+// KubernetesClusterFeatureProvisioningState - The provisioning state of the Kubernetes cluster feature.
+type KubernetesClusterFeatureProvisioningState string
+
+const (
+	KubernetesClusterFeatureProvisioningStateAccepted  KubernetesClusterFeatureProvisioningState = "Accepted"
+	KubernetesClusterFeatureProvisioningStateCanceled  KubernetesClusterFeatureProvisioningState = "Canceled"
+	KubernetesClusterFeatureProvisioningStateDeleting  KubernetesClusterFeatureProvisioningState = "Deleting"
+	KubernetesClusterFeatureProvisioningStateFailed    KubernetesClusterFeatureProvisioningState = "Failed"
+	KubernetesClusterFeatureProvisioningStateSucceeded KubernetesClusterFeatureProvisioningState = "Succeeded"
+	KubernetesClusterFeatureProvisioningStateUpdating  KubernetesClusterFeatureProvisioningState = "Updating"
+)
+
+// PossibleKubernetesClusterFeatureProvisioningStateValues returns the possible values for the KubernetesClusterFeatureProvisioningState const type.
+func PossibleKubernetesClusterFeatureProvisioningStateValues() []KubernetesClusterFeatureProvisioningState {
+	return []KubernetesClusterFeatureProvisioningState{
+		KubernetesClusterFeatureProvisioningStateAccepted,
+		KubernetesClusterFeatureProvisioningStateCanceled,
+		KubernetesClusterFeatureProvisioningStateDeleting,
+		KubernetesClusterFeatureProvisioningStateFailed,
+		KubernetesClusterFeatureProvisioningStateSucceeded,
+		KubernetesClusterFeatureProvisioningStateUpdating,
+	}
+}
+
+// KubernetesClusterFeatureRequired - The indicator of if the feature is required or optional. Optional features may be deleted
+// by the user, while required features are managed with the kubernetes cluster lifecycle.
+type KubernetesClusterFeatureRequired string
+
+const (
+	KubernetesClusterFeatureRequiredFalse KubernetesClusterFeatureRequired = "False"
+	KubernetesClusterFeatureRequiredTrue  KubernetesClusterFeatureRequired = "True"
+)
+
+// PossibleKubernetesClusterFeatureRequiredValues returns the possible values for the KubernetesClusterFeatureRequired const type.
+func PossibleKubernetesClusterFeatureRequiredValues() []KubernetesClusterFeatureRequired {
+	return []KubernetesClusterFeatureRequired{
+		KubernetesClusterFeatureRequiredFalse,
+		KubernetesClusterFeatureRequiredTrue,
+	}
+}
+
 // KubernetesClusterNodeDetailedStatus - The detailed state of this node.
 type KubernetesClusterNodeDetailedStatus string
 
@@ -1181,6 +1323,42 @@ func PossibleMachineSKUDiskConnectionTypeValues() []MachineSKUDiskConnectionType
 	}
 }
 
+// ManagedServiceIdentitySelectorType - The type of managed identity that is being selected.
+type ManagedServiceIdentitySelectorType string
+
+const (
+	ManagedServiceIdentitySelectorTypeSystemAssignedIdentity ManagedServiceIdentitySelectorType = "SystemAssignedIdentity"
+	ManagedServiceIdentitySelectorTypeUserAssignedIdentity   ManagedServiceIdentitySelectorType = "UserAssignedIdentity"
+)
+
+// PossibleManagedServiceIdentitySelectorTypeValues returns the possible values for the ManagedServiceIdentitySelectorType const type.
+func PossibleManagedServiceIdentitySelectorTypeValues() []ManagedServiceIdentitySelectorType {
+	return []ManagedServiceIdentitySelectorType{
+		ManagedServiceIdentitySelectorTypeSystemAssignedIdentity,
+		ManagedServiceIdentitySelectorTypeUserAssignedIdentity,
+	}
+}
+
+// ManagedServiceIdentityType - Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+type ManagedServiceIdentityType string
+
+const (
+	ManagedServiceIdentityTypeNone                       ManagedServiceIdentityType = "None"
+	ManagedServiceIdentityTypeSystemAssigned             ManagedServiceIdentityType = "SystemAssigned"
+	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned,UserAssigned"
+	ManagedServiceIdentityTypeUserAssigned               ManagedServiceIdentityType = "UserAssigned"
+)
+
+// PossibleManagedServiceIdentityTypeValues returns the possible values for the ManagedServiceIdentityType const type.
+func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
+	return []ManagedServiceIdentityType{
+		ManagedServiceIdentityTypeNone,
+		ManagedServiceIdentityTypeSystemAssigned,
+		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
+		ManagedServiceIdentityTypeUserAssigned,
+	}
+}
+
 // Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
 // value is "user,system"
 type Origin string
@@ -1272,12 +1450,16 @@ func PossibleRackProvisioningStateValues() []RackProvisioningState {
 type RackSKUProvisioningState string
 
 const (
+	RackSKUProvisioningStateCanceled  RackSKUProvisioningState = "Canceled"
+	RackSKUProvisioningStateFailed    RackSKUProvisioningState = "Failed"
 	RackSKUProvisioningStateSucceeded RackSKUProvisioningState = "Succeeded"
 )
 
 // PossibleRackSKUProvisioningStateValues returns the possible values for the RackSKUProvisioningState const type.
 func PossibleRackSKUProvisioningStateValues() []RackSKUProvisioningState {
 	return []RackSKUProvisioningState{
+		RackSKUProvisioningStateCanceled,
+		RackSKUProvisioningStateFailed,
 		RackSKUProvisioningStateSucceeded,
 	}
 }
@@ -1332,6 +1514,28 @@ func PossibleRemoteVendorManagementStatusValues() []RemoteVendorManagementStatus
 		RemoteVendorManagementStatusDisabled,
 		RemoteVendorManagementStatusEnabled,
 		RemoteVendorManagementStatusUnsupported,
+	}
+}
+
+// RuntimeProtectionEnforcementLevel - The mode of operation for runtime protection.
+type RuntimeProtectionEnforcementLevel string
+
+const (
+	RuntimeProtectionEnforcementLevelAudit    RuntimeProtectionEnforcementLevel = "Audit"
+	RuntimeProtectionEnforcementLevelDisabled RuntimeProtectionEnforcementLevel = "Disabled"
+	RuntimeProtectionEnforcementLevelOnDemand RuntimeProtectionEnforcementLevel = "OnDemand"
+	RuntimeProtectionEnforcementLevelPassive  RuntimeProtectionEnforcementLevel = "Passive"
+	RuntimeProtectionEnforcementLevelRealTime RuntimeProtectionEnforcementLevel = "RealTime"
+)
+
+// PossibleRuntimeProtectionEnforcementLevelValues returns the possible values for the RuntimeProtectionEnforcementLevel const type.
+func PossibleRuntimeProtectionEnforcementLevelValues() []RuntimeProtectionEnforcementLevel {
+	return []RuntimeProtectionEnforcementLevel{
+		RuntimeProtectionEnforcementLevelAudit,
+		RuntimeProtectionEnforcementLevelDisabled,
+		RuntimeProtectionEnforcementLevelOnDemand,
+		RuntimeProtectionEnforcementLevelPassive,
+		RuntimeProtectionEnforcementLevelRealTime,
 	}
 }
 

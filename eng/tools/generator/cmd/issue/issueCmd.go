@@ -116,17 +116,17 @@ func (c *commandContext) execute() error {
 	if err != nil {
 		return err
 	}
+	// validate the config
+	if err := c.validateConfig(*cfg); err != nil {
+		log.Printf("validate config fail:error(%s)", err.Error())
+	}
+	// output the config to stdout after filtering out some invalid request,  so that the user could always get a usable config
 	// write config to stdout
 	b, err := json.MarshalIndent(*cfg, "", "  ")
 	if err != nil {
 		return err
 	}
 	fmt.Println(string(b))
-	// we first output the config to stdout, then validate it so that the user could always get a usable config
-	// validate the config
-	if err := c.validateConfig(*cfg); err != nil {
-		return err
-	}
 	return nil
 }
 

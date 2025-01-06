@@ -266,24 +266,8 @@ func (t *transformer) replaceDocs() error {
 	log.Printf("replaceDocs()")
 
 	err := transformFiles(t.fileCache, "replaceDocs", []string{"client.go"}, func(text string) (string, error) {
-		docString := `
-// CreateVectorStoreFile - Create a vector store file by attaching a file to a vector store.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01-preview
-//   - vectorStoreID - The ID of the vector store for which to create a File.
-//   - options - CreateVectorStoreFileOptions contains the optional parameters for the Client.CreateVectorStoreFile method.
-`
-		newDocString := `
-// CreateVectorStoreFile - Create a vector store file by attaching a file to a vector store.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01-preview
-//   - vectorStoreID - The ID of the vector store for which to create a File.
-//   - body - Request object for creating a vector store file.
-//   - options - CreateVectorStoreFileOptions contains the optional parameters for the Client.CreateVectorStoreFile method.
-`
-		text = strings.ReplaceAll(text, docString, newDocString)
+		docStringRE := regexp.MustCompile(`(?s)(- options - CreateVectorStoreFileOptions)`)
+		text = docStringRE.ReplaceAllString(text, "  - body - Request object for creating a vector store file.\n"+`//  $1`)
 		return text, nil
 	}, nil)
 	return err

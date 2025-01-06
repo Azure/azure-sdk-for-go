@@ -1,6 +1,7 @@
 # Release History
 
 ## 0.6.1 (2023-06-23)
+### Other Changes
 
 - Deprecated: use github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmosforpostgresql/armcosmosforpostgresql instead.
 

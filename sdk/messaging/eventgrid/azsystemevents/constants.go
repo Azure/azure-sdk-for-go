@@ -943,139 +943,6 @@ func PossibleHealthcareFhirResourceTypeValues() []HealthcareFhirResourceType {
 	}
 }
 
-// MediaJobErrorCategory - Error categories for Media Job Errors.
-type MediaJobErrorCategory string
-
-const (
-	// MediaJobErrorCategoryAccount - The error is related to account information.
-	MediaJobErrorCategoryAccount MediaJobErrorCategory = "Account"
-	// MediaJobErrorCategoryConfiguration - The error is configuration related.
-	MediaJobErrorCategoryConfiguration MediaJobErrorCategory = "Configuration"
-	// MediaJobErrorCategoryContent - The error is related to data in the input files.
-	MediaJobErrorCategoryContent MediaJobErrorCategory = "Content"
-	// MediaJobErrorCategoryDownload - The error is download related.
-	MediaJobErrorCategoryDownload MediaJobErrorCategory = "Download"
-	// MediaJobErrorCategoryService - The error is service related.
-	MediaJobErrorCategoryService MediaJobErrorCategory = "Service"
-	// MediaJobErrorCategoryUpload - The error is upload related.
-	MediaJobErrorCategoryUpload MediaJobErrorCategory = "Upload"
-)
-
-// PossibleMediaJobErrorCategoryValues returns the possible values for the MediaJobErrorCategory const type.
-func PossibleMediaJobErrorCategoryValues() []MediaJobErrorCategory {
-	return []MediaJobErrorCategory{
-		MediaJobErrorCategoryAccount,
-		MediaJobErrorCategoryConfiguration,
-		MediaJobErrorCategoryContent,
-		MediaJobErrorCategoryDownload,
-		MediaJobErrorCategoryService,
-		MediaJobErrorCategoryUpload,
-	}
-}
-
-// MediaJobErrorCode - Media Job Error Codes.
-type MediaJobErrorCode string
-
-const (
-	// MediaJobErrorCodeConfigurationUnsupported - There was a problem with the combination of input files and the configuration
-	// settings applied, fix the configuration settings and retry with the same input, or change input to match the configuration.
-	MediaJobErrorCodeConfigurationUnsupported MediaJobErrorCode = "ConfigurationUnsupported"
-	// MediaJobErrorCodeContentMalformed - There was a problem with the input content (for example: zero byte files, or corrupt/non-decodable
-	// files), check the input files.
-	MediaJobErrorCodeContentMalformed MediaJobErrorCode = "ContentMalformed"
-	// MediaJobErrorCodeContentUnsupported - There was a problem with the format of the input (not valid media file, or an unsupported
-	// file/codec), check the validity of the input files.
-	MediaJobErrorCodeContentUnsupported MediaJobErrorCode = "ContentUnsupported"
-	// MediaJobErrorCodeDownloadNotAccessible - While trying to download the input files, the files were not accessible, please
-	// check the availability of the source.
-	MediaJobErrorCodeDownloadNotAccessible MediaJobErrorCode = "DownloadNotAccessible"
-	// MediaJobErrorCodeDownloadTransientError - While trying to download the input files, there was an issue during transfer
-	// (storage service, network errors), see details and check your source.
-	MediaJobErrorCodeDownloadTransientError MediaJobErrorCode = "DownloadTransientError"
-	// MediaJobErrorCodeIdentityUnsupported - There is an error verifying to the account identity. Check and fix the identity
-	// configurations and retry. If unsuccessful, please contact support.
-	MediaJobErrorCodeIdentityUnsupported MediaJobErrorCode = "IdentityUnsupported"
-	// MediaJobErrorCodeServiceError - Fatal service error, please contact support.
-	MediaJobErrorCodeServiceError MediaJobErrorCode = "ServiceError"
-	// MediaJobErrorCodeServiceTransientError - Transient error, please retry, if retry is unsuccessful, please contact support.
-	MediaJobErrorCodeServiceTransientError MediaJobErrorCode = "ServiceTransientError"
-	// MediaJobErrorCodeUploadNotAccessible - While trying to upload the output files, the destination was not reachable, please
-	// check the availability of the destination.
-	MediaJobErrorCodeUploadNotAccessible MediaJobErrorCode = "UploadNotAccessible"
-	// MediaJobErrorCodeUploadTransientError - While trying to upload the output files, there was an issue during transfer (storage
-	// service, network errors), see details and check your destination.
-	MediaJobErrorCodeUploadTransientError MediaJobErrorCode = "UploadTransientError"
-)
-
-// PossibleMediaJobErrorCodeValues returns the possible values for the MediaJobErrorCode const type.
-func PossibleMediaJobErrorCodeValues() []MediaJobErrorCode {
-	return []MediaJobErrorCode{
-		MediaJobErrorCodeConfigurationUnsupported,
-		MediaJobErrorCodeContentMalformed,
-		MediaJobErrorCodeContentUnsupported,
-		MediaJobErrorCodeDownloadNotAccessible,
-		MediaJobErrorCodeDownloadTransientError,
-		MediaJobErrorCodeIdentityUnsupported,
-		MediaJobErrorCodeServiceError,
-		MediaJobErrorCodeServiceTransientError,
-		MediaJobErrorCodeUploadNotAccessible,
-		MediaJobErrorCodeUploadTransientError,
-	}
-}
-
-// MediaJobRetry - Media Job Retry Options.
-type MediaJobRetry string
-
-const (
-	// MediaJobRetryDoNotRetry - Issue needs to be investigated and then the job resubmitted with corrections or retried once
-	// the underlying issue has been corrected.
-	MediaJobRetryDoNotRetry MediaJobRetry = "DoNotRetry"
-	// MediaJobRetryMayRetry - Issue may be resolved after waiting for a period of time and resubmitting the same Job.
-	MediaJobRetryMayRetry MediaJobRetry = "MayRetry"
-)
-
-// PossibleMediaJobRetryValues returns the possible values for the MediaJobRetry const type.
-func PossibleMediaJobRetryValues() []MediaJobRetry {
-	return []MediaJobRetry{
-		MediaJobRetryDoNotRetry,
-		MediaJobRetryMayRetry,
-	}
-}
-
-// MediaJobState - State of a Media Job.
-type MediaJobState string
-
-const (
-	// MediaJobStateCanceled - The job was canceled. This is a final state for the job.
-	MediaJobStateCanceled MediaJobState = "Canceled"
-	// MediaJobStateCanceling - The job is in the process of being canceled. This is a transient state for the job.
-	MediaJobStateCanceling MediaJobState = "Canceling"
-	// MediaJobStateError - The job has encountered an error. This is a final state for the job.
-	MediaJobStateError MediaJobState = "Error"
-	// MediaJobStateFinished - The job is finished. This is a final state for the job.
-	MediaJobStateFinished MediaJobState = "Finished"
-	// MediaJobStateProcessing - The job is processing. This is a transient state for the job.
-	MediaJobStateProcessing MediaJobState = "Processing"
-	// MediaJobStateQueued - The job is in a queued state, waiting for resources to become available. This is a transient state.
-	MediaJobStateQueued MediaJobState = "Queued"
-	// MediaJobStateScheduled - The job is being scheduled to run on an available resource. This is a transient state, between
-	// queued and processing states.
-	MediaJobStateScheduled MediaJobState = "Scheduled"
-)
-
-// PossibleMediaJobStateValues returns the possible values for the MediaJobState const type.
-func PossibleMediaJobStateValues() []MediaJobState {
-	return []MediaJobState{
-		MediaJobStateCanceled,
-		MediaJobStateCanceling,
-		MediaJobStateError,
-		MediaJobStateFinished,
-		MediaJobStateProcessing,
-		MediaJobStateQueued,
-		MediaJobStateScheduled,
-	}
-}
-
 // RecordingChannelKind - Recording channel type
 type RecordingChannelKind string
 
@@ -1178,6 +1045,27 @@ func PossibleStorageBlobAccessTierValues() []StorageBlobAccessTier {
 		StorageBlobAccessTierCool,
 		StorageBlobAccessTierDefault,
 		StorageBlobAccessTierHot,
+	}
+}
+
+// StorageLifecycleCompletionStatus - The status for a LCM policy.
+type StorageLifecycleCompletionStatus string
+
+const (
+	// StorageLifecycleCompletionStatusCompleted - Completed
+	StorageLifecycleCompletionStatusCompleted StorageLifecycleCompletionStatus = "Completed"
+	// StorageLifecycleCompletionStatusCompletedWithError - CompletedWithError
+	StorageLifecycleCompletionStatusCompletedWithError StorageLifecycleCompletionStatus = "CompletedWithError"
+	// StorageLifecycleCompletionStatusIncomplete - Incomplete
+	StorageLifecycleCompletionStatusIncomplete StorageLifecycleCompletionStatus = "Incomplete"
+)
+
+// PossibleStorageLifecycleCompletionStatusValues returns the possible values for the StorageLifecycleCompletionStatus const type.
+func PossibleStorageLifecycleCompletionStatusValues() []StorageLifecycleCompletionStatus {
+	return []StorageLifecycleCompletionStatus{
+		StorageLifecycleCompletionStatusCompleted,
+		StorageLifecycleCompletionStatusCompletedWithError,
+		StorageLifecycleCompletionStatusIncomplete,
 	}
 }
 

@@ -21,7 +21,7 @@ import (
 
 func TestGetCompletionsStream(t *testing.T) {
 	testFn := func(t *testing.T, epm endpointWithModel) {
-		body := azopenai.CompletionsOptions{
+		body := azopenai.CompletionsStreamOptions{
 			Prompt:         []string{"What is Azure OpenAI?"},
 			MaxTokens:      to.Ptr(int32(2048)),
 			Temperature:    to.Ptr(float32(0.0)),
@@ -96,7 +96,7 @@ func TestClient_GetCompletions_Error(t *testing.T) {
 	doTest := func(t *testing.T, model string) {
 		client := newBogusAzureOpenAIClient(t)
 
-		streamResp, err := client.GetCompletionsStream(context.Background(), azopenai.CompletionsOptions{
+		streamResp, err := client.GetCompletionsStream(context.Background(), azopenai.CompletionsStreamOptions{
 			Prompt:         []string{"What is Azure OpenAI?"},
 			MaxTokens:      to.Ptr(int32(2048 - 127)),
 			Temperature:    to.Ptr(float32(0.0)),

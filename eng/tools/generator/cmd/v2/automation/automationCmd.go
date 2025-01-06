@@ -131,14 +131,14 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 				errorBuilder.add(err)
 				continue
 			}
-
+			packageModuleRelativePath := tsc.GetPackageModuleRelativePath()
 			namespaceResult, err := generateCtx.GenerateForTypeSpec(&common.GenerateParam{
 				RPName:              module[0],
 				NamespaceName:       module[1],
 				SkipGenerateExample: true,
 				GoVersion:           ctx.goVersion,
 				TspClientOptions:    []string{"--debug"},
-			})
+			}, packageModuleRelativePath)
 			if err != nil {
 				errorBuilder.add(err)
 				continue
@@ -147,8 +147,8 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 				breaking := namespaceResult.Changelog.HasBreakingChanges()
 				breakingChangeItems := namespaceResult.Changelog.GetBreakingChangeItems()
 
-				srcFolder := filepath.Join(sdkRepo.Root(), "sdk", "resourcemanager", namespaceResult.RPName, namespaceResult.PackageName)
-				apiViewArtifact := filepath.Join(sdkRepo.Root(), "sdk", "resourcemanager", namespaceResult.RPName, namespaceResult.PackageName+".gosource")
+				srcFolder := filepath.Join(sdkRepo.Root(), packageModuleRelativePath)
+				apiViewArtifact := filepath.Join(sdkRepo.Root(), packageModuleRelativePath+".gosource")
 				err := zipDirectory(srcFolder, apiViewArtifact)
 				if err != nil {
 					fmt.Println(err)
@@ -156,16 +156,16 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 
 				results = append(results, pipeline.PackageResult{
 					Version:         namespaceResult.Version,
-					PackageName:     fmt.Sprintf("sdk/resourcemanager/%s/%s", namespaceResult.RPName, namespaceResult.PackageName),
-					Path:            []string{fmt.Sprintf("sdk/resourcemanager/%s/%s", namespaceResult.RPName, namespaceResult.PackageName)},
-					PackageFolder:   fmt.Sprintf("sdk/resourcemanager/%s/%s", namespaceResult.RPName, namespaceResult.PackageName),
+					PackageName:     packageModuleRelativePath,
+					Path:            []string{packageModuleRelativePath},
+					PackageFolder:   packageModuleRelativePath,
 					TypespecProject: []string{tspProjectFolder},
 					Changelog: &pipeline.Changelog{
 						Content:             &content,
 						HasBreakingChange:   &breaking,
 						BreakingChangeItems: &breakingChangeItems,
 					},
-					APIViewArtifact: fmt.Sprintf("sdk/resourcemanager/%s/%s", namespaceResult.RPName, namespaceResult.PackageName+".gosource"),
+					APIViewArtifact: packageModuleRelativePath + ".gosource",
 					Language:        "Go",
 				})
 
@@ -182,6 +182,7 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 	}
 
 	for _, readme := range input.RelatedReadmeMdFiles {
+
 		log.Printf("Start to process autorest project: %s", readme)
 
 		sepStrs := strings.Split(readme, "/")

@@ -1,14 +1,32 @@
 # Release History
 
-## 0.4.4 (Unreleased)
+## 0.6.0 (Unreleased)
 
 ### Features Added
 
+
 ### Breaking Changes
+
+- Azure Media services has been retired - all related system events have been removed. See the [retirement announcement](https://azure.microsoft.com/updates?id=retirement-notice-azure-media-services-is-being-retired-on-30-june-2024) for more details.
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 0.5.0 (2024-11-19)
+
+### Features Added
+
+- A new system event has been added: `ResourceNotificationsContainerServiceEventResourcesScheduledEventData`
+- A new field: `StorageLifecyclePolicyCompletedEventData.PolicyRunSummary`
+
+### Breaking Changes
+
+- Models, that were not system events, have been removed. Any fields from those types are incorporated into their corresponding system event type.
+
+### Bugs Fixed
+
+- ACSMessageDeliveryStatusUpdatedEventData.Error has been corrected to use an exported type.
 
 ## 0.4.3 (2024-10-14)
 

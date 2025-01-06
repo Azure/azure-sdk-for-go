@@ -30,8 +30,9 @@ const (
 	sdk_remote_url    = "https://github.com/Azure/azure-sdk-for-go.git"
 )
 
-func GetAllVersionTags(rpName, namespaceName string) ([]string, error) {
-	log.Printf("Fetching all release tags from GitHub for RP: '%s' Package: '%s' ...", rpName, namespaceName)
+func GetAllVersionTags(packageModuleRelativePath string) ([]string, error) {
+	arr := strings.Split(packageModuleRelativePath, "/")
+	log.Printf("Fetching all release tags from GitHub for RP: '%s' Package: '%s' ...", arr[len(arr)-2], arr[len(arr)-1])
 	client := http.Client{}
 	res, err := client.Get(sdk_tag_fetch_url)
 	if err != nil {
@@ -51,7 +52,7 @@ func GetAllVersionTags(rpName, namespaceName string) ([]string, error) {
 	versionTag := make(map[string]string)
 	for _, tag := range result {
 		tagName := tag["ref"].(string)
-		if strings.Contains(tagName, "sdk/resourcemanager/"+rpName+"/"+namespaceName+"/v") {
+		if strings.Contains(tagName, packageModuleRelativePath+"/v") {
 			m := regexp.MustCompile(semver.SemVerRegex).FindString(tagName)
 			versions = append(versions, m)
 			versionTag[m] = tagName

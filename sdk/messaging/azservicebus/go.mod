@@ -18,12 +18,12 @@ require (
 	// used in stress tests
 	// github.com/microsoft/ApplicationInsights-Go v0.4.4
 	github.com/stretchr/testify v1.10.0
-
-	// used in examples only
-	nhooyr.io/websocket v1.8.17
 )
 
-require github.com/golang/mock v1.6.0
+require (
+	github.com/coder/websocket v1.8.12
+	github.com/golang/mock v1.6.0
+)
 
 require (
 	github.com/AzureAD/microsoft-authentication-library-for-go v1.3.2 // indirect

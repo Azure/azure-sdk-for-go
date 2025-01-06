@@ -4,7 +4,7 @@
 
 package azkeys
 
-// CurveName - Elliptic curve name. For valid values, see JsonWebKeyCurveName.
+// CurveName - Elliptic curve name.
 type CurveName string
 
 const (
@@ -58,13 +58,12 @@ const (
 	EncryptionAlgorithmA256KW EncryptionAlgorithm = "A256KW"
 	// EncryptionAlgorithmRSA15 - RSAES-PKCS1-V1_5 key encryption, as described in https://tools.ietf.org/html/rfc3447.
 	EncryptionAlgorithmRSA15 EncryptionAlgorithm = "RSA1_5"
-	// EncryptionAlgorithmRSAOAEP - RSAES using Optimal Asymmetric Encryption Padding (OAEP), as described in
-	// https://tools.ietf.org/html/rfc3447, with the default parameters specified by
-	// RFC 3447 in Section A.2.1. Those default parameters are using a hash function
+	// EncryptionAlgorithmRSAOAEP - RSAES using Optimal Asymmetric Encryption Padding (OAEP), as described in https://tools.ietf.org/html/rfc3447,
+	// with the default parameters specified by RFC 3447 in Section A.2.1. Those default parameters are using a hash function
 	// of SHA-1 and a mask generation function of MGF1 with SHA-1.
 	EncryptionAlgorithmRSAOAEP EncryptionAlgorithm = "RSA-OAEP"
-	// EncryptionAlgorithmRSAOAEP256 - RSAES using Optimal Asymmetric Encryption Padding with a hash function of SHA-256
-	// and a mask generation function of MGF1 with SHA-256.
+	// EncryptionAlgorithmRSAOAEP256 - RSAES using Optimal Asymmetric Encryption Padding with a hash function of SHA-256 and a
+	// mask generation function of MGF1 with SHA-256.
 	EncryptionAlgorithmRSAOAEP256 EncryptionAlgorithm = "RSA-OAEP-256"
 )
 
@@ -163,8 +162,7 @@ func PossibleKeyRotationPolicyActionValues() []KeyRotationPolicyAction {
 	}
 }
 
-// KeyType - JsonWebKey Key Type (kty), as defined in
-// https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
+// KeyType - JsonWebKey Key Type (kty), as defined in https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
 type KeyType string
 
 const (
@@ -194,40 +192,30 @@ func PossibleKeyTypeValues() []KeyType {
 	}
 }
 
-// SignatureAlgorithm - The signing/verification algorithm identifier. For more information on possible
-// algorithm types, see JsonWebKeySignatureAlgorithm.
+// SignatureAlgorithm - The signing/verification algorithm identifier. For more information on possible algorithm types, see
+// JsonWebKeySignatureAlgorithm.
 type SignatureAlgorithm string
 
 const (
-	// SignatureAlgorithmES256 - ECDSA using P-256 and SHA-256, as described in
-	// https://tools.ietf.org/html/rfc7518.
+	// SignatureAlgorithmES256 - ECDSA using P-256 and SHA-256, as described in https://tools.ietf.org/html/rfc7518.
 	SignatureAlgorithmES256 SignatureAlgorithm = "ES256"
-	// SignatureAlgorithmES256K - ECDSA using P-256K and SHA-256, as described in
-	// https://tools.ietf.org/html/rfc7518
+	// SignatureAlgorithmES256K - ECDSA using P-256K and SHA-256, as described in https://tools.ietf.org/html/rfc7518
 	SignatureAlgorithmES256K SignatureAlgorithm = "ES256K"
-	// SignatureAlgorithmES384 - ECDSA using P-384 and SHA-384, as described in
-	// https://tools.ietf.org/html/rfc7518
+	// SignatureAlgorithmES384 - ECDSA using P-384 and SHA-384, as described in https://tools.ietf.org/html/rfc7518
 	SignatureAlgorithmES384 SignatureAlgorithm = "ES384"
-	// SignatureAlgorithmES512 - ECDSA using P-521 and SHA-512, as described in
-	// https://tools.ietf.org/html/rfc7518
+	// SignatureAlgorithmES512 - ECDSA using P-521 and SHA-512, as described in https://tools.ietf.org/html/rfc7518
 	SignatureAlgorithmES512 SignatureAlgorithm = "ES512"
-	// SignatureAlgorithmPS256 - RSASSA-PSS using SHA-256 and MGF1 with SHA-256, as described in
-	// https://tools.ietf.org/html/rfc7518
+	// SignatureAlgorithmPS256 - RSASSA-PSS using SHA-256 and MGF1 with SHA-256, as described in https://tools.ietf.org/html/rfc7518
 	SignatureAlgorithmPS256 SignatureAlgorithm = "PS256"
-	// SignatureAlgorithmPS384 - RSASSA-PSS using SHA-384 and MGF1 with SHA-384, as described in
-	// https://tools.ietf.org/html/rfc7518
+	// SignatureAlgorithmPS384 - RSASSA-PSS using SHA-384 and MGF1 with SHA-384, as described in https://tools.ietf.org/html/rfc7518
 	SignatureAlgorithmPS384 SignatureAlgorithm = "PS384"
-	// SignatureAlgorithmPS512 - RSASSA-PSS using SHA-512 and MGF1 with SHA-512, as described in
-	// https://tools.ietf.org/html/rfc7518
+	// SignatureAlgorithmPS512 - RSASSA-PSS using SHA-512 and MGF1 with SHA-512, as described in https://tools.ietf.org/html/rfc7518
 	SignatureAlgorithmPS512 SignatureAlgorithm = "PS512"
-	// SignatureAlgorithmRS256 - RSASSA-PKCS1-v1_5 using SHA-256, as described in
-	// https://tools.ietf.org/html/rfc7518
+	// SignatureAlgorithmRS256 - RSASSA-PKCS1-v1_5 using SHA-256, as described in https://tools.ietf.org/html/rfc7518
 	SignatureAlgorithmRS256 SignatureAlgorithm = "RS256"
-	// SignatureAlgorithmRS384 - RSASSA-PKCS1-v1_5 using SHA-384, as described in
-	// https://tools.ietf.org/html/rfc7518
+	// SignatureAlgorithmRS384 - RSASSA-PKCS1-v1_5 using SHA-384, as described in https://tools.ietf.org/html/rfc7518
 	SignatureAlgorithmRS384 SignatureAlgorithm = "RS384"
-	// SignatureAlgorithmRS512 - RSASSA-PKCS1-v1_5 using SHA-512, as described in
-	// https://tools.ietf.org/html/rfc7518
+	// SignatureAlgorithmRS512 - RSASSA-PKCS1-v1_5 using SHA-512, as described in https://tools.ietf.org/html/rfc7518
 	SignatureAlgorithmRS512 SignatureAlgorithm = "RS512"
 )
 

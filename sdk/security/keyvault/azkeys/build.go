@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 //go:generate tsp-client update
 //go:generate go run ./internal/transforms.go
 //go:generate gofmt -w .

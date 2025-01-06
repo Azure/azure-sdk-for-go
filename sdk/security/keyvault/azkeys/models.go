@@ -17,14 +17,13 @@ type CreateKeyParameters struct {
 	// REQUIRED; The type of key to create. For valid values, see JsonWebKeyType.
 	Kty *KeyType
 
-	// Elliptic curve name. For valid values, see JsonWebKeyCurveName.
+	// Elliptic curve name.
 	Curve *CurveName
 
 	// The attributes of a key managed by the key vault service.
 	KeyAttributes *KeyAttributes
 
-	// Json web key operations. For more information on possible key operations, see
-	// JsonWebKeyOperation.
+	// Json web key operations. For more information on possible key operations, see JsonWebKeyOperation.
 	KeyOps []*KeyOperation
 
 	// The key size in bits. For example: 2048, 3072, or 4096 for RSA.
@@ -40,7 +39,7 @@ type CreateKeyParameters struct {
 	Tags map[string]*string
 }
 
-// DeletedKey - A DeletedKeyBundle consisting of a WebKey plus its Attributes and deletion info
+// DeletedKey - A  DeletedKey consisting of a WebKey plus its Attributes and deletion info
 type DeletedKey struct {
 	// The key management attributes.
 	Attributes *KeyAttributes
@@ -60,16 +59,15 @@ type DeletedKey struct {
 	// READ-ONLY; The time when the key was deleted, in UTC
 	DeletedDate *time.Time
 
-	// READ-ONLY; True if the key's lifetime is managed by key vault. If this is a key backing a
-	// certificate, then managed will be true.
+	// READ-ONLY; True if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed will
+	// be true.
 	Managed *bool
 
 	// READ-ONLY; The time when the key is scheduled to be purged, in UTC
 	ScheduledPurgeDate *time.Time
 }
 
-// DeletedKeyProperties - The deleted key item containing the deleted key metadata and information about
-// deletion.
+// DeletedKeyProperties - The deleted key item containing the deleted key metadata and information about deletion.
 type DeletedKeyProperties struct {
 	// The key management attributes.
 	Attributes *KeyAttributes
@@ -86,8 +84,8 @@ type DeletedKeyProperties struct {
 	// READ-ONLY; The time when the key was deleted, in UTC
 	DeletedDate *time.Time
 
-	// READ-ONLY; True if the key's lifetime is managed by key vault. If this is a key backing a
-	// certificate, then managed will be true.
+	// READ-ONLY; True if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed will
+	// be true.
 	Managed *bool
 
 	// READ-ONLY; The time when the key is scheduled to be purged, in UTC
@@ -130,7 +128,7 @@ type ImportKeyParameters struct {
 
 // JSONWebKey - As of http://tools.ietf.org/html/draft-ietf-jose-json-web-key-18
 type JSONWebKey struct {
-	// Elliptic curve name. For valid values, see JsonWebKeyCurveName.
+	// Elliptic curve name.
 	Crv *CurveName
 
 	// RSA private exponent, or the D component of an EC private key.
@@ -151,12 +149,10 @@ type JSONWebKey struct {
 	// Key identifier.
 	KID *ID
 
-	// Json web key operations. For more information on possible key operations, see
-	// JsonWebKeyOperation.
+	// Json web key operations. For more information on possible key operations, see JsonWebKeyOperation.
 	KeyOps []*KeyOperation
 
-	// JsonWebKey Key Type (kty), as defined in
-	// https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
+	// JsonWebKey Key Type (kty), as defined in https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
 	Kty *KeyType
 
 	// RSA modulus.
@@ -189,8 +185,8 @@ type KeyAttributes struct {
 	// Expiry date in UTC.
 	Expires *time.Time
 
-	// Indicates if the private key can be exported. Release policy must be provided
-	// when creating the first version of an exportable key.
+	// Indicates if the private key can be exported. Release policy must be provided when creating the first version of an exportable
+	// key.
 	Exportable *bool
 
 	// Not before date in UTC.
@@ -202,14 +198,12 @@ type KeyAttributes struct {
 	// READ-ONLY; The underlying HSM Platform.
 	HSMPlatform *string
 
-	// READ-ONLY; softDelete data retention days. Value should be >=7 and <=90 when softDelete
-	// enabled, otherwise 0.
+	// READ-ONLY; softDelete data retention days. Value should be >=7 and <=90 when softDelete enabled, otherwise 0.
 	RecoverableDays *int32
 
-	// READ-ONLY; Reflects the deletion recovery level currently in effect for keys in the
-	// current vault. If it contains 'Purgeable' the key can be permanently deleted by
-	// a privileged user; otherwise, only the system can purge the key, at the end of
-	// the retention interval.
+	// READ-ONLY; Reflects the deletion recovery level currently in effect for keys in the current vault. If it contains 'Purgeable'
+	// the key can be permanently deleted by a privileged user; otherwise, only the system can purge the key, at the end of the
+	// retention interval.
 	RecoveryLevel *string
 
 	// READ-ONLY; Last updated time in UTC.
@@ -230,8 +224,8 @@ type KeyBundle struct {
 	// Application specific metadata in the form of key-value pairs.
 	Tags map[string]*string
 
-	// READ-ONLY; True if the key's lifetime is managed by key vault. If this is a key backing a
-	// certificate, then managed will be true.
+	// READ-ONLY; True if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed will
+	// be true.
 	Managed *bool
 }
 
@@ -243,31 +237,25 @@ type KeyOperationParameters struct {
 	// REQUIRED; The value to operate on.
 	Value []byte
 
-	// Additional data to authenticate but not encrypt/decrypt when using
-	// authenticated crypto algorithms.
+	// Additional data to authenticate but not encrypt/decrypt when using authenticated crypto algorithms.
 	AdditionalAuthenticatedData []byte
 
-	// The tag to authenticate when performing decryption with an authenticated
-	// algorithm.
+	// The tag to authenticate when performing decryption with an authenticated algorithm.
 	AuthenticationTag []byte
 
-	// Cryptographically random, non-repeating initialization vector for symmetric
-	// algorithms.
+	// Cryptographically random, non-repeating initialization vector for symmetric algorithms.
 	IV []byte
 }
 
 // KeyOperationResult - The key operation result.
 type KeyOperationResult struct {
-	// READ-ONLY; Additional data to authenticate but not encrypt/decrypt when using
-	// authenticated crypto algorithms.
+	// READ-ONLY; Additional data to authenticate but not encrypt/decrypt when using authenticated crypto algorithms.
 	AdditionalAuthenticatedData []byte
 
-	// READ-ONLY; The tag to authenticate when performing decryption with an authenticated
-	// algorithm.
+	// READ-ONLY; The tag to authenticate when performing decryption with an authenticated algorithm.
 	AuthenticationTag []byte
 
-	// READ-ONLY; Cryptographically random, non-repeating initialization vector for symmetric
-	// algorithms.
+	// READ-ONLY; Cryptographically random, non-repeating initialization vector for symmetric algorithms.
 	IV []byte
 
 	// READ-ONLY; Key identifier
@@ -288,8 +276,8 @@ type KeyProperties struct {
 	// Application specific metadata in the form of key-value pairs.
 	Tags map[string]*string
 
-	// READ-ONLY; True if the key's lifetime is managed by key vault. If this is a key backing a
-	// certificate, then managed will be true.
+	// READ-ONLY; True if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed will
+	// be true.
 	Managed *bool
 }
 
@@ -307,12 +295,11 @@ type KeyReleasePolicy struct {
 	// Content type and version of key release policy
 	ContentType *string
 
-	// Blob encoding the policy rules under which the key can be released. Blob must
-	// be base64 URL encoded.
+	// Blob encoding the policy rules under which the key can be released. Blob must be base64 URL encoded.
 	EncodedPolicy []byte
 
-	// Defines the mutability state of the policy. Once marked immutable, this flag
-	// cannot be reset and the policy cannot be changed under any circumstances.
+	// Defines the mutability state of the policy. Once marked immutable, this flag cannot be reset and the policy cannot be changed
+	// under any circumstances.
 	Immutable *bool
 }
 
@@ -327,10 +314,9 @@ type KeyRotationPolicy struct {
 	// The key rotation policy attributes.
 	Attributes *KeyRotationPolicyAttributes
 
-	// Actions that will be performed by Key Vault over the lifetime of a key. For
-	// preview, lifetimeActions can only have two items at maximum: one for rotate,
-	// one for notify. Notification time would be default to 30 days before expiry and
-	// it is not configurable.
+	// Actions that will be performed by Key Vault over the lifetime of a key. For preview, lifetimeActions can only have two
+	// items at maximum: one for rotate, one for notify. Notification time would be default to 30 days before expiry and it is
+	// not configurable.
 	LifetimeActions []*LifetimeAction
 
 	// READ-ONLY; The key policy id.
@@ -339,9 +325,8 @@ type KeyRotationPolicy struct {
 
 // KeyRotationPolicyAttributes - The key rotation policy attributes.
 type KeyRotationPolicyAttributes struct {
-	// The expiryTime will be applied on the new key version. It should be at least 28
-	// days. It will be in ISO 8601 Format. Examples: 90 days: P90D, 3 months: P3M, 48
-	// hours: PT48H, 1 year and 10 days: P1Y10D
+	// The expiryTime will be applied on the new key version. It should be at least 28 days. It will be in ISO 8601 Format. Examples:
+	// 90 days: P90D, 3 months: P3M, 48 hours: PT48H, 1 year and 10 days: P1Y10D
 	ExpiryTime *string
 
 	// READ-ONLY; The key rotation policy created time in UTC.
@@ -357,8 +342,7 @@ type KeyVerifyResult struct {
 	Value *bool
 }
 
-// LifetimeAction - Action and its trigger that will be performed by Key Vault over the lifetime of
-// a key.
+// LifetimeAction - Action and its trigger that will be performed by Key Vault over the lifetime of a key.
 type LifetimeAction struct {
 	// The action that will be executed.
 	Action *LifetimeActionType
@@ -369,12 +353,11 @@ type LifetimeAction struct {
 
 // LifetimeActionTrigger - A condition to be satisfied for an action to be executed.
 type LifetimeActionTrigger struct {
-	// Time after creation to attempt to rotate. It only applies to rotate. It will be
-	// in ISO 8601 duration format. Example: 90 days : "P90D"
+	// Time after creation to attempt to rotate. It only applies to rotate. It will be in ISO 8601 duration format. Example: 90
+	// days : "P90D"
 	TimeAfterCreate *string
 
-	// Time before expiry to attempt to rotate or notify. It will be in ISO 8601
-	// duration format. Example: 90 days : "P90D"
+	// Time before expiry to attempt to rotate or notify. It will be in ISO 8601 duration format. Example: 90 days : "P90D"
 	TimeBeforeExpiry *string
 }
 
@@ -410,8 +393,7 @@ type RestoreKeyParameters struct {
 
 // SignParameters - The key operations parameters.
 type SignParameters struct {
-	// REQUIRED; The signing/verification algorithm identifier. For more information on possible
-	// algorithm types, see JsonWebKeySignatureAlgorithm.
+	// REQUIRED; The signing/verification algorithm identifier. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm.
 	Algorithm *SignatureAlgorithm
 
 	// REQUIRED; The value to operate on.
@@ -423,8 +405,7 @@ type UpdateKeyParameters struct {
 	// The attributes of a key managed by the key vault service.
 	KeyAttributes *KeyAttributes
 
-	// Json web key operations. For more information on possible key operations, see
-	// JsonWebKeyOperation.
+	// Json web key operations. For more information on possible key operations, see JsonWebKeyOperation.
 	KeyOps []*KeyOperation
 
 	// The policy rules under which the key can be exported.
@@ -436,8 +417,7 @@ type UpdateKeyParameters struct {
 
 // VerifyParameters - The key verify parameters.
 type VerifyParameters struct {
-	// REQUIRED; The signing/verification algorithm. For more information on possible algorithm
-	// types, see JsonWebKeySignatureAlgorithm.
+	// REQUIRED; The signing/verification algorithm. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm.
 	Algorithm *SignatureAlgorithm
 
 	// REQUIRED; The digest used for signing.

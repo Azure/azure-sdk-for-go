@@ -1,4 +1,4 @@
 directory: specification/keyvault/Security.KeyVault.Keys
-commit: 1d41054b0ef409b998bcb33213e48ec2634d4ed4
+commit: c9b1a922156183b34963c04b860b4da999f5ccdd
 repo: Azure/azure-rest-api-specs
-additionalDirectories: 
+# https://github.com/Azure/azure-rest-api-specs/pull/29248

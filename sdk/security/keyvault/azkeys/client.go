@@ -16,8 +16,7 @@ import (
 	"strings"
 )
 
-// Client - The key vault client performs cryptographic key operations and vault operations
-// against the Key Vault service.
+// Client - The key vault client performs cryptographic key operations and vault operations against the Key Vault service.
 // Don't use this type directly, use a constructor function instead.
 type Client struct {
 	internal     *azcore.Client
@@ -26,19 +25,14 @@ type Client struct {
 
 // BackupKey - Requests that a backup of the specified key be downloaded to the client.
 //
-// The Key Backup operation exports a key from Azure Key Vault in a protected
-// form. Note that this operation does NOT return key material in a form that can
-// be used outside the Azure Key Vault system, the returned key material is either
-// protected to a Azure Key Vault HSM or to Azure Key Vault itself. The intent of
-// this operation is to allow a client to GENERATE a key in one Azure Key Vault
-// instance, BACKUP the key, and then RESTORE it into another Azure Key Vault
-// instance. The BACKUP operation may be used to export, in protected form, any
-// key type from Azure Key Vault. Individual versions of a key cannot be backed
-// up. BACKUP / RESTORE can be performed within geographical boundaries only;
-// meaning that a BACKUP from one geographical area cannot be restored to another
-// geographical area. For example, a backup from the US geographical area cannot
-// be restored in an EU geographical area. This operation requires the key/backup
-// permission.
+// The Key Backup operation exports a key from Azure Key Vault in a protected form. Note that this operation does NOT return
+// key material in a form that can be used outside the Azure Key Vault system, the returned key material is either protected
+// to a Azure Key Vault HSM or to Azure Key Vault itself. The intent of this operation is to allow a client to GENERATE a
+// key in one Azure Key Vault instance, BACKUP the key, and then RESTORE it into another Azure Key Vault instance. The BACKUP
+// operation may be used to export, in protected form, any key type from Azure Key Vault. Individual versions of a key cannot
+// be backed up. BACKUP / RESTORE can be performed within geographical boundaries only; meaning that a BACKUP from one geographical
+// area cannot be restored to another geographical area. For example, a backup from the US geographical area cannot be restored
+// in an EU geographical area. This operation requires the key/backup permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 7.5
@@ -93,18 +87,15 @@ func (client *Client) backupKeyHandleResponse(resp *http.Response) (BackupKeyRes
 	return result, nil
 }
 
-// CreateKey - Creates a new key, stores it, then returns key parameters and attributes to the
-// client.
+// CreateKey - Creates a new key, stores it, then returns key parameters and attributes to the client.
 //
-// The create key operation can be used to create any key type in Azure Key Vault.
-// If the named key already exists, Azure Key Vault creates a new version of the
-// key. It requires the keys/create permission.
+// The create key operation can be used to create any key type in Azure Key Vault. If the named key already exists, Azure
+// Key Vault creates a new version of the key. It requires the keys/create permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 7.5
-//   - name - The name for the new key. The system will generate the version name for the new
-//     key. The value you provide may be copied globally for the purpose of running
-//     the service. The value provided should not include personally identifiable or
+//   - name - The name for the new key. The system will generate the version name for the new key. The value you provide may be
+//     copied globally for the purpose of running the service. The value provided should not include personally identifiable or
 //     sensitive information.
 //   - parameters - The parameters to create a key.
 //   - options - CreateKeyOptions contains the optional parameters for the Client.CreateKey method.
@@ -163,17 +154,12 @@ func (client *Client) createKeyHandleResponse(resp *http.Response) (CreateKeyRes
 
 // Decrypt - Decrypts a single block of encrypted data.
 //
-// The DECRYPT operation decrypts a well-formed block of ciphertext using the
-// target encryption key and specified algorithm. This operation is the reverse of
-// the ENCRYPT operation; only a single block of data may be decrypted, the size
-// of this block is dependent on the target key and the algorithm to be used. The
-// DECRYPT operation applies to asymmetric and symmetric keys stored in Azure Key
-// Vault since it uses the private portion of the key. This operation requires the
-// keys/decrypt permission. Microsoft recommends not to use CBC algorithms for
-// decryption without first ensuring the integrity of the ciphertext using an
-// HMAC, for example. See
-// https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode
-// for more information.
+// The DECRYPT operation decrypts a well-formed block of ciphertext using the target encryption key and specified algorithm.
+// This operation is the reverse of the ENCRYPT operation; only a single block of data may be decrypted, the size of this
+// block is dependent on the target key and the algorithm to be used. The DECRYPT operation applies to asymmetric and symmetric
+// keys stored in Azure Key Vault since it uses the private portion of the key. This operation requires the keys/decrypt permission.
+// Microsoft recommends not to use CBC algorithms for decryption without first ensuring the integrity of the ciphertext using
+// an HMAC, for example. See https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode for more information.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 7.5
@@ -237,10 +223,9 @@ func (client *Client) decryptHandleResponse(resp *http.Response) (DecryptRespons
 
 // DeleteKey - Deletes a key of any type from storage in Azure Key Vault.
 //
-// The delete key operation cannot be used to remove individual versions of a key.
-// This operation removes the cryptographic material associated with the key,
-// which means the key is not usable for Sign/Verify, Wrap/Unwrap or
-// Encrypt/Decrypt operations. This operation requires the keys/delete permission.
+// The delete key operation cannot be used to remove individual versions of a key. This operation removes the cryptographic
+// material associated with the key, which means the key is not usable for Sign/Verify, Wrap/Unwrap or Encrypt/Decrypt operations.
+// This operation requires the keys/delete permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 7.5
@@ -295,18 +280,14 @@ func (client *Client) deleteKeyHandleResponse(resp *http.Response) (DeleteKeyRes
 	return result, nil
 }
 
-// Encrypt - Encrypts an arbitrary sequence of bytes using an encryption key that is stored
-// in a key vault.
+// Encrypt - Encrypts an arbitrary sequence of bytes using an encryption key that is stored in a key vault.
 //
-// The ENCRYPT operation encrypts an arbitrary sequence of bytes using an
-// encryption key that is stored in Azure Key Vault. Note that the ENCRYPT
-// operation only supports a single block of data, the size of which is dependent
-// on the target key and the encryption algorithm to be used. The ENCRYPT
-// operation is only strictly necessary for symmetric keys stored in Azure Key
-// Vault since protection with an asymmetric key can be performed using public
-// portion of the key. This operation is supported for asymmetric keys as a
-// convenience for callers that have a key-reference but do not have access to the
-// public key material. This operation requires the keys/encrypt permission.
+// The ENCRYPT operation encrypts an arbitrary sequence of bytes using an encryption key that is stored in Azure Key Vault.
+// Note that the ENCRYPT operation only supports a single block of data, the size of which is dependent on the target key
+// and the encryption algorithm to be used. The ENCRYPT operation is only strictly necessary for symmetric keys stored in
+// Azure Key Vault since protection with an asymmetric key can be performed using public portion of the key. This operation
+// is supported for asymmetric keys as a convenience for callers that have a key-reference but do not have access to the public
+// key material. This operation requires the keys/encrypt permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 7.5
@@ -370,10 +351,8 @@ func (client *Client) encryptHandleResponse(resp *http.Response) (EncryptRespons
 
 // GetDeletedKey - Gets the public part of a deleted key.
 //
-// The Get Deleted Key operation is applicable for soft-delete enabled vaults.
-// While the operation can be invoked on any vault, it will return an error if
-// invoked on a non soft-delete enabled vault. This operation requires the
-// keys/get permission.
+// The Get Deleted Key operation is applicable for soft-delete enabled vaults. While the operation can be invoked on any vault,
+// it will return an error if invoked on a non soft-delete enabled vault. This operation requires the keys/get permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 7.5
@@ -430,16 +409,14 @@ func (client *Client) getDeletedKeyHandleResponse(resp *http.Response) (GetDelet
 
 // GetKey - Gets the public part of a stored key.
 //
-// The get key operation is applicable to all key types. If the requested key is
-// symmetric, then no key material is released in the response. This operation
-// requires the keys/get permission.
+// The get key operation is applicable to all key types. If the requested key is symmetric, then no key material is released
+// in the response. This operation requires the keys/get permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 7.5
 //   - name - The name of the key to get.
-//   - version - Adding the version parameter retrieves a specific version of a key. This URI
-//     fragment is optional. If not specified, the latest version of the key is
-//     returned.
+//   - version - Adding the version parameter retrieves a specific version of a key. This URI fragment is optional. If not specified,
+//     the latest version of the key is returned.
 //   - options - GetKeyOptions contains the optional parameters for the Client.GetKey method.
 func (client *Client) GetKey(ctx context.Context, name string, version string, options *GetKeyOptions) (GetKeyResponse, error) {
 	var err error
@@ -493,8 +470,8 @@ func (client *Client) getKeyHandleResponse(resp *http.Response) (GetKeyResponse,
 
 // GetKeyRotationPolicy - Lists the policy for a key.
 //
-// The GetKeyRotationPolicy operation returns the specified key policy resources
-// in the specified key vault. This operation requires the keys/get permission.
+// The GetKeyRotationPolicy operation returns the specified key policy resources in the specified key vault. This operation
+// requires the keys/get permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 7.5
@@ -606,18 +583,15 @@ func (client *Client) getRandomBytesHandleResponse(resp *http.Response) (GetRand
 	return result, nil
 }
 
-// ImportKey - Imports an externally created key, stores it, and returns key parameters and
-// attributes to the client.
+// ImportKey - Imports an externally created key, stores it, and returns key parameters and attributes to the client.
 //
-// The import key operation may be used to import any key type into an Azure Key
-// Vault. If the named key already exists, Azure Key Vault creates a new version
-// of the key. This operation requires the keys/import permission.
+// The import key operation may be used to import any key type into an Azure Key Vault. If the named key already exists, Azure
+// Key Vault creates a new version of the key. This operation requires the keys/import permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 7.5
-//   - name - Name for the imported key. The value you provide may be copied globally for the
-//     purpose of running the service. The value provided should not include
-//     personally identifiable or sensitive information.
+//   - name - Name for the imported key. The value you provide may be copied globally for the purpose of running the service.
+//     The value provided should not include personally identifiable or sensitive information.
 //   - parameters - The parameters to import a key.
 //   - options - ImportKeyOptions contains the optional parameters for the Client.ImportKey method.
 func (client *Client) ImportKey(ctx context.Context, name string, parameters ImportKeyParameters, options *ImportKeyOptions) (ImportKeyResponse, error) {
@@ -675,12 +649,10 @@ func (client *Client) importKeyHandleResponse(resp *http.Response) (ImportKeyRes
 
 // NewListDeletedKeyPropertiesPager - Lists the deleted keys in the specified vault.
 //
-// Retrieves a list of the keys in the Key Vault as JSON Web Key structures that
-// contain the public part of a deleted key. This operation includes
-// deletion-specific information. The Get Deleted Keys operation is applicable for
-// vaults enabled for soft-delete. While the operation can be invoked on any
-// vault, it will return an error if invoked on a non soft-delete enabled vault.
-// This operation requires the keys/list permission.
+// Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part of a deleted key.
+// This operation includes deletion-specific information. The Get Deleted Keys operation is applicable for vaults enabled
+// for soft-delete. While the operation can be invoked on any vault, it will return an error if invoked on a non soft-delete
+// enabled vault. This operation requires the keys/list permission.
 //
 // Generated from API version 7.5
 //   - options - ListDeletedKeyPropertiesOptions contains the optional parameters for the Client.NewListDeletedKeyPropertiesPager
@@ -734,11 +706,9 @@ func (client *Client) listDeletedKeyPropertiesHandleResponse(resp *http.Response
 
 // NewListKeyPropertiesPager - List keys in the specified vault.
 //
-// Retrieves a list of the keys in the Key Vault as JSON Web Key structures that
-// contain the public part of a stored key. The LIST operation is applicable to
-// all key types, however only the base key identifier, attributes, and tags are
-// provided in the response. Individual versions of a key are not listed in the
-// response. This operation requires the keys/list permission.
+// Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part of a stored key.
+// The LIST operation is applicable to all key types, however only the base key identifier, attributes, and tags are provided
+// in the response. Individual versions of a key are not listed in the response. This operation requires the keys/list permission.
 //
 // Generated from API version 7.5
 //   - options - ListKeyPropertiesOptions contains the optional parameters for the Client.NewListKeyPropertiesPager method.
@@ -791,8 +761,7 @@ func (client *Client) listKeyPropertiesHandleResponse(resp *http.Response) (List
 
 // NewListKeyPropertiesVersionsPager - Retrieves a list of individual key versions with the same key name.
 //
-// The full key identifier, attributes, and tags are provided in the response.
-// This operation requires the keys/list permission.
+// The full key identifier, attributes, and tags are provided in the response. This operation requires the keys/list permission.
 //
 // Generated from API version 7.5
 //   - name - The name of the key.
@@ -851,10 +820,8 @@ func (client *Client) listKeyPropertiesVersionsHandleResponse(resp *http.Respons
 
 // PurgeDeletedKey - Permanently deletes the specified key.
 //
-// The Purge Deleted Key operation is applicable for soft-delete enabled vaults.
-// While the operation can be invoked on any vault, it will return an error if
-// invoked on a non soft-delete enabled vault. This operation requires the
-// keys/purge permission.
+// The Purge Deleted Key operation is applicable for soft-delete enabled vaults. While the operation can be invoked on any
+// vault, it will return an error if invoked on a non soft-delete enabled vault. This operation requires the keys/purge permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 7.5
@@ -901,11 +868,9 @@ func (client *Client) purgeDeletedKeyCreateRequest(ctx context.Context, name str
 
 // RecoverDeletedKey - Recovers the deleted key to its latest version.
 //
-// The Recover Deleted Key operation is applicable for deleted keys in soft-delete
-// enabled vaults. It recovers the deleted key back to its latest version under
-// /keys. An attempt to recover an non-deleted key will return an error. Consider
-// this the inverse of the delete operation on soft-delete enabled vaults. This
-// operation requires the keys/recover permission.
+// The Recover Deleted Key operation is applicable for deleted keys in soft-delete enabled vaults. It recovers the deleted
+// key back to its latest version under /keys. An attempt to recover an non-deleted key will return an error. Consider this
+// the inverse of the delete operation on soft-delete enabled vaults. This operation requires the keys/recover permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 7.5
@@ -962,8 +927,8 @@ func (client *Client) recoverDeletedKeyHandleResponse(resp *http.Response) (Reco
 
 // Release - Releases a key.
 //
-// The release key operation is applicable to all key types. The target key must
-// be marked exportable. This operation requires the keys/release permission.
+// The release key operation is applicable to all key types. The target key must be marked exportable. This operation requires
+// the keys/release permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 7.5
@@ -1027,17 +992,13 @@ func (client *Client) releaseHandleResponse(resp *http.Response) (ReleaseRespons
 
 // RestoreKey - Restores a backed up key to a vault.
 //
-// Imports a previously backed up key into Azure Key Vault, restoring the key, its
-// key identifier, attributes and access control policies. The RESTORE operation
-// may be used to import a previously backed up key. Individual versions of a key
-// cannot be restored. The key is restored in its entirety with the same key name
-// as it had when it was backed up. If the key name is not available in the target
-// Key Vault, the RESTORE operation will be rejected. While the key name is
-// retained during restore, the final key identifier will change if the key is
-// restored to a different vault. Restore will restore all versions and preserve
-// version identifiers. The RESTORE operation is subject to security constraints:
-// The target Key Vault must be owned by the same Microsoft Azure Subscription as
-// the source Key Vault The user must have RESTORE permission in the target Key
+// Imports a previously backed up key into Azure Key Vault, restoring the key, its key identifier, attributes and access control
+// policies. The RESTORE operation may be used to import a previously backed up key. Individual versions of a key cannot be
+// restored. The key is restored in its entirety with the same key name as it had when it was backed up. If the key name is
+// not available in the target Key Vault, the RESTORE operation will be rejected. While the key name is retained during restore,
+// the final key identifier will change if the key is restored to a different vault. Restore will restore all versions and
+// preserve version identifiers. The RESTORE operation is subject to security constraints: The target Key Vault must be owned
+// by the same Microsoft Azure Subscription as the source Key Vault The user must have RESTORE permission in the target Key
 // Vault. This operation requires the keys/restore permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
@@ -1093,16 +1054,13 @@ func (client *Client) restoreKeyHandleResponse(resp *http.Response) (RestoreKeyR
 	return result, nil
 }
 
-// RotateKey - Creates a new key version, stores it, then returns key parameters, attributes
-// and policy to the client.
+// RotateKey - Creates a new key version, stores it, then returns key parameters, attributes and policy to the client.
 //
-// The operation will rotate the key based on the key policy. It requires the
-// keys/rotate permission.
+// The operation will rotate the key based on the key policy. It requires the keys/rotate permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 7.5
-//   - name - The name of key to be rotated. The system will generate a new version in the
-//     specified key.
+//   - name - The name of key to be rotated. The system will generate a new version in the specified key.
 //   - options - RotateKeyOptions contains the optional parameters for the Client.RotateKey method.
 func (client *Client) RotateKey(ctx context.Context, name string, options *RotateKeyOptions) (RotateKeyResponse, error) {
 	var err error
@@ -1155,9 +1113,8 @@ func (client *Client) rotateKeyHandleResponse(resp *http.Response) (RotateKeyRes
 
 // Sign - Creates a signature from a digest using the specified key.
 //
-// The SIGN operation is applicable to asymmetric and symmetric keys stored in
-// Azure Key Vault since this operation uses the private portion of the key. This
-// operation requires the keys/sign permission.
+// The SIGN operation is applicable to asymmetric and symmetric keys stored in Azure Key Vault since this operation uses the
+// private portion of the key. This operation requires the keys/sign permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 7.5
@@ -1219,14 +1176,11 @@ func (client *Client) signHandleResponse(resp *http.Response) (SignResponse, err
 	return result, nil
 }
 
-// UnwrapKey - Unwraps a symmetric key using the specified key that was initially used for
-// wrapping that key.
+// UnwrapKey - Unwraps a symmetric key using the specified key that was initially used for wrapping that key.
 //
-// The UNWRAP operation supports decryption of a symmetric key using the target
-// key encryption key. This operation is the reverse of the WRAP operation. The
-// UNWRAP operation applies to asymmetric and symmetric keys stored in Azure Key
-// Vault since it uses the private portion of the key. This operation requires the
-// keys/unwrapKey permission.
+// The UNWRAP operation supports decryption of a symmetric key using the target key encryption key. This operation is the
+// reverse of the WRAP operation. The UNWRAP operation applies to asymmetric and symmetric keys stored in Azure Key Vault
+// since it uses the private portion of the key. This operation requires the keys/unwrapKey permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 7.5
@@ -1288,12 +1242,11 @@ func (client *Client) unwrapKeyHandleResponse(resp *http.Response) (UnwrapKeyRes
 	return result, nil
 }
 
-// UpdateKey - The update key operation changes specified attributes of a stored key and can
-// be applied to any key type and key version stored in Azure Key Vault.
+// UpdateKey - The update key operation changes specified attributes of a stored key and can be applied to any key type and
+// key version stored in Azure Key Vault.
 //
-// In order to perform this operation, the key must already exist in the Key
-// Vault. Note: The cryptographic material of a key itself cannot be changed. This
-// operation requires the keys/update permission.
+// In order to perform this operation, the key must already exist in the Key Vault. Note: The cryptographic material of a
+// key itself cannot be changed. This operation requires the keys/update permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 7.5
@@ -1357,8 +1310,7 @@ func (client *Client) updateKeyHandleResponse(resp *http.Response) (UpdateKeyRes
 
 // UpdateKeyRotationPolicy - Updates the rotation policy for a key.
 //
-// Set specified members in the key policy. Leave others as undefined. This
-// operation requires the keys/update permission.
+// Set specified members in the key policy. Leave others as undefined. This operation requires the keys/update permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 7.5
@@ -1420,12 +1372,10 @@ func (client *Client) updateKeyRotationPolicyHandleResponse(resp *http.Response)
 
 // Verify - Verifies a signature using a specified key.
 //
-// The VERIFY operation is applicable to symmetric keys stored in Azure Key Vault.
-// VERIFY is not strictly necessary for asymmetric keys stored in Azure Key Vault
-// since signature verification can be performed using the public portion of the
-// key but this operation is supported as a convenience for callers that only have
-// a key-reference and not the public portion of the key. This operation requires
-// the keys/verify permission.
+// The VERIFY operation is applicable to symmetric keys stored in Azure Key Vault. VERIFY is not strictly necessary for asymmetric
+// keys stored in Azure Key Vault since signature verification can be performed using the public portion of the key but this
+// operation is supported as a convenience for callers that only have a key-reference and not the public portion of the key.
+// This operation requires the keys/verify permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 7.5
@@ -1489,13 +1439,11 @@ func (client *Client) verifyHandleResponse(resp *http.Response) (VerifyResponse,
 
 // WrapKey - Wraps a symmetric key using a specified key.
 //
-// The WRAP operation supports encryption of a symmetric key using a key
-// encryption key that has previously been stored in an Azure Key Vault. The WRAP
-// operation is only strictly necessary for symmetric keys stored in Azure Key
-// Vault since protection with an asymmetric key can be performed using the public
-// portion of the key. This operation is supported for asymmetric keys as a
-// convenience for callers that have a key-reference but do not have access to the
-// public key material. This operation requires the keys/wrapKey permission.
+// The WRAP operation supports encryption of a symmetric key using a key encryption key that has previously been stored in
+// an Azure Key Vault. The WRAP operation is only strictly necessary for symmetric keys stored in Azure Key Vault since protection
+// with an asymmetric key can be performed using the public portion of the key. This operation is supported for asymmetric
+// keys as a convenience for callers that have a key-reference but do not have access to the public key material. This operation
+// requires the keys/wrapKey permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 7.5

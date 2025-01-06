@@ -11,16 +11,12 @@ import (
 
 // removing client prefix from types
 func regexReplace(fileName string, regex string, replace string) {
-	r, err := regexp.Compile(regex)
-	if err != nil {
-		panic(err)
-	}
-
 	file, err := os.ReadFile(fileName)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
+	r := regexp.MustCompile(regex)
 	file = r.ReplaceAll(file, []byte(replace))
 
 	err = os.WriteFile(fileName, file, 0644)
@@ -51,4 +47,16 @@ func main() {
 
 	// delete strconv
 	regexReplace("client.go", `\"strconv\"`, "")
+
+	// delete DeletionRecoveryLevel
+	regexReplace("models.go", `RecoveryLevel \*DeletionRecoveryLevel`, "RecoveryLevel *string")
+	regexReplace("constants.go", `(?:\/\/.*\s)+type DeletionRecoveryLevel string`, "")
+	regexReplace("constants.go", `(?:\/\/.*\s)+func PossibleDeletionRecovery(?:.+\s)+\}`, "")
+	regexReplace("constants.go", `const \(\n\/\/ DeletionRecoveryLevel(?:.+\s)+\)`, "")
+
+	// fix up doc comments
+	regexReplace("models.go", `\/\/(.+)DeletedKeyBundle`, `//$1 DeletedKey`)
+	regexReplace("responses.go", `\/\/(.+)DeletedKeyBundle`, `//$1 DeletedKey`)
+	regexReplace("models.go", `For valid values\, see JsonWebKeyCurveName\.`, ``)
+	regexReplace("constants.go", `For valid values\, see JsonWebKeyCurveName\.`, ``)
 }

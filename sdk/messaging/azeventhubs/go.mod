@@ -1,8 +1,6 @@
 module github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs
 
-go 1.22.0
-
-toolchain go1.23.1
+go 1.18
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.16.0

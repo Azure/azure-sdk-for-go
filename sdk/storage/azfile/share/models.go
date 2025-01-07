@@ -118,11 +118,7 @@ type GetPropertiesOptions struct {
 	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
 	ShareSnapshot *string
 	// LeaseAccessConditions contains optional parameters to access leased entity.
-	LeaseAccessConditions                        *LeaseAccessConditions
-	IncludedBurstIops                            *int64
-	MaxBurstCreditsForIops                       *int64
-	NextAllowedProvisionedBandwidthDowngradeTime *time.Time
-	NextAllowedProvisionedIopsDowngradeTime      *time.Time
+	LeaseAccessConditions *LeaseAccessConditions
 }
 
 func (o *GetPropertiesOptions) format() (*generated.ShareClientGetPropertiesOptions, *LeaseAccessConditions) {

@@ -21,8 +21,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/test"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub"
+	"github.com/coder/websocket"
 	"github.com/stretchr/testify/require"
-	"nhooyr.io/websocket"
 )
 
 func TestConsumerClient_UsingWebSockets(t *testing.T) {

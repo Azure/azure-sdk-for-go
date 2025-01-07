@@ -17,66 +17,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
 )
 
-// TelemetryClientWrapper is a wrapper for telemetry client, once we get that phased back in.
-type TelemetryClientWrapper struct {
-	context TelemetryClientWrapperContext
-}
-
-func newTelemetryClientStub() *TelemetryClientWrapper {
-	// config := NewTelemetryConfiguration(aiKey)
-	// config.MaxBatchInterval = 5 * time.Second
-	// telemetryClient := NewTelemetryClientFromConfig(config)
-	return &TelemetryClientWrapper{}
-}
-
-type TelemetryClientWrapperContext struct {
-	CommonProperties map[string]string
-}
-
-func (tc *TelemetryClientWrapper) Track(evt any)            {}
-func (tc *TelemetryClientWrapper) TrackException(err error) {}
-func (tc *TelemetryClientWrapper) TrackEvent(name string)   {}
-
-func (tc *TelemetryClientWrapper) Flush() {
-	// tc.TC.Channel().Flush()
-	// <-tc.TC.Channel().Close()
-}
-
-func (tc *TelemetryClientWrapper) Context() *TelemetryClientWrapperContext {
-	return &tc.context
-}
-
-type BaseTelemetry struct {
-	Properties map[string]string
-}
-
-type MetricTelemetry struct {
-	Name          string
-	Value         any
-	BaseTelemetry BaseTelemetry
-}
-
-type ExceptionTelemetry struct {
-	BaseTelemetry BaseTelemetry
-}
-
-type EventTelemetry struct {
-	Properties map[string]string
-}
-
-func NewExceptionTelemetry(err error) *ExceptionTelemetry {
-	return &ExceptionTelemetry{}
-}
-
-func NewEventTelemetry(name string) *EventTelemetry {
-	return &EventTelemetry{}
-}
-
 // StressContext holds onto some common useful state for stress tests, including some simple stats tracking,
 // a telemetry client and a context that represents the lifetime of the test itself (and will be cancelled if the user
 // quits out of the stress)
 type StressContext struct {
-	TC      *TelemetryClientWrapper
+	TC      *TelemetryClientWrapper[Metric, Event]
 	Context context.Context
 
 	// TestRunID represents the test run and can be used to tie into other container metrics generated within the test cluster.
@@ -98,7 +43,7 @@ type StressContext struct {
 // TrackDuration tracks durations (as a metric), using the initial call to TrackDuration as the start. The duration is
 // ended when you call the returned function.
 // TrackDuration respects any included baggage in the context.
-func TrackDuration(ctx context.Context, tc *TelemetryClientWrapper, name Metric) func(map[string]string) {
+func TrackDuration(ctx context.Context, tc *TelemetryClientWrapper[Metric, Event], name Metric) func(map[string]string) {
 	start := time.Now()
 
 	return func(attrs map[string]string) {
@@ -108,30 +53,20 @@ func TrackDuration(ctx context.Context, tc *TelemetryClientWrapper, name Metric)
 }
 
 // TrackMetric tracks metric and respects any included baggage in the context.
-func TrackMetric(ctx context.Context, tc *TelemetryClientWrapper, name Metric, value float64, attrs map[string]string) {
-	tc.Track(&MetricTelemetry{
-		Name:  string(name),
-		Value: value,
-		BaseTelemetry: BaseTelemetry{
-			Properties: UpdateBaggage(ctx, attrs),
-		},
-	})
+func TrackMetric(ctx context.Context, tc *TelemetryClientWrapper[Metric, Event], name Metric, value float64, attrs map[string]string) {
+	tc.TrackMetricWithProps(name, value, UpdateBaggage(ctx, attrs))
 }
 
 // TrackError tracks an error (using the AppInsights exceptions table).
 // TrackError respects any included baggage in the context.
 //
 // NOTE: this function does not consider context cancellations/deadlines as errors.
-func TrackError(ctx context.Context, tc *TelemetryClientWrapper, err error) {
+func TrackError(ctx context.Context, tc *TelemetryClientWrapper[Metric, Event], err error) {
 	// track all errors except for cancellation errors - the caller can take care of those since
 	// they're the only one that knows if it's a true error or just normal behavior.
 	if err != nil && !isCancelError(err) {
 		log.Printf("Error: %#v, %T", err, err)
-
-		ext := NewExceptionTelemetry(err)
-		ext.BaseTelemetry.Properties = UpdateBaggage(ctx, nil)
-
-		tc.Track(ext)
+		tc.TrackExceptionWithProps(err, UpdateBaggage(ctx, nil))
 	}
 }
 
@@ -167,7 +102,7 @@ func MustCreateStressContext(testName string, options *StressContextOptions) *St
 		log.Fatalf("failed to create DefaultAzureCredential: %s", err)
 	}
 
-	telemetryClient := newTelemetryClientStub()
+	telemetryClient := NewTelemetryClientWrapper[Metric, Event]()
 
 	testRunID := strings.ToLower(fmt.Sprintf("%X", time.Now().UnixNano()))
 
@@ -238,17 +173,8 @@ func MustCreateStressContext(testName string, options *StressContextOptions) *St
 }
 
 func (sc *StressContext) Start(entityName string, attributes map[string]string) {
-	startEvent := NewEventTelemetry("Start")
-	startEvent.Properties = map[string]string{
-		"Entity": entityName,
-	}
-
-	for k, v := range attributes {
-		startEvent.Properties[k] = v
-	}
-
-	log.Printf("Start: %#v", startEvent.Properties)
-	sc.TC.Track(startEvent)
+	log.Printf("Start: %#v", attributes)
+	sc.TC.TrackEventWithProps(EventStart, attributes)
 }
 
 func (sc *StressContext) End() {
@@ -256,7 +182,7 @@ func (sc *StressContext) End() {
 
 	sc.cancel()
 
-	sc.TC.TrackEvent("End")
+	sc.TC.TrackEvent(EventEnd)
 	sc.TC.Flush()
 
 	time.Sleep(5 * time.Second)

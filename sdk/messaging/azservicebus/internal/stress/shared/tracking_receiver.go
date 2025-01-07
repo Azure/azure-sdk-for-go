@@ -11,7 +11,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
 )
 
-func NewTrackingReceiverForQueue(tc *TelemetryClientWrapper, client *azservicebus.Client, queueName string, options *azservicebus.ReceiverOptions) (*TrackingReceiver, error) {
+func NewTrackingReceiverForQueue(tc *TelemetryClientWrapper[Metric, Event], client *azservicebus.Client, queueName string, options *azservicebus.ReceiverOptions) (*TrackingReceiver, error) {
 	tmpReceiver, err := client.NewReceiverForQueue(queueName, options)
 
 	if err != nil {
@@ -21,7 +21,7 @@ func NewTrackingReceiverForQueue(tc *TelemetryClientWrapper, client *azservicebu
 	return &TrackingReceiver{r: tmpReceiver, tc: tc}, nil
 }
 
-func NewTrackingReceiverForSubscription(tc *TelemetryClientWrapper, client *azservicebus.Client, topicName string, subscriptionName string, options *azservicebus.ReceiverOptions) (*TrackingReceiver, error) {
+func NewTrackingReceiverForSubscription(tc *TelemetryClientWrapper[Metric, Event], client *azservicebus.Client, topicName string, subscriptionName string, options *azservicebus.ReceiverOptions) (*TrackingReceiver, error) {
 	tmpReceiver, err := client.NewReceiverForSubscription(topicName, subscriptionName, options)
 
 	if err != nil {
@@ -34,7 +34,7 @@ func NewTrackingReceiverForSubscription(tc *TelemetryClientWrapper, client *azse
 // TrackingReceiver reports metrics and errors automatically for its methods.
 type TrackingReceiver struct {
 	r  *azservicebus.Receiver
-	tc *TelemetryClientWrapper
+	tc *TelemetryClientWrapper[Metric, Event]
 }
 
 func (tr *TrackingReceiver) ReceiveMessages(ctx context.Context, maxMessages int, options *azservicebus.ReceiveMessagesOptions) ([]*azservicebus.ReceivedMessage, error) {

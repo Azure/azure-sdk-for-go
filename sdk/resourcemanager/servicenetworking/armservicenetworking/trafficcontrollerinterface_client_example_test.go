@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicenetworking/armservicenetworking"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7189fb57f69468c56df76f9a4d68dd9ff04ab100/specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/TrafficControllersGetList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/49456eb149e3bb5d0528cbca714cfa1806415484/specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2025-01-01/examples/TrafficControllersGetList.json
 func ExampleTrafficControllerInterfaceClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExampleTrafficControllerInterfaceClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7189fb57f69468c56df76f9a4d68dd9ff04ab100/specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/TrafficControllersGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/49456eb149e3bb5d0528cbca714cfa1806415484/specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2025-01-01/examples/TrafficControllersGet.json
 func ExampleTrafficControllerInterfaceClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,7 +136,7 @@ func ExampleTrafficControllerInterfaceClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7189fb57f69468c56df76f9a4d68dd9ff04ab100/specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/TrafficControllerGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/49456eb149e3bb5d0528cbca714cfa1806415484/specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2025-01-01/examples/TrafficControllerGet.json
 func ExampleTrafficControllerInterfaceClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -178,7 +178,7 @@ func ExampleTrafficControllerInterfaceClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7189fb57f69468c56df76f9a4d68dd9ff04ab100/specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/TrafficControllerPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/49456eb149e3bb5d0528cbca714cfa1806415484/specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2025-01-01/examples/TrafficControllerPut.json
 func ExampleTrafficControllerInterfaceClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -238,7 +238,7 @@ func ExampleTrafficControllerInterfaceClient_BeginCreateOrUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7189fb57f69468c56df76f9a4d68dd9ff04ab100/specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/TrafficControllerPatch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/49456eb149e3bb5d0528cbca714cfa1806415484/specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2025-01-01/examples/TrafficControllerPatch.json
 func ExampleTrafficControllerInterfaceClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -293,7 +293,7 @@ func ExampleTrafficControllerInterfaceClient_Update() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7189fb57f69468c56df76f9a4d68dd9ff04ab100/specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/TrafficControllerDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/49456eb149e3bb5d0528cbca714cfa1806415484/specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2025-01-01/examples/TrafficControllerDelete.json
 func ExampleTrafficControllerInterfaceClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

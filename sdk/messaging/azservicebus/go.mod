@@ -14,9 +14,6 @@ require (
 require (
 	// used in tests only
 	github.com/joho/godotenv v1.5.1
-
-	// used in stress tests
-	// github.com/microsoft/ApplicationInsights-Go v0.4.4
 	github.com/stretchr/testify v1.10.0
 )
 

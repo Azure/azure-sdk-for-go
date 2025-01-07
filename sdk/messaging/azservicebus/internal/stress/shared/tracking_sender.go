@@ -10,7 +10,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
 )
 
-func NewTrackingSender(tc *TelemetryClientWrapper, client *azservicebus.Client, queueOrTopic string, options *azservicebus.NewSenderOptions) (*TrackingSender, error) {
+func NewTrackingSender(tc *TelemetryClientWrapper[Metric, Event], client *azservicebus.Client, queueOrTopic string, options *azservicebus.NewSenderOptions) (*TrackingSender, error) {
 	tmpSender, err := client.NewSender(queueOrTopic, options)
 
 	if err != nil {
@@ -22,7 +22,7 @@ func NewTrackingSender(tc *TelemetryClientWrapper, client *azservicebus.Client, 
 
 // TrackingSender reports metrics and errors automatically for its methods.
 type TrackingSender struct {
-	tc *TelemetryClientWrapper
+	tc *TelemetryClientWrapper[Metric, Event]
 	s  *azservicebus.Sender
 }
 

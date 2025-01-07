@@ -32,6 +32,3 @@ require (
 	golang.org/x/text v0.21.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
-
-// used in stress tests
-// require github.com/microsoft/ApplicationInsights-Go v0.4.4

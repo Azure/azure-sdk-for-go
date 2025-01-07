@@ -190,7 +190,7 @@ func consumeForBatchTester(ctx context.Context, round int64, cc *azeventhubs.Con
 		if err != nil {
 			if errors.Is(err, context.DeadlineExceeded) || errors.Is(err, context.Canceled) {
 				// track these, we can use it as a proxy for "network was slow" or similar.
-				testData.TC.TrackMetric(MetricDeadlineExceeded, float64(1), nil)
+				testData.TC.TrackMetricWithProps(MetricDeadlineExceeded, float64(1), nil)
 				numCancels++
 
 				if numCancels >= cancelLimit {
@@ -213,7 +213,7 @@ func consumeForBatchTester(ctx context.Context, round int64, cc *azeventhubs.Con
 			panic(err)
 		}
 
-		testData.TC.TrackMetric(MetricReceived, float64(len(events)), nil)
+		testData.TC.TrackMetricWithProps(MetricNameReceived, float64(len(events)), nil)
 		total += len(events)
 
 		if total >= params.numToSend {

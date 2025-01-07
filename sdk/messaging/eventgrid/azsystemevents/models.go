@@ -1433,8 +1433,8 @@ type ACSRouterWorkerUpdatedEventData struct {
 	WorkerID *string
 }
 
-// ACSSmsDeliveryAttemptProperties - Schema for details of a delivery attempt
-type ACSSmsDeliveryAttemptProperties struct {
+// ACSSMSDeliveryAttemptProperties - Schema for details of a delivery attempt
+type ACSSMSDeliveryAttemptProperties struct {
 	// REQUIRED; TimeStamp when delivery was attempted
 	Timestamp *time.Time
 
@@ -1445,11 +1445,11 @@ type ACSSmsDeliveryAttemptProperties struct {
 	SegmentsSucceeded *int32
 }
 
-// ACSSmsDeliveryReportReceivedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.Communication.SMSDeliveryReportReceived
+// ACSSMSDeliveryReportReceivedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.Communication.SMSDeliveryReportReceived
 // event.
-type ACSSmsDeliveryReportReceivedEventData struct {
+type ACSSMSDeliveryReportReceivedEventData struct {
 	// REQUIRED; List of details of delivery attempts made
-	DeliveryAttempts []ACSSmsDeliveryAttemptProperties
+	DeliveryAttempts []ACSSMSDeliveryAttemptProperties
 
 	// REQUIRED; The time at which the SMS delivery report was received
 	ReceivedTimestamp *time.Time
@@ -1473,8 +1473,8 @@ type ACSSmsDeliveryReportReceivedEventData struct {
 	To *string
 }
 
-// ACSSmsReceivedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.Communication.SMSReceived event.
-type ACSSmsReceivedEventData struct {
+// ACSSMSReceivedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.Communication.SMSReceived event.
+type ACSSMSReceivedEventData struct {
 	// REQUIRED; The time at which the SMS was received
 	ReceivedTimestamp *time.Time
 

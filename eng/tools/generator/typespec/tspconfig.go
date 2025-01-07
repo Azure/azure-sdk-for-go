@@ -118,7 +118,20 @@ func ParseTypeSpecConfig(tspconfigPath string) (*TypeSpecConfig, error) {
 }
 
 func (tc *TypeSpecConfig) GetPackageModuleRelativePath() string {
-	return tc.Options["@azure-tools/typespec-go"].(map[string]interface{})["service-dir"].(string) + "/" + tc.Options["@azure-tools/typespec-go"].(map[string]interface{})["package-dir"].(string)
+	goConfig := tc.Options["@azure-tools/typespec-go"].(map[string]interface{})
+	if goConfig["module"] == nil {
+		return ""
+	}
+	module := goConfig["module"].(string)
+	re := regexp.MustCompile(`\{([^}]+)\}`)
+	module = re.ReplaceAllStringFunc(module, func(m string) string {
+		key := re.FindStringSubmatch(m)[1]
+		if val, ok := goConfig[key]; ok {
+			return val.(string)
+		}
+		return m
+	})
+	return strings.ReplaceAll(module, "github.com/Azure/azure-sdk-for-go/", "")
 }
 
 func (tc *TypeSpecConfig) EditOptions(emit string, option map[string]any, append bool) {

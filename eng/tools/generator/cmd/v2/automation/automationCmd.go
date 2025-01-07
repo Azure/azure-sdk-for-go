@@ -132,6 +132,10 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 				continue
 			}
 			packageModuleRelativePath := tsc.GetPackageModuleRelativePath()
+			if packageModuleRelativePath == "" {
+				errorBuilder.add(fmt.Errorf("package module relative path not found in %s", tspconfigPath))
+				continue
+			}
 			namespaceResult, err := generateCtx.GenerateForTypeSpec(&common.GenerateParam{
 				RPName:              module[0],
 				NamespaceName:       module[1],

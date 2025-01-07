@@ -4,6 +4,10 @@
 
 ### Features Added
 
+The following fields have been added:
+- ACSEmailDeliveryReportReceivedEventData.InternetMessageID
+- ACSEmailDeliveryReportStatusDetails.RecipientMailServerHostName
+- ACSSmsReceivedEventData.SegmentCount
 
 ### Breaking Changes
 

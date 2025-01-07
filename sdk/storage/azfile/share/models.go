@@ -48,6 +48,14 @@ type CreateOptions struct {
 	// Optional. Integer. Default if not specified is the maximum IOPS the file share can support. Current maximum for a file
 	// share is 102,400 IOPS.
 	PaidBurstingMaxIops *int64
+
+	// Specifies the provisioned bandwidth of the share, in mebibytes per second (MiBps). If this is not
+	// specified, the provisioned bandwidth is set to value calculated based on recommendation formula.
+	ShareProvisionedBandwidthMibps *int64
+
+	// Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this is
+	// not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
+	ShareProvisionedIops *int64
 }
 
 func (o *CreateOptions) format() *generated.ShareClientCreateOptions {
@@ -65,6 +73,8 @@ func (o *CreateOptions) format() *generated.ShareClientCreateOptions {
 		PaidBurstingEnabled:                  o.PaidBurstingEnabled,
 		PaidBurstingMaxBandwidthMibps:        o.PaidBurstingMaxBandwidthMibps,
 		PaidBurstingMaxIops:                  o.PaidBurstingMaxIops,
+		ShareProvisionedBandwidthMibps:       o.ShareProvisionedBandwidthMibps,
+		ShareProvisionedIops:                 o.ShareProvisionedIops,
 	}
 }
 
@@ -144,6 +154,13 @@ type SetPropertiesOptions struct {
 	// Optional. Integer. Default if not specified is the maximum IOPS the file share can support. Current maximum for a file
 	// share is 102,400 IOPS.
 	PaidBurstingMaxIops *int64
+	// Specifies the provisioned bandwidth of the share, in mebibytes per second (MiBps). If this is not
+	// specified, the provisioned bandwidth is set to value calculated based on recommendation formula.
+	ShareProvisionedBandwidthMibps *int64
+
+	// Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this is
+	// not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
+	ShareProvisionedIops *int64
 }
 
 func (o *SetPropertiesOptions) format() (*generated.ShareClientSetPropertiesOptions, *LeaseAccessConditions) {
@@ -159,6 +176,8 @@ func (o *SetPropertiesOptions) format() (*generated.ShareClientSetPropertiesOpti
 		PaidBurstingEnabled:                  o.PaidBurstingEnabled,
 		PaidBurstingMaxBandwidthMibps:        o.PaidBurstingMaxBandwidthMibps,
 		PaidBurstingMaxIops:                  o.PaidBurstingMaxIops,
+		ShareProvisionedIops:                 o.ShareProvisionedIops,
+		ShareProvisionedBandwidthMibps:       o.ShareProvisionedBandwidthMibps,
 	}, o.LeaseAccessConditions
 }
 

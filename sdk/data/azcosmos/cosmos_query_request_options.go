@@ -82,6 +82,7 @@ func (options *QueryOptions) toHeaders() *map[string]string {
 	}
 
 	headers[cosmosHeaderPopulateQueryMetrics] = "true"
+	headers[cosmosHeaderEnableCrossPartitionQuery] = "true"
 
 	return &headers
 }

@@ -486,8 +486,20 @@ func (c *ContainerClient) DeleteItem(
 
 // NewQueryItemsPager executes a single partition query in a Cosmos container.
 // query - The SQL query to execute.
-// partitionKey - The partition key to scope the query on.
+// partitionKey - The partition key to scope the query on. See below for more information on cross partition queries.
 // o - Options for the operation.
+//
+// Limited cross partition queries ARE possible with the Go SDK.
+// You can specify an empty list of partition keys by passing `NewPartitionKey()` to the `partitionKey` parameter, to indicate that the query WHERE clauses will indicate the partitions to query.
+// If you specify partition keys in the `partitionKey` parameter, you must specify ALL partition keys that the container has (in the case of hierarchical partitioning).
+//
+// If the query itself contains WHERE clauses that filter down to a single partition, the query will be executed on that partition.
+// If the query does not filter down to a single partition (i.e. it does not filter on partition key at all, or filters on only some of the partition keys a container defines), the query will be executed as a cross partition query.
+// The Azure Cosmos DB Gateway API, used by the Go SDK, can only perform a LIMITED set of cross-partition queries.
+// Specifically, the gateway can only perform simple projections and filtering on cross partition queries.
+// See https://learn.microsoft.com/en-us/rest/api/cosmos-db/querying-cosmosdb-resources-using-the-rest-api#queries-that-cannot-be-served-by-gateway for more details.
+//
+// If you provide a query that the gateway cannot execute, it will return a BadRequest error.
 func (c *ContainerClient) NewQueryItemsPager(query string, partitionKey PartitionKey, o *QueryOptions) *runtime.Pager[QueryItemsResponse] {
 	correlatedActivityId, _ := uuid.New()
 	h := headerOptionsOverride{

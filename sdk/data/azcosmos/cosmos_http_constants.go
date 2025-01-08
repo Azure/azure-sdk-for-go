@@ -36,6 +36,7 @@ const (
 	cosmosHeaderIsBatchAtomic                      string = "x-ms-cosmos-batch-atomic"
 	cosmosHeaderIsBatchOrdered                     string = "x-ms-cosmos-batch-ordered"
 	cosmosHeaderSDKSupportedCapabilities           string = "x-ms-cosmos-sdk-supportedcapabilities"
+	cosmosHeaderEnableCrossPartitionQuery          string = "x-ms-documentdb-query-enablecrosspartition"
 	headerXmsDate                                  string = "x-ms-date"
 	headerAuthorization                            string = "Authorization"
 	headerContentType                              string = "Content-Type"

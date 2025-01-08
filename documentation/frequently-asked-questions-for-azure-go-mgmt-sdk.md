@@ -1,4 +1,4 @@
-# frequently-asked-questions-for-azure-go-mgmt-sdk
+# Frequently Asked Questions For Azure Go Mgmt Sdk
 
 
 ## json unmarshal error

@@ -12,6 +12,6 @@ when user report something related to product experience or related to functions
 
 
 ## some cases is not belong mgmt
-* some reports is not belongs to range of sdk resource mangement,e.g:https://github.com/Azure/azure-sdk-for-go/issues/23895, this revolved in `management group`,not resource
+* some reports does not belong to sdk of resource mangement,e.g:https://github.com/Azure/azure-sdk-for-go/issues/23895, this revolved in `management group`,not resource
 * some reports is related to namespace started with `az`, e.g: https://github.com/Azure/azure-sdk-for-go/issues/23889#issuecomment-2565844706, this is reported about `azcosmos` which is not under `sdk/resourcemanager` directory, so we will not deal issues like this
 

@@ -78,8 +78,6 @@ generator release-v2 <azure-sdk-for-go path> <azure-rest-api-specs path> <RP nam
         - i.	RUN: `test-proxy restore --assets-json-path assets.json` in the target project directory.
         - ii.	Get the new API version by finding any file in the project that ends with '_client', and in the comments, locate 'Generated from API version {api version}'.
         - iii.	Go to the '/.assets' folder and find the issued recording JSON file. Replace all the old version with the new API version found in step 2.
-    - b.	If we need to re-record the tests, we could do the following steps:
-        - i.	(GO Test  Chenjie fill)
 5.	Run `test-proxy push --assets-json-path assets.json` in the project directory.
 6.	Check that whether generated  api version  is consistent with the version commented in client,[api version check see details](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/resourcemanager/neonpostgres/armneonpostgres/operations_client.go#L38),[client version see details](https://github.com/Azure/azure-rest-api-specs/blob/main/specification/liftrneon/Neon.Postgres.Management/main.tsp#L28),if is inconsistent, reported that
 7.	Commit changes and create the PR.

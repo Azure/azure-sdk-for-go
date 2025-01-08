@@ -28,7 +28,6 @@ extends:
     ServiceDirectory: 'security/keyvault/azkeys'
     RunLiveTests: true
     UsePipelineProxy: false
-    SupportedClouds: 'Public,UsGov,China'
     CloudConfig:
       Public:
       UsGov:

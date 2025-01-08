@@ -1079,11 +1079,11 @@ type ShareClientDeleteResponse struct {
 	// Version contains the information returned from the x-ms-version header response.
 	Version *string
 
-	// XMSFileShareSnapshotUsageBytes contains the information returned from the x-ms-file-share-snapshot-usage-bytes header response.
-	XMSFileShareSnapshotUsageBytes *int64
+	// FileShareSnapshotUsageBytes contains the information returned from the x-ms-file-share-snapshot-usage-bytes header response.
+	FileShareSnapshotUsageBytes *int64
 
-	// XMSFileShareUsageBytes contains the information returned from the x-ms-file-share-usage-bytes header response.
-	XMSFileShareUsageBytes *int64
+	// FileShareUsageBytes contains the information returned from the x-ms-file-share-usage-bytes header response.
+	FileShareUsageBytes *int64
 }
 
 // ShareClientGetAccessPolicyResponse contains the response from method ShareClient.GetAccessPolicy.

@@ -37,6 +37,20 @@ directive:
       replaceAll(`[]string{"2021-12-02"}`, `[]string{ServiceVersion}`);
 ```
 
+### Updating Header Names XMSFileShareSnapshotUsageBytes and XMSFileShareUsageBytes
+
+```yaml
+directive:
+- from: 
+  - zz_response_types.go
+  - zz_share_client.go
+  where: $
+  transform: >-
+    return $.
+      replaceAll(`XMSFileShareSnapshotUsageBytes`, `FileShareSnapshotUsageBytes`).
+      replaceAll(`XMSFileShareUsageBytes`, `FileShareUsageBytes`);
+```
+
 ### Don't include share name, directory, or file name in path - we have direct URIs
 
 ``` yaml

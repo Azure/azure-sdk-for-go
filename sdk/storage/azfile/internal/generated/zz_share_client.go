@@ -690,14 +690,14 @@ func (client *ShareClient) deleteHandleResponse(resp *http.Response) (ShareClien
 		if err != nil {
 			return ShareClientDeleteResponse{}, err
 		}
-		result.XMSFileShareSnapshotUsageBytes = &xMSFileShareSnapshotUsageBytes
+		result.FileShareSnapshotUsageBytes = &xMSFileShareSnapshotUsageBytes
 	}
 	if val := resp.Header.Get("x-ms-file-share-usage-bytes"); val != "" {
 		xMSFileShareUsageBytes, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientDeleteResponse{}, err
 		}
-		result.XMSFileShareUsageBytes = &xMSFileShareUsageBytes
+		result.FileShareUsageBytes = &xMSFileShareUsageBytes
 	}
 	return result, nil
 }

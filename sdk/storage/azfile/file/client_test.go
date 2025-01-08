@@ -901,8 +901,8 @@ func (f *FileRecordedTestsSuite) TestFileDelete() {
 
 	response, err := shareClient.Delete(context.Background(), &share.DeleteOptions{DeleteSnapshots: to.Ptr(share.DeleteSnapshotsOptionTypeInclude)})
 	_require.NoError(err)
-	_require.NotNil(response.XMSFileShareUsageBytes)
-	_require.NotNil(response.XMSFileShareSnapshotUsageBytes)
+	_require.NotNil(response.FileShareUsageBytes)
+	_require.NotNil(response.FileShareSnapshotUsageBytes)
 }
 
 func (f *FileRecordedTestsSuite) TestStartCopyDefault() {

@@ -490,7 +490,7 @@ func (c *ContainerClient) DeleteItem(
 // o - Options for the operation.
 //
 // Limited cross partition queries ARE possible with the Go SDK.
-// You can specify an empty list of partition keys by passing `NewPartitionKey()` to the `partitionKey` parameter, to indicate that the query WHERE clauses will indicate the partitions to query.
+// You can specify an empty list of partition keys by passing `NewPartitionKey()` to the `partitionKey` parameter, to indicate that the query WHERE clauses will specify which partitions to query.
 // If you specify partition keys in the `partitionKey` parameter, you must specify ALL partition keys that the container has (in the case of hierarchical partitioning).
 //
 // If the query itself contains WHERE clauses that filter down to a single partition, the query will be executed on that partition.

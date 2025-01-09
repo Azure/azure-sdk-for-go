@@ -278,7 +278,7 @@ func TestReceiver_releaserFunc_cancelBetweenReceiveAndReleaseStillReleases(t *te
 		// NOTE: in the real world this can also happen if the amqp.Receiver is returning prefetched
 		// messages since it ignores the context's cancellation state.
 		return &amqp.Message{}, nil
-	}).Times(2)
+	}).Times(1)
 
 	amqpReceiver.EXPECT().ReleaseMessage(context.Background(), gomock.Any())
 

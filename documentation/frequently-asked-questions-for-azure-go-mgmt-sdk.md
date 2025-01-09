@@ -11,7 +11,7 @@
 when user report something related to product experience or related to functions about the service, add label  `service-attention`, [example like this](https://github.com/Azure/azure-sdk-for-go/issues/23867)
 
 
-## some cases does not belong mgmt
+## some cases do not belong mgmt
 * some reports do not belong to sdk of resource mangement,e.g:https://github.com/Azure/azure-sdk-for-go/issues/23895, this revolved in `management group`,not resource
 * some reports are related to namespace started with `az`, e.g: https://github.com/Azure/azure-sdk-for-go/issues/23889#issuecomment-2565844706, this is reported about `azcosmos` which is not under `sdk/resourcemanager` directory, so we will not deal issues like this
 

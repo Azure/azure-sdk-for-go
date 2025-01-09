@@ -320,8 +320,8 @@ func PossibleKeyPermissionsValues() []KeyPermissions {
 type KeyRotationPolicyActionType string
 
 const (
-	KeyRotationPolicyActionTypeNotify KeyRotationPolicyActionType = "notify"
-	KeyRotationPolicyActionTypeRotate KeyRotationPolicyActionType = "rotate"
+	KeyRotationPolicyActionTypeNotify KeyRotationPolicyActionType = "Notify"
+	KeyRotationPolicyActionTypeRotate KeyRotationPolicyActionType = "Rotate"
 )
 
 // PossibleKeyRotationPolicyActionTypeValues returns the possible values for the KeyRotationPolicyActionType const type.

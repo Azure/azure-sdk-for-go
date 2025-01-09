@@ -55,6 +55,7 @@ type Receiver struct {
 	receiving                bool
 	retryOptions             RetryOptions
 	settler                  *messageSettler
+	defaultReleaserTimeout   time.Duration // defaults to 1min, settable for unit tests.
 }
 
 // ReceiverOptions contains options for the `Client.NewReceiverForQueue` or `Client.NewReceiverForSubscription`
@@ -133,6 +134,7 @@ func newReceiver(args newReceiverArgs, options *ReceiverOptions) (*Receiver, err
 		lastPeekedSequenceNumber: 0,
 		maxAllowedCredits:        defaultLinkRxBuffer,
 		retryOptions:             args.retryOptions,
+		defaultReleaserTimeout:   time.Minute,
 	}
 
 	receiver.cancelReleaser.Store(emptyCancelFn)
@@ -625,9 +627,12 @@ func (r *Receiver) newReleaserFunc(receiver amqpwrap.AMQPReceiver) func() {
 			msg, err := receiver.Receive(ctx, nil)
 
 			if err == nil {
+				releaseCtx, cancelRelease := context.WithTimeout(context.Background(), r.defaultReleaserTimeout)
+
 				// We don't use `ctx` here to avoid cancelling Release(), and leaving this message
 				// in limbo until it expires.
-				err = receiver.ReleaseMessage(context.Background(), msg)
+				err = receiver.ReleaseMessage(releaseCtx, msg)
+				cancelRelease()
 
 				if err == nil {
 					released++

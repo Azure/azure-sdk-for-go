@@ -278,9 +278,9 @@ func TestReceiver_releaserFunc_cancelBetweenReceiveAndReleaseStillReleases(t *te
 		// NOTE: in the real world this can also happen if the amqp.Receiver is returning prefetched
 		// messages since it ignores the context's cancellation state.
 		return &amqp.Message{}, nil
-	}).Times(1)
+	})
 
-	amqpReceiver.EXPECT().ReleaseMessage(context.Background(), gomock.Any())
+	amqpReceiver.EXPECT().ReleaseMessage(gomock.Any(), gomock.Any())
 
 	releaserFn()
 }
@@ -310,6 +310,37 @@ func TestReceiver_releaserFunc_cancelReceive(t *testing.T) {
 
 		// simulates the cancellation occurring while we were receiving, thus cancelling the call.
 		return nil, ctx.Err()
+	})
+
+	releaserFn()
+}
+
+func TestReceiver_releaserFunc_releaseTimesOut(t *testing.T) {
+	receiver, err := newReceiver(defaultNewReceiverArgsForTest(), nil)
+	require.NoError(t, err)
+
+	ctrl := gomock.NewController(t)
+	amqpReceiver := mock.NewMockAMQPReceiver(ctrl)
+
+	releaserFn := receiver.newReleaserFunc(amqpReceiver)
+
+	amqpReceiver.EXPECT().LinkName().Return("link-name").AnyTimes()
+	amqpReceiver.EXPECT().Receive(gomock.Any(), gomock.Any()).DoAndReturn(func(ctx context.Context, o *amqp.ReceiveOptions) (*amqp.Message, error) {
+		if ctx.Err() != nil {
+			return nil, ctx.Err()
+		}
+
+		return &amqp.Message{}, nil
+	})
+
+	receiver.defaultReleaserTimeout = time.Millisecond // shorten this so the release call times out properly.
+
+	amqpReceiver.EXPECT().ReleaseMessage(gomock.Any(), gomock.Any()).DoAndReturn(func(ctx context.Context, msg *amqp.Message) error {
+		for ctx.Err() == nil {
+			time.Sleep(10 * time.Millisecond) // allow the context cancellation to happen
+		}
+
+		return ctx.Err()
 	})
 
 	releaserFn()

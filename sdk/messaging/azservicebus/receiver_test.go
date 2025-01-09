@@ -1045,7 +1045,7 @@ func TestReceiveWithDifferentWaitTime(t *testing.T) {
 }
 
 func TestReceiveCancelReleaser(t *testing.T) {
-	getLogs := test.CaptureLogsForTest(true)
+	getLogs := test.CaptureLogsForTest(false)
 
 	client, cleanup, queueName := setupLiveTest(t, &liveTestOptions{
 		QueueProperties: &admin.QueueProperties{
@@ -1116,7 +1116,7 @@ SendLoop:
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 	defer cancel()
 
-	expected := numSent - 1 // (we got )
+	expected := numSent - len(messages) // remove any messages we've already received. Usually it's just one but it's not
 	remaining := expected
 
 	t.Logf("Receiving remaining messages (%d)", remaining)

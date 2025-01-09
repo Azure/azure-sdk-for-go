@@ -7,9 +7,10 @@ package azkeys
 import (
 	"encoding/json"
 	"fmt"
+	"reflect"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"reflect"
 )
 
 // MarshalJSON implements the json.Marshaller interface for type BackupKeyResult.

@@ -14,7 +14,7 @@ type BackupKeyResult struct {
 
 // CreateKeyParameters - The key create parameters.
 type CreateKeyParameters struct {
-	// REQUIRED; The type of key to create. For valid values, see JsonWebKeyType.
+	// REQUIRED; The type of key to create.
 	Kty *KeyType
 
 	// Elliptic curve name.
@@ -39,7 +39,7 @@ type CreateKeyParameters struct {
 	Tags map[string]*string
 }
 
-// DeletedKey - A  DeletedKey consisting of a WebKey plus its Attributes and deletion info
+// DeletedKey - A DeletedKeyBundle consisting of a WebKey plus its Attributes and deletion info
 type DeletedKey struct {
 	// The key management attributes.
 	Attributes *KeyAttributes

@@ -26,7 +26,7 @@ func regexReplace(fileName string, regex string, replace string) {
 }
 
 func main() {
-	// delete the version path param check (version == "" is legal for Key Vault but indescribable by OpenAPI)
+	// delete the version path param check (TypeSpec doesn't allow optional path parameters)
 	regexReplace("client.go", `\sif version == "" \{\s+.+version cannot be empty"\)\s+\}\s`, "")
 
 	// make secret IDs a convenience type so we can add parsing methods
@@ -45,9 +45,6 @@ func main() {
 	// delete KeyOperationExport
 	regexReplace("constants.go", `.*(\bKeyOperationExport\b).*`, "")
 
-	// delete strconv
-	regexReplace("client.go", `\"strconv\"`, "")
-
 	// delete DeletionRecoveryLevel
 	regexReplace("models.go", `RecoveryLevel \*DeletionRecoveryLevel`, "RecoveryLevel *string")
 	regexReplace("constants.go", `(?:\/\/.*\s)+type DeletionRecoveryLevel string`, "")
@@ -55,8 +52,9 @@ func main() {
 	regexReplace("constants.go", `const \(\n\/\/ DeletionRecoveryLevel(?:.+\s)+\)`, "")
 
 	// fix up doc comments
-	regexReplace("models.go", `\/\/(.+)DeletedKeyBundle`, `//$1 DeletedKey`)
-	regexReplace("responses.go", `\/\/(.+)DeletedKeyBundle`, `//$1 DeletedKey`)
+	regexReplace("models.go", `\/\/ A DeletedKeyBundle`, `// A DeletedKey`)
+	regexReplace("responses.go", `\/\/ A DeletedKeyBundle`, `// A DeletedKey`)
 	regexReplace("models.go", `For valid values\, see JsonWebKeyCurveName\.`, ``)
 	regexReplace("constants.go", `For valid values\, see JsonWebKeyCurveName\.`, ``)
+	regexReplace("models.go", `For valid values\, see JsonWebKeyType\.`, ``)
 }

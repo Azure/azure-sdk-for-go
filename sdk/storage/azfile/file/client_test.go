@@ -891,6 +891,9 @@ func (f *FileRecordedTestsSuite) TestFileSetMetadataInvalidField() {
 }
 
 func (f *FileRecordedTestsSuite) TestFileDelete() {
+	if recording.GetRecordMode() == recording.LiveMode {
+		f.T().Skip("This test cannot be made live")
+	}
 	_require := require.New(f.T())
 	testName := f.T().Name()
 

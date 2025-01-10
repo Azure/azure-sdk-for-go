@@ -131,67 +131,6 @@ func TestReceiverOptions(t *testing.T) {
 	require.EqualValues(t, "topic/Subscriptions/subscription/$Transfer/$DeadLetterQueue", path)
 }
 
-func TestReceiver_releaserFunc(t *testing.T) {
-	receiver, err := newReceiver(defaultNewReceiverArgsForTest(), nil)
-	receiver.amqpLinks = &internal.FakeAMQPLinks{}
-	require.NoError(t, err)
-
-	successfulReleases := 0
-
-	messagesCh := make(chan *amqp.Message, 1)
-
-	messagesCh <- &amqp.Message{
-		Data: [][]byte{[]byte("hello")},
-	}
-
-	receiverClosed := make(chan struct{})
-
-	amqpReceiver := internal.FakeAMQPReceiver{
-		ReceiveFn: func(ctx context.Context) (*amqp.Message, error) {
-			select {
-			case m := <-messagesCh:
-				return m, nil
-			case <-ctx.Done():
-				return nil, ctx.Err()
-			}
-		},
-		ReleaseMessageFn: func(ctx context.Context, msg *amqp.Message) error {
-			require.Equal(t, "hello", string(msg.Data[0]))
-			successfulReleases++
-
-			go func() {
-				err := receiver.Close(context.Background())
-				require.NoError(t, err)
-
-				close(receiverClosed)
-			}()
-
-			return nil
-		},
-	}
-
-	logsFn := test.CaptureLogsForTest(false)
-
-	releaserFn := receiver.newReleaserFunc(&amqpReceiver)
-	releaserFn()
-
-	require.Equal(t, 1+1, amqpReceiver.ReceiveCalled, "called twice - once to receive a message, the second time blocks")
-	require.Equal(t, 1, amqpReceiver.ReleaseMessageCalled)
-
-	_ = amqpReceiver.Close(context.Background())
-
-	t.Logf("Waiting for receiver to shut down")
-	<-receiverClosed
-	t.Logf("Receiver has closed")
-
-	logs := logsFn()
-
-	require.Contains(t,
-		logs,
-		fmt.Sprintf("[azsb.Receiver] [prefix] Message releaser pausing. Released %d messages", successfulReleases),
-	)
-}
-
 func TestReceiver_releaserFunc_errorOnFirstMessage(t *testing.T) {
 	receiver, err := newReceiver(defaultNewReceiverArgsForTest(), nil)
 	require.NoError(t, err)

@@ -1,16 +1,10 @@
 # Release History
 
-## 1.4.1 (Unreleased)
+## 1.5.0-beta.1 (2025-01-10)
 
 ### Features Added
 * Add Premium access tier to Files Shares
 * Provisioned v2 billing model for Azure files
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 1.4.0 (2024-11-13)
 

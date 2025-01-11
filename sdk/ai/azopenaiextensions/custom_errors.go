@@ -78,7 +78,7 @@ func ExtractContentFilterError(err error, contentFilterErr **ContentFilterError)
 			Status     int    `json:"status"`
 			InnerError struct {
 				Code                 string                              `json:"code"`
-				ContentFilterResults ContentFilterResultDetailsForPrompt `json:"content_filter_result"`
+				ContentFilterResults ContentFilterResultDetailsForPrompt `json:"content_filter_results"`
 			} `json:"inner_error"`
 		} `json:"error"`
 	}

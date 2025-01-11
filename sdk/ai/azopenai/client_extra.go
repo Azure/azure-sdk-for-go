@@ -53,7 +53,7 @@ func newContentFilterResponseError(resp *http.Response) error {
 		Error struct {
 			InnerError struct {
 				ContentFilterResults *ContentFilterResults `json:"content_filter_result"`
-			} `json:"innererror"`
+			} `json:"inner_error"`
 		}
 	}
 

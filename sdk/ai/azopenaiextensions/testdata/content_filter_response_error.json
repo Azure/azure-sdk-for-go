@@ -5,7 +5,7 @@
         "param": "prompt",
         "code": "content_filter",
         "status": 400,
-        "innererror": {
+        "inner_error": {
             "code": "ResponsibleAIPolicyViolation",
             "content_filter_result": {
                 "hate": {

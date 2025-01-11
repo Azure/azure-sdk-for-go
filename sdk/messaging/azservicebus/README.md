@@ -315,11 +315,11 @@ If you'd like to contribute to this library, please read the [contributing guide
 [new_issue]: https://github.com/Azure/azure-sdk-for-go/issues/new
 [azure_identity_pkg]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
 [default_azure_credential]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#NewDefaultAzureCredential
-[queue_concept]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview#queues
-[topic_concept]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview#topics
-[subscription_concept]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-queues-topics-subscriptions#topics-and-subscriptions
-[service_bus_overview]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview
-[msdoc_settling]: https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#settling-receive-operations
+[queue_concept]: https://learn.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview#queues
+[topic_concept]: https://learn.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview#topics
+[subscription_concept]: https://learn.microsoft.com/azure/service-bus-messaging/service-bus-queues-topics-subscriptions#topics-and-subscriptions
+[service_bus_overview]: https://learn.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview
+[msdoc_settling]: https://learn.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#settling-receive-operations
 [source]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/messaging/azservicebus
 [godoc]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus#section-documentation
 [godoc_examples]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus#pkg-examples

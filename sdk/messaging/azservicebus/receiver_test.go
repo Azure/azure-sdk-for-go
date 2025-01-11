@@ -10,6 +10,7 @@ import (
 	"regexp"
 	"sort"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 
@@ -1041,6 +1042,133 @@ func TestReceiveWithDifferentWaitTime(t *testing.T) {
 	t.Logf("Bigger: %d messages", bigger)
 	require.Greater(t, bigger, base)
 	require.Greater(t, bigger, base2)
+}
+
+func TestReceiveCancelReleaser(t *testing.T) {
+	getLogs := test.CaptureLogsForTest(false)
+
+	client, cleanup, queueName := setupLiveTest(t, &liveTestOptions{
+		QueueProperties: &admin.QueueProperties{
+			// use a long lock time to really make it clear when we've accidentally
+			// orphaned a message.
+			LockDuration: to.Ptr("PT5M"),
+		},
+	})
+	defer cleanup()
+
+	receiver, err := client.NewReceiverForQueue(queueName, nil)
+	require.NoError(t, err)
+
+	sender, err := client.NewSender(queueName, nil)
+	require.NoError(t, err)
+
+	padding := make([]byte, 1)
+
+	var batch *MessageBatch
+	const numSent = 2000
+
+	t.Logf("Sending messages")
+SendLoop:
+	for i := 0; i < numSent; i++ {
+		if batch == nil {
+			tmpBatch, err := sender.NewMessageBatch(context.Background(), nil)
+			require.NoError(t, err)
+			batch = tmpBatch
+		}
+
+		err := batch.AddMessage(&Message{
+			MessageID: to.Ptr(fmt.Sprintf("%d", i)),
+			Body:      padding}, nil)
+
+		if errors.Is(err, ErrMessageTooLarge) {
+			err := sender.SendMessageBatch(context.Background(), batch, nil)
+			require.NoError(t, err)
+			batch = nil
+			i--
+			continue SendLoop
+		}
+
+		if i == numSent-1 {
+			err := sender.SendMessageBatch(context.Background(), batch, nil)
+			require.NoError(t, err)
+			break SendLoop
+		}
+	}
+
+	t.Logf("Receiving small subset of messages")
+	messages, err := receiver.ReceiveMessages(context.Background(), numSent, &ReceiveMessagesOptions{
+		// Receive with a high credit count, but too little time to actually get them all
+		// This will force us into a situation where the AMQP receiver will have a lot of messages
+		// in its prefetch cache, giving us a high chance of triggering a previous bug where early
+		// cancellation could result in us losing messages.
+		TimeAfterFirstMessage: time.Nanosecond,
+	})
+	require.NoError(t, err)
+
+	ids := &sync.Map{}
+
+	for _, msg := range messages {
+		require.NoError(t, receiver.CompleteMessage(context.Background(), msg, nil))
+		_, exists := ids.LoadOrStore(msg.MessageID, true)
+		require.False(t, exists)
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+	defer cancel()
+
+	expected := numSent - len(messages) // remove any messages we've already received. Usually it's just one but it's not
+	remaining := expected
+
+	t.Logf("Receiving remaining messages (%d)", remaining)
+
+	for remaining > 0 {
+		messages, err := receiver.ReceiveMessages(ctx, remaining, nil)
+		require.NoError(t, err)
+		require.NotEmpty(t, messages)
+
+		t.Logf("Received %d messages", len(messages))
+
+		wg := sync.WaitGroup{}
+
+		for _, msg := range messages {
+			msg := msg
+			wg.Add(1)
+
+			go func() {
+				defer wg.Done()
+				require.NoError(t, receiver.CompleteMessage(context.Background(), msg, nil))
+				_, exists := ids.LoadOrStore(msg.MessageID, true)
+				require.False(t, exists)
+			}()
+		}
+
+		wg.Wait()
+
+		remaining -= len(messages)
+	}
+
+	count := 0
+	ids.Range(func(_, _ any) bool {
+		count++
+		return true
+	})
+
+	require.Equal(t, numSent, count)
+
+	logs := getLogs()
+
+	found := 0
+
+	for _, log := range logs {
+		if strings.Contains(log, "Message releaser pausing. Released ") {
+			found++
+		}
+	}
+
+	// This is a bit of a non-deterministic bit so I'm not going to fail the overall test
+	if found == 0 {
+		t.Logf("Failed to find our 'messages released' log entry: %#v", logs)
+	}
 }
 
 type receivedMessageSlice []*ReceivedMessage

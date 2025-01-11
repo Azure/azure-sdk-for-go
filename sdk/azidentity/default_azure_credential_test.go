@@ -335,27 +335,26 @@ func TestDefaultAzureCredential_IMDS(t *testing.T) {
 		require.True(t, probed)
 		require.Equal(t, tokenValue, tk.Token)
 
-		t.Run("non-JSON response", func(t *testing.T) {
+		t.Run("Azure Container Instances", func(t *testing.T) {
+			// ensure GetToken returns an error if DefaultAzureCredential skips managed identity
 			before := defaultAzTokenProvider
 			defer func() { defaultAzTokenProvider = before }()
-			defaultAzTokenProvider = mockAzTokenProviderSuccess
-			for _, res := range [][]mock.ResponseOption{
-				{mock.WithStatusCode(http.StatusNotFound)},
-				{mock.WithBody([]byte("not json")), mock.WithStatusCode(http.StatusBadRequest)},
-				{mock.WithBody([]byte("not json")), mock.WithStatusCode(http.StatusOK)},
-			} {
-				srv, close := mock.NewTLSServer(mock.WithTransformAllRequestsToTestServerUrl())
-				defer close()
-				srv.SetResponse(res...)
-				cred, err := NewDefaultAzureCredential(&DefaultAzureCredentialOptions{
-					ClientOptions: policy.ClientOptions{
-						Transport: srv,
-					},
-				})
-				require.NoError(t, err)
-				_, err = cred.GetToken(ctx, testTRO)
-				require.NoError(t, err, "DefaultAzureCredential should continue after receiving a non-JSON response from IMDS")
-			}
+			defaultAzTokenProvider = mockAzTokenProviderFailure
+
+			srv, close := mock.NewTLSServer(mock.WithTransformAllRequestsToTestServerUrl())
+			defer close()
+			srv.AppendResponse(mock.WithBody([]byte("Required metadata header not specified or not correct")), mock.WithStatusCode(http.StatusBadRequest))
+			srv.AppendResponse(mock.WithBody(accessTokenRespSuccess), mock.WithStatusCode(http.StatusOK))
+
+			cred, err := NewDefaultAzureCredential(&DefaultAzureCredentialOptions{
+				ClientOptions: policy.ClientOptions{
+					Transport: srv,
+				},
+			})
+			require.NoError(t, err)
+			tk, err := cred.GetToken(ctx, testTRO)
+			require.NoError(t, err, "DefaultAzureCredential should accept ACI's response to the probe request")
+			require.Equal(t, tokenValue, tk.Token)
 		})
 	})
 

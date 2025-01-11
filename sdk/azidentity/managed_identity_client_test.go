@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
+	"github.com/stretchr/testify/require"
 )
 
 type userAgentValidatingPolicy struct {
@@ -97,6 +98,11 @@ func TestManagedIdentityClient_IMDSErrors(t *testing.T) {
 			code: http.StatusForbidden,
 			body: "connecting to 169.254.169.254:80: connecting to 169.254.169.254:80: dial tcp 169.254.169.254:80: connectex: A socket operation was attempted to an unreachable host.",
 		},
+		{
+			desc: "Azure Container Instances",
+			code: http.StatusBadRequest,
+			body: "Required metadata header not specified or not correct",
+		},
 	} {
 		t.Run(fmt.Sprint(test.code), func(t *testing.T) {
 			srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
@@ -119,6 +125,79 @@ func TestManagedIdentityClient_IMDSErrors(t *testing.T) {
 			if !errors.As(err, &unavailableErr) {
 				t.Fatalf("expected %T, got %T", unavailableErr, err)
 			}
+		})
+	}
+}
+
+func TestManagedIdentityClient_IMDSProbeReturnsUnavailableError(t *testing.T) {
+	for _, test := range []struct {
+		desc string
+		res  [][]mock.ResponseOption
+	}{
+		{
+			"Azure Container Instance",
+			[][]mock.ResponseOption{
+				{
+					mock.WithBody([]byte("Required metadata header not specified or not correct")),
+					mock.WithStatusCode(http.StatusBadRequest),
+				},
+				{mock.WithBody([]byte("error")), mock.WithStatusCode(http.StatusBadRequest)},
+			},
+		},
+		{
+			"404",
+			[][]mock.ResponseOption{
+				{mock.WithStatusCode(http.StatusNotFound)},
+				{mock.WithStatusCode(http.StatusNotFound)},
+			},
+		},
+		{
+			"non-JSON token response",
+			[][]mock.ResponseOption{
+				{mock.WithBody([]byte("Required metadata header not specified or not correct"))},
+				{mock.WithBody([]byte("not json"))},
+			},
+		},
+		{
+			"no token in response",
+			[][]mock.ResponseOption{
+				{mock.WithBody([]byte("Required metadata header not specified or not correct"))},
+				{mock.WithBody([]byte(`{"error": "no token here"}`)), mock.WithStatusCode(http.StatusBadRequest)},
+			},
+		},
+	} {
+		t.Run(test.desc, func(t *testing.T) {
+			srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+			defer close()
+			for _, res := range test.res {
+				srv.AppendResponse(res...)
+			}
+			c, err := newManagedIdentityClient(&ManagedIdentityCredentialOptions{
+				ClientOptions: azcore.ClientOptions{
+					// disabling retries simplifies the 404 test (404 is retriable for IMDS)
+					Retry:     policy.RetryOptions{MaxRetries: -1},
+					Transport: srv,
+				},
+				dac: true,
+			})
+			require.NoError(t, err)
+			_, err = c.authenticate(ctx, nil, testTRO.Scopes)
+			var cu credentialUnavailable
+			require.ErrorAs(t, err, &cu)
+
+			srv.AppendResponse(
+				mock.WithBody(accessTokenRespSuccess),
+				mock.WithPredicate(func(r *http.Request) bool {
+					if _, ok := r.Header["Metadata"]; !ok {
+						t.Error("client shouldn't send another probe after receiving a response")
+					}
+					return true
+				}),
+			)
+			srv.AppendResponse()
+			tk, err := c.authenticate(ctx, nil, testTRO.Scopes)
+			require.NoError(t, err)
+			require.Equal(t, tokenValue, tk.Token)
 		})
 	}
 }

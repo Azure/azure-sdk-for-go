@@ -213,7 +213,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 	if !onBoard {
 		log.Printf("Get ori exports for changelog generation...")
 
-		tags, err := GetAllVersionTags(generateParam.RPName, generateParam.NamespaceName)
+		tags, err := GetAllVersionTags(fmt.Sprintf("sdk/resourcemanager/%s/%s", generateParam.RPName, generateParam.NamespaceName))
 		if err != nil {
 			return nil, err
 		}
@@ -308,7 +308,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 		}
 
 		log.Printf("Update module definition if v2+...")
-		err = UpdateModuleDefinition(packagePath, generateParam.RPName, generateParam.NamespaceName, version)
+		err = UpdateModuleDefinition(packagePath, fmt.Sprintf("sdk/resourcemanager/%s/%s", generateParam.RPName, generateParam.NamespaceName), version)
 		if err != nil {
 			return nil, err
 		}
@@ -341,7 +341,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 		}
 
 		log.Printf("Replace README.md module...")
-		if err = replaceReadmeModule(packagePath, generateParam.RPName, generateParam.NamespaceName, version.String()); err != nil {
+		if err = replaceReadmeModule(packagePath, fmt.Sprintf("sdk/resourcemanager/%s/%s", generateParam.RPName, generateParam.NamespaceName), version.String()); err != nil {
 			return nil, err
 		}
 
@@ -374,8 +374,8 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 	}
 }
 
-func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*GenerateResult, error) {
-	packagePath := filepath.Join(ctx.SDKPath, "sdk", "resourcemanager", generateParam.RPName, generateParam.NamespaceName)
+func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam, packageModuleRelativePath string) (*GenerateResult, error) {
+	packagePath := filepath.Join(ctx.SDKPath, packageModuleRelativePath)
 	changelogPath := filepath.Join(packagePath, ChangelogFileName)
 
 	version, err := semver.NewVersion("0.1.0")
@@ -448,13 +448,13 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 	if !onBoard {
 		log.Printf("Get ori exports for changelog generation...")
 
-		tags, err := GetAllVersionTags(generateParam.RPName, generateParam.NamespaceName)
+		tags, err := GetAllVersionTags(packageModuleRelativePath)
 		if err != nil {
 			return nil, err
 		}
 
 		if len(tags) == 0 {
-			return nil, fmt.Errorf("github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/%s/%s hasn't been released, it's supposed to OnBoard", generateParam.RPName, generateParam.NamespaceName)
+			return nil, fmt.Errorf("github.com/Azure/azure-sdk-for-go/%s hasn't been released, it's supposed to OnBoard", packageModuleRelativePath)
 		}
 
 		previousVersionTag := GetPreviousVersionTag(isCurrentPreview, tags)
@@ -546,7 +546,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 		}
 
 		log.Printf("Update module definition if v2+...")
-		err = UpdateModuleDefinition(packagePath, generateParam.RPName, generateParam.NamespaceName, version)
+		err = UpdateModuleDefinition(packagePath, packageModuleRelativePath, version)
 		if err != nil {
 			return nil, err
 		}
@@ -561,7 +561,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 			return nil, err
 		}
 
-		baseModule := fmt.Sprintf("%s/%s/%s", MgmtSDKModulePrefix, generateParam.RPName, generateParam.NamespaceName)
+		baseModule := fmt.Sprintf("%s/%s", "github.com/Azure/azure-sdk-for-go", packageModuleRelativePath)
 		if _, err := os.Stat(filepath.Join(packagePath, "fake")); !os.IsNotExist(err) && oldModuleVersion.Major() != version.Major() {
 			log.Printf("Replace fake module v2+...")
 			if err = ReplaceModule(version, packagePath, baseModule, ".go"); err != nil {
@@ -578,7 +578,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 		}
 
 		log.Printf("Replace README.md module...")
-		if err = replaceReadmeModule(packagePath, generateParam.RPName, generateParam.NamespaceName, version.String()); err != nil {
+		if err = replaceReadmeModule(packagePath, packageModuleRelativePath, version.String()); err != nil {
 			return nil, err
 		}
 

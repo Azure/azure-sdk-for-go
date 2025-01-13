@@ -28,7 +28,6 @@ extends:
     ServiceDirectory: 'monitor/azquery'
     RunLiveTests: true
     UsePipelineProxy: false
-    SupportedClouds: 'Public,UsGov,China'
     EnvVars:
       AZURE_CLIENT_ID: $(AZQUERY_CLIENT_ID)
       AZURE_TENANT_ID: $(AZQUERY_TENANT_ID)

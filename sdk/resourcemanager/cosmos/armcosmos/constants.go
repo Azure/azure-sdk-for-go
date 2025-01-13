@@ -10,7 +10,7 @@ package armcosmos
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
-	moduleVersion = "v4.0.0-beta.1"
+	moduleVersion = "v4.0.0-beta.2"
 )
 
 // APIType - Enum to indicate the API type of the restorable database account.
@@ -531,6 +531,24 @@ func PossibleDefaultPriorityLevelValues() []DefaultPriorityLevel {
 	return []DefaultPriorityLevel{
 		DefaultPriorityLevelHigh,
 		DefaultPriorityLevelLow,
+	}
+}
+
+// DistanceFunction - The distance function to use for distance calculation in between vectors.
+type DistanceFunction string
+
+const (
+	DistanceFunctionCosine     DistanceFunction = "cosine"
+	DistanceFunctionDotproduct DistanceFunction = "dotproduct"
+	DistanceFunctionEuclidean  DistanceFunction = "euclidean"
+)
+
+// PossibleDistanceFunctionValues returns the possible values for the DistanceFunction const type.
+func PossibleDistanceFunctionValues() []DistanceFunction {
+	return []DistanceFunction{
+		DistanceFunctionCosine,
+		DistanceFunctionDotproduct,
+		DistanceFunctionEuclidean,
 	}
 }
 
@@ -1279,5 +1297,41 @@ func PossibleUnitTypeValues() []UnitType {
 		UnitTypeMilliseconds,
 		UnitTypePercent,
 		UnitTypeSeconds,
+	}
+}
+
+// VectorDataType - Indicates the data type of vector.
+type VectorDataType string
+
+const (
+	VectorDataTypeFloat32 VectorDataType = "float32"
+	VectorDataTypeInt8    VectorDataType = "int8"
+	VectorDataTypeUint8   VectorDataType = "uint8"
+)
+
+// PossibleVectorDataTypeValues returns the possible values for the VectorDataType const type.
+func PossibleVectorDataTypeValues() []VectorDataType {
+	return []VectorDataType{
+		VectorDataTypeFloat32,
+		VectorDataTypeInt8,
+		VectorDataTypeUint8,
+	}
+}
+
+// VectorIndexType - The index type of the vector. Currently, flat, diskANN, and quantizedFlat are supported.
+type VectorIndexType string
+
+const (
+	VectorIndexTypeDiskANN       VectorIndexType = "diskANN"
+	VectorIndexTypeFlat          VectorIndexType = "flat"
+	VectorIndexTypeQuantizedFlat VectorIndexType = "quantizedFlat"
+)
+
+// PossibleVectorIndexTypeValues returns the possible values for the VectorIndexType const type.
+func PossibleVectorIndexTypeValues() []VectorIndexType {
+	return []VectorIndexType{
+		VectorIndexTypeDiskANN,
+		VectorIndexTypeFlat,
+		VectorIndexTypeQuantizedFlat,
 	}
 }

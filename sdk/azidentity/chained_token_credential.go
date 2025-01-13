@@ -27,7 +27,10 @@ type ChainedTokenCredentialOptions struct {
 }
 
 // ChainedTokenCredential links together multiple credentials and tries them sequentially when authenticating. By default,
-// it tries all the credentials until one authenticates, after which it always uses that credential.
+// it tries all the credentials until one authenticates, after which it always uses that credential. For more information,
+// see [ChainedTokenCredential overview].
+//
+// [ChainedTokenCredential overview]: https://aka.ms/azsdk/go/identity/credential-chains#chainedtokencredential-overview
 type ChainedTokenCredential struct {
 	cond                 *sync.Cond
 	iterating            bool

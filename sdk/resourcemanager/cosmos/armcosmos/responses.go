@@ -32,8 +32,8 @@ type CassandraClustersClientGetBackupResponse struct {
 
 // CassandraClustersClientGetCommandAsyncResponse contains the response from method CassandraClustersClient.GetCommandAsync.
 type CassandraClustersClientGetCommandAsyncResponse struct {
-	// List of commands for cluster.
-	ListCommands
+	// resource representing a command
+	CommandPublicResource
 }
 
 // CassandraClustersClientGetResponse contains the response from method CassandraClustersClient.Get.
@@ -1321,8 +1321,30 @@ type TableResourcesClientCreateUpdateTableResponse struct {
 	TableGetResults
 }
 
+// TableResourcesClientCreateUpdateTableRoleAssignmentResponse contains the response from method TableResourcesClient.BeginCreateUpdateTableRoleAssignment.
+type TableResourcesClientCreateUpdateTableRoleAssignmentResponse struct {
+	// Parameters to create and update an Azure Cosmos DB Table Role Assignment.
+	TableRoleAssignmentResource
+}
+
+// TableResourcesClientCreateUpdateTableRoleDefinitionResponse contains the response from method TableResourcesClient.BeginCreateUpdateTableRoleDefinition.
+type TableResourcesClientCreateUpdateTableRoleDefinitionResponse struct {
+	// Parameters to create and update an Azure Cosmos DB Table Role Definition.
+	TableRoleDefinitionResource
+}
+
 // TableResourcesClientDeleteTableResponse contains the response from method TableResourcesClient.BeginDeleteTable.
 type TableResourcesClientDeleteTableResponse struct {
+	// placeholder for future response values
+}
+
+// TableResourcesClientDeleteTableRoleAssignmentResponse contains the response from method TableResourcesClient.BeginDeleteTableRoleAssignment.
+type TableResourcesClientDeleteTableRoleAssignmentResponse struct {
+	// placeholder for future response values
+}
+
+// TableResourcesClientDeleteTableRoleDefinitionResponse contains the response from method TableResourcesClient.BeginDeleteTableRoleDefinition.
+type TableResourcesClientDeleteTableRoleDefinitionResponse struct {
 	// placeholder for future response values
 }
 
@@ -1332,10 +1354,34 @@ type TableResourcesClientGetTableResponse struct {
 	TableGetResults
 }
 
+// TableResourcesClientGetTableRoleAssignmentResponse contains the response from method TableResourcesClient.GetTableRoleAssignment.
+type TableResourcesClientGetTableRoleAssignmentResponse struct {
+	// Parameters to create and update an Azure Cosmos DB Table Role Assignment.
+	TableRoleAssignmentResource
+}
+
+// TableResourcesClientGetTableRoleDefinitionResponse contains the response from method TableResourcesClient.GetTableRoleDefinition.
+type TableResourcesClientGetTableRoleDefinitionResponse struct {
+	// Parameters to create and update an Azure Cosmos DB Table Role Definition.
+	TableRoleDefinitionResource
+}
+
 // TableResourcesClientGetTableThroughputResponse contains the response from method TableResourcesClient.GetTableThroughput.
 type TableResourcesClientGetTableThroughputResponse struct {
 	// An Azure Cosmos DB resource throughput.
 	ThroughputSettingsGetResults
+}
+
+// TableResourcesClientListTableRoleAssignmentsResponse contains the response from method TableResourcesClient.NewListTableRoleAssignmentsPager.
+type TableResourcesClientListTableRoleAssignmentsResponse struct {
+	// The relevant Role Assignments.
+	TableRoleAssignmentListResult
+}
+
+// TableResourcesClientListTableRoleDefinitionsResponse contains the response from method TableResourcesClient.NewListTableRoleDefinitionsPager.
+type TableResourcesClientListTableRoleDefinitionsResponse struct {
+	// The relevant Role Definitions.
+	TableRoleDefinitionListResult
 }
 
 // TableResourcesClientListTablesResponse contains the response from method TableResourcesClient.NewListTablesPager.

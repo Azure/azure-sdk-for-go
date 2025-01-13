@@ -14,6 +14,7 @@ type AccessTier = generated.ShareAccessTier
 const (
 	AccessTierCool                 AccessTier = generated.ShareAccessTierCool
 	AccessTierHot                  AccessTier = generated.ShareAccessTierHot
+	AccessTierPremium              AccessTier = generated.ShareAccessTierPremium
 	AccessTierTransactionOptimized AccessTier = generated.ShareAccessTierTransactionOptimized
 )
 

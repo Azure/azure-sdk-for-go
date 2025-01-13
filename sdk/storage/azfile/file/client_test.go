@@ -890,6 +890,24 @@ func (f *FileRecordedTestsSuite) TestFileSetMetadataInvalidField() {
 	_require.Error(err)
 }
 
+func (f *FileRecordedTestsSuite) TestFileDelete() {
+	if recording.GetRecordMode() == recording.LiveMode {
+		f.T().Skip("This test cannot be made live")
+	}
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+
+	response, err := shareClient.Delete(context.Background(), &share.DeleteOptions{DeleteSnapshots: to.Ptr(share.DeleteSnapshotsOptionTypeInclude)})
+	_require.NoError(err)
+	_require.NotNil(response.FileShareUsageBytes)
+	_require.NotNil(response.FileShareSnapshotUsageBytes)
+}
+
 func (f *FileRecordedTestsSuite) TestStartCopyDefault() {
 	_require := require.New(f.T())
 	testName := f.T().Name()

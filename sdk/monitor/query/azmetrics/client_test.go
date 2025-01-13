@@ -8,10 +8,13 @@ package azmetrics_test
 
 import (
 	"context"
+	"net/http"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
+	azcred "github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/Azure/azure-sdk-for-go/sdk/monitor/query/azmetrics"
 	"github.com/stretchr/testify/require"
 )
@@ -67,4 +70,32 @@ func TestQueryResources_Fail(t *testing.T) {
 	require.Nil(t, res.Values)
 
 	testSerde(t, &res)
+}
+
+func TestAPIVersion(t *testing.T) {
+	apiVersion := "2023-10-01"
+	var requireVersion = func(t *testing.T) func(req *http.Request) bool {
+		return func(r *http.Request) bool {
+			version := r.URL.Query().Get("api-version")
+			require.Equal(t, version, apiVersion)
+			return true
+		}
+	}
+	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer close()
+	srv.AppendResponse(
+		mock.WithStatusCode(200),
+		mock.WithPredicate(requireVersion(t)),
+	)
+	srv.AppendResponse(mock.WithStatusCode(http.StatusInternalServerError))
+	opts := &azmetrics.ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			Transport:  srv,
+			APIVersion: apiVersion,
+		},
+	}
+	client, err := azmetrics.NewClient(endpoint, &azcred.Fake{}, opts)
+	require.NoError(t, err)
+	_, err = client.QueryResources(context.Background(), subscriptionID, "testing", []string{"test"}, azmetrics.ResourceIDList{}, nil)
+	require.NoError(t, err)
 }

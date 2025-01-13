@@ -25,7 +25,7 @@ type InstanceServer struct {
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, instanceName string, resource armiotoperations.InstanceResource, options *armiotoperations.InstanceClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armiotoperations.InstanceClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method InstanceClient.BeginDelete
-	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, instanceName string, options *armiotoperations.InstanceClientBeginDeleteOptions) (resp azfake.PollerResponder[armiotoperations.InstanceClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method InstanceClient.Get
@@ -80,27 +80,46 @@ func (i *InstanceServerTransport) Do(req *http.Request) (*http.Response, error) 
 }
 
 func (i *InstanceServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	var resp *http.Response
-	var err error
+	resultChan := make(chan result)
+	defer close(resultChan)
 
-	switch method {
-	case "InstanceClient.BeginCreateOrUpdate":
-		resp, err = i.dispatchBeginCreateOrUpdate(req)
-	case "InstanceClient.BeginDelete":
-		resp, err = i.dispatchBeginDelete(req)
-	case "InstanceClient.Get":
-		resp, err = i.dispatchGet(req)
-	case "InstanceClient.NewListByResourceGroupPager":
-		resp, err = i.dispatchNewListByResourceGroupPager(req)
-	case "InstanceClient.NewListBySubscriptionPager":
-		resp, err = i.dispatchNewListBySubscriptionPager(req)
-	case "InstanceClient.Update":
-		resp, err = i.dispatchUpdate(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+	go func() {
+		var intercepted bool
+		var res result
+		if instanceServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = instanceServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "InstanceClient.BeginCreateOrUpdate":
+				res.resp, res.err = i.dispatchBeginCreateOrUpdate(req)
+			case "InstanceClient.BeginDelete":
+				res.resp, res.err = i.dispatchBeginDelete(req)
+			case "InstanceClient.Get":
+				res.resp, res.err = i.dispatchGet(req)
+			case "InstanceClient.NewListByResourceGroupPager":
+				res.resp, res.err = i.dispatchNewListByResourceGroupPager(req)
+			case "InstanceClient.NewListBySubscriptionPager":
+				res.resp, res.err = i.dispatchNewListBySubscriptionPager(req)
+			case "InstanceClient.Update":
+				res.resp, res.err = i.dispatchUpdate(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	return resp, err
 }
 
 func (i *InstanceServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -184,9 +203,9 @@ func (i *InstanceServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		i.beginDelete.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		i.beginDelete.remove(req)
@@ -333,4 +352,10 @@ func (i *InstanceServerTransport) dispatchUpdate(req *http.Request) (*http.Respo
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to InstanceServerTransport
+var instanceServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

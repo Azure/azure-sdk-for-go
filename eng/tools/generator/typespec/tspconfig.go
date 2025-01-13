@@ -117,6 +117,23 @@ func ParseTypeSpecConfig(tspconfigPath string) (*TypeSpecConfig, error) {
 	return &tspConfig, err
 }
 
+func (tc *TypeSpecConfig) GetPackageModuleRelativePath() string {
+	goConfig := tc.Options["@azure-tools/typespec-go"].(map[string]interface{})
+	if goConfig["module"] == nil {
+		return ""
+	}
+	module := goConfig["module"].(string)
+	re := regexp.MustCompile(`\{([^}]+)\}`)
+	module = re.ReplaceAllStringFunc(module, func(m string) string {
+		key := re.FindStringSubmatch(m)[1]
+		if val, ok := goConfig[key]; ok {
+			return val.(string)
+		}
+		return m
+	})
+	return strings.ReplaceAll(module, "github.com/Azure/azure-sdk-for-go/", "")
+}
+
 func (tc *TypeSpecConfig) EditOptions(emit string, option map[string]any, append bool) {
 	if tc.Options == nil {
 		tc.Options = make(map[string]any)
@@ -177,8 +194,8 @@ func (tc TypeSpecConfig) GetModuleName() ([2]string, error) {
 	if l != 7 {
 		return [2]string{}, fmt.Errorf("module is invalid and must be in the format of `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/{rpName}/{packageName}`")
 	}
-	if !strings.Contains(s[l-1], "arm") {
-		return [2]string{}, fmt.Errorf("packageName is invalid and must start with `arm`")
+	if !strings.Contains(s[l-1], "arm") && !strings.Contains(s[l-1], "az") {
+		return [2]string{}, fmt.Errorf("packageName is invalid and must start with `arm` or `az`")
 	}
 
 	return [2]string{s[l-2], s[l-1]}, nil

@@ -169,6 +169,10 @@ func newClientImpl(creds clientCreds, args clientImplArgs) (*Client, error) {
 			nsOptions = append(nsOptions, internal.NamespaceWithUserAgent(args.ClientOptions.ApplicationID))
 		}
 
+		// if args.ClientOptions.CustomEndpoint != "" {
+		// 	nsOptions = append(nsOptions, internal.NamespaceWithCustomEndpoint(args.ClientOptions.CustomEndpoint))
+		// }
+
 		nsOptions = append(nsOptions, internal.NamespaceWithRetryOptions(args.ClientOptions.RetryOptions))
 	}
 

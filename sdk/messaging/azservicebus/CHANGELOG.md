@@ -4,8 +4,6 @@
 
 ### Features Added
 
-- Client allows the endpoint to be overridden with CustomEndpoint, allowing the use of TCP proxies with AMQP.
-
 ### Breaking Changes
 
 ### Bugs Fixed

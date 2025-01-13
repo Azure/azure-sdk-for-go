@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- ServiceBusClient allows the endpoint to be overridden with ServiceBusClientOptions.CustomEndpoint, to use TCP proxies with AMQP.
+- ServiceBusClient allows the endpoint to be overridden with ServiceBusClientOptions.CustomEndpoint, to use TCP proxies with AMQP. (PR#23843)
 
 ### Breaking Changes
 

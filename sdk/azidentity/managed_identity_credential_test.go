@@ -660,6 +660,21 @@ func TestManagedIdentityCredential_IMDSRetries(t *testing.T) {
 	}
 }
 
+func TestManagedIdentityCredential_UnexpectedIMDSResponse(t *testing.T) {
+	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer close()
+	srv.AppendResponse(mock.WithBody([]byte("not json")), mock.WithStatusCode(http.StatusOK))
+
+	c, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{
+		ClientOptions: policy.ClientOptions{Transport: srv},
+	})
+	require.NoError(t, err)
+
+	_, err = c.GetToken(ctx, testTRO)
+	var authFailed *AuthenticationFailedError
+	require.ErrorAs(t, err, &authFailed, "unexpected token response from IMDS should prompt an AuthenticationFailedError")
+}
+
 func TestManagedIdentityCredential_ServiceFabric(t *testing.T) {
 	expectedSecret := "expected-secret"
 	pred := func(req *http.Request) bool {

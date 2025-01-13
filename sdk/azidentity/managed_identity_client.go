@@ -60,7 +60,10 @@ const (
 )
 
 type managedIdentityClient struct {
-	azClient  *azcore.Client
+	azClient *azcore.Client
+	// chained indicates whether the client is part of a credential chain. If true, the client will return
+	// a credentialUnavailableError instead of an AuthenticationFailedError for an unexpected IMDS response.
+	chained   bool
 	endpoint  string
 	id        ManagedIDKind
 	msiType   msiType
@@ -246,7 +249,7 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKi
 
 	if azruntime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		tk, err := c.createAccessToken(resp)
-		if err != nil && c.msiType == msiTypeIMDS {
+		if err != nil && c.chained && c.msiType == msiTypeIMDS {
 			// failure to unmarshal a 2xx implies the response is from something other than IMDS such as a proxy listening at
 			// the same address. Return a credentialUnavailableError so credential chains continue to their next credential
 			err = newCredentialUnavailableError(credNameManagedIdentity, err.Error())

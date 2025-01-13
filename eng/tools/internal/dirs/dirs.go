@@ -4,7 +4,6 @@
 package dirs
 
 import (
-	"io/ioutil"
 	"os"
 	"path/filepath"
 )
@@ -12,7 +11,7 @@ import (
 // GetSubdirs returns all of the subdirectories under current.
 // Returns an empty slice if current contains no subdirectories.
 func GetSubdirs(current string) ([]string, error) {
-	children, err := ioutil.ReadDir(current)
+	children, err := os.ReadDir(current)
 	if err != nil {
 		return nil, err
 	}

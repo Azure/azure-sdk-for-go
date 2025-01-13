@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -25,6 +25,10 @@ import (
 
 // CodeVersionsServer is a fake server for instances of the armmachinelearning.CodeVersionsClient type.
 type CodeVersionsServer struct {
+	// CreateOrGetStartPendingUpload is the fake for method CodeVersionsClient.CreateOrGetStartPendingUpload
+	// HTTP status codes to indicate success: http.StatusOK
+	CreateOrGetStartPendingUpload func(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, body armmachinelearning.PendingUploadRequestDto, options *armmachinelearning.CodeVersionsClientCreateOrGetStartPendingUploadOptions) (resp azfake.Responder[armmachinelearning.CodeVersionsClientCreateOrGetStartPendingUploadResponse], errResp azfake.ErrorResponder)
+
 	// CreateOrUpdate is the fake for method CodeVersionsClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	CreateOrUpdate func(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, body armmachinelearning.CodeVersion, options *armmachinelearning.CodeVersionsClientCreateOrUpdateOptions) (resp azfake.Responder[armmachinelearning.CodeVersionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -40,6 +44,10 @@ type CodeVersionsServer struct {
 	// NewListPager is the fake for method CodeVersionsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, workspaceName string, name string, options *armmachinelearning.CodeVersionsClientListOptions) (resp azfake.PagerResponder[armmachinelearning.CodeVersionsClientListResponse])
+
+	// BeginPublish is the fake for method CodeVersionsClient.BeginPublish
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginPublish func(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, body armmachinelearning.DestinationAsset, options *armmachinelearning.CodeVersionsClientBeginPublishOptions) (resp azfake.PollerResponder[armmachinelearning.CodeVersionsClientPublishResponse], errResp azfake.ErrorResponder)
 }
 
 // NewCodeVersionsServerTransport creates a new instance of CodeVersionsServerTransport with the provided implementation.
@@ -49,6 +57,7 @@ func NewCodeVersionsServerTransport(srv *CodeVersionsServer) *CodeVersionsServer
 	return &CodeVersionsServerTransport{
 		srv:          srv,
 		newListPager: newTracker[azfake.PagerResponder[armmachinelearning.CodeVersionsClientListResponse]](),
+		beginPublish: newTracker[azfake.PollerResponder[armmachinelearning.CodeVersionsClientPublishResponse]](),
 	}
 }
 
@@ -57,6 +66,7 @@ func NewCodeVersionsServerTransport(srv *CodeVersionsServer) *CodeVersionsServer
 type CodeVersionsServerTransport struct {
 	srv          *CodeVersionsServer
 	newListPager *tracker[azfake.PagerResponder[armmachinelearning.CodeVersionsClientListResponse]]
+	beginPublish *tracker[azfake.PollerResponder[armmachinelearning.CodeVersionsClientPublishResponse]]
 }
 
 // Do implements the policy.Transporter interface for CodeVersionsServerTransport.
@@ -71,6 +81,8 @@ func (c *CodeVersionsServerTransport) Do(req *http.Request) (*http.Response, err
 	var err error
 
 	switch method {
+	case "CodeVersionsClient.CreateOrGetStartPendingUpload":
+		resp, err = c.dispatchCreateOrGetStartPendingUpload(req)
 	case "CodeVersionsClient.CreateOrUpdate":
 		resp, err = c.dispatchCreateOrUpdate(req)
 	case "CodeVersionsClient.Delete":
@@ -79,6 +91,8 @@ func (c *CodeVersionsServerTransport) Do(req *http.Request) (*http.Response, err
 		resp, err = c.dispatchGet(req)
 	case "CodeVersionsClient.NewListPager":
 		resp, err = c.dispatchNewListPager(req)
+	case "CodeVersionsClient.BeginPublish":
+		resp, err = c.dispatchBeginPublish(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
 	}
@@ -87,6 +101,51 @@ func (c *CodeVersionsServerTransport) Do(req *http.Request) (*http.Response, err
 		return nil, err
 	}
 
+	return resp, nil
+}
+
+func (c *CodeVersionsServerTransport) dispatchCreateOrGetStartPendingUpload(req *http.Request) (*http.Response, error) {
+	if c.srv.CreateOrGetStartPendingUpload == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrGetStartPendingUpload not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/codes/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<version>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/startPendingUpload`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armmachinelearning.PendingUploadRequestDto](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	versionParam, err := url.PathUnescape(matches[regex.SubexpIndex("version")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.CreateOrGetStartPendingUpload(req.Context(), resourceGroupNameParam, workspaceNameParam, nameParam, versionParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PendingUploadResponseDto, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 
@@ -266,12 +325,24 @@ func (c *CodeVersionsServerTransport) dispatchNewListPager(req *http.Request) (*
 			return nil, err
 		}
 		skipParam := getOptional(skipUnescaped)
+		hashUnescaped, err := url.QueryUnescape(qp.Get("hash"))
+		if err != nil {
+			return nil, err
+		}
+		hashParam := getOptional(hashUnescaped)
+		hashVersionUnescaped, err := url.QueryUnescape(qp.Get("hashVersion"))
+		if err != nil {
+			return nil, err
+		}
+		hashVersionParam := getOptional(hashVersionUnescaped)
 		var options *armmachinelearning.CodeVersionsClientListOptions
-		if orderByParam != nil || topParam != nil || skipParam != nil {
+		if orderByParam != nil || topParam != nil || skipParam != nil || hashParam != nil || hashVersionParam != nil {
 			options = &armmachinelearning.CodeVersionsClientListOptions{
-				OrderBy: orderByParam,
-				Top:     topParam,
-				Skip:    skipParam,
+				OrderBy:     orderByParam,
+				Top:         topParam,
+				Skip:        skipParam,
+				Hash:        hashParam,
+				HashVersion: hashVersionParam,
 			}
 		}
 		resp := c.srv.NewListPager(resourceGroupNameParam, workspaceNameParam, nameParam, options)
@@ -292,5 +363,61 @@ func (c *CodeVersionsServerTransport) dispatchNewListPager(req *http.Request) (*
 	if !server.PagerResponderMore(newListPager) {
 		c.newListPager.remove(req)
 	}
+	return resp, nil
+}
+
+func (c *CodeVersionsServerTransport) dispatchBeginPublish(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginPublish == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginPublish not implemented")}
+	}
+	beginPublish := c.beginPublish.get(req)
+	if beginPublish == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/codes/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<version>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/publish`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armmachinelearning.DestinationAsset](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		versionParam, err := url.PathUnescape(matches[regex.SubexpIndex("version")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginPublish(req.Context(), resourceGroupNameParam, workspaceNameParam, nameParam, versionParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginPublish = &respr
+		c.beginPublish.add(req, beginPublish)
+	}
+
+	resp, err := server.PollerResponderNext(beginPublish, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		c.beginPublish.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginPublish) {
+		c.beginPublish.remove(req)
+	}
+
 	return resp, nil
 }

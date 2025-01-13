@@ -80,6 +80,7 @@ type CreateOptions struct {
 	SMBProperties *SMBProperties
 	// The default value is 'inherit' for Permission field in file.Permissions.
 	Permissions           *Permissions
+	FilePermissionFormat  *PermissionFormat
 	HTTPHeaders           *HTTPHeaders
 	LeaseAccessConditions *LeaseAccessConditions
 	// A name-value pair to associate with a file storage object.
@@ -110,6 +111,12 @@ func (o *CreateOptions) format() (*generated.FileClientCreateOptions, *generated
 		Metadata:          o.Metadata,
 	}
 
+	if permissionKey != nil && *permissionKey != shared.DefaultFilePermissionString {
+		createOptions.FilePermissionFormat = to.Ptr(PermissionFormat(shared.DefaultFilePermissionFormat))
+	} else if o.FilePermissionFormat != nil {
+		createOptions.FilePermissionFormat = to.Ptr(PermissionFormat(*o.FilePermissionFormat))
+	}
+
 	return createOptions, o.HTTPHeaders, o.LeaseAccessConditions
 }
 
@@ -136,6 +143,12 @@ type RenameOptions struct {
 	SMBProperties *SMBProperties
 	// Permissions contains the optional parameters for the permissions on the file.
 	Permissions *Permissions
+	// Optional. Available for version 2023-06-01 and later. Specifies the format in which the permission is returned. Acceptable
+	// values are SDDL or binary. If x-ms-file-permission-format is unspecified or
+	// explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is explicitly set to
+	// binary, the permission is returned as a base64 string representing the binary
+	// encoding of the permission
+	FilePermissionFormat *PermissionFormat
 	// ContentType sets the content type of the file.
 	ContentType *string
 	// IgnoreReadOnly specifies whether the ReadOnly attribute on a pre-existing destination file should be respected.
@@ -169,6 +182,12 @@ func (o *RenameOptions) format() (*generated.FileClientRenameOptions, *generated
 		IgnoreReadOnly:    o.IgnoreReadOnly,
 		Metadata:          o.Metadata,
 		ReplaceIfExists:   o.ReplaceIfExists,
+	}
+
+	if permissionKey != nil && *permissionKey != shared.DefaultPreserveString {
+		renameOpts.FilePermissionFormat = to.Ptr(PermissionFormat(shared.DefaultFilePermissionFormat))
+	} else if o.FilePermissionFormat != nil {
+		renameOpts.FilePermissionFormat = to.Ptr(PermissionFormat(*o.FilePermissionFormat))
 	}
 
 	smbInfo := &generated.CopyFileSMBInfo{
@@ -216,6 +235,13 @@ type SetHTTPHeadersOptions struct {
 	SMBProperties *SMBProperties
 	// The default value is 'preserve' for Permission field in file.Permissions.
 	Permissions *Permissions
+	// Optional. Available for version 2023-06-01 and later. Specifies the format in which the permission is returned. Acceptable
+	// values are SDDL or binary. If x-ms-file-permission-format is unspecified or
+	// explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is explicitly set to
+	// binary, the permission is returned as a base64 string representing the binary
+	// encoding of the permission
+	FilePermissionFormat *PermissionFormat
+
 	HTTPHeaders *HTTPHeaders
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
@@ -243,6 +269,12 @@ func (o *SetHTTPHeadersOptions) format() (*generated.FileClientSetHTTPHeadersOpt
 		FileContentLength: o.FileContentLength,
 		FilePermission:    permission,
 		FilePermissionKey: permissionKey,
+	}
+
+	if permissionKey != nil && *permissionKey != shared.DefaultPreserveString {
+		opts.FilePermissionFormat = to.Ptr(PermissionFormat(shared.DefaultFilePermissionFormat))
+	} else if o.FilePermissionFormat != nil {
+		opts.FilePermissionFormat = to.Ptr(PermissionFormat(*o.FilePermissionFormat))
 	}
 
 	return opts, o.HTTPHeaders, o.LeaseAccessConditions
@@ -691,6 +723,9 @@ type GetRangeListOptions struct {
 	ShareSnapshot *string
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
+	// SupportRename determines whether the changed ranges for a file should be listed when the file's location in the
+	// previous snapshot is different from the location in the Request URI, as a result of rename or move operations.
+	SupportRename *bool
 }
 
 func (o *GetRangeListOptions) format() (*generated.FileClientGetRangeListOptions, *generated.LeaseAccessConditions) {
@@ -702,6 +737,7 @@ func (o *GetRangeListOptions) format() (*generated.FileClientGetRangeListOptions
 		Prevsharesnapshot: o.PrevShareSnapshot,
 		Range:             exported.FormatHTTPRange(o.Range),
 		Sharesnapshot:     o.ShareSnapshot,
+		SupportRename:     o.SupportRename,
 	}, o.LeaseAccessConditions
 }
 

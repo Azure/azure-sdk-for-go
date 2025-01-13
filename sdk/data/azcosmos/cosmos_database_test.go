@@ -6,9 +6,11 @@ package azcosmos
 import (
 	"context"
 	"net/http"
+	"net/url"
 	"strconv"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
@@ -19,6 +21,7 @@ func TestDatabaseQueryContainers(t *testing.T) {
 	jsonStringpage2 := []byte(`{"DocumentCollections":[{"id":"doc3"},{"id":"doc4"},{"id":"doc5"}]}`)
 
 	srv, close := mock.NewTLSServer()
+	defaultEndpoint, _ := url.Parse(srv.URL())
 	defer close()
 	srv.AppendResponse(
 		mock.WithBody(jsonStringpage1),
@@ -36,9 +39,9 @@ func TestDatabaseQueryContainers(t *testing.T) {
 
 	verifier := pipelineVerifier{}
 
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
 	gem := &globalEndpointManager{preferredLocations: []string{}}
-	client := &Client{endpoint: srv.URL(), pipeline: pl, gem: gem}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
 
 	database, _ := newDatabase("databaseId", client)
 

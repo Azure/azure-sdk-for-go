@@ -45,7 +45,7 @@ func Example_deserializingEventGridSchema() {
 
 	for _, envelope := range eventGridEvents {
 		switch *envelope.EventType {
-		case string(azsystemevents.TypeSubscriptionValidation):
+		case azsystemevents.TypeSubscriptionValidation:
 			var eventData *azsystemevents.SubscriptionValidationEventData
 
 			if err := json.Unmarshal(envelope.Data.([]byte), &eventData); err != nil {

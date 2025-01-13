@@ -19,19 +19,24 @@ import (
 
 // ServerFactory is a fake server for instances of the armnetapp.ClientFactory type.
 type ServerFactory struct {
-	AccountsServer            AccountsServer
-	BackupPoliciesServer      BackupPoliciesServer
-	BackupsServer             BackupsServer
-	OperationsServer          OperationsServer
-	PoolsServer               PoolsServer
-	ResourceServer            ResourceServer
-	ResourceQuotaLimitsServer ResourceQuotaLimitsServer
-	SnapshotPoliciesServer    SnapshotPoliciesServer
-	SnapshotsServer           SnapshotsServer
-	SubvolumesServer          SubvolumesServer
-	VolumeGroupsServer        VolumeGroupsServer
-	VolumeQuotaRulesServer    VolumeQuotaRulesServer
-	VolumesServer             VolumesServer
+	AccountsServer                AccountsServer
+	BackupPoliciesServer          BackupPoliciesServer
+	BackupVaultsServer            BackupVaultsServer
+	BackupsServer                 BackupsServer
+	BackupsUnderAccountServer     BackupsUnderAccountServer
+	BackupsUnderBackupVaultServer BackupsUnderBackupVaultServer
+	BackupsUnderVolumeServer      BackupsUnderVolumeServer
+	OperationsServer              OperationsServer
+	PoolsServer                   PoolsServer
+	ResourceServer                ResourceServer
+	ResourceQuotaLimitsServer     ResourceQuotaLimitsServer
+	ResourceRegionInfosServer     ResourceRegionInfosServer
+	SnapshotPoliciesServer        SnapshotPoliciesServer
+	SnapshotsServer               SnapshotsServer
+	SubvolumesServer              SubvolumesServer
+	VolumeGroupsServer            VolumeGroupsServer
+	VolumeQuotaRulesServer        VolumeQuotaRulesServer
+	VolumesServer                 VolumesServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -46,21 +51,26 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armnetapp.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                         *ServerFactory
-	trMu                        sync.Mutex
-	trAccountsServer            *AccountsServerTransport
-	trBackupPoliciesServer      *BackupPoliciesServerTransport
-	trBackupsServer             *BackupsServerTransport
-	trOperationsServer          *OperationsServerTransport
-	trPoolsServer               *PoolsServerTransport
-	trResourceServer            *ResourceServerTransport
-	trResourceQuotaLimitsServer *ResourceQuotaLimitsServerTransport
-	trSnapshotPoliciesServer    *SnapshotPoliciesServerTransport
-	trSnapshotsServer           *SnapshotsServerTransport
-	trSubvolumesServer          *SubvolumesServerTransport
-	trVolumeGroupsServer        *VolumeGroupsServerTransport
-	trVolumeQuotaRulesServer    *VolumeQuotaRulesServerTransport
-	trVolumesServer             *VolumesServerTransport
+	srv                             *ServerFactory
+	trMu                            sync.Mutex
+	trAccountsServer                *AccountsServerTransport
+	trBackupPoliciesServer          *BackupPoliciesServerTransport
+	trBackupVaultsServer            *BackupVaultsServerTransport
+	trBackupsServer                 *BackupsServerTransport
+	trBackupsUnderAccountServer     *BackupsUnderAccountServerTransport
+	trBackupsUnderBackupVaultServer *BackupsUnderBackupVaultServerTransport
+	trBackupsUnderVolumeServer      *BackupsUnderVolumeServerTransport
+	trOperationsServer              *OperationsServerTransport
+	trPoolsServer                   *PoolsServerTransport
+	trResourceServer                *ResourceServerTransport
+	trResourceQuotaLimitsServer     *ResourceQuotaLimitsServerTransport
+	trResourceRegionInfosServer     *ResourceRegionInfosServerTransport
+	trSnapshotPoliciesServer        *SnapshotPoliciesServerTransport
+	trSnapshotsServer               *SnapshotsServerTransport
+	trSubvolumesServer              *SubvolumesServerTransport
+	trVolumeGroupsServer            *VolumeGroupsServerTransport
+	trVolumeQuotaRulesServer        *VolumeQuotaRulesServerTransport
+	trVolumesServer                 *VolumesServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -84,9 +94,27 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewBackupPoliciesServerTransport(&s.srv.BackupPoliciesServer)
 		})
 		resp, err = s.trBackupPoliciesServer.Do(req)
+	case "BackupVaultsClient":
+		initServer(s, &s.trBackupVaultsServer, func() *BackupVaultsServerTransport { return NewBackupVaultsServerTransport(&s.srv.BackupVaultsServer) })
+		resp, err = s.trBackupVaultsServer.Do(req)
 	case "BackupsClient":
 		initServer(s, &s.trBackupsServer, func() *BackupsServerTransport { return NewBackupsServerTransport(&s.srv.BackupsServer) })
 		resp, err = s.trBackupsServer.Do(req)
+	case "BackupsUnderAccountClient":
+		initServer(s, &s.trBackupsUnderAccountServer, func() *BackupsUnderAccountServerTransport {
+			return NewBackupsUnderAccountServerTransport(&s.srv.BackupsUnderAccountServer)
+		})
+		resp, err = s.trBackupsUnderAccountServer.Do(req)
+	case "BackupsUnderBackupVaultClient":
+		initServer(s, &s.trBackupsUnderBackupVaultServer, func() *BackupsUnderBackupVaultServerTransport {
+			return NewBackupsUnderBackupVaultServerTransport(&s.srv.BackupsUnderBackupVaultServer)
+		})
+		resp, err = s.trBackupsUnderBackupVaultServer.Do(req)
+	case "BackupsUnderVolumeClient":
+		initServer(s, &s.trBackupsUnderVolumeServer, func() *BackupsUnderVolumeServerTransport {
+			return NewBackupsUnderVolumeServerTransport(&s.srv.BackupsUnderVolumeServer)
+		})
+		resp, err = s.trBackupsUnderVolumeServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
@@ -101,6 +129,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewResourceQuotaLimitsServerTransport(&s.srv.ResourceQuotaLimitsServer)
 		})
 		resp, err = s.trResourceQuotaLimitsServer.Do(req)
+	case "ResourceRegionInfosClient":
+		initServer(s, &s.trResourceRegionInfosServer, func() *ResourceRegionInfosServerTransport {
+			return NewResourceRegionInfosServerTransport(&s.srv.ResourceRegionInfosServer)
+		})
+		resp, err = s.trResourceRegionInfosServer.Do(req)
 	case "SnapshotPoliciesClient":
 		initServer(s, &s.trSnapshotPoliciesServer, func() *SnapshotPoliciesServerTransport {
 			return NewSnapshotPoliciesServerTransport(&s.srv.SnapshotPoliciesServer)

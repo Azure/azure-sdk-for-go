@@ -14,9 +14,14 @@ This repository is for active development of the Azure SDK for Go. For consumers
 
 To get started with a module, see the README.md file located in the module's project folder.  You can find these module folders grouped by service in the `/sdk` directory.
 
-> NOTE: Go **1.18** or later is required. You could download and install the latest version of Go from [here](https://go.dev/doc/install). It will replace the existing Go on your machine. If you want to install multiple Go versions on the same machine, you could refer this [doc](https://go.dev/doc/manage-install).
+> [!NOTE]
+> Go **1.18** or later is required. You could download and install the latest version of Go from [here](https://go.dev/doc/install). It will replace the existing Go on your machine. If you want to install multiple Go versions on the same machine, you could refer this [doc](https://go.dev/doc/manage-install).
 
-> NOTE: The [root azure-sdk-for-go Go module](https://godoc.org/github.com/Azure/azure-sdk-for-go) which contains subpaths of `/services/**/mgmt/**` (also known as track 1) is [deprecated and no longer recieving support](https://azure.github.io/azure-sdk/releases/deprecated/go.html). See [the migration guide](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/MIGRATION_GUIDE.md) to learn how to migrate to the current version.
+> [!NOTE]
+> Projects are highly encouraged to use the latest version of Go. This ensures your product has all the latest security fixes and is included in [Go's support lifecycle](https://go.dev/doc/devel/release).
+
+> [!WARNING]
+> The [root azure-sdk-for-go Go module](https://godoc.org/github.com/Azure/azure-sdk-for-go) which contains subpaths of `/services/**/mgmt/**` (also known as track 1) is [deprecated and no longer recieving support](https://azure.github.io/azure-sdk/releases/deprecated/go.html). See [the migration guide](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/MIGRATION_GUIDE.md) to learn how to migrate to the current version.
 
 ## Packages available
 
@@ -28,7 +33,8 @@ Our client modules follow the [Azure Go SDK guidelines](https://azure.github.io/
 
 You can find the most up-to-date list of new modules on our [latest page](https://azure.github.io/azure-sdk/releases/latest/index.html#go).
 
-> NOTE: If you need to ensure your code is ready for production use one of the stable, non-beta modules.
+> [!NOTE]
+> If you need to ensure your code is ready for production use one of the stable, non-beta modules.
 
 ### Management modules
 Similar to our client modules, the management modules follow the [Azure Go SDK guidelines](https://azure.github.io/azure-sdk/golang_introduction.html). All management modules are available at `sdk/resourcemanager`. These modules provide a number of core capabilities that are shared amongst all Azure SDKs, including the intuitive Azure Identity module, an HTTP Pipeline with custom policies, error-handling, distributed tracing, and much more.
@@ -37,7 +43,8 @@ To get started, please follow the [quickstart guide here](https://aka.ms/azsdk/g
 
 You can find the [most up to date list of all of the new packages on our page](https://azure.github.io/azure-sdk/releases/latest/mgmt/go.html)
 
-> NOTE: If you need to ensure your code is ready for production use one of the stable, non-beta modules. Also, if you are experiencing authentication issues with the management modules after upgrading certain packages, it's possible that you upgraded to the new versions of SDK without changing the authentication code. Please refer to the migration guide for proper instructions.
+> [!NOTE]
+> If you need to ensure your code is ready for production use one of the stable, non-beta modules. Also, if you are experiencing authentication issues with the management modules after upgrading certain packages, it's possible that you upgraded to the new versions of SDK without changing the authentication code. Please refer to the migration guide for proper instructions.
 
 * [Quickstart tutorial for new releases](https://aka.ms/azsdk/go/mgmt). Documentation is also available at each readme file of the individual module (Example: [Readme for Compute Module](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/compute/armcompute))
 

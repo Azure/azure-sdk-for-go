@@ -52,6 +52,90 @@ func unmarshalMessageContentClassificationArray(rawMsg json.RawMessage) ([]Messa
 	return fArray, nil
 }
 
+func unmarshalMessageDeltaContentClassification(rawMsg json.RawMessage) (MessageDeltaContentClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b MessageDeltaContentClassification
+	switch m["type"] {
+	case "image_file":
+		b = &MessageDeltaImageFileContent{}
+	case "text":
+		b = &MessageDeltaTextContentObject{}
+	default:
+		b = &MessageDeltaContent{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalMessageDeltaContentClassificationArray(rawMsg json.RawMessage) ([]MessageDeltaContentClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var rawMessages []json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fArray := make([]MessageDeltaContentClassification, len(rawMessages))
+	for index, rawMessage := range rawMessages {
+		f, err := unmarshalMessageDeltaContentClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fArray[index] = f
+	}
+	return fArray, nil
+}
+
+func unmarshalMessageDeltaTextAnnotationClassification(rawMsg json.RawMessage) (MessageDeltaTextAnnotationClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b MessageDeltaTextAnnotationClassification
+	switch m["type"] {
+	case "file_citation":
+		b = &MessageDeltaTextFileCitationAnnotationObject{}
+	case "file_path":
+		b = &MessageDeltaTextFilePathAnnotationObject{}
+	default:
+		b = &MessageDeltaTextAnnotation{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalMessageDeltaTextAnnotationClassificationArray(rawMsg json.RawMessage) ([]MessageDeltaTextAnnotationClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var rawMessages []json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fArray := make([]MessageDeltaTextAnnotationClassification, len(rawMessages))
+	for index, rawMessage := range rawMessages {
+		f, err := unmarshalMessageDeltaTextAnnotationClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fArray[index] = f
+	}
+	return fArray, nil
+}
+
 func unmarshalMessageTextAnnotationClassification(rawMsg json.RawMessage) (MessageTextAnnotationClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
@@ -92,6 +176,27 @@ func unmarshalMessageTextAnnotationClassificationArray(rawMsg json.RawMessage) (
 		fArray[index] = f
 	}
 	return fArray, nil
+}
+
+func unmarshalRequiredActionClassification(rawMsg json.RawMessage) (RequiredActionClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b RequiredActionClassification
+	switch m["type"] {
+	case "submit_tool_outputs":
+		b = &SubmitToolOutputsAction{}
+	default:
+		b = &RequiredAction{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
 }
 
 func unmarshalRequiredToolCallClassification(rawMsg json.RawMessage) (RequiredToolCallClassification, error) {
@@ -176,6 +281,115 @@ func unmarshalRunStepCodeInterpreterToolCallOutputClassificationArray(rawMsg jso
 	return fArray, nil
 }
 
+func unmarshalRunStepDeltaCodeInterpreterOutputClassification(rawMsg json.RawMessage) (RunStepDeltaCodeInterpreterOutputClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b RunStepDeltaCodeInterpreterOutputClassification
+	switch m["type"] {
+	case "image":
+		b = &RunStepDeltaCodeInterpreterImageOutput{}
+	case "logs":
+		b = &RunStepDeltaCodeInterpreterLogOutput{}
+	default:
+		b = &RunStepDeltaCodeInterpreterOutput{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalRunStepDeltaCodeInterpreterOutputClassificationArray(rawMsg json.RawMessage) ([]RunStepDeltaCodeInterpreterOutputClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var rawMessages []json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fArray := make([]RunStepDeltaCodeInterpreterOutputClassification, len(rawMessages))
+	for index, rawMessage := range rawMessages {
+		f, err := unmarshalRunStepDeltaCodeInterpreterOutputClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fArray[index] = f
+	}
+	return fArray, nil
+}
+
+func unmarshalRunStepDeltaDetailClassification(rawMsg json.RawMessage) (RunStepDeltaDetailClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b RunStepDeltaDetailClassification
+	switch m["type"] {
+	case "message_creation":
+		b = &RunStepDeltaMessageCreation{}
+	case "tool_calls":
+		b = &RunStepDeltaToolCallObject{}
+	default:
+		b = &RunStepDeltaDetail{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalRunStepDeltaToolCallClassification(rawMsg json.RawMessage) (RunStepDeltaToolCallClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b RunStepDeltaToolCallClassification
+	switch m["type"] {
+	case "code_interpreter":
+		b = &RunStepDeltaCodeInterpreterToolCall{}
+	case "file_search":
+		b = &RunStepDeltaFileSearchToolCall{}
+	case "function":
+		b = &RunStepDeltaFunctionToolCall{}
+	default:
+		b = &RunStepDeltaToolCall{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalRunStepDeltaToolCallClassificationArray(rawMsg json.RawMessage) ([]RunStepDeltaToolCallClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var rawMessages []json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fArray := make([]RunStepDeltaToolCallClassification, len(rawMessages))
+	for index, rawMessage := range rawMessages {
+		f, err := unmarshalRunStepDeltaToolCallClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fArray[index] = f
+	}
+	return fArray, nil
+}
+
 func unmarshalRunStepDetailsClassification(rawMsg json.RawMessage) (RunStepDetailsClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
@@ -211,10 +425,10 @@ func unmarshalRunStepToolCallClassification(rawMsg json.RawMessage) (RunStepTool
 	switch m["type"] {
 	case "code_interpreter":
 		b = &RunStepCodeInterpreterToolCall{}
+	case "file_search":
+		b = &RunStepFileSearchToolCall{}
 	case "function":
 		b = &RunStepFunctionToolCall{}
-	case "retrieval":
-		b = &RunStepRetrievalToolCall{}
 	default:
 		b = &RunStepToolCall{}
 	}
@@ -255,10 +469,10 @@ func unmarshalToolDefinitionClassification(rawMsg json.RawMessage) (ToolDefiniti
 	switch m["type"] {
 	case "code_interpreter":
 		b = &CodeInterpreterToolDefinition{}
+	case "file_search":
+		b = &FileSearchToolDefinition{}
 	case "function":
 		b = &FunctionToolDefinition{}
-	case "retrieval":
-		b = &RetrievalToolDefinition{}
 	default:
 		b = &ToolDefinition{}
 	}
@@ -285,4 +499,50 @@ func unmarshalToolDefinitionClassificationArray(rawMsg json.RawMessage) ([]ToolD
 		fArray[index] = f
 	}
 	return fArray, nil
+}
+
+func unmarshalVectorStoreChunkingStrategyRequestClassification(rawMsg json.RawMessage) (VectorStoreChunkingStrategyRequestClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b VectorStoreChunkingStrategyRequestClassification
+	switch m["type"] {
+	case string(VectorStoreChunkingStrategyRequestTypeAuto):
+		b = &VectorStoreAutoChunkingStrategyRequest{}
+	case string(VectorStoreChunkingStrategyRequestTypeStatic):
+		b = &VectorStoreStaticChunkingStrategyRequest{}
+	default:
+		b = &VectorStoreChunkingStrategyRequest{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalVectorStoreChunkingStrategyResponseClassification(rawMsg json.RawMessage) (VectorStoreChunkingStrategyResponseClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b VectorStoreChunkingStrategyResponseClassification
+	switch m["type"] {
+	case string(VectorStoreChunkingStrategyResponseTypeOther):
+		b = &VectorStoreAutoChunkingStrategyResponse{}
+	case string(VectorStoreChunkingStrategyResponseTypeStatic):
+		b = &VectorStoreStaticChunkingStrategyResponse{}
+	default:
+		b = &VectorStoreChunkingStrategyResponse{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
 }

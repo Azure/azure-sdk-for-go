@@ -1,5 +1,25 @@
 # Release History
 
+## 2.0.0 (2024-05-24)
+### Breaking Changes
+
+- Operation `*VaultsClient.Delete` has been changed to LRO, use `*VaultsClient.BeginDelete` instead.
+
+### Features Added
+
+- New value `StandardTierStorageRedundancyInvalid` added to enum type `StandardTierStorageRedundancy`
+- New enum type `BCDRSecurityLevel` with values `BCDRSecurityLevelExcellent`, `BCDRSecurityLevelFair`, `BCDRSecurityLevelGood`, `BCDRSecurityLevelPoor`
+- New enum type `EnhancedSecurityState` with values `EnhancedSecurityStateAlwaysON`, `EnhancedSecurityStateDisabled`, `EnhancedSecurityStateEnabled`, `EnhancedSecurityStateInvalid`
+- New struct `ErrorDetail`
+- New struct `ErrorResponse`
+- New field `AlertsForAllFailoverIssues`, `AlertsForAllReplicationIssues` in struct `AzureMonitorAlertSettings`
+- New field `EmailNotificationsForSiteRecovery` in struct `ClassicAlertSettings`
+- New field `EnhancedSecurityState` in struct `SoftDeleteSettings`
+- New field `BcdrSecurityLevel`, `ResourceGuardOperationRequests` in struct `VaultProperties`
+- New field `XMSAuthorizationAuxiliary` in struct `VaultsClientBeginCreateOrUpdateOptions`
+- New field `XMSAuthorizationAuxiliary` in struct `VaultsClientBeginUpdateOptions`
+
+
 ## 1.6.0 (2023-11-30)
 ### Features Added
 

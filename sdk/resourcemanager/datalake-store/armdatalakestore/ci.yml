@@ -26,3 +26,4 @@ extends:
   parameters:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/datalake-store/armdatalakestore'
+    UsePipelineProxy: false

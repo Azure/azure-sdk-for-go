@@ -17,7 +17,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
-	"strconv"
 	"strings"
 )
 
@@ -29,7 +28,7 @@ type CloudsClient struct {
 }
 
 // NewCloudsClient creates a new instance of CloudsClient with the specified values.
-//   - subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewCloudsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CloudsClient, error) {
@@ -47,15 +46,15 @@ func NewCloudsClient(subscriptionID string, credential azcore.TokenCredential, o
 // BeginCreateOrUpdate - Onboards the ScVmm fabric cloud as an Azure cloud resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-06-05-preview
-//   - resourceGroupName - The name of the resource group.
-//   - cloudName - Name of the Cloud.
-//   - body - Request payload.
+// Generated from API version 2023-10-07
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - cloudResourceName - Name of the Cloud.
+//   - resource - Resource create parameters.
 //   - options - CloudsClientBeginCreateOrUpdateOptions contains the optional parameters for the CloudsClient.BeginCreateOrUpdate
 //     method.
-func (client *CloudsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, cloudName string, body Cloud, options *CloudsClientBeginCreateOrUpdateOptions) (*runtime.Poller[CloudsClientCreateOrUpdateResponse], error) {
+func (client *CloudsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, cloudResourceName string, resource Cloud, options *CloudsClientBeginCreateOrUpdateOptions) (*runtime.Poller[CloudsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, cloudName, body, options)
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, cloudResourceName, resource, options)
 		if err != nil {
 			return nil, err
 		}
@@ -74,14 +73,14 @@ func (client *CloudsClient) BeginCreateOrUpdate(ctx context.Context, resourceGro
 // CreateOrUpdate - Onboards the ScVmm fabric cloud as an Azure cloud resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-06-05-preview
-func (client *CloudsClient) createOrUpdate(ctx context.Context, resourceGroupName string, cloudName string, body Cloud, options *CloudsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+// Generated from API version 2023-10-07
+func (client *CloudsClient) createOrUpdate(ctx context.Context, resourceGroupName string, cloudResourceName string, resource Cloud, options *CloudsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CloudsClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, cloudName, body, options)
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, cloudResourceName, resource, options)
 	if err != nil {
 		return nil, err
 	}
@@ -97,8 +96,8 @@ func (client *CloudsClient) createOrUpdate(ctx context.Context, resourceGroupNam
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *CloudsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, cloudName string, body Cloud, options *CloudsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ScVmm/clouds/{cloudName}"
+func (client *CloudsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, cloudResourceName string, resource Cloud, options *CloudsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ScVmm/clouds/{cloudResourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -107,19 +106,19 @@ func (client *CloudsClient) createOrUpdateCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if cloudName == "" {
-		return nil, errors.New("parameter cloudName cannot be empty")
+	if cloudResourceName == "" {
+		return nil, errors.New("parameter cloudResourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{cloudName}", url.PathEscape(cloudName))
+	urlPath = strings.ReplaceAll(urlPath, "{cloudResourceName}", url.PathEscape(cloudResourceName))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-06-05-preview")
+	reqQP.Set("api-version", "2023-10-07")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
+	if err := runtime.MarshalAsJSON(req, resource); err != nil {
 		return nil, err
 	}
 	return req, nil
@@ -128,13 +127,13 @@ func (client *CloudsClient) createOrUpdateCreateRequest(ctx context.Context, res
 // BeginDelete - Deregisters the ScVmm fabric cloud from Azure.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-06-05-preview
-//   - resourceGroupName - The name of the resource group.
-//   - cloudName - Name of the Cloud.
+// Generated from API version 2023-10-07
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - cloudResourceName - Name of the Cloud.
 //   - options - CloudsClientBeginDeleteOptions contains the optional parameters for the CloudsClient.BeginDelete method.
-func (client *CloudsClient) BeginDelete(ctx context.Context, resourceGroupName string, cloudName string, options *CloudsClientBeginDeleteOptions) (*runtime.Poller[CloudsClientDeleteResponse], error) {
+func (client *CloudsClient) BeginDelete(ctx context.Context, resourceGroupName string, cloudResourceName string, options *CloudsClientBeginDeleteOptions) (*runtime.Poller[CloudsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, cloudName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, cloudResourceName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -153,14 +152,14 @@ func (client *CloudsClient) BeginDelete(ctx context.Context, resourceGroupName s
 // Delete - Deregisters the ScVmm fabric cloud from Azure.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-06-05-preview
-func (client *CloudsClient) deleteOperation(ctx context.Context, resourceGroupName string, cloudName string, options *CloudsClientBeginDeleteOptions) (*http.Response, error) {
+// Generated from API version 2023-10-07
+func (client *CloudsClient) deleteOperation(ctx context.Context, resourceGroupName string, cloudResourceName string, options *CloudsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CloudsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, cloudName, options)
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, cloudResourceName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -168,7 +167,7 @@ func (client *CloudsClient) deleteOperation(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}
@@ -176,8 +175,8 @@ func (client *CloudsClient) deleteOperation(ctx context.Context, resourceGroupNa
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *CloudsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, cloudName string, options *CloudsClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ScVmm/clouds/{cloudName}"
+func (client *CloudsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, cloudResourceName string, options *CloudsClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ScVmm/clouds/{cloudResourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -186,18 +185,18 @@ func (client *CloudsClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if cloudName == "" {
-		return nil, errors.New("parameter cloudName cannot be empty")
+	if cloudResourceName == "" {
+		return nil, errors.New("parameter cloudResourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{cloudName}", url.PathEscape(cloudName))
+	urlPath = strings.ReplaceAll(urlPath, "{cloudResourceName}", url.PathEscape(cloudResourceName))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-06-05-preview")
+	reqQP.Set("api-version", "2023-10-07")
 	if options != nil && options.Force != nil {
-		reqQP.Set("force", strconv.FormatBool(*options.Force))
+		reqQP.Set("force", string(*options.Force))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
@@ -207,17 +206,17 @@ func (client *CloudsClient) deleteCreateRequest(ctx context.Context, resourceGro
 // Get - Implements Cloud GET method.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-06-05-preview
-//   - resourceGroupName - The name of the resource group.
-//   - cloudName - Name of the Cloud.
+// Generated from API version 2023-10-07
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - cloudResourceName - Name of the Cloud.
 //   - options - CloudsClientGetOptions contains the optional parameters for the CloudsClient.Get method.
-func (client *CloudsClient) Get(ctx context.Context, resourceGroupName string, cloudName string, options *CloudsClientGetOptions) (CloudsClientGetResponse, error) {
+func (client *CloudsClient) Get(ctx context.Context, resourceGroupName string, cloudResourceName string, options *CloudsClientGetOptions) (CloudsClientGetResponse, error) {
 	var err error
 	const operationName = "CloudsClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, cloudName, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, cloudResourceName, options)
 	if err != nil {
 		return CloudsClientGetResponse{}, err
 	}
@@ -234,8 +233,8 @@ func (client *CloudsClient) Get(ctx context.Context, resourceGroupName string, c
 }
 
 // getCreateRequest creates the Get request.
-func (client *CloudsClient) getCreateRequest(ctx context.Context, resourceGroupName string, cloudName string, options *CloudsClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ScVmm/clouds/{cloudName}"
+func (client *CloudsClient) getCreateRequest(ctx context.Context, resourceGroupName string, cloudResourceName string, options *CloudsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ScVmm/clouds/{cloudResourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -244,16 +243,16 @@ func (client *CloudsClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if cloudName == "" {
-		return nil, errors.New("parameter cloudName cannot be empty")
+	if cloudResourceName == "" {
+		return nil, errors.New("parameter cloudResourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{cloudName}", url.PathEscape(cloudName))
+	urlPath = strings.ReplaceAll(urlPath, "{cloudResourceName}", url.PathEscape(cloudResourceName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-06-05-preview")
+	reqQP.Set("api-version", "2023-10-07")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -270,8 +269,8 @@ func (client *CloudsClient) getHandleResponse(resp *http.Response) (CloudsClient
 
 // NewListByResourceGroupPager - List of Clouds in a resource group.
 //
-// Generated from API version 2020-06-05-preview
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2023-10-07
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - CloudsClientListByResourceGroupOptions contains the optional parameters for the CloudsClient.NewListByResourceGroupPager
 //     method.
 func (client *CloudsClient) NewListByResourceGroupPager(resourceGroupName string, options *CloudsClientListByResourceGroupOptions) *runtime.Pager[CloudsClientListByResourceGroupResponse] {
@@ -313,7 +312,7 @@ func (client *CloudsClient) listByResourceGroupCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-06-05-preview")
+	reqQP.Set("api-version", "2023-10-07")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -330,7 +329,7 @@ func (client *CloudsClient) listByResourceGroupHandleResponse(resp *http.Respons
 
 // NewListBySubscriptionPager - List of Clouds in a subscription.
 //
-// Generated from API version 2020-06-05-preview
+// Generated from API version 2023-10-07
 //   - options - CloudsClientListBySubscriptionOptions contains the optional parameters for the CloudsClient.NewListBySubscriptionPager
 //     method.
 func (client *CloudsClient) NewListBySubscriptionPager(options *CloudsClientListBySubscriptionOptions) *runtime.Pager[CloudsClientListBySubscriptionResponse] {
@@ -368,7 +367,7 @@ func (client *CloudsClient) listBySubscriptionCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-06-05-preview")
+	reqQP.Set("api-version", "2023-10-07")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -386,14 +385,14 @@ func (client *CloudsClient) listBySubscriptionHandleResponse(resp *http.Response
 // BeginUpdate - Updates the Clouds resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-06-05-preview
-//   - resourceGroupName - The name of the resource group.
-//   - cloudName - Name of the Cloud.
-//   - body - Clouds patch payload.
+// Generated from API version 2023-10-07
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - cloudResourceName - Name of the Cloud.
+//   - properties - The resource properties to be updated.
 //   - options - CloudsClientBeginUpdateOptions contains the optional parameters for the CloudsClient.BeginUpdate method.
-func (client *CloudsClient) BeginUpdate(ctx context.Context, resourceGroupName string, cloudName string, body ResourcePatch, options *CloudsClientBeginUpdateOptions) (*runtime.Poller[CloudsClientUpdateResponse], error) {
+func (client *CloudsClient) BeginUpdate(ctx context.Context, resourceGroupName string, cloudResourceName string, properties CloudTagsUpdate, options *CloudsClientBeginUpdateOptions) (*runtime.Poller[CloudsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, cloudName, body, options)
+		resp, err := client.update(ctx, resourceGroupName, cloudResourceName, properties, options)
 		if err != nil {
 			return nil, err
 		}
@@ -412,14 +411,14 @@ func (client *CloudsClient) BeginUpdate(ctx context.Context, resourceGroupName s
 // Update - Updates the Clouds resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-06-05-preview
-func (client *CloudsClient) update(ctx context.Context, resourceGroupName string, cloudName string, body ResourcePatch, options *CloudsClientBeginUpdateOptions) (*http.Response, error) {
+// Generated from API version 2023-10-07
+func (client *CloudsClient) update(ctx context.Context, resourceGroupName string, cloudResourceName string, properties CloudTagsUpdate, options *CloudsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CloudsClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, cloudName, body, options)
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, cloudResourceName, properties, options)
 	if err != nil {
 		return nil, err
 	}
@@ -427,7 +426,7 @@ func (client *CloudsClient) update(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}
@@ -435,29 +434,29 @@ func (client *CloudsClient) update(ctx context.Context, resourceGroupName string
 }
 
 // updateCreateRequest creates the Update request.
-func (client *CloudsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, cloudName string, body ResourcePatch, options *CloudsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ScVmm/clouds/{cloudName}"
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+func (client *CloudsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, cloudResourceName string, properties CloudTagsUpdate, options *CloudsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ScVmm/clouds/{cloudResourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if cloudName == "" {
-		return nil, errors.New("parameter cloudName cannot be empty")
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{cloudName}", url.PathEscape(cloudName))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if cloudResourceName == "" {
+		return nil, errors.New("parameter cloudResourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{cloudResourceName}", url.PathEscape(cloudResourceName))
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-06-05-preview")
+	reqQP.Set("api-version", "2023-10-07")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
 		return nil, err
 	}
 	return req, nil

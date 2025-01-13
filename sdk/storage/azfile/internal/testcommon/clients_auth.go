@@ -12,11 +12,10 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/directory"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/file"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/service"
@@ -24,7 +23,6 @@ import (
 	"github.com/stretchr/testify/require"
 	"strings"
 	"testing"
-	"time"
 )
 
 type TestAccountType string
@@ -54,11 +52,14 @@ const (
 )
 
 const (
-	ISO8601 = "2006-01-02T15:04:05.0000000Z07:00"
+	ISO8601                  = "2006-01-02T15:04:05.0000000Z07:00"
+	FilePermissionFormatSddl = "sddl"
+	FilePermissionBinary     = "Binary"
 )
 
 var (
-	SampleSDDL = `O:S-1-5-32-548G:S-1-5-21-397955417-626881126-188441444-512D:(A;;RPWPCCDCLCSWRCWDWOGA;;;S-1-0-0)`
+	SampleSDDL   = `O:S-1-5-32-548G:S-1-5-21-397955417-626881126-188441444-512D:(A;;RPWPCCDCLCSWRCWDWOGA;;;S-1-0-0)`
+	SampleBinary = `AQAUhGwAAACIAAAAAAAAABQAAAACAFgAAwAAAAAAFAD/AR8AAQEAAAAAAAUSAAAAAAAYAP8BHwABAgAAAAAABSAAAAAgAgAAAAAkAKkAEgABBQAAAAAABRUAAABZUbgXZnJdJWRjOwuMmS4AAQUAAAAAAAUVAAAAoGXPfnhLm1/nfIdwr/1IAQEFAAAAAAAFFQAAAKBlz354S5tf53yHcAECAAA=`
 )
 
 var BasicMetadata = map[string]*string{
@@ -144,18 +145,8 @@ func GetGenericConnectionString(accountType TestAccountType) (*string, error) {
 	return &connectionString, nil
 }
 
-type FakeCredential struct {
-}
-
-func (c *FakeCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	return azcore.AccessToken{Token: FakeToken, ExpiresOn: time.Now().Add(time.Hour).UTC()}, nil
-}
-
 func GetGenericTokenCredential() (azcore.TokenCredential, error) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		return &FakeCredential{}, nil
-	}
-	return azidentity.NewDefaultAzureCredential(nil)
+	return credential.New(nil)
 }
 
 func GetServiceClientFromConnectionString(t *testing.T, accountType TestAccountType, options *service.ClientOptions) (*service.Client, error) {

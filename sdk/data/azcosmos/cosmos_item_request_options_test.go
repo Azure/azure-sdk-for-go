@@ -4,7 +4,9 @@
 package azcosmos
 
 import (
+	"strconv"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -19,6 +21,10 @@ func TestItemRequestOptionsToHeaders(t *testing.T) {
 	options.IndexingDirective = IndexingDirectiveInclude.ToPtr()
 	etagValue := azcore.ETag("someEtag")
 	options.IfMatchEtag = &etagValue
+	maxIntegratedCacheStalenessDuration := time.Duration(5 * time.Minute)
+	options.DedicatedGatewayRequestOptions = &DedicatedGatewayRequestOptions{
+		MaxIntegratedCacheStaleness: &maxIntegratedCacheStalenessDuration,
+	}
 	header := options.toHeaders()
 	if header == nil {
 		t.Fatal("toHeaders should return non-nil")
@@ -42,5 +48,8 @@ func TestItemRequestOptionsToHeaders(t *testing.T) {
 	}
 	if headers[headerIfMatch] != string(*options.IfMatchEtag) {
 		t.Errorf("IfMatchEtag should be someEtag but got %v", headers[headerIfMatch])
+	}
+	if headers[headerDedicatedGatewayMaxAge] != strconv.FormatInt(300000, 10) {
+		t.Errorf("headerDedicatedGatewayMaxAge should be 300000 but got %v", headers[headerDedicatedGatewayMaxAge])
 	}
 }

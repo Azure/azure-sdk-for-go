@@ -12,20 +12,25 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/http"
+	"net/url"
+	"regexp"
+
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
-	"net/http"
-	"net/url"
-	"regexp"
 )
 
 // AvailableBalancesServer is a fake server for instances of the armbilling.AvailableBalancesClient type.
 type AvailableBalancesServer struct {
-	// Get is the fake for method AvailableBalancesClient.Get
+	// GetByBillingAccount is the fake for method AvailableBalancesClient.GetByBillingAccount
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, billingAccountName string, billingProfileName string, options *armbilling.AvailableBalancesClientGetOptions) (resp azfake.Responder[armbilling.AvailableBalancesClientGetResponse], errResp azfake.ErrorResponder)
+	GetByBillingAccount func(ctx context.Context, billingAccountName string, options *armbilling.AvailableBalancesClientGetByBillingAccountOptions) (resp azfake.Responder[armbilling.AvailableBalancesClientGetByBillingAccountResponse], errResp azfake.ErrorResponder)
+
+	// GetByBillingProfile is the fake for method AvailableBalancesClient.GetByBillingProfile
+	// HTTP status codes to indicate success: http.StatusOK
+	GetByBillingProfile func(ctx context.Context, billingAccountName string, billingProfileName string, options *armbilling.AvailableBalancesClientGetByBillingProfileOptions) (resp azfake.Responder[armbilling.AvailableBalancesClientGetByBillingProfileResponse], errResp azfake.ErrorResponder)
 }
 
 // NewAvailableBalancesServerTransport creates a new instance of AvailableBalancesServerTransport with the provided implementation.
@@ -53,8 +58,10 @@ func (a *AvailableBalancesServerTransport) Do(req *http.Request) (*http.Response
 	var err error
 
 	switch method {
-	case "AvailableBalancesClient.Get":
-		resp, err = a.dispatchGet(req)
+	case "AvailableBalancesClient.GetByBillingAccount":
+		resp, err = a.dispatchGetByBillingAccount(req)
+	case "AvailableBalancesClient.GetByBillingProfile":
+		resp, err = a.dispatchGetByBillingProfile(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
 	}
@@ -66,9 +73,38 @@ func (a *AvailableBalancesServerTransport) Do(req *http.Request) (*http.Response
 	return resp, nil
 }
 
-func (a *AvailableBalancesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if a.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+func (a *AvailableBalancesServerTransport) dispatchGetByBillingAccount(req *http.Request) (*http.Response, error) {
+	if a.srv.GetByBillingAccount == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetByBillingAccount not implemented")}
+	}
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/availableBalance/default`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 1 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.GetByBillingAccount(req.Context(), billingAccountNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AvailableBalance, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *AvailableBalancesServerTransport) dispatchGetByBillingProfile(req *http.Request) (*http.Response, error) {
+	if a.srv.GetByBillingProfile == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetByBillingProfile not implemented")}
 	}
 	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/availableBalance/default`
 	regex := regexp.MustCompile(regexStr)
@@ -84,7 +120,7 @@ func (a *AvailableBalancesServerTransport) dispatchGet(req *http.Request) (*http
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := a.srv.Get(req.Context(), billingAccountNameParam, billingProfileNameParam, nil)
+	respr, errRespr := a.srv.GetByBillingProfile(req.Context(), billingAccountNameParam, billingProfileNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

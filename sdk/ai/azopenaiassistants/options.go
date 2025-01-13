@@ -13,8 +13,8 @@ type CancelRunOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CreateAssistantFileOptions contains the optional parameters for the Client.CreateAssistantFile method.
-type CreateAssistantFileOptions struct {
+// CancelVectorStoreFileBatchOptions contains the optional parameters for the Client.CancelVectorStoreFileBatch method.
+type CancelVectorStoreFileBatchOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -43,8 +43,18 @@ type CreateThreadOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeleteAssistantFileOptions contains the optional parameters for the Client.DeleteAssistantFile method.
-type DeleteAssistantFileOptions struct {
+// CreateVectorStoreFileBatchOptions contains the optional parameters for the Client.CreateVectorStoreFileBatch method.
+type CreateVectorStoreFileBatchOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CreateVectorStoreFileOptions contains the optional parameters for the Client.CreateVectorStoreFile method.
+type CreateVectorStoreFileOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CreateVectorStoreOptions contains the optional parameters for the Client.CreateVectorStore method.
+type CreateVectorStoreOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -63,8 +73,13 @@ type DeleteThreadOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GetAssistantFileOptions contains the optional parameters for the Client.GetAssistantFile method.
-type GetAssistantFileOptions struct {
+// DeleteVectorStoreFileOptions contains the optional parameters for the Client.DeleteVectorStoreFile method.
+type DeleteVectorStoreFileOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeleteVectorStoreOptions contains the optional parameters for the Client.DeleteVectorStore method.
+type DeleteVectorStoreOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -75,11 +90,6 @@ type GetAssistantOptions struct {
 
 // GetFileOptions contains the optional parameters for the Client.GetFile method.
 type GetFileOptions struct {
-	// placeholder for future optional parameters
-}
-
-// GetMessageFileOptions contains the optional parameters for the Client.GetMessageFile method.
-type GetMessageFileOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -103,23 +113,19 @@ type GetThreadOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ListAssistantFilesOptions contains the optional parameters for the Client.ListAssistantFiles method.
-type ListAssistantFilesOptions struct {
-	// A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if you make a
-	// list request and receive 100 objects, ending with objfoo, your subsequent call
-	// can include after=objfoo in order to fetch the next page of the list.
-	After *string
+// GetVectorStoreFileBatchOptions contains the optional parameters for the Client.GetVectorStoreFileBatch method.
+type GetVectorStoreFileBatchOptions struct {
+	// placeholder for future optional parameters
+}
 
-	// A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if you make a
-	// list request and receive 100 objects, ending with objfoo, your subsequent call
-	// can include before=objfoo in order to fetch the previous page of the list.
-	Before *string
+// GetVectorStoreFileOptions contains the optional parameters for the Client.GetVectorStoreFile method.
+type GetVectorStoreFileOptions struct {
+	// placeholder for future optional parameters
+}
 
-	// A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 20.
-	Limit *int32
-
-	// Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
-	Order *ListSortOrder
+// GetVectorStoreOptions contains the optional parameters for the Client.GetVectorStore method.
+type GetVectorStoreOptions struct {
+	// placeholder for future optional parameters
 }
 
 // ListAssistantsOptions contains the optional parameters for the Client.ListAssistants method.
@@ -147,25 +153,6 @@ type ListFilesOptions struct {
 	Purpose *FilePurpose
 }
 
-// ListMessageFilesOptions contains the optional parameters for the Client.ListMessageFiles method.
-type ListMessageFilesOptions struct {
-	// A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if you make a
-	// list request and receive 100 objects, ending with objfoo, your subsequent call
-	// can include after=objfoo in order to fetch the next page of the list.
-	After *string
-
-	// A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if you make a
-	// list request and receive 100 objects, ending with objfoo, your subsequent call
-	// can include before=objfoo in order to fetch the previous page of the list.
-	Before *string
-
-	// A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 20.
-	Limit *int32
-
-	// Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
-	Order *ListSortOrder
-}
-
 // ListMessagesOptions contains the optional parameters for the Client.ListMessages method.
 type ListMessagesOptions struct {
 	// A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if you make a
@@ -183,6 +170,9 @@ type ListMessagesOptions struct {
 
 	// Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
 	Order *ListSortOrder
+
+	// Filter messages by the run ID that generated them.
+	RunID *string
 }
 
 // ListRunStepsOptions contains the optional parameters for the Client.ListRunSteps method.
@@ -221,6 +211,75 @@ type ListRunsOptions struct {
 
 	// Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
 	Order *ListSortOrder
+}
+
+// ListVectorStoreFileBatchFilesOptions contains the optional parameters for the Client.ListVectorStoreFileBatchFiles
+// method.
+type ListVectorStoreFileBatchFilesOptions struct {
+	// A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if you make a
+	// list request and receive 100 objects, ending with objfoo, your subsequent call
+	// can include after=objfoo in order to fetch the next page of the list.
+	After *string
+
+	// A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if you make a
+	// list request and receive 100 objects, ending with objfoo, your subsequent call
+	// can include before=objfoo in order to fetch the previous page of the list.
+	Before *string
+
+	// Filter by file status.
+	Filter *VectorStoreFileStatusFilter
+
+	// A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 20.
+	Limit *int32
+
+	// Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
+	Order *ListSortOrder
+}
+
+// ListVectorStoreFilesOptions contains the optional parameters for the Client.ListVectorStoreFiles method.
+type ListVectorStoreFilesOptions struct {
+	// A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if you make a
+	// list request and receive 100 objects, ending with objfoo, your subsequent call
+	// can include after=objfoo in order to fetch the next page of the list.
+	After *string
+
+	// A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if you make a
+	// list request and receive 100 objects, ending with objfoo, your subsequent call
+	// can include before=objfoo in order to fetch the previous page of the list.
+	Before *string
+
+	// Filter by file status.
+	Filter *VectorStoreFileStatusFilter
+
+	// A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 20.
+	Limit *int32
+
+	// Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
+	Order *ListSortOrder
+}
+
+// ListVectorStoresOptions contains the optional parameters for the Client.ListVectorStores method.
+type ListVectorStoresOptions struct {
+	// A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if you make a
+	// list request and receive 100 objects, ending with objfoo, your subsequent call
+	// can include after=objfoo in order to fetch the next page of the list.
+	After *string
+
+	// A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if you make a
+	// list request and receive 100 objects, ending with objfoo, your subsequent call
+	// can include before=objfoo in order to fetch the previous page of the list.
+	Before *string
+
+	// A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 20.
+	Limit *int32
+
+	// Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
+	Order *ListSortOrder
+}
+
+// ModifyVectorStoreOptions contains the optional parameters for the Client.ModifyVectorStore method.
+type ModifyVectorStoreOptions struct {
+	// placeholder for future optional parameters
 }
 
 // SubmitToolOutputsToRunOptions contains the optional parameters for the Client.SubmitToolOutputsToRun method.

@@ -91,6 +91,7 @@ const (
 	ShareDisabled                         Code = "ShareDisabled"
 	ShareHasSnapshots                     Code = "ShareHasSnapshots"
 	ShareNotFound                         Code = "ShareNotFound"
+	ShareSizeLimitReached                 Code = "ShareSizeLimitReached"
 	ShareSnapshotCountExceeded            Code = "ShareSnapshotCountExceeded"
 	ShareSnapshotInProgress               Code = "ShareSnapshotInProgress"
 	ShareSnapshotOperationNotSupported    Code = "ShareSnapshotOperationNotSupported"

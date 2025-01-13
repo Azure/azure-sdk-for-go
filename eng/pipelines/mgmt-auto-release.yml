@@ -23,10 +23,15 @@ extends:
                 inputs:
                   command: 'custom'
                   customCommand: 'install -g autorest@latest'
-
+                  
+              - task: Npm@1
+                inputs:
+                  command: 'custom'
+                  customCommand: 'install -g @azure-tools/typespec-client-generator-cli@v0.10.0'
+                  
               - task: GoTool@0
                 inputs:
-                  version: '1.22.0'
+                  version: '1.23.2'
 
               - task: ShellScript@2
                 inputs:

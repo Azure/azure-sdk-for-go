@@ -1,5 +1,16 @@
 # Release History
 
+## 2.0.0-beta.2 (2024-10-11)
+### Features Added
+
+- New value `AzureResourceTypeAppConfig` added to enum type `AzureResourceType`
+- New value `TargetServiceTypeFabricPlatform` added to enum type `TargetServiceType`
+- New function `*AzureAppConfigProperties.GetAzureResourcePropertiesBase() *AzureResourcePropertiesBase`
+- New function `*FabricPlatform.GetTargetServiceBase() *TargetServiceBase`
+- New struct `AzureAppConfigProperties`
+- New struct `FabricPlatform`
+
+
 ## 2.0.0-beta.1 (2024-03-22)
 ### Breaking Changes
 

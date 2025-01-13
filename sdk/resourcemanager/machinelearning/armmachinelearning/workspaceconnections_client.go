@@ -46,7 +46,7 @@ func NewWorkspaceConnectionsClient(subscriptionID string, credential azcore.Toke
 // Create -
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2024-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - Name of Azure Machine Learning workspace.
 //   - connectionName - Friendly name of the workspace connection
@@ -99,7 +99,7 @@ func (client *WorkspaceConnectionsClient) createCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -120,7 +120,7 @@ func (client *WorkspaceConnectionsClient) createHandleResponse(resp *http.Respon
 // Delete -
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2024-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - Name of Azure Machine Learning workspace.
 //   - connectionName - Friendly name of the workspace connection
@@ -171,7 +171,7 @@ func (client *WorkspaceConnectionsClient) deleteCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -180,7 +180,7 @@ func (client *WorkspaceConnectionsClient) deleteCreateRequest(ctx context.Contex
 // Get -
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2024-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - Name of Azure Machine Learning workspace.
 //   - connectionName - Friendly name of the workspace connection
@@ -232,7 +232,7 @@ func (client *WorkspaceConnectionsClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -294,13 +294,13 @@ func (client *WorkspaceConnectionsClient) listCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Target != nil {
-		reqQP.Set("target", *options.Target)
-	}
+	reqQP.Set("api-version", "2024-04-01")
 	if options != nil && options.Category != nil {
 		reqQP.Set("category", *options.Category)
 	}
-	reqQP.Set("api-version", "2022-10-01")
+	if options != nil && options.Target != nil {
+		reqQP.Set("target", *options.Target)
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -311,6 +311,76 @@ func (client *WorkspaceConnectionsClient) listHandleResponse(resp *http.Response
 	result := WorkspaceConnectionsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspaceConnectionPropertiesV2BasicResourceArmPaginatedResult); err != nil {
 		return WorkspaceConnectionsClientListResponse{}, err
+	}
+	return result, nil
+}
+
+// ListSecrets - List all the secrets of a machine learning workspaces connections.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - Name of Azure Machine Learning workspace.
+//   - connectionName - Friendly name of the workspace connection
+//   - options - WorkspaceConnectionsClientListSecretsOptions contains the optional parameters for the WorkspaceConnectionsClient.ListSecrets
+//     method.
+func (client *WorkspaceConnectionsClient) ListSecrets(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, options *WorkspaceConnectionsClientListSecretsOptions) (WorkspaceConnectionsClientListSecretsResponse, error) {
+	var err error
+	const operationName = "WorkspaceConnectionsClient.ListSecrets"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listSecretsCreateRequest(ctx, resourceGroupName, workspaceName, connectionName, options)
+	if err != nil {
+		return WorkspaceConnectionsClientListSecretsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return WorkspaceConnectionsClientListSecretsResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return WorkspaceConnectionsClientListSecretsResponse{}, err
+	}
+	resp, err := client.listSecretsHandleResponse(httpResp)
+	return resp, err
+}
+
+// listSecretsCreateRequest creates the ListSecrets request.
+func (client *WorkspaceConnectionsClient) listSecretsCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, options *WorkspaceConnectionsClientListSecretsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}/listsecrets"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	if connectionName == "" {
+		return nil, errors.New("parameter connectionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{connectionName}", url.PathEscape(connectionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listSecretsHandleResponse handles the ListSecrets response.
+func (client *WorkspaceConnectionsClient) listSecretsHandleResponse(resp *http.Response) (WorkspaceConnectionsClientListSecretsResponse, error) {
+	result := WorkspaceConnectionsClientListSecretsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspaceConnectionPropertiesV2BasicResource); err != nil {
+		return WorkspaceConnectionsClientListSecretsResponse{}, err
 	}
 	return result, nil
 }

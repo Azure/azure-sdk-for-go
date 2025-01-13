@@ -10,7 +10,7 @@ package armdevhub
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devhub/armdevhub"
-	moduleVersion = "v0.5.0"
+	moduleVersion = "v0.6.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -231,6 +231,33 @@ func PossiblePullRequestStatusValues() []PullRequestStatus {
 		PullRequestStatusRemoved,
 		PullRequestStatusSubmitted,
 		PullRequestStatusUnknown,
+	}
+}
+
+// QuickStartTemplateType - Determines the authorization status of requests.
+type QuickStartTemplateType string
+
+const (
+	// QuickStartTemplateTypeALL - The template use quick start template of All supported products
+	QuickStartTemplateTypeALL QuickStartTemplateType = "ALL"
+	// QuickStartTemplateTypeHCI - The template use quick start template of HCI
+	QuickStartTemplateTypeHCI QuickStartTemplateType = "HCI"
+	// QuickStartTemplateTypeHCIAKS - The template use quick start template of HCI and AKS
+	QuickStartTemplateTypeHCIAKS QuickStartTemplateType = "HCIAKS"
+	// QuickStartTemplateTypeHCIARCVM - The template use quick start template of HCI and ArcVM
+	QuickStartTemplateTypeHCIARCVM QuickStartTemplateType = "HCIARCVM"
+	// QuickStartTemplateTypeNone - The template has not use quick start template
+	QuickStartTemplateTypeNone QuickStartTemplateType = "None"
+)
+
+// PossibleQuickStartTemplateTypeValues returns the possible values for the QuickStartTemplateType const type.
+func PossibleQuickStartTemplateTypeValues() []QuickStartTemplateType {
+	return []QuickStartTemplateType{
+		QuickStartTemplateTypeALL,
+		QuickStartTemplateTypeHCI,
+		QuickStartTemplateTypeHCIAKS,
+		QuickStartTemplateTypeHCIARCVM,
+		QuickStartTemplateTypeNone,
 	}
 }
 

@@ -11,13 +11,14 @@ package armappcontainers
 import (
 	"context"
 	"errors"
+	"net/http"
+	"net/url"
+	"strings"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"net/http"
-	"net/url"
-	"strings"
 )
 
 // ManagedEnvironmentsDiagnosticsClient contains the methods for the ManagedEnvironmentsDiagnostics group.
@@ -46,7 +47,7 @@ func NewManagedEnvironmentsDiagnosticsClient(subscriptionID string, credential a
 // GetRoot - Get the properties of a Managed Environment used to host container apps.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-02-preview
+// Generated from API version 2024-08-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - environmentName - Name of the Environment.
 //   - options - ManagedEnvironmentsDiagnosticsClientGetRootOptions contains the optional parameters for the ManagedEnvironmentsDiagnosticsClient.GetRoot
@@ -93,7 +94,7 @@ func (client *ManagedEnvironmentsDiagnosticsClient) getRootCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-02-preview")
+	reqQP.Set("api-version", "2024-08-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -29,7 +29,7 @@ func FinitePeeks(remainingArgs []string) {
 
 	shared.MustCreateAutoDeletingQueue(sc, queueName, nil)
 
-	client, err := azservicebus.NewClientFromConnectionString(sc.ConnectionString, nil)
+	client, err := azservicebus.NewClient(sc.Endpoint, sc.Cred, nil)
 	sc.PanicOnError("failed to create client", err)
 
 	sender, err := shared.NewTrackingSender(sc.TC, client, queueName, nil)

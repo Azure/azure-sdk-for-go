@@ -19,6 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection/v3"
 	"net/http"
 	"net/url"
+	"reflect"
 	"regexp"
 )
 
@@ -275,7 +276,14 @@ func (b *BackupInstancesServerTransport) dispatchBeginCreateOrUpdate(req *http.R
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := b.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, vaultNameParam, backupInstanceNameParam, body, nil)
+		xMSAuthorizationAuxiliaryParam := getOptional(getHeaderValue(req.Header, "x-ms-authorization-auxiliary"))
+		var options *armdataprotection.BackupInstancesClientBeginCreateOrUpdateOptions
+		if xMSAuthorizationAuxiliaryParam != nil {
+			options = &armdataprotection.BackupInstancesClientBeginCreateOrUpdateOptions{
+				XMSAuthorizationAuxiliary: xMSAuthorizationAuxiliaryParam,
+			}
+		}
+		respr, errRespr := b.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, vaultNameParam, backupInstanceNameParam, body, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -323,7 +331,14 @@ func (b *BackupInstancesServerTransport) dispatchBeginDelete(req *http.Request) 
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := b.srv.BeginDelete(req.Context(), resourceGroupNameParam, vaultNameParam, backupInstanceNameParam, nil)
+		xMSAuthorizationAuxiliaryParam := getOptional(getHeaderValue(req.Header, "x-ms-authorization-auxiliary"))
+		var options *armdataprotection.BackupInstancesClientBeginDeleteOptions
+		if xMSAuthorizationAuxiliaryParam != nil {
+			options = &armdataprotection.BackupInstancesClientBeginDeleteOptions{
+				XMSAuthorizationAuxiliary: xMSAuthorizationAuxiliaryParam,
+			}
+		}
+		respr, errRespr := b.srv.BeginDelete(req.Context(), resourceGroupNameParam, vaultNameParam, backupInstanceNameParam, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -574,6 +589,10 @@ func (b *BackupInstancesServerTransport) dispatchBeginStopProtection(req *http.R
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		body, err := server.UnmarshalRequestAsJSON[armdataprotection.StopProtectionRequest](req)
+		if err != nil {
+			return nil, err
+		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
@@ -586,7 +605,15 @@ func (b *BackupInstancesServerTransport) dispatchBeginStopProtection(req *http.R
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := b.srv.BeginStopProtection(req.Context(), resourceGroupNameParam, vaultNameParam, backupInstanceNameParam, nil)
+		xMSAuthorizationAuxiliaryParam := getOptional(getHeaderValue(req.Header, "x-ms-authorization-auxiliary"))
+		var options *armdataprotection.BackupInstancesClientBeginStopProtectionOptions
+		if xMSAuthorizationAuxiliaryParam != nil || !reflect.ValueOf(body).IsZero() {
+			options = &armdataprotection.BackupInstancesClientBeginStopProtectionOptions{
+				XMSAuthorizationAuxiliary: xMSAuthorizationAuxiliaryParam,
+				Parameters:                &body,
+			}
+		}
+		respr, errRespr := b.srv.BeginStopProtection(req.Context(), resourceGroupNameParam, vaultNameParam, backupInstanceNameParam, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -622,6 +649,10 @@ func (b *BackupInstancesServerTransport) dispatchBeginSuspendBackups(req *http.R
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		body, err := server.UnmarshalRequestAsJSON[armdataprotection.SuspendBackupRequest](req)
+		if err != nil {
+			return nil, err
+		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
@@ -634,7 +665,15 @@ func (b *BackupInstancesServerTransport) dispatchBeginSuspendBackups(req *http.R
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := b.srv.BeginSuspendBackups(req.Context(), resourceGroupNameParam, vaultNameParam, backupInstanceNameParam, nil)
+		xMSAuthorizationAuxiliaryParam := getOptional(getHeaderValue(req.Header, "x-ms-authorization-auxiliary"))
+		var options *armdataprotection.BackupInstancesClientBeginSuspendBackupsOptions
+		if xMSAuthorizationAuxiliaryParam != nil || !reflect.ValueOf(body).IsZero() {
+			options = &armdataprotection.BackupInstancesClientBeginSuspendBackupsOptions{
+				XMSAuthorizationAuxiliary: xMSAuthorizationAuxiliaryParam,
+				Parameters:                &body,
+			}
+		}
+		respr, errRespr := b.srv.BeginSuspendBackups(req.Context(), resourceGroupNameParam, vaultNameParam, backupInstanceNameParam, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -842,7 +881,14 @@ func (b *BackupInstancesServerTransport) dispatchBeginTriggerRestore(req *http.R
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := b.srv.BeginTriggerRestore(req.Context(), resourceGroupNameParam, vaultNameParam, backupInstanceNameParam, body, nil)
+		xMSAuthorizationAuxiliaryParam := getOptional(getHeaderValue(req.Header, "x-ms-authorization-auxiliary"))
+		var options *armdataprotection.BackupInstancesClientBeginTriggerRestoreOptions
+		if xMSAuthorizationAuxiliaryParam != nil {
+			options = &armdataprotection.BackupInstancesClientBeginTriggerRestoreOptions{
+				XMSAuthorizationAuxiliary: xMSAuthorizationAuxiliaryParam,
+			}
+		}
+		respr, errRespr := b.srv.BeginTriggerRestore(req.Context(), resourceGroupNameParam, vaultNameParam, backupInstanceNameParam, body, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

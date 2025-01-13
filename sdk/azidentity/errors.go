@@ -38,22 +38,34 @@ type AuthenticationFailedError struct {
 	// RawResponse is the HTTP response motivating the error, if available.
 	RawResponse *http.Response
 
-	credType string
-	message  string
-	err      error
+	credType, message string
+	omitResponse      bool
 }
 
-func newAuthenticationFailedError(credType string, message string, resp *http.Response, err error) error {
-	return &AuthenticationFailedError{credType: credType, message: message, RawResponse: resp, err: err}
+func newAuthenticationFailedError(credType, message string, resp *http.Response) error {
+	return &AuthenticationFailedError{credType: credType, message: message, RawResponse: resp}
+}
+
+// newAuthenticationFailedErrorFromMSAL creates an AuthenticationFailedError from an MSAL error.
+// If the error is an MSAL CallErr, the new error includes an HTTP response and not the MSAL error
+// message, because that message is redundant given the response. If the original error isn't a
+// CallErr, the returned error incorporates its message.
+func newAuthenticationFailedErrorFromMSAL(credType string, err error) error {
+	msg := ""
+	res := getResponseFromError(err)
+	if res == nil {
+		msg = err.Error()
+	}
+	return newAuthenticationFailedError(credType, msg, res)
 }
 
 // Error implements the error interface. Note that the message contents are not contractual and can change over time.
 func (e *AuthenticationFailedError) Error() string {
-	if e.RawResponse == nil {
+	if e.RawResponse == nil || e.omitResponse {
 		return e.credType + ": " + e.message
 	}
 	msg := &bytes.Buffer{}
-	fmt.Fprintf(msg, e.credType+" authentication failed\n")
+	fmt.Fprintf(msg, "%s authentication failed. %s\n", e.credType, e.message)
 	if e.RawResponse.Request != nil {
 		fmt.Fprintf(msg, "%s %s://%s%s\n", e.RawResponse.Request.Method, e.RawResponse.Request.URL.Scheme, e.RawResponse.Request.URL.Host, e.RawResponse.Request.URL.Path)
 	} else {
@@ -62,7 +74,7 @@ func (e *AuthenticationFailedError) Error() string {
 		fmt.Fprintln(msg, "Request information not available")
 	}
 	fmt.Fprintln(msg, "--------------------------------------------------------------------------------")
-	fmt.Fprintf(msg, "RESPONSE %s\n", e.RawResponse.Status)
+	fmt.Fprintf(msg, "RESPONSE %d: %s\n", e.RawResponse.StatusCode, e.RawResponse.Status)
 	fmt.Fprintln(msg, "--------------------------------------------------------------------------------")
 	body, err := runtime.Payload(e.RawResponse)
 	switch {
@@ -83,6 +95,8 @@ func (e *AuthenticationFailedError) Error() string {
 		anchor = "azure-cli"
 	case credNameAzureDeveloperCLI:
 		anchor = "azd"
+	case credNameAzurePipelines:
+		anchor = "apc"
 	case credNameCert:
 		anchor = "client-cert"
 	case credNameSecret:

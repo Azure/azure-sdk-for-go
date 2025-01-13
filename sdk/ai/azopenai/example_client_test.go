@@ -19,8 +19,9 @@ func ExampleNewClientForOpenAI() {
 	client, err := azopenai.NewClientForOpenAI("https://api.openai.com/v1", keyCredential, nil)
 
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	_ = client
@@ -30,8 +31,9 @@ func ExampleNewClient() {
 	dac, err := azidentity.NewDefaultAzureCredential(nil)
 
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	// NOTE: this constructor creates a client that connects to an Azure OpenAI endpoint.
@@ -39,8 +41,9 @@ func ExampleNewClient() {
 	client, err := azopenai.NewClient("https://<your-azure-openai-host>.openai.azure.com", dac, nil)
 
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	_ = client
@@ -54,8 +57,9 @@ func ExampleNewClientWithKeyCredential() {
 	client, err := azopenai.NewClientWithKeyCredential("https://<your-azure-openai-host>.openai.azure.com", keyCredential, nil)
 
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	_ = client

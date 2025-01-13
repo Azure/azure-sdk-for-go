@@ -12,14 +12,14 @@ import "time"
 
 // APIServerProfile represents an API server profile.
 type APIServerProfile struct {
-	// The IP of the cluster API server.
-	IP *string
-
-	// The URL to access the cluster API server.
-	URL *string
-
 	// API server visibility.
 	Visibility *Visibility
+
+	// READ-ONLY; The IP of the cluster API server.
+	IP *string
+
+	// READ-ONLY; The URL to access the cluster API server.
+	URL *string
 }
 
 // ClusterProfile represents a cluster profile.
@@ -42,7 +42,7 @@ type ClusterProfile struct {
 
 // ConsoleProfile represents a console profile.
 type ConsoleProfile struct {
-	// The URL to access the cluster console.
+	// READ-ONLY; The URL to access the cluster console.
 	URL *string
 }
 
@@ -61,16 +61,31 @@ type Display struct {
 	Resource *string
 }
 
+// EffectiveOutboundIP represents an effective outbound IP resource of the cluster public load balancer.
+type EffectiveOutboundIP struct {
+	// The fully qualified Azure resource id of an IP address resource.
+	ID *string
+}
+
 // IngressProfile represents an ingress profile.
 type IngressProfile struct {
-	// The IP of the ingress.
-	IP *string
-
 	// The ingress profile name.
 	Name *string
 
 	// Ingress visibility.
 	Visibility *Visibility
+
+	// READ-ONLY; The IP of the ingress.
+	IP *string
+}
+
+// LoadBalancerProfile represents the profile of the cluster public load balancer.
+type LoadBalancerProfile struct {
+	// The desired managed outbound IPs for the cluster public load balancer.
+	ManagedOutboundIPs *ManagedOutboundIPs
+
+	// READ-ONLY; The list of effective outbound IP addresses of the public load balancer.
+	EffectiveOutboundIPs []*EffectiveOutboundIP
 }
 
 // MachinePool represents a MachinePool
@@ -114,6 +129,13 @@ type MachinePoolUpdate struct {
 	SystemData *SystemData
 }
 
+// ManagedOutboundIPs represents the desired managed outbound IPs for the cluster public load balancer.
+type ManagedOutboundIPs struct {
+	// Count represents the desired number of IPv4 outbound IPs created and managed by Azure for the cluster public load balancer.
+	// Allowed values are in the range of 1 - 20. The default value is 1.
+	Count *int32
+}
+
 // MasterProfile represents a master profile.
 type MasterProfile struct {
 	// The resource ID of an associated DiskEncryptionSet, if applicable.
@@ -131,6 +153,9 @@ type MasterProfile struct {
 
 // NetworkProfile represents a network profile.
 type NetworkProfile struct {
+	// The cluster load balancer profile.
+	LoadBalancerProfile *LoadBalancerProfile
+
 	// The OutboundType used for egress traffic.
 	OutboundType *OutboundType
 

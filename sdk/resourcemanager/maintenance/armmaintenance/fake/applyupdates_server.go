@@ -27,6 +27,10 @@ type ApplyUpdatesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	CreateOrUpdate func(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, options *armmaintenance.ApplyUpdatesClientCreateOrUpdateOptions) (resp azfake.Responder[armmaintenance.ApplyUpdatesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
+	// CreateOrUpdateOrCancel is the fake for method ApplyUpdatesClient.CreateOrUpdateOrCancel
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	CreateOrUpdateOrCancel func(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, applyUpdateName string, applyUpdate armmaintenance.ApplyUpdate, options *armmaintenance.ApplyUpdatesClientCreateOrUpdateOrCancelOptions) (resp azfake.Responder[armmaintenance.ApplyUpdatesClientCreateOrUpdateOrCancelResponse], errResp azfake.ErrorResponder)
+
 	// CreateOrUpdateParent is the fake for method ApplyUpdatesClient.CreateOrUpdateParent
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	CreateOrUpdateParent func(ctx context.Context, resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, options *armmaintenance.ApplyUpdatesClientCreateOrUpdateParentOptions) (resp azfake.Responder[armmaintenance.ApplyUpdatesClientCreateOrUpdateParentResponse], errResp azfake.ErrorResponder)
@@ -75,6 +79,8 @@ func (a *ApplyUpdatesServerTransport) Do(req *http.Request) (*http.Response, err
 	switch method {
 	case "ApplyUpdatesClient.CreateOrUpdate":
 		resp, err = a.dispatchCreateOrUpdate(req)
+	case "ApplyUpdatesClient.CreateOrUpdateOrCancel":
+		resp, err = a.dispatchCreateOrUpdateOrCancel(req)
 	case "ApplyUpdatesClient.CreateOrUpdateParent":
 		resp, err = a.dispatchCreateOrUpdateParent(req)
 	case "ApplyUpdatesClient.Get":
@@ -121,6 +127,55 @@ func (a *ApplyUpdatesServerTransport) dispatchCreateOrUpdate(req *http.Request) 
 		return nil, err
 	}
 	respr, errRespr := a.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, providerNameParam, resourceTypeParam, resourceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ApplyUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *ApplyUpdatesServerTransport) dispatchCreateOrUpdateOrCancel(req *http.Request) (*http.Response, error) {
+	if a.srv.CreateOrUpdateOrCancel == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdateOrCancel not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<providerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<resourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Maintenance/applyUpdates/(?P<applyUpdateName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armmaintenance.ApplyUpdate](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	providerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("providerName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceTypeParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceType")])
+	if err != nil {
+		return nil, err
+	}
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	if err != nil {
+		return nil, err
+	}
+	applyUpdateNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("applyUpdateName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.CreateOrUpdateOrCancel(req.Context(), resourceGroupNameParam, providerNameParam, resourceTypeParam, resourceNameParam, applyUpdateNameParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

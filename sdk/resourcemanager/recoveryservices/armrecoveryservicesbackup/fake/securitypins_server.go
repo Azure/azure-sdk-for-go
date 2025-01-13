@@ -89,10 +89,12 @@ func (s *SecurityPINsServerTransport) dispatchGet(req *http.Request) (*http.Resp
 	if err != nil {
 		return nil, err
 	}
+	xMSAuthorizationAuxiliaryParam := getOptional(getHeaderValue(req.Header, "x-ms-authorization-auxiliary"))
 	var options *armrecoveryservicesbackup.SecurityPINsClientGetOptions
-	if !reflect.ValueOf(body).IsZero() {
+	if xMSAuthorizationAuxiliaryParam != nil || !reflect.ValueOf(body).IsZero() {
 		options = &armrecoveryservicesbackup.SecurityPINsClientGetOptions{
-			Parameters: &body,
+			XMSAuthorizationAuxiliary: xMSAuthorizationAuxiliaryParam,
+			Parameters:                &body,
 		}
 	}
 	respr, errRespr := s.srv.Get(req.Context(), vaultNameParam, resourceGroupNameParam, options)

@@ -17,11 +17,11 @@ import (
 )
 
 func ExampleClient_GetCompletions() {
-	azureOpenAIKey := os.Getenv("AOAI_API_KEY")
+	azureOpenAIKey := os.Getenv("AOAI_COMPLETIONS_API_KEY")
 	modelDeployment := os.Getenv("AOAI_COMPLETIONS_MODEL")
 
 	// Ex: "https://<your-azure-openai-host>.openai.azure.com"
-	azureOpenAIEndpoint := os.Getenv("AOAI_ENDPOINT")
+	azureOpenAIEndpoint := os.Getenv("AOAI_COMPLETIONS_ENDPOINT")
 
 	if azureOpenAIKey == "" || modelDeployment == "" || azureOpenAIEndpoint == "" {
 		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
@@ -35,8 +35,9 @@ func ExampleClient_GetCompletions() {
 	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, nil)
 
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	resp, err := client.GetCompletions(context.TODO(), azopenai.CompletionsOptions{
@@ -47,8 +48,9 @@ func ExampleClient_GetCompletions() {
 	}, nil)
 
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	for _, choice := range resp.Choices {
@@ -59,11 +61,11 @@ func ExampleClient_GetCompletions() {
 }
 
 func ExampleClient_GetCompletionsStream() {
-	azureOpenAIKey := os.Getenv("AOAI_API_KEY")
+	azureOpenAIKey := os.Getenv("AOAI_COMPLETIONS_API_KEY")
 	modelDeploymentID := os.Getenv("AOAI_COMPLETIONS_MODEL")
 
 	// Ex: "https://<your-azure-openai-host>.openai.azure.com"
-	azureOpenAIEndpoint := os.Getenv("AOAI_ENDPOINT")
+	azureOpenAIEndpoint := os.Getenv("AOAI_COMPLETIONS_ENDPOINT")
 
 	if azureOpenAIKey == "" || modelDeploymentID == "" || azureOpenAIEndpoint == "" {
 		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
@@ -77,11 +79,12 @@ func ExampleClient_GetCompletionsStream() {
 	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, nil)
 
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
-	resp, err := client.GetCompletionsStream(context.TODO(), azopenai.CompletionsOptions{
+	resp, err := client.GetCompletionsStream(context.TODO(), azopenai.CompletionsStreamOptions{
 		Prompt:         []string{"What is Azure OpenAI, in 20 words or less?"},
 		MaxTokens:      to.Ptr(int32(2048)),
 		Temperature:    to.Ptr(float32(0.0)),
@@ -89,8 +92,9 @@ func ExampleClient_GetCompletionsStream() {
 	}, nil)
 
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	defer resp.CompletionsStream.Close()
@@ -105,7 +109,8 @@ func ExampleClient_GetCompletionsStream() {
 
 		if err != nil {
 			//  TODO: Update the following line with your application specific error handling logic
-			log.Fatalf("ERROR: %s", err)
+			log.Printf("ERROR: %s", err)
+			return
 		}
 
 		for _, choice := range entry.Choices {

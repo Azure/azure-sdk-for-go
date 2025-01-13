@@ -35,6 +35,27 @@ type CreateOptions struct {
 	Quota *int32
 	// Root squash to set on the share. Only valid for NFS shares.
 	RootSquash *RootSquash
+	// Specifies whether the snapshot virtual directory should be accessible at the root of share mount point
+	// when NFS is enabled.
+	EnableSnapshotVirtualDirectoryAccess *bool
+	// Optional. Boolean. Default if not specified is false. This property enables paid bursting.
+	PaidBurstingEnabled *bool
+
+	// Optional. Integer. Default if not specified is the maximum throughput the file share can support. Current maximum for a
+	// file share is 10,340 MiB/sec.
+	PaidBurstingMaxBandwidthMibps *int64
+
+	// Optional. Integer. Default if not specified is the maximum IOPS the file share can support. Current maximum for a file
+	// share is 102,400 IOPS.
+	PaidBurstingMaxIops *int64
+
+	// Specifies the provisioned bandwidth of the share, in mebibytes per second (MiBps). If this is not
+	// specified, the provisioned bandwidth is set to value calculated based on recommendation formula.
+	ShareProvisionedBandwidthMibps *int64
+
+	// Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this is
+	// not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
+	ShareProvisionedIops *int64
 }
 
 func (o *CreateOptions) format() *generated.ShareClientCreateOptions {
@@ -43,11 +64,17 @@ func (o *CreateOptions) format() *generated.ShareClientCreateOptions {
 	}
 
 	return &generated.ShareClientCreateOptions{
-		AccessTier:       o.AccessTier,
-		EnabledProtocols: o.EnabledProtocols,
-		Metadata:         o.Metadata,
-		Quota:            o.Quota,
-		RootSquash:       o.RootSquash,
+		AccessTier:                           o.AccessTier,
+		EnabledProtocols:                     o.EnabledProtocols,
+		Metadata:                             o.Metadata,
+		Quota:                                o.Quota,
+		RootSquash:                           o.RootSquash,
+		EnableSnapshotVirtualDirectoryAccess: o.EnableSnapshotVirtualDirectoryAccess,
+		PaidBurstingEnabled:                  o.PaidBurstingEnabled,
+		PaidBurstingMaxBandwidthMibps:        o.PaidBurstingMaxBandwidthMibps,
+		PaidBurstingMaxIops:                  o.PaidBurstingMaxIops,
+		ShareProvisionedBandwidthMibps:       o.ShareProvisionedBandwidthMibps,
+		ShareProvisionedIops:                 o.ShareProvisionedIops,
 	}
 }
 
@@ -116,6 +143,24 @@ type SetPropertiesOptions struct {
 	RootSquash *RootSquash
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
+	// Specifies whether the snapshot virtual directory should be accessible at the root of share mount point
+	// when NFS is enabled.
+	EnableSnapshotVirtualDirectoryAccess *bool
+	// Optional. Boolean. Default if not specified is false. This property enables paid bursting.
+	PaidBurstingEnabled *bool
+	// Optional. Integer. Default if not specified is the maximum throughput the file share can support. Current maximum for a
+	// file share is 10,340 MiB/sec.
+	PaidBurstingMaxBandwidthMibps *int64
+	// Optional. Integer. Default if not specified is the maximum IOPS the file share can support. Current maximum for a file
+	// share is 102,400 IOPS.
+	PaidBurstingMaxIops *int64
+	// Specifies the provisioned bandwidth of the share, in mebibytes per second (MiBps). If this is not
+	// specified, the provisioned bandwidth is set to value calculated based on recommendation formula.
+	ShareProvisionedBandwidthMibps *int64
+
+	// Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this is
+	// not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
+	ShareProvisionedIops *int64
 }
 
 func (o *SetPropertiesOptions) format() (*generated.ShareClientSetPropertiesOptions, *LeaseAccessConditions) {
@@ -124,9 +169,15 @@ func (o *SetPropertiesOptions) format() (*generated.ShareClientSetPropertiesOpti
 	}
 
 	return &generated.ShareClientSetPropertiesOptions{
-		AccessTier: o.AccessTier,
-		Quota:      o.Quota,
-		RootSquash: o.RootSquash,
+		AccessTier:                           o.AccessTier,
+		Quota:                                o.Quota,
+		RootSquash:                           o.RootSquash,
+		EnableSnapshotVirtualDirectoryAccess: o.EnableSnapshotVirtualDirectoryAccess,
+		PaidBurstingEnabled:                  o.PaidBurstingEnabled,
+		PaidBurstingMaxBandwidthMibps:        o.PaidBurstingMaxBandwidthMibps,
+		PaidBurstingMaxIops:                  o.PaidBurstingMaxIops,
+		ShareProvisionedIops:                 o.ShareProvisionedIops,
+		ShareProvisionedBandwidthMibps:       o.ShareProvisionedBandwidthMibps,
 	}, o.LeaseAccessConditions
 }
 
@@ -244,11 +295,16 @@ type Permission = generated.SharePermission
 
 // GetPermissionOptions contains the optional parameters for the Client.GetPermission method.
 type GetPermissionOptions struct {
-	// placeholder for future options
+	FilePermissionFormat *PermissionFormat
 }
 
 func (o *GetPermissionOptions) format() *generated.ShareClientGetPermissionOptions {
-	return nil
+	if o == nil {
+		return &generated.ShareClientGetPermissionOptions{}
+	}
+	return &generated.ShareClientGetPermissionOptions{
+		FilePermissionFormat: o.FilePermissionFormat,
+	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

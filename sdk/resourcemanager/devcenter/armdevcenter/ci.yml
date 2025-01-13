@@ -26,3 +26,4 @@ extends:
   parameters:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/devcenter/armdevcenter'
+    UsePipelineProxy: false

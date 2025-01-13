@@ -13,6 +13,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"math/rand"
 	"mime"
 	"net/http"
 	"os"
@@ -20,14 +21,13 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiassistants"
-	assistants "github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiassistants"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/stretchr/testify/require"
 )
 
@@ -52,7 +52,7 @@ type newClientArgs struct {
 	UseIdentity bool
 }
 
-func newClient(t *testing.T, args newClientArgs) *azopenaiassistants.Client {
+func mustGetClient(t *testing.T, args newClientArgs) *azopenaiassistants.Client {
 	var httpClient policy.Transporter
 	// var recordingPolicy
 	// PerRetryPolicies: []{&mimeTypeRecordingPolicy{}}
@@ -79,6 +79,24 @@ func newClient(t *testing.T, args newClientArgs) *azopenaiassistants.Client {
 
 			err = recording.AddHeaderRegexSanitizer("Api-Key", "key", "", nil)
 			require.NoError(t, err)
+
+			// add regexes for all of our resources
+			for _, res := range []string{"thread", "run", "asst", "step", "msg"} {
+				err = recording.AddURISanitizer("$1Sanitized$2", fmt.Sprintf("^(.+?/)%s_[^?/]+(.*)$", res), nil)
+				require.NoError(t, err)
+
+				err = recording.AddURISanitizer("$1Sanitized$2", fmt.Sprintf("^(.+?/)%s_[^?/]+(/.*)$", res), nil)
+				require.NoError(t, err)
+			}
+
+			err := recording.AddURISanitizer("after=SANITIZED", `after=msg_[^&+]+`, nil)
+			require.NoError(t, err)
+
+			for _, res := range []string{"thread", "run", "assistant", "step", "message", "first", "last"} {
+				// ie: "run_id": "run_SSUooivFMcO9KVYY99xUoFUG",
+				err = recording.AddBodyRegexSanitizer(`$1:"Sanitized"`, fmt.Sprintf(`("%s_id")\s*:\s*"[^"]+"`, res), nil)
+				require.NoError(t, err)
+			}
 		}
 
 		httpClient = tmpHttpClient
@@ -114,10 +132,10 @@ func newClient(t *testing.T, args newClientArgs) *azopenaiassistants.Client {
 
 	if args.Azure {
 		if args.UseIdentity {
-			dac, err := azidentity.NewDefaultAzureCredential(nil)
+			cred, err := credential.New(nil)
 			require.NoError(t, err)
 
-			tmpClient, err := azopenaiassistants.NewClient(tv.AOAIEndpoint, dac, opts)
+			tmpClient, err := azopenaiassistants.NewClient(tv.AOAIEndpoint, cred, opts)
 			require.NoError(t, err)
 			return tmpClient
 		} else {
@@ -132,8 +150,26 @@ func newClient(t *testing.T, args newClientArgs) *azopenaiassistants.Client {
 	}
 }
 
+var weatherFunctionDefn = &azopenaiassistants.FunctionDefinition{
+	Name: to.Ptr("get_current_weather"),
+	Parameters: map[string]any{
+		"required": []string{"location"},
+		"type":     "object",
+		"properties": map[string]any{
+			"location": map[string]any{
+				"type":        "string",
+				"description": "The city and state, e.g. San Francisco, CA",
+			},
+			"unit": map[string]any{
+				"type": "string",
+				"enum": []string{"celsius", "fahrenheit"},
+			},
+		},
+	},
+}
+
 func mustGetClientWithAssistant(t *testing.T, args mustGetClientWithAssistantArgs) (*azopenaiassistants.Client, azopenaiassistants.CreateAssistantResponse) {
-	client := newClient(t, args.newClientArgs)
+	client := mustGetClient(t, args.newClientArgs)
 
 	// give the assistant a random-ish name.
 	id, err := recording.GenerateAlphaNumericID(t, "your-assistant-name", 6+len("your-assistant-name"), true)
@@ -141,19 +177,21 @@ func mustGetClientWithAssistant(t *testing.T, args mustGetClientWithAssistantArg
 
 	assistantName := id
 
-	createResp, err := client.CreateAssistant(context.Background(), azopenaiassistants.AssistantCreationBody{
+	createResp, err := client.CreateAssistant(context.Background(), azopenaiassistants.CreateAssistantBody{
 		Name:           &assistantName,
 		DeploymentName: &assistantsModel,
 		Instructions:   to.Ptr("You are a personal math tutor. Write and run code to answer math questions."),
-		Tools: []assistants.ToolDefinitionClassification{
-			&assistants.CodeInterpreterToolDefinition{},
+		Tools: []azopenaiassistants.ToolDefinitionClassification{
+			&azopenaiassistants.CodeInterpreterToolDefinition{},
 
 			// others...
-			// &assistants.FunctionToolDefinition{}
-			// &assistants.RetrievalToolDefinition{}
+			&azopenaiassistants.FunctionToolDefinition{
+				Function: weatherFunctionDefn,
+			},
+			// &azopenaiassistants.RetrievalToolDefinition{}
 		},
 	}, nil)
-	require.NoError(t, err)
+	requireNoErr(t, args.Azure, err)
 
 	t.Cleanup(func() {
 		_, err := client.DeleteAssistant(context.Background(), *createResp.ID, nil)
@@ -165,12 +203,12 @@ func mustGetClientWithAssistant(t *testing.T, args mustGetClientWithAssistantArg
 
 type runThreadArgs struct {
 	newClientArgs
-	Assistant azopenaiassistants.AssistantCreationBody
-	Thread    azopenaiassistants.CreateAndRunThreadOptions
+	Assistant azopenaiassistants.CreateAssistantBody
+	Thread    azopenaiassistants.CreateAndRunThreadBody
 }
 
 func mustRunThread(ctx context.Context, t *testing.T, args runThreadArgs) (*azopenaiassistants.Client, []azopenaiassistants.ThreadMessage) {
-	client := newClient(t, args.newClientArgs)
+	client := mustGetClient(t, args.newClientArgs)
 
 	// give the assistant a random-ish name.
 	assistantName, err := recording.GenerateAlphaNumericID(t, "your-assistant-name", 6+len("your-assistant-name"), true)
@@ -183,53 +221,36 @@ func mustRunThread(ctx context.Context, t *testing.T, args runThreadArgs) (*azop
 	args.Assistant.DeploymentName = &assistantsModel
 
 	createResp, err := client.CreateAssistant(ctx, args.Assistant, nil)
-	require.NoError(t, err)
+	requireNoErr(t, args.Azure, err)
 
 	t.Cleanup(func() {
 		_, err := client.DeleteAssistant(ctx, *createResp.ID, nil)
-		require.NoError(t, err)
+		requireNoErr(t, args.Azure, err)
 	})
 
 	// create a thread and run it
 	args.Thread.AssistantID = createResp.ID
 	threadRunResp, err := client.CreateThreadAndRun(ctx, args.Thread, nil)
-	require.NoError(t, err)
+	requireNoErr(t, args.Azure, err)
 
 	// poll for the thread end
-	err = pollRunEnd(ctx, client, *threadRunResp.ThreadID, *threadRunResp.ID)
-	require.NoError(t, err)
+	runStatus := pollForTests(t, ctx, client, *threadRunResp.ThreadID, *threadRunResp.ID, args.Azure)
+	require.Equal(t, *runStatus.Status, azopenaiassistants.RunStatusCompleted)
 
 	var allMessages []azopenaiassistants.ThreadMessage
 
-	messagePager := client.NewListMessagesPager(*threadRunResp.ThreadID, &assistants.ListMessagesOptions{
+	messagePager := client.NewListMessagesPager(*threadRunResp.ThreadID, &azopenaiassistants.ListMessagesOptions{
 		Order: to.Ptr(azopenaiassistants.ListSortOrderAscending),
 	})
 
 	for messagePager.More() {
 		page, err := messagePager.NextPage(ctx)
-		require.NoError(t, err)
+		requireNoErr(t, args.Azure, err)
 
 		allMessages = append(allMessages, page.Data...)
 	}
 
 	return client, allMessages
-}
-
-func mustUploadFile(t *testing.T, c *assistants.Client, text string) azopenaiassistants.UploadFileResponse {
-	textBytes := []byte(text)
-
-	uploadResp, err := c.UploadFile(context.Background(), bytes.NewReader(textBytes), azopenaiassistants.FilePurposeAssistants, &assistants.UploadFileOptions{
-		Filename: to.Ptr("a.txt"),
-	})
-	require.NoError(t, err)
-	require.Equal(t, len(textBytes), int(*uploadResp.Bytes))
-
-	t.Cleanup(func() {
-		_, err := c.DeleteFile(context.Background(), *uploadResp.ID, nil)
-		require.NoError(t, err)
-	})
-
-	return uploadResp
 }
 
 type mimeTypeRecordingPolicy struct{}
@@ -284,4 +305,44 @@ func (mrp *mimeTypeRecordingPolicy) Do(req *policy.Request) (*http.Response, err
 	}
 
 	return req.Next()
+}
+
+func getFileName(t *testing.T, ext string) *string {
+	fileName := fmt.Sprintf("go-%s-%d.%s",
+		t.Name(), rand.Int63(), ext)
+
+	return &fileName
+}
+
+func requireNoErr(t *testing.T, azure bool, err error) {
+	if responseErr := (*azcore.ResponseError)(nil); azure && errors.As(err, &responseErr) && responseErr.StatusCode == http.StatusTooManyRequests {
+		t.Skipf("Assistants API is being throttled: %s", responseErr)
+	}
+
+	require.NoError(t, err)
+}
+
+func requireSuccessfulPolling(t *testing.T, azure bool, resp azopenaiassistants.GetRunResponse, err error) {
+	// it's possible we're oversubscribed, so we need to just skip this test
+	if azure && resp.LastError != nil && resp.LastError.Code != nil && *resp.LastError.Code == "rate_limit_exceeded" {
+		t.Skipf("Test being skipped, we're rate limited")
+	}
+
+	requireNoErr(t, azure, err)
+}
+
+func requireType[T azopenaiassistants.StreamEventDataClassification](t *testing.T, event azopenaiassistants.StreamEvent) T {
+	v, ok := event.Event.(T)
+
+	var zero T
+	require.Truef(t, ok, "Expecting %T (%T)", zero, event.Event)
+	return v
+}
+
+func getValue[T any](v *T, def T) T {
+	if v == nil {
+		return def
+	}
+
+	return *v
 }

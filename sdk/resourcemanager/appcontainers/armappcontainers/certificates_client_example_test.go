@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/Certificates_ListByManagedEnvironment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/Certificates_ListByManagedEnvironment.json
 func ExampleCertificatesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleCertificatesClient_NewListPager() {
 		// 		{
 		// 			Name: to.Ptr("certificate-firendly-name"),
 		// 			Type: to.Ptr("Microsoft.App/ManagedEnvironments/Certificates"),
-		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/testcontainerenv/certificate-firendly-name"),
+		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/testcontainerenv/certificates/certificate-firendly-name"),
 		// 			Location: to.Ptr("East US"),
 		// 			Properties: &armappcontainers.CertificateProperties{
 		// 				CertificateType: to.Ptr(armappcontainers.CertificateTypeImagePullTrustedCA),
@@ -63,7 +63,7 @@ func ExampleCertificatesClient_NewListPager() {
 		// 			{
 		// 				Name: to.Ptr("certificate-firendly-name"),
 		// 				Type: to.Ptr("Microsoft.App/ManagedEnvironments/Certificates"),
-		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/testcontainerenv/certificate-firendly-name"),
+		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/testcontainerenv/certificates/certificate-firendly-name"),
 		// 				Location: to.Ptr("East US"),
 		// 				Properties: &armappcontainers.CertificateProperties{
 		// 					CertificateType: to.Ptr(armappcontainers.CertificateTypeServerSSLCertificate),
@@ -82,7 +82,7 @@ func ExampleCertificatesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/Certificate_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/Certificate_Get.json
 func ExampleCertificatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,7 +103,7 @@ func ExampleCertificatesClient_Get() {
 	// res.Certificate = armappcontainers.Certificate{
 	// 	Name: to.Ptr("certificate-firendly-name"),
 	// 	Type: to.Ptr("Microsoft.App/ManagedEnvironments/Certificates"),
-	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/testcontainerenv/certificate-firendly-name"),
+	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/testcontainerenv/certificates/certificate-firendly-name"),
 	// 	Location: to.Ptr("East US"),
 	// 	Properties: &armappcontainers.CertificateProperties{
 	// 		CertificateType: to.Ptr(armappcontainers.CertificateTypeServerSSLCertificate),
@@ -120,7 +120,7 @@ func ExampleCertificatesClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/Certificate_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/Certificate_CreateOrUpdate.json
 func ExampleCertificatesClient_CreateOrUpdate_createOrUpdateCertificate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -148,7 +148,7 @@ func ExampleCertificatesClient_CreateOrUpdate_createOrUpdateCertificate() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Certificate = armappcontainers.Certificate{
 	// 	Type: to.Ptr("Microsoft.App/ManagedEnvironments/Certificates"),
-	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/testcontainerenv/certificate-firendly-name"),
+	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/testcontainerenv/certificates/certificate-firendly-name"),
 	// 	Location: to.Ptr("East US"),
 	// 	Properties: &armappcontainers.CertificateProperties{
 	// 		CertificateType: to.Ptr(armappcontainers.CertificateTypeImagePullTrustedCA),
@@ -165,7 +165,7 @@ func ExampleCertificatesClient_CreateOrUpdate_createOrUpdateCertificate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/Certificate_CreateOrUpdate_FromKeyVault.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/Certificate_CreateOrUpdate_FromKeyVault.json
 func ExampleCertificatesClient_CreateOrUpdate_createOrUpdateCertificateUsingManagedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -195,7 +195,7 @@ func ExampleCertificatesClient_CreateOrUpdate_createOrUpdateCertificateUsingMana
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Certificate = armappcontainers.Certificate{
 	// 	Type: to.Ptr("Microsoft.App/ManagedEnvironments/Certificates"),
-	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/testcontainerenv/certificate-firendly-name"),
+	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/testcontainerenv/certificates/certificate-firendly-name"),
 	// 	Location: to.Ptr("East US"),
 	// 	Properties: &armappcontainers.CertificateProperties{
 	// 		CertificateKeyVaultProperties: &armappcontainers.CertificateKeyVaultProperties{
@@ -216,7 +216,7 @@ func ExampleCertificatesClient_CreateOrUpdate_createOrUpdateCertificateUsingMana
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/Certificate_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/Certificate_Delete.json
 func ExampleCertificatesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -233,7 +233,7 @@ func ExampleCertificatesClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/Certificates_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/Certificates_Patch.json
 func ExampleCertificatesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -258,7 +258,7 @@ func ExampleCertificatesClient_Update() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Certificate = armappcontainers.Certificate{
 	// 	Type: to.Ptr("Microsoft.App/ManagedEnvironments/Certificates"),
-	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/testcontainerenv/certificate-firendly-name"),
+	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/testcontainerenv/certificates/certificate-firendly-name"),
 	// 	Location: to.Ptr("East US"),
 	// 	Tags: map[string]*string{
 	// 		"tag1": to.Ptr("value1"),

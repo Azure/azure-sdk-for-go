@@ -67,6 +67,10 @@ type ServersServer struct {
 	// BeginUpdate is the fake for method ServersClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, serverName string, parameters armmysqlflexibleservers.ServerForUpdate, options *armmysqlflexibleservers.ServersClientBeginUpdateOptions) (resp azfake.PollerResponder[armmysqlflexibleservers.ServersClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// ValidateEstimateHighAvailability is the fake for method ServersClient.ValidateEstimateHighAvailability
+	// HTTP status codes to indicate success: http.StatusOK
+	ValidateEstimateHighAvailability func(ctx context.Context, resourceGroupName string, serverName string, parameters armmysqlflexibleservers.HighAvailabilityValidationEstimation, options *armmysqlflexibleservers.ServersClientValidateEstimateHighAvailabilityOptions) (resp azfake.Responder[armmysqlflexibleservers.ServersClientValidateEstimateHighAvailabilityResponse], errResp azfake.ErrorResponder)
 }
 
 // NewServersServerTransport creates a new instance of ServersServerTransport with the provided implementation.
@@ -138,6 +142,8 @@ func (s *ServersServerTransport) Do(req *http.Request) (*http.Response, error) {
 		resp, err = s.dispatchBeginStop(req)
 	case "ServersClient.BeginUpdate":
 		resp, err = s.dispatchBeginUpdate(req)
+	case "ServersClient.ValidateEstimateHighAvailability":
+		resp, err = s.dispatchValidateEstimateHighAvailability(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
 	}
@@ -617,5 +623,42 @@ func (s *ServersServerTransport) dispatchBeginUpdate(req *http.Request) (*http.R
 		s.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (s *ServersServerTransport) dispatchValidateEstimateHighAvailability(req *http.Request) (*http.Response, error) {
+	if s.srv.ValidateEstimateHighAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ValidateEstimateHighAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DBforMySQL/flexibleServers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validateEstimateHighAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armmysqlflexibleservers.HighAvailabilityValidationEstimation](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.ValidateEstimateHighAvailability(req.Context(), resourceGroupNameParam, serverNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).HighAvailabilityValidationEstimation, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }

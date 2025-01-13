@@ -28,7 +28,7 @@ type ResourceReferenceClient struct {
 }
 
 // NewResourceReferenceClient creates a new instance of ResourceReferenceClient with the specified values.
-//   - subscriptionID - Specifies the Azure subscription ID, which uniquely identifies the Microsoft Azure subscription.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewResourceReferenceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourceReferenceClient, error) {
@@ -46,7 +46,7 @@ func NewResourceReferenceClient(subscriptionID string, credential azcore.TokenCr
 // GetByTargetResources - Returns the DNS records specified by the referencing targetResourceIds.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2018-05-01
+// Generated from API version 2023-07-01-preview
 //   - parameters - Properties for dns resource reference request.
 //   - options - ResourceReferenceClientGetByTargetResourcesOptions contains the optional parameters for the ResourceReferenceClient.GetByTargetResources
 //     method.
@@ -84,7 +84,7 @@ func (client *ResourceReferenceClient) getByTargetResourcesCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-05-01")
+	reqQP.Set("api-version", "2023-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

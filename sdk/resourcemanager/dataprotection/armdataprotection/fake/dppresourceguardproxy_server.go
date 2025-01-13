@@ -277,7 +277,14 @@ func (d *DppResourceGuardProxyServerTransport) dispatchUnlockDelete(req *http.Re
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := d.srv.UnlockDelete(req.Context(), resourceGroupNameParam, vaultNameParam, resourceGuardProxyNameParam, body, nil)
+	xMSAuthorizationAuxiliaryParam := getOptional(getHeaderValue(req.Header, "x-ms-authorization-auxiliary"))
+	var options *armdataprotection.DppResourceGuardProxyClientUnlockDeleteOptions
+	if xMSAuthorizationAuxiliaryParam != nil {
+		options = &armdataprotection.DppResourceGuardProxyClientUnlockDeleteOptions{
+			XMSAuthorizationAuxiliary: xMSAuthorizationAuxiliaryParam,
+		}
+	}
+	respr, errRespr := d.srv.UnlockDelete(req.Context(), resourceGroupNameParam, vaultNameParam, resourceGuardProxyNameParam, body, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

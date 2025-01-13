@@ -47,11 +47,6 @@ func CreateTempQueue(remainingArgs []string) int {
 
 	autoDeleteOnIdle := utils.DurationToStringPtr(&duration)
 
-	if err != nil {
-		fmt.Printf("ERROR: %s\n", err.Error())
-		return 1
-	}
-
 	queueName := strings.ToLower(fmt.Sprintf("tempqueue-%X", time.Now().UnixNano()))
 
 	_, err = adminClient.CreateQueue(context.Background(), queueName, &admin.CreateQueueOptions{

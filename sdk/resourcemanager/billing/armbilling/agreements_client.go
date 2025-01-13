@@ -11,13 +11,14 @@ package armbilling
 import (
 	"context"
 	"errors"
+	"net/http"
+	"net/url"
+	"strings"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"net/http"
-	"net/url"
-	"strings"
 )
 
 // AgreementsClient contains the methods for the Agreements group.
@@ -43,7 +44,7 @@ func NewAgreementsClient(credential azcore.TokenCredential, options *arm.ClientO
 // Get - Gets an agreement by ID.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
 //   - agreementName - The ID that uniquely identifies an agreement.
 //   - options - AgreementsClientGetOptions contains the optional parameters for the AgreementsClient.Get method.
@@ -85,10 +86,7 @@ func (client *AgreementsClient) getCreateRequest(ctx context.Context, billingAcc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
-	if options != nil && options.Expand != nil {
-		reqQP.Set("$expand", *options.Expand)
-	}
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -105,7 +103,7 @@ func (client *AgreementsClient) getHandleResponse(resp *http.Response) (Agreemen
 
 // NewListByBillingAccountPager - Lists the agreements for a billing account.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
 //   - options - AgreementsClientListByBillingAccountOptions contains the optional parameters for the AgreementsClient.NewListByBillingAccountPager
 //     method.
@@ -144,9 +142,9 @@ func (client *AgreementsClient) listByBillingAccountCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2024-04-01")
 	if options != nil && options.Expand != nil {
-		reqQP.Set("$expand", *options.Expand)
+		reqQP.Set("expand", *options.Expand)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}

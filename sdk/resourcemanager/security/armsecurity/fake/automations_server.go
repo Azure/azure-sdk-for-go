@@ -29,7 +29,7 @@ type AutomationsServer struct {
 	CreateOrUpdate func(ctx context.Context, resourceGroupName string, automationName string, automation armsecurity.Automation, options *armsecurity.AutomationsClientCreateOrUpdateOptions) (resp azfake.Responder[armsecurity.AutomationsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Delete is the fake for method AutomationsClient.Delete
-	// HTTP status codes to indicate success: http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
 	Delete func(ctx context.Context, resourceGroupName string, automationName string, options *armsecurity.AutomationsClientDeleteOptions) (resp azfake.Responder[armsecurity.AutomationsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method AutomationsClient.Get
@@ -43,6 +43,10 @@ type AutomationsServer struct {
 	// NewListByResourceGroupPager is the fake for method AutomationsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armsecurity.AutomationsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armsecurity.AutomationsClientListByResourceGroupResponse])
+
+	// Update is the fake for method AutomationsClient.Update
+	// HTTP status codes to indicate success: http.StatusOK
+	Update func(ctx context.Context, resourceGroupName string, automationName string, automation armsecurity.AutomationUpdateModel, options *armsecurity.AutomationsClientUpdateOptions) (resp azfake.Responder[armsecurity.AutomationsClientUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Validate is the fake for method AutomationsClient.Validate
 	// HTTP status codes to indicate success: http.StatusOK
@@ -90,6 +94,8 @@ func (a *AutomationsServerTransport) Do(req *http.Request) (*http.Response, erro
 		resp, err = a.dispatchNewListPager(req)
 	case "AutomationsClient.NewListByResourceGroupPager":
 		resp, err = a.dispatchNewListByResourceGroupPager(req)
+	case "AutomationsClient.Update":
+		resp, err = a.dispatchUpdate(req)
 	case "AutomationsClient.Validate":
 		resp, err = a.dispatchValidate(req)
 	default:
@@ -163,8 +169,8 @@ func (a *AutomationsServerTransport) dispatchDelete(req *http.Request) (*http.Re
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
+	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
 	if err != nil {
@@ -272,6 +278,43 @@ func (a *AutomationsServerTransport) dispatchNewListByResourceGroupPager(req *ht
 	}
 	if !server.PagerResponderMore(newListByResourceGroupPager) {
 		a.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (a *AutomationsServerTransport) dispatchUpdate(req *http.Request) (*http.Response, error) {
+	if a.srv.Update == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/automations/(?P<automationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armsecurity.AutomationUpdateModel](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	automationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("automationName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.Update(req.Context(), resourceGroupNameParam, automationNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Automation, req)
+	if err != nil {
+		return nil, err
 	}
 	return resp, nil
 }

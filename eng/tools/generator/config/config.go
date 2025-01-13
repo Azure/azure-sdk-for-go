@@ -5,15 +5,13 @@ package config
 
 import (
 	"encoding/json"
-
-	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/autorest/model"
 )
 
 type Config struct {
-	Track1Requests  Track1ReleaseRequests `json:"track1Requests,omitempty"`
-	Track2Requests  Track2ReleaseRequests `json:"track2Requests,omitempty"`
-	RefreshInfo     RefreshInfo           `json:"refresh,omitempty"`
-	AdditionalFlags []string              `json:"additionalOptions,omitempty"`
+	Track2Requests   Track2ReleaseRequests   `json:"track2Requests,omitempty"`
+	TypeSpecRequests TypeSpecReleaseRequests `json:"typespecRequests,omitempty"`
+	RefreshInfo      RefreshInfo             `json:"refresh,omitempty"`
+	AdditionalFlags  []string                `json:"additionalOptions,omitempty"`
 }
 
 func (c Config) String() string {
@@ -21,6 +19,6 @@ func (c Config) String() string {
 	return string(b)
 }
 
-func (c Config) AdditionalOptions() ([]model.Option, error) {
+func (c Config) AdditionalOptions() ([]Option, error) {
 	return parseAdditionalOptions(c.AdditionalFlags)
 }

@@ -112,7 +112,14 @@ func (p *ProtectedItemsServerTransport) dispatchCreateOrUpdate(req *http.Request
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := p.srv.CreateOrUpdate(req.Context(), vaultNameParam, resourceGroupNameParam, fabricNameParam, containerNameParam, protectedItemNameParam, body, nil)
+	xMSAuthorizationAuxiliaryParam := getOptional(getHeaderValue(req.Header, "x-ms-authorization-auxiliary"))
+	var options *armrecoveryservicesbackup.ProtectedItemsClientCreateOrUpdateOptions
+	if xMSAuthorizationAuxiliaryParam != nil {
+		options = &armrecoveryservicesbackup.ProtectedItemsClientCreateOrUpdateOptions{
+			XMSAuthorizationAuxiliary: xMSAuthorizationAuxiliaryParam,
+		}
+	}
+	respr, errRespr := p.srv.CreateOrUpdate(req.Context(), vaultNameParam, resourceGroupNameParam, fabricNameParam, containerNameParam, protectedItemNameParam, body, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

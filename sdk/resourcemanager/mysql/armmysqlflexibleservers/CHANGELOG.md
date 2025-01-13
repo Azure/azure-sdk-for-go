@@ -1,5 +1,116 @@
 # Release History
 
+## 2.0.0-beta.3 (2024-04-30)
+### Breaking Changes
+
+- Type of `BackupAndExportResponse.Error` has been changed from `*ErrorResponse` to `*ErrorDetail`
+- Type of `Server.Identity` has been changed from `*Identity` to `*MySQLServerIdentity`
+- Type of `Server.SKU` has been changed from `*SKU` to `*MySQLServerSKU`
+- Type of `ServerForUpdate.Identity` has been changed from `*Identity` to `*MySQLServerIdentity`
+- Type of `ServerForUpdate.SKU` has been changed from `*SKU` to `*MySQLServerSKU`
+- `BackupFormatNone` from enum `BackupFormat` has been removed
+- Enum `SKUTier` has been removed
+- Struct `Identity` has been removed
+- Struct `SKU` has been removed
+- Field `AdditionalInfo`, `Code`, `Details`, `Message`, `Target` of struct `ErrorResponse` has been removed
+
+### Features Added
+
+- New value `BackupFormatRaw` added to enum type `BackupFormat`
+- New enum type `AdvancedThreatProtectionName` with values `AdvancedThreatProtectionNameDefault`
+- New enum type `AdvancedThreatProtectionProvisioningState` with values `AdvancedThreatProtectionProvisioningStateCanceled`, `AdvancedThreatProtectionProvisioningStateFailed`, `AdvancedThreatProtectionProvisioningStateSucceeded`, `AdvancedThreatProtectionProvisioningStateUpdating`
+- New enum type `AdvancedThreatProtectionState` with values `AdvancedThreatProtectionStateDisabled`, `AdvancedThreatProtectionStateEnabled`
+- New enum type `BackupType` with values `BackupTypeFULL`
+- New enum type `ImportSourceStorageType` with values `ImportSourceStorageTypeAzureBlob`
+- New enum type `MaintenanceProvisioningState` with values `MaintenanceProvisioningStateCreating`, `MaintenanceProvisioningStateDeleting`, `MaintenanceProvisioningStateFailed`, `MaintenanceProvisioningStateSucceeded`
+- New enum type `MaintenanceState` with values `MaintenanceStateCanceled`, `MaintenanceStateCompleted`, `MaintenanceStateInPreparation`, `MaintenanceStateProcessing`, `MaintenanceStateReScheduled`, `MaintenanceStateScheduled`
+- New enum type `MaintenanceType` with values `MaintenanceTypeHotFixes`, `MaintenanceTypeMinorVersionUpgrade`, `MaintenanceTypeRoutineMaintenance`, `MaintenanceTypeSecurityPatches`
+- New enum type `ObjectType` with values `ObjectTypeBackupAndExportResponse`, `ObjectTypeImportFromStorageResponse`
+- New enum type `PrivateEndpointConnectionProvisioningState` with values `PrivateEndpointConnectionProvisioningStateCreating`, `PrivateEndpointConnectionProvisioningStateDeleting`, `PrivateEndpointConnectionProvisioningStateFailed`, `PrivateEndpointConnectionProvisioningStateSucceeded`
+- New enum type `PrivateEndpointServiceConnectionStatus` with values `PrivateEndpointServiceConnectionStatusApproved`, `PrivateEndpointServiceConnectionStatusPending`, `PrivateEndpointServiceConnectionStatusRejected`
+- New enum type `ProvisioningState` with values `ProvisioningStateCanceled`, `ProvisioningStateCreating`, `ProvisioningStateDeleting`, `ProvisioningStateFailed`, `ProvisioningStateSucceeded`
+- New enum type `ServerSKUTier` with values `ServerSKUTierBurstable`, `ServerSKUTierGeneralPurpose`, `ServerSKUTierMemoryOptimized`
+- New function `NewAdvancedThreatProtectionSettingsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*AdvancedThreatProtectionSettingsClient, error)`
+- New function `*AdvancedThreatProtectionSettingsClient.Get(context.Context, string, string, AdvancedThreatProtectionName, *AdvancedThreatProtectionSettingsClientGetOptions) (AdvancedThreatProtectionSettingsClientGetResponse, error)`
+- New function `*AdvancedThreatProtectionSettingsClient.NewListPager(string, string, *AdvancedThreatProtectionSettingsClientListOptions) *runtime.Pager[AdvancedThreatProtectionSettingsClientListResponse]`
+- New function `*AdvancedThreatProtectionSettingsClient.BeginUpdate(context.Context, string, string, AdvancedThreatProtectionName, AdvancedThreatProtectionForUpdate, *AdvancedThreatProtectionSettingsClientBeginUpdateOptions) (*runtime.Poller[AdvancedThreatProtectionSettingsClientUpdateResponse], error)`
+- New function `*AdvancedThreatProtectionSettingsClient.BeginUpdatePut(context.Context, string, string, AdvancedThreatProtectionName, AdvancedThreatProtection, *AdvancedThreatProtectionSettingsClientBeginUpdatePutOptions) (*runtime.Poller[AdvancedThreatProtectionSettingsClientUpdatePutResponse], error)`
+- New function `*BackupAndExportResponseType.GetOperationProgressResponseType() *OperationProgressResponseType`
+- New function `*ClientFactory.NewAdvancedThreatProtectionSettingsClient() *AdvancedThreatProtectionSettingsClient`
+- New function `*ClientFactory.NewLocationBasedCapabilitySetClient() *LocationBasedCapabilitySetClient`
+- New function `*ClientFactory.NewLongRunningBackupClient() *LongRunningBackupClient`
+- New function `*ClientFactory.NewLongRunningBackupsClient() *LongRunningBackupsClient`
+- New function `*ClientFactory.NewMaintenancesClient() *MaintenancesClient`
+- New function `*ClientFactory.NewOperationProgressClient() *OperationProgressClient`
+- New function `*ClientFactory.NewOperationResultsClient() *OperationResultsClient`
+- New function `*ClientFactory.NewServersMigrationClient() *ServersMigrationClient`
+- New function `*ImportFromStorageResponseType.GetOperationProgressResponseType() *OperationProgressResponseType`
+- New function `NewLocationBasedCapabilitySetClient(string, azcore.TokenCredential, *arm.ClientOptions) (*LocationBasedCapabilitySetClient, error)`
+- New function `*LocationBasedCapabilitySetClient.Get(context.Context, string, string, *LocationBasedCapabilitySetClientGetOptions) (LocationBasedCapabilitySetClientGetResponse, error)`
+- New function `*LocationBasedCapabilitySetClient.NewListPager(string, *LocationBasedCapabilitySetClientListOptions) *runtime.Pager[LocationBasedCapabilitySetClientListResponse]`
+- New function `NewLongRunningBackupClient(string, azcore.TokenCredential, *arm.ClientOptions) (*LongRunningBackupClient, error)`
+- New function `*LongRunningBackupClient.BeginCreate(context.Context, string, string, string, *LongRunningBackupClientBeginCreateOptions) (*runtime.Poller[LongRunningBackupClientCreateResponse], error)`
+- New function `NewLongRunningBackupsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*LongRunningBackupsClient, error)`
+- New function `*LongRunningBackupsClient.Get(context.Context, string, string, string, *LongRunningBackupsClientGetOptions) (LongRunningBackupsClientGetResponse, error)`
+- New function `*LongRunningBackupsClient.NewListPager(string, string, *LongRunningBackupsClientListOptions) *runtime.Pager[LongRunningBackupsClientListResponse]`
+- New function `NewMaintenancesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*MaintenancesClient, error)`
+- New function `*MaintenancesClient.NewListPager(string, string, *MaintenancesClientListOptions) *runtime.Pager[MaintenancesClientListResponse]`
+- New function `*MaintenancesClient.Read(context.Context, string, string, string, *MaintenancesClientReadOptions) (MaintenancesClientReadResponse, error)`
+- New function `*MaintenancesClient.BeginUpdate(context.Context, string, string, string, *MaintenancesClientBeginUpdateOptions) (*runtime.Poller[MaintenancesClientUpdateResponse], error)`
+- New function `NewOperationProgressClient(string, azcore.TokenCredential, *arm.ClientOptions) (*OperationProgressClient, error)`
+- New function `*OperationProgressClient.Get(context.Context, string, string, *OperationProgressClientGetOptions) (OperationProgressClientGetResponse, error)`
+- New function `*OperationProgressResponseType.GetOperationProgressResponseType() *OperationProgressResponseType`
+- New function `NewOperationResultsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*OperationResultsClient, error)`
+- New function `*OperationResultsClient.Get(context.Context, string, string, *OperationResultsClientGetOptions) (OperationResultsClientGetResponse, error)`
+- New function `*ServersClient.ValidateEstimateHighAvailability(context.Context, string, string, HighAvailabilityValidationEstimation, *ServersClientValidateEstimateHighAvailabilityOptions) (ServersClientValidateEstimateHighAvailabilityResponse, error)`
+- New function `NewServersMigrationClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ServersMigrationClient, error)`
+- New function `*ServersMigrationClient.BeginCutoverMigration(context.Context, string, string, *ServersMigrationClientBeginCutoverMigrationOptions) (*runtime.Poller[ServersMigrationClientCutoverMigrationResponse], error)`
+- New struct `AdvancedThreatProtection`
+- New struct `AdvancedThreatProtectionForUpdate`
+- New struct `AdvancedThreatProtectionListResult`
+- New struct `AdvancedThreatProtectionProperties`
+- New struct `AdvancedThreatProtectionUpdateProperties`
+- New struct `BackupAndExportResponseType`
+- New struct `Capability`
+- New struct `CapabilityPropertiesV2`
+- New struct `CapabilitySetsList`
+- New struct `ErrorDetail`
+- New struct `HighAvailabilityValidationEstimation`
+- New struct `ImportFromStorageResponseType`
+- New struct `ImportSourceProperties`
+- New struct `Maintenance`
+- New struct `MaintenanceListResult`
+- New struct `MaintenanceProperties`
+- New struct `MaintenancePropertiesForUpdate`
+- New struct `MaintenanceUpdate`
+- New struct `MySQLServerIdentity`
+- New struct `MySQLServerSKU`
+- New struct `OperationProgressResult`
+- New struct `OperationStatusExtendedResult`
+- New struct `OperationStatusResult`
+- New struct `PrivateEndpoint`
+- New struct `PrivateEndpointConnection`
+- New struct `PrivateEndpointConnectionProperties`
+- New struct `PrivateLinkServiceConnectionState`
+- New struct `Provisioning`
+- New struct `ProvisioningStateProperties`
+- New struct `SKUCapabilityV2`
+- New struct `ServerBackupPropertiesV2`
+- New struct `ServerBackupV2`
+- New struct `ServerBackupV2ListResult`
+- New struct `ServerEditionCapabilityV2`
+- New struct `ServerVersionCapabilityV2`
+- New field `BackupIntervalHours` in struct `Backup`
+- New field `SystemData` in struct `BackupAndExportResponse`
+- New field `Error` in struct `ErrorResponse`
+- New field `SystemData` in struct `ProxyResource`
+- New field `SystemData` in struct `Resource`
+- New field `ImportSourceProperties`, `PrivateEndpointConnections` in struct `ServerProperties`
+- New field `Network` in struct `ServerPropertiesForUpdate`
+- New field `MaxBackupIntervalHours`, `MinBackupIntervalHours` in struct `StorageEditionCapability`
+- New field `SystemData` in struct `TrackedResource`
+
+
 ## 2.0.0-beta.2 (2023-11-30)
 ### Features Added
 

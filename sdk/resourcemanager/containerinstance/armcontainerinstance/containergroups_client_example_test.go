@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerinstance/armcontainerinstance/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e60df62e9e0d88462e6abba81a76d94eab000f0d/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2023-05-01/examples/ContainerGroupsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupsList.json
 func ExampleContainerGroupsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,6 +95,7 @@ func ExampleContainerGroupsClient_NewListPager() {
 		// 							Protocol: to.Ptr(armcontainerinstance.ContainerGroupNetworkProtocolTCP),
 		// 					}},
 		// 				},
+		// 				IsCreatedFromStandbyPool: to.Ptr(false),
 		// 				OSType: to.Ptr(armcontainerinstance.OperatingSystemTypesLinux),
 		// 				ProvisioningState: to.Ptr("Succeeded"),
 		// 				Volumes: []*armcontainerinstance.Volume{
@@ -118,7 +119,7 @@ func ExampleContainerGroupsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e60df62e9e0d88462e6abba81a76d94eab000f0d/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2023-05-01/examples/ContainerGroupsListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupsListByResourceGroup.json
 func ExampleContainerGroupsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -185,6 +186,7 @@ func ExampleContainerGroupsClient_NewListByResourceGroupPager() {
 		// 							Protocol: to.Ptr(armcontainerinstance.ContainerGroupNetworkProtocolTCP),
 		// 					}},
 		// 				},
+		// 				IsCreatedFromStandbyPool: to.Ptr(false),
 		// 				OSType: to.Ptr(armcontainerinstance.OperatingSystemTypesLinux),
 		// 				ProvisioningState: to.Ptr("Succeeded"),
 		// 				Volumes: []*armcontainerinstance.Volume{
@@ -208,7 +210,7 @@ func ExampleContainerGroupsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e60df62e9e0d88462e6abba81a76d94eab000f0d/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2023-05-01/examples/ContainerGroupsGetPriority.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupsGetPriority.json
 func ExampleContainerGroupsClient_Get_containerGroupsGetWithPriority() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -291,6 +293,7 @@ func ExampleContainerGroupsClient_Get_containerGroupsGetWithPriority() {
 	// 				},
 	// 				State: to.Ptr("Succeeded"),
 	// 			},
+	// 			IsCreatedFromStandbyPool: to.Ptr(false),
 	// 			OSType: to.Ptr(armcontainerinstance.OperatingSystemTypesLinux),
 	// 			Priority: to.Ptr(armcontainerinstance.ContainerGroupPrioritySpot),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
@@ -304,7 +307,7 @@ func ExampleContainerGroupsClient_Get_containerGroupsGetWithPriority() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e60df62e9e0d88462e6abba81a76d94eab000f0d/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2023-05-01/examples/ContainerGroupsGet_Failed.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupsGet_Failed.json
 func ExampleContainerGroupsClient_Get_containerGroupsGetFailed() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -402,6 +405,7 @@ func ExampleContainerGroupsClient_Get_containerGroupsGetFailed() {
 	// 					Protocol: to.Ptr(armcontainerinstance.ContainerGroupNetworkProtocolTCP),
 	// 			}},
 	// 		},
+	// 		IsCreatedFromStandbyPool: to.Ptr(false),
 	// 		OSType: to.Ptr(armcontainerinstance.OperatingSystemTypesLinux),
 	// 		ProvisioningState: to.Ptr("Succeeded"),
 	// 		Volumes: []*armcontainerinstance.Volume{
@@ -421,7 +425,7 @@ func ExampleContainerGroupsClient_Get_containerGroupsGetFailed() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e60df62e9e0d88462e6abba81a76d94eab000f0d/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2023-05-01/examples/ContainerGroupsGet_Succeeded.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupsGet_Succeeded.json
 func ExampleContainerGroupsClient_Get_containerGroupsGetSucceeded() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -482,6 +486,7 @@ func ExampleContainerGroupsClient_Get_containerGroupsGetSucceeded() {
 	// 					Protocol: to.Ptr(armcontainerinstance.ContainerGroupNetworkProtocolTCP),
 	// 			}},
 	// 		},
+	// 		IsCreatedFromStandbyPool: to.Ptr(false),
 	// 		OSType: to.Ptr(armcontainerinstance.OperatingSystemTypesLinux),
 	// 		ProvisioningState: to.Ptr("Succeeded"),
 	// 		Volumes: []*armcontainerinstance.Volume{
@@ -503,7 +508,7 @@ func ExampleContainerGroupsClient_Get_containerGroupsGetSucceeded() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e60df62e9e0d88462e6abba81a76d94eab000f0d/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2023-05-01/examples/ContainerGroupCreateConfidential.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupCreateConfidential.json
 func ExampleContainerGroupsClient_BeginCreateOrUpdate_confidentialContainerGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -619,6 +624,7 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_confidentialContainerGroup
 	// 						Protocol: to.Ptr(armcontainerinstance.ContainerGroupNetworkProtocolTCP),
 	// 				}},
 	// 			},
+	// 			IsCreatedFromStandbyPool: to.Ptr(false),
 	// 			OSType: to.Ptr(armcontainerinstance.OperatingSystemTypesLinux),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			SKU: to.Ptr(armcontainerinstance.ContainerGroupSKUConfidential),
@@ -630,7 +636,104 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_confidentialContainerGroup
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e60df62e9e0d88462e6abba81a76d94eab000f0d/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2023-05-01/examples/ContainerGroupExtensions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupCreateOrUpdateStandbyPool.json
+func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupCreateOrUpdateWithStandbyPool() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerinstance.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewContainerGroupsClient().BeginCreateOrUpdate(ctx, "demo", "demo1", armcontainerinstance.ContainerGroup{
+		Properties: &armcontainerinstance.ContainerGroupPropertiesProperties{
+			ContainerGroupProfile: &armcontainerinstance.ContainerGroupProfileReferenceDefinition{
+				ID:       to.Ptr("/subscriptions/subid/resourceGroups/demo/providers/Microsoft.ContainerInstance/containerGroupProfiles/democgp"),
+				Revision: to.Ptr[int32](1),
+			},
+			Containers: []*armcontainerinstance.Container{
+				{
+					Name: to.Ptr("demo1"),
+					Properties: &armcontainerinstance.ContainerProperties{
+						ConfigMap: &armcontainerinstance.ConfigMap{
+							KeyValuePairs: map[string]*string{
+								"Newkey": to.Ptr("value"),
+							},
+						},
+					},
+				}},
+			StandbyPoolProfile: &armcontainerinstance.StandbyPoolProfileDefinition{
+				ID: to.Ptr("/subscriptions/subid/resourceGroups/demo/providers/Microsoft.StandbyPool/standbyContainerGroupPools/demopool"),
+			},
+		},
+		Location: to.Ptr("west us"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ContainerGroup = armcontainerinstance.ContainerGroup{
+	// 	Properties: &armcontainerinstance.ContainerGroupPropertiesProperties{
+	// 		ContainerGroupProfile: &armcontainerinstance.ContainerGroupProfileReferenceDefinition{
+	// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/demo/providers/Microsoft.ContainerInstance/containerGroupProfiles/democgp"),
+	// 			Revision: to.Ptr[int32](1),
+	// 		},
+	// 		Containers: []*armcontainerinstance.Container{
+	// 			{
+	// 				Name: to.Ptr("demo1"),
+	// 				Properties: &armcontainerinstance.ContainerProperties{
+	// 					Command: []*string{
+	// 					},
+	// 					ConfigMap: &armcontainerinstance.ConfigMap{
+	// 						KeyValuePairs: map[string]*string{
+	// 							"Newkey": to.Ptr("value"),
+	// 						},
+	// 					},
+	// 					EnvironmentVariables: []*armcontainerinstance.EnvironmentVariable{
+	// 					},
+	// 					Image: to.Ptr("nginx"),
+	// 					Ports: []*armcontainerinstance.ContainerPort{
+	// 						{
+	// 							Port: to.Ptr[int32](80),
+	// 					}},
+	// 					Resources: &armcontainerinstance.ResourceRequirements{
+	// 						Requests: &armcontainerinstance.ResourceRequests{
+	// 							CPU: to.Ptr[float64](1),
+	// 							MemoryInGB: to.Ptr[float64](1.5),
+	// 						},
+	// 					},
+	// 				},
+	// 		}},
+	// 		ImageRegistryCredentials: []*armcontainerinstance.ImageRegistryCredential{
+	// 		},
+	// 		InitContainers: []*armcontainerinstance.InitContainerDefinition{
+	// 		},
+	// 		InstanceView: &armcontainerinstance.ContainerGroupPropertiesInstanceView{
+	// 			Events: []*armcontainerinstance.Event{
+	// 			},
+	// 			State: to.Ptr("Running"),
+	// 		},
+	// 		IsCreatedFromStandbyPool: to.Ptr(true),
+	// 		OSType: to.Ptr(armcontainerinstance.OperatingSystemTypesLinux),
+	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		SKU: to.Ptr(armcontainerinstance.ContainerGroupSKUStandard),
+	// 	},
+	// 	Name: to.Ptr("demo1"),
+	// 	Type: to.Ptr("Microsoft.ContainerInstance/containerGroups"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/demo/providers/Microsoft.ContainerInstance/containerGroups/demo1"),
+	// 	Location: to.Ptr("eastus2"),
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupExtensions.json
 func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupCreateWithExtensions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -743,6 +846,7 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupCreateWithEx
 	// 			},
 	// 			State: to.Ptr("Pending"),
 	// 		},
+	// 		IsCreatedFromStandbyPool: to.Ptr(false),
 	// 		OSType: to.Ptr(armcontainerinstance.OperatingSystemTypesLinux),
 	// 		ProvisioningState: to.Ptr("Succeeded"),
 	// 		SKU: to.Ptr(armcontainerinstance.ContainerGroupSKUStandard),
@@ -777,7 +881,7 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupCreateWithEx
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e60df62e9e0d88462e6abba81a76d94eab000f0d/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2023-05-01/examples/ContainerGroupEncryptionProperties.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupEncryptionProperties.json
 func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupWithEncryptionProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -900,6 +1004,7 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupWithEncrypti
 	// 					Protocol: to.Ptr(armcontainerinstance.ContainerGroupNetworkProtocolTCP),
 	// 			}},
 	// 		},
+	// 		IsCreatedFromStandbyPool: to.Ptr(false),
 	// 		OSType: to.Ptr(armcontainerinstance.OperatingSystemTypesLinux),
 	// 		ProvisioningState: to.Ptr("Succeeded"),
 	// 		SKU: to.Ptr(armcontainerinstance.ContainerGroupSKUStandard),
@@ -911,7 +1016,7 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupWithEncrypti
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e60df62e9e0d88462e6abba81a76d94eab000f0d/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2023-05-01/examples/ContainerGroupsCreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupsCreateOrUpdate.json
 func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupsCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1103,6 +1208,7 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupsCreateOrUpd
 	// 						Protocol: to.Ptr(armcontainerinstance.ContainerGroupNetworkProtocolTCP),
 	// 				}},
 	// 			},
+	// 			IsCreatedFromStandbyPool: to.Ptr(false),
 	// 			OSType: to.Ptr(armcontainerinstance.OperatingSystemTypesLinux),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			Volumes: []*armcontainerinstance.Volume{
@@ -1133,7 +1239,7 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupsCreateOrUpd
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e60df62e9e0d88462e6abba81a76d94eab000f0d/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2023-05-01/examples/ContainerGroupsCreatePriority.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupsCreatePriority.json
 func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupsCreateWithPriority() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1210,6 +1316,7 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupsCreateWithP
 	// 				},
 	// 				State: to.Ptr("Succeeded"),
 	// 			},
+	// 			IsCreatedFromStandbyPool: to.Ptr(false),
 	// 			OSType: to.Ptr(armcontainerinstance.OperatingSystemTypesLinux),
 	// 			Priority: to.Ptr(armcontainerinstance.ContainerGroupPrioritySpot),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
@@ -1223,7 +1330,7 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupsCreateWithP
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e60df62e9e0d88462e6abba81a76d94eab000f0d/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2023-05-01/examples/ContainerGroupsUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupsUpdate.json
 func ExampleContainerGroupsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1298,6 +1405,7 @@ func ExampleContainerGroupsClient_Update() {
 	// 					Protocol: to.Ptr(armcontainerinstance.ContainerGroupNetworkProtocolTCP),
 	// 			}},
 	// 		},
+	// 		IsCreatedFromStandbyPool: to.Ptr(false),
 	// 		OSType: to.Ptr(armcontainerinstance.OperatingSystemTypesLinux),
 	// 		ProvisioningState: to.Ptr("Succeeded"),
 	// 		Volumes: []*armcontainerinstance.Volume{
@@ -1330,7 +1438,7 @@ func ExampleContainerGroupsClient_Update() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e60df62e9e0d88462e6abba81a76d94eab000f0d/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2023-05-01/examples/ContainerGroupsDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupsDelete.json
 func ExampleContainerGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1395,6 +1503,7 @@ func ExampleContainerGroupsClient_BeginDelete() {
 	// 					Protocol: to.Ptr(armcontainerinstance.ContainerGroupNetworkProtocolTCP),
 	// 			}},
 	// 		},
+	// 		IsCreatedFromStandbyPool: to.Ptr(false),
 	// 		OSType: to.Ptr(armcontainerinstance.OperatingSystemTypesLinux),
 	// 		ProvisioningState: to.Ptr("Succeeded"),
 	// 		Volumes: []*armcontainerinstance.Volume{
@@ -1416,7 +1525,7 @@ func ExampleContainerGroupsClient_BeginDelete() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e60df62e9e0d88462e6abba81a76d94eab000f0d/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2023-05-01/examples/ContainerGroupsRestart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupsRestart.json
 func ExampleContainerGroupsClient_BeginRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1437,7 +1546,7 @@ func ExampleContainerGroupsClient_BeginRestart() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e60df62e9e0d88462e6abba81a76d94eab000f0d/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2023-05-01/examples/ContainerGroupsStop.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupsStop.json
 func ExampleContainerGroupsClient_Stop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1454,7 +1563,7 @@ func ExampleContainerGroupsClient_Stop() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e60df62e9e0d88462e6abba81a76d94eab000f0d/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2023-05-01/examples/ContainerGroupsStart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/ContainerGroupsStart.json
 func ExampleContainerGroupsClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

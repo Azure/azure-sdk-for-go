@@ -38,38 +38,39 @@ func NewCheckNameAvailabilityClient(credential azcore.TokenCredential, options *
 	return client, nil
 }
 
-// Post - This API is used to check the uniqueness of a resource name used for a diagnostic, troubleshooter or solutions
+// CheckAvailability - This API is used to check the uniqueness of a resource name used for a diagnostic, troubleshooter or
+// solutions
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-03-01-preview
 //   - scope - scope = resourceUri of affected resource.
 //     For example: /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read
-//   - options - CheckNameAvailabilityClientPostOptions contains the optional parameters for the CheckNameAvailabilityClient.Post
+//   - options - CheckNameAvailabilityClientCheckAvailabilityOptions contains the optional parameters for the CheckNameAvailabilityClient.CheckAvailability
 //     method.
-func (client *CheckNameAvailabilityClient) Post(ctx context.Context, scope string, options *CheckNameAvailabilityClientPostOptions) (CheckNameAvailabilityClientPostResponse, error) {
+func (client *CheckNameAvailabilityClient) CheckAvailability(ctx context.Context, scope string, options *CheckNameAvailabilityClientCheckAvailabilityOptions) (CheckNameAvailabilityClientCheckAvailabilityResponse, error) {
 	var err error
-	const operationName = "CheckNameAvailabilityClient.Post"
+	const operationName = "CheckNameAvailabilityClient.CheckAvailability"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.postCreateRequest(ctx, scope, options)
+	req, err := client.checkAvailabilityCreateRequest(ctx, scope, options)
 	if err != nil {
-		return CheckNameAvailabilityClientPostResponse{}, err
+		return CheckNameAvailabilityClientCheckAvailabilityResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return CheckNameAvailabilityClientPostResponse{}, err
+		return CheckNameAvailabilityClientCheckAvailabilityResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return CheckNameAvailabilityClientPostResponse{}, err
+		return CheckNameAvailabilityClientCheckAvailabilityResponse{}, err
 	}
-	resp, err := client.postHandleResponse(httpResp)
+	resp, err := client.checkAvailabilityHandleResponse(httpResp)
 	return resp, err
 }
 
-// postCreateRequest creates the Post request.
-func (client *CheckNameAvailabilityClient) postCreateRequest(ctx context.Context, scope string, options *CheckNameAvailabilityClientPostOptions) (*policy.Request, error) {
+// checkAvailabilityCreateRequest creates the CheckAvailability request.
+func (client *CheckNameAvailabilityClient) checkAvailabilityCreateRequest(ctx context.Context, scope string, options *CheckNameAvailabilityClientCheckAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Help/checkNameAvailability"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -89,11 +90,11 @@ func (client *CheckNameAvailabilityClient) postCreateRequest(ctx context.Context
 	return req, nil
 }
 
-// postHandleResponse handles the Post response.
-func (client *CheckNameAvailabilityClient) postHandleResponse(resp *http.Response) (CheckNameAvailabilityClientPostResponse, error) {
-	result := CheckNameAvailabilityClientPostResponse{}
+// checkAvailabilityHandleResponse handles the CheckAvailability response.
+func (client *CheckNameAvailabilityClient) checkAvailabilityHandleResponse(resp *http.Response) (CheckNameAvailabilityClientCheckAvailabilityResponse, error) {
+	result := CheckNameAvailabilityClientCheckAvailabilityResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityResponse); err != nil {
-		return CheckNameAvailabilityClientPostResponse{}, err
+		return CheckNameAvailabilityClientCheckAvailabilityResponse{}, err
 	}
 	return result, nil
 }

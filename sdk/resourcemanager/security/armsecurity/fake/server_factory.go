@@ -36,7 +36,6 @@ type ServerFactory struct {
 	AzureDevOpsOrgsServer                              AzureDevOpsOrgsServer
 	AzureDevOpsProjectsServer                          AzureDevOpsProjectsServer
 	AzureDevOpsReposServer                             AzureDevOpsReposServer
-	CenterServer                                       CenterServer
 	ComplianceResultsServer                            ComplianceResultsServer
 	CompliancesServer                                  CompliancesServer
 	ConnectorApplicationServer                         ConnectorApplicationServer
@@ -123,7 +122,6 @@ type ServerFactoryTransport struct {
 	trAzureDevOpsOrgsServer                              *AzureDevOpsOrgsServerTransport
 	trAzureDevOpsProjectsServer                          *AzureDevOpsProjectsServerTransport
 	trAzureDevOpsReposServer                             *AzureDevOpsReposServerTransport
-	trCenterServer                                       *CenterServerTransport
 	trComplianceResultsServer                            *ComplianceResultsServerTransport
 	trCompliancesServer                                  *CompliancesServerTransport
 	trConnectorApplicationServer                         *ConnectorApplicationServerTransport
@@ -267,9 +265,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewAzureDevOpsReposServerTransport(&s.srv.AzureDevOpsReposServer)
 		})
 		resp, err = s.trAzureDevOpsReposServer.Do(req)
-	case "CenterClient":
-		initServer(s, &s.trCenterServer, func() *CenterServerTransport { return NewCenterServerTransport(&s.srv.CenterServer) })
-		resp, err = s.trCenterServer.Do(req)
 	case "ComplianceResultsClient":
 		initServer(s, &s.trComplianceResultsServer, func() *ComplianceResultsServerTransport {
 			return NewComplianceResultsServerTransport(&s.srv.ComplianceResultsServer)

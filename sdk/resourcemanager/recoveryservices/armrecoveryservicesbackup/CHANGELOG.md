@@ -1,5 +1,32 @@
 # Release History
 
+## 4.1.0 (2024-05-24)
+### Features Added
+
+- New enum type `IaasVMSnapshotConsistencyType` with values `IaasVMSnapshotConsistencyTypeOnlyCrashConsistent`
+- New field `ResourceGuardOperationRequests` in struct `AzureFileShareRestoreRequest`
+- New field `SnapshotConsistencyType` in struct `AzureIaaSVMProtectionPolicy`
+- New field `ResourceGuardOperationRequests` in struct `AzureWorkloadPointInTimeRestoreRequest`
+- New field `ResourceGuardOperationRequests` in struct `AzureWorkloadRestoreRequest`
+- New field `ResourceGuardOperationRequests` in struct `AzureWorkloadSAPHanaPointInTimeRestoreRequest`
+- New field `ResourceGuardOperationRequests` in struct `AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest`
+- New field `ResourceGuardOperationRequests` in struct `AzureWorkloadSAPHanaRestoreRequest`
+- New field `ResourceGuardOperationRequests` in struct `AzureWorkloadSAPHanaRestoreWithRehydrateRequest`
+- New field `ResourceGuardOperationRequests` in struct `AzureWorkloadSQLPointInTimeRestoreRequest`
+- New field `ResourceGuardOperationRequests` in struct `AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest`
+- New field `ResourceGuardOperationRequests` in struct `AzureWorkloadSQLRestoreRequest`
+- New field `ResourceGuardOperationRequests` in struct `AzureWorkloadSQLRestoreWithRehydrateRequest`
+- New field `XMSAuthorizationAuxiliary` in struct `BackupResourceVaultConfigsClientPutOptions`
+- New field `XMSAuthorizationAuxiliary` in struct `BackupResourceVaultConfigsClientUpdateOptions`
+- New field `ResourceGuardOperationRequests` in struct `IaasVMRestoreRequest`
+- New field `ResourceGuardOperationRequests` in struct `IaasVMRestoreWithRehydrationRequest`
+- New field `XMSAuthorizationAuxiliary` in struct `ProtectedItemsClientCreateOrUpdateOptions`
+- New field `XMSAuthorizationAuxiliary` in struct `ProtectionPoliciesClientCreateOrUpdateOptions`
+- New field `ResourceGuardOperationRequests` in struct `RestoreRequest`
+- New field `XMSAuthorizationAuxiliary` in struct `RestoresClientBeginTriggerOptions`
+- New field `XMSAuthorizationAuxiliary` in struct `SecurityPINsClientGetOptions`
+
+
 ## 4.0.0 (2023-12-08)
 ### Breaking Changes
 

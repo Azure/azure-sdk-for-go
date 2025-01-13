@@ -110,6 +110,12 @@ type ImageTemplate struct {
 	Type *string
 }
 
+// ImageTemplateAutoRun - Indicates if the image template needs to be built on create/update
+type ImageTemplateAutoRun struct {
+	// Enabling this field will trigger an automatic build on image template creation or update.
+	State *AutoRunState
+}
+
 // ImageTemplateCustomizer - Describes a unit of image customization
 type ImageTemplateCustomizer struct {
 	// REQUIRED; The type of customization tool you want to use on the Image. For example, "Shell" can be shell customizer
@@ -408,6 +414,9 @@ type ImageTemplateProperties struct {
 	// REQUIRED; Specifies the properties used to describe the source image.
 	Source ImageTemplateSourceClassification
 
+	// Indicates whether or not to automatically run the image template build on template creation or update.
+	AutoRun *ImageTemplateAutoRun
+
 	// Maximum duration to wait while building the image template (includes all customizations, optimization, validations, and
 	// distributions). Omit or specify 0 to use the default (4 hours).
 	BuildTimeoutInMinutes *int32
@@ -417,6 +426,9 @@ type ImageTemplateProperties struct {
 
 	// Error handling options upon a build failure
 	ErrorHandling *ImageTemplatePropertiesErrorHandling
+
+	// Tags that will be applied to the resource group and/or resources created by the service.
+	ManagedResourceTags map[string]*string
 
 	// Specifies optimization to be performed on image.
 	Optimize *ImageTemplatePropertiesOptimize
@@ -664,6 +676,9 @@ type ImageTemplateUpdateParameters struct {
 type ImageTemplateUpdateParametersProperties struct {
 	// The distribution targets where the image output needs to go to.
 	Distribute []ImageTemplateDistributorClassification
+
+	// Describes how virtual machine is set up to build images
+	VMProfile *ImageTemplateVMProfile
 }
 
 // ImageTemplateVMProfile - Describes the virtual machines used to build and validate images
@@ -1012,10 +1027,16 @@ type UserAssignedIdentity struct {
 
 // VirtualNetworkConfig - Virtual Network configuration.
 type VirtualNetworkConfig struct {
-	// Size of the proxy virtual machine used to pass traffic to the build VM and validation VM. Omit or specify empty string
-	// to use the default (StandardA1v2).
+	// Resource id of a pre-existing subnet on which Azure Container Instance will be deployed for Isolated Builds. This field
+	// may be specified only if subnetId is also specified and must be on the same
+	// Virtual Network as the subnet specified in subnetId.
+	ContainerInstanceSubnetID *string
+
+	// Size of the proxy virtual machine used to pass traffic to the build VM and validation VM. This must not be specified if
+	// containerInstanceSubnetId is specified because no proxy virtual machine is
+	// deployed in that case. Omit or specify empty string to use the default (StandardA1v2).
 	ProxyVMSize *string
 
-	// Resource id of a pre-existing subnet.
+	// Resource id of a pre-existing subnet on which the build VM and validation VM will be deployed
 	SubnetID *string
 }

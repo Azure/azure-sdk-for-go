@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/automationRules/AutomationRules_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/automationRules/AutomationRules_Get.json
 func ExampleAutomationRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,11 +42,12 @@ func ExampleAutomationRulesClient_Get() {
 	// 	Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
 	// 	Properties: &armsecurityinsights.AutomationRuleProperties{
 	// 		Actions: []armsecurityinsights.AutomationRuleActionClassification{
-	// 			&armsecurityinsights.AutomationRuleModifyPropertiesAction{
-	// 				ActionType: to.Ptr(armsecurityinsights.ActionTypeModifyProperties),
+	// 			&armsecurityinsights.AutomationRuleRunPlaybookAction{
+	// 				ActionType: to.Ptr(armsecurityinsights.ActionTypeRunPlaybook),
 	// 				Order: to.Ptr[int32](1),
-	// 				ActionConfiguration: &armsecurityinsights.IncidentPropertiesAction{
-	// 					Severity: to.Ptr(armsecurityinsights.IncidentSeverityHigh),
+	// 				ActionConfiguration: &armsecurityinsights.PlaybookActionProperties{
+	// 					LogicAppResourceID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.Logic/workflows/IncidentPlaybook"),
+	// 					TenantID: to.Ptr("d23e3eef-eed0-428f-a2d5-bc48c268e31d"),
 	// 				},
 	// 		}},
 	// 		CreatedBy: &armsecurityinsights.ClientInfo{
@@ -56,7 +57,7 @@ func ExampleAutomationRulesClient_Get() {
 	// 			UserPrincipalName: to.Ptr("john@contoso.com"),
 	// 		},
 	// 		CreatedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:00:00.000Z"); return t}()),
-	// 		DisplayName: to.Ptr("High severity incidents escalation"),
+	// 		DisplayName: to.Ptr("Suspicious alerts in workspace"),
 	// 		LastModifiedBy: &armsecurityinsights.ClientInfo{
 	// 			Name: to.Ptr("john doe"),
 	// 			Email: to.Ptr("john.doe@contoso.com"),
@@ -67,25 +68,74 @@ func ExampleAutomationRulesClient_Get() {
 	// 		Order: to.Ptr[int32](1),
 	// 		TriggeringLogic: &armsecurityinsights.AutomationRuleTriggeringLogic{
 	// 			Conditions: []armsecurityinsights.AutomationRuleConditionClassification{
-	// 				&armsecurityinsights.PropertyConditionProperties{
-	// 					ConditionType: to.Ptr(armsecurityinsights.ConditionTypeProperty),
-	// 					ConditionProperties: &armsecurityinsights.AutomationRulePropertyValuesCondition{
-	// 						Operator: to.Ptr(armsecurityinsights.AutomationRulePropertyConditionSupportedOperatorContains),
-	// 						PropertyName: to.Ptr(armsecurityinsights.AutomationRulePropertyConditionSupportedPropertyIncidentRelatedAnalyticRuleIDs),
-	// 						PropertyValues: []*string{
-	// 							to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/alertRules/fab3d2d4-747f-46a7-8ef0-9c0be8112bf7"),
-	// 							to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/alertRules/8deb8303-e94d-46ff-96e0-5fd94b33df1a")},
+	// 				&armsecurityinsights.BooleanConditionProperties{
+	// 					ConditionType: to.Ptr(armsecurityinsights.ConditionTypeBoolean),
+	// 					ConditionProperties: &armsecurityinsights.AutomationRuleBooleanCondition{
+	// 						InnerConditions: []armsecurityinsights.AutomationRuleConditionClassification{
+	// 							&armsecurityinsights.PropertyConditionProperties{
+	// 								ConditionType: to.Ptr(armsecurityinsights.ConditionTypeProperty),
+	// 								ConditionProperties: &armsecurityinsights.AutomationRulePropertyValuesCondition{
+	// 									Operator: to.Ptr(armsecurityinsights.AutomationRulePropertyConditionSupportedOperatorEquals),
+	// 									PropertyName: to.Ptr(armsecurityinsights.AutomationRulePropertyConditionSupportedPropertyAccountName),
+	// 									PropertyValues: []*string{
+	// 										to.Ptr("Administrator")},
+	// 									},
+	// 								},
+	// 								&armsecurityinsights.PropertyConditionProperties{
+	// 									ConditionType: to.Ptr(armsecurityinsights.ConditionTypeProperty),
+	// 									ConditionProperties: &armsecurityinsights.AutomationRulePropertyValuesCondition{
+	// 										Operator: to.Ptr(armsecurityinsights.AutomationRulePropertyConditionSupportedOperatorEquals),
+	// 										PropertyName: to.Ptr(armsecurityinsights.AutomationRulePropertyConditionSupportedPropertyHostName),
+	// 										PropertyValues: []*string{
+	// 											to.Ptr("MainServer")},
+	// 										},
+	// 								}},
+	// 								Operator: to.Ptr(armsecurityinsights.AutomationRuleBooleanConditionSupportedOperatorOr),
+	// 							},
 	// 						},
-	// 				}},
-	// 				IsEnabled: to.Ptr(true),
-	// 				TriggersOn: to.Ptr(armsecurityinsights.TriggersOnIncidents),
-	// 				TriggersWhen: to.Ptr(armsecurityinsights.TriggersWhenCreated),
-	// 			},
-	// 		},
-	// 	}
+	// 						&armsecurityinsights.PropertyArrayConditionProperties{
+	// 							ConditionType: to.Ptr(armsecurityinsights.ConditionTypePropertyArray),
+	// 							ConditionProperties: &armsecurityinsights.AutomationRulePropertyArrayValuesCondition{
+	// 								ArrayConditionType: to.Ptr(armsecurityinsights.AutomationRulePropertyArrayConditionSupportedArrayConditionTypeAnyItem),
+	// 								ArrayType: to.Ptr(armsecurityinsights.AutomationRulePropertyArrayConditionSupportedArrayTypeCustomDetails),
+	// 								ItemConditions: []armsecurityinsights.AutomationRuleConditionClassification{
+	// 									&armsecurityinsights.PropertyConditionProperties{
+	// 										ConditionType: to.Ptr(armsecurityinsights.ConditionTypeProperty),
+	// 										ConditionProperties: &armsecurityinsights.AutomationRulePropertyValuesCondition{
+	// 											Operator: to.Ptr(armsecurityinsights.AutomationRulePropertyConditionSupportedOperatorEquals),
+	// 											PropertyName: to.Ptr(armsecurityinsights.AutomationRulePropertyConditionSupportedPropertyIncidentCustomDetailsKey),
+	// 											PropertyValues: []*string{
+	// 												to.Ptr("AlertTags")},
+	// 											},
+	// 										},
+	// 										&armsecurityinsights.PropertyArrayConditionProperties{
+	// 											ConditionType: to.Ptr(armsecurityinsights.ConditionTypePropertyArray),
+	// 											ConditionProperties: &armsecurityinsights.AutomationRulePropertyArrayValuesCondition{
+	// 												ArrayConditionType: to.Ptr(armsecurityinsights.AutomationRulePropertyArrayConditionSupportedArrayConditionTypeAnyItem),
+	// 												ArrayType: to.Ptr(armsecurityinsights.AutomationRulePropertyArrayConditionSupportedArrayTypeCustomDetailValues),
+	// 												ItemConditions: []armsecurityinsights.AutomationRuleConditionClassification{
+	// 													&armsecurityinsights.PropertyConditionProperties{
+	// 														ConditionType: to.Ptr(armsecurityinsights.ConditionTypeProperty),
+	// 														ConditionProperties: &armsecurityinsights.AutomationRulePropertyValuesCondition{
+	// 															Operator: to.Ptr(armsecurityinsights.AutomationRulePropertyConditionSupportedOperatorEquals),
+	// 															PropertyName: to.Ptr(armsecurityinsights.AutomationRulePropertyConditionSupportedPropertyIncidentCustomDetailsValue),
+	// 															PropertyValues: []*string{
+	// 																to.Ptr("HighPriority")},
+	// 															},
+	// 													}},
+	// 												},
+	// 										}},
+	// 									},
+	// 							}},
+	// 							IsEnabled: to.Ptr(true),
+	// 							TriggersOn: to.Ptr(armsecurityinsights.TriggersOnIncidents),
+	// 							TriggersWhen: to.Ptr(armsecurityinsights.TriggersWhenCreated),
+	// 						},
+	// 					},
+	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/automationRules/AutomationRules_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/automationRules/AutomationRules_CreateOrUpdate.json
 func ExampleAutomationRulesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -110,11 +160,12 @@ func ExampleAutomationRulesClient_CreateOrUpdate() {
 	// 	Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
 	// 	Properties: &armsecurityinsights.AutomationRuleProperties{
 	// 		Actions: []armsecurityinsights.AutomationRuleActionClassification{
-	// 			&armsecurityinsights.AutomationRuleModifyPropertiesAction{
-	// 				ActionType: to.Ptr(armsecurityinsights.ActionTypeModifyProperties),
+	// 			&armsecurityinsights.AutomationRuleRunPlaybookAction{
+	// 				ActionType: to.Ptr(armsecurityinsights.ActionTypeRunPlaybook),
 	// 				Order: to.Ptr[int32](1),
-	// 				ActionConfiguration: &armsecurityinsights.IncidentPropertiesAction{
-	// 					Severity: to.Ptr(armsecurityinsights.IncidentSeverityHigh),
+	// 				ActionConfiguration: &armsecurityinsights.PlaybookActionProperties{
+	// 					LogicAppResourceID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.Logic/workflows/AlertPlaybook"),
+	// 					TenantID: to.Ptr("d23e3eef-eed0-428f-a2d5-bc48c268e31d"),
 	// 				},
 	// 		}},
 	// 		CreatedBy: &armsecurityinsights.ClientInfo{
@@ -124,7 +175,7 @@ func ExampleAutomationRulesClient_CreateOrUpdate() {
 	// 			UserPrincipalName: to.Ptr("john@contoso.com"),
 	// 		},
 	// 		CreatedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:00:00.000Z"); return t}()),
-	// 		DisplayName: to.Ptr("High severity incidents escalation"),
+	// 		DisplayName: to.Ptr("Suspicious alerts in workspace"),
 	// 		LastModifiedBy: &armsecurityinsights.ClientInfo{
 	// 			Name: to.Ptr("john doe"),
 	// 			Email: to.Ptr("john.doe@contoso.com"),
@@ -139,21 +190,21 @@ func ExampleAutomationRulesClient_CreateOrUpdate() {
 	// 					ConditionType: to.Ptr(armsecurityinsights.ConditionTypeProperty),
 	// 					ConditionProperties: &armsecurityinsights.AutomationRulePropertyValuesCondition{
 	// 						Operator: to.Ptr(armsecurityinsights.AutomationRulePropertyConditionSupportedOperatorContains),
-	// 						PropertyName: to.Ptr(armsecurityinsights.AutomationRulePropertyConditionSupportedPropertyIncidentRelatedAnalyticRuleIDs),
+	// 						PropertyName: to.Ptr(armsecurityinsights.AutomationRulePropertyConditionSupportedPropertyAlertAnalyticRuleIDs),
 	// 						PropertyValues: []*string{
 	// 							to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/alertRules/fab3d2d4-747f-46a7-8ef0-9c0be8112bf7"),
 	// 							to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/alertRules/8deb8303-e94d-46ff-96e0-5fd94b33df1a")},
 	// 						},
 	// 				}},
 	// 				IsEnabled: to.Ptr(true),
-	// 				TriggersOn: to.Ptr(armsecurityinsights.TriggersOnIncidents),
+	// 				TriggersOn: to.Ptr(armsecurityinsights.TriggersOnAlerts),
 	// 				TriggersWhen: to.Ptr(armsecurityinsights.TriggersWhenCreated),
 	// 			},
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/automationRules/AutomationRules_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/automationRules/AutomationRules_Delete.json
 func ExampleAutomationRulesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -175,7 +226,7 @@ func ExampleAutomationRulesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/automationRules/AutomationRules_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/automationRules/AutomationRules_List.json
 func ExampleAutomationRulesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -206,11 +257,12 @@ func ExampleAutomationRulesClient_NewListPager() {
 		// 			Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
 		// 			Properties: &armsecurityinsights.AutomationRuleProperties{
 		// 				Actions: []armsecurityinsights.AutomationRuleActionClassification{
-		// 					&armsecurityinsights.AutomationRuleModifyPropertiesAction{
-		// 						ActionType: to.Ptr(armsecurityinsights.ActionTypeModifyProperties),
+		// 					&armsecurityinsights.AutomationRuleRunPlaybookAction{
+		// 						ActionType: to.Ptr(armsecurityinsights.ActionTypeRunPlaybook),
 		// 						Order: to.Ptr[int32](1),
-		// 						ActionConfiguration: &armsecurityinsights.IncidentPropertiesAction{
-		// 							Severity: to.Ptr(armsecurityinsights.IncidentSeverityHigh),
+		// 						ActionConfiguration: &armsecurityinsights.PlaybookActionProperties{
+		// 							LogicAppResourceID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.Logic/workflows/AlertPlaybook"),
+		// 							TenantID: to.Ptr("d23e3eef-eed0-428f-a2d5-bc48c268e31d"),
 		// 						},
 		// 				}},
 		// 				CreatedBy: &armsecurityinsights.ClientInfo{
@@ -220,7 +272,7 @@ func ExampleAutomationRulesClient_NewListPager() {
 		// 					UserPrincipalName: to.Ptr("john@contoso.com"),
 		// 				},
 		// 				CreatedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:00:00.000Z"); return t}()),
-		// 				DisplayName: to.Ptr("High severity incidents escalation"),
+		// 				DisplayName: to.Ptr("Suspicious alerts in workspace"),
 		// 				LastModifiedBy: &armsecurityinsights.ClientInfo{
 		// 					Name: to.Ptr("john doe"),
 		// 					Email: to.Ptr("john.doe@contoso.com"),
@@ -235,14 +287,14 @@ func ExampleAutomationRulesClient_NewListPager() {
 		// 							ConditionType: to.Ptr(armsecurityinsights.ConditionTypeProperty),
 		// 							ConditionProperties: &armsecurityinsights.AutomationRulePropertyValuesCondition{
 		// 								Operator: to.Ptr(armsecurityinsights.AutomationRulePropertyConditionSupportedOperatorContains),
-		// 								PropertyName: to.Ptr(armsecurityinsights.AutomationRulePropertyConditionSupportedPropertyIncidentRelatedAnalyticRuleIDs),
+		// 								PropertyName: to.Ptr(armsecurityinsights.AutomationRulePropertyConditionSupportedPropertyAlertAnalyticRuleIDs),
 		// 								PropertyValues: []*string{
 		// 									to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/alertRules/fab3d2d4-747f-46a7-8ef0-9c0be8112bf7"),
 		// 									to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/alertRules/8deb8303-e94d-46ff-96e0-5fd94b33df1a")},
 		// 								},
 		// 						}},
 		// 						IsEnabled: to.Ptr(true),
-		// 						TriggersOn: to.Ptr(armsecurityinsights.TriggersOnIncidents),
+		// 						TriggersOn: to.Ptr(armsecurityinsights.TriggersOnAlerts),
 		// 						TriggersWhen: to.Ptr(armsecurityinsights.TriggersWhenCreated),
 		// 					},
 		// 				},

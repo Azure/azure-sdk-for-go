@@ -10,16 +10,16 @@ package armqumulo
 
 import "time"
 
-// FileSystemResource - A FileSystem Resource by Qumulo
+// FileSystemResource - Concrete tracked resource types can be created by aliasing this type using a specific property type.
 type FileSystemResource struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// REQUIRED; The resource-specific properties for this resource.
-	Properties *FileSystemResourceProperties
-
 	// The managed service identities assigned to this resource.
 	Identity *ManagedServiceIdentity
+
+	// The resource-specific properties for this resource.
+	Properties *FileSystemResourceProperties
 
 	// Resource tags.
 	Tags map[string]*string
@@ -54,14 +54,11 @@ type FileSystemResourceProperties struct {
 	// REQUIRED; Delegated subnet id for Vnet injection
 	DelegatedSubnetID *string
 
-	// REQUIRED; Storage capacity in TB
-	InitialCapacity *int32
-
 	// REQUIRED; Marketplace details
 	MarketplaceDetails *MarketplaceDetails
 
 	// REQUIRED; Storage Sku
-	StorageSKU *StorageSKU
+	StorageSKU *string
 
 	// REQUIRED; User Details
 	UserDetails *UserDetails
@@ -93,17 +90,11 @@ type FileSystemResourceUpdate struct {
 
 // FileSystemResourceUpdateProperties - The updatable properties of the FileSystemResource.
 type FileSystemResourceUpdateProperties struct {
-	// File system Id of the resource
-	ClusterLoginURL *string
-
 	// Delegated subnet id for Vnet injection
 	DelegatedSubnetID *string
 
 	// Marketplace details
 	MarketplaceDetails *MarketplaceDetails
-
-	// Private IPs of the resource
-	PrivateIPs []*string
 
 	// User Details
 	UserDetails *UserDetails
@@ -137,11 +128,14 @@ type MarketplaceDetails struct {
 	// REQUIRED; Plan Id
 	PlanID *string
 
-	// REQUIRED; Publisher Id
-	PublisherID *string
-
 	// Marketplace Subscription Id
 	MarketplaceSubscriptionID *string
+
+	// Publisher Id
+	PublisherID *string
+
+	// Term Unit
+	TermUnit *string
 
 	// READ-ONLY; Marketplace subscription status
 	MarketplaceSubscriptionStatus *MarketplaceSubscriptionStatus

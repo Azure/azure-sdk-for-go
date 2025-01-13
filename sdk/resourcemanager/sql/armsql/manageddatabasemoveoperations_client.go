@@ -163,13 +163,13 @@ func (client *ManagedDatabaseMoveOperationsClient) listByLocationCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.OnlyLatestPerDatabase != nil {
-		reqQP.Set("onlyLatestPerDatabase", strconv.FormatBool(*options.OnlyLatestPerDatabase))
-	}
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
 	reqQP.Set("api-version", "2022-05-01-preview")
+	if options != nil && options.OnlyLatestPerDatabase != nil {
+		reqQP.Set("onlyLatestPerDatabase", strconv.FormatBool(*options.OnlyLatestPerDatabase))
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

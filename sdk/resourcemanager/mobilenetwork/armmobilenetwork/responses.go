@@ -124,6 +124,12 @@ type MobileNetworksClientListBySubscriptionResponse struct {
 	ListResult
 }
 
+// MobileNetworksClientListSimGroupsResponse contains the response from method MobileNetworksClient.NewListSimGroupsPager.
+type MobileNetworksClientListSimGroupsResponse struct {
+	// Response for list SIM groups API service call.
+	SimGroupListResult
+}
+
 // MobileNetworksClientUpdateTagsResponse contains the response from method MobileNetworksClient.UpdateTags.
 type MobileNetworksClientUpdateTagsResponse struct {
 	// Mobile network resource.
@@ -271,6 +277,18 @@ type PacketCoreDataPlanesClientUpdateTagsResponse struct {
 	PacketCoreDataPlane
 }
 
+// RoutingInfoClientGetResponse contains the response from method RoutingInfoClient.Get.
+type RoutingInfoClientGetResponse struct {
+	// Routing information
+	RoutingInfoModel
+}
+
+// RoutingInfoClientListResponse contains the response from method RoutingInfoClient.NewListPager.
+type RoutingInfoClientListResponse struct {
+	// Response for the list routing information API service call.
+	RoutingInfoListResult
+}
+
 // ServicesClientCreateOrUpdateResponse contains the response from method ServicesClient.BeginCreateOrUpdate.
 type ServicesClientCreateOrUpdateResponse struct {
 	// Service resource. Must be created in the same location as its parent mobile network.
@@ -382,6 +400,12 @@ type SimsClientBulkUploadResponse struct {
 	AsyncOperationStatus
 }
 
+// SimsClientCloneResponse contains the response from method SimsClient.BeginClone.
+type SimsClientCloneResponse struct {
+	// The current status of an async operation.
+	AsyncOperationStatus
+}
+
 // SimsClientCreateOrUpdateResponse contains the response from method SimsClient.BeginCreateOrUpdate.
 type SimsClientCreateOrUpdateResponse struct {
 	// SIM resource.
@@ -403,6 +427,12 @@ type SimsClientGetResponse struct {
 type SimsClientListByGroupResponse struct {
 	// Response for list SIMs API service call.
 	SimListResult
+}
+
+// SimsClientMoveResponse contains the response from method SimsClient.BeginMove.
+type SimsClientMoveResponse struct {
+	// The current status of an async operation.
+	AsyncOperationStatus
 }
 
 // SitesClientCreateOrUpdateResponse contains the response from method SitesClient.BeginCreateOrUpdate.

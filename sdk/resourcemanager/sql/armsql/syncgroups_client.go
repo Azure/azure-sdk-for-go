@@ -568,13 +568,13 @@ func (client *SyncGroupsClient) listLogsCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("startTime", startTime)
-	reqQP.Set("endTime", endTime)
-	reqQP.Set("type", string(typeParam))
+	reqQP.Set("api-version", "2020-11-01-preview")
 	if options != nil && options.ContinuationToken != nil {
 		reqQP.Set("continuationToken", *options.ContinuationToken)
 	}
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("endTime", endTime)
+	reqQP.Set("startTime", startTime)
+	reqQP.Set("type", string(typeParam))
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

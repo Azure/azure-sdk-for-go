@@ -46,19 +46,19 @@ type VirtualMachinesServer struct {
 	NewListBySubscriptionPager func(options *armnetworkcloud.VirtualMachinesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armnetworkcloud.VirtualMachinesClientListBySubscriptionResponse])
 
 	// BeginPowerOff is the fake for method VirtualMachinesClient.BeginPowerOff
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginPowerOff func(ctx context.Context, resourceGroupName string, virtualMachineName string, options *armnetworkcloud.VirtualMachinesClientBeginPowerOffOptions) (resp azfake.PollerResponder[armnetworkcloud.VirtualMachinesClientPowerOffResponse], errResp azfake.ErrorResponder)
 
 	// BeginReimage is the fake for method VirtualMachinesClient.BeginReimage
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginReimage func(ctx context.Context, resourceGroupName string, virtualMachineName string, options *armnetworkcloud.VirtualMachinesClientBeginReimageOptions) (resp azfake.PollerResponder[armnetworkcloud.VirtualMachinesClientReimageResponse], errResp azfake.ErrorResponder)
 
 	// BeginRestart is the fake for method VirtualMachinesClient.BeginRestart
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginRestart func(ctx context.Context, resourceGroupName string, virtualMachineName string, options *armnetworkcloud.VirtualMachinesClientBeginRestartOptions) (resp azfake.PollerResponder[armnetworkcloud.VirtualMachinesClientRestartResponse], errResp azfake.ErrorResponder)
 
 	// BeginStart is the fake for method VirtualMachinesClient.BeginStart
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginStart func(ctx context.Context, resourceGroupName string, virtualMachineName string, options *armnetworkcloud.VirtualMachinesClientBeginStartOptions) (resp azfake.PollerResponder[armnetworkcloud.VirtualMachinesClientStartResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdate is the fake for method VirtualMachinesClient.BeginUpdate
@@ -380,9 +380,9 @@ func (v *VirtualMachinesServerTransport) dispatchBeginPowerOff(req *http.Request
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		v.beginPowerOff.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginPowerOff) {
 		v.beginPowerOff.remove(req)
@@ -424,9 +424,9 @@ func (v *VirtualMachinesServerTransport) dispatchBeginReimage(req *http.Request)
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		v.beginReimage.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginReimage) {
 		v.beginReimage.remove(req)
@@ -468,9 +468,9 @@ func (v *VirtualMachinesServerTransport) dispatchBeginRestart(req *http.Request)
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		v.beginRestart.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginRestart) {
 		v.beginRestart.remove(req)
@@ -512,9 +512,9 @@ func (v *VirtualMachinesServerTransport) dispatchBeginStart(req *http.Request) (
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		v.beginStart.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginStart) {
 		v.beginStart.remove(req)

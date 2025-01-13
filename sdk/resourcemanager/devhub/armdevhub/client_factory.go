@@ -17,40 +17,52 @@ import (
 // Don't use this type directly, use NewClientFactory instead.
 type ClientFactory struct {
 	subscriptionID string
-	credential     azcore.TokenCredential
-	options        *arm.ClientOptions
+	internal       *arm.Client
 }
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
 // The parameter values will be propagated to any client created from this factory.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
+	internal, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	return &ClientFactory{
-		subscriptionID: subscriptionID, credential: credential,
-		options: options.Clone(),
+		subscriptionID: subscriptionID,
+		internal:       internal,
 	}, nil
 }
 
 // NewDeveloperHubServiceClient creates a new instance of DeveloperHubServiceClient.
 func (c *ClientFactory) NewDeveloperHubServiceClient() *DeveloperHubServiceClient {
-	subClient, _ := NewDeveloperHubServiceClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &DeveloperHubServiceClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewIacProfilesClient creates a new instance of IacProfilesClient.
+func (c *ClientFactory) NewIacProfilesClient() *IacProfilesClient {
+	return &IacProfilesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
-	subClient, _ := NewOperationsClient(c.credential, c.options)
-	return subClient
+	return &OperationsClient{
+		internal: c.internal,
+	}
 }
 
 // NewWorkflowClient creates a new instance of WorkflowClient.
 func (c *ClientFactory) NewWorkflowClient() *WorkflowClient {
-	subClient, _ := NewWorkflowClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &WorkflowClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }

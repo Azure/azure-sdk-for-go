@@ -28,7 +28,7 @@ type LocationBasedCapabilitiesClient struct {
 }
 
 // NewLocationBasedCapabilitiesClient creates a new instance of LocationBasedCapabilitiesClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewLocationBasedCapabilitiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LocationBasedCapabilitiesClient, error) {
@@ -45,7 +45,7 @@ func NewLocationBasedCapabilitiesClient(subscriptionID string, credential azcore
 
 // NewListPager - Get capabilities at specified location in a given subscription.
 //
-// Generated from API version 2021-12-01-preview
+// Generated from API version 2023-12-30
 //   - locationName - The name of the location.
 //   - options - LocationBasedCapabilitiesClientListOptions contains the optional parameters for the LocationBasedCapabilitiesClient.NewListPager
 //     method.
@@ -88,7 +88,7 @@ func (client *LocationBasedCapabilitiesClient) listCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2023-12-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

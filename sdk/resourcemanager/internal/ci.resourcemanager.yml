@@ -27,3 +27,4 @@ extends:
   parameters:
     IncludeRelease: true
     ServiceDirectory: resourcemanager/internal
+    UsePipelineProxy: false

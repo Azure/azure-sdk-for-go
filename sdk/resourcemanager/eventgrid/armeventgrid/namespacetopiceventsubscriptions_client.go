@@ -49,11 +49,11 @@ func NewNamespaceTopicEventSubscriptionsClient(subscriptionID string, credential
 // Existing event subscriptions will be updated with this API.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-12-15-preview
+// Generated from API version 2024-06-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - namespaceName - Name of the namespace.
 //   - topicName - Name of the namespace topic.
-//   - eventSubscriptionName - Name of the event subscription to be created. Event subscription names must be between 3 and 100
+//   - eventSubscriptionName - Name of the event subscription to be created. Event subscription names must be between 3 and 50
 //     characters in length and use alphanumeric letters only.
 //   - eventSubscriptionInfo - Event subscription properties containing the delivery mode, filter information, and others.
 //   - options - NamespaceTopicEventSubscriptionsClientBeginCreateOrUpdateOptions contains the optional parameters for the NamespaceTopicEventSubscriptionsClient.BeginCreateOrUpdate
@@ -80,7 +80,7 @@ func (client *NamespaceTopicEventSubscriptionsClient) BeginCreateOrUpdate(ctx co
 // Existing event subscriptions will be updated with this API.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-12-15-preview
+// Generated from API version 2024-06-01-preview
 func (client *NamespaceTopicEventSubscriptionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, eventSubscriptionName string, eventSubscriptionInfo Subscription, options *NamespaceTopicEventSubscriptionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NamespaceTopicEventSubscriptionsClient.BeginCreateOrUpdate"
@@ -130,7 +130,7 @@ func (client *NamespaceTopicEventSubscriptionsClient) createOrUpdateCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-15-preview")
+	reqQP.Set("api-version", "2024-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, eventSubscriptionInfo); err != nil {
@@ -142,12 +142,11 @@ func (client *NamespaceTopicEventSubscriptionsClient) createOrUpdateCreateReques
 // BeginDelete - Delete an existing event subscription of a namespace topic.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-12-15-preview
+// Generated from API version 2024-06-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - namespaceName - Name of the namespace.
 //   - topicName - Name of the namespace topic.
-//   - eventSubscriptionName - Name of the event subscription to be created. Event subscription names must be between 3 and 100
-//     characters in length and use alphanumeric letters only.
+//   - eventSubscriptionName - Name of the event subscription to be deleted.
 //   - options - NamespaceTopicEventSubscriptionsClientBeginDeleteOptions contains the optional parameters for the NamespaceTopicEventSubscriptionsClient.BeginDelete
 //     method.
 func (client *NamespaceTopicEventSubscriptionsClient) BeginDelete(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, eventSubscriptionName string, options *NamespaceTopicEventSubscriptionsClientBeginDeleteOptions) (*runtime.Poller[NamespaceTopicEventSubscriptionsClientDeleteResponse], error) {
@@ -171,7 +170,7 @@ func (client *NamespaceTopicEventSubscriptionsClient) BeginDelete(ctx context.Co
 // Delete - Delete an existing event subscription of a namespace topic.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-12-15-preview
+// Generated from API version 2024-06-01-preview
 func (client *NamespaceTopicEventSubscriptionsClient) deleteOperation(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, eventSubscriptionName string, options *NamespaceTopicEventSubscriptionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NamespaceTopicEventSubscriptionsClient.BeginDelete"
@@ -221,7 +220,7 @@ func (client *NamespaceTopicEventSubscriptionsClient) deleteCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-15-preview")
+	reqQP.Set("api-version", "2024-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -230,12 +229,11 @@ func (client *NamespaceTopicEventSubscriptionsClient) deleteCreateRequest(ctx co
 // Get - Get properties of an event subscription of a namespace topic.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-12-15-preview
+// Generated from API version 2024-06-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - namespaceName - Name of the namespace.
 //   - topicName - Name of the namespace topic.
-//   - eventSubscriptionName - Name of the event subscription to be created. Event subscription names must be between 3 and 100
-//     characters in length and use alphanumeric letters only.
+//   - eventSubscriptionName - Name of the event subscription to be found.
 //   - options - NamespaceTopicEventSubscriptionsClientGetOptions contains the optional parameters for the NamespaceTopicEventSubscriptionsClient.Get
 //     method.
 func (client *NamespaceTopicEventSubscriptionsClient) Get(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, eventSubscriptionName string, options *NamespaceTopicEventSubscriptionsClientGetOptions) (NamespaceTopicEventSubscriptionsClientGetResponse, error) {
@@ -288,7 +286,7 @@ func (client *NamespaceTopicEventSubscriptionsClient) getCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-15-preview")
+	reqQP.Set("api-version", "2024-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -306,12 +304,11 @@ func (client *NamespaceTopicEventSubscriptionsClient) getHandleResponse(resp *ht
 // GetDeliveryAttributes - Get all delivery attributes for an event subscription of a namespace topic.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-12-15-preview
+// Generated from API version 2024-06-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - namespaceName - Name of the namespace.
 //   - topicName - Name of the namespace topic.
-//   - eventSubscriptionName - Name of the event subscription to be created. Event subscription names must be between 3 and 100
-//     characters in length and use alphanumeric letters only.
+//   - eventSubscriptionName - Name of the event subscription.
 //   - options - NamespaceTopicEventSubscriptionsClientGetDeliveryAttributesOptions contains the optional parameters for the NamespaceTopicEventSubscriptionsClient.GetDeliveryAttributes
 //     method.
 func (client *NamespaceTopicEventSubscriptionsClient) GetDeliveryAttributes(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, eventSubscriptionName string, options *NamespaceTopicEventSubscriptionsClientGetDeliveryAttributesOptions) (NamespaceTopicEventSubscriptionsClientGetDeliveryAttributesResponse, error) {
@@ -364,7 +361,7 @@ func (client *NamespaceTopicEventSubscriptionsClient) getDeliveryAttributesCreat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-15-preview")
+	reqQP.Set("api-version", "2024-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -379,9 +376,84 @@ func (client *NamespaceTopicEventSubscriptionsClient) getDeliveryAttributesHandl
 	return result, nil
 }
 
+// GetFullURL - Get the full endpoint URL for an event subscription of a namespace topic.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-06-01-preview
+//   - resourceGroupName - The name of the resource group within the user's subscription.
+//   - namespaceName - Name of the namespace.
+//   - topicName - Name of the namespace topic.
+//   - eventSubscriptionName - Name of the event subscription.
+//   - options - NamespaceTopicEventSubscriptionsClientGetFullURLOptions contains the optional parameters for the NamespaceTopicEventSubscriptionsClient.GetFullURL
+//     method.
+func (client *NamespaceTopicEventSubscriptionsClient) GetFullURL(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, eventSubscriptionName string, options *NamespaceTopicEventSubscriptionsClientGetFullURLOptions) (NamespaceTopicEventSubscriptionsClientGetFullURLResponse, error) {
+	var err error
+	const operationName = "NamespaceTopicEventSubscriptionsClient.GetFullURL"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getFullURLCreateRequest(ctx, resourceGroupName, namespaceName, topicName, eventSubscriptionName, options)
+	if err != nil {
+		return NamespaceTopicEventSubscriptionsClientGetFullURLResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return NamespaceTopicEventSubscriptionsClientGetFullURLResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return NamespaceTopicEventSubscriptionsClientGetFullURLResponse{}, err
+	}
+	resp, err := client.getFullURLHandleResponse(httpResp)
+	return resp, err
+}
+
+// getFullURLCreateRequest creates the GetFullURL request.
+func (client *NamespaceTopicEventSubscriptionsClient) getFullURLCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, eventSubscriptionName string, options *NamespaceTopicEventSubscriptionsClientGetFullURLOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/topics/{topicName}/eventSubscriptions/{eventSubscriptionName}/getFullUrl"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if namespaceName == "" {
+		return nil, errors.New("parameter namespaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
+	if topicName == "" {
+		return nil, errors.New("parameter topicName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{topicName}", url.PathEscape(topicName))
+	if eventSubscriptionName == "" {
+		return nil, errors.New("parameter eventSubscriptionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{eventSubscriptionName}", url.PathEscape(eventSubscriptionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-06-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getFullURLHandleResponse handles the GetFullURL response.
+func (client *NamespaceTopicEventSubscriptionsClient) getFullURLHandleResponse(resp *http.Response) (NamespaceTopicEventSubscriptionsClientGetFullURLResponse, error) {
+	result := NamespaceTopicEventSubscriptionsClientGetFullURLResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionFullURL); err != nil {
+		return NamespaceTopicEventSubscriptionsClientGetFullURLResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListByNamespaceTopicPager - List event subscriptions that belong to a specific namespace topic.
 //
-// Generated from API version 2023-12-15-preview
+// Generated from API version 2024-06-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - namespaceName - Name of the namespace.
 //   - topicName - Name of the namespace topic.
@@ -434,13 +506,13 @@ func (client *NamespaceTopicEventSubscriptionsClient) listByNamespaceTopicCreate
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-15-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
+	reqQP.Set("api-version", "2024-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -458,12 +530,11 @@ func (client *NamespaceTopicEventSubscriptionsClient) listByNamespaceTopicHandle
 // BeginUpdate - Update an existing event subscription of a namespace topic.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-12-15-preview
+// Generated from API version 2024-06-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - namespaceName - Name of the namespace.
 //   - topicName - Name of the namespace topic.
-//   - eventSubscriptionName - Name of the event subscription to be created. Event subscription names must be between 3 and 100
-//     characters in length and use alphanumeric letters only.
+//   - eventSubscriptionName - Name of the event subscription to be updated.
 //   - eventSubscriptionUpdateParameters - Updated event subscription information.
 //   - options - NamespaceTopicEventSubscriptionsClientBeginUpdateOptions contains the optional parameters for the NamespaceTopicEventSubscriptionsClient.BeginUpdate
 //     method.
@@ -488,7 +559,7 @@ func (client *NamespaceTopicEventSubscriptionsClient) BeginUpdate(ctx context.Co
 // Update - Update an existing event subscription of a namespace topic.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-12-15-preview
+// Generated from API version 2024-06-01-preview
 func (client *NamespaceTopicEventSubscriptionsClient) update(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, eventSubscriptionName string, eventSubscriptionUpdateParameters SubscriptionUpdateParameters, options *NamespaceTopicEventSubscriptionsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NamespaceTopicEventSubscriptionsClient.BeginUpdate"
@@ -538,7 +609,7 @@ func (client *NamespaceTopicEventSubscriptionsClient) updateCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-15-preview")
+	reqQP.Set("api-version", "2024-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, eventSubscriptionUpdateParameters); err != nil {

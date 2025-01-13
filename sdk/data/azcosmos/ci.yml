@@ -70,5 +70,6 @@ extends:
               ServiceDirectory: 'data/azcosmos'
               Image: $(vm.image)
               GoVersion: '1.22.0'
+              EnableRaceDetector: true
               EnvVars:
                 EMULATOR: 'true'

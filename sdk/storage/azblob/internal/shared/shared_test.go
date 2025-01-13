@@ -29,7 +29,6 @@ func TestParseConnectionStringInvalid(t *testing.T) {
 		parsed, err := ParseConnectionString(badConnStr)
 		require.Error(t, err)
 		require.Zero(t, parsed)
-		//require.Contains(t, err.Error(), errConnectionString.Error())
 	}
 }
 
@@ -164,7 +163,7 @@ func TestSerializeBlobTags(t *testing.T) {
 	}
 	blobTags = SerializeBlobTags(tags)
 	require.NotNil(t, blobTags)
-	for _, tagPtr := range (*blobTags).BlobTagSet {
+	for _, tagPtr := range blobTags.BlobTagSet {
 		require.Contains(t, tags, *tagPtr.Key)
 		require.Equal(t, tags[*tagPtr.Key], *tagPtr.Value)
 		delete(tags, *tagPtr.Key)

@@ -30,12 +30,12 @@ type publicClientOptions struct {
 	azcore.ClientOptions
 
 	AdditionallyAllowedTenants     []string
+	Cache                          Cache
 	DeviceCodePrompt               func(context.Context, DeviceCodeMessage) error
 	DisableAutomaticAuthentication bool
 	DisableInstanceDiscovery       bool
 	LoginHint, RedirectURL         string
 	Record                         AuthenticationRecord
-	TokenCachePersistenceOptions   *TokenCachePersistenceOptions
 	Username, Password             string
 }
 
@@ -154,12 +154,7 @@ func (p *publicClient) GetToken(ctx context.Context, tro policy.TokenRequestOpti
 	if p.opts.DisableAutomaticAuthentication {
 		return azcore.AccessToken{}, newAuthenticationRequiredError(p.name, tro)
 	}
-	at, err := p.reqToken(ctx, client, tro)
-	if err == nil {
-		msg := fmt.Sprintf("%s.GetToken() acquired a token for scope %q", p.name, strings.Join(ar.GrantedScopes, ", "))
-		log.Write(EventAuthentication, msg)
-	}
-	return at, err
+	return p.reqToken(ctx, client, tro)
 }
 
 // reqToken requests a token from the MSAL public client. It's separate from GetToken() to enable Authenticate() to bypass the cache.
@@ -222,13 +217,13 @@ func (p *publicClient) client(tro policy.TokenRequestOptions) (msalPublicClient,
 }
 
 func (p *publicClient) newMSALClient(enableCAE bool) (msalPublicClient, error) {
-	cache, err := internal.NewCache(p.opts.TokenCachePersistenceOptions, enableCAE)
+	c, err := internal.ExportReplace(p.opts.Cache, enableCAE)
 	if err != nil {
 		return nil, err
 	}
 	o := []public.Option{
 		public.WithAuthority(runtime.JoinPaths(p.host, p.tenantID)),
-		public.WithCache(cache),
+		public.WithCache(c),
 		public.WithHTTPClient(p),
 	}
 	if enableCAE {
@@ -242,10 +237,11 @@ func (p *publicClient) newMSALClient(enableCAE bool) (msalPublicClient, error) {
 
 func (p *publicClient) token(ar public.AuthResult, err error) (azcore.AccessToken, error) {
 	if err == nil {
+		msg := fmt.Sprintf(scopeLogFmt, p.name, strings.Join(ar.GrantedScopes, ", "))
+		log.Write(EventAuthentication, msg)
 		p.record, err = newAuthenticationRecord(ar)
 	} else {
-		res := getResponseFromError(err)
-		err = newAuthenticationFailedError(p.name, err.Error(), res, err)
+		err = newAuthenticationFailedErrorFromMSAL(p.name, err)
 	}
 	return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 }

@@ -99,5 +99,6 @@ Azure SDK for Go is licensed under the [MIT](https://github.com/Azure/azure-sdk-
 [event_handlers]: https://learn.microsoft.com/azure/event-grid/overview#event-handlers
 [product_docs]: https://learn.microsoft.com/azure/event-grid/overview
 [system_topics]: https://learn.microsoft.com/azure/event-grid/system-topics
- [source]: https://azsdk/go/systemevents/src
- [godoc_examples]: https://azsdk/go/systemevents/pkg#pkg-examples
+ [source]: https://aka.ms/azsdk/go/systemevents/src
+ [godoc_examples]: https://aka.ms/azsdk/go/systemevents/pkg#pkg-examples
+ [godoc]: https://aka.ms/azsdk/go/systemevents/pkg

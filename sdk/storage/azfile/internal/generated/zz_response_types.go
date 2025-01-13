@@ -511,6 +511,12 @@ type FileClientDownloadResponse struct {
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
+	// StructuredBodyType contains the information returned from the x-ms-structured-body header response.
+	StructuredBodyType *string
+
+	// StructuredContentLength contains the information returned from the x-ms-structured-content-length header response.
+	StructuredContentLength *int64
+
 	// Version contains the information returned from the x-ms-version header response.
 	Version *string
 }
@@ -877,6 +883,9 @@ type FileClientUploadRangeResponse struct {
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
+	// StructuredBodyType contains the information returned from the x-ms-structured-body header response.
+	StructuredBodyType *string
+
 	// Version contains the information returned from the x-ms-version header response.
 	Version *string
 }
@@ -1015,8 +1024,24 @@ type ShareClientCreateResponse struct {
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
 
+	// MaxBurstCreditsForIops contains the information returned from the x-ms-share-max-burst-credits-for-iops header response.
+	MaxBurstCreditsForIops *int64
+
+	// Quota contains the information returned from the x-ms-share-quota header response.
+	Quota *int64
+
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
+
+	// ShareIncludedBurstIops contains the information returned from the x-ms-share-included-burst-iops header response.
+	ShareIncludedBurstIops *int64
+
+	// ShareProvisionedBandwidthMibps contains the information returned from the x-ms-share-provisioned-bandwidth-mibps header
+	// response.
+	ShareProvisionedBandwidthMibps *int64
+
+	// ShareProvisionedIops contains the information returned from the x-ms-share-provisioned-iops header response.
+	ShareProvisionedIops *int64
 
 	// Version contains the information returned from the x-ms-version header response.
 	Version *string
@@ -1053,6 +1078,12 @@ type ShareClientDeleteResponse struct {
 
 	// Version contains the information returned from the x-ms-version header response.
 	Version *string
+
+	// FileShareSnapshotUsageBytes contains the information returned from the x-ms-file-share-snapshot-usage-bytes header response.
+	FileShareSnapshotUsageBytes *int64
+
+	// FileShareUsageBytes contains the information returned from the x-ms-file-share-usage-bytes header response.
+	FileShareUsageBytes *int64
 }
 
 // ShareClientGetAccessPolicyResponse contains the response from method ShareClient.GetAccessPolicy.
@@ -1108,8 +1139,15 @@ type ShareClientGetPropertiesResponse struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *azcore.ETag
 
+	// EnableSnapshotVirtualDirectoryAccess contains the information returned from the x-ms-enable-snapshot-virtual-directory-access
+	// header response.
+	EnableSnapshotVirtualDirectoryAccess *bool
+
 	// EnabledProtocols contains the information returned from the x-ms-enabled-protocols header response.
 	EnabledProtocols *string
+
+	// IncludedBurstIops contains the information returned from the x-ms-share-included-burst-iops header response.
+	IncludedBurstIops *int64
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -1123,12 +1161,33 @@ type ShareClientGetPropertiesResponse struct {
 	// LeaseStatus contains the information returned from the x-ms-lease-status header response.
 	LeaseStatus *LeaseStatusType
 
+	// MaxBurstCreditsForIops contains the information returned from the x-ms-share-max-burst-credits-for-iops header response.
+	MaxBurstCreditsForIops *int64
+
 	// Metadata contains the information returned from the x-ms-meta header response.
 	Metadata map[string]*string
+
+	// NextAllowedProvisionedBandwidthDowngradeTime contains the information returned from the x-ms-share-next-allowed-provisioned-bandwidth-downgrade-time
+	// header response.
+	NextAllowedProvisionedBandwidthDowngradeTime *time.Time
+
+	// NextAllowedProvisionedIopsDowngradeTime contains the information returned from the x-ms-share-next-allowed-provisioned-iops-downgrade-time
+	// header response.
+	NextAllowedProvisionedIopsDowngradeTime *time.Time
 
 	// NextAllowedQuotaDowngradeTime contains the information returned from the x-ms-share-next-allowed-quota-downgrade-time header
 	// response.
 	NextAllowedQuotaDowngradeTime *time.Time
+
+	// PaidBurstingEnabled contains the information returned from the x-ms-share-paid-bursting-enabled header response.
+	PaidBurstingEnabled *bool
+
+	// PaidBurstingMaxBandwidthMibps contains the information returned from the x-ms-share-paid-bursting-max-bandwidth-mibps header
+	// response.
+	PaidBurstingMaxBandwidthMibps *int64
+
+	// PaidBurstingMaxIops contains the information returned from the x-ms-share-paid-bursting-max-iops header response.
+	PaidBurstingMaxIops *int64
 
 	// ProvisionedBandwidthMiBps contains the information returned from the x-ms-share-provisioned-bandwidth-mibps header response.
 	ProvisionedBandwidthMiBps *int32
@@ -1232,8 +1291,23 @@ type ShareClientRestoreResponse struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *azcore.ETag
 
+	// IncludedBurstIops contains the information returned from the x-ms-share-included-burst-iops header response.
+	IncludedBurstIops *int64
+
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
+
+	// MaxBurstCreditsForIops contains the information returned from the x-ms-share-max-burst-credits-for-iops header response.
+	MaxBurstCreditsForIops *int64
+
+	// ProvisionedBandwidthMibps contains the information returned from the x-ms-share-provisioned-bandwidth-mibps header response.
+	ProvisionedBandwidthMibps *int64
+
+	// ProvisionedIops contains the information returned from the x-ms-share-provisioned-iops header response.
+	ProvisionedIops *int64
+
+	// Quota contains the information returned from the x-ms-share-quota header response.
+	Quota *int64
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
@@ -1286,8 +1360,35 @@ type ShareClientSetPropertiesResponse struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *azcore.ETag
 
+	// IncludedBurstIops contains the information returned from the x-ms-share-included-burst-iops header response.
+	IncludedBurstIops *int64
+
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
+
+	// MaxBurstCreditsForIops contains the information returned from the x-ms-share-max-burst-credits-for-iops header response.
+	MaxBurstCreditsForIops *int64
+
+	// NextAllowedProvisionedBandwidthDowngradeTime contains the information returned from the x-ms-share-next-allowed-provisioned-bandwidth-downgrade-time
+	// header response.
+	NextAllowedProvisionedBandwidthDowngradeTime *time.Time
+
+	// NextAllowedProvisionedIopsDowngradeTime contains the information returned from the x-ms-share-next-allowed-provisioned-iops-downgrade-time
+	// header response.
+	NextAllowedProvisionedIopsDowngradeTime *time.Time
+
+	// NextAllowedQuotaDowngradeTime contains the information returned from the x-ms-share-next-allowed-quota-downgrade-time header
+	// response.
+	NextAllowedQuotaDowngradeTime *time.Time
+
+	// ProvisionedBandwidthMibps contains the information returned from the x-ms-share-provisioned-bandwidth-mibps header response.
+	ProvisionedBandwidthMibps *int64
+
+	// ProvisionedIops contains the information returned from the x-ms-share-provisioned-iops header response.
+	ProvisionedIops *int64
+
+	// Quota contains the information returned from the x-ms-share-quota header response.
+	Quota *int64
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string

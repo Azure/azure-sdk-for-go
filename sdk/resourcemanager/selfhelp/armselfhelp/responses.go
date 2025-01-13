@@ -8,8 +8,8 @@
 
 package armselfhelp
 
-// CheckNameAvailabilityClientPostResponse contains the response from method CheckNameAvailabilityClient.Post.
-type CheckNameAvailabilityClientPostResponse struct {
+// CheckNameAvailabilityClientCheckAvailabilityResponse contains the response from method CheckNameAvailabilityClient.CheckAvailability.
+type CheckNameAvailabilityClientCheckAvailabilityResponse struct {
 	// Response for whether the requested resource name is available or not.
 	CheckNameAvailabilityResponse
 }
@@ -32,14 +32,14 @@ type DiscoverySolutionClientListResponse struct {
 	DiscoveryResponse
 }
 
-// DiscoverySolutionNLPSubscriptionScopeClientPostResponse contains the response from method DiscoverySolutionNLPSubscriptionScopeClient.Post.
-type DiscoverySolutionNLPSubscriptionScopeClientPostResponse struct {
+// DiscoverySolutionNLPClientDiscoverSolutionsBySubscriptionResponse contains the response from method DiscoverySolutionNLPClient.DiscoverSolutionsBySubscription.
+type DiscoverySolutionNLPClientDiscoverSolutionsBySubscriptionResponse struct {
 	// Successfully fetched list of solution metadata.
 	DiscoveryNlpResponse
 }
 
-// DiscoverySolutionNLPTenantScopeClientPostResponse contains the response from method DiscoverySolutionNLPTenantScopeClient.Post.
-type DiscoverySolutionNLPTenantScopeClientPostResponse struct {
+// DiscoverySolutionNLPClientDiscoverSolutionsResponse contains the response from method DiscoverySolutionNLPClient.DiscoverSolutions.
+type DiscoverySolutionNLPClientDiscoverSolutionsResponse struct {
 	// Successfully fetched list of solution metadata.
 	DiscoveryNlpResponse
 }

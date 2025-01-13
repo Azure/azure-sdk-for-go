@@ -7,15 +7,15 @@ import (
 	"encoding/json"
 	"fmt"
 	"go/ast"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
+	"os"
 	"path"
 	"regexp"
 	"sort"
 	"strings"
 
-	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/autorest/model"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/repo"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/delta"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
@@ -30,14 +30,15 @@ const (
 	sdk_remote_url    = "https://github.com/Azure/azure-sdk-for-go.git"
 )
 
-func GetAllVersionTags(rpName, namespaceName string) ([]string, error) {
-	log.Printf("Fetching all release tags from GitHub for RP: '%s' Package: '%s' ...", rpName, namespaceName)
+func GetAllVersionTags(packageModuleRelativePath string) ([]string, error) {
+	arr := strings.Split(packageModuleRelativePath, "/")
+	log.Printf("Fetching all release tags from GitHub for RP: '%s' Package: '%s' ...", arr[len(arr)-2], arr[len(arr)-1])
 	client := http.Client{}
 	res, err := client.Get(sdk_tag_fetch_url)
 	if err != nil {
 		return nil, err
 	}
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +52,7 @@ func GetAllVersionTags(rpName, namespaceName string) ([]string, error) {
 	versionTag := make(map[string]string)
 	for _, tag := range result {
 		tagName := tag["ref"].(string)
-		if strings.Contains(tagName, "sdk/resourcemanager/"+rpName+"/"+namespaceName+"/v") {
+		if strings.Contains(tagName, packageModuleRelativePath+"/v") {
 			m := regexp.MustCompile(semver.SemVerRegex).FindString(tagName)
 			versions = append(versions, m)
 			versionTag[m] = tagName
@@ -79,14 +80,14 @@ func GetAllVersionTags(rpName, namespaceName string) ([]string, error) {
 func ContainsPreviewAPIVersion(packagePath string) (bool, error) {
 	log.Printf("Judge whether contains preview API version from '%s' ...", packagePath)
 
-	files, err := ioutil.ReadDir(packagePath)
+	files, err := os.ReadDir(packagePath)
 	if err != nil {
 		return false, err
 	}
 
 	for _, file := range files {
 		if strings.HasSuffix(file.Name(), ".go") {
-			b, err := ioutil.ReadFile(path.Join(packagePath, file.Name()))
+			b, err := os.ReadFile(path.Join(packagePath, file.Name()))
 			if err != nil {
 				return false, err
 			}
@@ -194,7 +195,7 @@ func GetExportsFromTag(sdkRepo repo.SDKRepository, packagePath, tag string) (*ex
 	return &result, nil
 }
 
-func MarshalUnmarshalFilter(changelog *model.Changelog) {
+func MarshalUnmarshalFilter(changelog *Changelog) {
 	if changelog.Modified != nil {
 		if changelog.Modified.AdditiveChanges != nil {
 			removeMarshalUnmarshalFunc(changelog.Modified.AdditiveChanges.Funcs)
@@ -213,7 +214,7 @@ func removeMarshalUnmarshalFunc(funcs map[string]exports.Func) {
 	}
 }
 
-func FilterChangelog(changelog *model.Changelog, opts ...func(changelog *model.Changelog)) {
+func FilterChangelog(changelog *Changelog, opts ...func(changelog *Changelog)) {
 	if changelog.Modified != nil {
 		for _, opt := range opts {
 			opt(changelog)
@@ -221,7 +222,7 @@ func FilterChangelog(changelog *model.Changelog, opts ...func(changelog *model.C
 	}
 }
 
-func EnumFilter(changelog *model.Changelog) {
+func EnumFilter(changelog *Changelog) {
 	if changelog.Modified.HasAdditiveChanges() {
 		if changelog.Modified.AdditiveChanges != nil && changelog.Modified.AdditiveChanges.TypeAliases != nil {
 			for typeAliases := range changelog.Modified.AdditiveChanges.TypeAliases {
@@ -271,7 +272,7 @@ func searchKey[T exports.Const | exports.Func | exports.Struct](m map[string]T, 
 	return nil, false
 }
 
-func FuncFilter(changelog *model.Changelog) {
+func FuncFilter(changelog *Changelog) {
 	if changelog.Modified.HasAdditiveChanges() {
 		funcOperation(changelog.Modified.AdditiveChanges)
 	}
@@ -333,7 +334,7 @@ func funcOperation(content *delta.Content) {
 					rs := strings.Split(*funcValue.Returns, ",")
 					clientFuncResponse := rs[0]
 					if strings.Contains(clientFuncResponse, "runtime") {
-						re := regexp.MustCompile("\\[(?P<response>.*)\\]")
+						re := regexp.MustCompile(`\[(?P<response>.*)\]`)
 						clientFuncResponse = re.FindString(clientFuncResponse)
 						clientFuncResponse = re.ReplaceAllString(clientFuncResponse, "${response}")
 					} else {
@@ -356,7 +357,7 @@ func funcOperation(content *delta.Content) {
 }
 
 // LROFilter LROFilter after OperationFilter
-func LROFilter(changelog *model.Changelog) {
+func LROFilter(changelog *Changelog) {
 	if changelog.Modified.HasBreakingChanges() && changelog.Modified.HasAdditiveChanges() && changelog.Modified.BreakingChanges.Removed != nil && changelog.Modified.BreakingChanges.Removed.Funcs != nil {
 		removedContent := changelog.Modified.BreakingChanges.Removed
 		for bFunc, v := range removedContent.Funcs {
@@ -380,7 +381,7 @@ func LROFilter(changelog *model.Changelog) {
 }
 
 // PageableFilter PageableFilter after OperationFilter
-func PageableFilter(changelog *model.Changelog) {
+func PageableFilter(changelog *Changelog) {
 	if changelog.Modified.HasBreakingChanges() && changelog.Modified.HasAdditiveChanges() && changelog.Modified.BreakingChanges.Removed != nil && changelog.Modified.BreakingChanges.Removed.Funcs != nil {
 		removedContent := changelog.Modified.BreakingChanges.Removed
 		for bFunc, v := range removedContent.Funcs {
@@ -403,7 +404,7 @@ func PageableFilter(changelog *model.Changelog) {
 	}
 }
 
-func InterfaceToAnyFilter(changelog *model.Changelog) {
+func InterfaceToAnyFilter(changelog *Changelog) {
 	if changelog.HasBreakingChanges() {
 		for structName, s := range changelog.Modified.BreakingChanges.Structs {
 			for k, v := range s.Fields {
@@ -419,7 +420,7 @@ func InterfaceToAnyFilter(changelog *model.Changelog) {
 	}
 }
 
-func NonExportedFilter(changelog *model.Changelog) {
+func NonExportedFilter(changelog *Changelog) {
 	if !changelog.Modified.IsEmpty() {
 		if changelog.Modified.HasAdditiveChanges() {
 			nonExportOperation(changelog.Modified.AdditiveChanges)
@@ -429,7 +430,7 @@ func NonExportedFilter(changelog *model.Changelog) {
 			breakingChanges := changelog.Modified.BreakingChanges
 			for fName := range breakingChanges.Funcs {
 				before, after, _ := strings.Cut(fName, ".")
-				if !ast.IsExported(strings.TrimLeft(before, "*")) || !ast.IsExported(after) {
+				if !ast.IsExported(strings.TrimLeft(before, "*")) || (after != "" && !ast.IsExported(after)) {
 					delete(changelog.Modified.BreakingChanges.Funcs, fName)
 				}
 			}

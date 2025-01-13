@@ -7,7 +7,7 @@ go: true
 clear-output-folder: false
 version: "^3.0.0"
 license-header: MICROSOFT_MIT_NO_VERSION
-input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/a32d0b2423d19835246bb2ef92941503bfd5e734/specification/storage/data-plane/Microsoft.BlobStorage/preview/2021-12-02/blob.json"
+input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/ae95eb6a4701d844bada7d1c4f5ecf4a7444e5b8/specification/storage/data-plane/Microsoft.BlobStorage/stable/2025-01-05/blob.json"
 credential-scope: "https://storage.azure.com/.default"
 output-folder: ../generated_blob
 file-prefix: "zz_"
@@ -19,7 +19,7 @@ modelerfour:
   seal-single-value-enum-by-default: true
   lenient-model-deduplication: true
 export-clients: true
-use: "@autorest/go@4.0.0-preview.49"
+use: "@autorest/go@4.0.0-preview.65"
 ```
 
 ### Undo breaking change with BlobName
@@ -263,7 +263,9 @@ directive:
 
 ``` yaml
 directive:
-- from: zz_models.go
+- from: 
+    - zz_options.go
+    - zz_models.go
   where: $
   transform: >-
     return $.
@@ -274,7 +276,7 @@ directive:
       replace(/SourceIfMatch\s+\*string/g, `SourceIfMatch *azcore.ETag`).
       replace(/SourceIfNoneMatch\s+\*string/g, `SourceIfNoneMatch *azcore.ETag`);
 
-- from: zz_response_types.go
+- from: zz_responses.go
   where: $
   transform: >-
     return $.
@@ -345,11 +347,13 @@ directive:
 
 ``` yaml
 directive:
-  - from: zz_service_client.go
-    where: $
-    transform: >-
-      return $.
-        replace(/req.Raw\(\).URL.RawQuery \= reqQP.Encode\(\)/, `req.Raw().URL.RawQuery = strings.Replace(reqQP.Encode(), "+", "%20", -1)`)
+- from: 
+  - zz_service_client.go
+  - zz_container_client.go
+  where: $
+  transform: >-
+    return $.
+      replace(/req.Raw\(\).URL.RawQuery \= reqQP.Encode\(\)/g, `req.Raw().URL.RawQuery = strings.Replace(reqQP.Encode(), "+", "%20", -1)`);
 ```
 
 ### Change `where` parameter in blob filtering to be required

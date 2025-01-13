@@ -10,7 +10,7 @@ package armqumulo
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/liftrqumulo/armqumulo"
-	moduleVersion = "v1.1.0"
+	moduleVersion = "v2.0.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -53,7 +53,7 @@ type ManagedServiceIdentityType string
 const (
 	ManagedServiceIdentityTypeNone                       ManagedServiceIdentityType = "None"
 	ManagedServiceIdentityTypeSystemAssigned             ManagedServiceIdentityType = "SystemAssigned"
-	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned, UserAssigned"
+	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned,UserAssigned"
 	ManagedServiceIdentityTypeUserAssigned               ManagedServiceIdentityType = "UserAssigned"
 )
 
@@ -126,8 +126,6 @@ const (
 	ProvisioningStateDeleting ProvisioningState = "Deleting"
 	// ProvisioningStateFailed - File system resource creation failed
 	ProvisioningStateFailed ProvisioningState = "Failed"
-	// ProvisioningStateNotSpecified - File system resource state is unknown
-	ProvisioningStateNotSpecified ProvisioningState = "NotSpecified"
 	// ProvisioningStateSucceeded - File system resource creation successful
 	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
 	// ProvisioningStateUpdating - File system resource is being updated
@@ -143,26 +141,7 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStateDeleted,
 		ProvisioningStateDeleting,
 		ProvisioningStateFailed,
-		ProvisioningStateNotSpecified,
 		ProvisioningStateSucceeded,
 		ProvisioningStateUpdating,
-	}
-}
-
-// StorageSKU - Storage Sku
-type StorageSKU string
-
-const (
-	// StorageSKUPerformance - Performance Storage Sku
-	StorageSKUPerformance StorageSKU = "Performance"
-	// StorageSKUStandard - Standard Storage Sku
-	StorageSKUStandard StorageSKU = "Standard"
-)
-
-// PossibleStorageSKUValues returns the possible values for the StorageSKU const type.
-func PossibleStorageSKUValues() []StorageSKU {
-	return []StorageSKU{
-		StorageSKUPerformance,
-		StorageSKUStandard,
 	}
 }

@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -237,15 +237,15 @@ func (w *WatchlistItemsServerTransport) dispatchNewListPager(req *http.Request) 
 		if err != nil {
 			return nil, err
 		}
-		watchlistAliasParam, err := url.PathUnescape(matches[regex.SubexpIndex("watchlistAlias")])
-		if err != nil {
-			return nil, err
-		}
 		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
 		if err != nil {
 			return nil, err
 		}
 		skipTokenParam := getOptional(skipTokenUnescaped)
+		watchlistAliasParam, err := url.PathUnescape(matches[regex.SubexpIndex("watchlistAlias")])
+		if err != nil {
+			return nil, err
+		}
 		var options *armsecurityinsights.WatchlistItemsClientListOptions
 		if skipTokenParam != nil {
 			options = &armsecurityinsights.WatchlistItemsClientListOptions{

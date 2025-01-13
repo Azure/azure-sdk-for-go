@@ -1,5 +1,41 @@
 # Release History
 
+## 3.1.0 (2024-07-26)
+### Features Added
+
+- New enum type `BCDRSecurityLevel` with values `BCDRSecurityLevelExcellent`, `BCDRSecurityLevelFair`, `BCDRSecurityLevelGood`, `BCDRSecurityLevelNotSupported`, `BCDRSecurityLevelPoor`
+- New enum type `EncryptionState` with values `EncryptionStateDisabled`, `EncryptionStateEnabled`, `EncryptionStateInconsistent`
+- New enum type `IdentityType` with values `IdentityTypeSystemAssigned`, `IdentityTypeUserAssigned`
+- New enum type `InfrastructureEncryptionState` with values `InfrastructureEncryptionStateDisabled`, `InfrastructureEncryptionStateEnabled`
+- New function `NewBackupInstancesExtensionRoutingClient(azcore.TokenCredential, *arm.ClientOptions) (*BackupInstancesExtensionRoutingClient, error)`
+- New function `*BackupInstancesExtensionRoutingClient.NewListPager(string, *BackupInstancesExtensionRoutingClientListOptions) *runtime.Pager[BackupInstancesExtensionRoutingClientListResponse]`
+- New function `*ClientFactory.NewBackupInstancesExtensionRoutingClient() *BackupInstancesExtensionRoutingClient`
+- New struct `CmkKekIdentity`
+- New struct `CmkKeyVaultProperties`
+- New struct `EncryptionSettings`
+- New struct `StopProtectionRequest`
+- New struct `SuspendBackupRequest`
+- New field `ResourceGuardOperationRequests` in struct `AzureBackupRecoveryPointBasedRestoreRequest`
+- New field `ResourceGuardOperationRequests` in struct `AzureBackupRecoveryTimeBasedRestoreRequest`
+- New field `ResourceGuardOperationRequests` in struct `AzureBackupRestoreRequest`
+- New field `ResourceGuardOperationRequests` in struct `AzureBackupRestoreWithRehydrationRequest`
+- New field `ResourceGuardOperationRequests` in struct `BackupInstance`
+- New field `XMSAuthorizationAuxiliary` in struct `BackupInstancesClientBeginCreateOrUpdateOptions`
+- New field `XMSAuthorizationAuxiliary` in struct `BackupInstancesClientBeginDeleteOptions`
+- New field `Parameters`, `XMSAuthorizationAuxiliary` in struct `BackupInstancesClientBeginStopProtectionOptions`
+- New field `Parameters`, `XMSAuthorizationAuxiliary` in struct `BackupInstancesClientBeginSuspendBackupsOptions`
+- New field `XMSAuthorizationAuxiliary` in struct `BackupInstancesClientBeginTriggerRestoreOptions`
+- New field `BcdrSecurityLevel`, `ResourceGuardOperationRequests` in struct `BackupVault`
+- New field `XMSAuthorizationAuxiliary` in struct `BackupVaultsClientBeginCreateOrUpdateOptions`
+- New field `XMSAuthorizationAuxiliary` in struct `BackupVaultsClientBeginUpdateOptions`
+- New field `ResourceGuardOperationRequests` in struct `DeletedBackupInstance`
+- New field `XMSAuthorizationAuxiliary` in struct `DppResourceGuardProxyClientUnlockDeleteOptions`
+- New field `ResourceModifierReference` in struct `KubernetesClusterRestoreCriteria`
+- New field `ResourceModifierReference` in struct `KubernetesClusterVaultTierRestoreCriteria`
+- New field `ResourceGuardOperationRequests` in struct `PatchBackupVaultInput`
+- New field `EncryptionSettings` in struct `SecuritySettings`
+
+
 ## 3.0.0 (2023-12-22)
 ### Breaking Changes
 

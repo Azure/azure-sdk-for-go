@@ -21,6 +21,14 @@ import (
 
 // SensitivitySettingsServer is a fake server for instances of the armsecurity.SensitivitySettingsClient type.
 type SensitivitySettingsServer struct {
+	// CreateOrUpdate is the fake for method SensitivitySettingsClient.CreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK
+	CreateOrUpdate func(ctx context.Context, sensitivitySettings armsecurity.UpdateSensitivitySettingsRequest, options *armsecurity.SensitivitySettingsClientCreateOrUpdateOptions) (resp azfake.Responder[armsecurity.SensitivitySettingsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method SensitivitySettingsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, options *armsecurity.SensitivitySettingsClientGetOptions) (resp azfake.Responder[armsecurity.SensitivitySettingsClientGetResponse], errResp azfake.ErrorResponder)
+
 	// List is the fake for method SensitivitySettingsClient.List
 	// HTTP status codes to indicate success: http.StatusOK
 	List func(ctx context.Context, options *armsecurity.SensitivitySettingsClientListOptions) (resp azfake.Responder[armsecurity.SensitivitySettingsClientListResponse], errResp azfake.ErrorResponder)
@@ -51,6 +59,10 @@ func (s *SensitivitySettingsServerTransport) Do(req *http.Request) (*http.Respon
 	var err error
 
 	switch method {
+	case "SensitivitySettingsClient.CreateOrUpdate":
+		resp, err = s.dispatchCreateOrUpdate(req)
+	case "SensitivitySettingsClient.Get":
+		resp, err = s.dispatchGet(req)
 	case "SensitivitySettingsClient.List":
 		resp, err = s.dispatchList(req)
 	default:
@@ -61,6 +73,48 @@ func (s *SensitivitySettingsServerTransport) Do(req *http.Request) (*http.Respon
 		return nil, err
 	}
 
+	return resp, nil
+}
+
+func (s *SensitivitySettingsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if s.srv.CreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+	}
+	body, err := server.UnmarshalRequestAsJSON[armsecurity.UpdateSensitivitySettingsRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.CreateOrUpdate(req.Context(), body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).GetSensitivitySettingsResponse, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *SensitivitySettingsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if s.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	respr, errRespr := s.srv.Get(req.Context(), nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).GetSensitivitySettingsResponse, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

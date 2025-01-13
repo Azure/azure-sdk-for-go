@@ -24,6 +24,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
@@ -65,6 +66,12 @@ func TestWorkloadIdentityCredential_Live(t *testing.T) {
 }
 
 func TestWorkloadIdentityCredential_Recorded(t *testing.T) {
+	if recording.GetRecordMode() == recording.LiveMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22879")
+	}
+	// workload identity and client cert auth use the same flow. This test
+	// implements cert auth with WorkloadIdentityCredential as a way to test
+	// that credential in an environment that's easier to set up than AKS
 	cert, err := os.ReadFile(liveSP.pemPath)
 	if err != nil {
 		t.Fatal(err)

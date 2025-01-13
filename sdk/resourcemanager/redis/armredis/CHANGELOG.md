@@ -1,5 +1,14 @@
 # Release History
 
+## 3.2.0 (2024-07-25)
+### Features Added
+
+- New field `NotifyKeyspaceEvents` in struct `CommonPropertiesRedisConfiguration`
+- New field `DisableAccessKeyAuthentication` in struct `CreateProperties`
+- New field `DisableAccessKeyAuthentication` in struct `Properties`
+- New field `DisableAccessKeyAuthentication` in struct `UpdateProperties`
+
+
 ## 3.1.0 (2023-11-24)
 ### Features Added
 

@@ -28,7 +28,7 @@ type DatastoresClient struct {
 }
 
 // NewDatastoresClient creates a new instance of DatastoresClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDatastoresClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatastoresClient, error) {
@@ -43,15 +43,15 @@ func NewDatastoresClient(subscriptionID string, credential azcore.TokenCredentia
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Create or update a datastore in a private cloud cluster
+// BeginCreateOrUpdate - Create a Datastore
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
-//   - clusterName - Name of the cluster in the private cloud
-//   - datastoreName - Name of the datastore in the private cloud cluster
-//   - datastore - A datastore in a private cloud cluster
+//   - clusterName - Name of the cluster
+//   - datastoreName - Name of the datastore
+//   - datastore - Resource create parameters.
 //   - options - DatastoresClientBeginCreateOrUpdateOptions contains the optional parameters for the DatastoresClient.BeginCreateOrUpdate
 //     method.
 func (client *DatastoresClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, datastoreName string, datastore Datastore, options *DatastoresClientBeginCreateOrUpdateOptions) (*runtime.Poller[DatastoresClientCreateOrUpdateResponse], error) {
@@ -61,7 +61,8 @@ func (client *DatastoresClient) BeginCreateOrUpdate(ctx context.Context, resourc
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DatastoresClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -71,10 +72,10 @@ func (client *DatastoresClient) BeginCreateOrUpdate(ctx context.Context, resourc
 	}
 }
 
-// CreateOrUpdate - Create or update a datastore in a private cloud cluster
+// CreateOrUpdate - Create a Datastore
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 func (client *DatastoresClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, datastoreName string, datastore Datastore, options *DatastoresClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DatastoresClient.BeginCreateOrUpdate"
@@ -124,7 +125,7 @@ func (client *DatastoresClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, datastore); err != nil {
@@ -133,14 +134,14 @@ func (client *DatastoresClient) createOrUpdateCreateRequest(ctx context.Context,
 	return req, nil
 }
 
-// BeginDelete - Delete a datastore in a private cloud cluster
+// BeginDelete - Delete a Datastore
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
-//   - clusterName - Name of the cluster in the private cloud
-//   - datastoreName - Name of the datastore in the private cloud cluster
+//   - clusterName - Name of the cluster
+//   - datastoreName - Name of the datastore
 //   - options - DatastoresClientBeginDeleteOptions contains the optional parameters for the DatastoresClient.BeginDelete method.
 func (client *DatastoresClient) BeginDelete(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, datastoreName string, options *DatastoresClientBeginDeleteOptions) (*runtime.Poller[DatastoresClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
@@ -149,7 +150,8 @@ func (client *DatastoresClient) BeginDelete(ctx context.Context, resourceGroupNa
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DatastoresClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -159,10 +161,10 @@ func (client *DatastoresClient) BeginDelete(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Delete - Delete a datastore in a private cloud cluster
+// Delete - Delete a Datastore
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 func (client *DatastoresClient) deleteOperation(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, datastoreName string, options *DatastoresClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DatastoresClient.BeginDelete"
@@ -212,20 +214,20 @@ func (client *DatastoresClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// Get - Get a datastore in a private cloud cluster
+// Get - Get a Datastore
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
-//   - clusterName - Name of the cluster in the private cloud
-//   - datastoreName - Name of the datastore in the private cloud cluster
+//   - clusterName - Name of the cluster
+//   - datastoreName - Name of the datastore
 //   - options - DatastoresClientGetOptions contains the optional parameters for the DatastoresClient.Get method.
 func (client *DatastoresClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, datastoreName string, options *DatastoresClientGetOptions) (DatastoresClientGetResponse, error) {
 	var err error
@@ -277,7 +279,7 @@ func (client *DatastoresClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -292,12 +294,12 @@ func (client *DatastoresClient) getHandleResponse(resp *http.Response) (Datastor
 	return result, nil
 }
 
-// NewListPager - List datastores in a private cloud cluster
+// NewListPager - List Datastore resources by Cluster
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
-//   - clusterName - Name of the cluster in the private cloud
+//   - clusterName - Name of the cluster
 //   - options - DatastoresClientListOptions contains the optional parameters for the DatastoresClient.NewListPager method.
 func (client *DatastoresClient) NewListPager(resourceGroupName string, privateCloudName string, clusterName string, options *DatastoresClientListOptions) *runtime.Pager[DatastoresClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DatastoresClientListResponse]{
@@ -346,7 +348,7 @@ func (client *DatastoresClient) listCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

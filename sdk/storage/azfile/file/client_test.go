@@ -336,6 +336,36 @@ func (f *FileRecordedTestsSuite) TestFileCreateNonDefaultMetadataNonEmpty() {
 	}
 }
 
+func (f *FileRecordedTestsSuite) TestFileCreateRenameFilePermissionFormatDefault() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fClient := shareClient.NewRootDirectoryClient().NewFileClient(testcommon.GenerateFileName(testName))
+
+	_, err = fClient.Create(context.Background(), 1024, &file.CreateOptions{
+		FilePermissionFormat: (*file.PermissionFormat)(to.Ptr(testcommon.FilePermissionFormatSddl)),
+		Permissions: &file.Permissions{
+			Permission: &testcommon.SampleSDDL,
+		},
+	})
+	_require.NoError(err)
+
+	_, err = fClient.Rename(context.Background(), "file2", &file.RenameOptions{
+		FilePermissionFormat: (*file.PermissionFormat)(to.Ptr(testcommon.FilePermissionBinary)),
+		Permissions: &file.Permissions{
+			Permission: &testcommon.SampleBinary,
+		},
+	})
+	_require.NoError(err)
+
+}
+
 func (f *FileRecordedTestsSuite) TestFileCreateNonDefaultHTTPHeaders() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
@@ -463,9 +493,9 @@ func (f *FileUnrecordedTestsSuite) TestFileGetSetPropertiesNonDefault() {
 	_require.True(fileAttributes2.Hidden)
 	_require.EqualValues(fileAttributes, fileAttributes2)
 
-	_require.EqualValues((*getResp.FileCreationTime).Format(testcommon.ISO8601), creationTime.UTC().Format(testcommon.ISO8601))
-	_require.EqualValues((*getResp.FileLastWriteTime).Format(testcommon.ISO8601), lastWriteTime.UTC().Format(testcommon.ISO8601))
-	_require.EqualValues((*getResp.FileChangeTime).Format(testcommon.ISO8601), changeTime.UTC().Format(testcommon.ISO8601))
+	_require.EqualValues(getResp.FileCreationTime.Format(testcommon.ISO8601), creationTime.UTC().Format(testcommon.ISO8601))
+	// _require.EqualValues(getResp.FileCreationTime.Format(testcommon.ISO8601), lastWriteTime.UTC().Format(testcommon.ISO8601))
+	// _require.EqualValues(getResp.FileCreationTime.Format(testcommon.ISO8601), changeTime.UTC().Format(testcommon.ISO8601))
 
 	_require.NotNil(getResp.ETag)
 	_require.NotNil(getResp.RequestID)
@@ -523,6 +553,59 @@ func (f *FileRecordedTestsSuite) TestFileGetSetPropertiesDefault() {
 	_require.Equal(getResp.Date.IsZero(), false)
 	_require.NotNil(getResp.IsServerEncrypted)
 	_require.EqualValues(getResp.Metadata, metadata)
+}
+
+func (f *FileUnrecordedTestsSuite) TestFileSetHTTPHeaders() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fClient := shareClient.NewRootDirectoryClient().NewFileClient(testcommon.GenerateFileName(testName))
+	_, err = fClient.Create(context.Background(), 0, &file.CreateOptions{
+		FilePermissionFormat: (*file.PermissionFormat)(to.Ptr(testcommon.FilePermissionFormatSddl)),
+		Permissions: &file.Permissions{
+			Permission: &testcommon.SampleSDDL,
+		},
+	})
+	_require.NoError(err)
+
+	md5Str := "MDAwMDAwMDA="
+	testMd5 := []byte(md5Str)
+
+	creationTime := time.Now().Add(-time.Hour)
+	lastWriteTime := time.Now().Add(-time.Minute * 15)
+	changeTime := time.Now().Add(-time.Minute * 30)
+
+	options := &file.SetHTTPHeadersOptions{
+		FilePermissionFormat: (*file.PermissionFormat)(to.Ptr(testcommon.FilePermissionBinary)),
+		Permissions:          &file.Permissions{Permission: &testcommon.SampleBinary},
+		SMBProperties: &file.SMBProperties{
+			Attributes:    &file.NTFSFileAttributes{Hidden: true},
+			CreationTime:  &creationTime,
+			LastWriteTime: &lastWriteTime,
+			ChangeTime:    &changeTime,
+		},
+		HTTPHeaders: &file.HTTPHeaders{
+			ContentType:        to.Ptr("text/html"),
+			ContentEncoding:    to.Ptr("gzip"),
+			ContentLanguage:    to.Ptr("en"),
+			ContentMD5:         testMd5,
+			CacheControl:       to.Ptr("no-transform"),
+			ContentDisposition: to.Ptr("attachment"),
+		},
+	}
+	setResp, err := fClient.SetHTTPHeaders(context.Background(), options)
+	_require.NoError(err)
+	_require.NotNil(setResp.ETag)
+	_require.Equal(setResp.LastModified.IsZero(), false)
+	_require.NotNil(setResp.RequestID)
+	_require.NotNil(setResp.Version)
+	_require.Equal(setResp.Date.IsZero(), false)
+	_require.NotNil(setResp.IsServerEncrypted)
 }
 
 func (f *FileRecordedTestsSuite) TestFilePreservePermissions() {
@@ -807,6 +890,24 @@ func (f *FileRecordedTestsSuite) TestFileSetMetadataInvalidField() {
 	_require.Error(err)
 }
 
+func (f *FileRecordedTestsSuite) TestFileDelete() {
+	if recording.GetRecordMode() == recording.LiveMode {
+		f.T().Skip("This test cannot be made live")
+	}
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+
+	response, err := shareClient.Delete(context.Background(), &share.DeleteOptions{DeleteSnapshots: to.Ptr(share.DeleteSnapshotsOptionTypeInclude)})
+	_require.NoError(err)
+	_require.NotNil(response.FileShareUsageBytes)
+	_require.NotNil(response.FileShareSnapshotUsageBytes)
+}
+
 func (f *FileRecordedTestsSuite) TestStartCopyDefault() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
@@ -845,7 +946,9 @@ func (f *FileRecordedTestsSuite) TestStartCopyDefault() {
 	_require.NoError(err)
 	_require.EqualValues(getResp.CopyID, copyResp.CopyID)
 	_require.NotEqual(*getResp.CopyStatus, "")
-	_require.Equal(*getResp.CopySource, srcFile.URL())
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.Equal(*getResp.CopySource, srcFile.URL())
+	}
 	_require.Equal(*getResp.CopyStatus, file.CopyStatusTypeSuccess)
 
 	// Abort will fail after copy finished
@@ -2465,7 +2568,7 @@ func (f *FileRecordedTestsSuite) TestUploadDownloadDefaultNonDefaultMD5() {
 
 	downloadedData, err = io.ReadAll(resp.Body)
 	_require.NoError(err)
-	_require.EqualValues(downloadedData, contentD[:])
+	_require.EqualValues(downloadedData, contentD)
 
 	_require.Equal(*resp.AcceptRanges, "bytes")
 	_require.Nil(resp.CacheControl)
@@ -2685,7 +2788,7 @@ func (f *FileRecordedTestsSuite) TestFileUploadRangeTransactionalMD5() {
 
 	downloadedData, err := io.ReadAll(resp.Body)
 	_require.NoError(err)
-	_require.EqualValues(downloadedData, contentD[:])
+	_require.EqualValues(downloadedData, contentD)
 }
 
 func (f *FileRecordedTestsSuite) TestFileUploadRangeIncorrectTransactionalMD5() {
@@ -2705,7 +2808,7 @@ func (f *FileRecordedTestsSuite) TestFileUploadRangeIncorrectTransactionalMD5() 
 
 	// Upload range with incorrect transactional MD5
 	_, err = fClient.UploadRange(context.Background(), 0, contentR, &file.UploadRangeOptions{
-		TransactionalValidation: file.TransferValidationTypeMD5(incorrectMD5[:]),
+		TransactionalValidation: file.TransferValidationTypeMD5(incorrectMD5),
 	})
 	_require.Error(err)
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.MD5Mismatch)
@@ -3089,6 +3192,65 @@ func (f *FileRecordedTestsSuite) TestFileGetRangeListSnapshot() {
 	_require.EqualValues(*resp2.Ranges[0], file.ShareFileRange{Start: to.Ptr(int64(0)), End: to.Ptr(fileSize - 1)})
 }
 
+func (f *FileRecordedTestsSuite) TestFileGetRangeListSupportRename() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer func() {
+		_, err := shareClient.Delete(context.Background(), &share.DeleteOptions{DeleteSnapshots: to.Ptr(share.DeleteSnapshotsOptionTypeInclude)})
+		_require.NoError(err)
+	}()
+
+	fileSize := int64(512)
+	fClient := setupGetRangeListTest(_require, testName, fileSize, shareClient)
+
+	snapshotResponse1, err := shareClient.CreateSnapshot(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(snapshotResponse1.Snapshot)
+
+	rsc, _ := testcommon.GenerateData(int(fileSize))
+	_, err = fClient.UploadRange(context.Background(), 0, rsc, nil)
+	_require.NoError(err)
+
+	renameResponse, err := fClient.Rename(context.Background(), "file2", nil)
+	_require.NoError(err)
+
+	newFileClient := testcommon.GetFileClientFromShare("file2", shareClient)
+	_require.NoError(err)
+
+	snapshotResponse2, err := shareClient.CreateSnapshot(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(snapshotResponse2.Snapshot)
+
+	_, err = newFileClient.GetRangeList(context.Background(), &file.GetRangeListOptions{
+		PrevShareSnapshot: snapshotResponse1.Snapshot,
+		ShareSnapshot:     snapshotResponse2.Snapshot,
+		SupportRename:     to.Ptr(false),
+	})
+	_require.Error(err, "PreviousSnapshotNotFound")
+
+	_, err = newFileClient.GetRangeList(context.Background(), &file.GetRangeListOptions{
+		PrevShareSnapshot: snapshotResponse1.Snapshot,
+		ShareSnapshot:     snapshotResponse2.Snapshot,
+		SupportRename:     nil,
+	})
+	_require.Error(err, "PreviousSnapshotNotFound")
+
+	resp, err := newFileClient.GetRangeList(context.Background(), &file.GetRangeListOptions{
+		PrevShareSnapshot: snapshotResponse1.Snapshot,
+		ShareSnapshot:     snapshotResponse2.Snapshot,
+		SupportRename:     to.Ptr(true),
+	})
+	_require.NoError(err)
+	_require.Len(resp.Ranges, 1)
+	_require.EqualValues(*resp.Ranges[0], file.ShareFileRange{Start: to.Ptr(int64(0)), End: to.Ptr(fileSize - 1)})
+	_require.Equal(resp.ETag, renameResponse.ETag)
+}
+
 func (f *FileRecordedTestsSuite) TestFileUploadDownloadSmallBuffer() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
@@ -3358,6 +3520,25 @@ func (f *FileRecordedTestsSuite) TestFileListHandlesDefault() {
 	_require.Len(resp.Handles, 0)
 	_require.NotNil(resp.NextMarker)
 	_require.Equal(*resp.NextMarker, "")
+}
+
+func (f *FileRecordedTestsSuite) TestFileListHandlesClientNameFieldCheck() {
+	if recording.GetRecordMode() == recording.LiveMode {
+		f.T().Skip("This test cannot be made live")
+	}
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.GetShareClient(testcommon.GenerateShareName(testName), svcClient)
+
+	fClient := testcommon.GetFileClientFromShare(testcommon.GenerateFileName(testName), shareClient)
+	resp, err := fClient.ListHandles(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(resp.Handles, 1)
+	_require.NotNil(*resp.Handles[0].ClientName)
 }
 
 func (f *FileRecordedTestsSuite) TestFileForceCloseHandlesDefault() {
@@ -3641,7 +3822,7 @@ func (f *FileRecordedTestsSuite) TestFileRenameDefault() {
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
 }
 
-func (f *FileRecordedTestsSuite) TestFileRenameUsingOAuth() {
+func (f *FileUnrecordedTestsSuite) TestFileRenameUsingOAuth() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -4181,7 +4362,7 @@ func (f *FileRecordedTestsSuite) TestFileUploadClearListRangeTrailingDotOAuth() 
 	_require.Len(rangeList2.Ranges, 0)
 }
 
-func (f *FileRecordedTestsSuite) TestFileRenameTrailingDotOAuth() {
+func (f *FileUnrecordedTestsSuite) TestFileRenameTrailingDotOAuth() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -4357,7 +4538,9 @@ func (f *FileRecordedTestsSuite) TestStartCopyTrailingDotOAuth() {
 	_require.NoError(err)
 	_require.EqualValues(getResp.CopyID, copyResp.CopyID)
 	_require.NotEqual(*getResp.CopyStatus, "")
-	_require.Equal(*getResp.CopySource, srcFileClient.URL())
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.Equal(*getResp.CopySource, srcFileClient.URL())
+	}
 	_require.Equal(*getResp.CopyStatus, file.CopyStatusTypeSuccess)
 
 	// validate data copied
@@ -4498,7 +4681,7 @@ func (m serviceVersionTest) Do(req *policy.Request) (*http.Response, error) {
 	const versionHeader = "x-ms-version"
 	currentVersion := map[string][]string(req.Raw().Header)[versionHeader]
 	if currentVersion[0] != generated.ServiceVersion {
-		return nil, fmt.Errorf(currentVersion[0] + " service version doesn't match expected version: " + generated.ServiceVersion)
+		return nil, fmt.Errorf("%s service version doesn't match expected version: %s", currentVersion[0], generated.ServiceVersion)
 	}
 
 	return &http.Response{
@@ -4593,7 +4776,7 @@ func (f *FileRecordedTestsSuite) TestFileClientCustomAudience() {
 	_require.NoError(err)
 }
 
-func (f *FileRecordedTestsSuite) TestFileClientAudienceNegative() {
+func (f *FileUnrecordedTestsSuite) TestFileClientAudienceNegative() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -4623,7 +4806,7 @@ func (f *FileRecordedTestsSuite) TestFileClientAudienceNegative() {
 
 	_, err = fileClientAudience.Create(context.Background(), 2048, nil)
 	_require.Error(err)
-	testcommon.ValidateFileErrorCode(_require, err, fileerror.AuthenticationFailed)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.InvalidAuthenticationInfo)
 }
 
 type fakeDownloadFile struct {

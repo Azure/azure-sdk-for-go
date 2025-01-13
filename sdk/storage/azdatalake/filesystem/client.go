@@ -271,8 +271,8 @@ func (fs *Client) GetAccessPolicy(ctx context.Context, options *GetAccessPolicyO
 
 // TODO: implement undelete path in fs client as well
 
-// NewListPathsPager operation returns a pager of the shares under the specified account.
-// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/list-shares
+// NewListPathsPager operation returns a pager of the paths under the specified filesystem.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/list
 func (fs *Client) NewListPathsPager(recursive bool, options *ListPathsOptions) *runtime.Pager[ListPathsSegmentResponse] {
 	listOptions := options.format()
 	return runtime.NewPager(runtime.PagingHandler[ListPathsSegmentResponse]{

@@ -17,53 +17,76 @@ import (
 // Don't use this type directly, use NewClientFactory instead.
 type ClientFactory struct {
 	subscriptionID string
-	credential     azcore.TokenCredential
-	options        *arm.ClientOptions
+	internal       *arm.Client
 }
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
 // The parameter values will be propagated to any client created from this factory.
-//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-//     part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
+	internal, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	return &ClientFactory{
-		subscriptionID: subscriptionID, credential: credential,
-		options: options.Clone(),
+		subscriptionID: subscriptionID,
+		internal:       internal,
 	}, nil
+}
+
+// NewContainerGroupProfileClient creates a new instance of ContainerGroupProfileClient.
+func (c *ClientFactory) NewContainerGroupProfileClient() *ContainerGroupProfileClient {
+	return &ContainerGroupProfileClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewContainerGroupProfilesClient creates a new instance of ContainerGroupProfilesClient.
+func (c *ClientFactory) NewContainerGroupProfilesClient() *ContainerGroupProfilesClient {
+	return &ContainerGroupProfilesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewContainerGroupsClient creates a new instance of ContainerGroupsClient.
 func (c *ClientFactory) NewContainerGroupsClient() *ContainerGroupsClient {
-	subClient, _ := NewContainerGroupsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &ContainerGroupsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewContainersClient creates a new instance of ContainersClient.
 func (c *ClientFactory) NewContainersClient() *ContainersClient {
-	subClient, _ := NewContainersClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &ContainersClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewLocationClient creates a new instance of LocationClient.
 func (c *ClientFactory) NewLocationClient() *LocationClient {
-	subClient, _ := NewLocationClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &LocationClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
-	subClient, _ := NewOperationsClient(c.credential, c.options)
-	return subClient
+	return &OperationsClient{
+		internal: c.internal,
+	}
 }
 
 // NewSubnetServiceAssociationLinkClient creates a new instance of SubnetServiceAssociationLinkClient.
 func (c *ClientFactory) NewSubnetServiceAssociationLinkClient() *SubnetServiceAssociationLinkClient {
-	subClient, _ := NewSubnetServiceAssociationLinkClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &SubnetServiceAssociationLinkClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }

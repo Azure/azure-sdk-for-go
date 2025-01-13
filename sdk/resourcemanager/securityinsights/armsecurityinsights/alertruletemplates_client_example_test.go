@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/alertRuleTemplates/GetAlertRuleTemplates.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/alertRuleTemplates/GetAlertRuleTemplates.json
 func ExampleAlertRuleTemplatesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,14 +44,14 @@ func ExampleAlertRuleTemplatesClient_NewListPager() {
 		// 		&armsecurityinsights.ScheduledAlertRuleTemplate{
 		// 			Name: to.Ptr("65360bb0-8986-4ade-a89d-af3cf44d28aa"),
 		// 			Type: to.Ptr("Microsoft.SecurityInsights/AlertRuleTemplates"),
-		// 			ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/AlertRuleTemplates/65360bb0-8986-4ade-a89d-af3cf44d28aa"),
+		// 			ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalIinsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/AlertRuleTemplates/65360bb0-8986-4ade-a89d-af3cf44d28aa"),
 		// 			Kind: to.Ptr(armsecurityinsights.AlertRuleKindScheduled),
 		// 			Properties: &armsecurityinsights.ScheduledAlertRuleTemplateProperties{
 		// 				Description: to.Ptr("This alert monitors changes to Amazon VPC (Virtual Private Cloud) settings such as new ACL entries and routes in route tables.\nMore information: https://medium.com/@GorillaStack/the-most-important-aws-cloudtrail-security-events-to-track-a5b9873f8255 \nand https://aws.amazon.com/vpc/"),
 		// 				AlertRulesCreatedByTemplateCount: to.Ptr[int32](0),
 		// 				CreatedDateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-02-27T00:00:00.000Z"); return t}()),
 		// 				DisplayName: to.Ptr("Changes to Amazon VPC settings"),
-		// 				LastUpdatedDateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-02-27T10:00:00.000Z"); return t}()),
+		// 				LastUpdatedDateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-27T00:00:00.000Z"); return t}()),
 		// 				Query: to.Ptr("let timeframe = 1d;\nAWSCloudTrail\n| where TimeGenerated >= ago(timeframe)\n| where EventName == \"CreateNetworkAclEntry\"\n    or EventName == \"CreateRoute\"\n| project TimeGenerated, EventName, EventTypeName, UserIdentityAccountId, UserIdentityPrincipalid, UserAgent, UserIdentityUserName, SessionMfaAuthenticated, SourceIpAddress, AWSRegion, EventSource, AdditionalEventData, ResponseElements\n| extend AccountCustomEntity = UserIdentityUserName, IPCustomEntity = SourceIpAddress"),
 		// 				QueryFrequency: to.Ptr("P1D"),
 		// 				QueryPeriod: to.Ptr("P1D"),
@@ -66,51 +66,179 @@ func ExampleAlertRuleTemplatesClient_NewListPager() {
 		// 					Tactics: []*armsecurityinsights.AttackTactic{
 		// 						to.Ptr(armsecurityinsights.AttackTacticPrivilegeEscalation),
 		// 						to.Ptr(armsecurityinsights.AttackTacticLateralMovement)},
-		// 						TriggerOperator: to.Ptr(armsecurityinsights.TriggerOperatorGreaterThan),
-		// 						TriggerThreshold: to.Ptr[int32](0),
-		// 						Version: to.Ptr("1.0.1"),
-		// 					},
-		// 				},
-		// 				&armsecurityinsights.FusionAlertRuleTemplate{
-		// 					Name: to.Ptr("f71aba3d-28fb-450b-b192-4e76a83015c8"),
-		// 					Type: to.Ptr("Microsoft.SecurityInsights/AlertRuleTemplates"),
-		// 					ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/AlertRuleTemplates/f71aba3d-28fb-450b-b192-4e76a83015c8"),
-		// 					Kind: to.Ptr(armsecurityinsights.AlertRuleKindFusion),
-		// 					Properties: &armsecurityinsights.FusionAlertRuleTemplateProperties{
-		// 						Description: to.Ptr("Place holder: Fusion uses graph powered machine learning algorithms to correlate between millions of lower fidelity anomalous activities from different products such as Azure AD Identity Protection, and Microsoft Cloud App Security, to combine them into a manageable number of interesting security cases.\n"),
-		// 						AlertRulesCreatedByTemplateCount: to.Ptr[int32](0),
-		// 						CreatedDateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-07-25T00:00:00.000Z"); return t}()),
-		// 						DisplayName: to.Ptr("Advanced Multi-Stage Attack Detection"),
-		// 						LastUpdatedDateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-27T10:00:00.000Z"); return t}()),
-		// 						Severity: to.Ptr(armsecurityinsights.AlertSeverityHigh),
-		// 						Status: to.Ptr(armsecurityinsights.TemplateStatusAvailable),
-		// 						Tactics: []*armsecurityinsights.AttackTactic{
-		// 							to.Ptr(armsecurityinsights.AttackTacticPersistence),
-		// 							to.Ptr(armsecurityinsights.AttackTacticLateralMovement),
-		// 							to.Ptr(armsecurityinsights.AttackTacticExfiltration),
-		// 							to.Ptr(armsecurityinsights.AttackTacticCommandAndControl)},
+		// 						Techniques: []*string{
+		// 							to.Ptr("T1037"),
+		// 							to.Ptr("T1021")},
+		// 							TriggerOperator: to.Ptr(armsecurityinsights.TriggerOperatorGreaterThan),
+		// 							TriggerThreshold: to.Ptr[int32](0),
+		// 							Version: to.Ptr("1.0.1"),
 		// 						},
 		// 					},
-		// 					&armsecurityinsights.MicrosoftSecurityIncidentCreationAlertRuleTemplate{
-		// 						Name: to.Ptr("b3cfc7c0-092c-481c-a55b-34a3979758cb"),
+		// 					&armsecurityinsights.FusionAlertRuleTemplate{
+		// 						Name: to.Ptr("f71aba3d-28fb-450b-b192-4e76a83015c8"),
 		// 						Type: to.Ptr("Microsoft.SecurityInsights/AlertRuleTemplates"),
-		// 						ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/AlertRuleTemplates/b3cfc7c0-092c-481c-a55b-34a3979758cb"),
-		// 						Kind: to.Ptr(armsecurityinsights.AlertRuleKindMicrosoftSecurityIncidentCreation),
-		// 						Properties: &armsecurityinsights.MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties{
-		// 							Description: to.Ptr("Create incidents based on all alerts generated in Microsoft Cloud App Security"),
+		// 						ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalIinsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/AlertRuleTemplates/f71aba3d-28fb-450b-b192-4e76a83015c8"),
+		// 						Kind: to.Ptr(armsecurityinsights.AlertRuleKindFusion),
+		// 						Properties: &armsecurityinsights.FusionAlertRuleTemplateProperties{
+		// 							Description: to.Ptr("Microsoft Sentinel uses Fusion, a correlation engine based on scalable machine learning algorithms, to automatically detect multistage attacks by identifying combinations of anomalous behaviors and suspicious activities that are observed at various stages of the kill chain. On the basis of these discoveries, Azure Sentinel generates incidents that would otherwise be very difficult to catch. By design, these incidents are low-volume, high-fidelity, and high-severity, which is why this detection is turned ON by default.\n\nSince Fusion correlates multiple signals from various products to detect advanced multistage attacks, successful Fusion detections are presented as Fusion incidents on the Microsoft Sentinel Incidents page. This rule covers the following detections:\n- Fusion for emerging threats\n- Fusion for ransomware\n- Scenario-based Fusion detections (122 scenarios)\n\nTo enable these detections, we recommend you configure the following data connectors for best results:\n- Out-of-the-box anomaly detections\n- Azure Active Directory Identity Protection\n- Azure Defender\n- Azure Defender for IoT\n- Microsoft 365 Defender\n- Microsoft Cloud App Security    \n- Microsoft Defender for Endpoint\n- Microsoft Defender for Identity\n- Microsoft Defender for Office 365\n- Palo Alto Networks\n- Scheduled analytics rules, both built-in and those created by your security analysts. Analytics rules must contain kill-chain (tactics) and entity mapping information in order to be used by Fusion.\n\nFor the full description of each detection that is supported by Fusion, go to https://aka.ms/SentinelFusion."),
 		// 							AlertRulesCreatedByTemplateCount: to.Ptr[int32](0),
-		// 							CreatedDateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-07-16T00:00:00.000Z"); return t}()),
-		// 							DisplayName: to.Ptr("Create incidents based on Microsoft Cloud App Security alerts"),
-		// 							LastUpdatedDateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-27T10:00:00.000Z"); return t}()),
-		// 							ProductFilter: to.Ptr(armsecurityinsights.MicrosoftSecurityProductNameMicrosoftCloudAppSecurity),
-		// 							Status: to.Ptr(armsecurityinsights.TemplateStatusAvailable),
-		// 						},
-		// 				}},
-		// 			}
+		// 							CreatedDateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-07-25T00:00:00.000Z"); return t}()),
+		// 							DisplayName: to.Ptr("Advanced Multi-Stage Attack Detection"),
+		// 							LastUpdatedDateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T00:00:00.000Z"); return t}()),
+		// 							Severity: to.Ptr(armsecurityinsights.AlertSeverityHigh),
+		// 							SourceSettings: []*armsecurityinsights.FusionTemplateSourceSetting{
+		// 								{
+		// 									SourceName: to.Ptr("Anomalies"),
+		// 								},
+		// 								{
+		// 									SourceName: to.Ptr("Alert providers"),
+		// 									SourceSubTypes: []*armsecurityinsights.FusionTemplateSourceSubType{
+		// 										{
+		// 											SeverityFilter: &armsecurityinsights.FusionTemplateSubTypeSeverityFilter{
+		// 												IsSupported: to.Ptr(true),
+		// 												SeverityFilters: []*armsecurityinsights.AlertSeverity{
+		// 													to.Ptr(armsecurityinsights.AlertSeverityInformational),
+		// 													to.Ptr(armsecurityinsights.AlertSeverityLow),
+		// 													to.Ptr(armsecurityinsights.AlertSeverityMedium),
+		// 													to.Ptr(armsecurityinsights.AlertSeverityHigh)},
+		// 												},
+		// 												SourceSubTypeName: to.Ptr("Azure Active Directory Identity Protection"),
+		// 											},
+		// 											{
+		// 												SeverityFilter: &armsecurityinsights.FusionTemplateSubTypeSeverityFilter{
+		// 													IsSupported: to.Ptr(true),
+		// 													SeverityFilters: []*armsecurityinsights.AlertSeverity{
+		// 														to.Ptr(armsecurityinsights.AlertSeverityInformational),
+		// 														to.Ptr(armsecurityinsights.AlertSeverityLow),
+		// 														to.Ptr(armsecurityinsights.AlertSeverityMedium),
+		// 														to.Ptr(armsecurityinsights.AlertSeverityHigh)},
+		// 													},
+		// 													SourceSubTypeName: to.Ptr("Azure Defender"),
+		// 												},
+		// 												{
+		// 													SeverityFilter: &armsecurityinsights.FusionTemplateSubTypeSeverityFilter{
+		// 														IsSupported: to.Ptr(true),
+		// 														SeverityFilters: []*armsecurityinsights.AlertSeverity{
+		// 															to.Ptr(armsecurityinsights.AlertSeverityInformational),
+		// 															to.Ptr(armsecurityinsights.AlertSeverityLow),
+		// 															to.Ptr(armsecurityinsights.AlertSeverityMedium),
+		// 															to.Ptr(armsecurityinsights.AlertSeverityHigh)},
+		// 														},
+		// 														SourceSubTypeName: to.Ptr("Azure Defender for IoT"),
+		// 													},
+		// 													{
+		// 														SeverityFilter: &armsecurityinsights.FusionTemplateSubTypeSeverityFilter{
+		// 															IsSupported: to.Ptr(true),
+		// 															SeverityFilters: []*armsecurityinsights.AlertSeverity{
+		// 																to.Ptr(armsecurityinsights.AlertSeverityInformational),
+		// 																to.Ptr(armsecurityinsights.AlertSeverityLow),
+		// 																to.Ptr(armsecurityinsights.AlertSeverityMedium),
+		// 																to.Ptr(armsecurityinsights.AlertSeverityHigh)},
+		// 															},
+		// 															SourceSubTypeName: to.Ptr("Microsoft 365 Defender"),
+		// 														},
+		// 														{
+		// 															SeverityFilter: &armsecurityinsights.FusionTemplateSubTypeSeverityFilter{
+		// 																IsSupported: to.Ptr(true),
+		// 																SeverityFilters: []*armsecurityinsights.AlertSeverity{
+		// 																	to.Ptr(armsecurityinsights.AlertSeverityInformational),
+		// 																	to.Ptr(armsecurityinsights.AlertSeverityLow),
+		// 																	to.Ptr(armsecurityinsights.AlertSeverityMedium),
+		// 																	to.Ptr(armsecurityinsights.AlertSeverityHigh)},
+		// 																},
+		// 																SourceSubTypeName: to.Ptr("Microsoft Cloud App Security"),
+		// 															},
+		// 															{
+		// 																SeverityFilter: &armsecurityinsights.FusionTemplateSubTypeSeverityFilter{
+		// 																	IsSupported: to.Ptr(true),
+		// 																	SeverityFilters: []*armsecurityinsights.AlertSeverity{
+		// 																		to.Ptr(armsecurityinsights.AlertSeverityInformational),
+		// 																		to.Ptr(armsecurityinsights.AlertSeverityLow),
+		// 																		to.Ptr(armsecurityinsights.AlertSeverityMedium),
+		// 																		to.Ptr(armsecurityinsights.AlertSeverityHigh)},
+		// 																	},
+		// 																	SourceSubTypeName: to.Ptr("Microsoft Defender for Endpoint"),
+		// 																},
+		// 																{
+		// 																	SeverityFilter: &armsecurityinsights.FusionTemplateSubTypeSeverityFilter{
+		// 																		IsSupported: to.Ptr(true),
+		// 																		SeverityFilters: []*armsecurityinsights.AlertSeverity{
+		// 																			to.Ptr(armsecurityinsights.AlertSeverityInformational),
+		// 																			to.Ptr(armsecurityinsights.AlertSeverityLow),
+		// 																			to.Ptr(armsecurityinsights.AlertSeverityMedium),
+		// 																			to.Ptr(armsecurityinsights.AlertSeverityHigh)},
+		// 																		},
+		// 																		SourceSubTypeName: to.Ptr("Microsoft Defender for Identity"),
+		// 																	},
+		// 																	{
+		// 																		SeverityFilter: &armsecurityinsights.FusionTemplateSubTypeSeverityFilter{
+		// 																			IsSupported: to.Ptr(true),
+		// 																			SeverityFilters: []*armsecurityinsights.AlertSeverity{
+		// 																				to.Ptr(armsecurityinsights.AlertSeverityInformational),
+		// 																				to.Ptr(armsecurityinsights.AlertSeverityLow),
+		// 																				to.Ptr(armsecurityinsights.AlertSeverityMedium),
+		// 																				to.Ptr(armsecurityinsights.AlertSeverityHigh)},
+		// 																			},
+		// 																			SourceSubTypeName: to.Ptr("Microsoft Defender for Office 365"),
+		// 																		},
+		// 																		{
+		// 																			SeverityFilter: &armsecurityinsights.FusionTemplateSubTypeSeverityFilter{
+		// 																				IsSupported: to.Ptr(true),
+		// 																				SeverityFilters: []*armsecurityinsights.AlertSeverity{
+		// 																					to.Ptr(armsecurityinsights.AlertSeverityInformational),
+		// 																					to.Ptr(armsecurityinsights.AlertSeverityLow),
+		// 																					to.Ptr(armsecurityinsights.AlertSeverityMedium),
+		// 																					to.Ptr(armsecurityinsights.AlertSeverityHigh)},
+		// 																				},
+		// 																				SourceSubTypeName: to.Ptr("Azure Sentinel scheduled analytics rules"),
+		// 																		}},
+		// 																	},
+		// 																	{
+		// 																		SourceName: to.Ptr("Raw logs from other sources"),
+		// 																		SourceSubTypes: []*armsecurityinsights.FusionTemplateSourceSubType{
+		// 																			{
+		// 																				SeverityFilter: &armsecurityinsights.FusionTemplateSubTypeSeverityFilter{
+		// 																					IsSupported: to.Ptr(false),
+		// 																				},
+		// 																				SourceSubTypeName: to.Ptr("Palo Alto Networks"),
+		// 																		}},
+		// 																}},
+		// 																Status: to.Ptr(armsecurityinsights.TemplateStatusAvailable),
+		// 																Tactics: []*armsecurityinsights.AttackTactic{
+		// 																	to.Ptr(armsecurityinsights.AttackTacticCollection),
+		// 																	to.Ptr(armsecurityinsights.AttackTacticCommandAndControl),
+		// 																	to.Ptr(armsecurityinsights.AttackTacticCredentialAccess),
+		// 																	to.Ptr(armsecurityinsights.AttackTacticDefenseEvasion),
+		// 																	to.Ptr(armsecurityinsights.AttackTacticDiscovery),
+		// 																	to.Ptr(armsecurityinsights.AttackTacticExecution),
+		// 																	to.Ptr(armsecurityinsights.AttackTacticExfiltration),
+		// 																	to.Ptr(armsecurityinsights.AttackTacticImpact),
+		// 																	to.Ptr(armsecurityinsights.AttackTacticInitialAccess),
+		// 																	to.Ptr(armsecurityinsights.AttackTacticLateralMovement),
+		// 																	to.Ptr(armsecurityinsights.AttackTacticPersistence),
+		// 																	to.Ptr(armsecurityinsights.AttackTacticPrivilegeEscalation)},
+		// 																},
+		// 															},
+		// 															&armsecurityinsights.MicrosoftSecurityIncidentCreationAlertRuleTemplate{
+		// 																Name: to.Ptr("b3cfc7c0-092c-481c-a55b-34a3979758cb"),
+		// 																Type: to.Ptr("Microsoft.SecurityInsights/AlertRuleTemplates"),
+		// 																ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalIinsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/AlertRuleTemplates/b3cfc7c0-092c-481c-a55b-34a3979758cb"),
+		// 																Kind: to.Ptr(armsecurityinsights.AlertRuleKindMicrosoftSecurityIncidentCreation),
+		// 																Properties: &armsecurityinsights.MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties{
+		// 																	Description: to.Ptr("Create incidents based on all alerts generated in Microsoft Cloud App Security"),
+		// 																	AlertRulesCreatedByTemplateCount: to.Ptr[int32](0),
+		// 																	CreatedDateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-07-16T00:00:00.000Z"); return t}()),
+		// 																	DisplayName: to.Ptr("Create incidents based on Microsoft Cloud App Security alerts"),
+		// 																	LastUpdatedDateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-27T00:00:00.000Z"); return t}()),
+		// 																	Status: to.Ptr(armsecurityinsights.TemplateStatusAvailable),
+		// 																	ProductFilter: to.Ptr(armsecurityinsights.MicrosoftSecurityProductNameMicrosoftCloudAppSecurity),
+		// 																},
+		// 														}},
+		// 													}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/alertRuleTemplates/GetAlertRuleTemplateById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/alertRuleTemplates/GetAlertRuleTemplateById.json
 func ExampleAlertRuleTemplatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -132,42 +260,17 @@ func ExampleAlertRuleTemplatesClient_Get() {
 	// 	                            AlertRuleTemplateClassification: &armsecurityinsights.ScheduledAlertRuleTemplate{
 	// 		Name: to.Ptr("65360bb0-8986-4ade-a89d-af3cf44d28aa"),
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/AlertRuleTemplates"),
-	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/alertRuleTemplates/65360bb0-8986-4ade-a89d-af3cf44d28aa"),
+	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalIinsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/alertRuleTemplates/65360bb0-8986-4ade-a89d-af3cf44d28aa"),
 	// 		Kind: to.Ptr(armsecurityinsights.AlertRuleKindScheduled),
 	// 		Properties: &armsecurityinsights.ScheduledAlertRuleTemplateProperties{
 	// 			Description: to.Ptr("This alert monitors changes to Amazon VPC (Virtual Private Cloud) settings such as new ACL entries and routes in route tables.\nMore information: https://medium.com/@GorillaStack/the-most-important-aws-cloudtrail-security-events-to-track-a5b9873f8255 \nand https://aws.amazon.com/vpc/"),
-	// 			AlertDetailsOverride: &armsecurityinsights.AlertDetailsOverride{
-	// 				AlertDescriptionFormat: to.Ptr("Suspicious activity was made by {{AccountCustomEntity}}"),
-	// 				AlertDisplayNameFormat: to.Ptr("Alert on event {{EventName}}"),
-	// 			},
 	// 			AlertRulesCreatedByTemplateCount: to.Ptr[int32](0),
 	// 			CreatedDateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-02-27T00:00:00.000Z"); return t}()),
-	// 			CustomDetails: map[string]*string{
-	// 				"EventNames": to.Ptr("EventName"),
-	// 				"EventTypes": to.Ptr("EventTypeName"),
-	// 			},
 	// 			DisplayName: to.Ptr("Changes to Amazon VPC settings"),
-	// 			EntityMappings: []*armsecurityinsights.EntityMapping{
-	// 				{
-	// 					EntityType: to.Ptr(armsecurityinsights.EntityMappingTypeAccount),
-	// 					FieldMappings: []*armsecurityinsights.FieldMapping{
-	// 						{
-	// 							ColumnName: to.Ptr("AccountCustomEntity"),
-	// 							Identifier: to.Ptr("FullName"),
-	// 					}},
-	// 				},
-	// 				{
-	// 					EntityType: to.Ptr(armsecurityinsights.EntityMappingTypeIP),
-	// 					FieldMappings: []*armsecurityinsights.FieldMapping{
-	// 						{
-	// 							ColumnName: to.Ptr("IPCustomEntity"),
-	// 							Identifier: to.Ptr("Address"),
-	// 					}},
-	// 			}},
 	// 			EventGroupingSettings: &armsecurityinsights.EventGroupingSettings{
 	// 				AggregationKind: to.Ptr(armsecurityinsights.EventGroupingAggregationKindAlertPerResult),
 	// 			},
-	// 			LastUpdatedDateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-02-27T10:00:00.000Z"); return t}()),
+	// 			LastUpdatedDateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-27T00:00:00.000Z"); return t}()),
 	// 			Query: to.Ptr("let timeframe = 1d;\nAWSCloudTrail\n| where TimeGenerated >= ago(timeframe)\n| where EventName == \"CreateNetworkAclEntry\"\n    or EventName == \"CreateRoute\"\n| project TimeGenerated, EventName, EventTypeName, UserIdentityAccountId, UserIdentityPrincipalid, UserAgent, UserIdentityUserName, SessionMfaAuthenticated, SourceIpAddress, AWSRegion, EventSource, AdditionalEventData, ResponseElements\n| extend AccountCustomEntity = UserIdentityUserName, IPCustomEntity = SourceIpAddress"),
 	// 			QueryFrequency: to.Ptr("P1D"),
 	// 			QueryPeriod: to.Ptr("P1D"),
@@ -182,10 +285,13 @@ func ExampleAlertRuleTemplatesClient_Get() {
 	// 				Tactics: []*armsecurityinsights.AttackTactic{
 	// 					to.Ptr(armsecurityinsights.AttackTacticPrivilegeEscalation),
 	// 					to.Ptr(armsecurityinsights.AttackTacticLateralMovement)},
-	// 					TriggerOperator: to.Ptr(armsecurityinsights.TriggerOperatorGreaterThan),
-	// 					TriggerThreshold: to.Ptr[int32](0),
-	// 					Version: to.Ptr("1.0.2"),
+	// 					Techniques: []*string{
+	// 						to.Ptr("T1037"),
+	// 						to.Ptr("T1021")},
+	// 						TriggerOperator: to.Ptr(armsecurityinsights.TriggerOperatorGreaterThan),
+	// 						TriggerThreshold: to.Ptr[int32](0),
+	// 						Version: to.Ptr("1.0.2"),
+	// 					},
 	// 				},
-	// 			},
-	// 			                        }
+	// 				                        }
 }

@@ -10,7 +10,7 @@ package armeventgrid
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid"
-	moduleVersion = "v2.3.0-beta.1"
+	moduleVersion = "v2.3.0-beta.2"
 )
 
 // AdvancedFilterOperatorType - The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
@@ -63,6 +63,8 @@ func PossibleAdvancedFilterOperatorTypeValues() []AdvancedFilterOperatorType {
 	}
 }
 
+// AlternativeAuthenticationNameSource - Alternative authentication name sources related to client authentication settings
+// for namespace resource.
 type AlternativeAuthenticationNameSource string
 
 const (
@@ -263,6 +265,58 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
+	}
+}
+
+// CustomDomainIdentityType - The type of managed identity used. Can be either 'SystemAssigned' or 'UserAssigned'.
+type CustomDomainIdentityType string
+
+const (
+	CustomDomainIdentityTypeSystemAssigned CustomDomainIdentityType = "SystemAssigned"
+	CustomDomainIdentityTypeUserAssigned   CustomDomainIdentityType = "UserAssigned"
+)
+
+// PossibleCustomDomainIdentityTypeValues returns the possible values for the CustomDomainIdentityType const type.
+func PossibleCustomDomainIdentityTypeValues() []CustomDomainIdentityType {
+	return []CustomDomainIdentityType{
+		CustomDomainIdentityTypeSystemAssigned,
+		CustomDomainIdentityTypeUserAssigned,
+	}
+}
+
+// CustomDomainValidationState - Validation state for the custom domain. This is a read only property and is initially set
+// to 'Pending' and will be updated to 'Approved' by Event Grid only after ownership of the domain name has been
+// successfully validated.
+type CustomDomainValidationState string
+
+const (
+	CustomDomainValidationStateApproved                 CustomDomainValidationState = "Approved"
+	CustomDomainValidationStateErrorRetrievingDNSRecord CustomDomainValidationState = "ErrorRetrievingDnsRecord"
+	CustomDomainValidationStatePending                  CustomDomainValidationState = "Pending"
+)
+
+// PossibleCustomDomainValidationStateValues returns the possible values for the CustomDomainValidationState const type.
+func PossibleCustomDomainValidationStateValues() []CustomDomainValidationState {
+	return []CustomDomainValidationState{
+		CustomDomainValidationStateApproved,
+		CustomDomainValidationStateErrorRetrievingDNSRecord,
+		CustomDomainValidationStatePending,
+	}
+}
+
+// CustomJwtAuthenticationManagedIdentityType - The type of managed identity used. Can be either 'SystemAssigned' or 'UserAssigned'.
+type CustomJwtAuthenticationManagedIdentityType string
+
+const (
+	CustomJwtAuthenticationManagedIdentityTypeSystemAssigned CustomJwtAuthenticationManagedIdentityType = "SystemAssigned"
+	CustomJwtAuthenticationManagedIdentityTypeUserAssigned   CustomJwtAuthenticationManagedIdentityType = "UserAssigned"
+)
+
+// PossibleCustomJwtAuthenticationManagedIdentityTypeValues returns the possible values for the CustomJwtAuthenticationManagedIdentityType const type.
+func PossibleCustomJwtAuthenticationManagedIdentityTypeValues() []CustomJwtAuthenticationManagedIdentityType {
+	return []CustomJwtAuthenticationManagedIdentityType{
+		CustomJwtAuthenticationManagedIdentityTypeSystemAssigned,
+		CustomJwtAuthenticationManagedIdentityTypeUserAssigned,
 	}
 }
 
@@ -468,8 +522,7 @@ func PossibleEventInputSchemaValues() []EventInputSchema {
 	}
 }
 
-// EventSubscriptionIdentityType - The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both
-// an implicitly created identity and a set of user-assigned identities. The type 'None' will remove any identity.
+// EventSubscriptionIdentityType - The type of managed identity used. Can be either 'SystemAssigned' or 'UserAssigned'.
 type EventSubscriptionIdentityType string
 
 const (
@@ -1220,6 +1273,7 @@ func PossibleResourceRegionTypeValues() []ResourceRegionType {
 	}
 }
 
+// RoutingIdentityType - Routing identity type for topic spaces configuration.
 type RoutingIdentityType string
 
 const (

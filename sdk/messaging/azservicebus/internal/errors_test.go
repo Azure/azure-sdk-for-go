@@ -16,7 +16,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 	"github.com/Azure/go-amqp"
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -72,26 +71,14 @@ func TestErrIncorrectType_Error(t *testing.T) {
 	}
 }
 
-func TestErrNotFound_Error(t *testing.T) {
-	err := ErrNotFound{EntityPath: "/foo/bar"}
-	assert.Equal(t, "entity at /foo/bar not found", err.Error())
-	assert.True(t, IsErrNotFound(err))
-
-	otherErr := errors.New("foo")
-	assert.False(t, IsErrNotFound(otherErr))
-}
-
 func Test_recoveryKind(t *testing.T) {
 	t.Run("link", func(t *testing.T) {
-		linkErrorCodes := []string{
-			string(amqp.ErrCondDetachForced),
+		linkErrorCodes := []amqp.ErrCond{
+			amqp.ErrCondDetachForced,
 		}
 
 		for _, code := range linkErrorCodes {
-			t.Run(code, func(t *testing.T) {
-				rk := GetRecoveryKind(&amqp.Error{Condition: amqp.ErrCond(code)})
-				require.EqualValues(t, RecoveryKindLink, rk, fmt.Sprintf("requires link recovery: %s", code))
-			})
+			amqpConditionTakesPrecedence(t, code, RecoveryKindLink)
 		}
 
 		t.Run("sentinel errors", func(t *testing.T) {
@@ -100,20 +87,21 @@ func Test_recoveryKind(t *testing.T) {
 
 			rk = GetRecoveryKind(&amqp.SessionError{})
 			require.EqualValues(t, RecoveryKindConn, rk)
+
+			rk = GetRecoveryKind(&amqp.ConnError{})
+			require.EqualValues(t, RecoveryKindConn, rk)
+
 		})
 	})
 
 	t.Run("connection", func(t *testing.T) {
-		codes := []string{
-			string(amqp.ErrCondConnectionForced),
-			string(amqp.ErrCondInternalError),
+		codes := []amqp.ErrCond{
+			amqp.ErrCondConnectionForced,
+			amqp.ErrCondInternalError,
 		}
 
 		for _, code := range codes {
-			t.Run(code, func(t *testing.T) {
-				rk := GetRecoveryKind(&amqp.Error{Condition: amqp.ErrCond(code)})
-				require.EqualValues(t, RecoveryKindConn, rk, fmt.Sprintf("requires connection recovery: %s", code))
-			})
+			amqpConditionTakesPrecedence(t, code, RecoveryKindConn)
 		}
 
 		t.Run("sentinel errors", func(t *testing.T) {
@@ -123,17 +111,14 @@ func Test_recoveryKind(t *testing.T) {
 	})
 
 	t.Run("nonretriable", func(t *testing.T) {
-		codes := []string{
-			string(amqp.ErrCondUnauthorizedAccess),
-			string(amqp.ErrCondNotFound),
-			string(amqp.ErrCondMessageSizeExceeded),
+		codes := []amqp.ErrCond{
+			amqp.ErrCondUnauthorizedAccess,
+			amqp.ErrCondNotFound,
+			amqp.ErrCondMessageSizeExceeded,
 		}
 
 		for _, code := range codes {
-			t.Run(code, func(t *testing.T) {
-				rk := GetRecoveryKind(&amqp.Error{Condition: amqp.ErrCond(code)})
-				require.EqualValues(t, RecoveryKindFatal, rk, fmt.Sprintf("cannot be recovered: %s", code))
-			})
+			amqpConditionTakesPrecedence(t, code, RecoveryKindFatal)
 		}
 	})
 
@@ -300,4 +285,30 @@ func Test_TransformError(t *testing.T) {
 
 	// and it's okay, for convenience, to pass a nil.
 	require.Nil(t, TransformError(nil))
+}
+
+func amqpConditionTakesPrecedence(t *testing.T, cond amqp.ErrCond, kind RecoveryKind) {
+	t.Run(fmt.Sprintf("code:%s", string(cond)), func(t *testing.T) {
+		// NOTE: some combinations of *Error and condition are non-sensical. The important part
+		// is the inner amqp.Error's Condition should take precedence over where it was returned.
+		t.Run("amqp.Error", func(t *testing.T) {
+			rk := GetRecoveryKind(&amqp.Error{Condition: cond})
+			require.Equal(t, kind, rk)
+		})
+
+		t.Run("amqp.LinkError", func(t *testing.T) {
+			rk := GetRecoveryKind(&amqp.LinkError{RemoteErr: &amqp.Error{Condition: cond}})
+			require.Equal(t, kind, rk)
+		})
+
+		t.Run("amqp.SessionError", func(t *testing.T) {
+			rk := GetRecoveryKind(&amqp.SessionError{RemoteErr: &amqp.Error{Condition: cond}})
+			require.Equal(t, kind, rk)
+		})
+
+		t.Run("amqp.ConnError", func(t *testing.T) {
+			rk := GetRecoveryKind(&amqp.ConnError{RemoteErr: &amqp.Error{Condition: cond}})
+			require.Equal(t, kind, rk)
+		})
+	})
 }

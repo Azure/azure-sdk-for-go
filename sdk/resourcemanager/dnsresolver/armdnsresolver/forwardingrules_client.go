@@ -29,7 +29,7 @@ type ForwardingRulesClient struct {
 }
 
 // NewForwardingRulesClient creates a new instance of ForwardingRulesClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewForwardingRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ForwardingRulesClient, error) {
@@ -47,7 +47,7 @@ func NewForwardingRulesClient(subscriptionID string, credential azcore.TokenCred
 // CreateOrUpdate - Creates or updates a forwarding rule in a DNS forwarding ruleset.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-07-01
+// Generated from API version 2023-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dnsForwardingRulesetName - The name of the DNS forwarding ruleset.
 //   - forwardingRuleName - The name of the forwarding rule.
@@ -100,15 +100,15 @@ func (client *ForwardingRulesClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2023-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
 	}
@@ -127,7 +127,7 @@ func (client *ForwardingRulesClient) createOrUpdateHandleResponse(resp *http.Res
 // Delete - Deletes a forwarding rule in a DNS forwarding ruleset. WARNING: This operation cannot be undone.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-07-01
+// Generated from API version 2023-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dnsForwardingRulesetName - The name of the DNS forwarding ruleset.
 //   - forwardingRuleName - The name of the forwarding rule.
@@ -177,19 +177,19 @@ func (client *ForwardingRulesClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2023-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets properties of a forwarding rule in a DNS forwarding ruleset.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-07-01
+// Generated from API version 2023-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dnsForwardingRulesetName - The name of the DNS forwarding ruleset.
 //   - forwardingRuleName - The name of the forwarding rule.
@@ -240,7 +240,7 @@ func (client *ForwardingRulesClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2023-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -257,7 +257,7 @@ func (client *ForwardingRulesClient) getHandleResponse(resp *http.Response) (For
 
 // NewListPager - Lists forwarding rules in a DNS forwarding ruleset.
 //
-// Generated from API version 2022-07-01
+// Generated from API version 2023-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dnsForwardingRulesetName - The name of the DNS forwarding ruleset.
 //   - options - ForwardingRulesClientListOptions contains the optional parameters for the ForwardingRulesClient.NewListPager
@@ -305,10 +305,10 @@ func (client *ForwardingRulesClient) listCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
+	reqQP.Set("api-version", "2023-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -326,7 +326,7 @@ func (client *ForwardingRulesClient) listHandleResponse(resp *http.Response) (Fo
 // Update - Updates a forwarding rule in a DNS forwarding ruleset.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-07-01
+// Generated from API version 2023-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dnsForwardingRulesetName - The name of the DNS forwarding ruleset.
 //   - forwardingRuleName - The name of the forwarding rule.
@@ -378,12 +378,12 @@ func (client *ForwardingRulesClient) updateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2023-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
 	}

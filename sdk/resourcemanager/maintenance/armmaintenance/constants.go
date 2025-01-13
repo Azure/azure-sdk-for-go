@@ -10,7 +10,7 @@ package armmaintenance
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance"
-	moduleVersion = "v1.3.0"
+	moduleVersion = "v1.4.0-beta.1"
 )
 
 // CreatedByType - The type of identity that created the resource.
@@ -130,10 +130,18 @@ func PossibleTagOperatorsValues() []TagOperators {
 type UpdateStatus string
 
 const (
+	// UpdateStatusCancel - Cancel the schedule and stop creating PMR for resources part of it. Applicable to Maintenance Configuration
+	// resource type only.
+	UpdateStatusCancel UpdateStatus = "Cancel"
+	// UpdateStatusCancelled - Send the Cancelled response to the user if request came to cancel the schedule. Applicable to Maintenance
+	// Configuration resource type only.
+	UpdateStatusCancelled UpdateStatus = "Cancelled"
 	// UpdateStatusCompleted - All updates are successfully applied.
 	UpdateStatusCompleted UpdateStatus = "Completed"
 	// UpdateStatusInProgress - Updates installation are in progress.
 	UpdateStatusInProgress UpdateStatus = "InProgress"
+	// UpdateStatusNoUpdatesPending - No updates are pending.
+	UpdateStatusNoUpdatesPending UpdateStatus = "NoUpdatesPending"
 	// UpdateStatusPending - There are pending updates to be installed.
 	UpdateStatusPending UpdateStatus = "Pending"
 	// UpdateStatusRetryLater - Updates installation failed and should be retried later.
@@ -145,8 +153,11 @@ const (
 // PossibleUpdateStatusValues returns the possible values for the UpdateStatus const type.
 func PossibleUpdateStatusValues() []UpdateStatus {
 	return []UpdateStatus{
+		UpdateStatusCancel,
+		UpdateStatusCancelled,
 		UpdateStatusCompleted,
 		UpdateStatusInProgress,
+		UpdateStatusNoUpdatesPending,
 		UpdateStatusPending,
 		UpdateStatusRetryLater,
 		UpdateStatusRetryNow,

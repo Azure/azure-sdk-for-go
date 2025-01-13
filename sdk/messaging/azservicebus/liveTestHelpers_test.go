@@ -60,13 +60,12 @@ func setupLiveTest(t *testing.T, options *liveTestOptions) (*Client, func(), str
 		options = &liveTestOptions{}
 	}
 
-	cs := test.GetConnectionString(t)
-
 	clientOptions, flushKeyFn := enableDebugClientOptions(t, options.ClientOptions)
-	serviceBusClient, err := NewClientFromConnectionString(cs, clientOptions)
-	require.NoError(t, err)
+	serviceBusClient := newServiceBusClientForTest(t, &test.NewClientOptions[ClientOptions]{
+		ClientOptions: clientOptions,
+	})
 
-	queueName, cleanupQueue := createQueue(t, cs, options.QueueProperties)
+	queueName, cleanupQueue := createQueue(t, nil, options.QueueProperties)
 
 	testCleanup := func() {
 		require.NoError(t, serviceBusClient.Close(context.Background()))
@@ -93,13 +92,13 @@ func setupLiveTestWithSubscription(t *testing.T, options *liveTestOptionsWithSub
 		options = &liveTestOptionsWithSubscription{}
 	}
 
-	cs := test.GetConnectionString(t)
-
 	clientOptions, flushKeyFn := enableDebugClientOptions(t, options.ClientOptions)
-	serviceBusClient, err := NewClientFromConnectionString(cs, clientOptions)
-	require.NoError(t, err)
 
-	topic, cleanupTopic := createSubscription(t, cs, options.TopicProperties, options.SubscriptionProperties)
+	serviceBusClient := newServiceBusClientForTest(t, &test.NewClientOptions[ClientOptions]{
+		ClientOptions: clientOptions,
+	})
+
+	topic, cleanupTopic := createSubscription(t, options.TopicProperties, options.SubscriptionProperties)
 
 	testCleanup := func() {
 		require.NoError(t, serviceBusClient.Close(context.Background()))
@@ -116,12 +115,14 @@ func setupLiveTestWithSubscription(t *testing.T, options *liveTestOptionsWithSub
 }
 
 // createQueue creates a queue, automatically setting it to delete on idle in 5 minutes.
-func createQueue(t *testing.T, connectionString string, queueProperties *admin.QueueProperties) (string, func()) {
+func createQueue(t *testing.T, options *test.NewClientOptions[admin.ClientOptions], queueProperties *admin.QueueProperties) (string, func()) {
+	adminClient := newAdminClientForTest(t, options)
+	return createQueueUsingClient(t, adminClient, queueProperties)
+}
+
+func createQueueUsingClient(t *testing.T, adminClient *admin.Client, queueProperties *admin.QueueProperties) (string, func()) {
 	nanoSeconds := time.Now().UnixNano()
 	queueName := fmt.Sprintf("queue-%X", nanoSeconds)
-
-	adminClient, err := admin.NewClientFromConnectionString(connectionString, nil)
-	require.NoError(t, err)
 
 	if queueProperties == nil {
 		queueProperties = &admin.QueueProperties{}
@@ -132,7 +133,7 @@ func createQueue(t *testing.T, connectionString string, queueProperties *admin.Q
 		queueProperties.AutoDeleteOnIdle = &autoDeleteOnIdle
 	}
 
-	_, err = adminClient.CreateQueue(context.Background(), queueName, &admin.CreateQueueOptions{
+	_, err := adminClient.CreateQueue(context.Background(), queueName, &admin.CreateQueueOptions{
 		Properties: queueProperties,
 	})
 	require.NoError(t, err)
@@ -144,12 +145,11 @@ func createQueue(t *testing.T, connectionString string, queueProperties *admin.Q
 
 // createSubscription creates a topic, automatically setting it to delete on idle in 5 minutes.
 // It also creates a subscription named 'sub'.
-func createSubscription(t *testing.T, connectionString string, topicProperties *admin.TopicProperties, subscriptionProperties *admin.SubscriptionProperties) (string, func()) {
+func createSubscription(t *testing.T, topicProperties *admin.TopicProperties, subscriptionProperties *admin.SubscriptionProperties) (string, func()) {
 	nanoSeconds := time.Now().UnixNano()
 	topicName := fmt.Sprintf("topic-%X", nanoSeconds)
 
-	adminClient, err := admin.NewClientFromConnectionString(connectionString, nil)
-	require.NoError(t, err)
+	adminClient := newAdminClientForTest(t, nil)
 
 	if topicProperties == nil {
 		topicProperties = &admin.TopicProperties{}
@@ -158,7 +158,7 @@ func createSubscription(t *testing.T, connectionString string, topicProperties *
 	autoDeleteOnIdle := "PT5M"
 	topicProperties.AutoDeleteOnIdle = &autoDeleteOnIdle
 
-	_, err = adminClient.CreateTopic(context.Background(), topicName, &admin.CreateTopicOptions{
+	_, err := adminClient.CreateTopic(context.Background(), topicName, &admin.CreateTopicOptions{
 		Properties: topicProperties,
 	})
 	require.NoError(t, err)
@@ -232,4 +232,18 @@ func requireScheduledMessageDisappears(ctx context.Context, t *testing.T, receiv
 		require.Equal(t, MessageStateScheduled, msgs[0].State)
 		time.Sleep(100 * time.Millisecond)
 	}
+}
+
+func newServiceBusClientForTest(t *testing.T, options *test.NewClientOptions[ClientOptions]) *Client {
+	return test.NewClient(t, test.NewClientArgs[ClientOptions, Client]{
+		NewClientFromConnectionString: NewClientFromConnectionString, // allowed connection string
+		NewClient:                     NewClient,
+	}, options)
+}
+
+func newAdminClientForTest(t *testing.T, options *test.NewClientOptions[admin.ClientOptions]) *admin.Client {
+	return test.NewClient(t, test.NewClientArgs[admin.ClientOptions, admin.Client]{
+		NewClientFromConnectionString: admin.NewClientFromConnectionString, // allowed connection string
+		NewClient:                     admin.NewClient,
+	}, options)
 }

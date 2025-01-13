@@ -10,8 +10,28 @@ package armdns
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dns/armdns"
-	moduleVersion = "v1.2.0"
+	moduleVersion = "v1.3.0-beta.1"
 )
+
+// CreatedByType - The type of identity that created the resource.
+type CreatedByType string
+
+const (
+	CreatedByTypeApplication     CreatedByType = "Application"
+	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
+	CreatedByTypeUser            CreatedByType = "User"
+)
+
+// PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{
+		CreatedByTypeApplication,
+		CreatedByTypeKey,
+		CreatedByTypeManagedIdentity,
+		CreatedByTypeUser,
+	}
+}
 
 type RecordType string
 
@@ -20,11 +40,14 @@ const (
 	RecordTypeAAAA  RecordType = "AAAA"
 	RecordTypeCAA   RecordType = "CAA"
 	RecordTypeCNAME RecordType = "CNAME"
+	RecordTypeDS    RecordType = "DS"
 	RecordTypeMX    RecordType = "MX"
+	RecordTypeNAPTR RecordType = "NAPTR"
 	RecordTypeNS    RecordType = "NS"
 	RecordTypePTR   RecordType = "PTR"
 	RecordTypeSOA   RecordType = "SOA"
 	RecordTypeSRV   RecordType = "SRV"
+	RecordTypeTLSA  RecordType = "TLSA"
 	RecordTypeTXT   RecordType = "TXT"
 )
 
@@ -35,11 +58,14 @@ func PossibleRecordTypeValues() []RecordType {
 		RecordTypeAAAA,
 		RecordTypeCAA,
 		RecordTypeCNAME,
+		RecordTypeDS,
 		RecordTypeMX,
+		RecordTypeNAPTR,
 		RecordTypeNS,
 		RecordTypePTR,
 		RecordTypeSOA,
 		RecordTypeSRV,
+		RecordTypeTLSA,
 		RecordTypeTXT,
 	}
 }

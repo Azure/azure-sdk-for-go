@@ -37,7 +37,7 @@ type UpgradableVersionsClient struct {
 }
 
 // NewUpgradableVersionsClient creates a new instance of UpgradableVersionsClient with the specified values.
-//   - subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewUpgradableVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UpgradableVersionsClient, error) {
@@ -55,8 +55,8 @@ func NewUpgradableVersionsClient(subscriptionID string, credential azcore.TokenC
 // Details - List of upgradable versions for a given monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
-//   - resourceGroupName - The name of the resource group to which the Elastic resource belongs.
+// Generated from API version 2024-03-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - UpgradableVersionsClientDetailsOptions contains the optional parameters for the UpgradableVersionsClient.Details
 //     method.
@@ -102,7 +102,7 @@ func (client *UpgradableVersionsClient) detailsCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2024-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

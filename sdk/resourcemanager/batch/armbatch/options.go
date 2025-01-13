@@ -188,16 +188,6 @@ type LocationClientGetQuotasOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LocationClientListSupportedCloudServiceSKUsOptions contains the optional parameters for the LocationClient.NewListSupportedCloudServiceSKUsPager
-// method.
-type LocationClientListSupportedCloudServiceSKUsOptions struct {
-	// OData filter expression. Valid properties for filtering are "familyName".
-	Filter *string
-
-	// The maximum number of items to return in the response.
-	Maxresults *int32
-}
-
 // LocationClientListSupportedVirtualMachineSKUsOptions contains the optional parameters for the LocationClient.NewListSupportedVirtualMachineSKUsPager
 // method.
 type LocationClientListSupportedVirtualMachineSKUsOptions struct {
@@ -206,6 +196,25 @@ type LocationClientListSupportedVirtualMachineSKUsOptions struct {
 
 	// The maximum number of items to return in the response.
 	Maxresults *int32
+}
+
+// NetworkSecurityPerimeterClientBeginReconcileConfigurationOptions contains the optional parameters for the NetworkSecurityPerimeterClient.BeginReconcileConfiguration
+// method.
+type NetworkSecurityPerimeterClientBeginReconcileConfigurationOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NetworkSecurityPerimeterClientGetConfigurationOptions contains the optional parameters for the NetworkSecurityPerimeterClient.GetConfiguration
+// method.
+type NetworkSecurityPerimeterClientGetConfigurationOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkSecurityPerimeterClientListConfigurationsOptions contains the optional parameters for the NetworkSecurityPerimeterClient.NewListConfigurationsPager
+// method.
+type NetworkSecurityPerimeterClientListConfigurationsOptions struct {
+	// placeholder for future optional parameters
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.

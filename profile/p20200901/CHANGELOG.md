@@ -1,6 +1,14 @@
 # Release History
 
+## 0.1.2 (2025-01-14)
+
+### Other Changes
+
+- Update dependencies
+
 ## 0.1.1 (2023-11-30)
+
+### Other Changes
 
 - Upgrade `azcore` version.
 

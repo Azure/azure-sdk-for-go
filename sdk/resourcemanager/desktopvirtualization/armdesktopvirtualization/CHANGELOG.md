@@ -1,5 +1,47 @@
 # Release History
 
+## 2.3.0 (2024-09-24)
+### Features Added
+
+- New enum type `AppAttachPackageArchitectures` with values `AppAttachPackageArchitecturesALL`, `AppAttachPackageArchitecturesARM`, `AppAttachPackageArchitecturesARM64`, `AppAttachPackageArchitecturesNeutral`, `AppAttachPackageArchitecturesX64`, `AppAttachPackageArchitecturesX86`, `AppAttachPackageArchitecturesX86A64`
+- New enum type `FailHealthCheckOnStagingFailure` with values `FailHealthCheckOnStagingFailureDoNotFail`, `FailHealthCheckOnStagingFailureNeedsAssistance`, `FailHealthCheckOnStagingFailureUnhealthy`
+- New enum type `PackageTimestamped` with values `PackageTimestampedNotTimestamped`, `PackageTimestampedTimestamped`
+- New enum type `ProvisioningState` with values `ProvisioningStateCanceled`, `ProvisioningStateFailed`, `ProvisioningStateProvisioning`, `ProvisioningStateSucceeded`
+- New function `NewAppAttachPackageClient(string, azcore.TokenCredential, *arm.ClientOptions) (*AppAttachPackageClient, error)`
+- New function `*AppAttachPackageClient.CreateOrUpdate(context.Context, string, string, AppAttachPackage, *AppAttachPackageClientCreateOrUpdateOptions) (AppAttachPackageClientCreateOrUpdateResponse, error)`
+- New function `*AppAttachPackageClient.Delete(context.Context, string, string, *AppAttachPackageClientDeleteOptions) (AppAttachPackageClientDeleteResponse, error)`
+- New function `*AppAttachPackageClient.Get(context.Context, string, string, *AppAttachPackageClientGetOptions) (AppAttachPackageClientGetResponse, error)`
+- New function `*AppAttachPackageClient.NewListByResourceGroupPager(string, *AppAttachPackageClientListByResourceGroupOptions) *runtime.Pager[AppAttachPackageClientListByResourceGroupResponse]`
+- New function `*AppAttachPackageClient.NewListBySubscriptionPager(*AppAttachPackageClientListBySubscriptionOptions) *runtime.Pager[AppAttachPackageClientListBySubscriptionResponse]`
+- New function `*AppAttachPackageClient.Update(context.Context, string, string, *AppAttachPackageClientUpdateOptions) (AppAttachPackageClientUpdateResponse, error)`
+- New function `NewAppAttachPackageInfoClient(string, azcore.TokenCredential, *arm.ClientOptions) (*AppAttachPackageInfoClient, error)`
+- New function `*AppAttachPackageInfoClient.NewImportPager(string, string, ImportPackageInfoRequest, *AppAttachPackageInfoClientImportOptions) *runtime.Pager[AppAttachPackageInfoClientImportResponse]`
+- New function `*ClientFactory.NewAppAttachPackageClient() *AppAttachPackageClient`
+- New function `*ClientFactory.NewAppAttachPackageInfoClient() *AppAttachPackageInfoClient`
+- New function `*HostPoolsClient.ListRegistrationTokens(context.Context, string, string, *HostPoolsClientListRegistrationTokensOptions) (HostPoolsClientListRegistrationTokensResponse, error)`
+- New struct `AppAttachPackage`
+- New struct `AppAttachPackageInfoProperties`
+- New struct `AppAttachPackageList`
+- New struct `AppAttachPackagePatch`
+- New struct `AppAttachPackagePatchProperties`
+- New struct `AppAttachPackageProperties`
+- New struct `ImportPackageInfoRequest`
+- New struct `RegistrationTokenList`
+- New struct `RegistrationTokenMinimal`
+- New field `SystemData` in struct `ApplicationGroupPatch`
+- New field `SystemData` in struct `ExpandMsixImage`
+- New field `CertificateExpiry`, `CertificateName` in struct `ExpandMsixImageProperties`
+- New field `SystemData` in struct `HostPoolPatch`
+- New field `AppAttachPackageReferences` in struct `HostPoolProperties`
+- New field `SystemData` in struct `MSIXPackagePatch`
+- New field `SystemData` in struct `PrivateEndpointConnection`
+- New field `GroupIDs` in struct `PrivateEndpointConnectionProperties`
+- New field `SystemData` in struct `PrivateLinkResource`
+- New field `SystemData` in struct `ScalingPlanPooledSchedulePatch`
+- New field `SystemData` in struct `SessionHostPatch`
+- New field `SystemData` in struct `StartMenuItem`
+
+
 ## 2.2.0 (2023-11-24)
 ### Features Added
 

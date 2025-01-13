@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v2/testutil"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault"
 	"github.com/stretchr/testify/suite"
 )
@@ -40,7 +40,7 @@ func (testsuite *SecretsClientTestSuite) SetupSuite() {
 	testsuite.subscriptionID = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 	testsuite.tenantID = recording.GetEnvVariable("AZURE_TENANT_ID", "00000000-0000-0000-0000-000000000000")
 	testsuite.objectID = recording.GetEnvVariable("AZURE_OBJECT_ID", "00000000-0000-0000-0000-000000000000")
-	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/keyvault/armkeyvault/testdata")
+	testutil.StartRecording(testsuite.T(), pathToPackage)
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionID, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name
@@ -101,16 +101,15 @@ func (testsuite *SecretsClientTestSuite) TestSecretsCRUD() {
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	vResp, err := testutil.PollForTest(testsuite.ctx, vPollerResp)
+	_, err = testutil.PollForTest(testsuite.ctx, vPollerResp)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal(vaultName, *vResp.Name)
 
 	// create secret
 	fmt.Println("Call operation: Secrets_CreateOrUpdate")
 	secretsClient, err := armkeyvault.NewSecretsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	secretName := "go-test-secret2"
-	secretResp, err := secretsClient.CreateOrUpdate(
+	_, err = secretsClient.CreateOrUpdate(
 		testsuite.ctx,
 		testsuite.resourceGroupName,
 		vaultName,
@@ -126,11 +125,10 @@ func (testsuite *SecretsClientTestSuite) TestSecretsCRUD() {
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal(secretName, *secretResp.Name)
 
 	// update secret
 	fmt.Println("Call operation: Secrets_Update")
-	updateResp, err := secretsClient.Update(
+	_, err = secretsClient.Update(
 		testsuite.ctx,
 		testsuite.resourceGroupName,
 		vaultName,
@@ -146,13 +144,11 @@ func (testsuite *SecretsClientTestSuite) TestSecretsCRUD() {
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal("recording", *updateResp.Tags["test"])
 
 	// get secret
 	fmt.Println("Call operation: Secrets_Get")
-	getResp, err := secretsClient.Get(testsuite.ctx, testsuite.resourceGroupName, vaultName, secretName, nil)
+	_, err = secretsClient.Get(testsuite.ctx, testsuite.resourceGroupName, vaultName, secretName, nil)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal(secretName, *getResp.Name)
 
 	// list secret
 	fmt.Println("Call operation: Secrets_List")

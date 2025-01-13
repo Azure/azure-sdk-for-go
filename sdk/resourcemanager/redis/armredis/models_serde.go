@@ -304,6 +304,7 @@ func (c CommonPropertiesRedisConfiguration) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "maxmemory-delta", c.MaxmemoryDelta)
 	populate(objectMap, "maxmemory-policy", c.MaxmemoryPolicy)
 	populate(objectMap, "maxmemory-reserved", c.MaxmemoryReserved)
+	populate(objectMap, "notify-keyspace-events", c.NotifyKeyspaceEvents)
 	populate(objectMap, "preferred-data-archive-auth-method", c.PreferredDataArchiveAuthMethod)
 	populate(objectMap, "preferred-data-persistence-auth-method", c.PreferredDataPersistenceAuthMethod)
 	populate(objectMap, "rdb-backup-enabled", c.RdbBackupEnabled)
@@ -358,6 +359,9 @@ func (c *CommonPropertiesRedisConfiguration) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "maxmemory-reserved":
 			err = unpopulate(val, "MaxmemoryReserved", &c.MaxmemoryReserved)
+			delete(rawMsg, key)
+		case "notify-keyspace-events":
+			err = unpopulate(val, "NotifyKeyspaceEvents", &c.NotifyKeyspaceEvents)
 			delete(rawMsg, key)
 		case "preferred-data-archive-auth-method":
 			err = unpopulate(val, "PreferredDataArchiveAuthMethod", &c.PreferredDataArchiveAuthMethod)
@@ -447,6 +451,7 @@ func (c *CreateParameters) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type CreateProperties.
 func (c CreateProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "disableAccessKeyAuthentication", c.DisableAccessKeyAuthentication)
 	populate(objectMap, "enableNonSslPort", c.EnableNonSSLPort)
 	populate(objectMap, "minimumTlsVersion", c.MinimumTLSVersion)
 	populate(objectMap, "publicNetworkAccess", c.PublicNetworkAccess)
@@ -472,6 +477,9 @@ func (c *CreateProperties) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "disableAccessKeyAuthentication":
+			err = unpopulate(val, "DisableAccessKeyAuthentication", &c.DisableAccessKeyAuthentication)
+			delete(rawMsg, key)
 		case "enableNonSslPort":
 			err = unpopulate(val, "EnableNonSSLPort", &c.EnableNonSSLPort)
 			delete(rawMsg, key)
@@ -1722,6 +1730,7 @@ func (p *PrivateLinkServiceConnectionState) UnmarshalJSON(data []byte) error {
 func (p Properties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "accessKeys", p.AccessKeys)
+	populate(objectMap, "disableAccessKeyAuthentication", p.DisableAccessKeyAuthentication)
 	populate(objectMap, "enableNonSslPort", p.EnableNonSSLPort)
 	populate(objectMap, "hostName", p.HostName)
 	populate(objectMap, "instances", p.Instances)
@@ -1756,6 +1765,9 @@ func (p *Properties) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "accessKeys":
 			err = unpopulate(val, "AccessKeys", &p.AccessKeys)
+			delete(rawMsg, key)
+		case "disableAccessKeyAuthentication":
+			err = unpopulate(val, "DisableAccessKeyAuthentication", &p.DisableAccessKeyAuthentication)
 			delete(rawMsg, key)
 		case "enableNonSslPort":
 			err = unpopulate(val, "EnableNonSSLPort", &p.EnableNonSSLPort)
@@ -2077,6 +2089,7 @@ func (u *UpdateParameters) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type UpdateProperties.
 func (u UpdateProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "disableAccessKeyAuthentication", u.DisableAccessKeyAuthentication)
 	populate(objectMap, "enableNonSslPort", u.EnableNonSSLPort)
 	populate(objectMap, "minimumTlsVersion", u.MinimumTLSVersion)
 	populate(objectMap, "publicNetworkAccess", u.PublicNetworkAccess)
@@ -2100,6 +2113,9 @@ func (u *UpdateProperties) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "disableAccessKeyAuthentication":
+			err = unpopulate(val, "DisableAccessKeyAuthentication", &u.DisableAccessKeyAuthentication)
+			delete(rawMsg, key)
 		case "enableNonSslPort":
 			err = unpopulate(val, "EnableNonSSLPort", &u.EnableNonSSLPort)
 			delete(rawMsg, key)
@@ -2228,7 +2244,7 @@ func populateAny(m map[string]any, k string, v any) {
 }
 
 func unpopulate(data json.RawMessage, fn string, v any) error {
-	if data == nil {
+	if data == nil || string(data) == "null" {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {

@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v2/testutil"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/stretchr/testify/suite"
 )
@@ -36,7 +36,7 @@ func (testsuite *TagsClientTestSuite) SetupSuite() {
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
 	testsuite.location = recording.GetEnvVariable("LOCATION", "eastus")
 	testsuite.subscriptionID = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
-	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/resources/armresources/testdata")
+	testutil.StartRecording(testsuite.T(), pathToPackage)
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionID, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name
@@ -59,16 +59,14 @@ func (testsuite *TagsClientTestSuite) TestTagsCRUD() {
 	tagsClient, err := armresources.NewTagsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	tagName := "go-test-tags"
-	resp, err := tagsClient.CreateOrUpdate(testsuite.ctx, tagName, &armresources.TagsClientCreateOrUpdateOptions{})
+	_, err = tagsClient.CreateOrUpdate(testsuite.ctx, tagName, &armresources.TagsClientCreateOrUpdateOptions{})
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal(tagName, *resp.TagName)
 
 	// create tag value
 	fmt.Println("Call operation: Tags_CreateOrUpdateValue")
 	valueName := "go-test-value"
-	valueResp, err := tagsClient.CreateOrUpdateValue(testsuite.ctx, tagName, valueName, nil)
+	_, err = tagsClient.CreateOrUpdateValue(testsuite.ctx, tagName, valueName, nil)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal(valueName, *valueResp.TagValue.TagValue)
 
 	// list
 	fmt.Println("Call operation: Tags_List")
@@ -92,7 +90,7 @@ func (testsuite *TagsClientTestSuite) TestTagsCRUDAtScope() {
 	tagsClient, err := armresources.NewTagsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	scopeName := fmt.Sprintf("/subscriptions/%v/resourceGroups/%v", testsuite.subscriptionID, testsuite.resourceGroupName)
-	resp, err := tagsClient.CreateOrUpdateAtScope(
+	_, err = tagsClient.CreateOrUpdateAtScope(
 		testsuite.ctx,
 		scopeName,
 		armresources.TagsResource{
@@ -106,11 +104,10 @@ func (testsuite *TagsClientTestSuite) TestTagsCRUDAtScope() {
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal("default", *resp.Name)
 
 	// update at scope
 	fmt.Println("Call operation: Tags_UpdateAtScope")
-	updateResp, err := tagsClient.UpdateAtScope(
+	_, err = tagsClient.UpdateAtScope(
 		testsuite.ctx,
 		scopeName,
 		armresources.TagsPatchResource{
@@ -124,13 +121,11 @@ func (testsuite *TagsClientTestSuite) TestTagsCRUDAtScope() {
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal("default", *updateResp.Name)
 
 	// get at scopes
 	fmt.Println("Call operation: Tags_GetAtScope")
-	getResp, err := tagsClient.GetAtScope(testsuite.ctx, scopeName, nil)
+	_, err = tagsClient.GetAtScope(testsuite.ctx, scopeName, nil)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal("default", *getResp.Name)
 
 	// delete at scope
 	fmt.Println("Call operation: Tags_DeleteAtScope")

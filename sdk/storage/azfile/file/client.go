@@ -569,6 +569,7 @@ func (f *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFil
 			return 0, err
 		}
 		size = *props.ContentLength - do.Range.Offset
+		do.Range.Count = size
 	} else {
 		size = count
 	}

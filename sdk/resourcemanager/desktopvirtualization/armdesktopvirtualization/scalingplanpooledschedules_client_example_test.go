@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/ScalingPlanPooledSchedule_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2024-04-03/examples/ScalingPlanPooledSchedule_Get.json
 func ExampleScalingPlanPooledSchedulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,6 +40,14 @@ func ExampleScalingPlanPooledSchedulesClient_Get() {
 	// 	Name: to.Ptr("scalingPlanScheduleWeekdays1"),
 	// 	Type: to.Ptr("Microsoft.DesktopVirtualization/scalingPlans/pooledSchedules"),
 	// 	ID: to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup1/providers/Microsoft.DesktopVirtualization/scalingPlans/scalingPlan1/pooledSchedules/scalingPlanScheduleWeekdays1"),
+	// 	SystemData: &armdesktopvirtualization.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
+	// 		CreatedBy: to.Ptr("user1"),
+	// 		CreatedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("user2"),
+	// 		LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
+	// 	},
 	// 	Properties: &armdesktopvirtualization.ScalingPlanPooledScheduleProperties{
 	// 		DaysOfWeek: []*armdesktopvirtualization.DayOfWeek{
 	// 			to.Ptr(armdesktopvirtualization.DayOfWeekMonday),
@@ -75,18 +83,10 @@ func ExampleScalingPlanPooledSchedulesClient_Get() {
 	// 				Minute: to.Ptr[int32](0),
 	// 			},
 	// 		},
-	// 		SystemData: &armdesktopvirtualization.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
-	// 			CreatedBy: to.Ptr("user1"),
-	// 			CreatedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("user2"),
-	// 			LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
-	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/ScalingPlanPooledSchedule_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2024-04-03/examples/ScalingPlanPooledSchedule_Create.json
 func ExampleScalingPlanPooledSchedulesClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -144,6 +144,14 @@ func ExampleScalingPlanPooledSchedulesClient_Create() {
 	// 	Name: to.Ptr("scalingPlanScheduleWeekdays1"),
 	// 	Type: to.Ptr("Microsoft.DesktopVirtualization/scalingPlans/pooledSchedules"),
 	// 	ID: to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup1/providers/Microsoft.DesktopVirtualization/scalingPlans/scalingPlan1/pooledSchedules/scalingPlanScheduleWeekdays1"),
+	// 	SystemData: &armdesktopvirtualization.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
+	// 		CreatedBy: to.Ptr("user1"),
+	// 		CreatedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("user2"),
+	// 		LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
+	// 	},
 	// 	Properties: &armdesktopvirtualization.ScalingPlanPooledScheduleProperties{
 	// 		DaysOfWeek: []*armdesktopvirtualization.DayOfWeek{
 	// 			to.Ptr(armdesktopvirtualization.DayOfWeekMonday),
@@ -179,18 +187,10 @@ func ExampleScalingPlanPooledSchedulesClient_Create() {
 	// 				Minute: to.Ptr[int32](0),
 	// 			},
 	// 		},
-	// 		SystemData: &armdesktopvirtualization.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
-	// 			CreatedBy: to.Ptr("user1"),
-	// 			CreatedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("user2"),
-	// 			LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
-	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/ScalingPlanPooledSchedule_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2024-04-03/examples/ScalingPlanPooledSchedule_Delete.json
 func ExampleScalingPlanPooledSchedulesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -207,7 +207,7 @@ func ExampleScalingPlanPooledSchedulesClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/ScalingPlanPooledSchedule_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2024-04-03/examples/ScalingPlanPooledSchedule_Update.json
 func ExampleScalingPlanPooledSchedulesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -248,6 +248,14 @@ func ExampleScalingPlanPooledSchedulesClient_Update() {
 	// 	Name: to.Ptr("scalingPlanScheduleWeekdays1"),
 	// 	Type: to.Ptr("Microsoft.DesktopVirtualization/scalingPlans/pooledSchedules"),
 	// 	ID: to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup1/providers/Microsoft.DesktopVirtualization/scalingPlans/scalingPlan1/pooledSchedules/scalingPlanScheduleWeekdays1"),
+	// 	SystemData: &armdesktopvirtualization.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
+	// 		CreatedBy: to.Ptr("user1"),
+	// 		CreatedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("user2"),
+	// 		LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
+	// 	},
 	// 	Properties: &armdesktopvirtualization.ScalingPlanPooledScheduleProperties{
 	// 		DaysOfWeek: []*armdesktopvirtualization.DayOfWeek{
 	// 			to.Ptr(armdesktopvirtualization.DayOfWeekMonday),
@@ -283,18 +291,10 @@ func ExampleScalingPlanPooledSchedulesClient_Update() {
 	// 				Minute: to.Ptr[int32](0),
 	// 			},
 	// 		},
-	// 		SystemData: &armdesktopvirtualization.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
-	// 			CreatedBy: to.Ptr("user1"),
-	// 			CreatedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("user2"),
-	// 			LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
-	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/ScalingPlanPooledSchedule_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2024-04-03/examples/ScalingPlanPooledSchedule_List.json
 func ExampleScalingPlanPooledSchedulesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -325,6 +325,14 @@ func ExampleScalingPlanPooledSchedulesClient_NewListPager() {
 		// 			Name: to.Ptr("scalingPlanScheduleWeekdays1"),
 		// 			Type: to.Ptr("Microsoft.DesktopVirtualization/scalingPlans/pooledSchedules"),
 		// 			ID: to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup1/providers/Microsoft.DesktopVirtualization/scalingPlans/scalingPlan1/pooledSchedules/scalingPlanScheduleWeekdays1"),
+		// 			SystemData: &armdesktopvirtualization.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
+		// 				CreatedBy: to.Ptr("user1"),
+		// 				CreatedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("user2"),
+		// 				LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
+		// 			},
 		// 			Properties: &armdesktopvirtualization.ScalingPlanPooledScheduleProperties{
 		// 				DaysOfWeek: []*armdesktopvirtualization.DayOfWeek{
 		// 					to.Ptr(armdesktopvirtualization.DayOfWeekMonday),
@@ -360,6 +368,11 @@ func ExampleScalingPlanPooledSchedulesClient_NewListPager() {
 		// 						Minute: to.Ptr[int32](0),
 		// 					},
 		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("scalingPlanScheduleWeekends1"),
+		// 				Type: to.Ptr("Microsoft.DesktopVirtualization/scalingPlans/pooledSchedules"),
+		// 				ID: to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup1/providers/Microsoft.DesktopVirtualization/scalingPlans/scalingPlan1/pooledSchedules/scalingPlanScheduleWeekends1"),
 		// 				SystemData: &armdesktopvirtualization.SystemData{
 		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
 		// 					CreatedBy: to.Ptr("user1"),
@@ -368,11 +381,6 @@ func ExampleScalingPlanPooledSchedulesClient_NewListPager() {
 		// 					LastModifiedBy: to.Ptr("user2"),
 		// 					LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
 		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("scalingPlanScheduleWeekends1"),
-		// 				Type: to.Ptr("Microsoft.DesktopVirtualization/scalingPlans/pooledSchedules"),
-		// 				ID: to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup1/providers/Microsoft.DesktopVirtualization/scalingPlans/scalingPlan1/pooledSchedules/scalingPlanScheduleWeekends1"),
 		// 				Properties: &armdesktopvirtualization.ScalingPlanPooledScheduleProperties{
 		// 					DaysOfWeek: []*armdesktopvirtualization.DayOfWeek{
 		// 						to.Ptr(armdesktopvirtualization.DayOfWeekSaturday),
@@ -404,14 +412,6 @@ func ExampleScalingPlanPooledSchedulesClient_NewListPager() {
 		// 							Hour: to.Ptr[int32](6),
 		// 							Minute: to.Ptr[int32](0),
 		// 						},
-		// 					},
-		// 					SystemData: &armdesktopvirtualization.SystemData{
-		// 						CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
-		// 						CreatedBy: to.Ptr("user1"),
-		// 						CreatedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
-		// 						LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
-		// 						LastModifiedBy: to.Ptr("user2"),
-		// 						LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
 		// 					},
 		// 			}},
 		// 		}

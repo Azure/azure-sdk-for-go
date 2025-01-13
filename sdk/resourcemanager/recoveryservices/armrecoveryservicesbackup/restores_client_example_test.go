@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d402f685809d6d08be9c0b45065cadd7d78ab870/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreRequest.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreRequest.json
 func ExampleRestoresClient_BeginTrigger_restoreDisksWithIaasVmRestoreRequest() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,7 +51,7 @@ func ExampleRestoresClient_BeginTrigger_restoreDisksWithIaasVmRestoreRequest() {
 				TargetDiskNetworkAccessOption: to.Ptr(armrecoveryservicesbackup.TargetDiskNetworkAccessOptionEnablePrivateAccessForAllDisks),
 			},
 		},
-	}, nil)
+	}, &armrecoveryservicesbackup.RestoresClientBeginTriggerOptions{XMSAuthorizationAuxiliary: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -61,7 +61,7 @@ func ExampleRestoresClient_BeginTrigger_restoreDisksWithIaasVmRestoreRequest() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d402f685809d6d08be9c0b45065cadd7d78ab870/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreRequest_IdentityBasedRestoreDetails.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreRequest_IdentityBasedRestoreDetails.json
 func ExampleRestoresClient_BeginTrigger_restoreDisksWithIaasVmRestoreRequestWithIdentityBasedRestoreDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,7 +92,7 @@ func ExampleRestoresClient_BeginTrigger_restoreDisksWithIaasVmRestoreRequestWith
 			Region:                       to.Ptr("southeastasia"),
 			SourceResourceID:             to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg/providers/Microsoft.Compute/virtualMachines/netvmtestv2vm1"),
 		},
-	}, nil)
+	}, &armrecoveryservicesbackup.RestoresClientBeginTriggerOptions{XMSAuthorizationAuxiliary: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -102,7 +102,7 @@ func ExampleRestoresClient_BeginTrigger_restoreDisksWithIaasVmRestoreRequestWith
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d402f685809d6d08be9c0b45065cadd7d78ab870/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreWithRehydrationRequest.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreWithRehydrationRequest.json
 func ExampleRestoresClient_BeginTrigger_restoreDisksWithIaasVmRestoreWithRehydrationRequest() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,7 +131,7 @@ func ExampleRestoresClient_BeginTrigger_restoreDisksWithIaasVmRestoreWithRehydra
 				RehydrationRetentionDuration: to.Ptr("P7D"),
 			},
 		},
-	}, nil)
+	}, &armrecoveryservicesbackup.RestoresClientBeginTriggerOptions{XMSAuthorizationAuxiliary: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -141,7 +141,7 @@ func ExampleRestoresClient_BeginTrigger_restoreDisksWithIaasVmRestoreWithRehydra
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d402f685809d6d08be9c0b45065cadd7d78ab870/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest.json
 func ExampleRestoresClient_BeginTrigger_restoreToNewAzureIaasVmWithIaasVmRestoreRequest() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -173,7 +173,7 @@ func ExampleRestoresClient_BeginTrigger_restoreToNewAzureIaasVmWithIaasVmRestore
 			TargetVirtualMachineID:       to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg2/providers/Microsoft.Compute/virtualmachines/RSMDALRVM981435"),
 			VirtualNetworkID:             to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRg/providers/Microsoft.Network/virtualNetworks/testNet"),
 		},
-	}, nil)
+	}, &armrecoveryservicesbackup.RestoresClientBeginTriggerOptions{XMSAuthorizationAuxiliary: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -183,7 +183,7 @@ func ExampleRestoresClient_BeginTrigger_restoreToNewAzureIaasVmWithIaasVmRestore
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d402f685809d6d08be9c0b45065cadd7d78ab870/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest_IdentityBasedRestoreDetails.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest_IdentityBasedRestoreDetails.json
 func ExampleRestoresClient_BeginTrigger_restoreToNewAzureIaasVmWithIaasVmRestoreRequestWithIdentityBasedRestoreDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -217,7 +217,7 @@ func ExampleRestoresClient_BeginTrigger_restoreToNewAzureIaasVmWithIaasVmRestore
 			TargetVirtualMachineID:       to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg2/providers/Microsoft.Compute/virtualmachines/RSMDALRVM981435"),
 			VirtualNetworkID:             to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRg/providers/Microsoft.Network/virtualNetworks/testNet"),
 		},
-	}, nil)
+	}, &armrecoveryservicesbackup.RestoresClientBeginTriggerOptions{XMSAuthorizationAuxiliary: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -227,7 +227,7 @@ func ExampleRestoresClient_BeginTrigger_restoreToNewAzureIaasVmWithIaasVmRestore
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d402f685809d6d08be9c0b45065cadd7d78ab870/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreWithRehydrationRequest.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreWithRehydrationRequest.json
 func ExampleRestoresClient_BeginTrigger_restoreToNewAzureIaasVmWithIaasVmRestoreWithRehydrationRequest() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -260,7 +260,7 @@ func ExampleRestoresClient_BeginTrigger_restoreToNewAzureIaasVmWithIaasVmRestore
 				RehydrationRetentionDuration: to.Ptr("P7D"),
 			},
 		},
-	}, nil)
+	}, &armrecoveryservicesbackup.RestoresClientBeginTriggerOptions{XMSAuthorizationAuxiliary: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

@@ -11,20 +11,18 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/conn"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
 	"github.com/stretchr/testify/require"
 )
 
 func TestAdminClient_Queue_Forwarding(t *testing.T) {
-	cs := test.GetConnectionString(t)
-	adminClient, err := admin.NewClientFromConnectionString(cs, nil)
-	require.NoError(t, err)
+	adminClient := newAdminClientForTest(t, nil)
+	client := newServiceBusClientForTest(t, nil)
 
 	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
 	forwardToQueueName := fmt.Sprintf("queue-fwd-%X", time.Now().UnixNano())
 
-	_, err = adminClient.CreateQueue(context.Background(), forwardToQueueName, nil)
+	_, err := adminClient.CreateQueue(context.Background(), forwardToQueueName, nil)
 	require.NoError(t, err)
 
 	defer func() {
@@ -32,10 +30,7 @@ func TestAdminClient_Queue_Forwarding(t *testing.T) {
 		require.NoError(t, err)
 	}()
 
-	parsed, err := conn.ParseConnectionString(cs)
-	require.NoError(t, err)
-
-	formatted := fmt.Sprintf("%s%s", fmt.Sprintf("https://%s/", parsed.FullyQualifiedNamespace), forwardToQueueName)
+	formatted := fmt.Sprintf("%s%s", fmt.Sprintf("https://%s/", test.GetIdentityVars(t).Endpoint), forwardToQueueName)
 
 	createResp, err := adminClient.CreateQueue(context.Background(), queueName, &admin.CreateQueueOptions{
 		Properties: &admin.QueueProperties{
@@ -58,9 +53,6 @@ func TestAdminClient_Queue_Forwarding(t *testing.T) {
 	require.NoError(t, err)
 	require.EqualValues(t, createResp.QueueProperties, getResp.QueueProperties)
 
-	client, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
-	require.NoError(t, err)
-
 	sender, err := client.NewSender(queueName, nil)
 	require.NoError(t, err)
 
@@ -79,15 +71,13 @@ func TestAdminClient_Queue_Forwarding(t *testing.T) {
 }
 
 func TestAdminClient_GetQueueRuntimeProperties(t *testing.T) {
-	adminClient, err := admin.NewClientFromConnectionString(test.GetConnectionString(t), nil)
-	require.NoError(t, err)
+	adminClient := newAdminClientForTest(t, nil)
+	client := newServiceBusClientForTest(t, nil)
 
-	client, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
-	require.NoError(t, err)
 	defer client.Close(context.Background())
 
 	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
-	_, err = adminClient.CreateQueue(context.Background(), queueName, nil)
+	_, err := adminClient.CreateQueue(context.Background(), queueName, nil)
 	require.NoError(t, err)
 
 	defer deleteQueue(t, adminClient, queueName)
@@ -135,56 +125,67 @@ func TestAdminClient_GetQueueRuntimeProperties(t *testing.T) {
 }
 
 func TestAdminClient_TopicAndSubscriptionRuntimeProperties(t *testing.T) {
-	adminClient, err := admin.NewClientFromConnectionString(test.GetConnectionString(t), nil)
-	require.NoError(t, err)
+	fn := func(t *testing.T, useTokenCreds bool) {
+		adminClient := newAdminClientForTest(t, &test.NewClientOptions[admin.ClientOptions]{
+			UseConnectionString: !useTokenCreds,
+		})
+		client := newServiceBusClientForTest(t, &test.NewClientOptions[ClientOptions]{
+			UseConnectionString: !useTokenCreds,
+		})
 
-	client, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
-	require.NoError(t, err)
+		topicName := fmt.Sprintf("topic-%X", time.Now().UnixNano())
+		subscriptionName := fmt.Sprintf("sub-%X", time.Now().UnixNano())
 
-	topicName := fmt.Sprintf("topic-%X", time.Now().UnixNano())
-	subscriptionName := fmt.Sprintf("sub-%X", time.Now().UnixNano())
+		_, err := adminClient.CreateTopic(context.Background(), topicName, nil)
+		require.NoError(t, err)
 
-	_, err = adminClient.CreateTopic(context.Background(), topicName, nil)
-	require.NoError(t, err)
+		addSubResp, err := adminClient.CreateSubscription(context.Background(), topicName, subscriptionName, nil)
+		require.NoError(t, err)
+		require.NotNil(t, addSubResp)
+		require.EqualValues(t, 10, *addSubResp.MaxDeliveryCount)
 
-	addSubResp, err := adminClient.CreateSubscription(context.Background(), topicName, subscriptionName, nil)
-	require.NoError(t, err)
-	require.NotNil(t, addSubResp)
-	require.EqualValues(t, 10, *addSubResp.MaxDeliveryCount)
+		defer deleteSubscription(t, adminClient, topicName, subscriptionName)
 
-	defer deleteSubscription(t, adminClient, topicName, subscriptionName)
+		sender, err := client.NewSender(topicName, nil)
+		require.NoError(t, err)
 
-	sender, err := client.NewSender(topicName, nil)
-	require.NoError(t, err)
+		// trigger some stats
 
-	// trigger some stats
+		//  Scheduled messages are accounted for in the topic stats.
+		_, err = sender.ScheduleMessages(context.Background(), []*Message{
+			{Body: []byte("hello")},
+		}, time.Now().Add(2*time.Hour), nil)
+		require.NoError(t, err)
 
-	//  Scheduled messages are accounted for in the topic stats.
-	_, err = sender.ScheduleMessages(context.Background(), []*Message{
-		{Body: []byte("hello")},
-	}, time.Now().Add(2*time.Hour), nil)
-	require.NoError(t, err)
+		// validate the topic runtime properties
+		getRuntimeResp, err := adminClient.GetTopicRuntimeProperties(context.Background(), topicName, nil)
+		require.NoError(t, err)
 
-	// validate the topic runtime properties
-	getRuntimeResp, err := adminClient.GetTopicRuntimeProperties(context.Background(), topicName, nil)
-	require.NoError(t, err)
+		require.EqualValues(t, 1, getRuntimeResp.SubscriptionCount)
+		require.False(t, getRuntimeResp.CreatedAt.IsZero())
+		require.False(t, getRuntimeResp.UpdatedAt.IsZero())
+		require.False(t, getRuntimeResp.AccessedAt.IsZero())
 
-	require.EqualValues(t, 1, getRuntimeResp.SubscriptionCount)
-	require.False(t, getRuntimeResp.CreatedAt.IsZero())
-	require.False(t, getRuntimeResp.UpdatedAt.IsZero())
-	require.False(t, getRuntimeResp.AccessedAt.IsZero())
+		require.Greater(t, getRuntimeResp.SizeInBytes, int64(0))
+		require.EqualValues(t, int32(1), getRuntimeResp.ScheduledMessageCount)
 
-	require.Greater(t, getRuntimeResp.SizeInBytes, int64(0))
-	require.EqualValues(t, int32(1), getRuntimeResp.ScheduledMessageCount)
+		// validate subscription runtime properties
+		getSubResp, err := adminClient.GetSubscriptionRuntimeProperties(context.Background(), topicName, subscriptionName, nil)
+		require.NoError(t, err)
 
-	// validate subscription runtime properties
-	getSubResp, err := adminClient.GetSubscriptionRuntimeProperties(context.Background(), topicName, subscriptionName, nil)
-	require.NoError(t, err)
+		require.EqualValues(t, 0, getSubResp.ActiveMessageCount)
+		require.False(t, getSubResp.CreatedAt.IsZero())
+		require.False(t, getSubResp.UpdatedAt.IsZero())
+		require.False(t, getSubResp.AccessedAt.IsZero())
+	}
 
-	require.EqualValues(t, 0, getSubResp.ActiveMessageCount)
-	require.False(t, getSubResp.CreatedAt.IsZero())
-	require.False(t, getSubResp.UpdatedAt.IsZero())
-	require.False(t, getSubResp.AccessedAt.IsZero())
+	t.Run("UsingTokenCredential", func(t *testing.T) {
+		fn(t, true)
+	})
+
+	t.Run("UsingConnectionString", func(t *testing.T) {
+		fn(t, false)
+	})
 }
 
 func TestAdminClient_StringToTime(t *testing.T) {

@@ -10,6 +10,7 @@ import (
 	"bytes"
 	"context"
 	"crypto/md5"
+	"crypto/rand"
 	"encoding/binary"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
@@ -17,7 +18,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 	"hash/crc64"
 	"io"
-	"math/rand"
 	"net/http"
 	"os"
 	"strconv"
@@ -104,7 +104,8 @@ func (u userAgentTest) Do(req *policy.Request) (*http.Response, error) {
 
 	currentUserAgentHeader := req.Raw().Header.Get(userAgentHeader)
 	if !strings.HasPrefix(currentUserAgentHeader, "azsdk-go-azdatalake/"+exported.ModuleVersion) {
-		return nil, fmt.Errorf(currentUserAgentHeader + " user agent doesn't match expected agent: azsdk-go-azdatalake/vx.xx.xx")
+		return nil, fmt.Errorf("%s user agent doesn't match expected agent: "+
+			"azsdk-go-azdatalake/vx.xx.xx", currentUserAgentHeader)
 	}
 
 	return &http.Response{
@@ -239,7 +240,9 @@ func (s *RecordedTestSuite) TestCreateFileWithCPK() {
 	_require.NoError(err)
 	_require.NotNil(resp)
 	_require.Equal(*(resp.IsServerEncrypted), true)
-	_require.Equal(resp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.Equal(resp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+	}
 }
 
 func (s *RecordedTestSuite) TestCreateFileIfModifiedSinceTrue() {
@@ -526,7 +529,7 @@ func (s *UnrecordedTestSuite) TestCreateFileWithExpiryAbsolute() {
 	resp1, err := fClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.NotNil(resp1.ExpiresOn)
-	_require.Equal(expiryTimeAbsolute.UTC().Format(http.TimeFormat), (*resp1.ExpiresOn).UTC().Format(http.TimeFormat))
+	_require.Equal(expiryTimeAbsolute.UTC().Format(http.TimeFormat), resp1.ExpiresOn.UTC().Format(http.TimeFormat))
 }
 
 func (s *RecordedTestSuite) TestCreateFileWithExpiryNever() {
@@ -2072,7 +2075,9 @@ func (s *RecordedTestSuite) TestFileSetMetadataWithCPK() {
 	res, err := fClient.SetMetadata(context.Background(), testcommon.BasicMetadata, opts)
 	_require.NoError(err)
 	_require.Equal(*(res.IsServerEncrypted), true)
-	_require.Equal(res.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.Equal(res.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+	}
 }
 
 func validatePropertiesSet(_require *require.Assertions, fileClient *file.Client, disposition string) {
@@ -2455,11 +2460,8 @@ func (s *RecordedTestSuite) TestRenameFileWithNilAccessConditions() {
 		AccessConditions: nil,
 	}
 
-	//resp1, err := fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_require.NoError(err)
-	//_require.NotNil(resp1)
-	//_require.Contains(resp1.NewFileClient.DFSURL(), "newName")
 }
 
 func (s *RecordedTestSuite) TestRenameFileIfModifiedSinceTrue() {
@@ -2491,11 +2493,8 @@ func (s *RecordedTestSuite) TestRenameFileIfModifiedSinceTrue() {
 			},
 		},
 	}
-	//resp1, err := fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_require.NoError(err)
-	//_require.NotNil(resp1)
-	//_require.Contains(resp1.NewFileClient.DFSURL(), "newName")
 }
 
 func (s *RecordedTestSuite) TestRenameFileIfModifiedSinceFalse() {
@@ -2528,7 +2527,6 @@ func (s *RecordedTestSuite) TestRenameFileIfModifiedSinceFalse() {
 		},
 	}
 
-	//_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
 
 	_require.Error(err)
@@ -2565,11 +2563,8 @@ func (s *RecordedTestSuite) TestRenameFileIfUnmodifiedSinceTrue() {
 		},
 	}
 
-	//resp1, err := fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_require.NoError(err)
-	//_require.NotNil(resp1)
-	//_require.Contains(resp1.NewFileClient.DFSURL(), "newName")
 }
 
 func (s *RecordedTestSuite) TestRenameFileIfUnmodifiedSinceFalse() {
@@ -2602,7 +2597,6 @@ func (s *RecordedTestSuite) TestRenameFileIfUnmodifiedSinceFalse() {
 		},
 	}
 
-	//_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
 
 	_require.Error(err)
@@ -2639,11 +2633,8 @@ func (s *RecordedTestSuite) TestRenameFileIfETagMatch() {
 		},
 	}
 
-	//resp1, err := fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_require.NoError(err)
-	//_require.NotNil(resp1)
-	//_require.Contains(resp1.NewFileClient.DFSURL(), "newName")
 }
 
 func (s *RecordedTestSuite) TestRenameFileIfETagMatchFalse() {
@@ -2676,7 +2667,6 @@ func (s *RecordedTestSuite) TestRenameFileIfETagMatchFalse() {
 		},
 	}
 
-	//_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = fClient.Rename(context.Background(), "newName", renameFileOpts)
 
 	_require.Error(err)
@@ -2705,7 +2695,8 @@ func (s *UnrecordedTestSuite) TestFileUploadDownloadStream() {
 	_require.NotNil(resp)
 
 	content := make([]byte, fileSize)
-	_, err = rand.Read(content)
+	var b [8]byte
+	_, err = rand.Read(b[:])
 	_require.NoError(err)
 	md5Value := md5.Sum(content)
 	contentMD5 := md5Value[:]
@@ -2780,6 +2771,45 @@ func (s *RecordedTestSuite) TestFileUploadDownloadSmallStream() {
 	_require.Equal(*gResp2.ContentLength, fileSize)
 }
 
+func (s *RecordedTestSuite) TestFileUploadDownloadStreamWithAcl() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	acl := "user::rwx,group::r-x,other::rwx"
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	var fileSize int64 = 10 * 1024
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.Create(context.Background(), &file.CreateOptions{ACL: &acl})
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	_, content := testcommon.GenerateData(int(fileSize))
+
+	err = fClient.UploadStream(context.Background(), streaming.NopCloser(bytes.NewReader(content)), &file.UploadStreamOptions{
+		Concurrency: 5,
+		ChunkSize:   2 * 1024,
+	})
+	_require.NoError(err)
+
+	dResp, err := fClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*dResp.AccessControlList, acl)
+
+	gResp2, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp2.AccessControlList, acl)
+}
+
 func (s *RecordedTestSuite) TestFileUploadTinyStream() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -2849,7 +2879,8 @@ func (s *UnrecordedTestSuite) TestFileUploadDownloadStreamWithCPK() {
 	_require.NotNil(resp)
 
 	content := make([]byte, fileSize)
-	_, err = rand.Read(content)
+	var b [8]byte
+	_, err = rand.Read(b[:])
 	_require.NoError(err)
 	md5Value := md5.Sum(content)
 	contentMD5 := md5Value[:]
@@ -2949,7 +2980,7 @@ func (s *UnrecordedTestSuite) TestFileUploadDownloadStreamWithCPKNegative() {
 
 	_, err = fClient.DownloadStream(context.Background(), &file.DownloadStreamOptions{})
 	_require.Error(err)
-	_require.ErrorContains(err, "PathUsesCustomerSpecifiedEncryption")
+	_require.ErrorContains(err, "BlobUsesCustomerSpecifiedEncryption")
 }
 
 func (s *UnrecordedTestSuite) TestFileUploadFile() {
@@ -3277,6 +3308,43 @@ func (s *UnrecordedTestSuite) TestFileGetPropertiesWithEncryptionContext() {
 	_require.NoError(err)
 	_require.NotNil(response)
 	_require.Nil(response2.EncryptionContext)
+}
+
+func (s *RecordedTestSuite) TestFileGetPropertiesACL() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	owner := "4cf4e284-f6a8-4540-b53e-c3469af032dc"
+	group := owner
+	acl := "user::rwx,group::r-x,other::rwx"
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	createFileOpts := &file.CreateOptions{
+		Owner: &owner,
+		Group: &group,
+		ACL:   &acl,
+	}
+
+	resp, err := fClient.Create(context.Background(), createFileOpts)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	response, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(*response.AccessControlList)
+	_require.Equal(*response.Owner, owner)
+	_require.Equal(*response.Group, group)
+	_require.Equal(*response.AccessControlList, acl)
 }
 
 func (s *RecordedTestSuite) TestSmallFileUploadFileWithAccessConditionsAndHTTPHeaders() {
@@ -3729,7 +3797,7 @@ func (s *RecordedTestSuite) TestFileAppendDataWithAcquireLease() {
 
 	time.Sleep(time.Second * 15)
 
-	//Check if the lease was acquired for the right duration
+	// Check if the lease was acquired for the right duration
 	gResp, err := srcFClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.Equal(lease.StateTypeExpired, *gResp.LeaseState)
@@ -3765,7 +3833,7 @@ func (s *RecordedTestSuite) TestFileAppendDataWithRenewLease() {
 	_require.NoError(err)
 	_require.Equal(lease.StateTypeLeased, *gResp2.LeaseState)
 
-	//Wait for 15 seconds for lease to expire
+	// Wait for 15 seconds for lease to expire
 	time.Sleep(15 * time.Second)
 
 	gResp, err := srcFClient.GetProperties(context.Background(), nil)
@@ -4037,7 +4105,9 @@ func (s *RecordedTestSuite) TestFileAppendAndFlushDataWithCPK() {
 	_require.NoError(err)
 	_require.Equal(*gResp2.ContentLength, int64(contentSize))
 	_require.Equal(true, *(gResp2.IsServerEncrypted))
-	_require.Equal(testcommon.TestCPKByValue.EncryptionKeySHA256, gResp2.EncryptionKeySHA256)
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.Equal(testcommon.TestCPKByValue.EncryptionKeySHA256, gResp2.EncryptionKeySHA256)
+	}
 }
 
 func (s *RecordedTestSuite) TestFileAppendAndFlushDataWithLeasedFile() {
@@ -4931,7 +5001,9 @@ func (s *RecordedTestSuite) TestFileUploadDownloadSmallFileWithCPK() {
 	_require.NoError(err)
 	_require.Equal(*gResp2.ContentLength, fileSize)
 	_require.Equal(*(gResp2.IsServerEncrypted), true)
-	_require.Equal(gResp2.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.Equal(gResp2.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+	}
 }
 
 func (s *RecordedTestSuite) TestFileUploadDownloadWithProgress() {
@@ -5254,7 +5326,9 @@ func (s *RecordedTestSuite) TestFileDownloadBufferWithCPK() {
 	_require.NoError(err)
 	_require.Equal(*gResp2.ContentLength, fileSize)
 	_require.Equal(*(gResp2.IsServerEncrypted), true)
-	_require.Equal(gResp2.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.Equal(gResp2.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+	}
 }
 
 func (s *RecordedTestSuite) TestFileGetPropertiesResponseCapture() {
@@ -5375,8 +5449,10 @@ func (s *RecordedTestSuite) TestFileGetPropertiesWithCPK() {
 	response, err := fClient.GetProperties(ctxWithRespFile, GetPropertiesOpts)
 	_require.NoError(err)
 	_require.NotNil(response)
-	_require.NotNil(respFromCtxFile.Header.Get("x-ms-encryption-key-sha256")) // validate that the x-ms-encryption-key-sha256 is actually populated
-	_require.Equal(testcommon.TestCPKByValue.EncryptionKeySHA256, response.EncryptionKeySHA256)
+	_require.NotNil(respFromCtxFile.Header.Get("x-ms-encryption-key-sha256"))
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.Equal(testcommon.TestCPKByValue.EncryptionKeySHA256, response.EncryptionKeySHA256)
+	}
 }
 
 func (s *UnrecordedTestSuite) TestFileCreateDeleteUsingOAuth() {
@@ -5551,4 +5627,24 @@ func (s *RecordedTestSuite) TestFileClientDefaultAudience() {
 
 	_, err = fClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
+}
+
+func (s *UnrecordedTestSuite) TestCreateSASUsingUserDelegationKeyFile() {
+	_require := require.New(s.T())
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	udSAS, err := testcommon.GetUserDelegationSAS(svcClient, "testfile", sas.FilePermissions{Read: true, Create: true, Write: true, List: true})
+	_require.NoError(err)
+
+	serviceClient, err := file.NewClientWithNoCredential(svcClient.DFSURL()+"/testfile?"+udSAS, nil)
+	_require.NoError(err)
+	_require.NotNil(serviceClient)
+
 }

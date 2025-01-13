@@ -10,7 +10,7 @@ package armdeploymentstacks
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeploymentstacks"
-	moduleVersion = "v0.2.0"
+	moduleVersion = "v1.0.0"
 )
 
 // CreatedByType - The type of identity that created the resource.
@@ -33,13 +33,13 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// DenySettingsMode - denySettings Mode.
+// DenySettingsMode - denySettings Mode that defines denied actions.
 type DenySettingsMode string
 
 const (
 	// DenySettingsModeDenyDelete - Authorized users are able to read and modify the resources, but cannot delete.
 	DenySettingsModeDenyDelete DenySettingsMode = "denyDelete"
-	// DenySettingsModeDenyWriteAndDelete - Authorized users can only read from a resource, but cannot modify or delete it.
+	// DenySettingsModeDenyWriteAndDelete - Authorized users can read from a resource, but cannot modify or delete it.
 	DenySettingsModeDenyWriteAndDelete DenySettingsMode = "denyWriteAndDelete"
 	// DenySettingsModeNone - No denyAssignments have been applied.
 	DenySettingsModeNone DenySettingsMode = "none"
@@ -65,7 +65,7 @@ const (
 	// DenyStatusModeInapplicable - denyAssignments are not supported on resources outside the scope of the deployment stack.
 	DenyStatusModeInapplicable DenyStatusMode = "inapplicable"
 	// DenyStatusModeNone - No denyAssignments have been applied.
-	DenyStatusModeNone DenyStatusMode = "None"
+	DenyStatusModeNone DenyStatusMode = "none"
 	// DenyStatusModeNotSupported - Resource type does not support denyAssignments.
 	DenyStatusModeNotSupported DenyStatusMode = "notSupported"
 	// DenyStatusModeRemovedBySystem - Deny assignment has been removed by Azure due to a resource management change (management
@@ -89,17 +89,17 @@ func PossibleDenyStatusModeValues() []DenyStatusMode {
 type DeploymentStackProvisioningState string
 
 const (
-	DeploymentStackProvisioningStateCanceled          DeploymentStackProvisioningState = "Canceled"
-	DeploymentStackProvisioningStateCanceling         DeploymentStackProvisioningState = "Canceling"
-	DeploymentStackProvisioningStateCreating          DeploymentStackProvisioningState = "Creating"
-	DeploymentStackProvisioningStateDeleting          DeploymentStackProvisioningState = "Deleting"
-	DeploymentStackProvisioningStateDeletingResources DeploymentStackProvisioningState = "DeletingResources"
-	DeploymentStackProvisioningStateDeploying         DeploymentStackProvisioningState = "Deploying"
-	DeploymentStackProvisioningStateFailed            DeploymentStackProvisioningState = "Failed"
-	DeploymentStackProvisioningStateLocking           DeploymentStackProvisioningState = "Locking"
-	DeploymentStackProvisioningStateSucceeded         DeploymentStackProvisioningState = "Succeeded"
-	DeploymentStackProvisioningStateValidating        DeploymentStackProvisioningState = "Validating"
-	DeploymentStackProvisioningStateWaiting           DeploymentStackProvisioningState = "Waiting"
+	DeploymentStackProvisioningStateCanceled                DeploymentStackProvisioningState = "canceled"
+	DeploymentStackProvisioningStateCanceling               DeploymentStackProvisioningState = "canceling"
+	DeploymentStackProvisioningStateCreating                DeploymentStackProvisioningState = "creating"
+	DeploymentStackProvisioningStateDeleting                DeploymentStackProvisioningState = "deleting"
+	DeploymentStackProvisioningStateDeletingResources       DeploymentStackProvisioningState = "deletingResources"
+	DeploymentStackProvisioningStateDeploying               DeploymentStackProvisioningState = "deploying"
+	DeploymentStackProvisioningStateFailed                  DeploymentStackProvisioningState = "failed"
+	DeploymentStackProvisioningStateSucceeded               DeploymentStackProvisioningState = "succeeded"
+	DeploymentStackProvisioningStateUpdatingDenyAssignments DeploymentStackProvisioningState = "updatingDenyAssignments"
+	DeploymentStackProvisioningStateValidating              DeploymentStackProvisioningState = "validating"
+	DeploymentStackProvisioningStateWaiting                 DeploymentStackProvisioningState = "waiting"
 )
 
 // PossibleDeploymentStackProvisioningStateValues returns the possible values for the DeploymentStackProvisioningState const type.
@@ -112,16 +112,15 @@ func PossibleDeploymentStackProvisioningStateValues() []DeploymentStackProvision
 		DeploymentStackProvisioningStateDeletingResources,
 		DeploymentStackProvisioningStateDeploying,
 		DeploymentStackProvisioningStateFailed,
-		DeploymentStackProvisioningStateLocking,
 		DeploymentStackProvisioningStateSucceeded,
+		DeploymentStackProvisioningStateUpdatingDenyAssignments,
 		DeploymentStackProvisioningStateValidating,
 		DeploymentStackProvisioningStateWaiting,
 	}
 }
 
-// DeploymentStacksDeleteDetachEnum - Specifies the action that should be taken on the resource when the deployment stack
-// is deleted. Delete will attempt to delete the resource from Azure. Detach will leave the resource in it's current
-// state.
+// DeploymentStacksDeleteDetachEnum - Specifies an action for a newly unmanaged resource. Delete will attempt to delete the
+// resource from Azure. Detach will leave the resource in it's current state.
 type DeploymentStacksDeleteDetachEnum string
 
 const (
@@ -145,9 +144,7 @@ const (
 	// deployment, or can be deleted manually.
 	ResourceStatusModeDeleteFailed ResourceStatusMode = "deleteFailed"
 	// ResourceStatusModeManaged - This resource is managed by the deployment stack.
-	ResourceStatusModeManaged ResourceStatusMode = "Managed"
-	// ResourceStatusModeNone - No denyAssignments have been applied.
-	ResourceStatusModeNone ResourceStatusMode = "None"
+	ResourceStatusModeManaged ResourceStatusMode = "managed"
 	// ResourceStatusModeRemoveDenyFailed - Unable to remove the deny assignment on resource.
 	ResourceStatusModeRemoveDenyFailed ResourceStatusMode = "removeDenyFailed"
 )
@@ -157,7 +154,6 @@ func PossibleResourceStatusModeValues() []ResourceStatusMode {
 	return []ResourceStatusMode{
 		ResourceStatusModeDeleteFailed,
 		ResourceStatusModeManaged,
-		ResourceStatusModeNone,
 		ResourceStatusModeRemoveDenyFailed,
 	}
 }

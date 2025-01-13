@@ -10,7 +10,7 @@ package armbilling
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
-	moduleVersion = "v0.7.0"
+	moduleVersion = "v1.0.0"
 )
 
 // AcceptanceMode - The mode of acceptance for an agreement.
@@ -20,6 +20,10 @@ const (
 	AcceptanceModeClickToAccept AcceptanceMode = "ClickToAccept"
 	AcceptanceModeESignEmbedded AcceptanceMode = "ESignEmbedded"
 	AcceptanceModeESignOffline  AcceptanceMode = "ESignOffline"
+	AcceptanceModeImplicit      AcceptanceMode = "Implicit"
+	AcceptanceModeOffline       AcceptanceMode = "Offline"
+	AcceptanceModeOther         AcceptanceMode = "Other"
+	AcceptanceModePhysicalSign  AcceptanceMode = "PhysicalSign"
 )
 
 // PossibleAcceptanceModeValues returns the possible values for the AcceptanceMode const type.
@@ -28,6 +32,28 @@ func PossibleAcceptanceModeValues() []AcceptanceMode {
 		AcceptanceModeClickToAccept,
 		AcceptanceModeESignEmbedded,
 		AcceptanceModeESignOffline,
+		AcceptanceModeImplicit,
+		AcceptanceModeOffline,
+		AcceptanceModeOther,
+		AcceptanceModePhysicalSign,
+	}
+}
+
+// AccessDecision - Access Decision, specifies access is allowed or not.
+type AccessDecision string
+
+const (
+	AccessDecisionAllowed    AccessDecision = "Allowed"
+	AccessDecisionNotAllowed AccessDecision = "NotAllowed"
+	AccessDecisionOther      AccessDecision = "Other"
+)
+
+// PossibleAccessDecisionValues returns the possible values for the AccessDecision const type.
+func PossibleAccessDecisionValues() []AccessDecision {
+	return []AccessDecision{
+		AccessDecisionAllowed,
+		AccessDecisionNotAllowed,
+		AccessDecisionOther,
 	}
 }
 
@@ -40,8 +66,12 @@ const (
 	AccountStatusDisabled    AccountStatus = "Disabled"
 	AccountStatusExpired     AccountStatus = "Expired"
 	AccountStatusExtended    AccountStatus = "Extended"
+	AccountStatusNew         AccountStatus = "New"
+	AccountStatusOther       AccountStatus = "Other"
+	AccountStatusPending     AccountStatus = "Pending"
 	AccountStatusTerminated  AccountStatus = "Terminated"
 	AccountStatusTransferred AccountStatus = "Transferred"
+	AccountStatusUnderReview AccountStatus = "UnderReview"
 )
 
 // PossibleAccountStatusValues returns the possible values for the AccountStatus const type.
@@ -52,8 +82,34 @@ func PossibleAccountStatusValues() []AccountStatus {
 		AccountStatusDisabled,
 		AccountStatusExpired,
 		AccountStatusExtended,
+		AccountStatusNew,
+		AccountStatusOther,
+		AccountStatusPending,
 		AccountStatusTerminated,
 		AccountStatusTransferred,
+		AccountStatusUnderReview,
+	}
+}
+
+// AccountSubType - The tier of the account.
+type AccountSubType string
+
+const (
+	AccountSubTypeEnterprise   AccountSubType = "Enterprise"
+	AccountSubTypeIndividual   AccountSubType = "Individual"
+	AccountSubTypeNone         AccountSubType = "None"
+	AccountSubTypeOther        AccountSubType = "Other"
+	AccountSubTypeProfessional AccountSubType = "Professional"
+)
+
+// PossibleAccountSubTypeValues returns the possible values for the AccountSubType const type.
+func PossibleAccountSubTypeValues() []AccountSubType {
+	return []AccountSubType{
+		AccountSubTypeEnterprise,
+		AccountSubTypeIndividual,
+		AccountSubTypeNone,
+		AccountSubTypeOther,
+		AccountSubTypeProfessional,
 	}
 }
 
@@ -61,17 +117,29 @@ func PossibleAccountStatusValues() []AccountStatus {
 type AccountType string
 
 const (
-	AccountTypeEnterprise AccountType = "Enterprise"
-	AccountTypeIndividual AccountType = "Individual"
-	AccountTypePartner    AccountType = "Partner"
+	AccountTypeBusiness       AccountType = "Business"
+	AccountTypeClassicPartner AccountType = "ClassicPartner"
+	AccountTypeEnterprise     AccountType = "Enterprise"
+	AccountTypeIndividual     AccountType = "Individual"
+	AccountTypeInternal       AccountType = "Internal"
+	AccountTypeOther          AccountType = "Other"
+	AccountTypePartner        AccountType = "Partner"
+	AccountTypeReseller       AccountType = "Reseller"
+	AccountTypeTenant         AccountType = "Tenant"
 )
 
 // PossibleAccountTypeValues returns the possible values for the AccountType const type.
 func PossibleAccountTypeValues() []AccountType {
 	return []AccountType{
+		AccountTypeBusiness,
+		AccountTypeClassicPartner,
 		AccountTypeEnterprise,
 		AccountTypeIndividual,
+		AccountTypeInternal,
+		AccountTypeOther,
 		AccountTypePartner,
+		AccountTypeReseller,
+		AccountTypeTenant,
 	}
 }
 
@@ -80,6 +148,7 @@ type AddressValidationStatus string
 
 const (
 	AddressValidationStatusInvalid AddressValidationStatus = "Invalid"
+	AddressValidationStatusOther   AddressValidationStatus = "Other"
 	AddressValidationStatusValid   AddressValidationStatus = "Valid"
 )
 
@@ -87,6 +156,7 @@ const (
 func PossibleAddressValidationStatusValues() []AddressValidationStatus {
 	return []AddressValidationStatus{
 		AddressValidationStatusInvalid,
+		AddressValidationStatusOther,
 		AddressValidationStatusValid,
 	}
 }
@@ -99,6 +169,7 @@ const (
 	AgreementTypeMicrosoftCustomerAgreement     AgreementType = "MicrosoftCustomerAgreement"
 	AgreementTypeMicrosoftOnlineServicesProgram AgreementType = "MicrosoftOnlineServicesProgram"
 	AgreementTypeMicrosoftPartnerAgreement      AgreementType = "MicrosoftPartnerAgreement"
+	AgreementTypeOther                          AgreementType = "Other"
 )
 
 // PossibleAgreementTypeValues returns the possible values for the AgreementType const type.
@@ -108,6 +179,25 @@ func PossibleAgreementTypeValues() []AgreementType {
 		AgreementTypeMicrosoftCustomerAgreement,
 		AgreementTypeMicrosoftOnlineServicesProgram,
 		AgreementTypeMicrosoftPartnerAgreement,
+		AgreementTypeOther,
+	}
+}
+
+// AppliedScopeType - Type of the Applied Scope.
+type AppliedScopeType string
+
+const (
+	AppliedScopeTypeManagementGroup AppliedScopeType = "ManagementGroup"
+	AppliedScopeTypeShared          AppliedScopeType = "Shared"
+	AppliedScopeTypeSingle          AppliedScopeType = "Single"
+)
+
+// PossibleAppliedScopeTypeValues returns the possible values for the AppliedScopeType const type.
+func PossibleAppliedScopeTypeValues() []AppliedScopeType {
+	return []AppliedScopeType{
+		AppliedScopeTypeManagementGroup,
+		AppliedScopeTypeShared,
+		AppliedScopeTypeSingle,
 	}
 }
 
@@ -127,37 +217,62 @@ func PossibleAutoRenewValues() []AutoRenew {
 	}
 }
 
-// BillingFrequency - The frequency at which the product will be billed.
-type BillingFrequency string
+// BillingAccountStatusReasonCode - Reason for the specified billing account status.
+type BillingAccountStatusReasonCode string
 
 const (
-	BillingFrequencyMonthly    BillingFrequency = "Monthly"
-	BillingFrequencyOneTime    BillingFrequency = "OneTime"
-	BillingFrequencyUsageBased BillingFrequency = "UsageBased"
+	BillingAccountStatusReasonCodeExpired             BillingAccountStatusReasonCode = "Expired"
+	BillingAccountStatusReasonCodeManuallyTerminated  BillingAccountStatusReasonCode = "ManuallyTerminated"
+	BillingAccountStatusReasonCodeOther               BillingAccountStatusReasonCode = "Other"
+	BillingAccountStatusReasonCodeTerminateProcessing BillingAccountStatusReasonCode = "TerminateProcessing"
+	BillingAccountStatusReasonCodeTransferred         BillingAccountStatusReasonCode = "Transferred"
+	BillingAccountStatusReasonCodeUnusualActivity     BillingAccountStatusReasonCode = "UnusualActivity"
 )
 
-// PossibleBillingFrequencyValues returns the possible values for the BillingFrequency const type.
-func PossibleBillingFrequencyValues() []BillingFrequency {
-	return []BillingFrequency{
-		BillingFrequencyMonthly,
-		BillingFrequencyOneTime,
-		BillingFrequencyUsageBased,
+// PossibleBillingAccountStatusReasonCodeValues returns the possible values for the BillingAccountStatusReasonCode const type.
+func PossibleBillingAccountStatusReasonCodeValues() []BillingAccountStatusReasonCode {
+	return []BillingAccountStatusReasonCode{
+		BillingAccountStatusReasonCodeExpired,
+		BillingAccountStatusReasonCodeManuallyTerminated,
+		BillingAccountStatusReasonCodeOther,
+		BillingAccountStatusReasonCodeTerminateProcessing,
+		BillingAccountStatusReasonCodeTransferred,
+		BillingAccountStatusReasonCodeUnusualActivity,
 	}
 }
 
-// BillingProfileSpendingLimit - The billing profile spending limit.
-type BillingProfileSpendingLimit string
+// BillingManagementTenantState - The state determines whether users from the associated tenant can be assigned roles for
+// commerce activities like viewing and downloading invoices, managing payments, and making purchases.
+type BillingManagementTenantState string
 
 const (
-	BillingProfileSpendingLimitOff BillingProfileSpendingLimit = "Off"
-	BillingProfileSpendingLimitOn  BillingProfileSpendingLimit = "On"
+	BillingManagementTenantStateActive     BillingManagementTenantState = "Active"
+	BillingManagementTenantStateNotAllowed BillingManagementTenantState = "NotAllowed"
+	BillingManagementTenantStateOther      BillingManagementTenantState = "Other"
+	BillingManagementTenantStateRevoked    BillingManagementTenantState = "Revoked"
 )
 
-// PossibleBillingProfileSpendingLimitValues returns the possible values for the BillingProfileSpendingLimit const type.
-func PossibleBillingProfileSpendingLimitValues() []BillingProfileSpendingLimit {
-	return []BillingProfileSpendingLimit{
-		BillingProfileSpendingLimitOff,
-		BillingProfileSpendingLimitOn,
+// PossibleBillingManagementTenantStateValues returns the possible values for the BillingManagementTenantState const type.
+func PossibleBillingManagementTenantStateValues() []BillingManagementTenantState {
+	return []BillingManagementTenantState{
+		BillingManagementTenantStateActive,
+		BillingManagementTenantStateNotAllowed,
+		BillingManagementTenantStateOther,
+		BillingManagementTenantStateRevoked,
+	}
+}
+
+// BillingPlan - Represents the billing plan in ISO 8601 format. Required only for monthly purchases.
+type BillingPlan string
+
+const (
+	BillingPlanP1M BillingPlan = "P1M"
+)
+
+// PossibleBillingPlanValues returns the possible values for the BillingPlan const type.
+func PossibleBillingPlanValues() []BillingPlan {
+	return []BillingPlan{
+		BillingPlanP1M,
 	}
 }
 
@@ -165,16 +280,22 @@ func PossibleBillingProfileSpendingLimitValues() []BillingProfileSpendingLimit {
 type BillingProfileStatus string
 
 const (
-	BillingProfileStatusActive   BillingProfileStatus = "Active"
-	BillingProfileStatusDisabled BillingProfileStatus = "Disabled"
-	BillingProfileStatusWarned   BillingProfileStatus = "Warned"
+	BillingProfileStatusActive      BillingProfileStatus = "Active"
+	BillingProfileStatusDeleted     BillingProfileStatus = "Deleted"
+	BillingProfileStatusDisabled    BillingProfileStatus = "Disabled"
+	BillingProfileStatusOther       BillingProfileStatus = "Other"
+	BillingProfileStatusUnderReview BillingProfileStatus = "UnderReview"
+	BillingProfileStatusWarned      BillingProfileStatus = "Warned"
 )
 
 // PossibleBillingProfileStatusValues returns the possible values for the BillingProfileStatus const type.
 func PossibleBillingProfileStatusValues() []BillingProfileStatus {
 	return []BillingProfileStatus{
 		BillingProfileStatusActive,
+		BillingProfileStatusDeleted,
 		BillingProfileStatusDisabled,
+		BillingProfileStatusOther,
+		BillingProfileStatusUnderReview,
 		BillingProfileStatusWarned,
 	}
 }
@@ -183,77 +304,375 @@ func PossibleBillingProfileStatusValues() []BillingProfileStatus {
 type BillingProfileStatusReasonCode string
 
 const (
+	BillingProfileStatusReasonCodeOther                BillingProfileStatusReasonCode = "Other"
 	BillingProfileStatusReasonCodePastDue              BillingProfileStatusReasonCode = "PastDue"
 	BillingProfileStatusReasonCodeSpendingLimitExpired BillingProfileStatusReasonCode = "SpendingLimitExpired"
 	BillingProfileStatusReasonCodeSpendingLimitReached BillingProfileStatusReasonCode = "SpendingLimitReached"
+	BillingProfileStatusReasonCodeUnusualActivity      BillingProfileStatusReasonCode = "UnusualActivity"
 )
 
 // PossibleBillingProfileStatusReasonCodeValues returns the possible values for the BillingProfileStatusReasonCode const type.
 func PossibleBillingProfileStatusReasonCodeValues() []BillingProfileStatusReasonCode {
 	return []BillingProfileStatusReasonCode{
+		BillingProfileStatusReasonCodeOther,
 		BillingProfileStatusReasonCodePastDue,
 		BillingProfileStatusReasonCodeSpendingLimitExpired,
 		BillingProfileStatusReasonCodeSpendingLimitReached,
+		BillingProfileStatusReasonCodeUnusualActivity,
 	}
 }
 
-// BillingRelationshipType - Identifies which services and purchases are paid by a billing profile.
+// BillingRelationshipType - Identifies the billing relationships represented by a billing account or billing profile. The
+// billing relationship may be between Microsoft, the customer, and/or a third-party.
 type BillingRelationshipType string
 
 const (
+	BillingRelationshipTypeCSPCustomer      BillingRelationshipType = "CSPCustomer"
 	BillingRelationshipTypeCSPPartner       BillingRelationshipType = "CSPPartner"
 	BillingRelationshipTypeDirect           BillingRelationshipType = "Direct"
 	BillingRelationshipTypeIndirectCustomer BillingRelationshipType = "IndirectCustomer"
 	BillingRelationshipTypeIndirectPartner  BillingRelationshipType = "IndirectPartner"
+	BillingRelationshipTypeOther            BillingRelationshipType = "Other"
 )
 
 // PossibleBillingRelationshipTypeValues returns the possible values for the BillingRelationshipType const type.
 func PossibleBillingRelationshipTypeValues() []BillingRelationshipType {
 	return []BillingRelationshipType{
+		BillingRelationshipTypeCSPCustomer,
 		BillingRelationshipTypeCSPPartner,
 		BillingRelationshipTypeDirect,
 		BillingRelationshipTypeIndirectCustomer,
 		BillingRelationshipTypeIndirectPartner,
+		BillingRelationshipTypeOther,
 	}
 }
 
-// BillingSubscriptionStatusType - The current billing status of the subscription.
-type BillingSubscriptionStatusType string
+// BillingRequestStatus - Status of billing request.
+type BillingRequestStatus string
 
 const (
-	BillingSubscriptionStatusTypeAbandoned BillingSubscriptionStatusType = "Abandoned"
-	BillingSubscriptionStatusTypeActive    BillingSubscriptionStatusType = "Active"
-	BillingSubscriptionStatusTypeDeleted   BillingSubscriptionStatusType = "Deleted"
-	BillingSubscriptionStatusTypeInactive  BillingSubscriptionStatusType = "Inactive"
-	BillingSubscriptionStatusTypeWarning   BillingSubscriptionStatusType = "Warning"
+	BillingRequestStatusApproved  BillingRequestStatus = "Approved"
+	BillingRequestStatusCancelled BillingRequestStatus = "Cancelled"
+	BillingRequestStatusCompleted BillingRequestStatus = "Completed"
+	BillingRequestStatusDeclined  BillingRequestStatus = "Declined"
+	BillingRequestStatusExpired   BillingRequestStatus = "Expired"
+	BillingRequestStatusOther     BillingRequestStatus = "Other"
+	BillingRequestStatusPending   BillingRequestStatus = "Pending"
 )
 
-// PossibleBillingSubscriptionStatusTypeValues returns the possible values for the BillingSubscriptionStatusType const type.
-func PossibleBillingSubscriptionStatusTypeValues() []BillingSubscriptionStatusType {
-	return []BillingSubscriptionStatusType{
-		BillingSubscriptionStatusTypeAbandoned,
-		BillingSubscriptionStatusTypeActive,
-		BillingSubscriptionStatusTypeDeleted,
-		BillingSubscriptionStatusTypeInactive,
-		BillingSubscriptionStatusTypeWarning,
+// PossibleBillingRequestStatusValues returns the possible values for the BillingRequestStatus const type.
+func PossibleBillingRequestStatusValues() []BillingRequestStatus {
+	return []BillingRequestStatus{
+		BillingRequestStatusApproved,
+		BillingRequestStatusCancelled,
+		BillingRequestStatusCompleted,
+		BillingRequestStatusDeclined,
+		BillingRequestStatusExpired,
+		BillingRequestStatusOther,
+		BillingRequestStatusPending,
 	}
 }
 
-// Category - The category of the agreement signed by a customer.
+// BillingRequestType - Type of billing request.
+type BillingRequestType string
+
+const (
+	BillingRequestTypeInvoiceAccess       BillingRequestType = "InvoiceAccess"
+	BillingRequestTypeOther               BillingRequestType = "Other"
+	BillingRequestTypeProvisioningAccess  BillingRequestType = "ProvisioningAccess"
+	BillingRequestTypeRoleAssignment      BillingRequestType = "RoleAssignment"
+	BillingRequestTypeUpdateBillingPolicy BillingRequestType = "UpdateBillingPolicy"
+)
+
+// PossibleBillingRequestTypeValues returns the possible values for the BillingRequestType const type.
+func PossibleBillingRequestTypeValues() []BillingRequestType {
+	return []BillingRequestType{
+		BillingRequestTypeInvoiceAccess,
+		BillingRequestTypeOther,
+		BillingRequestTypeProvisioningAccess,
+		BillingRequestTypeRoleAssignment,
+		BillingRequestTypeUpdateBillingPolicy,
+	}
+}
+
+// BillingSubscriptionOperationStatus - The status of an operation on the subscription. When None, there is no ongoing operation.
+// When LockedForUpdate, write operations will be blocked on the Billing Subscription. Other is the default value
+// and you may need to refer to the latest API version for more details.
+type BillingSubscriptionOperationStatus string
+
+const (
+	BillingSubscriptionOperationStatusLockedForUpdate BillingSubscriptionOperationStatus = "LockedForUpdate"
+	BillingSubscriptionOperationStatusNone            BillingSubscriptionOperationStatus = "None"
+	BillingSubscriptionOperationStatusOther           BillingSubscriptionOperationStatus = "Other"
+)
+
+// PossibleBillingSubscriptionOperationStatusValues returns the possible values for the BillingSubscriptionOperationStatus const type.
+func PossibleBillingSubscriptionOperationStatusValues() []BillingSubscriptionOperationStatus {
+	return []BillingSubscriptionOperationStatus{
+		BillingSubscriptionOperationStatusLockedForUpdate,
+		BillingSubscriptionOperationStatusNone,
+		BillingSubscriptionOperationStatusOther,
+	}
+}
+
+// BillingSubscriptionStatus - The subscription status.
+type BillingSubscriptionStatus string
+
+const (
+	BillingSubscriptionStatusActive    BillingSubscriptionStatus = "Active"
+	BillingSubscriptionStatusAutoRenew BillingSubscriptionStatus = "AutoRenew"
+	BillingSubscriptionStatusCancelled BillingSubscriptionStatus = "Cancelled"
+	BillingSubscriptionStatusDeleted   BillingSubscriptionStatus = "Deleted"
+	BillingSubscriptionStatusDisabled  BillingSubscriptionStatus = "Disabled"
+	BillingSubscriptionStatusExpired   BillingSubscriptionStatus = "Expired"
+	BillingSubscriptionStatusExpiring  BillingSubscriptionStatus = "Expiring"
+	BillingSubscriptionStatusFailed    BillingSubscriptionStatus = "Failed"
+	BillingSubscriptionStatusOther     BillingSubscriptionStatus = "Other"
+	BillingSubscriptionStatusSuspended BillingSubscriptionStatus = "Suspended"
+	BillingSubscriptionStatusUnknown   BillingSubscriptionStatus = "Unknown"
+	BillingSubscriptionStatusWarned    BillingSubscriptionStatus = "Warned"
+)
+
+// PossibleBillingSubscriptionStatusValues returns the possible values for the BillingSubscriptionStatus const type.
+func PossibleBillingSubscriptionStatusValues() []BillingSubscriptionStatus {
+	return []BillingSubscriptionStatus{
+		BillingSubscriptionStatusActive,
+		BillingSubscriptionStatusAutoRenew,
+		BillingSubscriptionStatusCancelled,
+		BillingSubscriptionStatusDeleted,
+		BillingSubscriptionStatusDisabled,
+		BillingSubscriptionStatusExpired,
+		BillingSubscriptionStatusExpiring,
+		BillingSubscriptionStatusFailed,
+		BillingSubscriptionStatusOther,
+		BillingSubscriptionStatusSuspended,
+		BillingSubscriptionStatusUnknown,
+		BillingSubscriptionStatusWarned,
+	}
+}
+
+// Cancellation - The policy override for the subscription indicates whether the self-serve cancellation or seat reduction
+// is allowed.
+type Cancellation string
+
+const (
+	CancellationAllowed    Cancellation = "Allowed"
+	CancellationNotAllowed Cancellation = "NotAllowed"
+)
+
+// PossibleCancellationValues returns the possible values for the Cancellation const type.
+func PossibleCancellationValues() []Cancellation {
+	return []Cancellation{
+		CancellationAllowed,
+		CancellationNotAllowed,
+	}
+}
+
+// CancellationReason - Cancellation reason.
+type CancellationReason string
+
+const (
+	CancellationReasonCompromise CancellationReason = "Compromise"
+	CancellationReasonDispute    CancellationReason = "Dispute"
+	CancellationReasonOther      CancellationReason = "Other"
+)
+
+// PossibleCancellationReasonValues returns the possible values for the CancellationReason const type.
+func PossibleCancellationReasonValues() []CancellationReason {
+	return []CancellationReason{
+		CancellationReasonCompromise,
+		CancellationReasonDispute,
+		CancellationReasonOther,
+	}
+}
+
+// Category - The category of the agreement.
 type Category string
 
 const (
-	CategoryAffiliatePurchaseTerms     Category = "AffiliatePurchaseTerms"
-	CategoryMicrosoftCustomerAgreement Category = "MicrosoftCustomerAgreement"
-	CategoryOther                      Category = "Other"
+	CategoryAffiliatePurchaseTerms         Category = "AffiliatePurchaseTerms"
+	CategoryIndirectForGovernmentAgreement Category = "IndirectForGovernmentAgreement"
+	CategoryMicrosoftCustomerAgreement     Category = "MicrosoftCustomerAgreement"
+	CategoryMicrosoftPartnerAgreement      Category = "MicrosoftPartnerAgreement"
+	CategoryOther                          Category = "Other"
+	CategoryUKCloudComputeFramework        Category = "UKCloudComputeFramework"
 )
 
 // PossibleCategoryValues returns the possible values for the Category const type.
 func PossibleCategoryValues() []Category {
 	return []Category{
 		CategoryAffiliatePurchaseTerms,
+		CategoryIndirectForGovernmentAgreement,
 		CategoryMicrosoftCustomerAgreement,
+		CategoryMicrosoftPartnerAgreement,
 		CategoryOther,
+		CategoryUKCloudComputeFramework,
+	}
+}
+
+// CommitmentGrain - Commitment grain.
+type CommitmentGrain string
+
+const (
+	CommitmentGrainHourly CommitmentGrain = "Hourly"
+)
+
+// PossibleCommitmentGrainValues returns the possible values for the CommitmentGrain const type.
+func PossibleCommitmentGrainValues() []CommitmentGrain {
+	return []CommitmentGrain{
+		CommitmentGrainHourly,
+	}
+}
+
+// CreatedByType - The type of identity that created the resource.
+type CreatedByType string
+
+const (
+	CreatedByTypeApplication     CreatedByType = "Application"
+	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
+	CreatedByTypeUser            CreatedByType = "User"
+)
+
+// PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{
+		CreatedByTypeApplication,
+		CreatedByTypeKey,
+		CreatedByTypeManagedIdentity,
+		CreatedByTypeUser,
+	}
+}
+
+// CreditType - The credit type of the transaction. Applies only to credited transactions.
+type CreditType string
+
+const (
+	CreditTypeAzureCreditOffer    CreditType = "AzureCreditOffer"
+	CreditTypeAzureFreeCredit     CreditType = "AzureFreeCredit"
+	CreditTypeOther               CreditType = "Other"
+	CreditTypeRefund              CreditType = "Refund"
+	CreditTypeServiceInterruption CreditType = "ServiceInterruption"
+)
+
+// PossibleCreditTypeValues returns the possible values for the CreditType const type.
+func PossibleCreditTypeValues() []CreditType {
+	return []CreditType{
+		CreditTypeAzureCreditOffer,
+		CreditTypeAzureFreeCredit,
+		CreditTypeOther,
+		CreditTypeRefund,
+		CreditTypeServiceInterruption,
+	}
+}
+
+// CustomerStatus - Identifies the status of an customer. This is an upcoming property that will be populated in the future.
+type CustomerStatus string
+
+const (
+	CustomerStatusActive      CustomerStatus = "Active"
+	CustomerStatusDeleted     CustomerStatus = "Deleted"
+	CustomerStatusDisabled    CustomerStatus = "Disabled"
+	CustomerStatusOther       CustomerStatus = "Other"
+	CustomerStatusPending     CustomerStatus = "Pending"
+	CustomerStatusUnderReview CustomerStatus = "UnderReview"
+	CustomerStatusWarned      CustomerStatus = "Warned"
+)
+
+// PossibleCustomerStatusValues returns the possible values for the CustomerStatus const type.
+func PossibleCustomerStatusValues() []CustomerStatus {
+	return []CustomerStatus{
+		CustomerStatusActive,
+		CustomerStatusDeleted,
+		CustomerStatusDisabled,
+		CustomerStatusOther,
+		CustomerStatusPending,
+		CustomerStatusUnderReview,
+		CustomerStatusWarned,
+	}
+}
+
+// DeleteBillingProfileEligibilityCode - Code of the delete invoice section eligibility response.
+type DeleteBillingProfileEligibilityCode string
+
+const (
+	DeleteBillingProfileEligibilityCodeActiveBillingSubscriptions DeleteBillingProfileEligibilityCode = "ActiveBillingSubscriptions"
+	DeleteBillingProfileEligibilityCodeActiveCreditCard           DeleteBillingProfileEligibilityCode = "ActiveCreditCard"
+	DeleteBillingProfileEligibilityCodeActiveCredits              DeleteBillingProfileEligibilityCode = "ActiveCredits"
+	DeleteBillingProfileEligibilityCodeLastBillingProfile         DeleteBillingProfileEligibilityCode = "LastBillingProfile"
+	DeleteBillingProfileEligibilityCodeNone                       DeleteBillingProfileEligibilityCode = "None"
+	DeleteBillingProfileEligibilityCodeNotSupported               DeleteBillingProfileEligibilityCode = "NotSupported"
+	DeleteBillingProfileEligibilityCodeOutstandingCharges         DeleteBillingProfileEligibilityCode = "OutstandingCharges"
+	DeleteBillingProfileEligibilityCodePendingCharges             DeleteBillingProfileEligibilityCode = "PendingCharges"
+	DeleteBillingProfileEligibilityCodeReservedInstances          DeleteBillingProfileEligibilityCode = "ReservedInstances"
+)
+
+// PossibleDeleteBillingProfileEligibilityCodeValues returns the possible values for the DeleteBillingProfileEligibilityCode const type.
+func PossibleDeleteBillingProfileEligibilityCodeValues() []DeleteBillingProfileEligibilityCode {
+	return []DeleteBillingProfileEligibilityCode{
+		DeleteBillingProfileEligibilityCodeActiveBillingSubscriptions,
+		DeleteBillingProfileEligibilityCodeActiveCreditCard,
+		DeleteBillingProfileEligibilityCodeActiveCredits,
+		DeleteBillingProfileEligibilityCodeLastBillingProfile,
+		DeleteBillingProfileEligibilityCodeNone,
+		DeleteBillingProfileEligibilityCodeNotSupported,
+		DeleteBillingProfileEligibilityCodeOutstandingCharges,
+		DeleteBillingProfileEligibilityCodePendingCharges,
+		DeleteBillingProfileEligibilityCodeReservedInstances,
+	}
+}
+
+// DeleteBillingProfileEligibilityStatus - Status describing if billing profile is eligible to be deleted.
+type DeleteBillingProfileEligibilityStatus string
+
+const (
+	DeleteBillingProfileEligibilityStatusAllowed    DeleteBillingProfileEligibilityStatus = "Allowed"
+	DeleteBillingProfileEligibilityStatusNotAllowed DeleteBillingProfileEligibilityStatus = "NotAllowed"
+)
+
+// PossibleDeleteBillingProfileEligibilityStatusValues returns the possible values for the DeleteBillingProfileEligibilityStatus const type.
+func PossibleDeleteBillingProfileEligibilityStatusValues() []DeleteBillingProfileEligibilityStatus {
+	return []DeleteBillingProfileEligibilityStatus{
+		DeleteBillingProfileEligibilityStatusAllowed,
+		DeleteBillingProfileEligibilityStatusNotAllowed,
+	}
+}
+
+// DeleteInvoiceSectionEligibilityCode - Code for the delete invoice section validation.
+type DeleteInvoiceSectionEligibilityCode string
+
+const (
+	DeleteInvoiceSectionEligibilityCodeActiveAzurePlans           DeleteInvoiceSectionEligibilityCode = "ActiveAzurePlans"
+	DeleteInvoiceSectionEligibilityCodeActiveBillingSubscriptions DeleteInvoiceSectionEligibilityCode = "ActiveBillingSubscriptions"
+	DeleteInvoiceSectionEligibilityCodeLastInvoiceSection         DeleteInvoiceSectionEligibilityCode = "LastInvoiceSection"
+	DeleteInvoiceSectionEligibilityCodeOther                      DeleteInvoiceSectionEligibilityCode = "Other"
+	DeleteInvoiceSectionEligibilityCodeReservedInstances          DeleteInvoiceSectionEligibilityCode = "ReservedInstances"
+)
+
+// PossibleDeleteInvoiceSectionEligibilityCodeValues returns the possible values for the DeleteInvoiceSectionEligibilityCode const type.
+func PossibleDeleteInvoiceSectionEligibilityCodeValues() []DeleteInvoiceSectionEligibilityCode {
+	return []DeleteInvoiceSectionEligibilityCode{
+		DeleteInvoiceSectionEligibilityCodeActiveAzurePlans,
+		DeleteInvoiceSectionEligibilityCodeActiveBillingSubscriptions,
+		DeleteInvoiceSectionEligibilityCodeLastInvoiceSection,
+		DeleteInvoiceSectionEligibilityCodeOther,
+		DeleteInvoiceSectionEligibilityCodeReservedInstances,
+	}
+}
+
+// DeleteInvoiceSectionEligibilityStatus - Status describing if invoice section is eligible to be deleted.
+type DeleteInvoiceSectionEligibilityStatus string
+
+const (
+	DeleteInvoiceSectionEligibilityStatusAllowed    DeleteInvoiceSectionEligibilityStatus = "Allowed"
+	DeleteInvoiceSectionEligibilityStatusNotAllowed DeleteInvoiceSectionEligibilityStatus = "NotAllowed"
+)
+
+// PossibleDeleteInvoiceSectionEligibilityStatusValues returns the possible values for the DeleteInvoiceSectionEligibilityStatus const type.
+func PossibleDeleteInvoiceSectionEligibilityStatusValues() []DeleteInvoiceSectionEligibilityStatus {
+	return []DeleteInvoiceSectionEligibilityStatus{
+		DeleteInvoiceSectionEligibilityStatusAllowed,
+		DeleteInvoiceSectionEligibilityStatusNotAllowed,
 	}
 }
 
@@ -261,8 +680,9 @@ func PossibleCategoryValues() []Category {
 type DocumentSource string
 
 const (
-	DocumentSourceDRS DocumentSource = "DRS"
-	DocumentSourceENF DocumentSource = "ENF"
+	DocumentSourceDRS   DocumentSource = "DRS"
+	DocumentSourceENF   DocumentSource = "ENF"
+	DocumentSourceOther DocumentSource = "Other"
 )
 
 // PossibleDocumentSourceValues returns the possible values for the DocumentSource const type.
@@ -270,26 +690,158 @@ func PossibleDocumentSourceValues() []DocumentSource {
 	return []DocumentSource{
 		DocumentSourceDRS,
 		DocumentSourceENF,
+		DocumentSourceOther,
 	}
 }
 
-// DocumentType - The type of the document.
-type DocumentType string
+// EligibleProductType - Type of the products that can be transferred.
+type EligibleProductType string
 
 const (
-	DocumentTypeCreditNote DocumentType = "CreditNote"
-	DocumentTypeInvoice    DocumentType = "Invoice"
-	DocumentTypeTaxReceipt DocumentType = "TaxReceipt"
-	DocumentTypeVoidNote   DocumentType = "VoidNote"
+	EligibleProductTypeAzureReservation          EligibleProductType = "AzureReservation"
+	EligibleProductTypeDevTestAzureSubscription  EligibleProductType = "DevTestAzureSubscription"
+	EligibleProductTypeStandardAzureSubscription EligibleProductType = "StandardAzureSubscription"
 )
 
-// PossibleDocumentTypeValues returns the possible values for the DocumentType const type.
-func PossibleDocumentTypeValues() []DocumentType {
-	return []DocumentType{
-		DocumentTypeCreditNote,
-		DocumentTypeInvoice,
-		DocumentTypeTaxReceipt,
-		DocumentTypeVoidNote,
+// PossibleEligibleProductTypeValues returns the possible values for the EligibleProductType const type.
+func PossibleEligibleProductTypeValues() []EligibleProductType {
+	return []EligibleProductType{
+		EligibleProductTypeAzureReservation,
+		EligibleProductTypeDevTestAzureSubscription,
+		EligibleProductTypeStandardAzureSubscription,
+	}
+}
+
+// EnrollmentAccountOwnerViewCharges - The policy that controls whether account owner can view charges.
+type EnrollmentAccountOwnerViewCharges string
+
+const (
+	EnrollmentAccountOwnerViewChargesAllowed    EnrollmentAccountOwnerViewCharges = "Allowed"
+	EnrollmentAccountOwnerViewChargesDisabled   EnrollmentAccountOwnerViewCharges = "Disabled"
+	EnrollmentAccountOwnerViewChargesNotAllowed EnrollmentAccountOwnerViewCharges = "NotAllowed"
+	EnrollmentAccountOwnerViewChargesOther      EnrollmentAccountOwnerViewCharges = "Other"
+)
+
+// PossibleEnrollmentAccountOwnerViewChargesValues returns the possible values for the EnrollmentAccountOwnerViewCharges const type.
+func PossibleEnrollmentAccountOwnerViewChargesValues() []EnrollmentAccountOwnerViewCharges {
+	return []EnrollmentAccountOwnerViewCharges{
+		EnrollmentAccountOwnerViewChargesAllowed,
+		EnrollmentAccountOwnerViewChargesDisabled,
+		EnrollmentAccountOwnerViewChargesNotAllowed,
+		EnrollmentAccountOwnerViewChargesOther,
+	}
+}
+
+// EnrollmentAuthLevelState - The state showing the enrollment auth level.
+type EnrollmentAuthLevelState string
+
+const (
+	EnrollmentAuthLevelStateMicrosoftAccountOnly             EnrollmentAuthLevelState = "MicrosoftAccountOnly"
+	EnrollmentAuthLevelStateMixedAccount                     EnrollmentAuthLevelState = "MixedAccount"
+	EnrollmentAuthLevelStateOrganizationalAccountCrossTenant EnrollmentAuthLevelState = "OrganizationalAccountCrossTenant"
+	EnrollmentAuthLevelStateOrganizationalAccountOnly        EnrollmentAuthLevelState = "OrganizationalAccountOnly"
+	EnrollmentAuthLevelStateOther                            EnrollmentAuthLevelState = "Other"
+)
+
+// PossibleEnrollmentAuthLevelStateValues returns the possible values for the EnrollmentAuthLevelState const type.
+func PossibleEnrollmentAuthLevelStateValues() []EnrollmentAuthLevelState {
+	return []EnrollmentAuthLevelState{
+		EnrollmentAuthLevelStateMicrosoftAccountOnly,
+		EnrollmentAuthLevelStateMixedAccount,
+		EnrollmentAuthLevelStateOrganizationalAccountCrossTenant,
+		EnrollmentAuthLevelStateOrganizationalAccountOnly,
+		EnrollmentAuthLevelStateOther,
+	}
+}
+
+// EnrollmentDepartmentAdminViewCharges - The policy that controls whether department admin can view charges.
+type EnrollmentDepartmentAdminViewCharges string
+
+const (
+	EnrollmentDepartmentAdminViewChargesAllowed    EnrollmentDepartmentAdminViewCharges = "Allowed"
+	EnrollmentDepartmentAdminViewChargesDisabled   EnrollmentDepartmentAdminViewCharges = "Disabled"
+	EnrollmentDepartmentAdminViewChargesNotAllowed EnrollmentDepartmentAdminViewCharges = "NotAllowed"
+	EnrollmentDepartmentAdminViewChargesOther      EnrollmentDepartmentAdminViewCharges = "Other"
+)
+
+// PossibleEnrollmentDepartmentAdminViewChargesValues returns the possible values for the EnrollmentDepartmentAdminViewCharges const type.
+func PossibleEnrollmentDepartmentAdminViewChargesValues() []EnrollmentDepartmentAdminViewCharges {
+	return []EnrollmentDepartmentAdminViewCharges{
+		EnrollmentDepartmentAdminViewChargesAllowed,
+		EnrollmentDepartmentAdminViewChargesDisabled,
+		EnrollmentDepartmentAdminViewChargesNotAllowed,
+		EnrollmentDepartmentAdminViewChargesOther,
+	}
+}
+
+// ExtendedTermOption - The billing account extension opted by the company.
+type ExtendedTermOption string
+
+const (
+	ExtendedTermOptionOptedIn  ExtendedTermOption = "Opted-In"
+	ExtendedTermOptionOptedOut ExtendedTermOption = "Opted-Out"
+	ExtendedTermOptionOther    ExtendedTermOption = "Other"
+)
+
+// PossibleExtendedTermOptionValues returns the possible values for the ExtendedTermOption const type.
+func PossibleExtendedTermOptionValues() []ExtendedTermOption {
+	return []ExtendedTermOption{
+		ExtendedTermOptionOptedIn,
+		ExtendedTermOptionOptedOut,
+		ExtendedTermOptionOther,
+	}
+}
+
+// FailedPaymentReason - The reason that the payment failed.
+type FailedPaymentReason string
+
+const (
+	FailedPaymentReasonBankDeclined         FailedPaymentReason = "BankDeclined"
+	FailedPaymentReasonCardExpired          FailedPaymentReason = "CardExpired"
+	FailedPaymentReasonIncorrectCardDetails FailedPaymentReason = "IncorrectCardDetails"
+	FailedPaymentReasonOther                FailedPaymentReason = "Other"
+)
+
+// PossibleFailedPaymentReasonValues returns the possible values for the FailedPaymentReason const type.
+func PossibleFailedPaymentReasonValues() []FailedPaymentReason {
+	return []FailedPaymentReason{
+		FailedPaymentReasonBankDeclined,
+		FailedPaymentReasonCardExpired,
+		FailedPaymentReasonIncorrectCardDetails,
+		FailedPaymentReasonOther,
+	}
+}
+
+// InitiatorCustomerType - The type of customer of the transfer initiator.
+type InitiatorCustomerType string
+
+const (
+	InitiatorCustomerTypeEA      InitiatorCustomerType = "EA"
+	InitiatorCustomerTypePartner InitiatorCustomerType = "Partner"
+)
+
+// PossibleInitiatorCustomerTypeValues returns the possible values for the InitiatorCustomerType const type.
+func PossibleInitiatorCustomerTypeValues() []InitiatorCustomerType {
+	return []InitiatorCustomerType{
+		InitiatorCustomerTypeEA,
+		InitiatorCustomerTypePartner,
+	}
+}
+
+// InstanceFlexibility - Turning this on will apply the reservation discount to other VMs in the same VM size group. Only
+// specify for VirtualMachines reserved resource type.
+type InstanceFlexibility string
+
+const (
+	InstanceFlexibilityOff InstanceFlexibility = "Off"
+	InstanceFlexibilityOn  InstanceFlexibility = "On"
+)
+
+// PossibleInstanceFlexibilityValues returns the possible values for the InstanceFlexibility const type.
+func PossibleInstanceFlexibilityValues() []InstanceFlexibility {
+	return []InstanceFlexibility{
+		InstanceFlexibilityOff,
+		InstanceFlexibilityOn,
 	}
 }
 
@@ -297,8 +849,13 @@ func PossibleDocumentTypeValues() []DocumentType {
 type InvoiceDocumentType string
 
 const (
-	InvoiceDocumentTypeCreditNote InvoiceDocumentType = "CreditNote"
-	InvoiceDocumentTypeInvoice    InvoiceDocumentType = "Invoice"
+	InvoiceDocumentTypeCreditNote   InvoiceDocumentType = "CreditNote"
+	InvoiceDocumentTypeInvoice      InvoiceDocumentType = "Invoice"
+	InvoiceDocumentTypeOther        InvoiceDocumentType = "Other"
+	InvoiceDocumentTypeSummary      InvoiceDocumentType = "Summary"
+	InvoiceDocumentTypeTaxReceipt   InvoiceDocumentType = "TaxReceipt"
+	InvoiceDocumentTypeTransactions InvoiceDocumentType = "Transactions"
+	InvoiceDocumentTypeVoidNote     InvoiceDocumentType = "VoidNote"
 )
 
 // PossibleInvoiceDocumentTypeValues returns the possible values for the InvoiceDocumentType const type.
@@ -306,22 +863,78 @@ func PossibleInvoiceDocumentTypeValues() []InvoiceDocumentType {
 	return []InvoiceDocumentType{
 		InvoiceDocumentTypeCreditNote,
 		InvoiceDocumentTypeInvoice,
+		InvoiceDocumentTypeOther,
+		InvoiceDocumentTypeSummary,
+		InvoiceDocumentTypeTaxReceipt,
+		InvoiceDocumentTypeTransactions,
+		InvoiceDocumentTypeVoidNote,
 	}
 }
 
-// InvoiceSectionState - Identifies the state of an invoice section.
+// InvoiceSectionLabelManagementPolicy - The policy that controls invoice section label management at invoice section scope.
+// This is allowed by default.
+type InvoiceSectionLabelManagementPolicy string
+
+const (
+	InvoiceSectionLabelManagementPolicyAllowed    InvoiceSectionLabelManagementPolicy = "Allowed"
+	InvoiceSectionLabelManagementPolicyNotAllowed InvoiceSectionLabelManagementPolicy = "NotAllowed"
+	InvoiceSectionLabelManagementPolicyOther      InvoiceSectionLabelManagementPolicy = "Other"
+)
+
+// PossibleInvoiceSectionLabelManagementPolicyValues returns the possible values for the InvoiceSectionLabelManagementPolicy const type.
+func PossibleInvoiceSectionLabelManagementPolicyValues() []InvoiceSectionLabelManagementPolicy {
+	return []InvoiceSectionLabelManagementPolicy{
+		InvoiceSectionLabelManagementPolicyAllowed,
+		InvoiceSectionLabelManagementPolicyNotAllowed,
+		InvoiceSectionLabelManagementPolicyOther,
+	}
+}
+
+// InvoiceSectionState - Identifies the status of an invoice section.
 type InvoiceSectionState string
 
 const (
-	InvoiceSectionStateActive     InvoiceSectionState = "Active"
-	InvoiceSectionStateRestricted InvoiceSectionState = "Restricted"
+	InvoiceSectionStateActive      InvoiceSectionState = "Active"
+	InvoiceSectionStateDeleted     InvoiceSectionState = "Deleted"
+	InvoiceSectionStateDisabled    InvoiceSectionState = "Disabled"
+	InvoiceSectionStateOther       InvoiceSectionState = "Other"
+	InvoiceSectionStateRestricted  InvoiceSectionState = "Restricted"
+	InvoiceSectionStateUnderReview InvoiceSectionState = "UnderReview"
+	InvoiceSectionStateWarned      InvoiceSectionState = "Warned"
 )
 
 // PossibleInvoiceSectionStateValues returns the possible values for the InvoiceSectionState const type.
 func PossibleInvoiceSectionStateValues() []InvoiceSectionState {
 	return []InvoiceSectionState{
 		InvoiceSectionStateActive,
+		InvoiceSectionStateDeleted,
+		InvoiceSectionStateDisabled,
+		InvoiceSectionStateOther,
 		InvoiceSectionStateRestricted,
+		InvoiceSectionStateUnderReview,
+		InvoiceSectionStateWarned,
+	}
+}
+
+// InvoiceSectionStateReasonCode - Reason for the specified invoice section status.
+type InvoiceSectionStateReasonCode string
+
+const (
+	InvoiceSectionStateReasonCodeOther                InvoiceSectionStateReasonCode = "Other"
+	InvoiceSectionStateReasonCodePastDue              InvoiceSectionStateReasonCode = "PastDue"
+	InvoiceSectionStateReasonCodeSpendingLimitExpired InvoiceSectionStateReasonCode = "SpendingLimitExpired"
+	InvoiceSectionStateReasonCodeSpendingLimitReached InvoiceSectionStateReasonCode = "SpendingLimitReached"
+	InvoiceSectionStateReasonCodeUnusualActivity      InvoiceSectionStateReasonCode = "UnusualActivity"
+)
+
+// PossibleInvoiceSectionStateReasonCodeValues returns the possible values for the InvoiceSectionStateReasonCode const type.
+func PossibleInvoiceSectionStateReasonCodeValues() []InvoiceSectionStateReasonCode {
+	return []InvoiceSectionStateReasonCode{
+		InvoiceSectionStateReasonCodeOther,
+		InvoiceSectionStateReasonCodePastDue,
+		InvoiceSectionStateReasonCodeSpendingLimitExpired,
+		InvoiceSectionStateReasonCodeSpendingLimitReached,
+		InvoiceSectionStateReasonCodeUnusualActivity,
 	}
 }
 
@@ -330,6 +943,8 @@ type InvoiceStatus string
 
 const (
 	InvoiceStatusDue     InvoiceStatus = "Due"
+	InvoiceStatusLocked  InvoiceStatus = "Locked"
+	InvoiceStatusOther   InvoiceStatus = "Other"
 	InvoiceStatusOverDue InvoiceStatus = "OverDue"
 	InvoiceStatusPaid    InvoiceStatus = "Paid"
 	InvoiceStatusVoid    InvoiceStatus = "Void"
@@ -339,6 +954,8 @@ const (
 func PossibleInvoiceStatusValues() []InvoiceStatus {
 	return []InvoiceStatus{
 		InvoiceStatusDue,
+		InvoiceStatusLocked,
+		InvoiceStatusOther,
 		InvoiceStatusOverDue,
 		InvoiceStatusPaid,
 		InvoiceStatusVoid,
@@ -350,45 +967,123 @@ type InvoiceType string
 
 const (
 	InvoiceTypeAzureMarketplace InvoiceType = "AzureMarketplace"
-	InvoiceTypeAzureService     InvoiceType = "AzureService"
+	InvoiceTypeAzureServices    InvoiceType = "AzureServices"
 	InvoiceTypeAzureSupport     InvoiceType = "AzureSupport"
+	InvoiceTypeOther            InvoiceType = "Other"
 )
 
 // PossibleInvoiceTypeValues returns the possible values for the InvoiceType const type.
 func PossibleInvoiceTypeValues() []InvoiceType {
 	return []InvoiceType{
 		InvoiceTypeAzureMarketplace,
-		InvoiceTypeAzureService,
+		InvoiceTypeAzureServices,
 		InvoiceTypeAzureSupport,
+		InvoiceTypeOther,
 	}
 }
 
-// MarketplacePurchasesPolicy - The policy that controls whether Azure marketplace purchases are allowed for a billing profile.
+// MarketplacePurchasesPolicy - The policy that controls whether Azure marketplace purchases are allowed.
 type MarketplacePurchasesPolicy string
 
 const (
 	MarketplacePurchasesPolicyAllAllowed      MarketplacePurchasesPolicy = "AllAllowed"
+	MarketplacePurchasesPolicyDisabled        MarketplacePurchasesPolicy = "Disabled"
 	MarketplacePurchasesPolicyNotAllowed      MarketplacePurchasesPolicy = "NotAllowed"
 	MarketplacePurchasesPolicyOnlyFreeAllowed MarketplacePurchasesPolicy = "OnlyFreeAllowed"
+	MarketplacePurchasesPolicyOther           MarketplacePurchasesPolicy = "Other"
 )
 
 // PossibleMarketplacePurchasesPolicyValues returns the possible values for the MarketplacePurchasesPolicy const type.
 func PossibleMarketplacePurchasesPolicyValues() []MarketplacePurchasesPolicy {
 	return []MarketplacePurchasesPolicy{
 		MarketplacePurchasesPolicyAllAllowed,
+		MarketplacePurchasesPolicyDisabled,
 		MarketplacePurchasesPolicyNotAllowed,
 		MarketplacePurchasesPolicyOnlyFreeAllowed,
+		MarketplacePurchasesPolicyOther,
 	}
 }
 
-// PaymentMethodFamily - The family of payment method.
+// MarkupStatus - Markup status of enrollment, applicable only for indirect enrollments.
+type MarkupStatus string
+
+const (
+	MarkupStatusDisabled  MarkupStatus = "Disabled"
+	MarkupStatusLocked    MarkupStatus = "Locked"
+	MarkupStatusOther     MarkupStatus = "Other"
+	MarkupStatusPreview   MarkupStatus = "Preview"
+	MarkupStatusPublished MarkupStatus = "Published"
+)
+
+// PossibleMarkupStatusValues returns the possible values for the MarkupStatus const type.
+func PossibleMarkupStatusValues() []MarkupStatus {
+	return []MarkupStatus{
+		MarkupStatusDisabled,
+		MarkupStatusLocked,
+		MarkupStatusOther,
+		MarkupStatusPreview,
+		MarkupStatusPublished,
+	}
+}
+
+// MoveValidationErrorCode - Error code for the product transfer validation.
+type MoveValidationErrorCode string
+
+const (
+	MoveValidationErrorCodeBillingAccountInactive              MoveValidationErrorCode = "BillingAccountInactive"
+	MoveValidationErrorCodeDestinationBillingProfileInactive   MoveValidationErrorCode = "DestinationBillingProfileInactive"
+	MoveValidationErrorCodeDestinationBillingProfileNotFound   MoveValidationErrorCode = "DestinationBillingProfileNotFound"
+	MoveValidationErrorCodeDestinationBillingProfilePastDue    MoveValidationErrorCode = "DestinationBillingProfilePastDue"
+	MoveValidationErrorCodeDestinationInvoiceSectionInactive   MoveValidationErrorCode = "DestinationInvoiceSectionInactive"
+	MoveValidationErrorCodeDestinationInvoiceSectionNotFound   MoveValidationErrorCode = "DestinationInvoiceSectionNotFound"
+	MoveValidationErrorCodeInsufficientPermissionOnDestination MoveValidationErrorCode = "InsufficientPermissionOnDestination"
+	MoveValidationErrorCodeInsufficientPermissionOnSource      MoveValidationErrorCode = "InsufficientPermissionOnSource"
+	MoveValidationErrorCodeInvalidDestination                  MoveValidationErrorCode = "InvalidDestination"
+	MoveValidationErrorCodeInvalidSource                       MoveValidationErrorCode = "InvalidSource"
+	MoveValidationErrorCodeMarketplaceNotEnabledOnDestination  MoveValidationErrorCode = "MarketplaceNotEnabledOnDestination"
+	MoveValidationErrorCodeOther                               MoveValidationErrorCode = "Other"
+	MoveValidationErrorCodeProductInactive                     MoveValidationErrorCode = "ProductInactive"
+	MoveValidationErrorCodeProductNotFound                     MoveValidationErrorCode = "ProductNotFound"
+	MoveValidationErrorCodeProductTypeNotSupported             MoveValidationErrorCode = "ProductTypeNotSupported"
+	MoveValidationErrorCodeSourceBillingProfilePastDue         MoveValidationErrorCode = "SourceBillingProfilePastDue"
+	MoveValidationErrorCodeSourceInvoiceSectionInactive        MoveValidationErrorCode = "SourceInvoiceSectionInactive"
+)
+
+// PossibleMoveValidationErrorCodeValues returns the possible values for the MoveValidationErrorCode const type.
+func PossibleMoveValidationErrorCodeValues() []MoveValidationErrorCode {
+	return []MoveValidationErrorCode{
+		MoveValidationErrorCodeBillingAccountInactive,
+		MoveValidationErrorCodeDestinationBillingProfileInactive,
+		MoveValidationErrorCodeDestinationBillingProfileNotFound,
+		MoveValidationErrorCodeDestinationBillingProfilePastDue,
+		MoveValidationErrorCodeDestinationInvoiceSectionInactive,
+		MoveValidationErrorCodeDestinationInvoiceSectionNotFound,
+		MoveValidationErrorCodeInsufficientPermissionOnDestination,
+		MoveValidationErrorCodeInsufficientPermissionOnSource,
+		MoveValidationErrorCodeInvalidDestination,
+		MoveValidationErrorCodeInvalidSource,
+		MoveValidationErrorCodeMarketplaceNotEnabledOnDestination,
+		MoveValidationErrorCodeOther,
+		MoveValidationErrorCodeProductInactive,
+		MoveValidationErrorCodeProductNotFound,
+		MoveValidationErrorCodeProductTypeNotSupported,
+		MoveValidationErrorCodeSourceBillingProfilePastDue,
+		MoveValidationErrorCodeSourceInvoiceSectionInactive,
+	}
+}
+
+// PaymentMethodFamily - Payment on Account type.
 type PaymentMethodFamily string
 
 const (
-	PaymentMethodFamilyCheckWire  PaymentMethodFamily = "CheckWire"
-	PaymentMethodFamilyCreditCard PaymentMethodFamily = "CreditCard"
-	PaymentMethodFamilyCredits    PaymentMethodFamily = "Credits"
-	PaymentMethodFamilyNone       PaymentMethodFamily = "None"
+	PaymentMethodFamilyCheckWire   PaymentMethodFamily = "CheckWire"
+	PaymentMethodFamilyCreditCard  PaymentMethodFamily = "CreditCard"
+	PaymentMethodFamilyCredits     PaymentMethodFamily = "Credits"
+	PaymentMethodFamilyDirectDebit PaymentMethodFamily = "DirectDebit"
+	PaymentMethodFamilyEWallet     PaymentMethodFamily = "EWallet"
+	PaymentMethodFamilyNone        PaymentMethodFamily = "None"
+	PaymentMethodFamilyOther       PaymentMethodFamily = "Other"
+	PaymentMethodFamilyTaskOrder   PaymentMethodFamily = "TaskOrder"
 )
 
 // PossiblePaymentMethodFamilyValues returns the possible values for the PaymentMethodFamily const type.
@@ -397,97 +1092,486 @@ func PossiblePaymentMethodFamilyValues() []PaymentMethodFamily {
 		PaymentMethodFamilyCheckWire,
 		PaymentMethodFamilyCreditCard,
 		PaymentMethodFamilyCredits,
+		PaymentMethodFamilyDirectDebit,
+		PaymentMethodFamilyEWallet,
 		PaymentMethodFamilyNone,
+		PaymentMethodFamilyOther,
+		PaymentMethodFamilyTaskOrder,
 	}
 }
 
-// ProductStatusType - The current status of the product.
-type ProductStatusType string
+// PaymentMethodStatus - Status of the payment method.
+type PaymentMethodStatus string
 
 const (
-	ProductStatusTypeActive    ProductStatusType = "Active"
-	ProductStatusTypeAutoRenew ProductStatusType = "AutoRenew"
-	ProductStatusTypeCancelled ProductStatusType = "Cancelled"
-	ProductStatusTypeDisabled  ProductStatusType = "Disabled"
-	ProductStatusTypeExpired   ProductStatusType = "Expired"
-	ProductStatusTypeExpiring  ProductStatusType = "Expiring"
-	ProductStatusTypeInactive  ProductStatusType = "Inactive"
-	ProductStatusTypePastDue   ProductStatusType = "PastDue"
+	PaymentMethodStatusActive   PaymentMethodStatus = "active"
+	PaymentMethodStatusInactive PaymentMethodStatus = "inactive"
 )
 
-// PossibleProductStatusTypeValues returns the possible values for the ProductStatusType const type.
-func PossibleProductStatusTypeValues() []ProductStatusType {
-	return []ProductStatusType{
-		ProductStatusTypeActive,
-		ProductStatusTypeAutoRenew,
-		ProductStatusTypeCancelled,
-		ProductStatusTypeDisabled,
-		ProductStatusTypeExpired,
-		ProductStatusTypeExpiring,
-		ProductStatusTypeInactive,
-		ProductStatusTypePastDue,
+// PossiblePaymentMethodStatusValues returns the possible values for the PaymentMethodStatus const type.
+func PossiblePaymentMethodStatusValues() []PaymentMethodStatus {
+	return []PaymentMethodStatus{
+		PaymentMethodStatusActive,
+		PaymentMethodStatusInactive,
 	}
 }
 
-// ProductTransferValidationErrorCode - Error code of the transfer validation response.
-type ProductTransferValidationErrorCode string
+// PaymentStatus - Describes whether the payment is completed, failed, pending, cancelled or scheduled in the future.
+type PaymentStatus string
 
 const (
-	ProductTransferValidationErrorCodeCrossBillingAccountNotAllowed            ProductTransferValidationErrorCode = "CrossBillingAccountNotAllowed"
-	ProductTransferValidationErrorCodeDestinationBillingProfilePastDue         ProductTransferValidationErrorCode = "DestinationBillingProfilePastDue"
-	ProductTransferValidationErrorCodeInsufficientPermissionOnDestination      ProductTransferValidationErrorCode = "InsufficientPermissionOnDestination"
-	ProductTransferValidationErrorCodeInsufficientPermissionOnSource           ProductTransferValidationErrorCode = "InsufficientPermissionOnSource"
-	ProductTransferValidationErrorCodeInvalidSource                            ProductTransferValidationErrorCode = "InvalidSource"
-	ProductTransferValidationErrorCodeNotAvailableForDestinationMarket         ProductTransferValidationErrorCode = "NotAvailableForDestinationMarket"
-	ProductTransferValidationErrorCodeOneTimePurchaseProductTransferNotAllowed ProductTransferValidationErrorCode = "OneTimePurchaseProductTransferNotAllowed"
-	ProductTransferValidationErrorCodeProductNotActive                         ProductTransferValidationErrorCode = "ProductNotActive"
-	ProductTransferValidationErrorCodeProductTypeNotSupported                  ProductTransferValidationErrorCode = "ProductTypeNotSupported"
+	PaymentStatusCancelled PaymentStatus = "Cancelled"
+	PaymentStatusCompleted PaymentStatus = "Completed"
+	PaymentStatusFailed    PaymentStatus = "Failed"
+	PaymentStatusPending   PaymentStatus = "Pending"
+	PaymentStatusScheduled PaymentStatus = "Scheduled"
+	PaymentStatusSucceeded PaymentStatus = "Succeeded"
 )
 
-// PossibleProductTransferValidationErrorCodeValues returns the possible values for the ProductTransferValidationErrorCode const type.
-func PossibleProductTransferValidationErrorCodeValues() []ProductTransferValidationErrorCode {
-	return []ProductTransferValidationErrorCode{
-		ProductTransferValidationErrorCodeCrossBillingAccountNotAllowed,
-		ProductTransferValidationErrorCodeDestinationBillingProfilePastDue,
-		ProductTransferValidationErrorCodeInsufficientPermissionOnDestination,
-		ProductTransferValidationErrorCodeInsufficientPermissionOnSource,
-		ProductTransferValidationErrorCodeInvalidSource,
-		ProductTransferValidationErrorCodeNotAvailableForDestinationMarket,
-		ProductTransferValidationErrorCodeOneTimePurchaseProductTransferNotAllowed,
-		ProductTransferValidationErrorCodeProductNotActive,
-		ProductTransferValidationErrorCodeProductTypeNotSupported,
+// PossiblePaymentStatusValues returns the possible values for the PaymentStatus const type.
+func PossiblePaymentStatusValues() []PaymentStatus {
+	return []PaymentStatus{
+		PaymentStatusCancelled,
+		PaymentStatusCompleted,
+		PaymentStatusFailed,
+		PaymentStatusPending,
+		PaymentStatusScheduled,
+		PaymentStatusSucceeded,
 	}
 }
 
-// ReservationPurchasesPolicy - The policy that controls whether Azure reservation purchases are allowed for a billing profile.
+// PaymentTermsEligibilityCode - Indicates the reason for the ineligibility of the payment terms.
+type PaymentTermsEligibilityCode string
+
+const (
+	PaymentTermsEligibilityCodeBillingAccountNotFound         PaymentTermsEligibilityCode = "BillingAccountNotFound"
+	PaymentTermsEligibilityCodeInactiveBillingAccount         PaymentTermsEligibilityCode = "InactiveBillingAccount"
+	PaymentTermsEligibilityCodeIneligibleBillingAccountStatus PaymentTermsEligibilityCode = "IneligibleBillingAccountStatus"
+	PaymentTermsEligibilityCodeInvalidBillingAccountType      PaymentTermsEligibilityCode = "InvalidBillingAccountType"
+	PaymentTermsEligibilityCodeInvalidDateFormat              PaymentTermsEligibilityCode = "InvalidDateFormat"
+	PaymentTermsEligibilityCodeInvalidDateRange               PaymentTermsEligibilityCode = "InvalidDateRange"
+	PaymentTermsEligibilityCodeInvalidTerms                   PaymentTermsEligibilityCode = "InvalidTerms"
+	PaymentTermsEligibilityCodeNullOrEmptyPaymentTerms        PaymentTermsEligibilityCode = "NullOrEmptyPaymentTerms"
+	PaymentTermsEligibilityCodeOther                          PaymentTermsEligibilityCode = "Other"
+	PaymentTermsEligibilityCodeOverlappingPaymentTerms        PaymentTermsEligibilityCode = "OverlappingPaymentTerms"
+)
+
+// PossiblePaymentTermsEligibilityCodeValues returns the possible values for the PaymentTermsEligibilityCode const type.
+func PossiblePaymentTermsEligibilityCodeValues() []PaymentTermsEligibilityCode {
+	return []PaymentTermsEligibilityCode{
+		PaymentTermsEligibilityCodeBillingAccountNotFound,
+		PaymentTermsEligibilityCodeInactiveBillingAccount,
+		PaymentTermsEligibilityCodeIneligibleBillingAccountStatus,
+		PaymentTermsEligibilityCodeInvalidBillingAccountType,
+		PaymentTermsEligibilityCodeInvalidDateFormat,
+		PaymentTermsEligibilityCodeInvalidDateRange,
+		PaymentTermsEligibilityCodeInvalidTerms,
+		PaymentTermsEligibilityCodeNullOrEmptyPaymentTerms,
+		PaymentTermsEligibilityCodeOther,
+		PaymentTermsEligibilityCodeOverlappingPaymentTerms,
+	}
+}
+
+// PaymentTermsEligibilityStatus - Indicates the eligibility status of the payment terms.
+type PaymentTermsEligibilityStatus string
+
+const (
+	PaymentTermsEligibilityStatusInvalid PaymentTermsEligibilityStatus = "Invalid"
+	PaymentTermsEligibilityStatusOther   PaymentTermsEligibilityStatus = "Other"
+	PaymentTermsEligibilityStatusValid   PaymentTermsEligibilityStatus = "Valid"
+)
+
+// PossiblePaymentTermsEligibilityStatusValues returns the possible values for the PaymentTermsEligibilityStatus const type.
+func PossiblePaymentTermsEligibilityStatusValues() []PaymentTermsEligibilityStatus {
+	return []PaymentTermsEligibilityStatus{
+		PaymentTermsEligibilityStatusInvalid,
+		PaymentTermsEligibilityStatusOther,
+		PaymentTermsEligibilityStatusValid,
+	}
+}
+
+// PolicyType - The type of the policy.
+type PolicyType string
+
+const (
+	PolicyTypeOther            PolicyType = "Other"
+	PolicyTypeSystemControlled PolicyType = "SystemControlled"
+	PolicyTypeUserControlled   PolicyType = "UserControlled"
+)
+
+// PossiblePolicyTypeValues returns the possible values for the PolicyType const type.
+func PossiblePolicyTypeValues() []PolicyType {
+	return []PolicyType{
+		PolicyTypeOther,
+		PolicyTypeSystemControlled,
+		PolicyTypeUserControlled,
+	}
+}
+
+// PrincipalType - The type of a role Assignment.
+type PrincipalType string
+
+const (
+	PrincipalTypeDirectoryRole    PrincipalType = "DirectoryRole"
+	PrincipalTypeEveryone         PrincipalType = "Everyone"
+	PrincipalTypeGroup            PrincipalType = "Group"
+	PrincipalTypeNone             PrincipalType = "None"
+	PrincipalTypeServicePrincipal PrincipalType = "ServicePrincipal"
+	PrincipalTypeUnknown          PrincipalType = "Unknown"
+	PrincipalTypeUser             PrincipalType = "User"
+)
+
+// PossiblePrincipalTypeValues returns the possible values for the PrincipalType const type.
+func PossiblePrincipalTypeValues() []PrincipalType {
+	return []PrincipalType{
+		PrincipalTypeDirectoryRole,
+		PrincipalTypeEveryone,
+		PrincipalTypeGroup,
+		PrincipalTypeNone,
+		PrincipalTypeServicePrincipal,
+		PrincipalTypeUnknown,
+		PrincipalTypeUser,
+	}
+}
+
+// ProductStatus - The status of the product.
+type ProductStatus string
+
+const (
+	ProductStatusActive    ProductStatus = "Active"
+	ProductStatusAutoRenew ProductStatus = "AutoRenew"
+	ProductStatusCanceled  ProductStatus = "Canceled"
+	ProductStatusDeleted   ProductStatus = "Deleted"
+	ProductStatusDisabled  ProductStatus = "Disabled"
+	ProductStatusExpired   ProductStatus = "Expired"
+	ProductStatusExpiring  ProductStatus = "Expiring"
+	ProductStatusOther     ProductStatus = "Other"
+	ProductStatusPastDue   ProductStatus = "PastDue"
+	ProductStatusSuspended ProductStatus = "Suspended"
+)
+
+// PossibleProductStatusValues returns the possible values for the ProductStatus const type.
+func PossibleProductStatusValues() []ProductStatus {
+	return []ProductStatus{
+		ProductStatusActive,
+		ProductStatusAutoRenew,
+		ProductStatusCanceled,
+		ProductStatusDeleted,
+		ProductStatusDisabled,
+		ProductStatusExpired,
+		ProductStatusExpiring,
+		ProductStatusOther,
+		ProductStatusPastDue,
+		ProductStatusSuspended,
+	}
+}
+
+// ProductTransferStatus - The status of a transfer.
+type ProductTransferStatus string
+
+const (
+	ProductTransferStatusCompleted  ProductTransferStatus = "Completed"
+	ProductTransferStatusFailed     ProductTransferStatus = "Failed"
+	ProductTransferStatusInProgress ProductTransferStatus = "InProgress"
+	ProductTransferStatusNotStarted ProductTransferStatus = "NotStarted"
+)
+
+// PossibleProductTransferStatusValues returns the possible values for the ProductTransferStatus const type.
+func PossibleProductTransferStatusValues() []ProductTransferStatus {
+	return []ProductTransferStatus{
+		ProductTransferStatusCompleted,
+		ProductTransferStatusFailed,
+		ProductTransferStatusInProgress,
+		ProductTransferStatusNotStarted,
+	}
+}
+
+// ProductType - The type of product that is transferred.
+type ProductType string
+
+const (
+	ProductTypeAzureReservation  ProductType = "AzureReservation"
+	ProductTypeAzureSubscription ProductType = "AzureSubscription"
+	ProductTypeDepartment        ProductType = "Department"
+	ProductTypeSAAS              ProductType = "SAAS"
+	ProductTypeSavingsPlan       ProductType = "SavingsPlan"
+)
+
+// PossibleProductTypeValues returns the possible values for the ProductType const type.
+func PossibleProductTypeValues() []ProductType {
+	return []ProductType{
+		ProductTypeAzureReservation,
+		ProductTypeAzureSubscription,
+		ProductTypeDepartment,
+		ProductTypeSAAS,
+		ProductTypeSavingsPlan,
+	}
+}
+
+// ProvisioningState - The provisioning state of the resource during a long-running operation.
+type ProvisioningState string
+
+const (
+	ProvisioningStateCanceled         ProvisioningState = "Canceled"
+	ProvisioningStateConfirmedBilling ProvisioningState = "ConfirmedBilling"
+	ProvisioningStateCreated          ProvisioningState = "Created"
+	ProvisioningStateCreating         ProvisioningState = "Creating"
+	ProvisioningStateExpired          ProvisioningState = "Expired"
+	ProvisioningStateFailed           ProvisioningState = "Failed"
+	ProvisioningStateNew              ProvisioningState = "New"
+	ProvisioningStatePending          ProvisioningState = "Pending"
+	ProvisioningStatePendingBilling   ProvisioningState = "PendingBilling"
+	ProvisioningStateProvisioning     ProvisioningState = "Provisioning"
+	ProvisioningStateSucceeded        ProvisioningState = "Succeeded"
+)
+
+// PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{
+		ProvisioningStateCanceled,
+		ProvisioningStateConfirmedBilling,
+		ProvisioningStateCreated,
+		ProvisioningStateCreating,
+		ProvisioningStateExpired,
+		ProvisioningStateFailed,
+		ProvisioningStateNew,
+		ProvisioningStatePending,
+		ProvisioningStatePendingBilling,
+		ProvisioningStateProvisioning,
+		ProvisioningStateSucceeded,
+	}
+}
+
+// ProvisioningTenantState - The state determines whether subscriptions and licenses can be provisioned in the associated
+// tenant. It can be set to 'Pending' to initiate a billing request.
+type ProvisioningTenantState string
+
+const (
+	ProvisioningTenantStateActive                 ProvisioningTenantState = "Active"
+	ProvisioningTenantStateBillingRequestDeclined ProvisioningTenantState = "BillingRequestDeclined"
+	ProvisioningTenantStateBillingRequestExpired  ProvisioningTenantState = "BillingRequestExpired"
+	ProvisioningTenantStateNotRequested           ProvisioningTenantState = "NotRequested"
+	ProvisioningTenantStateOther                  ProvisioningTenantState = "Other"
+	ProvisioningTenantStatePending                ProvisioningTenantState = "Pending"
+	ProvisioningTenantStateRevoked                ProvisioningTenantState = "Revoked"
+)
+
+// PossibleProvisioningTenantStateValues returns the possible values for the ProvisioningTenantState const type.
+func PossibleProvisioningTenantStateValues() []ProvisioningTenantState {
+	return []ProvisioningTenantState{
+		ProvisioningTenantStateActive,
+		ProvisioningTenantStateBillingRequestDeclined,
+		ProvisioningTenantStateBillingRequestExpired,
+		ProvisioningTenantStateNotRequested,
+		ProvisioningTenantStateOther,
+		ProvisioningTenantStatePending,
+		ProvisioningTenantStateRevoked,
+	}
+}
+
+// RefundReasonCode - The reason for refund.
+type RefundReasonCode string
+
+const (
+	RefundReasonCodeAccidentalConversion RefundReasonCode = "AccidentalConversion"
+	RefundReasonCodeAccidentalPurchase   RefundReasonCode = "AccidentalPurchase"
+	RefundReasonCodeForgotToCancel       RefundReasonCode = "ForgotToCancel"
+	RefundReasonCodeOther                RefundReasonCode = "Other"
+	RefundReasonCodeUnclearDocumentation RefundReasonCode = "UnclearDocumentation"
+	RefundReasonCodeUnclearPricing       RefundReasonCode = "UnclearPricing"
+)
+
+// PossibleRefundReasonCodeValues returns the possible values for the RefundReasonCode const type.
+func PossibleRefundReasonCodeValues() []RefundReasonCode {
+	return []RefundReasonCode{
+		RefundReasonCodeAccidentalConversion,
+		RefundReasonCodeAccidentalPurchase,
+		RefundReasonCodeForgotToCancel,
+		RefundReasonCodeOther,
+		RefundReasonCodeUnclearDocumentation,
+		RefundReasonCodeUnclearPricing,
+	}
+}
+
+// RefundStatus - The status of refund request.
+type RefundStatus string
+
+const (
+	RefundStatusApproved  RefundStatus = "Approved"
+	RefundStatusCancelled RefundStatus = "Cancelled"
+	RefundStatusCompleted RefundStatus = "Completed"
+	RefundStatusDeclined  RefundStatus = "Declined"
+	RefundStatusExpired   RefundStatus = "Expired"
+	RefundStatusOther     RefundStatus = "Other"
+	RefundStatusPending   RefundStatus = "Pending"
+)
+
+// PossibleRefundStatusValues returns the possible values for the RefundStatus const type.
+func PossibleRefundStatusValues() []RefundStatus {
+	return []RefundStatus{
+		RefundStatusApproved,
+		RefundStatusCancelled,
+		RefundStatusCompleted,
+		RefundStatusDeclined,
+		RefundStatusExpired,
+		RefundStatusOther,
+		RefundStatusPending,
+	}
+}
+
+// ReservationBillingPlan - Represent the billing plans.
+type ReservationBillingPlan string
+
+const (
+	ReservationBillingPlanMonthly ReservationBillingPlan = "Monthly"
+	ReservationBillingPlanUpfront ReservationBillingPlan = "Upfront"
+)
+
+// PossibleReservationBillingPlanValues returns the possible values for the ReservationBillingPlan const type.
+func PossibleReservationBillingPlanValues() []ReservationBillingPlan {
+	return []ReservationBillingPlan{
+		ReservationBillingPlanMonthly,
+		ReservationBillingPlanUpfront,
+	}
+}
+
+// ReservationPurchasesPolicy - The policy that controls whether Azure reservation purchases are allowed.
 type ReservationPurchasesPolicy string
 
 const (
 	ReservationPurchasesPolicyAllowed    ReservationPurchasesPolicy = "Allowed"
+	ReservationPurchasesPolicyDisabled   ReservationPurchasesPolicy = "Disabled"
 	ReservationPurchasesPolicyNotAllowed ReservationPurchasesPolicy = "NotAllowed"
+	ReservationPurchasesPolicyOther      ReservationPurchasesPolicy = "Other"
 )
 
 // PossibleReservationPurchasesPolicyValues returns the possible values for the ReservationPurchasesPolicy const type.
 func PossibleReservationPurchasesPolicyValues() []ReservationPurchasesPolicy {
 	return []ReservationPurchasesPolicy{
 		ReservationPurchasesPolicyAllowed,
+		ReservationPurchasesPolicyDisabled,
 		ReservationPurchasesPolicyNotAllowed,
+		ReservationPurchasesPolicyOther,
 	}
 }
 
-// ReservationType - The type of transaction.
-type ReservationType string
+// ReservationStatusCode - The status of the reservation.
+type ReservationStatusCode string
 
 const (
-	ReservationTypePurchase    ReservationType = "Purchase"
-	ReservationTypeUsageCharge ReservationType = "Usage Charge"
+	ReservationStatusCodeActive                             ReservationStatusCode = "Active"
+	ReservationStatusCodeCapacityError                      ReservationStatusCode = "CapacityError"
+	ReservationStatusCodeCapacityRestricted                 ReservationStatusCode = "CapacityRestricted"
+	ReservationStatusCodeCreditLineCheckFailed              ReservationStatusCode = "CreditLineCheckFailed"
+	ReservationStatusCodeExchanged                          ReservationStatusCode = "Exchanged"
+	ReservationStatusCodeExpired                            ReservationStatusCode = "Expired"
+	ReservationStatusCodeMerged                             ReservationStatusCode = "Merged"
+	ReservationStatusCodeNoBenefit                          ReservationStatusCode = "NoBenefit"
+	ReservationStatusCodeNoBenefitDueToSubscriptionDeletion ReservationStatusCode = "NoBenefitDueToSubscriptionDeletion"
+	ReservationStatusCodeNoBenefitDueToSubscriptionTransfer ReservationStatusCode = "NoBenefitDueToSubscriptionTransfer"
+	ReservationStatusCodeNone                               ReservationStatusCode = "None"
+	ReservationStatusCodePaymentInstrumentError             ReservationStatusCode = "PaymentInstrumentError"
+	ReservationStatusCodePending                            ReservationStatusCode = "Pending"
+	ReservationStatusCodeProcessing                         ReservationStatusCode = "Processing"
+	ReservationStatusCodePurchaseError                      ReservationStatusCode = "PurchaseError"
+	ReservationStatusCodeRiskCheckFailed                    ReservationStatusCode = "RiskCheckFailed"
+	ReservationStatusCodeSplit                              ReservationStatusCode = "Split"
+	ReservationStatusCodeSucceeded                          ReservationStatusCode = "Succeeded"
+	ReservationStatusCodeUnknownError                       ReservationStatusCode = "UnknownError"
+	ReservationStatusCodeWarning                            ReservationStatusCode = "Warning"
 )
 
-// PossibleReservationTypeValues returns the possible values for the ReservationType const type.
-func PossibleReservationTypeValues() []ReservationType {
-	return []ReservationType{
-		ReservationTypePurchase,
-		ReservationTypeUsageCharge,
+// PossibleReservationStatusCodeValues returns the possible values for the ReservationStatusCode const type.
+func PossibleReservationStatusCodeValues() []ReservationStatusCode {
+	return []ReservationStatusCode{
+		ReservationStatusCodeActive,
+		ReservationStatusCodeCapacityError,
+		ReservationStatusCodeCapacityRestricted,
+		ReservationStatusCodeCreditLineCheckFailed,
+		ReservationStatusCodeExchanged,
+		ReservationStatusCodeExpired,
+		ReservationStatusCodeMerged,
+		ReservationStatusCodeNoBenefit,
+		ReservationStatusCodeNoBenefitDueToSubscriptionDeletion,
+		ReservationStatusCodeNoBenefitDueToSubscriptionTransfer,
+		ReservationStatusCodeNone,
+		ReservationStatusCodePaymentInstrumentError,
+		ReservationStatusCodePending,
+		ReservationStatusCodeProcessing,
+		ReservationStatusCodePurchaseError,
+		ReservationStatusCodeRiskCheckFailed,
+		ReservationStatusCodeSplit,
+		ReservationStatusCodeSucceeded,
+		ReservationStatusCodeUnknownError,
+		ReservationStatusCodeWarning,
+	}
+}
+
+// SavingsPlanPurchasesPolicy - The policy that controls whether users with Azure savings plan purchase are allowed.
+type SavingsPlanPurchasesPolicy string
+
+const (
+	SavingsPlanPurchasesPolicyAllowed    SavingsPlanPurchasesPolicy = "Allowed"
+	SavingsPlanPurchasesPolicyDisabled   SavingsPlanPurchasesPolicy = "Disabled"
+	SavingsPlanPurchasesPolicyNotAllowed SavingsPlanPurchasesPolicy = "NotAllowed"
+	SavingsPlanPurchasesPolicyOther      SavingsPlanPurchasesPolicy = "Other"
+)
+
+// PossibleSavingsPlanPurchasesPolicyValues returns the possible values for the SavingsPlanPurchasesPolicy const type.
+func PossibleSavingsPlanPurchasesPolicyValues() []SavingsPlanPurchasesPolicy {
+	return []SavingsPlanPurchasesPolicy{
+		SavingsPlanPurchasesPolicyAllowed,
+		SavingsPlanPurchasesPolicyDisabled,
+		SavingsPlanPurchasesPolicyNotAllowed,
+		SavingsPlanPurchasesPolicyOther,
+	}
+}
+
+// SavingsPlanTerm - Represents the Savings plan term in ISO 8601 format.
+type SavingsPlanTerm string
+
+const (
+	SavingsPlanTermP1Y SavingsPlanTerm = "P1Y"
+	SavingsPlanTermP3Y SavingsPlanTerm = "P3Y"
+	SavingsPlanTermP5Y SavingsPlanTerm = "P5Y"
+)
+
+// PossibleSavingsPlanTermValues returns the possible values for the SavingsPlanTerm const type.
+func PossibleSavingsPlanTermValues() []SavingsPlanTerm {
+	return []SavingsPlanTerm{
+		SavingsPlanTermP1Y,
+		SavingsPlanTermP3Y,
+		SavingsPlanTermP5Y,
+	}
+}
+
+type ServiceDefinedResourceName string
+
+const (
+	ServiceDefinedResourceNameDefault ServiceDefinedResourceName = "default"
+)
+
+// PossibleServiceDefinedResourceNameValues returns the possible values for the ServiceDefinedResourceName const type.
+func PossibleServiceDefinedResourceNameValues() []ServiceDefinedResourceName {
+	return []ServiceDefinedResourceName{
+		ServiceDefinedResourceNameDefault,
+	}
+}
+
+// SpecialTaxationType - Identifies the type of tax calculation used for the invoice. The field is applicable only to invoices
+// with special tax calculation logic.
+type SpecialTaxationType string
+
+const (
+	SpecialTaxationTypeInvoiceLevel  SpecialTaxationType = "InvoiceLevel"
+	SpecialTaxationTypeSubtotalLevel SpecialTaxationType = "SubtotalLevel"
+)
+
+// PossibleSpecialTaxationTypeValues returns the possible values for the SpecialTaxationType const type.
+func PossibleSpecialTaxationTypeValues() []SpecialTaxationType {
+	return []SpecialTaxationType{
+		SpecialTaxationTypeInvoiceLevel,
+		SpecialTaxationTypeSubtotalLevel,
 	}
 }
 
@@ -507,55 +1591,149 @@ func PossibleSpendingLimitValues() []SpendingLimit {
 	}
 }
 
-// SpendingLimitForBillingProfile - The billing profile spending limit.
-type SpendingLimitForBillingProfile string
+// SpendingLimitStatus - The status of current spending limit.
+type SpendingLimitStatus string
 
 const (
-	SpendingLimitForBillingProfileOff SpendingLimitForBillingProfile = "Off"
-	SpendingLimitForBillingProfileOn  SpendingLimitForBillingProfile = "On"
+	SpendingLimitStatusActive       SpendingLimitStatus = "Active"
+	SpendingLimitStatusExpired      SpendingLimitStatus = "Expired"
+	SpendingLimitStatusLimitReached SpendingLimitStatus = "LimitReached"
+	SpendingLimitStatusLimitRemoved SpendingLimitStatus = "LimitRemoved"
+	SpendingLimitStatusNone         SpendingLimitStatus = "None"
+	SpendingLimitStatusOther        SpendingLimitStatus = "Other"
 )
 
-// PossibleSpendingLimitForBillingProfileValues returns the possible values for the SpendingLimitForBillingProfile const type.
-func PossibleSpendingLimitForBillingProfileValues() []SpendingLimitForBillingProfile {
-	return []SpendingLimitForBillingProfile{
-		SpendingLimitForBillingProfileOff,
-		SpendingLimitForBillingProfileOn,
+// PossibleSpendingLimitStatusValues returns the possible values for the SpendingLimitStatus const type.
+func PossibleSpendingLimitStatusValues() []SpendingLimitStatus {
+	return []SpendingLimitStatus{
+		SpendingLimitStatusActive,
+		SpendingLimitStatusExpired,
+		SpendingLimitStatusLimitReached,
+		SpendingLimitStatusLimitRemoved,
+		SpendingLimitStatusNone,
+		SpendingLimitStatusOther,
 	}
 }
 
-// StatusReasonCode - Reason for the specified billing profile status.
-type StatusReasonCode string
+// SpendingLimitType - The type of spending limit.
+type SpendingLimitType string
 
 const (
-	StatusReasonCodePastDue              StatusReasonCode = "PastDue"
-	StatusReasonCodeSpendingLimitExpired StatusReasonCode = "SpendingLimitExpired"
-	StatusReasonCodeSpendingLimitReached StatusReasonCode = "SpendingLimitReached"
+	SpendingLimitTypeAcademicSponsorship     SpendingLimitType = "AcademicSponsorship"
+	SpendingLimitTypeAzureConsumptionCredit  SpendingLimitType = "AzureConsumptionCredit"
+	SpendingLimitTypeAzureForStudents        SpendingLimitType = "AzureForStudents"
+	SpendingLimitTypeAzureForStudentsStarter SpendingLimitType = "AzureForStudentsStarter"
+	SpendingLimitTypeAzurePassSponsorship    SpendingLimitType = "AzurePassSponsorship"
+	SpendingLimitTypeFreeAccount             SpendingLimitType = "FreeAccount"
+	SpendingLimitTypeMSDN                    SpendingLimitType = "MSDN"
+	SpendingLimitTypeMpnSponsorship          SpendingLimitType = "MpnSponsorship"
+	SpendingLimitTypeNonProfitSponsorship    SpendingLimitType = "NonProfitSponsorship"
+	SpendingLimitTypeNone                    SpendingLimitType = "None"
+	SpendingLimitTypeOther                   SpendingLimitType = "Other"
+	SpendingLimitTypeSandbox                 SpendingLimitType = "Sandbox"
+	SpendingLimitTypeSponsorship             SpendingLimitType = "Sponsorship"
+	SpendingLimitTypeStartupSponsorship      SpendingLimitType = "StartupSponsorship"
+	SpendingLimitTypeVisualStudio            SpendingLimitType = "VisualStudio"
 )
 
-// PossibleStatusReasonCodeValues returns the possible values for the StatusReasonCode const type.
-func PossibleStatusReasonCodeValues() []StatusReasonCode {
-	return []StatusReasonCode{
-		StatusReasonCodePastDue,
-		StatusReasonCodeSpendingLimitExpired,
-		StatusReasonCodeSpendingLimitReached,
+// PossibleSpendingLimitTypeValues returns the possible values for the SpendingLimitType const type.
+func PossibleSpendingLimitTypeValues() []SpendingLimitType {
+	return []SpendingLimitType{
+		SpendingLimitTypeAcademicSponsorship,
+		SpendingLimitTypeAzureConsumptionCredit,
+		SpendingLimitTypeAzureForStudents,
+		SpendingLimitTypeAzureForStudentsStarter,
+		SpendingLimitTypeAzurePassSponsorship,
+		SpendingLimitTypeFreeAccount,
+		SpendingLimitTypeMSDN,
+		SpendingLimitTypeMpnSponsorship,
+		SpendingLimitTypeNonProfitSponsorship,
+		SpendingLimitTypeNone,
+		SpendingLimitTypeOther,
+		SpendingLimitTypeSandbox,
+		SpendingLimitTypeSponsorship,
+		SpendingLimitTypeStartupSponsorship,
+		SpendingLimitTypeVisualStudio,
 	}
 }
 
-// StatusReasonCodeForBillingProfile - Reason for the specified billing profile status.
-type StatusReasonCodeForBillingProfile string
+// SubscriptionBillingType - The type of billing subscription.
+type SubscriptionBillingType string
 
 const (
-	StatusReasonCodeForBillingProfilePastDue              StatusReasonCodeForBillingProfile = "PastDue"
-	StatusReasonCodeForBillingProfileSpendingLimitExpired StatusReasonCodeForBillingProfile = "SpendingLimitExpired"
-	StatusReasonCodeForBillingProfileSpendingLimitReached StatusReasonCodeForBillingProfile = "SpendingLimitReached"
+	SubscriptionBillingTypeBenefit SubscriptionBillingType = "Benefit"
+	SubscriptionBillingTypeFree    SubscriptionBillingType = "Free"
+	SubscriptionBillingTypeNone    SubscriptionBillingType = "None"
+	SubscriptionBillingTypePaid    SubscriptionBillingType = "Paid"
+	SubscriptionBillingTypePrePaid SubscriptionBillingType = "PrePaid"
 )
 
-// PossibleStatusReasonCodeForBillingProfileValues returns the possible values for the StatusReasonCodeForBillingProfile const type.
-func PossibleStatusReasonCodeForBillingProfileValues() []StatusReasonCodeForBillingProfile {
-	return []StatusReasonCodeForBillingProfile{
-		StatusReasonCodeForBillingProfilePastDue,
-		StatusReasonCodeForBillingProfileSpendingLimitExpired,
-		StatusReasonCodeForBillingProfileSpendingLimitReached,
+// PossibleSubscriptionBillingTypeValues returns the possible values for the SubscriptionBillingType const type.
+func PossibleSubscriptionBillingTypeValues() []SubscriptionBillingType {
+	return []SubscriptionBillingType{
+		SubscriptionBillingTypeBenefit,
+		SubscriptionBillingTypeFree,
+		SubscriptionBillingTypeNone,
+		SubscriptionBillingTypePaid,
+		SubscriptionBillingTypePrePaid,
+	}
+}
+
+// SubscriptionEnrollmentAccountStatus - The current enrollment account status of the subscription. This field is available
+// only for the Enterprise Agreement Type.
+type SubscriptionEnrollmentAccountStatus string
+
+const (
+	SubscriptionEnrollmentAccountStatusActive         SubscriptionEnrollmentAccountStatus = "Active"
+	SubscriptionEnrollmentAccountStatusCancelled      SubscriptionEnrollmentAccountStatus = "Cancelled"
+	SubscriptionEnrollmentAccountStatusDeleted        SubscriptionEnrollmentAccountStatus = "Deleted"
+	SubscriptionEnrollmentAccountStatusExpired        SubscriptionEnrollmentAccountStatus = "Expired"
+	SubscriptionEnrollmentAccountStatusInactive       SubscriptionEnrollmentAccountStatus = "Inactive"
+	SubscriptionEnrollmentAccountStatusTransferredOut SubscriptionEnrollmentAccountStatus = "TransferredOut"
+	SubscriptionEnrollmentAccountStatusTransferring   SubscriptionEnrollmentAccountStatus = "Transferring"
+)
+
+// PossibleSubscriptionEnrollmentAccountStatusValues returns the possible values for the SubscriptionEnrollmentAccountStatus const type.
+func PossibleSubscriptionEnrollmentAccountStatusValues() []SubscriptionEnrollmentAccountStatus {
+	return []SubscriptionEnrollmentAccountStatus{
+		SubscriptionEnrollmentAccountStatusActive,
+		SubscriptionEnrollmentAccountStatusCancelled,
+		SubscriptionEnrollmentAccountStatusDeleted,
+		SubscriptionEnrollmentAccountStatusExpired,
+		SubscriptionEnrollmentAccountStatusInactive,
+		SubscriptionEnrollmentAccountStatusTransferredOut,
+		SubscriptionEnrollmentAccountStatusTransferring,
+	}
+}
+
+// SubscriptionStatusReason - The suspension reason for a subscription. This field is not available for Enterprise Agreement
+// billing accounts.
+type SubscriptionStatusReason string
+
+const (
+	SubscriptionStatusReasonCancelled            SubscriptionStatusReason = "Cancelled"
+	SubscriptionStatusReasonExpired              SubscriptionStatusReason = "Expired"
+	SubscriptionStatusReasonNone                 SubscriptionStatusReason = "None"
+	SubscriptionStatusReasonOther                SubscriptionStatusReason = "Other"
+	SubscriptionStatusReasonPastDue              SubscriptionStatusReason = "PastDue"
+	SubscriptionStatusReasonPolicyViolation      SubscriptionStatusReason = "PolicyViolation"
+	SubscriptionStatusReasonSpendingLimitReached SubscriptionStatusReason = "SpendingLimitReached"
+	SubscriptionStatusReasonSuspiciousActivity   SubscriptionStatusReason = "SuspiciousActivity"
+	SubscriptionStatusReasonTransferred          SubscriptionStatusReason = "Transferred"
+)
+
+// PossibleSubscriptionStatusReasonValues returns the possible values for the SubscriptionStatusReason const type.
+func PossibleSubscriptionStatusReasonValues() []SubscriptionStatusReason {
+	return []SubscriptionStatusReason{
+		SubscriptionStatusReasonCancelled,
+		SubscriptionStatusReasonExpired,
+		SubscriptionStatusReasonNone,
+		SubscriptionStatusReasonOther,
+		SubscriptionStatusReasonPastDue,
+		SubscriptionStatusReasonPolicyViolation,
+		SubscriptionStatusReasonSpendingLimitReached,
+		SubscriptionStatusReasonSuspiciousActivity,
+		SubscriptionStatusReasonTransferred,
 	}
 }
 
@@ -563,7 +1741,11 @@ func PossibleStatusReasonCodeForBillingProfileValues() []StatusReasonCodeForBill
 type SubscriptionTransferValidationErrorCode string
 
 const (
+	SubscriptionTransferValidationErrorCodeAccountIsLocked                     SubscriptionTransferValidationErrorCode = "AccountIsLocked"
+	SubscriptionTransferValidationErrorCodeAssetHasCap                         SubscriptionTransferValidationErrorCode = "AssetHasCap"
+	SubscriptionTransferValidationErrorCodeAssetNotActive                      SubscriptionTransferValidationErrorCode = "AssetNotActive"
 	SubscriptionTransferValidationErrorCodeBillingAccountInactive              SubscriptionTransferValidationErrorCode = "BillingAccountInactive"
+	SubscriptionTransferValidationErrorCodeBillingProfilePastDue               SubscriptionTransferValidationErrorCode = "BillingProfilePastDue"
 	SubscriptionTransferValidationErrorCodeCrossBillingAccountNotAllowed       SubscriptionTransferValidationErrorCode = "CrossBillingAccountNotAllowed"
 	SubscriptionTransferValidationErrorCodeDestinationBillingProfileInactive   SubscriptionTransferValidationErrorCode = "DestinationBillingProfileInactive"
 	SubscriptionTransferValidationErrorCodeDestinationBillingProfileNotFound   SubscriptionTransferValidationErrorCode = "DestinationBillingProfileNotFound"
@@ -574,13 +1756,17 @@ const (
 	SubscriptionTransferValidationErrorCodeInsufficientPermissionOnSource      SubscriptionTransferValidationErrorCode = "InsufficientPermissionOnSource"
 	SubscriptionTransferValidationErrorCodeInvalidDestination                  SubscriptionTransferValidationErrorCode = "InvalidDestination"
 	SubscriptionTransferValidationErrorCodeInvalidSource                       SubscriptionTransferValidationErrorCode = "InvalidSource"
+	SubscriptionTransferValidationErrorCodeInvoiceSectionIsRestricted          SubscriptionTransferValidationErrorCode = "InvoiceSectionIsRestricted"
 	SubscriptionTransferValidationErrorCodeMarketplaceNotEnabledOnDestination  SubscriptionTransferValidationErrorCode = "MarketplaceNotEnabledOnDestination"
-	SubscriptionTransferValidationErrorCodeNotAvailableForDestinationMarket    SubscriptionTransferValidationErrorCode = "NotAvailableForDestinationMarket"
+	SubscriptionTransferValidationErrorCodeNoActiveAzurePlan                   SubscriptionTransferValidationErrorCode = "NoActiveAzurePlan"
+	SubscriptionTransferValidationErrorCodeNone                                SubscriptionTransferValidationErrorCode = "None"
+	SubscriptionTransferValidationErrorCodeOther                               SubscriptionTransferValidationErrorCode = "Other"
 	SubscriptionTransferValidationErrorCodeProductInactive                     SubscriptionTransferValidationErrorCode = "ProductInactive"
 	SubscriptionTransferValidationErrorCodeProductNotFound                     SubscriptionTransferValidationErrorCode = "ProductNotFound"
 	SubscriptionTransferValidationErrorCodeProductTypeNotSupported             SubscriptionTransferValidationErrorCode = "ProductTypeNotSupported"
 	SubscriptionTransferValidationErrorCodeSourceBillingProfilePastDue         SubscriptionTransferValidationErrorCode = "SourceBillingProfilePastDue"
 	SubscriptionTransferValidationErrorCodeSourceInvoiceSectionInactive        SubscriptionTransferValidationErrorCode = "SourceInvoiceSectionInactive"
+	SubscriptionTransferValidationErrorCodeSubscriptionHasReservations         SubscriptionTransferValidationErrorCode = "SubscriptionHasReservations"
 	SubscriptionTransferValidationErrorCodeSubscriptionNotActive               SubscriptionTransferValidationErrorCode = "SubscriptionNotActive"
 	SubscriptionTransferValidationErrorCodeSubscriptionTypeNotSupported        SubscriptionTransferValidationErrorCode = "SubscriptionTypeNotSupported"
 )
@@ -588,7 +1774,11 @@ const (
 // PossibleSubscriptionTransferValidationErrorCodeValues returns the possible values for the SubscriptionTransferValidationErrorCode const type.
 func PossibleSubscriptionTransferValidationErrorCodeValues() []SubscriptionTransferValidationErrorCode {
 	return []SubscriptionTransferValidationErrorCode{
+		SubscriptionTransferValidationErrorCodeAccountIsLocked,
+		SubscriptionTransferValidationErrorCodeAssetHasCap,
+		SubscriptionTransferValidationErrorCodeAssetNotActive,
 		SubscriptionTransferValidationErrorCodeBillingAccountInactive,
+		SubscriptionTransferValidationErrorCodeBillingProfilePastDue,
 		SubscriptionTransferValidationErrorCodeCrossBillingAccountNotAllowed,
 		SubscriptionTransferValidationErrorCodeDestinationBillingProfileInactive,
 		SubscriptionTransferValidationErrorCodeDestinationBillingProfileNotFound,
@@ -599,74 +1789,223 @@ func PossibleSubscriptionTransferValidationErrorCodeValues() []SubscriptionTrans
 		SubscriptionTransferValidationErrorCodeInsufficientPermissionOnSource,
 		SubscriptionTransferValidationErrorCodeInvalidDestination,
 		SubscriptionTransferValidationErrorCodeInvalidSource,
+		SubscriptionTransferValidationErrorCodeInvoiceSectionIsRestricted,
 		SubscriptionTransferValidationErrorCodeMarketplaceNotEnabledOnDestination,
-		SubscriptionTransferValidationErrorCodeNotAvailableForDestinationMarket,
+		SubscriptionTransferValidationErrorCodeNoActiveAzurePlan,
+		SubscriptionTransferValidationErrorCodeNone,
+		SubscriptionTransferValidationErrorCodeOther,
 		SubscriptionTransferValidationErrorCodeProductInactive,
 		SubscriptionTransferValidationErrorCodeProductNotFound,
 		SubscriptionTransferValidationErrorCodeProductTypeNotSupported,
 		SubscriptionTransferValidationErrorCodeSourceBillingProfilePastDue,
 		SubscriptionTransferValidationErrorCodeSourceInvoiceSectionInactive,
+		SubscriptionTransferValidationErrorCodeSubscriptionHasReservations,
 		SubscriptionTransferValidationErrorCodeSubscriptionNotActive,
 		SubscriptionTransferValidationErrorCodeSubscriptionTypeNotSupported,
 	}
 }
 
-// TargetCloud - Possible cloud environments.
-type TargetCloud string
+// SubscriptionWorkloadType - The Azure workload type of the subscription.
+type SubscriptionWorkloadType string
 
 const (
-	TargetCloudUSGov TargetCloud = "USGov"
-	TargetCloudUSNat TargetCloud = "USNat"
-	TargetCloudUSSec TargetCloud = "USSec"
+	SubscriptionWorkloadTypeDevTest    SubscriptionWorkloadType = "DevTest"
+	SubscriptionWorkloadTypeInternal   SubscriptionWorkloadType = "Internal"
+	SubscriptionWorkloadTypeNone       SubscriptionWorkloadType = "None"
+	SubscriptionWorkloadTypeProduction SubscriptionWorkloadType = "Production"
 )
 
-// PossibleTargetCloudValues returns the possible values for the TargetCloud const type.
-func PossibleTargetCloudValues() []TargetCloud {
-	return []TargetCloud{
-		TargetCloudUSGov,
-		TargetCloudUSNat,
-		TargetCloudUSSec,
+// PossibleSubscriptionWorkloadTypeValues returns the possible values for the SubscriptionWorkloadType const type.
+func PossibleSubscriptionWorkloadTypeValues() []SubscriptionWorkloadType {
+	return []SubscriptionWorkloadType{
+		SubscriptionWorkloadTypeDevTest,
+		SubscriptionWorkloadTypeInternal,
+		SubscriptionWorkloadTypeNone,
+		SubscriptionWorkloadTypeProduction,
 	}
 }
 
-// TransactionTypeKind - The kind of transaction. Options are all or reservation.
-type TransactionTypeKind string
+// SupportLevel - The support level offer associated with an enrollment.
+type SupportLevel string
 
 const (
-	TransactionTypeKindAll         TransactionTypeKind = "all"
-	TransactionTypeKindReservation TransactionTypeKind = "reservation"
+	SupportLevelDeveloper SupportLevel = "Developer"
+	SupportLevelOther     SupportLevel = "Other"
+	SupportLevelProDirect SupportLevel = "Pro-Direct"
+	SupportLevelStandard  SupportLevel = "Standard"
 )
 
-// PossibleTransactionTypeKindValues returns the possible values for the TransactionTypeKind const type.
-func PossibleTransactionTypeKindValues() []TransactionTypeKind {
-	return []TransactionTypeKind{
-		TransactionTypeKindAll,
-		TransactionTypeKindReservation,
+// PossibleSupportLevelValues returns the possible values for the SupportLevel const type.
+func PossibleSupportLevelValues() []SupportLevel {
+	return []SupportLevel{
+		SupportLevelDeveloper,
+		SupportLevelOther,
+		SupportLevelProDirect,
+		SupportLevelStandard,
 	}
 }
 
-// ViewCharges - The policy that controls whether the users in customer's organization can view charges at pay-as-you-go prices.
-type ViewCharges string
+// SupportedAccountType - The supported account types.
+type SupportedAccountType string
 
 const (
-	ViewChargesAllowed    ViewCharges = "Allowed"
-	ViewChargesNotAllowed ViewCharges = "NotAllowed"
+	SupportedAccountTypeEnterprise SupportedAccountType = "Enterprise"
+	SupportedAccountTypeIndividual SupportedAccountType = "Individual"
+	SupportedAccountTypeNone       SupportedAccountType = "None"
+	SupportedAccountTypePartner    SupportedAccountType = "Partner"
 )
 
-// PossibleViewChargesValues returns the possible values for the ViewCharges const type.
-func PossibleViewChargesValues() []ViewCharges {
-	return []ViewCharges{
-		ViewChargesAllowed,
-		ViewChargesNotAllowed,
+// PossibleSupportedAccountTypeValues returns the possible values for the SupportedAccountType const type.
+func PossibleSupportedAccountTypeValues() []SupportedAccountType {
+	return []SupportedAccountType{
+		SupportedAccountTypeEnterprise,
+		SupportedAccountTypeIndividual,
+		SupportedAccountTypeNone,
+		SupportedAccountTypePartner,
 	}
 }
 
-// ViewChargesPolicy - The policy that controls whether users with Azure RBAC access to a subscription can view its charges.
+// TaxIdentifierStatus - The status of the tax identifier.
+type TaxIdentifierStatus string
+
+const (
+	TaxIdentifierStatusInvalid TaxIdentifierStatus = "Invalid"
+	TaxIdentifierStatusOther   TaxIdentifierStatus = "Other"
+	TaxIdentifierStatusValid   TaxIdentifierStatus = "Valid"
+)
+
+// PossibleTaxIdentifierStatusValues returns the possible values for the TaxIdentifierStatus const type.
+func PossibleTaxIdentifierStatusValues() []TaxIdentifierStatus {
+	return []TaxIdentifierStatus{
+		TaxIdentifierStatusInvalid,
+		TaxIdentifierStatusOther,
+		TaxIdentifierStatusValid,
+	}
+}
+
+// TaxIdentifierType - The type of the tax identifier.
+type TaxIdentifierType string
+
+const (
+	TaxIdentifierTypeBrazilCcmID                  TaxIdentifierType = "BrazilCcmId"
+	TaxIdentifierTypeBrazilCnpjID                 TaxIdentifierType = "BrazilCnpjId"
+	TaxIdentifierTypeBrazilCpfID                  TaxIdentifierType = "BrazilCpfId"
+	TaxIdentifierTypeCanadianFederalExempt        TaxIdentifierType = "CanadianFederalExempt"
+	TaxIdentifierTypeCanadianProvinceExempt       TaxIdentifierType = "CanadianProvinceExempt"
+	TaxIdentifierTypeExternalTaxation             TaxIdentifierType = "ExternalTaxation"
+	TaxIdentifierTypeIndiaFederalServiceTaxID     TaxIdentifierType = "IndiaFederalServiceTaxId"
+	TaxIdentifierTypeIndiaFederalTanID            TaxIdentifierType = "IndiaFederalTanId"
+	TaxIdentifierTypeIndiaPanID                   TaxIdentifierType = "IndiaPanId"
+	TaxIdentifierTypeIndiaStateCstID              TaxIdentifierType = "IndiaStateCstId"
+	TaxIdentifierTypeIndiaStateGstINID            TaxIdentifierType = "IndiaStateGstINId"
+	TaxIdentifierTypeIndiaStateVatID              TaxIdentifierType = "IndiaStateVatId"
+	TaxIdentifierTypeIntlExempt                   TaxIdentifierType = "IntlExempt"
+	TaxIdentifierTypeLoveCode                     TaxIdentifierType = "LoveCode"
+	TaxIdentifierTypeMobileBarCode                TaxIdentifierType = "MobileBarCode"
+	TaxIdentifierTypeNationalIdentificationNumber TaxIdentifierType = "NationalIdentificationNumber"
+	TaxIdentifierTypeOther                        TaxIdentifierType = "Other"
+	TaxIdentifierTypePublicSectorID               TaxIdentifierType = "PublicSectorId"
+	TaxIdentifierTypeUSExempt                     TaxIdentifierType = "USExempt"
+	TaxIdentifierTypeVatID                        TaxIdentifierType = "VatId"
+)
+
+// PossibleTaxIdentifierTypeValues returns the possible values for the TaxIdentifierType const type.
+func PossibleTaxIdentifierTypeValues() []TaxIdentifierType {
+	return []TaxIdentifierType{
+		TaxIdentifierTypeBrazilCcmID,
+		TaxIdentifierTypeBrazilCnpjID,
+		TaxIdentifierTypeBrazilCpfID,
+		TaxIdentifierTypeCanadianFederalExempt,
+		TaxIdentifierTypeCanadianProvinceExempt,
+		TaxIdentifierTypeExternalTaxation,
+		TaxIdentifierTypeIndiaFederalServiceTaxID,
+		TaxIdentifierTypeIndiaFederalTanID,
+		TaxIdentifierTypeIndiaPanID,
+		TaxIdentifierTypeIndiaStateCstID,
+		TaxIdentifierTypeIndiaStateGstINID,
+		TaxIdentifierTypeIndiaStateVatID,
+		TaxIdentifierTypeIntlExempt,
+		TaxIdentifierTypeLoveCode,
+		TaxIdentifierTypeMobileBarCode,
+		TaxIdentifierTypeNationalIdentificationNumber,
+		TaxIdentifierTypeOther,
+		TaxIdentifierTypePublicSectorID,
+		TaxIdentifierTypeUSExempt,
+		TaxIdentifierTypeVatID,
+	}
+}
+
+// TransactionKind - Type of the transaction, billed or unbilled.
+type TransactionKind string
+
+const (
+	TransactionKindAll         TransactionKind = "All"
+	TransactionKindOther       TransactionKind = "Other"
+	TransactionKindReservation TransactionKind = "Reservation"
+)
+
+// PossibleTransactionKindValues returns the possible values for the TransactionKind const type.
+func PossibleTransactionKindValues() []TransactionKind {
+	return []TransactionKind{
+		TransactionKindAll,
+		TransactionKindOther,
+		TransactionKindReservation,
+	}
+}
+
+type TransactionType string
+
+const (
+	TransactionTypeBilled   TransactionType = "Billed"
+	TransactionTypeOther    TransactionType = "Other"
+	TransactionTypeUnbilled TransactionType = "Unbilled"
+)
+
+// PossibleTransactionTypeValues returns the possible values for the TransactionType const type.
+func PossibleTransactionTypeValues() []TransactionType {
+	return []TransactionType{
+		TransactionTypeBilled,
+		TransactionTypeOther,
+		TransactionTypeUnbilled,
+	}
+}
+
+// TransferStatus - The status of a transfer.
+type TransferStatus string
+
+const (
+	TransferStatusCanceled            TransferStatus = "Canceled"
+	TransferStatusCompleted           TransferStatus = "Completed"
+	TransferStatusCompletedWithErrors TransferStatus = "CompletedWithErrors"
+	TransferStatusDeclined            TransferStatus = "Declined"
+	TransferStatusExpired             TransferStatus = "Expired"
+	TransferStatusFailed              TransferStatus = "Failed"
+	TransferStatusInProgress          TransferStatus = "InProgress"
+	TransferStatusPending             TransferStatus = "Pending"
+)
+
+// PossibleTransferStatusValues returns the possible values for the TransferStatus const type.
+func PossibleTransferStatusValues() []TransferStatus {
+	return []TransferStatus{
+		TransferStatusCanceled,
+		TransferStatusCompleted,
+		TransferStatusCompletedWithErrors,
+		TransferStatusDeclined,
+		TransferStatusExpired,
+		TransferStatusFailed,
+		TransferStatusInProgress,
+		TransferStatusPending,
+	}
+}
+
+// ViewChargesPolicy - The policy that controls whether the users in customer's organization can view charges at pay-as-you-go
+// prices.
 type ViewChargesPolicy string
 
 const (
 	ViewChargesPolicyAllowed    ViewChargesPolicy = "Allowed"
 	ViewChargesPolicyNotAllowed ViewChargesPolicy = "NotAllowed"
+	ViewChargesPolicyOther      ViewChargesPolicy = "Other"
 )
 
 // PossibleViewChargesPolicyValues returns the possible values for the ViewChargesPolicy const type.
@@ -674,5 +2013,6 @@ func PossibleViewChargesPolicyValues() []ViewChargesPolicy {
 	return []ViewChargesPolicy{
 		ViewChargesPolicyAllowed,
 		ViewChargesPolicyNotAllowed,
+		ViewChargesPolicyOther,
 	}
 }

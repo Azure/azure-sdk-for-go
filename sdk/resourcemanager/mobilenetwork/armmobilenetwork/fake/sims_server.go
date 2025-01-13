@@ -36,6 +36,10 @@ type SimsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginBulkUploadEncrypted func(ctx context.Context, resourceGroupName string, simGroupName string, parameters armmobilenetwork.EncryptedSimUploadList, options *armmobilenetwork.SimsClientBeginBulkUploadEncryptedOptions) (resp azfake.PollerResponder[armmobilenetwork.SimsClientBulkUploadEncryptedResponse], errResp azfake.ErrorResponder)
 
+	// BeginClone is the fake for method SimsClient.BeginClone
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginClone func(ctx context.Context, resourceGroupName string, simGroupName string, parameters armmobilenetwork.SimClone, options *armmobilenetwork.SimsClientBeginCloneOptions) (resp azfake.PollerResponder[armmobilenetwork.SimsClientCloneResponse], errResp azfake.ErrorResponder)
+
 	// BeginCreateOrUpdate is the fake for method SimsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, simGroupName string, simName string, parameters armmobilenetwork.Sim, options *armmobilenetwork.SimsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armmobilenetwork.SimsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -51,6 +55,10 @@ type SimsServer struct {
 	// NewListByGroupPager is the fake for method SimsClient.NewListByGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByGroupPager func(resourceGroupName string, simGroupName string, options *armmobilenetwork.SimsClientListByGroupOptions) (resp azfake.PagerResponder[armmobilenetwork.SimsClientListByGroupResponse])
+
+	// BeginMove is the fake for method SimsClient.BeginMove
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginMove func(ctx context.Context, resourceGroupName string, simGroupName string, parameters armmobilenetwork.SimMove, options *armmobilenetwork.SimsClientBeginMoveOptions) (resp azfake.PollerResponder[armmobilenetwork.SimsClientMoveResponse], errResp azfake.ErrorResponder)
 }
 
 // NewSimsServerTransport creates a new instance of SimsServerTransport with the provided implementation.
@@ -62,9 +70,11 @@ func NewSimsServerTransport(srv *SimsServer) *SimsServerTransport {
 		beginBulkDelete:          newTracker[azfake.PollerResponder[armmobilenetwork.SimsClientBulkDeleteResponse]](),
 		beginBulkUpload:          newTracker[azfake.PollerResponder[armmobilenetwork.SimsClientBulkUploadResponse]](),
 		beginBulkUploadEncrypted: newTracker[azfake.PollerResponder[armmobilenetwork.SimsClientBulkUploadEncryptedResponse]](),
+		beginClone:               newTracker[azfake.PollerResponder[armmobilenetwork.SimsClientCloneResponse]](),
 		beginCreateOrUpdate:      newTracker[azfake.PollerResponder[armmobilenetwork.SimsClientCreateOrUpdateResponse]](),
 		beginDelete:              newTracker[azfake.PollerResponder[armmobilenetwork.SimsClientDeleteResponse]](),
 		newListByGroupPager:      newTracker[azfake.PagerResponder[armmobilenetwork.SimsClientListByGroupResponse]](),
+		beginMove:                newTracker[azfake.PollerResponder[armmobilenetwork.SimsClientMoveResponse]](),
 	}
 }
 
@@ -75,9 +85,11 @@ type SimsServerTransport struct {
 	beginBulkDelete          *tracker[azfake.PollerResponder[armmobilenetwork.SimsClientBulkDeleteResponse]]
 	beginBulkUpload          *tracker[azfake.PollerResponder[armmobilenetwork.SimsClientBulkUploadResponse]]
 	beginBulkUploadEncrypted *tracker[azfake.PollerResponder[armmobilenetwork.SimsClientBulkUploadEncryptedResponse]]
+	beginClone               *tracker[azfake.PollerResponder[armmobilenetwork.SimsClientCloneResponse]]
 	beginCreateOrUpdate      *tracker[azfake.PollerResponder[armmobilenetwork.SimsClientCreateOrUpdateResponse]]
 	beginDelete              *tracker[azfake.PollerResponder[armmobilenetwork.SimsClientDeleteResponse]]
 	newListByGroupPager      *tracker[azfake.PagerResponder[armmobilenetwork.SimsClientListByGroupResponse]]
+	beginMove                *tracker[azfake.PollerResponder[armmobilenetwork.SimsClientMoveResponse]]
 }
 
 // Do implements the policy.Transporter interface for SimsServerTransport.
@@ -98,6 +110,8 @@ func (s *SimsServerTransport) Do(req *http.Request) (*http.Response, error) {
 		resp, err = s.dispatchBeginBulkUpload(req)
 	case "SimsClient.BeginBulkUploadEncrypted":
 		resp, err = s.dispatchBeginBulkUploadEncrypted(req)
+	case "SimsClient.BeginClone":
+		resp, err = s.dispatchBeginClone(req)
 	case "SimsClient.BeginCreateOrUpdate":
 		resp, err = s.dispatchBeginCreateOrUpdate(req)
 	case "SimsClient.BeginDelete":
@@ -106,6 +120,8 @@ func (s *SimsServerTransport) Do(req *http.Request) (*http.Response, error) {
 		resp, err = s.dispatchGet(req)
 	case "SimsClient.NewListByGroupPager":
 		resp, err = s.dispatchNewListByGroupPager(req)
+	case "SimsClient.BeginMove":
+		resp, err = s.dispatchBeginMove(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
 	}
@@ -256,6 +272,54 @@ func (s *SimsServerTransport) dispatchBeginBulkUploadEncrypted(req *http.Request
 	}
 	if !server.PollerResponderMore(beginBulkUploadEncrypted) {
 		s.beginBulkUploadEncrypted.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (s *SimsServerTransport) dispatchBeginClone(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginClone == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginClone not implemented")}
+	}
+	beginClone := s.beginClone.get(req)
+	if beginClone == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MobileNetwork/simGroups/(?P<simGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cloneSims`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armmobilenetwork.SimClone](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		simGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("simGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginClone(req.Context(), resourceGroupNameParam, simGroupNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginClone = &respr
+		s.beginClone.add(req, beginClone)
+	}
+
+	resp, err := server.PollerResponderNext(beginClone, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginClone.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginClone) {
+		s.beginClone.remove(req)
 	}
 
 	return resp, nil
@@ -436,5 +500,53 @@ func (s *SimsServerTransport) dispatchNewListByGroupPager(req *http.Request) (*h
 	if !server.PagerResponderMore(newListByGroupPager) {
 		s.newListByGroupPager.remove(req)
 	}
+	return resp, nil
+}
+
+func (s *SimsServerTransport) dispatchBeginMove(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginMove == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginMove not implemented")}
+	}
+	beginMove := s.beginMove.get(req)
+	if beginMove == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MobileNetwork/simGroups/(?P<simGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/moveSims`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armmobilenetwork.SimMove](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		simGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("simGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginMove(req.Context(), resourceGroupNameParam, simGroupNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginMove = &respr
+		s.beginMove.add(req, beginMove)
+	}
+
+	resp, err := server.PollerResponderNext(beginMove, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginMove.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginMove) {
+		s.beginMove.remove(req)
+	}
+
 	return resp, nil
 }

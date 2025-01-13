@@ -11,7 +11,7 @@ package armeventgrid
 import "encoding/json"
 
 func unmarshalAdvancedFilterClassification(rawMsg json.RawMessage) (AdvancedFilterClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -68,7 +68,7 @@ func unmarshalAdvancedFilterClassification(rawMsg json.RawMessage) (AdvancedFilt
 }
 
 func unmarshalAdvancedFilterClassificationArray(rawMsg json.RawMessage) ([]AdvancedFilterClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -87,7 +87,7 @@ func unmarshalAdvancedFilterClassificationArray(rawMsg json.RawMessage) ([]Advan
 }
 
 func unmarshalDeadLetterDestinationClassification(rawMsg json.RawMessage) (DeadLetterDestinationClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -108,7 +108,7 @@ func unmarshalDeadLetterDestinationClassification(rawMsg json.RawMessage) (DeadL
 }
 
 func unmarshalDeliveryAttributeMappingClassification(rawMsg json.RawMessage) (DeliveryAttributeMappingClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -131,7 +131,7 @@ func unmarshalDeliveryAttributeMappingClassification(rawMsg json.RawMessage) (De
 }
 
 func unmarshalDeliveryAttributeMappingClassificationArray(rawMsg json.RawMessage) ([]DeliveryAttributeMappingClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -150,7 +150,7 @@ func unmarshalDeliveryAttributeMappingClassificationArray(rawMsg json.RawMessage
 }
 
 func unmarshalEventSubscriptionDestinationClassification(rawMsg json.RawMessage) (EventSubscriptionDestinationClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -189,7 +189,7 @@ func unmarshalEventSubscriptionDestinationClassification(rawMsg json.RawMessage)
 }
 
 func unmarshalFilterClassification(rawMsg json.RawMessage) (FilterClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -246,7 +246,7 @@ func unmarshalFilterClassification(rawMsg json.RawMessage) (FilterClassification
 }
 
 func unmarshalFilterClassificationArray(rawMsg json.RawMessage) ([]FilterClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -265,7 +265,7 @@ func unmarshalFilterClassificationArray(rawMsg json.RawMessage) ([]FilterClassif
 }
 
 func unmarshalInputSchemaMappingClassification(rawMsg json.RawMessage) (InputSchemaMappingClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -286,7 +286,7 @@ func unmarshalInputSchemaMappingClassification(rawMsg json.RawMessage) (InputSch
 }
 
 func unmarshalPartnerClientAuthenticationClassification(rawMsg json.RawMessage) (PartnerClientAuthenticationClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -307,7 +307,7 @@ func unmarshalPartnerClientAuthenticationClassification(rawMsg json.RawMessage) 
 }
 
 func unmarshalPartnerDestinationInfoClassification(rawMsg json.RawMessage) (PartnerDestinationInfoClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -328,7 +328,7 @@ func unmarshalPartnerDestinationInfoClassification(rawMsg json.RawMessage) (Part
 }
 
 func unmarshalPartnerUpdateDestinationInfoClassification(rawMsg json.RawMessage) (PartnerUpdateDestinationInfoClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -349,7 +349,7 @@ func unmarshalPartnerUpdateDestinationInfoClassification(rawMsg json.RawMessage)
 }
 
 func unmarshalStaticRoutingEnrichmentClassification(rawMsg json.RawMessage) (StaticRoutingEnrichmentClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -370,7 +370,7 @@ func unmarshalStaticRoutingEnrichmentClassification(rawMsg json.RawMessage) (Sta
 }
 
 func unmarshalStaticRoutingEnrichmentClassificationArray(rawMsg json.RawMessage) ([]StaticRoutingEnrichmentClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage

@@ -14,7 +14,7 @@ import (
 func TestThroughputPropertiesManualRawSerialization(t *testing.T) {
 	nowAsUnix := time.Unix(1630100602, 0)
 
-	jsonString := []byte("{\"offerType\":\"Invalid\",\"offerResourceId\":\"4SRTANCD3Dw=\",\"offerVersion\":\"V2\",\"content\":{\"offerThroughput\":400},\"id\":\"HFln\",\"_etag\":\"\\\"00000000-0000-0000-9b8c-8ea3e19601d7\\\"\",\"_ts\":1630100602}")
+	jsonString := []byte("{\"offerType\":\"Invalid\",\"offerResourceId\":\"4SRTANCD3Dw=\",\"resource\":\"dbs/dbid/colls/collid/\", \"offerVersion\":\"V2\",\"content\":{\"offerThroughput\":400},\"id\":\"HFln\",\"_etag\":\"\\\"00000000-0000-0000-9b8c-8ea3e19601d7\\\"\",\"_ts\":1630100602}")
 
 	otherProperties := &ThroughputProperties{}
 	err := json.Unmarshal(jsonString, otherProperties)
@@ -46,6 +46,10 @@ func TestThroughputPropertiesManualRawSerialization(t *testing.T) {
 		t.Errorf("Timestamp mismatch %v", otherProperties.LastModified)
 	}
 
+	if otherProperties.resource != "dbs/dbid/colls/collid/" {
+		t.Errorf("resource mismatch %v", otherProperties.resource)
+	}
+
 	mt, isManual := otherProperties.ManualThroughput()
 	if !isManual {
 		t.Fatal("Expected to have manual throughput available")
@@ -63,6 +67,7 @@ func TestThroughputPropertiesManualE2ESerialization(t *testing.T) {
 	properties := NewManualThroughputProperties(400)
 	properties.offerId = "HFln"
 	properties.offerResourceId = "4SRTANCD3Dw="
+	properties.resource = "dbs/dbid/colls/collid/"
 	properties.ETag = &etag
 	properties.LastModified = nowAsUnix
 	jsonString, err := json.Marshal(&properties)
@@ -98,6 +103,10 @@ func TestThroughputPropertiesManualE2ESerialization(t *testing.T) {
 
 	if otherProperties.LastModified != properties.LastModified {
 		t.Errorf("Timestamp mismatch %v", otherProperties.LastModified)
+	}
+
+	if otherProperties.resource != properties.resource {
+		t.Errorf("resource mismatch %v", otherProperties.resource)
 	}
 
 	mt, isManual := otherProperties.ManualThroughput()

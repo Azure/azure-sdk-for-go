@@ -41,7 +41,7 @@ func ExampleMarketplaceAgreementsServer() {
 			resp.SetResponse(http.StatusOK, agreementResp, nil)
 
 			// to simulate the failure case, use errResp
-			//errResp.SetResponseError(http.StatusBadRequest, "ThisIsASimulatedError")
+			// errResp.SetResponseError(http.StatusBadRequest, "ThisIsASimulatedError")
 
 			return
 		},

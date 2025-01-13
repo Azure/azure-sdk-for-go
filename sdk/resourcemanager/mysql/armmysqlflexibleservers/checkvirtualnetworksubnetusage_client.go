@@ -28,7 +28,7 @@ type CheckVirtualNetworkSubnetUsageClient struct {
 }
 
 // NewCheckVirtualNetworkSubnetUsageClient creates a new instance of CheckVirtualNetworkSubnetUsageClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewCheckVirtualNetworkSubnetUsageClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CheckVirtualNetworkSubnetUsageClient, error) {
@@ -46,7 +46,7 @@ func NewCheckVirtualNetworkSubnetUsageClient(subscriptionID string, credential a
 // Execute - Get virtual network subnet usage for a given vNet resource id.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-12-01-preview
+// Generated from API version 2023-12-30
 //   - locationName - The name of the location.
 //   - parameters - The required parameters for creating or updating a server.
 //   - options - CheckVirtualNetworkSubnetUsageClientExecuteOptions contains the optional parameters for the CheckVirtualNetworkSubnetUsageClient.Execute
@@ -89,7 +89,7 @@ func (client *CheckVirtualNetworkSubnetUsageClient) executeCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2023-12-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

@@ -8,6 +8,31 @@
 
 package armredisenterprise
 
+// AccessPolicyAssignmentClientBeginCreateUpdateOptions contains the optional parameters for the AccessPolicyAssignmentClient.BeginCreateUpdate
+// method.
+type AccessPolicyAssignmentClientBeginCreateUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AccessPolicyAssignmentClientBeginDeleteOptions contains the optional parameters for the AccessPolicyAssignmentClient.BeginDelete
+// method.
+type AccessPolicyAssignmentClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AccessPolicyAssignmentClientGetOptions contains the optional parameters for the AccessPolicyAssignmentClient.Get method.
+type AccessPolicyAssignmentClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessPolicyAssignmentClientListOptions contains the optional parameters for the AccessPolicyAssignmentClient.NewListPager
+// method.
+type AccessPolicyAssignmentClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ClientBeginCreateOptions contains the optional parameters for the Client.BeginCreate method.
 type ClientBeginCreateOptions struct {
 	// Resumes the LRO from the provided token.
@@ -65,6 +90,13 @@ type DatabasesClientBeginFlushOptions struct {
 	ResumeToken string
 }
 
+// DatabasesClientBeginForceLinkToReplicationGroupOptions contains the optional parameters for the DatabasesClient.BeginForceLinkToReplicationGroup
+// method.
+type DatabasesClientBeginForceLinkToReplicationGroupOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // DatabasesClientBeginForceUnlinkOptions contains the optional parameters for the DatabasesClient.BeginForceUnlink method.
 type DatabasesClientBeginForceUnlinkOptions struct {
 	// Resumes the LRO from the provided token.
@@ -85,6 +117,13 @@ type DatabasesClientBeginRegenerateKeyOptions struct {
 
 // DatabasesClientBeginUpdateOptions contains the optional parameters for the DatabasesClient.BeginUpdate method.
 type DatabasesClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// DatabasesClientBeginUpgradeDBRedisVersionOptions contains the optional parameters for the DatabasesClient.BeginUpgradeDBRedisVersion
+// method.
+type DatabasesClientBeginUpgradeDBRedisVersionOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }

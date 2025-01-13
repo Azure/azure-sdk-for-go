@@ -67,7 +67,7 @@ func ExampleBlobClient_GetBlob() {
 	defer f.Close()
 	_, err = io.Copy(f, reader)
 	if err != nil {
-		log.Fatalf("failed to write to the file: %v", err)
+		log.Printf("failed to write to the file: %v", err)
 	}
 }
 
@@ -83,15 +83,18 @@ func ExampleBlobClient_GetChunk() {
 	for {
 		res, err := blobClient.GetChunk(context.TODO(), "prod/bash", digest, fmt.Sprintf("bytes=%d-%d", current, current+chunkSize-1), nil)
 		if err != nil {
-			log.Fatalf("failed to finish the request: %v", err)
+			log.Printf("failed to finish the request: %v", err)
+			return
 		}
 		chunk, err := io.ReadAll(res.ChunkData)
 		if err != nil {
-			log.Fatalf("failed to read the chunk: %v", err)
+			log.Printf("failed to read the chunk: %v", err)
+			return
 		}
 		_, err = f.Write(chunk)
 		if err != nil {
-			log.Fatalf("failed to write to the file: %v", err)
+			log.Printf("failed to write to the file: %v", err)
+			return
 		}
 
 		totalSize, _ := strconv.Atoi(strings.Split(*res.ContentRange, "/")[1])
@@ -103,15 +106,17 @@ func ExampleBlobClient_GetChunk() {
 	}
 	_, err = f.Seek(0, io.SeekStart)
 	if err != nil {
-		log.Fatalf("failed to set to the start of the file: %v", err)
+		log.Printf("failed to set to the start of the file: %v", err)
+		return
 	}
 	reader, err := azcontainerregistry.NewDigestValidationReader(digest, f)
 	if err != nil {
-		log.Fatalf("failed to create digest validation reader: %v", err)
+		log.Printf("failed to create digest validation reader: %v", err)
+		return
 	}
 	_, err = io.ReadAll(reader)
 	if err != nil {
-		log.Fatalf("failed to validate digest: %v", err)
+		log.Printf("failed to validate digest: %v", err)
 	}
 }
 

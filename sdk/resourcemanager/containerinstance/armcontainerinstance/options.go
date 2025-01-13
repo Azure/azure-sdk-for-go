@@ -8,6 +8,52 @@
 
 package armcontainerinstance
 
+// ContainerGroupProfileClientGetByRevisionNumberOptions contains the optional parameters for the ContainerGroupProfileClient.GetByRevisionNumber
+// method.
+type ContainerGroupProfileClientGetByRevisionNumberOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ContainerGroupProfileClientListAllRevisionsOptions contains the optional parameters for the ContainerGroupProfileClient.NewListAllRevisionsPager
+// method.
+type ContainerGroupProfileClientListAllRevisionsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ContainerGroupProfilesClientCreateOrUpdateOptions contains the optional parameters for the ContainerGroupProfilesClient.CreateOrUpdate
+// method.
+type ContainerGroupProfilesClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ContainerGroupProfilesClientDeleteOptions contains the optional parameters for the ContainerGroupProfilesClient.Delete
+// method.
+type ContainerGroupProfilesClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ContainerGroupProfilesClientGetOptions contains the optional parameters for the ContainerGroupProfilesClient.Get method.
+type ContainerGroupProfilesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ContainerGroupProfilesClientListByResourceGroupOptions contains the optional parameters for the ContainerGroupProfilesClient.NewListByResourceGroupPager
+// method.
+type ContainerGroupProfilesClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ContainerGroupProfilesClientListOptions contains the optional parameters for the ContainerGroupProfilesClient.NewListPager
+// method.
+type ContainerGroupProfilesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ContainerGroupProfilesClientPatchOptions contains the optional parameters for the ContainerGroupProfilesClient.Patch method.
+type ContainerGroupProfilesClientPatchOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ContainerGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the ContainerGroupsClient.BeginCreateOrUpdate
 // method.
 type ContainerGroupsClientBeginCreateOrUpdateOptions struct {

@@ -8,6 +8,41 @@
 
 package azopenai
 
+// AddUploadPartOptions contains the optional parameters for the Client.AddUploadPart method.
+type AddUploadPartOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CancelBatchOptions contains the optional parameters for the Client.CancelBatch method.
+type CancelBatchOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CancelUploadOptions contains the optional parameters for the Client.CancelUpload method.
+type CancelUploadOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CompleteUploadOptions contains the optional parameters for the Client.CompleteUpload method.
+type CompleteUploadOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CreateBatchOptions contains the optional parameters for the Client.CreateBatch method.
+type CreateBatchOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CreateUploadOptions contains the optional parameters for the Client.CreateUpload method.
+type CreateUploadOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeleteFileOptions contains the optional parameters for the Client.DeleteFile method.
+type DeleteFileOptions struct {
+	// placeholder for future optional parameters
+}
+
 // GenerateSpeechFromTextOptions contains the optional parameters for the Client.GenerateSpeechFromText method.
 type GenerateSpeechFromTextOptions struct {
 	// placeholder for future optional parameters
@@ -38,6 +73,11 @@ type getAudioTranscriptionInternalOptions struct {
 	// like 0.2 will make it more focused and deterministic. If set to 0, the model will
 	// use log probability to automatically increase the temperature until certain thresholds are hit.
 	Temperature *float32
+
+	// The timestamp granularities to populate for this transcription.response_format must be set verbose_json to use timestamp
+	// granularities. Either or both of these options are supported: word, or segment.
+	// Note: There is no additional latency for segment timestamps, but generating word timestamps incurs additional latency.
+	TimestampGranularities []AudioTranscriptionTimestampGranularity
 }
 
 // getAudioTranslationInternalOptions contains the optional parameters for the Client.getAudioTranslationInternal method.
@@ -61,6 +101,11 @@ type getAudioTranslationInternalOptions struct {
 	Temperature *float32
 }
 
+// GetBatchOptions contains the optional parameters for the Client.GetBatch method.
+type GetBatchOptions struct {
+	// placeholder for future optional parameters
+}
+
 // GetChatCompletionsOptions contains the optional parameters for the Client.GetChatCompletions method.
 type GetChatCompletionsOptions struct {
 	// placeholder for future optional parameters
@@ -76,7 +121,38 @@ type GetEmbeddingsOptions struct {
 	// placeholder for future optional parameters
 }
 
+// GetFileContentOptions contains the optional parameters for the Client.GetFileContent method.
+type GetFileContentOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GetFileOptions contains the optional parameters for the Client.GetFile method.
+type GetFileOptions struct {
+	// placeholder for future optional parameters
+}
+
 // GetImageGenerationsOptions contains the optional parameters for the Client.GetImageGenerations method.
 type GetImageGenerationsOptions struct {
 	// placeholder for future optional parameters
+}
+
+// ListBatchesOptions contains the optional parameters for the Client.ListBatches method.
+type ListBatchesOptions struct {
+	// Identifier for the last event from the previous pagination request.
+	After *string
+
+	// Number of batches to retrieve. Defaults to 20.
+	Limit *int32
+}
+
+// ListFilesOptions contains the optional parameters for the Client.ListFiles method.
+type ListFilesOptions struct {
+	// A value that, when provided, limits list results to files matching the corresponding purpose.
+	Purpose *FilePurpose
+}
+
+// UploadFileOptions contains the optional parameters for the Client.UploadFile method.
+type UploadFileOptions struct {
+	// A filename to associate with the uploaded data.
+	Filename *string
 }

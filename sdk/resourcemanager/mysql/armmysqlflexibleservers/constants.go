@@ -10,7 +10,7 @@ package armmysqlflexibleservers
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflexibleservers"
-	moduleVersion = "v2.0.0-beta.2"
+	moduleVersion = "v2.0.0-beta.3"
 )
 
 type AdministratorName string
@@ -40,19 +40,82 @@ func PossibleAdministratorTypeValues() []AdministratorType {
 	}
 }
 
+type AdvancedThreatProtectionName string
+
+const (
+	AdvancedThreatProtectionNameDefault AdvancedThreatProtectionName = "Default"
+)
+
+// PossibleAdvancedThreatProtectionNameValues returns the possible values for the AdvancedThreatProtectionName const type.
+func PossibleAdvancedThreatProtectionNameValues() []AdvancedThreatProtectionName {
+	return []AdvancedThreatProtectionName{
+		AdvancedThreatProtectionNameDefault,
+	}
+}
+
+// AdvancedThreatProtectionProvisioningState - The current provisioning state.
+type AdvancedThreatProtectionProvisioningState string
+
+const (
+	AdvancedThreatProtectionProvisioningStateCanceled  AdvancedThreatProtectionProvisioningState = "Canceled"
+	AdvancedThreatProtectionProvisioningStateFailed    AdvancedThreatProtectionProvisioningState = "Failed"
+	AdvancedThreatProtectionProvisioningStateSucceeded AdvancedThreatProtectionProvisioningState = "Succeeded"
+	AdvancedThreatProtectionProvisioningStateUpdating  AdvancedThreatProtectionProvisioningState = "Updating"
+)
+
+// PossibleAdvancedThreatProtectionProvisioningStateValues returns the possible values for the AdvancedThreatProtectionProvisioningState const type.
+func PossibleAdvancedThreatProtectionProvisioningStateValues() []AdvancedThreatProtectionProvisioningState {
+	return []AdvancedThreatProtectionProvisioningState{
+		AdvancedThreatProtectionProvisioningStateCanceled,
+		AdvancedThreatProtectionProvisioningStateFailed,
+		AdvancedThreatProtectionProvisioningStateSucceeded,
+		AdvancedThreatProtectionProvisioningStateUpdating,
+	}
+}
+
+// AdvancedThreatProtectionState - Specifies the state of the Advanced Threat Protection, whether it is enabled or disabled
+// on the server.
+type AdvancedThreatProtectionState string
+
+const (
+	AdvancedThreatProtectionStateDisabled AdvancedThreatProtectionState = "Disabled"
+	AdvancedThreatProtectionStateEnabled  AdvancedThreatProtectionState = "Enabled"
+)
+
+// PossibleAdvancedThreatProtectionStateValues returns the possible values for the AdvancedThreatProtectionState const type.
+func PossibleAdvancedThreatProtectionStateValues() []AdvancedThreatProtectionState {
+	return []AdvancedThreatProtectionState{
+		AdvancedThreatProtectionStateDisabled,
+		AdvancedThreatProtectionStateEnabled,
+	}
+}
+
 // BackupFormat - Backup Format for the current backup. (CollatedFormat is INTERNAL – DO NOT USE)
 type BackupFormat string
 
 const (
 	BackupFormatCollatedFormat BackupFormat = "CollatedFormat"
-	BackupFormatNone           BackupFormat = "None"
+	BackupFormatRaw            BackupFormat = "Raw"
 )
 
 // PossibleBackupFormatValues returns the possible values for the BackupFormat const type.
 func PossibleBackupFormatValues() []BackupFormat {
 	return []BackupFormat{
 		BackupFormatCollatedFormat,
-		BackupFormatNone,
+		BackupFormatRaw,
+	}
+}
+
+type BackupType string
+
+const (
+	BackupTypeFULL BackupType = "FULL"
+)
+
+// PossibleBackupTypeValues returns the possible values for the BackupType const type.
+func PossibleBackupTypeValues() []BackupType {
+	return []BackupType{
+		BackupTypeFULL,
 	}
 }
 
@@ -184,6 +247,20 @@ func PossibleHighAvailabilityStateValues() []HighAvailabilityState {
 	}
 }
 
+// ImportSourceStorageType - Storage type of import source.
+type ImportSourceStorageType string
+
+const (
+	ImportSourceStorageTypeAzureBlob ImportSourceStorageType = "AzureBlob"
+)
+
+// PossibleImportSourceStorageTypeValues returns the possible values for the ImportSourceStorageType const type.
+func PossibleImportSourceStorageTypeValues() []ImportSourceStorageType {
+	return []ImportSourceStorageType{
+		ImportSourceStorageTypeAzureBlob,
+	}
+}
+
 // IsConfigPendingRestart - If is the configuration pending restart or not.
 type IsConfigPendingRestart string
 
@@ -232,6 +309,70 @@ func PossibleIsReadOnlyValues() []IsReadOnly {
 	}
 }
 
+// MaintenanceProvisioningState - The current provisioning state.
+type MaintenanceProvisioningState string
+
+const (
+	MaintenanceProvisioningStateCreating  MaintenanceProvisioningState = "Creating"
+	MaintenanceProvisioningStateDeleting  MaintenanceProvisioningState = "Deleting"
+	MaintenanceProvisioningStateFailed    MaintenanceProvisioningState = "Failed"
+	MaintenanceProvisioningStateSucceeded MaintenanceProvisioningState = "Succeeded"
+)
+
+// PossibleMaintenanceProvisioningStateValues returns the possible values for the MaintenanceProvisioningState const type.
+func PossibleMaintenanceProvisioningStateValues() []MaintenanceProvisioningState {
+	return []MaintenanceProvisioningState{
+		MaintenanceProvisioningStateCreating,
+		MaintenanceProvisioningStateDeleting,
+		MaintenanceProvisioningStateFailed,
+		MaintenanceProvisioningStateSucceeded,
+	}
+}
+
+// MaintenanceState - The current status of this maintenance.
+type MaintenanceState string
+
+const (
+	MaintenanceStateCanceled      MaintenanceState = "Canceled"
+	MaintenanceStateCompleted     MaintenanceState = "Completed"
+	MaintenanceStateInPreparation MaintenanceState = "InPreparation"
+	MaintenanceStateProcessing    MaintenanceState = "Processing"
+	MaintenanceStateReScheduled   MaintenanceState = "ReScheduled"
+	MaintenanceStateScheduled     MaintenanceState = "Scheduled"
+)
+
+// PossibleMaintenanceStateValues returns the possible values for the MaintenanceState const type.
+func PossibleMaintenanceStateValues() []MaintenanceState {
+	return []MaintenanceState{
+		MaintenanceStateCanceled,
+		MaintenanceStateCompleted,
+		MaintenanceStateInPreparation,
+		MaintenanceStateProcessing,
+		MaintenanceStateReScheduled,
+		MaintenanceStateScheduled,
+	}
+}
+
+// MaintenanceType - The type of this maintenance.
+type MaintenanceType string
+
+const (
+	MaintenanceTypeHotFixes            MaintenanceType = "HotFixes"
+	MaintenanceTypeMinorVersionUpgrade MaintenanceType = "MinorVersionUpgrade"
+	MaintenanceTypeRoutineMaintenance  MaintenanceType = "RoutineMaintenance"
+	MaintenanceTypeSecurityPatches     MaintenanceType = "SecurityPatches"
+)
+
+// PossibleMaintenanceTypeValues returns the possible values for the MaintenanceType const type.
+func PossibleMaintenanceTypeValues() []MaintenanceType {
+	return []MaintenanceType{
+		MaintenanceTypeHotFixes,
+		MaintenanceTypeMinorVersionUpgrade,
+		MaintenanceTypeRoutineMaintenance,
+		MaintenanceTypeSecurityPatches,
+	}
+}
+
 // ManagedServiceIdentityType - Type of managed service identity.
 type ManagedServiceIdentityType string
 
@@ -243,6 +384,22 @@ const (
 func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 	return []ManagedServiceIdentityType{
 		ManagedServiceIdentityTypeUserAssigned,
+	}
+}
+
+// ObjectType - Identifies the type of source operation
+type ObjectType string
+
+const (
+	ObjectTypeBackupAndExportResponse   ObjectType = "BackupAndExportResponse"
+	ObjectTypeImportFromStorageResponse ObjectType = "ImportFromStorageResponse"
+)
+
+// PossibleObjectTypeValues returns the possible values for the ObjectType const type.
+func PossibleObjectTypeValues() []ObjectType {
+	return []ObjectType{
+		ObjectTypeBackupAndExportResponse,
+		ObjectTypeImportFromStorageResponse,
 	}
 }
 
@@ -273,6 +430,66 @@ func PossibleOperationStatusValues() []OperationStatus {
 		OperationStatusInProgress,
 		OperationStatusPending,
 		OperationStatusSucceeded,
+	}
+}
+
+// PrivateEndpointConnectionProvisioningState - The current provisioning state.
+type PrivateEndpointConnectionProvisioningState string
+
+const (
+	PrivateEndpointConnectionProvisioningStateCreating  PrivateEndpointConnectionProvisioningState = "Creating"
+	PrivateEndpointConnectionProvisioningStateDeleting  PrivateEndpointConnectionProvisioningState = "Deleting"
+	PrivateEndpointConnectionProvisioningStateFailed    PrivateEndpointConnectionProvisioningState = "Failed"
+	PrivateEndpointConnectionProvisioningStateSucceeded PrivateEndpointConnectionProvisioningState = "Succeeded"
+)
+
+// PossiblePrivateEndpointConnectionProvisioningStateValues returns the possible values for the PrivateEndpointConnectionProvisioningState const type.
+func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
+	return []PrivateEndpointConnectionProvisioningState{
+		PrivateEndpointConnectionProvisioningStateCreating,
+		PrivateEndpointConnectionProvisioningStateDeleting,
+		PrivateEndpointConnectionProvisioningStateFailed,
+		PrivateEndpointConnectionProvisioningStateSucceeded,
+	}
+}
+
+// PrivateEndpointServiceConnectionStatus - The private endpoint connection status.
+type PrivateEndpointServiceConnectionStatus string
+
+const (
+	PrivateEndpointServiceConnectionStatusApproved PrivateEndpointServiceConnectionStatus = "Approved"
+	PrivateEndpointServiceConnectionStatusPending  PrivateEndpointServiceConnectionStatus = "Pending"
+	PrivateEndpointServiceConnectionStatusRejected PrivateEndpointServiceConnectionStatus = "Rejected"
+)
+
+// PossiblePrivateEndpointServiceConnectionStatusValues returns the possible values for the PrivateEndpointServiceConnectionStatus const type.
+func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
+	return []PrivateEndpointServiceConnectionStatus{
+		PrivateEndpointServiceConnectionStatusApproved,
+		PrivateEndpointServiceConnectionStatusPending,
+		PrivateEndpointServiceConnectionStatusRejected,
+	}
+}
+
+// ProvisioningState - The current provisioning state.
+type ProvisioningState string
+
+const (
+	ProvisioningStateCanceled  ProvisioningState = "Canceled"
+	ProvisioningStateCreating  ProvisioningState = "Creating"
+	ProvisioningStateDeleting  ProvisioningState = "Deleting"
+	ProvisioningStateFailed    ProvisioningState = "Failed"
+	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
+)
+
+// PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{
+		ProvisioningStateCanceled,
+		ProvisioningStateCreating,
+		ProvisioningStateDeleting,
+		ProvisioningStateFailed,
+		ProvisioningStateSucceeded,
 	}
 }
 
@@ -310,21 +527,21 @@ func PossibleResetAllToDefaultValues() []ResetAllToDefault {
 	}
 }
 
-// SKUTier - The tier of the particular SKU, e.g. GeneralPurpose.
-type SKUTier string
+// ServerSKUTier - The tier of the particular SKU, e.g. GeneralPurpose.
+type ServerSKUTier string
 
 const (
-	SKUTierBurstable       SKUTier = "Burstable"
-	SKUTierGeneralPurpose  SKUTier = "GeneralPurpose"
-	SKUTierMemoryOptimized SKUTier = "MemoryOptimized"
+	ServerSKUTierBurstable       ServerSKUTier = "Burstable"
+	ServerSKUTierGeneralPurpose  ServerSKUTier = "GeneralPurpose"
+	ServerSKUTierMemoryOptimized ServerSKUTier = "MemoryOptimized"
 )
 
-// PossibleSKUTierValues returns the possible values for the SKUTier const type.
-func PossibleSKUTierValues() []SKUTier {
-	return []SKUTier{
-		SKUTierBurstable,
-		SKUTierGeneralPurpose,
-		SKUTierMemoryOptimized,
+// PossibleServerSKUTierValues returns the possible values for the ServerSKUTier const type.
+func PossibleServerSKUTierValues() []ServerSKUTier {
+	return []ServerSKUTier{
+		ServerSKUTierBurstable,
+		ServerSKUTierGeneralPurpose,
+		ServerSKUTierMemoryOptimized,
 	}
 }
 

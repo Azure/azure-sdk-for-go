@@ -1,5 +1,115 @@
 # Release History
 
+## 7.4.0-beta.1 (2024-11-18)
+### Features Added
+
+- New value `ServiceLevelFlexible` added to enum type `ServiceLevel`
+- New enum type `AcceptGrowCapacityPoolForShortTermCloneSplit` with values `AcceptGrowCapacityPoolForShortTermCloneSplitAccepted`, `AcceptGrowCapacityPoolForShortTermCloneSplitDeclined`
+- New enum type `ReplicationType` with values `ReplicationTypeCrossRegionReplication`, `ReplicationTypeCrossZoneReplication`
+- New enum type `VolumeLanguage` with values `VolumeLanguageAr`, `VolumeLanguageArUTF8`, `VolumeLanguageC`, `VolumeLanguageCUTF8`, `VolumeLanguageCs`, `VolumeLanguageCsUTF8`, `VolumeLanguageDa`, `VolumeLanguageDaUTF8`, `VolumeLanguageDe`, `VolumeLanguageDeUTF8`, `VolumeLanguageEn`, `VolumeLanguageEnUTF8`, `VolumeLanguageEnUs`, `VolumeLanguageEnUsUTF8`, `VolumeLanguageEs`, `VolumeLanguageEsUTF8`, `VolumeLanguageFi`, `VolumeLanguageFiUTF8`, `VolumeLanguageFr`, `VolumeLanguageFrUTF8`, `VolumeLanguageHe`, `VolumeLanguageHeUTF8`, `VolumeLanguageHr`, `VolumeLanguageHrUTF8`, `VolumeLanguageHu`, `VolumeLanguageHuUTF8`, `VolumeLanguageIt`, `VolumeLanguageItUTF8`, `VolumeLanguageJa`, `VolumeLanguageJaJp932`, `VolumeLanguageJaJp932UTF8`, `VolumeLanguageJaJpPck`, `VolumeLanguageJaJpPckUTF8`, `VolumeLanguageJaJpPckV2`, `VolumeLanguageJaJpPckV2UTF8`, `VolumeLanguageJaUTF8`, `VolumeLanguageJaV1`, `VolumeLanguageJaV1UTF8`, `VolumeLanguageKo`, `VolumeLanguageKoUTF8`, `VolumeLanguageNl`, `VolumeLanguageNlUTF8`, `VolumeLanguageNo`, `VolumeLanguageNoUTF8`, `VolumeLanguagePl`, `VolumeLanguagePlUTF8`, `VolumeLanguagePt`, `VolumeLanguagePtUTF8`, `VolumeLanguageRo`, `VolumeLanguageRoUTF8`, `VolumeLanguageRu`, `VolumeLanguageRuUTF8`, `VolumeLanguageSk`, `VolumeLanguageSkUTF8`, `VolumeLanguageSl`, `VolumeLanguageSlUTF8`, `VolumeLanguageSv`, `VolumeLanguageSvUTF8`, `VolumeLanguageTr`, `VolumeLanguageTrUTF8`, `VolumeLanguageUTF8Mb4`, `VolumeLanguageZh`, `VolumeLanguageZhGbk`, `VolumeLanguageZhGbkUTF8`, `VolumeLanguageZhTw`, `VolumeLanguageZhTwBig5`, `VolumeLanguageZhTwBig5UTF8`, `VolumeLanguageZhTwUTF8`, `VolumeLanguageZhUTF8`
+- New function `*AccountsClient.BeginChangeKeyVault(context.Context, string, string, *AccountsClientBeginChangeKeyVaultOptions) (*runtime.Poller[AccountsClientChangeKeyVaultResponse], error)`
+- New function `*AccountsClient.BeginGetChangeKeyVaultInformation(context.Context, string, string, *AccountsClientBeginGetChangeKeyVaultInformationOptions) (*runtime.Poller[AccountsClientGetChangeKeyVaultInformationResponse], error)`
+- New function `*AccountsClient.BeginTransitionToCmk(context.Context, string, string, *AccountsClientBeginTransitionToCmkOptions) (*runtime.Poller[AccountsClientTransitionToCmkResponse], error)`
+- New function `*VolumesClient.BeginListQuotaReport(context.Context, string, string, string, string, *VolumesClientBeginListQuotaReportOptions) (*runtime.Poller[VolumesClientListQuotaReportResponse], error)`
+- New function `*VolumesClient.BeginSplitCloneFromParent(context.Context, string, string, string, string, *VolumesClientBeginSplitCloneFromParentOptions) (*runtime.Poller[VolumesClientSplitCloneFromParentResponse], error)`
+- New struct `ChangeKeyVault`
+- New struct `DestinationReplication`
+- New struct `EncryptionTransitionRequest`
+- New struct `KeyVaultPrivateEndpoint`
+- New struct `ListQuotaReportResponse`
+- New struct `QuotaReport`
+- New field `IsMultiAdEnabled`, `NfsV4IDDomain` in struct `AccountProperties`
+- New field `IsLargeVolume` in struct `BackupProperties`
+- New field `FederatedClientID` in struct `EncryptionIdentity`
+- New field `CustomThroughputMibps` in struct `PoolPatchProperties`
+- New field `CustomThroughputMibps` in struct `PoolProperties`
+- New field `DestinationReplications` in struct `ReplicationObject`
+- New field `AcceptGrowCapacityPoolForShortTermCloneSplit`, `InheritedSizeInBytes`, `Language` in struct `VolumeProperties`
+
+
+## 7.3.0 (2024-10-23)
+### Features Added
+
+- New function `*VolumesClient.BeginAuthorizeExternalReplication(context.Context, string, string, string, string, *VolumesClientBeginAuthorizeExternalReplicationOptions) (*runtime.Poller[VolumesClientAuthorizeExternalReplicationResponse], error)`
+- New function `*VolumesClient.BeginFinalizeExternalReplication(context.Context, string, string, string, string, *VolumesClientBeginFinalizeExternalReplicationOptions) (*runtime.Poller[VolumesClientFinalizeExternalReplicationResponse], error)`
+- New function `*VolumesClient.BeginPeerExternalCluster(context.Context, string, string, string, string, PeerClusterForVolumeMigrationRequest, *VolumesClientBeginPeerExternalClusterOptions) (*runtime.Poller[VolumesClientPeerExternalClusterResponse], error)`
+- New function `*VolumesClient.BeginPerformReplicationTransfer(context.Context, string, string, string, string, *VolumesClientBeginPerformReplicationTransferOptions) (*runtime.Poller[VolumesClientPerformReplicationTransferResponse], error)`
+- New struct `ClusterPeerCommandResponse`
+- New struct `PeerClusterForVolumeMigrationRequest`
+- New struct `RemotePath`
+- New struct `SvmPeerCommandResponse`
+- New field `AvailabilityZone` in struct `FilePathAvailabilityRequest`
+- New field `RemotePath` in struct `ReplicationObject`
+- New field `EffectiveNetworkFeatures` in struct `VolumeProperties`
+
+
+## 7.2.0 (2024-08-23)
+### Features Added
+
+- New field `ReplicationID` in struct `Replication`
+
+
+## 7.1.0 (2024-07-26)
+### Features Added
+
+- New field `ProtocolTypes` in struct `VolumePatchProperties`
+
+
+## 7.0.0 (2024-05-24)
+### Breaking Changes
+
+- Function `*BackupsClient.GetVolumeRestoreStatus` has been removed
+
+### Features Added
+
+- New enum type `BackupType` with values `BackupTypeManual`, `BackupTypeScheduled`
+- New function `NewBackupVaultsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*BackupVaultsClient, error)`
+- New function `*BackupVaultsClient.BeginCreateOrUpdate(context.Context, string, string, string, BackupVault, *BackupVaultsClientBeginCreateOrUpdateOptions) (*runtime.Poller[BackupVaultsClientCreateOrUpdateResponse], error)`
+- New function `*BackupVaultsClient.BeginDelete(context.Context, string, string, string, *BackupVaultsClientBeginDeleteOptions) (*runtime.Poller[BackupVaultsClientDeleteResponse], error)`
+- New function `*BackupVaultsClient.Get(context.Context, string, string, string, *BackupVaultsClientGetOptions) (BackupVaultsClientGetResponse, error)`
+- New function `*BackupVaultsClient.NewListByNetAppAccountPager(string, string, *BackupVaultsClientListByNetAppAccountOptions) *runtime.Pager[BackupVaultsClientListByNetAppAccountResponse]`
+- New function `*BackupVaultsClient.BeginUpdate(context.Context, string, string, string, BackupVaultPatch, *BackupVaultsClientBeginUpdateOptions) (*runtime.Poller[BackupVaultsClientUpdateResponse], error)`
+- New function `*BackupsClient.BeginCreate(context.Context, string, string, string, string, Backup, *BackupsClientBeginCreateOptions) (*runtime.Poller[BackupsClientCreateResponse], error)`
+- New function `*BackupsClient.BeginDelete(context.Context, string, string, string, string, *BackupsClientBeginDeleteOptions) (*runtime.Poller[BackupsClientDeleteResponse], error)`
+- New function `*BackupsClient.Get(context.Context, string, string, string, string, *BackupsClientGetOptions) (BackupsClientGetResponse, error)`
+- New function `*BackupsClient.GetLatestStatus(context.Context, string, string, string, string, *BackupsClientGetLatestStatusOptions) (BackupsClientGetLatestStatusResponse, error)`
+- New function `*BackupsClient.GetVolumeLatestRestoreStatus(context.Context, string, string, string, string, *BackupsClientGetVolumeLatestRestoreStatusOptions) (BackupsClientGetVolumeLatestRestoreStatusResponse, error)`
+- New function `*BackupsClient.NewListByVaultPager(string, string, string, *BackupsClientListByVaultOptions) *runtime.Pager[BackupsClientListByVaultResponse]`
+- New function `*BackupsClient.BeginUpdate(context.Context, string, string, string, string, BackupPatch, *BackupsClientBeginUpdateOptions) (*runtime.Poller[BackupsClientUpdateResponse], error)`
+- New function `NewBackupsUnderAccountClient(string, azcore.TokenCredential, *arm.ClientOptions) (*BackupsUnderAccountClient, error)`
+- New function `*BackupsUnderAccountClient.BeginMigrateBackups(context.Context, string, string, BackupsMigrationRequest, *BackupsUnderAccountClientBeginMigrateBackupsOptions) (*runtime.Poller[BackupsUnderAccountClientMigrateBackupsResponse], error)`
+- New function `NewBackupsUnderBackupVaultClient(string, azcore.TokenCredential, *arm.ClientOptions) (*BackupsUnderBackupVaultClient, error)`
+- New function `*BackupsUnderBackupVaultClient.BeginRestoreFiles(context.Context, string, string, string, string, BackupRestoreFiles, *BackupsUnderBackupVaultClientBeginRestoreFilesOptions) (*runtime.Poller[BackupsUnderBackupVaultClientRestoreFilesResponse], error)`
+- New function `NewBackupsUnderVolumeClient(string, azcore.TokenCredential, *arm.ClientOptions) (*BackupsUnderVolumeClient, error)`
+- New function `*BackupsUnderVolumeClient.BeginMigrateBackups(context.Context, string, string, string, string, BackupsMigrationRequest, *BackupsUnderVolumeClientBeginMigrateBackupsOptions) (*runtime.Poller[BackupsUnderVolumeClientMigrateBackupsResponse], error)`
+- New function `*ClientFactory.NewBackupVaultsClient() *BackupVaultsClient`
+- New function `*ClientFactory.NewBackupsUnderAccountClient() *BackupsUnderAccountClient`
+- New function `*ClientFactory.NewBackupsUnderBackupVaultClient() *BackupsUnderBackupVaultClient`
+- New function `*ClientFactory.NewBackupsUnderVolumeClient() *BackupsUnderVolumeClient`
+- New function `*ClientFactory.NewResourceRegionInfosClient() *ResourceRegionInfosClient`
+- New function `NewResourceRegionInfosClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ResourceRegionInfosClient, error)`
+- New function `*ResourceRegionInfosClient.Get(context.Context, string, *ResourceRegionInfosClientGetOptions) (ResourceRegionInfosClientGetResponse, error)`
+- New function `*ResourceRegionInfosClient.NewListPager(string, *ResourceRegionInfosClientListOptions) *runtime.Pager[ResourceRegionInfosClientListResponse]`
+- New struct `Backup`
+- New struct `BackupPatch`
+- New struct `BackupPatchProperties`
+- New struct `BackupProperties`
+- New struct `BackupRestoreFiles`
+- New struct `BackupStatus`
+- New struct `BackupVault`
+- New struct `BackupVaultPatch`
+- New struct `BackupVaultProperties`
+- New struct `BackupVaultsList`
+- New struct `BackupsList`
+- New struct `BackupsMigrationRequest`
+- New struct `RegionInfoResource`
+- New struct `RegionInfosList`
+- New struct `VolumeBackupProperties`
+- New field `VolumeResourceID` in struct `VolumeBackups`
+- New field `Backup` in struct `VolumePatchPropertiesDataProtection`
+- New field `Backup` in struct `VolumePropertiesDataProtection`
+
+
 ## 6.0.0 (2024-03-22)
 ### Breaking Changes
 

@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflexibleservers/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ReplicasListByServer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8691fbfca8fcdc5a241a0b501c32fd4a76bb0cd/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/ReplicasListByServer.json
 func ExampleReplicasClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,9 +77,9 @@ func ExampleReplicasClient_NewListByServerPager() {
 		// 				},
 		// 				Version: to.Ptr(armmysqlflexibleservers.ServerVersionFive7),
 		// 			},
-		// 			SKU: &armmysqlflexibleservers.SKU{
+		// 			SKU: &armmysqlflexibleservers.MySQLServerSKU{
 		// 				Name: to.Ptr("Standard_D2ds_v4"),
-		// 				Tier: to.Ptr(armmysqlflexibleservers.SKUTierGeneralPurpose),
+		// 				Tier: to.Ptr(armmysqlflexibleservers.ServerSKUTierGeneralPurpose),
 		// 			},
 		// 		},
 		// 		{
@@ -118,9 +118,9 @@ func ExampleReplicasClient_NewListByServerPager() {
 		// 				},
 		// 				Version: to.Ptr(armmysqlflexibleservers.ServerVersionFive7),
 		// 			},
-		// 			SKU: &armmysqlflexibleservers.SKU{
+		// 			SKU: &armmysqlflexibleservers.MySQLServerSKU{
 		// 				Name: to.Ptr("Standard_D2ds_v4"),
-		// 				Tier: to.Ptr(armmysqlflexibleservers.SKUTierGeneralPurpose),
+		// 				Tier: to.Ptr(armmysqlflexibleservers.ServerSKUTierGeneralPurpose),
 		// 			},
 		// 	}},
 		// }

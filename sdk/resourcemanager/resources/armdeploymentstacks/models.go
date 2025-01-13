@@ -10,6 +10,21 @@ package armdeploymentstacks
 
 import "time"
 
+// ActionOnUnmanage - Defines the behavior of resources that are no longer managed after the stack is updated or deleted.
+type ActionOnUnmanage struct {
+	// REQUIRED; Specifies an action for a newly unmanaged resource. Delete will attempt to delete the resource from Azure. Detach
+	// will leave the resource in it's current state.
+	Resources *DeploymentStacksDeleteDetachEnum
+
+	// Specifies an action for a newly unmanaged resource. Delete will attempt to delete the resource from Azure. Detach will
+	// leave the resource in it's current state.
+	ManagementGroups *DeploymentStacksDeleteDetachEnum
+
+	// Specifies an action for a newly unmanaged resource. Delete will attempt to delete the resource from Azure. Detach will
+	// leave the resource in it's current state.
+	ResourceGroups *DeploymentStacksDeleteDetachEnum
+}
+
 // DebugSetting - The debug setting.
 type DebugSetting struct {
 	// Specifies the type of information to log for debugging. The permitted values are none, requestContent, responseContent,
@@ -20,17 +35,17 @@ type DebugSetting struct {
 	DetailLevel *string
 }
 
-// DenySettings - Defines how resources deployed by the deployment stack are locked.
+// DenySettings - Defines how resources deployed by the Deployment stack are locked.
 type DenySettings struct {
-	// REQUIRED; denySettings Mode.
+	// REQUIRED; denySettings Mode that defines denied actions.
 	Mode *DenySettingsMode
 
-	// DenySettings will be applied to child scopes.
+	// DenySettings will be applied to child resource scopes of every managed resource with a deny assignment.
 	ApplyToChildScopes *bool
 
 	// List of role-based management operations that are excluded from the denySettings. Up to 200 actions are permitted. If the
 	// denySetting mode is set to 'denyWriteAndDelete', then the following actions
-	// are automatically appended to 'excludedActions': '*/read' and 'Microsoft.Authorization/locks/delete'. If the denySetting
+	// are automatically appended to 'excludedActions': '*\/read' and 'Microsoft.Authorization/locks/delete'. If the denySetting
 	// mode is set to 'denyDelete', then the following actions are automatically
 	// appended to 'excludedActions': 'Microsoft.Authorization/locks/delete'. Duplicate actions will be removed.
 	ExcludedActions []*string
@@ -39,9 +54,21 @@ type DenySettings struct {
 	ExcludedPrincipals []*string
 }
 
+// DeploymentParameter - Deployment parameter for the template.
+type DeploymentParameter struct {
+	// Azure Key Vault parameter reference.
+	Reference *KeyVaultParameterReference
+
+	// Type of the value.
+	Type *string
+
+	// Input value to the parameter.
+	Value any
+}
+
 // DeploymentStack - Deployment stack object.
 type DeploymentStack struct {
-	// The location of the deployment stack. It cannot be changed after creation. It must be one of the supported Azure locations.
+	// The location of the Deployment stack. It cannot be changed after creation. It must be one of the supported Azure locations.
 	Location *string
 
 	// Deployment stack properties.
@@ -63,9 +90,9 @@ type DeploymentStack struct {
 	Type *string
 }
 
-// DeploymentStackListResult - List of deployment stacks.
+// DeploymentStackListResult - List of Deployment stacks.
 type DeploymentStackListResult struct {
-	// An array of deployment stacks.
+	// An array of Deployment stacks.
 	Value []*DeploymentStack
 
 	// READ-ONLY; The URL to use for getting the next set of results.
@@ -74,11 +101,14 @@ type DeploymentStackListResult struct {
 
 // DeploymentStackProperties - Deployment stack properties.
 type DeploymentStackProperties struct {
-	// REQUIRED; Defines the behavior of resources that are not managed immediately after the stack is updated.
-	ActionOnUnmanage *DeploymentStackPropertiesActionOnUnmanage
+	// REQUIRED; Defines the behavior of resources that are no longer managed after the Deployment stack is updated or deleted.
+	ActionOnUnmanage *ActionOnUnmanage
 
 	// REQUIRED; Defines how resources deployed by the stack are locked.
 	DenySettings *DenySettings
+
+	// Flag to bypass service errors that indicate the stack resource list is not correctly synchronized.
+	BypassStackOutOfSyncError *bool
 
 	// The debug setting of the deployment.
 	DebugSetting *DebugSetting
@@ -90,18 +120,16 @@ type DeploymentStackProperties struct {
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}').
 	DeploymentScope *string
 
-	// Deployment stack description.
+	// Deployment stack description. Max length of 4096 characters.
 	Description *string
 
-	// Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows
-	// the OData error response format.).
-	Error *ErrorResponse
+	// The error detail.
+	Error *ErrorDetail
 
 	// Name and value pairs that define the deployment parameters for the template. Use this element when providing the parameter
 	// values directly in the request, rather than linking to an existing parameter
-	// file. Use either the parametersLink property or the parameters property, but not both. It can be a JObject or a well formed
-	// JSON string.
-	Parameters any
+	// file. Use either the parametersLink property or the parameters property, but not both.
+	Parameters map[string]*DeploymentParameter
 
 	// The URI of parameters file. Use this element to link to an existing parameters file. Use either the parametersLink property
 	// or the parameters property, but not both.
@@ -115,22 +143,30 @@ type DeploymentStackProperties struct {
 	// The URI of the template. Use either the templateLink property or the template property, but not both.
 	TemplateLink *TemplateLink
 
-	// READ-ONLY; An array of resources that were deleted during the most recent update.
+	// READ-ONLY; The correlation id of the last Deployment stack upsert or delete operation. It is in GUID format and is used
+	// for tracing.
+	CorrelationID *string
+
+	// READ-ONLY; An array of resources that were deleted during the most recent Deployment stack update. Deleted means that the
+	// resource was removed from the template and relevant deletion operations were specified.
 	DeletedResources []*ResourceReference
 
 	// READ-ONLY; The resourceId of the deployment resource created by the deployment stack.
 	DeploymentID *string
 
-	// READ-ONLY; An array of resources that were detached during the most recent update.
+	// READ-ONLY; An array of resources that were detached during the most recent Deployment stack update. Detached means that
+	// the resource was removed from the template, but no relevant deletion operations were
+	// specified. So, the resource still exists while no longer being associated with the stack.
 	DetachedResources []*ResourceReference
 
-	// READ-ONLY; The duration of the deployment stack update.
+	// READ-ONLY; The duration of the last successful Deployment stack update.
 	Duration *string
 
-	// READ-ONLY; An array of resources that failed to reach goal state during the most recent update.
+	// READ-ONLY; An array of resources that failed to reach goal state during the most recent update. Each resourceId is accompanied
+	// by an error message.
 	FailedResources []*ResourceReferenceExtended
 
-	// READ-ONLY; The outputs of the underlying deployment.
+	// READ-ONLY; The outputs of the deployment resource created by the deployment stack.
 	Outputs any
 
 	// READ-ONLY; State of the deployment stack.
@@ -140,26 +176,7 @@ type DeploymentStackProperties struct {
 	Resources []*ManagedResourceReference
 }
 
-// DeploymentStackPropertiesActionOnUnmanage - Defines the behavior of resources that are not managed immediately after the
-// stack is updated.
-type DeploymentStackPropertiesActionOnUnmanage struct {
-	// REQUIRED; Specifies the action that should be taken on the resource when the deployment stack is deleted. Delete will attempt
-	// to delete the resource from Azure. Detach will leave the resource in it's current
-	// state.
-	Resources *DeploymentStacksDeleteDetachEnum
-
-	// Specifies the action that should be taken on the resource when the deployment stack is deleted. Delete will attempt to
-	// delete the resource from Azure. Detach will leave the resource in it's current
-	// state.
-	ManagementGroups *DeploymentStacksDeleteDetachEnum
-
-	// Specifies the action that should be taken on the resource when the deployment stack is deleted. Delete will attempt to
-	// delete the resource from Azure. Detach will leave the resource in it's current
-	// state.
-	ResourceGroups *DeploymentStacksDeleteDetachEnum
-}
-
-// DeploymentStackTemplateDefinition - Export Template specific properties of the Stack.
+// DeploymentStackTemplateDefinition - Export Template specific properties of the Deployment stack.
 type DeploymentStackTemplateDefinition struct {
 	// The template content. Use this element to pass the template syntax directly in the request rather than link to an existing
 	// template. It can be a JObject or well-formed JSON string. Use either the
@@ -168,6 +185,54 @@ type DeploymentStackTemplateDefinition struct {
 
 	// The URI of the template. Use either the templateLink property or the template property, but not both.
 	TemplateLink *TemplateLink
+}
+
+// DeploymentStackValidateProperties - The Deployment stack validation result details.
+type DeploymentStackValidateProperties struct {
+	// Defines the behavior of resources that are no longer managed after the Deployment stack is updated or deleted.
+	ActionOnUnmanage *ActionOnUnmanage
+
+	// The correlation id of the Deployment stack validate operation. It is in GUID format and is used for tracing.
+	CorrelationID *string
+
+	// The Deployment stack deny settings.
+	DenySettings *DenySettings
+
+	// The Deployment stack deployment scope.
+	DeploymentScope *string
+
+	// The Deployment stack validation description.
+	Description *string
+
+	// Deployment parameters.
+	Parameters map[string]*DeploymentParameter
+
+	// The URI of the template.
+	TemplateLink *TemplateLink
+
+	// The array of resources that were validated.
+	ValidatedResources []*ResourceReference
+}
+
+// DeploymentStackValidateResult - The Deployment stack validation result.
+type DeploymentStackValidateResult struct {
+	// The error detail.
+	Error *ErrorDetail
+
+	// The validation result details.
+	Properties *DeploymentStackValidateProperties
+
+	// READ-ONLY; String Id used to locate any resource on Azure.
+	ID *string
+
+	// READ-ONLY; Name of this resource.
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; Type of this resource.
+	Type *string
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
@@ -197,11 +262,22 @@ type ErrorDetail struct {
 	Target *string
 }
 
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
-// (This also follows the OData error response format.).
-type ErrorResponse struct {
-	// The error object.
-	Error *ErrorDetail
+// KeyVaultParameterReference - Azure Key Vault parameter reference.
+type KeyVaultParameterReference struct {
+	// REQUIRED; Azure Key Vault reference.
+	KeyVault *KeyVaultReference
+
+	// REQUIRED; Azure Key Vault secret name.
+	SecretName *string
+
+	// Azure Key Vault secret version.
+	SecretVersion *string
+}
+
+// KeyVaultReference - Azure Key Vault reference.
+type KeyVaultReference struct {
+	// REQUIRED; Azure Key Vault resourceId.
+	ID *string
 }
 
 // ManagedResourceReference - The managed resource model.
@@ -225,17 +301,17 @@ type ParametersLink struct {
 	ContentVersion *string
 }
 
-// ResourceReference - The resource Id model.
+// ResourceReference - The resourceId model.
 type ResourceReference struct {
 	// READ-ONLY; The resourceId of a resource managed by the deployment stack.
 	ID *string
 }
 
-// ResourceReferenceExtended - The resource Id extended model.
+// ResourceReferenceExtended - The resourceId extended model. This is used to document failed resources with a resourceId
+// and a corresponding error.
 type ResourceReferenceExtended struct {
-	// Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows
-	// the OData error response format.).
-	Error *ErrorResponse
+	// The error detail.
+	Error *ErrorDetail
 
 	// READ-ONLY; The resourceId of a resource managed by the deployment stack.
 	ID *string
@@ -267,7 +343,7 @@ type TemplateLink struct {
 	// If included, must match the ContentVersion in the template.
 	ContentVersion *string
 
-	// The resource id of a Template Spec. Use either the id or uri property, but not both.
+	// The resourceId of a Template Spec. Use either the id or uri property, but not both.
 	ID *string
 
 	// The query string (for example, a SAS token) to be used with the templateLink URI.
@@ -276,7 +352,7 @@ type TemplateLink struct {
 	// The relativePath property can be used to deploy a linked template at a location relative to the parent. If the parent template
 	// was linked with a TemplateSpec, this will reference an artifact in the
 	// TemplateSpec. If the parent was linked with a URI, the child deployment will be a combination of the parent and relativePath
-	// URIs
+	// URIs.
 	RelativePath *string
 
 	// The URI of the template to deploy. Use either the uri or id property, but not both.

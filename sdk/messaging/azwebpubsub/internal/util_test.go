@@ -26,9 +26,8 @@ func TestParseConnectionStringInvalid(t *testing.T) {
 
 	for _, badConnStr := range badConnectionStrings {
 		parsed, err := ParseConnectionString(badConnStr)
-		require.Error(t, err)
+		require.ErrorIs(t, err, errConnectionString)
 		require.Zero(t, parsed)
-		//require.Contains(t, err.Error(), errConnectionString.Error())
 	}
 }
 

@@ -10,7 +10,7 @@ package armdataprotection
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection"
-	moduleVersion = "v3.0.0"
+	moduleVersion = "v3.1.0"
 )
 
 type AbsoluteMarker string
@@ -46,6 +46,28 @@ func PossibleAlertsStateValues() []AlertsState {
 	return []AlertsState{
 		AlertsStateDisabled,
 		AlertsStateEnabled,
+	}
+}
+
+// BCDRSecurityLevel - Security Level of Backup Vault
+type BCDRSecurityLevel string
+
+const (
+	BCDRSecurityLevelExcellent    BCDRSecurityLevel = "Excellent"
+	BCDRSecurityLevelFair         BCDRSecurityLevel = "Fair"
+	BCDRSecurityLevelGood         BCDRSecurityLevel = "Good"
+	BCDRSecurityLevelNotSupported BCDRSecurityLevel = "NotSupported"
+	BCDRSecurityLevelPoor         BCDRSecurityLevel = "Poor"
+)
+
+// PossibleBCDRSecurityLevelValues returns the possible values for the BCDRSecurityLevel const type.
+func PossibleBCDRSecurityLevelValues() []BCDRSecurityLevel {
+	return []BCDRSecurityLevel{
+		BCDRSecurityLevelExcellent,
+		BCDRSecurityLevelFair,
+		BCDRSecurityLevelGood,
+		BCDRSecurityLevelNotSupported,
+		BCDRSecurityLevelPoor,
 	}
 }
 
@@ -182,6 +204,29 @@ func PossibleDayOfWeekValues() []DayOfWeek {
 	}
 }
 
+// EncryptionState - Encryption state of the Backup Vault.
+type EncryptionState string
+
+const (
+	// EncryptionStateDisabled - CMK encryption is disabled on the Backup Vault. User can not set this state once Encryption State
+	// is 'Enabled'.
+	EncryptionStateDisabled EncryptionState = "Disabled"
+	// EncryptionStateEnabled - CMK encryption is enabled on the Backup Vault
+	EncryptionStateEnabled EncryptionState = "Enabled"
+	// EncryptionStateInconsistent - CMK encryption is in inconsistent state on the Backup Vault. This state indicates that user
+	// needs to retry the encryption settings operation immediately to correct the state.
+	EncryptionStateInconsistent EncryptionState = "Inconsistent"
+)
+
+// PossibleEncryptionStateValues returns the possible values for the EncryptionState const type.
+func PossibleEncryptionStateValues() []EncryptionState {
+	return []EncryptionState{
+		EncryptionStateDisabled,
+		EncryptionStateEnabled,
+		EncryptionStateInconsistent,
+	}
+}
+
 // ExistingResourcePolicy - Gets or sets the Conflict Policy property. This property sets policy during conflict of resources
 // during restore.
 type ExistingResourcePolicy string
@@ -239,6 +284,23 @@ func PossibleFeatureTypeValues() []FeatureType {
 	}
 }
 
+// IdentityType - The identity type. 'SystemAssigned' and 'UserAssigned' are mutually exclusive. 'SystemAssigned' will use
+// implicitly created managed identity.
+type IdentityType string
+
+const (
+	IdentityTypeSystemAssigned IdentityType = "SystemAssigned"
+	IdentityTypeUserAssigned   IdentityType = "UserAssigned"
+)
+
+// PossibleIdentityTypeValues returns the possible values for the IdentityType const type.
+func PossibleIdentityTypeValues() []IdentityType {
+	return []IdentityType{
+		IdentityTypeSystemAssigned,
+		IdentityTypeUserAssigned,
+	}
+}
+
 // ImmutabilityState - Immutability state
 type ImmutabilityState string
 
@@ -254,6 +316,22 @@ func PossibleImmutabilityStateValues() []ImmutabilityState {
 		ImmutabilityStateDisabled,
 		ImmutabilityStateLocked,
 		ImmutabilityStateUnlocked,
+	}
+}
+
+// InfrastructureEncryptionState - Enabling/Disabling the Double Encryption state
+type InfrastructureEncryptionState string
+
+const (
+	InfrastructureEncryptionStateDisabled InfrastructureEncryptionState = "Disabled"
+	InfrastructureEncryptionStateEnabled  InfrastructureEncryptionState = "Enabled"
+)
+
+// PossibleInfrastructureEncryptionStateValues returns the possible values for the InfrastructureEncryptionState const type.
+func PossibleInfrastructureEncryptionStateValues() []InfrastructureEncryptionState {
+	return []InfrastructureEncryptionState{
+		InfrastructureEncryptionStateDisabled,
+		InfrastructureEncryptionStateEnabled,
 	}
 }
 

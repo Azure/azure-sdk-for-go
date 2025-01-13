@@ -26,7 +26,7 @@ func ReceiveCancellation(remainingArgs []string) {
 
 	shared.MustCreateAutoDeletingQueue(sc, queueName, nil)
 
-	client, err := azservicebus.NewClientFromConnectionString(sc.ConnectionString, nil)
+	client, err := azservicebus.NewClient(sc.Endpoint, sc.Cred, nil)
 	sc.PanicOnError("failed to create client", err)
 
 	for i := 0; i < rounds; i += 100 {

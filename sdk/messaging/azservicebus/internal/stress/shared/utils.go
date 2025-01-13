@@ -51,7 +51,7 @@ func MustGenerateMessages(sc *StressContext, sender *TrackingSender, messageLimi
 
 // MustCreateAutoDeletingQueue creates a queue that will auto-delete 10 minutes after activity has ceased.
 func MustCreateAutoDeletingQueue(sc *StressContext, queueName string, qp *admin.QueueProperties) *admin.Client {
-	adminClient, err := admin.NewClientFromConnectionString(sc.ConnectionString, nil)
+	adminClient, err := admin.NewClient(sc.Endpoint, sc.Cred, nil)
 	sc.PanicOnError("failed to create adminClient", err)
 
 	var newQP admin.QueueProperties
@@ -83,7 +83,7 @@ func MustCreateSubscriptions(sc *StressContext, topicName string, subscriptionNa
 	log.Printf("[BEGIN] Creating topic %s", topicName)
 	defer log.Printf("[END] Creating topic %s", topicName)
 
-	ac, err := admin.NewClientFromConnectionString(sc.ConnectionString, nil)
+	ac, err := admin.NewClient(sc.Endpoint, sc.Cred, nil)
 	sc.PanicOnError("Failed to create a topic manager", err)
 
 	var topicOpts *admin.CreateTopicOptions
@@ -172,51 +172,30 @@ func LoadEnvironment() error {
 // AddAuthFlags adds the flags needed for authenticating to Service Bus.
 // Returns a function that can be called after the flags have been parsed, which will create the an *azservicebus.Client.
 func AddAuthFlags(fs *flag.FlagSet) func() (*azservicebus.Client, *admin.Client, error) {
-	connectionStringEnvVar := fs.String("cs", "SERVICEBUS_CONNECTION_STRING", "Environment variable containing a connection string for authentication.")
 	fullyQualifiedNamespace := fs.String("ns", "", "A Service Bus namespace (ex: <server>.servicebus.windows.net). azidentity.DefaultAzureCredential will be used for authentication.")
 
 	return func() (*azservicebus.Client, *admin.Client, error) {
 		var serviceBusClient *azservicebus.Client
 
-		if *fullyQualifiedNamespace != "" {
-			// the DefaultAzureCredential will try multiple methods to authenticate, including using cached Azure CLI
-			// credentials, pulling authentication variables from the environment and others!
-			defaultAzureCredential, err := azidentity.NewDefaultAzureCredential(nil)
-
-			if err != nil {
-				return nil, nil, fmt.Errorf("failed to create a DefaultAzureCredential: %w", err)
-			}
-
-			serviceBusClient, err = azservicebus.NewClient(*fullyQualifiedNamespace, defaultAzureCredential, nil)
-
-			if err != nil {
-				return nil, nil, fmt.Errorf("failed to create an azservicebus.Client using the azidentity.DefaultAzureCredential: %w", err)
-			}
-
-			adminClient, err := admin.NewClient(*fullyQualifiedNamespace, defaultAzureCredential, nil)
-
-			if err != nil {
-				return nil, nil, fmt.Errorf("failed to create an admin.Client using the azidentity.DefaultAzureCredential: %w", err)
-			}
-
-			return serviceBusClient, adminClient, nil
+		if fullyQualifiedNamespace == nil || *fullyQualifiedNamespace == "" {
+			return nil, nil, fmt.Errorf("fullyQualifiedNamespace must be specified")
 		}
 
-		// assume connection string based authentication, via the environment
-		cs := os.Getenv(*connectionStringEnvVar)
-
-		if cs == "" {
-			return nil, nil, fmt.Errorf("no connection string in environment variable '%s'", *connectionStringEnvVar)
-		}
-
-		var err error
-		serviceBusClient, err = azservicebus.NewClientFromConnectionString(cs, nil)
+		// the DefaultAzureCredential will try multiple methods to authenticate, including using cached Azure CLI
+		// credentials, pulling authentication variables from the environment and others!
+		defaultAzureCredential, err := azidentity.NewDefaultAzureCredential(nil)
 
 		if err != nil {
-			return nil, nil, fmt.Errorf("failed to create an azservicebus.Client using a connection string: %w", err)
+			return nil, nil, fmt.Errorf("failed to create a DefaultAzureCredential: %w", err)
 		}
 
-		adminClient, err := admin.NewClientFromConnectionString(cs, nil)
+		serviceBusClient, err = azservicebus.NewClient(*fullyQualifiedNamespace, defaultAzureCredential, nil)
+
+		if err != nil {
+			return nil, nil, fmt.Errorf("failed to create an azservicebus.Client using the azidentity.DefaultAzureCredential: %w", err)
+		}
+
+		adminClient, err := admin.NewClient(*fullyQualifiedNamespace, defaultAzureCredential, nil)
 
 		if err != nil {
 			return nil, nil, fmt.Errorf("failed to create an admin.Client using the azidentity.DefaultAzureCredential: %w", err)

@@ -10,7 +10,7 @@ package armnetwork
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
-	moduleVersion = "v5.1.1"
+	moduleVersion = "v6.2.0"
 )
 
 // Access - Access to be allowed or denied.
@@ -55,15 +55,34 @@ func PossibleActionTypeValues() []ActionType {
 type AddressPrefixType string
 
 const (
-	AddressPrefixTypeIPPrefix   AddressPrefixType = "IPPrefix"
-	AddressPrefixTypeServiceTag AddressPrefixType = "ServiceTag"
+	AddressPrefixTypeIPPrefix     AddressPrefixType = "IPPrefix"
+	AddressPrefixTypeNetworkGroup AddressPrefixType = "NetworkGroup"
+	AddressPrefixTypeServiceTag   AddressPrefixType = "ServiceTag"
 )
 
 // PossibleAddressPrefixTypeValues returns the possible values for the AddressPrefixType const type.
 func PossibleAddressPrefixTypeValues() []AddressPrefixType {
 	return []AddressPrefixType{
 		AddressPrefixTypeIPPrefix,
+		AddressPrefixTypeNetworkGroup,
 		AddressPrefixTypeServiceTag,
+	}
+}
+
+// AddressSpaceAggregationOption - Option indicating the update behavior of a resource's address prefixes referenced within
+// a network manager configuration.
+type AddressSpaceAggregationOption string
+
+const (
+	AddressSpaceAggregationOptionManual AddressSpaceAggregationOption = "Manual"
+	AddressSpaceAggregationOptionNone   AddressSpaceAggregationOption = "None"
+)
+
+// PossibleAddressSpaceAggregationOptionValues returns the possible values for the AddressSpaceAggregationOption const type.
+func PossibleAddressSpaceAggregationOptionValues() []AddressSpaceAggregationOption {
+	return []AddressSpaceAggregationOption{
+		AddressSpaceAggregationOptionManual,
+		AddressSpaceAggregationOptionNone,
 	}
 }
 
@@ -353,6 +372,22 @@ func PossibleApplicationGatewayRuleSetStatusOptionsValues() []ApplicationGateway
 	}
 }
 
+// ApplicationGatewaySKUFamily - Family of an application gateway SKU.
+type ApplicationGatewaySKUFamily string
+
+const (
+	ApplicationGatewaySKUFamilyGeneration1 ApplicationGatewaySKUFamily = "Generation_1"
+	ApplicationGatewaySKUFamilyGeneration2 ApplicationGatewaySKUFamily = "Generation_2"
+)
+
+// PossibleApplicationGatewaySKUFamilyValues returns the possible values for the ApplicationGatewaySKUFamily const type.
+func PossibleApplicationGatewaySKUFamilyValues() []ApplicationGatewaySKUFamily {
+	return []ApplicationGatewaySKUFamily{
+		ApplicationGatewaySKUFamilyGeneration1,
+		ApplicationGatewaySKUFamilyGeneration2,
+	}
+}
+
 // ApplicationGatewaySKUName - Name of an application gateway SKU.
 type ApplicationGatewaySKUName string
 
@@ -569,6 +604,26 @@ func PossibleApplicationGatewayWafRuleActionTypesValues() []ApplicationGatewayWa
 		ApplicationGatewayWafRuleActionTypesBlock,
 		ApplicationGatewayWafRuleActionTypesLog,
 		ApplicationGatewayWafRuleActionTypesNone,
+	}
+}
+
+// ApplicationGatewayWafRuleSensitivityTypes - The string representation of the web application firewall rule sensitivity.
+type ApplicationGatewayWafRuleSensitivityTypes string
+
+const (
+	ApplicationGatewayWafRuleSensitivityTypesHigh   ApplicationGatewayWafRuleSensitivityTypes = "High"
+	ApplicationGatewayWafRuleSensitivityTypesLow    ApplicationGatewayWafRuleSensitivityTypes = "Low"
+	ApplicationGatewayWafRuleSensitivityTypesMedium ApplicationGatewayWafRuleSensitivityTypes = "Medium"
+	ApplicationGatewayWafRuleSensitivityTypesNone   ApplicationGatewayWafRuleSensitivityTypes = "None"
+)
+
+// PossibleApplicationGatewayWafRuleSensitivityTypesValues returns the possible values for the ApplicationGatewayWafRuleSensitivityTypes const type.
+func PossibleApplicationGatewayWafRuleSensitivityTypesValues() []ApplicationGatewayWafRuleSensitivityTypes {
+	return []ApplicationGatewayWafRuleSensitivityTypes{
+		ApplicationGatewayWafRuleSensitivityTypesHigh,
+		ApplicationGatewayWafRuleSensitivityTypesLow,
+		ApplicationGatewayWafRuleSensitivityTypesMedium,
+		ApplicationGatewayWafRuleSensitivityTypesNone,
 	}
 }
 
@@ -814,12 +869,13 @@ func PossibleBastionConnectProtocolValues() []BastionConnectProtocol {
 	}
 }
 
-// BastionHostSKUName - The name of this Bastion Host.
+// BastionHostSKUName - The name of the sku of this Bastion Host.
 type BastionHostSKUName string
 
 const (
 	BastionHostSKUNameBasic     BastionHostSKUName = "Basic"
 	BastionHostSKUNameDeveloper BastionHostSKUName = "Developer"
+	BastionHostSKUNamePremium   BastionHostSKUName = "Premium"
 	BastionHostSKUNameStandard  BastionHostSKUName = "Standard"
 )
 
@@ -828,6 +884,7 @@ func PossibleBastionHostSKUNameValues() []BastionHostSKUName {
 	return []BastionHostSKUName{
 		BastionHostSKUNameBasic,
 		BastionHostSKUNameDeveloper,
+		BastionHostSKUNamePremium,
 		BastionHostSKUNameStandard,
 	}
 }
@@ -905,14 +962,18 @@ type ConfigurationType string
 
 const (
 	ConfigurationTypeConnectivity  ConfigurationType = "Connectivity"
+	ConfigurationTypeRouting       ConfigurationType = "Routing"
 	ConfigurationTypeSecurityAdmin ConfigurationType = "SecurityAdmin"
+	ConfigurationTypeSecurityUser  ConfigurationType = "SecurityUser"
 )
 
 // PossibleConfigurationTypeValues returns the possible values for the ConfigurationType const type.
 func PossibleConfigurationTypeValues() []ConfigurationType {
 	return []ConfigurationType{
 		ConfigurationTypeConnectivity,
+		ConfigurationTypeRouting,
 		ConfigurationTypeSecurityAdmin,
+		ConfigurationTypeSecurityUser,
 	}
 }
 
@@ -1242,6 +1303,22 @@ func PossibleDirectionValues() []Direction {
 	}
 }
 
+// DisableBgpRoutePropagation - Determines whether BGP route propagation is enabled. Defaults to true.
+type DisableBgpRoutePropagation string
+
+const (
+	DisableBgpRoutePropagationFalse DisableBgpRoutePropagation = "False"
+	DisableBgpRoutePropagationTrue  DisableBgpRoutePropagation = "True"
+)
+
+// PossibleDisableBgpRoutePropagationValues returns the possible values for the DisableBgpRoutePropagation const type.
+func PossibleDisableBgpRoutePropagationValues() []DisableBgpRoutePropagation {
+	return []DisableBgpRoutePropagation{
+		DisableBgpRoutePropagationFalse,
+		DisableBgpRoutePropagationTrue,
+	}
+}
+
 // EffectiveAdminRuleKind - Whether the rule is custom or default.
 type EffectiveAdminRuleKind string
 
@@ -1316,6 +1393,7 @@ func PossibleEffectiveSecurityRuleProtocolValues() []EffectiveSecurityRuleProtoc
 type EndpointType string
 
 const (
+	EndpointTypeAzureArcNetwork     EndpointType = "AzureArcNetwork"
 	EndpointTypeAzureArcVM          EndpointType = "AzureArcVM"
 	EndpointTypeAzureSubnet         EndpointType = "AzureSubnet"
 	EndpointTypeAzureVM             EndpointType = "AzureVM"
@@ -1329,6 +1407,7 @@ const (
 // PossibleEndpointTypeValues returns the possible values for the EndpointType const type.
 func PossibleEndpointTypeValues() []EndpointType {
 	return []EndpointType{
+		EndpointTypeAzureArcNetwork,
 		EndpointTypeAzureArcVM,
 		EndpointTypeAzureSubnet,
 		EndpointTypeAzureVM,
@@ -1355,6 +1434,67 @@ func PossibleEvaluationStateValues() []EvaluationState {
 		EvaluationStateCompleted,
 		EvaluationStateInProgress,
 		EvaluationStateNotStarted,
+	}
+}
+
+// ExceptionEntryMatchVariable - The variable on which we evaluate the exception condition
+type ExceptionEntryMatchVariable string
+
+const (
+	ExceptionEntryMatchVariableRemoteAddr    ExceptionEntryMatchVariable = "RemoteAddr"
+	ExceptionEntryMatchVariableRequestHeader ExceptionEntryMatchVariable = "RequestHeader"
+	ExceptionEntryMatchVariableRequestURI    ExceptionEntryMatchVariable = "RequestURI"
+)
+
+// PossibleExceptionEntryMatchVariableValues returns the possible values for the ExceptionEntryMatchVariable const type.
+func PossibleExceptionEntryMatchVariableValues() []ExceptionEntryMatchVariable {
+	return []ExceptionEntryMatchVariable{
+		ExceptionEntryMatchVariableRemoteAddr,
+		ExceptionEntryMatchVariableRequestHeader,
+		ExceptionEntryMatchVariableRequestURI,
+	}
+}
+
+// ExceptionEntrySelectorMatchOperator - When the matchVariable points to a key-value pair (e.g, RequestHeader), this operates
+// on the selector
+type ExceptionEntrySelectorMatchOperator string
+
+const (
+	ExceptionEntrySelectorMatchOperatorContains   ExceptionEntrySelectorMatchOperator = "Contains"
+	ExceptionEntrySelectorMatchOperatorEndsWith   ExceptionEntrySelectorMatchOperator = "EndsWith"
+	ExceptionEntrySelectorMatchOperatorEquals     ExceptionEntrySelectorMatchOperator = "Equals"
+	ExceptionEntrySelectorMatchOperatorStartsWith ExceptionEntrySelectorMatchOperator = "StartsWith"
+)
+
+// PossibleExceptionEntrySelectorMatchOperatorValues returns the possible values for the ExceptionEntrySelectorMatchOperator const type.
+func PossibleExceptionEntrySelectorMatchOperatorValues() []ExceptionEntrySelectorMatchOperator {
+	return []ExceptionEntrySelectorMatchOperator{
+		ExceptionEntrySelectorMatchOperatorContains,
+		ExceptionEntrySelectorMatchOperatorEndsWith,
+		ExceptionEntrySelectorMatchOperatorEquals,
+		ExceptionEntrySelectorMatchOperatorStartsWith,
+	}
+}
+
+// ExceptionEntryValueMatchOperator - Operates on the allowed values for the matchVariable
+type ExceptionEntryValueMatchOperator string
+
+const (
+	ExceptionEntryValueMatchOperatorContains   ExceptionEntryValueMatchOperator = "Contains"
+	ExceptionEntryValueMatchOperatorEndsWith   ExceptionEntryValueMatchOperator = "EndsWith"
+	ExceptionEntryValueMatchOperatorEquals     ExceptionEntryValueMatchOperator = "Equals"
+	ExceptionEntryValueMatchOperatorIPMatch    ExceptionEntryValueMatchOperator = "IPMatch"
+	ExceptionEntryValueMatchOperatorStartsWith ExceptionEntryValueMatchOperator = "StartsWith"
+)
+
+// PossibleExceptionEntryValueMatchOperatorValues returns the possible values for the ExceptionEntryValueMatchOperator const type.
+func PossibleExceptionEntryValueMatchOperatorValues() []ExceptionEntryValueMatchOperator {
+	return []ExceptionEntryValueMatchOperator{
+		ExceptionEntryValueMatchOperatorContains,
+		ExceptionEntryValueMatchOperatorEndsWith,
+		ExceptionEntryValueMatchOperatorEquals,
+		ExceptionEntryValueMatchOperatorIPMatch,
+		ExceptionEntryValueMatchOperatorStartsWith,
 	}
 }
 
@@ -1595,6 +1735,100 @@ func PossibleExtendedLocationTypesValues() []ExtendedLocationTypes {
 	}
 }
 
+// FailoverConnectionStatus - The current status of the connection
+type FailoverConnectionStatus string
+
+const (
+	FailoverConnectionStatusConnected    FailoverConnectionStatus = "Connected"
+	FailoverConnectionStatusDisconnected FailoverConnectionStatus = "Disconnected"
+)
+
+// PossibleFailoverConnectionStatusValues returns the possible values for the FailoverConnectionStatus const type.
+func PossibleFailoverConnectionStatusValues() []FailoverConnectionStatus {
+	return []FailoverConnectionStatus{
+		FailoverConnectionStatusConnected,
+		FailoverConnectionStatusDisconnected,
+	}
+}
+
+// FailoverTestStatus - The current status of the test
+type FailoverTestStatus string
+
+const (
+	FailoverTestStatusCompleted   FailoverTestStatus = "Completed"
+	FailoverTestStatusExpired     FailoverTestStatus = "Expired"
+	FailoverTestStatusInvalid     FailoverTestStatus = "Invalid"
+	FailoverTestStatusNotStarted  FailoverTestStatus = "NotStarted"
+	FailoverTestStatusRunning     FailoverTestStatus = "Running"
+	FailoverTestStatusStartFailed FailoverTestStatus = "StartFailed"
+	FailoverTestStatusStarting    FailoverTestStatus = "Starting"
+	FailoverTestStatusStopFailed  FailoverTestStatus = "StopFailed"
+	FailoverTestStatusStopping    FailoverTestStatus = "Stopping"
+)
+
+// PossibleFailoverTestStatusValues returns the possible values for the FailoverTestStatus const type.
+func PossibleFailoverTestStatusValues() []FailoverTestStatus {
+	return []FailoverTestStatus{
+		FailoverTestStatusCompleted,
+		FailoverTestStatusExpired,
+		FailoverTestStatusInvalid,
+		FailoverTestStatusNotStarted,
+		FailoverTestStatusRunning,
+		FailoverTestStatusStartFailed,
+		FailoverTestStatusStarting,
+		FailoverTestStatusStopFailed,
+		FailoverTestStatusStopping,
+	}
+}
+
+// FailoverTestStatusForSingleTest - The current status of the test
+type FailoverTestStatusForSingleTest string
+
+const (
+	FailoverTestStatusForSingleTestCompleted   FailoverTestStatusForSingleTest = "Completed"
+	FailoverTestStatusForSingleTestExpired     FailoverTestStatusForSingleTest = "Expired"
+	FailoverTestStatusForSingleTestInvalid     FailoverTestStatusForSingleTest = "Invalid"
+	FailoverTestStatusForSingleTestNotStarted  FailoverTestStatusForSingleTest = "NotStarted"
+	FailoverTestStatusForSingleTestRunning     FailoverTestStatusForSingleTest = "Running"
+	FailoverTestStatusForSingleTestStartFailed FailoverTestStatusForSingleTest = "StartFailed"
+	FailoverTestStatusForSingleTestStarting    FailoverTestStatusForSingleTest = "Starting"
+	FailoverTestStatusForSingleTestStopFailed  FailoverTestStatusForSingleTest = "StopFailed"
+	FailoverTestStatusForSingleTestStopping    FailoverTestStatusForSingleTest = "Stopping"
+)
+
+// PossibleFailoverTestStatusForSingleTestValues returns the possible values for the FailoverTestStatusForSingleTest const type.
+func PossibleFailoverTestStatusForSingleTestValues() []FailoverTestStatusForSingleTest {
+	return []FailoverTestStatusForSingleTest{
+		FailoverTestStatusForSingleTestCompleted,
+		FailoverTestStatusForSingleTestExpired,
+		FailoverTestStatusForSingleTestInvalid,
+		FailoverTestStatusForSingleTestNotStarted,
+		FailoverTestStatusForSingleTestRunning,
+		FailoverTestStatusForSingleTestStartFailed,
+		FailoverTestStatusForSingleTestStarting,
+		FailoverTestStatusForSingleTestStopFailed,
+		FailoverTestStatusForSingleTestStopping,
+	}
+}
+
+// FailoverTestType - The type of failover test
+type FailoverTestType string
+
+const (
+	FailoverTestTypeAll                FailoverTestType = "All"
+	FailoverTestTypeMultiSiteFailover  FailoverTestType = "MultiSiteFailover"
+	FailoverTestTypeSingleSiteFailover FailoverTestType = "SingleSiteFailover"
+)
+
+// PossibleFailoverTestTypeValues returns the possible values for the FailoverTestType const type.
+func PossibleFailoverTestTypeValues() []FailoverTestType {
+	return []FailoverTestType{
+		FailoverTestTypeAll,
+		FailoverTestTypeMultiSiteFailover,
+		FailoverTestTypeSingleSiteFailover,
+	}
+}
+
 // FirewallPolicyFilterRuleCollectionActionType - The action type of a rule.
 type FirewallPolicyFilterRuleCollectionActionType string
 
@@ -1628,10 +1862,11 @@ func PossibleFirewallPolicyIDPSQuerySortOrderValues() []FirewallPolicyIDPSQueryS
 }
 
 // FirewallPolicyIDPSSignatureDirection - Describes in which direction signature is being enforced: 0 - OutBound, 1 - InBound,
-// 2 - Any, 3 - Internal, 4 - InternalOutbound
+// 2 - Any, 3 - Internal, 4 - InternalOutbound, 5 - InternalInbound
 type FirewallPolicyIDPSSignatureDirection int32
 
 const (
+	FirewallPolicyIDPSSignatureDirectionFive  FirewallPolicyIDPSSignatureDirection = 5
 	FirewallPolicyIDPSSignatureDirectionFour  FirewallPolicyIDPSSignatureDirection = 4
 	FirewallPolicyIDPSSignatureDirectionOne   FirewallPolicyIDPSSignatureDirection = 1
 	FirewallPolicyIDPSSignatureDirectionThree FirewallPolicyIDPSSignatureDirection = 3
@@ -1642,6 +1877,7 @@ const (
 // PossibleFirewallPolicyIDPSSignatureDirectionValues returns the possible values for the FirewallPolicyIDPSSignatureDirection const type.
 func PossibleFirewallPolicyIDPSSignatureDirectionValues() []FirewallPolicyIDPSSignatureDirection {
 	return []FirewallPolicyIDPSSignatureDirection{
+		FirewallPolicyIDPSSignatureDirectionFive,
 		FirewallPolicyIDPSSignatureDirectionFour,
 		FirewallPolicyIDPSSignatureDirectionOne,
 		FirewallPolicyIDPSSignatureDirectionThree,
@@ -1942,6 +2178,22 @@ func PossibleGroupConnectivityValues() []GroupConnectivity {
 	}
 }
 
+// GroupMemberType - Network Group member type
+type GroupMemberType string
+
+const (
+	GroupMemberTypeSubnet         GroupMemberType = "Subnet"
+	GroupMemberTypeVirtualNetwork GroupMemberType = "VirtualNetwork"
+)
+
+// PossibleGroupMemberTypeValues returns the possible values for the GroupMemberType const type.
+func PossibleGroupMemberTypeValues() []GroupMemberType {
+	return []GroupMemberType{
+		GroupMemberTypeSubnet,
+		GroupMemberTypeVirtualNetwork,
+	}
+}
+
 // HTTPConfigurationMethod - The HTTP method to use.
 type HTTPConfigurationMethod string
 
@@ -2132,6 +2384,22 @@ func PossibleIPSecIntegrityValues() []IPSecIntegrity {
 	}
 }
 
+// IPType - Enumeration to indicate the IP type.
+type IPType string
+
+const (
+	IPTypeIPv4 IPType = "IPv4"
+	IPTypeIPv6 IPType = "IPv6"
+)
+
+// PossibleIPTypeValues returns the possible values for the IPType const type.
+func PossibleIPTypeValues() []IPType {
+	return []IPType{
+		IPTypeIPv4,
+		IPTypeIPv6,
+	}
+}
+
 // IPVersion - IP address version.
 type IPVersion string
 
@@ -2195,6 +2463,23 @@ func PossibleIkeIntegrityValues() []IkeIntegrity {
 		IkeIntegritySHA1,
 		IkeIntegritySHA256,
 		IkeIntegritySHA384,
+	}
+}
+
+// InboundSecurityRuleType - Rule Type. This should be either AutoExpire or Permanent. Auto Expire Rule only creates NSG rules.
+// Permanent Rule creates NSG rule and SLB LB Rule.
+type InboundSecurityRuleType string
+
+const (
+	InboundSecurityRuleTypeAutoExpire InboundSecurityRuleType = "AutoExpire"
+	InboundSecurityRuleTypePermanent  InboundSecurityRuleType = "Permanent"
+)
+
+// PossibleInboundSecurityRuleTypeValues returns the possible values for the InboundSecurityRuleType const type.
+func PossibleInboundSecurityRuleTypeValues() []InboundSecurityRuleType {
+	return []InboundSecurityRuleType{
+		InboundSecurityRuleTypeAutoExpire,
+		InboundSecurityRuleTypePermanent,
 	}
 }
 
@@ -2511,6 +2796,26 @@ func PossibleNetworkOperationStatusValues() []NetworkOperationStatus {
 	}
 }
 
+// NetworkProtocol - Network Protocol.
+type NetworkProtocol string
+
+const (
+	NetworkProtocolAny  NetworkProtocol = "Any"
+	NetworkProtocolICMP NetworkProtocol = "ICMP"
+	NetworkProtocolTCP  NetworkProtocol = "TCP"
+	NetworkProtocolUDP  NetworkProtocol = "UDP"
+)
+
+// PossibleNetworkProtocolValues returns the possible values for the NetworkProtocol const type.
+func PossibleNetworkProtocolValues() []NetworkProtocol {
+	return []NetworkProtocol{
+		NetworkProtocolAny,
+		NetworkProtocolICMP,
+		NetworkProtocolTCP,
+		NetworkProtocolUDP,
+	}
+}
+
 // NextHopType - Next hop type.
 type NextHopType string
 
@@ -2550,6 +2855,40 @@ func PossibleNextStepValues() []NextStep {
 		NextStepContinue,
 		NextStepTerminate,
 		NextStepUnknown,
+	}
+}
+
+// NicTypeInRequest - NIC type. This should be either PublicNic or PrivateNic.
+type NicTypeInRequest string
+
+const (
+	NicTypeInRequestPrivateNic NicTypeInRequest = "PrivateNic"
+	NicTypeInRequestPublicNic  NicTypeInRequest = "PublicNic"
+)
+
+// PossibleNicTypeInRequestValues returns the possible values for the NicTypeInRequest const type.
+func PossibleNicTypeInRequestValues() []NicTypeInRequest {
+	return []NicTypeInRequest{
+		NicTypeInRequestPrivateNic,
+		NicTypeInRequestPublicNic,
+	}
+}
+
+// NicTypeInResponse - NIC type - PublicNic, PrivateNic, or AdditionalNic.
+type NicTypeInResponse string
+
+const (
+	NicTypeInResponseAdditionalNic NicTypeInResponse = "AdditionalNic"
+	NicTypeInResponsePrivateNic    NicTypeInResponse = "PrivateNic"
+	NicTypeInResponsePublicNic     NicTypeInResponse = "PublicNic"
+)
+
+// PossibleNicTypeInResponseValues returns the possible values for the NicTypeInResponse const type.
+func PossibleNicTypeInResponseValues() []NicTypeInResponse {
+	return []NicTypeInResponse{
+		NicTypeInResponseAdditionalNic,
+		NicTypeInResponsePrivateNic,
+		NicTypeInResponsePublicNic,
 	}
 }
 
@@ -2800,6 +3139,42 @@ func PossiblePreferredRoutingGatewayValues() []PreferredRoutingGateway {
 	}
 }
 
+// PrivateEndpointVNetPolicies - Private Endpoint VNet Policies.
+type PrivateEndpointVNetPolicies string
+
+const (
+	PrivateEndpointVNetPoliciesBasic    PrivateEndpointVNetPolicies = "Basic"
+	PrivateEndpointVNetPoliciesDisabled PrivateEndpointVNetPolicies = "Disabled"
+)
+
+// PossiblePrivateEndpointVNetPoliciesValues returns the possible values for the PrivateEndpointVNetPolicies const type.
+func PossiblePrivateEndpointVNetPoliciesValues() []PrivateEndpointVNetPolicies {
+	return []PrivateEndpointVNetPolicies{
+		PrivateEndpointVNetPoliciesBasic,
+		PrivateEndpointVNetPoliciesDisabled,
+	}
+}
+
+// ProbeNoHealthyBackendsBehavior - Determines how new connections are handled by the load balancer when all backend instances
+// are probed down.
+type ProbeNoHealthyBackendsBehavior string
+
+const (
+	// ProbeNoHealthyBackendsBehaviorAllProbedDown - No new flows will be sent to the backend pool.
+	ProbeNoHealthyBackendsBehaviorAllProbedDown ProbeNoHealthyBackendsBehavior = "AllProbedDown"
+	// ProbeNoHealthyBackendsBehaviorAllProbedUp - When all backend instances are probed down, incoming packets will be sent to
+	// all instances.
+	ProbeNoHealthyBackendsBehaviorAllProbedUp ProbeNoHealthyBackendsBehavior = "AllProbedUp"
+)
+
+// PossibleProbeNoHealthyBackendsBehaviorValues returns the possible values for the ProbeNoHealthyBackendsBehavior const type.
+func PossibleProbeNoHealthyBackendsBehaviorValues() []ProbeNoHealthyBackendsBehavior {
+	return []ProbeNoHealthyBackendsBehavior{
+		ProbeNoHealthyBackendsBehaviorAllProbedDown,
+		ProbeNoHealthyBackendsBehaviorAllProbedUp,
+	}
+}
+
 // ProbeProtocol - The protocol of the end point. If 'Tcp' is specified, a received ACK is required for the probe to be successful.
 // If 'Http' or 'Https' is specified, a 200 OK response from the specifies URI is required
 // for the probe to be successful.
@@ -2886,10 +3261,12 @@ func PossibleProtocolTypeValues() []ProtocolType {
 	}
 }
 
-// ProvisioningState - The current provisioning state.
+// ProvisioningState - Provisioning states of a resource.
 type ProvisioningState string
 
 const (
+	ProvisioningStateCanceled  ProvisioningState = "Canceled"
+	ProvisioningStateCreating  ProvisioningState = "Creating"
 	ProvisioningStateDeleting  ProvisioningState = "Deleting"
 	ProvisioningStateFailed    ProvisioningState = "Failed"
 	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
@@ -2899,6 +3276,8 @@ const (
 // PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return []ProvisioningState{
+		ProvisioningStateCanceled,
+		ProvisioningStateCreating,
 		ProvisioningStateDeleting,
 		ProvisioningStateFailed,
 		ProvisioningStateSucceeded,
@@ -3013,6 +3392,22 @@ func PossiblePublicIPPrefixSKUTierValues() []PublicIPPrefixSKUTier {
 	}
 }
 
+// ResiliencyModel - Property to indicate if the Express Route Gateway has resiliency model of MultiHomed or SingleHomed
+type ResiliencyModel string
+
+const (
+	ResiliencyModelMultiHomed  ResiliencyModel = "MultiHomed"
+	ResiliencyModelSingleHomed ResiliencyModel = "SingleHomed"
+)
+
+// PossibleResiliencyModelValues returns the possible values for the ResiliencyModel const type.
+func PossibleResiliencyModelValues() []ResiliencyModel {
+	return []ResiliencyModel{
+		ResiliencyModelMultiHomed,
+		ResiliencyModelSingleHomed,
+	}
+}
+
 // ResourceIdentityType - The type of identity used for the resource. The type 'SystemAssigned, UserAssigned' includes both
 // an implicitly created identity and a set of user assigned identities. The type 'None' will remove any
 // identities from the virtual machine.
@@ -3113,6 +3508,44 @@ func PossibleRouteNextHopTypeValues() []RouteNextHopType {
 		RouteNextHopTypeVirtualAppliance,
 		RouteNextHopTypeVirtualNetworkGateway,
 		RouteNextHopTypeVnetLocal,
+	}
+}
+
+// RoutingRuleDestinationType - Routing rule destination type.
+type RoutingRuleDestinationType string
+
+const (
+	RoutingRuleDestinationTypeAddressPrefix RoutingRuleDestinationType = "AddressPrefix"
+	RoutingRuleDestinationTypeServiceTag    RoutingRuleDestinationType = "ServiceTag"
+)
+
+// PossibleRoutingRuleDestinationTypeValues returns the possible values for the RoutingRuleDestinationType const type.
+func PossibleRoutingRuleDestinationTypeValues() []RoutingRuleDestinationType {
+	return []RoutingRuleDestinationType{
+		RoutingRuleDestinationTypeAddressPrefix,
+		RoutingRuleDestinationTypeServiceTag,
+	}
+}
+
+// RoutingRuleNextHopType - Routing rule next hop type.
+type RoutingRuleNextHopType string
+
+const (
+	RoutingRuleNextHopTypeInternet              RoutingRuleNextHopType = "Internet"
+	RoutingRuleNextHopTypeNoNextHop             RoutingRuleNextHopType = "NoNextHop"
+	RoutingRuleNextHopTypeVirtualAppliance      RoutingRuleNextHopType = "VirtualAppliance"
+	RoutingRuleNextHopTypeVirtualNetworkGateway RoutingRuleNextHopType = "VirtualNetworkGateway"
+	RoutingRuleNextHopTypeVnetLocal             RoutingRuleNextHopType = "VnetLocal"
+)
+
+// PossibleRoutingRuleNextHopTypeValues returns the possible values for the RoutingRuleNextHopType const type.
+func PossibleRoutingRuleNextHopTypeValues() []RoutingRuleNextHopType {
+	return []RoutingRuleNextHopType{
+		RoutingRuleNextHopTypeInternet,
+		RoutingRuleNextHopTypeNoNextHop,
+		RoutingRuleNextHopTypeVirtualAppliance,
+		RoutingRuleNextHopTypeVirtualNetworkGateway,
+		RoutingRuleNextHopTypeVnetLocal,
 	}
 }
 
@@ -3369,6 +3802,26 @@ func PossibleSecurityRuleProtocolValues() []SecurityRuleProtocol {
 	}
 }
 
+// SensitivityType - Defines the sensitivity for the rule.
+type SensitivityType string
+
+const (
+	SensitivityTypeHigh   SensitivityType = "High"
+	SensitivityTypeLow    SensitivityType = "Low"
+	SensitivityTypeMedium SensitivityType = "Medium"
+	SensitivityTypeNone   SensitivityType = "None"
+)
+
+// PossibleSensitivityTypeValues returns the possible values for the SensitivityType const type.
+func PossibleSensitivityTypeValues() []SensitivityType {
+	return []SensitivityType{
+		SensitivityTypeHigh,
+		SensitivityTypeLow,
+		SensitivityTypeMedium,
+		SensitivityTypeNone,
+	}
+}
+
 // ServiceProviderProvisioningState - The ServiceProviderProvisioningState state of the resource.
 type ServiceProviderProvisioningState string
 
@@ -3402,6 +3855,24 @@ func PossibleSeverityValues() []Severity {
 	return []Severity{
 		SeverityError,
 		SeverityWarning,
+	}
+}
+
+// SharingScope - Set this property to Tenant to allow sharing subnet with other subscriptions in your AAD tenant. This property
+// can only be set if defaultOutboundAccess is set to false, both properties can only be set
+// if subnet is empty.
+type SharingScope string
+
+const (
+	SharingScopeDelegatedServices SharingScope = "DelegatedServices"
+	SharingScopeTenant            SharingScope = "Tenant"
+)
+
+// PossibleSharingScopeValues returns the possible values for the SharingScope const type.
+func PossibleSharingScopeValues() []SharingScope {
+	return []SharingScope{
+		SharingScopeDelegatedServices,
+		SharingScopeTenant,
 	}
 }
 
@@ -3710,7 +4181,8 @@ func PossibleVerbosityLevelValues() []VerbosityLevel {
 	}
 }
 
-// VirtualNetworkEncryptionEnforcement - If the encrypted VNet allows VM that does not support encryption
+// VirtualNetworkEncryptionEnforcement - If the encrypted VNet allows VM that does not support encryption. This field is for
+// future support, AllowUnencrypted is the only supported value at general availability.
 type VirtualNetworkEncryptionEnforcement string
 
 const (

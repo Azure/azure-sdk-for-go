@@ -7,12 +7,13 @@
 package azcontainerregistry
 
 import (
-	"github.com/stretchr/testify/require"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 func Test_newAuthenticationClient(t *testing.T) {
-	client, err := newAuthenticationClient("test", nil)
+	client, err := NewAuthenticationClient("test", nil)
 	require.NoError(t, err)
 	require.NotNil(t, client)
 }

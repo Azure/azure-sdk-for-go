@@ -8,6 +8,12 @@
 
 package azlogs
 
+// QueryBatchResponse contains the response from method Client.QueryBatch.
+type QueryBatchResponse struct {
+	// Response to a batch query.
+	BatchResponse
+}
+
 // QueryResourceResponse contains the response from method Client.QueryResource.
 type QueryResourceResponse struct {
 	// Contains the tables, columns & rows resulting from a query.

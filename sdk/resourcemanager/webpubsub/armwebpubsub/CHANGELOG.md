@@ -1,5 +1,35 @@
 # Release History
 
+## 1.3.0 (2024-09-25)
+### Features Added
+
+- New enum type `ServiceKind` with values `ServiceKindSocketIO`, `ServiceKindWebPubSub`
+- New function `*Client.ListReplicaSKUs(context.Context, string, string, string, *ClientListReplicaSKUsOptions) (ClientListReplicaSKUsResponse, error)`
+- New function `*ClientFactory.NewReplicaSharedPrivateLinkResourcesClient() *ReplicaSharedPrivateLinkResourcesClient`
+- New function `*ClientFactory.NewReplicasClient() *ReplicasClient`
+- New function `NewReplicaSharedPrivateLinkResourcesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ReplicaSharedPrivateLinkResourcesClient, error)`
+- New function `*ReplicaSharedPrivateLinkResourcesClient.BeginCreateOrUpdate(context.Context, string, string, string, string, SharedPrivateLinkResource, *ReplicaSharedPrivateLinkResourcesClientBeginCreateOrUpdateOptions) (*runtime.Poller[ReplicaSharedPrivateLinkResourcesClientCreateOrUpdateResponse], error)`
+- New function `*ReplicaSharedPrivateLinkResourcesClient.Get(context.Context, string, string, string, string, *ReplicaSharedPrivateLinkResourcesClientGetOptions) (ReplicaSharedPrivateLinkResourcesClientGetResponse, error)`
+- New function `*ReplicaSharedPrivateLinkResourcesClient.NewListPager(string, string, string, *ReplicaSharedPrivateLinkResourcesClientListOptions) *runtime.Pager[ReplicaSharedPrivateLinkResourcesClientListResponse]`
+- New function `NewReplicasClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ReplicasClient, error)`
+- New function `*ReplicasClient.BeginCreateOrUpdate(context.Context, string, string, string, Replica, *ReplicasClientBeginCreateOrUpdateOptions) (*runtime.Poller[ReplicasClientCreateOrUpdateResponse], error)`
+- New function `*ReplicasClient.Delete(context.Context, string, string, string, *ReplicasClientDeleteOptions) (ReplicasClientDeleteResponse, error)`
+- New function `*ReplicasClient.Get(context.Context, string, string, string, *ReplicasClientGetOptions) (ReplicasClientGetResponse, error)`
+- New function `*ReplicasClient.NewListPager(string, string, *ReplicasClientListOptions) *runtime.Pager[ReplicasClientListResponse]`
+- New function `*ReplicasClient.BeginRestart(context.Context, string, string, string, *ReplicasClientBeginRestartOptions) (*runtime.Poller[ReplicasClientRestartResponse], error)`
+- New function `*ReplicasClient.BeginUpdate(context.Context, string, string, string, Replica, *ReplicasClientBeginUpdateOptions) (*runtime.Poller[ReplicasClientUpdateResponse], error)`
+- New struct `IPRule`
+- New struct `Replica`
+- New struct `ReplicaList`
+- New struct `ReplicaProperties`
+- New struct `SocketIOSettings`
+- New field `WebSocketKeepAliveIntervalInSeconds` in struct `HubProperties`
+- New field `IPRules` in struct `NetworkACLs`
+- New field `SystemData` in struct `PrivateLinkResource`
+- New field `RegionEndpointEnabled`, `ResourceStopped`, `SocketIO` in struct `Properties`
+- New field `Kind` in struct `ResourceInfo`
+
+
 ## 1.3.0-beta.1 (2023-11-30)
 ### Features Added
 

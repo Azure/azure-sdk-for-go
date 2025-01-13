@@ -159,13 +159,13 @@ func TestResultHelper(t *testing.T) {
 		Body:       http.NoBody,
 	}
 	var result string
-	err := ResultHelper(resp, false, &result)
+	err := ResultHelper(resp, false, "", &result)
 	require.NoError(t, err)
 	require.Empty(t, result)
 
 	resp.StatusCode = http.StatusBadRequest
 	resp.Body = io.NopCloser(strings.NewReader(`{ "code": "failed", "message": "bad stuff" }`))
-	err = ResultHelper(resp, false, &result)
+	err = ResultHelper(resp, false, "", &result)
 	var respErr *exported.ResponseError
 	require.ErrorAs(t, err, &respErr)
 	require.Equal(t, "failed", respErr.ErrorCode)
@@ -173,13 +173,20 @@ func TestResultHelper(t *testing.T) {
 
 	resp.StatusCode = http.StatusOK
 	resp.Body = http.NoBody
-	err = ResultHelper(resp, false, &result)
+	err = ResultHelper(resp, false, "", &result)
 	require.NoError(t, err)
 	require.Empty(t, result)
 
 	resp.Body = io.NopCloser(strings.NewReader(`{ "Result": "happy" }`))
 	widgetResult := widget{Precalculated: 123}
-	err = ResultHelper(resp, false, &widgetResult)
+	err = ResultHelper(resp, false, "", &widgetResult)
+	require.NoError(t, err)
+	require.Equal(t, "happy", widgetResult.Result)
+	require.Equal(t, 123, widgetResult.Precalculated)
+
+	resp.Body = io.NopCloser(strings.NewReader(`{ "subpath": { "Result": "happy" } }`))
+	widgetResult = widget{Precalculated: 123}
+	err = ResultHelper(resp, false, "subpath", &widgetResult)
 	require.NoError(t, err)
 	require.Equal(t, "happy", widgetResult.Result)
 	require.Equal(t, 123, widgetResult.Precalculated)

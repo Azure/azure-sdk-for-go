@@ -46,7 +46,7 @@ func NewSyncSetsClient(subscriptionID string, credential azcore.TokenCredential,
 // CreateOrUpdate - The operation returns properties of a SyncSet.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-04
+// Generated from API version 2023-11-22
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the OpenShift cluster resource.
 //   - childResourceName - The name of the SyncSet resource.
@@ -98,7 +98,7 @@ func (client *SyncSetsClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-04")
+	reqQP.Set("api-version", "2023-11-22")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -119,7 +119,7 @@ func (client *SyncSetsClient) createOrUpdateHandleResponse(resp *http.Response) 
 // Delete - The operation returns nothing.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-04
+// Generated from API version 2023-11-22
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the OpenShift cluster resource.
 //   - childResourceName - The name of the SyncSet resource.
@@ -169,7 +169,7 @@ func (client *SyncSetsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-04")
+	reqQP.Set("api-version", "2023-11-22")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -178,7 +178,7 @@ func (client *SyncSetsClient) deleteCreateRequest(ctx context.Context, resourceG
 // Get - The operation returns properties of a SyncSet.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-04
+// Generated from API version 2023-11-22
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the OpenShift cluster resource.
 //   - childResourceName - The name of the SyncSet resource.
@@ -229,7 +229,7 @@ func (client *SyncSetsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-04")
+	reqQP.Set("api-version", "2023-11-22")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -246,7 +246,7 @@ func (client *SyncSetsClient) getHandleResponse(resp *http.Response) (SyncSetsCl
 
 // NewListPager - The operation returns properties of each SyncSet.
 //
-// Generated from API version 2023-09-04
+// Generated from API version 2023-11-22
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the OpenShift cluster resource.
 //   - options - SyncSetsClientListOptions contains the optional parameters for the SyncSetsClient.NewListPager method.
@@ -293,7 +293,7 @@ func (client *SyncSetsClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-04")
+	reqQP.Set("api-version", "2023-11-22")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -311,7 +311,7 @@ func (client *SyncSetsClient) listHandleResponse(resp *http.Response) (SyncSetsC
 // Update - The operation returns properties of a SyncSet.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-04
+// Generated from API version 2023-11-22
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the OpenShift cluster resource.
 //   - childResourceName - The name of the SyncSet resource.
@@ -363,7 +363,7 @@ func (client *SyncSetsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-04")
+	reqQP.Set("api-version", "2023-11-22")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

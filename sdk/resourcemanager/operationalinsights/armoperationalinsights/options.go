@@ -183,6 +183,87 @@ type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// QueriesClientDeleteOptions contains the optional parameters for the QueriesClient.Delete method.
+type QueriesClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// QueriesClientGetOptions contains the optional parameters for the QueriesClient.Get method.
+type QueriesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// QueriesClientListOptions contains the optional parameters for the QueriesClient.NewListPager method.
+type QueriesClientListOptions struct {
+	// Flag indicating whether or not to return the body of each applicable query. If false, only return the query information.
+	IncludeBody *bool
+
+	// Base64 encoded token used to fetch the next page of items. Default is null.
+	SkipToken *string
+
+	// Maximum items returned in page.
+	Top *int64
+}
+
+// QueriesClientPutOptions contains the optional parameters for the QueriesClient.Put method.
+type QueriesClientPutOptions struct {
+	// placeholder for future optional parameters
+}
+
+// QueriesClientSearchOptions contains the optional parameters for the QueriesClient.NewSearchPager method.
+type QueriesClientSearchOptions struct {
+	// Flag indicating whether or not to return the body of each applicable query. If false, only return the query information.
+	IncludeBody *bool
+
+	// Base64 encoded token used to fetch the next page of items. Default is null.
+	SkipToken *string
+
+	// Maximum items returned in page.
+	Top *int64
+}
+
+// QueriesClientUpdateOptions contains the optional parameters for the QueriesClient.Update method.
+type QueriesClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// QueryPacksClientCreateOrUpdateOptions contains the optional parameters for the QueryPacksClient.CreateOrUpdate method.
+type QueryPacksClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// QueryPacksClientCreateOrUpdateWithoutNameOptions contains the optional parameters for the QueryPacksClient.CreateOrUpdateWithoutName
+// method.
+type QueryPacksClientCreateOrUpdateWithoutNameOptions struct {
+	// placeholder for future optional parameters
+}
+
+// QueryPacksClientDeleteOptions contains the optional parameters for the QueryPacksClient.Delete method.
+type QueryPacksClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// QueryPacksClientGetOptions contains the optional parameters for the QueryPacksClient.Get method.
+type QueryPacksClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// QueryPacksClientListByResourceGroupOptions contains the optional parameters for the QueryPacksClient.NewListByResourceGroupPager
+// method.
+type QueryPacksClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// QueryPacksClientListOptions contains the optional parameters for the QueryPacksClient.NewListPager method.
+type QueryPacksClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// QueryPacksClientUpdateTagsOptions contains the optional parameters for the QueryPacksClient.UpdateTags method.
+type QueryPacksClientUpdateTagsOptions struct {
+	// placeholder for future optional parameters
+}
+
 // SavedSearchesClientCreateOrUpdateOptions contains the optional parameters for the SavedSearchesClient.CreateOrUpdate method.
 type SavedSearchesClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
@@ -241,6 +322,24 @@ type StorageInsightConfigsClientListByWorkspaceOptions struct {
 	// placeholder for future optional parameters
 }
 
+// TablesClientBeginCreateOrUpdateOptions contains the optional parameters for the TablesClient.BeginCreateOrUpdate method.
+type TablesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// TablesClientBeginDeleteOptions contains the optional parameters for the TablesClient.BeginDelete method.
+type TablesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// TablesClientBeginUpdateOptions contains the optional parameters for the TablesClient.BeginUpdate method.
+type TablesClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // TablesClientGetOptions contains the optional parameters for the TablesClient.Get method.
 type TablesClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -251,8 +350,8 @@ type TablesClientListByWorkspaceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TablesClientUpdateOptions contains the optional parameters for the TablesClient.Update method.
-type TablesClientUpdateOptions struct {
+// TablesClientMigrateOptions contains the optional parameters for the TablesClient.Migrate method.
+type TablesClientMigrateOptions struct {
 	// placeholder for future optional parameters
 }
 

@@ -31,10 +31,20 @@ type BaseCosmosDataTransferDataSourceSinkClassification interface {
 // Call the interface's GetDataTransferDataSourceSink() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
 // - *AzureBlobDataTransferDataSourceSink, *BaseCosmosDataTransferDataSourceSink, *CassandraDataTransferDataSourceSink, *DataTransferDataSourceSink,
-// - *MongoDataTransferDataSourceSink, *SQLDataTransferDataSourceSink
+// - *MongoDataTransferDataSourceSink, *MongoVCoreDataTransferDataSourceSink, *SQLDataTransferDataSourceSink
 type DataTransferDataSourceSinkClassification interface {
 	// GetDataTransferDataSourceSink returns the DataTransferDataSourceSink content of the underlying type.
 	GetDataTransferDataSourceSink() *DataTransferDataSourceSink
+}
+
+// ServiceResourceCreateUpdatePropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetServiceResourceCreateUpdateProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *DataTransferServiceResourceCreateUpdateProperties, *GraphAPIComputeServiceResourceCreateUpdateProperties, *MaterializedViewsBuilderServiceResourceCreateUpdateProperties,
+// - *SQLDedicatedGatewayServiceResourceCreateUpdateProperties, *ServiceResourceCreateUpdateProperties
+type ServiceResourceCreateUpdatePropertiesClassification interface {
+	// GetServiceResourceCreateUpdateProperties returns the ServiceResourceCreateUpdateProperties content of the underlying type.
+	GetServiceResourceCreateUpdateProperties() *ServiceResourceCreateUpdateProperties
 }
 
 // ServiceResourcePropertiesClassification provides polymorphic access to related types.

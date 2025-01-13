@@ -78,7 +78,7 @@ func TestProgressReportingSeek(t *testing.T) {
 	body := bytes.NewReader(content)
 	srv, close := mock.NewServer()
 	defer close()
-	srv.SetResponse(mock.WithBody(content))
+	srv.SetResponse()
 	pl := exported.NewPipeline(srv)
 	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {

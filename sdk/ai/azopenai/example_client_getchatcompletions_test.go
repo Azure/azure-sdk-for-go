@@ -15,14 +15,15 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
 func ExampleClient_GetChatCompletions() {
-	azureOpenAIKey := os.Getenv("AOAI_API_KEY")
+	azureOpenAIKey := os.Getenv("AOAI_CHAT_COMPLETIONS_API_KEY")
 	modelDeploymentID := os.Getenv("AOAI_CHAT_COMPLETIONS_MODEL")
 
 	// Ex: "https://<your-azure-openai-host>.openai.azure.com"
-	azureOpenAIEndpoint := os.Getenv("AOAI_ENDPOINT")
+	azureOpenAIEndpoint := os.Getenv("AOAI_CHAT_COMPLETIONS_ENDPOINT")
 
 	if azureOpenAIKey == "" || modelDeploymentID == "" || azureOpenAIEndpoint == "" {
 		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
@@ -36,21 +37,22 @@ func ExampleClient_GetChatCompletions() {
 	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, nil)
 
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	// This is a conversation in progress.
 	// NOTE: all messages, regardless of role, count against token usage for this API.
 	messages := []azopenai.ChatRequestMessageClassification{
 		// You set the tone and rules of the conversation with a prompt as the system role.
-		&azopenai.ChatRequestSystemMessage{Content: to.Ptr("You are a helpful assistant. You will talk like a pirate.")},
+		&azopenai.ChatRequestSystemMessage{Content: azopenai.NewChatRequestSystemMessageContent("You are a helpful assistant. You will talk like a pirate.")},
 
 		// The user asks a question
 		&azopenai.ChatRequestUserMessage{Content: azopenai.NewChatRequestUserMessageContent("Can you help me?")},
 
 		// The reply would come back from the ChatGPT. You'd add it to the conversation so we can maintain context.
-		&azopenai.ChatRequestAssistantMessage{Content: to.Ptr("Arrrr! Of course, me hearty! What can I do for ye?")},
+		&azopenai.ChatRequestAssistantMessage{Content: azopenai.NewChatRequestAssistantMessageContent("Arrrr! Of course, me hearty! What can I do for ye?")},
 
 		// The user answers the question based on the latest reply.
 		&azopenai.ChatRequestUserMessage{Content: azopenai.NewChatRequestUserMessageContent("What's the best way to train a parrot?")},
@@ -68,8 +70,9 @@ func ExampleClient_GetChatCompletions() {
 	}, nil)
 
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	for _, choice := range resp.Choices {
@@ -106,11 +109,11 @@ func ExampleClient_GetChatCompletions() {
 }
 
 func ExampleClient_GetChatCompletions_functions() {
-	azureOpenAIKey := os.Getenv("AOAI_API_KEY")
+	azureOpenAIKey := os.Getenv("AOAI_CHAT_COMPLETIONS_API_KEY")
 	modelDeploymentID := os.Getenv("AOAI_CHAT_COMPLETIONS_MODEL")
 
 	// Ex: "https://<your-azure-openai-host>.openai.azure.com"
-	azureOpenAIEndpoint := os.Getenv("AOAI_ENDPOINT")
+	azureOpenAIEndpoint := os.Getenv("AOAI_CHAT_COMPLETIONS_ENDPOINT")
 
 	if azureOpenAIKey == "" || modelDeploymentID == "" || azureOpenAIEndpoint == "" {
 		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
@@ -124,8 +127,34 @@ func ExampleClient_GetChatCompletions_functions() {
 	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, nil)
 
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
+	}
+
+	jsonBytes, err := json.Marshal(map[string]any{
+		"required": []string{"location"},
+		"type":     "object",
+		"properties": map[string]any{
+			"location": map[string]any{
+				"type":        "string",
+				"description": "The city and state, e.g. San Francisco, CA",
+			},
+			"unit": map[string]any{
+				"type": "string",
+				"enum": []string{"celsius", "fahrenheit"},
+			},
+		},
+	})
+
+	if err != nil {
+		panic(err)
+	}
+
+	funcDef := &azopenai.ChatCompletionsFunctionToolDefinitionFunction{
+		Name:        to.Ptr("get_current_weather"),
+		Description: to.Ptr("Get the current weather in a given location"),
+		Parameters:  jsonBytes,
 	}
 
 	resp, err := client.GetChatCompletions(context.TODO(), azopenai.ChatCompletionsOptions{
@@ -137,32 +166,16 @@ func ExampleClient_GetChatCompletions_functions() {
 		},
 		Tools: []azopenai.ChatCompletionsToolDefinitionClassification{
 			&azopenai.ChatCompletionsFunctionToolDefinition{
-				Function: &azopenai.FunctionDefinition{
-					Name:        to.Ptr("get_current_weather"),
-					Description: to.Ptr("Get the current weather in a given location"),
-					Parameters: map[string]any{
-						"required": []string{"location"},
-						"type":     "object",
-						"properties": map[string]any{
-							"location": map[string]any{
-								"type":        "string",
-								"description": "The city and state, e.g. San Francisco, CA",
-							},
-							"unit": map[string]any{
-								"type": "string",
-								"enum": []string{"celsius", "fahrenheit"},
-							},
-						},
-					},
-				},
+				Function: funcDef,
 			},
 		},
 		Temperature: to.Ptr[float32](0.0),
 	}, nil)
 
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	funcCall := resp.Choices[0].Message.ToolCalls[0].(*azopenai.ChatCompletionsFunctionToolCall).Function
@@ -179,8 +192,9 @@ func ExampleClient_GetChatCompletions_functions() {
 	err = json.Unmarshal([]byte(*funcCall.Arguments), &funcParams)
 
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	// Prints:
@@ -191,11 +205,11 @@ func ExampleClient_GetChatCompletions_functions() {
 }
 
 func ExampleClient_GetChatCompletions_legacyFunctions() {
-	azureOpenAIKey := os.Getenv("AOAI_API_KEY")
-	modelDeploymentID := os.Getenv("AOAI_CHAT_COMPLETIONS_MODEL_LEGACY_FUNCTIONS")
+	azureOpenAIKey := os.Getenv("AOAI_CHAT_COMPLETIONS_MODEL_LEGACY_FUNCTIONS_API_KEY")
+	modelDeploymentID := os.Getenv("AOAI_CHAT_COMPLETIONS_MODEL_LEGACY_FUNCTIONS_MODEL")
 
 	// Ex: "https://<your-azure-openai-host>.openai.azure.com"
-	azureOpenAIEndpoint := os.Getenv("AOAI_ENDPOINT")
+	azureOpenAIEndpoint := os.Getenv("AOAI_CHAT_COMPLETIONS_MODEL_LEGACY_FUNCTIONS_ENDPOINT")
 
 	if azureOpenAIKey == "" || modelDeploymentID == "" || azureOpenAIEndpoint == "" {
 		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
@@ -209,8 +223,30 @@ func ExampleClient_GetChatCompletions_legacyFunctions() {
 	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, nil)
 
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
+	}
+
+	parametersJSON, err := json.Marshal(map[string]any{
+		"required": []string{"location"},
+		"type":     "object",
+		"properties": map[string]any{
+			"location": map[string]any{
+				"type":        "string",
+				"description": "The city and state, e.g. San Francisco, CA",
+			},
+			"unit": map[string]any{
+				"type": "string",
+				"enum": []string{"celsius", "fahrenheit"},
+			},
+		},
+	})
+
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	resp, err := client.GetChatCompletions(context.TODO(), azopenai.ChatCompletionsOptions{
@@ -228,28 +264,16 @@ func ExampleClient_GetChatCompletions_legacyFunctions() {
 				Name:        to.Ptr("get_current_weather"),
 				Description: to.Ptr("Get the current weather in a given location"),
 
-				Parameters: map[string]any{
-					"required": []string{"location"},
-					"type":     "object",
-					"properties": map[string]any{
-						"location": map[string]any{
-							"type":        "string",
-							"description": "The city and state, e.g. San Francisco, CA",
-						},
-						"unit": map[string]any{
-							"type": "string",
-							"enum": []string{"celsius", "fahrenheit"},
-						},
-					},
-				},
+				Parameters: parametersJSON,
 			},
 		},
 		Temperature: to.Ptr[float32](0.0),
 	}, nil)
 
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	funcCall := resp.Choices[0].Message.FunctionCall
@@ -266,8 +290,9 @@ func ExampleClient_GetChatCompletions_legacyFunctions() {
 	err = json.Unmarshal([]byte(*funcCall.Arguments), &funcParams)
 
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	// Prints:
@@ -278,11 +303,11 @@ func ExampleClient_GetChatCompletions_legacyFunctions() {
 }
 
 func ExampleClient_GetChatCompletionsStream() {
-	azureOpenAIKey := os.Getenv("AOAI_API_KEY")
+	azureOpenAIKey := os.Getenv("AOAI_CHAT_COMPLETIONS_API_KEY")
 	modelDeploymentID := os.Getenv("AOAI_CHAT_COMPLETIONS_MODEL")
 
 	// Ex: "https://<your-azure-openai-host>.openai.azure.com"
-	azureOpenAIEndpoint := os.Getenv("AOAI_ENDPOINT")
+	azureOpenAIEndpoint := os.Getenv("AOAI_CHAT_COMPLETIONS_ENDPOINT")
 
 	if azureOpenAIKey == "" || modelDeploymentID == "" || azureOpenAIEndpoint == "" {
 		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
@@ -296,21 +321,22 @@ func ExampleClient_GetChatCompletionsStream() {
 	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, nil)
 
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	// This is a conversation in progress.
 	// NOTE: all messages, regardless of role, count against token usage for this API.
 	messages := []azopenai.ChatRequestMessageClassification{
 		// You set the tone and rules of the conversation with a prompt as the system role.
-		&azopenai.ChatRequestSystemMessage{Content: to.Ptr("You are a helpful assistant. You will talk like a pirate and limit your responses to 20 words or less.")},
+		&azopenai.ChatRequestSystemMessage{Content: azopenai.NewChatRequestSystemMessageContent("You are a helpful assistant. You will talk like a pirate and limit your responses to 20 words or less.")},
 
 		// The user asks a question
 		&azopenai.ChatRequestUserMessage{Content: azopenai.NewChatRequestUserMessageContent("Can you help me?")},
 
 		// The reply would come back from the ChatGPT. You'd add it to the conversation so we can maintain context.
-		&azopenai.ChatRequestAssistantMessage{Content: to.Ptr("Arrrr! Of course, me hearty! What can I do for ye?")},
+		&azopenai.ChatRequestAssistantMessage{Content: azopenai.NewChatRequestAssistantMessageContent("Arrrr! Of course, me hearty! What can I do for ye?")},
 
 		// The user answers the question based on the latest reply.
 		&azopenai.ChatRequestUserMessage{Content: azopenai.NewChatRequestUserMessageContent("What's the best way to train a parrot?")},
@@ -318,7 +344,7 @@ func ExampleClient_GetChatCompletionsStream() {
 		// from here you'd keep iterating, sending responses back from ChatGPT
 	}
 
-	resp, err := client.GetChatCompletionsStream(context.TODO(), azopenai.ChatCompletionsOptions{
+	resp, err := client.GetChatCompletionsStream(context.TODO(), azopenai.ChatCompletionsStreamOptions{
 		// This is a conversation in progress.
 		// NOTE: all messages count against token usage for this API.
 		Messages:       messages,
@@ -327,8 +353,9 @@ func ExampleClient_GetChatCompletionsStream() {
 	}, nil)
 
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	defer resp.ChatCompletionsStream.Close()
@@ -344,7 +371,8 @@ func ExampleClient_GetChatCompletionsStream() {
 
 		if err != nil {
 			//  TODO: Update the following line with your application specific error handling logic
-			log.Fatalf("ERROR: %s", err)
+			log.Printf("ERROR: %s", err)
+			return
 		}
 
 		for _, choice := range chatCompletions.Choices {
@@ -371,4 +399,268 @@ func ExampleClient_GetChatCompletionsStream() {
 	}
 
 	// Output:
+}
+
+func ExampleClient_GetChatCompletions_structuredOutputs() {
+	// This example is a Go implementation of the example from this article:
+	// https://openai.com/index/introducing-structured-outputs-in-the-api/
+	modelDeploymentID := os.Getenv("AOAI_CHAT_COMPLETIONS_STRUCTURED_OUTPUTS_MODEL")
+
+	// Ex: "https://<your-azure-openai-host>.openai.azure.com"
+	azureOpenAIEndpoint := os.Getenv("AOAI_CHAT_COMPLETIONS_STRUCTURED_OUTPUTS_ENDPOINT")
+
+	if modelDeploymentID == "" || azureOpenAIEndpoint == "" {
+		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
+		return
+	}
+
+	tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
+	}
+
+	client, err := azopenai.NewClient(azureOpenAIEndpoint, tokenCredential, nil)
+
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
+	}
+
+	structuredJSONToolDefParams := []byte(`{
+		"type": "object",
+		"properties": {
+			"table_name": {
+				"type": "string",
+				"enum": [
+					"orders"
+				]
+			},
+			"columns": {
+				"type": "array",
+				"items": {
+					"type": "string",
+					"enum": [
+						"id",
+						"status",
+						"expected_delivery_date",
+						"delivered_at",
+						"shipped_at",
+						"ordered_at",
+						"canceled_at"
+					]
+				}
+			},
+			"conditions": {
+				"type": "array",
+				"items": {
+					"type": "object",
+					"properties": {
+						"column": {
+							"type": "string"
+						},
+						"operator": {
+							"type": "string",
+							"enum": [
+								"=",
+								">",
+								"<",
+								">=",
+								"<=",
+								"!="
+							]
+						},
+						"value": {
+							"anyOf": [
+								{
+									"type": "string"
+								},
+								{
+									"type": "number"
+								},
+								{
+									"type": "object",
+									"properties": {
+										"column_name": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"column_name"
+									],
+									"additionalProperties": false
+								}
+							]
+						}
+					},
+					"required": [
+						"column",
+						"operator",
+						"value"
+					],
+					"additionalProperties": false
+				}
+			},
+			"order_by": {
+				"type": "string",
+				"enum": [
+					"asc",
+					"desc"
+				]
+			}
+		},
+		"required": [
+			"table_name",
+			"columns",
+			"conditions",
+			"order_by"
+		],
+		"additionalProperties": false
+	}`)
+
+	resp, err := client.GetChatCompletions(context.TODO(), azopenai.ChatCompletionsOptions{
+		DeploymentName: &modelDeploymentID,
+		Messages: []azopenai.ChatRequestMessageClassification{
+			&azopenai.ChatRequestAssistantMessage{
+				Content: azopenai.NewChatRequestAssistantMessageContent("You are a helpful assistant. The current date is August 6, 2024. You help users query for the data they are looking for by calling the query function."),
+			},
+			&azopenai.ChatRequestUserMessage{
+				Content: azopenai.NewChatRequestUserMessageContent("look up all my orders in may of last year that were fulfilled but not delivered on time"),
+			},
+		},
+		Tools: []azopenai.ChatCompletionsToolDefinitionClassification{
+			&azopenai.ChatCompletionsFunctionToolDefinition{
+				Function: &azopenai.ChatCompletionsFunctionToolDefinitionFunction{
+					Strict:     to.Ptr(true),
+					Name:       to.Ptr("query"),
+					Parameters: structuredJSONToolDefParams,
+				},
+			},
+		},
+	}, nil)
+
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
+	}
+
+	// and now the results should contain proper JSON for the arguments, every time.
+	fn := resp.Choices[0].Message.ToolCalls[0].(*azopenai.ChatCompletionsFunctionToolCall).Function
+
+	argumentsObj := map[string]any{}
+
+	err = json.Unmarshal([]byte(*fn.Arguments), &argumentsObj)
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
+	}
+
+	fmt.Printf("%#v\n", argumentsObj)
+}
+
+func ExampleClient_GetChatCompletions_structuredOutputs_responseFormat() {
+	// This example is a Go implementation of the example from this article:
+	// https://openai.com/index/introducing-structured-outputs-in-the-api/
+	modelDeploymentID := os.Getenv("AOAI_CHAT_COMPLETIONS_STRUCTURED_OUTPUTS_MODEL")
+
+	// Ex: "https://<your-azure-openai-host>.openai.azure.com"
+	azureOpenAIEndpoint := os.Getenv("AOAI_CHAT_COMPLETIONS_STRUCTURED_OUTPUTS_ENDPOINT")
+
+	if modelDeploymentID == "" || azureOpenAIEndpoint == "" {
+		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
+		return
+	}
+
+	// In Azure OpenAI you must deploy a model before you can use it in your client. For more information
+	// see here: https://learn.microsoft.com/azure/cognitive-services/openai/how-to/create-resource
+	tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
+	}
+
+	client, err := azopenai.NewClient(azureOpenAIEndpoint, tokenCredential, nil)
+
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
+	}
+
+	structuredOutputJSONSchema := []byte(`{
+	"type": "object",
+	"properties": {
+		"steps": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"explanation": {
+						"type": "string"
+					},
+					"output": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"explanation",
+					"output"
+				],
+				"additionalProperties": false
+			}
+		},
+		"final_answer": {
+			"type": "string"
+		}
+	},
+	"required": [
+		"steps",
+		"final_answer"
+	],
+	"additionalProperties": false
+}`)
+
+	resp, err := client.GetChatCompletions(context.TODO(), azopenai.ChatCompletionsOptions{
+		DeploymentName: &modelDeploymentID,
+		Messages: []azopenai.ChatRequestMessageClassification{
+			&azopenai.ChatRequestAssistantMessage{
+				Content: azopenai.NewChatRequestAssistantMessageContent("You are a helpful math tutor."),
+			},
+			&azopenai.ChatRequestUserMessage{
+				Content: azopenai.NewChatRequestUserMessageContent("solve 8x + 31 = 2"),
+			},
+		},
+		ResponseFormat: &azopenai.ChatCompletionsJSONSchemaResponseFormat{
+			JSONSchema: &azopenai.ChatCompletionsJSONSchemaResponseFormatJSONSchema{
+				Name:   to.Ptr("math_response"),
+				Strict: to.Ptr(true),
+				Schema: structuredOutputJSONSchema,
+			},
+		},
+	}, nil)
+
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
+	}
+
+	responseObj := map[string]any{}
+	err = json.Unmarshal([]byte(*resp.Choices[0].Message.Content), &responseObj)
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
+	}
+
+	fmt.Printf("%#v", responseObj)
 }

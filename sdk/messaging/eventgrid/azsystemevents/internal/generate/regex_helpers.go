@@ -20,37 +20,23 @@ import (
 // DeleteType removes a type from models.go and it's associated marshalling functions from models_serde.go.
 func DeleteType(model string) error {
 	deleteModelTypeRE := regexp.MustCompile(fmt.Sprintf(`(?s)// %s -.+?\n}\n`, model))
-	deleteModelFuncsRE := regexp.MustCompile(fmt.Sprintf(`(?s)// (UnmarshalJSON) implements the (json\.Unmarshaller) interface for type %s.+?\n}\n`, model))
 
-	modelsGoBytes, err := os.ReadFile(modelsGoFile)
+	/* Example:
+	// MarshalJSON implements the json.Marshaller interface for type AvsClusterEventData.
+	*/
+	deleteModelFuncsRE := regexp.MustCompile(fmt.Sprintf(`(?s)// (UnmarshalJSON|MarshalJSON) implements the (json\.Unmarshaller|json\.Marshaller) interface for type %s.+?\n}\n`, model))
 
-	if err != nil {
-		return err
-	}
-
-	newModelsGoBytes := deleteModelTypeRE.ReplaceAll(modelsGoBytes, nil)
-
-	if bytes.Equal(modelsGoBytes, newModelsGoBytes) {
-		return fmt.Errorf("no match or changes in %s for model %s. Is the type name correct?", modelsGoFile, model)
-	}
-
-	if err := os.WriteFile(modelsGoFile, newModelsGoBytes, 0700); err != nil {
-		return err
-	}
-
-	modelsSerdeGoBytes, err := os.ReadFile(modelsSerdeGoFile)
+	err := Replace(modelsGoFile, fmt.Sprintf("Remove model %s", model), func(s string) (string, error) {
+		return deleteModelTypeRE.ReplaceAllString(s, ""), nil
+	})
 
 	if err != nil {
 		return err
 	}
 
-	newModelsSerdeGoBytes := deleteModelFuncsRE.ReplaceAll(modelsSerdeGoBytes, nil)
-
-	if bytes.Equal(modelsSerdeGoBytes, newModelsSerdeGoBytes) {
-		return fmt.Errorf("no match or changes in %s for model %s. Is the type name correct?", modelsGoFile, model)
-	}
-
-	return os.WriteFile(modelsSerdeGoFile, newModelsSerdeGoBytes, 0700)
+	return Replace(modelsSerdeGoFile, fmt.Sprintf("Remove %s serde functions", model), func(s string) (string, error) {
+		return deleteModelFuncsRE.ReplaceAllString(s, ""), nil
+	})
 }
 
 // SwapType changes the declared type for the symbol, which is expected to be a field
@@ -112,5 +98,29 @@ func UseCustomUnpopulate(filename string, symbolName string, newFuncCall string)
 
 	newBuff := re.ReplaceAll(buff, []byte("$1 "+newFuncCall+"$2"))
 
+	if bytes.Equal(newBuff, buff) {
+		return fmt.Errorf("Replacement didn't change any text for %s -> %s", symbolName, newFuncCall)
+	}
+
 	return os.WriteFile(filename, newBuff, 0600)
+}
+
+func Replace(filename string, purpose string, repl func(string) (string, error)) error {
+	data, err := os.ReadFile(filename)
+
+	if err != nil {
+		return err
+	}
+
+	newData, err := repl(string(data))
+
+	if err != nil {
+		return err
+	}
+
+	if newData == string(data) {
+		return fmt.Errorf("no replacements made for %s", purpose)
+	}
+
+	return os.WriteFile(filename, []byte(newData), 0600)
 }

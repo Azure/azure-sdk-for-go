@@ -11,13 +11,13 @@ import (
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/issue/query"
 )
 
-func handleSuccess(_ context.Context, _ *query.Client, reqIssue ReleaseRequestIssue, result link.ResolveResult) (*Request, error) {
+func handleTrack2(_ context.Context, _ *query.Client, reqIssue ReleaseRequestIssue, result link.ResolveResult) (*Request, error) {
 	return &Request{
 		RequestLink: reqIssue.IssueLink,
 		TargetDate:  reqIssue.ReleaseDate,
 		ReadmePath:  string(result.GetReadme()),
 		Tag:         reqIssue.Tag,
-		Track:       getTrack(reqIssue),
+		Track:       Track2,
 	}, nil
 }
 
@@ -38,12 +38,12 @@ func handlePRNotMerged(_ context.Context, _ *query.Client, reqIssue ReleaseReque
 	return nil, nil
 }
 
-func getTrack(issue ReleaseRequestIssue) Track {
-	for _, l := range issue.Labels {
-		if l != nil && l.GetName() == "Track1" {
-			return Track1
-		}
-	}
-
-	return Track2
+func handleTypeSpec(_ context.Context, _ *query.Client, reqIssue ReleaseRequestIssue, result link.ResolveResult) (*Request, error) {
+	return &Request{
+		RequestLink: reqIssue.IssueLink,
+		TargetDate:  reqIssue.ReleaseDate,
+		ReadmePath:  string(result.GetReadme()),
+		Tag:         reqIssue.Tag,
+		Track:       TypeSpec,
+	}, nil
 }

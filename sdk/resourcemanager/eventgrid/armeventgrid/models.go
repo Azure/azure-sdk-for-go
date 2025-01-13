@@ -264,6 +264,9 @@ type Client struct {
 type ClientAuthenticationSettings struct {
 	// Alternative authentication name sources related to client authentication settings for namespace resource.
 	AlternativeAuthenticationNameSources []*AlternativeAuthenticationNameSource
+
+	// Custom JWT authentication settings for namespace resource.
+	CustomJwtAuthentication *CustomJwtAuthenticationSettings
 }
 
 // ClientCertificateAuthentication - The certificate authentication properties for the client.
@@ -358,6 +361,73 @@ type ConnectionState struct {
 	Status *PersistedConnectionStatus
 }
 
+// CustomDomainConfiguration - A custom domain configuration that allows users to publish to their own domain name.
+type CustomDomainConfiguration struct {
+	// REQUIRED; Fully Qualified Domain Name (FQDN) for the custom domain.
+	FullyQualifiedDomainName *string
+
+	// The URL for the certificate that is used for publishing to the custom domain. We currently support certificates stored
+	// in Azure Key Vault only. While certificate URL can be either versioned URL of the
+	// following format https://{key-vault-name}.vault.azure.net/certificates/{certificate-name}/{version-id}, or unversioned
+	// URL of the following format (e.g.,
+	// https://contosovault.vault.azure.net/certificates/contosocert, we support unversioned certificate URL only (e.g., https://contosovault.vault.azure.net/certificates/contosocert)
+	CertificateURL *string
+
+	// Expected DNS TXT record name. Event Grid will check for a TXT record with this name in the DNS record set of the custom
+	// domain name to prove ownership over the domain. The values under this TXT record
+	// must contain the expected TXT record value.
+	ExpectedTxtRecordName *string
+
+	// Expected DNS TXT record value. Event Grid will check for a TXT record with this value in the DNS record set of the custom
+	// domain name to prove ownership over the domain.
+	ExpectedTxtRecordValue *string
+
+	// Identity info for accessing the certificate for the custom domain. This identity info must match an identity that has been
+	// set on the namespace.
+	Identity *CustomDomainIdentity
+
+	// Validation state for the custom domain. This is a read only property and is initially set to 'Pending' and will be updated
+	// to 'Approved' by Event Grid only after ownership of the domain name has been
+	// successfully validated.
+	ValidationState *CustomDomainValidationState
+}
+
+// CustomDomainIdentity - The identity information for retrieving the certificate for the custom domain.
+type CustomDomainIdentity struct {
+	// The type of managed identity used. Can be either 'SystemAssigned' or 'UserAssigned'.
+	Type *CustomDomainIdentityType
+
+	// The user identity associated with the resource.
+	UserAssignedIdentity *string
+}
+
+// CustomDomainOwnershipValidationResult - Namespace custom domain ownership validation result.
+type CustomDomainOwnershipValidationResult struct {
+	// List of custom domain configurations for the namespace under topic spaces configuration.
+	CustomDomainsForTopicSpacesConfiguration []*CustomDomainConfiguration
+
+	// List of custom domain configurations for the namespace under topics configuration.
+	CustomDomainsForTopicsConfiguration []*CustomDomainConfiguration
+}
+
+// CustomJwtAuthenticationManagedIdentity - The identity information for retrieving the certificate for custom JWT authentication.
+type CustomJwtAuthenticationManagedIdentity struct {
+	// REQUIRED; The type of managed identity used. Can be either 'SystemAssigned' or 'UserAssigned'.
+	Type *CustomJwtAuthenticationManagedIdentityType
+
+	// The user identity associated with the resource.
+	UserAssignedIdentity *string
+}
+
+// CustomJwtAuthenticationSettings - Custom JWT authentication settings for namespace resource.
+type CustomJwtAuthenticationSettings struct {
+	// Information about the certificate that is used for token validation. We currently support maximum 2 certificates.
+	IssuerCertificates []*IssuerCertificateInfo
+
+	// Expected JWT token issuer.
+	TokenIssuer *string
+}
+
 // DeadLetterDestination - Information about the dead letter destination for an event subscription. To configure a deadletter
 // destination, do not directly instantiate an object of this class. Instead, instantiate an object of a
 // derived class. Currently, StorageBlobDeadLetterDestination is the only class that derives from this class.
@@ -373,7 +443,7 @@ func (d *DeadLetterDestination) GetDeadLetterDestination() *DeadLetterDestinatio
 type DeadLetterWithResourceIdentity struct {
 	// Information about the destination where events have to be delivered for the event subscription. Uses the managed identity
 	// setup on the parent resource (namely, topic or domain) to acquire the
-	// authentication tokens being used during delivery / dead-lettering.
+	// authentication tokens being used during dead-lettering.
 	DeadLetterDestination DeadLetterDestinationClassification
 
 	// The identity to use when dead-lettering events.
@@ -412,9 +482,9 @@ type DeliveryConfiguration struct {
 
 // DeliveryWithResourceIdentity - Information about the delivery for an event subscription with resource identity.
 type DeliveryWithResourceIdentity struct {
-	// Information about the destination where events have to be delivered for the event subscription. Uses Azure Event Grid's
-	// identity to acquire the authentication tokens being used during delivery /
-	// dead-lettering.
+	// Information about the destination where events have to be delivered for the event subscription. Uses the managed identity
+	// setup on the parent resource (namely, topic or domain) to acquire the
+	// authentication tokens being used during delivery.
 	Destination EventSubscriptionDestinationClassification
 
 	// The identity to use when delivering events.
@@ -511,7 +581,7 @@ type DomainProperties struct {
 	// READ-ONLY; Metric resource id for the Event Grid Domain Resource.
 	MetricResourceID *string
 
-	// READ-ONLY
+	// READ-ONLY; List of private endpoint connections.
 	PrivateEndpointConnections []*PrivateEndpointConnection
 
 	// READ-ONLY; Provisioning state of the Event Grid Domain Resource.
@@ -786,7 +856,7 @@ type EventSubscriptionFilter struct {
 	SubjectEndsWith *string
 }
 
-// EventSubscriptionFullURL - Full endpoint url of an event subscription
+// EventSubscriptionFullURL - Full endpoint URL of an event subscription
 type EventSubscriptionFullURL struct {
 	// The URL that represents the endpoint of the destination of an event subscription.
 	EndpointURL *string
@@ -794,8 +864,7 @@ type EventSubscriptionFullURL struct {
 
 // EventSubscriptionIdentity - The identity information with the event subscription.
 type EventSubscriptionIdentity struct {
-	// The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity
-	// and a set of user-assigned identities. The type 'None' will remove any identity.
+	// The type of managed identity used. Can be either 'SystemAssigned' or 'UserAssigned'.
 	Type *EventSubscriptionIdentityType
 
 	// The user identity associated with the resource.
@@ -1148,6 +1217,16 @@ func (i *IsNullOrUndefinedFilter) GetFilter() *Filter {
 	}
 }
 
+// IssuerCertificateInfo - Information about the certificate that is used for token validation.
+type IssuerCertificateInfo struct {
+	// REQUIRED; Keyvault certificate URL in https://keyvaultname.vault.azure.net/certificates/certificateName/certificateVersion
+	// format.
+	CertificateURL *string
+
+	// The identity that will be used to access the certificate.
+	Identity *CustomJwtAuthenticationManagedIdentity
+}
+
 // JSONField - This is used to express the source of an input schema mapping for a single target field in the Event Grid Event
 // schema. This is currently used in the mappings for the 'id', 'topic' and 'eventtime'
 // properties. This represents a field in the input event schema.
@@ -1283,7 +1362,9 @@ type NamespaceProperties struct {
 	IsZoneRedundant *bool
 
 	// Minimum TLS version of the publisher allowed to publish to this namespace. Only TLS version 1.2 is supported.
-	MinimumTLSVersionAllowed   *TLSVersion
+	MinimumTLSVersionAllowed *TLSVersion
+
+	// List of private endpoint connections.
 	PrivateEndpointConnections []*PrivateEndpointConnection
 
 	// This determines if traffic is allowed over public network. By default it is enabled. You can further restrict to specific
@@ -1420,6 +1501,9 @@ type NamespaceUpdateParameterProperties struct {
 
 	// Topic spaces configuration properties that can be updated.
 	TopicSpacesConfiguration *UpdateTopicSpacesConfigurationInfo
+
+	// Topics configuration properties that can be updated.
+	TopicsConfiguration *UpdateTopicsConfigurationInfo
 }
 
 // NamespaceUpdateParameters - Properties to update namespace.
@@ -1582,7 +1666,13 @@ type NetworkSecurityPerimeterProfileAccessRuleProperties struct {
 	PhoneNumbers []*string
 
 	// List of subscriptions.
-	Subscriptions []*string
+	Subscriptions []*NetworkSecurityPerimeterSubscription
+}
+
+// NetworkSecurityPerimeterSubscription - Network security perimeter subscription inbound access rule.
+type NetworkSecurityPerimeterSubscription struct {
+	// Subscription id.
+	ID *string
 }
 
 // NumberGreaterThanAdvancedFilter - NumberGreaterThan Advanced Filter.
@@ -2217,7 +2307,7 @@ type PartnerNamespaceProperties struct {
 	// READ-ONLY; Endpoint for the partner namespace.
 	Endpoint *string
 
-	// READ-ONLY
+	// READ-ONLY; List of private endpoint connections.
 	PrivateEndpointConnections []*PrivateEndpointConnection
 
 	// READ-ONLY; Provisioning state of the partner namespace.
@@ -2566,13 +2656,17 @@ type PrivateLinkResourcesListResult struct {
 type PushInfo struct {
 	// The dead letter destination of the event subscription. Any event that cannot be delivered to its' destination is sent to
 	// the dead letter destination. Uses the managed identity setup on the parent
-	// resource (namely, namespace) to acquire the authentication tokens being used during delivery / dead-lettering.
+	// resource (namely, namespace) to acquire the authentication tokens being used during dead-lettering.
 	DeadLetterDestinationWithResourceIdentity *DeadLetterWithResourceIdentity
 
 	// Information about the destination where events have to be delivered for the event subscription. Uses the managed identity
 	// setup on the parent resource (namely, topic or domain) to acquire the
-	// authentication tokens being used during delivery / dead-lettering.
+	// authentication tokens being used during delivery.
 	DeliveryWithResourceIdentity *DeliveryWithResourceIdentity
+
+	// Information about the destination where events have to be delivered for the event subscription. Uses Azure Event Grid's
+	// identity to acquire the authentication tokens being used during delivery.
+	Destination EventSubscriptionDestinationClassification
 
 	// Time span duration in ISO 8601 format that determines how long messages are available to the subscription from the time
 	// the message was published. This duration value is expressed using the following
@@ -2685,6 +2779,7 @@ type RoutingEnrichments struct {
 
 // RoutingIdentityInfo - Routing identity info for topic spaces configuration.
 type RoutingIdentityInfo struct {
+	// Routing identity type for topic spaces configuration.
 	Type                 *RoutingIdentityType
 	UserAssignedIdentity *string
 }
@@ -3193,6 +3288,12 @@ type Subscription struct {
 	Type *string
 }
 
+// SubscriptionFullURL - Full endpoint URL of an event subscription
+type SubscriptionFullURL struct {
+	// The URL that represents the endpoint of the destination of an event subscription.
+	EndpointURL *string
+}
+
 // SubscriptionProperties - Properties of the event subscription.
 type SubscriptionProperties struct {
 	// Information about the delivery configuration of the event subscription.
@@ -3200,6 +3301,9 @@ type SubscriptionProperties struct {
 
 	// The event delivery schema for the event subscription.
 	EventDeliverySchema *DeliverySchema
+
+	// Expiration time of the event subscription.
+	ExpirationTimeUTC *time.Time
 
 	// Information about the filter for the event subscription.
 	FiltersConfiguration *FiltersConfiguration
@@ -3221,6 +3325,9 @@ type SubscriptionUpdateParametersProperties struct {
 
 	// The event delivery schema for the event subscription.
 	EventDeliverySchema *DeliverySchema
+
+	// Expiration time of the event subscription.
+	ExpirationTimeUTC *time.Time
 
 	// Information about the filter for the event subscription.
 	FiltersConfiguration *FiltersConfiguration
@@ -3389,7 +3496,7 @@ type TopicProperties struct {
 	// READ-ONLY; Metric resource id for the topic.
 	MetricResourceID *string
 
-	// READ-ONLY
+	// READ-ONLY; List of private endpoint connections.
 	PrivateEndpointConnections []*PrivateEndpointConnection
 
 	// READ-ONLY; Provisioning state of the topic.
@@ -3446,6 +3553,9 @@ type TopicSpaceProperties struct {
 type TopicSpacesConfiguration struct {
 	// Client authentication settings for topic spaces configuration.
 	ClientAuthentication *ClientAuthenticationSettings
+
+	// List of custom domain configurations for the namespace.
+	CustomDomains []*CustomDomainConfiguration
 
 	// The maximum number of sessions per authentication name. The property default value is 1. Min allowed value is 1 and max
 	// allowed value is 100.
@@ -3583,6 +3693,9 @@ type TopicUpdateParameters struct {
 
 // TopicsConfiguration - Properties of the Topics Configuration.
 type TopicsConfiguration struct {
+	// List of custom domain configurations for the namespace.
+	CustomDomains []*CustomDomainConfiguration
+
 	// READ-ONLY; The hostname for the topics configuration. This is a read-only property.
 	Hostname *string
 }
@@ -3619,6 +3732,9 @@ type UpdateTopicSpacesConfigurationInfo struct {
 	// Client authentication settings for topic spaces configuration.
 	ClientAuthentication *ClientAuthenticationSettings
 
+	// Custom domain info for topic spaces configuration.
+	CustomDomains []*CustomDomainConfiguration
+
 	// The maximum number of sessions per authentication name. The property default value is 1. Min allowed value is 1 and max
 	// allowed value is 100.
 	MaximumClientSessionsPerAuthenticationName *int32
@@ -3638,6 +3754,12 @@ type UpdateTopicSpacesConfigurationInfo struct {
 
 	// Indicate if Topic Spaces Configuration is enabled for the namespace. Default is Disabled.
 	State *TopicSpacesConfigurationState
+}
+
+// UpdateTopicsConfigurationInfo - Properties of the topics configuration info of a namespace.
+type UpdateTopicsConfigurationInfo struct {
+	// Custom domain info for topics configuration.
+	CustomDomains []*CustomDomainConfiguration
 }
 
 // UserIdentityProperties - The information about the user identity.

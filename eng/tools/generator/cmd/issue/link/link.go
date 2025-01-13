@@ -47,6 +47,8 @@ const (
 	CodeDataPlane Code = "DataPlaneRequest"
 	// CodePRNotMerged marks the resolve succeeds but the requested PR is not merged yet
 	CodePRNotMerged Code = "PRNotMerged"
+
+	CodeTypeSpec Code = "TypeSpec"
 )
 
 type result struct {
@@ -85,6 +87,8 @@ func getResult(readme Readme) ResolveResult {
 	code := CodeDataPlane
 	if readme.IsMgmt() {
 		code = CodeSuccess
+	} else if readme.IsTsp() {
+		code = CodeTypeSpec
 	}
 	return result{
 		readme: readme,

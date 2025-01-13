@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/PacketCoreControlPlaneVersionGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d88c94b22a8efdd47c0cadfe6d8d489107db2b23/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCoreControlPlaneVersionGet.json
 func ExamplePacketCoreControlPlaneVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,7 +28,7 @@ func ExamplePacketCoreControlPlaneVersionsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewPacketCoreControlPlaneVersionsClient().Get(ctx, "PMN-4-11-1", nil)
+	res, err := clientFactory.NewPacketCoreControlPlaneVersionsClient().Get(ctx, "2404.0-1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -36,23 +36,26 @@ func ExamplePacketCoreControlPlaneVersionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.PacketCoreControlPlaneVersion = armmobilenetwork.PacketCoreControlPlaneVersion{
-	// 	Name: to.Ptr("PMN-4-11-1"),
+	// 	Name: to.Ptr("2404.0-1"),
 	// 	Type: to.Ptr("Microsoft.MobileNetwork/packetCoreControlPlaneVersions"),
-	// 	ID: to.Ptr("/providers/Microsoft.MobileNetwork/packetCoreControlPlaneVersions/PMN-4-11-1"),
+	// 	ID: to.Ptr("/providers/Microsoft.MobileNetwork/packetCoreControlPlaneVersions/2404.0-1"),
 	// 	Properties: &armmobilenetwork.PacketCoreControlPlaneVersionPropertiesFormat{
 	// 		Platforms: []*armmobilenetwork.Platform{
 	// 			{
-	// 				MaximumPlatformSoftwareVersion: to.Ptr("2211"),
-	// 				MinimumPlatformSoftwareVersion: to.Ptr("2209"),
-	// 				PlatformType: to.Ptr(armmobilenetwork.PlatformTypeAKSHCI),
-	// 				RecommendedVersion: to.Ptr(armmobilenetwork.RecommendedVersionRecommended),
-	// 				VersionState: to.Ptr(armmobilenetwork.VersionStateActive),
-	// 		}},
-	// 	},
-	// }
+	// 				HaUpgradesAvailable: []*string{
+	// 					to.Ptr("2407.0"),
+	// 					to.Ptr("2407.1")},
+	// 					MaximumPlatformSoftwareVersion: to.Ptr("2211"),
+	// 					MinimumPlatformSoftwareVersion: to.Ptr("2209"),
+	// 					PlatformType: to.Ptr(armmobilenetwork.PlatformTypeAKSHCI),
+	// 					RecommendedVersion: to.Ptr(armmobilenetwork.RecommendedVersionRecommended),
+	// 					VersionState: to.Ptr(armmobilenetwork.VersionStateActive),
+	// 			}},
+	// 		},
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/PacketCoreControlPlaneVersionList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d88c94b22a8efdd47c0cadfe6d8d489107db2b23/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCoreControlPlaneVersionList.json
 func ExamplePacketCoreControlPlaneVersionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,55 +80,62 @@ func ExamplePacketCoreControlPlaneVersionsClient_NewListPager() {
 		// page.PacketCoreControlPlaneVersionListResult = armmobilenetwork.PacketCoreControlPlaneVersionListResult{
 		// 	Value: []*armmobilenetwork.PacketCoreControlPlaneVersion{
 		// 		{
-		// 			Name: to.Ptr("PMN-4-9-4"),
+		// 			Name: to.Ptr("2404.0-0"),
 		// 			Type: to.Ptr("Microsoft.MobileNetwork/packetCoreControlPlaneVersions"),
-		// 			ID: to.Ptr("/providers/Microsoft.MobileNetwork/packetCoreControlPlaneVersions/PMN-4-9-4"),
+		// 			ID: to.Ptr("/providers/Microsoft.MobileNetwork/packetCoreControlPlaneVersions/2404.0-0"),
 		// 			Properties: &armmobilenetwork.PacketCoreControlPlaneVersionPropertiesFormat{
 		// 				Platforms: []*armmobilenetwork.Platform{
 		// 					{
-		// 						MaximumPlatformSoftwareVersion: to.Ptr("2211"),
-		// 						MinimumPlatformSoftwareVersion: to.Ptr("2209"),
-		// 						PlatformType: to.Ptr(armmobilenetwork.PlatformTypeAKSHCI),
-		// 						RecommendedVersion: to.Ptr(armmobilenetwork.RecommendedVersionNotRecommended),
-		// 						VersionState: to.Ptr(armmobilenetwork.VersionStateActive),
-		// 				}},
+		// 						HaUpgradesAvailable: []*string{
+		// 							to.Ptr("2404.1"),
+		// 							to.Ptr("2407.0")},
+		// 							MaximumPlatformSoftwareVersion: to.Ptr("2211"),
+		// 							MinimumPlatformSoftwareVersion: to.Ptr("2209"),
+		// 							PlatformType: to.Ptr(armmobilenetwork.PlatformTypeAKSHCI),
+		// 							RecommendedVersion: to.Ptr(armmobilenetwork.RecommendedVersionNotRecommended),
+		// 							VersionState: to.Ptr(armmobilenetwork.VersionStateActive),
+		// 					}},
+		// 				},
 		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("PMN-4-10-2"),
-		// 			Type: to.Ptr("Microsoft.MobileNetwork/packetCoreControlPlaneVersions"),
-		// 			ID: to.Ptr("/providers/Microsoft.MobileNetwork/packetCoreControlPlaneVersions/PMN-4-10-2"),
-		// 			Properties: &armmobilenetwork.PacketCoreControlPlaneVersionPropertiesFormat{
-		// 				Platforms: []*armmobilenetwork.Platform{
-		// 					{
-		// 						MaximumPlatformSoftwareVersion: to.Ptr("2212"),
-		// 						MinimumPlatformSoftwareVersion: to.Ptr("2210"),
-		// 						PlatformType: to.Ptr(armmobilenetwork.PlatformTypeAKSHCI),
-		// 						RecommendedVersion: to.Ptr(armmobilenetwork.RecommendedVersionNotRecommended),
-		// 						VersionState: to.Ptr(armmobilenetwork.VersionStateActive),
+		// 			{
+		// 				Name: to.Ptr("2404.1-1"),
+		// 				Type: to.Ptr("Microsoft.MobileNetwork/packetCoreControlPlaneVersions"),
+		// 				ID: to.Ptr("/providers/Microsoft.MobileNetwork/packetCoreControlPlaneVersions/2404.1-1"),
+		// 				Properties: &armmobilenetwork.PacketCoreControlPlaneVersionPropertiesFormat{
+		// 					Platforms: []*armmobilenetwork.Platform{
+		// 						{
+		// 							HaUpgradesAvailable: []*string{
+		// 								to.Ptr("2407.0")},
+		// 								MaximumPlatformSoftwareVersion: to.Ptr("2212"),
+		// 								MinimumPlatformSoftwareVersion: to.Ptr("2210"),
+		// 								PlatformType: to.Ptr(armmobilenetwork.PlatformTypeAKSHCI),
+		// 								RecommendedVersion: to.Ptr(armmobilenetwork.RecommendedVersionNotRecommended),
+		// 								VersionState: to.Ptr(armmobilenetwork.VersionStateActive),
+		// 						}},
+		// 					},
+		// 				},
+		// 				{
+		// 					Name: to.Ptr("2407.0-1"),
+		// 					Type: to.Ptr("Microsoft.MobileNetwork/packetCoreControlPlaneVersions"),
+		// 					ID: to.Ptr("/providers/Microsoft.MobileNetwork/packetCoreControlPlaneVersions/2407.0-1"),
+		// 					Properties: &armmobilenetwork.PacketCoreControlPlaneVersionPropertiesFormat{
+		// 						Platforms: []*armmobilenetwork.Platform{
+		// 							{
+		// 								HaUpgradesAvailable: []*string{
+		// 									to.Ptr("2410.1")},
+		// 									MaximumPlatformSoftwareVersion: to.Ptr("2301"),
+		// 									MinimumPlatformSoftwareVersion: to.Ptr("2211"),
+		// 									PlatformType: to.Ptr(armmobilenetwork.PlatformTypeAKSHCI),
+		// 									RecommendedVersion: to.Ptr(armmobilenetwork.RecommendedVersionRecommended),
+		// 									VersionState: to.Ptr(armmobilenetwork.VersionStateActive),
+		// 							}},
+		// 						},
 		// 				}},
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("PMN-4-11-1"),
-		// 			Type: to.Ptr("Microsoft.MobileNetwork/packetCoreControlPlaneVersions"),
-		// 			ID: to.Ptr("/providers/Microsoft.MobileNetwork/packetCoreControlPlaneVersions/PMN-4-11-1"),
-		// 			Properties: &armmobilenetwork.PacketCoreControlPlaneVersionPropertiesFormat{
-		// 				Platforms: []*armmobilenetwork.Platform{
-		// 					{
-		// 						MaximumPlatformSoftwareVersion: to.Ptr("2301"),
-		// 						MinimumPlatformSoftwareVersion: to.Ptr("2211"),
-		// 						PlatformType: to.Ptr(armmobilenetwork.PlatformTypeAKSHCI),
-		// 						RecommendedVersion: to.Ptr(armmobilenetwork.RecommendedVersionRecommended),
-		// 						VersionState: to.Ptr(armmobilenetwork.VersionStateActive),
-		// 				}},
-		// 			},
-		// 	}},
-		// }
+		// 			}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/PacketCoreControlPlaneVersionGetBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d88c94b22a8efdd47c0cadfe6d8d489107db2b23/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCoreControlPlaneVersionGetBySubscription.json
 func ExamplePacketCoreControlPlaneVersionsClient_GetBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,7 +146,7 @@ func ExamplePacketCoreControlPlaneVersionsClient_GetBySubscription() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewPacketCoreControlPlaneVersionsClient().GetBySubscription(ctx, "PMN-4-11-1", "00000000-0000-0000-0000-000000000000", nil)
+	res, err := clientFactory.NewPacketCoreControlPlaneVersionsClient().GetBySubscription(ctx, "2404.0-1", "00000000-0000-0000-0000-000000000000", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -144,23 +154,26 @@ func ExamplePacketCoreControlPlaneVersionsClient_GetBySubscription() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.PacketCoreControlPlaneVersion = armmobilenetwork.PacketCoreControlPlaneVersion{
-	// 	Name: to.Ptr("PMN-4-11-1"),
+	// 	Name: to.Ptr("2404.0-1"),
 	// 	Type: to.Ptr("Microsoft.MobileNetwork/packetCoreControlPlaneVersions"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.MobileNetwork/packetCoreControlPlaneVersions/PMN-4-11-1"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.MobileNetwork/packetCoreControlPlaneVersions/2404.0-1"),
 	// 	Properties: &armmobilenetwork.PacketCoreControlPlaneVersionPropertiesFormat{
 	// 		Platforms: []*armmobilenetwork.Platform{
 	// 			{
-	// 				MaximumPlatformSoftwareVersion: to.Ptr("2211"),
-	// 				MinimumPlatformSoftwareVersion: to.Ptr("2209"),
-	// 				PlatformType: to.Ptr(armmobilenetwork.PlatformTypeAKSHCI),
-	// 				RecommendedVersion: to.Ptr(armmobilenetwork.RecommendedVersionRecommended),
-	// 				VersionState: to.Ptr(armmobilenetwork.VersionStateActive),
-	// 		}},
-	// 	},
-	// }
+	// 				HaUpgradesAvailable: []*string{
+	// 					to.Ptr("2407.0"),
+	// 					to.Ptr("2407.1")},
+	// 					MaximumPlatformSoftwareVersion: to.Ptr("2211"),
+	// 					MinimumPlatformSoftwareVersion: to.Ptr("2209"),
+	// 					PlatformType: to.Ptr(armmobilenetwork.PlatformTypeAKSHCI),
+	// 					RecommendedVersion: to.Ptr(armmobilenetwork.RecommendedVersionRecommended),
+	// 					VersionState: to.Ptr(armmobilenetwork.VersionStateActive),
+	// 			}},
+	// 		},
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/PacketCoreControlPlaneVersionListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d88c94b22a8efdd47c0cadfe6d8d489107db2b23/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCoreControlPlaneVersionListBySubscription.json
 func ExamplePacketCoreControlPlaneVersionsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -185,50 +198,57 @@ func ExamplePacketCoreControlPlaneVersionsClient_NewListBySubscriptionPager() {
 		// page.PacketCoreControlPlaneVersionListResult = armmobilenetwork.PacketCoreControlPlaneVersionListResult{
 		// 	Value: []*armmobilenetwork.PacketCoreControlPlaneVersion{
 		// 		{
-		// 			Name: to.Ptr("PMN-4-9-4"),
+		// 			Name: to.Ptr("2404.1-0"),
 		// 			Type: to.Ptr("Microsoft.MobileNetwork/packetCoreControlPlaneVersions"),
-		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.MobileNetwork/packetCoreControlPlaneVersions/PMN-4-9-4"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.MobileNetwork/packetCoreControlPlaneVersions/2404.1-0"),
 		// 			Properties: &armmobilenetwork.PacketCoreControlPlaneVersionPropertiesFormat{
 		// 				Platforms: []*armmobilenetwork.Platform{
 		// 					{
-		// 						MaximumPlatformSoftwareVersion: to.Ptr("2211"),
-		// 						MinimumPlatformSoftwareVersion: to.Ptr("2209"),
-		// 						PlatformType: to.Ptr(armmobilenetwork.PlatformTypeAKSHCI),
-		// 						RecommendedVersion: to.Ptr(armmobilenetwork.RecommendedVersionNotRecommended),
-		// 						VersionState: to.Ptr(armmobilenetwork.VersionStateActive),
-		// 				}},
+		// 						HaUpgradesAvailable: []*string{
+		// 							to.Ptr("2404.0")},
+		// 							MaximumPlatformSoftwareVersion: to.Ptr("2211"),
+		// 							MinimumPlatformSoftwareVersion: to.Ptr("2209"),
+		// 							PlatformType: to.Ptr(armmobilenetwork.PlatformTypeAKSHCI),
+		// 							RecommendedVersion: to.Ptr(armmobilenetwork.RecommendedVersionNotRecommended),
+		// 							VersionState: to.Ptr(armmobilenetwork.VersionStateActive),
+		// 					}},
+		// 				},
 		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("PMN-4-10-2"),
-		// 			Type: to.Ptr("Microsoft.MobileNetwork/packetCoreControlPlaneVersions"),
-		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.MobileNetwork/packetCoreControlPlaneVersions/PMN-4-10-2"),
-		// 			Properties: &armmobilenetwork.PacketCoreControlPlaneVersionPropertiesFormat{
-		// 				Platforms: []*armmobilenetwork.Platform{
-		// 					{
-		// 						MaximumPlatformSoftwareVersion: to.Ptr("2212"),
-		// 						MinimumPlatformSoftwareVersion: to.Ptr("2210"),
-		// 						PlatformType: to.Ptr(armmobilenetwork.PlatformTypeAKSHCI),
-		// 						RecommendedVersion: to.Ptr(armmobilenetwork.RecommendedVersionNotRecommended),
-		// 						VersionState: to.Ptr(armmobilenetwork.VersionStateActive),
+		// 			{
+		// 				Name: to.Ptr("2404.1-1"),
+		// 				Type: to.Ptr("Microsoft.MobileNetwork/packetCoreControlPlaneVersions"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.MobileNetwork/packetCoreControlPlaneVersions/2404.1-1"),
+		// 				Properties: &armmobilenetwork.PacketCoreControlPlaneVersionPropertiesFormat{
+		// 					Platforms: []*armmobilenetwork.Platform{
+		// 						{
+		// 							HaUpgradesAvailable: []*string{
+		// 								to.Ptr("2404.0")},
+		// 								MaximumPlatformSoftwareVersion: to.Ptr("2212"),
+		// 								MinimumPlatformSoftwareVersion: to.Ptr("2210"),
+		// 								PlatformType: to.Ptr(armmobilenetwork.PlatformTypeAKSHCI),
+		// 								RecommendedVersion: to.Ptr(armmobilenetwork.RecommendedVersionNotRecommended),
+		// 								VersionState: to.Ptr(armmobilenetwork.VersionStateActive),
+		// 						}},
+		// 					},
+		// 				},
+		// 				{
+		// 					Name: to.Ptr("2407.0-1"),
+		// 					Type: to.Ptr("Microsoft.MobileNetwork/packetCoreControlPlaneVersions"),
+		// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.MobileNetwork/packetCoreControlPlaneVersions/2407.0-1"),
+		// 					Properties: &armmobilenetwork.PacketCoreControlPlaneVersionPropertiesFormat{
+		// 						Platforms: []*armmobilenetwork.Platform{
+		// 							{
+		// 								HaUpgradesAvailable: []*string{
+		// 									to.Ptr("2404.0"),
+		// 									to.Ptr("2404.1")},
+		// 									MaximumPlatformSoftwareVersion: to.Ptr("2301"),
+		// 									MinimumPlatformSoftwareVersion: to.Ptr("2211"),
+		// 									PlatformType: to.Ptr(armmobilenetwork.PlatformTypeAKSHCI),
+		// 									RecommendedVersion: to.Ptr(armmobilenetwork.RecommendedVersionRecommended),
+		// 									VersionState: to.Ptr(armmobilenetwork.VersionStateActive),
+		// 							}},
+		// 						},
 		// 				}},
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("PMN-4-11-1"),
-		// 			Type: to.Ptr("Microsoft.MobileNetwork/packetCoreControlPlaneVersions"),
-		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.MobileNetwork/packetCoreControlPlaneVersions/PMN-4-11-1"),
-		// 			Properties: &armmobilenetwork.PacketCoreControlPlaneVersionPropertiesFormat{
-		// 				Platforms: []*armmobilenetwork.Platform{
-		// 					{
-		// 						MaximumPlatformSoftwareVersion: to.Ptr("2301"),
-		// 						MinimumPlatformSoftwareVersion: to.Ptr("2211"),
-		// 						PlatformType: to.Ptr(armmobilenetwork.PlatformTypeAKSHCI),
-		// 						RecommendedVersion: to.Ptr(armmobilenetwork.RecommendedVersionRecommended),
-		// 						VersionState: to.Ptr(armmobilenetwork.VersionStateActive),
-		// 				}},
-		// 			},
-		// 	}},
-		// }
+		// 			}
 	}
 }

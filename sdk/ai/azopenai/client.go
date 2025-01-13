@@ -10,8 +10,12 @@ package azopenai
 
 import (
 	"context"
+	"errors"
 	"io"
 	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -25,10 +29,369 @@ type Client struct {
 	clientData
 }
 
+// AddUploadPart - Adds a Part to an Upload object. A Part represents a chunk of bytes from the file you are trying to upload.
+// Each Part can be at most 64 MB, and you can add Parts until you hit the Upload maximum of 8 GB.
+// It is possible to add multiple Parts in parallel. You can decide the intended order of the Parts when you complete the
+// Upload.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-10-01-preview
+//   - uploadID - The ID of the upload associated with this operation.
+//   - data - The chunk of bytes for this Part.
+//   - options - AddUploadPartOptions contains the optional parameters for the Client.AddUploadPart method.
+func (client *Client) AddUploadPart(ctx context.Context, uploadID string, data io.ReadSeekCloser, options *AddUploadPartOptions) (AddUploadPartResponse, error) {
+	var err error
+	req, err := client.addUploadPartCreateRequest(ctx, uploadID, data, options)
+	if err != nil {
+		return AddUploadPartResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return AddUploadPartResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = client.newError(httpResp)
+		return AddUploadPartResponse{}, err
+	}
+	resp, err := client.addUploadPartHandleResponse(httpResp)
+	return resp, err
+}
+
+// addUploadPartCreateRequest creates the AddUploadPart request.
+func (client *Client) addUploadPartCreateRequest(ctx context.Context, uploadID string, data io.ReadSeekCloser, options *AddUploadPartOptions) (*policy.Request, error) {
+	urlPath := "/uploads/{upload_id}/parts"
+	if uploadID == "" {
+		return nil, errors.New("parameter uploadID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{upload_id}", url.PathEscape(uploadID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, nil))
+	if err != nil {
+		return nil, err
+	}
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.SetMultipartFormData(req, map[string]any{
+		"data": data,
+	}); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// addUploadPartHandleResponse handles the AddUploadPart response.
+func (client *Client) addUploadPartHandleResponse(resp *http.Response) (AddUploadPartResponse, error) {
+	result := AddUploadPartResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.UploadPart); err != nil {
+		return AddUploadPartResponse{}, err
+	}
+	return result, nil
+}
+
+// CancelBatch - Gets details for a single batch specified by the given batchID.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-10-01-preview
+//   - batchID - The identifier of the batch.
+//   - options - CancelBatchOptions contains the optional parameters for the Client.CancelBatch method.
+func (client *Client) CancelBatch(ctx context.Context, batchID string, options *CancelBatchOptions) (CancelBatchResponse, error) {
+	var err error
+	req, err := client.cancelBatchCreateRequest(ctx, batchID, options)
+	if err != nil {
+		return CancelBatchResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return CancelBatchResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = client.newError(httpResp)
+		return CancelBatchResponse{}, err
+	}
+	resp, err := client.cancelBatchHandleResponse(httpResp)
+	return resp, err
+}
+
+// cancelBatchCreateRequest creates the CancelBatch request.
+func (client *Client) cancelBatchCreateRequest(ctx context.Context, batchID string, options *CancelBatchOptions) (*policy.Request, error) {
+	urlPath := "/batches/{batchId}/cancel"
+	if batchID == "" {
+		return nil, errors.New("parameter batchID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{batchId}", url.PathEscape(batchID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, nil))
+	if err != nil {
+		return nil, err
+	}
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// cancelBatchHandleResponse handles the CancelBatch response.
+func (client *Client) cancelBatchHandleResponse(resp *http.Response) (CancelBatchResponse, error) {
+	result := CancelBatchResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Batch); err != nil {
+		return CancelBatchResponse{}, err
+	}
+	return result, nil
+}
+
+// CancelUpload - Cancels the Upload. No Parts may be added after an Upload is cancelled.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-10-01-preview
+//   - uploadID - The ID of the upload associated with this operation.
+//   - options - CancelUploadOptions contains the optional parameters for the Client.CancelUpload method.
+func (client *Client) CancelUpload(ctx context.Context, uploadID string, options *CancelUploadOptions) (CancelUploadResponse, error) {
+	var err error
+	req, err := client.cancelUploadCreateRequest(ctx, uploadID, options)
+	if err != nil {
+		return CancelUploadResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return CancelUploadResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = client.newError(httpResp)
+		return CancelUploadResponse{}, err
+	}
+	resp, err := client.cancelUploadHandleResponse(httpResp)
+	return resp, err
+}
+
+// cancelUploadCreateRequest creates the CancelUpload request.
+func (client *Client) cancelUploadCreateRequest(ctx context.Context, uploadID string, options *CancelUploadOptions) (*policy.Request, error) {
+	urlPath := "/uploads/{upload_id}/cancel"
+	if uploadID == "" {
+		return nil, errors.New("parameter uploadID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{upload_id}", url.PathEscape(uploadID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, nil))
+	if err != nil {
+		return nil, err
+	}
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// cancelUploadHandleResponse handles the CancelUpload response.
+func (client *Client) cancelUploadHandleResponse(resp *http.Response) (CancelUploadResponse, error) {
+	result := CancelUploadResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Upload); err != nil {
+		return CancelUploadResponse{}, err
+	}
+	return result, nil
+}
+
+// CompleteUpload - Completes the Upload.
+// Within the returned Upload object, there is a nested File object that is ready to use in the rest of the platform.
+// You can specify the order of the Parts by passing in an ordered list of the Part IDs.
+// The number of bytes uploaded upon completion must match the number of bytes initially specified when creating the Upload
+// object. No Parts may be added after an Upload is completed.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-10-01-preview
+//   - uploadID - The ID of the upload associated with this operation.
+//   - requestBody - The request body for the completion operation.
+//   - options - CompleteUploadOptions contains the optional parameters for the Client.CompleteUpload method.
+func (client *Client) CompleteUpload(ctx context.Context, uploadID string, requestBody CompleteUploadRequest, options *CompleteUploadOptions) (CompleteUploadResponse, error) {
+	var err error
+	req, err := client.completeUploadCreateRequest(ctx, uploadID, requestBody, options)
+	if err != nil {
+		return CompleteUploadResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return CompleteUploadResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = client.newError(httpResp)
+		return CompleteUploadResponse{}, err
+	}
+	resp, err := client.completeUploadHandleResponse(httpResp)
+	return resp, err
+}
+
+// completeUploadCreateRequest creates the CompleteUpload request.
+func (client *Client) completeUploadCreateRequest(ctx context.Context, uploadID string, requestBody CompleteUploadRequest, options *CompleteUploadOptions) (*policy.Request, error) {
+	urlPath := "/uploads/{upload_id}/complete"
+	if uploadID == "" {
+		return nil, errors.New("parameter uploadID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{upload_id}", url.PathEscape(uploadID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, nil))
+	if err != nil {
+		return nil, err
+	}
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, requestBody); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// completeUploadHandleResponse handles the CompleteUpload response.
+func (client *Client) completeUploadHandleResponse(resp *http.Response) (CompleteUploadResponse, error) {
+	result := CompleteUploadResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Upload); err != nil {
+		return CompleteUploadResponse{}, err
+	}
+	return result, nil
+}
+
+// CreateBatch - Creates and executes a batch from an uploaded file of requests. Response includes details of the enqueued
+// job including job status. The ID of the result file is added to the response once complete.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-10-01-preview
+//   - createBatchRequest - The specification of the batch to create and execute.
+//   - options - CreateBatchOptions contains the optional parameters for the Client.CreateBatch method.
+func (client *Client) CreateBatch(ctx context.Context, createBatchRequest BatchCreateRequest, options *CreateBatchOptions) (CreateBatchResponse, error) {
+	var err error
+	req, err := client.createBatchCreateRequest(ctx, createBatchRequest, options)
+	if err != nil {
+		return CreateBatchResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return CreateBatchResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
+		err = client.newError(httpResp)
+		return CreateBatchResponse{}, err
+	}
+	resp, err := client.createBatchHandleResponse(httpResp)
+	return resp, err
+}
+
+// createBatchCreateRequest creates the CreateBatch request.
+func (client *Client) createBatchCreateRequest(ctx context.Context, createBatchRequest BatchCreateRequest, options *CreateBatchOptions) (*policy.Request, error) {
+	urlPath := "/batches"
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, nil))
+	if err != nil {
+		return nil, err
+	}
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, createBatchRequest); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// createBatchHandleResponse handles the CreateBatch response.
+func (client *Client) createBatchHandleResponse(resp *http.Response) (CreateBatchResponse, error) {
+	result := CreateBatchResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Batch); err != nil {
+		return CreateBatchResponse{}, err
+	}
+	return result, nil
+}
+
+// CreateUpload - Creates an intermediate Upload object that you can add Parts to. Currently, an Upload can accept at most
+// 8 GB in total and expires after an hour after you create it.
+// Once you complete the Upload, we will create a File object that contains all the parts you uploaded. This File is usable
+// in the rest of our platform as a regular File object.
+// For certain purposes, the correct mime_type must be specified. Please refer to documentation for the supported MIME types
+// for your use case.
+// For guidance on the proper filename extensions for each purpose, please follow the documentation on creating a File.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-10-01-preview
+//   - requestBody - The request body for the operation options.
+//   - options - CreateUploadOptions contains the optional parameters for the Client.CreateUpload method.
+func (client *Client) CreateUpload(ctx context.Context, requestBody CreateUploadRequest, options *CreateUploadOptions) (CreateUploadResponse, error) {
+	var err error
+	req, err := client.createUploadCreateRequest(ctx, requestBody, options)
+	if err != nil {
+		return CreateUploadResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return CreateUploadResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = client.newError(httpResp)
+		return CreateUploadResponse{}, err
+	}
+	resp, err := client.createUploadHandleResponse(httpResp)
+	return resp, err
+}
+
+// createUploadCreateRequest creates the CreateUpload request.
+func (client *Client) createUploadCreateRequest(ctx context.Context, requestBody CreateUploadRequest, options *CreateUploadOptions) (*policy.Request, error) {
+	urlPath := "/uploads"
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, nil))
+	if err != nil {
+		return nil, err
+	}
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, requestBody); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// createUploadHandleResponse handles the CreateUpload response.
+func (client *Client) createUploadHandleResponse(resp *http.Response) (CreateUploadResponse, error) {
+	result := CreateUploadResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Upload); err != nil {
+		return CreateUploadResponse{}, err
+	}
+	return result, nil
+}
+
+// DeleteFile - Delete a previously uploaded file.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-10-01-preview
+//   - fileID - The ID of the file to delete.
+//   - options - DeleteFileOptions contains the optional parameters for the Client.DeleteFile method.
+func (client *Client) DeleteFile(ctx context.Context, fileID string, options *DeleteFileOptions) (DeleteFileResponse, error) {
+	var err error
+	req, err := client.deleteFileCreateRequest(ctx, fileID, options)
+	if err != nil {
+		return DeleteFileResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return DeleteFileResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = client.newError(httpResp)
+		return DeleteFileResponse{}, err
+	}
+	resp, err := client.deleteFileHandleResponse(httpResp)
+	return resp, err
+}
+
+// deleteFileCreateRequest creates the DeleteFile request.
+func (client *Client) deleteFileCreateRequest(ctx context.Context, fileID string, options *DeleteFileOptions) (*policy.Request, error) {
+	urlPath := "/files/{fileId}"
+	if fileID == "" {
+		return nil, errors.New("parameter fileID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{fileId}", url.PathEscape(fileID))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, client.formatURL(urlPath, nil))
+	if err != nil {
+		return nil, err
+	}
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// deleteFileHandleResponse handles the DeleteFile response.
+func (client *Client) deleteFileHandleResponse(resp *http.Response) (DeleteFileResponse, error) {
+	result := DeleteFileResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.FileDeletionStatus); err != nil {
+		return DeleteFileResponse{}, err
+	}
+	return result, nil
+}
+
 // GenerateSpeechFromText - Generates text-to-speech audio from the input text.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01-preview
+// Generated from API version 2024-10-01-preview
+//   - body - A representation of the request options that control the behavior of a text-to-speech operation.
 //   - options - GenerateSpeechFromTextOptions contains the optional parameters for the Client.GenerateSpeechFromText method.
 func (client *Client) GenerateSpeechFromText(ctx context.Context, body SpeechGenerationOptions, options *GenerateSpeechFromTextOptions) (GenerateSpeechFromTextResponse, error) {
 	var err error
@@ -50,12 +413,12 @@ func (client *Client) GenerateSpeechFromText(ctx context.Context, body SpeechGen
 // generateSpeechFromTextCreateRequest creates the GenerateSpeechFromText request.
 func (client *Client) generateSpeechFromTextCreateRequest(ctx context.Context, body SpeechGenerationOptions, options *GenerateSpeechFromTextOptions) (*policy.Request, error) {
 	urlPath := "audio/speech"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, getDeployment(body)))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, body.DeploymentName))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01-preview")
+	reqQP.Set("api-version", "2024-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	runtime.SkipBodyDownload(req)
 	req.Raw().Header["Accept"] = []string{"application/octet-stream, application/json"}
@@ -69,7 +432,7 @@ func (client *Client) generateSpeechFromTextCreateRequest(ctx context.Context, b
 // be transcribed in the written language corresponding to the language it was spoken in.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01-preview
+// Generated from API version 2024-10-01-preview
 //   - deploymentID - Specifies either the model deployment name (when using Azure OpenAI) or model name (when using non-Azure
 //     OpenAI) to use for this request.
 //   - file - The audio data to transcribe. This must be the binary content of a file in one of the supported media formats: flac,
@@ -97,12 +460,12 @@ func (client *Client) getAudioTranscriptionInternal(ctx context.Context, file io
 // getAudioTranscriptionInternalCreateRequest creates the getAudioTranscriptionInternal request.
 func (client *Client) getAudioTranscriptionInternalCreateRequest(ctx context.Context, file io.ReadSeekCloser, body *getAudioTranscriptionInternalOptions) (*policy.Request, error) {
 	urlPath := "audio/transcriptions"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, getDeployment(body)))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, body.DeploymentName))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01-preview")
+	reqQP.Set("api-version", "2024-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := setMultipartFormData(req, file, *body); err != nil {
@@ -124,7 +487,7 @@ func (client *Client) getAudioTranscriptionInternalHandleResponse(resp *http.Res
 // data.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01-preview
+// Generated from API version 2024-10-01-preview
 //   - deploymentID - Specifies either the model deployment name (when using Azure OpenAI) or model name (when using non-Azure
 //     OpenAI) to use for this request.
 //   - file - The audio data to translate. This must be the binary content of a file in one of the supported media formats: flac,
@@ -152,12 +515,12 @@ func (client *Client) getAudioTranslationInternal(ctx context.Context, file io.R
 // getAudioTranslationInternalCreateRequest creates the getAudioTranslationInternal request.
 func (client *Client) getAudioTranslationInternalCreateRequest(ctx context.Context, file io.ReadSeekCloser, body *getAudioTranslationInternalOptions) (*policy.Request, error) {
 	urlPath := "audio/translations"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, getDeployment(body)))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, body.DeploymentName))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01-preview")
+	reqQP.Set("api-version", "2024-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := setMultipartFormData(req, file, *body); err != nil {
@@ -175,13 +538,63 @@ func (client *Client) getAudioTranslationInternalHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// GetChatCompletions - Gets chat completions for the provided chat messages. Completions support a wide variety of tasks
+// GetBatch - Gets details for a single batch specified by the given batchID.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-10-01-preview
+//   - batchID - The identifier of the batch.
+//   - options - GetBatchOptions contains the optional parameters for the Client.GetBatch method.
+func (client *Client) GetBatch(ctx context.Context, batchID string, options *GetBatchOptions) (GetBatchResponse, error) {
+	var err error
+	req, err := client.getBatchCreateRequest(ctx, batchID, options)
+	if err != nil {
+		return GetBatchResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return GetBatchResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = client.newError(httpResp)
+		return GetBatchResponse{}, err
+	}
+	resp, err := client.getBatchHandleResponse(httpResp)
+	return resp, err
+}
+
+// getBatchCreateRequest creates the GetBatch request.
+func (client *Client) getBatchCreateRequest(ctx context.Context, batchID string, options *GetBatchOptions) (*policy.Request, error) {
+	urlPath := "/batches/{batchId}"
+	if batchID == "" {
+		return nil, errors.New("parameter batchID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{batchId}", url.PathEscape(batchID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.formatURL(urlPath, nil))
+	if err != nil {
+		return nil, err
+	}
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getBatchHandleResponse handles the GetBatch response.
+func (client *Client) getBatchHandleResponse(resp *http.Response) (GetBatchResponse, error) {
+	result := GetBatchResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Batch); err != nil {
+		return GetBatchResponse{}, err
+	}
+	return result, nil
+}
+
+// getChatCompletions - Gets chat completions for the provided chat messages. Completions support a wide variety of tasks
 // and generate text that continues from or "completes" provided prompt data.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01-preview
-//   - options - GetChatCompletionsOptions contains the optional parameters for the Client.GetChatCompletions method.
-func (client *Client) GetChatCompletions(ctx context.Context, body ChatCompletionsOptions, options *GetChatCompletionsOptions) (GetChatCompletionsResponse, error) {
+// Generated from API version 2024-10-01-preview
+//   - body - The configuration information for a chat completions request. Completions support a wide variety of tasks and generate
+//     text that continues from or "completes" provided prompt data.
+//   - options - GetChatCompletionsOptions contains the optional parameters for the Client.getChatCompletions method.
+func (client *Client) getChatCompletions(ctx context.Context, body chatCompletionsOptions, options *GetChatCompletionsOptions) (GetChatCompletionsResponse, error) {
 	var err error
 	req, err := client.getChatCompletionsCreateRequest(ctx, body, options)
 	if err != nil {
@@ -200,14 +613,14 @@ func (client *Client) GetChatCompletions(ctx context.Context, body ChatCompletio
 }
 
 // getChatCompletionsCreateRequest creates the GetChatCompletions request.
-func (client *Client) getChatCompletionsCreateRequest(ctx context.Context, body ChatCompletionsOptions, options *GetChatCompletionsOptions) (*policy.Request, error) {
+func (client *Client) getChatCompletionsCreateRequest(ctx context.Context, body chatCompletionsOptions, options *GetChatCompletionsOptions) (*policy.Request, error) {
 	urlPath := "chat/completions"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, getDeployment(body)))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, body.DeploymentName))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01-preview")
+	reqQP.Set("api-version", "2024-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -225,13 +638,15 @@ func (client *Client) getChatCompletionsHandleResponse(resp *http.Response) (Get
 	return result, nil
 }
 
-// GetCompletions - Gets completions for the provided input prompts. Completions support a wide variety of tasks and generate
+// getCompletions - Gets completions for the provided input prompts. Completions support a wide variety of tasks and generate
 // text that continues from or "completes" provided prompt data.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01-preview
-//   - options - GetCompletionsOptions contains the optional parameters for the Client.GetCompletions method.
-func (client *Client) GetCompletions(ctx context.Context, body CompletionsOptions, options *GetCompletionsOptions) (GetCompletionsResponse, error) {
+// Generated from API version 2024-10-01-preview
+//   - body - The configuration information for a completions request. Completions support a wide variety of tasks and generate
+//     text that continues from or "completes" provided prompt data.
+//   - options - GetCompletionsOptions contains the optional parameters for the Client.getCompletions method.
+func (client *Client) getCompletions(ctx context.Context, body completionsOptions, options *GetCompletionsOptions) (GetCompletionsResponse, error) {
 	var err error
 	req, err := client.getCompletionsCreateRequest(ctx, body, options)
 	if err != nil {
@@ -250,14 +665,14 @@ func (client *Client) GetCompletions(ctx context.Context, body CompletionsOption
 }
 
 // getCompletionsCreateRequest creates the GetCompletions request.
-func (client *Client) getCompletionsCreateRequest(ctx context.Context, body CompletionsOptions, options *GetCompletionsOptions) (*policy.Request, error) {
+func (client *Client) getCompletionsCreateRequest(ctx context.Context, body completionsOptions, options *GetCompletionsOptions) (*policy.Request, error) {
 	urlPath := "completions"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, getDeployment(body)))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, body.DeploymentName))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01-preview")
+	reqQP.Set("api-version", "2024-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -278,7 +693,9 @@ func (client *Client) getCompletionsHandleResponse(resp *http.Response) (GetComp
 // GetEmbeddings - Return the embeddings for a given prompt.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01-preview
+// Generated from API version 2024-10-01-preview
+//   - body - The configuration information for an embeddings request. Embeddings measure the relatedness of text strings and
+//     are commonly used for search, clustering, recommendations, and other similar scenarios.
 //   - options - GetEmbeddingsOptions contains the optional parameters for the Client.GetEmbeddings method.
 func (client *Client) GetEmbeddings(ctx context.Context, body EmbeddingsOptions, options *GetEmbeddingsOptions) (GetEmbeddingsResponse, error) {
 	var err error
@@ -301,12 +718,12 @@ func (client *Client) GetEmbeddings(ctx context.Context, body EmbeddingsOptions,
 // getEmbeddingsCreateRequest creates the GetEmbeddings request.
 func (client *Client) getEmbeddingsCreateRequest(ctx context.Context, body EmbeddingsOptions, options *GetEmbeddingsOptions) (*policy.Request, error) {
 	urlPath := "embeddings"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, getDeployment(body)))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, body.DeploymentName))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01-preview")
+	reqQP.Set("api-version", "2024-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -324,10 +741,107 @@ func (client *Client) getEmbeddingsHandleResponse(resp *http.Response) (GetEmbed
 	return result, nil
 }
 
+// GetFile - Returns information about a specific file. Does not retrieve file content.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-10-01-preview
+//   - fileID - The ID of the file to retrieve.
+//   - options - GetFileOptions contains the optional parameters for the Client.GetFile method.
+func (client *Client) GetFile(ctx context.Context, fileID string, options *GetFileOptions) (GetFileResponse, error) {
+	var err error
+	req, err := client.getFileCreateRequest(ctx, fileID, options)
+	if err != nil {
+		return GetFileResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return GetFileResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = client.newError(httpResp)
+		return GetFileResponse{}, err
+	}
+	resp, err := client.getFileHandleResponse(httpResp)
+	return resp, err
+}
+
+// getFileCreateRequest creates the GetFile request.
+func (client *Client) getFileCreateRequest(ctx context.Context, fileID string, options *GetFileOptions) (*policy.Request, error) {
+	urlPath := "/files/{fileId}"
+	if fileID == "" {
+		return nil, errors.New("parameter fileID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{fileId}", url.PathEscape(fileID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.formatURL(urlPath, nil))
+	if err != nil {
+		return nil, err
+	}
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getFileHandleResponse handles the GetFile response.
+func (client *Client) getFileHandleResponse(resp *http.Response) (GetFileResponse, error) {
+	result := GetFileResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.File); err != nil {
+		return GetFileResponse{}, err
+	}
+	return result, nil
+}
+
+// GetFileContent - Returns information about a specific file. Does not retrieve file content.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-10-01-preview
+//   - fileID - The ID of the file to retrieve.
+//   - options - GetFileContentOptions contains the optional parameters for the Client.GetFileContent method.
+func (client *Client) GetFileContent(ctx context.Context, fileID string, options *GetFileContentOptions) (GetFileContentResponse, error) {
+	var err error
+	req, err := client.getFileContentCreateRequest(ctx, fileID, options)
+	if err != nil {
+		return GetFileContentResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return GetFileContentResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = client.newError(httpResp)
+		return GetFileContentResponse{}, err
+	}
+	resp, err := client.getFileContentHandleResponse(httpResp)
+	return resp, err
+}
+
+// getFileContentCreateRequest creates the GetFileContent request.
+func (client *Client) getFileContentCreateRequest(ctx context.Context, fileID string, options *GetFileContentOptions) (*policy.Request, error) {
+	urlPath := "/files/{fileId}/content"
+	if fileID == "" {
+		return nil, errors.New("parameter fileID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{fileId}", url.PathEscape(fileID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.formatURL(urlPath, nil))
+	if err != nil {
+		return nil, err
+	}
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getFileContentHandleResponse handles the GetFileContent response.
+func (client *Client) getFileContentHandleResponse(resp *http.Response) (GetFileContentResponse, error) {
+	result := GetFileContentResponse{}
+	if err := runtime.UnmarshalAsByteArray(resp, &result.Value, runtime.Base64StdFormat); err != nil {
+		return GetFileContentResponse{}, err
+	}
+	return result, nil
+}
+
 // GetImageGenerations - Creates an image given a prompt.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01-preview
+// Generated from API version 2024-10-01-preview
+//   - body - Represents the request data used to generate images.
 //   - options - GetImageGenerationsOptions contains the optional parameters for the Client.GetImageGenerations method.
 func (client *Client) GetImageGenerations(ctx context.Context, body ImageGenerationOptions, options *GetImageGenerationsOptions) (GetImageGenerationsResponse, error) {
 	var err error
@@ -350,12 +864,12 @@ func (client *Client) GetImageGenerations(ctx context.Context, body ImageGenerat
 // getImageGenerationsCreateRequest creates the GetImageGenerations request.
 func (client *Client) getImageGenerationsCreateRequest(ctx context.Context, body ImageGenerationOptions, options *GetImageGenerationsOptions) (*policy.Request, error) {
 	urlPath := "images/generations"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, getDeployment(body)))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.formatURL(urlPath, body.DeploymentName))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01-preview")
+	reqQP.Set("api-version", "2024-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -369,6 +883,139 @@ func (client *Client) getImageGenerationsHandleResponse(resp *http.Response) (Ge
 	result := GetImageGenerationsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImageGenerations); err != nil {
 		return GetImageGenerationsResponse{}, err
+	}
+	return result, nil
+}
+
+// listBatches - Gets a list of all batches owned by the Azure OpenAI resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-10-01-preview
+//   - options - ListBatchesOptions contains the optional parameters for the Client.listBatches method.
+func (client *Client) listBatches(ctx context.Context, options *ListBatchesOptions) (ListBatchesResponse, error) {
+	var err error
+	req, err := client.listBatchesCreateRequest(ctx, options)
+	if err != nil {
+		return ListBatchesResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ListBatchesResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = client.newError(httpResp)
+		return ListBatchesResponse{}, err
+	}
+	resp, err := client.listBatchesHandleResponse(httpResp)
+	return resp, err
+}
+
+// listBatchesCreateRequest creates the listBatches request.
+func (client *Client) listBatchesCreateRequest(ctx context.Context, options *ListBatchesOptions) (*policy.Request, error) {
+	urlPath := "/batches"
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.formatURL(urlPath, nil))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.After != nil {
+		reqQP.Set("after", *options.After)
+	}
+	if options != nil && options.Limit != nil {
+		reqQP.Set("limit", strconv.FormatInt(int64(*options.Limit), 10))
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listBatchesHandleResponse handles the listBatches response.
+func (client *Client) listBatchesHandleResponse(resp *http.Response) (ListBatchesResponse, error) {
+	result := ListBatchesResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ListBatchesPage); err != nil {
+		return ListBatchesResponse{}, err
+	}
+	return result, nil
+}
+
+// ListFiles - Gets a list of previously uploaded files.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-10-01-preview
+//   - options - ListFilesOptions contains the optional parameters for the Client.ListFiles method.
+func (client *Client) ListFiles(ctx context.Context, options *ListFilesOptions) (ListFilesResponse, error) {
+	var err error
+	req, err := client.listFilesCreateRequest(ctx, options)
+	if err != nil {
+		return ListFilesResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ListFilesResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = client.newError(httpResp)
+		return ListFilesResponse{}, err
+	}
+	resp, err := client.listFilesHandleResponse(httpResp)
+	return resp, err
+}
+
+// listFilesCreateRequest creates the ListFiles request.
+func (client *Client) listFilesCreateRequest(ctx context.Context, options *ListFilesOptions) (*policy.Request, error) {
+	urlPath := "/files"
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.formatURL(urlPath, nil))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.Purpose != nil {
+		reqQP.Set("purpose", string(*options.Purpose))
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listFilesHandleResponse handles the ListFiles response.
+func (client *Client) listFilesHandleResponse(resp *http.Response) (ListFilesResponse, error) {
+	result := ListFilesResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.FileListResponse); err != nil {
+		return ListFilesResponse{}, err
+	}
+	return result, nil
+}
+
+// UploadFile - Uploads a file for use by other operations.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-10-01-preview
+//   - file - The file data (not filename) to upload.
+//   - purpose - The intended purpose of the file.
+//   - options - UploadFileOptions contains the optional parameters for the Client.UploadFile method.
+func (client *Client) UploadFile(ctx context.Context, file io.ReadSeekCloser, purpose FilePurpose, options *UploadFileOptions) (UploadFileResponse, error) {
+	var err error
+	req, err := client.uploadFileCreateRequest(ctx, file, purpose, options)
+	if err != nil {
+		return UploadFileResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return UploadFileResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = client.newError(httpResp)
+		return UploadFileResponse{}, err
+	}
+	resp, err := client.uploadFileHandleResponse(httpResp)
+	return resp, err
+}
+
+// uploadFileHandleResponse handles the UploadFile response.
+func (client *Client) uploadFileHandleResponse(resp *http.Response) (UploadFileResponse, error) {
+	result := UploadFileResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.File); err != nil {
+		return UploadFileResponse{}, err
 	}
 	return result, nil
 }

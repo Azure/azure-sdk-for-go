@@ -8,6 +8,32 @@
 
 package armmysqlflexibleservers
 
+// AdvancedThreatProtectionSettingsClientBeginUpdateOptions contains the optional parameters for the AdvancedThreatProtectionSettingsClient.BeginUpdate
+// method.
+type AdvancedThreatProtectionSettingsClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AdvancedThreatProtectionSettingsClientBeginUpdatePutOptions contains the optional parameters for the AdvancedThreatProtectionSettingsClient.BeginUpdatePut
+// method.
+type AdvancedThreatProtectionSettingsClientBeginUpdatePutOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AdvancedThreatProtectionSettingsClientGetOptions contains the optional parameters for the AdvancedThreatProtectionSettingsClient.Get
+// method.
+type AdvancedThreatProtectionSettingsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AdvancedThreatProtectionSettingsClientListOptions contains the optional parameters for the AdvancedThreatProtectionSettingsClient.NewListPager
+// method.
+type AdvancedThreatProtectionSettingsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // AzureADAdministratorsClientBeginCreateOrUpdateOptions contains the optional parameters for the AzureADAdministratorsClient.BeginCreateOrUpdate
 // method.
 type AzureADAdministratorsClientBeginCreateOrUpdateOptions struct {
@@ -178,8 +204,69 @@ type LocationBasedCapabilitiesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// LocationBasedCapabilitySetClientGetOptions contains the optional parameters for the LocationBasedCapabilitySetClient.Get
+// method.
+type LocationBasedCapabilitySetClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// LocationBasedCapabilitySetClientListOptions contains the optional parameters for the LocationBasedCapabilitySetClient.NewListPager
+// method.
+type LocationBasedCapabilitySetClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // LogFilesClientListByServerOptions contains the optional parameters for the LogFilesClient.NewListByServerPager method.
 type LogFilesClientListByServerOptions struct {
+	// placeholder for future optional parameters
+}
+
+// LongRunningBackupClientBeginCreateOptions contains the optional parameters for the LongRunningBackupClient.BeginCreate
+// method.
+type LongRunningBackupClientBeginCreateOptions struct {
+	// The required parameters for creating and exporting backup of the given server.
+	Parameters *ServerBackupV2
+
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// LongRunningBackupsClientGetOptions contains the optional parameters for the LongRunningBackupsClient.Get method.
+type LongRunningBackupsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// LongRunningBackupsClientListOptions contains the optional parameters for the LongRunningBackupsClient.NewListPager method.
+type LongRunningBackupsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MaintenancesClientBeginUpdateOptions contains the optional parameters for the MaintenancesClient.BeginUpdate method.
+type MaintenancesClientBeginUpdateOptions struct {
+	// The required parameters for update maintenance on a server.
+	Parameters *MaintenanceUpdate
+
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// MaintenancesClientListOptions contains the optional parameters for the MaintenancesClient.NewListPager method.
+type MaintenancesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MaintenancesClientReadOptions contains the optional parameters for the MaintenancesClient.Read method.
+type MaintenancesClientReadOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OperationProgressClientGetOptions contains the optional parameters for the OperationProgressClient.Get method.
+type OperationProgressClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OperationResultsClientGetOptions contains the optional parameters for the OperationResultsClient.Get method.
+type OperationResultsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -255,4 +342,17 @@ type ServersClientListByResourceGroupOptions struct {
 // ServersClientListOptions contains the optional parameters for the ServersClient.NewListPager method.
 type ServersClientListOptions struct {
 	// placeholder for future optional parameters
+}
+
+// ServersClientValidateEstimateHighAvailabilityOptions contains the optional parameters for the ServersClient.ValidateEstimateHighAvailability
+// method.
+type ServersClientValidateEstimateHighAvailabilityOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServersMigrationClientBeginCutoverMigrationOptions contains the optional parameters for the ServersMigrationClient.BeginCutoverMigration
+// method.
+type ServersMigrationClientBeginCutoverMigrationOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }

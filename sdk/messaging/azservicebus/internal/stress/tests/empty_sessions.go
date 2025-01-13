@@ -50,7 +50,7 @@ func EmptySessions(remainingArgs []string) {
 	})
 	defer cleanup()
 
-	client, err := azservicebus.NewClientFromConnectionString(sc.ConnectionString, &azservicebus.ClientOptions{
+	client, err := azservicebus.NewClient(sc.Endpoint, sc.Cred, &azservicebus.ClientOptions{
 		RetryOptions: azservicebus.RetryOptions{
 			MaxRetries: -1,
 		},

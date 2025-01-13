@@ -1,5 +1,31 @@
 # Release History
 
+## 4.1.0 (2024-06-21)
+### Features Added
+
+- New enum type `NasEncryptionType` with values `NasEncryptionTypeNEA0EEA0`, `NasEncryptionTypeNEA1EEA1`, `NasEncryptionTypeNEA2EEA2`
+- New function `*ClientFactory.NewRoutingInfoClient() *RoutingInfoClient`
+- New function `*MobileNetworksClient.NewListSimGroupsPager(string, string, *MobileNetworksClientListSimGroupsOptions) *runtime.Pager[MobileNetworksClientListSimGroupsResponse]`
+- New function `NewRoutingInfoClient(string, azcore.TokenCredential, *arm.ClientOptions) (*RoutingInfoClient, error)`
+- New function `*RoutingInfoClient.Get(context.Context, string, string, *RoutingInfoClientGetOptions) (RoutingInfoClientGetResponse, error)`
+- New function `*RoutingInfoClient.NewListPager(string, string, *RoutingInfoClientListOptions) *runtime.Pager[RoutingInfoClientListResponse]`
+- New function `*SimsClient.BeginClone(context.Context, string, string, SimClone, *SimsClientBeginCloneOptions) (*runtime.Poller[SimsClientCloneResponse], error)`
+- New function `*SimsClient.BeginMove(context.Context, string, string, SimMove, *SimsClientBeginMoveOptions) (*runtime.Poller[SimsClientMoveResponse], error)`
+- New struct `IPv4Route`
+- New struct `IPv4RouteNextHop`
+- New struct `RoutingInfoListResult`
+- New struct `RoutingInfoModel`
+- New struct `RoutingInfoPropertiesFormat`
+- New struct `SimClone`
+- New struct `SimMove`
+- New struct `UserConsentConfiguration`
+- New struct `UserPlaneDataRoutesItem`
+- New field `BfdIPv4Endpoints`, `IPv4AddressList`, `VlanID` in struct `InterfaceProperties`
+- New field `UserConsent` in struct `PacketCoreControlPlanePropertiesFormat`
+- New field `HaUpgradesAvailable` in struct `Platform`
+- New field `NasEncryption` in struct `SignalingConfiguration`
+
+
 ## 4.0.0 (2024-03-22)
 ### Breaking Changes
 

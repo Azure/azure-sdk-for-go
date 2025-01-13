@@ -45,7 +45,7 @@ type DatalakeSignatureValues struct {
 	EncryptionScope      string `param:"ses"`
 }
 
-//TODO: add snapshot and versioning support in the future
+// TODO: add snapshot and versioning support in the future
 
 func getDirectoryDepth(path string) string {
 	if path == "" {
@@ -60,7 +60,7 @@ func (v DatalakeSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKe
 		return QueryParameters{}, errors.New("service SAS is missing at least one of these: ExpiryTime or Permissions")
 	}
 
-	//Make sure the permission characters are in the correct order
+	// Make sure the permission characters are in the correct order
 	perms, err := parsePathPermissions(v.Permissions)
 	if err != nil {
 		return QueryParameters{}, err
@@ -95,7 +95,7 @@ func (v DatalakeSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKe
 		string(v.Protocol),
 		v.Version,
 		resource,
-		"", //snapshot not supported
+		"", // snapshot not supported
 		v.EncryptionScope,
 		v.CacheControl,       // rscc
 		v.ContentDisposition, // rscd
@@ -199,7 +199,7 @@ func (v DatalakeSignatureValues) SignWithUserDelegation(userDelegationCredential
 		string(v.Protocol),
 		v.Version,
 		resource,
-		"", //snapshot not supported
+		"", // snapshot not supported
 		v.EncryptionScope,
 		v.CacheControl,       // rscc
 		v.ContentDisposition, // rscd
@@ -239,7 +239,7 @@ func (v DatalakeSignatureValues) SignWithUserDelegation(userDelegationCredential
 		signature: signature,
 	}
 
-	//User delegation SAS specific parameters
+	// User delegation SAS specific parameters
 	p.signedOID = *udk.SignedOID
 	p.signedTID = *udk.SignedTID
 	p.signedStart = *udk.SignedStart
@@ -256,7 +256,7 @@ func getCanonicalName(account string, filesystemName string, fileName string, di
 	// Blob:      "/blob/account/containername/blobname"
 	elements := []string{"/blob/", account, "/", filesystemName}
 	if fileName != "" {
-		elements = append(elements, "/", strings.Replace(fileName, "\\", "/", -1))
+		elements = append(elements, "/", strings.ReplaceAll(fileName, "\\", "/"))
 	} else if directoryName != "" {
 		elements = append(elements, "/", directoryName)
 	}

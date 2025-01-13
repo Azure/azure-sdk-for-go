@@ -21,7 +21,7 @@ func LongRunningRenewLockTest(remainingArgs []string) {
 	queueName := fmt.Sprintf("renew-lock-test-%s", sc.Nano)
 	shared.MustCreateAutoDeletingQueue(sc, queueName, nil)
 
-	client, err := azservicebus.NewClientFromConnectionString(sc.ConnectionString, nil)
+	client, err := azservicebus.NewClient(sc.Endpoint, sc.Cred, nil)
 	sc.PanicOnError("failed to create admin.Client", err)
 
 	sender, err := shared.NewTrackingSender(sc.TC, client, queueName, nil)

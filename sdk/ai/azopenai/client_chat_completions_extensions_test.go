@@ -30,7 +30,7 @@ func TestChatCompletions_extensions_bringYourOwnData(t *testing.T) {
 		},
 		DeploymentName: &azureOpenAI.ChatCompletionsOYD.Model,
 	}, nil)
-	require.NoError(t, err)
+	customRequireNoError(t, err, true)
 	require.NotEmpty(t, resp)
 
 	msgContext := resp.Choices[0].Message.Context
@@ -43,7 +43,7 @@ func TestChatCompletions_extensions_bringYourOwnData(t *testing.T) {
 func TestChatExtensionsStreaming_extensions_bringYourOwnData(t *testing.T) {
 	client := newTestClient(t, azureOpenAI.ChatCompletionsOYD.Endpoint)
 
-	streamResp, err := client.GetChatCompletionsStream(context.Background(), azopenai.ChatCompletionsOptions{
+	streamResp, err := client.GetChatCompletionsStream(context.Background(), azopenai.ChatCompletionsStreamOptions{
 		Messages: []azopenai.ChatRequestMessageClassification{
 			&azopenai.ChatRequestUserMessage{Content: azopenai.NewChatRequestUserMessageContent("What does PR complete mean?")},
 		},
@@ -54,7 +54,7 @@ func TestChatExtensionsStreaming_extensions_bringYourOwnData(t *testing.T) {
 		DeploymentName: &azureOpenAI.ChatCompletionsOYD.Model,
 	}, nil)
 
-	require.NoError(t, err)
+	customRequireNoError(t, err, true)
 	defer streamResp.ChatCompletionsStream.Close()
 
 	text := ""

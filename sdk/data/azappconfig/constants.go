@@ -43,7 +43,7 @@ const (
 type SnapshotFields = generated.SnapshotFields
 
 const (
-	//The composition type of a snapshot.
+	// The composition type of a snapshot.
 	SnapshotFieldsCompositionType SnapshotFields = generated.SnapshotFieldsCompositionType
 
 	// The time when the snapshot was created.

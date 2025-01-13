@@ -510,14 +510,14 @@ func (client *SensitivityLabelsClient) listCurrentByDatabaseCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skipToken", *options.SkipToken)
-	}
 	if options != nil && options.Count != nil {
 		reqQP.Set("$count", strconv.FormatBool(*options.Count))
 	}
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
+	}
+	if options != nil && options.SkipToken != nil {
+		reqQP.Set("$skipToken", *options.SkipToken)
 	}
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
@@ -590,16 +590,16 @@ func (client *SensitivityLabelsClient) listRecommendedByDatabaseCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skipToken", *options.SkipToken)
-	}
-	if options != nil && options.IncludeDisabledRecommendations != nil {
-		reqQP.Set("includeDisabledRecommendations", strconv.FormatBool(*options.IncludeDisabledRecommendations))
-	}
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
+	if options != nil && options.SkipToken != nil {
+		reqQP.Set("$skipToken", *options.SkipToken)
+	}
 	reqQP.Set("api-version", "2020-11-01-preview")
+	if options != nil && options.IncludeDisabledRecommendations != nil {
+		reqQP.Set("includeDisabledRecommendations", strconv.FormatBool(*options.IncludeDisabledRecommendations))
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

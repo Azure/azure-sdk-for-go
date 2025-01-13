@@ -79,7 +79,7 @@ type ContainerUnrecordedTestsSuite struct {
 	suite.Suite
 }
 
-//func (s *ContainerUnrecordedTestsSuite) TestNewContainerClientValidName() {
+// func (s *ContainerUnrecordedTestsSuite) TestNewContainerClientValidName() {
 //	_require := require.New(s.T())
 //	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 //	if err != nil {
@@ -91,9 +91,9 @@ type ContainerUnrecordedTestsSuite struct {
 //	_require.NoError(err)
 //	correctURL := "https://" + accountName + "." + DefaultBlobEndpointSuffix + containerPrefix
 //	_require.Equal(testURL.URL(), correctURL)
-//}
+// }
 
-//func (s *ContainerUnrecordedTestsSuite) TestCreateRootContainerURL() {
+// func (s *ContainerUnrecordedTestsSuite) TestCreateRootContainerURL() {
 //	_require := require.New(s.T())
 //	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 //	if err != nil {
@@ -105,7 +105,7 @@ type ContainerUnrecordedTestsSuite struct {
 //	_require.NoError(err)
 //	correctURL := "https://" + accountName + ".blob.core.windows.net/$root"
 //	_require.Equal(testURL.URL(), correctURL)
-//}
+// }
 
 func (s *ContainerRecordedTestsSuite) TestContainerGetAccountInfo() {
 	_require := require.New(s.T())
@@ -129,9 +129,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerCreateInvalidName() {
 	_require.NoError(err)
 	containerClient := svcClient.NewContainerClient("foo bar")
 
-	access := container.PublicAccessTypeBlob
 	createContainerOptions := container.CreateOptions{
-		Access:   &access,
 		Metadata: map[string]*string{},
 	}
 	_, err = containerClient.Create(context.Background(), &createContainerOptions)
@@ -168,9 +166,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerCreateNameCollision() {
 
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
-	access := container.PublicAccessTypeBlob
 	createContainerOptions := container.CreateOptions{
-		Access:   &access,
 		Metadata: map[string]*string{},
 	}
 
@@ -208,9 +204,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerCreateNilMetadata() {
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := testcommon.GetContainerClient(containerName, svcClient)
 
-	access := container.PublicAccessTypeBlob
 	createContainerOptions := container.CreateOptions{
-		Access:   &access,
 		Metadata: map[string]*string{},
 	}
 	_, err = containerClient.Create(context.Background(), &createContainerOptions)
@@ -231,9 +225,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerCreateEmptyMetadata() {
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := testcommon.GetContainerClient(containerName, svcClient)
 
-	access := container.PublicAccessTypeBlob
 	createContainerOptions := container.CreateOptions{
-		Access:   &access,
 		Metadata: map[string]*string{},
 	}
 	_, err = containerClient.Create(context.Background(), &createContainerOptions)
@@ -245,11 +237,11 @@ func (s *ContainerRecordedTestsSuite) TestContainerCreateEmptyMetadata() {
 	_require.Nil(response.Metadata)
 }
 
-//func (s *ContainerRecordedTestsSuite) TestContainerCreateAccessContainer() {
+// func (s *ContainerRecordedTestsSuite) TestContainerCreateAccessContainer() {
 //	// TOD0: NotWorking
 //	_require := require.New(s.T())
-//testName := s.T().Name()
-////
+// testName := s.T().Name()
+
 //	svcClient := testcommon.GetServiceClient(&ClientOptions{
 //		HTTPClient: _context.recording,
 //		Retry: azcore.RetryOptions{MaxRetries: -1}})
@@ -293,9 +285,9 @@ func (s *ContainerRecordedTestsSuite) TestContainerCreateEmptyMetadata() {
 //	resp, err := blobURL2.GetProperties(context.Background(), nil)
 //	_require.NoError(err)
 //	_require.EqualValues(resp.Metadata, testcommon.BasicMetadata)
-//}
+// }
 
-//func (s *ContainerRecordedTestsSuite) TestContainerCreateAccessBlob() {
+// func (s *ContainerRecordedTestsSuite) TestContainerCreateAccessBlob() {
 //	// TODO: Not Working
 //	_require := require.New(s.T())
 // testName := s.T().Name()
@@ -335,7 +327,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerCreateEmptyMetadata() {
 //	resp, err := blobURL2.GetProperties(context.Background(), nil)
 //	_require.NoError(err)
 //	_require.EqualValues(resp.Metadata, testcommon.BasicMetadata)
-//}
+// }
 
 func (s *ContainerRecordedTestsSuite) TestContainerCreateAccessNone() {
 	_require := require.New(s.T())
@@ -374,18 +366,12 @@ func (s *ContainerRecordedTestsSuite) TestContainerCreateAccessNone() {
 
 	// Blob data is not public
 	// TODO: Fix Inheritance
-	//blobURL2 := containerClient2.NewBlockBlobClient(testcommon.BlobPrefix)
-	//_, err = blobURL2.GetProperties(context.Background(), nil)
-	//_require.Error(err)
-
-	//serr := err.(StorageError)
-	//_assert(serr.Response().StatusCode, chk.Equals, 401) // HEAD request does not return a status code
 }
 
-//func (s *ContainerRecordedTestsSuite) TestContainerCreateIfExists() {
+// func (s *ContainerRecordedTestsSuite) TestContainerCreateIfExists() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
-////	serviceClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+//	serviceClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
@@ -411,12 +397,12 @@ func (s *ContainerRecordedTestsSuite) TestContainerCreateAccessNone() {
 //	_require.NoError(err)
 //	_require.Nil(getResp.BlobPublicAccess)
 //	_require.Nil(getResp.Metadata)
-//}
+// }
 //
-//func (s *ContainerRecordedTestsSuite) TestContainerCreateIfNotExists() {
+// func (s *ContainerRecordedTestsSuite) TestContainerCreateIfNotExists() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
-////	serviceClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+//	serviceClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
@@ -433,12 +419,12 @@ func (s *ContainerRecordedTestsSuite) TestContainerCreateAccessNone() {
 //	_require.NoError(err)
 //	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 //
-//	// Ensure that next create call doesn't update the properties of already created container
+// Ensure that next create call doesn't update the properties of already created container
 //	getResp, err := containerClient.GetProperties(context.Background(), nil)
 //	_require.NoError(err)
 //	_require.EqualValues(*getResp.BlobPublicAccess, PublicAccessTypeBlob)
 //	_require.EqualValues(getResp.Metadata, testcommon.BasicMetadata)
-//}
+// }
 
 func validateContainerDeleted(_require *require.Assertions, containerClient *container.Client) {
 	_, err := containerClient.GetAccessPolicy(context.Background(), nil)
@@ -462,10 +448,10 @@ func (s *ContainerRecordedTestsSuite) TestContainerDelete() {
 	validateContainerDeleted(_require, containerClient)
 }
 
-//func (s *ContainerRecordedTestsSuite) TestContainerDeleteIfExists() {
+// func (s *ContainerRecordedTestsSuite) TestContainerDeleteIfExists() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
-////	serviceClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+//	serviceClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
@@ -482,12 +468,12 @@ func (s *ContainerRecordedTestsSuite) TestContainerDelete() {
 //	_require.NoError(err)
 //
 //	validateContainerDeleted(_require, containerClient)
-//}
+// }
 //
-//func (s *ContainerRecordedTestsSuite) TestContainerDeleteIfNotExists() {
+// func (s *ContainerRecordedTestsSuite) TestContainerDeleteIfNotExists() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
-////	serviceClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+//	serviceClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
@@ -497,7 +483,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerDelete() {
 //
 //	_, err = containerClient.DeleteIfExists(context.Background(), nil)
 //	_require.NoError(err)
-//}
+// }
 
 func (s *ContainerRecordedTestsSuite) TestContainerDeleteNonExistent() {
 	_require := require.New(s.T())
@@ -626,24 +612,23 @@ func (s *ContainerRecordedTestsSuite) TestContainerDeleteIfUnModifiedSinceFalse(
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 }
 
-////func (s *ContainerRecordedTestsSuite) TestContainerAccessConditionsUnsupportedConditions() {
-////	// This test defines that the library will panic if the user specifies conditional headers
-////	// that will be ignored by the service
-////	svcClient := testcommon.GetServiceClient()
-////	containerClient, _ := createNewContainer(c, svcClient)
-////	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
-////
-////	invalidEtag := "invalid"
-////	deleteContainerOptions := ContainerSetMetadataOptions{
-////		Metadata: testcommon.BasicMetadata,
-////		ModifiedAccessConditions: &ModifiedAccessConditions{
-////			IfMatch: &invalidEtag,
-////		},
-////	}
-////	_, err := containerClient.SetMetadata(context.Background(), &deleteContainerOptions)
-////	_require.Error(err)
-////}
+// func (s *ContainerRecordedTestsSuite) TestContainerAccessConditionsUnsupportedConditions() {
+//	// This test defines that the library will panic if the user specifies conditional headers
+//	// that will be ignored by the service
+//	svcClient := testcommon.GetServiceClient()
+//	containerClient, _ := createNewContainer(c, svcClient)
+//	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 //
+//	invalidEtag := "invalid"
+//	deleteContainerOptions := ContainerSetMetadataOptions{
+//		Metadata: testcommon.BasicMetadata,
+//		ModifiedAccessConditions: &ModifiedAccessConditions{
+//			IfMatch: &invalidEtag,
+//		},
+//	}
+//	_, err := containerClient.SetMetadata(context.Background(), &deleteContainerOptions)
+//	_require.Error(err)
+//}
 
 func (s *ContainerRecordedTestsSuite) TestContainerListBlobsNonexistentPrefix() {
 	_require := require.New(s.T())
@@ -1038,42 +1023,42 @@ func (s *ContainerRecordedTestsSuite) TestContainerListBlobsIncludeMultipleImpl(
 	}
 }
 
-////func (s *ContainerRecordedTestsSuite) TestContainerListBlobsMaxResultsNegative() {
-////	svcClient := testcommon.GetServiceClient()
-////	containerClient, _ := createNewContainer(c, svcClient)
-////
-////	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
-////	_, err := containerClient.NewListBlobsFlatPager(context.Background(), Marker{}, ListBlobsSegmentOptions{MaxResults: -2})
-////	_assert(err, chk.Not(chk.IsNil))
-////}
+// func (s *ContainerRecordedTestsSuite) TestContainerListBlobsMaxResultsNegative() {
+//	svcClient := testcommon.GetServiceClient()
+//	containerClient, _ := createNewContainer(c, svcClient)
 //
-////func (s *ContainerRecordedTestsSuite) TestContainerListBlobsMaxResultsZero() {
-////	svcClient := testcommon.GetServiceClient()
-////	containerClient, _ := createNewContainer(c, svcClient)
-////	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
-////	createNewBlockBlob(c, containerClient)
-////
-////	maxResults := int32(0)
-////	resp, errChan := containerClient.NewListBlobsFlatPager(context.Background(), 1, 0, &ContainerListBlobsFlatOptions{MaxResults: &maxResults})
-////
-////	_assert(<-errChan, chk.IsNil)
-////	_assert(resp, chk.HasLen, 1)
-////}
+//	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+//	_, err := containerClient.NewListBlobsFlatPager(context.Background(), Marker{}, ListBlobsSegmentOptions{MaxResults: -2})
+//	_assert(err, chk.Not(chk.IsNil))
+// }
+
+// func (s *ContainerRecordedTestsSuite) TestContainerListBlobsMaxResultsZero() {
+//	svcClient := testcommon.GetServiceClient()
+//	containerClient, _ := createNewContainer(c, svcClient)
+//	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+//	createNewBlockBlob(c, containerClient)
 //
-//// TODO: Adele: Case failing
-////func (s *ContainerRecordedTestsSuite) TestContainerListBlobsMaxResultsInsufficient() {
-////	svcClient := testcommon.GetServiceClient()
-////	containerClient, _ := createNewContainer(c, svcClient)
-////	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
-////	_, blobName := createNewBlockBlobWithPrefix(c, containerClient, "a")
-////	createNewBlockBlobWithPrefix(c, containerClient, "b")
-////
-////	maxResults := int32(1)
-////	resp, errChan := containerClient.NewListBlobsFlatPager(context.Background(), 3, 0, &ContainerListBlobsFlatOptions{MaxResults: &maxResults})
-////	_assert(<- errChan, chk.IsNil)
-////	_assert(resp, chk.HasLen, 1)
-////	_assert((<- resp).Name, chk.Equals, blobName)
-////}
+//	maxResults := int32(0)
+//	resp, errChan := containerClient.NewListBlobsFlatPager(context.Background(), 1, 0, &ContainerListBlobsFlatOptions{MaxResults: &maxResults})
+//
+//	_assert(<-errChan, chk.IsNil)
+//	_assert(resp, chk.HasLen, 1)
+// }
+//
+// TODO: Adele: Case failing
+// func (s *ContainerRecordedTestsSuite) TestContainerListBlobsMaxResultsInsufficient() {
+//	svcClient := testcommon.GetServiceClient()
+//	containerClient, _ := createNewContainer(c, svcClient)
+//	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+//	_, blobName := createNewBlockBlobWithPrefix(c, containerClient, "a")
+//	createNewBlockBlobWithPrefix(c, containerClient, "b")
+//
+//	maxResults := int32(1)
+//	resp, errChan := containerClient.NewListBlobsFlatPager(context.Background(), 3, 0, &ContainerListBlobsFlatOptions{MaxResults: &maxResults})
+//	_assert(<- errChan, chk.IsNil)
+//	_assert(resp, chk.HasLen, 1)
+//	_assert((<- resp).Name, chk.Equals, blobName)
+// }
 
 func (s *ContainerRecordedTestsSuite) TestContainerListBlobsMaxResultsExact() {
 	_require := require.New(s.T())
@@ -1203,10 +1188,8 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetMetadataEmpty() {
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := testcommon.GetContainerClient(containerName, svcClient)
 
-	access := container.PublicAccessTypeBlob
 	createContainerOptions := container.CreateOptions{
 		Metadata: testcommon.BasicMetadata,
-		Access:   &access,
 	}
 	_, err = containerClient.Create(context.Background(), &createContainerOptions)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
@@ -1230,9 +1213,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetMetadataNil() {
 	_require.NoError(err)
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := testcommon.GetContainerClient(containerName, svcClient)
-	access := container.PublicAccessTypeBlob
 	createContainerOptions := container.CreateOptions{
-		Access:   &access,
 		Metadata: testcommon.BasicMetadata,
 	}
 	_, err = containerClient.Create(context.Background(), &createContainerOptions)
@@ -1279,8 +1260,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetMetadataNonExistent() {
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ContainerNotFound)
 }
 
-//
-//func (s *ContainerRecordedTestsSuite) TestContainerSetMetadataIfModifiedSinceTrue() {
+// func (s *ContainerRecordedTestsSuite) TestContainerSetMetadataIfModifiedSinceTrue() {
 //	currentTime := getRelativeTimeGMT(-10)
 //
 //	svcClient := testcommon.GetServiceClient(nil)
@@ -1302,13 +1282,13 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetMetadataNonExistent() {
 //	_assert(resp.Metadata, chk.NotNil)
 //	_assert(resp.Metadata, chk.DeepEquals, testcommon.BasicMetadata)
 //
-//}
+// }
 
-//func (s *ContainerRecordedTestsSuite) TestContainerSetMetadataIfModifiedSinceFalse() {
+// func (s *ContainerRecordedTestsSuite) TestContainerSetMetadataIfModifiedSinceFalse() {
 //	// TODO: NotWorking
 //	_require := require.New(s.T())
 // testName := s.T().Name()
-////	svcClient := testcommon.GetServiceClient(&ClientOptions{
+// svcClient := testcommon.GetServiceClient(&ClientOptions{
 //		HTTPClient: _context.recording,
 //		Retry: azcore.RetryOptions{MaxRetries: -1}})
 //	containerClient, _ := testcommon.CreateNewContainer(context.Background(), _require, testName, svcClient)
@@ -1329,7 +1309,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetMetadataNonExistent() {
 //	_require.Error(err)
 //
 //	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
-//}
+// }
 
 func (s *ContainerRecordedTestsSuite) TestContainerNewBlobURL() {
 	_require := require.New(s.T())
@@ -1749,6 +1729,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerGetSetPermissionsMultiplePoli
 }
 
 func (s *ContainerRecordedTestsSuite) TestContainerGetPermissionsPublicAccessNotNone() {
+	s.T().Skip("this test is not needed as public access is disabled")
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -1815,6 +1796,7 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerSetPermissionsPublicAccessN
 }
 
 func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsPublicAccessTypeBlob() {
+	s.T().Skip("this test is not needed as public access is disabled")
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -1835,6 +1817,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsPublicAccessTyp
 }
 
 func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsPublicAccessContainer() {
+	s.T().Skip("This test is not valid because public access is disabled")
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -1855,8 +1838,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsPublicAccessCon
 	_require.Equal(*resp.BlobPublicAccess, container.PublicAccessTypeContainer)
 }
 
-//
-//func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsACLSinglePolicy() {
+// func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsACLSinglePolicy() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
 ////	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -1911,7 +1893,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsPublicAccessCon
 //	anonymousContainer := anonymousBlobService.NewContainerClient(containerName)
 //	_, err = anonymousContainer.NewListBlobsFlatPager(context.Background(), Marker{}, ListBlobsSegmentOptions{})
 //	testcommon.ValidateBlobErrorCode(c, err, StorageErrorCodeNoAuthenticationInformation)
-//}
+// }
 
 func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsACLMoreThanFive() {
 	_require := require.New(s.T())
@@ -1941,9 +1923,8 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsACLMoreThanFive
 		}
 	}
 
-	access := container.PublicAccessTypeBlob
 	setAccessPolicyOptions := container.SetAccessPolicyOptions{
-		Access: &access,
+		ContainerACL: permissions,
 	}
 	setAccessPolicyOptions.ContainerACL = permissions
 	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
@@ -1980,9 +1961,8 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsDeleteAndModify
 		}
 	}
 
-	access := container.PublicAccessTypeBlob
 	setAccessPolicyOptions := container.SetAccessPolicyOptions{
-		Access: &access,
+		ContainerACL: permissions,
 	}
 	setAccessPolicyOptions.ContainerACL = permissions
 	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
@@ -1996,7 +1976,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsDeleteAndModify
 	newId := "0004"
 	permissions[0].ID = &newId // Modify the remaining policy which is at index 0 in the new slice
 	setAccessPolicyOptions1 := container.SetAccessPolicyOptions{
-		Access: &access,
+		ContainerACL: permissions,
 	}
 	setAccessPolicyOptions1.ContainerACL = permissions
 	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions1)
@@ -2037,7 +2017,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsDeleteAllPolici
 	}
 
 	setAccessPolicyOptions := container.SetAccessPolicyOptions{
-		Access: to.Ptr(container.PublicAccessTypeBlob),
+		ContainerACL: permissions,
 	}
 	setAccessPolicyOptions.ContainerACL = permissions
 	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
@@ -2049,7 +2029,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsDeleteAllPolici
 	_require.EqualValues(resp.SignedIdentifiers, permissions)
 
 	setAccessPolicyOptions = container.SetAccessPolicyOptions{
-		Access: to.Ptr(container.PublicAccessTypeBlob),
+		ContainerACL: []*container.SignedIdentifier{},
 	}
 	setAccessPolicyOptions.ContainerACL = []*container.SignedIdentifier{}
 	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
@@ -2088,13 +2068,6 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsInvalidPolicyTi
 			},
 		}
 	}
-
-	setAccessPolicyOptions := container.SetAccessPolicyOptions{
-		Access: to.Ptr(container.PublicAccessTypeBlob),
-	}
-	setAccessPolicyOptions.ContainerACL = permissions
-	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
-	_require.NoError(err)
 }
 
 func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsNilPolicySlice() {
@@ -2142,7 +2115,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsSignedIdentifie
 	}
 
 	setAccessPolicyOptions := container.SetAccessPolicyOptions{
-		Access: to.Ptr(container.PublicAccessTypeBlob),
+		ContainerACL: permissions,
 	}
 	setAccessPolicyOptions.ContainerACL = permissions
 	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
@@ -2190,7 +2163,6 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsIfModifiedSince
 
 	cResp, err := containerClient.Create(context.Background(), nil)
 	_require.NoError(err)
-	//_require.Equal(cResp.RawResponse.StatusCode, 201)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, 10)
@@ -2217,7 +2189,6 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsIfUnModifiedSin
 
 	cResp, err := containerClient.Create(context.Background(), nil)
 	_require.NoError(err)
-	//_require.Equal(cResp.RawResponse.StatusCode, 201)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, 10)
@@ -2246,7 +2217,6 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsIfUnModifiedSin
 
 	cResp, err := containerClient.Create(context.Background(), nil)
 	_require.NoError(err)
-	//_require.Equal(cResp.RawResponse.StatusCode, 201)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, -10)
@@ -2469,7 +2439,7 @@ func (s *ContainerUnrecordedTestsSuite) TestSASContainerClient() {
 	_require.NoError(err)
 }
 
-func (s *ContainerUnrecordedTestsSuite) TestFilterBlobsByTags() {
+func (s *ContainerUnrecordedTestsSuite) TestFilterBlobsByBasicTags() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -2513,9 +2483,58 @@ func (s *ContainerUnrecordedTestsSuite) TestFilterBlobsByTags() {
 	opts := container.FilterBlobsOptions{MaxResults: to.Ptr(int32(10)), Marker: to.Ptr("")}
 	lResp, err := containerSasClient.FilterBlobs(context.Background(), where, &opts)
 	_require.NoError(err)
-	_require.Len(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet, 1)
 	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Key, "azure")
 	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Value, "blob")
+}
+
+func (s *ContainerUnrecordedTestsSuite) TestFilterBlobsBySpecialCharTags() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName), svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Adding SAS and options
+	permissions := sas.ContainerPermissions{
+		Read:         true,
+		Add:          true,
+		Write:        true,
+		Create:       true,
+		Delete:       true,
+		Tag:          true,
+		FilterByTags: true,
+	}
+	expiry := time.Now().Add(time.Hour)
+
+	// ContainerSASURL is created with GetSASURL
+	sasUrl, err := containerClient.GetSASURL(permissions, expiry, nil)
+	_require.NoError(err)
+
+	// Create container client with sasUrl
+	containerSasClient, err := container.NewClientWithNoCredential(sasUrl, nil)
+	_require.NoError(err)
+
+	abClient := containerSasClient.NewAppendBlobClient(testcommon.GenerateBlobName(testName))
+
+	createAppendBlobOptions := appendblob.CreateOptions{
+		Tags: testcommon.SpecialCharBlobTagsMap,
+	}
+	createResp, err := abClient.Create(context.Background(), &createAppendBlobOptions)
+	_require.NoError(err)
+	_require.NotNil(createResp.VersionID)
+	time.Sleep(10 * time.Second)
+
+	// Use container client to filter blobs by tag
+
+	where := "\"go\"='written in golang'"
+	opts := container.FilterBlobsOptions{MaxResults: to.Ptr(int32(10))}
+	lResp, err := containerSasClient.FilterBlobs(context.Background(), where, &opts)
+	_require.NoError(err)
+	_require.Len(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet, 1)
+	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Key, "go")
+	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Value, "written in golang")
 }
 
 func (s *ContainerUnrecordedTestsSuite) TestFilterBlobsByTagsNegative() {

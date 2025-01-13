@@ -7,7 +7,7 @@ go: true
 clear-output-folder: false
 version: "^3.0.0"
 license-header: MICROSOFT_MIT_NO_VERSION
-input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/688a906172823628e75b19ea8964d998cb7560fd/specification/storage/data-plane/Azure.Storage.Files.DataLake/preview/2023-05-03/DataLakeStorage.json"
+input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/ae95eb6a4701d844bada7d1c4f5ecf4a7444e5b8/specification/storage/data-plane/Azure.Storage.Files.DataLake/stable/2025-01-05/DataLakeStorage.json"
 credential-scope: "https://storage.azure.com/.default"
 output-folder: ../generated
 file-prefix: "zz_"
@@ -19,7 +19,7 @@ modelerfour:
   seal-single-value-enum-by-default: true
   lenient-model-deduplication: true
 export-clients: true
-use: "@autorest/go@4.0.0-preview.49"
+use: "@autorest/go@4.0.0-preview.65"
 ```
 
 ### Remove FileSystem and PathName from parameter list since they are not needed
@@ -39,6 +39,19 @@ directive:
             $[property]["parameters"] = $[property]["parameters"].filter(function(param) { return (typeof param['$ref'] === "undefined") || (false == param['$ref'].endsWith("#/parameters/FileSystem"))});
         }
     }
+```
+
+### Turn Path eTag into etag
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.Path
+  transform: >
+    $.properties.etag = $.properties.eTag;
+    delete $.properties.eTag;
+    $.properties.etag["x-ms-client-name"] = "eTag";
+
 ```
 
 ### Remove pager methods and export various generated methods in filesystem client
@@ -119,7 +132,7 @@ directive:
       return $.
         replace(/"strconv"/, `"strconv"\n\t"strings"`);
 ```
-### Add Missing Imports to zz_models_serde.go 
+### Add Missing Imports to zz_models_serde.go
 
 ``` yaml
 directive:
@@ -146,7 +159,9 @@ directive:
 
 ``` yaml
 directive:
-- from: zz_models.go
+- from: 
+    - zz_options.go
+    - zz_models.go       
   where: $
   transform: >-
     return $.
@@ -157,7 +172,7 @@ directive:
       replace(/SourceIfMatch\s+\*string/g, `SourceIfMatch *azcore.ETag`).
       replace(/SourceIfNoneMatch\s+\*string/g, `SourceIfNoneMatch *azcore.ETag`);
 
-- from: zz_response_types.go
+- from: zz_responses.go
   where: $
   transform: >-
     return $.
@@ -193,11 +208,11 @@ directive:
 
 ``` yaml
 directive:
-  - from: zz_service_client.go
-    where: $
-    transform: >-
-      return $.
-        replace(/req.Raw\(\).URL.RawQuery \= reqQP.Encode\(\)/, `req.Raw().URL.RawQuery = strings.Replace(reqQP.Encode(), "+", "%20", -1)`)
+- from: zz_service_client.go
+  where: $
+  transform: >-
+    return $.
+      replace(/req.Raw\(\).URL.RawQuery \= reqQP.Encode\(\)/, `req.Raw().URL.RawQuery = strings.Replace(reqQP.Encode(), "+", "%20", -1)`);
 ```
 
 ### Change `Duration` parameter in leases to be required
@@ -299,7 +314,7 @@ directive:
         replace(/err = unpopulate\((.*), "IsDirectory", &p\.IsDirectory\)/g, 'var rawVal string\nerr = unpopulate(val, "IsDirectory", &rawVal)\nboolVal, _ := strconv.ParseBool(rawVal)\np.IsDirectory = &boolVal');
 ```
 
-### Updating service version to 2023-11-03
+### Updating service version to 2025-01-05
 ```yaml
 directive:
 - from: 
@@ -309,6 +324,5 @@ directive:
   where: $
   transform: >-
     return $.
-      replaceAll(`[]string{"2023-05-03"}`, `[]string{ServiceVersion}`).
-      replaceAll(`2023-05-03`, `2023-11-03`);
+      replaceAll(`[]string{"2023-05-03"}`, `[]string{ServiceVersion}`);
 ```

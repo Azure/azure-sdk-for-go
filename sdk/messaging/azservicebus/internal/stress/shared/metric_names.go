@@ -52,3 +52,10 @@ const (
 const (
 	MetricStressSuccessfulCancels = "stress.cancels"
 )
+
+type Event string
+
+const (
+	EventEnd   Event = "end"
+	EventStart Event = "start"
+)

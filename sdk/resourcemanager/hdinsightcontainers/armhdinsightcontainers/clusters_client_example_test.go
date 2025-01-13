@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsightcontainers/armhdinsightcontainers"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/ListClustersByClusterPoolName.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0219f9da9de5833fc380f57d6b026f68b5df6f93/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2024-05-01-preview/examples/ListClustersByClusterPoolName.json
 func ExampleClustersClient_NewListByClusterPoolNamePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,33 +89,38 @@ func ExampleClustersClient_NewListByClusterPoolNamePager() {
 		// 						SSHProfile: &armhdinsightcontainers.SSHProfile{
 		// 							Count: to.Ptr[int32](2),
 		// 							PodPrefix: to.Ptr("sshnode"),
+		// 							VMSize: to.Ptr("Standard_D3_v2"),
 		// 						},
 		// 						TrinoProfile: &armhdinsightcontainers.TrinoProfile{
 		// 						},
 		// 					},
 		// 					ClusterType: to.Ptr("Trino"),
 		// 					ComputeProfile: &armhdinsightcontainers.ComputeProfile{
-		// 						Nodes: []*armhdinsightcontainers.NodeProfile{
-		// 							{
-		// 								Type: to.Ptr("Head"),
-		// 								Count: to.Ptr[int32](2),
-		// 								VMSize: to.Ptr("Standard_E8as_v5"),
-		// 							},
-		// 							{
-		// 								Type: to.Ptr("Worker"),
-		// 								Count: to.Ptr[int32](3),
-		// 								VMSize: to.Ptr("Standard_E8as_v5"),
-		// 						}},
+		// 						AvailabilityZones: []*string{
+		// 							to.Ptr("1"),
+		// 							to.Ptr("2"),
+		// 							to.Ptr("3")},
+		// 							Nodes: []*armhdinsightcontainers.NodeProfile{
+		// 								{
+		// 									Type: to.Ptr("Head"),
+		// 									Count: to.Ptr[int32](2),
+		// 									VMSize: to.Ptr("Standard_E8as_v5"),
+		// 								},
+		// 								{
+		// 									Type: to.Ptr("Worker"),
+		// 									Count: to.Ptr[int32](3),
+		// 									VMSize: to.Ptr("Standard_E8as_v5"),
+		// 							}},
+		// 						},
+		// 						DeploymentID: to.Ptr("45cd32aead6e4a91b079a0cdbfac8c36"),
+		// 						ProvisioningState: to.Ptr(armhdinsightcontainers.ProvisioningStatusSucceeded),
 		// 					},
-		// 					DeploymentID: to.Ptr("45cd32aead6e4a91b079a0cdbfac8c36"),
-		// 					ProvisioningState: to.Ptr(armhdinsightcontainers.ProvisioningStatusSucceeded),
-		// 				},
-		// 		}},
-		// 	}
+		// 			}},
+		// 		}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/UpgradeAKSPatchVersionForCluster.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0219f9da9de5833fc380f57d6b026f68b5df6f93/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2024-05-01-preview/examples/UpgradeAKSPatchVersionForCluster.json
 func ExampleClustersClient_BeginUpgrade_clustersUpgradeAksPatchVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -223,35 +228,44 @@ func ExampleClustersClient_BeginUpgrade_clustersUpgradeAksPatchVersion() {
 	// 								Fqdn: to.Ptr("cluster1.clusterpool1.westus2.projecthilo.net"),
 	// 							},
 	// 						},
-	// 						IdentityProfile: &armhdinsightcontainers.IdentityProfile{
-	// 							MsiClientID: to.Ptr("de91f1d8-767f-460a-ac11-3cf103f74b34"),
-	// 							MsiObjectID: to.Ptr("40491351-c240-4042-91e0-f644a1d2b441"),
-	// 							MsiResourceID: to.Ptr("/subscriptions/subid/resourceGroups/hiloResourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-msi"),
+	// 						ManagedIdentityProfile: &armhdinsightcontainers.ManagedIdentityProfile{
+	// 							IdentityList: []*armhdinsightcontainers.ManagedIdentitySpec{
+	// 								{
+	// 									Type: to.Ptr(armhdinsightcontainers.ManagedIdentityTypeCluster),
+	// 									ClientID: to.Ptr("de91f1d8-767f-460a-ac11-3cf103f74b34"),
+	// 									ObjectID: to.Ptr("40491351-c240-4042-91e0-f644a1d2b441"),
+	// 									ResourceID: to.Ptr("/subscriptions/subid/resourceGroups/hiloResourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-msi"),
+	// 							}},
 	// 						},
 	// 						OssVersion: to.Ptr("2.4.1"),
 	// 						SSHProfile: &armhdinsightcontainers.SSHProfile{
 	// 							Count: to.Ptr[int32](2),
 	// 							PodPrefix: to.Ptr("sshnode"),
+	// 							VMSize: to.Ptr("Standard_D3_v2"),
 	// 						},
 	// 						TrinoProfile: &armhdinsightcontainers.TrinoProfile{
 	// 						},
 	// 					},
 	// 					ClusterType: to.Ptr("trino"),
 	// 					ComputeProfile: &armhdinsightcontainers.ComputeProfile{
-	// 						Nodes: []*armhdinsightcontainers.NodeProfile{
-	// 							{
-	// 								Type: to.Ptr("worker"),
-	// 								Count: to.Ptr[int32](3),
-	// 								VMSize: to.Ptr("Standard_D3_v2"),
-	// 						}},
+	// 						AvailabilityZones: []*string{
+	// 							to.Ptr("1"),
+	// 							to.Ptr("2"),
+	// 							to.Ptr("3")},
+	// 							Nodes: []*armhdinsightcontainers.NodeProfile{
+	// 								{
+	// 									Type: to.Ptr("worker"),
+	// 									Count: to.Ptr[int32](3),
+	// 									VMSize: to.Ptr("Standard_D3_v2"),
+	// 							}},
+	// 						},
+	// 						DeploymentID: to.Ptr("45cd32aead6e4a91b079a0cdbfac8c36"),
+	// 						ProvisioningState: to.Ptr(armhdinsightcontainers.ProvisioningStatusSucceeded),
 	// 					},
-	// 					DeploymentID: to.Ptr("45cd32aead6e4a91b079a0cdbfac8c36"),
-	// 					ProvisioningState: to.Ptr(armhdinsightcontainers.ProvisioningStatusSucceeded),
-	// 				},
-	// 			}
+	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/UpgradeHotfixForCluster.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0219f9da9de5833fc380f57d6b026f68b5df6f93/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2024-05-01-preview/examples/UpgradeHotfixForCluster.json
 func ExampleClustersClient_BeginUpgrade_clustersUpgradeHotfix() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -363,6 +377,151 @@ func ExampleClustersClient_BeginUpgrade_clustersUpgradeHotfix() {
 	// 								Fqdn: to.Ptr("cluster1.clusterpool1.westus2.projecthilo.net"),
 	// 							},
 	// 						},
+	// 						ManagedIdentityProfile: &armhdinsightcontainers.ManagedIdentityProfile{
+	// 							IdentityList: []*armhdinsightcontainers.ManagedIdentitySpec{
+	// 								{
+	// 									Type: to.Ptr(armhdinsightcontainers.ManagedIdentityTypeCluster),
+	// 									ClientID: to.Ptr("de91f1d8-767f-460a-ac11-3cf103f74b34"),
+	// 									ObjectID: to.Ptr("40491351-c240-4042-91e0-f644a1d2b441"),
+	// 									ResourceID: to.Ptr("/subscriptions/subid/resourceGroups/hiloResourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-msi"),
+	// 							}},
+	// 						},
+	// 						OssVersion: to.Ptr("2.4.1"),
+	// 						SSHProfile: &armhdinsightcontainers.SSHProfile{
+	// 							Count: to.Ptr[int32](2),
+	// 							PodPrefix: to.Ptr("sshnode"),
+	// 							VMSize: to.Ptr("Standard_D3_v2"),
+	// 						},
+	// 						TrinoProfile: &armhdinsightcontainers.TrinoProfile{
+	// 						},
+	// 					},
+	// 					ClusterType: to.Ptr("trino"),
+	// 					ComputeProfile: &armhdinsightcontainers.ComputeProfile{
+	// 						AvailabilityZones: []*string{
+	// 							to.Ptr("1"),
+	// 							to.Ptr("2"),
+	// 							to.Ptr("3")},
+	// 							Nodes: []*armhdinsightcontainers.NodeProfile{
+	// 								{
+	// 									Type: to.Ptr("worker"),
+	// 									Count: to.Ptr[int32](3),
+	// 									VMSize: to.Ptr("Standard_D3_v2"),
+	// 							}},
+	// 						},
+	// 						DeploymentID: to.Ptr("45cd32aead6e4a91b079a0cdbfac8c36"),
+	// 						ProvisioningState: to.Ptr(armhdinsightcontainers.ProvisioningStatusSucceeded),
+	// 					},
+	// 				}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0219f9da9de5833fc380f57d6b026f68b5df6f93/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2024-05-01-preview/examples/ClusterUpgradeRollback.json
+func ExampleClustersClient_BeginUpgradeManualRollback() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhdinsightcontainers.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewClustersClient().BeginUpgradeManualRollback(ctx, "hiloResourcegroup", "clusterpool1", "cluster1", armhdinsightcontainers.ClusterUpgradeRollback{
+		Properties: &armhdinsightcontainers.ClusterUpgradeRollbackProperties{
+			UpgradeHistory: to.Ptr("/subscriptions/10e32bab-26da-4cc4-a441-52b318f824e6/resourceGroups/hiloResourcegroup/providers/Microsoft.HDInsight/clusterpools/clusterpool1/clusters/cluster1/upgradeHistories/01_11_2024_02_35_03_AM-HotfixUpgrade"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Cluster = armhdinsightcontainers.Cluster{
+	// 	Name: to.Ptr("cluster1"),
+	// 	Type: to.Ptr("Microsoft.HDInsight/clusterPools/clusters"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/hiloResourcegroup/providers/Microsoft.HDInsight/clusterPools/clusterpool1/clusters/cluster1"),
+	// 	SystemData: &armhdinsightcontainers.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.107Z"); return t}()),
+	// 		CreatedBy: to.Ptr("string"),
+	// 		CreatedByType: to.Ptr(armhdinsightcontainers.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-04T02:03:01.197Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("string"),
+	// 		LastModifiedByType: to.Ptr(armhdinsightcontainers.CreatedByTypeUser),
+	// 	},
+	// 	Location: to.Ptr("West US 2"),
+	// 	Properties: &armhdinsightcontainers.ClusterResourceProperties{
+	// 		ClusterProfile: &armhdinsightcontainers.ClusterProfile{
+	// 			AuthorizationProfile: &armhdinsightcontainers.AuthorizationProfile{
+	// 				UserIDs: []*string{
+	// 					to.Ptr("testuser1"),
+	// 					to.Ptr("testuser2")},
+	// 				},
+	// 				AutoscaleProfile: &armhdinsightcontainers.AutoscaleProfile{
+	// 					AutoscaleType: to.Ptr(armhdinsightcontainers.AutoscaleTypeScheduleBased),
+	// 					Enabled: to.Ptr(true),
+	// 					GracefulDecommissionTimeout: to.Ptr[int32](3600),
+	// 					LoadBasedConfig: &armhdinsightcontainers.LoadBasedConfig{
+	// 						CooldownPeriod: to.Ptr[int32](300),
+	// 						MaxNodes: to.Ptr[int32](20),
+	// 						MinNodes: to.Ptr[int32](10),
+	// 						PollInterval: to.Ptr[int32](60),
+	// 						ScalingRules: []*armhdinsightcontainers.ScalingRule{
+	// 							{
+	// 								ActionType: to.Ptr(armhdinsightcontainers.ScaleActionTypeScaleup),
+	// 								ComparisonRule: &armhdinsightcontainers.ComparisonRule{
+	// 									Operator: to.Ptr(armhdinsightcontainers.ComparisonOperatorGreaterThan),
+	// 									Threshold: to.Ptr[float32](90),
+	// 								},
+	// 								EvaluationCount: to.Ptr[int32](3),
+	// 								ScalingMetric: to.Ptr("cpu"),
+	// 							},
+	// 							{
+	// 								ActionType: to.Ptr(armhdinsightcontainers.ScaleActionTypeScaledown),
+	// 								ComparisonRule: &armhdinsightcontainers.ComparisonRule{
+	// 									Operator: to.Ptr(armhdinsightcontainers.ComparisonOperatorLessThan),
+	// 									Threshold: to.Ptr[float32](20),
+	// 								},
+	// 								EvaluationCount: to.Ptr[int32](3),
+	// 								ScalingMetric: to.Ptr("cpu"),
+	// 						}},
+	// 					},
+	// 					ScheduleBasedConfig: &armhdinsightcontainers.ScheduleBasedConfig{
+	// 						DefaultCount: to.Ptr[int32](10),
+	// 						Schedules: []*armhdinsightcontainers.Schedule{
+	// 							{
+	// 								Count: to.Ptr[int32](20),
+	// 								Days: []*armhdinsightcontainers.ScheduleDay{
+	// 									to.Ptr(armhdinsightcontainers.ScheduleDayMonday)},
+	// 									EndTime: to.Ptr("12:00"),
+	// 									StartTime: to.Ptr("00:00"),
+	// 								},
+	// 								{
+	// 									Count: to.Ptr[int32](25),
+	// 									Days: []*armhdinsightcontainers.ScheduleDay{
+	// 										to.Ptr(armhdinsightcontainers.ScheduleDaySunday)},
+	// 										EndTime: to.Ptr("12:00"),
+	// 										StartTime: to.Ptr("00:00"),
+	// 								}},
+	// 								TimeZone: to.Ptr("Cen. Australia Standard Time"),
+	// 							},
+	// 						},
+	// 						ClusterVersion: to.Ptr("1.0.1"),
+	// 						ConnectivityProfile: &armhdinsightcontainers.ConnectivityProfile{
+	// 							SSH: []*armhdinsightcontainers.SSHConnectivityEndpoint{
+	// 								{
+	// 									Endpoint: to.Ptr("cluster1.clusterpool1.westus2.projecthilo.net/ssh/host/sshnode-0"),
+	// 								},
+	// 								{
+	// 									Endpoint: to.Ptr("cluster1.clusterpool1.westus2.projecthilo.net/ssh/host/sshnode-1"),
+	// 							}},
+	// 							Web: &armhdinsightcontainers.ConnectivityProfileWeb{
+	// 								Fqdn: to.Ptr("cluster1.clusterpool1.westus2.projecthilo.net"),
+	// 							},
+	// 						},
 	// 						IdentityProfile: &armhdinsightcontainers.IdentityProfile{
 	// 							MsiClientID: to.Ptr("de91f1d8-767f-460a-ac11-3cf103f74b34"),
 	// 							MsiObjectID: to.Ptr("40491351-c240-4042-91e0-f644a1d2b441"),
@@ -378,20 +537,24 @@ func ExampleClustersClient_BeginUpgrade_clustersUpgradeHotfix() {
 	// 					},
 	// 					ClusterType: to.Ptr("trino"),
 	// 					ComputeProfile: &armhdinsightcontainers.ComputeProfile{
-	// 						Nodes: []*armhdinsightcontainers.NodeProfile{
-	// 							{
-	// 								Type: to.Ptr("worker"),
-	// 								Count: to.Ptr[int32](3),
-	// 								VMSize: to.Ptr("Standard_D3_v2"),
-	// 						}},
+	// 						AvailabilityZones: []*string{
+	// 							to.Ptr("1"),
+	// 							to.Ptr("2"),
+	// 							to.Ptr("3")},
+	// 							Nodes: []*armhdinsightcontainers.NodeProfile{
+	// 								{
+	// 									Type: to.Ptr("worker"),
+	// 									Count: to.Ptr[int32](3),
+	// 									VMSize: to.Ptr("Standard_D3_v2"),
+	// 							}},
+	// 						},
+	// 						DeploymentID: to.Ptr("45cd32aead6e4a91b079a0cdbfac8c36"),
+	// 						ProvisioningState: to.Ptr(armhdinsightcontainers.ProvisioningStatusSucceeded),
 	// 					},
-	// 					DeploymentID: to.Ptr("45cd32aead6e4a91b079a0cdbfac8c36"),
-	// 					ProvisioningState: to.Ptr(armhdinsightcontainers.ProvisioningStatusSucceeded),
-	// 				},
-	// 			}
+	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/ResizeCluster.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0219f9da9de5833fc380f57d6b026f68b5df6f93/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2024-05-01-preview/examples/ResizeCluster.json
 func ExampleClustersClient_BeginResize() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -500,40 +663,49 @@ func ExampleClustersClient_BeginResize() {
 	// 								Fqdn: to.Ptr("cluster1.clusterpool1.westus2.projecthilo.net"),
 	// 							},
 	// 						},
-	// 						IdentityProfile: &armhdinsightcontainers.IdentityProfile{
-	// 							MsiClientID: to.Ptr("de91f1d8-767f-460a-ac11-3cf103f74b34"),
-	// 							MsiObjectID: to.Ptr("40491351-c240-4042-91e0-f644a1d2b441"),
-	// 							MsiResourceID: to.Ptr("/subscriptions/subid/resourceGroups/hiloResourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-msi"),
+	// 						ManagedIdentityProfile: &armhdinsightcontainers.ManagedIdentityProfile{
+	// 							IdentityList: []*armhdinsightcontainers.ManagedIdentitySpec{
+	// 								{
+	// 									Type: to.Ptr(armhdinsightcontainers.ManagedIdentityTypeCluster),
+	// 									ClientID: to.Ptr("de91f1d8-767f-460a-ac11-3cf103f74b34"),
+	// 									ObjectID: to.Ptr("40491351-c240-4042-91e0-f644a1d2b441"),
+	// 									ResourceID: to.Ptr("/subscriptions/subid/resourceGroups/hiloResourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-msi"),
+	// 							}},
 	// 						},
 	// 						OssVersion: to.Ptr("0.410.0"),
 	// 						SSHProfile: &armhdinsightcontainers.SSHProfile{
 	// 							Count: to.Ptr[int32](2),
 	// 							PodPrefix: to.Ptr("sshnode"),
+	// 							VMSize: to.Ptr("Standard_D3_v2"),
 	// 						},
 	// 						TrinoProfile: &armhdinsightcontainers.TrinoProfile{
 	// 						},
 	// 					},
 	// 					ClusterType: to.Ptr("Trino"),
 	// 					ComputeProfile: &armhdinsightcontainers.ComputeProfile{
-	// 						Nodes: []*armhdinsightcontainers.NodeProfile{
-	// 							{
-	// 								Type: to.Ptr("Head"),
-	// 								Count: to.Ptr[int32](2),
-	// 								VMSize: to.Ptr("Standard_E8as_v5"),
-	// 							},
-	// 							{
-	// 								Type: to.Ptr("Worker"),
-	// 								Count: to.Ptr[int32](5),
-	// 								VMSize: to.Ptr("Standard_E8as_v5"),
-	// 						}},
+	// 						AvailabilityZones: []*string{
+	// 							to.Ptr("1"),
+	// 							to.Ptr("2"),
+	// 							to.Ptr("3")},
+	// 							Nodes: []*armhdinsightcontainers.NodeProfile{
+	// 								{
+	// 									Type: to.Ptr("Head"),
+	// 									Count: to.Ptr[int32](2),
+	// 									VMSize: to.Ptr("Standard_E8as_v5"),
+	// 								},
+	// 								{
+	// 									Type: to.Ptr("Worker"),
+	// 									Count: to.Ptr[int32](5),
+	// 									VMSize: to.Ptr("Standard_E8as_v5"),
+	// 							}},
+	// 						},
+	// 						DeploymentID: to.Ptr("45cd32aead6e4a91b079a0cdbfac8c36"),
+	// 						ProvisioningState: to.Ptr(armhdinsightcontainers.ProvisioningStatusSucceeded),
 	// 					},
-	// 					DeploymentID: to.Ptr("45cd32aead6e4a91b079a0cdbfac8c36"),
-	// 					ProvisioningState: to.Ptr(armhdinsightcontainers.ProvisioningStatusSucceeded),
-	// 				},
-	// 			}
+	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/GetCluster.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0219f9da9de5833fc380f57d6b026f68b5df6f93/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2024-05-01-preview/examples/GetCluster.json
 func ExampleClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -593,40 +765,49 @@ func ExampleClustersClient_Get() {
 	// 						Fqdn: to.Ptr("cluster1.clusterpool1.westus2.projecthilo.net"),
 	// 					},
 	// 				},
-	// 				IdentityProfile: &armhdinsightcontainers.IdentityProfile{
-	// 					MsiClientID: to.Ptr("de91f1d8-767f-460a-ac11-3cf103f74b34"),
-	// 					MsiObjectID: to.Ptr("40491351-c240-4042-91e0-f644a1d2b441"),
-	// 					MsiResourceID: to.Ptr("/subscriptions/subid/resourceGroups/hiloResourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-msi"),
+	// 				ManagedIdentityProfile: &armhdinsightcontainers.ManagedIdentityProfile{
+	// 					IdentityList: []*armhdinsightcontainers.ManagedIdentitySpec{
+	// 						{
+	// 							Type: to.Ptr(armhdinsightcontainers.ManagedIdentityTypeCluster),
+	// 							ClientID: to.Ptr("de91f1d8-767f-460a-ac11-3cf103f74b34"),
+	// 							ObjectID: to.Ptr("40491351-c240-4042-91e0-f644a1d2b441"),
+	// 							ResourceID: to.Ptr("/subscriptions/subid/resourceGroups/hiloResourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-msi"),
+	// 					}},
 	// 				},
 	// 				OssVersion: to.Ptr("0.410.0"),
 	// 				SSHProfile: &armhdinsightcontainers.SSHProfile{
 	// 					Count: to.Ptr[int32](2),
 	// 					PodPrefix: to.Ptr("sshnode"),
+	// 					VMSize: to.Ptr("Standard_D3_v2"),
 	// 				},
 	// 				TrinoProfile: &armhdinsightcontainers.TrinoProfile{
 	// 				},
 	// 			},
 	// 			ClusterType: to.Ptr("Trino"),
 	// 			ComputeProfile: &armhdinsightcontainers.ComputeProfile{
-	// 				Nodes: []*armhdinsightcontainers.NodeProfile{
-	// 					{
-	// 						Type: to.Ptr("Head"),
-	// 						Count: to.Ptr[int32](2),
-	// 						VMSize: to.Ptr("Standard_E8as_v5"),
-	// 					},
-	// 					{
-	// 						Type: to.Ptr("Worker"),
-	// 						Count: to.Ptr[int32](3),
-	// 						VMSize: to.Ptr("Standard_E8as_v5"),
-	// 				}},
+	// 				AvailabilityZones: []*string{
+	// 					to.Ptr("1"),
+	// 					to.Ptr("2"),
+	// 					to.Ptr("3")},
+	// 					Nodes: []*armhdinsightcontainers.NodeProfile{
+	// 						{
+	// 							Type: to.Ptr("Head"),
+	// 							Count: to.Ptr[int32](2),
+	// 							VMSize: to.Ptr("Standard_E8as_v5"),
+	// 						},
+	// 						{
+	// 							Type: to.Ptr("Worker"),
+	// 							Count: to.Ptr[int32](3),
+	// 							VMSize: to.Ptr("Standard_E8as_v5"),
+	// 					}},
+	// 				},
+	// 				DeploymentID: to.Ptr("45cd32aead6e4a91b079a0cdbfac8c36"),
+	// 				ProvisioningState: to.Ptr(armhdinsightcontainers.ProvisioningStatusSucceeded),
 	// 			},
-	// 			DeploymentID: to.Ptr("45cd32aead6e4a91b079a0cdbfac8c36"),
-	// 			ProvisioningState: to.Ptr(armhdinsightcontainers.ProvisioningStatusSucceeded),
-	// 		},
-	// 	}
+	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/CreateAutoscaleCluster.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0219f9da9de5833fc380f57d6b026f68b5df6f93/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2024-05-01-preview/examples/CreateAutoscaleCluster.json
 func ExampleClustersClient_BeginCreate_hdInsightClusterPut() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -696,19 +877,28 @@ func ExampleClustersClient_BeginCreate_hdInsightClusterPut() {
 					},
 				},
 				ClusterVersion: to.Ptr("1.0.6"),
-				IdentityProfile: &armhdinsightcontainers.IdentityProfile{
-					MsiClientID:   to.Ptr("de91f1d8-767f-460a-ac11-3cf103f74b34"),
-					MsiObjectID:   to.Ptr("40491351-c240-4042-91e0-f644a1d2b441"),
-					MsiResourceID: to.Ptr("/subscriptions/subid/resourceGroups/hiloResourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-msi"),
+				ManagedIdentityProfile: &armhdinsightcontainers.ManagedIdentityProfile{
+					IdentityList: []*armhdinsightcontainers.ManagedIdentitySpec{
+						{
+							Type:       to.Ptr(armhdinsightcontainers.ManagedIdentityTypeCluster),
+							ClientID:   to.Ptr("de91f1d8-767f-460a-ac11-3cf103f74b34"),
+							ObjectID:   to.Ptr("40491351-c240-4042-91e0-f644a1d2b441"),
+							ResourceID: to.Ptr("/subscriptions/subid/resourceGroups/hiloResourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-msi"),
+						}},
 				},
 				OssVersion: to.Ptr("0.410.0"),
 				SSHProfile: &armhdinsightcontainers.SSHProfile{
-					Count: to.Ptr[int32](2),
+					Count:  to.Ptr[int32](2),
+					VMSize: to.Ptr("Standard_E8as_v5"),
 				},
 				TrinoProfile: &armhdinsightcontainers.TrinoProfile{},
 			},
 			ClusterType: to.Ptr("Trino"),
 			ComputeProfile: &armhdinsightcontainers.ComputeProfile{
+				AvailabilityZones: []*string{
+					to.Ptr("1"),
+					to.Ptr("2"),
+					to.Ptr("3")},
 				Nodes: []*armhdinsightcontainers.NodeProfile{
 					{
 						Type:   to.Ptr("Head"),
@@ -824,40 +1014,49 @@ func ExampleClustersClient_BeginCreate_hdInsightClusterPut() {
 	// 								Fqdn: to.Ptr("cluster1.clusterpool1.westus2.projecthilo.net"),
 	// 							},
 	// 						},
-	// 						IdentityProfile: &armhdinsightcontainers.IdentityProfile{
-	// 							MsiClientID: to.Ptr("de91f1d8-767f-460a-ac11-3cf103f74b34"),
-	// 							MsiObjectID: to.Ptr("40491351-c240-4042-91e0-f644a1d2b441"),
-	// 							MsiResourceID: to.Ptr("/subscriptions/subid/resourceGroups/hiloResourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-msi"),
+	// 						ManagedIdentityProfile: &armhdinsightcontainers.ManagedIdentityProfile{
+	// 							IdentityList: []*armhdinsightcontainers.ManagedIdentitySpec{
+	// 								{
+	// 									Type: to.Ptr(armhdinsightcontainers.ManagedIdentityTypeCluster),
+	// 									ClientID: to.Ptr("de91f1d8-767f-460a-ac11-3cf103f74b34"),
+	// 									ObjectID: to.Ptr("40491351-c240-4042-91e0-f644a1d2b441"),
+	// 									ResourceID: to.Ptr("/subscriptions/subid/resourceGroups/hiloResourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-msi"),
+	// 							}},
 	// 						},
 	// 						OssVersion: to.Ptr("0.410.0"),
 	// 						SSHProfile: &armhdinsightcontainers.SSHProfile{
 	// 							Count: to.Ptr[int32](2),
 	// 							PodPrefix: to.Ptr("sshnode"),
+	// 							VMSize: to.Ptr("Standard_E8as_v5"),
 	// 						},
 	// 						TrinoProfile: &armhdinsightcontainers.TrinoProfile{
 	// 						},
 	// 					},
 	// 					ClusterType: to.Ptr("Trino"),
 	// 					ComputeProfile: &armhdinsightcontainers.ComputeProfile{
-	// 						Nodes: []*armhdinsightcontainers.NodeProfile{
-	// 							{
-	// 								Type: to.Ptr("Head"),
-	// 								Count: to.Ptr[int32](2),
-	// 								VMSize: to.Ptr("Standard_E8as_v5"),
-	// 							},
-	// 							{
-	// 								Type: to.Ptr("Worker"),
-	// 								Count: to.Ptr[int32](3),
-	// 								VMSize: to.Ptr("Standard_E8as_v5"),
-	// 						}},
+	// 						AvailabilityZones: []*string{
+	// 							to.Ptr("1"),
+	// 							to.Ptr("2"),
+	// 							to.Ptr("3")},
+	// 							Nodes: []*armhdinsightcontainers.NodeProfile{
+	// 								{
+	// 									Type: to.Ptr("Head"),
+	// 									Count: to.Ptr[int32](2),
+	// 									VMSize: to.Ptr("Standard_E8as_v5"),
+	// 								},
+	// 								{
+	// 									Type: to.Ptr("Worker"),
+	// 									Count: to.Ptr[int32](3),
+	// 									VMSize: to.Ptr("Standard_E8as_v5"),
+	// 							}},
+	// 						},
+	// 						DeploymentID: to.Ptr("45cd32aead6e4a91b079a0cdbfac8c36"),
+	// 						ProvisioningState: to.Ptr(armhdinsightcontainers.ProvisioningStatusSucceeded),
 	// 					},
-	// 					DeploymentID: to.Ptr("45cd32aead6e4a91b079a0cdbfac8c36"),
-	// 					ProvisioningState: to.Ptr(armhdinsightcontainers.ProvisioningStatusSucceeded),
-	// 				},
-	// 			}
+	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/CreateRangerCluster.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0219f9da9de5833fc380f57d6b026f68b5df6f93/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2024-05-01-preview/examples/CreateRangerCluster.json
 func ExampleClustersClient_BeginCreate_hdInsightRangerClusterPut() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -878,10 +1077,14 @@ func ExampleClustersClient_BeginCreate_hdInsightRangerClusterPut() {
 						to.Ptr("testuser2")},
 				},
 				ClusterVersion: to.Ptr("0.0.1"),
-				IdentityProfile: &armhdinsightcontainers.IdentityProfile{
-					MsiClientID:   to.Ptr("de91f1d8-767f-460a-ac11-3cf103f74b34"),
-					MsiObjectID:   to.Ptr("40491351-c240-4042-91e0-f644a1d2b441"),
-					MsiResourceID: to.Ptr("/subscriptions/subid/resourceGroups/hiloResourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-msi"),
+				ManagedIdentityProfile: &armhdinsightcontainers.ManagedIdentityProfile{
+					IdentityList: []*armhdinsightcontainers.ManagedIdentitySpec{
+						{
+							Type:       to.Ptr(armhdinsightcontainers.ManagedIdentityTypeCluster),
+							ClientID:   to.Ptr("de91f1d8-767f-460a-ac11-3cf103f74b34"),
+							ObjectID:   to.Ptr("40491351-c240-4042-91e0-f644a1d2b441"),
+							ResourceID: to.Ptr("/subscriptions/subid/resourceGroups/hiloResourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-msi"),
+						}},
 				},
 				OssVersion: to.Ptr("2.2.3"),
 				RangerProfile: &armhdinsightcontainers.RangerProfile{
@@ -913,6 +1116,10 @@ func ExampleClustersClient_BeginCreate_hdInsightRangerClusterPut() {
 			},
 			ClusterType: to.Ptr("ranger"),
 			ComputeProfile: &armhdinsightcontainers.ComputeProfile{
+				AvailabilityZones: []*string{
+					to.Ptr("1"),
+					to.Ptr("2"),
+					to.Ptr("3")},
 				Nodes: []*armhdinsightcontainers.NodeProfile{
 					{
 						Type:   to.Ptr("head"),
@@ -963,10 +1170,14 @@ func ExampleClustersClient_BeginCreate_hdInsightRangerClusterPut() {
 	// 						Fqdn: to.Ptr("cluster1.clusterpool1.westus2.projecthilo.net"),
 	// 					},
 	// 				},
-	// 				IdentityProfile: &armhdinsightcontainers.IdentityProfile{
-	// 					MsiClientID: to.Ptr("de91f1d8-767f-460a-ac11-3cf103f74b34"),
-	// 					MsiObjectID: to.Ptr("40491351-c240-4042-91e0-f644a1d2b441"),
-	// 					MsiResourceID: to.Ptr("/subscriptions/subid/resourceGroups/hiloResourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-msi"),
+	// 				ManagedIdentityProfile: &armhdinsightcontainers.ManagedIdentityProfile{
+	// 					IdentityList: []*armhdinsightcontainers.ManagedIdentitySpec{
+	// 						{
+	// 							Type: to.Ptr(armhdinsightcontainers.ManagedIdentityTypeCluster),
+	// 							ClientID: to.Ptr("de91f1d8-767f-460a-ac11-3cf103f74b34"),
+	// 							ObjectID: to.Ptr("40491351-c240-4042-91e0-f644a1d2b441"),
+	// 							ResourceID: to.Ptr("/subscriptions/subid/resourceGroups/hiloResourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-msi"),
+	// 					}},
 	// 				},
 	// 				OssVersion: to.Ptr("2.2.3"),
 	// 				RangerProfile: &armhdinsightcontainers.RangerProfile{
@@ -998,20 +1209,24 @@ func ExampleClustersClient_BeginCreate_hdInsightRangerClusterPut() {
 	// 						},
 	// 						ClusterType: to.Ptr("ranger"),
 	// 						ComputeProfile: &armhdinsightcontainers.ComputeProfile{
-	// 							Nodes: []*armhdinsightcontainers.NodeProfile{
-	// 								{
-	// 									Type: to.Ptr("head"),
-	// 									Count: to.Ptr[int32](2),
-	// 									VMSize: to.Ptr("Standard_D3_v2"),
-	// 							}},
+	// 							AvailabilityZones: []*string{
+	// 								to.Ptr("1"),
+	// 								to.Ptr("2"),
+	// 								to.Ptr("3")},
+	// 								Nodes: []*armhdinsightcontainers.NodeProfile{
+	// 									{
+	// 										Type: to.Ptr("head"),
+	// 										Count: to.Ptr[int32](2),
+	// 										VMSize: to.Ptr("Standard_D3_v2"),
+	// 								}},
+	// 							},
+	// 							DeploymentID: to.Ptr("45cd32aead6e4a91b079a0cdbfac8c36"),
+	// 							ProvisioningState: to.Ptr(armhdinsightcontainers.ProvisioningStatusSucceeded),
 	// 						},
-	// 						DeploymentID: to.Ptr("45cd32aead6e4a91b079a0cdbfac8c36"),
-	// 						ProvisioningState: to.Ptr(armhdinsightcontainers.ProvisioningStatusSucceeded),
-	// 					},
-	// 				}
+	// 					}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/CreateSparkCluster.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0219f9da9de5833fc380f57d6b026f68b5df6f93/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2024-05-01-preview/examples/CreateSparkCluster.json
 func ExampleClustersClient_BeginCreate_hdInsightSparkClusterPut() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1032,10 +1247,14 @@ func ExampleClustersClient_BeginCreate_hdInsightSparkClusterPut() {
 						to.Ptr("testuser2")},
 				},
 				ClusterVersion: to.Ptr("0.0.1"),
-				IdentityProfile: &armhdinsightcontainers.IdentityProfile{
-					MsiClientID:   to.Ptr("de91f1d8-767f-460a-ac11-3cf103f74b34"),
-					MsiObjectID:   to.Ptr("40491351-c240-4042-91e0-f644a1d2b441"),
-					MsiResourceID: to.Ptr("/subscriptions/subid/resourceGroups/hiloResourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-msi"),
+				ManagedIdentityProfile: &armhdinsightcontainers.ManagedIdentityProfile{
+					IdentityList: []*armhdinsightcontainers.ManagedIdentitySpec{
+						{
+							Type:       to.Ptr(armhdinsightcontainers.ManagedIdentityTypeCluster),
+							ClientID:   to.Ptr("de91f1d8-767f-460a-ac11-3cf103f74b34"),
+							ObjectID:   to.Ptr("40491351-c240-4042-91e0-f644a1d2b441"),
+							ResourceID: to.Ptr("/subscriptions/subid/resourceGroups/hiloResourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-msi"),
+						}},
 				},
 				OssVersion: to.Ptr("2.2.3"),
 				ServiceConfigsProfiles: []*armhdinsightcontainers.ClusterServiceConfigsProfile{
@@ -1079,11 +1298,16 @@ func ExampleClustersClient_BeginCreate_hdInsightSparkClusterPut() {
 					}},
 				SparkProfile: &armhdinsightcontainers.SparkProfile{},
 				SSHProfile: &armhdinsightcontainers.SSHProfile{
-					Count: to.Ptr[int32](2),
+					Count:  to.Ptr[int32](2),
+					VMSize: to.Ptr("Standard_D3_v2"),
 				},
 			},
 			ClusterType: to.Ptr("spark"),
 			ComputeProfile: &armhdinsightcontainers.ComputeProfile{
+				AvailabilityZones: []*string{
+					to.Ptr("1"),
+					to.Ptr("2"),
+					to.Ptr("3")},
 				Nodes: []*armhdinsightcontainers.NodeProfile{
 					{
 						Type:   to.Ptr("worker"),
@@ -1141,10 +1365,14 @@ func ExampleClustersClient_BeginCreate_hdInsightSparkClusterPut() {
 	// 						Fqdn: to.Ptr("cluster1.clusterpool1.westus2.projecthilo.net"),
 	// 					},
 	// 				},
-	// 				IdentityProfile: &armhdinsightcontainers.IdentityProfile{
-	// 					MsiClientID: to.Ptr("de91f1d8-767f-460a-ac11-3cf103f74b34"),
-	// 					MsiObjectID: to.Ptr("40491351-c240-4042-91e0-f644a1d2b441"),
-	// 					MsiResourceID: to.Ptr("/subscriptions/subid/resourceGroups/hiloResourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-msi"),
+	// 				ManagedIdentityProfile: &armhdinsightcontainers.ManagedIdentityProfile{
+	// 					IdentityList: []*armhdinsightcontainers.ManagedIdentitySpec{
+	// 						{
+	// 							Type: to.Ptr(armhdinsightcontainers.ManagedIdentityTypeCluster),
+	// 							ClientID: to.Ptr("de91f1d8-767f-460a-ac11-3cf103f74b34"),
+	// 							ObjectID: to.Ptr("40491351-c240-4042-91e0-f644a1d2b441"),
+	// 							ResourceID: to.Ptr("/subscriptions/subid/resourceGroups/hiloResourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-msi"),
+	// 					}},
 	// 				},
 	// 				OssVersion: to.Ptr("2.2.3"),
 	// 				ServiceConfigsProfiles: []*armhdinsightcontainers.ClusterServiceConfigsProfile{
@@ -1195,20 +1423,24 @@ func ExampleClustersClient_BeginCreate_hdInsightSparkClusterPut() {
 	// 			},
 	// 			ClusterType: to.Ptr("spark"),
 	// 			ComputeProfile: &armhdinsightcontainers.ComputeProfile{
-	// 				Nodes: []*armhdinsightcontainers.NodeProfile{
-	// 					{
-	// 						Type: to.Ptr("worker"),
-	// 						Count: to.Ptr[int32](4),
-	// 						VMSize: to.Ptr("Standard_D3_v2"),
-	// 				}},
+	// 				AvailabilityZones: []*string{
+	// 					to.Ptr("1"),
+	// 					to.Ptr("2"),
+	// 					to.Ptr("3")},
+	// 					Nodes: []*armhdinsightcontainers.NodeProfile{
+	// 						{
+	// 							Type: to.Ptr("worker"),
+	// 							Count: to.Ptr[int32](4),
+	// 							VMSize: to.Ptr("Standard_D3_v2"),
+	// 					}},
+	// 				},
+	// 				DeploymentID: to.Ptr("45cd32aead6e4a91b079a0cdbfac8c36"),
+	// 				ProvisioningState: to.Ptr(armhdinsightcontainers.ProvisioningStatusSucceeded),
 	// 			},
-	// 			DeploymentID: to.Ptr("45cd32aead6e4a91b079a0cdbfac8c36"),
-	// 			ProvisioningState: to.Ptr(armhdinsightcontainers.ProvisioningStatusSucceeded),
-	// 		},
-	// 	}
+	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/CreateSparkClusterWithInternalIngress.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0219f9da9de5833fc380f57d6b026f68b5df6f93/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2024-05-01-preview/examples/CreateSparkClusterWithInternalIngress.json
 func ExampleClustersClient_BeginCreate_hdInsightSparkClusterPutWithInternalIngress() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1232,10 +1464,14 @@ func ExampleClustersClient_BeginCreate_hdInsightSparkClusterPutWithInternalIngre
 					EnableInternalIngress: to.Ptr(true),
 				},
 				ClusterVersion: to.Ptr("0.0.1"),
-				IdentityProfile: &armhdinsightcontainers.IdentityProfile{
-					MsiClientID:   to.Ptr("de91f1d8-767f-460a-ac11-3cf103f74b34"),
-					MsiObjectID:   to.Ptr("40491351-c240-4042-91e0-f644a1d2b441"),
-					MsiResourceID: to.Ptr("/subscriptions/subid/resourceGroups/hiloResourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-msi"),
+				ManagedIdentityProfile: &armhdinsightcontainers.ManagedIdentityProfile{
+					IdentityList: []*armhdinsightcontainers.ManagedIdentitySpec{
+						{
+							Type:       to.Ptr(armhdinsightcontainers.ManagedIdentityTypeCluster),
+							ClientID:   to.Ptr("de91f1d8-767f-460a-ac11-3cf103f74b34"),
+							ObjectID:   to.Ptr("40491351-c240-4042-91e0-f644a1d2b441"),
+							ResourceID: to.Ptr("/subscriptions/subid/resourceGroups/hiloResourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-msi"),
+						}},
 				},
 				OssVersion: to.Ptr("2.2.3"),
 				ServiceConfigsProfiles: []*armhdinsightcontainers.ClusterServiceConfigsProfile{
@@ -1279,11 +1515,16 @@ func ExampleClustersClient_BeginCreate_hdInsightSparkClusterPutWithInternalIngre
 					}},
 				SparkProfile: &armhdinsightcontainers.SparkProfile{},
 				SSHProfile: &armhdinsightcontainers.SSHProfile{
-					Count: to.Ptr[int32](2),
+					Count:  to.Ptr[int32](2),
+					VMSize: to.Ptr("Standard_D3_v2"),
 				},
 			},
 			ClusterType: to.Ptr("spark"),
 			ComputeProfile: &armhdinsightcontainers.ComputeProfile{
+				AvailabilityZones: []*string{
+					to.Ptr("1"),
+					to.Ptr("2"),
+					to.Ptr("3")},
 				Nodes: []*armhdinsightcontainers.NodeProfile{
 					{
 						Type:   to.Ptr("worker"),
@@ -1348,10 +1589,14 @@ func ExampleClustersClient_BeginCreate_hdInsightSparkClusterPutWithInternalIngre
 	// 						PrivateFqdn: to.Ptr("cluster1-int.clusterpool1.westus2.projecthilo.net"),
 	// 					},
 	// 				},
-	// 				IdentityProfile: &armhdinsightcontainers.IdentityProfile{
-	// 					MsiClientID: to.Ptr("de91f1d8-767f-460a-ac11-3cf103f74b34"),
-	// 					MsiObjectID: to.Ptr("40491351-c240-4042-91e0-f644a1d2b441"),
-	// 					MsiResourceID: to.Ptr("/subscriptions/subid/resourceGroups/hiloResourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-msi"),
+	// 				ManagedIdentityProfile: &armhdinsightcontainers.ManagedIdentityProfile{
+	// 					IdentityList: []*armhdinsightcontainers.ManagedIdentitySpec{
+	// 						{
+	// 							Type: to.Ptr(armhdinsightcontainers.ManagedIdentityTypeCluster),
+	// 							ClientID: to.Ptr("de91f1d8-767f-460a-ac11-3cf103f74b34"),
+	// 							ObjectID: to.Ptr("40491351-c240-4042-91e0-f644a1d2b441"),
+	// 							ResourceID: to.Ptr("/subscriptions/subid/resourceGroups/hiloResourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-msi"),
+	// 					}},
 	// 				},
 	// 				OssVersion: to.Ptr("2.2.3"),
 	// 				ServiceConfigsProfiles: []*armhdinsightcontainers.ClusterServiceConfigsProfile{
@@ -1398,24 +1643,29 @@ func ExampleClustersClient_BeginCreate_hdInsightSparkClusterPutWithInternalIngre
 	// 				SSHProfile: &armhdinsightcontainers.SSHProfile{
 	// 					Count: to.Ptr[int32](2),
 	// 					PodPrefix: to.Ptr("sshnode"),
+	// 					VMSize: to.Ptr("Standard_D3_v2"),
 	// 				},
 	// 			},
 	// 			ClusterType: to.Ptr("spark"),
 	// 			ComputeProfile: &armhdinsightcontainers.ComputeProfile{
-	// 				Nodes: []*armhdinsightcontainers.NodeProfile{
-	// 					{
-	// 						Type: to.Ptr("worker"),
-	// 						Count: to.Ptr[int32](4),
-	// 						VMSize: to.Ptr("Standard_D3_v2"),
-	// 				}},
+	// 				AvailabilityZones: []*string{
+	// 					to.Ptr("1"),
+	// 					to.Ptr("2"),
+	// 					to.Ptr("3")},
+	// 					Nodes: []*armhdinsightcontainers.NodeProfile{
+	// 						{
+	// 							Type: to.Ptr("worker"),
+	// 							Count: to.Ptr[int32](4),
+	// 							VMSize: to.Ptr("Standard_D3_v2"),
+	// 					}},
+	// 				},
+	// 				DeploymentID: to.Ptr("45cd32aead6e4a91b079a0cdbfac8c36"),
+	// 				ProvisioningState: to.Ptr(armhdinsightcontainers.ProvisioningStatusSucceeded),
 	// 			},
-	// 			DeploymentID: to.Ptr("45cd32aead6e4a91b079a0cdbfac8c36"),
-	// 			ProvisioningState: to.Ptr(armhdinsightcontainers.ProvisioningStatusSucceeded),
-	// 		},
-	// 	}
+	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/PatchCluster.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0219f9da9de5833fc380f57d6b026f68b5df6f93/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2024-05-01-preview/examples/PatchCluster.json
 func ExampleClustersClient_BeginUpdate_hdInsightClustersPatchTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1596,11 +1846,6 @@ func ExampleClustersClient_BeginUpdate_hdInsightClustersPatchTags() {
 	// 								Fqdn: to.Ptr("cluster1.clusterpool1.westus2.projecthilo.net"),
 	// 							},
 	// 						},
-	// 						IdentityProfile: &armhdinsightcontainers.IdentityProfile{
-	// 							MsiClientID: to.Ptr("de91f1d8-767f-460a-ac11-3cf103f74b34"),
-	// 							MsiObjectID: to.Ptr("40491351-c240-4042-91e0-f644a1d2b441"),
-	// 							MsiResourceID: to.Ptr("/subscriptions/subid/resourceGroups/hiloResourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-msi"),
-	// 						},
 	// 						LogAnalyticsProfile: &armhdinsightcontainers.ClusterLogAnalyticsProfile{
 	// 							ApplicationLogs: &armhdinsightcontainers.ClusterLogAnalyticsApplicationLogs{
 	// 								StdErrorEnabled: to.Ptr(true),
@@ -1608,6 +1853,15 @@ func ExampleClustersClient_BeginUpdate_hdInsightClustersPatchTags() {
 	// 							},
 	// 							Enabled: to.Ptr(true),
 	// 							MetricsEnabled: to.Ptr(true),
+	// 						},
+	// 						ManagedIdentityProfile: &armhdinsightcontainers.ManagedIdentityProfile{
+	// 							IdentityList: []*armhdinsightcontainers.ManagedIdentitySpec{
+	// 								{
+	// 									Type: to.Ptr(armhdinsightcontainers.ManagedIdentityTypeCluster),
+	// 									ClientID: to.Ptr("de91f1d8-767f-460a-ac11-3cf103f74b34"),
+	// 									ObjectID: to.Ptr("40491351-c240-4042-91e0-f644a1d2b441"),
+	// 									ResourceID: to.Ptr("/subscriptions/subid/resourceGroups/hiloResourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-msi"),
+	// 							}},
 	// 						},
 	// 						OssVersion: to.Ptr("0.410.0"),
 	// 						ServiceConfigsProfiles: []*armhdinsightcontainers.ClusterServiceConfigsProfile{
@@ -1666,31 +1920,36 @@ func ExampleClustersClient_BeginUpdate_hdInsightClustersPatchTags() {
 	// 						SSHProfile: &armhdinsightcontainers.SSHProfile{
 	// 							Count: to.Ptr[int32](2),
 	// 							PodPrefix: to.Ptr("sshnode"),
+	// 							VMSize: to.Ptr("Standard_D3_v2"),
 	// 						},
 	// 						TrinoProfile: &armhdinsightcontainers.TrinoProfile{
 	// 						},
 	// 					},
 	// 					ClusterType: to.Ptr("Trino"),
 	// 					ComputeProfile: &armhdinsightcontainers.ComputeProfile{
-	// 						Nodes: []*armhdinsightcontainers.NodeProfile{
-	// 							{
-	// 								Type: to.Ptr("Head"),
-	// 								Count: to.Ptr[int32](2),
-	// 								VMSize: to.Ptr("Standard_E8as_v5"),
-	// 							},
-	// 							{
-	// 								Type: to.Ptr("Worker"),
-	// 								Count: to.Ptr[int32](3),
-	// 								VMSize: to.Ptr("Standard_E8as_v5"),
-	// 						}},
+	// 						AvailabilityZones: []*string{
+	// 							to.Ptr("1"),
+	// 							to.Ptr("2"),
+	// 							to.Ptr("3")},
+	// 							Nodes: []*armhdinsightcontainers.NodeProfile{
+	// 								{
+	// 									Type: to.Ptr("Head"),
+	// 									Count: to.Ptr[int32](2),
+	// 									VMSize: to.Ptr("Standard_E8as_v5"),
+	// 								},
+	// 								{
+	// 									Type: to.Ptr("Worker"),
+	// 									Count: to.Ptr[int32](3),
+	// 									VMSize: to.Ptr("Standard_E8as_v5"),
+	// 							}},
+	// 						},
+	// 						DeploymentID: to.Ptr("45cd32aead6e4a91b079a0cdbfac8c36"),
+	// 						ProvisioningState: to.Ptr(armhdinsightcontainers.ProvisioningStatusSucceeded),
 	// 					},
-	// 					DeploymentID: to.Ptr("45cd32aead6e4a91b079a0cdbfac8c36"),
-	// 					ProvisioningState: to.Ptr(armhdinsightcontainers.ProvisioningStatusSucceeded),
-	// 				},
-	// 			}
+	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/PatchRangerCluster.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0219f9da9de5833fc380f57d6b026f68b5df6f93/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2024-05-01-preview/examples/PatchRangerCluster.json
 func ExampleClustersClient_BeginUpdate_hdInsightRangerClusterPatchTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1773,11 +2032,6 @@ func ExampleClustersClient_BeginUpdate_hdInsightRangerClusterPatchTags() {
 	// 						Fqdn: to.Ptr("cluster1.clusterpool1.westus2.projecthilo.net"),
 	// 					},
 	// 				},
-	// 				IdentityProfile: &armhdinsightcontainers.IdentityProfile{
-	// 					MsiClientID: to.Ptr("de91f1d8-767f-460a-ac11-3cf103f74b34"),
-	// 					MsiObjectID: to.Ptr("40491351-c240-4042-91e0-f644a1d2b441"),
-	// 					MsiResourceID: to.Ptr("/subscriptions/subid/resourceGroups/hiloResourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-msi"),
-	// 				},
 	// 				LogAnalyticsProfile: &armhdinsightcontainers.ClusterLogAnalyticsProfile{
 	// 					ApplicationLogs: &armhdinsightcontainers.ClusterLogAnalyticsApplicationLogs{
 	// 						StdErrorEnabled: to.Ptr(true),
@@ -1785,6 +2039,15 @@ func ExampleClustersClient_BeginUpdate_hdInsightRangerClusterPatchTags() {
 	// 					},
 	// 					Enabled: to.Ptr(true),
 	// 					MetricsEnabled: to.Ptr(true),
+	// 				},
+	// 				ManagedIdentityProfile: &armhdinsightcontainers.ManagedIdentityProfile{
+	// 					IdentityList: []*armhdinsightcontainers.ManagedIdentitySpec{
+	// 						{
+	// 							Type: to.Ptr(armhdinsightcontainers.ManagedIdentityTypeCluster),
+	// 							ClientID: to.Ptr("de91f1d8-767f-460a-ac11-3cf103f74b34"),
+	// 							ObjectID: to.Ptr("40491351-c240-4042-91e0-f644a1d2b441"),
+	// 							ResourceID: to.Ptr("/subscriptions/subid/resourceGroups/hiloResourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-msi"),
+	// 					}},
 	// 				},
 	// 				OssVersion: to.Ptr("2.4.1"),
 	// 				RangerProfile: &armhdinsightcontainers.RangerProfile{
@@ -1816,20 +2079,24 @@ func ExampleClustersClient_BeginUpdate_hdInsightRangerClusterPatchTags() {
 	// 						},
 	// 						ClusterType: to.Ptr("ranger"),
 	// 						ComputeProfile: &armhdinsightcontainers.ComputeProfile{
-	// 							Nodes: []*armhdinsightcontainers.NodeProfile{
-	// 								{
-	// 									Type: to.Ptr("head"),
-	// 									Count: to.Ptr[int32](2),
-	// 									VMSize: to.Ptr("Standard_D3_v2"),
-	// 							}},
+	// 							AvailabilityZones: []*string{
+	// 								to.Ptr("1"),
+	// 								to.Ptr("2"),
+	// 								to.Ptr("3")},
+	// 								Nodes: []*armhdinsightcontainers.NodeProfile{
+	// 									{
+	// 										Type: to.Ptr("head"),
+	// 										Count: to.Ptr[int32](2),
+	// 										VMSize: to.Ptr("Standard_D3_v2"),
+	// 								}},
+	// 							},
+	// 							DeploymentID: to.Ptr("45cd32aead6e4a91b079a0cdbfac8c36"),
+	// 							ProvisioningState: to.Ptr(armhdinsightcontainers.ProvisioningStatusSucceeded),
 	// 						},
-	// 						DeploymentID: to.Ptr("45cd32aead6e4a91b079a0cdbfac8c36"),
-	// 						ProvisioningState: to.Ptr(armhdinsightcontainers.ProvisioningStatusSucceeded),
-	// 					},
-	// 				}
+	// 					}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/DeleteCluster.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0219f9da9de5833fc380f57d6b026f68b5df6f93/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2024-05-01-preview/examples/DeleteCluster.json
 func ExampleClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1850,7 +2117,7 @@ func ExampleClustersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/ListClusterServiceConfigs.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0219f9da9de5833fc380f57d6b026f68b5df6f93/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2024-05-01-preview/examples/ListClusterServiceConfigs.json
 func ExampleClustersClient_NewListServiceConfigsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1886,7 +2153,7 @@ func ExampleClustersClient_NewListServiceConfigsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/ListClusterInstanceViews.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0219f9da9de5833fc380f57d6b026f68b5df6f93/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2024-05-01-preview/examples/ListClusterInstanceViews.json
 func ExampleClustersClient_NewListInstanceViewsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1930,7 +2197,7 @@ func ExampleClustersClient_NewListInstanceViewsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/GetClusterInstanceView.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0219f9da9de5833fc380f57d6b026f68b5df6f93/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2024-05-01-preview/examples/GetClusterInstanceView.json
 func ExampleClustersClient_GetInstanceView() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

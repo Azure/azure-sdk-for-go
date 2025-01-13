@@ -8,6 +8,8 @@
 
 package armdns
 
+import "time"
+
 // ARecord - An A record.
 type ARecord struct {
 	// The IPv4 address of this A record.
@@ -38,6 +40,79 @@ type CnameRecord struct {
 	Cname *string
 }
 
+// DelegationSignerInfo - The delegation signer information.
+type DelegationSignerInfo struct {
+	// READ-ONLY; The digest algorithm type represents the standard digest algorithm number used to construct the digest. See:
+	// https://www.iana.org/assignments/ds-rr-types/ds-rr-types.xhtml
+	DigestAlgorithmType *int32
+
+	// READ-ONLY; The digest value is a cryptographic hash value of the referenced DNSKEY Resource Record.
+	DigestValue *string
+
+	// READ-ONLY; The record represents a delegation signer (DS) record.
+	Record *string
+}
+
+// Digest - A digest.
+type Digest struct {
+	// The digest algorithm type represents the standard digest algorithm number used to construct the digest. See: https://www.iana.org/assignments/ds-rr-types/ds-rr-types.xhtml
+	AlgorithmType *int32
+
+	// The digest value is a cryptographic hash value of the referenced DNSKEY Resource Record.
+	Value *string
+}
+
+// DnssecConfig - Represents the DNSSEC configuration.
+type DnssecConfig struct {
+	// The etag of the DNSSEC configuration.
+	Etag *string
+
+	// READ-ONLY; The ID of the DNSSEC configuration.
+	ID *string
+
+	// READ-ONLY; The name of the DNSSEC configuration.
+	Name *string
+
+	// READ-ONLY; The DNSSEC properties.
+	Properties *DnssecProperties
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the DNSSEC configuration.
+	Type *string
+}
+
+// DnssecConfigListResult - The response to a List DNSSEC configurations operation.
+type DnssecConfigListResult struct {
+	// Information about the DNSSEC configurations in the response.
+	Value []*DnssecConfig
+
+	// READ-ONLY; The continuation token for the next page of results.
+	NextLink *string
+}
+
+// DnssecProperties - Represents the DNSSEC properties.
+type DnssecProperties struct {
+	// READ-ONLY; Provisioning State of the DNSSEC configuration.
+	ProvisioningState *string
+
+	// READ-ONLY; The list of signing keys.
+	SigningKeys []*SigningKey
+}
+
+// DsRecord - A DS record. For more information about the DS record format, see RFC 4034: https://www.rfc-editor.org/rfc/rfc4034
+type DsRecord struct {
+	// The security algorithm type represents the standard security algorithm number of the DNSKEY Resource Record. See: https://www.iana.org/assignments/dns-sec-alg-numbers/dns-sec-alg-numbers.xhtml
+	Algorithm *int32
+
+	// The digest entity.
+	Digest *Digest
+
+	// The key tag value is used to determine which DNSKEY Resource Record is used for signature verification.
+	KeyTag *int32
+}
+
 // MxRecord - An MX record.
 type MxRecord struct {
 	// The domain name of the mail host for this MX record.
@@ -45,6 +120,36 @@ type MxRecord struct {
 
 	// The preference value for this MX record.
 	Preference *int32
+}
+
+// NaptrRecord - A NAPTR record. For more information about the NAPTR record format, see RFC 3403: https://www.rfc-editor.org/rfc/rfc3403
+type NaptrRecord struct {
+	// The flags specific to DDDS applications. Values currently defined in RFC 3404 are uppercase and lowercase letters "A",
+	// "P", "S", and "U", and the empty string, "". Enclose Flags in quotation marks.
+	Flags *string
+
+	// The order in which the NAPTR records MUST be processed in order to accurately represent the ordered list of rules. The
+	// ordering is from lowest to highest. Valid values: 0-65535.
+	Order *int32
+
+	// The preference specifies the order in which NAPTR records with equal 'order' values should be processed, low numbers being
+	// processed before high numbers. Valid values: 0-65535.
+	Preference *int32
+
+	// The regular expression that the DDDS application uses to convert an input value into an output value. For example: an IP
+	// phone system might use a regular expression to convert a phone number that is
+	// entered by a user into a SIP URI. Enclose the regular expression in quotation marks. Specify either a value for 'regexp'
+	// or a value for 'replacement'.
+	Regexp *string
+
+	// The replacement is a fully qualified domain name (FQDN) of the next domain name that you want the DDDS application to submit
+	// a DNS query for. The DDDS application replaces the input value with the
+	// value specified for replacement. Specify either a value for 'regexp' or a value for 'replacement'. If you specify a value
+	// for 'regexp', specify a dot (.) for 'replacement'.
+	Replacement *string
+
+	// The services specific to DDDS applications. Enclose Services in quotation marks.
+	Services *string
 }
 
 // NsRecord - An NS record.
@@ -100,11 +205,17 @@ type RecordSetProperties struct {
 	// The CNAME record in the record set.
 	CnameRecord *CnameRecord
 
+	// The list of DS records in the record set.
+	DsRecords []*DsRecord
+
 	// The metadata attached to the record set.
 	Metadata map[string]*string
 
 	// The list of MX records in the record set.
 	MxRecords []*MxRecord
+
+	// The list of NAPTR records in the record set.
+	NaptrRecords []*NaptrRecord
 
 	// The list of NS records in the record set.
 	NsRecords []*NsRecord
@@ -123,6 +234,12 @@ type RecordSetProperties struct {
 
 	// A reference to an azure resource from where the dns resource value is taken.
 	TargetResource *SubResource
+
+	// The list of TLSA records in the record set.
+	TlsaRecords []*TlsaRecord
+
+	// A reference to an azure traffic manager profile resource from where the dns resource value is taken.
+	TrafficManagementProfile *SubResource
 
 	// The list of TXT records in the record set.
 	TxtRecords []*TxtRecord
@@ -193,6 +310,28 @@ type ResourceReferenceResultProperties struct {
 	DNSResourceReferences []*ResourceReference
 }
 
+// SigningKey - Represents the signing key.
+type SigningKey struct {
+	// READ-ONLY; The delegation signer information.
+	DelegationSignerInfo []*DelegationSignerInfo
+
+	// READ-ONLY; The flags specifies how the key is used.
+	Flags *int32
+
+	// READ-ONLY; The key tag value of the DNSKEY Resource Record.
+	KeyTag *int32
+
+	// READ-ONLY; The protocol value. The value is always 3.
+	Protocol *int32
+
+	// READ-ONLY; The public key, represented as a Base64 encoding.
+	PublicKey *string
+
+	// READ-ONLY; The security algorithm type represents the standard security algorithm number of the DNSKEY Resource Record.
+	// See: https://www.iana.org/assignments/dns-sec-alg-numbers/dns-sec-alg-numbers.xhtml
+	SecurityAlgorithmType *int32
+}
+
 // SoaRecord - An SOA record.
 type SoaRecord struct {
 	// The email contact for this SOA record.
@@ -238,6 +377,43 @@ type SubResource struct {
 	ID *string
 }
 
+// SystemData - Metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// The timestamp of resource creation (UTC).
+	CreatedAt *time.Time
+
+	// The identity that created the resource.
+	CreatedBy *string
+
+	// The type of identity that created the resource.
+	CreatedByType *CreatedByType
+
+	// The timestamp of resource last modification (UTC)
+	LastModifiedAt *time.Time
+
+	// The identity that last modified the resource.
+	LastModifiedBy *string
+
+	// The type of identity that last modified the resource.
+	LastModifiedByType *CreatedByType
+}
+
+// TlsaRecord - A TLSA record. For more information about the TLSA record format, see RFC 6698: https://www.rfc-editor.org/rfc/rfc6698
+type TlsaRecord struct {
+	// This specifies the certificate association data to be matched.
+	CertAssociationData *string
+
+	// The matching type specifies how the certificate association is presented.
+	MatchingType *int32
+
+	// The selector specifies which part of the TLS certificate presented by the server will be matched against the association
+	// data.
+	Selector *int32
+
+	// The usage specifies the provided association that will be used to match the certificate presented in the TLS handshake.
+	Usage *int32
+}
+
 // TxtRecord - A TXT record.
 type TxtRecord struct {
 	// The text value of this TXT record.
@@ -263,6 +439,9 @@ type Zone struct {
 
 	// READ-ONLY; Resource name.
 	Name *string
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type.
 	Type *string
@@ -302,6 +481,9 @@ type ZoneProperties struct {
 	// READ-ONLY; The current number of record sets in this DNS zone. This is a read-only property and any attempt to set this
 	// value will be ignored.
 	NumberOfRecordSets *int64
+
+	// READ-ONLY; The list of signing keys.
+	SigningKeys []*SigningKey
 }
 
 // ZoneUpdate - Describes a request to update a DNS zone.

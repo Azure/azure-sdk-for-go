@@ -92,6 +92,38 @@ const (
 Once the skeleton for your SDK has been created, you can start writing your SDK.
 Please refer to the Azure [Go SDK API design guidelines][api_design] for detailed information on how to structure clients, their APIs, and more.
 
+From here you will choose which code generation stack you'll be using: [TypeSpec](https://typespec.io/), which should be used for all new stacks or autorest, which is only used for legacy stacks that use Swagger/OpenAPI specifications.
+
+### Using TypeSpec and `tsp-client`
+
+tsp-client bundles up the client generation process into a single program, making it simple to generate your code once you've onboarded your TypeSpec files into the azure-rest-api-specs repository.
+
+Setting up your project involves a few steps:
+
+1. Add the typespec-go emitter for your TypeSpec project to the `tspconfig.yaml` in azure-rest-api-specs: ([example](https://github.com/Azure/azure-rest-api-specs/blob/2bde125befabb21807a2021765901f20e3e74ec8/specification/eventgrid/Azure.Messaging.EventGrid/tspconfig.yaml#L55)).
+
+	```yaml
+	# other YAML elided
+	options:
+	  # other emitters elided
+	  "@azure-tools/typespec-go":
+        module: "github.com/Azure/azure-sdk-for-go/sdk/<path to your 'az' package goes here>"
+        module-version: "0.0.1"
+        emitter-output-dir: "{project-root}"
+	```
+2. Create a tsp-location.yaml file at the root of your module directory. This file gives the location and commit that should be used to generate your code: ([example](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/eventgrid/aznamespaces/tsp-location.yaml)).
+
+3. Install `tsp-client`: [(instructions)](https://github.com/Azure/azure-sdk-tools/blob/main/tools/tsp-client/README.md)
+4. Create a `build.go` file, and add `go generate` commands to run tsp-client: ([example](https://github.com/Azure/azure-sdk-for-go/blob/656c879ce93a0bc011d60df1f7b300620be08f82/sdk/messaging/eventgrid/aznamespaces/build.go#L4)).
+    
+	NOTE: the formatting here is _very_ important:
+	```go
+    //go:generate tsp-client update
+    //go:generate goimports -w .
+	```
+
+4. In a terminal, `cd` into your package folder and type `go generate`. This should run without error and will create a client, along with code needed to serialize and deserialize models.
+
 ### Using Autorest
 
 If your SDK doesn't require any Autorest-generated content, please skip this section.
@@ -116,7 +148,7 @@ use: "@autorest/go@4.0.0-preview.44"
 For the `use` section, the value should always be the latest version of the `@autorest/go` package.
 The latest version can be found at the NPM [page][autorest_go] for `@autorest/go`.
 
-For services that authenticate with Azure Active Directory, you **must** include the `security-scopes` parameter with the appropriate values (example below).
+For services that authenticate with Microsoft Entra ID, you **must** include the `security-scopes` parameter with the appropriate values (example below).
 
 ```yaml
 security-scopes: "https://vault.azure.net/.default"
@@ -160,19 +192,35 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 )
 
-func createClientForRecording(t *testing.T, tableName string, serviceURL string, cred SharedKeyCredential) (*Client, error) {
+func createClientForRecording(t *testing.T, tableName string, serviceURL string) (*Client, error) {
 	transport, err := recording.NewRecordingHTTPClient(t)
 	require.NoError(t, err)
 
 	options := &ClientOptions{
 		ClientOptions: azcore.ClientOptions{
-			Transport:       client,
+			Transport: transport,
 		},
 	}
 
-	return NewClientWithSharedKey(runtime.JoinPaths(serviceURL, tableName), &cred, options)
+	// credential.New returns a credential for Entra ID authentication. It works in CI
+	// and local development, in all recording modes. To authenticate live tests on
+	// your machine, sign in to the Azure CLI or Azure Developer CLI.
+	cred, err := credential.New(nil)
+	require.NoError(t, err)
+
+	return NewClient(runtime.JoinPaths(serviceURL, tableName), &cred, options)
+}
+
+func startRecording(t *testing.T) {
+	err := recording.Start(t, recordingDirectory, nil)
+	require.NoError(t, err)
+	t.Cleanup(func() {
+		err := recording.Stop(t, nil)
+		require.NoError(t, err)
+	})
 }
 ```
 
@@ -180,10 +228,9 @@ Including this in a file for test helper methods will ensure that before each te
 
 ```go
 func TestExample(t *testing.T) {
-	err := recording.Start(t, "path/to/package", nil)
-	defer recording.Stop(t, nil)
+	startRecording(t)
 
-	client, err := createClientForRecording(t, "myTableName", "myServiceUrl", myCredential)
+	client, err := createClientForRecording(t, "myTableName", "myServiceUrl")
 	require.NoError(t, err)
 	...
 	<test code>
@@ -204,14 +251,10 @@ import (
 	"os"
 
 	"github.com/stretchr/testify/require"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
 
-const (
-	accountName := os.GetEnv("TABLES_PRIMARY_ACCOUNT_NAME")
-	accountKey := os.GetEnv("TABLES_PRIMARY_ACCOUNT_KEY")
-)
+const accountName = os.GetEnv("TABLES_PRIMARY_ACCOUNT_NAME")
 
 // Test creating a single table
 func TestCreateTable(t *testing.T) {
@@ -222,11 +265,8 @@ func TestCreateTable(t *testing.T) {
 		require.NoError(t, err)
 	}()
 
-	serviceUrl := fmt.Sprintf("https://%v.table.core.windows.net", accountName)
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	require.NoError(t, err)
-
-	client, err := createClientForRecording(t, "tableName", serviceUrl, cred)
+	serviceURL := fmt.Sprintf("https://%v.table.core.windows.net", accountName)
+	client, err := createClientForRecording(t, "tableName", serviceURL)
 	require.NoError(t, err)
 
 	resp, err := client.Create()
@@ -239,7 +279,7 @@ func TestCreateTable(t *testing.T) {
 }
 ```
 
-The first part of the test above is for getting the secrets needed for authentication from your environment, best practice is to store your test secrets in environment variables.
+The first part of the test above is for getting resource configuration from your environment.
 
 The rest of the snippet shows a test that creates a single table and requirements (similar to assertions in other languages) that the response from the service has the same table name as the supplied parameter. Every test in Go has to have exactly one parameter, the `t *testing.T` object, and it must begin with `Test`. After making a service call or creating an object you can make assertions on that object by using the external `testify/require` library. In the example above, we "require" that the error returned is `nil`, meaning the call was successful and then we require that the response object has the same table name as supplied.
 
@@ -249,7 +289,7 @@ If you set the environment variable `AZURE_RECORD_MODE` to "record" and run `go 
 
 ### Scrubbing Secrets
 
-The recording files eventually live in the main repository (`github.com/Azure/azure-sdk-for-go`) and we need to make sure that all of these recordings are free from secrets. To do this we use Sanitizers with regular expressions for replacements. All of the available sanitizers are available as methods from the `recording` package. The recording methods generally take three parameters: the test instance (`t *testing.T`), the value to be removed (ie. an account name or key), and the value to use in replacement.
+Recording files live in the assets repository (`github.com/Azure/azure-sdk-assets`) and must not contain secrets. We use sanitizers with regular expression replacements to prevent recording secrets. The test proxy has many built-in sanitizers enabled by default. However, you may need to add your own by calling functions from the `recording` package. These functions generally take three parameters: the test instance (`t *testing.T`), the value to be removed (ie. an account name or key), and the value to use in replacement.
 
 | Sanitizer Type | Method |
 | -------------- | ------ |
@@ -263,7 +303,9 @@ The recording files eventually live in the main repository (`github.com/Azure/az
 | URI Sanitizer | `AddURISanitizer(value, regex string, options *RecordingOptions)` |
 | URI Subscription ID Sanitizer | `AddURISubscriptionIDSanitizer(value string, options *RecordingOptions)` |
 
-To add a scrubber that replaces the URL of your account use the `TestMain()` function to set sanitizers before you begin running tests.
+You may also need to remove a built-in sanitizer overwriting a non-secret value needed by a test. To do this, call `RemoveRegisteredSanitizers` with a list of sanitizer IDs such as "AZSDK3430". See the [test proxy documentation](https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/Common/SanitizerDictionary.cs) for a complete list of all the built-in sanitizers and their IDs.
+
+Configure sanitizers before running tests:
 
 ```go
 const recordingDirectory = "<path to service directory with assets.json file>/testdata"
@@ -290,15 +332,18 @@ func run(m *testing.M) int {
 		}()
 	}
 
-    // Set sanitizers in record mode
-	if recording.GetRecordMode() == "record" {
-		vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
-		err = recording.AddURISanitizer(fakeKvURL, vaultUrl, nil)
+	// sanitizers run in playback and recording modes
+	if recording.GetRecordMode() != recording.LiveMode {
+		// configure sanitizers here. For example:
+		err := recording.RemoveRegisteredSanitizers([]string{
+			"AZSDK3430", // body key $..id
+		}, nil)
 		if err != nil {
 			panic(err)
 		}
 	}
 
+	// run test cases
 	return m.Run()
 }
 ```
@@ -319,39 +364,6 @@ func TestClient(t *testing.T) {
 }
 ```
 
-### Using `azidentity` Credentials In Tests
-
-The credentials in `azidentity` are not automatically configured to run in playback mode. To make sure your tests run in playback mode even with `azidentity` credentials the best practice is to use a simple `FakeCredential` type that inserts a fake Authorization header to mock a credential. An example for swapping the `DefaultAzureCredential` using a helper function is shown below in the context of `aztables`
-
-```go
-type FakeCredential struct {}
-
-func NewFakeCredential() *FakeCredential {
-	return &FakeCredential{}
-}
-
-func (f *FakeCredential) GetToken(ctx context.Context, options policy.TokenRequestOptions) (*azcore.AccessToken, error) {
-	return &azcore.AccessToken{Token: "***", ExpiresOn: time.Now().Add(time.Hour)}, nil
-}
-
-func getAADCredential() (azcore.TokenCredential, error) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		return NewFakeCredential(), nil
-	}
-	return azidentity.NewDefaultCredential(nil)
-}
-
-func TestClientWithAAD(t *testing.T) {
-	accountName := recording.GetEnvVariable(t, "TABLES_PRIMARY_ACCOUNT_NAME", "fakeAccountName")
-	cred, err := getAADCredential()
-	require.NoError(t, err)
-	...
-	...run tests...
-}
-```
-
-The `FakeCredential` show here implements the `azcore.TokenCredential` interface and can be used anywhere the `azcore.TokenCredential` is used.
-
 ### Live Test Resource Management
 
 If you have live tests that require Azure resources, you'll need to create a test resources config file for deployment during CI.
@@ -359,7 +371,7 @@ Please see the [test resource][test_resources] documentation for more info.
 
 ### Committing/Updating Recordings
 
-The `assets.json` file located in your module directory is used by the Test Framework to figure out how to retrieve session records from the assets repo. In order to push new session records, you need to invoke:
+Always inspect recordings for secrets before pushing them. The `assets.json` file located in your module directory is used by the Test Framework to figure out how to retrieve session records from the assets repo. In order to push new session records, you need to invoke:
 
 ```PowerShell
 test-proxy push -a <path-to-assets.json>

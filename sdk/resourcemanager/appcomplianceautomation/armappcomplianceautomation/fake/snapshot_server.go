@@ -15,21 +15,27 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcomplianceautomation/armappcomplianceautomation"
 	"net/http"
 	"net/url"
 	"regexp"
+	"strconv"
 )
 
 // SnapshotServer is a fake server for instances of the armappcomplianceautomation.SnapshotClient type.
 type SnapshotServer struct {
 	// BeginDownload is the fake for method SnapshotClient.BeginDownload
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginDownload func(ctx context.Context, reportName string, snapshotName string, parameters armappcomplianceautomation.SnapshotDownloadRequest, options *armappcomplianceautomation.SnapshotClientBeginDownloadOptions) (resp azfake.PollerResponder[armappcomplianceautomation.SnapshotClientDownloadResponse], errResp azfake.ErrorResponder)
+	BeginDownload func(ctx context.Context, reportName string, snapshotName string, body armappcomplianceautomation.SnapshotDownloadRequest, options *armappcomplianceautomation.SnapshotClientBeginDownloadOptions) (resp azfake.PollerResponder[armappcomplianceautomation.SnapshotClientDownloadResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method SnapshotClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, reportName string, snapshotName string, options *armappcomplianceautomation.SnapshotClientGetOptions) (resp azfake.Responder[armappcomplianceautomation.SnapshotClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListPager is the fake for method SnapshotClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(reportName string, options *armappcomplianceautomation.SnapshotClientListOptions) (resp azfake.PagerResponder[armappcomplianceautomation.SnapshotClientListResponse])
 }
 
 // NewSnapshotServerTransport creates a new instance of SnapshotServerTransport with the provided implementation.
@@ -39,6 +45,7 @@ func NewSnapshotServerTransport(srv *SnapshotServer) *SnapshotServerTransport {
 	return &SnapshotServerTransport{
 		srv:           srv,
 		beginDownload: newTracker[azfake.PollerResponder[armappcomplianceautomation.SnapshotClientDownloadResponse]](),
+		newListPager:  newTracker[azfake.PagerResponder[armappcomplianceautomation.SnapshotClientListResponse]](),
 	}
 }
 
@@ -47,6 +54,7 @@ func NewSnapshotServerTransport(srv *SnapshotServer) *SnapshotServerTransport {
 type SnapshotServerTransport struct {
 	srv           *SnapshotServer
 	beginDownload *tracker[azfake.PollerResponder[armappcomplianceautomation.SnapshotClientDownloadResponse]]
+	newListPager  *tracker[azfake.PagerResponder[armappcomplianceautomation.SnapshotClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for SnapshotServerTransport.
@@ -65,6 +73,8 @@ func (s *SnapshotServerTransport) Do(req *http.Request) (*http.Response, error) 
 		resp, err = s.dispatchBeginDownload(req)
 	case "SnapshotClient.Get":
 		resp, err = s.dispatchGet(req)
+	case "SnapshotClient.NewListPager":
+		resp, err = s.dispatchNewListPager(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
 	}
@@ -153,6 +163,100 @@ func (s *SnapshotServerTransport) dispatchGet(req *http.Request) (*http.Response
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SnapshotResource, req)
 	if err != nil {
 		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *SnapshotServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := s.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/providers/Microsoft\.AppComplianceAutomation/reports/(?P<reportName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/snapshots`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 1 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(skipTokenUnescaped)
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		selectUnescaped, err := url.QueryUnescape(qp.Get("$select"))
+		if err != nil {
+			return nil, err
+		}
+		selectParam := getOptional(selectUnescaped)
+		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
+		orderbyUnescaped, err := url.QueryUnescape(qp.Get("$orderby"))
+		if err != nil {
+			return nil, err
+		}
+		orderbyParam := getOptional(orderbyUnescaped)
+		offerGUIDUnescaped, err := url.QueryUnescape(qp.Get("offerGuid"))
+		if err != nil {
+			return nil, err
+		}
+		offerGUIDParam := getOptional(offerGUIDUnescaped)
+		reportCreatorTenantIDUnescaped, err := url.QueryUnescape(qp.Get("reportCreatorTenantId"))
+		if err != nil {
+			return nil, err
+		}
+		reportCreatorTenantIDParam := getOptional(reportCreatorTenantIDUnescaped)
+		reportNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("reportName")])
+		if err != nil {
+			return nil, err
+		}
+		var options *armappcomplianceautomation.SnapshotClientListOptions
+		if skipTokenParam != nil || topParam != nil || selectParam != nil || filterParam != nil || orderbyParam != nil || offerGUIDParam != nil || reportCreatorTenantIDParam != nil {
+			options = &armappcomplianceautomation.SnapshotClientListOptions{
+				SkipToken:             skipTokenParam,
+				Top:                   topParam,
+				Select:                selectParam,
+				Filter:                filterParam,
+				Orderby:               orderbyParam,
+				OfferGUID:             offerGUIDParam,
+				ReportCreatorTenantID: reportCreatorTenantIDParam,
+			}
+		}
+		resp := s.srv.NewListPager(reportNameParam, options)
+		newListPager = &resp
+		s.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armappcomplianceautomation.SnapshotClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		s.newListPager.remove(req)
 	}
 	return resp, nil
 }

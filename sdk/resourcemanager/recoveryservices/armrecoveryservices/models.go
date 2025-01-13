@@ -12,7 +12,9 @@ import "time"
 
 // AzureMonitorAlertSettings - Settings for Azure Monitor based alerts
 type AzureMonitorAlertSettings struct {
-	AlertsForAllJobFailures *AlertsState
+	AlertsForAllFailoverIssues    *AlertsState
+	AlertsForAllJobFailures       *AlertsState
+	AlertsForAllReplicationIssues *AlertsState
 }
 
 // CapabilitiesProperties - Capabilities information
@@ -59,7 +61,8 @@ type CheckNameAvailabilityResult struct {
 
 // ClassicAlertSettings - Settings for classic alerts
 type ClassicAlertSettings struct {
-	AlertsForCriticalOperations *AlertsState
+	AlertsForCriticalOperations       *AlertsState
+	EmailNotificationsForSiteRecovery *AlertsState
 }
 
 // ClientDiscoveryDisplay - Localized display information of an operation.
@@ -185,6 +188,31 @@ type ErrorAdditionalInfo struct {
 
 	// READ-ONLY; The additional info type.
 	Type *string
+}
+
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo
+
+	// READ-ONLY; The error code.
+	Code *string
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail
+
+	// READ-ONLY; The error message.
+	Message *string
+
+	// READ-ONLY; The error target.
+	Target *string
+}
+
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
+type ErrorResponse struct {
+	// The error object.
+	Error *ErrorDetail
 }
 
 // IdentityData - Identity for the resource.
@@ -684,6 +712,8 @@ type SecuritySettings struct {
 
 // SoftDeleteSettings - Soft delete Settings of vault
 type SoftDeleteSettings struct {
+	EnhancedSecurityState *EnhancedSecurityState
+
 	// Soft delete retention period in days
 	SoftDeleteRetentionPeriodInDays *int32
 	SoftDeleteState                 *SoftDeleteState
@@ -877,6 +907,9 @@ type VaultProperties struct {
 	// The redundancy Settings of a Vault
 	RedundancySettings *VaultPropertiesRedundancySettings
 
+	// ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests []*string
+
 	// Restore Settings of the vault
 	RestoreSettings *RestoreSettings
 
@@ -888,6 +921,9 @@ type VaultProperties struct {
 
 	// READ-ONLY; Backup storage version
 	BackupStorageVersion *BackupStorageVersion
+
+	// READ-ONLY; Security levels of Recovery Services Vault for business continuity and disaster recovery
+	BcdrSecurityLevel *BCDRSecurityLevel
 
 	// READ-ONLY; The State of the Resource after the move operation
 	MoveState *ResourceMoveState
@@ -940,10 +976,10 @@ type VaultPropertiesMoveDetails struct {
 
 // VaultPropertiesRedundancySettings - The redundancy Settings of a Vault
 type VaultPropertiesRedundancySettings struct {
-	// READ-ONLY; Flag to show if Cross Region Restore is enabled on the Vault or not
+	// Flag to show if Cross Region Restore is enabled on the Vault or not
 	CrossRegionRestore *CrossRegionRestore
 
-	// READ-ONLY; The storage redundancy setting of a vault
+	// The storage redundancy setting of a vault
 	StandardTierStorageRedundancy *StandardTierStorageRedundancy
 }
 

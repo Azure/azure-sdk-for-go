@@ -23,6 +23,7 @@ type ServerFactory struct {
 	AscOperationsServer  AscOperationsServer
 	AscUsagesServer      AscUsagesServer
 	CachesServer         CachesServer
+	ImportJobsServer     ImportJobsServer
 	ManagementServer     ManagementServer
 	OperationsServer     OperationsServer
 	SKUsServer           SKUsServer
@@ -49,6 +50,7 @@ type ServerFactoryTransport struct {
 	trAscOperationsServer  *AscOperationsServerTransport
 	trAscUsagesServer      *AscUsagesServerTransport
 	trCachesServer         *CachesServerTransport
+	trImportJobsServer     *ImportJobsServerTransport
 	trManagementServer     *ManagementServerTransport
 	trOperationsServer     *OperationsServerTransport
 	trSKUsServer           *SKUsServerTransport
@@ -86,6 +88,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "CachesClient":
 		initServer(s, &s.trCachesServer, func() *CachesServerTransport { return NewCachesServerTransport(&s.srv.CachesServer) })
 		resp, err = s.trCachesServer.Do(req)
+	case "ImportJobsClient":
+		initServer(s, &s.trImportJobsServer, func() *ImportJobsServerTransport { return NewImportJobsServerTransport(&s.srv.ImportJobsServer) })
+		resp, err = s.trImportJobsServer.Do(req)
 	case "ManagementClient":
 		initServer(s, &s.trManagementServer, func() *ManagementServerTransport { return NewManagementServerTransport(&s.srv.ManagementServer) })
 		resp, err = s.trManagementServer.Do(req)

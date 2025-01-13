@@ -167,6 +167,33 @@ func (a *AvailabilitySetProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type AvailabilitySetTagsUpdate.
+func (a AvailabilitySetTagsUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "tags", a.Tags)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AvailabilitySetTagsUpdate.
+func (a *AvailabilitySetTagsUpdate) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "tags":
+			err = unpopulate(val, "Tags", &a.Tags)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type Checkpoint.
 func (c Checkpoint) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -377,7 +404,7 @@ func (c CloudProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "cloudName", c.CloudName)
 	populate(objectMap, "inventoryItemId", c.InventoryItemID)
 	populate(objectMap, "provisioningState", c.ProvisioningState)
-	populate(objectMap, "storageQoSPolicies", c.StorageQoSPolicies)
+	populate(objectMap, "storageQoSPolicies", c.StorageQosPolicies)
 	populate(objectMap, "uuid", c.UUID)
 	populate(objectMap, "vmmServerId", c.VmmServerID)
 	return json.Marshal(objectMap)
@@ -405,7 +432,7 @@ func (c *CloudProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "ProvisioningState", &c.ProvisioningState)
 			delete(rawMsg, key)
 		case "storageQoSPolicies":
-			err = unpopulate(val, "StorageQoSPolicies", &c.StorageQoSPolicies)
+			err = unpopulate(val, "StorageQosPolicies", &c.StorageQosPolicies)
 			delete(rawMsg, key)
 		case "uuid":
 			err = unpopulate(val, "UUID", &c.UUID)
@@ -421,63 +448,28 @@ func (c *CloudProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ErrorDefinition.
-func (e ErrorDefinition) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type CloudTagsUpdate.
+func (c CloudTagsUpdate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
+	populate(objectMap, "tags", c.Tags)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ErrorDefinition.
-func (e *ErrorDefinition) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type CloudTagsUpdate.
+func (c *CloudTagsUpdate) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", e, err)
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "code":
-			err = unpopulate(val, "Code", &e.Code)
-			delete(rawMsg, key)
-		case "details":
-			err = unpopulate(val, "Details", &e.Details)
-			delete(rawMsg, key)
-		case "message":
-			err = unpopulate(val, "Message", &e.Message)
+		case "tags":
+			err = unpopulate(val, "Tags", &c.Tags)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", e, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ErrorResponse.
-func (e ErrorResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "error", e.Error)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ErrorResponse.
-func (e *ErrorResponse) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", e, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "error":
-			err = unpopulate(val, "Error", &e.Error)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", e, err)
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
 		}
 	}
 	return nil
@@ -509,6 +501,189 @@ func (e *ExtendedLocation) UnmarshalJSON(data []byte) error {
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", e, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type GuestAgent.
+func (g GuestAgent) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "id", g.ID)
+	populate(objectMap, "name", g.Name)
+	populate(objectMap, "properties", g.Properties)
+	populate(objectMap, "systemData", g.SystemData)
+	populate(objectMap, "type", g.Type)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type GuestAgent.
+func (g *GuestAgent) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", g, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "id":
+			err = unpopulate(val, "ID", &g.ID)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, "Name", &g.Name)
+			delete(rawMsg, key)
+		case "properties":
+			err = unpopulate(val, "Properties", &g.Properties)
+			delete(rawMsg, key)
+		case "systemData":
+			err = unpopulate(val, "SystemData", &g.SystemData)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, "Type", &g.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", g, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type GuestAgentListResult.
+func (g GuestAgentListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "nextLink", g.NextLink)
+	populate(objectMap, "value", g.Value)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type GuestAgentListResult.
+func (g *GuestAgentListResult) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", g, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "nextLink":
+			err = unpopulate(val, "NextLink", &g.NextLink)
+			delete(rawMsg, key)
+		case "value":
+			err = unpopulate(val, "Value", &g.Value)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", g, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type GuestAgentProperties.
+func (g GuestAgentProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "credentials", g.Credentials)
+	populate(objectMap, "customResourceName", g.CustomResourceName)
+	populate(objectMap, "httpProxyConfig", g.HTTPProxyConfig)
+	populate(objectMap, "provisioningAction", g.ProvisioningAction)
+	populate(objectMap, "provisioningState", g.ProvisioningState)
+	populate(objectMap, "status", g.Status)
+	populate(objectMap, "uuid", g.UUID)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type GuestAgentProperties.
+func (g *GuestAgentProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", g, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "credentials":
+			err = unpopulate(val, "Credentials", &g.Credentials)
+			delete(rawMsg, key)
+		case "customResourceName":
+			err = unpopulate(val, "CustomResourceName", &g.CustomResourceName)
+			delete(rawMsg, key)
+		case "httpProxyConfig":
+			err = unpopulate(val, "HTTPProxyConfig", &g.HTTPProxyConfig)
+			delete(rawMsg, key)
+		case "provisioningAction":
+			err = unpopulate(val, "ProvisioningAction", &g.ProvisioningAction)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, "ProvisioningState", &g.ProvisioningState)
+			delete(rawMsg, key)
+		case "status":
+			err = unpopulate(val, "Status", &g.Status)
+			delete(rawMsg, key)
+		case "uuid":
+			err = unpopulate(val, "UUID", &g.UUID)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", g, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type GuestCredential.
+func (g GuestCredential) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "password", g.Password)
+	populate(objectMap, "username", g.Username)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type GuestCredential.
+func (g *GuestCredential) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", g, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "password":
+			err = unpopulate(val, "Password", &g.Password)
+			delete(rawMsg, key)
+		case "username":
+			err = unpopulate(val, "Username", &g.Username)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", g, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type HTTPProxyConfiguration.
+func (h HTTPProxyConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "httpsProxy", h.HTTPSProxy)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type HTTPProxyConfiguration.
+func (h *HTTPProxyConfiguration) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", h, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "httpsProxy":
+			err = unpopulate(val, "HTTPSProxy", &h.HTTPSProxy)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", h, err)
 		}
 	}
 	return nil
@@ -612,6 +787,100 @@ func (h *HardwareProfileUpdate) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type InfrastructureProfile.
+func (i InfrastructureProfile) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "biosGuid", i.BiosGUID)
+	populate(objectMap, "checkpointType", i.CheckpointType)
+	populate(objectMap, "checkpoints", i.Checkpoints)
+	populate(objectMap, "cloudId", i.CloudID)
+	populate(objectMap, "generation", i.Generation)
+	populate(objectMap, "inventoryItemId", i.InventoryItemID)
+	populate(objectMap, "lastRestoredVMCheckpoint", i.LastRestoredVMCheckpoint)
+	populate(objectMap, "templateId", i.TemplateID)
+	populate(objectMap, "uuid", i.UUID)
+	populate(objectMap, "vmName", i.VMName)
+	populate(objectMap, "vmmServerId", i.VmmServerID)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type InfrastructureProfile.
+func (i *InfrastructureProfile) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", i, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "biosGuid":
+			err = unpopulate(val, "BiosGUID", &i.BiosGUID)
+			delete(rawMsg, key)
+		case "checkpointType":
+			err = unpopulate(val, "CheckpointType", &i.CheckpointType)
+			delete(rawMsg, key)
+		case "checkpoints":
+			err = unpopulate(val, "Checkpoints", &i.Checkpoints)
+			delete(rawMsg, key)
+		case "cloudId":
+			err = unpopulate(val, "CloudID", &i.CloudID)
+			delete(rawMsg, key)
+		case "generation":
+			err = unpopulate(val, "Generation", &i.Generation)
+			delete(rawMsg, key)
+		case "inventoryItemId":
+			err = unpopulate(val, "InventoryItemID", &i.InventoryItemID)
+			delete(rawMsg, key)
+		case "lastRestoredVMCheckpoint":
+			err = unpopulate(val, "LastRestoredVMCheckpoint", &i.LastRestoredVMCheckpoint)
+			delete(rawMsg, key)
+		case "templateId":
+			err = unpopulate(val, "TemplateID", &i.TemplateID)
+			delete(rawMsg, key)
+		case "uuid":
+			err = unpopulate(val, "UUID", &i.UUID)
+			delete(rawMsg, key)
+		case "vmName":
+			err = unpopulate(val, "VMName", &i.VMName)
+			delete(rawMsg, key)
+		case "vmmServerId":
+			err = unpopulate(val, "VmmServerID", &i.VmmServerID)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", i, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type InfrastructureProfileUpdate.
+func (i InfrastructureProfileUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "checkpointType", i.CheckpointType)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type InfrastructureProfileUpdate.
+func (i *InfrastructureProfileUpdate) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", i, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "checkpointType":
+			err = unpopulate(val, "CheckpointType", &i.CheckpointType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", i, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type InventoryItem.
 func (i InventoryItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -690,6 +959,37 @@ func (i *InventoryItemDetails) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type InventoryItemListResult.
+func (i InventoryItemListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "nextLink", i.NextLink)
+	populate(objectMap, "value", i.Value)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type InventoryItemListResult.
+func (i *InventoryItemListResult) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", i, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "nextLink":
+			err = unpopulate(val, "NextLink", &i.NextLink)
+			delete(rawMsg, key)
+		case "value":
+			err = unpopulate(val, "Value", &i.Value)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", i, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type InventoryItemProperties.
 func (i InventoryItemProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -733,39 +1033,8 @@ func (i *InventoryItemProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type InventoryItemsList.
-func (i InventoryItemsList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "nextLink", i.NextLink)
-	populate(objectMap, "value", i.Value)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InventoryItemsList.
-func (i *InventoryItemsList) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", i, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "nextLink":
-			err = unpopulate(val, "NextLink", &i.NextLink)
-			delete(rawMsg, key)
-		case "value":
-			err = unpopulate(val, "Value", &i.Value)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", i, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type NetworkInterfaces.
-func (n NetworkInterfaces) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type NetworkInterface.
+func (n NetworkInterface) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "displayName", n.DisplayName)
 	populate(objectMap, "ipv4AddressType", n.IPv4AddressType)
@@ -781,8 +1050,8 @@ func (n NetworkInterfaces) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type NetworkInterfaces.
-func (n *NetworkInterfaces) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type NetworkInterface.
+func (n *NetworkInterface) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", n, err)
@@ -831,8 +1100,8 @@ func (n *NetworkInterfaces) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type NetworkInterfacesUpdate.
-func (n NetworkInterfacesUpdate) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type NetworkInterfaceUpdate.
+func (n NetworkInterfaceUpdate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "ipv4AddressType", n.IPv4AddressType)
 	populate(objectMap, "ipv6AddressType", n.IPv6AddressType)
@@ -844,8 +1113,8 @@ func (n NetworkInterfacesUpdate) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type NetworkInterfacesUpdate.
-func (n *NetworkInterfacesUpdate) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type NetworkInterfaceUpdate.
+func (n *NetworkInterfaceUpdate) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", n, err)
@@ -936,18 +1205,132 @@ func (n *NetworkProfileUpdate) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OsProfile.
-func (o OsProfile) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type Operation.
+func (o Operation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "adminPassword", o.AdminPassword)
-	populate(objectMap, "computerName", o.ComputerName)
-	populate(objectMap, "osName", o.OSName)
-	populate(objectMap, "osType", o.OSType)
+	populate(objectMap, "actionType", o.ActionType)
+	populate(objectMap, "display", o.Display)
+	populate(objectMap, "isDataAction", o.IsDataAction)
+	populate(objectMap, "name", o.Name)
+	populate(objectMap, "origin", o.Origin)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type OsProfile.
-func (o *OsProfile) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type Operation.
+func (o *Operation) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", o, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "actionType":
+			err = unpopulate(val, "ActionType", &o.ActionType)
+			delete(rawMsg, key)
+		case "display":
+			err = unpopulate(val, "Display", &o.Display)
+			delete(rawMsg, key)
+		case "isDataAction":
+			err = unpopulate(val, "IsDataAction", &o.IsDataAction)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, "Name", &o.Name)
+			delete(rawMsg, key)
+		case "origin":
+			err = unpopulate(val, "Origin", &o.Origin)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", o, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type OperationDisplay.
+func (o OperationDisplay) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "description", o.Description)
+	populate(objectMap, "operation", o.Operation)
+	populate(objectMap, "provider", o.Provider)
+	populate(objectMap, "resource", o.Resource)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type OperationDisplay.
+func (o *OperationDisplay) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", o, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "description":
+			err = unpopulate(val, "Description", &o.Description)
+			delete(rawMsg, key)
+		case "operation":
+			err = unpopulate(val, "Operation", &o.Operation)
+			delete(rawMsg, key)
+		case "provider":
+			err = unpopulate(val, "Provider", &o.Provider)
+			delete(rawMsg, key)
+		case "resource":
+			err = unpopulate(val, "Resource", &o.Resource)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", o, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
+func (o OperationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "nextLink", o.NextLink)
+	populate(objectMap, "value", o.Value)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type OperationListResult.
+func (o *OperationListResult) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", o, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "nextLink":
+			err = unpopulate(val, "NextLink", &o.NextLink)
+			delete(rawMsg, key)
+		case "value":
+			err = unpopulate(val, "Value", &o.Value)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", o, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type OsProfileForVMInstance.
+func (o OsProfileForVMInstance) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "adminPassword", o.AdminPassword)
+	populate(objectMap, "computerName", o.ComputerName)
+	populate(objectMap, "osSku", o.OSSKU)
+	populate(objectMap, "osType", o.OSType)
+	populate(objectMap, "osVersion", o.OSVersion)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type OsProfileForVMInstance.
+func (o *OsProfileForVMInstance) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", o, err)
@@ -961,217 +1344,18 @@ func (o *OsProfile) UnmarshalJSON(data []byte) error {
 		case "computerName":
 			err = unpopulate(val, "ComputerName", &o.ComputerName)
 			delete(rawMsg, key)
-		case "osName":
-			err = unpopulate(val, "OSName", &o.OSName)
+		case "osSku":
+			err = unpopulate(val, "OSSKU", &o.OSSKU)
 			delete(rawMsg, key)
 		case "osType":
 			err = unpopulate(val, "OSType", &o.OSType)
 			delete(rawMsg, key)
+		case "osVersion":
+			err = unpopulate(val, "OSVersion", &o.OSVersion)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", o, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ProxyResource.
-func (p ProxyResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "id", p.ID)
-	populate(objectMap, "name", p.Name)
-	populate(objectMap, "type", p.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ProxyResource.
-func (p *ProxyResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", p, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, "ID", &p.ID)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, "Name", &p.Name)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, "Type", &p.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", p, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Resource.
-func (r *Resource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, "ID", &r.ID)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, "Name", &r.Name)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, "Type", &r.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", r, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ResourcePatch.
-func (r ResourcePatch) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "tags", r.Tags)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ResourcePatch.
-func (r *ResourcePatch) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "tags":
-			err = unpopulate(val, "Tags", &r.Tags)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", r, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ResourceProviderOperation.
-func (r ResourceProviderOperation) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "display", r.Display)
-	populate(objectMap, "isDataAction", r.IsDataAction)
-	populate(objectMap, "name", r.Name)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ResourceProviderOperation.
-func (r *ResourceProviderOperation) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "display":
-			err = unpopulate(val, "Display", &r.Display)
-			delete(rawMsg, key)
-		case "isDataAction":
-			err = unpopulate(val, "IsDataAction", &r.IsDataAction)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, "Name", &r.Name)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", r, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ResourceProviderOperationDisplay.
-func (r ResourceProviderOperationDisplay) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "description", r.Description)
-	populate(objectMap, "operation", r.Operation)
-	populate(objectMap, "provider", r.Provider)
-	populate(objectMap, "resource", r.Resource)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ResourceProviderOperationDisplay.
-func (r *ResourceProviderOperationDisplay) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "description":
-			err = unpopulate(val, "Description", &r.Description)
-			delete(rawMsg, key)
-		case "operation":
-			err = unpopulate(val, "Operation", &r.Operation)
-			delete(rawMsg, key)
-		case "provider":
-			err = unpopulate(val, "Provider", &r.Provider)
-			delete(rawMsg, key)
-		case "resource":
-			err = unpopulate(val, "Resource", &r.Resource)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", r, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ResourceProviderOperationList.
-func (r ResourceProviderOperationList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ResourceProviderOperationList.
-func (r *ResourceProviderOperationList) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "nextLink":
-			err = unpopulate(val, "NextLink", &r.NextLink)
-			delete(rawMsg, key)
-		case "value":
-			err = unpopulate(val, "Value", &r.Value)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", r, err)
 		}
 	}
 	return nil
@@ -1258,8 +1442,8 @@ func (s *StorageProfileUpdate) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type StorageQoSPolicy.
-func (s StorageQoSPolicy) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type StorageQosPolicy.
+func (s StorageQosPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "bandwidthLimit", s.BandwidthLimit)
 	populate(objectMap, "id", s.ID)
@@ -1270,8 +1454,8 @@ func (s StorageQoSPolicy) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type StorageQoSPolicy.
-func (s *StorageQoSPolicy) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type StorageQosPolicy.
+func (s *StorageQosPolicy) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", s, err)
@@ -1305,16 +1489,16 @@ func (s *StorageQoSPolicy) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type StorageQoSPolicyDetails.
-func (s StorageQoSPolicyDetails) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type StorageQosPolicyDetails.
+func (s StorageQosPolicyDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "id", s.ID)
 	populate(objectMap, "name", s.Name)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type StorageQoSPolicyDetails.
-func (s *StorageQoSPolicyDetails) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type StorageQosPolicyDetails.
+func (s *StorageQosPolicyDetails) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", s, err)
@@ -1383,22 +1567,19 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type VMMServer.
-func (v VMMServer) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type VMInstanceHybridIdentityMetadata.
+func (v VMInstanceHybridIdentityMetadata) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "extendedLocation", v.ExtendedLocation)
 	populate(objectMap, "id", v.ID)
-	populate(objectMap, "location", v.Location)
 	populate(objectMap, "name", v.Name)
 	populate(objectMap, "properties", v.Properties)
 	populate(objectMap, "systemData", v.SystemData)
-	populate(objectMap, "tags", v.Tags)
 	populate(objectMap, "type", v.Type)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type VMMServer.
-func (v *VMMServer) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type VMInstanceHybridIdentityMetadata.
+func (v *VMInstanceHybridIdentityMetadata) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", v, err)
@@ -1406,14 +1587,8 @@ func (v *VMMServer) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "extendedLocation":
-			err = unpopulate(val, "ExtendedLocation", &v.ExtendedLocation)
-			delete(rawMsg, key)
 		case "id":
 			err = unpopulate(val, "ID", &v.ID)
-			delete(rawMsg, key)
-		case "location":
-			err = unpopulate(val, "Location", &v.Location)
 			delete(rawMsg, key)
 		case "name":
 			err = unpopulate(val, "Name", &v.Name)
@@ -1423,9 +1598,6 @@ func (v *VMMServer) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "systemData":
 			err = unpopulate(val, "SystemData", &v.SystemData)
-			delete(rawMsg, key)
-		case "tags":
-			err = unpopulate(val, "Tags", &v.Tags)
 			delete(rawMsg, key)
 		case "type":
 			err = unpopulate(val, "Type", &v.Type)
@@ -1438,16 +1610,16 @@ func (v *VMMServer) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type VMMServerListResult.
-func (v VMMServerListResult) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type VMInstanceHybridIdentityMetadataListResult.
+func (v VMInstanceHybridIdentityMetadataListResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "nextLink", v.NextLink)
 	populate(objectMap, "value", v.Value)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type VMMServerListResult.
-func (v *VMMServerListResult) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type VMInstanceHybridIdentityMetadataListResult.
+func (v *VMInstanceHybridIdentityMetadataListResult) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", v, err)
@@ -1469,22 +1641,17 @@ func (v *VMMServerListResult) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type VMMServerProperties.
-func (v VMMServerProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type VMInstanceHybridIdentityMetadataProperties.
+func (v VMInstanceHybridIdentityMetadataProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "connectionStatus", v.ConnectionStatus)
-	populate(objectMap, "credentials", v.Credentials)
-	populate(objectMap, "errorMessage", v.ErrorMessage)
-	populate(objectMap, "fqdn", v.Fqdn)
-	populate(objectMap, "port", v.Port)
 	populate(objectMap, "provisioningState", v.ProvisioningState)
-	populate(objectMap, "uuid", v.UUID)
-	populate(objectMap, "version", v.Version)
+	populate(objectMap, "publicKey", v.PublicKey)
+	populate(objectMap, "resourceUid", v.ResourceUID)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type VMMServerProperties.
-func (v *VMMServerProperties) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type VMInstanceHybridIdentityMetadataProperties.
+func (v *VMInstanceHybridIdentityMetadataProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", v, err)
@@ -1492,60 +1659,14 @@ func (v *VMMServerProperties) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "connectionStatus":
-			err = unpopulate(val, "ConnectionStatus", &v.ConnectionStatus)
-			delete(rawMsg, key)
-		case "credentials":
-			err = unpopulate(val, "Credentials", &v.Credentials)
-			delete(rawMsg, key)
-		case "errorMessage":
-			err = unpopulate(val, "ErrorMessage", &v.ErrorMessage)
-			delete(rawMsg, key)
-		case "fqdn":
-			err = unpopulate(val, "Fqdn", &v.Fqdn)
-			delete(rawMsg, key)
-		case "port":
-			err = unpopulate(val, "Port", &v.Port)
-			delete(rawMsg, key)
 		case "provisioningState":
 			err = unpopulate(val, "ProvisioningState", &v.ProvisioningState)
 			delete(rawMsg, key)
-		case "uuid":
-			err = unpopulate(val, "UUID", &v.UUID)
+		case "publicKey":
+			err = unpopulate(val, "PublicKey", &v.PublicKey)
 			delete(rawMsg, key)
-		case "version":
-			err = unpopulate(val, "Version", &v.Version)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", v, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VMMServerPropertiesCredentials.
-func (v VMMServerPropertiesCredentials) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "password", v.Password)
-	populate(objectMap, "username", v.Username)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VMMServerPropertiesCredentials.
-func (v *VMMServerPropertiesCredentials) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", v, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "password":
-			err = unpopulate(val, "Password", &v.Password)
-			delete(rawMsg, key)
-		case "username":
-			err = unpopulate(val, "Username", &v.Username)
+		case "resourceUid":
+			err = unpopulate(val, "ResourceUID", &v.ResourceUID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1567,7 +1688,7 @@ func (v VirtualDisk) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "lun", v.Lun)
 	populate(objectMap, "maxDiskSizeGB", v.MaxDiskSizeGB)
 	populate(objectMap, "name", v.Name)
-	populate(objectMap, "storageQoSPolicy", v.StorageQoSPolicy)
+	populate(objectMap, "storageQoSPolicy", v.StorageQosPolicy)
 	populate(objectMap, "templateDiskId", v.TemplateDiskID)
 	populate(objectMap, "vhdFormatType", v.VhdFormatType)
 	populate(objectMap, "vhdType", v.VhdType)
@@ -1612,7 +1733,7 @@ func (v *VirtualDisk) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Name", &v.Name)
 			delete(rawMsg, key)
 		case "storageQoSPolicy":
-			err = unpopulate(val, "StorageQoSPolicy", &v.StorageQoSPolicy)
+			err = unpopulate(val, "StorageQosPolicy", &v.StorageQosPolicy)
 			delete(rawMsg, key)
 		case "templateDiskId":
 			err = unpopulate(val, "TemplateDiskID", &v.TemplateDiskID)
@@ -1643,7 +1764,7 @@ func (v VirtualDiskUpdate) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "diskSizeGB", v.DiskSizeGB)
 	populate(objectMap, "lun", v.Lun)
 	populate(objectMap, "name", v.Name)
-	populate(objectMap, "storageQoSPolicy", v.StorageQoSPolicy)
+	populate(objectMap, "storageQoSPolicy", v.StorageQosPolicy)
 	populate(objectMap, "vhdType", v.VhdType)
 	return json.Marshal(objectMap)
 }
@@ -1676,65 +1797,10 @@ func (v *VirtualDiskUpdate) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Name", &v.Name)
 			delete(rawMsg, key)
 		case "storageQoSPolicy":
-			err = unpopulate(val, "StorageQoSPolicy", &v.StorageQoSPolicy)
+			err = unpopulate(val, "StorageQosPolicy", &v.StorageQosPolicy)
 			delete(rawMsg, key)
 		case "vhdType":
 			err = unpopulate(val, "VhdType", &v.VhdType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", v, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VirtualMachine.
-func (v VirtualMachine) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "extendedLocation", v.ExtendedLocation)
-	populate(objectMap, "id", v.ID)
-	populate(objectMap, "location", v.Location)
-	populate(objectMap, "name", v.Name)
-	populate(objectMap, "properties", v.Properties)
-	populate(objectMap, "systemData", v.SystemData)
-	populate(objectMap, "tags", v.Tags)
-	populate(objectMap, "type", v.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualMachine.
-func (v *VirtualMachine) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", v, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "extendedLocation":
-			err = unpopulate(val, "ExtendedLocation", &v.ExtendedLocation)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, "ID", &v.ID)
-			delete(rawMsg, key)
-		case "location":
-			err = unpopulate(val, "Location", &v.Location)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, "Name", &v.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, "Properties", &v.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, "SystemData", &v.SystemData)
-			delete(rawMsg, key)
-		case "tags":
-			err = unpopulate(val, "Tags", &v.Tags)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, "Type", &v.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1802,24 +1868,20 @@ func (v *VirtualMachineDeleteCheckpoint) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type VirtualMachineInventoryItem.
-func (v VirtualMachineInventoryItem) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type VirtualMachineInstance.
+func (v VirtualMachineInstance) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "cloud", v.Cloud)
-	populate(objectMap, "ipAddresses", v.IPAddresses)
-	populate(objectMap, "inventoryItemName", v.InventoryItemName)
-	objectMap["inventoryType"] = InventoryTypeVirtualMachine
-	populate(objectMap, "managedResourceId", v.ManagedResourceID)
-	populate(objectMap, "osName", v.OSName)
-	populate(objectMap, "osType", v.OSType)
-	populate(objectMap, "powerState", v.PowerState)
-	populate(objectMap, "provisioningState", v.ProvisioningState)
-	populate(objectMap, "uuid", v.UUID)
+	populate(objectMap, "extendedLocation", v.ExtendedLocation)
+	populate(objectMap, "id", v.ID)
+	populate(objectMap, "name", v.Name)
+	populate(objectMap, "properties", v.Properties)
+	populate(objectMap, "systemData", v.SystemData)
+	populate(objectMap, "type", v.Type)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualMachineInventoryItem.
-func (v *VirtualMachineInventoryItem) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualMachineInstance.
+func (v *VirtualMachineInstance) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", v, err)
@@ -1827,35 +1889,23 @@ func (v *VirtualMachineInventoryItem) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "cloud":
-			err = unpopulate(val, "Cloud", &v.Cloud)
+		case "extendedLocation":
+			err = unpopulate(val, "ExtendedLocation", &v.ExtendedLocation)
 			delete(rawMsg, key)
-		case "ipAddresses":
-			err = unpopulate(val, "IPAddresses", &v.IPAddresses)
+		case "id":
+			err = unpopulate(val, "ID", &v.ID)
 			delete(rawMsg, key)
-		case "inventoryItemName":
-			err = unpopulate(val, "InventoryItemName", &v.InventoryItemName)
+		case "name":
+			err = unpopulate(val, "Name", &v.Name)
 			delete(rawMsg, key)
-		case "inventoryType":
-			err = unpopulate(val, "InventoryType", &v.InventoryType)
+		case "properties":
+			err = unpopulate(val, "Properties", &v.Properties)
 			delete(rawMsg, key)
-		case "managedResourceId":
-			err = unpopulate(val, "ManagedResourceID", &v.ManagedResourceID)
+		case "systemData":
+			err = unpopulate(val, "SystemData", &v.SystemData)
 			delete(rawMsg, key)
-		case "osName":
-			err = unpopulate(val, "OSName", &v.OSName)
-			delete(rawMsg, key)
-		case "osType":
-			err = unpopulate(val, "OSType", &v.OSType)
-			delete(rawMsg, key)
-		case "powerState":
-			err = unpopulate(val, "PowerState", &v.PowerState)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, "ProvisioningState", &v.ProvisioningState)
-			delete(rawMsg, key)
-		case "uuid":
-			err = unpopulate(val, "UUID", &v.UUID)
+		case "type":
+			err = unpopulate(val, "Type", &v.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1865,16 +1915,16 @@ func (v *VirtualMachineInventoryItem) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type VirtualMachineListResult.
-func (v VirtualMachineListResult) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type VirtualMachineInstanceListResult.
+func (v VirtualMachineInstanceListResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "nextLink", v.NextLink)
 	populate(objectMap, "value", v.Value)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualMachineListResult.
-func (v *VirtualMachineListResult) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualMachineInstanceListResult.
+func (v *VirtualMachineInstanceListResult) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", v, err)
@@ -1896,30 +1946,22 @@ func (v *VirtualMachineListResult) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type VirtualMachineProperties.
-func (v VirtualMachineProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type VirtualMachineInstanceProperties.
+func (v VirtualMachineInstanceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "availabilitySets", v.AvailabilitySets)
-	populate(objectMap, "checkpointType", v.CheckpointType)
-	populate(objectMap, "checkpoints", v.Checkpoints)
-	populate(objectMap, "cloudId", v.CloudID)
-	populate(objectMap, "generation", v.Generation)
 	populate(objectMap, "hardwareProfile", v.HardwareProfile)
-	populate(objectMap, "inventoryItemId", v.InventoryItemID)
+	populate(objectMap, "infrastructureProfile", v.InfrastructureProfile)
 	populate(objectMap, "networkProfile", v.NetworkProfile)
 	populate(objectMap, "osProfile", v.OSProfile)
 	populate(objectMap, "powerState", v.PowerState)
 	populate(objectMap, "provisioningState", v.ProvisioningState)
 	populate(objectMap, "storageProfile", v.StorageProfile)
-	populate(objectMap, "templateId", v.TemplateID)
-	populate(objectMap, "uuid", v.UUID)
-	populate(objectMap, "vmName", v.VMName)
-	populate(objectMap, "vmmServerId", v.VmmServerID)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualMachineProperties.
-func (v *VirtualMachineProperties) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualMachineInstanceProperties.
+func (v *VirtualMachineInstanceProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", v, err)
@@ -1930,23 +1972,11 @@ func (v *VirtualMachineProperties) UnmarshalJSON(data []byte) error {
 		case "availabilitySets":
 			err = unpopulate(val, "AvailabilitySets", &v.AvailabilitySets)
 			delete(rawMsg, key)
-		case "checkpointType":
-			err = unpopulate(val, "CheckpointType", &v.CheckpointType)
-			delete(rawMsg, key)
-		case "checkpoints":
-			err = unpopulate(val, "Checkpoints", &v.Checkpoints)
-			delete(rawMsg, key)
-		case "cloudId":
-			err = unpopulate(val, "CloudID", &v.CloudID)
-			delete(rawMsg, key)
-		case "generation":
-			err = unpopulate(val, "Generation", &v.Generation)
-			delete(rawMsg, key)
 		case "hardwareProfile":
 			err = unpopulate(val, "HardwareProfile", &v.HardwareProfile)
 			delete(rawMsg, key)
-		case "inventoryItemId":
-			err = unpopulate(val, "InventoryItemID", &v.InventoryItemID)
+		case "infrastructureProfile":
+			err = unpopulate(val, "InfrastructureProfile", &v.InfrastructureProfile)
 			delete(rawMsg, key)
 		case "networkProfile":
 			err = unpopulate(val, "NetworkProfile", &v.NetworkProfile)
@@ -1963,17 +1993,150 @@ func (v *VirtualMachineProperties) UnmarshalJSON(data []byte) error {
 		case "storageProfile":
 			err = unpopulate(val, "StorageProfile", &v.StorageProfile)
 			delete(rawMsg, key)
-		case "templateId":
-			err = unpopulate(val, "TemplateID", &v.TemplateID)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", v, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type VirtualMachineInstanceUpdate.
+func (v VirtualMachineInstanceUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "properties", v.Properties)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualMachineInstanceUpdate.
+func (v *VirtualMachineInstanceUpdate) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", v, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "properties":
+			err = unpopulate(val, "Properties", &v.Properties)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", v, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type VirtualMachineInstanceUpdateProperties.
+func (v VirtualMachineInstanceUpdateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "availabilitySets", v.AvailabilitySets)
+	populate(objectMap, "hardwareProfile", v.HardwareProfile)
+	populate(objectMap, "infrastructureProfile", v.InfrastructureProfile)
+	populate(objectMap, "networkProfile", v.NetworkProfile)
+	populate(objectMap, "storageProfile", v.StorageProfile)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualMachineInstanceUpdateProperties.
+func (v *VirtualMachineInstanceUpdateProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", v, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "availabilitySets":
+			err = unpopulate(val, "AvailabilitySets", &v.AvailabilitySets)
+			delete(rawMsg, key)
+		case "hardwareProfile":
+			err = unpopulate(val, "HardwareProfile", &v.HardwareProfile)
+			delete(rawMsg, key)
+		case "infrastructureProfile":
+			err = unpopulate(val, "InfrastructureProfile", &v.InfrastructureProfile)
+			delete(rawMsg, key)
+		case "networkProfile":
+			err = unpopulate(val, "NetworkProfile", &v.NetworkProfile)
+			delete(rawMsg, key)
+		case "storageProfile":
+			err = unpopulate(val, "StorageProfile", &v.StorageProfile)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", v, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type VirtualMachineInventoryItem.
+func (v VirtualMachineInventoryItem) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "biosGuid", v.BiosGUID)
+	populate(objectMap, "cloud", v.Cloud)
+	populate(objectMap, "ipAddresses", v.IPAddresses)
+	populate(objectMap, "inventoryItemName", v.InventoryItemName)
+	objectMap["inventoryType"] = InventoryTypeVirtualMachine
+	populate(objectMap, "managedMachineResourceId", v.ManagedMachineResourceID)
+	populate(objectMap, "managedResourceId", v.ManagedResourceID)
+	populate(objectMap, "osName", v.OSName)
+	populate(objectMap, "osType", v.OSType)
+	populate(objectMap, "osVersion", v.OSVersion)
+	populate(objectMap, "powerState", v.PowerState)
+	populate(objectMap, "provisioningState", v.ProvisioningState)
+	populate(objectMap, "uuid", v.UUID)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualMachineInventoryItem.
+func (v *VirtualMachineInventoryItem) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", v, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "biosGuid":
+			err = unpopulate(val, "BiosGUID", &v.BiosGUID)
+			delete(rawMsg, key)
+		case "cloud":
+			err = unpopulate(val, "Cloud", &v.Cloud)
+			delete(rawMsg, key)
+		case "ipAddresses":
+			err = unpopulate(val, "IPAddresses", &v.IPAddresses)
+			delete(rawMsg, key)
+		case "inventoryItemName":
+			err = unpopulate(val, "InventoryItemName", &v.InventoryItemName)
+			delete(rawMsg, key)
+		case "inventoryType":
+			err = unpopulate(val, "InventoryType", &v.InventoryType)
+			delete(rawMsg, key)
+		case "managedMachineResourceId":
+			err = unpopulate(val, "ManagedMachineResourceID", &v.ManagedMachineResourceID)
+			delete(rawMsg, key)
+		case "managedResourceId":
+			err = unpopulate(val, "ManagedResourceID", &v.ManagedResourceID)
+			delete(rawMsg, key)
+		case "osName":
+			err = unpopulate(val, "OSName", &v.OSName)
+			delete(rawMsg, key)
+		case "osType":
+			err = unpopulate(val, "OSType", &v.OSType)
+			delete(rawMsg, key)
+		case "osVersion":
+			err = unpopulate(val, "OSVersion", &v.OSVersion)
+			delete(rawMsg, key)
+		case "powerState":
+			err = unpopulate(val, "PowerState", &v.PowerState)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, "ProvisioningState", &v.ProvisioningState)
 			delete(rawMsg, key)
 		case "uuid":
 			err = unpopulate(val, "UUID", &v.UUID)
-			delete(rawMsg, key)
-		case "vmName":
-			err = unpopulate(val, "VMName", &v.VMName)
-			delete(rawMsg, key)
-		case "vmmServerId":
-			err = unpopulate(val, "VmmServerID", &v.VmmServerID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -2250,16 +2413,15 @@ func (v *VirtualMachineTemplateProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type VirtualMachineUpdate.
-func (v VirtualMachineUpdate) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type VirtualMachineTemplateTagsUpdate.
+func (v VirtualMachineTemplateTagsUpdate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "properties", v.Properties)
 	populate(objectMap, "tags", v.Tags)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualMachineUpdate.
-func (v *VirtualMachineUpdate) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualMachineTemplateTagsUpdate.
+func (v *VirtualMachineTemplateTagsUpdate) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", v, err)
@@ -2267,50 +2429,8 @@ func (v *VirtualMachineUpdate) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "properties":
-			err = unpopulate(val, "Properties", &v.Properties)
-			delete(rawMsg, key)
 		case "tags":
 			err = unpopulate(val, "Tags", &v.Tags)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", v, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VirtualMachineUpdateProperties.
-func (v VirtualMachineUpdateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "availabilitySets", v.AvailabilitySets)
-	populate(objectMap, "hardwareProfile", v.HardwareProfile)
-	populate(objectMap, "networkProfile", v.NetworkProfile)
-	populate(objectMap, "storageProfile", v.StorageProfile)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualMachineUpdateProperties.
-func (v *VirtualMachineUpdateProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", v, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "availabilitySets":
-			err = unpopulate(val, "AvailabilitySets", &v.AvailabilitySets)
-			delete(rawMsg, key)
-		case "hardwareProfile":
-			err = unpopulate(val, "HardwareProfile", &v.HardwareProfile)
-			delete(rawMsg, key)
-		case "networkProfile":
-			err = unpopulate(val, "NetworkProfile", &v.NetworkProfile)
-			delete(rawMsg, key)
-		case "storageProfile":
-			err = unpopulate(val, "StorageProfile", &v.StorageProfile)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -2492,6 +2612,232 @@ func (v *VirtualNetworkProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type VirtualNetworkTagsUpdate.
+func (v VirtualNetworkTagsUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "tags", v.Tags)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualNetworkTagsUpdate.
+func (v *VirtualNetworkTagsUpdate) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", v, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "tags":
+			err = unpopulate(val, "Tags", &v.Tags)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", v, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type VmmCredential.
+func (v VmmCredential) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "password", v.Password)
+	populate(objectMap, "username", v.Username)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type VmmCredential.
+func (v *VmmCredential) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", v, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "password":
+			err = unpopulate(val, "Password", &v.Password)
+			delete(rawMsg, key)
+		case "username":
+			err = unpopulate(val, "Username", &v.Username)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", v, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type VmmServer.
+func (v VmmServer) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "extendedLocation", v.ExtendedLocation)
+	populate(objectMap, "id", v.ID)
+	populate(objectMap, "location", v.Location)
+	populate(objectMap, "name", v.Name)
+	populate(objectMap, "properties", v.Properties)
+	populate(objectMap, "systemData", v.SystemData)
+	populate(objectMap, "tags", v.Tags)
+	populate(objectMap, "type", v.Type)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type VmmServer.
+func (v *VmmServer) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", v, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "extendedLocation":
+			err = unpopulate(val, "ExtendedLocation", &v.ExtendedLocation)
+			delete(rawMsg, key)
+		case "id":
+			err = unpopulate(val, "ID", &v.ID)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, "Location", &v.Location)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, "Name", &v.Name)
+			delete(rawMsg, key)
+		case "properties":
+			err = unpopulate(val, "Properties", &v.Properties)
+			delete(rawMsg, key)
+		case "systemData":
+			err = unpopulate(val, "SystemData", &v.SystemData)
+			delete(rawMsg, key)
+		case "tags":
+			err = unpopulate(val, "Tags", &v.Tags)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, "Type", &v.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", v, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type VmmServerListResult.
+func (v VmmServerListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "nextLink", v.NextLink)
+	populate(objectMap, "value", v.Value)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type VmmServerListResult.
+func (v *VmmServerListResult) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", v, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "nextLink":
+			err = unpopulate(val, "NextLink", &v.NextLink)
+			delete(rawMsg, key)
+		case "value":
+			err = unpopulate(val, "Value", &v.Value)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", v, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type VmmServerProperties.
+func (v VmmServerProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "connectionStatus", v.ConnectionStatus)
+	populate(objectMap, "credentials", v.Credentials)
+	populate(objectMap, "errorMessage", v.ErrorMessage)
+	populate(objectMap, "fqdn", v.Fqdn)
+	populate(objectMap, "port", v.Port)
+	populate(objectMap, "provisioningState", v.ProvisioningState)
+	populate(objectMap, "uuid", v.UUID)
+	populate(objectMap, "version", v.Version)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type VmmServerProperties.
+func (v *VmmServerProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", v, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "connectionStatus":
+			err = unpopulate(val, "ConnectionStatus", &v.ConnectionStatus)
+			delete(rawMsg, key)
+		case "credentials":
+			err = unpopulate(val, "Credentials", &v.Credentials)
+			delete(rawMsg, key)
+		case "errorMessage":
+			err = unpopulate(val, "ErrorMessage", &v.ErrorMessage)
+			delete(rawMsg, key)
+		case "fqdn":
+			err = unpopulate(val, "Fqdn", &v.Fqdn)
+			delete(rawMsg, key)
+		case "port":
+			err = unpopulate(val, "Port", &v.Port)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, "ProvisioningState", &v.ProvisioningState)
+			delete(rawMsg, key)
+		case "uuid":
+			err = unpopulate(val, "UUID", &v.UUID)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &v.Version)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", v, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type VmmServerTagsUpdate.
+func (v VmmServerTagsUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "tags", v.Tags)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type VmmServerTagsUpdate.
+func (v *VmmServerTagsUpdate) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", v, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "tags":
+			err = unpopulate(val, "Tags", &v.Tags)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", v, err)
+		}
+	}
+	return nil
+}
+
 func populate(m map[string]any, k string, v any) {
 	if v == nil {
 		return
@@ -2503,7 +2849,7 @@ func populate(m map[string]any, k string, v any) {
 }
 
 func unpopulate(data json.RawMessage, fn string, v any) error {
-	if data == nil {
+	if data == nil || string(data) == "null" {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {

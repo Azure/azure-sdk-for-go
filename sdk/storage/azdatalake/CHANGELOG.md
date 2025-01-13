@@ -1,14 +1,52 @@
 # Release History
 
-## 1.1.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.3.0-beta.1 (2024-10-23)
 
 ### Other Changes
+* Updated `azcore` version to `1.16.0`
+* Updated `azblob` version to `v1.5.0-beta.1`
+* Updated `azidentity` version to `1.8.0`
+
+## 1.2.1 (2024-09-23)
+
+### Features Added
+* Upgraded service version to `2024-08-04`.
+
+## 1.2.1-beta.1 (2024-08-30)
+
+### Features Added
+* Upgraded service version to `2024-08-04`.
+
+### Other Changes
+* Updated `azcore` version to `1.14.0`
+* Updated `azblob` version to `1.4.1-beta.1`
+
+## 1.2.0 (2024-07-19)
+
+### Other Changes
+* Updated `azblob` version to `1.4.0`
+* Updated `azcore` version to `1.13.0`
+
+## 1.2.0-beta.1 (2024-06-14)
+
+### Features Added
+* Added ACL response headers in GetBlobProperties API for Files.
+* Updated service version to `2024-05-04`
+
+### Other Changes
+* Updated `azidentity` version to `1.6.0`
+* Updated `azcore` version to `1.12.0`
+* Updated `azblob` version to `v1.4.0-beta.1`
+
+## 1.1.3 (2024-06-13)
+
+### Bugs Fixed
+* Fixed an issue where blob etag casing is different in the Path List API Spec is different from backend. Fixes [#29233](https://github.com/Azure/azure-rest-api-specs/issues/29233)
+
+## 1.1.2 (2024-05-16)
+
+### Other Changes
+* Updated `azidentity` version to `1.5.2`
 
 ## 1.1.2-beta.1 (2024-04-10)
 

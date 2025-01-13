@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.1 (Unreleased)
+## 1.1.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,16 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0 (2024-11-06)
+
+### Other Changes
+* Upgraded dependencies
+
+## 1.1.0-beta.1 (2024-09-18)
+
+### Features Added
+* Added batch query functionality
 
 ## 1.0.0 (2024-04-15)
 

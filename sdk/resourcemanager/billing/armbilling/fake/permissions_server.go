@@ -9,20 +9,46 @@
 package fake
 
 import (
+	"context"
 	"errors"
 	"fmt"
+	"net/http"
+	"net/url"
+	"regexp"
+
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
-	"net/http"
-	"net/url"
-	"regexp"
 )
 
 // PermissionsServer is a fake server for instances of the armbilling.PermissionsClient type.
 type PermissionsServer struct {
+	// CheckAccessByBillingAccount is the fake for method PermissionsClient.CheckAccessByBillingAccount
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckAccessByBillingAccount func(ctx context.Context, billingAccountName string, parameters armbilling.CheckAccessRequest, options *armbilling.PermissionsClientCheckAccessByBillingAccountOptions) (resp azfake.Responder[armbilling.PermissionsClientCheckAccessByBillingAccountResponse], errResp azfake.ErrorResponder)
+
+	// CheckAccessByBillingProfile is the fake for method PermissionsClient.CheckAccessByBillingProfile
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckAccessByBillingProfile func(ctx context.Context, billingAccountName string, billingProfileName string, parameters armbilling.CheckAccessRequest, options *armbilling.PermissionsClientCheckAccessByBillingProfileOptions) (resp azfake.Responder[armbilling.PermissionsClientCheckAccessByBillingProfileResponse], errResp azfake.ErrorResponder)
+
+	// CheckAccessByCustomer is the fake for method PermissionsClient.CheckAccessByCustomer
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckAccessByCustomer func(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, parameters armbilling.CheckAccessRequest, options *armbilling.PermissionsClientCheckAccessByCustomerOptions) (resp azfake.Responder[armbilling.PermissionsClientCheckAccessByCustomerResponse], errResp azfake.ErrorResponder)
+
+	// CheckAccessByDepartment is the fake for method PermissionsClient.CheckAccessByDepartment
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckAccessByDepartment func(ctx context.Context, billingAccountName string, departmentName string, parameters armbilling.CheckAccessRequest, options *armbilling.PermissionsClientCheckAccessByDepartmentOptions) (resp azfake.Responder[armbilling.PermissionsClientCheckAccessByDepartmentResponse], errResp azfake.ErrorResponder)
+
+	// CheckAccessByEnrollmentAccount is the fake for method PermissionsClient.CheckAccessByEnrollmentAccount
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckAccessByEnrollmentAccount func(ctx context.Context, billingAccountName string, enrollmentAccountName string, parameters armbilling.CheckAccessRequest, options *armbilling.PermissionsClientCheckAccessByEnrollmentAccountOptions) (resp azfake.Responder[armbilling.PermissionsClientCheckAccessByEnrollmentAccountResponse], errResp azfake.ErrorResponder)
+
+	// CheckAccessByInvoiceSection is the fake for method PermissionsClient.CheckAccessByInvoiceSection
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckAccessByInvoiceSection func(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, parameters armbilling.CheckAccessRequest, options *armbilling.PermissionsClientCheckAccessByInvoiceSectionOptions) (resp azfake.Responder[armbilling.PermissionsClientCheckAccessByInvoiceSectionResponse], errResp azfake.ErrorResponder)
+
 	// NewListByBillingAccountPager is the fake for method PermissionsClient.NewListByBillingAccountPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByBillingAccountPager func(billingAccountName string, options *armbilling.PermissionsClientListByBillingAccountOptions) (resp azfake.PagerResponder[armbilling.PermissionsClientListByBillingAccountResponse])
@@ -33,11 +59,23 @@ type PermissionsServer struct {
 
 	// NewListByCustomerPager is the fake for method PermissionsClient.NewListByCustomerPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByCustomerPager func(billingAccountName string, customerName string, options *armbilling.PermissionsClientListByCustomerOptions) (resp azfake.PagerResponder[armbilling.PermissionsClientListByCustomerResponse])
+	NewListByCustomerPager func(billingAccountName string, billingProfileName string, customerName string, options *armbilling.PermissionsClientListByCustomerOptions) (resp azfake.PagerResponder[armbilling.PermissionsClientListByCustomerResponse])
 
-	// NewListByInvoiceSectionsPager is the fake for method PermissionsClient.NewListByInvoiceSectionsPager
+	// NewListByCustomerAtBillingAccountPager is the fake for method PermissionsClient.NewListByCustomerAtBillingAccountPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByInvoiceSectionsPager func(billingAccountName string, billingProfileName string, invoiceSectionName string, options *armbilling.PermissionsClientListByInvoiceSectionsOptions) (resp azfake.PagerResponder[armbilling.PermissionsClientListByInvoiceSectionsResponse])
+	NewListByCustomerAtBillingAccountPager func(billingAccountName string, customerName string, options *armbilling.PermissionsClientListByCustomerAtBillingAccountOptions) (resp azfake.PagerResponder[armbilling.PermissionsClientListByCustomerAtBillingAccountResponse])
+
+	// NewListByDepartmentPager is the fake for method PermissionsClient.NewListByDepartmentPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByDepartmentPager func(billingAccountName string, departmentName string, options *armbilling.PermissionsClientListByDepartmentOptions) (resp azfake.PagerResponder[armbilling.PermissionsClientListByDepartmentResponse])
+
+	// NewListByEnrollmentAccountPager is the fake for method PermissionsClient.NewListByEnrollmentAccountPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByEnrollmentAccountPager func(billingAccountName string, enrollmentAccountName string, options *armbilling.PermissionsClientListByEnrollmentAccountOptions) (resp azfake.PagerResponder[armbilling.PermissionsClientListByEnrollmentAccountResponse])
+
+	// NewListByInvoiceSectionPager is the fake for method PermissionsClient.NewListByInvoiceSectionPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByInvoiceSectionPager func(billingAccountName string, billingProfileName string, invoiceSectionName string, options *armbilling.PermissionsClientListByInvoiceSectionOptions) (resp azfake.PagerResponder[armbilling.PermissionsClientListByInvoiceSectionResponse])
 }
 
 // NewPermissionsServerTransport creates a new instance of PermissionsServerTransport with the provided implementation.
@@ -45,22 +83,28 @@ type PermissionsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewPermissionsServerTransport(srv *PermissionsServer) *PermissionsServerTransport {
 	return &PermissionsServerTransport{
-		srv:                           srv,
-		newListByBillingAccountPager:  newTracker[azfake.PagerResponder[armbilling.PermissionsClientListByBillingAccountResponse]](),
-		newListByBillingProfilePager:  newTracker[azfake.PagerResponder[armbilling.PermissionsClientListByBillingProfileResponse]](),
-		newListByCustomerPager:        newTracker[azfake.PagerResponder[armbilling.PermissionsClientListByCustomerResponse]](),
-		newListByInvoiceSectionsPager: newTracker[azfake.PagerResponder[armbilling.PermissionsClientListByInvoiceSectionsResponse]](),
+		srv:                                    srv,
+		newListByBillingAccountPager:           newTracker[azfake.PagerResponder[armbilling.PermissionsClientListByBillingAccountResponse]](),
+		newListByBillingProfilePager:           newTracker[azfake.PagerResponder[armbilling.PermissionsClientListByBillingProfileResponse]](),
+		newListByCustomerPager:                 newTracker[azfake.PagerResponder[armbilling.PermissionsClientListByCustomerResponse]](),
+		newListByCustomerAtBillingAccountPager: newTracker[azfake.PagerResponder[armbilling.PermissionsClientListByCustomerAtBillingAccountResponse]](),
+		newListByDepartmentPager:               newTracker[azfake.PagerResponder[armbilling.PermissionsClientListByDepartmentResponse]](),
+		newListByEnrollmentAccountPager:        newTracker[azfake.PagerResponder[armbilling.PermissionsClientListByEnrollmentAccountResponse]](),
+		newListByInvoiceSectionPager:           newTracker[azfake.PagerResponder[armbilling.PermissionsClientListByInvoiceSectionResponse]](),
 	}
 }
 
 // PermissionsServerTransport connects instances of armbilling.PermissionsClient to instances of PermissionsServer.
 // Don't use this type directly, use NewPermissionsServerTransport instead.
 type PermissionsServerTransport struct {
-	srv                           *PermissionsServer
-	newListByBillingAccountPager  *tracker[azfake.PagerResponder[armbilling.PermissionsClientListByBillingAccountResponse]]
-	newListByBillingProfilePager  *tracker[azfake.PagerResponder[armbilling.PermissionsClientListByBillingProfileResponse]]
-	newListByCustomerPager        *tracker[azfake.PagerResponder[armbilling.PermissionsClientListByCustomerResponse]]
-	newListByInvoiceSectionsPager *tracker[azfake.PagerResponder[armbilling.PermissionsClientListByInvoiceSectionsResponse]]
+	srv                                    *PermissionsServer
+	newListByBillingAccountPager           *tracker[azfake.PagerResponder[armbilling.PermissionsClientListByBillingAccountResponse]]
+	newListByBillingProfilePager           *tracker[azfake.PagerResponder[armbilling.PermissionsClientListByBillingProfileResponse]]
+	newListByCustomerPager                 *tracker[azfake.PagerResponder[armbilling.PermissionsClientListByCustomerResponse]]
+	newListByCustomerAtBillingAccountPager *tracker[azfake.PagerResponder[armbilling.PermissionsClientListByCustomerAtBillingAccountResponse]]
+	newListByDepartmentPager               *tracker[azfake.PagerResponder[armbilling.PermissionsClientListByDepartmentResponse]]
+	newListByEnrollmentAccountPager        *tracker[azfake.PagerResponder[armbilling.PermissionsClientListByEnrollmentAccountResponse]]
+	newListByInvoiceSectionPager           *tracker[azfake.PagerResponder[armbilling.PermissionsClientListByInvoiceSectionResponse]]
 }
 
 // Do implements the policy.Transporter interface for PermissionsServerTransport.
@@ -75,14 +119,32 @@ func (p *PermissionsServerTransport) Do(req *http.Request) (*http.Response, erro
 	var err error
 
 	switch method {
+	case "PermissionsClient.CheckAccessByBillingAccount":
+		resp, err = p.dispatchCheckAccessByBillingAccount(req)
+	case "PermissionsClient.CheckAccessByBillingProfile":
+		resp, err = p.dispatchCheckAccessByBillingProfile(req)
+	case "PermissionsClient.CheckAccessByCustomer":
+		resp, err = p.dispatchCheckAccessByCustomer(req)
+	case "PermissionsClient.CheckAccessByDepartment":
+		resp, err = p.dispatchCheckAccessByDepartment(req)
+	case "PermissionsClient.CheckAccessByEnrollmentAccount":
+		resp, err = p.dispatchCheckAccessByEnrollmentAccount(req)
+	case "PermissionsClient.CheckAccessByInvoiceSection":
+		resp, err = p.dispatchCheckAccessByInvoiceSection(req)
 	case "PermissionsClient.NewListByBillingAccountPager":
 		resp, err = p.dispatchNewListByBillingAccountPager(req)
 	case "PermissionsClient.NewListByBillingProfilePager":
 		resp, err = p.dispatchNewListByBillingProfilePager(req)
 	case "PermissionsClient.NewListByCustomerPager":
 		resp, err = p.dispatchNewListByCustomerPager(req)
-	case "PermissionsClient.NewListByInvoiceSectionsPager":
-		resp, err = p.dispatchNewListByInvoiceSectionsPager(req)
+	case "PermissionsClient.NewListByCustomerAtBillingAccountPager":
+		resp, err = p.dispatchNewListByCustomerAtBillingAccountPager(req)
+	case "PermissionsClient.NewListByDepartmentPager":
+		resp, err = p.dispatchNewListByDepartmentPager(req)
+	case "PermissionsClient.NewListByEnrollmentAccountPager":
+		resp, err = p.dispatchNewListByEnrollmentAccountPager(req)
+	case "PermissionsClient.NewListByInvoiceSectionPager":
+		resp, err = p.dispatchNewListByInvoiceSectionPager(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
 	}
@@ -91,6 +153,232 @@ func (p *PermissionsServerTransport) Do(req *http.Request) (*http.Response, erro
 		return nil, err
 	}
 
+	return resp, nil
+}
+
+func (p *PermissionsServerTransport) dispatchCheckAccessByBillingAccount(req *http.Request) (*http.Response, error) {
+	if p.srv.CheckAccessByBillingAccount == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckAccessByBillingAccount not implemented")}
+	}
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkAccess`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 1 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armbilling.CheckAccessRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.CheckAccessByBillingAccount(req.Context(), billingAccountNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckAccessResponseArray, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (p *PermissionsServerTransport) dispatchCheckAccessByBillingProfile(req *http.Request) (*http.Response, error) {
+	if p.srv.CheckAccessByBillingProfile == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckAccessByBillingProfile not implemented")}
+	}
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkAccess`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armbilling.CheckAccessRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+	if err != nil {
+		return nil, err
+	}
+	billingProfileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingProfileName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.CheckAccessByBillingProfile(req.Context(), billingAccountNameParam, billingProfileNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckAccessResponseArray, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (p *PermissionsServerTransport) dispatchCheckAccessByCustomer(req *http.Request) (*http.Response, error) {
+	if p.srv.CheckAccessByCustomer == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckAccessByCustomer not implemented")}
+	}
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customers/(?P<customerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkAccess`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armbilling.CheckAccessRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+	if err != nil {
+		return nil, err
+	}
+	billingProfileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingProfileName")])
+	if err != nil {
+		return nil, err
+	}
+	customerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("customerName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.CheckAccessByCustomer(req.Context(), billingAccountNameParam, billingProfileNameParam, customerNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckAccessResponseArray, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (p *PermissionsServerTransport) dispatchCheckAccessByDepartment(req *http.Request) (*http.Response, error) {
+	if p.srv.CheckAccessByDepartment == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckAccessByDepartment not implemented")}
+	}
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/departments/(?P<departmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkAccess`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armbilling.CheckAccessRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+	if err != nil {
+		return nil, err
+	}
+	departmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("departmentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.CheckAccessByDepartment(req.Context(), billingAccountNameParam, departmentNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckAccessResponseArray, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (p *PermissionsServerTransport) dispatchCheckAccessByEnrollmentAccount(req *http.Request) (*http.Response, error) {
+	if p.srv.CheckAccessByEnrollmentAccount == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckAccessByEnrollmentAccount not implemented")}
+	}
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enrollmentAccounts/(?P<enrollmentAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkAccess`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armbilling.CheckAccessRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+	if err != nil {
+		return nil, err
+	}
+	enrollmentAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("enrollmentAccountName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.CheckAccessByEnrollmentAccount(req.Context(), billingAccountNameParam, enrollmentAccountNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckAccessResponseArray, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (p *PermissionsServerTransport) dispatchCheckAccessByInvoiceSection(req *http.Request) (*http.Response, error) {
+	if p.srv.CheckAccessByInvoiceSection == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckAccessByInvoiceSection not implemented")}
+	}
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/invoiceSections/(?P<invoiceSectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkAccess`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armbilling.CheckAccessRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+	if err != nil {
+		return nil, err
+	}
+	billingProfileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingProfileName")])
+	if err != nil {
+		return nil, err
+	}
+	invoiceSectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("invoiceSectionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.CheckAccessByInvoiceSection(req.Context(), billingAccountNameParam, billingProfileNameParam, invoiceSectionNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckAccessResponseArray, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 
@@ -178,13 +466,17 @@ func (p *PermissionsServerTransport) dispatchNewListByCustomerPager(req *http.Re
 	}
 	newListByCustomerPager := p.newListByCustomerPager.get(req)
 	if newListByCustomerPager == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customers/(?P<customerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingPermissions`
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customers/(?P<customerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingPermissions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		billingProfileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingProfileName")])
 		if err != nil {
 			return nil, err
 		}
@@ -192,7 +484,7 @@ func (p *PermissionsServerTransport) dispatchNewListByCustomerPager(req *http.Re
 		if err != nil {
 			return nil, err
 		}
-		resp := p.srv.NewListByCustomerPager(billingAccountNameParam, customerNameParam, nil)
+		resp := p.srv.NewListByCustomerPager(billingAccountNameParam, billingProfileNameParam, customerNameParam, nil)
 		newListByCustomerPager = &resp
 		p.newListByCustomerPager.add(req, newListByCustomerPager)
 		server.PagerResponderInjectNextLinks(newListByCustomerPager, req, func(page *armbilling.PermissionsClientListByCustomerResponse, createLink func() string) {
@@ -213,12 +505,135 @@ func (p *PermissionsServerTransport) dispatchNewListByCustomerPager(req *http.Re
 	return resp, nil
 }
 
-func (p *PermissionsServerTransport) dispatchNewListByInvoiceSectionsPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewListByInvoiceSectionsPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByInvoiceSectionsPager not implemented")}
+func (p *PermissionsServerTransport) dispatchNewListByCustomerAtBillingAccountPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListByCustomerAtBillingAccountPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByCustomerAtBillingAccountPager not implemented")}
 	}
-	newListByInvoiceSectionsPager := p.newListByInvoiceSectionsPager.get(req)
-	if newListByInvoiceSectionsPager == nil {
+	newListByCustomerAtBillingAccountPager := p.newListByCustomerAtBillingAccountPager.get(req)
+	if newListByCustomerAtBillingAccountPager == nil {
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customers/(?P<customerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingPermissions`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		customerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("customerName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := p.srv.NewListByCustomerAtBillingAccountPager(billingAccountNameParam, customerNameParam, nil)
+		newListByCustomerAtBillingAccountPager = &resp
+		p.newListByCustomerAtBillingAccountPager.add(req, newListByCustomerAtBillingAccountPager)
+		server.PagerResponderInjectNextLinks(newListByCustomerAtBillingAccountPager, req, func(page *armbilling.PermissionsClientListByCustomerAtBillingAccountResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByCustomerAtBillingAccountPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListByCustomerAtBillingAccountPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByCustomerAtBillingAccountPager) {
+		p.newListByCustomerAtBillingAccountPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (p *PermissionsServerTransport) dispatchNewListByDepartmentPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListByDepartmentPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByDepartmentPager not implemented")}
+	}
+	newListByDepartmentPager := p.newListByDepartmentPager.get(req)
+	if newListByDepartmentPager == nil {
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/departments/(?P<departmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingPermissions`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		departmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("departmentName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := p.srv.NewListByDepartmentPager(billingAccountNameParam, departmentNameParam, nil)
+		newListByDepartmentPager = &resp
+		p.newListByDepartmentPager.add(req, newListByDepartmentPager)
+		server.PagerResponderInjectNextLinks(newListByDepartmentPager, req, func(page *armbilling.PermissionsClientListByDepartmentResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByDepartmentPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListByDepartmentPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByDepartmentPager) {
+		p.newListByDepartmentPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (p *PermissionsServerTransport) dispatchNewListByEnrollmentAccountPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListByEnrollmentAccountPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByEnrollmentAccountPager not implemented")}
+	}
+	newListByEnrollmentAccountPager := p.newListByEnrollmentAccountPager.get(req)
+	if newListByEnrollmentAccountPager == nil {
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enrollmentAccounts/(?P<enrollmentAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingPermissions`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		enrollmentAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("enrollmentAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := p.srv.NewListByEnrollmentAccountPager(billingAccountNameParam, enrollmentAccountNameParam, nil)
+		newListByEnrollmentAccountPager = &resp
+		p.newListByEnrollmentAccountPager.add(req, newListByEnrollmentAccountPager)
+		server.PagerResponderInjectNextLinks(newListByEnrollmentAccountPager, req, func(page *armbilling.PermissionsClientListByEnrollmentAccountResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByEnrollmentAccountPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListByEnrollmentAccountPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByEnrollmentAccountPager) {
+		p.newListByEnrollmentAccountPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (p *PermissionsServerTransport) dispatchNewListByInvoiceSectionPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListByInvoiceSectionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByInvoiceSectionPager not implemented")}
+	}
+	newListByInvoiceSectionPager := p.newListByInvoiceSectionPager.get(req)
+	if newListByInvoiceSectionPager == nil {
 		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/invoiceSections/(?P<invoiceSectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingPermissions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -237,23 +652,23 @@ func (p *PermissionsServerTransport) dispatchNewListByInvoiceSectionsPager(req *
 		if err != nil {
 			return nil, err
 		}
-		resp := p.srv.NewListByInvoiceSectionsPager(billingAccountNameParam, billingProfileNameParam, invoiceSectionNameParam, nil)
-		newListByInvoiceSectionsPager = &resp
-		p.newListByInvoiceSectionsPager.add(req, newListByInvoiceSectionsPager)
-		server.PagerResponderInjectNextLinks(newListByInvoiceSectionsPager, req, func(page *armbilling.PermissionsClientListByInvoiceSectionsResponse, createLink func() string) {
+		resp := p.srv.NewListByInvoiceSectionPager(billingAccountNameParam, billingProfileNameParam, invoiceSectionNameParam, nil)
+		newListByInvoiceSectionPager = &resp
+		p.newListByInvoiceSectionPager.add(req, newListByInvoiceSectionPager)
+		server.PagerResponderInjectNextLinks(newListByInvoiceSectionPager, req, func(page *armbilling.PermissionsClientListByInvoiceSectionResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(newListByInvoiceSectionsPager, req)
+	resp, err := server.PagerResponderNext(newListByInvoiceSectionPager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newListByInvoiceSectionsPager.remove(req)
+		p.newListByInvoiceSectionPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(newListByInvoiceSectionsPager) {
-		p.newListByInvoiceSectionsPager.remove(req)
+	if !server.PagerResponderMore(newListByInvoiceSectionPager) {
+		p.newListByInvoiceSectionPager.remove(req)
 	}
 	return resp, nil
 }

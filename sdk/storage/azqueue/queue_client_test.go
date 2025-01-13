@@ -9,6 +9,8 @@ package azqueue_test
 import (
 	"context"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"os"
 	"strconv"
 	"time"
@@ -76,6 +78,46 @@ func (s *UnrecordedTestSuite) TestQueueClientFromConnectionString1() {
 	queueName := testcommon.GenerateQueueName(testName)
 
 	qClient, err := azqueue.NewQueueClientFromConnectionString(connectionString, queueName, nil)
+	_require.NoError(err)
+
+	_, err = qClient.Create(context.Background(), nil)
+	_require.NoError(err)
+}
+
+func (s *UnrecordedTestSuite) TestQueueClientUsingOauth() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	accountName, _ := testcommon.GetAccountInfo(testcommon.TestAccountDefault)
+
+	queueURL := fmt.Sprintf("https://%s.queue.core.windows.net/%s", accountName, queueName)
+	cred, err := credential.New(nil)
+	_require.NoError(err)
+	qClient, err := azqueue.NewQueueClient(queueURL, cred, nil)
+	_require.NoError(err)
+
+	_, err = qClient.Create(context.Background(), nil)
+	_require.NoError(err)
+}
+
+func (s *UnrecordedTestSuite) TestQueueClientUsingOauthWithCustomAudience() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	accountName, _ := testcommon.GetAccountInfo(testcommon.TestAccountDefault)
+
+	queueURL := fmt.Sprintf("https://%s.queue.core.windows.net/%s", accountName, queueName)
+	cred, err := credential.New(nil)
+	_require.NoError(err)
+
+	options := &azqueue.ClientOptions{Audience: "https://" + accountName + ".queue.core.windows.net"}
+	options.Logging.AllowedHeaders = append(options.Logging.AllowedHeaders, "X-Request-Mismatch", "X-Request-Mismatch-Error")
+	transport, err := recording.NewRecordingHTTPClient(s.T(), nil)
+	require.NoError(s.T(), err)
+
+	options.Transport = transport
+
+	qClient, err := azqueue.NewQueueClient(queueURL, cred, nil)
 	_require.NoError(err)
 
 	_, err = qClient.Create(context.Background(), nil)

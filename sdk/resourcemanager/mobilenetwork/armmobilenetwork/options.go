@@ -128,6 +128,12 @@ type MobileNetworksClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
+// MobileNetworksClientListSimGroupsOptions contains the optional parameters for the MobileNetworksClient.NewListSimGroupsPager
+// method.
+type MobileNetworksClientListSimGroupsOptions struct {
+	// placeholder for future optional parameters
+}
+
 // MobileNetworksClientUpdateTagsOptions contains the optional parameters for the MobileNetworksClient.UpdateTags method.
 type MobileNetworksClientUpdateTagsOptions struct {
 	// placeholder for future optional parameters
@@ -281,6 +287,16 @@ type PacketCoreDataPlanesClientUpdateTagsOptions struct {
 	// placeholder for future optional parameters
 }
 
+// RoutingInfoClientGetOptions contains the optional parameters for the RoutingInfoClient.Get method.
+type RoutingInfoClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RoutingInfoClientListOptions contains the optional parameters for the RoutingInfoClient.NewListPager method.
+type RoutingInfoClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ServicesClientBeginCreateOrUpdateOptions contains the optional parameters for the ServicesClient.BeginCreateOrUpdate method.
 type ServicesClientBeginCreateOrUpdateOptions struct {
 	// Resumes the LRO from the provided token.
@@ -392,6 +408,12 @@ type SimsClientBeginBulkUploadOptions struct {
 	ResumeToken string
 }
 
+// SimsClientBeginCloneOptions contains the optional parameters for the SimsClient.BeginClone method.
+type SimsClientBeginCloneOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // SimsClientBeginCreateOrUpdateOptions contains the optional parameters for the SimsClient.BeginCreateOrUpdate method.
 type SimsClientBeginCreateOrUpdateOptions struct {
 	// Resumes the LRO from the provided token.
@@ -400,6 +422,12 @@ type SimsClientBeginCreateOrUpdateOptions struct {
 
 // SimsClientBeginDeleteOptions contains the optional parameters for the SimsClient.BeginDelete method.
 type SimsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// SimsClientBeginMoveOptions contains the optional parameters for the SimsClient.BeginMove method.
+type SimsClientBeginMoveOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }

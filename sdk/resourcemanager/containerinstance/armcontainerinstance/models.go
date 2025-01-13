@@ -91,6 +91,12 @@ type ConfidentialComputeProperties struct {
 	CcePolicy *string
 }
 
+// ConfigMap - The container config map.
+type ConfigMap struct {
+	// The key value pairs dictionary in the config map.
+	KeyValuePairs map[string]*string
+}
+
 // Container - A container instance.
 type Container struct {
 	// REQUIRED; The user-provided name of the container instance.
@@ -203,26 +209,53 @@ type ContainerGroupListResult struct {
 	Value []*ContainerGroup
 }
 
-// ContainerGroupProperties - The container group properties
-type ContainerGroupProperties struct {
-	// REQUIRED; The container group properties
-	Properties *ContainerGroupPropertiesProperties
+// ContainerGroupProfile - A container group profile.
+type ContainerGroupProfile struct {
+	// REQUIRED; The container group profile properties
+	Properties *ContainerGroupProfilePropertiesProperties
 
-	// The identity of the container group, if configured.
-	Identity *ContainerGroupIdentity
+	// The resource location.
+	Location *string
+
+	// The resource tags.
+	Tags map[string]*string
+
+	// The zones for the container group.
+	Zones []*string
+
+	// READ-ONLY; The resource id.
+	ID *string
+
+	// READ-ONLY; The resource name.
+	Name *string
+
+	// READ-ONLY; The resource type.
+	Type *string
 }
 
-// ContainerGroupPropertiesInstanceView - The instance view of the container group. Only valid in response.
-type ContainerGroupPropertiesInstanceView struct {
-	// READ-ONLY; The events of this container group.
-	Events []*Event
+// ContainerGroupProfileListResult - The container group profile list response that contains the container group profile properties.
+type ContainerGroupProfileListResult struct {
+	// The URI to fetch the next page of container group profiles.
+	NextLink *string
 
-	// READ-ONLY; The state of the container group. Only valid in response.
-	State *string
+	// The list of container group profiles.
+	Value []*ContainerGroupProfile
 }
 
-// ContainerGroupPropertiesProperties - The container group properties
-type ContainerGroupPropertiesProperties struct {
+// ContainerGroupProfilePatch - Properties of container group profile that need to be patched
+type ContainerGroupProfilePatch struct {
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// ContainerGroupProfileProperties - The container group profile properties
+type ContainerGroupProfileProperties struct {
+	// REQUIRED; The container group profile properties
+	Properties *ContainerGroupProfilePropertiesProperties
+}
+
+// ContainerGroupProfilePropertiesProperties - The container group profile properties
+type ContainerGroupProfilePropertiesProperties struct {
 	// REQUIRED; The containers within the container group.
 	Containers []*Container
 
@@ -231,9 +264,6 @@ type ContainerGroupPropertiesProperties struct {
 
 	// The properties for confidential container group
 	ConfidentialComputeProperties *ConfidentialComputeProperties
-
-	// The DNS config information for a container group.
-	DNSConfig *DNSConfiguration
 
 	// The diagnostic information for a container group.
 	Diagnostics *ContainerGroupDiagnostics
@@ -265,6 +295,91 @@ type ContainerGroupPropertiesProperties struct {
 	// The SKU for a container group.
 	SKU *ContainerGroupSKU
 
+	// The list of volumes that can be mounted by containers in this container group.
+	Volumes []*Volume
+
+	// READ-ONLY; The container group profile current revision number. This only appears in the response.
+	Revision *int32
+}
+
+// ContainerGroupProfileReferenceDefinition - The container group profile reference.
+type ContainerGroupProfileReferenceDefinition struct {
+	// The container group profile reference id.This will be an ARM resource id in the form:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroupProfiles/{containerGroupProfileName}'.
+	ID *string
+
+	// The container group profile reference revision.
+	Revision *int32
+}
+
+// ContainerGroupProperties - The container group properties
+type ContainerGroupProperties struct {
+	// REQUIRED; The container group properties
+	Properties *ContainerGroupPropertiesProperties
+
+	// The identity of the container group, if configured.
+	Identity *ContainerGroupIdentity
+}
+
+// ContainerGroupPropertiesInstanceView - The instance view of the container group. Only valid in response.
+type ContainerGroupPropertiesInstanceView struct {
+	// READ-ONLY; The events of this container group.
+	Events []*Event
+
+	// READ-ONLY; The state of the container group. Only valid in response.
+	State *string
+}
+
+// ContainerGroupPropertiesProperties - The container group properties
+type ContainerGroupPropertiesProperties struct {
+	// REQUIRED; The containers within the container group.
+	Containers []*Container
+
+	// The properties for confidential container group
+	ConfidentialComputeProperties *ConfidentialComputeProperties
+
+	// The reference container group profile properties.
+	ContainerGroupProfile *ContainerGroupProfileReferenceDefinition
+
+	// The DNS config information for a container group.
+	DNSConfig *DNSConfiguration
+
+	// The diagnostic information for a container group.
+	Diagnostics *ContainerGroupDiagnostics
+
+	// The encryption properties for a container group.
+	EncryptionProperties *EncryptionProperties
+
+	// extensions used by virtual kubelet
+	Extensions []*DeploymentExtensionSpec
+
+	// The IP address type of the container group.
+	IPAddress *IPAddress
+
+	// The image registry credentials by which the container group is created from.
+	ImageRegistryCredentials []*ImageRegistryCredential
+
+	// The init containers for a container group.
+	InitContainers []*InitContainerDefinition
+
+	// The operating system type required by the containers in the container group.
+	OSType *OperatingSystemTypes
+
+	// The priority of the container group.
+	Priority *ContainerGroupPriority
+
+	// Restart policy for all containers within the container group.
+	// * Always Always restart
+	// * OnFailure Restart on failure
+	// * Never Never restart
+	RestartPolicy *ContainerGroupRestartPolicy
+
+	// The SKU for a container group.
+	SKU *ContainerGroupSKU
+
+	// The reference standby pool profile properties.
+	StandbyPoolProfile *StandbyPoolProfileDefinition
+
 	// The subnet resource IDs for a container group.
 	SubnetIDs []*ContainerGroupSubnetID
 
@@ -273,6 +388,9 @@ type ContainerGroupPropertiesProperties struct {
 
 	// READ-ONLY; The instance view of the container group. Only valid in response.
 	InstanceView *ContainerGroupPropertiesInstanceView
+
+	// READ-ONLY; The flag indicating whether the container group is created by standby pool.
+	IsCreatedFromStandbyPool *bool
 
 	// READ-ONLY; The provisioning state of the container group. This only appears in the response.
 	ProvisioningState *string
@@ -337,17 +455,17 @@ type ContainerProbe struct {
 
 // ContainerProperties - The container instance properties.
 type ContainerProperties struct {
-	// REQUIRED; The name of the image used to create the container instance.
-	Image *string
-
-	// REQUIRED; The resource requirements of the container instance.
-	Resources *ResourceRequirements
-
 	// The commands to execute within the container instance in exec form.
 	Command []*string
 
+	// The config map.
+	ConfigMap *ConfigMap
+
 	// The environment variables to set in the container instance.
 	EnvironmentVariables []*EnvironmentVariable
+
+	// The name of the image used to create the container instance.
+	Image *string
 
 	// The liveness probe.
 	LivenessProbe *ContainerProbe
@@ -357,6 +475,9 @@ type ContainerProperties struct {
 
 	// The readiness probe.
 	ReadinessProbe *ContainerProbe
+
+	// The resource requirements of the container instance.
+	Resources *ResourceRequirements
 
 	// The container security properties.
 	SecurityContext *SecurityContextDefinition
@@ -761,6 +882,17 @@ type SecurityContextDefinition struct {
 
 	// a base64 encoded string containing the contents of the JSON in the seccomp profile
 	SeccompProfile *string
+}
+
+// StandbyPoolProfileDefinition - The standby pool profile reference.
+type StandbyPoolProfileDefinition struct {
+	// The flag to determine whether ACI should fail the create request if the container group can not be obtained from standby
+	// pool.
+	FailContainerGroupCreateOnReuseFailure *bool
+
+	// The standby pool profile reference id.This will be an ARM resource id in the form:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyContainerGroupPools/{standbyPoolName}'.
+	ID *string
 }
 
 // Usage - A single usage result

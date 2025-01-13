@@ -10,7 +10,7 @@ package armredhatopenshift
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redhatopenshift/armredhatopenshift"
-	moduleVersion = "v1.5.0"
+	moduleVersion = "v1.6.0"
 )
 
 // CreatedByType - The type of identity that created the resource.
@@ -102,6 +102,7 @@ type ProvisioningState string
 
 const (
 	ProvisioningStateAdminUpdating ProvisioningState = "AdminUpdating"
+	ProvisioningStateCanceled      ProvisioningState = "Canceled"
 	ProvisioningStateCreating      ProvisioningState = "Creating"
 	ProvisioningStateDeleting      ProvisioningState = "Deleting"
 	ProvisioningStateFailed        ProvisioningState = "Failed"
@@ -113,6 +114,7 @@ const (
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return []ProvisioningState{
 		ProvisioningStateAdminUpdating,
+		ProvisioningStateCanceled,
 		ProvisioningStateCreating,
 		ProvisioningStateDeleting,
 		ProvisioningStateFailed,

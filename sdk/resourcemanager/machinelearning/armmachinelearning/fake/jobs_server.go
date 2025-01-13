@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -314,13 +314,19 @@ func (j *JobsServerTransport) dispatchNewListPager(req *http.Request) (*http.Res
 			return nil, err
 		}
 		listViewTypeParam := getOptional(armmachinelearning.ListViewType(listViewTypeUnescaped))
+		propertiesUnescaped, err := url.QueryUnescape(qp.Get("properties"))
+		if err != nil {
+			return nil, err
+		}
+		propertiesParam := getOptional(propertiesUnescaped)
 		var options *armmachinelearning.JobsClientListOptions
-		if skipParam != nil || jobTypeParam != nil || tagParam != nil || listViewTypeParam != nil {
+		if skipParam != nil || jobTypeParam != nil || tagParam != nil || listViewTypeParam != nil || propertiesParam != nil {
 			options = &armmachinelearning.JobsClientListOptions{
 				Skip:         skipParam,
 				JobType:      jobTypeParam,
 				Tag:          tagParam,
 				ListViewType: listViewTypeParam,
+				Properties:   propertiesParam,
 			}
 		}
 		resp := j.srv.NewListPager(resourceGroupNameParam, workspaceNameParam, options)

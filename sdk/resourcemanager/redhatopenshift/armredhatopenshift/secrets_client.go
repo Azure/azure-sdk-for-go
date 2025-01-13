@@ -46,7 +46,7 @@ func NewSecretsClient(subscriptionID string, credential azcore.TokenCredential, 
 // CreateOrUpdate - The operation returns properties of a Secret.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-04
+// Generated from API version 2023-11-22
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the OpenShift cluster resource.
 //   - childResourceName - The name of the Secret resource.
@@ -98,7 +98,7 @@ func (client *SecretsClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-04")
+	reqQP.Set("api-version", "2023-11-22")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -119,7 +119,7 @@ func (client *SecretsClient) createOrUpdateHandleResponse(resp *http.Response) (
 // Delete - The operation returns nothing.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-04
+// Generated from API version 2023-11-22
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the OpenShift cluster resource.
 //   - childResourceName - The name of the Secret resource.
@@ -169,7 +169,7 @@ func (client *SecretsClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-04")
+	reqQP.Set("api-version", "2023-11-22")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -178,7 +178,7 @@ func (client *SecretsClient) deleteCreateRequest(ctx context.Context, resourceGr
 // Get - The operation returns properties of a Secret.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-04
+// Generated from API version 2023-11-22
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the OpenShift cluster resource.
 //   - childResourceName - The name of the Secret resource.
@@ -229,7 +229,7 @@ func (client *SecretsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-04")
+	reqQP.Set("api-version", "2023-11-22")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -246,7 +246,7 @@ func (client *SecretsClient) getHandleResponse(resp *http.Response) (SecretsClie
 
 // NewListPager - The operation returns properties of each Secret.
 //
-// Generated from API version 2023-09-04
+// Generated from API version 2023-11-22
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the OpenShift cluster resource.
 //   - options - SecretsClientListOptions contains the optional parameters for the SecretsClient.NewListPager method.
@@ -293,7 +293,7 @@ func (client *SecretsClient) listCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-04")
+	reqQP.Set("api-version", "2023-11-22")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -311,7 +311,7 @@ func (client *SecretsClient) listHandleResponse(resp *http.Response) (SecretsCli
 // Update - The operation returns properties of a Secret.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-04
+// Generated from API version 2023-11-22
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the OpenShift cluster resource.
 //   - childResourceName - The name of the Secret resource.
@@ -363,7 +363,7 @@ func (client *SecretsClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-04")
+	reqQP.Set("api-version", "2023-11-22")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

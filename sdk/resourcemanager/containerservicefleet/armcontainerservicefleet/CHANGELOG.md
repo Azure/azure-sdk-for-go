@@ -1,5 +1,40 @@
 # Release History
 
+## 1.3.0-beta.1 (2024-10-25)
+### Features Added
+
+- New value `NodeImageSelectionTypeCustom` added to enum type `NodeImageSelectionType`
+- New enum type `AutoUpgradeNodeImageSelectionType` with values `AutoUpgradeNodeImageSelectionTypeConsistent`, `AutoUpgradeNodeImageSelectionTypeLatest`
+- New enum type `AutoUpgradeProfileProvisioningState` with values `AutoUpgradeProfileProvisioningStateCanceled`, `AutoUpgradeProfileProvisioningStateFailed`, `AutoUpgradeProfileProvisioningStateSucceeded`
+- New enum type `UpgradeChannel` with values `UpgradeChannelNodeImage`, `UpgradeChannelRapid`, `UpgradeChannelStable`
+- New function `NewAutoUpgradeProfilesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*AutoUpgradeProfilesClient, error)`
+- New function `*AutoUpgradeProfilesClient.BeginCreateOrUpdate(context.Context, string, string, string, AutoUpgradeProfile, *AutoUpgradeProfilesClientBeginCreateOrUpdateOptions) (*runtime.Poller[AutoUpgradeProfilesClientCreateOrUpdateResponse], error)`
+- New function `*AutoUpgradeProfilesClient.BeginDelete(context.Context, string, string, string, *AutoUpgradeProfilesClientBeginDeleteOptions) (*runtime.Poller[AutoUpgradeProfilesClientDeleteResponse], error)`
+- New function `*AutoUpgradeProfilesClient.Get(context.Context, string, string, string, *AutoUpgradeProfilesClientGetOptions) (AutoUpgradeProfilesClientGetResponse, error)`
+- New function `*AutoUpgradeProfilesClient.NewListByFleetPager(string, string, *AutoUpgradeProfilesClientListByFleetOptions) *runtime.Pager[AutoUpgradeProfilesClientListByFleetResponse]`
+- New function `*ClientFactory.NewAutoUpgradeProfilesClient() *AutoUpgradeProfilesClient`
+- New struct `AutoUpgradeNodeImageSelection`
+- New struct `AutoUpgradeProfile`
+- New struct `AutoUpgradeProfileListResult`
+- New struct `AutoUpgradeProfileProperties`
+- New field `EnableVnetIntegration`, `SubnetID` in struct `APIServerAccessProfile`
+- New field `CustomNodeImageVersions` in struct `NodeImageSelection`
+
+
+## 1.2.0 (2024-05-24)
+### Features Added
+
+- New value `ManagedClusterUpgradeTypeControlPlaneOnly` added to enum type `ManagedClusterUpgradeType`
+- New enum type `TargetType` with values `TargetTypeAfterStageWait`, `TargetTypeGroup`, `TargetTypeMember`, `TargetTypeStage`
+- New function `*UpdateRunsClient.BeginSkip(context.Context, string, string, string, SkipProperties, *UpdateRunsClientBeginSkipOptions) (*runtime.Poller[UpdateRunsClientSkipResponse], error)`
+- New struct `APIServerAccessProfile`
+- New struct `AgentProfile`
+- New struct `FleetHubProfile`
+- New struct `SkipProperties`
+- New struct `SkipTarget`
+- New field `HubProfile` in struct `FleetProperties`
+
+
 ## 1.2.0-beta.1 (2024-04-26)
 ### Features Added
 

@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v5"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v6"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-02-01/examples/Operation_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2024-09-02-preview/examples/Operation_List.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,16 +58,6 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Operation: to.Ptr("List Orchestrators"),
 		// 				Provider: to.Ptr("Microsoft Container Service"),
 		// 				Resource: to.Ptr("Orchestrator"),
-		// 			},
-		// 			Origin: to.Ptr("user,system"),
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("Microsoft.ContainerService/locations/osOptions/read"),
-		// 			Display: &armcontainerservice.OperationValueDisplay{
-		// 				Description: to.Ptr("Gets OS options"),
-		// 				Operation: to.Ptr("Get OS Options"),
-		// 				Provider: to.Ptr("Microsoft Container Service"),
-		// 				Resource: to.Ptr("OSOptions"),
 		// 			},
 		// 			Origin: to.Ptr("user,system"),
 		// 		},

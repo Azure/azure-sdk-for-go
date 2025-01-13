@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v3"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -33,10 +33,6 @@ type LocationServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetQuotas func(ctx context.Context, locationName string, options *armbatch.LocationClientGetQuotasOptions) (resp azfake.Responder[armbatch.LocationClientGetQuotasResponse], errResp azfake.ErrorResponder)
 
-	// NewListSupportedCloudServiceSKUsPager is the fake for method LocationClient.NewListSupportedCloudServiceSKUsPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListSupportedCloudServiceSKUsPager func(locationName string, options *armbatch.LocationClientListSupportedCloudServiceSKUsOptions) (resp azfake.PagerResponder[armbatch.LocationClientListSupportedCloudServiceSKUsResponse])
-
 	// NewListSupportedVirtualMachineSKUsPager is the fake for method LocationClient.NewListSupportedVirtualMachineSKUsPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListSupportedVirtualMachineSKUsPager func(locationName string, options *armbatch.LocationClientListSupportedVirtualMachineSKUsOptions) (resp azfake.PagerResponder[armbatch.LocationClientListSupportedVirtualMachineSKUsResponse])
@@ -48,7 +44,6 @@ type LocationServer struct {
 func NewLocationServerTransport(srv *LocationServer) *LocationServerTransport {
 	return &LocationServerTransport{
 		srv:                                     srv,
-		newListSupportedCloudServiceSKUsPager:   newTracker[azfake.PagerResponder[armbatch.LocationClientListSupportedCloudServiceSKUsResponse]](),
 		newListSupportedVirtualMachineSKUsPager: newTracker[azfake.PagerResponder[armbatch.LocationClientListSupportedVirtualMachineSKUsResponse]](),
 	}
 }
@@ -57,7 +52,6 @@ func NewLocationServerTransport(srv *LocationServer) *LocationServerTransport {
 // Don't use this type directly, use NewLocationServerTransport instead.
 type LocationServerTransport struct {
 	srv                                     *LocationServer
-	newListSupportedCloudServiceSKUsPager   *tracker[azfake.PagerResponder[armbatch.LocationClientListSupportedCloudServiceSKUsResponse]]
 	newListSupportedVirtualMachineSKUsPager *tracker[azfake.PagerResponder[armbatch.LocationClientListSupportedVirtualMachineSKUsResponse]]
 }
 
@@ -77,8 +71,6 @@ func (l *LocationServerTransport) Do(req *http.Request) (*http.Response, error) 
 		resp, err = l.dispatchCheckNameAvailability(req)
 	case "LocationClient.GetQuotas":
 		resp, err = l.dispatchGetQuotas(req)
-	case "LocationClient.NewListSupportedCloudServiceSKUsPager":
-		resp, err = l.dispatchNewListSupportedCloudServiceSKUsPager(req)
 	case "LocationClient.NewListSupportedVirtualMachineSKUsPager":
 		resp, err = l.dispatchNewListSupportedVirtualMachineSKUsPager(req)
 	default:
@@ -150,70 +142,6 @@ func (l *LocationServerTransport) dispatchGetQuotas(req *http.Request) (*http.Re
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).LocationQuota, req)
 	if err != nil {
 		return nil, err
-	}
-	return resp, nil
-}
-
-func (l *LocationServerTransport) dispatchNewListSupportedCloudServiceSKUsPager(req *http.Request) (*http.Response, error) {
-	if l.srv.NewListSupportedCloudServiceSKUsPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListSupportedCloudServiceSKUsPager not implemented")}
-	}
-	newListSupportedCloudServiceSKUsPager := l.newListSupportedCloudServiceSKUsPager.get(req)
-	if newListSupportedCloudServiceSKUsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Batch/locations/(?P<locationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cloudServiceSkus`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		locationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("locationName")])
-		if err != nil {
-			return nil, err
-		}
-		maxresultsUnescaped, err := url.QueryUnescape(qp.Get("maxresults"))
-		if err != nil {
-			return nil, err
-		}
-		maxresultsParam, err := parseOptional(maxresultsUnescaped, func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		var options *armbatch.LocationClientListSupportedCloudServiceSKUsOptions
-		if maxresultsParam != nil || filterParam != nil {
-			options = &armbatch.LocationClientListSupportedCloudServiceSKUsOptions{
-				Maxresults: maxresultsParam,
-				Filter:     filterParam,
-			}
-		}
-		resp := l.srv.NewListSupportedCloudServiceSKUsPager(locationNameParam, options)
-		newListSupportedCloudServiceSKUsPager = &resp
-		l.newListSupportedCloudServiceSKUsPager.add(req, newListSupportedCloudServiceSKUsPager)
-		server.PagerResponderInjectNextLinks(newListSupportedCloudServiceSKUsPager, req, func(page *armbatch.LocationClientListSupportedCloudServiceSKUsResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListSupportedCloudServiceSKUsPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		l.newListSupportedCloudServiceSKUsPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListSupportedCloudServiceSKUsPager) {
-		l.newListSupportedCloudServiceSKUsPager.remove(req)
 	}
 	return resp, nil
 }

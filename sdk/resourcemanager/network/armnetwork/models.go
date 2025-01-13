@@ -215,6 +215,9 @@ type AddressPrefixItem struct {
 type AddressSpace struct {
 	// A list of address blocks reserved for this virtual network in CIDR notation.
 	AddressPrefixes []*string
+
+	// A list of IPAM Pools allocating IP address prefixes.
+	IpamPoolPrefixAllocations []*IpamPoolPrefixAllocation
 }
 
 // AdminPropertiesFormat - Security admin rule resource.
@@ -742,6 +745,9 @@ type ApplicationGatewayFirewallRule struct {
 	// The string representation of the web application firewall rule identifier.
 	RuleIDString *string
 
+	// The string representation of the web application firewall rule sensitivity.
+	Sensitivity *ApplicationGatewayWafRuleSensitivityTypes
+
 	// The string representation of the web application firewall rule state.
 	State *ApplicationGatewayWafRuleStateTypes
 }
@@ -795,6 +801,12 @@ type ApplicationGatewayFirewallRuleSetPropertiesFormat struct {
 
 	// READ-ONLY; The provisioning state of the web application firewall rule set.
 	ProvisioningState *ProvisioningState
+}
+
+// ApplicationGatewayForContainersReferenceDefinition - Defines an application gateway for containers reference.
+type ApplicationGatewayForContainersReferenceDefinition struct {
+	// REQUIRED; Resource Id of the application gateway for containers.
+	ID *string
 }
 
 // ApplicationGatewayFrontendIPConfiguration - Frontend IP configuration of an application gateway.
@@ -933,6 +945,11 @@ type ApplicationGatewayHeaderConfiguration struct {
 
 	// Header value of the header configuration.
 	HeaderValue *string
+
+	// An optional field under "Rewrite Action". It lets you capture and modify the value(s) of a specific header when multiple
+	// headers with the same name exist. Currently supported for Set-Cookie Response
+	// header only. For more details, visit https://aka.ms/appgwheadercrud
+	HeaderValueMatcher *HeaderValueMatcher
 }
 
 // ApplicationGatewayIPConfiguration - IP configuration of an application gateway. Currently 1 public and 1 private IP configuration
@@ -1686,6 +1703,9 @@ type ApplicationGatewaySKU struct {
 	// Capacity (instance count) of an application gateway.
 	Capacity *int32
 
+	// Family of an application gateway SKU.
+	Family *ApplicationGatewaySKUFamily
+
 	// Name of an application gateway SKU.
 	Name *ApplicationGatewaySKUName
 
@@ -2098,6 +2118,9 @@ type AuthorizationPropertiesFormat struct {
 	// The authorization use status.
 	AuthorizationUseStatus *AuthorizationUseStatus
 
+	// READ-ONLY; The reference to the ExpressRoute connection resource using the authorization.
+	ConnectionResourceURI *string
+
 	// READ-ONLY; The provisioning state of the authorization resource.
 	ProvisioningState *ProvisioningState
 }
@@ -2366,6 +2389,15 @@ type AzureFirewallApplicationRuleProtocol struct {
 	ProtocolType *AzureFirewallApplicationRuleProtocolType
 }
 
+// AzureFirewallAutoscaleConfiguration - Azure Firewall Autoscale Configuration parameters.
+type AzureFirewallAutoscaleConfiguration struct {
+	// The maximum number of capacity units for this azure firewall. Use null to reset the value to the service default.
+	MaxCapacity *int32
+
+	// The minimum number of capacity units for this azure firewall. Use null to reset the value to the service default.
+	MinCapacity *int32
+}
+
 // AzureFirewallFqdnTag - Azure Firewall FQDN Tag Resource.
 type AzureFirewallFqdnTag struct {
 	// Resource ID.
@@ -2613,6 +2645,9 @@ type AzureFirewallPropertiesFormat struct {
 
 	// Collection of application rule collections used by Azure Firewall.
 	ApplicationRuleCollections []*AzureFirewallApplicationRuleCollection
+
+	// Properties to provide a custom autoscale configuration to this azure firewall.
+	AutoscaleConfiguration *AzureFirewallAutoscaleConfiguration
 
 	// The firewallPolicy associated with this azure firewall.
 	FirewallPolicy *SubResource
@@ -2969,14 +3004,14 @@ type BastionHostIPConfiguration struct {
 
 // BastionHostIPConfigurationPropertiesFormat - Properties of IP configuration of an Bastion Host.
 type BastionHostIPConfigurationPropertiesFormat struct {
-	// REQUIRED; Reference of the PublicIP resource.
-	PublicIPAddress *SubResource
-
 	// REQUIRED; Reference of the subnet resource.
 	Subnet *SubResource
 
 	// Private IP allocation method.
 	PrivateIPAllocationMethod *IPAllocationMethod
+
+	// Reference of the PublicIP resource. Null for private only bastion
+	PublicIPAddress *SubResource
 
 	// READ-ONLY; The provisioning state of the bastion host IP configuration resource.
 	ProvisioningState *ProvisioningState
@@ -3007,6 +3042,12 @@ type BastionHostPropertiesFormat struct {
 
 	// Enable/Disable Kerberos feature of the Bastion Host resource.
 	EnableKerberos *bool
+
+	// Enable/Disable Private Only feature of the Bastion Host resource.
+	EnablePrivateOnlyBastion *bool
+
+	// Enable/Disable Session Recording feature of the Bastion Host resource.
+	EnableSessionRecording *bool
 
 	// Enable/Disable Shareable Link of the Bastion Host resource.
 	EnableShareableLink *bool
@@ -3246,6 +3287,93 @@ type ChildResource struct {
 	Type *string
 }
 
+// CommonErrorAdditionalInfo - The resource management error additional info.
+type CommonErrorAdditionalInfo struct {
+	// READ-ONLY; The additional info.
+	Info any
+
+	// READ-ONLY; The additional info type.
+	Type *string
+}
+
+// CommonErrorDetail - The error detail.
+type CommonErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*CommonErrorAdditionalInfo
+
+	// READ-ONLY; The error code.
+	Code *string
+
+	// READ-ONLY; The error details.
+	Details []*CommonErrorDetail
+
+	// READ-ONLY; The error message.
+	Message *string
+
+	// READ-ONLY; The error target.
+	Target *string
+}
+
+// CommonErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
+type CommonErrorResponse struct {
+	// The error object.
+	Error *CommonErrorDetail
+}
+
+// CommonProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags
+// and a location
+type CommonProxyResource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// CommonResource - Common fields that are returned in the response for all Azure Resource Manager resources
+type CommonResource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// CommonTrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has
+// 'tags' and a 'location'
+type CommonTrackedResource struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
 type Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties struct {
 	// READ-ONLY; The client id of user assigned identity.
 	ClientID *string
@@ -3338,20 +3466,30 @@ type ConnectionMonitorEndpoint struct {
 	// REQUIRED; The name of the connection monitor endpoint.
 	Name *string
 
-	// Address of the connection monitor endpoint (IP or domain name).
+	// Address of the connection monitor endpoint. Supported for AzureVM, ExternalAddress, ArcMachine, MMAWorkspaceMachine endpoint
+	// type.
 	Address *string
 
 	// Test coverage for the endpoint.
 	CoverageLevel *CoverageLevel
 
-	// Filter for sub-items within the endpoint.
+	// Filter field is getting deprecated and should not be used. Instead use Include/Exclude scope fields for it.
 	Filter *ConnectionMonitorEndpointFilter
 
-	// Resource ID of the connection monitor endpoint.
+	// Location details is optional and only being used for 'AzureArcNetwork' type endpoints, which contains region details.
+	LocationDetails *ConnectionMonitorEndpointLocationDetails
+
+	// Resource ID of the connection monitor endpoint are supported for AzureVM, AzureVMSS, AzureVNet, AzureSubnet, MMAWorkspaceMachine,
+	// MMAWorkspaceNetwork, AzureArcVM endpoint type.
 	ResourceID *string
 
-	// Endpoint scope.
+	// Endpoint scope defines which target resource to monitor in case of compound resource endpoints like VMSS, AzureSubnet,
+	// AzureVNet, MMAWorkspaceNetwork, AzureArcNetwork.
 	Scope *ConnectionMonitorEndpointScope
+
+	// Subscription ID for connection monitor endpoint. It's an optional parameter which is being used for 'AzureArcNetwork' type
+	// endpoint.
+	SubscriptionID *string
 
 	// The endpoint type.
 	Type *EndpointType
@@ -3373,6 +3511,13 @@ type ConnectionMonitorEndpointFilterItem struct {
 
 	// The type of item included in the filter. Currently only 'AgentAddress' is supported.
 	Type *ConnectionMonitorEndpointFilterItemType
+}
+
+// ConnectionMonitorEndpointLocationDetails - Connection monitor endpoint location details only being used for 'AzureArcNetwork'
+// type endpoints, which contains the region details.
+type ConnectionMonitorEndpointLocationDetails struct {
+	// Region for connection monitor endpoint.
+	Region *string
 }
 
 // ConnectionMonitorEndpointScope - Describes the connection monitor endpoint scope.
@@ -3632,6 +3777,31 @@ type ConnectionSharedKey struct {
 
 	// Resource ID.
 	ID *string
+}
+
+// ConnectionSharedKeyResult - SharedKey Resource .
+type ConnectionSharedKeyResult struct {
+	// Resource ID.
+	ID *string
+
+	// The name of the resource that is unique within a resource group. This name can be used to access the resource.
+	Name *string
+
+	// Properties of the shared key.
+	Properties *SharedKeyProperties
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
+// ConnectionSharedKeyResultList - The list of shared keys for the vpn link connection. It should only contain one shared
+// key for each vpn link connection.
+type ConnectionSharedKeyResultList struct {
+	// URL to get the next set of operation list results if there are any.
+	NextLink *string
+
+	// List of SharedKeys.
+	Value []*ConnectionSharedKeyResult
 }
 
 // ConnectionStateSnapshot - Connection state snapshot.
@@ -4279,7 +4449,7 @@ type DelegationProperties struct {
 	// The service name to which the NVA is delegated.
 	ServiceName *string
 
-	// READ-ONLY; The current provisioning state.
+	// READ-ONLY; Provisioning states of a resource.
 	ProvisioningState *ProvisioningState
 }
 
@@ -4714,6 +4884,27 @@ type EvaluatedNetworkSecurityGroup struct {
 	RulesEvaluationResult []*SecurityRulesEvaluationResult
 }
 
+// ExceptionEntry - Adds exception to allow a request when the condition is satisfied.
+type ExceptionEntry struct {
+	// REQUIRED; The variable on which we evaluate the exception condition
+	MatchVariable *ExceptionEntryMatchVariable
+
+	// REQUIRED; Operates on the allowed values for the matchVariable
+	ValueMatchOperator *ExceptionEntryValueMatchOperator
+
+	// The managed rule sets that are associated with the exception.
+	ExceptionManagedRuleSets []*ExclusionManagedRuleSet
+
+	// When the matchVariable points to a key-value pair (e.g, RequestHeader), this identifies the key.
+	Selector *string
+
+	// When the matchVariable points to a key-value pair (e.g, RequestHeader), this operates on the selector
+	SelectorMatchOperator *ExceptionEntrySelectorMatchOperator
+
+	// Allowed values for the matchVariable
+	Values []*string
+}
+
 // ExclusionManagedRule - Defines a managed rule to use for exclusion.
 type ExclusionManagedRule struct {
 	// REQUIRED; Identifier for the managed rule.
@@ -5017,6 +5208,9 @@ type ExpressRouteCircuitPropertiesFormat struct {
 
 	// The CircuitProvisioningState state of the resource.
 	CircuitProvisioningState *string
+
+	// Flag denoting rate-limiting status of the ExpressRoute direct-port circuit.
+	EnableDirectPortRateLimit *bool
 
 	// The reference to the ExpressRoutePort resource when the circuit is provisioned on an ExpressRoutePort resource.
 	ExpressRoutePort *SubResource
@@ -5377,6 +5571,108 @@ type ExpressRouteCrossConnectionsRoutesTableSummaryListResult struct {
 
 	// READ-ONLY; The URL to get the next set of results.
 	NextLink *string
+}
+
+type ExpressRouteFailoverCircuitResourceDetails struct {
+	// Connection name associated with the circuit
+	ConnectionName *string
+
+	// Circuit Name
+	Name *string
+
+	// NRP Resource URI of the circuit
+	NrpResourceURI *string
+}
+
+type ExpressRouteFailoverConnectionResourceDetails struct {
+	// Time when the connection was last updated
+	LastUpdatedTime *string
+
+	// Connection Name
+	Name *string
+
+	// NRP Resource URI of the connection
+	NrpResourceURI *string
+
+	// The current status of the connection
+	Status *FailoverConnectionStatus
+}
+
+type ExpressRouteFailoverRedundantRoute struct {
+	// A list of all the peering locations for the redundant routes
+	PeeringLocations []*string
+
+	// A list of all the redundant routes in the peering locations
+	Routes []*string
+}
+
+// ExpressRouteFailoverSingleTestDetails - ExpressRoute failover single test details
+type ExpressRouteFailoverSingleTestDetails struct {
+	// Time when the test was completed
+	EndTimeUTC *string
+
+	// List of all the failover connections for this peering location
+	FailoverConnectionDetails []*FailoverConnectionDetails
+
+	// List of al the routes that were received only from this peering location
+	NonRedundantRoutes []*string
+
+	// Peering location of the test
+	PeeringLocation *string
+
+	// List of routes received from this peering as well as some other peering location
+	RedundantRoutes []*ExpressRouteFailoverRedundantRoute
+
+	// Time when the test was started
+	StartTimeUTC *string
+
+	// The current status of the test
+	Status *FailoverTestStatusForSingleTest
+
+	// Whether the failover simulation was successful or not
+	WasSimulationSuccessful *bool
+}
+
+// ExpressRouteFailoverStopAPIParameters - Start packet capture parameters on virtual network gateway.
+type ExpressRouteFailoverStopAPIParameters struct {
+	// List of all the failover connections for this peering location
+	Details []*FailoverConnectionDetails
+
+	// Peering location of the test
+	PeeringLocation *string
+
+	// Whether the failover simulation was successful or not
+	WasSimulationSuccessful *bool
+}
+
+// ExpressRouteFailoverTestDetails - ExpressRoute failover test details
+type ExpressRouteFailoverTestDetails struct {
+	// All circuits in the peering location
+	Circuits []*ExpressRouteFailoverCircuitResourceDetails
+
+	// All connections to the circuits in the peering location
+	Connections []*ExpressRouteFailoverConnectionResourceDetails
+
+	// Time when the test was completed
+	EndTime *string
+
+	// A list of all issues with the test
+	Issues []*string
+
+	// Peering location of the test
+	PeeringLocation *string
+
+	// Time when the test was started
+	StartTime *string
+
+	// The current status of the test
+	Status *FailoverTestStatus
+
+	// The unique GUID associated with the test
+	TestGUID *string
+
+	// The type of failover test
+	TestType *FailoverTestType
 }
 
 // ExpressRouteGateway - ExpressRoute gateway resource.
@@ -5802,6 +6098,17 @@ type ExtendedLocation struct {
 	Type *ExtendedLocationTypes
 }
 
+type FailoverConnectionDetails struct {
+	// Name of the failover connection
+	FailoverConnectionName *string
+
+	// Location of the failover connection
+	FailoverLocation *string
+
+	// Whether the customer was able to establish connectivity through this failover connection or not
+	IsVerified *bool
+}
+
 // FilterItems - Will contain the filter name and values to operate on
 type FilterItems struct {
 	// The name of the field we would like to filter
@@ -5811,17 +6118,8 @@ type FilterItems struct {
 	Values []*string
 }
 
-// FirewallPacketCaptureParameters - Azure Firewall Packet Capture Parameters resource.
+// FirewallPacketCaptureParameters - Azure Firewall Packet Capture Parameters.
 type FirewallPacketCaptureParameters struct {
-	// Resource ID.
-	ID *string
-
-	// Properties of the azure firewall.
-	Properties *FirewallPacketCaptureParametersFormat
-}
-
-// FirewallPacketCaptureParametersFormat - Packet capture parameters on azure firewall.
-type FirewallPacketCaptureParametersFormat struct {
 	// Duration of packet capture in seconds.
 	DurationInSeconds *int32
 
@@ -5878,6 +6176,56 @@ type FirewallPolicyCertificateAuthority struct {
 
 	// Name of the CA certificate.
 	Name *string
+}
+
+// FirewallPolicyDraft - FirewallPolicy Resource.
+type FirewallPolicyDraft struct {
+	// Resource ID.
+	ID *string
+
+	// Resource location.
+	Location *string
+
+	// Properties of the firewall policy.
+	Properties *FirewallPolicyDraftProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Resource name.
+	Name *string
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
+type FirewallPolicyDraftProperties struct {
+	// The parent firewall policy from which rules are inherited.
+	BasePolicy *SubResource
+
+	// DNS Proxy Settings definition.
+	DNSSettings *DNSSettings
+
+	// Explicit Proxy Settings definition.
+	ExplicitProxy *ExplicitProxySettings
+
+	// Insights on Firewall Policy.
+	Insights *FirewallPolicyInsights
+
+	// The configuration for Intrusion detection.
+	IntrusionDetection *FirewallPolicyIntrusionDetection
+
+	// SQL Settings definition.
+	SQL *FirewallPolicySQL
+
+	// The private IP addresses/IP ranges to which traffic will not be SNAT.
+	Snat *FirewallPolicySNAT
+
+	// The operation mode for Threat Intelligence.
+	ThreatIntelMode *AzureFirewallThreatIntelMode
+
+	// ThreatIntel Whitelist for Firewall Policy.
+	ThreatIntelWhitelist *FirewallPolicyThreatIntelWhitelist
 }
 
 // FirewallPolicyFilterRuleCollection - Firewall Policy Filter Rule Collection.
@@ -6168,6 +6516,33 @@ type FirewallPolicyRuleCollectionGroup struct {
 	Type *string
 }
 
+// FirewallPolicyRuleCollectionGroupDraft - Rule Collection Group resource.
+type FirewallPolicyRuleCollectionGroupDraft struct {
+	// Resource ID.
+	ID *string
+
+	// The name of the resource that is unique within a resource group. This name can be used to access the resource.
+	Name *string
+
+	// The properties of the firewall policy rule collection group.
+	Properties *FirewallPolicyRuleCollectionGroupDraftProperties
+
+	// READ-ONLY; Rule Group type.
+	Type *string
+}
+
+// FirewallPolicyRuleCollectionGroupDraftProperties - Properties of the rule collection group draft.
+type FirewallPolicyRuleCollectionGroupDraftProperties struct {
+	// Priority of the Firewall Policy Rule Collection Group resource.
+	Priority *int32
+
+	// Group of Firewall Policy rule collections.
+	RuleCollections []FirewallPolicyRuleCollectionClassification
+
+	// READ-ONLY; A read-only string that represents the size of the FirewallPolicyRuleCollectionGroupProperties in MB. (ex 1.2MB)
+	Size *string
+}
+
 // FirewallPolicyRuleCollectionGroupListResult - Response for ListFirewallPolicyRuleCollectionGroups API service call.
 type FirewallPolicyRuleCollectionGroupListResult struct {
 	// URL to get the next set of results.
@@ -6233,6 +6608,9 @@ type FlowLog struct {
 	// Resource ID.
 	ID *string
 
+	// FlowLog resource Managed Identity
+	Identity *ManagedServiceIdentity
+
 	// Resource location.
 	Location *string
 
@@ -6271,6 +6649,9 @@ type FlowLogInformation struct {
 
 	// Parameters that define the configuration of traffic analytics.
 	FlowAnalyticsConfiguration *TrafficAnalyticsProperties
+
+	// FlowLog resource Managed Identity
+	Identity *ManagedServiceIdentity
 }
 
 // FlowLogListResult - List of flow logs.
@@ -6290,6 +6671,10 @@ type FlowLogProperties struct {
 	// REQUIRED; ID of the storage account which is used to store the flow log.
 	StorageID *string
 
+	// Optional field to filter network traffic logs based on SrcIP, SrcPort, DstIP, DstPort, Protocol, Encryption, Direction
+	// and Action. If not specified, all network traffic will be logged.
+	EnabledFilteringCriteria *string
+
 	// Parameters that define the flow log format.
 	Format *FlowLogFormatParameters
 
@@ -6307,6 +6692,10 @@ type FlowLogPropertiesFormat struct {
 
 	// Flag to enable/disable flow logging.
 	Enabled *bool
+
+	// Optional field to filter network traffic logs based on SrcIP, SrcPort, DstIP, DstPort, Protocol, Encryption, Direction
+	// and Action. If not specified, all network traffic will be logged.
+	EnabledFilteringCriteria *string
 
 	// Parameters that define the configuration of traffic analytics.
 	FlowAnalyticsConfiguration *TrafficAnalyticsProperties
@@ -6534,6 +6923,9 @@ type GroupProperties struct {
 	// A description of the network group.
 	Description *string
 
+	// The type of the group member.
+	MemberType *GroupMemberType
+
 	// READ-ONLY; The provisioning state of the scope assignment resource.
 	ProvisioningState *ProvisioningState
 
@@ -6560,6 +6952,20 @@ type HTTPHeader struct {
 
 	// The value in HTTP header.
 	Value *string
+}
+
+// HeaderValueMatcher - An optional field under "Rewrite Action". It lets you capture and modify the value(s) of a specific
+// header when multiple headers with the same name exist. Currently supported for Set-Cookie Response
+// header only. For more details, visit https://aka.ms/appgwheadercrud
+type HeaderValueMatcher struct {
+	// Setting this parameter to truth value with force the pattern to do a case in-sensitive comparison.
+	IgnoreCase *bool
+
+	// Setting this value as truth will force to check the negation of the condition given by the user in the pattern field.
+	Negate *bool
+
+	// The pattern, either fixed string or regular expression, that evaluates if a header value should be selected for rewrite.
+	Pattern *string
 }
 
 // HopLink - Hop link.
@@ -7010,6 +7416,24 @@ type IPTag struct {
 	Tag *string
 }
 
+// IPTraffic - IP traffic information.
+type IPTraffic struct {
+	// REQUIRED; List of destination IP addresses of the traffic..
+	DestinationIPs []*string
+
+	// REQUIRED; The destination ports of the traffic.
+	DestinationPorts []*string
+
+	// REQUIRED
+	Protocols []*NetworkProtocol
+
+	// REQUIRED; List of source IP addresses of the traffic..
+	SourceIPs []*string
+
+	// REQUIRED; The source ports of the traffic.
+	SourcePorts []*string
+}
+
 // IPv6CircuitConnectionConfig - IPv6 Circuit Connection properties for global reach.
 type IPv6CircuitConnectionConfig struct {
 	// /125 IP address space to carve out customer addresses for global reach.
@@ -7204,6 +7628,10 @@ type InboundSecurityRule struct {
 
 // InboundSecurityRuleProperties - Properties of the Inbound Security Rules resource.
 type InboundSecurityRuleProperties struct {
+	// Rule Type. This should be either AutoExpire or Permanent. Auto Expire Rule only creates NSG rules. Permanent Rule creates
+	// NSG rule and SLB LB Rule.
+	RuleType *InboundSecurityRuleType
+
 	// List of allowed rules.
 	Rules []*InboundSecurityRules
 
@@ -7213,14 +7641,36 @@ type InboundSecurityRuleProperties struct {
 
 // InboundSecurityRules - Properties of the Inbound Security Rules resource.
 type InboundSecurityRules struct {
+	// Public IP name in case of Permanent Rule type & Interface Name in case of Auto Expire Rule type
+	AppliesOn []*string
+
 	// NVA port ranges to be opened up. One needs to provide specific ports.
 	DestinationPortRange *int32
+
+	// NVA port ranges to be opened up. One can provide a range of ports. Allowed port value between 0 and 65535.
+	DestinationPortRanges []*string
+
+	// Name of the rule.
+	Name *string
 
 	// Protocol. This should be either TCP or UDP.
 	Protocol *InboundSecurityRulesProtocol
 
-	// The CIDR or source IP range. Only /30, /31 and /32 Ip ranges are allowed.
+	// The CIDR or source IP range.
 	SourceAddressPrefix *string
+}
+
+// IntentContent - Intent information.
+type IntentContent struct {
+	// REQUIRED; Destination resource id of the intent.
+	DestinationResourceID *string
+
+	// REQUIRED; IP traffic information.
+	IPTraffic *IPTraffic
+
+	// REQUIRED; Source resource id of the intent.
+	SourceResourceID *string
+	Description      *string
 }
 
 // IntentPolicy - Network Intent Policy resource.
@@ -7372,8 +7822,12 @@ type InterfaceIPConfigurationPropertiesFormat struct {
 	// Whether this is a primary customer address on the network interface.
 	Primary *bool
 
-	// Private IP address of the IP configuration.
+	// Private IP address of the IP configuration. It can be a single IP address or a CIDR block in the format /.
 	PrivateIPAddress *string
+
+	// The private IP address prefix length. If specified and the allocation method is dynamic, the service will allocate a CIDR
+	// block instead of a single IP address.
+	PrivateIPAddressPrefixLength *int32
 
 	// Whether the specific IP configuration is IPv4 or IPv6. Default is IPv4.
 	PrivateIPAddressVersion *IPVersion
@@ -7454,6 +7908,9 @@ type InterfacePropertiesFormat struct {
 	// WorkloadType of the NetworkInterface for BareMetal resources
 	WorkloadType *string
 
+	// READ-ONLY; Whether default outbound connectivity for nic was configured or not.
+	DefaultOutboundConnectivityEnabled *bool
+
 	// READ-ONLY; A reference to the dscp configuration to which the network interface is linked.
 	DscpConfiguration *SubResource
 
@@ -7525,6 +7982,88 @@ type InterfaceTapConfigurationPropertiesFormat struct {
 type InternetIngressPublicIPsProperties struct {
 	// Resource Uri of Public Ip
 	ID *string
+}
+
+// IpamPool - Instance of Pool resource.
+type IpamPool struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// REQUIRED; Properties of IpamPool resource properties which are specific to the Pool resource.
+	Properties *IpamPoolProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// IpamPoolList - List of IpamPool
+type IpamPoolList struct {
+	// The link used to get the next page of operations.
+	NextLink *string
+	Value    []*IpamPool
+}
+
+// IpamPoolPrefixAllocation - IpamPool prefix allocation reference.
+type IpamPoolPrefixAllocation struct {
+	// Number of IP addresses to allocate.
+	NumberOfIPAddresses *string
+	Pool                *IpamPoolPrefixAllocationPool
+
+	// READ-ONLY; List of assigned IP address prefixes in the IpamPool of the associated resource.
+	AllocatedAddressPrefixes []*string
+}
+
+type IpamPoolPrefixAllocationPool struct {
+	// Resource id of the associated Azure IpamPool resource.
+	ID *string
+}
+
+// IpamPoolProperties - Properties of IpamPool resource properties which are specific to the Pool resource.
+type IpamPoolProperties struct {
+	// REQUIRED; List of IP address prefixes of the resource.
+	AddressPrefixes []*string
+	Description     *string
+
+	// String representing a friendly name for the resource.
+	DisplayName *string
+
+	// String representing parent IpamPool resource name. If empty the IpamPool will be a root pool.
+	ParentPoolName *string
+
+	// Provisioning states of a resource.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; List of IP address type for the IpamPool.
+	IPAddressType []*IPType
+}
+
+// IpamPoolUpdate - Represents the IpamPool update API request interface.
+type IpamPoolUpdate struct {
+	// Represents the IpamPool update properties.
+	Properties *IpamPoolUpdateProperties
+
+	// Dictionary of
+	Tags map[string]*string
+}
+
+// IpamPoolUpdateProperties - Represents the IpamPool update properties.
+type IpamPoolUpdateProperties struct {
+	Description *string
+
+	// String representing a friendly name for the resource.
+	DisplayName *string
 }
 
 // ListHubRouteTablesResult - List of RouteTables and a URL nextLink to get the next set of results.
@@ -7793,6 +8332,33 @@ type LoadBalancerFrontendIPConfigurationListResult struct {
 	NextLink *string
 }
 
+// LoadBalancerHealthPerRule - The response for a Health API.
+type LoadBalancerHealthPerRule struct {
+	// Number of backend instances associated to the LB rule that are considered unhealthy.
+	Down *int32
+
+	// Information about the health per rule of the backend addresses.
+	LoadBalancerBackendAddresses []*LoadBalancerHealthPerRulePerBackendAddress
+
+	// Number of backend instances associated to the LB rule that are considered healthy.
+	Up *int32
+}
+
+// LoadBalancerHealthPerRulePerBackendAddress - The information about health per rule per backend address.
+type LoadBalancerHealthPerRulePerBackendAddress struct {
+	// The IP address belonging to the backend address.
+	IPAddress *string
+
+	// The id of the network interface ip configuration belonging to the backend address
+	NetworkInterfaceIPConfigurationID *InterfaceIPConfiguration
+
+	// The explanation of the State
+	Reason *string
+
+	// The current health of the backend instances that is associated to the LB rule.
+	State *string
+}
+
 // LoadBalancerListResult - Response for ListLoadBalancers API service call.
 type LoadBalancerListResult struct {
 	// A list of load balancers in a resource group.
@@ -8049,6 +8615,9 @@ type ManagedRuleOverride struct {
 	// Describes the override action to be applied when rule matches.
 	Action *ActionType
 
+	// Describes the override sensitivity to be applied when rule matches.
+	Sensitivity *SensitivityType
+
 	// The state of the managed rule. Defaults to Disabled if not specified.
 	State *ManagedRuleEnabledState
 }
@@ -8069,6 +8638,9 @@ type ManagedRuleSet struct {
 type ManagedRulesDefinition struct {
 	// REQUIRED; The managed rule sets that are associated with the policy.
 	ManagedRuleSets []*ManagedRuleSet
+
+	// The exceptions that are applied on the policy.
+	Exceptions []*ExceptionEntry
 
 	// The Exclusions that are applied on the policy.
 	Exclusions []*OwaspCrsExclusionEntry
@@ -8255,14 +8827,14 @@ type ManagerListResult struct {
 
 // ManagerProperties - Properties of Managed Network
 type ManagerProperties struct {
-	// REQUIRED; Scope Access.
-	NetworkManagerScopeAccesses []*ConfigurationType
-
 	// REQUIRED; Scope of Network Manager.
 	NetworkManagerScopes *ManagerPropertiesNetworkManagerScopes
 
 	// A description of the network manager.
 	Description *string
+
+	// Scope Access.
+	NetworkManagerScopeAccesses []*ConfigurationType
 
 	// READ-ONLY; The provisioning state of the network manager resource.
 	ProvisioningState *ProvisioningState
@@ -8281,6 +8853,54 @@ type ManagerPropertiesNetworkManagerScopes struct {
 
 	// READ-ONLY; List of cross tenant scopes.
 	CrossTenantScopes []*CrossTenantScopes
+}
+
+// ManagerRoutingConfiguration - Defines the routing configuration
+type ManagerRoutingConfiguration struct {
+	// Indicates the properties for the network manager routing configuration.
+	Properties *ManagerRoutingConfigurationPropertiesFormat
+
+	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
+	Etag *string
+
+	// READ-ONLY; Resource ID.
+	ID *string
+
+	// READ-ONLY; Resource name.
+	Name *string
+
+	// READ-ONLY; The system metadata related to this resource.
+	SystemData *SystemData
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
+// ManagerRoutingConfigurationListResult - A list of network manager routing configurations
+type ManagerRoutingConfigurationListResult struct {
+	// Gets the URL to get the next page of results.
+	NextLink *string
+
+	// Gets a page of routing configurations
+	Value []*ManagerRoutingConfiguration
+}
+
+// ManagerRoutingConfigurationPropertiesFormat - Defines the routing configuration properties.
+type ManagerRoutingConfigurationPropertiesFormat struct {
+	// A description of the routing configuration.
+	Description *string
+
+	// READ-ONLY; The provisioning state of the resource.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Unique identifier for this resource.
+	ResourceGUID *string
+}
+
+// ManagerRoutingGroupItem - Network manager routing group item.
+type ManagerRoutingGroupItem struct {
+	// REQUIRED; Network manager group Id.
+	NetworkGroupID *string
 }
 
 // ManagerSecurityGroupItem - Network manager security group item.
@@ -8857,6 +9477,13 @@ type PacketCaptureParameters struct {
 	// Number of bytes captured per packet, the remaining bytes are truncated.
 	BytesToCapturePerPacket *int64
 
+	// The capture setting holds the 'FileCount', 'FileSizeInBytes', 'SessionTimeLimitInSeconds' values.
+	CaptureSettings *PacketCaptureSettings
+
+	// This continuous capture is a nullable boolean, which can hold 'null', 'true' or 'false' value. If we do not pass this parameter,
+	// it would be consider as 'null', default value is 'null'.
+	ContinuousCapture *bool
+
 	// A list of packet capture filters.
 	Filters []*PacketCaptureFilter
 
@@ -8921,6 +9548,13 @@ type PacketCaptureResultProperties struct {
 	// Number of bytes captured per packet, the remaining bytes are truncated.
 	BytesToCapturePerPacket *int64
 
+	// The capture setting holds the 'FileCount', 'FileSizeInBytes', 'SessionTimeLimitInSeconds' values.
+	CaptureSettings *PacketCaptureSettings
+
+	// This continuous capture is a nullable boolean, which can hold 'null', 'true' or 'false' value. If we do not pass this parameter,
+	// it would be consider as 'null', default value is 'null'.
+	ContinuousCapture *bool
+
 	// A list of packet capture filters.
 	Filters []*PacketCaptureFilter
 
@@ -8941,14 +9575,31 @@ type PacketCaptureResultProperties struct {
 	ProvisioningState *ProvisioningState
 }
 
+// PacketCaptureSettings - The storage location for a packet capture session.
+type PacketCaptureSettings struct {
+	// Number of file count. Default value of count is 10 and maximum number is 10000.
+	FileCount *int32
+
+	// Number of bytes captured per packet. Default value in bytes 104857600 (100MB) and maximum in bytes 4294967295 (4GB).
+	FileSizeInBytes *int64
+
+	// Maximum duration of the capture session in seconds is 604800s (7 days) for a file. Default value in second 86400s (1 day).
+	SessionTimeLimitInSeconds *int32
+}
+
 // PacketCaptureStorageLocation - The storage location for a packet capture session.
 type PacketCaptureStorageLocation struct {
-	// A valid local path on the targeting VM. Must include the name of the capture file (*.cap). For linux virtual machine it
-	// must start with /var/captures. Required if no storage ID is provided, otherwise
-	// optional.
+	// This path is invalid if 'Continuous Capture' is provided with 'true' or 'false'. A valid local path on the targeting VM.
+	// Must include the name of the capture file (*.cap). For linux virtual machine it
+	// must start with /var/captures. Required if no storage ID is provided, otherwise optional.
 	FilePath *string
 
-	// The ID of the storage account to save the packet capture session. Required if no local file path is provided.
+	// This path is valid if 'Continuous Capture' is provided with 'true' or 'false' and required if no storage ID is provided,
+	// otherwise optional. Must include the name of the capture file (*.cap). For
+	// linux virtual machine it must start with /var/captures.
+	LocalPath *string
+
+	// The ID of the storage account to save the packet capture session. Required if no localPath or filePath is provided.
 	StorageID *string
 
 	// The URI of the storage path to save the packet capture. Must be a well-formed URI describing the location to save the packet
@@ -9112,6 +9763,9 @@ type PolicySettings struct {
 	// Maximum file upload size in Mb for WAF.
 	FileUploadLimitInMb *int32
 
+	// Web Application Firewall JavaScript Challenge Cookie Expiration time in minutes.
+	JsChallengeCookieExpirationInMins *int32
+
 	// To scrub sensitive log fields
 	LogScrubbing *PolicySettingsLogScrubbing
 
@@ -9141,6 +9795,71 @@ type PolicySettingsLogScrubbing struct {
 
 	// State of the log scrubbing config. Default value is Enabled.
 	State *WebApplicationFirewallScrubbingState
+}
+
+// PoolAssociation - IpamPool association information.
+type PoolAssociation struct {
+	// REQUIRED; Resource id of the associated Azure resource.
+	ResourceID  *string
+	Description *string
+
+	// IpamPool id for which the resource is associated to.
+	PoolID *string
+
+	// READ-ONLY; List of assigned IP address prefixes in the IpamPool of the associated resource.
+	AddressPrefixes []*string
+
+	// READ-ONLY; Creation time of the association.
+	CreatedAt *time.Time
+
+	// READ-ONLY; Total number of reserved IP addresses of the association.
+	NumberOfReservedIPAddresses *string
+
+	// READ-ONLY; Expire time for IP addresses reserved.
+	ReservationExpiresAt *time.Time
+
+	// READ-ONLY; List of reserved IP address prefixes in the IpamPool of the associated resource.
+	ReservedPrefixes []*string
+
+	// READ-ONLY; Total number of assigned IP addresses of the association.
+	TotalNumberOfIPAddresses *string
+}
+
+// PoolAssociationList - List of PoolAssociation
+type PoolAssociationList struct {
+	// The link used to get the next page of operations.
+	NextLink *string
+	Value    []*PoolAssociation
+}
+
+// PoolUsage - IpamPool usage information.
+type PoolUsage struct {
+	// READ-ONLY; List of IP address prefixes of the resource.
+	AddressPrefixes []*string
+
+	// READ-ONLY; List of assigned IP address prefixes.
+	AllocatedAddressPrefixes []*string
+
+	// READ-ONLY; List of available IP address prefixes.
+	AvailableAddressPrefixes []*string
+
+	// READ-ONLY; List of IpamPool that are children of this IpamPool.
+	ChildPools []*ResourceBasics
+
+	// READ-ONLY; Total number of assigned IP addresses in the IpamPool.
+	NumberOfAllocatedIPAddresses *string
+
+	// READ-ONLY; Total number of available IP addresses in the IpamPool.
+	NumberOfAvailableIPAddresses *string
+
+	// READ-ONLY; Total number of reserved IP addresses in the IpamPool.
+	NumberOfReservedIPAddresses *string
+
+	// READ-ONLY; List of reserved IP address prefixes. These IP addresses could be reclaimed if not assigned in the given time.
+	ReservedAddressPrefixes []*string
+
+	// READ-ONLY; Total number of IP addresses managed in the IpamPool.
+	TotalNumberOfIPAddresses *string
 }
 
 // PrepareNetworkPoliciesRequest - Details of PrepareNetworkPolicies for Subnet.
@@ -9471,6 +10190,9 @@ type PrivateLinkServiceProperties struct {
 	// The auto-approval list of the private link service.
 	AutoApproval *PrivateLinkServicePropertiesAutoApproval
 
+	// The destination IP address of the private link service.
+	DestinationIPAddress *string
+
 	// Whether the private link service is enabled for proxy protocol or not.
 	EnableProxyProtocol *bool
 
@@ -9550,6 +10272,9 @@ type ProbePropertiesFormat struct {
 	// less than half the allocated timeout period (in seconds) which allows two full
 	// probes before taking the instance out of rotation. The default value is 15, the minimum value is 5.
 	IntervalInSeconds *int32
+
+	// Determines how new connections are handled by the load balancer when all backend instances are probed down.
+	NoHealthyBackendsBehavior *ProbeNoHealthyBackendsBehavior
 
 	// The number of probes where if no response, will result in stopping further traffic from being delivered to the endpoint.
 	// This values allows endpoints to be taken out of rotation faster or slower than
@@ -9942,6 +10667,95 @@ type RadiusServer struct {
 	RadiusServerSecret *string
 }
 
+// ReachabilityAnalysisIntent - Configuration information or intent on which to do the analysis on.
+type ReachabilityAnalysisIntent struct {
+	// REQUIRED; Represents the Reachability Analysis Intent properties.
+	Properties *ReachabilityAnalysisIntentProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ReachabilityAnalysisIntentListResult - A list of Reachability Analysis Intents.
+type ReachabilityAnalysisIntentListResult struct {
+	// Gets the URL to get the next page of results.
+	NextLink *string
+
+	// Gets a page of Reachability Analysis Intents
+	Value []*ReachabilityAnalysisIntent
+}
+
+// ReachabilityAnalysisIntentProperties - Represents the Reachability Analysis Intent properties.
+type ReachabilityAnalysisIntentProperties struct {
+	// REQUIRED; Destination resource id to verify the reachability path of.
+	DestinationResourceID *string
+
+	// REQUIRED; IP traffic information.
+	IPTraffic *IPTraffic
+
+	// REQUIRED; Source resource id to verify the reachability path of.
+	SourceResourceID *string
+	Description      *string
+
+	// Provisioning states of a resource.
+	ProvisioningState *ProvisioningState
+}
+
+// ReachabilityAnalysisRun - Configuration information for analysis run.
+type ReachabilityAnalysisRun struct {
+	// REQUIRED; Represents the Reachability Analysis Run properties.
+	Properties *ReachabilityAnalysisRunProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ReachabilityAnalysisRunListResult - A list of Reachability Analysis Run
+type ReachabilityAnalysisRunListResult struct {
+	// Gets the URL to get the next page of results.
+	NextLink *string
+
+	// Gets a page of Reachability Analysis Runs.
+	Value []*ReachabilityAnalysisRun
+}
+
+// ReachabilityAnalysisRunProperties - Represents the Reachability Analysis Run properties.
+type ReachabilityAnalysisRunProperties struct {
+	// REQUIRED; Id of the intent resource to run analysis on.
+	IntentID    *string
+	Description *string
+
+	// Provisioning states of a resource.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY
+	AnalysisResult *string
+
+	// READ-ONLY
+	ErrorMessage *string
+
+	// READ-ONLY; Intent information.
+	IntentContent *IntentContent
+}
+
 // RecordSet - A collective group of information about the record set information.
 type RecordSet struct {
 	// Fqdn that resolves to private endpoint ip address.
@@ -9985,6 +10799,15 @@ type Resource struct {
 
 	// READ-ONLY; Resource type.
 	Type *string
+}
+
+// ResourceBasics - Representation of basic resource information.
+type ResourceBasics struct {
+	// List of IP address prefixes of the resource.
+	AddressPrefixes []*string
+
+	// ResourceId of the Azure resource.
+	ResourceID *string
 }
 
 // ResourceNavigationLink resource.
@@ -10214,11 +11037,11 @@ type RoutePropertiesFormat struct {
 	// The destination CIDR to which the route applies.
 	AddressPrefix *string
 
-	// A value indicating whether this route overrides overlapping BGP routes regardless of LPM.
-	HasBgpOverride *bool
-
 	// The IP address packets should be forwarded to. Next hop values are only allowed in routes where the next hop type is VirtualAppliance.
 	NextHopIPAddress *string
+
+	// READ-ONLY; A value indicating whether this route overrides overlapping BGP routes regardless of LPM.
+	HasBgpOverride *bool
 
 	// READ-ONLY; The provisioning state of the route resource.
 	ProvisioningState *ProvisioningState
@@ -10332,6 +11155,120 @@ type RoutingPolicy struct {
 	NextHop *string
 }
 
+// RoutingRule - Network routing rule.
+type RoutingRule struct {
+	// Indicates the properties of the routing rule
+	Properties *RoutingRulePropertiesFormat
+
+	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
+	Etag *string
+
+	// READ-ONLY; Resource ID.
+	ID *string
+
+	// READ-ONLY; Resource name.
+	Name *string
+
+	// READ-ONLY; The system metadata related to this resource.
+	SystemData *SystemData
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
+// RoutingRuleCollection - Defines the routing rule collection.
+type RoutingRuleCollection struct {
+	// Indicates the properties for the network manager routing rule collection.
+	Properties *RoutingRuleCollectionPropertiesFormat
+
+	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
+	Etag *string
+
+	// READ-ONLY; Resource ID.
+	ID *string
+
+	// READ-ONLY; Resource name.
+	Name *string
+
+	// READ-ONLY; The system metadata related to this resource.
+	SystemData *SystemData
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
+// RoutingRuleCollectionListResult - Routing configuration rule collection list result.
+type RoutingRuleCollectionListResult struct {
+	// Gets the URL to get the next set of results.
+	NextLink *string
+
+	// A list of network manager routing configuration rule collections
+	Value []*RoutingRuleCollection
+}
+
+// RoutingRuleCollectionPropertiesFormat - Defines the routing rule collection properties.
+type RoutingRuleCollectionPropertiesFormat struct {
+	// REQUIRED; Groups for configuration
+	AppliesTo []*ManagerRoutingGroupItem
+
+	// A description of the routing rule collection.
+	Description *string
+
+	// Determines whether BGP route propagation is enabled. Defaults to true.
+	DisableBgpRoutePropagation *DisableBgpRoutePropagation
+
+	// READ-ONLY; The provisioning state of the resource.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Unique identifier for this resource.
+	ResourceGUID *string
+}
+
+// RoutingRuleListResult - Routing configuration rule list result.
+type RoutingRuleListResult struct {
+	// The URL to get the next set of results.
+	NextLink *string
+
+	// A list of routing rules.
+	Value []*RoutingRule
+}
+
+// RoutingRuleNextHop - Next hop.
+type RoutingRuleNextHop struct {
+	// REQUIRED; Next hop type.
+	NextHopType *RoutingRuleNextHopType
+
+	// Next hop address. Only required if the next hop type is VirtualAppliance.
+	NextHopAddress *string
+}
+
+// RoutingRulePropertiesFormat - Routing rule resource.
+type RoutingRulePropertiesFormat struct {
+	// REQUIRED; Indicates the destination for this particular rule.
+	Destination *RoutingRuleRouteDestination
+
+	// REQUIRED; Indicates the next hop for this particular rule.
+	NextHop *RoutingRuleNextHop
+
+	// A description for this rule.
+	Description *string
+
+	// READ-ONLY; The provisioning state of the resource.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Unique identifier for this resource.
+	ResourceGUID *string
+}
+
+// RoutingRuleRouteDestination - Route destination.
+type RoutingRuleRouteDestination struct {
+	// REQUIRED; Destination address.
+	DestinationAddress *string
+
+	// REQUIRED; Destination type.
+	Type *RoutingRuleDestinationType
+}
+
 // Rule of type network.
 type Rule struct {
 	// REQUIRED; Rule Type.
@@ -10376,7 +11313,7 @@ func (r *Rule) GetFirewallPolicyRule() *FirewallPolicyRule {
 
 // SKU - The sku of this Bastion Host.
 type SKU struct {
-	// The name of this Bastion Host.
+	// The name of the sku of this Bastion Host.
 	Name *BastionHostSKUName
 }
 
@@ -10462,6 +11399,9 @@ type SecurityAdminConfigurationPropertiesFormat struct {
 
 	// A description of the security configuration.
 	Description *string
+
+	// Determine update behavior for changes to network groups referenced within the rules in this configuration.
+	NetworkGroupAddressSpaceAggregationOption *AddressSpaceAggregationOption
 
 	// READ-ONLY; The provisioning state of the resource.
 	ProvisioningState *ProvisioningState
@@ -10729,6 +11669,159 @@ type SecurityRulesEvaluationResult struct {
 	SourcePortMatched *bool
 }
 
+// SecurityUserConfiguration - Defines the security user configuration
+type SecurityUserConfiguration struct {
+	// Indicates the properties for the network manager security user configuration.
+	Properties *SecurityUserConfigurationPropertiesFormat
+
+	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
+	Etag *string
+
+	// READ-ONLY; Resource ID.
+	ID *string
+
+	// READ-ONLY; Resource name.
+	Name *string
+
+	// READ-ONLY; The system metadata related to this resource.
+	SystemData *SystemData
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
+// SecurityUserConfigurationListResult - A list of network manager security user configurations
+type SecurityUserConfigurationListResult struct {
+	// Gets the URL to get the next page of results.
+	NextLink *string
+
+	// Gets a page of security user configurations
+	Value []*SecurityUserConfiguration
+}
+
+// SecurityUserConfigurationPropertiesFormat - Defines the security user configuration properties.
+type SecurityUserConfigurationPropertiesFormat struct {
+	// A description of the security user configuration.
+	Description *string
+
+	// READ-ONLY; The provisioning state of the resource.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Unique identifier for this resource.
+	ResourceGUID *string
+}
+
+// SecurityUserGroupItem - Network manager security user group item.
+type SecurityUserGroupItem struct {
+	// REQUIRED; Network manager group Id.
+	NetworkGroupID *string
+}
+
+// SecurityUserRule - Network security user rule.
+type SecurityUserRule struct {
+	// Indicates the properties of the security user rule
+	Properties *SecurityUserRulePropertiesFormat
+
+	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
+	Etag *string
+
+	// READ-ONLY; Resource ID.
+	ID *string
+
+	// READ-ONLY; Resource name.
+	Name *string
+
+	// READ-ONLY; The system metadata related to this resource.
+	SystemData *SystemData
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
+// SecurityUserRuleCollection - Defines the security user rule collection.
+type SecurityUserRuleCollection struct {
+	// Indicates the properties for the network manager security user rule collection.
+	Properties *SecurityUserRuleCollectionPropertiesFormat
+
+	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
+	Etag *string
+
+	// READ-ONLY; Resource ID.
+	ID *string
+
+	// READ-ONLY; Resource name.
+	Name *string
+
+	// READ-ONLY; The system metadata related to this resource.
+	SystemData *SystemData
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
+// SecurityUserRuleCollectionListResult - Security user configuration rule collection list result.
+type SecurityUserRuleCollectionListResult struct {
+	// Gets the URL to get the next set of results.
+	NextLink *string
+
+	// A list of network manager security user configuration rule collections
+	Value []*SecurityUserRuleCollection
+}
+
+// SecurityUserRuleCollectionPropertiesFormat - Defines the security user rule collection properties.
+type SecurityUserRuleCollectionPropertiesFormat struct {
+	// REQUIRED; Groups for configuration
+	AppliesToGroups []*SecurityUserGroupItem
+
+	// A description of the security user rule collection.
+	Description *string
+
+	// READ-ONLY; The provisioning state of the resource.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Unique identifier for this resource.
+	ResourceGUID *string
+}
+
+// SecurityUserRuleListResult - security user rule list result.
+type SecurityUserRuleListResult struct {
+	// The URL to get the next set of results.
+	NextLink *string
+
+	// A list of security user rules
+	Value []*SecurityUserRule
+}
+
+// SecurityUserRulePropertiesFormat - Security rule resource.
+type SecurityUserRulePropertiesFormat struct {
+	// REQUIRED; Indicates if the traffic matched against the rule in inbound or outbound.
+	Direction *SecurityConfigurationRuleDirection
+
+	// REQUIRED; Network protocol this rule applies to.
+	Protocol *SecurityConfigurationRuleProtocol
+
+	// A description for this rule.
+	Description *string
+
+	// The destination port ranges.
+	DestinationPortRanges []*string
+
+	// The destination address prefixes. CIDR or destination IP ranges.
+	Destinations []*AddressPrefixItem
+
+	// The source port ranges.
+	SourcePortRanges []*string
+
+	// The CIDR or source IP ranges.
+	Sources []*AddressPrefixItem
+
+	// READ-ONLY; The provisioning state of the security configuration user rule resource.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Unique identifier for this resource.
+	ResourceGUID *string
+}
+
 // ServiceAssociationLink resource.
 type ServiceAssociationLink struct {
 	// Resource ID.
@@ -10891,6 +11984,9 @@ type ServiceEndpointPropertiesFormat struct {
 	// A list of locations.
 	Locations []*string
 
+	// SubResource as network identifier.
+	NetworkIdentifier *SubResource
+
 	// The type of the endpoint service.
 	Service *string
 
@@ -10971,6 +12067,18 @@ type SessionIDs struct {
 	SessionIDs []*string
 }
 
+// SharedKeyProperties - Parameters for SharedKey.
+type SharedKeyProperties struct {
+	// The value of the shared key for the vpn link connection.
+	SharedKey *string
+
+	// The length of the shared key for the vpn link connection.
+	SharedKeyLength *int32
+
+	// READ-ONLY; The provisioning state of the SharedKey resource.
+	ProvisioningState *ProvisioningState
+}
+
 // SignatureOverridesFilterValuesQuery - Describes the filter values possibles for a given column
 type SignatureOverridesFilterValuesQuery struct {
 	// Describes the name of the column which values will be returned
@@ -11017,7 +12125,8 @@ type SingleQueryResult struct {
 	// Describes the list of destination ports related to this signature
 	DestinationPorts []*string
 
-	// Describes in which direction signature is being enforced: 0 - OutBound, 1 - InBound, 2 - Any, 3 - Internal, 4 - InternalOutbound
+	// Describes in which direction signature is being enforced: 0 - OutBound, 1 - InBound, 2 - Any, 3 - Internal, 4 - InternalOutbound,
+	// 5 - InternalInbound
 	Direction *FirewallPolicyIDPSSignatureDirection
 
 	// Describes the groups the signature belongs to
@@ -11043,6 +12152,48 @@ type SingleQueryResult struct {
 
 	// Describes the list of source ports related to this signature
 	SourcePorts []*string
+}
+
+// StaticCidr - Instance of StaticCidr resource.
+type StaticCidr struct {
+	// Properties of static CIDR resource.
+	Properties *StaticCidrProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// StaticCidrList - List of StaticCidr
+type StaticCidrList struct {
+	// The link used to get the next page of operations.
+	NextLink *string
+	Value    []*StaticCidr
+}
+
+// StaticCidrProperties - Properties of static CIDR resource.
+type StaticCidrProperties struct {
+	// List of IP address prefixes of the resource.
+	AddressPrefixes []*string
+	Description     *string
+
+	// Number of IP addresses to allocate for a static CIDR resource. The IP addresses will be assigned based on IpamPools available
+	// space.
+	NumberOfIPAddressesToAllocate *string
+
+	// Provisioning states of a resource.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Total number of IP addresses allocated for the static CIDR resource.
+	TotalNumberOfIPAddresses *string
 }
 
 // StaticMember Item.
@@ -11174,6 +12325,9 @@ type SubnetPropertiesFormat struct {
 	// Array of IpAllocation which reference this subnet.
 	IPAllocations []*SubResource
 
+	// A list of IPAM Pools for allocating IP address prefixes.
+	IpamPoolPrefixAllocations []*IpamPoolPrefixAllocation
+
 	// Nat gateway associated with this subnet.
 	NatGateway *SubResource
 
@@ -11194,6 +12348,11 @@ type SubnetPropertiesFormat struct {
 
 	// An array of service endpoints.
 	ServiceEndpoints []*ServiceEndpointPropertiesFormat
+
+	// Set this property to Tenant to allow sharing subnet with other subscriptions in your AAD tenant. This property can only
+	// be set if defaultOutboundAccess is set to false, both properties can only be set
+	// if subnet is empty.
+	SharingScope *SharingScope
 
 	// READ-ONLY; Array of IP configuration profiles which reference this subnet.
 	IPConfigurationProfiles []*IPConfigurationProfile
@@ -12209,6 +13368,9 @@ type VPNSiteLinkConnectionProperties struct {
 	// Expected bandwidth in MBPS.
 	ConnectionBandwidth *int32
 
+	// Dead Peer Detection timeout in seconds for VpnLink connection.
+	DpdTimeoutSeconds *int32
+
 	// List of egress NatRules.
 	EgressNatRules []*SubResource
 
@@ -12351,6 +13513,61 @@ type VerificationIPFlowResult struct {
 	RuleName *string
 }
 
+// VerifierWorkspace - Instance of Verifier Workspace.
+type VerifierWorkspace struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Properties of Verifier Workspace resource.
+	Properties *VerifierWorkspaceProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// VerifierWorkspaceListResult - A list of Verifier Workspace
+type VerifierWorkspaceListResult struct {
+	// Gets the URL to get the next page of results.
+	NextLink *string
+
+	// Gets a page of Verifier Workspaces.
+	Value []*VerifierWorkspace
+}
+
+// VerifierWorkspaceProperties - Properties of Verifier Workspace resource.
+type VerifierWorkspaceProperties struct {
+	Description *string
+
+	// Provisioning states of a resource.
+	ProvisioningState *ProvisioningState
+}
+
+// VerifierWorkspaceUpdate - Represents the VerifierWorkspace update API request interface.
+type VerifierWorkspaceUpdate struct {
+	// Represents the VerifierWorkspace update properties.
+	Properties *VerifierWorkspaceUpdateProperties
+
+	// Dictionary of
+	Tags map[string]*string
+}
+
+// VerifierWorkspaceUpdateProperties - Represents the VerifierWorkspace update properties.
+type VerifierWorkspaceUpdateProperties struct {
+	Description *string
+}
+
 // VirtualAppliance - NetworkVirtualAppliance Resource.
 type VirtualAppliance struct {
 	// Resource ID.
@@ -12432,6 +13649,29 @@ type VirtualApplianceConnectionProperties struct {
 	ProvisioningState *ProvisioningState
 }
 
+// VirtualApplianceIPConfiguration - Represents a single IP configuration.
+type VirtualApplianceIPConfiguration struct {
+	// Name of the IP configuration.
+	Name *string
+
+	// Represents a single IP configuration properties.
+	Properties *VirtualApplianceIPConfigurationProperties
+}
+
+// VirtualApplianceIPConfigurationProperties - Represents a single IP configuration properties.
+type VirtualApplianceIPConfigurationProperties struct {
+	// Whether or not this is primary IP configuration of the NIC.
+	Primary *bool
+}
+
+// VirtualApplianceInstanceIDs - Specifies a list of virtual machine instance IDs from the Network Virtual Appliance VM instances.
+type VirtualApplianceInstanceIDs struct {
+	// The network virtual appliance instance ids. Omitting the network virtual appliance instance ids will result in the operation
+	// being performed on all virtual machines belonging to the network virtual
+	// appliance.
+	InstanceIDs []*string
+}
+
 // VirtualApplianceListResult - Response for ListNetworkVirtualAppliances API service call.
 type VirtualApplianceListResult struct {
 	// URL to get the next set of results.
@@ -12441,6 +13681,20 @@ type VirtualApplianceListResult struct {
 	Value []*VirtualAppliance
 }
 
+// VirtualApplianceNetworkInterfaceConfiguration - Represents a single NIC configuration.
+type VirtualApplianceNetworkInterfaceConfiguration struct {
+	// NIC type. This should be either PublicNic or PrivateNic.
+	NicType *NicTypeInRequest
+
+	// Represents a single NIC configuration properties.
+	Properties *VirtualApplianceNetworkInterfaceConfigurationProperties
+}
+
+// VirtualApplianceNetworkInterfaceConfigurationProperties - Represents a single NIC configuration properties.
+type VirtualApplianceNetworkInterfaceConfigurationProperties struct {
+	IPConfigurations []*VirtualApplianceIPConfiguration
+}
+
 // VirtualApplianceNicProperties - Network Virtual Appliance NIC properties.
 type VirtualApplianceNicProperties struct {
 	// READ-ONLY; Instance on which nic is attached.
@@ -12448,6 +13702,9 @@ type VirtualApplianceNicProperties struct {
 
 	// READ-ONLY; NIC name.
 	Name *string
+
+	// READ-ONLY; NIC type - PublicNic, PrivateNic, or AdditionalNic.
+	NicType *NicTypeInResponse
 
 	// READ-ONLY; Private IP address.
 	PrivateIPAddress *string
@@ -12475,6 +13732,9 @@ type VirtualAppliancePropertiesFormat struct {
 
 	// List of Resource Uri of Public IPs for Internet Ingress Scenario.
 	InternetIngressPublicIPs []*InternetIngressPublicIPsProperties
+
+	// Network Profile containing configurations for Public and Private NIC.
+	NetworkProfile *VirtualAppliancePropertiesFormatNetworkProfile
 
 	// Network Virtual Appliance SKU.
 	NvaSKU *VirtualApplianceSKUProperties
@@ -12511,6 +13771,11 @@ type VirtualAppliancePropertiesFormat struct {
 
 	// READ-ONLY; List of references to VirtualApplianceSite.
 	VirtualApplianceSites []*SubResource
+}
+
+// VirtualAppliancePropertiesFormatNetworkProfile - Network Profile containing configurations for Public and Private NIC.
+type VirtualAppliancePropertiesFormatNetworkProfile struct {
+	NetworkInterfaceConfigurations []*VirtualApplianceNetworkInterfaceConfiguration
 }
 
 // VirtualApplianceSKU - Definition of the NetworkVirtualApplianceSkus resource.
@@ -12860,7 +14125,8 @@ type VirtualNetworkEncryption struct {
 	// REQUIRED; Indicates if encryption is enabled on the virtual network.
 	Enabled *bool
 
-	// If the encrypted VNet allows VM that does not support encryption
+	// If the encrypted VNet allows VM that does not support encryption. This field is for future support, AllowUnencrypted is
+	// the only supported value at general availability.
 	Enforcement *VirtualNetworkEncryptionEnforcement
 }
 
@@ -12874,6 +14140,9 @@ type VirtualNetworkGateway struct {
 
 	// Resource ID.
 	ID *string
+
+	// The identity of the virtual network gateway, if configured.
+	Identity *ManagedServiceIdentity
 
 	// Resource location.
 	Location *string
@@ -13309,6 +14578,9 @@ type VirtualNetworkGatewayPropertiesFormat struct {
 	// NatRules for virtual network gateway.
 	NatRules []*VirtualNetworkGatewayNatRule
 
+	// Property to indicate if the Express Route Gateway has resiliency model of MultiHomed or SingleHomed
+	ResiliencyModel *ResiliencyModel
+
 	// The reference to the VirtualNetworkGatewaySku resource which represents the SKU selected for Virtual network gateway.
 	SKU *VirtualNetworkGatewaySKU
 
@@ -13410,6 +14682,21 @@ type VirtualNetworkPeeringPropertiesFormat struct {
 	// If we need to verify the provisioning state of the remote gateway.
 	DoNotVerifyRemoteGateways *bool
 
+	// Whether only Ipv6 address space is peered for subnet peering.
+	EnableOnlyIPv6Peering *bool
+
+	// The local address space of the local virtual network that is peered.
+	LocalAddressSpace *AddressSpace
+
+	// List of local subnet names that are subnet peered with remote virtual network.
+	LocalSubnetNames []*string
+
+	// The current local address space of the local virtual network that is peered.
+	LocalVirtualNetworkAddressSpace *AddressSpace
+
+	// Whether complete virtual network address space is peered.
+	PeerCompleteVnets *bool
+
 	// The status of the virtual network peering.
 	PeeringState *VirtualNetworkPeeringState
 
@@ -13421,6 +14708,9 @@ type VirtualNetworkPeeringPropertiesFormat struct {
 
 	// The reference to the remote virtual network's Bgp Communities.
 	RemoteBgpCommunities *VirtualNetworkBgpCommunities
+
+	// List of remote subnet names from remote virtual network that are subnet peered.
+	RemoteSubnetNames []*string
 
 	// The reference to the remote virtual network. The remote virtual network can be in the same or different region (preview).
 	// See here to register for the preview and learn more
@@ -13475,6 +14765,9 @@ type VirtualNetworkPropertiesFormat struct {
 
 	// Array of IpAllocation which reference this VNET.
 	IPAllocations []*SubResource
+
+	// Private Endpoint VNet Policies.
+	PrivateEndpointVNetPolicies *PrivateEndpointVNetPolicies
 
 	// A list of subnets in a Virtual Network.
 	Subnets []*Subnet
@@ -13902,6 +15195,9 @@ type WebApplicationFirewallPolicyPropertiesFormat struct {
 
 	// The PolicySettings for policy.
 	PolicySettings *PolicySettings
+
+	// READ-ONLY; A collection of references to application gateway for containers.
+	ApplicationGatewayForContainers []*ApplicationGatewayForContainersReferenceDefinition
 
 	// READ-ONLY; A collection of references to application gateways.
 	ApplicationGateways []*ApplicationGateway

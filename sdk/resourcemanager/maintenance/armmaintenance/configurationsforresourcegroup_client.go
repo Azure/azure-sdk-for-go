@@ -28,8 +28,7 @@ type ConfigurationsForResourceGroupClient struct {
 }
 
 // NewConfigurationsForResourceGroupClient creates a new instance of ConfigurationsForResourceGroupClient with the specified values.
-//   - subscriptionID - Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
-//     part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewConfigurationsForResourceGroupClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConfigurationsForResourceGroupClient, error) {
@@ -46,7 +45,7 @@ func NewConfigurationsForResourceGroupClient(subscriptionID string, credential a
 
 // NewListPager - Get Configuration records within a subscription and resource group
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-10-01-preview
 //   - resourceGroupName - Resource Group Name
 //   - options - ConfigurationsForResourceGroupClientListOptions contains the optional parameters for the ConfigurationsForResourceGroupClient.NewListPager
 //     method.
@@ -90,7 +89,7 @@ func (client *ConfigurationsForResourceGroupClient) listCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -29,7 +29,7 @@ type OutboundEndpointsClient struct {
 }
 
 // NewOutboundEndpointsClient creates a new instance of OutboundEndpointsClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewOutboundEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OutboundEndpointsClient, error) {
@@ -47,7 +47,7 @@ func NewOutboundEndpointsClient(subscriptionID string, credential azcore.TokenCr
 // BeginCreateOrUpdate - Creates or updates an outbound endpoint for a DNS resolver.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-07-01
+// Generated from API version 2023-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dnsResolverName - The name of the DNS resolver.
 //   - outboundEndpointName - The name of the outbound endpoint for the DNS resolver.
@@ -74,7 +74,7 @@ func (client *OutboundEndpointsClient) BeginCreateOrUpdate(ctx context.Context, 
 // CreateOrUpdate - Creates or updates an outbound endpoint for a DNS resolver.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-07-01
+// Generated from API version 2023-07-01-preview
 func (client *OutboundEndpointsClient) createOrUpdate(ctx context.Context, resourceGroupName string, dnsResolverName string, outboundEndpointName string, parameters OutboundEndpoint, options *OutboundEndpointsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OutboundEndpointsClient.BeginCreateOrUpdate"
@@ -120,15 +120,15 @@ func (client *OutboundEndpointsClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2023-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
 	}
@@ -138,7 +138,7 @@ func (client *OutboundEndpointsClient) createOrUpdateCreateRequest(ctx context.C
 // BeginDelete - Deletes an outbound endpoint for a DNS resolver. WARNING: This operation cannot be undone.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-07-01
+// Generated from API version 2023-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dnsResolverName - The name of the DNS resolver.
 //   - outboundEndpointName - The name of the outbound endpoint for the DNS resolver.
@@ -164,7 +164,7 @@ func (client *OutboundEndpointsClient) BeginDelete(ctx context.Context, resource
 // Delete - Deletes an outbound endpoint for a DNS resolver. WARNING: This operation cannot be undone.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-07-01
+// Generated from API version 2023-07-01-preview
 func (client *OutboundEndpointsClient) deleteOperation(ctx context.Context, resourceGroupName string, dnsResolverName string, outboundEndpointName string, options *OutboundEndpointsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OutboundEndpointsClient.BeginDelete"
@@ -210,19 +210,19 @@ func (client *OutboundEndpointsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2023-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets properties of an outbound endpoint for a DNS resolver.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-07-01
+// Generated from API version 2023-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dnsResolverName - The name of the DNS resolver.
 //   - outboundEndpointName - The name of the outbound endpoint for the DNS resolver.
@@ -273,7 +273,7 @@ func (client *OutboundEndpointsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2023-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -290,7 +290,7 @@ func (client *OutboundEndpointsClient) getHandleResponse(resp *http.Response) (O
 
 // NewListPager - Lists outbound endpoints for a DNS resolver.
 //
-// Generated from API version 2022-07-01
+// Generated from API version 2023-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dnsResolverName - The name of the DNS resolver.
 //   - options - OutboundEndpointsClientListOptions contains the optional parameters for the OutboundEndpointsClient.NewListPager
@@ -338,10 +338,10 @@ func (client *OutboundEndpointsClient) listCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
+	reqQP.Set("api-version", "2023-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -359,7 +359,7 @@ func (client *OutboundEndpointsClient) listHandleResponse(resp *http.Response) (
 // BeginUpdate - Updates an outbound endpoint for a DNS resolver.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-07-01
+// Generated from API version 2023-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dnsResolverName - The name of the DNS resolver.
 //   - outboundEndpointName - The name of the outbound endpoint for the DNS resolver.
@@ -386,7 +386,7 @@ func (client *OutboundEndpointsClient) BeginUpdate(ctx context.Context, resource
 // Update - Updates an outbound endpoint for a DNS resolver.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-07-01
+// Generated from API version 2023-07-01-preview
 func (client *OutboundEndpointsClient) update(ctx context.Context, resourceGroupName string, dnsResolverName string, outboundEndpointName string, parameters OutboundEndpointPatch, options *OutboundEndpointsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OutboundEndpointsClient.BeginUpdate"
@@ -432,12 +432,12 @@ func (client *OutboundEndpointsClient) updateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2023-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
 	}

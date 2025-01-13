@@ -7,6 +7,7 @@
 package azidentity
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"net/http"
@@ -14,13 +15,14 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
@@ -32,7 +34,11 @@ const (
 )
 
 func TestManagedIdentityCredential_AzureArc(t *testing.T) {
-	file, err := os.Create(filepath.Join(t.TempDir(), "arc.key"))
+	d := t.TempDir()
+	before := arcKeyDirectory
+	arcKeyDirectory = func() (string, error) { return d, nil }
+	defer func() { arcKeyDirectory = before }()
+	file, err := os.Create(filepath.Join(d, "arc.key"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -150,6 +156,69 @@ func TestManagedIdentityCredential_AzureArcErrors(t *testing.T) {
 			t.Fatal("expected an error")
 		}
 	})
+	t.Run("key too large", func(t *testing.T) {
+		d := t.TempDir()
+		f := filepath.Join(d, "test.key")
+		err := os.WriteFile(f, bytes.Repeat([]byte("."), 4097), 0600)
+		require.NoError(t, err)
+		before := arcKeyDirectory
+		arcKeyDirectory = func() (string, error) { return d, nil }
+		defer func() { arcKeyDirectory = before }()
+		srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+		defer close()
+		srv.AppendResponse(
+			mock.WithHeader("WWW-Authenticate", "Basic realm="+f),
+			mock.WithStatusCode(http.StatusUnauthorized),
+		)
+		cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: srv}})
+		require.NoError(t, err)
+		_, err = cred.GetToken(ctx, testTRO)
+		require.ErrorContains(t, err, "too large")
+	})
+	t.Run("unexpected file paths", func(t *testing.T) {
+		d, err := arcKeyDirectory()
+		if err != nil {
+			// test is running on an unsupported OS e.g. darwin
+			t.Skip(err)
+		}
+		srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+		defer close()
+		srv.AppendResponse(
+			// unexpected directory
+			mock.WithHeader("WWW-Authenticate", "Basic realm="+filepath.Join("foo", "bar.key")),
+			mock.WithStatusCode(http.StatusUnauthorized),
+		)
+		o := ManagedIdentityCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: srv}}
+		cred, err := NewManagedIdentityCredential(&o)
+		require.NoError(t, err)
+		_, err = cred.GetToken(ctx, testTRO)
+		require.ErrorContains(t, err, "unexpected file path")
+
+		srv.AppendResponse(
+			// unexpected extension
+			mock.WithHeader("WWW-Authenticate", "Basic realm="+filepath.Join(d, "foo")),
+			mock.WithStatusCode(http.StatusUnauthorized),
+		)
+		cred, err = NewManagedIdentityCredential(&o)
+		require.NoError(t, err)
+		_, err = cred.GetToken(ctx, testTRO)
+		require.ErrorContains(t, err, "unexpected file path")
+	})
+	if runtime.GOOS == "windows" {
+		t.Run("ProgramData not set", func(t *testing.T) {
+			t.Setenv("ProgramData", "")
+			srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+			defer close()
+			srv.AppendResponse(
+				mock.WithHeader("WWW-Authenticate", "Basic realm=foo"),
+				mock.WithStatusCode(http.StatusUnauthorized),
+			)
+			cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: srv}})
+			require.NoError(t, err)
+			_, err = cred.GetToken(ctx, testTRO)
+			require.ErrorContains(t, err, "ProgramData")
+		})
+	}
 }
 
 func TestManagedIdentityCredential_AzureContainerInstanceLive(t *testing.T) {
@@ -184,7 +253,7 @@ func TestManagedIdentityCredential_AzureFunctionsLive(t *testing.T) {
 	res, err := http.Get(url)
 	require.NoError(t, err)
 	if res.StatusCode != http.StatusOK {
-		b, err := runtime.Payload(res)
+		b, err := azruntime.Payload(res)
 		require.NoError(t, err)
 		t.Fatal("test application returned an error: " + string(b))
 	}
@@ -509,41 +578,53 @@ func TestManagedIdentityCredential_IMDSLive(t *testing.T) {
 	if recording.GetRecordMode() != recording.PlaybackMode && !liveManagedIdentity.imds {
 		t.Skip("set IDENTITY_IMDS_AVAILABLE to run this test")
 	}
-	opts, stop := initRecording(t)
-	defer stop()
-	cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ClientOptions: opts})
-	if err != nil {
-		t.Fatal(err)
-	}
-	testGetTokenSuccess(t, cred)
-}
 
-func TestManagedIdentityCredential_IMDSClientIDLive(t *testing.T) {
-	if recording.GetRecordMode() != recording.PlaybackMode && !liveManagedIdentity.imds || liveManagedIdentity.clientID == "" {
-		t.Skip("set IDENTITY_IMDS_AVAILABLE and IDENTITY_VM_USER_ASSIGNED_MI_CLIENT_ID to run this test")
-	}
-	opts, stop := initRecording(t)
-	defer stop()
-	o := ManagedIdentityCredentialOptions{ClientOptions: opts, ID: ClientID(liveManagedIdentity.clientID)}
-	cred, err := NewManagedIdentityCredential(&o)
-	if err != nil {
-		t.Fatal(err)
-	}
-	testGetTokenSuccess(t, cred)
-}
+	t.Run("client ID", func(t *testing.T) {
+		if recording.GetRecordMode() != recording.PlaybackMode && liveManagedIdentity.clientID == "" {
+			t.Skip("set IDENTITY_VM_USER_ASSIGNED_MI_CLIENT_ID to run this test")
+		}
+		opts, stop := initRecording(t)
+		defer stop()
+		cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{
+			ClientOptions: opts, ID: ClientID(liveManagedIdentity.clientID)},
+		)
+		require.NoError(t, err)
+		testGetTokenSuccess(t, cred)
+	})
 
-func TestManagedIdentityCredential_IMDSResourceIDLive(t *testing.T) {
-	if recording.GetRecordMode() != recording.PlaybackMode && !liveManagedIdentity.imds || liveManagedIdentity.resourceID == "" {
-		t.Skip("set IDENTITY_IMDS_AVAILABLE and IDENTITY_VM_USER_ASSIGNED_MI_RESOURCE_ID to run this test")
-	}
-	opts, stop := initRecording(t)
-	defer stop()
-	o := ManagedIdentityCredentialOptions{ClientOptions: opts, ID: ResourceID(liveManagedIdentity.resourceID)}
-	cred, err := NewManagedIdentityCredential(&o)
-	if err != nil {
-		t.Fatal(err)
-	}
-	testGetTokenSuccess(t, cred)
+	t.Run("object ID", func(t *testing.T) {
+		if recording.GetRecordMode() != recording.PlaybackMode && liveManagedIdentity.objectID == "" {
+			t.Skip("set IDENTITY_VM_USER_ASSIGNED_MI_OBJECT_ID to run this test")
+		}
+		opts, stop := initRecording(t)
+		defer stop()
+		cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{
+			ClientOptions: opts, ID: ObjectID(liveManagedIdentity.objectID)},
+		)
+		require.NoError(t, err)
+		testGetTokenSuccess(t, cred)
+	})
+
+	t.Run("resource ID", func(t *testing.T) {
+		if recording.GetRecordMode() != recording.PlaybackMode && liveManagedIdentity.resourceID == "" {
+			t.Skip("set IDENTITY_VM_USER_ASSIGNED_MI_RESOURCE_ID to run this test")
+		}
+		opts, stop := initRecording(t)
+		defer stop()
+		cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{
+			ClientOptions: opts, ID: ResourceID(liveManagedIdentity.resourceID)},
+		)
+		require.NoError(t, err)
+		testGetTokenSuccess(t, cred)
+	})
+
+	t.Run("system assigned", func(t *testing.T) {
+		opts, stop := initRecording(t)
+		defer stop()
+		cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ClientOptions: opts})
+		require.NoError(t, err)
+		testGetTokenSuccess(t, cred)
+	})
 }
 
 func TestManagedIdentityCredential_IMDSRetries(t *testing.T) {
@@ -603,4 +684,41 @@ func TestManagedIdentityCredential_ServiceFabric(t *testing.T) {
 		t.Fatal(err)
 	}
 	testGetTokenSuccess(t, cred)
+}
+
+func TestManagedIdentityCredential_UnsupportedID(t *testing.T) {
+	t.Run("Azure Arc", func(t *testing.T) {
+		t.Setenv(identityEndpoint, fakeMIEndpoint)
+		t.Setenv(arcIMDSEndpoint, fakeMIEndpoint)
+		for _, id := range []ManagedIDKind{ClientID(fakeClientID), ObjectID(fakeObjectID), ResourceID(fakeResourceID)} {
+			_, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ID: id})
+			require.Errorf(t, err, "expected an error for %T", id)
+		}
+	})
+	t.Run("Azure ML", func(t *testing.T) {
+		t.Setenv(msiEndpoint, fakeMIEndpoint)
+		t.Setenv(msiSecret, "...")
+		_, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ID: ResourceID(fakeResourceID)})
+		require.Error(t, err)
+		_, err = NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ID: ObjectID(fakeObjectID)})
+		require.Error(t, err)
+		_, err = NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ID: ClientID(fakeClientID)})
+		require.NoError(t, err)
+	})
+	t.Run("Cloud Shell", func(t *testing.T) {
+		t.Setenv(msiEndpoint, fakeMIEndpoint)
+		for _, id := range []ManagedIDKind{ClientID(fakeClientID), ObjectID(fakeObjectID), ResourceID(fakeResourceID)} {
+			_, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ID: id})
+			require.Errorf(t, err, "expected an error for %T", id)
+		}
+	})
+	t.Run("Service Fabric", func(t *testing.T) {
+		t.Setenv(identityEndpoint, fakeMIEndpoint)
+		t.Setenv(identityHeader, "...")
+		t.Setenv(identityServerThumbprint, "...")
+		for _, id := range []ManagedIDKind{ClientID(fakeClientID), ObjectID(fakeObjectID), ResourceID(fakeResourceID)} {
+			_, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ID: id})
+			require.Errorf(t, err, "expected an error for %T", id)
+		}
+	})
 }

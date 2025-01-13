@@ -58,13 +58,17 @@ func ExampleNewOnBehalfOfCredentialWithCertificate() {
 
 	// NewOnBehalfOfCredentialFromCertificate requires at least one *x509.Certificate, and a crypto.PrivateKey.
 	// ParseCertificates returns these given certificate data in PEM or PKCS12 format. It handles common
-	// scenarios but has limitations, for example it doesn't load PEM encrypted private keys.
+	// scenarios but has limitations, for example it doesn't load PEM encrypted private keys or PKCS12 certs
+	// that use SHA256 for message authentication. If it isn't able to parse your certificate, consider
+	// using another module to load the certificate and private key.
 	certs, key, err := azidentity.ParseCertificates(data, nil)
 	if err != nil {
 		// TODO: handle error
 	}
 
-	cred, err = azidentity.NewClientCertificateCredential(tenantID, clientID, certs, key, nil)
+	// userAssertion is the user's access token for the application. Typically it comes from a client request.
+	userAssertion := "TODO"
+	cred, err = azidentity.NewOnBehalfOfCredentialWithCertificate(tenantID, clientID, userAssertion, certs, key, nil)
 	if err != nil {
 		// TODO: handle error
 	}
@@ -77,8 +81,10 @@ func ExampleNewClientCertificateCredential() {
 	handleError(err)
 
 	// NewClientCertificateCredential requires at least one *x509.Certificate, and a crypto.PrivateKey.
-	// ParseCertificates returns these given certificate data in PEM or PKCS12 format. It handles common scenarios
-	// but has limitations, for example it doesn't load PEM encrypted private keys.
+	// ParseCertificates returns these given certificate data in PEM or PKCS12 format. It handles common
+	// scenarios but has limitations, for example it doesn't load PEM encrypted private keys or PKCS12 certs
+	// that use SHA256 for message authentication. If it isn't able to parse your certificate, consider
+	// using another module to load the certificate and private key.
 	certs, key, err := azidentity.ParseCertificates(data, nil)
 	handleError(err)
 
@@ -88,16 +94,31 @@ func ExampleNewClientCertificateCredential() {
 	// Output:
 }
 
+// This example shows how to specify a user-assigned identity. Note that some hosting environments
+// don't support user-assigned identities, and some that do support them accept only a subset of
+// their identifiers. See the documentation for [ClientID], [ResourceID], and [ObjectID] for details.
 func ExampleNewManagedIdentityCredential_userAssigned() {
-	// select a user assigned identity with its client ID...
+	// select a user-assigned identity with its client ID...
 	clientID := azidentity.ClientID("abcd1234-...")
 	opts := azidentity.ManagedIdentityCredentialOptions{ID: clientID}
 	cred, err = azidentity.NewManagedIdentityCredential(&opts)
-	handleError(err)
+	if err != nil {
+		// TODO
+	}
 
-	// ...or its resource ID
+	// ...or its resource ID...
 	resourceID := azidentity.ResourceID("/subscriptions/...")
 	opts = azidentity.ManagedIdentityCredentialOptions{ID: resourceID}
 	cred, err = azidentity.NewManagedIdentityCredential(&opts)
-	handleError(err)
+	if err != nil {
+		// TODO
+	}
+
+	// ...or its object ID
+	objectID := azidentity.ObjectID("4321dcba-...")
+	opts = azidentity.ManagedIdentityCredentialOptions{ID: objectID}
+	cred, err = azidentity.NewManagedIdentityCredential(&opts)
+	if err != nil {
+		// TODO
+	}
 }

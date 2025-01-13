@@ -28,7 +28,7 @@ type ScriptCmdletsClient struct {
 }
 
 // NewScriptCmdletsClient creates a new instance of ScriptCmdletsClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewScriptCmdletsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ScriptCmdletsClient, error) {
@@ -43,14 +43,14 @@ func NewScriptCmdletsClient(subscriptionID string, credential azcore.TokenCreden
 	return client, nil
 }
 
-// Get - Return information about a script cmdlet resource in a specific package on a private cloud
+// Get - Get a ScriptCmdlet
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
-//   - scriptPackageName - Name of the script package in the private cloud
-//   - scriptCmdletName - Name of the script cmdlet resource in the script package in the private cloud
+//   - scriptPackageName - Name of the script package.
+//   - scriptCmdletName - Name of the script cmdlet.
 //   - options - ScriptCmdletsClientGetOptions contains the optional parameters for the ScriptCmdletsClient.Get method.
 func (client *ScriptCmdletsClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, scriptPackageName string, scriptCmdletName string, options *ScriptCmdletsClientGetOptions) (ScriptCmdletsClientGetResponse, error) {
 	var err error
@@ -102,7 +102,7 @@ func (client *ScriptCmdletsClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -117,13 +117,12 @@ func (client *ScriptCmdletsClient) getHandleResponse(resp *http.Response) (Scrip
 	return result, nil
 }
 
-// NewListPager - List script cmdlet resources available for a private cloud to create a script execution resource on a private
-// cloud
+// NewListPager - List ScriptCmdlet resources by ScriptPackage
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
-//   - scriptPackageName - Name of the script package in the private cloud
+//   - scriptPackageName - Name of the script package.
 //   - options - ScriptCmdletsClientListOptions contains the optional parameters for the ScriptCmdletsClient.NewListPager method.
 func (client *ScriptCmdletsClient) NewListPager(resourceGroupName string, privateCloudName string, scriptPackageName string, options *ScriptCmdletsClientListOptions) *runtime.Pager[ScriptCmdletsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ScriptCmdletsClientListResponse]{
@@ -172,7 +171,7 @@ func (client *ScriptCmdletsClient) listCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

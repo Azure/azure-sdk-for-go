@@ -47,7 +47,7 @@ func NewPoolClient(subscriptionID string, credential azcore.TokenCredential, opt
 // Create - Creates a new pool inside the specified account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2024-07-01
 //   - resourceGroupName - The name of the resource group that contains the Batch account.
 //   - accountName - The name of the Batch account.
 //   - poolName - The pool name. This must be unique within the account.
@@ -99,7 +99,7 @@ func (client *PoolClient) createCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2024-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -129,7 +129,7 @@ func (client *PoolClient) createHandleResponse(resp *http.Response) (PoolClientC
 // BeginDelete - Deletes the specified pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2024-07-01
 //   - resourceGroupName - The name of the resource group that contains the Batch account.
 //   - accountName - The name of the Batch account.
 //   - poolName - The pool name. This must be unique within the account.
@@ -155,7 +155,7 @@ func (client *PoolClient) BeginDelete(ctx context.Context, resourceGroupName str
 // Delete - Deletes the specified pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2024-07-01
 func (client *PoolClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *PoolClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PoolClient.BeginDelete"
@@ -201,7 +201,7 @@ func (client *PoolClient) deleteCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2024-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -210,7 +210,7 @@ func (client *PoolClient) deleteCreateRequest(ctx context.Context, resourceGroup
 // DisableAutoScale - Disables automatic scaling for a pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2024-07-01
 //   - resourceGroupName - The name of the resource group that contains the Batch account.
 //   - accountName - The name of the Batch account.
 //   - poolName - The pool name. This must be unique within the account.
@@ -261,7 +261,7 @@ func (client *PoolClient) disableAutoScaleCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2024-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -282,7 +282,7 @@ func (client *PoolClient) disableAutoScaleHandleResponse(resp *http.Response) (P
 // Get - Gets information about the specified pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2024-07-01
 //   - resourceGroupName - The name of the resource group that contains the Batch account.
 //   - accountName - The name of the Batch account.
 //   - poolName - The pool name. This must be unique within the account.
@@ -333,7 +333,7 @@ func (client *PoolClient) getCreateRequest(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2024-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -353,7 +353,7 @@ func (client *PoolClient) getHandleResponse(resp *http.Response) (PoolClientGetR
 
 // NewListByBatchAccountPager - Lists all of the pools in the specified account.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2024-07-01
 //   - resourceGroupName - The name of the resource group that contains the Batch account.
 //   - accountName - The name of the Batch account.
 //   - options - PoolClientListByBatchAccountOptions contains the optional parameters for the PoolClient.NewListByBatchAccountPager
@@ -407,7 +407,7 @@ func (client *PoolClient) listByBatchAccountCreateRequest(ctx context.Context, r
 	if options != nil && options.Select != nil {
 		reqQP.Set("$select", *options.Select)
 	}
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2024-07-01")
 	if options != nil && options.Maxresults != nil {
 		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
 	}
@@ -432,7 +432,7 @@ func (client *PoolClient) listByBatchAccountHandleResponse(resp *http.Response) 
 // not be an explicit resize pool request; this API can also be used to halt the initial sizing of the pool when it is created.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2024-07-01
 //   - resourceGroupName - The name of the resource group that contains the Batch account.
 //   - accountName - The name of the Batch account.
 //   - poolName - The pool name. This must be unique within the account.
@@ -483,7 +483,7 @@ func (client *PoolClient) stopResizeCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2024-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -504,7 +504,7 @@ func (client *PoolClient) stopResizeHandleResponse(resp *http.Response) (PoolCli
 // Update - Updates the properties of an existing pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-01
+// Generated from API version 2024-07-01
 //   - resourceGroupName - The name of the resource group that contains the Batch account.
 //   - accountName - The name of the Batch account.
 //   - poolName - The pool name. This must be unique within the account.
@@ -557,7 +557,7 @@ func (client *PoolClient) updateCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", "2024-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {

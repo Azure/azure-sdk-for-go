@@ -12,6 +12,12 @@ import (
 	"time"
 )
 
+// AddUploadPartRequest - The multipart/form-data request body of a data part addition request for an upload.
+type AddUploadPartRequest struct {
+	// REQUIRED; The chunk of bytes for this Part.
+	Data []byte
+}
+
 // AudioTranscription - Result information for an operation that transcribed spoken audio into written text.
 type AudioTranscription struct {
 	// REQUIRED; The transcribed text for the provided audio data.
@@ -29,6 +35,9 @@ type AudioTranscription struct {
 
 	// The label that describes which operation type generated the accompanying response data.
 	Task *AudioTaskLabel
+
+	// A collection of information about the timing of each processed word.
+	Words []AudioTranscriptionWord
 }
 
 // AudioTranscriptionOptions - The configuration information for an audio transcription request.
@@ -59,6 +68,11 @@ type AudioTranscriptionOptions struct {
 	// like 0.2 will make it more focused and deterministic. If set to 0, the model will
 	// use log probability to automatically increase the temperature until certain thresholds are hit.
 	Temperature *float32
+
+	// The timestamp granularities to populate for this transcription.response_format must be set verbose_json to use timestamp
+	// granularities. Either or both of these options are supported: word, or segment.
+	// Note: There is no additional latency for segment timestamps, but generating word timestamps incurs additional latency.
+	TimestampGranularities []AudioTranscriptionTimestampGranularity
 }
 
 // AudioTranscriptionSegment - Extended information about a single segment of transcribed audio data. Segments generally represent
@@ -97,6 +111,19 @@ type AudioTranscriptionSegment struct {
 
 	// REQUIRED; The token IDs matching the transcribed text in this audio segment.
 	Tokens []int32
+}
+
+// AudioTranscriptionWord - Extended information about a single transcribed word, as provided on responses when the 'word'
+// timestamp granularity is provided.
+type AudioTranscriptionWord struct {
+	// REQUIRED; The end time of the word relative to the beginning of the audio, expressed in seconds.
+	End *float32
+
+	// REQUIRED; The start time of the word relative to the beginning of the audio, expressed in seconds.
+	Start *float32
+
+	// REQUIRED; The textual content of the word.
+	Word *string
 }
 
 // AudioTranslation - Result information for an operation that translated spoken audio into written text.
@@ -223,7 +250,44 @@ type AzureChatExtensionDataSourceResponseCitation struct {
 	ChunkID *string
 
 	// The file path of the citation.
-	Filepath *string
+	FilePath *string
+
+	// The rerank score of the retrieved document.
+	RerankScore *float64
+
+	// The title of the citation.
+	Title *string
+
+	// The URL of the citation.
+	URL *string
+}
+
+// AzureChatExtensionRetrievedDocument - The retrieved document.
+type AzureChatExtensionRetrievedDocument struct {
+	// REQUIRED; The content of the citation.
+	Content *string
+
+	// REQUIRED; The index of the data source.
+	DataSourceIndex *int32
+
+	// REQUIRED; The search queries used to retrieve the document.
+	SearchQueries []string
+
+	// The chunk ID of the citation.
+	ChunkID *string
+
+	// The file path of the citation.
+	FilePath *string
+
+	// Represents the rationale for filtering the document. If the document does not undergo filtering, this field will remain
+	// unset.
+	FilterReason *AzureChatExtensionRetrieveDocumentFilterReason
+
+	// The original search score of the retrieved document.
+	OriginalSearchScore *float64
+
+	// The rerank score of the retrieved document.
+	RerankScore *float64
 
 	// The title of the citation.
 	Title *string
@@ -236,6 +300,9 @@ type AzureChatExtensionDataSourceResponseCitation struct {
 // chat extensions are involved in the generation of a corresponding chat completions response. This context information
 // is only populated when using an Azure OpenAI request configured to use a matching extension.
 type AzureChatExtensionsMessageContext struct {
+	// All the retrieved documents.
+	AllRetrievedDocuments []AzureChatExtensionRetrievedDocument
+
 	// The contextual information associated with the Azure chat extensions used for a chat completions request. These messages
 	// describe the data source retrievals, plugin invocations, and other intermediate
 	// steps taken in the course of generating a chat completions response that was augmented by capabilities from Azure OpenAI
@@ -295,6 +362,11 @@ type AzureCosmosDBChatExtensionParameters struct {
 	// REQUIRED; The MongoDB vCore index name to use with Azure Cosmos DB.
 	IndexName *string
 
+	// If specified as true, the system will allow partial search results to be used and the request fails if all the queries
+	// fail. If not specified, or specified as false, the request will fail if any
+	// search query fails.
+	AllowPartialResult *bool
+
 	// The authentication method to use when accessing the defined data source. Each data source type supports a specific set
 	// of available authentication methods; please see the documentation of the data
 	// source for supported mechanisms. If not otherwise provided, On Your Data will attempt to use System Managed Identity (default
@@ -304,10 +376,12 @@ type AzureCosmosDBChatExtensionParameters struct {
 	// Whether queries should be restricted to use of indexed data.
 	InScope *bool
 
-	// Give the model instructions about how it should behave and any context it should reference when generating a response.
-	// You can describe the assistant's personality and tell it how to format responses.
-	// There's a 100 token limit for it, and it counts against the overall token limit.
-	RoleInformation *string
+	// The included properties of the output context. If not specified, the default value is citations and intent.
+	IncludeContexts []OnYourDataContextProperty
+
+	// The max number of rewritten queries should be send to search provider for one user message. If not specified, the system
+	// will decide the number of queries to send.
+	MaxSearchQueries *int32
 
 	// The configured strictness of the search relevance filtering. The higher of strictness, the higher of the precision but
 	// lower recall of the answer.
@@ -330,7 +404,7 @@ type AzureCosmosDBFieldMappingOptions struct {
 	ContentFieldsSeparator *string
 
 	// The name of the index field to use as a filepath.
-	FilepathField *string
+	FilePathField *string
 
 	// The name of the index field to use as a title.
 	TitleField *string
@@ -380,61 +454,6 @@ type AzureGroundingEnhancementLineSpan struct {
 	Text *string
 }
 
-// AzureMachineLearningIndexChatExtensionConfiguration - A specific representation of configurable options for Azure Machine
-// Learning vector index when using it as an Azure OpenAI chat extension.
-type AzureMachineLearningIndexChatExtensionConfiguration struct {
-	// REQUIRED; The label for the type of an Azure chat extension. This typically corresponds to a matching Azure resource. Azure
-	// chat extensions are only compatible with Azure OpenAI.
-	configType *AzureChatExtensionType
-
-	// REQUIRED; The parameters for the Azure Machine Learning vector index chat extension.
-	Parameters *AzureMachineLearningIndexChatExtensionParameters
-}
-
-// GetAzureChatExtensionConfiguration implements the AzureChatExtensionConfigurationClassification interface for type AzureMachineLearningIndexChatExtensionConfiguration.
-func (a *AzureMachineLearningIndexChatExtensionConfiguration) GetAzureChatExtensionConfiguration() *AzureChatExtensionConfiguration {
-	return &AzureChatExtensionConfiguration{
-		configType: a.configType,
-	}
-}
-
-// AzureMachineLearningIndexChatExtensionParameters - Parameters for the Azure Machine Learning vector index chat extension.
-// The supported authentication types are AccessToken, SystemAssignedManagedIdentity and UserAssignedManagedIdentity.
-type AzureMachineLearningIndexChatExtensionParameters struct {
-	// REQUIRED; The Azure Machine Learning vector index name.
-	Name *string
-
-	// REQUIRED; The resource ID of the Azure Machine Learning project.
-	ProjectResourceID *string
-
-	// REQUIRED; The version of the Azure Machine Learning vector index.
-	Version *string
-
-	// The authentication method to use when accessing the defined data source. Each data source type supports a specific set
-	// of available authentication methods; please see the documentation of the data
-	// source for supported mechanisms. If not otherwise provided, On Your Data will attempt to use System Managed Identity (default
-	// credential) authentication.
-	Authentication OnYourDataAuthenticationOptionsClassification
-
-	// Search filter. Only supported if the Azure Machine Learning vector index is of type AzureSearch.
-	Filter *string
-
-	// Whether queries should be restricted to use of indexed data.
-	InScope *bool
-
-	// Give the model instructions about how it should behave and any context it should reference when generating a response.
-	// You can describe the assistant's personality and tell it how to format responses.
-	// There's a 100 token limit for it, and it counts against the overall token limit.
-	RoleInformation *string
-
-	// The configured strictness of the search relevance filtering. The higher of strictness, the higher of the precision but
-	// lower recall of the answer.
-	Strictness *int32
-
-	// The configured top number of documents to feature for the configured query.
-	TopNDocuments *int32
-}
-
 // AzureSearchChatExtensionConfiguration - A specific representation of configurable options for Azure Search when using it
 // as an Azure OpenAI chat extension.
 type AzureSearchChatExtensionConfiguration struct {
@@ -462,6 +481,11 @@ type AzureSearchChatExtensionParameters struct {
 	// REQUIRED; The name of the index to use as available in the referenced Azure Cognitive Search resource.
 	IndexName *string
 
+	// If specified as true, the system will allow partial search results to be used and the request fails if all the queries
+	// fail. If not specified, or specified as false, the request will fail if any
+	// search query fails.
+	AllowPartialResult *bool
+
 	// The authentication method to use when accessing the defined data source. Each data source type supports a specific set
 	// of available authentication methods; please see the documentation of the data
 	// source for supported mechanisms. If not otherwise provided, On Your Data will attempt to use System Managed Identity (default
@@ -480,13 +504,15 @@ type AzureSearchChatExtensionParameters struct {
 	// Whether queries should be restricted to use of indexed data.
 	InScope *bool
 
+	// The included properties of the output context. If not specified, the default value is citations and intent.
+	IncludeContexts []OnYourDataContextProperty
+
+	// The max number of rewritten queries should be send to search provider for one user message. If not specified, the system
+	// will decide the number of queries to send.
+	MaxSearchQueries *int32
+
 	// The query type to use with Azure Cognitive Search.
 	QueryType *AzureSearchQueryType
-
-	// Give the model instructions about how it should behave and any context it should reference when generating a response.
-	// You can describe the assistant's personality and tell it how to format responses.
-	// There's a 100 token limit for it, and it counts against the overall token limit.
-	RoleInformation *string
 
 	// The additional semantic configuration for the query.
 	SemanticConfiguration *string
@@ -509,7 +535,7 @@ type AzureSearchIndexFieldMappingOptions struct {
 	ContentFieldsSeparator *string
 
 	// The name of the index field to use as a filepath.
-	FilepathField *string
+	FilePathField *string
 
 	// The names of fields that represent image vector data.
 	ImageVectorFields []string
@@ -522,6 +548,185 @@ type AzureSearchIndexFieldMappingOptions struct {
 
 	// The names of fields that represent vector data.
 	VectorFields []string
+}
+
+// Batch - The Batch object.
+type Batch struct {
+	// REQUIRED; The id assigned to the Batch.
+	ID *string
+
+	// REQUIRED; The ID of the input file for the batch.
+	InputFileID *string
+
+	// REQUIRED; The object type, which is always batch.
+	Object *string
+
+	// The Unix timestamp (in seconds) for when the batch was cancelled.
+	CancelledAt *time.Time
+
+	// The Unix timestamp (in seconds) for when the batch started cancelling.
+	CancellingAt *time.Time
+
+	// The Unix timestamp (in seconds) for when the batch was completed.
+	CompletedAt *time.Time
+
+	// The time frame within which the batch should be processed.
+	CompletionWindow *string
+
+	// The Unix timestamp (in seconds) for when the batch was created.
+	CreatedAt *time.Time
+
+	// The OpenAI API endpoint used by the batch.
+	Endpoint *string
+
+	// The ID of the file containing the outputs of requests with errors.
+	ErrorFileID *string
+
+	// The list of Batch errors.
+	Errors *BatchErrorList
+
+	// The Unix timestamp (in seconds) for when the batch expired.
+	ExpiredAt *time.Time
+
+	// The Unix timestamp (in seconds) for when the batch will expire.
+	ExpiresAt *time.Time
+
+	// The Unix timestamp (in seconds) for when the batch failed.
+	FailedAt *time.Time
+
+	// The Unix timestamp (in seconds) for when the batch started finalizing.
+	FinalizingAt *time.Time
+
+	// The Unix timestamp (in seconds) for when the batch started processing.
+	InProgressAt *time.Time
+
+	// A set of key-value pairs that can be attached to the batch. This can be useful for storing additional information about
+	// the batch in a structured format.
+	Metadata map[string]*string
+
+	// The ID of the file containing the outputs of successfully executed requests.
+	OutputFileID *string
+
+	// The request counts for different statuses within the batch.
+	RequestCounts *BatchRequestCounts
+
+	// The current status of the batch.
+	Status *BatchStatus
+}
+
+// BatchCreateRequest - Defines the request to create a batch.
+type BatchCreateRequest struct {
+	// REQUIRED; The time frame within which the batch should be processed.
+	CompletionWindow *string
+
+	// REQUIRED; The API endpoint used by the batch.
+	Endpoint *string
+
+	// REQUIRED; The ID of the input file for the batch.
+	InputFileID *string
+
+	// A set of key-value pairs that can be attached to the batch. This can be useful for storing additional information about
+	// the batch in a structured format.
+	Metadata map[string]*string
+}
+
+// BatchCreateResponseRequestCounts - The request counts for different statuses within the batch.
+type BatchCreateResponseRequestCounts struct {
+	// Number of requests that have been completed successfully.
+	Completed *int32
+
+	// Number of requests that have failed.
+	Failed *int32
+
+	// Total number of requests in the batch.
+	Total *int32
+}
+
+// BatchErrorDatum - A Datum containing information about a Batch Error.
+type BatchErrorDatum struct {
+	// An error code identifying the error type.
+	Code *string
+
+	// The line number of the input file where the error occurred, if applicable.
+	Line *int32
+
+	// A human-readable message providing more details about the error.
+	Message *string
+
+	// The name of the parameter that caused the error, if applicable.
+	Param *string
+}
+
+// BatchErrorList - A list of Batch errors.
+type BatchErrorList struct {
+	// REQUIRED; The object type, which is always list.
+	Object *string
+
+	// The list of Batch error data.
+	Data []BatchErrorDatum
+}
+
+// BatchRequestCounts - The request counts for different statuses within the batch.
+type BatchRequestCounts struct {
+	// Number of requests that have been completed successfully.
+	Completed *int32
+
+	// Number of requests that have failed.
+	Failed *int32
+
+	// Total number of requests in the batch.
+	Total *int32
+}
+
+// BatchRequestInput - The per-line object of the batch input file
+type BatchRequestInput struct {
+	// A developer-provided per-request id that will be used to match outputs to inputs. Must be unique for each request in a
+	// batch.
+	CustomID *string
+
+	// The HTTP method to be used for the request. Currently only POST is supported.
+	Method *string
+
+	// The OpenAI API relative URL to be used for the request. Currently /v1/chat/completions, /v1/embeddings, and /v1/completions
+	// are supported.
+	URL *string
+}
+
+// BatchRequestOutput - The per-line object of the batch output and error files
+type BatchRequestOutput struct {
+	// A developer-provided per-request id that will be used to match outputs to inputs.
+	CustomID *string
+
+	// For requests that failed with a non-HTTP error, this will contain more information on the cause of the failure.
+	Error *BatchRequestOutputError
+
+	// The Id of the request.
+	ID *string
+
+	// The http response
+	Response *BatchRequestOutputResponse
+}
+
+// BatchRequestOutputError - For requests that failed with a non-HTTP error, this will contain more information on the cause
+// of the failure.
+type BatchRequestOutputError struct {
+	// A machine-readable error code.
+	Code *string
+
+	// A human-readable error message.
+	Message *string
+}
+
+// BatchRequestOutputResponse - The http response
+type BatchRequestOutputResponse struct {
+	// The JSON body of the response
+	Body map[string]*string
+
+	// An unique identifier for the OpenAI API request. Please include this request ID when contacting support.
+	RequestID *string
+
+	// The HTTP status code of the response
+	StatusCode *int32
 }
 
 // ChatChoice - The representation of a single prompt completion as part of an overall chat completions request. Generally,
@@ -550,10 +755,6 @@ type ChatChoice struct {
 	// using Azure OpenAI and only when the request is configured to use enhancements.
 	Enhancements *AzureChatEnhancements
 
-	// The reason the model stopped generating tokens, together with any applicable details. This structured representation replaces
-	// 'finish_reason' for some models.
-	FinishDetails ChatFinishDetailsClassification
-
 	// The chat message for a given chat completions prompt.
 	Message *ChatResponseMessage
 }
@@ -563,6 +764,10 @@ type ChatChoiceLogProbabilityInfo struct {
 	// REQUIRED; The list of log probability information entries for the choice's message content tokens, as requested via the
 	// 'logprobs' option.
 	Content []ChatTokenLogProbabilityResult
+
+	// REQUIRED; The list of log probability information entries for the choice's message refusal message tokens, as requested
+	// via the 'logprobs' option.
+	Refusal []ChatTokenLogProbabilityResult
 }
 
 // ChatChoiceLogProbs - The log probability information for this choice, as enabled via the 'logprobs' request option.
@@ -570,6 +775,10 @@ type ChatChoiceLogProbs struct {
 	// REQUIRED; The list of log probability information entries for the choice's message content tokens, as requested via the
 	// 'logprobs' option.
 	Content []ChatTokenLogProbabilityResult
+
+	// REQUIRED; The list of log probability information entries for the choice's message refusal message tokens, as requested
+	// via the 'logprobs' option.
+	Refusal []ChatTokenLogProbabilityResult
 }
 
 // ChatCompletionRequestMessageContentPart - represents either an image URL or text content for a prompt
@@ -625,6 +834,14 @@ func (c *ChatCompletionRequestMessageContentPartText) GetChatCompletionRequestMe
 	return &ChatCompletionRequestMessageContentPart{
 		partType: c.partType,
 	}
+}
+
+// ChatCompletionStreamOptions - Options for streaming response. Only set this when you set stream: true.
+type ChatCompletionStreamOptions struct {
+	// If set, an additional chunk will be streamed before the data: [DONE] message. The usage field on this chunk shows the token
+	// usage statistics for the entire request, and the choices field will always
+	// be an empty array. All other chunks will also include a usage field, but with a null value.
+	IncludeUsage *bool
 }
 
 // ChatCompletions - Representation of the response data from a chat completions request. Completions support a wide variety
@@ -683,7 +900,7 @@ func (c *ChatCompletionsFunctionToolCall) GetChatCompletionsToolCall() *ChatComp
 // function in response to a tool call.
 type ChatCompletionsFunctionToolDefinition struct {
 	// REQUIRED; The function definition details for the function tool.
-	Function *FunctionDefinition
+	Function *ChatCompletionsFunctionToolDefinitionFunction
 
 	// REQUIRED; The object type.
 	Type *string
@@ -694,6 +911,48 @@ func (c *ChatCompletionsFunctionToolDefinition) GetChatCompletionsToolDefinition
 	return &ChatCompletionsToolDefinition{
 		Type: c.Type,
 	}
+}
+
+// ChatCompletionsFunctionToolDefinitionFunction - The function definition details for the function tool.
+type ChatCompletionsFunctionToolDefinitionFunction struct {
+	// REQUIRED; The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum
+	// length of 64.
+	Name *string
+
+	// A description of what the function does, used by the model to choose when and how to call the function.
+	Description *string
+
+	// Anything
+	// REQUIRED; The function definition details for the function tool.
+	// NOTE: this field is JSON text that describes a JSON schema. You can marshal a data
+	// structure using code similar to this:
+	//
+	//	jsonBytes, err := json.Marshal(map[string]any{
+	//		"required": []string{"location"},
+	// 		"type":     "object",
+	// 		"properties": map[string]any{
+	// 			"location": map[string]any{
+	//	 			"type":        "string",
+	// 				"description": "The city and state, e.g. San Francisco, CA",
+	// 			},
+	//		},
+	//	})
+	//
+	//	if err != nil {
+	// 		panic(err)
+	//	}
+	//
+	//	funcDef := &azopenai.FunctionDefinition{
+	// 		Name:        to.Ptr("get_current_weather"),
+	// 		Description: to.Ptr("Get the current weather in a given location"),
+	// 		Parameters:  jsonBytes,
+	// 	}
+	Parameters []byte
+
+	// Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the
+	// exact schema defined in the parameters field. Only a subset of JSON Schema is
+	// supported when strict is true. Learn more about Structured Outputs in the function calling guide [docs/guides/function-calling].
+	Strict *bool
 }
 
 // ChatCompletionsFunctionToolSelection - A tool selection of a specific, named function tool that will limit chat completions
@@ -715,6 +974,42 @@ func (c *ChatCompletionsJSONResponseFormat) GetChatCompletionsResponseFormat() *
 	return &ChatCompletionsResponseFormat{
 		respType: c.respType,
 	}
+}
+
+// ChatCompletionsJSONSchemaResponseFormat - A response format for Chat Completions that restricts responses to emitting JSON
+// that conforms to a provided JSON Schema for Structured Outputs.
+type ChatCompletionsJSONSchemaResponseFormat struct {
+	// REQUIRED; The discriminated type for the response format.
+	respType *string
+
+	// REQUIRED; A description of what the response format is for, used by the model to determine how to respond in the format.
+	JSONSchema *ChatCompletionsJSONSchemaResponseFormatJSONSchema
+}
+
+// GetChatCompletionsResponseFormat implements the ChatCompletionsResponseFormatClassification interface for type ChatCompletionsJSONSchemaResponseFormat.
+func (c *ChatCompletionsJSONSchemaResponseFormat) GetChatCompletionsResponseFormat() *ChatCompletionsResponseFormat {
+	return &ChatCompletionsResponseFormat{
+		respType: c.respType,
+	}
+}
+
+// ChatCompletionsJSONSchemaResponseFormatJSONSchema - A description of what the response format is for, used by the model
+// to determine how to respond in the format.
+type ChatCompletionsJSONSchemaResponseFormatJSONSchema struct {
+	// REQUIRED; The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length
+	// of 64.
+	Name *string
+
+	// A description of what the response format is for, used by the model to determine how to respond in the format.
+	Description *string
+
+	// Anything
+	Schema []byte
+
+	// Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the
+	// exact schema defined in the schema field. Only a subset of JSON Schema is
+	// supported when strict is true. To learn more, read the Structured Outputs guide [/docs/guides/structured-outputs].
+	Strict *bool
 }
 
 // ChatCompletionsNamedFunctionToolSelection - A tool selection of a specific, named function tool that will limit chat completions
@@ -748,9 +1043,9 @@ func (c *ChatCompletionsNamedToolSelection) GetChatCompletionsNamedToolSelection
 	return c
 }
 
-// ChatCompletionsOptions - The configuration information for a chat completions request. Completions support a wide variety
+// chatCompletionsOptions - The configuration information for a chat completions request. Completions support a wide variety
 // of tasks and generate text that continues from or "completes" provided prompt data.
-type ChatCompletionsOptions struct {
+type chatCompletionsOptions struct {
 	// REQUIRED; The collection of context messages associated with this chat completions request. Typical usage begins with a
 	// chat message for the System role that provides instructions for the behavior of the
 	// assistant, followed by alternating messages between the User and Assistant roles.
@@ -790,7 +1085,13 @@ type ChatCompletionsOptions struct {
 	// on the gpt-4-vision-preview model.
 	LogProbs *bool
 
-	// The maximum number of tokens to generate.
+	// An upper bound for the number of tokens that can be generated for a completion, including visible output tokens and reasoning
+	// tokens.
+	MaxCompletionTokens *int32
+
+	// The maximum number of tokens allowed for the generated answer. By default, the number of tokens the model can return will
+	// be (4096 - prompt tokens).
+	// This value is now deprecated in favor of max_completion_tokens, and is not compatible with o1 series models.
 	MaxTokens *int32
 
 	// The model name to provide as part of this completions request. Not applicable to Azure OpenAI, where deployment information
@@ -801,6 +1102,9 @@ type ChatCompletionsOptions struct {
 	// generate many completions, it may quickly consume your token quota. Use
 	// carefully and ensure reasonable settings for max_tokens and stop.
 	N *int32
+
+	// Whether to enable parallel function calling during tool use.
+	ParallelToolCalls *bool
 
 	// A value that influences the probability of generated tokens appearing based on their existing presence in generated text.
 	// Positive values will make tokens less likely to appear when they already exist
@@ -817,6 +1121,12 @@ type ChatCompletionsOptions struct {
 
 	// A collection of textual sequences that will end completions generation.
 	Stop []string
+
+	// A value indicating whether chat completions should be streamed for this request.
+	Stream *bool
+
+	// Options for streaming response. Only set this when you set stream: true.
+	StreamOptions *ChatCompletionStreamOptions
 
 	// The sampling temperature to use that controls the apparent creativity of generated completions. Higher values will make
 	// output more random while lower values will make results more focused and
@@ -940,6 +1250,23 @@ type ChatMessageImageURL struct {
 	Detail *ChatMessageImageDetailLevel
 }
 
+// ChatMessageRefusalContentItem - A structured chat content item containing model refusal information for a structured outputs
+// request.
+type ChatMessageRefusalContentItem struct {
+	// REQUIRED; The refusal message.
+	Refusal *string
+
+	// REQUIRED; The discriminated object type.
+	Type *string
+}
+
+// GetChatMessageContentItem implements the ChatMessageContentItemClassification interface for type ChatMessageRefusalContentItem.
+func (c *ChatMessageRefusalContentItem) GetChatMessageContentItem() *ChatMessageContentItem {
+	return &ChatMessageContentItem{
+		Type: c.Type,
+	}
+}
+
 // ChatMessageTextContentItem - A structured chat content item containing plain text.
 type ChatMessageTextContentItem struct {
 	// REQUIRED; The content of the message.
@@ -959,7 +1286,7 @@ func (c *ChatMessageTextContentItem) GetChatMessageContentItem() *ChatMessageCon
 // ChatRequestAssistantMessage - A request chat message representing response or action from the assistant.
 type ChatRequestAssistantMessage struct {
 	// REQUIRED; The content of the message.
-	Content *string
+	Content *ChatRequestAssistantMessageContent
 
 	// REQUIRED; The chat role associated with this message.
 	role *ChatRole
@@ -970,6 +1297,9 @@ type ChatRequestAssistantMessage struct {
 
 	// An optional name for the participant.
 	Name *string
+
+	// The refusal message by the assistant.
+	Refusal *string
 
 	// The tool calls that must be resolved and have their outputs appended to subsequent input messages for the chat completions
 	// request to resolve as configured.
@@ -1015,7 +1345,7 @@ func (c *ChatRequestMessage) GetChatRequestMessage() *ChatRequestMessage { retur
 // a chat completions response.
 type ChatRequestSystemMessage struct {
 	// REQUIRED; The contents of the system message.
-	Content *string
+	Content *ChatRequestSystemMessageContent
 
 	// REQUIRED; The chat role associated with this message.
 	role *ChatRole
@@ -1034,7 +1364,7 @@ func (c *ChatRequestSystemMessage) GetChatRequestMessage() *ChatRequestMessage {
 // ChatRequestToolMessage - A request chat message representing requested output from a configured tool.
 type ChatRequestToolMessage struct {
 	// REQUIRED; The content of the message.
-	Content *string
+	Content *ChatRequestToolMessageContent
 
 	// REQUIRED; The chat role associated with this message.
 	role *ChatRole
@@ -1053,7 +1383,7 @@ func (c *ChatRequestToolMessage) GetChatRequestMessage() *ChatRequestMessage {
 // ChatRequestUserMessage - A request chat message representing user input to the assistant.
 type ChatRequestUserMessage struct {
 	// REQUIRED; The contents of the user message, with available input types varying by selected model.
-	Content ChatRequestUserMessageContent
+	Content *ChatRequestUserMessageContent
 
 	// REQUIRED; The chat role associated with this message.
 	role *ChatRole
@@ -1073,6 +1403,9 @@ func (c *ChatRequestUserMessage) GetChatRequestMessage() *ChatRequestMessage {
 type ChatResponseMessage struct {
 	// REQUIRED; The content of the message.
 	Content *string
+
+	// REQUIRED; The refusal message generated by the model.
+	Refusal *string
 
 	// REQUIRED; The chat role associated with the message.
 	Role *ChatRole
@@ -1159,6 +1492,15 @@ type ChoiceLogProbs struct {
 	TopLogProbs []map[string]*float32
 }
 
+// CompleteUploadRequest - The request body of an upload completion request.
+type CompleteUploadRequest struct {
+	// REQUIRED; The ordered list of Part IDs.
+	PartIDs []string
+
+	// The optional md5 checksum for the file contents to verify if the bytes uploaded matches what you expect.
+	MD5 *string
+}
+
 // Completions - Representation of the response data from a completions request. Completions support a wide variety of tasks
 // and generate text that continues from or "completes" provided prompt data.
 type Completions struct {
@@ -1180,6 +1522,11 @@ type Completions struct {
 	// Content filtering results for zero or more prompts in the request. In a streaming request, results for different prompts
 	// may arrive at different times or in different orders.
 	PromptFilterResults []ContentFilterResultsForPrompt
+
+	// This fingerprint represents the backend configuration that the model runs with.
+	// Can be used in conjunction with the seed request parameter to understand when backend changes have been made that might
+	// impact determinism.
+	SystemFingerprint *string
 }
 
 // CompletionsLogProbabilityModel - Representation of a log probabilities model for a completions generation.
@@ -1197,9 +1544,9 @@ type CompletionsLogProbabilityModel struct {
 	TopLogProbs []map[string]*float32
 }
 
-// CompletionsOptions - The configuration information for a completions request. Completions support a wide variety of tasks
+// completionsOptions - The configuration information for a completions request. Completions support a wide variety of tasks
 // and generate text that continues from or "completes" provided prompt data.
-type CompletionsOptions struct {
+type completionsOptions struct {
 	// REQUIRED; The prompts to generate completions from.
 	Prompt []string
 
@@ -1245,8 +1592,20 @@ type CompletionsOptions struct {
 	// and increase the model's likelihood to output new topics.
 	PresencePenalty *float32
 
+	// If specified, our system will make a best effort to sample deterministically, such that repeated requests with the same
+	// seed and parameters should return the same result.
+	// Determinism is not guaranteed, and you should refer to the system_fingerprint response parameter to monitor changes in
+	// the backend.
+	Seed *int32
+
 	// A collection of textual sequences that will end completions generation.
 	Stop []string
+
+	// A value indicating whether chat completions should be streamed for this request.
+	Stream *bool
+
+	// Options for streaming response. Only set this when you set stream: true.
+	StreamOptions *ChatCompletionStreamOptions
 
 	// The suffix that comes after a completion of inserted text
 	Suffix *string
@@ -1279,6 +1638,24 @@ type CompletionsUsage struct {
 
 	// REQUIRED; The total number of tokens processed for the completions request and response.
 	TotalTokens *int32
+
+	// Breakdown of tokens used in a completion.
+	CompletionTokensDetails *CompletionsUsageCompletionTokensDetails
+
+	// Details of the prompt tokens.
+	PromptTokensDetails *CompletionsUsagePromptTokensDetails
+}
+
+// CompletionsUsageCompletionTokensDetails - Breakdown of tokens used in a completion.
+type CompletionsUsageCompletionTokensDetails struct {
+	// Tokens generated by the model for reasoning.
+	ReasoningTokens *int32
+}
+
+// CompletionsUsagePromptTokensDetails - Details of the prompt tokens.
+type CompletionsUsagePromptTokensDetails struct {
+	// The number of cached prompt tokens.
+	CachedTokens *int32
 }
 
 // ContentFilterBlocklistIDResult - Represents the outcome of an evaluation against a custom blocklist as performed by content
@@ -1300,11 +1677,44 @@ type ContentFilterCitedDetectionResult struct {
 	// REQUIRED; A value indicating whether or not the content has been filtered.
 	Filtered *bool
 
-	// REQUIRED; The license description associated with the detection.
+	// The license description associated with the detection.
 	License *string
 
 	// The internet location associated with the detection.
 	URL *string
+}
+
+// ContentFilterCompletionTextSpan - Describes a span within generated completion text. Offset 0 is the first UTF32 code point
+// of the completion text.
+type ContentFilterCompletionTextSpan struct {
+	// REQUIRED; Offset of the first UTF32 code point which is excluded from the span. This field is always equal to completionstartoffset
+	// for empty spans. This field is always larger than completionstartoffset for
+	// non-empty spans.
+	CompletionEndOffset *int32
+
+	// REQUIRED; Offset of the UTF32 code point which begins the span.
+	CompletionStartOffset *int32
+}
+
+// ContentFilterCompletionTextSpanResult - Describes a span within generated completion text.
+type ContentFilterCompletionTextSpanResult struct {
+	// REQUIRED; The collection of completion text spans.
+	Details []ContentFilterCompletionTextSpan
+
+	// REQUIRED; A value indicating whether detection occurred, irrespective of severity or whether the content was filtered.
+	Detected *bool
+
+	// REQUIRED; A value indicating whether or not the content has been filtered.
+	Filtered *bool
+}
+
+// ContentFilterDetailedResults - Represents a structured collection of result details for content filtering.
+type ContentFilterDetailedResults struct {
+	// REQUIRED; The collection of detailed blocklist result information.
+	Details []ContentFilterBlocklistIDResult
+
+	// REQUIRED; A value indicating whether or not the content has been filtered.
+	Filtered *bool
 }
 
 // ContentFilterDetectionResult - Represents the outcome of a detection operation performed by content filtering.
@@ -1328,7 +1738,7 @@ type ContentFilterResult struct {
 // ContentFilterResultDetailsForPrompt - Information about content filtering evaluated against input data to Azure OpenAI.
 type ContentFilterResultDetailsForPrompt struct {
 	// Describes detection results against configured custom blocklists.
-	CustomBlocklists []ContentFilterBlocklistIDResult
+	CustomBlockLists *ContentFilterDetailedResults
 
 	// Describes an error returned if the content filtering system is down or otherwise unable to complete the operation in time.
 	Error *Error
@@ -1338,6 +1748,9 @@ type ContentFilterResultDetailsForPrompt struct {
 	// including but not limited to race, ethnicity, nationality, gender identity and expression, sexual orientation, religion,
 	// immigration status, ability status, personal appearance, and body size.
 	Hate *ContentFilterResult
+
+	// Whether an indirect attack was detected in the prompt.
+	IndirectAttack *ContentFilterDetectionResult
 
 	// Whether a jailbreak attempt was detected in the prompt.
 	Jailbreak *ContentFilterDetectionResult
@@ -1360,8 +1773,11 @@ type ContentFilterResultDetailsForPrompt struct {
 
 // ContentFilterResultsForChoice - Information about content filtering evaluated against generated model output.
 type ContentFilterResultsForChoice struct {
+	// REQUIRED; Information about detection of ungrounded material.
+	UngroundedMaterial *ContentFilterCompletionTextSpanResult
+
 	// Describes detection results against configured custom blocklists.
-	CustomBlocklists []ContentFilterBlocklistIDResult
+	CustomBlockLists *ContentFilterDetailedResults
 
 	// Describes an error returned if the content filtering system is down or otherwise unable to complete the operation in time.
 	Error *Error
@@ -1403,6 +1819,24 @@ type ContentFilterResultsForPrompt struct {
 	PromptIndex *int32
 }
 
+// CreateUploadRequest - The request body of an upload creation operation.
+type CreateUploadRequest struct {
+	// REQUIRED; The number of bytes in the file you are uploading.
+	Bytes *int32
+
+	// REQUIRED; The name of the file to upload.
+	Filename *string
+
+	// REQUIRED; The MIME type of the file.
+	// This must fall within the supported MIME types for your file purpose. See the supported MIME types for assistants and vision.
+	MimeType *string
+
+	// REQUIRED; The intended purpose of the uploaded file.
+	// Use 'assistants' for Assistants and Message files, 'vision' for Assistants image file inputs, 'batch' for Batch API, and
+	// 'fine-tune' for Fine-tuning.
+	Purpose *CreateUploadRequestPurpose
+}
+
 // ElasticsearchChatExtensionConfiguration - A specific representation of configurable options for Elasticsearch when using
 // it as an Azure OpenAI chat extension.
 type ElasticsearchChatExtensionConfiguration struct {
@@ -1430,6 +1864,11 @@ type ElasticsearchChatExtensionParameters struct {
 	// REQUIRED; The index name of Elasticsearch®.
 	IndexName *string
 
+	// If specified as true, the system will allow partial search results to be used and the request fails if all the queries
+	// fail. If not specified, or specified as false, the request will fail if any
+	// search query fails.
+	AllowPartialResult *bool
+
 	// The authentication method to use when accessing the defined data source. Each data source type supports a specific set
 	// of available authentication methods; please see the documentation of the data
 	// source for supported mechanisms. If not otherwise provided, On Your Data will attempt to use System Managed Identity (default
@@ -1445,13 +1884,15 @@ type ElasticsearchChatExtensionParameters struct {
 	// Whether queries should be restricted to use of indexed data.
 	InScope *bool
 
+	// The included properties of the output context. If not specified, the default value is citations and intent.
+	IncludeContexts []OnYourDataContextProperty
+
+	// The max number of rewritten queries should be send to search provider for one user message. If not specified, the system
+	// will decide the number of queries to send.
+	MaxSearchQueries *int32
+
 	// The query type of Elasticsearch®.
 	QueryType *ElasticsearchQueryType
-
-	// Give the model instructions about how it should behave and any context it should reference when generating a response.
-	// You can describe the assistant's personality and tell it how to format responses.
-	// There's a 100 token limit for it, and it counts against the overall token limit.
-	RoleInformation *string
 
 	// The configured strictness of the search relevance filtering. The higher of strictness, the higher of the precision but
 	// lower recall of the answer.
@@ -1471,7 +1912,7 @@ type ElasticsearchIndexFieldMappingOptions struct {
 	ContentFieldsSeparator *string
 
 	// The name of the index field to use as a filepath.
-	FilepathField *string
+	FilePathField *string
 
 	// The name of the index field to use as a title.
 	TitleField *string
@@ -1540,6 +1981,54 @@ type Error struct {
 	message *string
 }
 
+// File - Represents an assistant that can call the model and use tools.
+type File struct {
+	// REQUIRED; The size of the file, in bytes.
+	Bytes *int32
+
+	// REQUIRED; The Unix timestamp, in seconds, representing when this object was created.
+	CreatedAt *time.Time
+
+	// REQUIRED; The name of the file.
+	Filename *string
+
+	// REQUIRED; The identifier, which can be referenced in API endpoints.
+	ID *string
+
+	// REQUIRED; The object type, which is always 'file'.
+	Object *string
+
+	// REQUIRED; The intended purpose of a file.
+	Purpose *FilePurpose
+
+	// The state of the file. This field is available in Azure OpenAI only.
+	Status *FileState
+
+	// The error message with details in case processing of this file failed. This field is available in Azure OpenAI only.
+	StatusDetails *string
+}
+
+// FileDeletionStatus - A status response from a file deletion operation.
+type FileDeletionStatus struct {
+	// REQUIRED; A value indicating whether deletion was successful.
+	Deleted *bool
+
+	// REQUIRED; The ID of the resource specified for deletion.
+	ID *string
+
+	// REQUIRED; The object type, which is always 'file'.
+	Object *string
+}
+
+// FileListResponse - The response data from a file list operation.
+type FileListResponse struct {
+	// REQUIRED; The files returned for the request.
+	Data []File
+
+	// REQUIRED; The object type, which is always 'list'.
+	Object *string
+}
+
 // FunctionCall - The name and arguments of a function that should be called, as generated by the model.
 type FunctionCall struct {
 	// REQUIRED; The arguments to call the function with, as generated by the model in JSON format. Note that the model does not
@@ -1562,7 +2051,7 @@ type FunctionDefinition struct {
 	Description *string
 
 	// The parameters the function accepts, described as a JSON Schema object.
-	Parameters any
+	Parameters []byte
 }
 
 // FunctionName - A structure that specifies the exact name of a specific, request-provided function to use when processing
@@ -1570,6 +2059,18 @@ type FunctionDefinition struct {
 type FunctionName struct {
 	// REQUIRED; The name of the function to call.
 	Name *string
+}
+
+// GetAudioTranscriptionBody - Get audio transcription body.
+type GetAudioTranscriptionBody struct {
+	// REQUIRED; The configuration information for an audio transcription request.
+	Body *AudioTranscriptionOptions
+}
+
+// GetAudioTranslationBody - Get audio translation body.
+type GetAudioTranslationBody struct {
+	// REQUIRED; The configuration information for an audio translation request.
+	Body *AudioTranslationOptions
 }
 
 // ImageGenerationContentFilterResults - Describes the content filtering result for the image generation request.
@@ -1649,6 +2150,9 @@ type ImageGenerationOptions struct {
 
 // ImageGenerationPromptFilterResults - Describes the content filtering results for the prompt of a image generation request.
 type ImageGenerationPromptFilterResults struct {
+	// Information about customer block lists and if something was detected the associated list ID.
+	CustomBlockLists *ContentFilterDetailedResults
+
 	// Describes language attacks or uses that include pejorative or discriminatory language with reference to a person or identity
 	// group on the basis of certain differentiating attributes of these groups
 	// including but not limited to race, ethnicity, nationality, gender identity and expression, sexual orientation, religion,
@@ -1683,6 +2187,24 @@ type ImageGenerations struct {
 	Data []ImageGenerationData
 }
 
+// ListBatchesPage - The response data for a requested list of items.
+type ListBatchesPage struct {
+	// REQUIRED; The object type, which is always list.
+	Object *string
+
+	// The requested list of items.
+	Data []Batch
+
+	// The first ID represented in this list.
+	FirstID *string
+
+	// A value indicating whether there are additional values available not captured in this list.
+	HasMore *bool
+
+	// The last ID represented in this list.
+	LastID *string
+}
+
 // MaxTokensFinishDetails - A structured representation of a stop reason that signifies a token limit was reached before the
 // model could naturally complete.
 type MaxTokensFinishDetails struct {
@@ -1695,6 +2217,91 @@ func (m *MaxTokensFinishDetails) GetChatFinishDetails() *ChatFinishDetails {
 	return &ChatFinishDetails{
 		Type: m.Type,
 	}
+}
+
+// MongoDBChatExtensionConfiguration - A specific representation of configurable options for a MongoDB chat extension configuration.
+type MongoDBChatExtensionConfiguration struct {
+	// REQUIRED; The label for the type of an Azure chat extension. This typically corresponds to a matching Azure resource. Azure
+	// chat extensions are only compatible with Azure OpenAI.
+	configType *AzureChatExtensionType
+
+	// REQUIRED; The parameters for the MongoDB chat extension.
+	Parameters *MongoDBChatExtensionParameters
+}
+
+// GetAzureChatExtensionConfiguration implements the AzureChatExtensionConfigurationClassification interface for type MongoDBChatExtensionConfiguration.
+func (m *MongoDBChatExtensionConfiguration) GetAzureChatExtensionConfiguration() *AzureChatExtensionConfiguration {
+	return &AzureChatExtensionConfiguration{
+		configType: m.configType,
+	}
+}
+
+// MongoDBChatExtensionParameters - Parameters for the MongoDB chat extension. The supported authentication types are AccessToken,
+// SystemAssignedManagedIdentity and UserAssignedManagedIdentity.
+type MongoDBChatExtensionParameters struct {
+	// REQUIRED; The app name for MongoDB.
+	AppName *string
+
+	// REQUIRED; The collection name for MongoDB.
+	CollectionName *string
+
+	// REQUIRED; The database name for MongoDB.
+	DatabaseName *string
+
+	// REQUIRED; The vectorization source to use with the MongoDB chat extension.
+	EmbeddingDependency *MongoDBChatExtensionParametersEmbeddingDependency
+
+	// REQUIRED; The endpoint name for MongoDB.
+	Endpoint *string
+
+	// REQUIRED; Field mappings to apply to data used by the MongoDB data source. Note that content and vector field mappings
+	// are required for MongoDB.
+	FieldsMapping *MongoDBChatExtensionParametersFieldsMapping
+
+	// REQUIRED; The name of the MongoDB index.
+	IndexName *string
+
+	// If specified as true, the system will allow partial search results to be used and the request fails if all the queries
+	// fail. If not specified, or specified as false, the request will fail if any
+	// search query fails.
+	AllowPartialResult *bool
+
+	// The authentication method to use when accessing the defined data source. Each data source type supports a specific set
+	// of available authentication methods; please see the documentation of the data
+	// source for supported mechanisms. If not otherwise provided, On Your Data will attempt to use System Managed Identity (default
+	// credential) authentication.
+	Authentication *OnYourDataUsernameAndPasswordAuthenticationOptions
+
+	// Whether queries should be restricted to use of indexed data.
+	InScope *bool
+
+	// The included properties of the output context. If not specified, the default value is citations and intent.
+	IncludeContexts []OnYourDataContextProperty
+
+	// The max number of rewritten queries should be send to search provider for one user message. If not specified, the system
+	// will decide the number of queries to send.
+	MaxSearchQueries *int32
+
+	// The configured strictness of the search relevance filtering. The higher of strictness, the higher of the precision but
+	// lower recall of the answer.
+	Strictness *int32
+
+	// The configured top number of documents to feature for the configured query.
+	TopNDocuments *int32
+}
+
+// MongoDBChatExtensionParametersFieldsMapping - Field mappings to apply to data used by the MongoDB data source. Note that
+// content and vector field mappings are required for MongoDB.
+type MongoDBChatExtensionParametersFieldsMapping struct {
+	// REQUIRED
+	ContentFields []string
+
+	// REQUIRED
+	VectorFields           []string
+	ContentFieldsSeparator *string
+	FilepathField          *string
+	TitleField             *string
+	URLField               *string
 }
 
 // OnYourDataAPIKeyAuthenticationOptions - The authentication options for Azure OpenAI On Your Data when using an API key.
@@ -1767,6 +2374,9 @@ type OnYourDataDeploymentNameVectorizationSource struct {
 
 	// REQUIRED; The type of vectorization source to use.
 	Type *OnYourDataVectorizationSourceType
+
+	// The number of dimensions the embeddings should have. Only supported in text-embedding-3 and later models.
+	Dimensions *int32
 }
 
 // GetOnYourDataVectorizationSource implements the OnYourDataVectorizationSourceClassification interface for type OnYourDataDeploymentNameVectorizationSource.
@@ -1797,7 +2407,7 @@ func (o *OnYourDataEncodedAPIKeyAuthenticationOptions) GetOnYourDataAuthenticati
 // applying vector search, that is based on a public Azure OpenAI endpoint call for embeddings.
 type OnYourDataEndpointVectorizationSource struct {
 	// REQUIRED; Specifies the authentication options to use when retrieving embeddings from the specified endpoint.
-	Authentication OnYourDataAuthenticationOptionsClassification
+	Authentication OnYourDataVectorSearchAuthenticationOptionsClassification
 
 	// REQUIRED; Specifies the resource endpoint URL from which embeddings should be retrieved. It should be in the format of
 	// https://YOURRESOURCENAME.openai.azure.com/openai/deployments/YOURDEPLOYMENTNAME/embeddings.
@@ -1810,6 +2420,19 @@ type OnYourDataEndpointVectorizationSource struct {
 
 // GetOnYourDataVectorizationSource implements the OnYourDataVectorizationSourceClassification interface for type OnYourDataEndpointVectorizationSource.
 func (o *OnYourDataEndpointVectorizationSource) GetOnYourDataVectorizationSource() *OnYourDataVectorizationSource {
+	return &OnYourDataVectorizationSource{
+		Type: o.Type,
+	}
+}
+
+// OnYourDataIntegratedVectorizationSource - Represents the integrated vectorizer defined within the search resource.
+type OnYourDataIntegratedVectorizationSource struct {
+	// REQUIRED; The type of vectorization source to use.
+	Type *OnYourDataVectorizationSourceType
+}
+
+// GetOnYourDataVectorizationSource implements the OnYourDataVectorizationSourceClassification interface for type OnYourDataIntegratedVectorizationSource.
+func (o *OnYourDataIntegratedVectorizationSource) GetOnYourDataVectorizationSource() *OnYourDataVectorizationSource {
 	return &OnYourDataVectorizationSource{
 		Type: o.Type,
 	}
@@ -1883,6 +2506,74 @@ func (o *OnYourDataUserAssignedManagedIdentityAuthenticationOptions) GetOnYourDa
 	}
 }
 
+// OnYourDataUsernameAndPasswordAuthenticationOptions - The authentication options for Azure OpenAI On Your Data when using
+// a username and password.
+type OnYourDataUsernameAndPasswordAuthenticationOptions struct {
+	// REQUIRED; The authentication type.
+	configType *OnYourDataAuthenticationType
+
+	// REQUIRED; The password.
+	Password *string
+
+	// REQUIRED; The username.
+	Username *string
+}
+
+// GetOnYourDataAuthenticationOptions implements the OnYourDataAuthenticationOptionsClassification interface for type OnYourDataUsernameAndPasswordAuthenticationOptions.
+func (o *OnYourDataUsernameAndPasswordAuthenticationOptions) GetOnYourDataAuthenticationOptions() *OnYourDataAuthenticationOptions {
+	return &OnYourDataAuthenticationOptions{
+		configType: o.configType,
+	}
+}
+
+// OnYourDataVectorSearchAPIKeyAuthenticationOptions - The authentication options for Azure OpenAI On Your Data when using
+// an API key.
+type OnYourDataVectorSearchAPIKeyAuthenticationOptions struct {
+	// REQUIRED; The API key to use for authentication.
+	Key *string
+
+	// REQUIRED; The type of authentication to use.
+	Type *OnYourDataVectorSearchAuthenticationType
+}
+
+// GetOnYourDataVectorSearchAuthenticationOptions implements the OnYourDataVectorSearchAuthenticationOptionsClassification
+// interface for type OnYourDataVectorSearchAPIKeyAuthenticationOptions.
+func (o *OnYourDataVectorSearchAPIKeyAuthenticationOptions) GetOnYourDataVectorSearchAuthenticationOptions() *OnYourDataVectorSearchAuthenticationOptions {
+	return &OnYourDataVectorSearchAuthenticationOptions{
+		Type: o.Type,
+	}
+}
+
+// OnYourDataVectorSearchAccessTokenAuthenticationOptions - The authentication options for Azure OpenAI On Your Data vector
+// search when using access token.
+type OnYourDataVectorSearchAccessTokenAuthenticationOptions struct {
+	// REQUIRED; The access token to use for authentication.
+	AccessToken *string
+
+	// REQUIRED; The type of authentication to use.
+	Type *OnYourDataVectorSearchAuthenticationType
+}
+
+// GetOnYourDataVectorSearchAuthenticationOptions implements the OnYourDataVectorSearchAuthenticationOptionsClassification
+// interface for type OnYourDataVectorSearchAccessTokenAuthenticationOptions.
+func (o *OnYourDataVectorSearchAccessTokenAuthenticationOptions) GetOnYourDataVectorSearchAuthenticationOptions() *OnYourDataVectorSearchAuthenticationOptions {
+	return &OnYourDataVectorSearchAuthenticationOptions{
+		Type: o.Type,
+	}
+}
+
+// OnYourDataVectorSearchAuthenticationOptions - The authentication options for Azure OpenAI On Your Data vector search.
+type OnYourDataVectorSearchAuthenticationOptions struct {
+	// REQUIRED; The type of authentication to use.
+	Type *OnYourDataVectorSearchAuthenticationType
+}
+
+// GetOnYourDataVectorSearchAuthenticationOptions implements the OnYourDataVectorSearchAuthenticationOptionsClassification
+// interface for type OnYourDataVectorSearchAuthenticationOptions.
+func (o *OnYourDataVectorSearchAuthenticationOptions) GetOnYourDataVectorSearchAuthenticationOptions() *OnYourDataVectorSearchAuthenticationOptions {
+	return o
+}
+
 // OnYourDataVectorizationSource - An abstract representation of a vectorization source for Azure OpenAI On Your Data with
 // vector search.
 type OnYourDataVectorizationSource struct {
@@ -1928,6 +2619,11 @@ type PineconeChatExtensionParameters struct {
 	// REQUIRED; The name of the Pinecone database index.
 	IndexName *string
 
+	// If specified as true, the system will allow partial search results to be used and the request fails if all the queries
+	// fail. If not specified, or specified as false, the request will fail if any
+	// search query fails.
+	AllowPartialResult *bool
+
 	// The authentication method to use when accessing the defined data source. Each data source type supports a specific set
 	// of available authentication methods; please see the documentation of the data
 	// source for supported mechanisms. If not otherwise provided, On Your Data will attempt to use System Managed Identity (default
@@ -1937,10 +2633,12 @@ type PineconeChatExtensionParameters struct {
 	// Whether queries should be restricted to use of indexed data.
 	InScope *bool
 
-	// Give the model instructions about how it should behave and any context it should reference when generating a response.
-	// You can describe the assistant's personality and tell it how to format responses.
-	// There's a 100 token limit for it, and it counts against the overall token limit.
-	RoleInformation *string
+	// The included properties of the output context. If not specified, the default value is citations and intent.
+	IncludeContexts []OnYourDataContextProperty
+
+	// The max number of rewritten queries should be send to search provider for one user message. If not specified, the system
+	// will decide the number of queries to send.
+	MaxSearchQueries *int32
 
 	// The configured strictness of the search relevance filtering. The higher of strictness, the higher of the precision but
 	// lower recall of the answer.
@@ -1959,7 +2657,7 @@ type PineconeFieldMappingOptions struct {
 	ContentFieldsSeparator *string
 
 	// The name of the index field to use as a filepath.
-	FilepathField *string
+	FilePathField *string
 
 	// The name of the index field to use as a title.
 	TitleField *string
@@ -2007,4 +2705,453 @@ func (s *StopFinishDetails) GetChatFinishDetails() *ChatFinishDetails {
 	return &ChatFinishDetails{
 		Type: s.Type,
 	}
+}
+
+// Upload - The Upload object can accept byte chunks in the form of Parts.
+type Upload struct {
+	// REQUIRED; The intended number of bytes to be uploaded.
+	Bytes *int64
+
+	// REQUIRED; The Unix timestamp (in seconds) for when the Upload was created.
+	CreatedAt *time.Time
+
+	// REQUIRED; The Unix timestamp (in seconds) for when the Upload was created.
+	ExpiresAt *time.Time
+
+	// REQUIRED; The name of the file to be uploaded.
+	Filename *string
+
+	// REQUIRED; The Upload unique identifier, which can be referenced in API endpoints.
+	ID *string
+
+	// REQUIRED; The intended purpose of the file.
+	Purpose *UploadPurpose
+
+	// REQUIRED; The status of the Upload.
+	Status *UploadStatus
+
+	// The ready File object after the Upload is completed.
+	File *UploadFile
+
+	// The object type, which is always "upload".
+	Object *string
+}
+
+// UploadFile - The ready File object after the Upload is completed.
+type UploadFile struct {
+	// REQUIRED; The size of the file, in bytes.
+	Bytes *int32
+
+	// REQUIRED; The Unix timestamp, in seconds, representing when this object was created.
+	CreatedAt *time.Time
+
+	// REQUIRED; The name of the file.
+	Filename *string
+
+	// REQUIRED; The identifier, which can be referenced in API endpoints.
+	ID *string
+
+	// REQUIRED; The object type, which is always 'file'.
+	Object *string
+
+	// REQUIRED; The intended purpose of a file.
+	Purpose *FilePurpose
+
+	// The state of the file. This field is available in Azure OpenAI only.
+	Status *FileState
+
+	// The error message with details in case processing of this file failed. This field is available in Azure OpenAI only.
+	StatusDetails *string
+}
+
+// UploadPart - The upload Part represents a chunk of bytes we can add to an Upload object.
+type UploadPart struct {
+	// REQUIRED; The Unix timestamp (in seconds) for when the Part was created.
+	CreatedAt *time.Time
+
+	// REQUIRED; The upload Part unique identifier, which can be referenced in API endpoints.
+	ID *string
+
+	// REQUIRED; The object type, which is always upload.part.
+	Object *string
+
+	// REQUIRED; The ID of the Upload object that this Part was added to.
+	UploadID *string
+
+	// Azure only field.
+	AzureBlockID *string
+}
+
+// CompletionsOptions - The configuration information for a completions request. Completions support a wide variety of tasks
+// and generate text that continues from or "completes" provided prompt data.
+type CompletionsOptions struct {
+	// REQUIRED; The prompts to generate completions from.
+	Prompt []string
+
+	// A value that controls how many completions will be internally generated prior to response formulation. When used together
+	// with n, bestof controls the number of candidate completions and must be
+	// greater than n. Because this setting can generate many completions, it may quickly consume your token quota. Use carefully
+	// and ensure reasonable settings for maxtokens and stop.
+	BestOf *int32
+
+	// A value specifying whether completions responses should include input prompts as prefixes to their generated output.
+	Echo *bool
+
+	// A value that influences the probability of generated tokens appearing based on their cumulative frequency in generated
+	// text. Positive values will make tokens less likely to appear as their frequency
+	// increases and decrease the likelihood of the model repeating the same statements verbatim.
+	FrequencyPenalty *float32
+
+	// A map between GPT token IDs and bias scores that influences the probability of specific tokens appearing in a completions
+	// response. Token IDs are computed via external tokenizer tools, while bias
+	// scores reside in the range of -100 to 100 with minimum and maximum values corresponding to a full ban or exclusive selection
+	// of a token, respectively. The exact behavior of a given bias score varies
+	// by model.
+	LogitBias map[string]*int32
+
+	// A value that controls the emission of log probabilities for the provided number of most likely tokens within a completions
+	// response.
+	LogProbs *int32
+
+	// The maximum number of tokens to generate.
+	MaxTokens *int32
+
+	// The model name to provide as part of this completions request. Not applicable to Azure OpenAI, where deployment information
+	// should be included in the Azure resource URI that's connected to.
+	DeploymentName *string
+
+	// The number of completions choices that should be generated per provided prompt as part of an overall completions response.
+	// Because this setting can generate many completions, it may quickly consume
+	// your token quota. Use carefully and ensure reasonable settings for max_tokens and stop.
+	N *int32
+
+	// A value that influences the probability of generated tokens appearing based on their existing presence in generated text.
+	// Positive values will make tokens less likely to appear when they already exist
+	// and increase the model's likelihood to output new topics.
+	PresencePenalty *float32
+
+	// If specified, our system will make a best effort to sample deterministically, such that repeated requests with the same
+	// seed and parameters should return the same result.
+	// Determinism is not guaranteed, and you should refer to the system_fingerprint response parameter to monitor changes in
+	// the backend.
+	Seed *int32
+
+	// A collection of textual sequences that will end completions generation.
+	Stop []string
+
+	// The suffix that comes after a completion of inserted text
+	Suffix *string
+
+	// The sampling temperature to use that controls the apparent creativity of generated completions. Higher values will make
+	// output more random while lower values will make results more focused and
+	// deterministic. It is not recommended to modify temperature and top_p for the same completions request as the interaction
+	// of these two settings is difficult to predict.
+	Temperature *float32
+
+	// An alternative to sampling with temperature called nucleus sampling. This value causes the model to consider the results
+	// of tokens with the provided probability mass. As an example, a value of 0.15
+	// will cause only the tokens comprising the top 15% of probability mass to be considered. It is not recommended to modify
+	// temperature and top_p for the same completions request as the interaction of
+	// these two settings is difficult to predict.
+	TopP *float32
+
+	// An identifier for the caller or end user of the operation. This may be used for tracking or rate-limiting purposes.
+	User *string
+}
+
+// CompletionsStreamOptions - The configuration information for a completions request. Completions support a wide variety of tasks
+// and generate text that continues from or "completes" provided prompt data.
+type CompletionsStreamOptions struct {
+	// REQUIRED; The prompts to generate completions from.
+	Prompt []string
+
+	// A value that controls how many completions will be internally generated prior to response formulation. When used together
+	// with n, bestof controls the number of candidate completions and must be
+	// greater than n. Because this setting can generate many completions, it may quickly consume your token quota. Use carefully
+	// and ensure reasonable settings for maxtokens and stop.
+	BestOf *int32
+
+	// A value specifying whether completions responses should include input prompts as prefixes to their generated output.
+	Echo *bool
+
+	// A value that influences the probability of generated tokens appearing based on their cumulative frequency in generated
+	// text. Positive values will make tokens less likely to appear as their frequency
+	// increases and decrease the likelihood of the model repeating the same statements verbatim.
+	FrequencyPenalty *float32
+
+	// A map between GPT token IDs and bias scores that influences the probability of specific tokens appearing in a completions
+	// response. Token IDs are computed via external tokenizer tools, while bias
+	// scores reside in the range of -100 to 100 with minimum and maximum values corresponding to a full ban or exclusive selection
+	// of a token, respectively. The exact behavior of a given bias score varies
+	// by model.
+	LogitBias map[string]*int32
+
+	// A value that controls the emission of log probabilities for the provided number of most likely tokens within a completions
+	// response.
+	LogProbs *int32
+
+	// The maximum number of tokens to generate.
+	MaxTokens *int32
+
+	// The model name to provide as part of this completions request. Not applicable to Azure OpenAI, where deployment information
+	// should be included in the Azure resource URI that's connected to.
+	DeploymentName *string
+
+	// The number of completions choices that should be generated per provided prompt as part of an overall completions response.
+	// Because this setting can generate many completions, it may quickly consume
+	// your token quota. Use carefully and ensure reasonable settings for max_tokens and stop.
+	N *int32
+
+	// A value that influences the probability of generated tokens appearing based on their existing presence in generated text.
+	// Positive values will make tokens less likely to appear when they already exist
+	// and increase the model's likelihood to output new topics.
+	PresencePenalty *float32
+
+	// If specified, our system will make a best effort to sample deterministically, such that repeated requests with the same
+	// seed and parameters should return the same result.
+	// Determinism is not guaranteed, and you should refer to the system_fingerprint response parameter to monitor changes in
+	// the backend.
+	Seed *int32
+
+	// A collection of textual sequences that will end completions generation.
+	Stop []string
+
+	// Options for streaming response. Only set this when you set stream: true.
+	StreamOptions *ChatCompletionStreamOptions
+
+	// The suffix that comes after a completion of inserted text
+	Suffix *string
+
+	// The sampling temperature to use that controls the apparent creativity of generated completions. Higher values will make
+	// output more random while lower values will make results more focused and
+	// deterministic. It is not recommended to modify temperature and top_p for the same completions request as the interaction
+	// of these two settings is difficult to predict.
+	Temperature *float32
+
+	// An alternative to sampling with temperature called nucleus sampling. This value causes the model to consider the results
+	// of tokens with the provided probability mass. As an example, a value of 0.15
+	// will cause only the tokens comprising the top 15% of probability mass to be considered. It is not recommended to modify
+	// temperature and top_p for the same completions request as the interaction of
+	// these two settings is difficult to predict.
+	TopP *float32
+
+	// An identifier for the caller or end user of the operation. This may be used for tracking or rate-limiting purposes.
+	User *string
+}
+
+// ChatCompletionsOptions - The configuration information for a chat completions request. Completions support a wide variety
+// of tasks and generate text that continues from or "completes" provided prompt data.
+type ChatCompletionsOptions struct {
+	// REQUIRED; The collection of context messages associated with this chat completions request. Typical usage begins with a
+	// chat message for the System role that provides instructions for the behavior of the
+	// assistant, followed by alternating messages between the User and Assistant roles.
+	Messages []ChatRequestMessageClassification
+
+	// The configuration entries for Azure OpenAI chat extensions that use them. This additional specification is only compatible
+	// with Azure OpenAI.
+	AzureExtensionsOptions []AzureChatExtensionConfigurationClassification
+
+	// If provided, the configuration options for available Azure OpenAI chat enhancements.
+	Enhancements *AzureChatEnhancementConfiguration
+
+	// A value that influences the probability of generated tokens appearing based on their cumulative frequency in generated
+	// text. Positive values will make tokens less likely to appear as their frequency
+	// increases and decrease the likelihood of the model repeating the same statements verbatim.
+	FrequencyPenalty *float32
+
+	// Controls how the model responds to function calls. "none" means the model does not call a function, and responds to the
+	// end-user. "auto" means the model can pick between an end-user or calling a
+	// function. Specifying a particular function via {"name": "my_function"} forces the model to call that function. "none" is
+	// the default when no functions are present. "auto" is the default if functions
+	// are present.
+	FunctionCall *ChatCompletionsOptionsFunctionCall
+
+	// A list of functions the model may generate JSON inputs for.
+	Functions []FunctionDefinition
+
+	// A map between GPT token IDs and bias scores that influences the probability of specific tokens appearing in a completions
+	// response. Token IDs are computed via external tokenizer tools, while bias
+	// scores reside in the range of -100 to 100 with minimum and maximum values corresponding to a full ban or exclusive selection
+	// of a token, respectively. The exact behavior of a given bias score varies
+	// by model.
+	LogitBias map[string]*int32
+
+	// Whether to return log probabilities of the output tokens or not. If true, returns the log probabilities of each output
+	// token returned in the content of message. This option is currently not available
+	// on the gpt-4-vision-preview model.
+	LogProbs *bool
+
+	// An upper bound for the number of tokens that can be generated for a completion, including visible output tokens and reasoning
+	// tokens.
+	MaxCompletionTokens *int32
+
+	// The maximum number of tokens allowed for the generated answer. By default, the number of tokens the model can return will
+	// be (4096 - prompt tokens).
+	// This value is now deprecated in favor of max_completion_tokens, and is not compatible with o1 series models.
+	MaxTokens *int32
+
+	// The model name to provide as part of this completions request. Not applicable to Azure OpenAI, where deployment information
+	// should be included in the Azure resource URI that's connected to.
+	DeploymentName *string
+
+	// The number of chat completions choices that should be generated for a chat completions response. Because this setting can
+	// generate many completions, it may quickly consume your token quota. Use
+	// carefully and ensure reasonable settings for max_tokens and stop.
+	N *int32
+
+	// Whether to enable parallel function calling during tool use.
+	ParallelToolCalls *bool
+
+	// A value that influences the probability of generated tokens appearing based on their existing presence in generated text.
+	// Positive values will make tokens less likely to appear when they already exist
+	// and increase the model's likelihood to output new topics.
+	PresencePenalty *float32
+
+	// An object specifying the format that the model must output. Used to enable JSON mode.
+	ResponseFormat ChatCompletionsResponseFormatClassification
+
+	// If specified, the system will make a best effort to sample deterministically such that repeated requests with the same
+	// seed and parameters should return the same result. Determinism is not guaranteed,
+	// and you should refer to the system_fingerprint response parameter to monitor changes in the backend."
+	Seed *int64
+
+	// A collection of textual sequences that will end completions generation.
+	Stop []string
+
+	// The sampling temperature to use that controls the apparent creativity of generated completions. Higher values will make
+	// output more random while lower values will make results more focused and
+	// deterministic. It is not recommended to modify temperature and top_p for the same completions request as the interaction
+	// of these two settings is difficult to predict.
+	Temperature *float32
+
+	// If specified, the model will configure which of the provided tools it can use for the chat completions response.
+	ToolChoice *ChatCompletionsToolChoice
+
+	// The available tool definitions that the chat completions request can use, including caller-defined functions.
+	Tools []ChatCompletionsToolDefinitionClassification
+
+	// An integer between 0 and 5 specifying the number of most likely tokens to return at each token position, each with an associated
+	// log probability. logprobs must be set to true if this parameter is
+	// used.
+	TopLogProbs *int32
+
+	// An alternative to sampling with temperature called nucleus sampling. This value causes the model to consider the results
+	// of tokens with the provided probability mass. As an example, a value of 0.15
+	// will cause only the tokens comprising the top 15% of probability mass to be considered. It is not recommended to modify
+	// temperature and top_p for the same completions request as the interaction of
+	// these two settings is difficult to predict.
+	TopP *float32
+
+	// An identifier for the caller or end user of the operation. This may be used for tracking or rate-limiting purposes.
+	User *string
+}
+
+// ChatCompletionsStreamOptions - The configuration information for a chat completions request. Completions support a wide variety
+// of tasks and generate text that continues from or "completes" provided prompt data.
+type ChatCompletionsStreamOptions struct {
+	// REQUIRED; The collection of context messages associated with this chat completions request. Typical usage begins with a
+	// chat message for the System role that provides instructions for the behavior of the
+	// assistant, followed by alternating messages between the User and Assistant roles.
+	Messages []ChatRequestMessageClassification
+
+	// The configuration entries for Azure OpenAI chat extensions that use them. This additional specification is only compatible
+	// with Azure OpenAI.
+	AzureExtensionsOptions []AzureChatExtensionConfigurationClassification
+
+	// If provided, the configuration options for available Azure OpenAI chat enhancements.
+	Enhancements *AzureChatEnhancementConfiguration
+
+	// A value that influences the probability of generated tokens appearing based on their cumulative frequency in generated
+	// text. Positive values will make tokens less likely to appear as their frequency
+	// increases and decrease the likelihood of the model repeating the same statements verbatim.
+	FrequencyPenalty *float32
+
+	// Controls how the model responds to function calls. "none" means the model does not call a function, and responds to the
+	// end-user. "auto" means the model can pick between an end-user or calling a
+	// function. Specifying a particular function via {"name": "my_function"} forces the model to call that function. "none" is
+	// the default when no functions are present. "auto" is the default if functions
+	// are present.
+	FunctionCall *ChatCompletionsOptionsFunctionCall
+
+	// A list of functions the model may generate JSON inputs for.
+	Functions []FunctionDefinition
+
+	// A map between GPT token IDs and bias scores that influences the probability of specific tokens appearing in a completions
+	// response. Token IDs are computed via external tokenizer tools, while bias
+	// scores reside in the range of -100 to 100 with minimum and maximum values corresponding to a full ban or exclusive selection
+	// of a token, respectively. The exact behavior of a given bias score varies
+	// by model.
+	LogitBias map[string]*int32
+
+	// Whether to return log probabilities of the output tokens or not. If true, returns the log probabilities of each output
+	// token returned in the content of message. This option is currently not available
+	// on the gpt-4-vision-preview model.
+	LogProbs *bool
+
+	// An upper bound for the number of tokens that can be generated for a completion, including visible output tokens and reasoning
+	// tokens.
+	MaxCompletionTokens *int32
+
+	// The maximum number of tokens allowed for the generated answer. By default, the number of tokens the model can return will
+	// be (4096 - prompt tokens).
+	// This value is now deprecated in favor of max_completion_tokens, and is not compatible with o1 series models.
+	MaxTokens *int32
+
+	// The model name to provide as part of this completions request. Not applicable to Azure OpenAI, where deployment information
+	// should be included in the Azure resource URI that's connected to.
+	DeploymentName *string
+
+	// The number of chat completions choices that should be generated for a chat completions response. Because this setting can
+	// generate many completions, it may quickly consume your token quota. Use
+	// carefully and ensure reasonable settings for max_tokens and stop.
+	N *int32
+
+	// Whether to enable parallel function calling during tool use.
+	ParallelToolCalls *bool
+
+	// A value that influences the probability of generated tokens appearing based on their existing presence in generated text.
+	// Positive values will make tokens less likely to appear when they already exist
+	// and increase the model's likelihood to output new topics.
+	PresencePenalty *float32
+
+	// An object specifying the format that the model must output. Used to enable JSON mode.
+	ResponseFormat ChatCompletionsResponseFormatClassification
+
+	// If specified, the system will make a best effort to sample deterministically such that repeated requests with the same
+	// seed and parameters should return the same result. Determinism is not guaranteed,
+	// and you should refer to the system_fingerprint response parameter to monitor changes in the backend."
+	Seed *int64
+
+	// A collection of textual sequences that will end completions generation.
+	Stop []string
+
+	// Options for streaming response. Only set this when you set stream: true.
+	StreamOptions *ChatCompletionStreamOptions
+
+	// The sampling temperature to use that controls the apparent creativity of generated completions. Higher values will make
+	// output more random while lower values will make results more focused and
+	// deterministic. It is not recommended to modify temperature and top_p for the same completions request as the interaction
+	// of these two settings is difficult to predict.
+	Temperature *float32
+
+	// If specified, the model will configure which of the provided tools it can use for the chat completions response.
+	ToolChoice *ChatCompletionsToolChoice
+
+	// The available tool definitions that the chat completions request can use, including caller-defined functions.
+	Tools []ChatCompletionsToolDefinitionClassification
+
+	// An integer between 0 and 5 specifying the number of most likely tokens to return at each token position, each with an associated
+	// log probability. logprobs must be set to true if this parameter is
+	// used.
+	TopLogProbs *int32
+
+	// An alternative to sampling with temperature called nucleus sampling. This value causes the model to consider the results
+	// of tokens with the provided probability mass. As an example, a value of 0.15
+	// will cause only the tokens comprising the top 15% of probability mass to be considered. It is not recommended to modify
+	// temperature and top_p for the same completions request as the interaction of
+	// these two settings is difficult to predict.
+	TopP *float32
+
+	// An identifier for the caller or end user of the operation. This may be used for tracking or rate-limiting purposes.
+	User *string
 }

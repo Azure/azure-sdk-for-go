@@ -11,13 +11,14 @@ package armappcontainers
 import (
 	"context"
 	"errors"
+	"net/http"
+	"net/url"
+	"strings"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"net/http"
-	"net/url"
-	"strings"
 )
 
 // UsagesClient contains the methods for the Usages group.
@@ -46,7 +47,7 @@ func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, o
 // NewListPager - Gets, for the specified location, the current resource usage information as well as the limits under the
 // subscription.
 //
-// Generated from API version 2023-11-02-preview
+// Generated from API version 2024-08-02-preview
 //   - location - The location for which resource usage is queried.
 //   - options - UsagesClientListOptions contains the optional parameters for the UsagesClient.NewListPager method.
 func (client *UsagesClient) NewListPager(location string, options *UsagesClientListOptions) *runtime.Pager[UsagesClientListResponse] {
@@ -88,7 +89,7 @@ func (client *UsagesClient) listCreateRequest(ctx context.Context, location stri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-02-preview")
+	reqQP.Set("api-version", "2024-08-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

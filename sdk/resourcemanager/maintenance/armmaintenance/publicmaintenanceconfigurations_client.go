@@ -28,8 +28,7 @@ type PublicMaintenanceConfigurationsClient struct {
 }
 
 // NewPublicMaintenanceConfigurationsClient creates a new instance of PublicMaintenanceConfigurationsClient with the specified values.
-//   - subscriptionID - Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
-//     part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewPublicMaintenanceConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PublicMaintenanceConfigurationsClient, error) {
@@ -47,7 +46,7 @@ func NewPublicMaintenanceConfigurationsClient(subscriptionID string, credential 
 // Get - Get Public Maintenance Configuration record
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-10-01-preview
 //   - resourceName - Maintenance Configuration Name
 //   - options - PublicMaintenanceConfigurationsClientGetOptions contains the optional parameters for the PublicMaintenanceConfigurationsClient.Get
 //     method.
@@ -89,7 +88,7 @@ func (client *PublicMaintenanceConfigurationsClient) getCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -106,7 +105,7 @@ func (client *PublicMaintenanceConfigurationsClient) getHandleResponse(resp *htt
 
 // NewListPager - Get Public Maintenance Configuration records
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-10-01-preview
 //   - options - PublicMaintenanceConfigurationsClientListOptions contains the optional parameters for the PublicMaintenanceConfigurationsClient.NewListPager
 //     method.
 func (client *PublicMaintenanceConfigurationsClient) NewListPager(options *PublicMaintenanceConfigurationsClientListOptions) *runtime.Pager[PublicMaintenanceConfigurationsClientListResponse] {
@@ -145,7 +144,7 @@ func (client *PublicMaintenanceConfigurationsClient) listCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

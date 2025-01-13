@@ -10,7 +10,7 @@ package armsecurity
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity"
-	moduleVersion = "v0.13.0"
+	moduleVersion = "v0.14.0"
 )
 
 // AADConnectivityState - The connectivity state of the external AAD solution
@@ -728,6 +728,8 @@ const (
 	EventSourceAlerts                                 EventSource = "Alerts"
 	EventSourceAssessments                            EventSource = "Assessments"
 	EventSourceAssessmentsSnapshot                    EventSource = "AssessmentsSnapshot"
+	EventSourceAttackPaths                            EventSource = "AttackPaths"
+	EventSourceAttackPathsSnapshot                    EventSource = "AttackPathsSnapshot"
 	EventSourceRegulatoryComplianceAssessment         EventSource = "RegulatoryComplianceAssessment"
 	EventSourceRegulatoryComplianceAssessmentSnapshot EventSource = "RegulatoryComplianceAssessmentSnapshot"
 	EventSourceSecureScoreControls                    EventSource = "SecureScoreControls"
@@ -744,6 +746,8 @@ func PossibleEventSourceValues() []EventSource {
 		EventSourceAlerts,
 		EventSourceAssessments,
 		EventSourceAssessmentsSnapshot,
+		EventSourceAttackPaths,
+		EventSourceAttackPathsSnapshot,
 		EventSourceRegulatoryComplianceAssessment,
 		EventSourceRegulatoryComplianceAssessmentSnapshot,
 		EventSourceSecureScoreControls,
@@ -1117,15 +1121,39 @@ func PossibleKindValues() []Kind {
 	}
 }
 
+// MinimalRiskLevel - Defines the minimal attack path risk level which will be sent as email notifications
+type MinimalRiskLevel string
+
+const (
+	// MinimalRiskLevelCritical - Get notifications on new attack paths with Critical risk level
+	MinimalRiskLevelCritical MinimalRiskLevel = "Critical"
+	// MinimalRiskLevelHigh - Get notifications on new attack paths with High or Critical risk level
+	MinimalRiskLevelHigh MinimalRiskLevel = "High"
+	// MinimalRiskLevelLow - Get notifications on new attach paths with Low, Medium, High or Critical risk level
+	MinimalRiskLevelLow MinimalRiskLevel = "Low"
+	// MinimalRiskLevelMedium - Get notifications on new attach paths with Medium, High or Critical risk level
+	MinimalRiskLevelMedium MinimalRiskLevel = "Medium"
+)
+
+// PossibleMinimalRiskLevelValues returns the possible values for the MinimalRiskLevel const type.
+func PossibleMinimalRiskLevelValues() []MinimalRiskLevel {
+	return []MinimalRiskLevel{
+		MinimalRiskLevelCritical,
+		MinimalRiskLevelHigh,
+		MinimalRiskLevelLow,
+		MinimalRiskLevelMedium,
+	}
+}
+
 // MinimalSeverity - Defines the minimal alert severity which will be sent as email notifications
 type MinimalSeverity string
 
 const (
 	// MinimalSeverityHigh - Get notifications on new alerts with High severity
 	MinimalSeverityHigh MinimalSeverity = "High"
-	// MinimalSeverityLow - Don't get notifications on new alerts with low, medium or high severity
+	// MinimalSeverityLow - Get notifications on new alerts with Low, Medium or High severity
 	MinimalSeverityLow MinimalSeverity = "Low"
-	// MinimalSeverityMedium - Get notifications on new alerts with medium or high severity
+	// MinimalSeverityMedium - Get notifications on new alerts with Medium or High severity
 	MinimalSeverityMedium MinimalSeverity = "Medium"
 )
 
@@ -1162,23 +1190,19 @@ func PossibleMipIntegrationStatusValues() []MipIntegrationStatus {
 type OfferingType string
 
 const (
-	OfferingTypeCspmMonitorAws               OfferingType = "CspmMonitorAws"
-	OfferingTypeCspmMonitorAzureDevOps       OfferingType = "CspmMonitorAzureDevOps"
-	OfferingTypeCspmMonitorGcp               OfferingType = "CspmMonitorGcp"
-	OfferingTypeCspmMonitorGitLab            OfferingType = "CspmMonitorGitLab"
-	OfferingTypeCspmMonitorGithub            OfferingType = "CspmMonitorGithub"
-	OfferingTypeDefenderCspmAws              OfferingType = "DefenderCspmAws"
-	OfferingTypeDefenderCspmGcp              OfferingType = "DefenderCspmGcp"
-	OfferingTypeDefenderForContainersAws     OfferingType = "DefenderForContainersAws"
-	OfferingTypeDefenderForContainersGcp     OfferingType = "DefenderForContainersGcp"
-	OfferingTypeDefenderForDatabasesAws      OfferingType = "DefenderForDatabasesAws"
-	OfferingTypeDefenderForDatabasesGcp      OfferingType = "DefenderForDatabasesGcp"
-	OfferingTypeDefenderForDevOpsAzureDevOps OfferingType = "DefenderForDevOpsAzureDevOps"
-	OfferingTypeDefenderForDevOpsGitLab      OfferingType = "DefenderForDevOpsGitLab"
-	OfferingTypeDefenderForDevOpsGithub      OfferingType = "DefenderForDevOpsGithub"
-	OfferingTypeDefenderForServersAws        OfferingType = "DefenderForServersAws"
-	OfferingTypeDefenderForServersGcp        OfferingType = "DefenderForServersGcp"
-	OfferingTypeInformationProtectionAws     OfferingType = "InformationProtectionAws"
+	OfferingTypeCspmMonitorAws           OfferingType = "CspmMonitorAws"
+	OfferingTypeCspmMonitorAzureDevOps   OfferingType = "CspmMonitorAzureDevOps"
+	OfferingTypeCspmMonitorGcp           OfferingType = "CspmMonitorGcp"
+	OfferingTypeCspmMonitorGitLab        OfferingType = "CspmMonitorGitLab"
+	OfferingTypeCspmMonitorGithub        OfferingType = "CspmMonitorGithub"
+	OfferingTypeDefenderCspmAws          OfferingType = "DefenderCspmAws"
+	OfferingTypeDefenderCspmGcp          OfferingType = "DefenderCspmGcp"
+	OfferingTypeDefenderForContainersAws OfferingType = "DefenderForContainersAws"
+	OfferingTypeDefenderForContainersGcp OfferingType = "DefenderForContainersGcp"
+	OfferingTypeDefenderForDatabasesAws  OfferingType = "DefenderForDatabasesAws"
+	OfferingTypeDefenderForDatabasesGcp  OfferingType = "DefenderForDatabasesGcp"
+	OfferingTypeDefenderForServersAws    OfferingType = "DefenderForServersAws"
+	OfferingTypeDefenderForServersGcp    OfferingType = "DefenderForServersGcp"
 )
 
 // PossibleOfferingTypeValues returns the possible values for the OfferingType const type.
@@ -1195,12 +1219,8 @@ func PossibleOfferingTypeValues() []OfferingType {
 		OfferingTypeDefenderForContainersGcp,
 		OfferingTypeDefenderForDatabasesAws,
 		OfferingTypeDefenderForDatabasesGcp,
-		OfferingTypeDefenderForDevOpsAzureDevOps,
-		OfferingTypeDefenderForDevOpsGitLab,
-		OfferingTypeDefenderForDevOpsGithub,
 		OfferingTypeDefenderForServersAws,
 		OfferingTypeDefenderForServersGcp,
-		OfferingTypeInformationProtectionAws,
 	}
 }
 
@@ -1642,30 +1662,6 @@ func PossibleResourcesCoverageStatusValues() []ResourcesCoverageStatus {
 	}
 }
 
-// Roles - A possible role to configure sending security notification alerts to
-type Roles string
-
-const (
-	// RolesAccountAdmin - If enabled, send notification on new alerts to the account admins
-	RolesAccountAdmin Roles = "AccountAdmin"
-	// RolesContributor - If enabled, send notification on new alerts to the subscription contributors
-	RolesContributor Roles = "Contributor"
-	// RolesOwner - If enabled, send notification on new alerts to the subscription owners
-	RolesOwner Roles = "Owner"
-	// RolesServiceAdmin - If enabled, send notification on new alerts to the service admins
-	RolesServiceAdmin Roles = "ServiceAdmin"
-)
-
-// PossibleRolesValues returns the possible values for the Roles const type.
-func PossibleRolesValues() []Roles {
-	return []Roles{
-		RolesAccountAdmin,
-		RolesContributor,
-		RolesOwner,
-		RolesServiceAdmin,
-	}
-}
-
 // RuleCategory - Rule categories. Code - code scanning results. Artifact scanning results. Dependencies scanning results.
 // IaC results. Secrets scanning results. Container scanning results.
 type RuleCategory string
@@ -1834,6 +1830,44 @@ const (
 func PossibleScanningModeValues() []ScanningMode {
 	return []ScanningMode{
 		ScanningModeDefault,
+	}
+}
+
+type SecurityContactName string
+
+const (
+	// SecurityContactNameDefault - The single applicable name of the security contact object
+	SecurityContactNameDefault SecurityContactName = "default"
+)
+
+// PossibleSecurityContactNameValues returns the possible values for the SecurityContactName const type.
+func PossibleSecurityContactNameValues() []SecurityContactName {
+	return []SecurityContactName{
+		SecurityContactNameDefault,
+	}
+}
+
+// SecurityContactRole - A possible role to configure sending security notification alerts to
+type SecurityContactRole string
+
+const (
+	// SecurityContactRoleAccountAdmin - If enabled, send notification on new alerts to the account admins
+	SecurityContactRoleAccountAdmin SecurityContactRole = "AccountAdmin"
+	// SecurityContactRoleContributor - If enabled, send notification on new alerts to the subscription contributors
+	SecurityContactRoleContributor SecurityContactRole = "Contributor"
+	// SecurityContactRoleOwner - If enabled, send notification on new alerts to the subscription owners
+	SecurityContactRoleOwner SecurityContactRole = "Owner"
+	// SecurityContactRoleServiceAdmin - If enabled, send notification on new alerts to the service admins
+	SecurityContactRoleServiceAdmin SecurityContactRole = "ServiceAdmin"
+)
+
+// PossibleSecurityContactRoleValues returns the possible values for the SecurityContactRole const type.
+func PossibleSecurityContactRoleValues() []SecurityContactRole {
+	return []SecurityContactRole{
+		SecurityContactRoleAccountAdmin,
+		SecurityContactRoleContributor,
+		SecurityContactRoleOwner,
+		SecurityContactRoleServiceAdmin,
 	}
 }
 
@@ -2069,6 +2103,22 @@ func PossibleSourceSystemValues() []SourceSystem {
 		SourceSystemNonAzureAppLocker,
 		SourceSystemNonAzureAuditD,
 		SourceSystemNone,
+	}
+}
+
+// SourceType - The source type that will trigger the notification
+type SourceType string
+
+const (
+	SourceTypeAlert      SourceType = "Alert"
+	SourceTypeAttackPath SourceType = "AttackPath"
+)
+
+// PossibleSourceTypeValues returns the possible values for the SourceType const type.
+func PossibleSourceTypeValues() []SourceType {
+	return []SourceType{
+		SourceTypeAlert,
+		SourceTypeAttackPath,
 	}
 }
 

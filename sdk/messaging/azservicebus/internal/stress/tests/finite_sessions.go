@@ -57,7 +57,7 @@ func FiniteSessions(remainingArgs []string) {
 	})
 	defer cleanup()
 
-	client, err := azservicebus.NewClientFromConnectionString(sc.ConnectionString, nil)
+	client, err := azservicebus.NewClient(sc.Endpoint, sc.Cred, nil)
 	sc.NoError(err)
 
 	sender, err := shared.NewTrackingSender(sc.TC, client, topicName, nil)

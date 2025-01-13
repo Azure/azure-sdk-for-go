@@ -20,7 +20,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/azeventgrid"
 	"github.com/stretchr/testify/require"
@@ -33,45 +32,32 @@ type topicVars struct {
 	SAS      string
 }
 
-type tokenCredentialVars struct {
-	ClientID       string
-	ClientSecret   string
-	TenantID       string
-	SubscriptionID string
-}
-
 type eventGridVars struct {
 	// EG are connection variables for an EventGrid encoded topic.
 	EG topicVars
 	// CE are connection variables for a CloudEvent encoded topic.
 	CE topicVars
-
-	TokenCredVars tokenCredentialVars
 }
 
 var fakeVars = eventGridVars{
 	EG: topicVars{
 		Name:     "faketopic",
 		Key:      base64.StdEncoding.EncodeToString([]byte("fakekey")),
-		Endpoint: "https://localhost/fake-endpoint",
+		Endpoint: "https://" + recording.SanitizedValue + ".westus-1.eventgrid.net/",
 		SAS:      "fake-sas",
 	},
 	CE: topicVars{
 		Name:     "faketopic",
 		Key:      base64.StdEncoding.EncodeToString([]byte("fakekey")),
-		Endpoint: "https://localhost/fake-endpoint",
+		Endpoint: "https://" + recording.SanitizedValue + ".westus-1.eventgrid.net/",
 		SAS:      "fake-sas",
-	},
-	TokenCredVars: tokenCredentialVars{
-		TenantID:       "fake-tenant-id",
-		ClientID:       "fake-client-id",
-		ClientSecret:   "fake-client-secret",
-		SubscriptionID: "fake-subscription-id",
 	},
 }
 
 func newTestVars(t *testing.T) eventGridVars {
 	if recording.GetRecordMode() == recording.PlaybackMode {
+		addSanitizers(t)
+
 		err := recording.Start(t, recordingDirectory, nil)
 		require.NoError(t, err)
 
@@ -80,12 +66,6 @@ func newTestVars(t *testing.T) eventGridVars {
 			require.NoError(t, err)
 		})
 
-		// set these up so DefaultAzureCredential will pick these up when it auths.
-		os.Setenv("AZURE_TENANT_ID", fakeVars.TokenCredVars.TenantID)
-		os.Setenv("AZURE_CLIENT_ID", fakeVars.TokenCredVars.ClientID)
-		os.Setenv("AZURE_CLIENT_SECRET", fakeVars.TokenCredVars.ClientSecret)
-
-		sanitizeForPlayback(t)
 		return fakeVars
 	}
 
@@ -97,12 +77,6 @@ func newTestVars(t *testing.T) eventGridVars {
 		CE: topicVars{Name: os.Getenv("EVENTGRID_CE_TOPIC_NAME"),
 			Key:      os.Getenv("EVENTGRID_CE_TOPIC_KEY"),
 			Endpoint: os.Getenv("EVENTGRID_CE_TOPIC_ENDPOINT"),
-		},
-		TokenCredVars: tokenCredentialVars{
-			ClientID:       os.Getenv("AZURE_CLIENT_ID"),
-			ClientSecret:   os.Getenv("AZURE_CLIENT_SECRET"),
-			TenantID:       os.Getenv("AZURE_TENANT_ID"),
-			SubscriptionID: os.Getenv("AZURE_SUBSCRIPTION_ID"),
 		},
 	}
 
@@ -117,17 +91,11 @@ func newTestVars(t *testing.T) eventGridVars {
 	egVars.EG.SAS = generateSAS(egVars.EG.Endpoint, egVars.EG.Key, time.Now())
 	egVars.CE.SAS = generateSAS(egVars.CE.Endpoint, egVars.CE.Key, time.Now())
 
-	if egVars.TokenCredVars.ClientID == "" ||
-		egVars.TokenCredVars.ClientSecret == "" ||
-		egVars.TokenCredVars.TenantID == "" ||
-		egVars.TokenCredVars.SubscriptionID == "" {
-		t.Logf("WARNING: not enabling azeventgrid integration tests, environment variables for token credential auth not set")
-		t.Skip()
-	}
-
 	if recording.GetRecordMode() == recording.LiveMode {
 		return egVars
 	}
+
+	addSanitizers(t)
 
 	// we're recording then, let's setup the sanitizers.
 	err := recording.Start(t, recordingDirectory, nil)
@@ -138,17 +106,14 @@ func newTestVars(t *testing.T) eventGridVars {
 		require.NoError(t, err)
 	})
 
-	sanitizeForRecording(t, egVars)
 	return egVars
 }
 
 func newClientOptionsForTest(t *testing.T) struct {
-	EG  *azeventgrid.ClientOptions
-	DAC *azidentity.DefaultAzureCredentialOptions
+	EG *azeventgrid.ClientOptions
 } {
 	var ret = struct {
-		EG  *azeventgrid.ClientOptions
-		DAC *azidentity.DefaultAzureCredentialOptions
+		EG *azeventgrid.ClientOptions
 	}{}
 
 	if recording.GetRecordMode() != recording.LiveMode {
@@ -157,10 +122,6 @@ func newClientOptionsForTest(t *testing.T) struct {
 
 		clientOptions := azcore.ClientOptions{
 			Transport: recordingClient,
-		}
-
-		ret.DAC = &azidentity.DefaultAzureCredentialOptions{
-			ClientOptions: clientOptions,
 		}
 
 		ret.EG = &azeventgrid.ClientOptions{
@@ -248,15 +209,13 @@ func FormatBytes(body []byte) []byte {
 			continue
 		}
 
-		if err == nil {
-			formattedBytes, err := json.MarshalIndent(v, "  ", "  ")
+		formattedBytes, err := json.MarshalIndent(v, "  ", "  ")
 
-			if err != nil {
-				continue
-			}
-
-			return formattedBytes
+		if err != nil {
+			continue
 		}
+
+		return formattedBytes
 	}
 
 	// if we can't format it we'll just give it back.

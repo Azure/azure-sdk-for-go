@@ -1,5 +1,35 @@
 # Release History
 
+## 4.0.0 (2024-05-24)
+### Breaking Changes
+
+- Type of `AscOperation.Error` has been changed from `*ErrorResponse` to `*AscOperationErrorResponse`
+
+### Features Added
+
+- New enum type `AmlFilesystemSquashMode` with values `AmlFilesystemSquashModeAll`, `AmlFilesystemSquashModeNone`, `AmlFilesystemSquashModeRootOnly`
+- New enum type `ConflictResolutionMode` with values `ConflictResolutionModeFail`, `ConflictResolutionModeOverwriteAlways`, `ConflictResolutionModeOverwriteIfDirty`, `ConflictResolutionModeSkip`
+- New enum type `ImportJobProvisioningStateType` with values `ImportJobProvisioningStateTypeCanceled`, `ImportJobProvisioningStateTypeCreating`, `ImportJobProvisioningStateTypeDeleting`, `ImportJobProvisioningStateTypeFailed`, `ImportJobProvisioningStateTypeSucceeded`, `ImportJobProvisioningStateTypeUpdating`
+- New enum type `ImportStatusType` with values `ImportStatusTypeCanceled`, `ImportStatusTypeCancelling`, `ImportStatusTypeCompleted`, `ImportStatusTypeCompletedPartial`, `ImportStatusTypeFailed`, `ImportStatusTypeInProgress`
+- New function `*ClientFactory.NewImportJobsClient() *ImportJobsClient`
+- New function `NewImportJobsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ImportJobsClient, error)`
+- New function `*ImportJobsClient.BeginCreateOrUpdate(context.Context, string, string, string, ImportJob, *ImportJobsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ImportJobsClientCreateOrUpdateResponse], error)`
+- New function `*ImportJobsClient.BeginDelete(context.Context, string, string, string, *ImportJobsClientBeginDeleteOptions) (*runtime.Poller[ImportJobsClientDeleteResponse], error)`
+- New function `*ImportJobsClient.Get(context.Context, string, string, string, *ImportJobsClientGetOptions) (ImportJobsClientGetResponse, error)`
+- New function `*ImportJobsClient.NewListByAmlFilesystemPager(string, string, *ImportJobsClientListByAmlFilesystemOptions) *runtime.Pager[ImportJobsClientListByAmlFilesystemResponse]`
+- New function `*ImportJobsClient.BeginUpdate(context.Context, string, string, string, ImportJobUpdate, *ImportJobsClientBeginUpdateOptions) (*runtime.Poller[ImportJobsClientUpdateResponse], error)`
+- New struct `AmlFilesystemRootSquashSettings`
+- New struct `AscOperationErrorResponse`
+- New struct `ImportJob`
+- New struct `ImportJobProperties`
+- New struct `ImportJobPropertiesStatus`
+- New struct `ImportJobUpdate`
+- New struct `ImportJobsListResult`
+- New field `ImportPrefixesInitial` in struct `AmlFilesystemHsmSettings`
+- New field `RootSquashSettings` in struct `AmlFilesystemProperties`
+- New field `RootSquashSettings` in struct `AmlFilesystemUpdateProperties`
+
+
 ## 3.4.0-beta.1 (2024-02-23)
 ### Features Added
 

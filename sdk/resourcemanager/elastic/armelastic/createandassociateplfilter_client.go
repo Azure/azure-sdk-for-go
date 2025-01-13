@@ -37,7 +37,7 @@ type CreateAndAssociatePLFilterClient struct {
 }
 
 // NewCreateAndAssociatePLFilterClient creates a new instance of CreateAndAssociatePLFilterClient with the specified values.
-//   - subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewCreateAndAssociatePLFilterClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CreateAndAssociatePLFilterClient, error) {
@@ -55,8 +55,8 @@ func NewCreateAndAssociatePLFilterClient(subscriptionID string, credential azcor
 // BeginCreate - Create and Associate private link traffic filter for the given deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
-//   - resourceGroupName - The name of the resource group to which the Elastic resource belongs.
+// Generated from API version 2024-03-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - CreateAndAssociatePLFilterClientBeginCreateOptions contains the optional parameters for the CreateAndAssociatePLFilterClient.BeginCreate
 //     method.
@@ -81,7 +81,7 @@ func (client *CreateAndAssociatePLFilterClient) BeginCreate(ctx context.Context,
 // Create - Create and Associate private link traffic filter for the given deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2024-03-01
 func (client *CreateAndAssociatePLFilterClient) create(ctx context.Context, resourceGroupName string, monitorName string, options *CreateAndAssociatePLFilterClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CreateAndAssociatePLFilterClient.BeginCreate"
@@ -123,7 +123,7 @@ func (client *CreateAndAssociatePLFilterClient) createCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2024-03-01")
 	if options != nil && options.Name != nil {
 		reqQP.Set("name", *options.Name)
 	}

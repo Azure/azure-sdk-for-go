@@ -10,7 +10,9 @@ import (
 
 func TestContainerCRUD(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
-	client := emulatorTests.getClient(t)
+	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{
+		ExpectedSpans: []string{"create_container aContainer", "read_container aContainer", "query_containers containerCRUD", "replace_container aContainer", "read_container_throughput aContainer", "replace_container_throughput aContainer", "delete_container aContainer"},
+	}))
 
 	database := emulatorTests.createDatabase(t, context.TODO(), client, "containerCRUD")
 	defer emulatorTests.deleteDatabase(t, context.TODO(), database)
@@ -107,9 +109,18 @@ func TestContainerCRUD(t *testing.T) {
 	}
 
 	newScale := NewManualThroughputProperties(500)
-	_, err = container.ReplaceThroughput(context.TODO(), newScale, nil)
+	throughputResponse, err = container.ReplaceThroughput(context.TODO(), newScale, nil)
 	if err != nil {
-		t.Errorf("Failed to read throughput: %v", err)
+		t.Fatalf("Failed to replace throughput: %v", err)
+	}
+
+	mt, hasManualThroughput = throughputResponse.ThroughputProperties.ManualThroughput()
+	if !hasManualThroughput {
+		t.Fatalf("Expected manual throughput to be available")
+	}
+
+	if mt != 500 {
+		t.Errorf("Unexpected throughput: %v", mt)
 	}
 
 	resp, err = container.Delete(context.TODO(), nil)
@@ -120,7 +131,9 @@ func TestContainerCRUD(t *testing.T) {
 
 func TestContainerAutoscaleCRUD(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
-	client := emulatorTests.getClient(t)
+	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{
+		ExpectedSpans: []string{"create_container aContainer", "read_container aContainer", "read_container_throughput aContainer", "replace_container_throughput aContainer", "delete_container aContainer"},
+	}))
 
 	database := emulatorTests.createDatabase(t, context.TODO(), client, "containerCRUD")
 	defer emulatorTests.deleteDatabase(t, context.TODO(), database)

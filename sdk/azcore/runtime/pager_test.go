@@ -330,3 +330,37 @@ func TestFetcherForNextLink(t *testing.T) {
 	require.False(t, firstReqCalled)
 	require.Nil(t, resp)
 }
+
+func TestFetcherForNextLinkWithStatusCodes(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	pl := exported.NewPipeline(srv)
+
+	srv.AppendResponse(mock.WithStatusCode(http.StatusNotModified))
+	resp, err := FetcherForNextLink(context.Background(), pl, "", func(ctx context.Context) (*policy.Request, error) {
+		return NewRequest(ctx, http.MethodGet, srv.URL())
+	}, nil)
+	require.Error(t, err)
+	require.Nil(t, resp)
+
+	srv.AppendResponse()
+	srv.AppendResponse(mock.WithStatusCode(http.StatusNotModified))
+
+	resp, err = FetcherForNextLink(context.Background(), pl, "", func(ctx context.Context) (*policy.Request, error) {
+		return NewRequest(ctx, http.MethodGet, srv.URL())
+	}, &FetcherForNextLinkOptions{
+		StatusCodes: []int{http.StatusNotModified},
+	})
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+	require.EqualValues(t, http.StatusOK, resp.StatusCode)
+
+	resp, err = FetcherForNextLink(context.Background(), pl, "", func(ctx context.Context) (*policy.Request, error) {
+		return NewRequest(ctx, http.MethodGet, srv.URL())
+	}, &FetcherForNextLinkOptions{
+		StatusCodes: []int{http.StatusNotModified},
+	})
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+	require.EqualValues(t, http.StatusNotModified, resp.StatusCode)
+}

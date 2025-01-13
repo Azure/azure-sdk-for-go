@@ -14,11 +14,11 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/liftrqumulo/armqumulo"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/liftrqumulo/armqumulo/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/Operations_List_MaximumSet_Gen.json
-func ExampleOperationsClient_NewListPager_operationsListMaximumSetGen() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72de08114673a547de8a017c85ed89a2017a86f7/specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2024-06-19/examples/Operations_List_MaximumSet_Gen.json
+func ExampleOperationsClient_NewListPager_operationsList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -42,13 +42,13 @@ func ExampleOperationsClient_NewListPager_operationsListMaximumSetGen() {
 		// page.OperationListResult = armqumulo.OperationListResult{
 		// 	Value: []*armqumulo.Operation{
 		// 		{
-		// 			Name: to.Ptr("runmssufdtztqwcjrxyuyodlzbxidp"),
+		// 			Name: to.Ptr("melhpzamnyx"),
 		// 			ActionType: to.Ptr(armqumulo.ActionTypeInternal),
 		// 			Display: &armqumulo.OperationDisplay{
-		// 				Description: to.Ptr("cnjdpucbtzreoihwdqnkprk"),
-		// 				Operation: to.Ptr("fgyvgifprfxdgyqdbglrysjjsozm"),
-		// 				Provider: to.Ptr("e"),
-		// 				Resource: to.Ptr("cgzkjnfpkvddogcszpdn"),
+		// 				Description: to.Ptr("vodhl"),
+		// 				Operation: to.Ptr("ayfoeuuyhtwjafroqzimyujr"),
+		// 				Provider: to.Ptr("ilyrhd"),
+		// 				Resource: to.Ptr("vjz"),
 		// 			},
 		// 			IsDataAction: to.Ptr(true),
 		// 			Origin: to.Ptr(armqumulo.OriginUser),
@@ -57,7 +57,7 @@ func ExampleOperationsClient_NewListPager_operationsListMaximumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/Operations_List_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72de08114673a547de8a017c85ed89a2017a86f7/specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2024-06-19/examples/Operations_List_MinimumSet_Gen.json
 func ExampleOperationsClient_NewListPager_operationsListMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -69,8 +69,7 @@ type AwsOrganizationalDataClassification interface {
 // Use a type switch to determine the concrete type.  The possible types are:
 // - *CloudOffering, *CspmMonitorAwsOffering, *CspmMonitorAzureDevOpsOffering, *CspmMonitorGcpOffering, *CspmMonitorGitLabOffering,
 // - *CspmMonitorGithubOffering, *DefenderCspmAwsOffering, *DefenderCspmGcpOffering, *DefenderFoDatabasesAwsOffering, *DefenderForContainersAwsOffering,
-// - *DefenderForContainersGcpOffering, *DefenderForDatabasesGcpOffering, *DefenderForDevOpsAzureDevOpsOffering, *DefenderForDevOpsGitLabOffering,
-// - *DefenderForDevOpsGithubOffering, *DefenderForServersAwsOffering, *DefenderForServersGcpOffering, *InformationProtectionAwsOffering
+// - *DefenderForContainersGcpOffering, *DefenderForDatabasesGcpOffering, *DefenderForServersAwsOffering, *DefenderForServersGcpOffering
 type CloudOfferingClassification interface {
 	// GetCloudOffering returns the CloudOffering content of the underlying type.
 	GetCloudOffering() *CloudOffering
@@ -128,6 +127,15 @@ type ListCustomAlertRuleClassification interface {
 	CustomAlertRuleClassification
 	// GetListCustomAlertRule returns the ListCustomAlertRule content of the underlying type.
 	GetListCustomAlertRule() *ListCustomAlertRule
+}
+
+// NotificationsSourceClassification provides polymorphic access to related types.
+// Call the interface's GetNotificationsSource() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *NotificationsSource, *NotificationsSourceAlert, *NotificationsSourceAttackPath
+type NotificationsSourceClassification interface {
+	// GetNotificationsSource returns the NotificationsSource content of the underlying type.
+	GetNotificationsSource() *NotificationsSource
 }
 
 // OnPremiseResourceDetailsClassification provides polymorphic access to related types.

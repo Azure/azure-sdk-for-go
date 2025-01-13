@@ -20,6 +20,111 @@ type ExtensionMetadataClientListResponse struct {
 	ExtensionValueListResult
 }
 
+// GatewaysClientCreateOrUpdateResponse contains the response from method GatewaysClient.BeginCreateOrUpdate.
+type GatewaysClientCreateOrUpdateResponse struct {
+	// Describes an Arc Gateway.
+	Gateway
+}
+
+// GatewaysClientDeleteResponse contains the response from method GatewaysClient.BeginDelete.
+type GatewaysClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// GatewaysClientGetResponse contains the response from method GatewaysClient.Get.
+type GatewaysClientGetResponse struct {
+	// Describes an Arc Gateway.
+	Gateway
+}
+
+// GatewaysClientListByResourceGroupResponse contains the response from method GatewaysClient.NewListByResourceGroupPager.
+type GatewaysClientListByResourceGroupResponse struct {
+	// The List license operation response.
+	GatewaysListResult
+}
+
+// GatewaysClientListBySubscriptionResponse contains the response from method GatewaysClient.NewListBySubscriptionPager.
+type GatewaysClientListBySubscriptionResponse struct {
+	// The List license operation response.
+	GatewaysListResult
+}
+
+// GatewaysClientUpdateResponse contains the response from method GatewaysClient.Update.
+type GatewaysClientUpdateResponse struct {
+	// Describes an Arc Gateway.
+	Gateway
+}
+
+// LicenseProfilesClientCreateOrUpdateResponse contains the response from method LicenseProfilesClient.BeginCreateOrUpdate.
+type LicenseProfilesClientCreateOrUpdateResponse struct {
+	// Describes a license profile in a hybrid machine.
+	LicenseProfile
+}
+
+// LicenseProfilesClientDeleteResponse contains the response from method LicenseProfilesClient.BeginDelete.
+type LicenseProfilesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// LicenseProfilesClientGetResponse contains the response from method LicenseProfilesClient.Get.
+type LicenseProfilesClientGetResponse struct {
+	// Describes a license profile in a hybrid machine.
+	LicenseProfile
+}
+
+// LicenseProfilesClientListResponse contains the response from method LicenseProfilesClient.NewListPager.
+type LicenseProfilesClientListResponse struct {
+	// The List hybrid machine license profile operation response.
+	LicenseProfilesListResult
+}
+
+// LicenseProfilesClientUpdateResponse contains the response from method LicenseProfilesClient.BeginUpdate.
+type LicenseProfilesClientUpdateResponse struct {
+	// Describes a license profile in a hybrid machine.
+	LicenseProfile
+}
+
+// LicensesClientCreateOrUpdateResponse contains the response from method LicensesClient.BeginCreateOrUpdate.
+type LicensesClientCreateOrUpdateResponse struct {
+	// Describes a license in a hybrid machine.
+	License
+}
+
+// LicensesClientDeleteResponse contains the response from method LicensesClient.BeginDelete.
+type LicensesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// LicensesClientGetResponse contains the response from method LicensesClient.Get.
+type LicensesClientGetResponse struct {
+	// Describes a license in a hybrid machine.
+	License
+}
+
+// LicensesClientListByResourceGroupResponse contains the response from method LicensesClient.NewListByResourceGroupPager.
+type LicensesClientListByResourceGroupResponse struct {
+	// The List license operation response.
+	LicensesListResult
+}
+
+// LicensesClientListBySubscriptionResponse contains the response from method LicensesClient.NewListBySubscriptionPager.
+type LicensesClientListBySubscriptionResponse struct {
+	// The List license operation response.
+	LicensesListResult
+}
+
+// LicensesClientUpdateResponse contains the response from method LicensesClient.BeginUpdate.
+type LicensesClientUpdateResponse struct {
+	// Describes a license in a hybrid machine.
+	License
+}
+
+// LicensesClientValidateLicenseResponse contains the response from method LicensesClient.BeginValidateLicense.
+type LicensesClientValidateLicenseResponse struct {
+	// Describes a license in a hybrid machine.
+	License
+}
+
 // MachineExtensionsClientCreateOrUpdateResponse contains the response from method MachineExtensionsClient.BeginCreateOrUpdate.
 type MachineExtensionsClientCreateOrUpdateResponse struct {
 	// Describes a Machine Extension.
@@ -78,6 +183,12 @@ type MachinesClientAssessPatchesResponse struct {
 	MachineAssessPatchesResult
 }
 
+// MachinesClientCreateOrUpdateResponse contains the response from method MachinesClient.CreateOrUpdate.
+type MachinesClientCreateOrUpdateResponse struct {
+	// Describes a hybrid machine.
+	Machine
+}
+
 // MachinesClientDeleteResponse contains the response from method MachinesClient.Delete.
 type MachinesClientDeleteResponse struct {
 	// placeholder for future response values
@@ -122,6 +233,24 @@ type ManagementClientUpgradeExtensionsResponse struct {
 type NetworkProfileClientGetResponse struct {
 	// Describes the network information on this machine.
 	NetworkProfile
+}
+
+// NetworkSecurityPerimeterConfigurationsClientGetByPrivateLinkScopeResponse contains the response from method NetworkSecurityPerimeterConfigurationsClient.GetByPrivateLinkScope.
+type NetworkSecurityPerimeterConfigurationsClientGetByPrivateLinkScopeResponse struct {
+	// Properties that define a Network Security Perimeter resource.
+	NetworkSecurityPerimeterConfiguration
+}
+
+// NetworkSecurityPerimeterConfigurationsClientListByPrivateLinkScopeResponse contains the response from method NetworkSecurityPerimeterConfigurationsClient.NewListByPrivateLinkScopePager.
+type NetworkSecurityPerimeterConfigurationsClientListByPrivateLinkScopeResponse struct {
+	// A list of network security perimeter configurations.
+	NetworkSecurityPerimeterConfigurationListResult
+}
+
+// NetworkSecurityPerimeterConfigurationsClientReconcileForPrivateLinkScopeResponse contains the response from method NetworkSecurityPerimeterConfigurationsClient.BeginReconcileForPrivateLinkScope.
+type NetworkSecurityPerimeterConfigurationsClientReconcileForPrivateLinkScopeResponse struct {
+	// Result of network security perimeter configurations.
+	NetworkSecurityPerimeterConfigurationReconcileResult
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
@@ -208,4 +337,19 @@ type PrivateLinkScopesClientListResponse struct {
 type PrivateLinkScopesClientUpdateTagsResponse struct {
 	// An Azure Arc PrivateLinkScope definition.
 	PrivateLinkScope
+}
+
+// SettingsClientGetResponse contains the response from method SettingsClient.Get.
+type SettingsClientGetResponse struct {
+	Settings
+}
+
+// SettingsClientPatchResponse contains the response from method SettingsClient.Patch.
+type SettingsClientPatchResponse struct {
+	Settings
+}
+
+// SettingsClientUpdateResponse contains the response from method SettingsClient.Update.
+type SettingsClientUpdateResponse struct {
+	Settings
 }

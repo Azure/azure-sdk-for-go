@@ -5,7 +5,6 @@ package template
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -102,7 +101,7 @@ func GeneratePackageByTemplate(rpName, packageName string, flags Flags) error {
 	} else {
 		absTemplateDir = filepath.Join(root, flags.TemplatePath)
 	}
-	fileList, err := ioutil.ReadDir(absTemplateDir)
+	fileList, err := os.ReadDir(absTemplateDir)
 	if err != nil {
 		return fmt.Errorf("cannot read the directory '%s': %+v", absTemplateDir, err)
 	}
@@ -150,7 +149,7 @@ func buildReplaceMap(rpName, packageName, packageConfig, packageTitle, commitID,
 }
 
 func readAndReplace(path string) (string, error) {
-	b, err := ioutil.ReadFile(path)
+	b, err := os.ReadFile(path)
 	if err != nil {
 		return "", fmt.Errorf("cannot read from file '%s': %+v", path, err)
 	}

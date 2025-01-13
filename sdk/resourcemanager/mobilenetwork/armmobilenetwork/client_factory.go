@@ -114,6 +114,14 @@ func (c *ClientFactory) NewPacketCoreDataPlanesClient() *PacketCoreDataPlanesCli
 	}
 }
 
+// NewRoutingInfoClient creates a new instance of RoutingInfoClient.
+func (c *ClientFactory) NewRoutingInfoClient() *RoutingInfoClient {
+	return &RoutingInfoClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewServicesClient creates a new instance of ServicesClient.
 func (c *ClientFactory) NewServicesClient() *ServicesClient {
 	return &ServicesClient{

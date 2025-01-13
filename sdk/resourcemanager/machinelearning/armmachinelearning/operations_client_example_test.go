@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aafb0944f7ab936e8cfbad8969bd5eb32263fb4f/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Workspace/operationsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Workspace/operationsList.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,11 +39,11 @@ func ExampleOperationsClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.AmlOperationListResult = armmachinelearning.AmlOperationListResult{
-		// 	Value: []*armmachinelearning.AmlOperation{
+		// page.OperationListResult = armmachinelearning.OperationListResult{
+		// 	Value: []*armmachinelearning.Operation{
 		// 		{
 		// 			Name: to.Ptr("Microsoft.MachineLearningServices/workspaces/write"),
-		// 			Display: &armmachinelearning.AmlOperationDisplay{
+		// 			Display: &armmachinelearning.OperationDisplay{
 		// 				Operation: to.Ptr("Create/Update Machine Learning workspaces"),
 		// 				Provider: to.Ptr("Microsoft MachineLearningServices"),
 		// 				Resource: to.Ptr("workspaces"),
@@ -51,7 +51,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.MachineLearningServices/workspaces/delete"),
-		// 			Display: &armmachinelearning.AmlOperationDisplay{
+		// 			Display: &armmachinelearning.OperationDisplay{
 		// 				Operation: to.Ptr("Delete Machine Learning workspaces"),
 		// 				Provider: to.Ptr("Microsoft MachineLearningServices"),
 		// 				Resource: to.Ptr("workspaces"),
@@ -59,7 +59,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.MachineLearningServices/workspaces/listkeys/action"),
-		// 			Display: &armmachinelearning.AmlOperationDisplay{
+		// 			Display: &armmachinelearning.OperationDisplay{
 		// 				Operation: to.Ptr("List workspace Keys"),
 		// 				Provider: to.Ptr("Microsoft MachineLearningServices"),
 		// 				Resource: to.Ptr("workspaces"),

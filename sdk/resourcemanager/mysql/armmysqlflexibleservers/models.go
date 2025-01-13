@@ -37,18 +37,71 @@ type AdministratorProperties struct {
 	TenantID *string
 }
 
-// AzureADAdministrator - Represents a Administrator.
-type AzureADAdministrator struct {
-	// The properties of an administrator.
-	Properties *AdministratorProperties
+// AdvancedThreatProtection - A server's Advanced Threat Protection.
+type AdvancedThreatProtection struct {
+	// Resource properties.
+	Properties *AdvancedThreatProtectionProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The system metadata relating to this resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// AdvancedThreatProtectionForUpdate - Parameters allowed to update advanced threat protection for a server.
+type AdvancedThreatProtectionForUpdate struct {
+	// Resource update properties.
+	Properties *AdvancedThreatProtectionUpdateProperties
+}
+
+// AdvancedThreatProtectionListResult - A list of the server's Advanced Threat Protection configurations.
+type AdvancedThreatProtectionListResult struct {
+	// READ-ONLY; Link to retrieve next page of results.
+	NextLink *string
+
+	// READ-ONLY; Array of results.
+	Value []*AdvancedThreatProtection
+}
+
+// AdvancedThreatProtectionProperties - Properties of an Advanced Threat Protection setting.
+type AdvancedThreatProtectionProperties struct {
+	// Specifies the state of the Advanced Threat Protection, whether it is enabled or disabled or a state has not been applied
+	// yet on the specific database or server.
+	State *AdvancedThreatProtectionState
+
+	// READ-ONLY; Specifies the UTC creation time of the policy.
+	CreationTime *time.Time
+
+	// READ-ONLY; Provisioning state of the Threat Protection.
+	ProvisioningState *AdvancedThreatProtectionProvisioningState
+}
+
+// AdvancedThreatProtectionUpdateProperties - Properties of Advanced Threat Protection that can be updated.
+type AdvancedThreatProtectionUpdateProperties struct {
+	// REQUIRED; Specifies the state of the Advanced Threat Protection, whether it is enabled or disabled or a state has not been
+	// applied yet on the specific database or server.
+	State *AdvancedThreatProtectionState
+}
+
+// AzureADAdministrator - Represents a Administrator.
+type AzureADAdministrator struct {
+	// The properties of an administrator.
+	Properties *AdministratorProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -57,6 +110,9 @@ type AzureADAdministrator struct {
 
 // Backup - Storage Profile properties of a server
 type Backup struct {
+	// Backup interval hours for the server.
+	BackupIntervalHours *int32
+
 	// Backup retention days for the server.
 	BackupRetentionDays *int32
 
@@ -81,8 +137,8 @@ type BackupAndExportResponse struct {
 	// End time
 	EndTime *time.Time
 
-	// The BackupAndExport operation error response.
-	Error *ErrorResponse
+	// The error object.
+	Error *ErrorDetail
 
 	// Operation progress (0-100).
 	PercentComplete *float64
@@ -96,11 +152,14 @@ type BackupAndExportResponse struct {
 	// The operation status
 	Status *OperationStatus
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
@@ -116,6 +175,28 @@ type BackupAndExportResponseProperties struct {
 
 	// Size of datasource in bytes
 	DatasourceSizeInBytes *int64
+}
+
+// BackupAndExportResponseType - BackupAndExport Response Properties
+type BackupAndExportResponseType struct {
+	// REQUIRED; Identifies the type of source operation
+	ObjectType *ObjectType
+
+	// Metadata related to backup to be stored for restoring resource in key-value pairs.
+	BackupMetadata *string
+
+	// Data transferred in bytes
+	DataTransferredInBytes *int64
+
+	// Size of datasource in bytes
+	DatasourceSizeInBytes *int64
+}
+
+// GetOperationProgressResponseType implements the OperationProgressResponseTypeClassification interface for type BackupAndExportResponseType.
+func (b *BackupAndExportResponseType) GetOperationProgressResponseType() *OperationProgressResponseType {
+	return &OperationProgressResponseType{
+		ObjectType: b.ObjectType,
+	}
 }
 
 // BackupRequestBase is the base for all backup request.
@@ -151,6 +232,24 @@ type CapabilitiesListResult struct {
 	Value []*CapabilityProperties
 }
 
+// Capability - Represents a location capability set.
+type Capability struct {
+	// The properties of a location capability set.
+	Properties *CapabilityPropertiesV2
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
 // CapabilityProperties - Location capabilities.
 type CapabilityProperties struct {
 	// READ-ONLY; A list of supported flexible server editions.
@@ -166,18 +265,39 @@ type CapabilityProperties struct {
 	Zone *string
 }
 
+// CapabilityPropertiesV2 - Location capability.
+type CapabilityPropertiesV2 struct {
+	// READ-ONLY; A list of supported flexible server editions.
+	SupportedFlexibleServerEditions []*ServerEditionCapabilityV2
+
+	// READ-ONLY; supported geo backup regions
+	SupportedGeoBackupRegions []*string
+
+	// READ-ONLY; A list of supported server versions.
+	SupportedServerVersions []*ServerVersionCapabilityV2
+}
+
+// CapabilitySetsList - location capability set
+type CapabilitySetsList struct {
+	// READ-ONLY; Link to retrieve next page of results.
+	NextLink *string
+
+	// READ-ONLY; A list of supported capability sets.
+	Value []*Capability
+}
+
 // Configuration - Represents a Configuration.
 type Configuration struct {
 	// The properties of a configuration.
 	Properties *ConfigurationProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The system metadata relating to this resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -279,13 +399,13 @@ type Database struct {
 	// The properties of a database.
 	Properties *DatabaseProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The system metadata relating to this resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -328,9 +448,8 @@ type ErrorAdditionalInfo struct {
 	Type *string
 }
 
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
-// (This also follows the OData error response format.)
-type ErrorResponse struct {
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
 	// READ-ONLY; The error additional info.
 	AdditionalInfo []*ErrorAdditionalInfo
 
@@ -338,7 +457,7 @@ type ErrorResponse struct {
 	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorResponse
+	Details []*ErrorDetail
 
 	// READ-ONLY; The error message.
 	Message *string
@@ -347,18 +466,25 @@ type ErrorResponse struct {
 	Target *string
 }
 
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
+type ErrorResponse struct {
+	// The error object.
+	Error *ErrorDetail
+}
+
 // FirewallRule - Represents a server firewall rule.
 type FirewallRule struct {
 	// REQUIRED; The properties of a firewall rule.
 	Properties *FirewallRuleProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The system metadata relating to this resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -405,7 +531,7 @@ type GetPrivateDNSZoneSuffixResponse struct {
 	PrivateDNSZoneSuffix *string
 }
 
-// HighAvailability - Network related properties of a server
+// HighAvailability - High availability properties of a server
 type HighAvailability struct {
 	// High availability mode for a server.
 	Mode *HighAvailabilityMode
@@ -417,19 +543,47 @@ type HighAvailability struct {
 	State *HighAvailabilityState
 }
 
-// Identity - Properties to configure Identity for Bring your Own Keys
-type Identity struct {
-	// Type of managed service identity.
-	Type *ManagedServiceIdentityType
+// HighAvailabilityValidationEstimation - High availability validation properties of a server
+type HighAvailabilityValidationEstimation struct {
+	// Expected Availability zone of the standby server.
+	ExpectedStandbyAvailabilityZone *string
 
-	// Metadata of user assigned identity.
-	UserAssignedIdentities map[string]any
+	// READ-ONLY; Estimated seconds of downtime for the deployment.
+	EstimatedDowntime *int32
 
-	// READ-ONLY; ObjectId from the KeyVault
-	PrincipalID *string
+	// READ-ONLY; Scheduled Availability zone of the standby server.
+	ScheduledStandbyAvailabilityZone *string
+}
 
-	// READ-ONLY; TenantId from the KeyVault
-	TenantID *string
+// ImportFromStorageResponseType - ImportFromStorage Response Properties
+type ImportFromStorageResponseType struct {
+	// REQUIRED; Identifies the type of source operation
+	ObjectType *ObjectType
+
+	// The estimated time of operation completion.
+	EstimatedCompletionTime *time.Time
+}
+
+// GetOperationProgressResponseType implements the OperationProgressResponseTypeClassification interface for type ImportFromStorageResponseType.
+func (i *ImportFromStorageResponseType) GetOperationProgressResponseType() *OperationProgressResponseType {
+	return &OperationProgressResponseType{
+		ObjectType: i.ObjectType,
+	}
+}
+
+// ImportSourceProperties - Import source related properties.
+type ImportSourceProperties struct {
+	// Relative path of data directory in storage.
+	DataDirPath *string
+
+	// Sas token for accessing source storage. Read and list permissions are required for sas token.
+	SasToken *string
+
+	// Storage type of import source.
+	StorageType *ImportSourceStorageType
+
+	// Uri of the import source storage.
+	StorageURL *string
 }
 
 // LogFile - Represents a logFile.
@@ -437,13 +591,13 @@ type LogFile struct {
 	// The properties of a logFile.
 	Properties *LogFileProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The system metadata relating to this resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -477,6 +631,81 @@ type LogFileProperties struct {
 	URL *string
 }
 
+// Maintenance - Represents a maintenance.
+type Maintenance struct {
+	// REQUIRED; The properties of a maintenance
+	Properties *MaintenanceProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// MaintenanceListResult - A list of maintenances.
+type MaintenanceListResult struct {
+	// The link used to get the next page of operations.
+	NextLink *string
+
+	// The list of maintenances in a server.
+	Value []*Maintenance
+}
+
+// MaintenanceProperties - The properties of a maintenance resource.
+type MaintenanceProperties struct {
+	// The start time for a maintenance.
+	MaintenanceStartTime *time.Time
+
+	// READ-ONLY; The max time the maintenance can be rescheduled.
+	MaintenanceAvailableScheduleMaxTime *time.Time
+
+	// READ-ONLY; The min time the maintenance can be rescheduled.
+	MaintenanceAvailableScheduleMinTime *time.Time
+
+	// READ-ONLY; The maintenance description.
+	MaintenanceDescription *string
+
+	// READ-ONLY; The end time for a maintenance.
+	MaintenanceEndTime *time.Time
+
+	// READ-ONLY; The end time for a maintenance execution.
+	MaintenanceExecutionEndTime *time.Time
+
+	// READ-ONLY; The start time for a maintenance execution.
+	MaintenanceExecutionStartTime *time.Time
+
+	// READ-ONLY; A string describes the maintenance status
+	MaintenanceState *MaintenanceState
+
+	// READ-ONLY; The maintenance title.
+	MaintenanceTitle *string
+
+	// READ-ONLY; A string defines maintenance type.
+	MaintenanceType *MaintenanceType
+
+	// READ-ONLY; Provisioning state of the Maintenance.
+	ProvisioningState *MaintenanceProvisioningState
+}
+
+// MaintenancePropertiesForUpdate - The properties of a maintenance update parameter.
+type MaintenancePropertiesForUpdate struct {
+	// The start time for a maintenance.
+	MaintenanceStartTime *time.Time
+}
+
+// MaintenanceUpdate - Represents a maintenance update parameter.
+type MaintenanceUpdate struct {
+	// The properties of a maintenance update parameter
+	Properties *MaintenancePropertiesForUpdate
+}
+
 // MaintenanceWindow - Maintenance window of a server.
 type MaintenanceWindow struct {
 	// indicates whether custom window is enabled or disabled
@@ -490,6 +719,30 @@ type MaintenanceWindow struct {
 
 	// start minute for maintenance window
 	StartMinute *int32
+}
+
+// MySQLServerIdentity - Properties to configure Identity for Bring your Own Keys
+type MySQLServerIdentity struct {
+	// Type of managed service identity.
+	Type *ManagedServiceIdentityType
+
+	// Metadata of user assigned identity.
+	UserAssignedIdentities map[string]any
+
+	// READ-ONLY; ObjectId from the KeyVault
+	PrincipalID *string
+
+	// READ-ONLY; TenantId from the KeyVault
+	TenantID *string
+}
+
+// MySQLServerSKU - Billing information related properties of a server.
+type MySQLServerSKU struct {
+	// REQUIRED; The name of the sku, e.g. StandardD32sv3.
+	Name *string
+
+	// REQUIRED; The tier of the particular SKU, e.g. GeneralPurpose.
+	Tier *ServerSKUTier
 }
 
 // NameAvailability - Represents a resource name availability.
@@ -564,14 +817,200 @@ type OperationListResult struct {
 	Value []*Operation
 }
 
-// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
-// location
-type ProxyResource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+// OperationProgressResponseType - Represents the response properties specific to the operation
+type OperationProgressResponseType struct {
+	// REQUIRED; Identifies the type of source operation
+	ObjectType *ObjectType
+}
+
+// GetOperationProgressResponseType implements the OperationProgressResponseTypeClassification interface for type OperationProgressResponseType.
+func (o *OperationProgressResponseType) GetOperationProgressResponseType() *OperationProgressResponseType {
+	return o
+}
+
+// OperationProgressResult - Represents Operation Results API Response
+type OperationProgressResult struct {
+	// REQUIRED; Operation status.
+	Status *string
+
+	// The end time of the operation.
+	EndTime *time.Time
+
+	// If present, details of the operation error.
+	Error *ErrorDetail
+
+	// Fully qualified ID for the async operation.
+	ID *string
+
+	// Name of the async operation.
+	Name *string
+
+	// The operations list.
+	Operations []*OperationStatusResult
+
+	// Percent of the operation that is complete.
+	PercentComplete *float32
+
+	// The response properties specific to the operation
+	Properties OperationProgressResponseTypeClassification
+
+	// The start time of the operation.
+	StartTime *time.Time
+
+	// READ-ONLY; Fully qualified ID of the resource against which the original async operation was started.
+	ResourceID *string
+}
+
+// OperationStatusExtendedResult - Represents Operation Results API Response
+type OperationStatusExtendedResult struct {
+	// REQUIRED; Operation status.
+	Status *string
+
+	// The end time of the operation.
+	EndTime *time.Time
+
+	// If present, details of the operation error.
+	Error *ErrorDetail
+
+	// Fully qualified ID for the async operation.
+	ID *string
+
+	// Name of the async operation.
+	Name *string
+
+	// The operations list.
+	Operations []*OperationStatusResult
+
+	// Percent of the operation that is complete.
+	PercentComplete *float32
+
+	// The extended properties of Operation Results
+	Properties map[string]any
+
+	// The start time of the operation.
+	StartTime *time.Time
+
+	// READ-ONLY; Fully qualified ID of the resource against which the original async operation was started.
+	ResourceID *string
+}
+
+// OperationStatusResult - The current status of an async operation.
+type OperationStatusResult struct {
+	// REQUIRED; Operation status.
+	Status *string
+
+	// The end time of the operation.
+	EndTime *time.Time
+
+	// If present, details of the operation error.
+	Error *ErrorDetail
+
+	// Fully qualified ID for the async operation.
+	ID *string
+
+	// Name of the async operation.
+	Name *string
+
+	// The operations list.
+	Operations []*OperationStatusResult
+
+	// Percent of the operation that is complete.
+	PercentComplete *float32
+
+	// The start time of the operation.
+	StartTime *time.Time
+
+	// READ-ONLY; Fully qualified ID of the resource against which the original async operation was started.
+	ResourceID *string
+}
+
+// PrivateEndpoint - The private endpoint resource.
+type PrivateEndpoint struct {
+	// READ-ONLY; The ARM identifier for private endpoint.
+	ID *string
+}
+
+// PrivateEndpointConnection - The private endpoint connection resource.
+type PrivateEndpointConnection struct {
+	// Resource properties.
+	Properties *PrivateEndpointConnectionProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// PrivateEndpointConnectionProperties - Properties of the private endpoint connection.
+type PrivateEndpointConnectionProperties struct {
+	// REQUIRED; A collection of information about the state of the connection between service consumer and provider.
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState
+
+	// The private endpoint resource.
+	PrivateEndpoint *PrivateEndpoint
+
+	// READ-ONLY; The group ids for the private endpoint resource.
+	GroupIDs []*string
+
+	// READ-ONLY; The provisioning state of the private endpoint connection resource.
+	ProvisioningState *PrivateEndpointConnectionProvisioningState
+}
+
+// PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer
+// and provider.
+type PrivateLinkServiceConnectionState struct {
+	// A message indicating if changes on the service provider require any updates on the consumer.
+	ActionsRequired *string
+
+	// The reason for approval/rejection of the connection.
+	Description *string
+
+	// Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
+	Status *PrivateEndpointServiceConnectionStatus
+}
+
+// Provisioning - Server backup properties
+type Provisioning struct {
+	// The properties of provisioning.
+	Properties *ProvisioningStateProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ProvisioningStateProperties - The properties of a server backup.
+type ProvisioningStateProperties struct {
+	// READ-ONLY; The provisioning state of backup resource.
+	ProvisioningState *ProvisioningState
+}
+
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
+type ProxyResource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
@@ -579,23 +1018,17 @@ type ProxyResource struct {
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
-}
-
-// SKU - Billing information related properties of a server.
-type SKU struct {
-	// REQUIRED; The name of the sku, e.g. StandardD32sv3.
-	Name *string
-
-	// REQUIRED; The tier of the particular SKU, e.g. GeneralPurpose.
-	Tier *SKUTier
 }
 
 // SKUCapability - Sku capability
@@ -613,30 +1046,51 @@ type SKUCapability struct {
 	VCores *int64
 }
 
+// SKUCapabilityV2 - Sku capability
+type SKUCapabilityV2 struct {
+	// READ-ONLY; vCore name
+	Name *string
+
+	// READ-ONLY; Supported high availability mode
+	SupportedHAMode []*string
+
+	// READ-ONLY; supported IOPS
+	SupportedIops *int64
+
+	// READ-ONLY; supported memory per vCore in MB
+	SupportedMemoryPerVCoreMB *int64
+
+	// READ-ONLY; Supported zones
+	SupportedZones []*string
+
+	// READ-ONLY; supported vCores
+	VCores *int64
+}
+
 // Server - Represents a server.
 type Server struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// The cmk identity for the server.
-	Identity *Identity
+	Identity *MySQLServerIdentity
 
 	// Properties of the server.
 	Properties *ServerProperties
 
 	// The SKU (pricing tier) of the server.
-	SKU *SKU
+	SKU *MySQLServerSKU
 
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The system metadata relating to this resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -648,13 +1102,13 @@ type ServerBackup struct {
 	// The properties of a server backup.
 	Properties *ServerBackupProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The system metadata relating to this resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -682,6 +1136,49 @@ type ServerBackupProperties struct {
 	Source *string
 }
 
+// ServerBackupPropertiesV2 - The properties of a server backup.
+type ServerBackupPropertiesV2 struct {
+	// Backup name
+	BackupNameV2 *string
+	BackupType   *BackupType
+
+	// Backup completed time (ISO8601 format).
+	CompletedTime *time.Time
+
+	// Backup source
+	Source *string
+
+	// READ-ONLY; The provisioning state of backup resource.
+	ProvisioningState *ProvisioningState
+}
+
+// ServerBackupV2 - Server backup properties
+type ServerBackupV2 struct {
+	// The properties of a server backup.
+	Properties *ServerBackupPropertiesV2
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ServerBackupV2ListResult - A list of server backups.
+type ServerBackupV2ListResult struct {
+	// The link used to get the next page of operations.
+	NextLink *string
+
+	// The list of backups of a server.
+	Value []*ServerBackupV2
+}
+
 // ServerEditionCapability - Server edition capabilities.
 type ServerEditionCapability struct {
 	// READ-ONLY; Server edition name
@@ -694,24 +1191,42 @@ type ServerEditionCapability struct {
 	SupportedStorageEditions []*StorageEditionCapability
 }
 
+// ServerEditionCapabilityV2 - Server edition capabilities.
+type ServerEditionCapabilityV2 struct {
+	// READ-ONLY; Default Sku name
+	DefaultSKU *string
+
+	// READ-ONLY; Default storage size
+	DefaultStorageSize *int32
+
+	// READ-ONLY; Server edition name
+	Name *string
+
+	// READ-ONLY; A list of supported Skus
+	SupportedSKUs []*SKUCapabilityV2
+
+	// READ-ONLY; A list of supported storage editions
+	SupportedStorageEditions []*StorageEditionCapability
+}
+
 // ServerForUpdate - Parameters allowed to update for a server.
 type ServerForUpdate struct {
 	// The cmk identity for the server.
-	Identity *Identity
+	Identity *MySQLServerIdentity
 
 	// The properties that can be updated for a server.
 	Properties *ServerPropertiesForUpdate
 
 	// The SKU (pricing tier) of the server.
-	SKU *SKU
+	SKU *MySQLServerSKU
 
 	// Application-specific metadata in the form of key-value pairs.
 	Tags map[string]*string
 }
 
-// ServerGtidSetParameter - Server gtid set parameters.
+// ServerGtidSetParameter - Server Gtid set parameters.
 type ServerGtidSetParameter struct {
-	// The gtid set of server.
+	// The Gtid set of server.
 	GtidSet *string
 }
 
@@ -748,6 +1263,9 @@ type ServerProperties struct {
 	// High availability related properties of a server.
 	HighAvailability *HighAvailability
 
+	// Source properties for import from storage.
+	ImportSourceProperties *ImportSourceProperties
+
 	// Maintenance window of a server.
 	MaintenanceWindow *MaintenanceWindow
 
@@ -772,6 +1290,9 @@ type ServerProperties struct {
 	// READ-ONLY; The fully qualified domain name of a server.
 	FullyQualifiedDomainName *string
 
+	// READ-ONLY; PrivateEndpointConnections related properties of a server.
+	PrivateEndpointConnections []*PrivateEndpointConnection
+
 	// READ-ONLY; The maximum number of replicas that a primary server can have.
 	ReplicaCapacity *int32
 
@@ -795,6 +1316,9 @@ type ServerPropertiesForUpdate struct {
 
 	// Maintenance window of a server.
 	MaintenanceWindow *MaintenanceWindow
+
+	// Network related properties of a server
+	Network *Network
 
 	// The replication role of the server.
 	ReplicationRole *ReplicationRole
@@ -824,6 +1348,12 @@ type ServerVersionCapability struct {
 	SupportedSKUs []*SKUCapability
 }
 
+// ServerVersionCapabilityV2 - Server version capabilities.
+type ServerVersionCapabilityV2 struct {
+	// READ-ONLY; server version
+	Name *string
+}
+
 // Storage Profile properties of a server
 type Storage struct {
 	// Enable Storage Auto Grow or not.
@@ -847,11 +1377,17 @@ type Storage struct {
 
 // StorageEditionCapability - storage edition capability
 type StorageEditionCapability struct {
+	// READ-ONLY; Maximum backup interval hours
+	MaxBackupIntervalHours *int64
+
 	// READ-ONLY; Maximum backup retention days
 	MaxBackupRetentionDays *int64
 
 	// READ-ONLY; The maximum supported storage size.
 	MaxStorageSize *int64
+
+	// READ-ONLY; Minimal backup interval hours
+	MinBackupIntervalHours *int64
 
 	// READ-ONLY; Minimal backup retention days
 	MinBackupRetentionDays *int64
@@ -893,11 +1429,14 @@ type TrackedResource struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string

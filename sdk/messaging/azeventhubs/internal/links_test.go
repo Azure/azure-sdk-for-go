@@ -6,11 +6,12 @@ package internal
 import (
 	"context"
 	"fmt"
-	"net"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/test"
@@ -21,7 +22,7 @@ import (
 func TestLinksCBSLinkStillOpen(t *testing.T) {
 	// we're not going to use this client for these tests.
 	testParams := test.GetConnectionParamsForTest(t)
-	ns, err := NewNamespace(NamespaceWithConnectionString(testParams.ConnectionString))
+	ns, err := NewNamespace(NamespaceWithTokenCredential(testParams.EventHubNamespace, testParams.Cred))
 	require.NoError(t, err)
 
 	defer func() { _ = ns.Close(context.Background(), true) }()
@@ -111,6 +112,8 @@ func TestLinksRecoverLinkWithConnectionFailureAndExpiredContext(t *testing.T) {
 	defer test.RequireClose(t, links)
 	defer test.RequireNSClose(t, ns)
 
+	t.Logf("Getting links (original), manually")
+
 	oldLWID, err := links.GetLink(context.Background(), "0")
 	require.NoError(t, err)
 
@@ -121,32 +124,44 @@ func TestLinksRecoverLinkWithConnectionFailureAndExpiredContext(t *testing.T) {
 	err = origConn.Close()
 	require.NoError(t, err)
 
-	err = oldLWID.Link().Send(context.Background(), &amqp.Message{}, nil)
-	require.Error(t, err)
-	require.Equal(t, RecoveryKindConn, GetRecoveryKind(err))
-
 	// Try to recover, but using an expired context. We'll get a network error (not enough time to resolve or
 	// create a connection), which would normally be a connection level recovery event.
 	cancelledCtx, cancel := context.WithDeadline(context.Background(), time.Now().Add(-time.Hour))
 	defer cancel()
 
-	err = links.lr.RecoverIfNeeded(cancelledCtx, lwidToError(err, oldLWID))
-	var netErr net.Error
-	require.ErrorAs(t, err, &netErr)
+	t.Logf("Sending message, within retry loop, with an already expired context")
 
-	// now recover like normal
-	err = links.lr.RecoverIfNeeded(context.Background(), lwidToError(err, oldLWID))
-	require.NoError(t, err)
+	err = links.Retry(cancelledCtx, "(expired context) retry loop with precancelled context", "send", "0", exported.RetryOptions{}, func(ctx context.Context, lwid LinkWithID[amqpwrap.AMQPSenderCloser]) error {
+		// ignoring the cancelled context, let's see what happens.
+		t.Logf("(expired context) Sending message")
+		err = lwid.Link().Send(context.Background(), &amqp.Message{
+			Data: [][]byte{[]byte("(expired context) hello world")},
+		}, nil)
 
-	newLWID, err := links.GetLink(context.Background(), "0")
+		t.Logf("(expired context) Message sent, error: %#v", err)
+		return err
+	})
+	require.ErrorIs(t, err, context.DeadlineExceeded)
+
+	t.Logf("Sending message, within retry loop, NO expired context")
+
+	var newLWID LinkWithID[amqpwrap.AMQPSenderCloser]
+
+	err = links.Retry(context.Background(), "(normal) retry loop without cancelled context", "send", "0", exported.RetryOptions{}, func(ctx context.Context, lwid LinkWithID[amqpwrap.AMQPSenderCloser]) error {
+		// ignoring the cancelled context, let's see what happens.
+		t.Logf("(normal) Sending message")
+		err = lwid.Link().Send(context.Background(), &amqp.Message{
+			Data: [][]byte{[]byte("hello world")},
+		}, nil)
+		t.Logf("(normal) Message sent, error: %#v", err)
+
+		newLWID = lwid
+		return err
+	})
 	require.NoError(t, err)
 
 	requireNewLinkNewConn(t, oldLWID, newLWID)
-
-	err = newLWID.Link().Send(context.Background(), &amqp.Message{
-		Data: [][]byte{[]byte("hello world")},
-	}, nil)
-	require.NoError(t, err)
+	require.Equal(t, newLWID.ConnID(), uint64(2), "we should have recovered the connection")
 }
 
 func TestLinkFailureWhenConnectionIsDead(t *testing.T) {
@@ -316,6 +331,131 @@ func TestLinksManagementRetry(t *testing.T) {
 	require.Nil(t, links.managementLink)
 }
 
+func TestRecoveryWithCancelledContext_Link(t *testing.T) {
+	// Customer calls into our functions, has an error and the context, bring expired, causes our retries
+	// to abort before we attempt to do even a single recovery.
+	//
+	// https://github.com/Azure/azure-sdk-for-go/issues/23282
+
+	const partitionID = "0"
+
+	setup := func(t *testing.T) (*Links[amqpwrap.AMQPSenderCloser], LinkWithID[amqpwrap.AMQPSenderCloser]) {
+		ns, links := newLinksForTest(t)
+
+		t.Cleanup(func() { test.RequireClose(t, links) })
+		t.Cleanup(func() { test.RequireNSClose(t, ns) })
+
+		origLWID, err := links.GetLink(context.Background(), partitionID)
+		require.NoError(t, err)
+		require.NotEmpty(t, origLWID)
+
+		// force a recovery but with a pre-cancelled context
+		cancelledCtx, cancel := context.WithCancel(context.Background())
+		cancel()
+
+		first := true
+		err = links.Retry(cancelledCtx, log.Event("event"), "operation", partitionID, exported.RetryOptions{}, func(ctx context.Context, lwid LinkWithID[amqpwrap.AMQPSenderCloser]) error {
+			if first {
+				first = false
+				return amqpwrap.Error{
+					Err:         &amqp.LinkError{},
+					ConnID:      lwid.ConnID(),
+					LinkName:    lwid.Link().LinkName(),
+					PartitionID: lwid.PartitionID(),
+				}
+			}
+
+			return nil
+		})
+		require.ErrorIs(t, err, context.Canceled)
+
+		return links, origLWID
+	}
+
+	t.Run("GetLinks", func(t *testing.T) {
+		links, origLWID := setup(t)
+
+		newLWID, err := links.GetLink(context.Background(), partitionID)
+		require.NoError(t, err)
+
+		require.NotEqual(t, origLWID.Link(), newLWID.Link())
+		require.Equal(t, origLWID.ConnID(), newLWID.ConnID())
+	})
+
+	t.Run("Retry", func(t *testing.T) {
+		links, origLWID := setup(t)
+
+		err := links.Retry(context.Background(), log.Event("event"), "operation", partitionID, exported.RetryOptions{}, func(ctx context.Context, lwid LinkWithID[amqpwrap.AMQPSenderCloser]) error {
+			require.NotEqual(t, origLWID.Link(), lwid.Link())
+			require.Equal(t, origLWID.ConnID(), lwid.ConnID())
+			return nil
+		})
+		require.NoError(t, err)
+	})
+}
+
+func TestRecoveryWithCancelledContext_Connection(t *testing.T) {
+	const partitionID = "0"
+
+	// Customer calls into our functions, has an error and the context, bring expired, causes our retries
+	// to abort before we attempt to do even a single recovery.
+	//
+	// https://github.com/Azure/azure-sdk-for-go/issues/23282
+	setup := func(t *testing.T) (*Links[amqpwrap.AMQPSenderCloser], LinkWithID[amqpwrap.AMQPSenderCloser]) {
+		ns, links := newLinksForTest(t)
+
+		t.Cleanup(func() { test.RequireClose(t, links) })
+		t.Cleanup(func() { test.RequireNSClose(t, ns) })
+
+		origLWID, err := links.GetLink(context.Background(), partitionID)
+		require.NoError(t, err)
+		require.NotEmpty(t, origLWID)
+
+		// force a recovery but with a pre-cancelled context
+		cancelledCtx, cancel := context.WithCancel(context.Background())
+		cancel()
+
+		first := true
+		err = links.Retry(cancelledCtx, log.Event("event"), "operation", partitionID, exported.RetryOptions{}, func(ctx context.Context, lwid LinkWithID[amqpwrap.AMQPSenderCloser]) error {
+			if first {
+				first = false
+				return amqpwrap.Error{
+					Err:         &amqp.ConnError{},
+					ConnID:      lwid.ConnID(),
+					LinkName:    lwid.Link().LinkName(),
+					PartitionID: lwid.PartitionID(),
+				}
+			}
+
+			return nil
+		})
+		require.ErrorIs(t, err, context.Canceled)
+
+		return links, origLWID
+	}
+
+	t.Run("GetLinks", func(t *testing.T) {
+		links, origLWID := setup(t)
+
+		newLWID, err := links.GetLink(context.Background(), partitionID)
+		require.NoError(t, err)
+
+		require.NotEqual(t, origLWID.Link(), newLWID.Link())
+		require.NotEqual(t, origLWID.ConnID(), newLWID.ConnID())
+	})
+
+	t.Run("Retry", func(t *testing.T) {
+		links, origLWID := setup(t)
+
+		err := links.Retry(context.Background(), log.Event("event"), "operation", partitionID, exported.RetryOptions{}, func(ctx context.Context, lwid LinkWithID[amqpwrap.AMQPSenderCloser]) error {
+			require.NotEqual(t, origLWID.Link(), lwid.Link())
+			require.NotEqual(t, origLWID.ConnID(), lwid.ConnID())
+			return nil
+		})
+		require.NoError(t, err)
+	})
+}
+
 func requireNewLinkSameConn(t *testing.T, oldLWID LinkWithID[AMQPSenderCloser], newLWID LinkWithID[AMQPSenderCloser]) {
 	t.Helper()
 	require.NotEqual(t, oldLWID.Link().LinkName(), newLWID.Link().LinkName(), "Link should have a new ID because it was recreated")
@@ -330,7 +470,10 @@ func requireNewLinkNewConn(t *testing.T, oldLWID LinkWithID[AMQPSenderCloser], n
 
 func newLinksForTest(t *testing.T) (*Namespace, *Links[amqpwrap.AMQPSenderCloser]) {
 	testParams := test.GetConnectionParamsForTest(t)
-	ns, err := NewNamespace(NamespaceWithConnectionString(testParams.ConnectionString))
+	cred, err := credential.New(nil)
+	require.NoError(t, err)
+
+	ns, err := NewNamespace(NamespaceWithTokenCredential(testParams.EventHubNamespace, cred))
 	require.NoError(t, err)
 
 	links := NewLinks(ns, fmt.Sprintf("%s/$management", testParams.EventHubLinksOnlyName), func(partitionID string) string {

@@ -236,6 +236,10 @@ type HubProperties struct {
 	// the array elements doesn't matter. Maximum count of event listeners among all
 	// hubs is 10.
 	EventListeners []*EventListener
+
+	// The settings for configuring the WebSocket ping-pong interval in seconds for all clients in the hub. Valid range: 1 to
+	// 120. Default to 20 seconds.
+	WebSocketKeepAliveIntervalInSeconds *int32
 }
 
 // IPRule - An IP rule
@@ -580,9 +584,12 @@ type Properties struct {
 	// Resource log configuration of a Microsoft.SignalRService resource.
 	ResourceLogConfiguration *ResourceLogConfiguration
 
-	// Stop or start the resource. Default to "false". When it's true, the data plane of the resource is shutdown. When it's false,
+	// Stop or start the resource. Default to "False". When it's true, the data plane of the resource is shutdown. When it's false,
 	// the data plane of the resource is started.
 	ResourceStopped *string
+
+	// SocketIO settings for the resource
+	SocketIO *SocketIOSettings
 
 	// TLS settings for the resource
 	TLS *TLSSettings
@@ -733,12 +740,13 @@ type ResourceReference struct {
 // ResourceSKU - The billing information of the resource.
 type ResourceSKU struct {
 	// REQUIRED; The name of the SKU. Required.
-	// Allowed values: StandardS1, FreeF1, Premium_P1
+	// Allowed values: StandardS1, FreeF1, PremiumP1, PremiumP2
 	Name *string
 
-	// Optional, integer. The unit count of the resource. 1 by default.
-	// If present, following values are allowed: Free: 1; Standard: 1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100; Premium:
-	// 1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100;
+	// Optional, integer. The unit count of the resource. 1 for FreeF1/StandardS1/PremiumP1, 100 for PremiumP2 by default.
+	// If present, following values are allowed: FreeF1: 1; StandardS1: 1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100; PremiumP1:
+	// 1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100; PremiumP2:
+	// 100,200,300,400,500,600,700,800,900,1000;
 	Capacity *int32
 
 	// Optional tier of this particular SKU. 'Standard' or 'Free'.
@@ -903,6 +911,13 @@ type SignalRServiceUsageName struct {
 
 	// The identifier of the usage.
 	Value *string
+}
+
+// SocketIOSettings - SocketIO settings for the resource
+type SocketIOSettings struct {
+	// The service mode of Web PubSub for Socket.IO. Values allowed: "Default": have your own backend Socket.IO server "Serverless":
+	// your application doesn't have a backend server
+	ServiceMode *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.

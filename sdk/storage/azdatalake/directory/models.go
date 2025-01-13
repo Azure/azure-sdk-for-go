@@ -86,11 +86,11 @@ type accessControlRecursiveOptions struct {
 	Marker *string
 }
 
-func (o *accessControlRecursiveOptions) format(ACL, mode string) (generated.PathSetAccessControlRecursiveMode, *generated.PathClientSetAccessControlRecursiveOptions) {
+func (o *accessControlRecursiveOptions) format(acl, mode string) (generated.PathSetAccessControlRecursiveMode, *generated.PathClientSetAccessControlRecursiveOptions) {
 	defaultMaxBatches := to.Ptr(int32(-1))
 	defaultForceFlag := to.Ptr(false)
 	opts := &generated.PathClientSetAccessControlRecursiveOptions{
-		ACL: &ACL,
+		ACL: &acl,
 	}
 	newMode := generated.PathSetAccessControlRecursiveMode(mode)
 	if o.ContinueOnFailure == nil {

@@ -46,7 +46,7 @@ func NewClusterPoolsClient(subscriptionID string, credential azcore.TokenCredent
 // BeginCreateOrUpdate - Creates or updates a cluster pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01-preview
+// Generated from API version 2024-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterPoolName - The name of the cluster pool.
 //   - clusterPool - The Cluster Pool to create.
@@ -73,7 +73,7 @@ func (client *ClusterPoolsClient) BeginCreateOrUpdate(ctx context.Context, resou
 // CreateOrUpdate - Creates or updates a cluster pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01-preview
+// Generated from API version 2024-05-01-preview
 func (client *ClusterPoolsClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterPoolName string, clusterPool ClusterPool, options *ClusterPoolsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ClusterPoolsClient.BeginCreateOrUpdate"
@@ -115,7 +115,7 @@ func (client *ClusterPoolsClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01-preview")
+	reqQP.Set("api-version", "2024-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, clusterPool); err != nil {
@@ -127,7 +127,7 @@ func (client *ClusterPoolsClient) createOrUpdateCreateRequest(ctx context.Contex
 // BeginDelete - Deletes a Cluster Pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01-preview
+// Generated from API version 2024-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterPoolName - The name of the cluster pool.
 //   - options - ClusterPoolsClientBeginDeleteOptions contains the optional parameters for the ClusterPoolsClient.BeginDelete
@@ -152,7 +152,7 @@ func (client *ClusterPoolsClient) BeginDelete(ctx context.Context, resourceGroup
 // Delete - Deletes a Cluster Pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01-preview
+// Generated from API version 2024-05-01-preview
 func (client *ClusterPoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterPoolName string, options *ClusterPoolsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ClusterPoolsClient.BeginDelete"
@@ -194,7 +194,7 @@ func (client *ClusterPoolsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01-preview")
+	reqQP.Set("api-version", "2024-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -203,7 +203,7 @@ func (client *ClusterPoolsClient) deleteCreateRequest(ctx context.Context, resou
 // Get - Gets a cluster pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01-preview
+// Generated from API version 2024-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterPoolName - The name of the cluster pool.
 //   - options - ClusterPoolsClientGetOptions contains the optional parameters for the ClusterPoolsClient.Get method.
@@ -249,7 +249,7 @@ func (client *ClusterPoolsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01-preview")
+	reqQP.Set("api-version", "2024-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -266,7 +266,7 @@ func (client *ClusterPoolsClient) getHandleResponse(resp *http.Response) (Cluste
 
 // NewListByResourceGroupPager - Lists the HDInsight cluster pools under a resource group.
 //
-// Generated from API version 2023-11-01-preview
+// Generated from API version 2024-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ClusterPoolsClientListByResourceGroupOptions contains the optional parameters for the ClusterPoolsClient.NewListByResourceGroupPager
 //     method.
@@ -309,7 +309,7 @@ func (client *ClusterPoolsClient) listByResourceGroupCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01-preview")
+	reqQP.Set("api-version", "2024-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -326,7 +326,7 @@ func (client *ClusterPoolsClient) listByResourceGroupHandleResponse(resp *http.R
 
 // NewListBySubscriptionPager - Gets the list of Cluster Pools within a Subscription.
 //
-// Generated from API version 2023-11-01-preview
+// Generated from API version 2024-05-01-preview
 //   - options - ClusterPoolsClientListBySubscriptionOptions contains the optional parameters for the ClusterPoolsClient.NewListBySubscriptionPager
 //     method.
 func (client *ClusterPoolsClient) NewListBySubscriptionPager(options *ClusterPoolsClientListBySubscriptionOptions) *runtime.Pager[ClusterPoolsClientListBySubscriptionResponse] {
@@ -364,7 +364,7 @@ func (client *ClusterPoolsClient) listBySubscriptionCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01-preview")
+	reqQP.Set("api-version", "2024-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -382,7 +382,7 @@ func (client *ClusterPoolsClient) listBySubscriptionHandleResponse(resp *http.Re
 // BeginUpdateTags - Updates an existing Cluster Pool Tags.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01-preview
+// Generated from API version 2024-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterPoolName - The name of the cluster pool.
 //   - clusterPoolTags - Parameters supplied to update tags.
@@ -409,7 +409,7 @@ func (client *ClusterPoolsClient) BeginUpdateTags(ctx context.Context, resourceG
 // UpdateTags - Updates an existing Cluster Pool Tags.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01-preview
+// Generated from API version 2024-05-01-preview
 func (client *ClusterPoolsClient) updateTags(ctx context.Context, resourceGroupName string, clusterPoolName string, clusterPoolTags TagsObject, options *ClusterPoolsClientBeginUpdateTagsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ClusterPoolsClient.BeginUpdateTags"
@@ -451,7 +451,7 @@ func (client *ClusterPoolsClient) updateTagsCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01-preview")
+	reqQP.Set("api-version", "2024-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, clusterPoolTags); err != nil {
@@ -463,7 +463,7 @@ func (client *ClusterPoolsClient) updateTagsCreateRequest(ctx context.Context, r
 // BeginUpgrade - Upgrade a cluster pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01-preview
+// Generated from API version 2024-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterPoolName - The name of the cluster pool.
 //   - clusterPoolUpgradeRequest - Upgrade a cluster pool.
@@ -490,7 +490,7 @@ func (client *ClusterPoolsClient) BeginUpgrade(ctx context.Context, resourceGrou
 // Upgrade - Upgrade a cluster pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01-preview
+// Generated from API version 2024-05-01-preview
 func (client *ClusterPoolsClient) upgrade(ctx context.Context, resourceGroupName string, clusterPoolName string, clusterPoolUpgradeRequest ClusterPoolUpgrade, options *ClusterPoolsClientBeginUpgradeOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ClusterPoolsClient.BeginUpgrade"
@@ -532,7 +532,7 @@ func (client *ClusterPoolsClient) upgradeCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01-preview")
+	reqQP.Set("api-version", "2024-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, clusterPoolUpgradeRequest); err != nil {

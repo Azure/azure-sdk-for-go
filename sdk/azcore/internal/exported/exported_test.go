@@ -7,7 +7,10 @@
 package exported
 
 import (
+	"bytes"
+	"context"
 	"fmt"
+	"io"
 	"net/http"
 	"strings"
 	"testing"
@@ -73,4 +76,73 @@ func TestNewSASCredential(t *testing.T) {
 	const val2 = "bar"
 	cred.Update(val2)
 	require.EqualValues(t, val2, SASCredentialGet(cred))
+}
+
+func TestNewRequestFromRequest(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	expectedData := bytes.NewReader([]byte{1, 2, 3, 4, 5})
+
+	httpRequest, err := http.NewRequestWithContext(ctx, "POST", "https://example.com", expectedData)
+	require.NoError(t, err)
+
+	req, err := NewRequestFromRequest(httpRequest)
+	require.NoError(t, err)
+
+	// our stream has been drained - the func has to make a copy of the body so it can be seekable.
+	// so our stream should be at end.
+	currentPos, err := expectedData.Seek(0, io.SeekCurrent)
+	require.NoError(t, err)
+	require.Equal(t, int64(5), currentPos)
+
+	actualData, err := io.ReadAll(req.Body())
+	require.NoError(t, err)
+	require.Equal(t, []byte{1, 2, 3, 4, 5}, actualData)
+
+	// now we change stuff in the policy.Request...
+	replacementBuff := bytes.NewReader([]byte{6})
+	err = req.SetBody(NopCloser(replacementBuff), "application/coolstuff")
+	require.NoError(t, err)
+
+	// and it's automatically reflected in the http.Request, which helps us with interop
+	// with other HTTP pipelines.
+	require.Equal(t, "application/coolstuff", httpRequest.Header.Get("Content-Type"))
+	newBytes, err := io.ReadAll(httpRequest.Body)
+	require.NoError(t, err)
+	require.Equal(t, []byte{6}, newBytes)
+}
+
+func TestNewRequestFromRequest_AvoidExtraCopyIfReadSeekCloser(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	expectedData := NopCloser(bytes.NewReader([]byte{1, 2, 3, 4, 5}))
+
+	httpRequest, err := http.NewRequestWithContext(ctx, "POST", "https://example.com", expectedData)
+	require.NoError(t, err)
+
+	req, err := NewRequestFromRequest(httpRequest)
+	require.NoError(t, err)
+
+	// our stream should _NOT_ get drained since it was already an io.ReadSeekCloser
+	currentPos, err := expectedData.Seek(0, io.SeekCurrent)
+	require.NoError(t, err)
+	require.Equal(t, int64(0), currentPos)
+
+	actualData, err := io.ReadAll(req.Body())
+	require.NoError(t, err)
+	require.Equal(t, []byte{1, 2, 3, 4, 5}, actualData)
+
+	// now we change stuff in the policy.Request...
+	replacementBuff := bytes.NewReader([]byte{6})
+	err = req.SetBody(NopCloser(replacementBuff), "application/coolstuff")
+	require.NoError(t, err)
+
+	// and it's automatically reflected in the http.Request, which helps us with interop
+	// with other HTTP pipelines.
+	require.Equal(t, "application/coolstuff", httpRequest.Header.Get("Content-Type"))
+	newBytes, err := io.ReadAll(httpRequest.Body)
+	require.NoError(t, err)
+	require.Equal(t, []byte{6}, newBytes)
 }

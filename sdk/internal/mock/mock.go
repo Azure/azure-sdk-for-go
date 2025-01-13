@@ -15,6 +15,7 @@ import (
 	"net/http/httptest"
 	"net/url"
 	"sync"
+	"sync/atomic"
 	"time"
 )
 
@@ -39,7 +40,7 @@ type Server struct {
 	resp []mockResponse
 
 	// count tracks the number of requests that have been made.
-	count int
+	count int32
 
 	// determines whether all requests will be routed to the httptest Server by changing the Host of each request
 	routeAllRequestsToMockServer bool
@@ -122,7 +123,7 @@ func (s *Server) URL() string {
 // Calling this when the response queue is empty and no static
 // response has been set will cause a panic.
 func (s *Server) Do(req *http.Request) (*http.Response, error) {
-	s.count++
+	atomic.AddInt32(&s.count, 1)
 	// error responses are returned here
 	if s.isErrorResp() {
 		resp := s.getResponse()
@@ -136,7 +137,7 @@ func (s *Server) Do(req *http.Request) (*http.Response, error) {
 		mockUrl := *req.URL
 		srvUrl, err = url.Parse(s.srv.URL)
 		if err != nil {
-			return nil, fmt.Errorf("Unable to parse the test server URL: %v", err)
+			return nil, fmt.Errorf("unable to parse the test server URL: %v", err)
 		}
 		mockUrl.Host = srvUrl.Host
 		mockUrl.Scheme = srvUrl.Scheme
@@ -181,8 +182,9 @@ func (s *Server) serveHTTP(w http.ResponseWriter, req *http.Request) {
 }
 
 // Requests returns the number of times an HTTP request was made.
+// NOTE: this is *not* goroutine safe to be called while requests are being served.
 func (s *Server) Requests() int {
-	return s.count
+	return int(s.count)
 }
 
 // AppendError appends the error to the end of the response queue.

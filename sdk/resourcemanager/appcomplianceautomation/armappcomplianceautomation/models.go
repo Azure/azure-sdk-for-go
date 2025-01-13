@@ -10,45 +10,6 @@ package armappcomplianceautomation
 
 import "time"
 
-// Assessment - A class represent the assessment.
-type Assessment struct {
-	// READ-ONLY; The description of the assessment.
-	Description *string
-
-	// READ-ONLY; Indicates whether all the resource(s) are compliant.
-	IsPass *IsPass
-
-	// READ-ONLY; The name of the assessment.
-	Name *string
-
-	// READ-ONLY; The policy id mapping to this assessment.
-	PolicyID *string
-
-	// READ-ONLY; The remediation of the assessment.
-	Remediation *string
-
-	// READ-ONLY; List of resource assessments.
-	ResourceList []*AssessmentResource
-
-	// READ-ONLY; The severity level of this assessment.
-	Severity *AssessmentSeverity
-}
-
-// AssessmentResource - A class represent the assessment resource.
-type AssessmentResource struct {
-	// READ-ONLY; The reason for the N/A resource.
-	Reason *string
-
-	// READ-ONLY; The Id of the resource.
-	ResourceID *string
-
-	// READ-ONLY; Resource status.
-	ResourceStatus *ResourceStatus
-
-	// READ-ONLY; The status change date for the resource. For unavailable date, set it as N/A.
-	StatusChangeDate *string
-}
-
 // Category - A class represent the compliance category.
 type Category struct {
 	// READ-ONLY; The name of the compliance category. e.g. "Operational Security"
@@ -57,11 +18,44 @@ type Category struct {
 	// READ-ONLY; Category status.
 	CategoryStatus *CategoryStatus
 
-	// READ-ONLY; The category type
-	CategoryType *CategoryType
-
 	// READ-ONLY; List of control families.
 	ControlFamilies []*ControlFamily
+}
+
+// CertSyncRecord - A class represent the certification record synchronized from app compliance.
+type CertSyncRecord struct {
+	// Indicates the status of certification process.
+	CertificationStatus *string
+
+	// The control records list to be synchronized.
+	Controls []*ControlSyncRecord
+
+	// Indicates the status of compliance process.
+	IngestionStatus *string
+
+	// The offerGuid which mapping to the reports.
+	OfferGUID *string
+}
+
+// CheckNameAvailabilityRequest - The check availability request body.
+type CheckNameAvailabilityRequest struct {
+	// The name of the resource for which availability needs to be checked.
+	Name *string
+
+	// The resource type.
+	Type *string
+}
+
+// CheckNameAvailabilityResponse - The check availability result.
+type CheckNameAvailabilityResponse struct {
+	// Detailed reason why the given name is available.
+	Message *string
+
+	// Indicates if the resource name is available.
+	NameAvailable *bool
+
+	// The reason why the given name is not available.
+	Reason *CheckNameAvailabilityReason
 }
 
 // ComplianceReportItem - Object that includes all the content for single compliance result.
@@ -69,8 +63,8 @@ type ComplianceReportItem struct {
 	// READ-ONLY; The category name.
 	CategoryName *string
 
-	// READ-ONLY; The compliance result's status.
-	ComplianceState *ComplianceState
+	// READ-ONLY; The control family name.
+	ControlFamilyName *string
 
 	// READ-ONLY; The control Id - e.g. "1".
 	ControlID *string
@@ -78,33 +72,29 @@ type ComplianceReportItem struct {
 	// READ-ONLY; The control name.
 	ControlName *string
 
-	// READ-ONLY; The control type.
-	ControlType *ControlType
+	// READ-ONLY; Control status.
+	ControlStatus *ControlStatus
 
-	// READ-ONLY; The policy's detail description.
-	PolicyDescription *string
-
-	// READ-ONLY; The policy's display name.
-	PolicyDisplayName *string
-
-	// READ-ONLY; The compliance result mapped policy Id.
-	PolicyID *string
-
-	// READ-ONLY; The compliance result mapped resource group.
-	ResourceGroup *string
-
-	// READ-ONLY; The compliance result mapped resource Id - e.g. "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachines/vm1".
+	// READ-ONLY; The Id of the resource.
 	ResourceID *string
 
-	// READ-ONLY; The compliance result mapped resource type.
+	// READ-ONLY; Resource origin.
+	ResourceOrigin *ResourceOrigin
+
+	// READ-ONLY; Resource status.
+	ResourceStatus *ResourceStatus
+
+	// READ-ONLY; The status change date for the resource.
+	ResourceStatusChangeDate *time.Time
+
+	// READ-ONLY; The type of the resource. e.g. "Microsoft.SignalRService/SignalR"
 	ResourceType *string
 
-	// READ-ONLY; The compliance result last changed date - e.g. "2022-10-24T02:55:16.3274379Z". For unavailable date, set it
-	// as "N/A".
-	StatusChangeDate *string
+	// READ-ONLY; The description of the customer responsibility.
+	ResponsibilityDescription *string
 
-	// READ-ONLY; The compliance result mapped subscription Id.
-	SubscriptionID *string
+	// READ-ONLY; The title of the customer responsibility.
+	ResponsibilityTitle *string
 }
 
 // ComplianceResult - A class represent the compliance result.
@@ -118,9 +108,6 @@ type ComplianceResult struct {
 
 // Control - A class represent the control.
 type Control struct {
-	// READ-ONLY; List of assessments.
-	Assessments []*Assessment
-
 	// READ-ONLY; The control's description
 	ControlDescription *string
 
@@ -131,59 +118,184 @@ type Control struct {
 	// not in use."
 	ControlFullName *string
 
-	// READ-ONLY; The Id of the control. e.g. "Operational Security#10"
+	// READ-ONLY; The Id of the control. e.g. "OperationalSecurity10"
 	ControlID *string
 
-	// READ-ONLY; The short name of the control. e.g. "Unsupported OS and Software."
-	ControlShortName *string
+	// READ-ONLY; The name of the control. e.g. "Unsupported OS and Software."
+	ControlName *string
 
 	// READ-ONLY; Control status.
 	ControlStatus *ControlStatus
 
-	// READ-ONLY; The control type
-	ControlType *ControlType
+	// READ-ONLY; List of customer responsibility.
+	Responsibilities []*Responsibility
 }
 
 // ControlFamily - A class represent the control family.
 type ControlFamily struct {
+	// READ-ONLY; The name of the control family. e.g. "Malware Protection - Anti-Virus"
+	ControlFamilyName *string
+
+	// READ-ONLY; The control family status
+	ControlFamilyStatus *ControlFamilyStatus
+
 	// READ-ONLY; List of controls.
 	Controls []*Control
+}
 
-	// READ-ONLY; The name of the control family. e.g. "Malware Protection - Anti-Virus"
-	FamilyName *string
+// ControlSyncRecord - A class represent the control record synchronized from app compliance.
+type ControlSyncRecord struct {
+	// The Id of the control. e.g. "OperationalSecurity10"
+	ControlID *string
 
-	// READ-ONLY; Control family status.
-	FamilyStatus *ControlFamilyStatus
-
-	// READ-ONLY; The control family type
-	FamilyType *ControlFamilyType
+	// Control status synchronized from app compliance.
+	ControlStatus *string
 }
 
 // DownloadResponse - Object that includes all the possible response for the download operation.
 type DownloadResponse struct {
-	// READ-ONLY; compliance detailed pdf report
+	// READ-ONLY; The detailed compliance pdf report
 	ComplianceDetailedPDFReport *DownloadResponseComplianceDetailedPDFReport
 
-	// READ-ONLY; compliance pdf report
+	// READ-ONLY; Compliance pdf report
 	CompliancePDFReport *DownloadResponseCompliancePDFReport
 
 	// READ-ONLY; List of the compliance result
 	ComplianceReport []*ComplianceReportItem
 
-	// READ-ONLY; List of the reports
+	// READ-ONLY; Resource list of the report
 	ResourceList []*ResourceItem
 }
 
-// DownloadResponseComplianceDetailedPDFReport - compliance detailed pdf report
+// DownloadResponseComplianceDetailedPDFReport - The detailed compliance pdf report
 type DownloadResponseComplianceDetailedPDFReport struct {
-	// READ-ONLY; uri of compliance detailed pdf report
+	// READ-ONLY; The uri of detailed compliance pdf report
 	SasURI *string
 }
 
-// DownloadResponseCompliancePDFReport - compliance pdf report
+// DownloadResponseCompliancePDFReport - Compliance pdf report
 type DownloadResponseCompliancePDFReport struct {
-	// READ-ONLY; uri of compliance pdf report
+	// READ-ONLY; The uri of compliance pdf report
 	SasURI *string
+}
+
+// EvidenceFileDownloadRequest - Evidence file's download request.
+type EvidenceFileDownloadRequest struct {
+	// The offerGuid which mapping to the reports.
+	OfferGUID *string
+
+	// Tenant id.
+	ReportCreatorTenantID *string
+}
+
+// EvidenceFileDownloadResponse - Object that includes all the possible response for the evidence file download operation.
+type EvidenceFileDownloadResponse struct {
+	// READ-ONLY; The uri of evidence file
+	EvidenceFile *EvidenceFileDownloadResponseEvidenceFile
+}
+
+// EvidenceFileDownloadResponseEvidenceFile - The uri of evidence file
+type EvidenceFileDownloadResponseEvidenceFile struct {
+	// READ-ONLY; The url of evidence file
+	URL *string
+}
+
+// EvidenceProperties - Evidence's properties.
+type EvidenceProperties struct {
+	// REQUIRED; The path of the file in storage.
+	FilePath *string
+
+	// Control id.
+	ControlID *string
+
+	// Evidence type.
+	EvidenceType *EvidenceType
+
+	// Extra data considered as evidence.
+	ExtraData *string
+
+	// Responsibility id.
+	ResponsibilityID *string
+
+	// READ-ONLY; Azure lifecycle management
+	ProvisioningState *ProvisioningState
+}
+
+// EvidenceResource - A class represent an AppComplianceAutomation evidence resource.
+type EvidenceResource struct {
+	// REQUIRED; Evidence property.
+	Properties *EvidenceProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// EvidenceResourceListResult - The response of a EvidenceResource list operation.
+type EvidenceResourceListResult struct {
+	// REQUIRED; The EvidenceResource items on this page
+	Value []*EvidenceResource
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// GetCollectionCountRequest - Get collection count's request object.
+type GetCollectionCountRequest struct {
+	// The resource type.
+	Type *string
+}
+
+// GetCollectionCountResponse - The get collection count response.
+type GetCollectionCountResponse struct {
+	// The count of the specified resource.
+	Count *int32
+}
+
+// GetOverviewStatusRequest - Get overview status request object.
+type GetOverviewStatusRequest struct {
+	// The resource type.
+	Type *string
+}
+
+// GetOverviewStatusResponse - The get overview status response.
+type GetOverviewStatusResponse struct {
+	// List of different status items.
+	StatusList []*StatusItem
+}
+
+// ListInUseStorageAccountsRequest - Parameters for listing in use storage accounts operation. If subscription list is null,
+// it will check the user's all subscriptions.
+type ListInUseStorageAccountsRequest struct {
+	// List of subscription ids to be query. If the list is null or empty, the API will query all the subscriptions of the user.
+	SubscriptionIDs []*string
+}
+
+// ListInUseStorageAccountsResponse - Parameters for listing in use storage accounts operation. If subscription list is null,
+// it will check the user's all subscriptions.
+type ListInUseStorageAccountsResponse struct {
+	// The storage account list which in use in related reports.
+	StorageAccountList []*StorageInfo
+}
+
+// OnboardRequest - Parameters for onboard operation
+type OnboardRequest struct {
+	// REQUIRED; List of subscription ids to be onboarded
+	SubscriptionIDs []*string
+}
+
+// OnboardResponse - Success. The response indicates given subscriptions has been onboarded.
+type OnboardResponse struct {
+	// List of subscription ids that are onboarded
+	SubscriptionIDs []*string
 }
 
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API
@@ -237,23 +349,134 @@ type OperationListResult struct {
 
 // OverviewStatus - The overview of the compliance result for one report.
 type OverviewStatus struct {
-	// The count of all failed full automation control.
+	// READ-ONLY; The count of all failed control.
 	FailedCount *int32
 
-	// The count of all manual control.
+	// READ-ONLY; The count of all manual control.
 	ManualCount *int32
 
-	// The count of all passed full automation control.
+	// READ-ONLY; The count of all not applicable control.
+	NotApplicableCount *int32
+
+	// READ-ONLY; The count of all passed control.
 	PassedCount *int32
+
+	// READ-ONLY; The count of all pending for approval control.
+	PendingCount *int32
+}
+
+// QuickAssessment - A class represent the quick assessment.
+type QuickAssessment struct {
+	// READ-ONLY; Quick assessment display name.
+	Description *string
+
+	// READ-ONLY; Quick assessment display name.
+	DisplayName *string
+
+	// READ-ONLY; Link to remediation steps for this quick assessment.
+	RemediationLink *string
+
+	// READ-ONLY; Resource id.
+	ResourceID *string
+
+	// READ-ONLY; Quick assessment status.
+	ResourceStatus *ResourceStatus
+
+	// READ-ONLY; Responsibility id.
+	ResponsibilityID *string
+
+	// READ-ONLY; The timestamp of resource creation (UTC).
+	Timestamp *time.Time
+}
+
+// Recommendation - A class represent the recommendation.
+type Recommendation struct {
+	// READ-ONLY; The Id of the recommendation.
+	RecommendationID *string
+
+	// READ-ONLY; The short name of the recommendation. e.g. "Invalid TLS config"
+	RecommendationShortName *string
+
+	// READ-ONLY; List of recommendation solutions.
+	RecommendationSolutions []*RecommendationSolution
+}
+
+// RecommendationSolution - A class represent the recommendation solution.
+type RecommendationSolution struct {
+	// READ-ONLY; Indicates whether this solution is the recommended.
+	IsRecommendSolution *IsRecommendSolution
+
+	// READ-ONLY; The detail steps of the recommendation solution.
+	RecommendationSolutionContent *string
+
+	// READ-ONLY; The index of the recommendation solution.
+	RecommendationSolutionIndex *string
 }
 
 // ReportComplianceStatus - A list which includes all the compliance result for one report.
 type ReportComplianceStatus struct {
-	// The Microsoft 365 certification name.
+	// READ-ONLY; The Microsoft 365 certification name.
 	M365 *OverviewStatus
 }
 
-// ReportProperties - Report's properties.
+// ReportFixResult - Report fix result.
+type ReportFixResult struct {
+	// READ-ONLY; If the report fix action failed, to indicate the detailed failed reason.
+	Reason *string
+
+	// READ-ONLY; Indicates whether the fix action is Succeeded or Failed.
+	Result *Result
+}
+
+// ReportPatchProperties - Patch Report's properties.
+type ReportPatchProperties struct {
+	// A list of comma-separated offerGuids indicates a series of offerGuids that map to the report. For example, "00000000-0000-0000-0000-000000000001,00000000-0000-0000-0000-000000000002"
+	// and
+	// "00000000-0000-0000-0000-000000000003".
+	OfferGUID *string
+
+	// List of resource data.
+	Resources []*ResourceMetadata
+
+	// The information of 'bring your own storage' binding to the report
+	StorageInfo *StorageInfo
+
+	// Report collection trigger time's time zone, the available list can be obtained by executing "Get-TimeZone -ListAvailable"
+	// in PowerShell. An example of valid timezone id is "Pacific Standard Time".
+	TimeZone *string
+
+	// Report collection trigger time.
+	TriggerTime *time.Time
+
+	// READ-ONLY; List of synchronized certification records.
+	CertRecords []*CertSyncRecord
+
+	// READ-ONLY; Report compliance status.
+	ComplianceStatus *ReportComplianceStatus
+
+	// READ-ONLY; List of report error codes.
+	Errors []*string
+
+	// READ-ONLY; Report last collection trigger time.
+	LastTriggerTime *time.Time
+
+	// READ-ONLY; Report next collection trigger time.
+	NextTriggerTime *time.Time
+
+	// READ-ONLY; Azure lifecycle management
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Report status.
+	Status *ReportStatus
+
+	// READ-ONLY; List of subscription Ids.
+	Subscriptions []*string
+
+	// READ-ONLY; Report's tenant id.
+	TenantID *string
+}
+
+// ReportProperties - Create Report's properties.
 type ReportProperties struct {
 	// REQUIRED; List of resource data.
 	Resources []*ResourceMetadata
@@ -265,14 +488,22 @@ type ReportProperties struct {
 	// REQUIRED; Report collection trigger time.
 	TriggerTime *time.Time
 
-	// Report offer Guid.
+	// A list of comma-separated offerGuids indicates a series of offerGuids that map to the report. For example, "00000000-0000-0000-0000-000000000001,00000000-0000-0000-0000-000000000002"
+	// and
+	// "00000000-0000-0000-0000-000000000003".
 	OfferGUID *string
+
+	// The information of 'bring your own storage' binding to the report
+	StorageInfo *StorageInfo
+
+	// READ-ONLY; List of synchronized certification records.
+	CertRecords []*CertSyncRecord
 
 	// READ-ONLY; Report compliance status.
 	ComplianceStatus *ReportComplianceStatus
 
-	// READ-ONLY; Report id in database.
-	ID *string
+	// READ-ONLY; List of report error codes.
+	Errors []*string
 
 	// READ-ONLY; Report last collection trigger time.
 	LastTriggerTime *time.Time
@@ -282,9 +513,6 @@ type ReportProperties struct {
 
 	// READ-ONLY; Azure lifecycle management
 	ProvisioningState *ProvisioningState
-
-	// READ-ONLY; Report name.
-	ReportName *string
 
 	// READ-ONLY; Report status.
 	Status *ReportStatus
@@ -314,19 +542,28 @@ type ReportResource struct {
 	Type *string
 }
 
-// ReportResourceList - Object that includes an array of resources and a possible link for next set.
-type ReportResourceList struct {
-	// The URL the client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string
-
-	// READ-ONLY; List of the reports
+// ReportResourceListResult - The response of a ReportResource list operation.
+type ReportResourceListResult struct {
+	// REQUIRED; The ReportResource items on this page
 	Value []*ReportResource
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // ReportResourcePatch - A class represent a AppComplianceAutomation report resource update properties.
 type ReportResourcePatch struct {
 	// Report property.
-	Properties *ReportProperties
+	Properties *ReportPatchProperties
+}
+
+// ReportVerificationResult - Report health status verification result.
+type ReportVerificationResult struct {
+	// READ-ONLY; If the report verification action failed, to indicate the detailed failed reason.
+	Reason *string
+
+	// READ-ONLY; Indicates whether the report verification action is Succeeded or Failed.
+	Result *Result
 }
 
 // ResourceItem - Resource Id.
@@ -337,7 +574,7 @@ type ResourceItem struct {
 	// READ-ONLY; The resource Id - e.g. "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachines/vm1".
 	ResourceID *string
 
-	// READ-ONLY; The resource type of this resource.
+	// READ-ONLY; The resource type of this resource. e.g. "Microsoft.SignalRService/SignalR"
 	ResourceType *string
 
 	// READ-ONLY; The subscription Id of this resource.
@@ -349,17 +586,158 @@ type ResourceMetadata struct {
 	// REQUIRED; Resource Id - e.g. "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachines/vm1".
 	ResourceID *string
 
+	// Account Id. For example - the AWS account id.
+	AccountID *string
+
 	// Resource kind.
 	ResourceKind *string
 
-	// Resource name.
-	ResourceName *string
+	// Resource Origin.
+	ResourceOrigin *ResourceOrigin
 
-	// Resource type.
+	// Resource type. e.g. "Microsoft.Compute/virtualMachines"
 	ResourceType *string
+}
 
-	// Resource's tag type.
-	Tags map[string]*string
+// Responsibility - A class represent the customer responsibility.
+type Responsibility struct {
+	// List of evidence file url.
+	EvidenceFiles []*string
+
+	// The count of all failed resources.
+	FailedResourceCount *int32
+
+	// The count of all resources.
+	TotalResourceCount *int32
+
+	// READ-ONLY; The evidence upload guidance description.
+	Guidance *string
+
+	// READ-ONLY; The justification given by the user to clarify the reason.
+	Justification *string
+
+	// READ-ONLY; List of recommendation.
+	RecommendationList []*Recommendation
+
+	// READ-ONLY; List of resource.
+	ResourceList []*ResponsibilityResource
+
+	// READ-ONLY; The description of the customer responsibility.
+	ResponsibilityDescription *string
+
+	// READ-ONLY; The supported cloud environment of this customer responsibility.
+	ResponsibilityEnvironment *ResponsibilityEnvironment
+
+	// READ-ONLY; The id of the customer responsibility.
+	ResponsibilityID *string
+
+	// READ-ONLY; The severity level of this customer responsibility.
+	ResponsibilitySeverity *ResponsibilitySeverity
+
+	// READ-ONLY; The status of this customer responsibility.
+	ResponsibilityStatus *ResponsibilityStatus
+
+	// READ-ONLY; The title of the customer responsibility.
+	ResponsibilityTitle *string
+
+	// READ-ONLY; The type of customer responsibility.
+	ResponsibilityType *ResponsibilityType
+}
+
+// ResponsibilityResource - A class represent the resource.
+type ResponsibilityResource struct {
+	// List of recommendation id.
+	RecommendationIDs []*string
+
+	// READ-ONLY; Account Id. For example - AWS account Id.
+	AccountID *string
+
+	// READ-ONLY; The Id of the resource.
+	ResourceID *string
+
+	// READ-ONLY; Resource origin.
+	ResourceOrigin *ResourceOrigin
+
+	// READ-ONLY; Resource status.
+	ResourceStatus *ResourceStatus
+
+	// READ-ONLY; The status change date for the resource.
+	ResourceStatusChangeDate *time.Time
+
+	// READ-ONLY; The type of the resource. e.g. "Microsoft.SignalRService/SignalR"
+	ResourceType *string
+}
+
+// ScopingAnswer - Scoping answer.
+type ScopingAnswer struct {
+	// REQUIRED; Question answer value list.
+	Answers []*string
+
+	// REQUIRED; Question id.
+	QuestionID *string
+}
+
+// ScopingConfigurationProperties - ScopingConfiguration's properties.
+type ScopingConfigurationProperties struct {
+	// List of scoping question answers.
+	Answers []*ScopingAnswer
+
+	// READ-ONLY; Azure lifecycle management
+	ProvisioningState *ProvisioningState
+}
+
+// ScopingConfigurationResource - A class represent an AppComplianceAutomation scoping configuration resource.
+type ScopingConfigurationResource struct {
+	// REQUIRED; ScopingConfiguration property.
+	Properties *ScopingConfigurationProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ScopingConfigurationResourceListResult - The response of a ScopingConfigurationResource list operation.
+type ScopingConfigurationResourceListResult struct {
+	// REQUIRED; The ScopingConfigurationResource items on this page
+	Value []*ScopingConfigurationResource
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ScopingQuestion - The definition of a scoping question.
+type ScopingQuestion struct {
+	// READ-ONLY; Input type of the question answer.
+	InputType *InputType
+
+	// READ-ONLY; Option id list.
+	OptionIDs []*string
+
+	// READ-ONLY; Question id.
+	QuestionID *string
+
+	// READ-ONLY; The rule of the question.
+	Rules []*Rule
+
+	// READ-ONLY; The answer value to show the sub questions.
+	ShowSubQuestionsValue *string
+
+	// READ-ONLY; Superior question id.
+	SuperiorQuestionID *string
+}
+
+// ScopingQuestions - Scoping question list.
+type ScopingQuestions struct {
+	// List of scoping questions.
+	Questions []*ScopingQuestion
 }
 
 // SnapshotDownloadRequest - Snapshot's download request.
@@ -382,9 +760,6 @@ type SnapshotProperties struct {
 	// READ-ONLY; The timestamp of resource creation (UTC).
 	CreatedAt *time.Time
 
-	// READ-ONLY; Snapshot id in the database.
-	ID *string
-
 	// READ-ONLY; Azure lifecycle management
 	ProvisioningState *ProvisioningState
 
@@ -400,14 +775,14 @@ type SnapshotProperties struct {
 
 // SnapshotResource - A class represent a AppComplianceAutomation snapshot resource.
 type SnapshotResource struct {
+	// Snapshot's property.
+	Properties *SnapshotProperties
+
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
-
-	// READ-ONLY; Snapshot's property'.
-	Properties *SnapshotProperties
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -416,13 +791,49 @@ type SnapshotResource struct {
 	Type *string
 }
 
-// SnapshotResourceList - Object that includes an array of resources and a possible link for next set.
-type SnapshotResourceList struct {
-	// The URL the client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string
-
-	// READ-ONLY; List of the snapshots
+// SnapshotResourceListResult - The response of a SnapshotResource list operation.
+type SnapshotResourceListResult struct {
+	// REQUIRED; The SnapshotResource items on this page
 	Value []*SnapshotResource
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// StatusItem - Single status.
+type StatusItem struct {
+	// Status name - e.g. "Active", "Failed".
+	StatusName *string
+
+	// Status value. e.g. "100", or "100%".
+	StatusValue *string
+}
+
+// StorageInfo - The information of 'bring your own storage' account binding to the report
+type StorageInfo struct {
+	// 'bring your own storage' account name
+	AccountName *string
+
+	// The region of 'bring your own storage' account
+	Location *string
+
+	// The resourceGroup which 'bring your own storage' account belongs to
+	ResourceGroup *string
+
+	// The subscription id which 'bring your own storage' account belongs to
+	SubscriptionID *string
+}
+
+// SyncCertRecordRequest - Synchronize certification record request.
+type SyncCertRecordRequest struct {
+	// REQUIRED; certification record to be synchronized.
+	CertRecord *CertSyncRecord
+}
+
+// SyncCertRecordResponse - Synchronize certification record response.
+type SyncCertRecordResponse struct {
+	// certification record synchronized.
+	CertRecord *CertSyncRecord
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -444,4 +855,106 @@ type SystemData struct {
 
 	// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType
+}
+
+// TriggerEvaluationProperty - Trigger evaluation response.
+type TriggerEvaluationProperty struct {
+	// List of quick assessments
+	QuickAssessments []*QuickAssessment
+
+	// List of resource ids to be evaluated
+	ResourceIDs []*string
+
+	// READ-ONLY; The time when the evaluation is end.
+	EvaluationEndTime *time.Time
+
+	// READ-ONLY; The time when the evaluation is triggered.
+	TriggerTime *time.Time
+}
+
+// TriggerEvaluationRequest - Trigger evaluation request.
+type TriggerEvaluationRequest struct {
+	// REQUIRED; List of resource ids to be evaluated
+	ResourceIDs []*string
+}
+
+// TriggerEvaluationResponse - Trigger evaluation response.
+type TriggerEvaluationResponse struct {
+	// trigger evaluation property.
+	Properties *TriggerEvaluationProperty
+}
+
+// WebhookProperties - Webhook properties.
+type WebhookProperties struct {
+	// content type
+	ContentType *ContentType
+
+	// whether to enable ssl verification
+	EnableSSLVerification *EnableSSLVerification
+
+	// under which event notification should be sent.
+	Events []*NotificationEvent
+
+	// webhook payload url
+	PayloadURL *string
+
+	// whether to send notification under any event.
+	SendAllEvents *SendAllEvents
+
+	// Webhook status.
+	Status *WebhookStatus
+
+	// whether to update webhookKey.
+	UpdateWebhookKey *UpdateWebhookKey
+
+	// webhook secret token. If not set, this field value is null; otherwise, please set a string value.
+	WebhookKey *string
+
+	// READ-ONLY; webhook deliveryStatus
+	DeliveryStatus *DeliveryStatus
+
+	// READ-ONLY; Azure Resource Provisioning State
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Tenant id.
+	TenantID *string
+
+	// READ-ONLY; Webhook id in database.
+	WebhookID *string
+
+	// READ-ONLY; whether webhookKey is enabled.
+	WebhookKeyEnabled *WebhookKeyEnabled
+}
+
+// WebhookResource - A class represent an AppComplianceAutomation webhook resource.
+type WebhookResource struct {
+	// REQUIRED; Webhook property.
+	Properties *WebhookProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// WebhookResourceListResult - The response of a WebhookResource list operation.
+type WebhookResourceListResult struct {
+	// REQUIRED; The WebhookResource items on this page
+	Value []*WebhookResource
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// WebhookResourcePatch - A class represent a AppComplianceAutomation webhook resource update properties.
+type WebhookResourcePatch struct {
+	// Webhook property.
+	Properties *WebhookProperties
 }

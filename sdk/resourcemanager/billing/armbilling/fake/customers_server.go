@@ -12,21 +12,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/http"
+	"net/url"
+	"regexp"
+	"strconv"
+
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
-	"net/http"
-	"net/url"
-	"regexp"
 )
 
 // CustomersServer is a fake server for instances of the armbilling.CustomersClient type.
 type CustomersServer struct {
 	// Get is the fake for method CustomersClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, billingAccountName string, customerName string, options *armbilling.CustomersClientGetOptions) (resp azfake.Responder[armbilling.CustomersClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, options *armbilling.CustomersClientGetOptions) (resp azfake.Responder[armbilling.CustomersClientGetResponse], errResp azfake.ErrorResponder)
+
+	// GetByBillingAccount is the fake for method CustomersClient.GetByBillingAccount
+	// HTTP status codes to indicate success: http.StatusOK
+	GetByBillingAccount func(ctx context.Context, billingAccountName string, customerName string, options *armbilling.CustomersClientGetByBillingAccountOptions) (resp azfake.Responder[armbilling.CustomersClientGetByBillingAccountResponse], errResp azfake.ErrorResponder)
 
 	// NewListByBillingAccountPager is the fake for method CustomersClient.NewListByBillingAccountPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -70,6 +76,8 @@ func (c *CustomersServerTransport) Do(req *http.Request) (*http.Response, error)
 	switch method {
 	case "CustomersClient.Get":
 		resp, err = c.dispatchGet(req)
+	case "CustomersClient.GetByBillingAccount":
+		resp, err = c.dispatchGetByBillingAccount(req)
 	case "CustomersClient.NewListByBillingAccountPager":
 		resp, err = c.dispatchNewListByBillingAccountPager(req)
 	case "CustomersClient.NewListByBillingProfilePager":
@@ -89,13 +97,49 @@ func (c *CustomersServerTransport) dispatchGet(req *http.Request) (*http.Respons
 	if c.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customers/(?P<customerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+	if err != nil {
+		return nil, err
+	}
+	billingProfileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingProfileName")])
+	if err != nil {
+		return nil, err
+	}
+	customerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("customerName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.Get(req.Context(), billingAccountNameParam, billingProfileNameParam, customerNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Customer, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *CustomersServerTransport) dispatchGetByBillingAccount(req *http.Request) (*http.Response, error) {
+	if c.srv.GetByBillingAccount == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetByBillingAccount not implemented")}
+	}
 	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customers/(?P<customerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	qp := req.URL.Query()
 	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
 	if err != nil {
 		return nil, err
@@ -104,18 +148,7 @@ func (c *CustomersServerTransport) dispatchGet(req *http.Request) (*http.Respons
 	if err != nil {
 		return nil, err
 	}
-	expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
-	if err != nil {
-		return nil, err
-	}
-	expandParam := getOptional(expandUnescaped)
-	var options *armbilling.CustomersClientGetOptions
-	if expandParam != nil {
-		options = &armbilling.CustomersClientGetOptions{
-			Expand: expandParam,
-		}
-	}
-	respr, errRespr := c.srv.Get(req.Context(), billingAccountNameParam, customerNameParam, options)
+	respr, errRespr := c.srv.GetByBillingAccount(req.Context(), billingAccountNameParam, customerNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -147,21 +180,72 @@ func (c *CustomersServerTransport) dispatchNewListByBillingAccountPager(req *htt
 		if err != nil {
 			return nil, err
 		}
-		searchUnescaped, err := url.QueryUnescape(qp.Get("$search"))
+		expandUnescaped, err := url.QueryUnescape(qp.Get("expand"))
 		if err != nil {
 			return nil, err
 		}
-		searchParam := getOptional(searchUnescaped)
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		expandParam := getOptional(expandUnescaped)
+		filterUnescaped, err := url.QueryUnescape(qp.Get("filter"))
 		if err != nil {
 			return nil, err
 		}
 		filterParam := getOptional(filterUnescaped)
+		orderByUnescaped, err := url.QueryUnescape(qp.Get("orderBy"))
+		if err != nil {
+			return nil, err
+		}
+		orderByParam := getOptional(orderByUnescaped)
+		topUnescaped, err := url.QueryUnescape(qp.Get("top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		skipUnescaped, err := url.QueryUnescape(qp.Get("skip"))
+		if err != nil {
+			return nil, err
+		}
+		skipParam, err := parseOptional(skipUnescaped, func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		countUnescaped, err := url.QueryUnescape(qp.Get("count"))
+		if err != nil {
+			return nil, err
+		}
+		countParam, err := parseOptional(countUnescaped, strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		searchUnescaped, err := url.QueryUnescape(qp.Get("search"))
+		if err != nil {
+			return nil, err
+		}
+		searchParam := getOptional(searchUnescaped)
 		var options *armbilling.CustomersClientListByBillingAccountOptions
-		if searchParam != nil || filterParam != nil {
+		if expandParam != nil || filterParam != nil || orderByParam != nil || topParam != nil || skipParam != nil || countParam != nil || searchParam != nil {
 			options = &armbilling.CustomersClientListByBillingAccountOptions{
-				Search: searchParam,
-				Filter: filterParam,
+				Expand:  expandParam,
+				Filter:  filterParam,
+				OrderBy: orderByParam,
+				Top:     topParam,
+				Skip:    skipParam,
+				Count:   countParam,
+				Search:  searchParam,
 			}
 		}
 		resp := c.srv.NewListByBillingAccountPager(billingAccountNameParam, options)
@@ -206,21 +290,72 @@ func (c *CustomersServerTransport) dispatchNewListByBillingProfilePager(req *htt
 		if err != nil {
 			return nil, err
 		}
-		searchUnescaped, err := url.QueryUnescape(qp.Get("$search"))
+		expandUnescaped, err := url.QueryUnescape(qp.Get("expand"))
 		if err != nil {
 			return nil, err
 		}
-		searchParam := getOptional(searchUnescaped)
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		expandParam := getOptional(expandUnescaped)
+		filterUnescaped, err := url.QueryUnescape(qp.Get("filter"))
 		if err != nil {
 			return nil, err
 		}
 		filterParam := getOptional(filterUnescaped)
+		orderByUnescaped, err := url.QueryUnescape(qp.Get("orderBy"))
+		if err != nil {
+			return nil, err
+		}
+		orderByParam := getOptional(orderByUnescaped)
+		topUnescaped, err := url.QueryUnescape(qp.Get("top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		skipUnescaped, err := url.QueryUnescape(qp.Get("skip"))
+		if err != nil {
+			return nil, err
+		}
+		skipParam, err := parseOptional(skipUnescaped, func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		countUnescaped, err := url.QueryUnescape(qp.Get("count"))
+		if err != nil {
+			return nil, err
+		}
+		countParam, err := parseOptional(countUnescaped, strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		searchUnescaped, err := url.QueryUnescape(qp.Get("search"))
+		if err != nil {
+			return nil, err
+		}
+		searchParam := getOptional(searchUnescaped)
 		var options *armbilling.CustomersClientListByBillingProfileOptions
-		if searchParam != nil || filterParam != nil {
+		if expandParam != nil || filterParam != nil || orderByParam != nil || topParam != nil || skipParam != nil || countParam != nil || searchParam != nil {
 			options = &armbilling.CustomersClientListByBillingProfileOptions{
-				Search: searchParam,
-				Filter: filterParam,
+				Expand:  expandParam,
+				Filter:  filterParam,
+				OrderBy: orderByParam,
+				Top:     topParam,
+				Skip:    skipParam,
+				Count:   countParam,
+				Search:  searchParam,
 			}
 		}
 		resp := c.srv.NewListByBillingProfilePager(billingAccountNameParam, billingProfileNameParam, options)

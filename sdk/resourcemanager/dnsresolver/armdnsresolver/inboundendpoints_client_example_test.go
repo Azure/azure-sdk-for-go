@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b749953e21e5c3f275d839862323920ef7bf716e/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/InboundEndpoint_Put.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/InboundEndpoint_Put.json
 func ExampleInboundEndpointsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,6 +60,12 @@ func ExampleInboundEndpointsClient_BeginCreateOrUpdate() {
 	// 	Name: to.Ptr("sampleInboundEndpoint"),
 	// 	Type: to.Ptr("Microsoft.Network/dnsResolvers/inboundEndpoints"),
 	// 	ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/inboundEndpoints/sampleInboundEndpoint"),
+	// 	SystemData: &armdnsresolver.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.107Z"); return t}()),
+	// 		CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T02:03:01.197Z"); return t}()),
+	// 		LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+	// 	},
 	// 	Location: to.Ptr("westus2"),
 	// 	Tags: map[string]*string{
 	// 		"key1": to.Ptr("value1"),
@@ -77,16 +83,10 @@ func ExampleInboundEndpointsClient_BeginCreateOrUpdate() {
 	// 		ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
 	// 		ResourceGUID: to.Ptr("87b3e20a-5833-4c40-8ad7-c5160bb1c5bd"),
 	// 	},
-	// 	SystemData: &armdnsresolver.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.107Z"); return t}()),
-	// 		CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T02:03:01.197Z"); return t}()),
-	// 		LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b749953e21e5c3f275d839862323920ef7bf716e/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/InboundEndpoint_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/InboundEndpoint_Patch.json
 func ExampleInboundEndpointsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,6 +116,12 @@ func ExampleInboundEndpointsClient_BeginUpdate() {
 	// 	Name: to.Ptr("sampleInboundEndpoint"),
 	// 	Type: to.Ptr("Microsoft.Network/dnsResolvers/inboundEndpoints"),
 	// 	ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/inboundEndpoints/sampleInboundEndpoint"),
+	// 	SystemData: &armdnsresolver.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.107Z"); return t}()),
+	// 		CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T02:03:01.197Z"); return t}()),
+	// 		LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+	// 	},
 	// 	Location: to.Ptr("westus2"),
 	// 	Tags: map[string]*string{
 	// 		"key1": to.Ptr("value1"),
@@ -133,16 +139,10 @@ func ExampleInboundEndpointsClient_BeginUpdate() {
 	// 		ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
 	// 		ResourceGUID: to.Ptr("87b3e20a-5833-4c40-8ad7-c5160bb1c5bd"),
 	// 	},
-	// 	SystemData: &armdnsresolver.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.107Z"); return t}()),
-	// 		CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T02:03:01.197Z"); return t}()),
-	// 		LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b749953e21e5c3f275d839862323920ef7bf716e/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/InboundEndpoint_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/InboundEndpoint_Delete.json
 func ExampleInboundEndpointsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -163,7 +163,7 @@ func ExampleInboundEndpointsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b749953e21e5c3f275d839862323920ef7bf716e/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/InboundEndpoint_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/InboundEndpoint_Get.json
 func ExampleInboundEndpointsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -185,6 +185,12 @@ func ExampleInboundEndpointsClient_Get() {
 	// 	Name: to.Ptr("sampleInboundEndpoint"),
 	// 	Type: to.Ptr("Microsoft.Network/dnsResolvers/inboundEndpoints"),
 	// 	ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/inboundEndpoints/sampleInboundEndpoint"),
+	// 	SystemData: &armdnsresolver.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.107Z"); return t}()),
+	// 		CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T02:03:01.197Z"); return t}()),
+	// 		LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+	// 	},
 	// 	Location: to.Ptr("westus2"),
 	// 	Tags: map[string]*string{
 	// 		"key1": to.Ptr("value1"),
@@ -202,16 +208,10 @@ func ExampleInboundEndpointsClient_Get() {
 	// 		ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
 	// 		ResourceGUID: to.Ptr("b6b2d964-8588-4e3a-a7fe-8a5b7fe8eca5"),
 	// 	},
-	// 	SystemData: &armdnsresolver.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.107Z"); return t}()),
-	// 		CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T02:03:01.197Z"); return t}()),
-	// 		LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b749953e21e5c3f275d839862323920ef7bf716e/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/InboundEndpoint_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/InboundEndpoint_List.json
 func ExampleInboundEndpointsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -239,6 +239,12 @@ func ExampleInboundEndpointsClient_NewListPager() {
 		// 			Name: to.Ptr("sampleInboundEndpoint1"),
 		// 			Type: to.Ptr("Microsoft.Network/dnsResolvers/inboundEndpoints"),
 		// 			ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/inboundEndpoints/sampleInboundEndpoint1"),
+		// 			SystemData: &armdnsresolver.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.107Z"); return t}()),
+		// 				CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T02:03:01.197Z"); return t}()),
+		// 				LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+		// 			},
 		// 			Location: to.Ptr("westus2"),
 		// 			Tags: map[string]*string{
 		// 				"key1": to.Ptr("value1"),
@@ -256,17 +262,17 @@ func ExampleInboundEndpointsClient_NewListPager() {
 		// 				ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
 		// 				ResourceGUID: to.Ptr("b6b2d964-8588-4e3a-a7fe-8a5b7fe8eca5"),
 		// 			},
-		// 			SystemData: &armdnsresolver.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.107Z"); return t}()),
-		// 				CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T02:03:01.197Z"); return t}()),
-		// 				LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-		// 			},
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("sampleInboundEndpoint2"),
 		// 			Type: to.Ptr("Microsoft.Network/dnsResolvers/inboundEndpoints"),
 		// 			ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/inboundEndpoints/sampleInboundEndpoint2"),
+		// 			SystemData: &armdnsresolver.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T01:01:01.107Z"); return t}()),
+		// 				CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-03T02:03:01.197Z"); return t}()),
+		// 				LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+		// 			},
 		// 			Location: to.Ptr("westus2"),
 		// 			Tags: map[string]*string{
 		// 				"key1": to.Ptr("value1"),
@@ -283,12 +289,6 @@ func ExampleInboundEndpointsClient_NewListPager() {
 		// 				}},
 		// 				ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
 		// 				ResourceGUID: to.Ptr("87b3e20a-5833-4c40-8ad7-c5160bb1c5bd"),
-		// 			},
-		// 			SystemData: &armdnsresolver.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T01:01:01.107Z"); return t}()),
-		// 				CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-03T02:03:01.197Z"); return t}()),
-		// 				LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
 		// 			},
 		// 	}},
 		// }

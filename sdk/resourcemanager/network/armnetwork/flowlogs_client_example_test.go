@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v5"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v6"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/NetworkWatcherFlowLogCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/NetworkWatcherFlowLogCreate.json
 func ExampleFlowLogsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,14 +31,21 @@ func ExampleFlowLogsClient_BeginCreateOrUpdate() {
 	}
 	poller, err := clientFactory.NewFlowLogsClient().BeginCreateOrUpdate(ctx, "rg1", "nw1", "fl", armnetwork.FlowLog{
 		Location: to.Ptr("centraluseuap"),
+		Identity: &armnetwork.ManagedServiceIdentity{
+			Type: to.Ptr(armnetwork.ResourceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armnetwork.Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties{
+				"/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": {},
+			},
+		},
 		Properties: &armnetwork.FlowLogPropertiesFormat{
 			Format: &armnetwork.FlowLogFormatParameters{
 				Type:    to.Ptr(armnetwork.FlowLogFormatTypeJSON),
 				Version: to.Ptr[int32](1),
 			},
-			Enabled:          to.Ptr(true),
-			StorageID:        to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Storage/storageAccounts/nwtest1mgvbfmqsigdxe"),
-			TargetResourceID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkSecurityGroups/desmondcentral-nsg"),
+			Enabled:                  to.Ptr(true),
+			EnabledFilteringCriteria: to.Ptr("srcIP=158.255.7.8 || dstPort=56891"),
+			StorageID:                to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Storage/storageAccounts/nwtest1mgvbfmqsigdxe"),
+			TargetResourceID:         to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkSecurityGroups/desmondcentral-nsg"),
 		},
 	}, nil)
 	if err != nil {
@@ -57,12 +64,22 @@ func ExampleFlowLogsClient_BeginCreateOrUpdate() {
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkWatchers/nw/FlowLogs/fl"),
 	// 	Location: to.Ptr("centraluseuap"),
 	// 	Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
+	// 	Identity: &armnetwork.ManagedServiceIdentity{
+	// 		Type: to.Ptr(armnetwork.ResourceIdentityTypeUserAssigned),
+	// 		UserAssignedIdentities: map[string]*armnetwork.Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties{
+	// 			"/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": &armnetwork.Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties{
+	// 				ClientID: to.Ptr("c16d15e1-f60a-40e4-8a05-df3d3f655c14"),
+	// 				PrincipalID: to.Ptr("e3858881-e40c-43bd-9cde-88da39c05023"),
+	// 			},
+	// 		},
+	// 	},
 	// 	Properties: &armnetwork.FlowLogPropertiesFormat{
 	// 		Format: &armnetwork.FlowLogFormatParameters{
 	// 			Type: to.Ptr(armnetwork.FlowLogFormatTypeJSON),
 	// 			Version: to.Ptr[int32](1),
 	// 		},
 	// 		Enabled: to.Ptr(true),
+	// 		EnabledFilteringCriteria: to.Ptr("srcIP=158.255.7.8 || dstPort=56891"),
 	// 		FlowAnalyticsConfiguration: &armnetwork.TrafficAnalyticsProperties{
 	// 		},
 	// 		ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
@@ -77,7 +94,7 @@ func ExampleFlowLogsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/NetworkWatcherFlowLogUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/NetworkWatcherFlowLogUpdateTags.json
 func ExampleFlowLogsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -110,12 +127,22 @@ func ExampleFlowLogsClient_UpdateTags() {
 	// 		"tag2": to.Ptr("value2"),
 	// 	},
 	// 	Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
+	// 	Identity: &armnetwork.ManagedServiceIdentity{
+	// 		Type: to.Ptr(armnetwork.ResourceIdentityTypeUserAssigned),
+	// 		UserAssignedIdentities: map[string]*armnetwork.Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties{
+	// 			"/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": &armnetwork.Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties{
+	// 				ClientID: to.Ptr("c16d15e1-f60a-40e4-8a05-df3d3f655c14"),
+	// 				PrincipalID: to.Ptr("e3858881-e40c-43bd-9cde-88da39c05023"),
+	// 			},
+	// 		},
+	// 	},
 	// 	Properties: &armnetwork.FlowLogPropertiesFormat{
 	// 		Format: &armnetwork.FlowLogFormatParameters{
 	// 			Type: to.Ptr(armnetwork.FlowLogFormatTypeJSON),
 	// 			Version: to.Ptr[int32](1),
 	// 		},
 	// 		Enabled: to.Ptr(true),
+	// 		EnabledFilteringCriteria: to.Ptr("srcIP=158.255.7.8 || dstPort=56891"),
 	// 		FlowAnalyticsConfiguration: &armnetwork.TrafficAnalyticsProperties{
 	// 		},
 	// 		ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
@@ -130,7 +157,7 @@ func ExampleFlowLogsClient_UpdateTags() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/NetworkWatcherFlowLogGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/NetworkWatcherFlowLogGet.json
 func ExampleFlowLogsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,12 +181,22 @@ func ExampleFlowLogsClient_Get() {
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkWatchers/тц1/FlowLogs/flowLog1"),
 	// 	Location: to.Ptr("centraluseuap"),
 	// 	Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
+	// 	Identity: &armnetwork.ManagedServiceIdentity{
+	// 		Type: to.Ptr(armnetwork.ResourceIdentityTypeUserAssigned),
+	// 		UserAssignedIdentities: map[string]*armnetwork.Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties{
+	// 			"/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": &armnetwork.Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties{
+	// 				ClientID: to.Ptr("c16d15e1-f60a-40e4-8a05-df3d3f655c14"),
+	// 				PrincipalID: to.Ptr("e3858881-e40c-43bd-9cde-88da39c05023"),
+	// 			},
+	// 		},
+	// 	},
 	// 	Properties: &armnetwork.FlowLogPropertiesFormat{
 	// 		Format: &armnetwork.FlowLogFormatParameters{
 	// 			Type: to.Ptr(armnetwork.FlowLogFormatTypeJSON),
 	// 			Version: to.Ptr[int32](2),
 	// 		},
 	// 		Enabled: to.Ptr(true),
+	// 		EnabledFilteringCriteria: to.Ptr("srcIP=158.255.7.8 || dstPort=56891"),
 	// 		FlowAnalyticsConfiguration: &armnetwork.TrafficAnalyticsProperties{
 	// 			NetworkWatcherFlowAnalyticsConfiguration: &armnetwork.TrafficAnalyticsConfigurationProperties{
 	// 				Enabled: to.Ptr(false),
@@ -180,7 +217,7 @@ func ExampleFlowLogsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/NetworkWatcherFlowLogDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/NetworkWatcherFlowLogDelete.json
 func ExampleFlowLogsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -201,7 +238,7 @@ func ExampleFlowLogsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/NetworkWatcherFlowLogList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/NetworkWatcherFlowLogList.json
 func ExampleFlowLogsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -231,12 +268,22 @@ func ExampleFlowLogsClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkWatchers/тц1/FlowLogs/flowLog1"),
 		// 			Location: to.Ptr("centraluseuap"),
 		// 			Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
+		// 			Identity: &armnetwork.ManagedServiceIdentity{
+		// 				Type: to.Ptr(armnetwork.ResourceIdentityTypeUserAssigned),
+		// 				UserAssignedIdentities: map[string]*armnetwork.Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties{
+		// 					"/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": &armnetwork.Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties{
+		// 						ClientID: to.Ptr("c16d15e1-f60a-40e4-8a05-df3d3f655c14"),
+		// 						PrincipalID: to.Ptr("e3858881-e40c-43bd-9cde-88da39c05023"),
+		// 					},
+		// 				},
+		// 			},
 		// 			Properties: &armnetwork.FlowLogPropertiesFormat{
 		// 				Format: &armnetwork.FlowLogFormatParameters{
 		// 					Type: to.Ptr(armnetwork.FlowLogFormatTypeJSON),
 		// 					Version: to.Ptr[int32](2),
 		// 				},
 		// 				Enabled: to.Ptr(true),
+		// 				EnabledFilteringCriteria: to.Ptr("srcIP=158.255.7.8 || dstPort=56891"),
 		// 				FlowAnalyticsConfiguration: &armnetwork.TrafficAnalyticsProperties{
 		// 					NetworkWatcherFlowAnalyticsConfiguration: &armnetwork.TrafficAnalyticsConfigurationProperties{
 		// 						Enabled: to.Ptr(false),
@@ -261,12 +308,22 @@ func ExampleFlowLogsClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/96e68903-0a56-4819-9987-8d08ad6a1f99/resourceGroups/NetworkWatcherRG/providers/Microsoft.Network/networkWatchers/NetworkWatcher_centraluseuap/FlowLogs/flowLog2"),
 		// 			Location: to.Ptr("centraluseuap"),
 		// 			Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
+		// 			Identity: &armnetwork.ManagedServiceIdentity{
+		// 				Type: to.Ptr(armnetwork.ResourceIdentityTypeUserAssigned),
+		// 				UserAssignedIdentities: map[string]*armnetwork.Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties{
+		// 					"/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": &armnetwork.Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties{
+		// 						ClientID: to.Ptr("c16d15e1-f60a-40e4-8a05-df3d3f655c14"),
+		// 						PrincipalID: to.Ptr("e3858881-e40c-43bd-9cde-88da39c05023"),
+		// 					},
+		// 				},
+		// 			},
 		// 			Properties: &armnetwork.FlowLogPropertiesFormat{
 		// 				Format: &armnetwork.FlowLogFormatParameters{
 		// 					Type: to.Ptr(armnetwork.FlowLogFormatTypeJSON),
 		// 					Version: to.Ptr[int32](2),
 		// 				},
 		// 				Enabled: to.Ptr(true),
+		// 				EnabledFilteringCriteria: to.Ptr("srcIP=158.255.7.8 || dstPort=56891"),
 		// 				FlowAnalyticsConfiguration: &armnetwork.TrafficAnalyticsProperties{
 		// 				},
 		// 				ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),

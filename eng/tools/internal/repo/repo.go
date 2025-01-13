@@ -6,7 +6,6 @@ package repo
 import (
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"sort"
@@ -24,8 +23,8 @@ type WorkingTree struct {
 func Get(dir string) (wt WorkingTree, err error) {
 	orig := dir
 	for found := false; !found; {
-		var fi []os.FileInfo
-		fi, err = ioutil.ReadDir(dir)
+		var fi []os.DirEntry
+		fi, err = os.ReadDir(dir)
 		if err != nil {
 			return
 		}

@@ -12,18 +12,19 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/http"
+
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
-	"net/http"
 )
 
 // AddressServer is a fake server for instances of the armbilling.AddressClient type.
 type AddressServer struct {
 	// Validate is the fake for method AddressClient.Validate
 	// HTTP status codes to indicate success: http.StatusOK
-	Validate func(ctx context.Context, address armbilling.AddressDetails, options *armbilling.AddressClientValidateOptions) (resp azfake.Responder[armbilling.AddressClientValidateResponse], errResp azfake.ErrorResponder)
+	Validate func(ctx context.Context, parameters armbilling.AddressDetails, options *armbilling.AddressClientValidateOptions) (resp azfake.Responder[armbilling.AddressClientValidateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewAddressServerTransport creates a new instance of AddressServerTransport with the provided implementation.
@@ -80,7 +81,7 @@ func (a *AddressServerTransport) dispatchValidate(req *http.Request) (*http.Resp
 	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ValidateAddressResponse, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AddressValidationResponse, req)
 	if err != nil {
 		return nil, err
 	}

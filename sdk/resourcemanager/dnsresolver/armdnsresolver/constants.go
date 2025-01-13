@@ -10,8 +10,40 @@ package armdnsresolver
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver"
-	moduleVersion = "v1.2.0"
+	moduleVersion = "v1.3.0-beta.1"
 )
+
+// ActionType - The type of action to take.
+type ActionType string
+
+const (
+	ActionTypeAlert ActionType = "Alert"
+	ActionTypeAllow ActionType = "Allow"
+	ActionTypeBlock ActionType = "Block"
+)
+
+// PossibleActionTypeValues returns the possible values for the ActionType const type.
+func PossibleActionTypeValues() []ActionType {
+	return []ActionType{
+		ActionTypeAlert,
+		ActionTypeAllow,
+		ActionTypeBlock,
+	}
+}
+
+// BlockResponseCode - The response code for block actions.
+type BlockResponseCode string
+
+const (
+	BlockResponseCodeSERVFAIL BlockResponseCode = "SERVFAIL"
+)
+
+// PossibleBlockResponseCodeValues returns the possible values for the BlockResponseCode const type.
+func PossibleBlockResponseCodeValues() []BlockResponseCode {
+	return []BlockResponseCode{
+		BlockResponseCodeSERVFAIL,
+	}
+}
 
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
@@ -47,6 +79,22 @@ func PossibleDNSResolverStateValues() []DNSResolverState {
 	return []DNSResolverState{
 		DNSResolverStateConnected,
 		DNSResolverStateDisconnected,
+	}
+}
+
+// DNSSecurityRuleState - The state of DNS security rule.
+type DNSSecurityRuleState string
+
+const (
+	DNSSecurityRuleStateDisabled DNSSecurityRuleState = "Disabled"
+	DNSSecurityRuleStateEnabled  DNSSecurityRuleState = "Enabled"
+)
+
+// PossibleDNSSecurityRuleStateValues returns the possible values for the DNSSecurityRuleState const type.
+func PossibleDNSSecurityRuleStateValues() []DNSSecurityRuleState {
+	return []DNSSecurityRuleState{
+		DNSSecurityRuleStateDisabled,
+		DNSSecurityRuleStateEnabled,
 	}
 }
 

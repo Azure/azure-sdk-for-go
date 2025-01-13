@@ -18,18 +18,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/selfhelp/armselfhelp/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c77bbf822be2deaac1b690270c6cd03a52df0e37/specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/CheckNameAvailabilityForDiagnosticWhenNameIsAvailable.json
-func ExampleCheckNameAvailabilityClient_Post_exampleWhenNameIsAvailableForADiagnosticResource() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c3cc9abe085093ba880ee3eeb792edb4fa789553/specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/CheckNameAvailabilityForDiagnosticWhenNameIsAvailable.json
+func ExampleCheckNameAvailabilityClient_CheckAvailability_exampleWhenNameIsAvailableForADiagnosticResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armselfhelp.NewClientFactory("<subscription-id>", cred, nil)
+	clientFactory, err := armselfhelp.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewCheckNameAvailabilityClient().Post(ctx, "subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6", &armselfhelp.CheckNameAvailabilityClientPostOptions{CheckNameAvailabilityRequest: &armselfhelp.CheckNameAvailabilityRequest{
+	res, err := clientFactory.NewCheckNameAvailabilityClient().CheckAvailability(ctx, "subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6", &armselfhelp.CheckNameAvailabilityClientCheckAvailabilityOptions{CheckNameAvailabilityRequest: &armselfhelp.CheckNameAvailabilityRequest{
 		Name: to.Ptr("sampleName"),
 		Type: to.Ptr("Microsoft.Help/diagnostics"),
 	},
@@ -45,18 +45,18 @@ func ExampleCheckNameAvailabilityClient_Post_exampleWhenNameIsAvailableForADiagn
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c77bbf822be2deaac1b690270c6cd03a52df0e37/specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/CheckNameAvailabilityForDiagnosticWhenNameIsNotAvailable.json
-func ExampleCheckNameAvailabilityClient_Post_exampleWhenNameIsNotAvailableForADiagnosticResource() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c3cc9abe085093ba880ee3eeb792edb4fa789553/specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/CheckNameAvailabilityForDiagnosticWhenNameIsNotAvailable.json
+func ExampleCheckNameAvailabilityClient_CheckAvailability_exampleWhenNameIsNotAvailableForADiagnosticResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armselfhelp.NewClientFactory("<subscription-id>", cred, nil)
+	clientFactory, err := armselfhelp.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewCheckNameAvailabilityClient().Post(ctx, "subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6", &armselfhelp.CheckNameAvailabilityClientPostOptions{CheckNameAvailabilityRequest: &armselfhelp.CheckNameAvailabilityRequest{
+	res, err := clientFactory.NewCheckNameAvailabilityClient().CheckAvailability(ctx, "subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6", &armselfhelp.CheckNameAvailabilityClientCheckAvailabilityOptions{CheckNameAvailabilityRequest: &armselfhelp.CheckNameAvailabilityRequest{
 		Name: to.Ptr("sampleName"),
 		Type: to.Ptr("Microsoft.Help/diagnostics"),
 	},

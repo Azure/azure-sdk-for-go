@@ -64,6 +64,21 @@ type AzureEntityResource struct {
 	Type *string
 }
 
+// AzureResourceProperties - An Azure resource QueryPack-Query object
+type AzureResourceProperties struct {
+	// READ-ONLY; Azure resource Id
+	ID *string
+
+	// READ-ONLY; Azure resource name
+	Name *string
+
+	// READ-ONLY; Read only system data
+	SystemData *SystemData
+
+	// READ-ONLY; Azure resource type
+	Type *string
+}
+
 // CapacityReservationProperties - The Capacity Reservation properties.
 type CapacityReservationProperties struct {
 	// READ-ONLY; The last time Sku was updated.
@@ -176,6 +191,30 @@ type ClusterSKU struct {
 
 	// The name of the SKU.
 	Name *ClusterSKUNameEnum
+}
+
+// Column - Table column.
+type Column struct {
+	// Column data type logical hint.
+	DataTypeHint *ColumnDataTypeHintEnum
+
+	// Column description.
+	Description *string
+
+	// Column display name.
+	DisplayName *string
+
+	// Column name.
+	Name *string
+
+	// Column data type.
+	Type *ColumnTypeEnum
+
+	// READ-ONLY; Is displayed by default.
+	IsDefaultDisplay *bool
+
+	// READ-ONLY; Is column hidden.
+	IsHidden *bool
 }
 
 // CoreSummary - The core summary of a search.
@@ -432,6 +471,148 @@ type LinkedStorageAccountsResource struct {
 	Type *string
 }
 
+// LogAnalyticsQueryPack - An Log Analytics QueryPack definition.
+type LogAnalyticsQueryPack struct {
+	// REQUIRED; Resource location
+	Location *string
+
+	// REQUIRED; Properties that define a Log Analytics QueryPack resource.
+	Properties *LogAnalyticsQueryPackProperties
+
+	// Resource tags
+	Tags map[string]*string
+
+	// READ-ONLY; Azure resource Id
+	ID *string
+
+	// READ-ONLY; Azure resource name
+	Name *string
+
+	// READ-ONLY; Azure resource type
+	Type *string
+}
+
+// LogAnalyticsQueryPackListResult - Describes the list of Log Analytics QueryPack resources.
+type LogAnalyticsQueryPackListResult struct {
+	// REQUIRED; List of Log Analytics QueryPack definitions.
+	Value []*LogAnalyticsQueryPack
+
+	// The URI to get the next set of Log Analytics QueryPack definitions if too many QueryPacks where returned in the result
+	// set.
+	NextLink *string
+}
+
+// LogAnalyticsQueryPackProperties - Properties that define a Log Analytics QueryPack resource.
+type LogAnalyticsQueryPackProperties struct {
+	// READ-ONLY; Current state of this QueryPack: whether or not is has been provisioned within the resource group it is defined.
+	// Users cannot change this value but are able to read from it. Values will include
+	// Succeeded, Deploying, Canceled, and Failed.
+	ProvisioningState *string
+
+	// READ-ONLY; The unique ID of your application. This field cannot be changed.
+	QueryPackID *string
+
+	// READ-ONLY; Creation Date for the Log Analytics QueryPack, in ISO 8601 format.
+	TimeCreated *time.Time
+
+	// READ-ONLY; Last modified date of the Log Analytics QueryPack, in ISO 8601 format.
+	TimeModified *time.Time
+}
+
+// LogAnalyticsQueryPackQuery - A Log Analytics QueryPack-Query definition.
+type LogAnalyticsQueryPackQuery struct {
+	// Properties that define an Log Analytics QueryPack-Query resource.
+	Properties *LogAnalyticsQueryPackQueryProperties
+
+	// READ-ONLY; Azure resource Id
+	ID *string
+
+	// READ-ONLY; Azure resource name
+	Name *string
+
+	// READ-ONLY; Read only system data
+	SystemData *SystemData
+
+	// READ-ONLY; Azure resource type
+	Type *string
+}
+
+// LogAnalyticsQueryPackQueryListResult - Describes the list of Log Analytics QueryPack-Query resources.
+type LogAnalyticsQueryPackQueryListResult struct {
+	// REQUIRED; List of Log Analytics QueryPack Query definitions.
+	Value []*LogAnalyticsQueryPackQuery
+
+	// The URI to get the next set of Log Analytics QueryPack definitions if too many QueryPack-Queries where returned in the
+	// result set.
+	NextLink *string
+}
+
+// LogAnalyticsQueryPackQueryProperties - Properties that define an Log Analytics QueryPack-Query resource.
+type LogAnalyticsQueryPackQueryProperties struct {
+	// REQUIRED; Body of the query.
+	Body *string
+
+	// REQUIRED; Unique display name for your query within the Query Pack.
+	DisplayName *string
+
+	// Description of the query.
+	Description *string
+
+	// Additional properties that can be set for the query.
+	Properties any
+
+	// The related metadata items for the function.
+	Related *LogAnalyticsQueryPackQueryPropertiesRelated
+
+	// Tags associated with the query.
+	Tags map[string][]*string
+
+	// READ-ONLY; Object Id of user creating the query.
+	Author *string
+
+	// READ-ONLY; The unique ID of your application. This field cannot be changed.
+	ID *string
+
+	// READ-ONLY; Creation Date for the Log Analytics Query, in ISO 8601 format.
+	TimeCreated *time.Time
+
+	// READ-ONLY; Last modified date of the Log Analytics Query, in ISO 8601 format.
+	TimeModified *time.Time
+}
+
+// LogAnalyticsQueryPackQueryPropertiesRelated - The related metadata items for the function.
+type LogAnalyticsQueryPackQueryPropertiesRelated struct {
+	// The related categories for the function.
+	Categories []*string
+
+	// The related resource types for the function.
+	ResourceTypes []*string
+
+	// The related Log Analytics solutions for the function.
+	Solutions []*string
+}
+
+// LogAnalyticsQueryPackQuerySearchProperties - Properties that define an Log Analytics QueryPack-Query search properties.
+type LogAnalyticsQueryPackQuerySearchProperties struct {
+	// The related metadata items for the function.
+	Related *LogAnalyticsQueryPackQuerySearchPropertiesRelated
+
+	// Tags associated with the query.
+	Tags map[string][]*string
+}
+
+// LogAnalyticsQueryPackQuerySearchPropertiesRelated - The related metadata items for the function.
+type LogAnalyticsQueryPackQuerySearchPropertiesRelated struct {
+	// The related categories for the function.
+	Categories []*string
+
+	// The related resource types for the function.
+	ResourceTypes []*string
+
+	// The related Log Analytics solutions for the function.
+	Solutions []*string
+}
+
 // ManagementGroup - A management group that is connected to a workspace
 type ManagementGroup struct {
 	// The properties of the management group.
@@ -550,6 +731,24 @@ type ProxyResource struct {
 	Type *string
 }
 
+// QueryPacksResource - An azure resource object
+type QueryPacksResource struct {
+	// REQUIRED; Resource location
+	Location *string
+
+	// Resource tags
+	Tags map[string]*string
+
+	// READ-ONLY; Azure resource Id
+	ID *string
+
+	// READ-ONLY; Azure resource name
+	Name *string
+
+	// READ-ONLY; Azure resource type
+	Type *string
+}
+
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -560,6 +759,27 @@ type Resource struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
+}
+
+// RestoredLogs - Restore parameters.
+type RestoredLogs struct {
+	// The timestamp to end the restore by (UTC).
+	EndRestoreTime *time.Time
+
+	// The table to restore data from.
+	SourceTable *string
+
+	// The timestamp to start the restore from (UTC).
+	StartRestoreTime *time.Time
+}
+
+// ResultStatistics - Search job execution statistics.
+type ResultStatistics struct {
+	// READ-ONLY; The number of rows that were returned by the search job.
+	IngestedRecords *int32
+
+	// READ-ONLY; Search job completion percentage.
+	Progress *float32
 }
 
 // SavedSearch - Value object for saved search results.
@@ -610,6 +830,49 @@ type SavedSearchProperties struct {
 type SavedSearchesListResult struct {
 	// The array of result values.
 	Value []*SavedSearch
+}
+
+// Schema - Table's schema.
+type Schema struct {
+	// A list of table custom columns.
+	Columns []*Column
+
+	// Table description.
+	Description *string
+
+	// Table display name.
+	DisplayName *string
+
+	// Table name.
+	Name *string
+
+	// READ-ONLY; Table category.
+	Categories []*string
+
+	// READ-ONLY; Table labels.
+	Labels []*string
+
+	// READ-ONLY; Parameters of the restore operation that initiated this table.
+	RestoredLogs *RestoredLogs
+
+	// READ-ONLY; Parameters of the search job that initiated this table.
+	SearchResults *SearchResults
+
+	// READ-ONLY; List of solutions the table is affiliated with
+	Solutions []*string
+
+	// READ-ONLY; Table's creator.
+	Source *SourceEnum
+
+	// READ-ONLY; A list of table standard columns.
+	StandardColumns []*Column
+
+	// READ-ONLY; The subtype describes what APIs can be used to interact with the table, and what features are available against
+	// it.
+	TableSubType *TableSubTypeEnum
+
+	// READ-ONLY; Table's creator.
+	TableType *TableTypeEnum
 }
 
 // SearchGetSchemaResponse - The get schema operation response.
@@ -682,6 +945,27 @@ type SearchMetadataSchema struct {
 
 	// The version of the metadata schema.
 	Version *int32
+}
+
+// SearchResults - Parameters of the search job that initiated this table.
+type SearchResults struct {
+	// Search job Description.
+	Description *string
+
+	// The timestamp to end the search by (UTC)
+	EndSearchTime *time.Time
+
+	// Limit the search job to return up to specified number of rows.
+	Limit *int32
+
+	// Search job query.
+	Query *string
+
+	// The timestamp to start the search from (UTC)
+	StartSearchTime *time.Time
+
+	// READ-ONLY; The table used in the search job.
+	SourceTable *string
 }
 
 // SearchSchemaValue - Value object for schema results.
@@ -789,9 +1073,51 @@ type StorageInsightStatus struct {
 	Description *string
 }
 
+// SystemData - Read only system data
+type SystemData struct {
+	// The timestamp of resource creation (UTC)
+	CreatedAt *time.Time
+
+	// An identifier for the identity that created the resource
+	CreatedBy *string
+
+	// The type of identity that created the resource
+	CreatedByType *IdentityType
+
+	// The timestamp of resource last modification (UTC)
+	LastModifiedAt *time.Time
+
+	// An identifier for the identity that last modified the resource
+	LastModifiedBy *string
+
+	// The type of identity that last modified the resource
+	LastModifiedByType *IdentityType
+}
+
+// SystemDataAutoGenerated - Metadata pertaining to creation and last modification of the resource.
+type SystemDataAutoGenerated struct {
+	// The timestamp of resource creation (UTC).
+	CreatedAt *time.Time
+
+	// The identity that created the resource.
+	CreatedBy *string
+
+	// The type of identity that created the resource.
+	CreatedByType *CreatedByType
+
+	// The timestamp of resource last modification (UTC)
+	LastModifiedAt *time.Time
+
+	// The identity that last modified the resource.
+	LastModifiedBy *string
+
+	// The type of identity that last modified the resource.
+	LastModifiedByType *CreatedByType
+}
+
 // Table - Workspace data table definition.
 type Table struct {
-	// Table properties.
+	// Table's properties.
 	Properties *TableProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -800,15 +1126,45 @@ type Table struct {
 	// READ-ONLY; The name of the resource
 	Name *string
 
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemDataAutoGenerated
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // TableProperties - Table properties.
 type TableProperties struct {
-	// The data table data retention in days, between 30 and 730. Setting this property to null will default to the workspace
-	// retention.
+	// Instruct the system how to handle and charge the logs ingested to this table.
+	Plan *TablePlanEnum
+
+	// Parameters of the restore operation that initiated this table.
+	RestoredLogs *RestoredLogs
+
+	// Search job execution statistics.
+	ResultStatistics *ResultStatistics
+
+	// The table retention in days, between 4 and 730. Setting this property to -1 will default to the workspace retention.
 	RetentionInDays *int32
+
+	// Table schema.
+	Schema *Schema
+
+	// Parameters of the search job that initiated this table.
+	SearchResults *SearchResults
+
+	// The table total retention in days, between 4 and 2555. Setting this property to -1 will default to table retention.
+	TotalRetentionInDays *int32
+
+	// READ-ONLY; The table data archive retention in days. Calculated as (totalRetentionInDays-retentionInDays)
+	ArchiveRetentionInDays *int32
+
+	// READ-ONLY; The timestamp that table plan was last modified (UTC).
+	LastPlanModifiedDate *string
+
+	// READ-ONLY; Table's current provisioning state. If set to 'updating', indicates a resource lock due to ongoing operation,
+	// forbidding any update to the table until the ongoing operation is concluded.
+	ProvisioningState *ProvisioningStateEnum
 }
 
 // TablesListResult - The list tables operation response.
@@ -824,6 +1180,12 @@ type Tag struct {
 
 	// REQUIRED; The tag value.
 	Value *string
+}
+
+// TagsResource - A container holding only the Tags for a resource, allowing the user to update the tags on a QueryPack instance.
+type TagsResource struct {
+	// Resource tags
+	Tags map[string]*string
 }
 
 // TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
@@ -880,8 +1242,8 @@ type Workspace struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// The etag of the workspace.
-	Etag *string
+	// The ETag of the workspace.
+	ETag *string
 
 	// Workspace properties.
 	Properties *WorkspaceProperties
@@ -894,6 +1256,9 @@ type Workspace struct {
 
 	// READ-ONLY; The name of the resource
 	Name *string
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemDataAutoGenerated
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
@@ -973,14 +1338,15 @@ type WorkspacePatch struct {
 
 // WorkspaceProperties - Workspace properties.
 type WorkspaceProperties struct {
+	// The resource ID of the default Data Collection Rule to use for this workspace. Expected format is -
+	// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionRules/{dcrName}.
+	DefaultDataCollectionRuleResourceID *string
+
 	// Workspace features.
 	Features *WorkspaceFeatures
 
 	// Indicates whether customer managed storage is mandatory for query management.
 	ForceCmkForQuery *bool
-
-	// The provisioning state of the workspace.
-	ProvisioningState *WorkspaceEntityStatus
 
 	// The network access type for accessing Log Analytics ingestion.
 	PublicNetworkAccessForIngestion *PublicNetworkAccessType
@@ -1008,6 +1374,9 @@ type WorkspaceProperties struct {
 
 	// READ-ONLY; List of linked private link scope resources.
 	PrivateLinkScopedResources []*PrivateLinkScopedResource
+
+	// READ-ONLY; The provisioning state of the workspace.
+	ProvisioningState *WorkspaceEntityStatus
 }
 
 // WorkspacePurgeBody - Describes the body of a purge request for an App Insights Workspace

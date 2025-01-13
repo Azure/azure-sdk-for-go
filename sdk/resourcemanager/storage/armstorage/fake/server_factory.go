@@ -19,26 +19,30 @@ import (
 
 // ServerFactory is a fake server for instances of the armstorage.ClientFactory type.
 type ServerFactory struct {
-	AccountsServer                   AccountsServer
-	BlobContainersServer             BlobContainersServer
-	BlobInventoryPoliciesServer      BlobInventoryPoliciesServer
-	BlobServicesServer               BlobServicesServer
-	DeletedAccountsServer            DeletedAccountsServer
-	EncryptionScopesServer           EncryptionScopesServer
-	FileServicesServer               FileServicesServer
-	FileSharesServer                 FileSharesServer
-	LocalUsersServer                 LocalUsersServer
-	ManagementPoliciesServer         ManagementPoliciesServer
-	ObjectReplicationPoliciesServer  ObjectReplicationPoliciesServer
-	OperationsServer                 OperationsServer
-	PrivateEndpointConnectionsServer PrivateEndpointConnectionsServer
-	PrivateLinkResourcesServer       PrivateLinkResourcesServer
-	QueueServer                      QueueServer
-	QueueServicesServer              QueueServicesServer
-	SKUsServer                       SKUsServer
-	TableServer                      TableServer
-	TableServicesServer              TableServicesServer
-	UsagesServer                     UsagesServer
+	AccountsServer                               AccountsServer
+	BlobContainersServer                         BlobContainersServer
+	BlobInventoryPoliciesServer                  BlobInventoryPoliciesServer
+	BlobServicesServer                           BlobServicesServer
+	DeletedAccountsServer                        DeletedAccountsServer
+	EncryptionScopesServer                       EncryptionScopesServer
+	FileServicesServer                           FileServicesServer
+	FileSharesServer                             FileSharesServer
+	LocalUsersServer                             LocalUsersServer
+	ManagementPoliciesServer                     ManagementPoliciesServer
+	NetworkSecurityPerimeterConfigurationsServer NetworkSecurityPerimeterConfigurationsServer
+	ObjectReplicationPoliciesServer              ObjectReplicationPoliciesServer
+	OperationsServer                             OperationsServer
+	PrivateEndpointConnectionsServer             PrivateEndpointConnectionsServer
+	PrivateLinkResourcesServer                   PrivateLinkResourcesServer
+	QueueServer                                  QueueServer
+	QueueServicesServer                          QueueServicesServer
+	SKUsServer                                   SKUsServer
+	TableServer                                  TableServer
+	TableServicesServer                          TableServicesServer
+	TaskAssignmentInstancesReportServer          TaskAssignmentInstancesReportServer
+	TaskAssignmentsServer                        TaskAssignmentsServer
+	TaskAssignmentsInstancesReportServer         TaskAssignmentsInstancesReportServer
+	UsagesServer                                 UsagesServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -53,28 +57,32 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armstorage.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                                *ServerFactory
-	trMu                               sync.Mutex
-	trAccountsServer                   *AccountsServerTransport
-	trBlobContainersServer             *BlobContainersServerTransport
-	trBlobInventoryPoliciesServer      *BlobInventoryPoliciesServerTransport
-	trBlobServicesServer               *BlobServicesServerTransport
-	trDeletedAccountsServer            *DeletedAccountsServerTransport
-	trEncryptionScopesServer           *EncryptionScopesServerTransport
-	trFileServicesServer               *FileServicesServerTransport
-	trFileSharesServer                 *FileSharesServerTransport
-	trLocalUsersServer                 *LocalUsersServerTransport
-	trManagementPoliciesServer         *ManagementPoliciesServerTransport
-	trObjectReplicationPoliciesServer  *ObjectReplicationPoliciesServerTransport
-	trOperationsServer                 *OperationsServerTransport
-	trPrivateEndpointConnectionsServer *PrivateEndpointConnectionsServerTransport
-	trPrivateLinkResourcesServer       *PrivateLinkResourcesServerTransport
-	trQueueServer                      *QueueServerTransport
-	trQueueServicesServer              *QueueServicesServerTransport
-	trSKUsServer                       *SKUsServerTransport
-	trTableServer                      *TableServerTransport
-	trTableServicesServer              *TableServicesServerTransport
-	trUsagesServer                     *UsagesServerTransport
+	srv                                            *ServerFactory
+	trMu                                           sync.Mutex
+	trAccountsServer                               *AccountsServerTransport
+	trBlobContainersServer                         *BlobContainersServerTransport
+	trBlobInventoryPoliciesServer                  *BlobInventoryPoliciesServerTransport
+	trBlobServicesServer                           *BlobServicesServerTransport
+	trDeletedAccountsServer                        *DeletedAccountsServerTransport
+	trEncryptionScopesServer                       *EncryptionScopesServerTransport
+	trFileServicesServer                           *FileServicesServerTransport
+	trFileSharesServer                             *FileSharesServerTransport
+	trLocalUsersServer                             *LocalUsersServerTransport
+	trManagementPoliciesServer                     *ManagementPoliciesServerTransport
+	trNetworkSecurityPerimeterConfigurationsServer *NetworkSecurityPerimeterConfigurationsServerTransport
+	trObjectReplicationPoliciesServer              *ObjectReplicationPoliciesServerTransport
+	trOperationsServer                             *OperationsServerTransport
+	trPrivateEndpointConnectionsServer             *PrivateEndpointConnectionsServerTransport
+	trPrivateLinkResourcesServer                   *PrivateLinkResourcesServerTransport
+	trQueueServer                                  *QueueServerTransport
+	trQueueServicesServer                          *QueueServicesServerTransport
+	trSKUsServer                                   *SKUsServerTransport
+	trTableServer                                  *TableServerTransport
+	trTableServicesServer                          *TableServicesServerTransport
+	trTaskAssignmentInstancesReportServer          *TaskAssignmentInstancesReportServerTransport
+	trTaskAssignmentsServer                        *TaskAssignmentsServerTransport
+	trTaskAssignmentsInstancesReportServer         *TaskAssignmentsInstancesReportServerTransport
+	trUsagesServer                                 *UsagesServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -130,6 +138,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewManagementPoliciesServerTransport(&s.srv.ManagementPoliciesServer)
 		})
 		resp, err = s.trManagementPoliciesServer.Do(req)
+	case "NetworkSecurityPerimeterConfigurationsClient":
+		initServer(s, &s.trNetworkSecurityPerimeterConfigurationsServer, func() *NetworkSecurityPerimeterConfigurationsServerTransport {
+			return NewNetworkSecurityPerimeterConfigurationsServerTransport(&s.srv.NetworkSecurityPerimeterConfigurationsServer)
+		})
+		resp, err = s.trNetworkSecurityPerimeterConfigurationsServer.Do(req)
 	case "ObjectReplicationPoliciesClient":
 		initServer(s, &s.trObjectReplicationPoliciesServer, func() *ObjectReplicationPoliciesServerTransport {
 			return NewObjectReplicationPoliciesServerTransport(&s.srv.ObjectReplicationPoliciesServer)
@@ -167,6 +180,21 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewTableServicesServerTransport(&s.srv.TableServicesServer)
 		})
 		resp, err = s.trTableServicesServer.Do(req)
+	case "TaskAssignmentInstancesReportClient":
+		initServer(s, &s.trTaskAssignmentInstancesReportServer, func() *TaskAssignmentInstancesReportServerTransport {
+			return NewTaskAssignmentInstancesReportServerTransport(&s.srv.TaskAssignmentInstancesReportServer)
+		})
+		resp, err = s.trTaskAssignmentInstancesReportServer.Do(req)
+	case "TaskAssignmentsClient":
+		initServer(s, &s.trTaskAssignmentsServer, func() *TaskAssignmentsServerTransport {
+			return NewTaskAssignmentsServerTransport(&s.srv.TaskAssignmentsServer)
+		})
+		resp, err = s.trTaskAssignmentsServer.Do(req)
+	case "TaskAssignmentsInstancesReportClient":
+		initServer(s, &s.trTaskAssignmentsInstancesReportServer, func() *TaskAssignmentsInstancesReportServerTransport {
+			return NewTaskAssignmentsInstancesReportServerTransport(&s.srv.TaskAssignmentsInstancesReportServer)
+		})
+		resp, err = s.trTaskAssignmentsInstancesReportServer.Do(req)
 	case "UsagesClient":
 		initServer(s, &s.trUsagesServer, func() *UsagesServerTransport { return NewUsagesServerTransport(&s.srv.UsagesServer) })
 		resp, err = s.trUsagesServer.Do(req)

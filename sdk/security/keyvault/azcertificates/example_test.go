@@ -8,7 +8,9 @@ package azcertificates_test
 
 import (
 	"context"
+	"encoding/base64"
 	"fmt"
+	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
@@ -93,4 +95,55 @@ func ExampleClient_DeleteCertificate() {
 
 	// In a soft-delete enabled vault, deleted resources can be recovered until they're purged (permanently deleted).
 	fmt.Printf("Certificate will be purged at %v", *resp.ScheduledPurgeDate)
+}
+
+// This example uses `ImportCertificate` to import an existing PFX certificate.
+func ExampleClient_ImportCertificate_pfx() {
+	// Getting certificate data from locally stored PFX file then encoding to base64
+	data, err := os.ReadFile("PFX_CERT_PATH")
+	if err != nil {
+		// TODO: handle error
+	}
+	encodedData := base64.StdEncoding.EncodeToString(data)
+
+	parameters := azcertificates.ImportCertificateParameters{
+		Base64EncodedCertificate: to.Ptr(encodedData),
+		CertificatePolicy: &azcertificates.CertificatePolicy{
+			SecretProperties: &azcertificates.SecretProperties{
+				ContentType: to.Ptr("application/x-pkcs12"),
+			},
+		},
+	}
+
+	resp, err := client.ImportCertificate(context.TODO(), "pfxCertName", parameters, nil)
+	if err != nil {
+		// TODO: handle error
+	}
+
+	fmt.Printf("PFX certificate %s imported successfully.", resp.ID.Name())
+}
+
+// This example uses `ImportCertificate` to import an existing PEM certificate.
+func ExampleClient_ImportCertificate_pem() {
+	// Getting certificate data from locally stored PEM file. Contents of .pem file are already base64 encoded.
+	data, err := os.ReadFile("PEM_CERT_PATH")
+	if err != nil {
+		// TODO: handle error
+	}
+
+	parameters := azcertificates.ImportCertificateParameters{
+		Base64EncodedCertificate: to.Ptr(string(data)),
+		CertificatePolicy: &azcertificates.CertificatePolicy{
+			SecretProperties: &azcertificates.SecretProperties{
+				ContentType: to.Ptr("application/x-pem-file"),
+			},
+		},
+	}
+
+	resp, err := client.ImportCertificate(context.TODO(), "pemCertName", parameters, nil)
+	if err != nil {
+		// TODO: handle error
+	}
+
+	fmt.Printf("PEM certificate %s imported successfully.", resp.ID.Name())
 }

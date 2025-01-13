@@ -5,7 +5,7 @@ package messaging
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"os"
 	"testing"
 	"time"
 
@@ -110,7 +110,7 @@ func TestCloudEventUnmarshalFull(t *testing.T) {
 
 func TestCloudEventUnmarshalFull_InteropWithPython(t *testing.T) {
 	// this event is a Python serialized CloudEvent
-	text, err := ioutil.ReadFile("testdata/cloudevent_binary_with_extensions.json")
+	text, err := os.ReadFile("testdata/cloudevent_binary_with_extensions.json")
 	require.NoError(t, err)
 
 	var ce *CloudEvent
@@ -141,7 +141,7 @@ func TestCloudEventUnmarshalFull_InteropWithPython(t *testing.T) {
 }
 
 func TestCloudEventUnmarshalRequiredFieldsOnly(t *testing.T) {
-	text, err := ioutil.ReadFile("testdata/cloudevent_required_only.json")
+	text, err := os.ReadFile("testdata/cloudevent_required_only.json")
 	require.NoError(t, err)
 
 	var ce *CloudEvent

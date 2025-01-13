@@ -35,6 +35,10 @@ type OrganizationsServer struct {
 	// GetAPIKey is the fake for method OrganizationsClient.GetAPIKey
 	// HTTP status codes to indicate success: http.StatusOK
 	GetAPIKey func(ctx context.Context, options *armelastic.OrganizationsClientGetAPIKeyOptions) (resp azfake.Responder[armelastic.OrganizationsClientGetAPIKeyResponse], errResp azfake.ErrorResponder)
+
+	// GetElasticToAzureSubscriptionMapping is the fake for method OrganizationsClient.GetElasticToAzureSubscriptionMapping
+	// HTTP status codes to indicate success: http.StatusOK
+	GetElasticToAzureSubscriptionMapping func(ctx context.Context, options *armelastic.OrganizationsClientGetElasticToAzureSubscriptionMappingOptions) (resp azfake.Responder[armelastic.OrganizationsClientGetElasticToAzureSubscriptionMappingResponse], errResp azfake.ErrorResponder)
 }
 
 // NewOrganizationsServerTransport creates a new instance of OrganizationsServerTransport with the provided implementation.
@@ -64,6 +68,8 @@ func (o *OrganizationsServerTransport) Do(req *http.Request) (*http.Response, er
 	switch method {
 	case "OrganizationsClient.GetAPIKey":
 		resp, err = o.dispatchGetAPIKey(req)
+	case "OrganizationsClient.GetElasticToAzureSubscriptionMapping":
+		resp, err = o.dispatchGetElasticToAzureSubscriptionMapping(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
 	}
@@ -104,6 +110,31 @@ func (o *OrganizationsServerTransport) dispatchGetAPIKey(req *http.Request) (*ht
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).UserAPIKeyResponse, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (o *OrganizationsServerTransport) dispatchGetElasticToAzureSubscriptionMapping(req *http.Request) (*http.Response, error) {
+	if o.srv.GetElasticToAzureSubscriptionMapping == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetElasticToAzureSubscriptionMapping not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Elastic/getElasticOrganizationToAzureSubscriptionMapping`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 1 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	respr, errRespr := o.srv.GetElasticToAzureSubscriptionMapping(req.Context(), nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).OrganizationToAzureSubscriptionMappingResponse, req)
 	if err != nil {
 		return nil, err
 	}

@@ -20,6 +20,7 @@ import (
 // ServerFactory is a fake server for instances of the armdevhub.ClientFactory type.
 type ServerFactory struct {
 	DeveloperHubServiceServer DeveloperHubServiceServer
+	IacProfilesServer         IacProfilesServer
 	OperationsServer          OperationsServer
 	WorkflowServer            WorkflowServer
 }
@@ -39,6 +40,7 @@ type ServerFactoryTransport struct {
 	srv                         *ServerFactory
 	trMu                        sync.Mutex
 	trDeveloperHubServiceServer *DeveloperHubServiceServerTransport
+	trIacProfilesServer         *IacProfilesServerTransport
 	trOperationsServer          *OperationsServerTransport
 	trWorkflowServer            *WorkflowServerTransport
 }
@@ -61,6 +63,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewDeveloperHubServiceServerTransport(&s.srv.DeveloperHubServiceServer)
 		})
 		resp, err = s.trDeveloperHubServiceServer.Do(req)
+	case "IacProfilesClient":
+		initServer(s, &s.trIacProfilesServer, func() *IacProfilesServerTransport { return NewIacProfilesServerTransport(&s.srv.IacProfilesServer) })
+		resp, err = s.trIacProfilesServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)

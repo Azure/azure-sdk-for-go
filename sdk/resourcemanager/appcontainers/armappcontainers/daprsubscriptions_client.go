@@ -11,13 +11,14 @@ package armappcontainers
 import (
 	"context"
 	"errors"
+	"net/http"
+	"net/url"
+	"strings"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"net/http"
-	"net/url"
-	"strings"
 )
 
 // DaprSubscriptionsClient contains the methods for the DaprSubscriptions group.
@@ -46,7 +47,7 @@ func NewDaprSubscriptionsClient(subscriptionID string, credential azcore.TokenCr
 // CreateOrUpdate - Creates or updates a Dapr subscription in a Managed Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-02-preview
+// Generated from API version 2024-08-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - environmentName - Name of the Managed Environment.
 //   - name - Name of the Dapr subscription.
@@ -99,7 +100,7 @@ func (client *DaprSubscriptionsClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-02-preview")
+	reqQP.Set("api-version", "2024-08-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, daprSubscriptionEnvelope); err != nil {
@@ -120,7 +121,7 @@ func (client *DaprSubscriptionsClient) createOrUpdateHandleResponse(resp *http.R
 // Delete - Delete a Dapr subscription from a Managed Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-02-preview
+// Generated from API version 2024-08-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - environmentName - Name of the Managed Environment.
 //   - name - Name of the Dapr subscription.
@@ -171,7 +172,7 @@ func (client *DaprSubscriptionsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-02-preview")
+	reqQP.Set("api-version", "2024-08-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -180,7 +181,7 @@ func (client *DaprSubscriptionsClient) deleteCreateRequest(ctx context.Context, 
 // Get - Get a dapr subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-02-preview
+// Generated from API version 2024-08-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - environmentName - Name of the Managed Environment.
 //   - name - Name of the Dapr subscription.
@@ -231,7 +232,7 @@ func (client *DaprSubscriptionsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-02-preview")
+	reqQP.Set("api-version", "2024-08-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -248,7 +249,7 @@ func (client *DaprSubscriptionsClient) getHandleResponse(resp *http.Response) (D
 
 // NewListPager - Get the Dapr subscriptions for a managed environment.
 //
-// Generated from API version 2023-11-02-preview
+// Generated from API version 2024-08-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - environmentName - Name of the Managed Environment.
 //   - options - DaprSubscriptionsClientListOptions contains the optional parameters for the DaprSubscriptionsClient.NewListPager
@@ -296,7 +297,7 @@ func (client *DaprSubscriptionsClient) listCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-02-preview")
+	reqQP.Set("api-version", "2024-08-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

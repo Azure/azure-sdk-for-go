@@ -42,8 +42,9 @@ func ExampleClient_GetChatCompletions_bringYourOwnDataWithCognitiveSearch() {
 	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, nil)
 
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	resp, err := client.GetChatCompletions(context.TODO(), azopenai.ChatCompletionsOptions{
@@ -73,8 +74,9 @@ func ExampleClient_GetChatCompletions_bringYourOwnDataWithCognitiveSearch() {
 	}, nil)
 
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	// Contains contextual information from your Azure chat completion extensions, configured above in `AzureExtensionsOptions`

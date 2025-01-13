@@ -103,9 +103,9 @@ type CheckNameAvailabilityParameters struct {
 	Type *string
 }
 
-// CommonPropertiesRedisConfiguration - All Redis Settings. Few possible keys:
-// rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
-// etc.
+// CommonPropertiesRedisConfiguration - All Redis Settings. Few possible keys: rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,
+// maxmemory-policy,notify-keyspace-events, aof-backup-enabled,
+// aof-storage-connection-string-0, aof-storage-connection-string-1 etc.
 type CommonPropertiesRedisConfiguration struct {
 	// Specifies whether AAD based authentication has been enabled or disabled for the cache
 	AADEnabled *string
@@ -136,6 +136,9 @@ type CommonPropertiesRedisConfiguration struct {
 
 	// Value in megabytes reserved for non-cache usage per shard e.g. failover.
 	MaxmemoryReserved *string
+
+	// The keyspace events which should be monitored.
+	NotifyKeyspaceEvents *string
 
 	// Preferred auth method to communicate to storage account used for data persistence, specify SAS or ManagedIdentity, default
 	// value is SAS
@@ -190,6 +193,9 @@ type CreateProperties struct {
 	// REQUIRED; The SKU of the Redis cache to deploy.
 	SKU *SKU
 
+	// Authentication to Redis through access keys is disabled when set as true. Default value is false.
+	DisableAccessKeyAuthentication *bool
+
 	// Specifies whether the non-ssl Redis server port (6379) is enabled.
 	EnableNonSSLPort *bool
 
@@ -201,9 +207,9 @@ type CreateProperties struct {
 	// Default value is 'Enabled'
 	PublicNetworkAccess *PublicNetworkAccess
 
-	// All Redis Settings. Few possible keys:
-	// rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
-	// etc.
+	// All Redis Settings. Few possible keys: rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,
+	// maxmemory-policy,notify-keyspace-events, aof-backup-enabled,
+	// aof-storage-connection-string-0, aof-storage-connection-string-1 etc.
 	RedisConfiguration *CommonPropertiesRedisConfiguration
 
 	// Redis version. This should be in the form 'major[.minor]' (only 'major' is required) or the value 'latest' which refers
@@ -685,6 +691,9 @@ type Properties struct {
 	// REQUIRED; The SKU of the Redis cache to deploy.
 	SKU *SKU
 
+	// Authentication to Redis through access keys is disabled when set as true. Default value is false.
+	DisableAccessKeyAuthentication *bool
+
 	// Specifies whether the non-ssl Redis server port (6379) is enabled.
 	EnableNonSSLPort *bool
 
@@ -696,9 +705,9 @@ type Properties struct {
 	// Default value is 'Enabled'
 	PublicNetworkAccess *PublicNetworkAccess
 
-	// All Redis Settings. Few possible keys:
-	// rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
-	// etc.
+	// All Redis Settings. Few possible keys: rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,
+	// maxmemory-policy,notify-keyspace-events, aof-backup-enabled,
+	// aof-storage-connection-string-0, aof-storage-connection-string-1 etc.
 	RedisConfiguration *CommonPropertiesRedisConfiguration
 
 	// Redis version. This should be in the form 'major[.minor]' (only 'major' is required) or the value 'latest' which refers
@@ -846,6 +855,9 @@ type UpdateParameters struct {
 
 // UpdateProperties - Patchable properties of the redis cache.
 type UpdateProperties struct {
+	// Authentication to Redis through access keys is disabled when set as true. Default value is false.
+	DisableAccessKeyAuthentication *bool
+
 	// Specifies whether the non-ssl Redis server port (6379) is enabled.
 	EnableNonSSLPort *bool
 
@@ -857,9 +869,9 @@ type UpdateProperties struct {
 	// Default value is 'Enabled'
 	PublicNetworkAccess *PublicNetworkAccess
 
-	// All Redis Settings. Few possible keys:
-	// rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
-	// etc.
+	// All Redis Settings. Few possible keys: rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,
+	// maxmemory-policy,notify-keyspace-events, aof-backup-enabled,
+	// aof-storage-connection-string-0, aof-storage-connection-string-1 etc.
 	RedisConfiguration *CommonPropertiesRedisConfiguration
 
 	// Redis version. This should be in the form 'major[.minor]' (only 'major' is required) or the value 'latest' which refers

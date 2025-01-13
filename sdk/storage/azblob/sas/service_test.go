@@ -284,12 +284,12 @@ func TestBlobSignatureValues_SignWithSharedKey(t *testing.T) {
 			expectedError: errors.New("service SAS is missing at least one of these: ExpiryTime or Permissions"),
 		},
 		{
-			object:        BlobSignatureValues{ContainerName: "fakestoragecontainer", Permissions: "a", ExpiryTime: *new(time.Time)},
+			object:        BlobSignatureValues{ContainerName: "fakestoragecontainer", Permissions: "a", ExpiryTime: *new(time.Time)}, //nolint
 			expected:      QueryParameters{},
 			expectedError: errors.New("service SAS is missing at least one of these: ExpiryTime or Permissions"),
 		},
 		{
-			object:        BlobSignatureValues{ContainerName: "fakestoragecontainer", Permissions: "", ExpiryTime: *new(time.Time), Identifier: "fakepolicyname"},
+			object:        BlobSignatureValues{ContainerName: "fakestoragecontainer", Permissions: "", ExpiryTime: *new(time.Time), Identifier: "fakepolicyname"}, //nolint
 			expected:      QueryParameters{version: Version, resource: "c", identifier: "fakepolicyname"},
 			expectedError: nil,
 		},

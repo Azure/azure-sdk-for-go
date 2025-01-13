@@ -68,6 +68,14 @@ func (c *ClientFactory) NewClusterJobsClient() *ClusterJobsClient {
 	}
 }
 
+// NewClusterLibrariesClient creates a new instance of ClusterLibrariesClient.
+func (c *ClientFactory) NewClusterLibrariesClient() *ClusterLibrariesClient {
+	return &ClusterLibrariesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewClusterPoolAvailableUpgradesClient creates a new instance of ClusterPoolAvailableUpgradesClient.
 func (c *ClientFactory) NewClusterPoolAvailableUpgradesClient() *ClusterPoolAvailableUpgradesClient {
 	return &ClusterPoolAvailableUpgradesClient{
@@ -76,9 +84,25 @@ func (c *ClientFactory) NewClusterPoolAvailableUpgradesClient() *ClusterPoolAvai
 	}
 }
 
+// NewClusterPoolUpgradeHistoriesClient creates a new instance of ClusterPoolUpgradeHistoriesClient.
+func (c *ClientFactory) NewClusterPoolUpgradeHistoriesClient() *ClusterPoolUpgradeHistoriesClient {
+	return &ClusterPoolUpgradeHistoriesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewClusterPoolsClient creates a new instance of ClusterPoolsClient.
 func (c *ClientFactory) NewClusterPoolsClient() *ClusterPoolsClient {
 	return &ClusterPoolsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewClusterUpgradeHistoriesClient creates a new instance of ClusterUpgradeHistoriesClient.
+func (c *ClientFactory) NewClusterUpgradeHistoriesClient() *ClusterUpgradeHistoriesClient {
+	return &ClusterUpgradeHistoriesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

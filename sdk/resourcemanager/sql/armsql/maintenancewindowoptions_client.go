@@ -100,8 +100,8 @@ func (client *MaintenanceWindowOptionsClient) getCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("maintenanceWindowOptionsName", maintenanceWindowOptionsName)
 	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("maintenanceWindowOptionsName", maintenanceWindowOptionsName)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -25,10 +25,12 @@ import (
 // configuration for live tests
 var liveManagedIdentity = struct {
 	clientID   string
+	objectID   string
 	resourceID string
 	imds       bool
 }{
 	clientID:   os.Getenv("IDENTITY_VM_USER_ASSIGNED_MI_CLIENT_ID"),
+	objectID:   os.Getenv("IDENTITY_VM_USER_ASSIGNED_MI_OBJECT_ID"),
 	resourceID: os.Getenv("IDENTITY_VM_USER_ASSIGNED_MI_RESOURCE_ID"),
 	imds:       os.Getenv("IDENTITY_IMDS_AVAILABLE") != "",
 }
@@ -62,6 +64,7 @@ const (
 	azidentityRunManualTests = "AZIDENTITY_RUN_MANUAL_TESTS"
 	fakeClientID             = "fake-client-id"
 	fakeMIEndpoint           = "https://fake.local"
+	fakeObjectID             = "fake-object-id"
 	fakeResourceID           = "/fake/resource/ID"
 	fakeTenantID             = "fake-tenant"
 	fakeUsername             = "fake@user"
@@ -103,6 +106,7 @@ var proxy *recording.TestProxyInstance
 
 func setFakeValues() {
 	liveManagedIdentity.clientID = fakeClientID
+	liveManagedIdentity.objectID = fakeObjectID
 	liveManagedIdentity.resourceID = fakeResourceID
 	liveSP.secret = "fake-secret"
 	liveSP.clientID = fakeClientID
@@ -166,6 +170,7 @@ func run(m *testing.M) int {
 		// replace path variables with fake values to simplify matching (the real values aren't secret)
 		pathVars := map[string]string{
 			liveManagedIdentity.clientID:                    fakeClientID,
+			liveManagedIdentity.objectID:                    fakeObjectID,
 			url.QueryEscape(liveManagedIdentity.resourceID): url.QueryEscape(fakeResourceID),
 			liveSP.tenantID:                                 fakeTenantID,
 			liveUser.tenantID:                               fakeTenantID,

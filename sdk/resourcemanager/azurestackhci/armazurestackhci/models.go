@@ -10,150 +10,25 @@ package armazurestackhci
 
 import "time"
 
-// ErrorAdditionalInfo - The resource management error additional info.
-type ErrorAdditionalInfo struct {
-	// READ-ONLY; The additional info.
-	Info any
-
-	// READ-ONLY; The additional info type.
-	Type *string
+// ArcIdentityResponse - ArcIdentity details.
+type ArcIdentityResponse struct {
+	// READ-ONLY; ArcIdentity properties.
+	Properties *ArcIdentityResponseProperties
 }
 
-// ErrorDetail - The error detail.
-type ErrorDetail struct {
-	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo
-
-	// READ-ONLY; The error code.
-	Code *string
-
-	// READ-ONLY; The error details.
-	Details []*ErrorDetail
-
-	// READ-ONLY; The error message.
-	Message *string
-
-	// READ-ONLY; The error target.
-	Target *string
+type ArcIdentityResponseProperties struct {
+	ArcApplicationClientID      *string
+	ArcApplicationObjectID      *string
+	ArcApplicationTenantID      *string
+	ArcServicePrincipalObjectID *string
 }
 
-// ExtendedLocation - The complex type of the extended location.
-type ExtendedLocation struct {
-	// The name of the extended location.
-	Name *string
+// ArcSetting details.
+type ArcSetting struct {
+	// ArcSetting properties.
+	Properties *ArcSettingProperties
 
-	// The type of the extended location.
-	Type *ExtendedLocationTypes
-}
-
-// GalleryImageIdentifier - This is the gallery image definition identifier.
-type GalleryImageIdentifier struct {
-	// REQUIRED; The name of the gallery image definition offer.
-	Offer *string
-
-	// REQUIRED; The name of the gallery image definition publisher.
-	Publisher *string
-
-	// REQUIRED; The name of the gallery image definition SKU.
-	SKU *string
-}
-
-// GalleryImageProperties - Properties under the gallery image resource
-type GalleryImageProperties struct {
-	// REQUIRED; Operating system type that the gallery image uses [Windows, Linux]
-	OSType *OperatingSystemTypes
-
-	// Datasource for the gallery image when provisioning with cloud-init [NoCloud, Azure]
-	CloudInitDataSource *CloudInitDataSource
-
-	// Storage ContainerID of the storage container to be used for gallery image
-	ContainerID *string
-
-	// The hypervisor generation of the Virtual Machine [V1, V2]
-	HyperVGeneration *HyperVGeneration
-
-	// This is the gallery image definition identifier.
-	Identifier *GalleryImageIdentifier
-
-	// location of the image the gallery image should be created from
-	ImagePath *string
-
-	// Specifies information about the gallery image version that you want to create or update.
-	Version *GalleryImageVersion
-
-	// READ-ONLY; Provisioning state of the gallery image.
-	ProvisioningState *ProvisioningStateEnum
-
-	// READ-ONLY; The observed state of gallery images
-	Status *GalleryImageStatus
-}
-
-// GalleryImageStatus - The observed state of gallery images
-type GalleryImageStatus struct {
-	// The download status of the gallery image
-	DownloadStatus *GalleryImageStatusDownloadStatus
-
-	// GalleryImage provisioning error code
-	ErrorCode *string
-
-	// Descriptive error message
-	ErrorMessage *string
-
-	// The progress of the operation in percentage
-	ProgressPercentage *int64
-	ProvisioningStatus *GalleryImageStatusProvisioningStatus
-}
-
-// GalleryImageStatusDownloadStatus - The download status of the gallery image
-type GalleryImageStatusDownloadStatus struct {
-	// The downloaded sized of the image in MB
-	DownloadSizeInMB *int64
-}
-
-type GalleryImageStatusProvisioningStatus struct {
-	// The ID of the operation performed on the gallery image
-	OperationID *string
-
-	// The status of the operation performed on the gallery image [Succeeded, Failed, InProgress]
-	Status *Status
-}
-
-// GalleryImageVersion - Specifies information about the gallery image version that you want to create or update.
-type GalleryImageVersion struct {
-	// This is the version of the gallery image.
-	Name *string
-
-	// Describes the properties of a gallery image version.
-	Properties *GalleryImageVersionProperties
-}
-
-// GalleryImageVersionProperties - Describes the properties of a gallery image version.
-type GalleryImageVersionProperties struct {
-	// REQUIRED; This is the storage profile of a Gallery Image Version.
-	StorageProfile *GalleryImageVersionStorageProfile
-}
-
-// GalleryImageVersionStorageProfile - This is the storage profile of a Gallery Image Version.
-type GalleryImageVersionStorageProfile struct {
-	// This is the OS disk image.
-	OSDiskImage *GalleryOSDiskImage
-}
-
-// GalleryImages - The gallery images resource definition.
-type GalleryImages struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
-
-	// The extendedLocation of the resource.
-	ExtendedLocation *ExtendedLocation
-
-	// Properties under the gallery image resource
-	Properties *GalleryImageProperties
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -166,32 +41,426 @@ type GalleryImages struct {
 	Type *string
 }
 
-// GalleryImagesListResult - List of gallery images.
-type GalleryImagesListResult struct {
-	Value []*GalleryImages
+// ArcSettingList - List of ArcSetting proxy resources for the HCI cluster.
+type ArcSettingList struct {
+	// READ-ONLY; Link to the next set of results.
+	NextLink *string
+
+	// READ-ONLY; List of ArcSetting proxy resources.
+	Value []*ArcSetting
+}
+
+// ArcSettingProperties - ArcSetting properties.
+type ArcSettingProperties struct {
+	// App id of arc AAD identity.
+	ArcApplicationClientID *string
+
+	// Object id of arc AAD identity.
+	ArcApplicationObjectID *string
+
+	// Tenant id of arc AAD identity.
+	ArcApplicationTenantID *string
+
+	// The resource group that hosts the Arc agents, ie. Hybrid Compute Machine resources.
+	ArcInstanceResourceGroup *string
+
+	// Object id of arc AAD service principal.
+	ArcServicePrincipalObjectID *string
+
+	// contains connectivity related configuration for ARC resources
+	ConnectivityProperties any
+
+	// READ-ONLY; Aggregate state of Arc agent across the nodes in this HCI cluster.
+	AggregateState *ArcSettingAggregateState
+
+	// READ-ONLY; Properties for each of the default extensions category
+	DefaultExtensions []*DefaultExtensionDetails
+
+	// READ-ONLY; State of Arc agent in each of the nodes.
+	PerNodeDetails []*PerNodeState
+
+	// READ-ONLY; Provisioning state of the ArcSetting proxy resource.
+	ProvisioningState *ProvisioningState
+}
+
+// ArcSettingsPatch - ArcSetting details to update.
+type ArcSettingsPatch struct {
+	// ArcSettings properties.
+	Properties *ArcSettingsPatchProperties
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// ArcSettingsPatchProperties - ArcSettings properties.
+type ArcSettingsPatchProperties struct {
+	// contains connectivity related configuration for ARC resources
+	ConnectivityProperties any
+}
+
+// Cluster details.
+type Cluster struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Identity of Cluster resource
+	Identity *ManagedServiceIdentity
+
+	// Cluster properties.
+	Properties *ClusterProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ClusterDesiredProperties - Desired properties of the cluster.
+type ClusterDesiredProperties struct {
+	// Desired level of diagnostic data emitted by the cluster.
+	DiagnosticLevel *DiagnosticLevel
+
+	// Desired state of Windows Server Subscription.
+	WindowsServerSubscription *WindowsServerSubscription
+}
+
+// ClusterIdentityResponse - Cluster Identity details.
+type ClusterIdentityResponse struct {
+	// READ-ONLY; Cluster identity properties.
+	Properties *ClusterIdentityResponseProperties
+}
+
+type ClusterIdentityResponseProperties struct {
+	AADApplicationObjectID      *string
+	AADClientID                 *string
+	AADServicePrincipalObjectID *string
+	AADTenantID                 *string
+}
+
+// ClusterList - List of clusters.
+type ClusterList struct {
+	// List of clusters.
+	Value []*Cluster
 
 	// READ-ONLY; Link to the next set of results.
 	NextLink *string
 }
 
-// GalleryImagesUpdateRequest - The gallery images resource patch definition.
-type GalleryImagesUpdateRequest struct {
-	// Resource tags
+// ClusterNode - Cluster node details.
+type ClusterNode struct {
+	// READ-ONLY; Number of physical cores on the cluster node.
+	CoreCount *float32
+
+	// READ-ONLY; Edge Hardware Center Resource Id
+	EhcResourceID *string
+
+	// READ-ONLY; Id of the node in the cluster.
+	ID *float32
+
+	// READ-ONLY; Most recent licensing timestamp.
+	LastLicensingTimestamp *time.Time
+
+	// READ-ONLY; Manufacturer of the cluster node hardware.
+	Manufacturer *string
+
+	// READ-ONLY; Total available memory on the cluster node (in GiB).
+	MemoryInGiB *float32
+
+	// READ-ONLY; Model name of the cluster node hardware.
+	Model *string
+
+	// READ-ONLY; Name of the cluster node.
+	Name *string
+
+	// READ-ONLY; Type of the cluster node hardware.
+	NodeType *ClusterNodeType
+
+	// READ-ONLY; Display version of the operating system running on the cluster node.
+	OSDisplayVersion *string
+
+	// READ-ONLY; Operating system running on the cluster node.
+	OSName *string
+
+	// READ-ONLY; Version of the operating system running on the cluster node.
+	OSVersion *string
+
+	// READ-ONLY; OEM activation status of the node.
+	OemActivation *OemActivation
+
+	// READ-ONLY; Immutable id of the cluster node.
+	SerialNumber *string
+
+	// READ-ONLY; State of Windows Server Subscription.
+	WindowsServerSubscription *WindowsServerSubscription
+}
+
+// ClusterPatch - Cluster details to update.
+type ClusterPatch struct {
+	// Identity of Cluster resource
+	Identity *ManagedServiceIdentity
+
+	// Cluster properties.
+	Properties *ClusterPatchProperties
+
+	// Resource tags.
 	Tags map[string]*string
 }
 
-// GalleryOSDiskImage - This is the OS disk image.
-type GalleryOSDiskImage struct {
-	// READ-ONLY; This property indicates the size of the VHD to be created.
-	SizeInMB *int64
+// ClusterPatchProperties - Cluster properties.
+type ClusterPatchProperties struct {
+	// App id of cluster AAD identity.
+	AADClientID *string
+
+	// Tenant id of cluster AAD identity.
+	AADTenantID *string
+
+	// Endpoint configured for management from the Azure portal
+	CloudManagementEndpoint *string
+
+	// Desired properties of the cluster.
+	DesiredProperties *ClusterDesiredProperties
 }
 
-// GuestAgent - Defines the GuestAgent.
-type GuestAgent struct {
-	// REQUIRED; Resource properties.
-	Properties *GuestAgentProperties
+// ClusterProperties - Cluster properties.
+type ClusterProperties struct {
+	// Object id of cluster AAD identity.
+	AADApplicationObjectID *string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// App id of cluster AAD identity.
+	AADClientID *string
+
+	// Id of cluster identity service principal.
+	AADServicePrincipalObjectID *string
+
+	// Tenant id of cluster AAD identity.
+	AADTenantID *string
+
+	// Endpoint configured for management from the Azure portal.
+	CloudManagementEndpoint *string
+
+	// Desired properties of the cluster.
+	DesiredProperties *ClusterDesiredProperties
+
+	// Log Collection properties of the cluster.
+	LogCollectionProperties *LogCollectionProperties
+
+	// RemoteSupport properties of the cluster.
+	RemoteSupportProperties *RemoteSupportProperties
+
+	// Software Assurance properties of the cluster.
+	SoftwareAssuranceProperties *SoftwareAssuranceProperties
+
+	// READ-ONLY; Type of billing applied to the resource.
+	BillingModel *string
+
+	// READ-ONLY; Unique, immutable resource id.
+	CloudID *string
+
+	// READ-ONLY; Overall connectivity status for the cluster resource.
+	ConnectivityStatus *ConnectivityStatus
+
+	// READ-ONLY; Attestation configurations for isolated VM (e.g. TVM, CVM) of the cluster.
+	IsolatedVMAttestationConfiguration *IsolatedVMAttestationConfiguration
+
+	// READ-ONLY; Most recent billing meter timestamp.
+	LastBillingTimestamp *time.Time
+
+	// READ-ONLY; Most recent cluster sync timestamp.
+	LastSyncTimestamp *time.Time
+
+	// READ-ONLY; Provisioning state.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; First cluster sync timestamp.
+	RegistrationTimestamp *time.Time
+
+	// READ-ONLY; Properties reported by cluster agent.
+	ReportedProperties *ClusterReportedProperties
+
+	// READ-ONLY; Object id of RP Service Principal
+	ResourceProviderObjectID *string
+
+	// READ-ONLY; Region specific DataPath Endpoint of the cluster.
+	ServiceEndpoint *string
+
+	// READ-ONLY; Status of the cluster agent.
+	Status *Status
+
+	// READ-ONLY; Number of days remaining in the trial period.
+	TrialDaysRemaining *float32
+}
+
+// ClusterReportedProperties - Properties reported by cluster agent.
+type ClusterReportedProperties struct {
+	// Level of diagnostic data emitted by the cluster.
+	DiagnosticLevel *DiagnosticLevel
+
+	// READ-ONLY; Unique id generated by the on-prem cluster.
+	ClusterID *string
+
+	// READ-ONLY; Name of the on-prem cluster connected to this resource.
+	ClusterName *string
+
+	// READ-ONLY; The node type of all the nodes of the cluster.
+	ClusterType *ClusterNodeType
+
+	// READ-ONLY; Version of the cluster software.
+	ClusterVersion *string
+
+	// READ-ONLY; IMDS attestation status of the cluster.
+	ImdsAttestation *ImdsAttestation
+
+	// READ-ONLY; Last time the cluster reported the data.
+	LastUpdated *time.Time
+
+	// READ-ONLY; The manufacturer of all the nodes of the cluster.
+	Manufacturer *string
+
+	// READ-ONLY; List of nodes reported by the cluster.
+	Nodes []*ClusterNode
+
+	// READ-ONLY; OEM activation status of the cluster.
+	OemActivation *OemActivation
+
+	// READ-ONLY; Capabilities supported by the cluster.
+	SupportedCapabilities []*string
+}
+
+// DefaultExtensionDetails - Properties for a particular default extension category.
+type DefaultExtensionDetails struct {
+	// READ-ONLY; Default extension category
+	Category *string
+
+	// READ-ONLY; Consent time for extension category
+	ConsentTime *time.Time
+}
+
+// DeploymentCluster - AzureStackHCI Cluster deployment properties.
+type DeploymentCluster struct {
+	// For Azure blob service endpoint type, select either Default or Custom domain. If you selected **Custom domain, enter the
+	// domain for the blob service in this format core.windows.net.
+	AzureServiceEndpoint *string
+
+	// Specify the Azure Storage account name for cloud witness for your Azure Stack HCI cluster.
+	CloudAccountName *string
+
+	// The cluster name provided when preparing Active Directory.
+	Name *string
+
+	// Specify the fileshare path for the local witness for your Azure Stack HCI cluster.
+	WitnessPath *string
+
+	// Use a cloud witness if you have internet access and if you use an Azure Storage account to provide a vote on cluster quorum.
+	// A cloud witness uses Azure Blob Storage to read or write a blob file and
+	// then uses it to arbitrate in split-brain resolution. Only allowed values are 'Cloud', 'FileShare'.
+	WitnessType *string
+}
+
+// DeploymentConfiguration - Deployment Configuration
+type DeploymentConfiguration struct {
+	// REQUIRED; Scale units will contains list of deployment data
+	ScaleUnits []*ScaleUnits
+
+	// deployment template version
+	Version *string
+}
+
+// DeploymentData - The Deployment data of AzureStackHCI Cluster.
+type DeploymentData struct {
+	// The path to the Active Directory Organizational Unit container object prepared for the deployment.
+	AdouPath *string
+
+	// Observability config to deploy AzureStackHCI Cluster.
+	Cluster *DeploymentCluster
+
+	// FQDN to deploy cluster
+	DomainFqdn *string
+
+	// HostNetwork config to deploy AzureStackHCI Cluster.
+	HostNetwork *DeploymentSettingHostNetwork
+
+	// InfrastructureNetwork config to deploy AzureStackHCI Cluster.
+	InfrastructureNetwork []*InfrastructureNetwork
+
+	// naming prefix to deploy cluster.
+	NamingPrefix *string
+
+	// Observability config to deploy AzureStackHCI Cluster.
+	Observability *Observability
+
+	// OptionalServices config to deploy AzureStackHCI Cluster.
+	OptionalServices *OptionalServices
+
+	// list of physical nodes config to deploy AzureStackHCI Cluster.
+	PhysicalNodes []*PhysicalNodes
+
+	// SDN Integration config to deploy AzureStackHCI Cluster.
+	SdnIntegration *SdnIntegration
+
+	// secrets used for cloud deployment.
+	Secrets []*EceDeploymentSecrets
+
+	// Azure keyvault endpoint. This property is deprecated from 2023-12-01-preview. Please use secrets property instead.
+	SecretsLocation *string
+
+	// SecuritySettings to deploy AzureStackHCI Cluster.
+	SecuritySettings *DeploymentSecuritySettings
+
+	// Storage config to deploy AzureStackHCI Cluster.
+	Storage *Storage
+}
+
+// DeploymentSecuritySettings - The SecuritySettings of AzureStackHCI Cluster.
+type DeploymentSecuritySettings struct {
+	// When set to true, BitLocker XTS_AES 256-bit encryption is enabled for all data-at-rest on the OS volume of your Azure Stack
+	// HCI cluster. This setting is TPM-hardware dependent.
+	BitlockerBootVolume *bool
+
+	// When set to true, BitLocker XTS-AES 256-bit encryption is enabled for all data-at-rest on your Azure Stack HCI cluster
+	// shared volumes.
+	BitlockerDataVolumes *bool
+
+	// When set to true, Credential Guard is enabled.
+	CredentialGuardEnforced *bool
+
+	// When set to true, the security baseline is re-applied regularly.
+	DriftControlEnforced *bool
+
+	// By default, Secure Boot is enabled on your Azure HCI cluster. This setting is hardware dependent.
+	DrtmProtection *bool
+
+	// By default, Hypervisor-protected Code Integrity is enabled on your Azure HCI cluster.
+	HvciProtection *bool
+
+	// When set to true, all the side channel mitigations are enabled
+	SideChannelMitigationEnforced *bool
+
+	// When set to true, cluster east-west traffic is encrypted.
+	SmbClusterEncryption *bool
+
+	// When set to true, the SMB default instance requires sign in for the client and server services.
+	SmbSigningEnforced *bool
+
+	// WDAC is enabled by default and limits the applications and the code that you can run on your Azure Stack HCI cluster.
+	WdacEnforced *bool
+}
+
+// DeploymentSetting - Edge device resource
+type DeploymentSetting struct {
+	// The resource-specific properties for this resource.
+	Properties *DeploymentSettingsProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -204,88 +473,205 @@ type GuestAgent struct {
 	Type *string
 }
 
-// GuestAgentInstallStatus - Defines the status of a guest agent installation.
-type GuestAgentInstallStatus struct {
-	// READ-ONLY; The hybrid machine agent full version.
-	AgentVersion *string
+// DeploymentSettingAdapterPropertyOverrides - The AdapterPropertyOverrides of a cluster.
+type DeploymentSettingAdapterPropertyOverrides struct {
+	// This parameter should only be modified based on your OEM guidance. Do not modify this parameter without OEM validation.
+	JumboPacket *string
 
-	// READ-ONLY; Details about the error state.
-	ErrorDetails []*ErrorDetail
+	// This parameter should only be modified based on your OEM guidance. Do not modify this parameter without OEM validation.
+	NetworkDirect *string
 
-	// READ-ONLY; The time of the last status change.
-	LastStatusChange *time.Time
-
-	// READ-ONLY; The installation status of the hybrid machine agent installation.
-	Status *StatusTypes
-
-	// READ-ONLY; Specifies the VM's unique SMBIOS ID.
-	VMUUID *string
+	// This parameter should only be modified based on your OEM guidance. Do not modify this parameter without OEM validation.
+	// Expected values are 'iWARP', 'RoCEv2', 'RoCE'
+	NetworkDirectTechnology *string
 }
 
-// GuestAgentList - List of GuestAgent.
-type GuestAgentList struct {
-	// REQUIRED; Array of GuestAgent
-	Value []*GuestAgent
+// DeploymentSettingHostNetwork - The HostNetwork of a cluster.
+type DeploymentSettingHostNetwork struct {
+	// Optional parameter required only for 3 Nodes Switchless deployments. This allows users to specify IPs and Mask for Storage
+	// NICs when Network ATC is not assigning the IPs for storage automatically.
+	EnableStorageAutoIP *bool
 
-	// Url to follow for getting next page of GuestAgent.
+	// The network intents assigned to the network reference pattern used for the deployment. Each intent will define its own
+	// name, traffic type, adapter names, and overrides as recommended by your OEM.
+	Intents []*DeploymentSettingIntents
+
+	// Defines how the storage adapters between nodes are connected either switch or switch less..
+	StorageConnectivitySwitchless *bool
+
+	// List of StorageNetworks config to deploy AzureStackHCI Cluster.
+	StorageNetworks []*DeploymentSettingStorageNetworks
+}
+
+// DeploymentSettingIntents - The Intents of a cluster.
+type DeploymentSettingIntents struct {
+	// Array of network interfaces used for the network intent.
+	Adapter []*string
+
+	// Set Adapter PropertyOverrides for cluster.
+	AdapterPropertyOverrides *DeploymentSettingAdapterPropertyOverrides
+
+	// Name of the network intent you wish to create.
+	Name *string
+
+	// This parameter should only be modified based on your OEM guidance. Do not modify this parameter without OEM validation.
+	OverrideAdapterProperty *bool
+
+	// This parameter should only be modified based on your OEM guidance. Do not modify this parameter without OEM validation.
+	OverrideQosPolicy *bool
+
+	// This parameter should only be modified based on your OEM guidance. Do not modify this parameter without OEM validation.
+	OverrideVirtualSwitchConfiguration *bool
+
+	// Set QoS PolicyOverrides for cluster.
+	QosPolicyOverrides *QosPolicyOverrides
+
+	// List of network traffic types. Only allowed values are 'Compute', 'Storage', 'Management'.
+	TrafficType []*string
+
+	// Set virtualSwitch ConfigurationOverrides for cluster.
+	VirtualSwitchConfigurationOverrides *DeploymentSettingVirtualSwitchConfigurationOverrides
+}
+
+// DeploymentSettingListResult - The response of a DeploymentSetting list operation.
+type DeploymentSettingListResult struct {
+	// REQUIRED; The DeploymentSetting items on this page
+	Value []*DeploymentSetting
+
+	// The link to the next page of items
 	NextLink *string
 }
 
-// GuestAgentProperties - Defines the resource properties.
-type GuestAgentProperties struct {
-	// Username / Password Credentials to provision guest agent.
-	Credentials *GuestCredential
+// DeploymentSettingStorageAdapterIPInfo - The StorageAdapter physical nodes of a cluster.
+type DeploymentSettingStorageAdapterIPInfo struct {
+	// The IPv4 address assigned to each storage adapter physical node on your Azure Stack HCI cluster.
+	IPv4Address *string
 
-	// The guest agent provisioning action.
-	ProvisioningAction *ProvisioningAction
+	// storage adapter physical node name.
+	PhysicalNode *string
 
-	// READ-ONLY; The provisioning state.
-	ProvisioningState *string
+	// The SubnetMask address assigned to each storage adapter physical node on your Azure Stack HCI cluster.
+	SubnetMask *string
+}
 
-	// READ-ONLY; The guest agent status.
+// DeploymentSettingStorageNetworks - The StorageNetworks of a cluster.
+type DeploymentSettingStorageNetworks struct {
+	// Name of the storage network.
+	Name *string
+
+	// Name of the storage network adapter.
+	NetworkAdapterName *string
+
+	// List of Storage adapter physical nodes config to deploy AzureStackHCI Cluster.
+	StorageAdapterIPInfo []*DeploymentSettingStorageAdapterIPInfo
+
+	// ID specified for the VLAN storage network. This setting is applied to the network interfaces that route the storage and
+	// VM migration traffic.
+	VlanID *string
+}
+
+// DeploymentSettingVirtualSwitchConfigurationOverrides - The VirtualSwitchConfigurationOverrides of a cluster.
+type DeploymentSettingVirtualSwitchConfigurationOverrides struct {
+	// Enable IoV for Virtual Switch
+	EnableIov *string
+
+	// Load Balancing Algorithm for Virtual Switch
+	LoadBalancingAlgorithm *string
+}
+
+// DeploymentSettingsProperties - DeploymentSetting properties
+type DeploymentSettingsProperties struct {
+	// REQUIRED; Azure resource ids of Arc machines to be part of cluster.
+	ArcNodeResourceIDs []*string
+
+	// REQUIRED; Scale units will contains list of deployment data
+	DeploymentConfiguration *DeploymentConfiguration
+
+	// REQUIRED; The deployment mode for cluster deployment.
+	DeploymentMode *DeploymentMode
+
+	// The intended operation for a cluster.
+	OperationType *OperationType
+
+	// READ-ONLY; DeploymentSetting provisioning state
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Deployment Status reported from cluster.
+	ReportedProperties *EceReportedProperties
+}
+
+// DeploymentStep - The Step of AzureStackHCI Cluster.
+type DeploymentStep struct {
+	// READ-ONLY; Description of step.
+	Description *string
+
+	// READ-ONLY; End time of step.
+	EndTimeUTC *string
+
+	// READ-ONLY; List of exceptions in AzureStackHCI Cluster Deployment.
+	Exception []*string
+
+	// READ-ONLY; FullStepIndex of step.
+	FullStepIndex *string
+
+	// READ-ONLY; Name of step.
+	Name *string
+
+	// READ-ONLY; Start time of step.
+	StartTimeUTC *string
+
+	// READ-ONLY; Status of step. Allowed values are 'Error', 'Success', 'InProgress'
 	Status *string
+
+	// READ-ONLY; List of nested steps of AzureStackHCI Cluster Deployment.
+	Steps []*DeploymentStep
 }
 
-// GuestCredential - Username / Password Credentials to connect to guest.
-type GuestCredential struct {
-	// The password to connect with the guest.
-	Password *string
+// DeviceConfiguration - The device Configuration for edge device.
+type DeviceConfiguration struct {
+	// Device metadata details.
+	DeviceMetadata *string
 
-	// The username to connect with the guest.
-	Username *string
+	// NIC Details of device
+	NicDetails []*NicDetail
 }
 
-// HTTPProxyConfiguration - HTTP Proxy configuration for the VM.
-type HTTPProxyConfiguration struct {
-	// The HTTP proxy server endpoint to use.
-	HTTPProxy *string
+// EceActionStatus - The ECE action plan deployment status for AzureStackHCI Cluster.
+type EceActionStatus struct {
+	// READ-ONLY; Status of ECE action AzureStackHCI Cluster Deployment.
+	Status *string
 
-	// The HTTPS proxy server endpoint to use.
-	HTTPSProxy *string
-
-	// The endpoints that should not go through proxy.
-	NoProxy []*string
-
-	// Alternative CA cert to use for connecting to proxy servers.
-	TrustedCa *string
+	// READ-ONLY; List of steps of AzureStackHCI Cluster Deployment.
+	Steps []*DeploymentStep
 }
 
-// HardwareProfileUpdate - HardwareProfile - Specifies the hardware settings for the virtual machine instance.
-type HardwareProfileUpdate struct {
-	// RAM in MB for the virtual machine instance
-	MemoryMB *int64
+// EceDeploymentSecrets - Protected parameters list stored in keyvault.
+type EceDeploymentSecrets struct {
+	// Secret name expected for Enterprise Cloud Engine (ECE) deployment.
+	EceSecretName *EceSecrets
 
-	// number of processors for the virtual machine instance
-	Processors *int32
-	VMSize     *VMSizeEnum
+	// Secret URI stored in keyvault.
+	SecretLocation *string
+
+	// Secret name stored in keyvault.
+	SecretName *string
 }
 
-// HybridIdentityMetadata - Defines the HybridIdentityMetadata.
-type HybridIdentityMetadata struct {
-	// REQUIRED; Resource properties.
-	Properties *HybridIdentityMetadataProperties
+// EceReportedProperties - The DeploymentStatus of AzureStackHCI Cluster.
+type EceReportedProperties struct {
+	// READ-ONLY; Deployment status of AzureStackHCI Cluster Deployment.
+	DeploymentStatus *EceActionStatus
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; validation status of AzureStackHCI Cluster Deployment.
+	ValidationStatus *EceActionStatus
+}
+
+// EdgeDevice - Edge device resource.
+type EdgeDevice struct {
+	// REQUIRED; Device kind to support polymorphic resource.
+	Kind *DeviceKind
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -298,97 +684,53 @@ type HybridIdentityMetadata struct {
 	Type *string
 }
 
-// HybridIdentityMetadataList - List of HybridIdentityMetadata.
-type HybridIdentityMetadataList struct {
-	// REQUIRED; Array of HybridIdentityMetadata
-	Value []*HybridIdentityMetadata
+// GetEdgeDevice implements the EdgeDeviceClassification interface for type EdgeDevice.
+func (e *EdgeDevice) GetEdgeDevice() *EdgeDevice { return e }
 
-	// Url to follow for getting next page of HybridIdentityMetadata.
+// EdgeDeviceListResult - The response of a EdgeDevice list operation.
+type EdgeDeviceListResult struct {
+	// REQUIRED; The EdgeDevice items on this page
+	Value []EdgeDeviceClassification
+
+	// The link to the next page of items
 	NextLink *string
 }
 
-// HybridIdentityMetadataProperties - Defines the resource properties.
-type HybridIdentityMetadataProperties struct {
-	// The Public Key.
-	PublicKey *string
+// Extension - Details of a particular extension in HCI Cluster.
+type Extension struct {
+	// Describes Machine Extension Properties.
+	Properties *ExtensionProperties
 
-	// The unique identifier for the resource.
-	ResourceUID *string
-
-	// READ-ONLY; Identity for the resource.
-	Identity *Identity
-
-	// READ-ONLY; The provisioning state.
-	ProvisioningState *string
-}
-
-// IPConfiguration - InterfaceIPConfiguration iPConfiguration in a network interface.
-type IPConfiguration struct {
-	// Name - The name of the resource that is unique within a resource group. This name can be used to access the resource.
-	Name *string
-
-	// InterfaceIPConfigurationPropertiesFormat properties of IP configuration.
-	Properties *IPConfigurationProperties
-}
-
-// IPConfigurationProperties - InterfaceIPConfigurationPropertiesFormat properties of IP configuration.
-type IPConfigurationProperties struct {
-	// PrivateIPAddress - Private IP address of the IP configuration.
-	PrivateIPAddress *string
-
-	// Subnet - Name of Subnet bound to the IP configuration.
-	Subnet *IPConfigurationPropertiesSubnet
-
-	// READ-ONLY; Gateway for network interface
-	Gateway *string
-
-	// READ-ONLY; prefixLength for network interface
-	PrefixLength *string
-}
-
-// IPConfigurationPropertiesSubnet - Subnet - Name of Subnet bound to the IP configuration.
-type IPConfigurationPropertiesSubnet struct {
-	// ID - The ARM resource id in the form of /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/…
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
-}
 
-type IPPool struct {
-	// End of the IP address pool
-	End *string
-
-	// Type of the IP Pool [vm, vippool]
-	IPPoolType *IPPoolTypeEnum
-	Info       *IPPoolInfo
-
-	// Name of the IP-Pool
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// Start of the IP address pool
-	Start *string
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
 }
 
-type IPPoolInfo struct {
-	// READ-ONLY; Number of IP addresses available in the IP Pool
-	Available *string
+// ExtensionInstanceView - Describes the Extension Instance View.
+type ExtensionInstanceView struct {
+	// The extension name.
+	Name *string
 
-	// READ-ONLY; Number of IP addresses allocated from the IP Pool
-	Used *string
-}
+	// Instance view status.
+	Status *ExtensionInstanceViewStatus
 
-// Identity for the resource.
-type Identity struct {
-	// The identity type.
+	// Specifies the type of the extension; an example is "MicrosoftMonitoringAgent".
 	Type *string
 
-	// READ-ONLY; The principal ID of resource identity.
-	PrincipalID *string
-
-	// READ-ONLY; The tenant ID of resource.
-	TenantID *string
+	// Specifies the version of the script handler.
+	TypeHandlerVersion *string
 }
 
-// InstanceViewStatus - Instance view status.
-type InstanceViewStatus struct {
+// ExtensionInstanceViewStatus - Instance view status.
+type ExtensionInstanceViewStatus struct {
 	// The status code.
 	Code *string
 
@@ -405,70 +747,110 @@ type InstanceViewStatus struct {
 	Time *time.Time
 }
 
-type InterfaceDNSSettings struct {
-	// List of DNS server IP Addresses for the interface
-	DNSServers []*string
+// ExtensionList - List of Extensions in HCI cluster.
+type ExtensionList struct {
+	// READ-ONLY; Link to the next set of results.
+	NextLink *string
+
+	// READ-ONLY; List of Extensions in HCI cluster.
+	Value []*Extension
 }
 
-// LogicalNetworkProperties - Properties under the logical network resource
-type LogicalNetworkProperties struct {
-	// DhcpOptions contains an array of DNS servers available to VMs deployed in the logical network. Standard DHCP option for
-	// a subnet overrides logical network DHCP options.
-	DhcpOptions *LogicalNetworkPropertiesDhcpOptions
+// ExtensionParameters - Describes the properties of a Machine Extension. This object mirrors the definition in HybridCompute.
+type ExtensionParameters struct {
+	// Indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed,
+	// however, the extension will not upgrade minor versions unless redeployed, even
+	// with this property set to true.
+	AutoUpgradeMinorVersion *bool
 
-	// Subnet - list of subnets under the logical network
-	Subnets []*Subnet
+	// Indicates whether the extension should be automatically upgraded by the platform if there is a newer version available.
+	EnableAutomaticUpgrade *bool
 
-	// name of the network switch to be used for VMs
-	VMSwitchName *string
+	// How the extension handler should be forced to update even if the extension configuration has not changed.
+	ForceUpdateTag *string
 
-	// READ-ONLY; Provisioning state of the logical network.
-	ProvisioningState *ProvisioningStateEnum
+	// Protected settings (may contain secrets).
+	ProtectedSettings any
 
-	// READ-ONLY; The observed state of logical networks
-	Status *LogicalNetworkStatus
+	// The name of the extension handler publisher.
+	Publisher *string
+
+	// Json formatted public settings for the extension.
+	Settings any
+
+	// Specifies the type of the extension; an example is "CustomScriptExtension".
+	Type *string
+
+	// Specifies the version of the script handler. Latest version would be used if not specified.
+	TypeHandlerVersion *string
 }
 
-// LogicalNetworkPropertiesDhcpOptions - DhcpOptions contains an array of DNS servers available to VMs deployed in the logical
-// network. Standard DHCP option for a subnet overrides logical network DHCP options.
-type LogicalNetworkPropertiesDhcpOptions struct {
-	// The list of DNS servers IP addresses.
-	DNSServers []*string
+// ExtensionPatch - Extension Details to update
+type ExtensionPatch struct {
+	// Describes Machine Extension Properties that can be updated.
+	Properties *ExtensionPatchProperties
 }
 
-// LogicalNetworkStatus - The observed state of logical networks
-type LogicalNetworkStatus struct {
-	// LogicalNetwork provisioning error code
-	ErrorCode *string
+// ExtensionPatchParameters - Describes the properties of a Machine Extension that can be updated.
+type ExtensionPatchParameters struct {
+	// Indicates whether the extension should be automatically upgraded by the platform if there is a newer version available.
+	EnableAutomaticUpgrade *bool
 
-	// Descriptive error message
-	ErrorMessage       *string
-	ProvisioningStatus *LogicalNetworkStatusProvisioningStatus
+	// Protected settings (may contain secrets).
+	ProtectedSettings any
+
+	// Json formatted public settings for the extension.
+	Settings any
+
+	// Specifies the version of the script handler. Latest version would be used if not specified.
+	TypeHandlerVersion *string
 }
 
-type LogicalNetworkStatusProvisioningStatus struct {
-	// The ID of the operation performed on the logical network
-	OperationID *string
-
-	// The status of the operation performed on the logical network [Succeeded, Failed, InProgress]
-	Status *Status
+// ExtensionPatchProperties - Describes Machine Extension Properties that can be updated.
+type ExtensionPatchProperties struct {
+	// Describes the properties of a Machine Extension that can be updated.
+	ExtensionParameters *ExtensionPatchParameters
 }
 
-// LogicalNetworks - The logical network resource definition.
-type LogicalNetworks struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
+// ExtensionProfile - Extensions details for edge device.
+type ExtensionProfile struct {
+	// READ-ONLY; List of Arc extensions installed on edge device.
+	Extensions []*HciEdgeDeviceArcExtension
+}
 
-	// The extendedLocation of the resource.
-	ExtendedLocation *ExtendedLocation
+// ExtensionProperties - Status of Arc Extension for a particular node in HCI Cluster.
+type ExtensionProperties struct {
+	// Parameters specific to this extension type.
+	ExtensionParameters *ExtensionParameters
 
-	// Properties under the logical network resource
-	Properties *LogicalNetworkProperties
+	// READ-ONLY; Aggregate state of Arc Extensions across the nodes in this HCI cluster.
+	AggregateState *ExtensionAggregateState
 
-	// Resource tags.
-	Tags map[string]*string
+	// READ-ONLY; Indicates if the extension is managed by azure or the user.
+	ManagedBy *ExtensionManagedBy
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; State of Arc Extension in each of the nodes.
+	PerNodeExtensionDetails []*PerNodeExtensionState
+
+	// READ-ONLY; Provisioning state of the Extension proxy resource.
+	ProvisioningState *ProvisioningState
+}
+
+// ExtensionUpgradeParameters - Describes the parameters for Extension upgrade.
+type ExtensionUpgradeParameters struct {
+	// Extension Upgrade Target Version.
+	TargetVersion *string
+}
+
+// HciEdgeDevice - Arc-enabled edge device with HCI OS.
+type HciEdgeDevice struct {
+	// REQUIRED; Device kind to support polymorphic resource.
+	Kind *DeviceKind
+
+	// properties for Arc-enabled edge device with HCI OS.
+	Properties *HciEdgeDeviceProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -481,163 +863,462 @@ type LogicalNetworks struct {
 	Type *string
 }
 
-type LogicalNetworksListResult struct {
-	NextLink *string
-	Value    []*LogicalNetworks
+// GetEdgeDevice implements the EdgeDeviceClassification interface for type HciEdgeDevice.
+func (h *HciEdgeDevice) GetEdgeDevice() *EdgeDevice {
+	return &EdgeDevice{
+		ID:         h.ID,
+		Kind:       h.Kind,
+		Name:       h.Name,
+		SystemData: h.SystemData,
+		Type:       h.Type,
+	}
 }
 
-// LogicalNetworksUpdateRequest - The logical network resource patch definition.
-type LogicalNetworksUpdateRequest struct {
-	// Resource tags
-	Tags map[string]*string
+// HciEdgeDeviceAdapterPropertyOverrides - The AdapterPropertyOverrides of a cluster.
+type HciEdgeDeviceAdapterPropertyOverrides struct {
+	// READ-ONLY; This parameter should only be modified based on your OEM guidance. Do not modify this parameter without OEM
+	// validation.
+	JumboPacket *string
+
+	// READ-ONLY; This parameter should only be modified based on your OEM guidance. Do not modify this parameter without OEM
+	// validation.
+	NetworkDirect *string
+
+	// READ-ONLY; This parameter should only be modified based on your OEM guidance. Do not modify this parameter without OEM
+	// validation. Expected values are 'iWARP', 'RoCEv2', 'RoCE'
+	NetworkDirectTechnology *string
 }
 
-// MarketplaceGalleryImageProperties - Properties under the marketplace gallery image resource
-type MarketplaceGalleryImageProperties struct {
-	// REQUIRED; Operating system type that the gallery image uses [Windows, Linux]
-	OSType *OperatingSystemTypes
+// HciEdgeDeviceArcExtension - Arc extension installed on edge device.
+type HciEdgeDeviceArcExtension struct {
+	// READ-ONLY; Error details while installing Arc extension.
+	ErrorDetails []*HciValidationFailureDetail
 
-	// Datasource for the gallery image when provisioning with cloud-init [NoCloud, Azure]
-	CloudInitDataSource *CloudInitDataSource
+	// READ-ONLY; Arc extension name installed on edge device.
+	ExtensionName *string
 
-	// Storage ContainerID of the storage container to be used for marketplace gallery image
-	ContainerID *string
+	// READ-ONLY; Arc Extension Azure resource id.
+	ExtensionResourceID *string
 
-	// The hypervisor generation of the Virtual Machine [V1, V2]
-	HyperVGeneration *HyperVGeneration
+	// READ-ONLY; Extension managed by user or Azure.
+	ManagedBy *ExtensionManagedBy
 
-	// This is the gallery image definition identifier.
-	Identifier *GalleryImageIdentifier
+	// READ-ONLY; Arc extension state from arc machine extension.
+	State *ArcExtensionState
 
-	// Specifies information about the gallery image version that you want to create or update.
-	Version *GalleryImageVersion
-
-	// READ-ONLY; Provisioning state of the marketplace gallery image.
-	ProvisioningState *ProvisioningStateEnum
-
-	// READ-ONLY; The observed state of marketplace gallery images
-	Status *MarketplaceGalleryImageStatus
+	// READ-ONLY; Extension version installed.
+	TypeHandlerVersion *string
 }
 
-// MarketplaceGalleryImageStatus - The observed state of marketplace gallery images
-type MarketplaceGalleryImageStatus struct {
-	// The download status of the gallery image
-	DownloadStatus *MarketplaceGalleryImageStatusDownloadStatus
+// HciEdgeDeviceHostNetwork - The HostNetwork of a cluster.
+type HciEdgeDeviceHostNetwork struct {
+	// READ-ONLY; Optional parameter required only for 3 Nodes Switchless deployments. This allows users to specify IPs and Mask
+	// for Storage NICs when Network ATC is not assigning the IPs for storage automatically.
+	EnableStorageAutoIP *bool
 
-	// MarketplaceGalleryImage provisioning error code
-	ErrorCode *string
+	// READ-ONLY; The network intents assigned to the network reference pattern used for the deployment. Each intent will define
+	// its own name, traffic type, adapter names, and overrides as recommended by your OEM.
+	Intents []*HciEdgeDeviceIntents
 
-	// Descriptive error message
-	ErrorMessage *string
+	// READ-ONLY; Defines how the storage adapters between nodes are connected either switch or switch less.
+	StorageConnectivitySwitchless *bool
 
-	// The progress of the operation in percentage
-	ProgressPercentage *int64
-	ProvisioningStatus *MarketplaceGalleryImageStatusProvisioningStatus
+	// READ-ONLY; List of StorageNetworks config to deploy AzureStackHCI Cluster.
+	StorageNetworks []*HciEdgeDeviceStorageNetworks
 }
 
-// MarketplaceGalleryImageStatusDownloadStatus - The download status of the gallery image
-type MarketplaceGalleryImageStatusDownloadStatus struct {
-	// The downloaded sized of the image in MB
-	DownloadSizeInMB *int64
+// HciEdgeDeviceIntents - The Intents of a cluster.
+type HciEdgeDeviceIntents struct {
+	// READ-ONLY; Set Adapter PropertyOverrides for cluster.
+	AdapterPropertyOverrides *HciEdgeDeviceAdapterPropertyOverrides
+
+	// READ-ONLY; Array of adapters used for the network intent.
+	IntentAdapters []*string
+
+	// READ-ONLY; Name of the network intent you wish to create.
+	IntentName *string
+
+	// READ-ONLY; IntentType for host network intent.
+	IntentType *int64
+
+	// READ-ONLY; IsComputeIntentSet for host network intent.
+	IsComputeIntentSet *bool
+
+	// READ-ONLY; IsManagementIntentSet for host network intent.
+	IsManagementIntentSet *bool
+
+	// READ-ONLY; IsNetworkIntentType for host network intent.
+	IsNetworkIntentType *bool
+
+	// READ-ONLY; IntentType for host network intent.
+	IsOnlyStorage *bool
+
+	// READ-ONLY; IsOnlyStretch for host network intent.
+	IsOnlyStretch *bool
+
+	// READ-ONLY; IsStorageIntentSet for host network intent.
+	IsStorageIntentSet *bool
+
+	// READ-ONLY; IsStretchIntentSet for host network intent.
+	IsStretchIntentSet *bool
+
+	// READ-ONLY; This parameter should only be modified based on your OEM guidance. Do not modify this parameter without OEM
+	// validation.
+	OverrideAdapterProperty *bool
+
+	// READ-ONLY; This parameter should only be modified based on your OEM guidance. Do not modify this parameter without OEM
+	// validation.
+	OverrideQosPolicy *bool
+
+	// READ-ONLY; This parameter should only be modified based on your OEM guidance. Do not modify this parameter without OEM
+	// validation.
+	OverrideVirtualSwitchConfiguration *bool
+
+	// READ-ONLY; Set QoS PolicyOverrides for cluster.
+	QosPolicyOverrides *QosPolicyOverrides
+
+	// READ-ONLY; Scope for host network intent.
+	Scope *int64
+
+	// READ-ONLY; Set virtualSwitch ConfigurationOverrides for cluster.
+	VirtualSwitchConfigurationOverrides *HciEdgeDeviceVirtualSwitchConfigurationOverrides
 }
 
-type MarketplaceGalleryImageStatusProvisioningStatus struct {
-	// The ID of the operation performed on the gallery image
-	OperationID *string
+// HciEdgeDeviceProperties - properties for Arc-enabled edge device with HCI OS.
+type HciEdgeDeviceProperties struct {
+	// Device Configuration
+	DeviceConfiguration *DeviceConfiguration
 
-	// The status of the operation performed on the gallery image [Succeeded, Failed, InProgress]
-	Status *Status
+	// READ-ONLY; Provisioning state of edgeDevice resource
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; The instance view of all current configurations on HCI device.
+	ReportedProperties *HciReportedProperties
 }
 
-// MarketplaceGalleryImages - The marketplace gallery image resource definition.
-type MarketplaceGalleryImages struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
+// HciEdgeDeviceStorageAdapterIPInfo - The StorageAdapter physical nodes of a cluster.
+type HciEdgeDeviceStorageAdapterIPInfo struct {
+	// READ-ONLY; The IPv4 address assigned to each storage adapter physical node on your Azure Stack HCI cluster.
+	IPv4Address *string
 
-	// The extendedLocation of the resource.
-	ExtendedLocation *ExtendedLocation
+	// READ-ONLY; storage adapter physical node name.
+	PhysicalNode *string
 
-	// Properties under the marketplace gallery image resource
-	Properties *MarketplaceGalleryImageProperties
+	// READ-ONLY; The SubnetMask address assigned to each storage adapter physical node on your Azure Stack HCI cluster.
+	SubnetMask *string
+}
 
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
+// HciEdgeDeviceStorageNetworks - The StorageNetworks of a cluster.
+type HciEdgeDeviceStorageNetworks struct {
+	// READ-ONLY; Name of the storage network.
 	Name *string
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
+	// READ-ONLY; Name of the storage network adapter.
+	NetworkAdapterName *string
 
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
+	// READ-ONLY; List of Storage adapter physical nodes config to deploy AzureStackHCI Cluster.
+	StorageAdapterIPInfo []*HciEdgeDeviceStorageAdapterIPInfo
+
+	// READ-ONLY; ID specified for the VLAN storage network. This setting is applied to the network interfaces that route the
+	// storage and VM migration traffic.
+	StorageVlanID *string
 }
 
-type MarketplaceGalleryImagesListResult struct {
-	NextLink *string
-	Value    []*MarketplaceGalleryImages
+// HciEdgeDeviceVirtualSwitchConfigurationOverrides - The VirtualSwitchConfigurationOverrides of a cluster.
+type HciEdgeDeviceVirtualSwitchConfigurationOverrides struct {
+	// READ-ONLY; Enable IoV for Virtual Switch
+	EnableIov *string
+
+	// READ-ONLY; Load Balancing Algorithm for Virtual Switch
+	LoadBalancingAlgorithm *string
 }
 
-// MarketplaceGalleryImagesUpdateRequest - The marketplace gallery image resource patch definition.
-type MarketplaceGalleryImagesUpdateRequest struct {
-	// Resource tags
-	Tags map[string]*string
+// HciNetworkProfile - The network profile of a device.
+type HciNetworkProfile struct {
+	// READ-ONLY; HostNetwork config to deploy AzureStackHCI Cluster.
+	HostNetwork *HciEdgeDeviceHostNetwork
+
+	// READ-ONLY; List of NIC Details of device.
+	NicDetails []*HciNicDetail
+
+	// READ-ONLY; List of switch details for edge device.
+	SwitchDetails []*SwitchDetail
 }
 
-// NetworkInterfaceProperties - Properties under the network interface resource
-type NetworkInterfaceProperties struct {
-	// DNS Settings for the interface
-	DNSSettings *InterfaceDNSSettings
+// HciNicDetail - The NIC Detail of a device.
+type HciNicDetail struct {
+	// READ-ONLY; Adapter Name of NIC
+	AdapterName *string
 
-	// IPConfigurations - A list of IPConfigurations of the network interface.
-	IPConfigurations []*IPConfiguration
+	// READ-ONLY; Component Id of NIC
+	ComponentID *string
 
-	// MacAddress - The MAC address of the network interface.
+	// READ-ONLY; DNS Servers for NIC
+	DNSServers []*string
+
+	// READ-ONLY; Default Gateway of NIC
+	DefaultGateway *string
+
+	// READ-ONLY; Default Isolation of Management NIC
+	DefaultIsolationID *string
+
+	// READ-ONLY; Driver Version of NIC
+	DriverVersion *string
+
+	// READ-ONLY; Interface Description of NIC
+	InterfaceDescription *string
+
+	// READ-ONLY; Subnet Mask of NIC
+	Ip4Address *string
+
+	// READ-ONLY; MAC address information of NIC.
 	MacAddress *string
 
-	// READ-ONLY; Provisioning state of the network interface.
-	ProvisioningState *ProvisioningStateEnum
+	// READ-ONLY; The status of NIC, up, disconnected.
+	NicStatus *string
 
-	// READ-ONLY; The observed state of network interfaces
-	Status *NetworkInterfaceStatus
+	// READ-ONLY; The type of NIC, physical, virtual, management.
+	NicType *string
+
+	// READ-ONLY; The slot attached to the NIC.
+	Slot *string
+
+	// READ-ONLY; Subnet Mask of NIC
+	SubnetMask *string
+
+	// READ-ONLY; The switch attached to the NIC, if any.
+	SwitchName *string
+
+	// READ-ONLY; The VLAN ID of the physical NIC.
+	VlanID *string
 }
 
-// NetworkInterfaceStatus - The observed state of network interfaces
-type NetworkInterfaceStatus struct {
-	// NetworkInterface provisioning error code
+// HciOsProfile - OS configurations for HCI device.
+type HciOsProfile struct {
+	// READ-ONLY; Version of assembly present on device
+	AssemblyVersion *string
+
+	// READ-ONLY; The boot type of the device. e.g. UEFI, Legacy etc
+	BootType *string
+}
+
+// HciReportedProperties - The device Configuration for HCI device.
+type HciReportedProperties struct {
+	// READ-ONLY; edge device state.
+	DeviceState *DeviceState
+
+	// READ-ONLY; Extensions details for edge device.
+	ExtensionProfile *ExtensionProfile
+
+	// READ-ONLY; HCI device network information.
+	NetworkProfile *HciNetworkProfile
+
+	// READ-ONLY; HCI device OS specific information.
+	OSProfile *HciOsProfile
+
+	// READ-ONLY; Solution builder extension (SBE) deployment package information.
+	SbeDeploymentPackageInfo *SbeDeploymentPackageInfo
+}
+
+// HciValidationFailureDetail - details of validation failure
+type HciValidationFailureDetail struct {
+	// READ-ONLY; Exception details while installing extension.
+	Exception *string
+}
+
+// IPPools - The dnsServers of a device.
+type IPPools struct {
+	// Ending IP address for the management network. A minimum of six free, contiguous IPv4 addresses (excluding your host IPs)
+	// are needed for infrastructure services such as clustering.
+	EndingAddress *string
+
+	// Starting IP address for the management network. A minimum of six free, contiguous IPv4 addresses (excluding your host IPs)
+	// are needed for infrastructure services such as clustering.
+	StartingAddress *string
+}
+
+// InfrastructureNetwork - The InfrastructureNetwork of a AzureStackHCI Cluster.
+type InfrastructureNetwork struct {
+	// IPv4 address of the DNS servers in your environment.
+	DNSServers []*string
+
+	// Default gateway that should be used for the provided IP address space.
+	Gateway *string
+
+	// Range of IP addresses from which addresses are allocated for nodes within a subnet.
+	IPPools []*IPPools
+
+	// Subnet mask that matches the provided IP address space.
+	SubnetMask *string
+
+	// Allows customers to use DHCP for Hosts and Cluster IPs. If not declared, the deployment will default to static IPs. When
+	// true, GW and DNS servers are not required
+	UseDhcp *bool
+}
+
+// IsolatedVMAttestationConfiguration - Attestation configurations for isolated VM (e.g. TVM, CVM) of the cluster.
+type IsolatedVMAttestationConfiguration struct {
+	// READ-ONLY; Fully qualified Azure resource id of the Microsoft Azure attestation resource associated with this cluster.
+	AttestationResourceID *string
+
+	// READ-ONLY; Region specific endpoint for Microsoft Azure Attestation service for the cluster
+	AttestationServiceEndpoint *string
+
+	// READ-ONLY; Region specific endpoint for relying party service.
+	RelyingPartyServiceEndpoint *string
+}
+
+// LogCollectionError - Log Collection Error details of the cluster.
+type LogCollectionError struct {
+	// READ-ONLY; Error Code of the log collection
 	ErrorCode *string
 
-	// Descriptive error message
-	ErrorMessage       *string
-	ProvisioningStatus *NetworkInterfaceStatusProvisioningStatus
+	// READ-ONLY; Error Message of the log collection
+	ErrorMessage *string
 }
 
-type NetworkInterfaceStatusProvisioningStatus struct {
-	// The ID of the operation performed on the network interface
-	OperationID *string
+// LogCollectionProperties - Log Collection properties of the cluster.
+type LogCollectionProperties struct {
+	// READ-ONLY; From DateTimeStamp from when logs need to be connected
+	FromDate *time.Time
 
-	// The status of the operation performed on the network interface [Succeeded, Failed, InProgress]
-	Status *Status
+	// READ-ONLY; Recent DateTimeStamp where logs are successfully generated
+	LastLogGenerated *time.Time
+
+	// READ-ONLY
+	LogCollectionSessionDetails []*LogCollectionSession
+
+	// READ-ONLY; To DateTimeStamp till when logs need to be connected
+	ToDate *time.Time
 }
 
-// NetworkInterfaces - The network interface resource definition.
-type NetworkInterfaces struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
+// LogCollectionRequest - Log Collection Request
+type LogCollectionRequest struct {
+	// Properties for Log Collection Request
+	Properties *LogCollectionRequestProperties
+}
 
-	// The extendedLocation of the resource.
-	ExtendedLocation *ExtendedLocation
+// LogCollectionRequestProperties - Properties for Log Collection Request
+type LogCollectionRequestProperties struct {
+	// REQUIRED; From DateTimeStamp from when logs need to be connected
+	FromDate *time.Time
 
-	// Properties under the network interface resource
-	Properties *NetworkInterfaceProperties
+	// REQUIRED; To DateTimeStamp till when logs need to be connected
+	ToDate *time.Time
+}
 
-	// Resource tags.
-	Tags map[string]*string
+// LogCollectionSession - Log Collection Session details of the cluster.
+type LogCollectionSession struct {
+	// READ-ONLY; CorrelationId of the log collection
+	CorrelationID *string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; End Time of the logs when it was collected
+	EndTimeCollected *time.Time
+
+	// READ-ONLY; Log Collection Error details of the cluster.
+	LogCollectionError *LogCollectionError
+
+	// READ-ONLY; LogCollection job type
+	LogCollectionJobType *LogCollectionJobType
+
+	// READ-ONLY; LogCollection status
+	LogCollectionStatus *LogCollectionStatus
+
+	// READ-ONLY; End Time of the logs when it was collected
+	LogEndTime *time.Time
+
+	// READ-ONLY; Size of the logs collected
+	LogSize *int64
+
+	// READ-ONLY; Start Time of the logs when it was collected
+	LogStartTime *time.Time
+
+	// READ-ONLY; Duration of logs collected
+	TimeCollected *time.Time
+}
+
+// ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
+type ManagedServiceIdentity struct {
+	// REQUIRED; Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+	Type *ManagedServiceIdentityType
+
+	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
+	// resource ids in the form:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+	// The dictionary values can be empty objects ({}) in
+	// requests.
+	UserAssignedIdentities map[string]*UserAssignedIdentity
+
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
+	PrincipalID *string
+
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *string
+}
+
+// NetworkController - network controller config for SDN Integration to deploy AzureStackHCI Cluster.
+type NetworkController struct {
+	// macAddressPoolStart of network controller used for SDN Integration.
+	MacAddressPoolStart *string
+
+	// macAddressPoolStop of network controller used for SDN Integration.
+	MacAddressPoolStop *string
+
+	// NetworkVirtualizationEnabled of network controller used for SDN Integration.
+	NetworkVirtualizationEnabled *bool
+}
+
+// NicDetail - The NIC Detail of a device.
+type NicDetail struct {
+	// Adapter Name of NIC
+	AdapterName *string
+
+	// Component Id of NIC
+	ComponentID *string
+
+	// DNS Servers for NIC
+	DNSServers []*string
+
+	// Default Gateway of NIC
+	DefaultGateway *string
+
+	// Default Isolation of Management NIC
+	DefaultIsolationID *string
+
+	// Driver Version of NIC
+	DriverVersion *string
+
+	// Interface Description of NIC
+	InterfaceDescription *string
+
+	// Subnet Mask of NIC
+	Ip4Address *string
+
+	// Subnet Mask of NIC
+	SubnetMask *string
+}
+
+// Observability - The Observability of AzureStackHCI Cluster.
+type Observability struct {
+	// When set to true, collects log data to facilitate quicker issue resolution.
+	EpisodicDataUpload *bool
+
+	// Location of your cluster. The log and diagnostic data is sent to the appropriate diagnostics servers depending upon where
+	// your cluster resides. Setting this to false results in all data sent to
+	// Microsoft to be stored outside of the EU.
+	EuLocation *bool
+
+	// Enables telemetry data to be sent to Microsoft
+	StreamingDataClient *bool
+}
+
+// Offer details.
+type Offer struct {
+	// Offer properties.
+	Properties *OfferProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -650,26 +1331,31 @@ type NetworkInterfaces struct {
 	Type *string
 }
 
-type NetworkInterfacesListResult struct {
+// OfferList - List of Offer proxy resources for the HCI cluster.
+type OfferList struct {
+	// READ-ONLY; Link to the next set of results.
 	NextLink *string
-	Value    []*NetworkInterfaces
+
+	// READ-ONLY; List of Offer proxy resources.
+	Value []*Offer
 }
 
-// NetworkInterfacesUpdateRequest - The network interface resource patch definition.
-type NetworkInterfacesUpdateRequest struct {
-	// Resource tags
-	Tags map[string]*string
-}
+// OfferProperties - Publisher properties.
+type OfferProperties struct {
+	// JSON serialized catalog content of the offer
+	Content *string
 
-// NetworkProfileUpdate - NetworkProfile - describes the network update configuration the virtual machine instance
-type NetworkProfileUpdate struct {
-	// NetworkInterfaces - list of network interfaces to be attached to the virtual machine instance
-	NetworkInterfaces []*NetworkProfileUpdateNetworkInterfacesItem
-}
+	// The API version of the catalog service used to serve the catalog content
+	ContentVersion *string
 
-type NetworkProfileUpdateNetworkInterfacesItem struct {
-	// ID - Resource ID of the network interface
-	ID *string
+	// Identifier of the Publisher for the offer
+	PublisherID *string
+
+	// Array of SKU mappings
+	SKUMappings []*SKUMappings
+
+	// READ-ONLY; Provisioning State
+	ProvisioningState *string
 }
 
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API
@@ -721,141 +1407,155 @@ type OperationListResult struct {
 	Value []*Operation
 }
 
-// OsProfileUpdate - OsProfile - describes the update configuration of the operating system
-type OsProfileUpdate struct {
-	// ComputerName - name of the computer
-	ComputerName         *string
-	LinuxConfiguration   *OsProfileUpdateLinuxConfiguration
-	WindowsConfiguration *OsProfileUpdateWindowsConfiguration
+// OptionalServices - The OptionalServices of AzureStackHCI Cluster.
+type OptionalServices struct {
+	// The name of custom location.
+	CustomLocation *string
 }
 
-type OsProfileUpdateLinuxConfiguration struct {
-	// Used to indicate whether Arc for Servers agent onboarding should be triggered during the virtual machine instance creation
-	// process.
-	ProvisionVMAgent *bool
+// PackageVersionInfo - Current version of each updatable component.
+type PackageVersionInfo struct {
+	// Last time this component was updated.
+	LastUpdated *time.Time
 
-	// Used to indicate whether the VM Config Agent should be installed during the virtual machine creation process.
-	ProvisionVMConfigAgent *bool
+	// Package type
+	PackageType *string
+
+	// Package version
+	Version *string
 }
 
-type OsProfileUpdateWindowsConfiguration struct {
-	// Used to indicate whether Arc for Servers agent onboarding should be triggered during the virtual machine instance creation
-	// process.
-	ProvisionVMAgent *bool
-
-	// Used to indicate whether the VM Config Agent should be installed during the virtual machine creation process.
-	ProvisionVMConfigAgent *bool
+type PasswordCredential struct {
+	EndDateTime   *time.Time
+	KeyID         *string
+	SecretText    *string
+	StartDateTime *time.Time
 }
 
-// Route - Route resource.
-type Route struct {
-	// Name - name of the subnet
+// PerNodeExtensionState - Status of Arc Extension for a particular node in HCI Cluster.
+type PerNodeExtensionState struct {
+	// READ-ONLY; Fully qualified resource ID for the particular Arc Extension on this node.
+	Extension *string
+
+	// READ-ONLY; The extension instance view.
+	InstanceView *ExtensionInstanceView
+
+	// READ-ONLY; Name of the node in HCI Cluster.
 	Name *string
 
-	// Properties of the route.
-	Properties *RoutePropertiesFormat
+	// READ-ONLY; State of Arc Extension in this node.
+	State *NodeExtensionState
+
+	// READ-ONLY; Specifies the version of the script handler.
+	TypeHandlerVersion *string
 }
 
-// RoutePropertiesFormat - Route resource.
-type RoutePropertiesFormat struct {
-	// The destination CIDR to which the route applies.
-	AddressPrefix *string
+// PerNodeRemoteSupportSession - Remote Support Node Session Details on the Node.
+type PerNodeRemoteSupportSession struct {
+	// READ-ONLY; Remote Support Access Level
+	AccessLevel *AccessLevel
 
-	// The IP address packets should be forwarded to. Next hop values are only allowed in routes where the next hop type is VirtualAppliance.
-	NextHopIPAddress *string
+	// READ-ONLY; Duration of Remote Support Enablement
+	Duration *int64
+
+	// READ-ONLY; Name of the node
+	NodeName *string
+
+	// READ-ONLY; Remote Support Session EndTime on the Node
+	SessionEndTime *time.Time
+
+	// READ-ONLY; Remote Support Session StartTime on the Node
+	SessionStartTime *time.Time
 }
 
-// RouteTable - Route table resource.
-type RouteTable struct {
-	// Properties of the route table.
-	Properties *RouteTablePropertiesFormat
+// PerNodeState - Status of Arc agent for a particular node in HCI Cluster.
+type PerNodeState struct {
+	// READ-ONLY; Fully qualified resource ID for the Arc agent of this node.
+	ArcInstance *string
 
-	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
-	Etag *string
+	// READ-ONLY; The service principal id of the arc for server node
+	ArcNodeServicePrincipalObjectID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; Name of the Node in HCI Cluster
 	Name *string
 
-	// READ-ONLY; Resource type.
-	Type *string
+	// READ-ONLY; State of Arc agent in this node.
+	State *NodeArcState
 }
 
-// RouteTablePropertiesFormat - Route Table resource.
-type RouteTablePropertiesFormat struct {
-	// Collection of routes contained within a route table.
-	Routes []*Route
+// PhysicalNodes - The PhysicalNodes of a cluster.
+type PhysicalNodes struct {
+	// The IPv4 address assigned to each physical server on your Azure Stack HCI cluster.
+	IPv4Address *string
+
+	// NETBIOS name of each physical server on your Azure Stack HCI cluster.
+	Name *string
 }
 
-// SSHConfiguration - SSH configuration for Linux based VMs running on Azure
-type SSHConfiguration struct {
-	// The list of SSH public keys used to authenticate with linux based VMs.
-	PublicKeys []*SSHPublicKey
-}
+type PrecheckResult struct {
+	// Property bag of key value pairs for additional information.
+	AdditionalData *string
 
-// SSHPublicKey - Contains information about SSH certificate public key and the path on the Linux VM where the public key
-// is placed.
-type SSHPublicKey struct {
-	// SSH public key certificate used to authenticate with the VM through ssh. The key needs to be at least 2048-bit and in ssh-rsa
-	// format.
-	// For creating ssh keys, see [Create SSH keys on Linux and Mac for Linux VMs in Azure]https://docs.microsoft.com/azure/virtual-machines/linux/create-ssh-keys-detailed).
-	KeyData *string
+	// Detailed overview of the issue and what impact the issue has on the stamp.
+	Description *string
 
-	// Specifies the full path on the created VM where ssh public key is stored. If the file already exists, the specified key
-	// is appended to the file. Example: /home/user/.ssh/authorized_keys
-	Path *string
-}
+	// The health check DisplayName localized of the individual test executed.
+	DisplayName *string
 
-// StorageContainerProperties - Properties under the storage container resource
-type StorageContainerProperties struct {
-	// REQUIRED; Path of the storage container on the disk
-	Path *string
+	// The name of the services called for the HealthCheck (I.E. Test-AzureStack, Test-Cluster).
+	HealthCheckSource *string
 
-	// READ-ONLY; Provisioning state of the storage container.
-	ProvisioningState *ProvisioningStateEnum
+	// Key-value pairs that allow grouping/filtering individual tests.
+	HealthCheckTags any
 
-	// READ-ONLY; The observed state of storage containers
-	Status *StorageContainerStatus
-}
+	// Name of the individual test/rule/alert that was executed. Unique, not exposed to the customer.
+	Name *string
 
-// StorageContainerStatus - The observed state of storage containers
-type StorageContainerStatus struct {
-	// Amount of space available on the disk in MB
-	AvailableSizeMB *int64
+	// Set of steps that can be taken to resolve the issue found.
+	Remediation *string
 
-	// Total size of the disk in MB
-	ContainerSizeMB *int64
+	// Severity of the result (Critical, Warning, Informational, Hidden). This answers how important the result is. Critical is
+	// the only update-blocking severity.
+	Severity *Severity
 
-	// StorageContainer provisioning error code
-	ErrorCode *string
-
-	// Descriptive error message
-	ErrorMessage       *string
-	ProvisioningStatus *StorageContainerStatusProvisioningStatus
-}
-
-type StorageContainerStatusProvisioningStatus struct {
-	// The ID of the operation performed on the storage container
-	OperationID *string
-
-	// The status of the operation performed on the storage container [Succeeded, Failed, InProgress]
+	// The status of the check running (i.e. Failed, Succeeded, In Progress). This answers whether the check ran, and passed or
+	// failed.
 	Status *Status
+
+	// Key-value pairs that allow grouping/filtering individual tests.
+	Tags *PrecheckResultTags
+
+	// The unique identifier for the affected resource (such as a node or drive).
+	TargetResourceID *string
+
+	// The name of the affected resource.
+	TargetResourceName *string
+
+	// The type of resource being referred to (well-known set of nouns in infrastructure, aligning with Monitoring).
+	TargetResourceType *string
+
+	// The time in which the HealthCheck was called.
+	Timestamp *time.Time
+
+	// User-facing name; one or more sentences indicating the direct issue.
+	Title *string
 }
 
-// StorageContainers - The storage container resource definition.
-type StorageContainers struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
+// PrecheckResultTags - Key-value pairs that allow grouping/filtering individual tests.
+type PrecheckResultTags struct {
+	// Key that allow grouping/filtering individual tests.
+	Key *string
 
-	// The extendedLocation of the resource.
-	ExtendedLocation *ExtendedLocation
+	// Value of the key that allow grouping/filtering individual tests.
+	Value *string
+}
 
-	// Properties under the storage container resource
-	Properties *StorageContainerProperties
+// Publisher details.
+type Publisher struct {
+	// Publisher properties.
+	Properties *PublisherProperties
 
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -868,63 +1568,380 @@ type StorageContainers struct {
 	Type *string
 }
 
-type StorageContainersListResult struct {
+// PublisherList - List of Publisher proxy resources for the HCI cluster.
+type PublisherList struct {
+	// READ-ONLY; Link to the next set of results.
 	NextLink *string
-	Value    []*StorageContainers
+
+	// READ-ONLY; List of Publisher proxy resources.
+	Value []*Publisher
 }
 
-// StorageContainersUpdateRequest - The storage container resource patch definition.
-type StorageContainersUpdateRequest struct {
-	// Resource tags
-	Tags map[string]*string
+// PublisherProperties - Publisher properties.
+type PublisherProperties struct {
+	// READ-ONLY; Provisioning State
+	ProvisioningState *string
 }
 
-type StorageProfileUpdate struct {
-	// adds data disks to the virtual machine instance for the update call
-	DataDisks []*StorageProfileUpdateDataDisksItem
+// QosPolicyOverrides - The QoSPolicyOverrides of a cluster.
+type QosPolicyOverrides struct {
+	// This parameter should only be modified based on your OEM guidance. Do not modify this parameter without OEM validation.
+	BandwidthPercentageSMB *string
+
+	// This parameter should only be modified based on your OEM guidance. Do not modify this parameter without OEM validation.
+	PriorityValue8021ActionCluster *string
+
+	// This parameter should only be modified based on your OEM guidance. Do not modify this parameter without OEM validation.
+	PriorityValue8021ActionSMB *string
 }
 
-type StorageProfileUpdateDataDisksItem struct {
+type RawCertificateData struct {
+	Certificates []*string
+}
+
+// RemoteSupportNodeSettings - Remote Support Node Settings of the cluster.
+type RemoteSupportNodeSettings struct {
+	// READ-ONLY; Arc ResourceId of the Node
+	ArcResourceID *string
+
+	// READ-ONLY; Remote Support Access Connection Error Message on the Node
+	ConnectionErrorMessage *string
+
+	// READ-ONLY; Remote Support Access Connection Status on the Node
+	ConnectionStatus *string
+
+	// READ-ONLY; Remote Support Enablement Request Created TimeStamp on the Node
+	CreatedAt *time.Time
+
+	// READ-ONLY; Remote Support Access Connection State on the Node
+	State *string
+
+	// READ-ONLY; Remote Support Transcript location on the node
+	TranscriptLocation *string
+
+	// READ-ONLY; Remote Support Enablement Request Updated TimeStamp on the Node
+	UpdatedAt *time.Time
+}
+
+// RemoteSupportProperties - Remote Support properties of the cluster.
+type RemoteSupportProperties struct {
+	// READ-ONLY; Remote Support Access Level
+	AccessLevel *AccessLevel
+
+	// READ-ONLY; Expiration DateTimeStamp when Remote Support Access will be expired
+	ExpirationTimeStamp *time.Time
+
+	// READ-ONLY
+	RemoteSupportNodeSettings []*RemoteSupportNodeSettings
+
+	// READ-ONLY
+	RemoteSupportSessionDetails []*PerNodeRemoteSupportSession
+
+	// READ-ONLY; Remote Support Type for cluster
+	RemoteSupportType *RemoteSupportType
+}
+
+// RemoteSupportRequest - Remote Support Request
+type RemoteSupportRequest struct {
+	// Properties for Remote Support Request
+	Properties *RemoteSupportRequestProperties
+}
+
+// RemoteSupportRequestProperties - Properties for Remote Support Request
+type RemoteSupportRequestProperties struct {
+	// Expiration DateTimeStamp when Remote Support Access will be expired
+	ExpirationTimeStamp *time.Time
+
+	// Remote Support Type for cluster
+	RemoteSupportType *RemoteSupportType
+
+	// READ-ONLY; Remote Support Access Level
+	AccessLevel *AccessLevel
+}
+
+// SKU - Sku details.
+type SKU struct {
+	// SKU properties.
+	Properties *SKUProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
-}
 
-type Subnet struct {
-	// Name - The name of the resource that is unique within a resource group. This name can be used to access the resource.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// Properties of the subnet.
-	Properties *SubnetPropertiesFormat
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
 }
 
-// SubnetPropertiesFormat - Properties of the subnet.
-type SubnetPropertiesFormat struct {
-	// The address prefix for the subnet: Cidr for this subnet - IPv4, IPv6.
-	AddressPrefix *string
+// SKUList - List of SKU proxy resources for the HCI cluster.
+type SKUList struct {
+	// READ-ONLY; Link to the next set of results.
+	NextLink *string
 
-	// List of address prefixes for the subnet.
-	AddressPrefixes []*string
-
-	// IPAllocationMethod - The IP address allocation method. Possible values include: 'Static', 'Dynamic'
-	IPAllocationMethod *IPAllocationMethodEnum
-
-	// IPConfigurationReferences - list of IPConfigurationReferences
-	IPConfigurationReferences []*SubnetPropertiesFormatIPConfigurationReferencesItem
-
-	// network associated pool of IP Addresses
-	IPPools []*IPPool
-
-	// Route table resource.
-	RouteTable *RouteTable
-
-	// Vlan to use for the subnet
-	Vlan *int32
+	// READ-ONLY; List of SKU proxy resources.
+	Value []*SKU
 }
 
-// SubnetPropertiesFormatIPConfigurationReferencesItem - IPConfigurationReference - Describes a IPConfiguration under the
-// virtual network
-type SubnetPropertiesFormatIPConfigurationReferencesItem struct {
-	// IPConfigurationID
+// SKUMappings - SKU Mapping details.
+type SKUMappings struct {
+	// Identifier of the CatalogPlan for the sku
+	CatalogPlanID *string
+
+	// Identifier for the sku
+	MarketplaceSKUID *string
+
+	// Array of SKU versions available
+	MarketplaceSKUVersions []*string
+}
+
+// SKUProperties - SKU properties.
+type SKUProperties struct {
+	// JSON serialized catalog content of the sku offer
+	Content *string
+
+	// The API version of the catalog service used to serve the catalog content
+	ContentVersion *string
+
+	// Identifier of the Offer for the sku
+	OfferID *string
+
+	// Identifier of the Publisher for the offer
+	PublisherID *string
+
+	// Array of SKU mappings
+	SKUMappings []*SKUMappings
+
+	// READ-ONLY; Provisioning State
+	ProvisioningState *string
+}
+
+// SbeCredentials - secrets used for solution builder extension (SBE) partner extensibility.
+type SbeCredentials struct {
+	// secret name expected for Enterprise Cloud Engine (ECE).
+	EceSecretName *string
+
+	// secret URI stored in keyvault.
+	SecretLocation *string
+
+	// secret name stored in keyvault.
+	SecretName *string
+}
+
+// SbeDeploymentInfo - Solution builder extension (SBE) package and manifest information for the solution builder extension
+// staged for AzureStackHCI cluster deployment.
+type SbeDeploymentInfo struct {
+	// SBE family name.
+	Family *string
+
+	// SBE manifest publisher.
+	Publisher *string
+
+	// SBE Manifest Creation Date.
+	SbeManifestCreationDate *time.Time
+
+	// SBE Manifest Source.
+	SbeManifestSource *string
+
+	// SBE package version.
+	Version *string
+}
+
+// SbeDeploymentPackageInfo - Solution builder extension (SBE) deployment package information.
+type SbeDeploymentPackageInfo struct {
+	// READ-ONLY; SBE deployment validation code.
+	Code *string
+
+	// READ-ONLY; A detailed message that explains the SBE package validation result.
+	Message *string
+
+	// READ-ONLY; This represents discovered update results for matching updates and store it as SBE manifest.
+	SbeManifest *string
+}
+
+// SbePartnerInfo - The solution builder extension (SBE) partner deployment info for cluster.
+type SbePartnerInfo struct {
+	// SBE credentials list for AzureStackHCI cluster deployment.
+	CredentialList []*SbeCredentials
+
+	// List of SBE partner properties for AzureStackHCI cluster deployment.
+	PartnerProperties []*SbePartnerProperties
+
+	// SBE package and manifest information for the solution Builder Extension staged for AzureStackHCI cluster deployment.
+	SbeDeploymentInfo *SbeDeploymentInfo
+}
+
+// SbePartnerProperties - Solution builder extension (SBE) partner properties object.
+type SbePartnerProperties struct {
+	// SBE partner property name.
+	Name *string
+
+	// SBE partner property value.
+	Value *string
+}
+
+// ScaleUnits - Scale units will contains list of deployment data
+type ScaleUnits struct {
+	// REQUIRED; Deployment Data to deploy AzureStackHCI Cluster.
+	DeploymentData *DeploymentData
+
+	// Solution builder extension (SBE) partner properties
+	SbePartnerInfo *SbePartnerInfo
+}
+
+// SdnIntegration - SDN Integration config to deploy AzureStackHCI Cluster.
+type SdnIntegration struct {
+	// network controller config for SDN Integration to deploy AzureStackHCI Cluster.
+	NetworkController *NetworkController
+}
+
+// SecurityComplianceStatus - Security compliance properties of the resource
+type SecurityComplianceStatus struct {
+	// READ-ONLY; Indicates whether data at-rest encryption is enabled on Azure Stack HCI clustered volumes.
+	DataAtRestEncrypted *ComplianceStatus
+
+	// READ-ONLY; Indicates whether HCI cluster has data in-transit protection.
+	DataInTransitProtected *ComplianceStatus
+
+	// READ-ONLY; Time in UTC when compliance status was last updated.
+	LastUpdated *time.Time
+
+	// READ-ONLY; Indicates whether HCI hosts meets secured-core server requirements.
+	SecuredCoreCompliance *ComplianceStatus
+
+	// READ-ONLY; Indicates whether HCI hosts have enforced consistent Windows Defender Application Control.
+	WdacCompliance *ComplianceStatus
+}
+
+// SecurityProperties - Security properties of the resource
+type SecurityProperties struct {
+	// The status of the last operation.
+	ProvisioningState *ProvisioningState
+
+	// Secured Core Compliance Assignment
+	SecuredCoreComplianceAssignment *ComplianceAssignmentType
+
+	// SMB encryption for intra-cluster traffic Compliance Assignment
+	SmbEncryptionForIntraClusterTrafficComplianceAssignment *ComplianceAssignmentType
+
+	// WDAC Compliance Assignment
+	WdacComplianceAssignment *ComplianceAssignmentType
+
+	// READ-ONLY; Security Compliance Status
+	SecurityComplianceStatus *SecurityComplianceStatus
+}
+
+// SecuritySetting - Security settings proxy resource
+type SecuritySetting struct {
+	// The resource-specific properties for this resource.
+	Properties *SecurityProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// SecuritySettingListResult - The response of a SecuritySetting list operation.
+type SecuritySettingListResult struct {
+	// REQUIRED; The SecuritySetting items on this page
+	Value []*SecuritySetting
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+type SoftwareAssuranceChangeRequest struct {
+	Properties *SoftwareAssuranceChangeRequestProperties
+}
+
+type SoftwareAssuranceChangeRequestProperties struct {
+	// Customer Intent for Software Assurance Benefit.
+	SoftwareAssuranceIntent *SoftwareAssuranceIntent
+}
+
+// SoftwareAssuranceProperties - Software Assurance properties of the cluster.
+type SoftwareAssuranceProperties struct {
+	// Customer Intent for Software Assurance Benefit.
+	SoftwareAssuranceIntent *SoftwareAssuranceIntent
+
+	// READ-ONLY; TimeStamp denoting the latest SA benefit applicability is validated.
+	LastUpdated *time.Time
+
+	// READ-ONLY; Status of the Software Assurance for the cluster.
+	SoftwareAssuranceStatus *SoftwareAssuranceStatus
+}
+
+// Step - Progress representation of the update run steps.
+type Step struct {
+	// More detailed description of the step.
+	Description *string
+
+	// When the step reached a terminal state.
+	EndTimeUTC *time.Time
+
+	// Error message, specified if the step is in a failed state.
+	ErrorMessage *string
+
+	// Expected execution time of a given step. This is optionally authored in the update action plan and can be empty.
+	ExpectedExecutionTime *string
+
+	// Completion time of this step or the last completed sub-step.
+	LastUpdatedTimeUTC *time.Time
+
+	// Name of the step.
+	Name *string
+
+	// When the step started, or empty if it has not started executing.
+	StartTimeUTC *time.Time
+
+	// Status of the step, bubbled up from the ECE action plan for installation attempts. Values are: 'Success', 'Error', 'InProgress',
+	// and 'Unknown status'.
+	Status *string
+
+	// Recursive model for child steps of this step.
+	Steps []*Step
+}
+
+// Storage - The Storage config of AzureStackHCI Cluster.
+type Storage struct {
+	// By default, this mode is set to Express and your storage is configured as per best practices based on the number of nodes
+	// in the cluster. Allowed values are 'Express','InfraOnly', 'KeepStorage'
+	ConfigurationMode *string
+}
+
+// SwitchDetail - List of switch details for edge device.
+type SwitchDetail struct {
+	// READ-ONLY; This represents extensions installed on virtualSwitch.
+	Extensions []*SwitchExtension
+
+	// READ-ONLY; The name of the switch.
+	SwitchName *string
+
+	// READ-ONLY; The type of the switch. e.g. external, internal.
+	SwitchType *string
+}
+
+// SwitchExtension - This represents extensions installed on virtualSwitch.
+type SwitchExtension struct {
+	// READ-ONLY; This represents whether extension is enabled on virtualSwitch.
+	ExtensionEnabled *bool
+
+	// READ-ONLY; This will show extension name for virtualSwitch.
+	ExtensionName *string
+
+	// READ-ONLY; Unique identifier for virtualSwitch.
+	SwitchID *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -948,67 +1965,15 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType
 }
 
-// VirtualHardDiskProperties - Properties under the virtual hard disk resource
-type VirtualHardDiskProperties struct {
-	BlockSizeBytes *int32
-
-	// Storage ContainerID of the storage container to be used for VHD
-	ContainerID *string
-
-	// The format of the actual VHD file [vhd, vhdx]
-	DiskFileFormat *DiskFileFormat
-
-	// Size of the disk in GB
-	DiskSizeGB *int64
-
-	// Boolean for enabling dynamic sizing on the virtual hard disk
-	Dynamic *bool
-
-	// The hypervisor generation of the Virtual Machine [V1, V2]
-	HyperVGeneration    *HyperVGeneration
-	LogicalSectorBytes  *int32
-	PhysicalSectorBytes *int32
-
-	// READ-ONLY; Provisioning state of the virtual hard disk.
-	ProvisioningState *ProvisioningStateEnum
-
-	// READ-ONLY; The observed state of virtual hard disks
-	Status *VirtualHardDiskStatus
-}
-
-// VirtualHardDiskStatus - The observed state of virtual hard disks
-type VirtualHardDiskStatus struct {
-	// VirtualHardDisk provisioning error code
-	ErrorCode *string
-
-	// Descriptive error message
-	ErrorMessage       *string
-	ProvisioningStatus *VirtualHardDiskStatusProvisioningStatus
-}
-
-type VirtualHardDiskStatusProvisioningStatus struct {
-	// The ID of the operation performed on the virtual hard disk
-	OperationID *string
-
-	// The status of the operation performed on the virtual hard disk [Succeeded, Failed, InProgress]
-	Status *Status
-}
-
-// VirtualHardDisks - The virtual hard disk resource definition.
-type VirtualHardDisks struct {
-	// REQUIRED; The geo-location where the resource lives
+// Update details
+type Update struct {
+	// The geo-location where the resource lives
 	Location *string
 
-	// The extendedLocation of the resource.
-	ExtendedLocation *ExtendedLocation
+	// Update properties
+	Properties *UpdateProperties
 
-	// Properties under the virtual hard disk resource
-	Properties *VirtualHardDiskProperties
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1021,38 +1986,105 @@ type VirtualHardDisks struct {
 	Type *string
 }
 
-type VirtualHardDisksListResult struct {
+// UpdateList - List of Updates
+type UpdateList struct {
+	// List of Updates
+	Value []*Update
+
+	// READ-ONLY; Link to the next set of results.
 	NextLink *string
-	Value    []*VirtualHardDisks
 }
 
-// VirtualHardDisksUpdateRequest - The virtual hard disk resource patch definition.
-type VirtualHardDisksUpdateRequest struct {
-	// Resource tags
-	Tags map[string]*string
+// UpdatePrerequisite - If update State is HasPrerequisite, this property contains an array of objects describing prerequisite
+// updates before installing this update. Otherwise, it is empty.
+type UpdatePrerequisite struct {
+	// Friendly name of the prerequisite.
+	PackageName *string
+
+	// Updatable component type.
+	UpdateType *string
+
+	// Version of the prerequisite.
+	Version *string
 }
 
-// VirtualMachineConfigAgentInstanceView - The instance view of the VM Config Agent running on the virtual machine.
-type VirtualMachineConfigAgentInstanceView struct {
-	// The resource status information.
-	Statuses []*InstanceViewStatus
+// UpdateProperties - Details of a singular Update in HCI Cluster
+type UpdateProperties struct {
+	// Extensible KV pairs serialized as a string. This is currently used to report the stamp OEM family and hardware model information
+	// when an update is flagged as Invalid for the stamp based on OEM type.
+	AdditionalProperties *string
 
-	// The VM Config Agent full version.
-	VMConfigAgentVersion *string
+	// Indicates the way the update content can be downloaded.
+	AvailabilityType *AvailabilityType
+
+	// An array of component versions for a Solution Bundle update, and an empty array otherwise.
+	ComponentVersions []*PackageVersionInfo
+
+	// Description of the update.
+	Description *string
+
+	// Display name of the Update
+	DisplayName *string
+
+	// Last time the package-specific checks were run.
+	HealthCheckDate *time.Time
+
+	// An array of PrecheckResult objects.
+	HealthCheckResult []*PrecheckResult
+
+	// Overall health state for update-specific health checks.
+	HealthState *HealthState
+
+	// Date that the update was installed.
+	InstalledDate *time.Time
+
+	// Minimum Sbe Version of the update.
+	MinSbeVersionRequired *string
+
+	// Path where the update package is available.
+	PackagePath *string
+
+	// Size of the package. This value is a combination of the size from update metadata and size of the payload that results
+	// from the live scan operation for OS update content.
+	PackageSizeInMb *float32
+
+	// Customer-visible type of the update.
+	PackageType *string
+
+	// If update State is HasPrerequisite, this property contains an array of objects describing prerequisite updates before installing
+	// this update. Otherwise, it is empty.
+	Prerequisites []*UpdatePrerequisite
+
+	// Publisher of the update package.
+	Publisher      *string
+	RebootRequired *RebootRequirement
+
+	// Link to release notes for the update.
+	ReleaseLink *string
+
+	// State of the update as it relates to this stamp.
+	State *State
+
+	// Additional information regarding the state of the update. See definition of UpdateStateProperties type below for more details
+	// on this property.
+	UpdateStateProperties *UpdateStateProperties
+
+	// Version of the update.
+	Version *string
+
+	// READ-ONLY; Provisioning state of the Updates proxy resource.
+	ProvisioningState *ProvisioningState
 }
 
-// VirtualMachineInstance - The virtual machine instance resource definition.
-type VirtualMachineInstance struct {
-	// The extendedLocation of the resource.
-	ExtendedLocation *ExtendedLocation
+// UpdateRun - Details of an Update run
+type UpdateRun struct {
+	// The geo-location where the resource lives
+	Location *string
 
-	// Identity for the resource.
-	Identity *Identity
+	// Describes Update Run Properties.
+	Properties *UpdateRunProperties
 
-	// Properties under the virtual machine instance resource
-	Properties *VirtualMachineInstanceProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1065,238 +2097,143 @@ type VirtualMachineInstance struct {
 	Type *string
 }
 
-type VirtualMachineInstanceListResult struct {
+// UpdateRunList - List of Update runs
+type UpdateRunList struct {
+	// List of Update runs
+	Value []*UpdateRun
+
+	// READ-ONLY; Link to the next set of results.
 	NextLink *string
-	Value    []*VirtualMachineInstance
 }
 
-// VirtualMachineInstanceProperties - Properties under the virtual machine instance resource
-type VirtualMachineInstanceProperties struct {
-	// Guest agent install status.
-	GuestAgentInstallStatus *GuestAgentInstallStatus
+// UpdateRunProperties - Details of an Update run
+type UpdateRunProperties struct {
+	// Duration of the update run.
+	Duration *string
 
-	// HTTP Proxy configuration for the VM.
-	HTTPProxyConfig *HTTPProxyConfiguration
+	// Timestamp of the most recently completed step in the update run.
+	LastUpdatedTime *time.Time
 
-	// HardwareProfile - Specifies the hardware settings for the virtual machine instance.
-	HardwareProfile *VirtualMachineInstancePropertiesHardwareProfile
+	// Progress representation of the update run steps.
+	Progress *Step
 
-	// NetworkProfile - describes the network configuration the virtual machine instance
-	NetworkProfile *VirtualMachineInstancePropertiesNetworkProfile
+	// State of the update run.
+	State *UpdateRunPropertiesState
 
-	// OsProfile - describes the configuration of the operating system and sets login data
-	OSProfile *VirtualMachineInstancePropertiesOsProfile
+	// Timestamp of the update run was started.
+	TimeStarted *time.Time
 
-	// Unique identifier defined by ARC to identify the guest of the VM.
-	ResourceUID *string
-
-	// SecurityProfile - Specifies the security settings for the virtual machine instance.
-	SecurityProfile *VirtualMachineInstancePropertiesSecurityProfile
-
-	// StorageProfile - contains information about the disks and storage information for the virtual machine instance
-	StorageProfile *VirtualMachineInstancePropertiesStorageProfile
-
-	// READ-ONLY; The virtual machine instance view.
-	InstanceView *VirtualMachineInstanceView
-
-	// READ-ONLY; Provisioning state of the virtual machine instance.
-	ProvisioningState *ProvisioningStateEnum
-
-	// READ-ONLY; The observed state of virtual machine instances
-	Status *VirtualMachineInstanceStatus
-
-	// READ-ONLY; Unique identifier for the vm resource.
-	VMID *string
+	// READ-ONLY; Provisioning state of the UpdateRuns proxy resource.
+	ProvisioningState *ProvisioningState
 }
 
-// VirtualMachineInstancePropertiesHardwareProfile - HardwareProfile - Specifies the hardware settings for the virtual machine
-// instance.
-type VirtualMachineInstancePropertiesHardwareProfile struct {
-	DynamicMemoryConfig *VirtualMachineInstancePropertiesHardwareProfileDynamicMemoryConfig
+// UpdateStateProperties - Additional information regarding the state of the update. See definition of UpdateStateProperties
+// type below for more details on this property.
+type UpdateStateProperties struct {
+	// Brief message with instructions for updates of AvailabilityType Notify.
+	NotifyMessage *string
 
-	// RAM in MB for the virtual machine instance
-	MemoryMB *int64
-
-	// number of processors for the virtual machine instance
-	Processors *int32
-	VMSize     *VMSizeEnum
+	// Progress percentage of ongoing operation. Currently this property is only valid when the update is in the Downloading state,
+	// where it maps to how much of the update content has been downloaded.
+	ProgressPercentage *float32
 }
 
-type VirtualMachineInstancePropertiesHardwareProfileDynamicMemoryConfig struct {
-	MaximumMemoryMB *int64
-	MinimumMemoryMB *int64
+// UpdateSummaries - Get the update summaries for the cluster
+type UpdateSummaries struct {
+	// The geo-location where the resource lives
+	Location *string
 
-	// Defines the amount of extra memory that should be reserved for a virtual machine instance at runtime, as a percentage of
-	// the total memory that the virtual machine instance is thought to need. This
-	// only applies to virtual systems with dynamic memory enabled. This property can be in the range of 5 to 2000.
-	TargetMemoryBuffer *int32
-}
+	// Update summaries properties
+	Properties *UpdateSummariesProperties
 
-// VirtualMachineInstancePropertiesNetworkProfile - NetworkProfile - describes the network configuration the virtual machine
-// instance
-type VirtualMachineInstancePropertiesNetworkProfile struct {
-	// NetworkInterfaces - list of network interfaces to be attached to the virtual machine instance
-	NetworkInterfaces []*VirtualMachineInstancePropertiesNetworkProfileNetworkInterfacesItem
-}
-
-type VirtualMachineInstancePropertiesNetworkProfileNetworkInterfacesItem struct {
-	// ID - Resource Id of the network interface
-	ID *string
-}
-
-// VirtualMachineInstancePropertiesOsProfile - OsProfile - describes the configuration of the operating system and sets login
-// data
-type VirtualMachineInstancePropertiesOsProfile struct {
-	// AdminPassword - admin password
-	AdminPassword *string
-
-	// AdminUsername - admin username
-	AdminUsername *string
-
-	// ComputerName - name of the compute
-	ComputerName *string
-
-	// LinuxConfiguration - linux specific configuration values for the virtual machine instance
-	LinuxConfiguration *VirtualMachineInstancePropertiesOsProfileLinuxConfiguration
-
-	// Windows Configuration for the virtual machine instance
-	WindowsConfiguration *VirtualMachineInstancePropertiesOsProfileWindowsConfiguration
-}
-
-// VirtualMachineInstancePropertiesOsProfileLinuxConfiguration - LinuxConfiguration - linux specific configuration values
-// for the virtual machine instance
-type VirtualMachineInstancePropertiesOsProfileLinuxConfiguration struct {
-	// DisablePasswordAuthentication - whether password authentication should be disabled
-	DisablePasswordAuthentication *bool
-
-	// Used to indicate whether Arc for Servers agent onboarding should be triggered during the virtual machine instance creation
-	// process.
-	ProvisionVMAgent *bool
-
-	// Used to indicate whether the VM Config Agent should be installed during the virtual machine creation process.
-	ProvisionVMConfigAgent *bool
-
-	// Specifies the ssh key configuration for a Linux OS.
-	SSH *SSHConfiguration
-}
-
-// VirtualMachineInstancePropertiesOsProfileWindowsConfiguration - Windows Configuration for the virtual machine instance
-type VirtualMachineInstancePropertiesOsProfileWindowsConfiguration struct {
-	// Whether to EnableAutomaticUpdates on the machine
-	EnableAutomaticUpdates *bool
-
-	// Used to indicate whether Arc for Servers agent onboarding should be triggered during the virtual machine instance creation
-	// process.
-	ProvisionVMAgent *bool
-
-	// Used to indicate whether the VM Config Agent should be installed during the virtual machine creation process.
-	ProvisionVMConfigAgent *bool
-
-	// Specifies the ssh key configuration for Windows OS.
-	SSH *SSHConfiguration
-
-	// TimeZone for the virtual machine instance
-	TimeZone *string
-}
-
-// VirtualMachineInstancePropertiesSecurityProfile - SecurityProfile - Specifies the security settings for the virtual machine
-// instance.
-type VirtualMachineInstancePropertiesSecurityProfile struct {
-	EnableTPM *bool
-
-	// Specifies the SecurityType of the virtual machine. EnableTPM and SecureBootEnabled must be set to true for SecurityType
-	// to function.
-	SecurityType *SecurityTypes
-	UefiSettings *VirtualMachineInstancePropertiesSecurityProfileUefiSettings
-}
-
-type VirtualMachineInstancePropertiesSecurityProfileUefiSettings struct {
-	// Specifies whether secure boot should be enabled on the virtual machine instance.
-	SecureBootEnabled *bool
-}
-
-// VirtualMachineInstancePropertiesStorageProfile - StorageProfile - contains information about the disks and storage information
-// for the virtual machine instance
-type VirtualMachineInstancePropertiesStorageProfile struct {
-	// adds data disks to the virtual machine instance
-	DataDisks []*VirtualMachineInstancePropertiesStorageProfileDataDisksItem
-
-	// Which Image to use for the virtual machine instance
-	ImageReference *VirtualMachineInstancePropertiesStorageProfileImageReference
-
-	// VHD to attach as OS disk
-	OSDisk *VirtualMachineInstancePropertiesStorageProfileOsDisk
-
-	// Id of the storage container that hosts the VM configuration file
-	VMConfigStoragePathID *string
-}
-
-type VirtualMachineInstancePropertiesStorageProfileDataDisksItem struct {
-	// Resource ID of the data disk
-	ID *string
-}
-
-// VirtualMachineInstancePropertiesStorageProfileImageReference - Which Image to use for the virtual machine instance
-type VirtualMachineInstancePropertiesStorageProfileImageReference struct {
-	// Resource ID of the image
-	ID *string
-}
-
-// VirtualMachineInstancePropertiesStorageProfileOsDisk - VHD to attach as OS disk
-type VirtualMachineInstancePropertiesStorageProfileOsDisk struct {
-	// Resource ID of the OS disk
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// This property allows you to specify the type of the OS that is included in the disk if creating a VM from user-image or
-	// a specialized VHD. Possible values are: Windows, Linux.
-	OSType *OperatingSystemTypes
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
 }
 
-// VirtualMachineInstanceStatus - The observed state of virtual machine instances
-type VirtualMachineInstanceStatus struct {
-	// VirtualMachine provisioning error code
-	ErrorCode *string
+// UpdateSummariesList - List of Update Summaries
+type UpdateSummariesList struct {
+	// List of Update Summaries
+	Value []*UpdateSummaries
 
-	// Descriptive error message
-	ErrorMessage *string
-
-	// The power state of the virtual machine instance
-	PowerState         *PowerStateEnum
-	ProvisioningStatus *VirtualMachineInstanceStatusProvisioningStatus
+	// READ-ONLY; Link to the next set of results.
+	NextLink *string
 }
 
-type VirtualMachineInstanceStatusProvisioningStatus struct {
-	// The ID of the operation performed on the virtual machine instance
-	OperationID *string
+// UpdateSummariesProperties - Properties of Update summaries
+type UpdateSummariesProperties struct {
+	// Current OEM Version.
+	CurrentOemVersion *string
 
-	// The status of the operation performed on the virtual machine instance [Succeeded, Failed, InProgress]
-	Status *Status
+	// Current Sbe version of the stamp.
+	CurrentSbeVersion *string
+
+	// Current Solution Bundle version of the stamp.
+	CurrentVersion *string
+
+	// Name of the hardware model.
+	HardwareModel *string
+
+	// Last time the package-specific checks were run.
+	HealthCheckDate *time.Time
+
+	// An array of pre-check result objects.
+	HealthCheckResult []*PrecheckResult
+
+	// Overall health state for update-specific health checks.
+	HealthState *HealthState
+
+	// Last time the update service successfully checked for updates
+	LastChecked *time.Time
+
+	// Last time an update installation completed successfully.
+	LastUpdated *time.Time
+
+	// OEM family name.
+	OemFamily *string
+
+	// Current version of each updatable component.
+	PackageVersions []*PackageVersionInfo
+
+	// Overall update state of the stamp.
+	State *UpdateSummariesPropertiesState
+
+	// READ-ONLY; Provisioning state of the UpdateSummaries proxy resource.
+	ProvisioningState *ProvisioningState
 }
 
-// VirtualMachineInstanceUpdateProperties - Defines the resource properties for the update.
-type VirtualMachineInstanceUpdateProperties struct {
-	// HardwareProfile - Specifies the hardware settings for the virtual machine instance.
-	HardwareProfile *HardwareProfileUpdate
-
-	// NetworkProfile - describes the network update configuration the virtual machine instance
-	NetworkProfile *NetworkProfileUpdate
-
-	// OsProfile - describes the update configuration of the operating system
-	OSProfile      *OsProfileUpdate
-	StorageProfile *StorageProfileUpdate
+type UploadCertificateRequest struct {
+	Properties *RawCertificateData
 }
 
-// VirtualMachineInstanceUpdateRequest - The virtual machine instance resource patch definition.
-type VirtualMachineInstanceUpdateRequest struct {
-	// Identity for the resource.
-	Identity *Identity
+// UserAssignedIdentity - User assigned identity properties
+type UserAssignedIdentity struct {
+	// READ-ONLY; The client ID of the assigned identity.
+	ClientID *string
 
-	// Defines the resource properties for the update.
-	Properties *VirtualMachineInstanceUpdateProperties
+	// READ-ONLY; The principal ID of the assigned identity.
+	PrincipalID *string
 }
 
-// VirtualMachineInstanceView - The instance view of a virtual machine.
-type VirtualMachineInstanceView struct {
-	// The VM Config Agent running on the virtual machine.
-	VMAgent *VirtualMachineConfigAgentInstanceView
+// ValidateRequest - The validate request for Edge Device.
+type ValidateRequest struct {
+	// REQUIRED; Node Ids against which, current node has to be validated.
+	EdgeDeviceIDs []*string
+
+	// Additional info required for validation.
+	AdditionalInfo *string
+}
+
+// ValidateResponse - An Accepted response with an Operation-Location header.
+type ValidateResponse struct {
+	// READ-ONLY; edge device validation status
+	Status *string
 }

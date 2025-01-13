@@ -19,17 +19,19 @@ import (
 
 // ServerFactory is a fake server for instances of the armazurestackhci.ClientFactory type.
 type ServerFactory struct {
-	GalleryImagesServer            GalleryImagesServer
-	GuestAgentServer               GuestAgentServer
-	GuestAgentsServer              GuestAgentsServer
-	HybridIdentityMetadataServer   HybridIdentityMetadataServer
-	LogicalNetworksServer          LogicalNetworksServer
-	MarketplaceGalleryImagesServer MarketplaceGalleryImagesServer
-	NetworkInterfacesServer        NetworkInterfacesServer
-	OperationsServer               OperationsServer
-	StorageContainersServer        StorageContainersServer
-	VirtualHardDisksServer         VirtualHardDisksServer
-	VirtualMachineInstancesServer  VirtualMachineInstancesServer
+	ArcSettingsServer        ArcSettingsServer
+	ClustersServer           ClustersServer
+	DeploymentSettingsServer DeploymentSettingsServer
+	EdgeDevicesServer        EdgeDevicesServer
+	ExtensionsServer         ExtensionsServer
+	OffersServer             OffersServer
+	OperationsServer         OperationsServer
+	PublishersServer         PublishersServer
+	SKUsServer               SKUsServer
+	SecuritySettingsServer   SecuritySettingsServer
+	UpdateRunsServer         UpdateRunsServer
+	UpdateSummariesServer    UpdateSummariesServer
+	UpdatesServer            UpdatesServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -44,19 +46,21 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armazurestackhci.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                              *ServerFactory
-	trMu                             sync.Mutex
-	trGalleryImagesServer            *GalleryImagesServerTransport
-	trGuestAgentServer               *GuestAgentServerTransport
-	trGuestAgentsServer              *GuestAgentsServerTransport
-	trHybridIdentityMetadataServer   *HybridIdentityMetadataServerTransport
-	trLogicalNetworksServer          *LogicalNetworksServerTransport
-	trMarketplaceGalleryImagesServer *MarketplaceGalleryImagesServerTransport
-	trNetworkInterfacesServer        *NetworkInterfacesServerTransport
-	trOperationsServer               *OperationsServerTransport
-	trStorageContainersServer        *StorageContainersServerTransport
-	trVirtualHardDisksServer         *VirtualHardDisksServerTransport
-	trVirtualMachineInstancesServer  *VirtualMachineInstancesServerTransport
+	srv                        *ServerFactory
+	trMu                       sync.Mutex
+	trArcSettingsServer        *ArcSettingsServerTransport
+	trClustersServer           *ClustersServerTransport
+	trDeploymentSettingsServer *DeploymentSettingsServerTransport
+	trEdgeDevicesServer        *EdgeDevicesServerTransport
+	trExtensionsServer         *ExtensionsServerTransport
+	trOffersServer             *OffersServerTransport
+	trOperationsServer         *OperationsServerTransport
+	trPublishersServer         *PublishersServerTransport
+	trSKUsServer               *SKUsServerTransport
+	trSecuritySettingsServer   *SecuritySettingsServerTransport
+	trUpdateRunsServer         *UpdateRunsServerTransport
+	trUpdateSummariesServer    *UpdateSummariesServerTransport
+	trUpdatesServer            *UpdatesServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -72,55 +76,51 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
-	case "GalleryImagesClient":
-		initServer(s, &s.trGalleryImagesServer, func() *GalleryImagesServerTransport {
-			return NewGalleryImagesServerTransport(&s.srv.GalleryImagesServer)
+	case "ArcSettingsClient":
+		initServer(s, &s.trArcSettingsServer, func() *ArcSettingsServerTransport { return NewArcSettingsServerTransport(&s.srv.ArcSettingsServer) })
+		resp, err = s.trArcSettingsServer.Do(req)
+	case "ClustersClient":
+		initServer(s, &s.trClustersServer, func() *ClustersServerTransport { return NewClustersServerTransport(&s.srv.ClustersServer) })
+		resp, err = s.trClustersServer.Do(req)
+	case "DeploymentSettingsClient":
+		initServer(s, &s.trDeploymentSettingsServer, func() *DeploymentSettingsServerTransport {
+			return NewDeploymentSettingsServerTransport(&s.srv.DeploymentSettingsServer)
 		})
-		resp, err = s.trGalleryImagesServer.Do(req)
-	case "GuestAgentClient":
-		initServer(s, &s.trGuestAgentServer, func() *GuestAgentServerTransport { return NewGuestAgentServerTransport(&s.srv.GuestAgentServer) })
-		resp, err = s.trGuestAgentServer.Do(req)
-	case "GuestAgentsClient":
-		initServer(s, &s.trGuestAgentsServer, func() *GuestAgentsServerTransport { return NewGuestAgentsServerTransport(&s.srv.GuestAgentsServer) })
-		resp, err = s.trGuestAgentsServer.Do(req)
-	case "HybridIdentityMetadataClient":
-		initServer(s, &s.trHybridIdentityMetadataServer, func() *HybridIdentityMetadataServerTransport {
-			return NewHybridIdentityMetadataServerTransport(&s.srv.HybridIdentityMetadataServer)
-		})
-		resp, err = s.trHybridIdentityMetadataServer.Do(req)
-	case "LogicalNetworksClient":
-		initServer(s, &s.trLogicalNetworksServer, func() *LogicalNetworksServerTransport {
-			return NewLogicalNetworksServerTransport(&s.srv.LogicalNetworksServer)
-		})
-		resp, err = s.trLogicalNetworksServer.Do(req)
-	case "MarketplaceGalleryImagesClient":
-		initServer(s, &s.trMarketplaceGalleryImagesServer, func() *MarketplaceGalleryImagesServerTransport {
-			return NewMarketplaceGalleryImagesServerTransport(&s.srv.MarketplaceGalleryImagesServer)
-		})
-		resp, err = s.trMarketplaceGalleryImagesServer.Do(req)
-	case "NetworkInterfacesClient":
-		initServer(s, &s.trNetworkInterfacesServer, func() *NetworkInterfacesServerTransport {
-			return NewNetworkInterfacesServerTransport(&s.srv.NetworkInterfacesServer)
-		})
-		resp, err = s.trNetworkInterfacesServer.Do(req)
+		resp, err = s.trDeploymentSettingsServer.Do(req)
+	case "EdgeDevicesClient":
+		initServer(s, &s.trEdgeDevicesServer, func() *EdgeDevicesServerTransport { return NewEdgeDevicesServerTransport(&s.srv.EdgeDevicesServer) })
+		resp, err = s.trEdgeDevicesServer.Do(req)
+	case "ExtensionsClient":
+		initServer(s, &s.trExtensionsServer, func() *ExtensionsServerTransport { return NewExtensionsServerTransport(&s.srv.ExtensionsServer) })
+		resp, err = s.trExtensionsServer.Do(req)
+	case "OffersClient":
+		initServer(s, &s.trOffersServer, func() *OffersServerTransport { return NewOffersServerTransport(&s.srv.OffersServer) })
+		resp, err = s.trOffersServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
-	case "StorageContainersClient":
-		initServer(s, &s.trStorageContainersServer, func() *StorageContainersServerTransport {
-			return NewStorageContainersServerTransport(&s.srv.StorageContainersServer)
+	case "PublishersClient":
+		initServer(s, &s.trPublishersServer, func() *PublishersServerTransport { return NewPublishersServerTransport(&s.srv.PublishersServer) })
+		resp, err = s.trPublishersServer.Do(req)
+	case "SKUsClient":
+		initServer(s, &s.trSKUsServer, func() *SKUsServerTransport { return NewSKUsServerTransport(&s.srv.SKUsServer) })
+		resp, err = s.trSKUsServer.Do(req)
+	case "SecuritySettingsClient":
+		initServer(s, &s.trSecuritySettingsServer, func() *SecuritySettingsServerTransport {
+			return NewSecuritySettingsServerTransport(&s.srv.SecuritySettingsServer)
 		})
-		resp, err = s.trStorageContainersServer.Do(req)
-	case "VirtualHardDisksClient":
-		initServer(s, &s.trVirtualHardDisksServer, func() *VirtualHardDisksServerTransport {
-			return NewVirtualHardDisksServerTransport(&s.srv.VirtualHardDisksServer)
+		resp, err = s.trSecuritySettingsServer.Do(req)
+	case "UpdateRunsClient":
+		initServer(s, &s.trUpdateRunsServer, func() *UpdateRunsServerTransport { return NewUpdateRunsServerTransport(&s.srv.UpdateRunsServer) })
+		resp, err = s.trUpdateRunsServer.Do(req)
+	case "UpdateSummariesClient":
+		initServer(s, &s.trUpdateSummariesServer, func() *UpdateSummariesServerTransport {
+			return NewUpdateSummariesServerTransport(&s.srv.UpdateSummariesServer)
 		})
-		resp, err = s.trVirtualHardDisksServer.Do(req)
-	case "VirtualMachineInstancesClient":
-		initServer(s, &s.trVirtualMachineInstancesServer, func() *VirtualMachineInstancesServerTransport {
-			return NewVirtualMachineInstancesServerTransport(&s.srv.VirtualMachineInstancesServer)
-		})
-		resp, err = s.trVirtualMachineInstancesServer.Do(req)
+		resp, err = s.trUpdateSummariesServer.Do(req)
+	case "UpdatesClient":
+		initServer(s, &s.trUpdatesServer, func() *UpdatesServerTransport { return NewUpdatesServerTransport(&s.srv.UpdatesServer) })
+		resp, err = s.trUpdatesServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

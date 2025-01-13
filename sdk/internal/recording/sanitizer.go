@@ -27,7 +27,7 @@ type Sanitizer struct{}
 type StringSanitizer func(*string)
 
 // SanitizedValue is the default placeholder value to be used for sanitized strings.
-const SanitizedValue string = "sanitized"
+const SanitizedValue string = "Sanitized"
 
 // SanitizedBase64Value is the default placeholder value to be used for sanitized base-64 encoded strings.
 const SanitizedBase64Value string = "Kg=="
@@ -386,6 +386,32 @@ func AddURISubscriptionIDSanitizer(value string, options *RecordingOptions) erro
 		req.Body = io.NopCloser(bytes.NewReader(marshalled))
 		req.ContentLength = int64(len(marshalled))
 	}
+	return handleProxyResponse(client.Do(req))
+}
+
+// RemoveRegisteredSanitizers selectively disables sanitizers that are enabled by default such as "AZSDK1001"
+func RemoveRegisteredSanitizers(sanitizerIDs []string, options *RecordingOptions) error {
+	if recordMode == LiveMode {
+		return nil
+	}
+	if options == nil {
+		options = defaultOptions()
+	}
+	b, err := json.Marshal(struct {
+		Sanitizers []string `json:"Sanitizers"`
+	}{
+		Sanitizers: sanitizerIDs,
+	})
+	if err != nil {
+		return err
+	}
+	url := options.baseURL() + "/Admin/RemoveSanitizers"
+	req, err := http.NewRequest(http.MethodPost, url, bytes.NewReader(b))
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Content-Type", "application/json")
+	handleTestLevelSanitizer(req, options)
 	return handleProxyResponse(client.Do(req))
 }
 

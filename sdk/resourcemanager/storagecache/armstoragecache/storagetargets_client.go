@@ -48,7 +48,7 @@ func NewStorageTargetsClient(subscriptionID string, credential azcore.TokenCrede
 // is healthy again.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01-preview
+// Generated from API version 2024-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cacheName - Name of cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
 //   - storageTargetName - Name of Storage Target.
@@ -77,7 +77,7 @@ func (client *StorageTargetsClient) BeginCreateOrUpdate(ctx context.Context, res
 // is healthy again.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01-preview
+// Generated from API version 2024-03-01
 func (client *StorageTargetsClient) createOrUpdate(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, storagetarget StorageTarget, options *StorageTargetsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StorageTargetsClient.BeginCreateOrUpdate"
@@ -123,7 +123,7 @@ func (client *StorageTargetsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01-preview")
+	reqQP.Set("api-version", "2024-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, storagetarget); err != nil {
@@ -135,7 +135,7 @@ func (client *StorageTargetsClient) createOrUpdateCreateRequest(ctx context.Cont
 // BeginDNSRefresh - Tells a storage target to refresh its DNS information.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01-preview
+// Generated from API version 2024-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cacheName - Name of cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
 //   - storageTargetName - Name of Storage Target.
@@ -162,7 +162,7 @@ func (client *StorageTargetsClient) BeginDNSRefresh(ctx context.Context, resourc
 // DNSRefresh - Tells a storage target to refresh its DNS information.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01-preview
+// Generated from API version 2024-03-01
 func (client *StorageTargetsClient) dNSRefresh(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientBeginDNSRefreshOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StorageTargetsClient.BeginDNSRefresh"
@@ -208,7 +208,7 @@ func (client *StorageTargetsClient) dnsRefreshCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01-preview")
+	reqQP.Set("api-version", "2024-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -220,7 +220,7 @@ func (client *StorageTargetsClient) dnsRefreshCreateRequest(ctx context.Context,
 // will be deleted.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01-preview
+// Generated from API version 2024-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cacheName - Name of cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
 //   - storageTargetName - Name of Storage Target.
@@ -249,7 +249,7 @@ func (client *StorageTargetsClient) BeginDelete(ctx context.Context, resourceGro
 // will be deleted.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01-preview
+// Generated from API version 2024-03-01
 func (client *StorageTargetsClient) deleteOperation(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StorageTargetsClient.BeginDelete"
@@ -295,7 +295,7 @@ func (client *StorageTargetsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01-preview")
+	reqQP.Set("api-version", "2024-03-01")
 	if options != nil && options.Force != nil {
 		reqQP.Set("force", *options.Force)
 	}
@@ -307,7 +307,7 @@ func (client *StorageTargetsClient) deleteCreateRequest(ctx context.Context, res
 // Get - Returns a Storage Target from a cache.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01-preview
+// Generated from API version 2024-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cacheName - Name of cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
 //   - storageTargetName - Name of Storage Target.
@@ -358,7 +358,7 @@ func (client *StorageTargetsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01-preview")
+	reqQP.Set("api-version", "2024-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -375,7 +375,7 @@ func (client *StorageTargetsClient) getHandleResponse(resp *http.Response) (Stor
 
 // NewListByCachePager - Returns a list of Storage Targets for the specified cache.
 //
-// Generated from API version 2023-11-01-preview
+// Generated from API version 2024-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cacheName - Name of cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
 //   - options - StorageTargetsClientListByCacheOptions contains the optional parameters for the StorageTargetsClient.NewListByCachePager
@@ -423,7 +423,7 @@ func (client *StorageTargetsClient) listByCacheCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01-preview")
+	reqQP.Set("api-version", "2024-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -441,7 +441,7 @@ func (client *StorageTargetsClient) listByCacheHandleResponse(resp *http.Respons
 // BeginRestoreDefaults - Tells a storage target to restore its settings to their default values.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01-preview
+// Generated from API version 2024-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cacheName - Name of cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
 //   - storageTargetName - Name of Storage Target.
@@ -468,7 +468,7 @@ func (client *StorageTargetsClient) BeginRestoreDefaults(ctx context.Context, re
 // RestoreDefaults - Tells a storage target to restore its settings to their default values.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01-preview
+// Generated from API version 2024-03-01
 func (client *StorageTargetsClient) restoreDefaults(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientBeginRestoreDefaultsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StorageTargetsClient.BeginRestoreDefaults"
@@ -514,7 +514,7 @@ func (client *StorageTargetsClient) restoreDefaultsCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01-preview")
+	reqQP.Set("api-version", "2024-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

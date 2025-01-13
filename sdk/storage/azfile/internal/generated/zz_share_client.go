@@ -33,7 +33,7 @@ type ShareClient struct {
 // delete share operations.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2025-01-05
 //   - duration - Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite
 //     lease can be between 15 and 60 seconds. A lease duration cannot be changed using
 //     renew or change.
@@ -77,9 +77,12 @@ func (client *ShareClient) acquireLeaseCreateRequest(ctx context.Context, durati
 	if options != nil && options.ProposedLeaseID != nil {
 		req.Raw().Header["x-ms-proposed-lease-id"] = []string{*options.ProposedLeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{"2025-01-05"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+	}
+	if client.fileRequestIntent != nil {
+		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -124,7 +127,7 @@ func (client *ShareClient) acquireLeaseHandleResponse(resp *http.Response) (Shar
 // delete share operations.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2025-01-05
 //   - options - ShareClientBreakLeaseOptions contains the optional parameters for the ShareClient.BreakLease method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
 func (client *ShareClient) BreakLease(ctx context.Context, options *ShareClientBreakLeaseOptions, leaseAccessConditions *LeaseAccessConditions) (ShareClientBreakLeaseResponse, error) {
@@ -168,9 +171,12 @@ func (client *ShareClient) breakLeaseCreateRequest(ctx context.Context, options 
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{"2025-01-05"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+	}
+	if client.fileRequestIntent != nil {
+		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -223,7 +229,7 @@ func (client *ShareClient) breakLeaseHandleResponse(resp *http.Response) (ShareC
 // delete share operations.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2025-01-05
 //   - leaseID - Specifies the current lease ID on the resource.
 //   - options - ShareClientChangeLeaseOptions contains the optional parameters for the ShareClient.ChangeLease method.
 func (client *ShareClient) ChangeLease(ctx context.Context, leaseID string, options *ShareClientChangeLeaseOptions) (ShareClientChangeLeaseResponse, error) {
@@ -265,9 +271,12 @@ func (client *ShareClient) changeLeaseCreateRequest(ctx context.Context, leaseID
 	if options != nil && options.ProposedLeaseID != nil {
 		req.Raw().Header["x-ms-proposed-lease-id"] = []string{*options.ProposedLeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{"2025-01-05"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+	}
+	if client.fileRequestIntent != nil {
+		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -312,7 +321,7 @@ func (client *ShareClient) changeLeaseHandleResponse(resp *http.Response) (Share
 // fails.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2025-01-05
 //   - options - ShareClientCreateOptions contains the optional parameters for the ShareClient.Create method.
 func (client *ShareClient) Create(ctx context.Context, options *ShareClientCreateOptions) (ShareClientCreateResponse, error) {
 	var err error
@@ -357,12 +366,33 @@ func (client *ShareClient) createCreateRequest(ctx context.Context, options *Sha
 	if options != nil && options.AccessTier != nil {
 		req.Raw().Header["x-ms-access-tier"] = []string{string(*options.AccessTier)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{"2025-01-05"}
 	if options != nil && options.EnabledProtocols != nil {
 		req.Raw().Header["x-ms-enabled-protocols"] = []string{*options.EnabledProtocols}
 	}
 	if options != nil && options.RootSquash != nil {
 		req.Raw().Header["x-ms-root-squash"] = []string{string(*options.RootSquash)}
+	}
+	if options != nil && options.EnableSnapshotVirtualDirectoryAccess != nil {
+		req.Raw().Header["x-ms-enable-snapshot-virtual-directory-access"] = []string{strconv.FormatBool(*options.EnableSnapshotVirtualDirectoryAccess)}
+	}
+	if options != nil && options.PaidBurstingEnabled != nil {
+		req.Raw().Header["x-ms-share-paid-bursting-enabled"] = []string{strconv.FormatBool(*options.PaidBurstingEnabled)}
+	}
+	if options != nil && options.PaidBurstingMaxBandwidthMibps != nil {
+		req.Raw().Header["x-ms-share-paid-bursting-max-bandwidth-mibps"] = []string{strconv.FormatInt(*options.PaidBurstingMaxBandwidthMibps, 10)}
+	}
+	if options != nil && options.PaidBurstingMaxIops != nil {
+		req.Raw().Header["x-ms-share-paid-bursting-max-iops"] = []string{strconv.FormatInt(*options.PaidBurstingMaxIops, 10)}
+	}
+	if client.fileRequestIntent != nil {
+		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+	}
+	if options != nil && options.ShareProvisionedIops != nil {
+		req.Raw().Header["x-ms-share-provisioned-iops"] = []string{strconv.FormatInt(*options.ShareProvisionedIops, 10)}
+	}
+	if options != nil && options.ShareProvisionedBandwidthMibps != nil {
+		req.Raw().Header["x-ms-share-provisioned-bandwidth-mibps"] = []string{strconv.FormatInt(*options.ShareProvisionedBandwidthMibps, 10)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -388,8 +418,43 @@ func (client *ShareClient) createHandleResponse(resp *http.Response) (ShareClien
 		}
 		result.LastModified = &lastModified
 	}
+	if val := resp.Header.Get("x-ms-share-max-burst-credits-for-iops"); val != "" {
+		maxBurstCreditsForIops, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return ShareClientCreateResponse{}, err
+		}
+		result.MaxBurstCreditsForIops = &maxBurstCreditsForIops
+	}
+	if val := resp.Header.Get("x-ms-share-quota"); val != "" {
+		quota, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return ShareClientCreateResponse{}, err
+		}
+		result.Quota = &quota
+	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.RequestID = &val
+	}
+	if val := resp.Header.Get("x-ms-share-included-burst-iops"); val != "" {
+		shareIncludedBurstIops, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return ShareClientCreateResponse{}, err
+		}
+		result.ShareIncludedBurstIops = &shareIncludedBurstIops
+	}
+	if val := resp.Header.Get("x-ms-share-provisioned-bandwidth-mibps"); val != "" {
+		shareProvisionedBandwidthMibps, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return ShareClientCreateResponse{}, err
+		}
+		result.ShareProvisionedBandwidthMibps = &shareProvisionedBandwidthMibps
+	}
+	if val := resp.Header.Get("x-ms-share-provisioned-iops"); val != "" {
+		shareProvisionedIops, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return ShareClientCreateResponse{}, err
+		}
+		result.ShareProvisionedIops = &shareProvisionedIops
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
 		result.Version = &val
@@ -400,7 +465,7 @@ func (client *ShareClient) createHandleResponse(resp *http.Response) (ShareClien
 // CreatePermission - Create a permission (a security descriptor).
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2025-01-05
 //   - sharePermission - A permission (a security descriptor) at the share level.
 //   - options - ShareClientCreatePermissionOptions contains the optional parameters for the ShareClient.CreatePermission method.
 func (client *ShareClient) CreatePermission(ctx context.Context, sharePermission SharePermission, options *ShareClientCreatePermissionOptions) (ShareClientCreatePermissionResponse, error) {
@@ -434,7 +499,7 @@ func (client *ShareClient) createPermissionCreateRequest(ctx context.Context, sh
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{"2025-01-05"}
 	if client.fileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
@@ -470,7 +535,7 @@ func (client *ShareClient) createPermissionHandleResponse(resp *http.Response) (
 // CreateSnapshot - Creates a read-only snapshot of a share.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2025-01-05
 //   - options - ShareClientCreateSnapshotOptions contains the optional parameters for the ShareClient.CreateSnapshot method.
 func (client *ShareClient) CreateSnapshot(ctx context.Context, options *ShareClientCreateSnapshotOptions) (ShareClientCreateSnapshotResponse, error) {
 	var err error
@@ -510,7 +575,10 @@ func (client *ShareClient) createSnapshotCreateRequest(ctx context.Context, opti
 			}
 		}
 	}
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{"2025-01-05"}
+	if client.fileRequestIntent != nil {
+		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
 }
@@ -551,7 +619,7 @@ func (client *ShareClient) createSnapshotHandleResponse(resp *http.Response) (Sh
 // contained within it are later deleted during garbage collection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2025-01-05
 //   - options - ShareClientDeleteOptions contains the optional parameters for the ShareClient.Delete method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
 func (client *ShareClient) Delete(ctx context.Context, options *ShareClientDeleteOptions, leaseAccessConditions *LeaseAccessConditions) (ShareClientDeleteResponse, error) {
@@ -587,12 +655,15 @@ func (client *ShareClient) deleteCreateRequest(ctx context.Context, options *Sha
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{"2025-01-05"}
 	if options != nil && options.DeleteSnapshots != nil {
 		req.Raw().Header["x-ms-delete-snapshots"] = []string{string(*options.DeleteSnapshots)}
 	}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
+	}
+	if client.fileRequestIntent != nil {
+		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -614,13 +685,27 @@ func (client *ShareClient) deleteHandleResponse(resp *http.Response) (ShareClien
 	if val := resp.Header.Get("x-ms-version"); val != "" {
 		result.Version = &val
 	}
+	if val := resp.Header.Get("x-ms-file-share-snapshot-usage-bytes"); val != "" {
+		xMSFileShareSnapshotUsageBytes, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return ShareClientDeleteResponse{}, err
+		}
+		result.FileShareSnapshotUsageBytes = &xMSFileShareSnapshotUsageBytes
+	}
+	if val := resp.Header.Get("x-ms-file-share-usage-bytes"); val != "" {
+		xMSFileShareUsageBytes, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return ShareClientDeleteResponse{}, err
+		}
+		result.FileShareUsageBytes = &xMSFileShareUsageBytes
+	}
 	return result, nil
 }
 
 // GetAccessPolicy - Returns information about stored access policies specified on the share.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2025-01-05
 //   - options - ShareClientGetAccessPolicyOptions contains the optional parameters for the ShareClient.GetAccessPolicy method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
 func (client *ShareClient) GetAccessPolicy(ctx context.Context, options *ShareClientGetAccessPolicyOptions, leaseAccessConditions *LeaseAccessConditions) (ShareClientGetAccessPolicyResponse, error) {
@@ -654,9 +739,12 @@ func (client *ShareClient) getAccessPolicyCreateRequest(ctx context.Context, opt
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{"2025-01-05"}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
+	}
+	if client.fileRequestIntent != nil {
+		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -697,7 +785,7 @@ func (client *ShareClient) getAccessPolicyHandleResponse(resp *http.Response) (S
 // GetPermission - Returns the permission (security descriptor) for a given key
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2025-01-05
 //   - filePermissionKey - Key of the permission to be set for the directory/file.
 //   - options - ShareClientGetPermissionOptions contains the optional parameters for the ShareClient.GetPermission method.
 func (client *ShareClient) GetPermission(ctx context.Context, filePermissionKey string, options *ShareClientGetPermissionOptions) (ShareClientGetPermissionResponse, error) {
@@ -732,7 +820,10 @@ func (client *ShareClient) getPermissionCreateRequest(ctx context.Context, fileP
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["x-ms-file-permission-key"] = []string{filePermissionKey}
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	if options != nil && options.FilePermissionFormat != nil {
+		req.Raw().Header["x-ms-file-permission-format"] = []string{string(*options.FilePermissionFormat)}
+	}
+	req.Raw().Header["x-ms-version"] = []string{"2025-01-05"}
 	if client.fileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
@@ -766,7 +857,7 @@ func (client *ShareClient) getPermissionHandleResponse(resp *http.Response) (Sha
 // data returned does not include the share's list of files.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2025-01-05
 //   - options - ShareClientGetPropertiesOptions contains the optional parameters for the ShareClient.GetProperties method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
 func (client *ShareClient) GetProperties(ctx context.Context, options *ShareClientGetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions) (ShareClientGetPropertiesResponse, error) {
@@ -802,9 +893,12 @@ func (client *ShareClient) getPropertiesCreateRequest(ctx context.Context, optio
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{"2025-01-05"}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
+	}
+	if client.fileRequestIntent != nil {
+		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -836,8 +930,22 @@ func (client *ShareClient) getPropertiesHandleResponse(resp *http.Response) (Sha
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
+	if val := resp.Header.Get("x-ms-enable-snapshot-virtual-directory-access"); val != "" {
+		enableSnapshotVirtualDirectoryAccess, err := strconv.ParseBool(val)
+		if err != nil {
+			return ShareClientGetPropertiesResponse{}, err
+		}
+		result.EnableSnapshotVirtualDirectoryAccess = &enableSnapshotVirtualDirectoryAccess
+	}
 	if val := resp.Header.Get("x-ms-enabled-protocols"); val != "" {
 		result.EnabledProtocols = &val
+	}
+	if val := resp.Header.Get("x-ms-share-included-burst-iops"); val != "" {
+		includedBurstIops, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return ShareClientGetPropertiesResponse{}, err
+		}
+		result.IncludedBurstIops = &includedBurstIops
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -855,6 +963,13 @@ func (client *ShareClient) getPropertiesHandleResponse(resp *http.Response) (Sha
 	if val := resp.Header.Get("x-ms-lease-status"); val != "" {
 		result.LeaseStatus = (*LeaseStatusType)(&val)
 	}
+	if val := resp.Header.Get("x-ms-share-max-burst-credits-for-iops"); val != "" {
+		maxBurstCreditsForIops, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return ShareClientGetPropertiesResponse{}, err
+		}
+		result.MaxBurstCreditsForIops = &maxBurstCreditsForIops
+	}
 	for hh := range resp.Header {
 		if len(hh) > len("x-ms-meta-") && strings.EqualFold(hh[:len("x-ms-meta-")], "x-ms-meta-") {
 			if result.Metadata == nil {
@@ -863,12 +978,47 @@ func (client *ShareClient) getPropertiesHandleResponse(resp *http.Response) (Sha
 			result.Metadata[hh[len("x-ms-meta-"):]] = to.Ptr(resp.Header.Get(hh))
 		}
 	}
+	if val := resp.Header.Get("x-ms-share-next-allowed-provisioned-bandwidth-downgrade-time"); val != "" {
+		nextAllowedProvisionedBandwidthDowngradeTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return ShareClientGetPropertiesResponse{}, err
+		}
+		result.NextAllowedProvisionedBandwidthDowngradeTime = &nextAllowedProvisionedBandwidthDowngradeTime
+	}
+	if val := resp.Header.Get("x-ms-share-next-allowed-provisioned-iops-downgrade-time"); val != "" {
+		nextAllowedProvisionedIopsDowngradeTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return ShareClientGetPropertiesResponse{}, err
+		}
+		result.NextAllowedProvisionedIopsDowngradeTime = &nextAllowedProvisionedIopsDowngradeTime
+	}
 	if val := resp.Header.Get("x-ms-share-next-allowed-quota-downgrade-time"); val != "" {
 		nextAllowedQuotaDowngradeTime, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return ShareClientGetPropertiesResponse{}, err
 		}
 		result.NextAllowedQuotaDowngradeTime = &nextAllowedQuotaDowngradeTime
+	}
+	if val := resp.Header.Get("x-ms-share-paid-bursting-enabled"); val != "" {
+		paidBurstingEnabled, err := strconv.ParseBool(val)
+		if err != nil {
+			return ShareClientGetPropertiesResponse{}, err
+		}
+		result.PaidBurstingEnabled = &paidBurstingEnabled
+	}
+	if val := resp.Header.Get("x-ms-share-paid-bursting-max-bandwidth-mibps"); val != "" {
+		paidBurstingMaxBandwidthMibps, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return ShareClientGetPropertiesResponse{}, err
+		}
+		result.PaidBurstingMaxBandwidthMibps = &paidBurstingMaxBandwidthMibps
+	}
+	if val := resp.Header.Get("x-ms-share-paid-bursting-max-iops"); val != "" {
+		paidBurstingMaxIops, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return ShareClientGetPropertiesResponse{}, err
+		}
+		result.PaidBurstingMaxIops = &paidBurstingMaxIops
 	}
 	if val := resp.Header.Get("x-ms-share-provisioned-bandwidth-mibps"); val != "" {
 		provisionedBandwidthMiBps32, err := strconv.ParseInt(val, 10, 32)
@@ -925,7 +1075,7 @@ func (client *ShareClient) getPropertiesHandleResponse(resp *http.Response) (Sha
 // GetStatistics - Retrieves statistics related to the share.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2025-01-05
 //   - options - ShareClientGetStatisticsOptions contains the optional parameters for the ShareClient.GetStatistics method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
 func (client *ShareClient) GetStatistics(ctx context.Context, options *ShareClientGetStatisticsOptions, leaseAccessConditions *LeaseAccessConditions) (ShareClientGetStatisticsResponse, error) {
@@ -959,9 +1109,12 @@ func (client *ShareClient) getStatisticsCreateRequest(ctx context.Context, optio
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{"2025-01-05"}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
+	}
+	if client.fileRequestIntent != nil {
+		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -1003,7 +1156,7 @@ func (client *ShareClient) getStatisticsHandleResponse(resp *http.Response) (Sha
 // delete share operations.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2025-01-05
 //   - leaseID - Specifies the current lease ID on the resource.
 //   - options - ShareClientReleaseLeaseOptions contains the optional parameters for the ShareClient.ReleaseLease method.
 func (client *ShareClient) ReleaseLease(ctx context.Context, leaseID string, options *ShareClientReleaseLeaseOptions) (ShareClientReleaseLeaseResponse, error) {
@@ -1042,9 +1195,12 @@ func (client *ShareClient) releaseLeaseCreateRequest(ctx context.Context, leaseI
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["x-ms-lease-action"] = []string{"release"}
 	req.Raw().Header["x-ms-lease-id"] = []string{leaseID}
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{"2025-01-05"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+	}
+	if client.fileRequestIntent != nil {
+		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -1086,7 +1242,7 @@ func (client *ShareClient) releaseLeaseHandleResponse(resp *http.Response) (Shar
 // delete share operations.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2025-01-05
 //   - leaseID - Specifies the current lease ID on the resource.
 //   - options - ShareClientRenewLeaseOptions contains the optional parameters for the ShareClient.RenewLease method.
 func (client *ShareClient) RenewLease(ctx context.Context, leaseID string, options *ShareClientRenewLeaseOptions) (ShareClientRenewLeaseResponse, error) {
@@ -1125,9 +1281,12 @@ func (client *ShareClient) renewLeaseCreateRequest(ctx context.Context, leaseID 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["x-ms-lease-action"] = []string{"renew"}
 	req.Raw().Header["x-ms-lease-id"] = []string{leaseID}
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{"2025-01-05"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+	}
+	if client.fileRequestIntent != nil {
+		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -1171,7 +1330,7 @@ func (client *ShareClient) renewLeaseHandleResponse(resp *http.Response) (ShareC
 // Restore - Restores a previously deleted Share.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2025-01-05
 //   - options - ShareClientRestoreOptions contains the optional parameters for the ShareClient.Restore method.
 func (client *ShareClient) Restore(ctx context.Context, options *ShareClientRestoreOptions) (ShareClientRestoreResponse, error) {
 	var err error
@@ -1204,7 +1363,7 @@ func (client *ShareClient) restoreCreateRequest(ctx context.Context, options *Sh
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{"2025-01-05"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -1213,6 +1372,9 @@ func (client *ShareClient) restoreCreateRequest(ctx context.Context, options *Sh
 	}
 	if options != nil && options.DeletedShareVersion != nil {
 		req.Raw().Header["x-ms-deleted-share-version"] = []string{*options.DeletedShareVersion}
+	}
+	if client.fileRequestIntent != nil {
+		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -1234,12 +1396,47 @@ func (client *ShareClient) restoreHandleResponse(resp *http.Response) (ShareClie
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
+	if val := resp.Header.Get("x-ms-share-included-burst-iops"); val != "" {
+		includedBurstIops, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return ShareClientRestoreResponse{}, err
+		}
+		result.IncludedBurstIops = &includedBurstIops
+	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return ShareClientRestoreResponse{}, err
 		}
 		result.LastModified = &lastModified
+	}
+	if val := resp.Header.Get("x-ms-share-max-burst-credits-for-iops"); val != "" {
+		maxBurstCreditsForIops, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return ShareClientRestoreResponse{}, err
+		}
+		result.MaxBurstCreditsForIops = &maxBurstCreditsForIops
+	}
+	if val := resp.Header.Get("x-ms-share-provisioned-bandwidth-mibps"); val != "" {
+		provisionedBandwidthMibps, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return ShareClientRestoreResponse{}, err
+		}
+		result.ProvisionedBandwidthMibps = &provisionedBandwidthMibps
+	}
+	if val := resp.Header.Get("x-ms-share-provisioned-iops"); val != "" {
+		provisionedIops, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return ShareClientRestoreResponse{}, err
+		}
+		result.ProvisionedIops = &provisionedIops
+	}
+	if val := resp.Header.Get("x-ms-share-quota"); val != "" {
+		quota, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return ShareClientRestoreResponse{}, err
+		}
+		result.Quota = &quota
 	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.RequestID = &val
@@ -1253,7 +1450,7 @@ func (client *ShareClient) restoreHandleResponse(resp *http.Response) (ShareClie
 // SetAccessPolicy - Sets a stored access policy for use with shared access signatures.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2025-01-05
 //   - shareACL - The ACL for the share.
 //   - options - ShareClientSetAccessPolicyOptions contains the optional parameters for the ShareClient.SetAccessPolicy method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
@@ -1288,9 +1485,12 @@ func (client *ShareClient) setAccessPolicyCreateRequest(ctx context.Context, sha
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{"2025-01-05"}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
+	}
+	if client.fileRequestIntent != nil {
+		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	type wrapper struct {
@@ -1335,7 +1535,7 @@ func (client *ShareClient) setAccessPolicyHandleResponse(resp *http.Response) (S
 // SetMetadata - Sets one or more user-defined name-value pairs for the specified share.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2025-01-05
 //   - options - ShareClientSetMetadataOptions contains the optional parameters for the ShareClient.SetMetadata method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
 func (client *ShareClient) SetMetadata(ctx context.Context, options *ShareClientSetMetadataOptions, leaseAccessConditions *LeaseAccessConditions) (ShareClientSetMetadataResponse, error) {
@@ -1376,9 +1576,12 @@ func (client *ShareClient) setMetadataCreateRequest(ctx context.Context, options
 			}
 		}
 	}
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{"2025-01-05"}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
+	}
+	if client.fileRequestIntent != nil {
+		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -1416,7 +1619,7 @@ func (client *ShareClient) setMetadataHandleResponse(resp *http.Response) (Share
 // SetProperties - Sets properties for the specified share.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-03
+// Generated from API version 2025-01-05
 //   - options - ShareClientSetPropertiesOptions contains the optional parameters for the ShareClient.SetProperties method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
 func (client *ShareClient) SetProperties(ctx context.Context, options *ShareClientSetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions) (ShareClientSetPropertiesResponse, error) {
@@ -1450,7 +1653,7 @@ func (client *ShareClient) setPropertiesCreateRequest(ctx context.Context, optio
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{"2025-01-05"}
 	if options != nil && options.Quota != nil {
 		req.Raw().Header["x-ms-share-quota"] = []string{strconv.FormatInt(int64(*options.Quota), 10)}
 	}
@@ -1462,6 +1665,27 @@ func (client *ShareClient) setPropertiesCreateRequest(ctx context.Context, optio
 	}
 	if options != nil && options.RootSquash != nil {
 		req.Raw().Header["x-ms-root-squash"] = []string{string(*options.RootSquash)}
+	}
+	if options != nil && options.EnableSnapshotVirtualDirectoryAccess != nil {
+		req.Raw().Header["x-ms-enable-snapshot-virtual-directory-access"] = []string{strconv.FormatBool(*options.EnableSnapshotVirtualDirectoryAccess)}
+	}
+	if options != nil && options.PaidBurstingEnabled != nil {
+		req.Raw().Header["x-ms-share-paid-bursting-enabled"] = []string{strconv.FormatBool(*options.PaidBurstingEnabled)}
+	}
+	if options != nil && options.PaidBurstingMaxBandwidthMibps != nil {
+		req.Raw().Header["x-ms-share-paid-bursting-max-bandwidth-mibps"] = []string{strconv.FormatInt(*options.PaidBurstingMaxBandwidthMibps, 10)}
+	}
+	if options != nil && options.PaidBurstingMaxIops != nil {
+		req.Raw().Header["x-ms-share-paid-bursting-max-iops"] = []string{strconv.FormatInt(*options.PaidBurstingMaxIops, 10)}
+	}
+	if client.fileRequestIntent != nil {
+		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
+	}
+	if options != nil && options.ShareProvisionedIops != nil {
+		req.Raw().Header["x-ms-share-provisioned-iops"] = []string{strconv.FormatInt(*options.ShareProvisionedIops, 10)}
+	}
+	if options != nil && options.ShareProvisionedBandwidthMibps != nil {
+		req.Raw().Header["x-ms-share-provisioned-bandwidth-mibps"] = []string{strconv.FormatInt(*options.ShareProvisionedBandwidthMibps, 10)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -1480,12 +1704,68 @@ func (client *ShareClient) setPropertiesHandleResponse(resp *http.Response) (Sha
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
+	if val := resp.Header.Get("x-ms-share-included-burst-iops"); val != "" {
+		includedBurstIops, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return ShareClientSetPropertiesResponse{}, err
+		}
+		result.IncludedBurstIops = &includedBurstIops
+	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return ShareClientSetPropertiesResponse{}, err
 		}
 		result.LastModified = &lastModified
+	}
+	if val := resp.Header.Get("x-ms-share-max-burst-credits-for-iops"); val != "" {
+		maxBurstCreditsForIops, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return ShareClientSetPropertiesResponse{}, err
+		}
+		result.MaxBurstCreditsForIops = &maxBurstCreditsForIops
+	}
+	if val := resp.Header.Get("x-ms-share-next-allowed-provisioned-bandwidth-downgrade-time"); val != "" {
+		nextAllowedProvisionedBandwidthDowngradeTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return ShareClientSetPropertiesResponse{}, err
+		}
+		result.NextAllowedProvisionedBandwidthDowngradeTime = &nextAllowedProvisionedBandwidthDowngradeTime
+	}
+	if val := resp.Header.Get("x-ms-share-next-allowed-provisioned-iops-downgrade-time"); val != "" {
+		nextAllowedProvisionedIopsDowngradeTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return ShareClientSetPropertiesResponse{}, err
+		}
+		result.NextAllowedProvisionedIopsDowngradeTime = &nextAllowedProvisionedIopsDowngradeTime
+	}
+	if val := resp.Header.Get("x-ms-share-next-allowed-quota-downgrade-time"); val != "" {
+		nextAllowedQuotaDowngradeTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return ShareClientSetPropertiesResponse{}, err
+		}
+		result.NextAllowedQuotaDowngradeTime = &nextAllowedQuotaDowngradeTime
+	}
+	if val := resp.Header.Get("x-ms-share-provisioned-bandwidth-mibps"); val != "" {
+		provisionedBandwidthMibps, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return ShareClientSetPropertiesResponse{}, err
+		}
+		result.ProvisionedBandwidthMibps = &provisionedBandwidthMibps
+	}
+	if val := resp.Header.Get("x-ms-share-provisioned-iops"); val != "" {
+		provisionedIops, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return ShareClientSetPropertiesResponse{}, err
+		}
+		result.ProvisionedIops = &provisionedIops
+	}
+	if val := resp.Header.Get("x-ms-share-quota"); val != "" {
+		quota, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return ShareClientSetPropertiesResponse{}, err
+		}
+		result.Quota = &quota
 	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.RequestID = &val

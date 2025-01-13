@@ -170,7 +170,10 @@ func (s *RecordedTestSuite) TestCreateDirUsingCPK() {
 	_require.NotNil(resp)
 
 	_require.Equal(true, *(resp.IsServerEncrypted))
-	_require.Equal(testcommon.TestCPKByValue.EncryptionKeySHA256, resp.EncryptionKeySHA256)
+	// run the below check if the test is not in playback mode
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.Equal(testcommon.TestCPKByValue.EncryptionKeySHA256, resp.EncryptionKeySHA256)
+	}
 }
 
 func (s *RecordedTestSuite) TestGetAndCreateFileClient() {
@@ -273,8 +276,9 @@ func (s *RecordedTestSuite) TestCreateNewSubdirectoryClient() {
 	_require.NotNil(resp.Permissions)
 	_require.Equal(perm, *resp.Permissions)
 	_require.Equal(*(resp.IsServerEncrypted), true)
-	_require.Equal(resp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
-
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.Equal(resp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+	}
 	// Create a file under the new directory just to make sure we're not secretly targeting the parent
 	fileName := testcommon.GenerateFileName("newFile")
 	subdirFileClient, err := subdirClient.NewFileClient(fileName)
@@ -2192,7 +2196,8 @@ func (s *RecordedTestSuite) TestDirSetMetadataWithCPKNegative() {
 	}
 	_, err = dirClient.SetMetadata(context.Background(), testcommon.BasicMetadata, opts)
 	_require.Error(err)
-	_require.ErrorContains(err, "PathDoesNotUseCustomerSpecifiedEncryption")
+	_require.ErrorContains(err, "BlobDoesNotUseCustomerSpecifiedEncryption")
+
 }
 
 func validatePropertiesSet(_require *require.Assertions, dirClient *directory.Client, disposition string) {
@@ -2519,11 +2524,8 @@ func (s *RecordedTestSuite) TestDirRenameNoOptions() {
 	_require.NoError(err)
 	_require.NotNil(resp)
 
-	//resp1, err := dirClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = dirClient.Rename(context.Background(), "newName", nil)
 	_require.NoError(err)
-	//_require.NotNil(resp1)
-	//_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
 }
 
 func (s *RecordedTestSuite) TestDirRenameRequestWithCPK() {
@@ -2582,11 +2584,8 @@ func (s *RecordedTestSuite) TestRenameDirWithNilAccessConditions() {
 		AccessConditions: nil,
 	}
 
-	//resp1, err := dirClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
 	_require.NoError(err)
-	//_require.NotNil(resp1)
-	//_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
 }
 
 func (s *RecordedTestSuite) TestRenameDirIfModifiedSinceTrue() {
@@ -2618,11 +2617,8 @@ func (s *RecordedTestSuite) TestRenameDirIfModifiedSinceTrue() {
 			},
 		},
 	}
-	//resp1, err := dirClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
 	_require.NoError(err)
-	//_require.NotNil(resp1)
-	//_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
 }
 
 func (s *RecordedTestSuite) TestRenameDirIfModifiedSinceFalse() {
@@ -2655,9 +2651,7 @@ func (s *RecordedTestSuite) TestRenameDirIfModifiedSinceFalse() {
 		},
 	}
 
-	//_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
-
 	_require.Error(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.SourceConditionNotMet)
 }
@@ -2692,11 +2686,8 @@ func (s *RecordedTestSuite) TestRenameDirIfUnmodifiedSinceTrue() {
 		},
 	}
 
-	//resp1, err := dirClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
 	_require.NoError(err)
-	//_require.NotNil(resp1)
-	//_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
 }
 
 func (s *RecordedTestSuite) TestRenameDirIfUnmodifiedSinceFalse() {
@@ -2729,9 +2720,7 @@ func (s *RecordedTestSuite) TestRenameDirIfUnmodifiedSinceFalse() {
 		},
 	}
 
-	//_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
-
 	_require.Error(err)
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.SourceConditionNotMet)
 }
@@ -2766,11 +2755,8 @@ func (s *RecordedTestSuite) TestRenameDirIfETagMatch() {
 		},
 	}
 
-	//resp1, err := dirClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
 	_require.NoError(err)
-	//_require.NotNil(resp1)
-	//_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
 }
 
 func (s *RecordedTestSuite) TestRenameDirIfETagMatchFalse() {
@@ -2803,7 +2789,6 @@ func (s *RecordedTestSuite) TestRenameDirIfETagMatchFalse() {
 		},
 	}
 
-	//_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
 	_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
 
 	_require.Error(err)
@@ -2889,7 +2874,9 @@ func (s *RecordedTestSuite) TestDirGetPropertiesWithCPK() {
 	_require.NoError(err)
 	_require.NotNil(response)
 	_require.Equal(*(resp.IsServerEncrypted), true)
-	_require.Equal(resp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.Equal(resp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+	}
 }
 
 func (s *UnrecordedTestSuite) TestDirCreateDeleteUsingOAuth() {

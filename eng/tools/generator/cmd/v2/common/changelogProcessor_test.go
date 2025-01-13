@@ -6,7 +6,6 @@ package common_test
 import (
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/autorest"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/v2/common"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
 	"github.com/stretchr/testify/assert"
@@ -23,7 +22,7 @@ func TestEnumFilter(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	changelog, err := autorest.GetChangelogForPackage(&oldExport, &newExport)
+	changelog, err := common.GetChangelogForPackage(&oldExport, &newExport)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -45,7 +44,7 @@ func TestFuncFilter(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	changelog, err := autorest.GetChangelogForPackage(&oldExport, &newExport)
+	changelog, err := common.GetChangelogForPackage(&oldExport, &newExport)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -67,7 +66,7 @@ func TestLROFilter(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	changelog, err := autorest.GetChangelogForPackage(&oldExport, &newExport)
+	changelog, err := common.GetChangelogForPackage(&oldExport, &newExport)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -89,7 +88,7 @@ func TestPageableFilter(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	changelog, err := autorest.GetChangelogForPackage(&oldExport, &newExport)
+	changelog, err := common.GetChangelogForPackage(&oldExport, &newExport)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -111,7 +110,7 @@ func TestInterfaceToAnyFilter(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	changelog, err := autorest.GetChangelogForPackage(&oldExport, &newExport)
+	changelog, err := common.GetChangelogForPackage(&oldExport, &newExport)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -133,7 +132,7 @@ func TestTypeToAny(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	changelog, err := autorest.GetChangelogForPackage(&oldExport, &newExport)
+	changelog, err := common.GetChangelogForPackage(&oldExport, &newExport)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -153,7 +152,7 @@ func TestFuncParameterChange(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	changelog, err := autorest.GetChangelogForPackage(&oldExport, &newExport)
+	changelog, err := common.GetChangelogForPackage(&oldExport, &newExport)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -175,7 +174,7 @@ func TestNonExportedFilter(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	changelog, err := autorest.GetChangelogForPackage(&oldExport, &newExport)
+	changelog, err := common.GetChangelogForPackage(&oldExport, &newExport)
 	if err != nil {
 		t.Fatal(err)
 	}

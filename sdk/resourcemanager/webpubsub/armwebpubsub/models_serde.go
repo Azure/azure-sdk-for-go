@@ -550,6 +550,7 @@ func (h HubProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "anonymousConnectPolicy", h.AnonymousConnectPolicy)
 	populate(objectMap, "eventHandlers", h.EventHandlers)
 	populate(objectMap, "eventListeners", h.EventListeners)
+	populate(objectMap, "webSocketKeepAliveIntervalInSeconds", h.WebSocketKeepAliveIntervalInSeconds)
 	return json.Marshal(objectMap)
 }
 
@@ -570,6 +571,9 @@ func (h *HubProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "eventListeners":
 			err = unpopulate(val, "EventListeners", &h.EventListeners)
+			delete(rawMsg, key)
+		case "webSocketKeepAliveIntervalInSeconds":
+			err = unpopulate(val, "WebSocketKeepAliveIntervalInSeconds", &h.WebSocketKeepAliveIntervalInSeconds)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1481,6 +1485,7 @@ func (p Properties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "resourceStopped", p.ResourceStopped)
 	populate(objectMap, "serverPort", p.ServerPort)
 	populate(objectMap, "sharedPrivateLinkResources", p.SharedPrivateLinkResources)
+	populate(objectMap, "socketIO", p.SocketIO)
 	populate(objectMap, "tls", p.TLS)
 	populate(objectMap, "version", p.Version)
 	return json.Marshal(objectMap)
@@ -1542,6 +1547,9 @@ func (p *Properties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "sharedPrivateLinkResources":
 			err = unpopulate(val, "SharedPrivateLinkResources", &p.SharedPrivateLinkResources)
+			delete(rawMsg, key)
+		case "socketIO":
+			err = unpopulate(val, "SocketIO", &p.SocketIO)
 			delete(rawMsg, key)
 		case "tls":
 			err = unpopulate(val, "TLS", &p.TLS)
@@ -2355,6 +2363,33 @@ func (s *SignalRServiceUsageName) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type SocketIOSettings.
+func (s SocketIOSettings) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "serviceMode", s.ServiceMode)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SocketIOSettings.
+func (s *SocketIOSettings) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "serviceMode":
+			err = unpopulate(val, "ServiceMode", &s.ServiceMode)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -2502,7 +2537,7 @@ func populate(m map[string]any, k string, v any) {
 }
 
 func unpopulate(data json.RawMessage, fn string, v any) error {
-	if data == nil {
+	if data == nil || string(data) == "null" {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {

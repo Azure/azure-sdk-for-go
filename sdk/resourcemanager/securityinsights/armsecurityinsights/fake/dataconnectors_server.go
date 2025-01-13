@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -24,6 +24,10 @@ import (
 
 // DataConnectorsServer is a fake server for instances of the armsecurityinsights.DataConnectorsClient type.
 type DataConnectorsServer struct {
+	// Connect is the fake for method DataConnectorsClient.Connect
+	// HTTP status codes to indicate success: http.StatusOK
+	Connect func(ctx context.Context, resourceGroupName string, workspaceName string, dataConnectorID string, connectBody armsecurityinsights.DataConnectorConnectBody, options *armsecurityinsights.DataConnectorsClientConnectOptions) (resp azfake.Responder[armsecurityinsights.DataConnectorsClientConnectResponse], errResp azfake.ErrorResponder)
+
 	// CreateOrUpdate is the fake for method DataConnectorsClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	CreateOrUpdate func(ctx context.Context, resourceGroupName string, workspaceName string, dataConnectorID string, dataConnector armsecurityinsights.DataConnectorClassification, options *armsecurityinsights.DataConnectorsClientCreateOrUpdateOptions) (resp azfake.Responder[armsecurityinsights.DataConnectorsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -31,6 +35,10 @@ type DataConnectorsServer struct {
 	// Delete is the fake for method DataConnectorsClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
 	Delete func(ctx context.Context, resourceGroupName string, workspaceName string, dataConnectorID string, options *armsecurityinsights.DataConnectorsClientDeleteOptions) (resp azfake.Responder[armsecurityinsights.DataConnectorsClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// Disconnect is the fake for method DataConnectorsClient.Disconnect
+	// HTTP status codes to indicate success: http.StatusOK
+	Disconnect func(ctx context.Context, resourceGroupName string, workspaceName string, dataConnectorID string, options *armsecurityinsights.DataConnectorsClientDisconnectOptions) (resp azfake.Responder[armsecurityinsights.DataConnectorsClientDisconnectResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method DataConnectorsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -70,10 +78,14 @@ func (d *DataConnectorsServerTransport) Do(req *http.Request) (*http.Response, e
 	var err error
 
 	switch method {
+	case "DataConnectorsClient.Connect":
+		resp, err = d.dispatchConnect(req)
 	case "DataConnectorsClient.CreateOrUpdate":
 		resp, err = d.dispatchCreateOrUpdate(req)
 	case "DataConnectorsClient.Delete":
 		resp, err = d.dispatchDelete(req)
+	case "DataConnectorsClient.Disconnect":
+		resp, err = d.dispatchDisconnect(req)
 	case "DataConnectorsClient.Get":
 		resp, err = d.dispatchGet(req)
 	case "DataConnectorsClient.NewListPager":
@@ -86,6 +98,47 @@ func (d *DataConnectorsServerTransport) Do(req *http.Request) (*http.Response, e
 		return nil, err
 	}
 
+	return resp, nil
+}
+
+func (d *DataConnectorsServerTransport) dispatchConnect(req *http.Request) (*http.Response, error) {
+	if d.srv.Connect == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Connect not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SecurityInsights/dataConnectors/(?P<dataConnectorId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connect`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armsecurityinsights.DataConnectorConnectBody](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+	if err != nil {
+		return nil, err
+	}
+	dataConnectorIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("dataConnectorId")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.Connect(req.Context(), resourceGroupNameParam, workspaceNameParam, dataConnectorIDParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 
@@ -163,6 +216,43 @@ func (d *DataConnectorsServerTransport) dispatchDelete(req *http.Request) (*http
 	respContent := server.GetResponseContent(respr)
 	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (d *DataConnectorsServerTransport) dispatchDisconnect(req *http.Request) (*http.Response, error) {
+	if d.srv.Disconnect == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Disconnect not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SecurityInsights/dataConnectors/(?P<dataConnectorId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/disconnect`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+	if err != nil {
+		return nil, err
+	}
+	dataConnectorIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("dataConnectorId")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.Disconnect(req.Context(), resourceGroupNameParam, workspaceNameParam, dataConnectorIDParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
 	if err != nil {

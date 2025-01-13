@@ -7,14 +7,10 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
-	"log"
 	"os"
 	"regexp"
-	"sort"
 	"strings"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/azsystemevents/internal/gopls"
 )
@@ -31,7 +27,7 @@ func main() {
 			return err
 		}
 
-		if err := doRenames(); err != nil {
+		if err := deleteUnneededTypes(); err != nil {
 			return err
 		}
 
@@ -44,11 +40,76 @@ func main() {
 	}
 
 	if err := fn(); err != nil {
-		fmt.Printf("Failed with error: %s\n", err)
+		fmt.Printf("./internal/generate: Failed with error: %s\n", err)
 		os.Exit(1)
 	}
 
 	fmt.Printf("DONE\n")
+}
+
+// deleteUnneededTypes deletes types that are vestigial. Event Grid system events, in TypeSpec,
+// use inheritance. We model this by pushing the parent properties into the child objects, so the
+// parent object is not needed.
+// NOTE: this is a workaround, I'm running into some conflicting behavior as I move between tsp-client
+// and my "homebrew" version calling the powershell scripts directly.
+func deleteUnneededTypes() error {
+	typesToDelete := []string{
+		"ACSChatEventBaseProperties",
+		"ACSChatEventInThreadBaseProperties",
+		"ACSChatMessageEventBaseProperties",
+		"ACSChatMessageEventInThreadBaseProperties",
+		"ACSChatThreadEventBaseProperties",
+		"ACSChatThreadEventInThreadBaseProperties",
+		"ACSMessageEventData",
+		"ACSRouterEventData",
+		"ACSRouterJobEventData",
+		"ACSRouterWorkerEventData",
+		"ACSSmsEventBaseProperties",
+		"AppConfigurationSnapshotEventData",
+		"AVSClusterEventData",
+		"AVSPrivateCloudEventData",
+		"AVSScriptExecutionEventData",
+		"ContainerRegistryArtifactEventData",
+		"ContainerRegistryEventData",
+		"ContainerServiceClusterSupportEventData",
+		"ContainerServiceNodePoolRollingEventData",
+		"DeviceConnectionStateEventProperties",
+		"DeviceLifeCycleEventProperties",
+		"DeviceTelemetryEventProperties",
+		"EventGridMQTTClientEventData",
+		"MapsGeofenceEventProperties",
+		"ResourceNotificationsResourceDeletedEventData",
+		"ResourceNotificationsResourceUpdatedEventData",
+	}
+
+	for _, typeToDelete := range typesToDelete {
+		// ex: // ACSChatEventBaseProperties - Schema of common properties of all chat events
+		if err := replaceAll("models.go", fmt.Sprintf("(?is)// %s.+?\n}\n", typeToDelete), ""); err != nil {
+			return err
+		}
+
+		// ex: // MarshalJSON implements the json.Marshaller interface for type ACSChatEventBaseProperties.
+		// ex: // UnmarshalJSON implements the json.Unmarshaller interface for type ACSChatEventBaseProperties.
+		if err := replaceAll("models_serde.go",
+			fmt.Sprintf("(?is)// (?:Marshal|Unmarshal)JSON\\s*implements\\s*the\\s*json\\.(?:Marshaller|Unmarshaller)\\s*interface\\s*for\\s*type\\s*%s.+?\n}\n", typeToDelete), ""); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func replaceAll(filename string, re string, replacement string) error {
+	buff, err := os.ReadFile(filename)
+
+	if err != nil {
+		return err
+	}
+
+	modelsRE := regexp.MustCompile(re)
+	buff = modelsRE.ReplaceAll(buff, []byte(replacement))
+
+	return os.WriteFile(filename, buff, 0600)
 }
 
 // swapErrorTypes handles turning most of the auto-generated errors into a single consistent error type.
@@ -61,16 +122,35 @@ func swapErrorTypes() error {
 		return err
 	}
 
+	// NOTE: the renaming of the error type is done in the propertyNameOverrideGo.tsp (AcsMessageChannelEventError)
+
+	// NOTE: there appears to be a bug where my type name is automatically being capitalized, even though I marked it as internal.
+	// Filed as https://github.com/Azure/autorest.go/issues/1467.
+	if err := gopls.Rename(syms.Get("InternalACSMessageChannelEventError"), "internalACSMessageChannelEventError"); err != nil {
+		return err
+	}
+
+	if err := gopls.Rename(syms.Get("InternalACSRouterCommunicationError"), "internalACSRouterCommunicationError"); err != nil {
+		return err
+	}
+
+	// TODO: do I really need to handle these myself? Can I not use TypeSpec to do it?
 	{
-		if err := gopls.Rename(syms.Get("AcsAdvancedMessageChannelEventError"), "internalACSAdvancedMessageChannelEventError"); err != nil {
+		if err := SwapType(syms.Get("AcsMessageReceivedEventData.Error"), "*Error"); err != nil {
 			return err
 		}
 
-		if err := SwapType(syms.Get("AcsAdvancedMessageReceivedEventData.Error"), "*Error"); err != nil {
+		if err := UseCustomUnpopulate(modelsSerdeGoFile, "ACSMessageReceivedEventData.Error", "unmarshalInternalACSMessageChannelEventError"); err != nil {
+			return err
+		}
+	}
+
+	{
+		if err := SwapType(syms.Get("ACSMessageDeliveryStatusUpdatedEventData.Error"), "*Error"); err != nil {
 			return err
 		}
 
-		if err := UseCustomUnpopulate(modelsSerdeGoFile, "AcsAdvancedMessageReceivedEventData.Error", "unmarshalInternalACSAdvancedMessageChannelEventError"); err != nil {
+		if err := UseCustomUnpopulate(modelsSerdeGoFile, "ACSMessageDeliveryStatusUpdatedEventData.Error", "unmarshalInternalACSMessageChannelEventError"); err != nil {
 			return err
 		}
 	}
@@ -80,21 +160,7 @@ func swapErrorTypes() error {
 			return err
 		}
 
-		if err := UseCustomUnpopulate(modelsSerdeGoFile, "AcsRouterJobClassificationFailedEventData.Errors", "unmarshalInternalACSRouterCommunicationError"); err != nil {
-			return err
-		}
-	}
-
-	{
-		if err := gopls.Rename(syms.Get("AcsRouterCommunicationError"), "internalAcsRouterCommunicationError"); err != nil {
-			return err
-		}
-
-		if err := SwapType(syms.Get("AcsRouterJobClassificationFailedEventData.Errors"), "[]*Error"); err != nil {
-			return err
-		}
-
-		if err := UseCustomUnpopulate(modelsSerdeGoFile, "AcsRouterJobClassificationFailedEventData.Errors", "unmarshalInternalACSRouterCommunicationError"); err != nil {
+		if err := UseCustomUnpopulate(modelsSerdeGoFile, "ACSRouterJobClassificationFailedEventData.Errors", "unmarshalInternalACSRouterCommunicationError"); err != nil {
 			return err
 		}
 	}
@@ -115,7 +181,7 @@ func swapErrorTypes() error {
 		}
 
 		if strings.HasSuffix(sym.Name, "Error") && !strings.HasPrefix(sym.Name, "internal") && sym.Type == "Struct" {
-			return fmt.Errorf("found redundant unhandled error type %s\n", sym.Name)
+			return fmt.Errorf("found error type which should have been deleted/renamed %q", sym.Name)
 		}
 	}
 
@@ -138,7 +204,7 @@ func generateSystemEventEnum() error {
 	}
 
 	if err := writeConstantsFile(systemEventsGoFile, constants); err != nil {
-		log.Fatalf("Failed to write constants file %s: %s", systemEventsGoFile, err)
+		return fmt.Errorf("Failed to write constants file %s: %w", systemEventsGoFile, err)
 	}
 
 	return nil
@@ -155,167 +221,4 @@ func deleteUnneededFiles() {
 			_ = os.Remove(file)
 		}
 	}
-}
-
-type rename struct {
-	Orig *gopls.Symbol
-	New  string
-}
-
-func doRenames() error {
-	constantSyms, err := gopls.Symbols(constantsGoFile)
-
-	if err != nil {
-		return err
-	}
-
-	modelsSyms, err := gopls.Symbols(modelsGoFile)
-
-	if err != nil {
-		return err
-	}
-
-	phase1Repls := getConstantsReplacements(constantSyms)
-
-	// We don't need to do this since we're not holding onto this error type anymore.
-	// phase1Repls = append(phase1Repls, rename{
-	// 	Orig: modelsSyms.Get("AcsRouterCommunicationError.Innererror"),
-	// 	New:  "InnerError",
-	// })
-
-	modelRepls := getModelsReplacements(modelsSyms)
-
-	total := len(phase1Repls) + len(modelRepls)
-
-	now := time.Now()
-
-	for i, repl := range phase1Repls {
-		fmt.Printf("%s[%d/%d]: %s -> %s\n", repl.Orig.File, i+1, total, repl.Orig.Name, repl.New)
-		if err := gopls.Rename(repl.Orig, repl.New); err != nil {
-			return err
-		}
-	}
-
-	for i, repl := range modelRepls {
-		idx := 1 + i + len(phase1Repls)
-		fmt.Printf("%s[%d/%d]: %s -> %s\n", repl.Orig.File, idx, total, repl.Orig.Name, repl.New)
-		if err := gopls.Rename(repl.Orig, repl.New); err != nil {
-			return err
-		}
-	}
-
-	fmt.Printf("Took %s to do gopls based renames\n", time.Since(now))
-
-	return fixComments(modelRepls)
-}
-
-func fixComments(modelRepls []rename) error {
-	// one annoyance here is that if the type name is not a doc reference (like [typename]) then
-	// it doesn't get renamed, so we'll have to fix up the comments on our own.
-	modelsSerdeBytes, err := os.ReadFile("models_serde.go")
-
-	if err != nil {
-		return err
-	}
-
-	constantsBytes, err := os.ReadFile(constantsGoFile)
-
-	if err != nil {
-		return err
-	}
-
-	for _, repl := range modelRepls {
-		modelsSerdeBytes = bytes.Replace(modelsSerdeBytes, []byte(repl.Orig.Name), []byte(repl.New), -1)
-		constantsBytes = bytes.Replace(constantsBytes, []byte(repl.Orig.Name), []byte(repl.New), -1)
-	}
-
-	if err := os.WriteFile("models_serde.go", modelsSerdeBytes, 0700); err != nil {
-		return err
-	}
-
-	return os.WriteFile(constantsGoFile, constantsBytes, 0700)
-}
-
-func getConstantsReplacements(syms *gopls.SymbolMap) []rename {
-	typeRE := regexp.MustCompile(`^(Acs|Avs|Iot)([A-Za-z0-9]+)$`)
-	possibleRE := regexp.MustCompile(`^(Possible)(Acs|Avs|Iot)([A-Za-z0-9]+)$`)
-
-	var renames []rename
-
-	for _, sym := range syms.All() {
-		matches := typeRE.FindStringSubmatch(sym.Name)
-
-		if matches != nil {
-			renames = append(renames, rename{
-				Orig: sym,
-				New:  strings.ToUpper(matches[1]) + matches[2],
-			})
-		}
-
-		matches = possibleRE.FindStringSubmatch(sym.Name)
-
-		if matches != nil {
-			renames = append(renames, rename{
-				Orig: sym,
-				New:  matches[1] + strings.ToUpper(matches[2]) + matches[3],
-			})
-		}
-	}
-
-	// TODO: it'd be nice to make this a bit more general
-	renames = append(renames, rename{
-		Orig: syms.Get("RecordingChannelType"),
-		New:  "RecordingChannelKind",
-	})
-
-	renames = append(renames, rename{
-		Orig: syms.Get("PossibleRecordingChannelTypeValues"),
-		New:  "PossibleRecordingChannelKindValues",
-	})
-
-	renames = append(renames, rename{
-		Orig: syms.Get("RecordingChannelTypeMixed"),
-		New:  "RecordingChannelKindMixed",
-	})
-
-	renames = append(renames, rename{
-		Orig: syms.Get("RecordingChannelTypeUnmixed"),
-		New:  "RecordingChannelKindUnmixed",
-	})
-
-	sort.Slice(renames, func(i, j int) bool {
-		return renames[i].New < renames[j].New
-	})
-	return renames
-}
-
-func getModelsReplacements(syms *gopls.SymbolMap) []rename {
-	typeRE := regexp.MustCompile(`^(Acs|Avs|Iot)([A-Za-z0-9]+)$`)
-
-	var renames []rename
-
-	for _, sym := range syms.All() {
-		if strings.EqualFold("AcsRecordingFileStatusUpdatedEventData.RecordingChannelType", sym.Name) {
-			renames = append(renames, rename{
-				Orig: sym,
-				New:  "RecordingChannelKind",
-			})
-			continue
-		}
-
-		matches := typeRE.FindStringSubmatch(sym.Name)
-
-		if matches != nil {
-			renames = append(renames, rename{
-				Orig: sym,
-				New:  strings.ToUpper(matches[1]) + matches[2],
-			})
-		}
-	}
-
-	sort.Slice(renames, func(i, j int) bool {
-		return renames[i].Orig.Name < renames[j].Orig.Name
-	})
-
-	return renames
 }

@@ -39,11 +39,11 @@ func (p *headerPolicies) Do(req *policy.Request) (*http.Response, error) {
 			}
 
 			if o.headerOptionsOverride.correlatedActivityId != nil {
-				req.Raw().Header.Add(cosmosHeaderCorrelatedActivityId, (*o.headerOptionsOverride.correlatedActivityId).String())
+				req.Raw().Header.Add(cosmosHeaderCorrelatedActivityId, o.headerOptionsOverride.correlatedActivityId.String())
 			}
 		}
 
-		if o.isWriteOperation && !enableContentResponseOnWrite {
+		if o.isWriteOperation && o.resourceType == resourceTypeDocument && !enableContentResponseOnWrite {
 			req.Raw().Header.Add(cosmosHeaderPrefer, cosmosHeaderValuesPreferMinimal)
 		}
 	}

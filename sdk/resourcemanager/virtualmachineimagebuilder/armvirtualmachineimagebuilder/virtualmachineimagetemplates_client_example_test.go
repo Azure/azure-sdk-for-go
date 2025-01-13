@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/virtualmachineimagebuilder/armvirtualmachineimagebuilder/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2023-07-01/examples/ListImageTemplates.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b22c642b361e6d6e7d72a2347a09b0bcf6075d70/specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2024-02-01/examples/ListImageTemplates.json
 func ExampleVirtualMachineImageTemplatesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,7 +136,7 @@ func ExampleVirtualMachineImageTemplatesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2023-07-01/examples/ListImageTemplatesByRg.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b22c642b361e6d6e7d72a2347a09b0bcf6075d70/specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2024-02-01/examples/ListImageTemplatesByRg.json
 func ExampleVirtualMachineImageTemplatesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -261,7 +261,7 @@ func ExampleVirtualMachineImageTemplatesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2023-07-01/examples/CreateImageTemplateLinux.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b22c642b361e6d6e7d72a2347a09b0bcf6075d70/specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2024-02-01/examples/CreateImageTemplateLinux.json
 func ExampleVirtualMachineImageTemplatesClient_BeginCreateOrUpdate_createAnImageTemplateForLinux() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -367,7 +367,7 @@ func ExampleVirtualMachineImageTemplatesClient_BeginCreateOrUpdate_createAnImage
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2023-07-01/examples/CreateImageTemplateWindows.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b22c642b361e6d6e7d72a2347a09b0bcf6075d70/specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2024-02-01/examples/CreateImageTemplateWindows.json
 func ExampleVirtualMachineImageTemplatesClient_BeginCreateOrUpdate_createAnImageTemplateForWindows() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -607,7 +607,7 @@ func ExampleVirtualMachineImageTemplatesClient_BeginCreateOrUpdate_createAnImage
 	// 							}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2023-07-01/examples/UpdateImageTemplateToRemoveIdentities.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b22c642b361e6d6e7d72a2347a09b0bcf6075d70/specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2024-02-01/examples/UpdateImageTemplateToRemoveIdentities.json
 func ExampleVirtualMachineImageTemplatesClient_BeginUpdate_removeIdentitiesForAnImageTemplate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -673,7 +673,84 @@ func ExampleVirtualMachineImageTemplatesClient_BeginUpdate_removeIdentitiesForAn
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2023-07-01/examples/UpdateImageTemplateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b22c642b361e6d6e7d72a2347a09b0bcf6075d70/specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2024-02-01/examples/UpdateImageTemplateVmProfile.json
+func ExampleVirtualMachineImageTemplatesClient_BeginUpdate_updateParametersForVmProfile() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armvirtualmachineimagebuilder.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualMachineImageTemplatesClient().BeginUpdate(ctx, "myResourceGroup", "myImageTemplate", armvirtualmachineimagebuilder.ImageTemplateUpdateParameters{
+		Properties: &armvirtualmachineimagebuilder.ImageTemplateUpdateParametersProperties{
+			VMProfile: &armvirtualmachineimagebuilder.ImageTemplateVMProfile{
+				OSDiskSizeGB: to.Ptr[int32](127),
+				VMSize:       to.Ptr("{updated_vmsize}"),
+				VnetConfig: &armvirtualmachineimagebuilder.VirtualNetworkConfig{
+					ContainerInstanceSubnetID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/vnetname/subnets/subnetname"),
+					SubnetID:                  to.Ptr("{updated_aci_subnet}"),
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ImageTemplate = armvirtualmachineimagebuilder.ImageTemplate{
+	// 	Name: to.Ptr("myImageTemplate"),
+	// 	Type: to.Ptr("Microsoft.VirtualMachineImages/imageTemplates"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.VirtualMachineImages/imageTemplates/myImageTemplate"),
+	// 	Location: to.Ptr("westus"),
+	// 	Tags: map[string]*string{
+	// 		"tag": to.Ptr("tag-value"),
+	// 	},
+	// 	Identity: &armvirtualmachineimagebuilder.ImageTemplateIdentity{
+	// 		Type: to.Ptr(armvirtualmachineimagebuilder.ResourceIdentityTypeNone),
+	// 	},
+	// 	Properties: &armvirtualmachineimagebuilder.ImageTemplateProperties{
+	// 		Customize: []armvirtualmachineimagebuilder.ImageTemplateCustomizerClassification{
+	// 			&armvirtualmachineimagebuilder.ImageTemplateShellCustomizer{
+	// 				Name: to.Ptr("Shell customization example"),
+	// 				Type: to.Ptr("Shell"),
+	// 				ScriptURI: to.Ptr("https://example.com/path/to/script.sh"),
+	// 		}},
+	// 		Distribute: []armvirtualmachineimagebuilder.ImageTemplateDistributorClassification{
+	// 			&armvirtualmachineimagebuilder.ImageTemplateManagedImageDistributor{
+	// 				Type: to.Ptr("ManagedImage"),
+	// 				ArtifactTags: map[string]*string{
+	// 					"tagName": to.Ptr("value"),
+	// 				},
+	// 				RunOutputName: to.Ptr("image_it_pir_1"),
+	// 				ImageID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rg1/providers/Microsoft.Compute/images/image_it_1"),
+	// 				Location: to.Ptr("1_location"),
+	// 		}},
+	// 		Source: &armvirtualmachineimagebuilder.ImageTemplateManagedImageSource{
+	// 			Type: to.Ptr("ManagedImage"),
+	// 			ImageID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/source_rg/providers/Microsoft.Compute/images/source_image"),
+	// 		},
+	// 		VMProfile: &armvirtualmachineimagebuilder.ImageTemplateVMProfile{
+	// 			OSDiskSizeGB: to.Ptr[int32](127),
+	// 			VMSize: to.Ptr("{updated_vmsize}"),
+	// 			VnetConfig: &armvirtualmachineimagebuilder.VirtualNetworkConfig{
+	// 				ContainerInstanceSubnetID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/vnetname/subnets/subnetname"),
+	// 				SubnetID: to.Ptr("{updated_aci_subnet}}"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b22c642b361e6d6e7d72a2347a09b0bcf6075d70/specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2024-02-01/examples/UpdateImageTemplateTags.json
 func ExampleVirtualMachineImageTemplatesClient_BeginUpdate_updateTheTagsForAnImageTemplate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -745,7 +822,7 @@ func ExampleVirtualMachineImageTemplatesClient_BeginUpdate_updateTheTagsForAnIma
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2023-07-01/examples/GetImageTemplate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b22c642b361e6d6e7d72a2347a09b0bcf6075d70/specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2024-02-01/examples/GetImageTemplate.json
 func ExampleVirtualMachineImageTemplatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -806,7 +883,7 @@ func ExampleVirtualMachineImageTemplatesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2023-07-01/examples/DeleteImageTemplate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b22c642b361e6d6e7d72a2347a09b0bcf6075d70/specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2024-02-01/examples/DeleteImageTemplate.json
 func ExampleVirtualMachineImageTemplatesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -827,7 +904,7 @@ func ExampleVirtualMachineImageTemplatesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2023-07-01/examples/RunImageTemplate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b22c642b361e6d6e7d72a2347a09b0bcf6075d70/specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2024-02-01/examples/RunImageTemplate.json
 func ExampleVirtualMachineImageTemplatesClient_BeginRun() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -848,7 +925,7 @@ func ExampleVirtualMachineImageTemplatesClient_BeginRun() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2023-07-01/examples/CancelImageBuild.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b22c642b361e6d6e7d72a2347a09b0bcf6075d70/specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2024-02-01/examples/CancelImageBuild.json
 func ExampleVirtualMachineImageTemplatesClient_BeginCancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -869,7 +946,7 @@ func ExampleVirtualMachineImageTemplatesClient_BeginCancel() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2023-07-01/examples/ListRunOutputs.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b22c642b361e6d6e7d72a2347a09b0bcf6075d70/specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2024-02-01/examples/ListRunOutputs.json
 func ExampleVirtualMachineImageTemplatesClient_NewListRunOutputsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -915,7 +992,7 @@ func ExampleVirtualMachineImageTemplatesClient_NewListRunOutputsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2023-07-01/examples/GetRunOutput.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b22c642b361e6d6e7d72a2347a09b0bcf6075d70/specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2024-02-01/examples/GetRunOutput.json
 func ExampleVirtualMachineImageTemplatesClient_GetRunOutput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

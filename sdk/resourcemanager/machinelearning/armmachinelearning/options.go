@@ -104,6 +104,18 @@ type CodeContainersClientListOptions struct {
 	Skip *string
 }
 
+// CodeVersionsClientBeginPublishOptions contains the optional parameters for the CodeVersionsClient.BeginPublish method.
+type CodeVersionsClientBeginPublishOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// CodeVersionsClientCreateOrGetStartPendingUploadOptions contains the optional parameters for the CodeVersionsClient.CreateOrGetStartPendingUpload
+// method.
+type CodeVersionsClientCreateOrGetStartPendingUploadOptions struct {
+	// placeholder for future optional parameters
+}
+
 // CodeVersionsClientCreateOrUpdateOptions contains the optional parameters for the CodeVersionsClient.CreateOrUpdate method.
 type CodeVersionsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
@@ -121,6 +133,12 @@ type CodeVersionsClientGetOptions struct {
 
 // CodeVersionsClientListOptions contains the optional parameters for the CodeVersionsClient.NewListPager method.
 type CodeVersionsClientListOptions struct {
+	// If specified, return CodeVersion assets with specified content hash value, regardless of name
+	Hash *string
+
+	// Hash algorithm version when listing by hash
+	HashVersion *string
+
 	// Ordering of list.
 	OrderBy *string
 
@@ -154,6 +172,13 @@ type ComponentContainersClientListOptions struct {
 
 	// Continuation token for pagination.
 	Skip *string
+}
+
+// ComponentVersionsClientBeginPublishOptions contains the optional parameters for the ComponentVersionsClient.BeginPublish
+// method.
+type ComponentVersionsClientBeginPublishOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ComponentVersionsClientCreateOrUpdateOptions contains the optional parameters for the ComponentVersionsClient.CreateOrUpdate
@@ -269,6 +294,12 @@ type DataContainersClientListOptions struct {
 	Skip *string
 }
 
+// DataVersionsClientBeginPublishOptions contains the optional parameters for the DataVersionsClient.BeginPublish method.
+type DataVersionsClientBeginPublishOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // DataVersionsClientCreateOrUpdateOptions contains the optional parameters for the DataVersionsClient.CreateOrUpdate method.
 type DataVersionsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
@@ -375,6 +406,13 @@ type EnvironmentContainersClientListOptions struct {
 	Skip *string
 }
 
+// EnvironmentVersionsClientBeginPublishOptions contains the optional parameters for the EnvironmentVersionsClient.BeginPublish
+// method.
+type EnvironmentVersionsClientBeginPublishOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // EnvironmentVersionsClientCreateOrUpdateOptions contains the optional parameters for the EnvironmentVersionsClient.CreateOrUpdate
 // method.
 type EnvironmentVersionsClientCreateOrUpdateOptions struct {
@@ -404,6 +442,234 @@ type EnvironmentVersionsClientListOptions struct {
 
 	// Maximum number of records to return.
 	Top *int32
+}
+
+// FeaturesClientGetOptions contains the optional parameters for the FeaturesClient.Get method.
+type FeaturesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FeaturesClientListOptions contains the optional parameters for the FeaturesClient.NewListPager method.
+type FeaturesClientListOptions struct {
+	// Description of the featureset.
+	Description *string
+
+	// feature name.
+	FeatureName *string
+
+	// [ListViewType.ActiveOnly, ListViewType.ArchivedOnly, ListViewType.All]View type for including/excluding (for example) archived
+	// entities.
+	ListViewType *ListViewType
+
+	// Page size.
+	PageSize *int32
+
+	// Continuation token for pagination.
+	Skip *string
+
+	// Comma-separated list of tag names (and optionally values). Example: tag1,tag2=value2
+	Tags *string
+}
+
+// FeaturesetContainersClientBeginCreateOrUpdateOptions contains the optional parameters for the FeaturesetContainersClient.BeginCreateOrUpdate
+// method.
+type FeaturesetContainersClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// FeaturesetContainersClientBeginDeleteOptions contains the optional parameters for the FeaturesetContainersClient.BeginDelete
+// method.
+type FeaturesetContainersClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// FeaturesetContainersClientGetEntityOptions contains the optional parameters for the FeaturesetContainersClient.GetEntity
+// method.
+type FeaturesetContainersClientGetEntityOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FeaturesetContainersClientListOptions contains the optional parameters for the FeaturesetContainersClient.NewListPager
+// method.
+type FeaturesetContainersClientListOptions struct {
+	// createdBy user name
+	CreatedBy *string
+
+	// description for the feature set
+	Description *string
+
+	// [ListViewType.ActiveOnly, ListViewType.ArchivedOnly, ListViewType.All]View type for including/excluding (for example) archived
+	// entities.
+	ListViewType *ListViewType
+
+	// name for the featureset
+	Name *string
+
+	// page size
+	PageSize *int32
+
+	// Continuation token for pagination.
+	Skip *string
+
+	// Comma-separated list of tag names (and optionally values). Example: tag1,tag2=value2
+	Tags *string
+}
+
+// FeaturesetVersionsClientBeginBackfillOptions contains the optional parameters for the FeaturesetVersionsClient.BeginBackfill
+// method.
+type FeaturesetVersionsClientBeginBackfillOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// FeaturesetVersionsClientBeginCreateOrUpdateOptions contains the optional parameters for the FeaturesetVersionsClient.BeginCreateOrUpdate
+// method.
+type FeaturesetVersionsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// FeaturesetVersionsClientBeginDeleteOptions contains the optional parameters for the FeaturesetVersionsClient.BeginDelete
+// method.
+type FeaturesetVersionsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// FeaturesetVersionsClientGetOptions contains the optional parameters for the FeaturesetVersionsClient.Get method.
+type FeaturesetVersionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FeaturesetVersionsClientListOptions contains the optional parameters for the FeaturesetVersionsClient.NewListPager method.
+type FeaturesetVersionsClientListOptions struct {
+	// createdBy user name
+	CreatedBy *string
+
+	// description for the feature set version
+	Description *string
+
+	// [ListViewType.ActiveOnly, ListViewType.ArchivedOnly, ListViewType.All]View type for including/excluding (for example) archived
+	// entities.
+	ListViewType *ListViewType
+
+	// page size
+	PageSize *int32
+
+	// Continuation token for pagination.
+	Skip *string
+
+	// Specifies the featurestore stage
+	Stage *string
+
+	// Comma-separated list of tag names (and optionally values). Example: tag1,tag2=value2
+	Tags *string
+
+	// featureset version
+	Version *string
+
+	// name for the featureset version
+	VersionName *string
+}
+
+// FeaturestoreEntityContainersClientBeginCreateOrUpdateOptions contains the optional parameters for the FeaturestoreEntityContainersClient.BeginCreateOrUpdate
+// method.
+type FeaturestoreEntityContainersClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// FeaturestoreEntityContainersClientBeginDeleteOptions contains the optional parameters for the FeaturestoreEntityContainersClient.BeginDelete
+// method.
+type FeaturestoreEntityContainersClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// FeaturestoreEntityContainersClientGetEntityOptions contains the optional parameters for the FeaturestoreEntityContainersClient.GetEntity
+// method.
+type FeaturestoreEntityContainersClientGetEntityOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FeaturestoreEntityContainersClientListOptions contains the optional parameters for the FeaturestoreEntityContainersClient.NewListPager
+// method.
+type FeaturestoreEntityContainersClientListOptions struct {
+	// createdBy user name
+	CreatedBy *string
+
+	// description for the featurestore entity
+	Description *string
+
+	// [ListViewType.ActiveOnly, ListViewType.ArchivedOnly, ListViewType.All]View type for including/excluding (for example) archived
+	// entities.
+	ListViewType *ListViewType
+
+	// name for the featurestore entity
+	Name *string
+
+	// page size
+	PageSize *int32
+
+	// Continuation token for pagination.
+	Skip *string
+
+	// Comma-separated list of tag names (and optionally values). Example: tag1,tag2=value2
+	Tags *string
+}
+
+// FeaturestoreEntityVersionsClientBeginCreateOrUpdateOptions contains the optional parameters for the FeaturestoreEntityVersionsClient.BeginCreateOrUpdate
+// method.
+type FeaturestoreEntityVersionsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// FeaturestoreEntityVersionsClientBeginDeleteOptions contains the optional parameters for the FeaturestoreEntityVersionsClient.BeginDelete
+// method.
+type FeaturestoreEntityVersionsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// FeaturestoreEntityVersionsClientGetOptions contains the optional parameters for the FeaturestoreEntityVersionsClient.Get
+// method.
+type FeaturestoreEntityVersionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FeaturestoreEntityVersionsClientListOptions contains the optional parameters for the FeaturestoreEntityVersionsClient.NewListPager
+// method.
+type FeaturestoreEntityVersionsClientListOptions struct {
+	// createdBy user name
+	CreatedBy *string
+
+	// description for the feature entity version
+	Description *string
+
+	// [ListViewType.ActiveOnly, ListViewType.ArchivedOnly, ListViewType.All]View type for including/excluding (for example) archived
+	// entities.
+	ListViewType *ListViewType
+
+	// page size
+	PageSize *int32
+
+	// Continuation token for pagination.
+	Skip *string
+
+	// Specifies the featurestore stage
+	Stage *string
+
+	// Comma-separated list of tag names (and optionally values). Example: tag1,tag2=value2
+	Tags *string
+
+	// featurestore entity version
+	Version *string
+
+	// name for the featurestore entity version
+	VersionName *string
 }
 
 // JobsClientBeginCancelOptions contains the optional parameters for the JobsClient.BeginCancel method.
@@ -436,11 +702,76 @@ type JobsClientListOptions struct {
 	// View type for including/excluding (for example) archived entities.
 	ListViewType *ListViewType
 
+	// Comma-separated list of user property names (and optionally values). Example: prop1,prop2=value2
+	Properties *string
+
 	// Continuation token for pagination.
 	Skip *string
 
 	// Jobs returned will have this tag key.
 	Tag *string
+}
+
+// ManagedNetworkProvisionsClientBeginProvisionManagedNetworkOptions contains the optional parameters for the ManagedNetworkProvisionsClient.BeginProvisionManagedNetwork
+// method.
+type ManagedNetworkProvisionsClientBeginProvisionManagedNetworkOptions struct {
+	// Managed Network Provisioning Options for a machine learning workspace.
+	Body *ManagedNetworkProvisionOptions
+
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ManagedNetworkSettingsRuleClientBeginCreateOrUpdateOptions contains the optional parameters for the ManagedNetworkSettingsRuleClient.BeginCreateOrUpdate
+// method.
+type ManagedNetworkSettingsRuleClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ManagedNetworkSettingsRuleClientBeginDeleteOptions contains the optional parameters for the ManagedNetworkSettingsRuleClient.BeginDelete
+// method.
+type ManagedNetworkSettingsRuleClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ManagedNetworkSettingsRuleClientGetOptions contains the optional parameters for the ManagedNetworkSettingsRuleClient.Get
+// method.
+type ManagedNetworkSettingsRuleClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ManagedNetworkSettingsRuleClientListOptions contains the optional parameters for the ManagedNetworkSettingsRuleClient.NewListPager
+// method.
+type ManagedNetworkSettingsRuleClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MarketplaceSubscriptionsClientBeginCreateOrUpdateOptions contains the optional parameters for the MarketplaceSubscriptionsClient.BeginCreateOrUpdate
+// method.
+type MarketplaceSubscriptionsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// MarketplaceSubscriptionsClientBeginDeleteOptions contains the optional parameters for the MarketplaceSubscriptionsClient.BeginDelete
+// method.
+type MarketplaceSubscriptionsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// MarketplaceSubscriptionsClientGetOptions contains the optional parameters for the MarketplaceSubscriptionsClient.Get method.
+type MarketplaceSubscriptionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MarketplaceSubscriptionsClientListOptions contains the optional parameters for the MarketplaceSubscriptionsClient.NewListPager
+// method.
+type MarketplaceSubscriptionsClientListOptions struct {
+	// Continuation token for pagination.
+	Skip *string
 }
 
 // ModelContainersClientCreateOrUpdateOptions contains the optional parameters for the ModelContainersClient.CreateOrUpdate
@@ -469,6 +800,12 @@ type ModelContainersClientListOptions struct {
 
 	// Continuation token for pagination.
 	Skip *string
+}
+
+// ModelVersionsClientBeginPublishOptions contains the optional parameters for the ModelVersionsClient.BeginPublish method.
+type ModelVersionsClientBeginPublishOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ModelVersionsClientCreateOrUpdateOptions contains the optional parameters for the ModelVersionsClient.CreateOrUpdate method.
@@ -683,6 +1020,400 @@ type QuotasClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
+// RegistriesClientBeginCreateOrUpdateOptions contains the optional parameters for the RegistriesClient.BeginCreateOrUpdate
+// method.
+type RegistriesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// RegistriesClientBeginDeleteOptions contains the optional parameters for the RegistriesClient.BeginDelete method.
+type RegistriesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// RegistriesClientBeginRemoveRegionsOptions contains the optional parameters for the RegistriesClient.BeginRemoveRegions
+// method.
+type RegistriesClientBeginRemoveRegionsOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// RegistriesClientGetOptions contains the optional parameters for the RegistriesClient.Get method.
+type RegistriesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RegistriesClientListBySubscriptionOptions contains the optional parameters for the RegistriesClient.NewListBySubscriptionPager
+// method.
+type RegistriesClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RegistriesClientListOptions contains the optional parameters for the RegistriesClient.NewListPager method.
+type RegistriesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RegistriesClientUpdateOptions contains the optional parameters for the RegistriesClient.Update method.
+type RegistriesClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RegistryCodeContainersClientBeginCreateOrUpdateOptions contains the optional parameters for the RegistryCodeContainersClient.BeginCreateOrUpdate
+// method.
+type RegistryCodeContainersClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// RegistryCodeContainersClientBeginDeleteOptions contains the optional parameters for the RegistryCodeContainersClient.BeginDelete
+// method.
+type RegistryCodeContainersClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// RegistryCodeContainersClientGetOptions contains the optional parameters for the RegistryCodeContainersClient.Get method.
+type RegistryCodeContainersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RegistryCodeContainersClientListOptions contains the optional parameters for the RegistryCodeContainersClient.NewListPager
+// method.
+type RegistryCodeContainersClientListOptions struct {
+	// Continuation token for pagination.
+	Skip *string
+}
+
+// RegistryCodeVersionsClientBeginCreateOrUpdateOptions contains the optional parameters for the RegistryCodeVersionsClient.BeginCreateOrUpdate
+// method.
+type RegistryCodeVersionsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// RegistryCodeVersionsClientBeginDeleteOptions contains the optional parameters for the RegistryCodeVersionsClient.BeginDelete
+// method.
+type RegistryCodeVersionsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// RegistryCodeVersionsClientCreateOrGetStartPendingUploadOptions contains the optional parameters for the RegistryCodeVersionsClient.CreateOrGetStartPendingUpload
+// method.
+type RegistryCodeVersionsClientCreateOrGetStartPendingUploadOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RegistryCodeVersionsClientGetOptions contains the optional parameters for the RegistryCodeVersionsClient.Get method.
+type RegistryCodeVersionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RegistryCodeVersionsClientListOptions contains the optional parameters for the RegistryCodeVersionsClient.NewListPager
+// method.
+type RegistryCodeVersionsClientListOptions struct {
+	// Ordering of list.
+	OrderBy *string
+
+	// Continuation token for pagination.
+	Skip *string
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// RegistryComponentContainersClientBeginCreateOrUpdateOptions contains the optional parameters for the RegistryComponentContainersClient.BeginCreateOrUpdate
+// method.
+type RegistryComponentContainersClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// RegistryComponentContainersClientBeginDeleteOptions contains the optional parameters for the RegistryComponentContainersClient.BeginDelete
+// method.
+type RegistryComponentContainersClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// RegistryComponentContainersClientGetOptions contains the optional parameters for the RegistryComponentContainersClient.Get
+// method.
+type RegistryComponentContainersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RegistryComponentContainersClientListOptions contains the optional parameters for the RegistryComponentContainersClient.NewListPager
+// method.
+type RegistryComponentContainersClientListOptions struct {
+	// Continuation token for pagination.
+	Skip *string
+}
+
+// RegistryComponentVersionsClientBeginCreateOrUpdateOptions contains the optional parameters for the RegistryComponentVersionsClient.BeginCreateOrUpdate
+// method.
+type RegistryComponentVersionsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// RegistryComponentVersionsClientBeginDeleteOptions contains the optional parameters for the RegistryComponentVersionsClient.BeginDelete
+// method.
+type RegistryComponentVersionsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// RegistryComponentVersionsClientGetOptions contains the optional parameters for the RegistryComponentVersionsClient.Get
+// method.
+type RegistryComponentVersionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RegistryComponentVersionsClientListOptions contains the optional parameters for the RegistryComponentVersionsClient.NewListPager
+// method.
+type RegistryComponentVersionsClientListOptions struct {
+	// Ordering of list.
+	OrderBy *string
+
+	// Continuation token for pagination.
+	Skip *string
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// RegistryDataContainersClientBeginCreateOrUpdateOptions contains the optional parameters for the RegistryDataContainersClient.BeginCreateOrUpdate
+// method.
+type RegistryDataContainersClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// RegistryDataContainersClientBeginDeleteOptions contains the optional parameters for the RegistryDataContainersClient.BeginDelete
+// method.
+type RegistryDataContainersClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// RegistryDataContainersClientGetOptions contains the optional parameters for the RegistryDataContainersClient.Get method.
+type RegistryDataContainersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RegistryDataContainersClientListOptions contains the optional parameters for the RegistryDataContainersClient.NewListPager
+// method.
+type RegistryDataContainersClientListOptions struct {
+	// View type for including/excluding (for example) archived entities.
+	ListViewType *ListViewType
+
+	// Continuation token for pagination.
+	Skip *string
+}
+
+// RegistryDataReferencesClientGetBlobReferenceSASOptions contains the optional parameters for the RegistryDataReferencesClient.GetBlobReferenceSAS
+// method.
+type RegistryDataReferencesClientGetBlobReferenceSASOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RegistryDataVersionsClientBeginCreateOrUpdateOptions contains the optional parameters for the RegistryDataVersionsClient.BeginCreateOrUpdate
+// method.
+type RegistryDataVersionsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// RegistryDataVersionsClientBeginDeleteOptions contains the optional parameters for the RegistryDataVersionsClient.BeginDelete
+// method.
+type RegistryDataVersionsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// RegistryDataVersionsClientCreateOrGetStartPendingUploadOptions contains the optional parameters for the RegistryDataVersionsClient.CreateOrGetStartPendingUpload
+// method.
+type RegistryDataVersionsClientCreateOrGetStartPendingUploadOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RegistryDataVersionsClientGetOptions contains the optional parameters for the RegistryDataVersionsClient.Get method.
+type RegistryDataVersionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RegistryDataVersionsClientListOptions contains the optional parameters for the RegistryDataVersionsClient.NewListPager
+// method.
+type RegistryDataVersionsClientListOptions struct {
+	// [ListViewType.ActiveOnly, ListViewType.ArchivedOnly, ListViewType.All]View type for including/excluding (for example) archived
+	// entities.
+	ListViewType *ListViewType
+
+	// Please choose OrderBy value from ['createdtime', 'modifiedtime']
+	OrderBy *string
+
+	// Continuation token for pagination.
+	Skip *string
+
+	// Comma-separated list of tag names (and optionally values). Example: tag1,tag2=value2
+	Tags *string
+
+	// Top count of results, top count cannot be greater than the page size. If topCount > page size, results with be default
+	// page size count will be returned
+	Top *int32
+}
+
+// RegistryEnvironmentContainersClientBeginCreateOrUpdateOptions contains the optional parameters for the RegistryEnvironmentContainersClient.BeginCreateOrUpdate
+// method.
+type RegistryEnvironmentContainersClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// RegistryEnvironmentContainersClientBeginDeleteOptions contains the optional parameters for the RegistryEnvironmentContainersClient.BeginDelete
+// method.
+type RegistryEnvironmentContainersClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// RegistryEnvironmentContainersClientGetOptions contains the optional parameters for the RegistryEnvironmentContainersClient.Get
+// method.
+type RegistryEnvironmentContainersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RegistryEnvironmentContainersClientListOptions contains the optional parameters for the RegistryEnvironmentContainersClient.NewListPager
+// method.
+type RegistryEnvironmentContainersClientListOptions struct {
+	// View type for including/excluding (for example) archived entities.
+	ListViewType *ListViewType
+
+	// Continuation token for pagination.
+	Skip *string
+}
+
+// RegistryEnvironmentVersionsClientBeginCreateOrUpdateOptions contains the optional parameters for the RegistryEnvironmentVersionsClient.BeginCreateOrUpdate
+// method.
+type RegistryEnvironmentVersionsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// RegistryEnvironmentVersionsClientBeginDeleteOptions contains the optional parameters for the RegistryEnvironmentVersionsClient.BeginDelete
+// method.
+type RegistryEnvironmentVersionsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// RegistryEnvironmentVersionsClientGetOptions contains the optional parameters for the RegistryEnvironmentVersionsClient.Get
+// method.
+type RegistryEnvironmentVersionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RegistryEnvironmentVersionsClientListOptions contains the optional parameters for the RegistryEnvironmentVersionsClient.NewListPager
+// method.
+type RegistryEnvironmentVersionsClientListOptions struct {
+	// View type for including/excluding (for example) archived entities.
+	ListViewType *ListViewType
+
+	// Ordering of list.
+	OrderBy *string
+
+	// Continuation token for pagination.
+	Skip *string
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// RegistryModelContainersClientBeginCreateOrUpdateOptions contains the optional parameters for the RegistryModelContainersClient.BeginCreateOrUpdate
+// method.
+type RegistryModelContainersClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// RegistryModelContainersClientBeginDeleteOptions contains the optional parameters for the RegistryModelContainersClient.BeginDelete
+// method.
+type RegistryModelContainersClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// RegistryModelContainersClientGetOptions contains the optional parameters for the RegistryModelContainersClient.Get method.
+type RegistryModelContainersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RegistryModelContainersClientListOptions contains the optional parameters for the RegistryModelContainersClient.NewListPager
+// method.
+type RegistryModelContainersClientListOptions struct {
+	// View type for including/excluding (for example) archived entities.
+	ListViewType *ListViewType
+
+	// Continuation token for pagination.
+	Skip *string
+}
+
+// RegistryModelVersionsClientBeginCreateOrUpdateOptions contains the optional parameters for the RegistryModelVersionsClient.BeginCreateOrUpdate
+// method.
+type RegistryModelVersionsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// RegistryModelVersionsClientBeginDeleteOptions contains the optional parameters for the RegistryModelVersionsClient.BeginDelete
+// method.
+type RegistryModelVersionsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// RegistryModelVersionsClientCreateOrGetStartPendingUploadOptions contains the optional parameters for the RegistryModelVersionsClient.CreateOrGetStartPendingUpload
+// method.
+type RegistryModelVersionsClientCreateOrGetStartPendingUploadOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RegistryModelVersionsClientGetOptions contains the optional parameters for the RegistryModelVersionsClient.Get method.
+type RegistryModelVersionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RegistryModelVersionsClientListOptions contains the optional parameters for the RegistryModelVersionsClient.NewListPager
+// method.
+type RegistryModelVersionsClientListOptions struct {
+	// Model description.
+	Description *string
+
+	// View type for including/excluding (for example) archived entities.
+	ListViewType *ListViewType
+
+	// Ordering of list.
+	OrderBy *string
+
+	// Comma-separated list of property names (and optionally values). Example: prop1,prop2=value2
+	Properties *string
+
+	// Continuation token for pagination.
+	Skip *string
+
+	// Comma-separated list of tag names (and optionally values). Example: tag1,tag2=value2
+	Tags *string
+
+	// Maximum number of records to return.
+	Top *int32
+
+	// Version identifier.
+	Version *string
+}
+
 // SchedulesClientBeginCreateOrUpdateOptions contains the optional parameters for the SchedulesClient.BeginCreateOrUpdate
 // method.
 type SchedulesClientBeginCreateOrUpdateOptions struct {
@@ -706,6 +1437,50 @@ type SchedulesClientListOptions struct {
 	// Status filter for schedule.
 	ListViewType *ScheduleListViewType
 
+	// Continuation token for pagination.
+	Skip *string
+}
+
+// ServerlessEndpointsClientBeginCreateOrUpdateOptions contains the optional parameters for the ServerlessEndpointsClient.BeginCreateOrUpdate
+// method.
+type ServerlessEndpointsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ServerlessEndpointsClientBeginDeleteOptions contains the optional parameters for the ServerlessEndpointsClient.BeginDelete
+// method.
+type ServerlessEndpointsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ServerlessEndpointsClientBeginRegenerateKeysOptions contains the optional parameters for the ServerlessEndpointsClient.BeginRegenerateKeys
+// method.
+type ServerlessEndpointsClientBeginRegenerateKeysOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ServerlessEndpointsClientBeginUpdateOptions contains the optional parameters for the ServerlessEndpointsClient.BeginUpdate
+// method.
+type ServerlessEndpointsClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ServerlessEndpointsClientGetOptions contains the optional parameters for the ServerlessEndpointsClient.Get method.
+type ServerlessEndpointsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServerlessEndpointsClientListKeysOptions contains the optional parameters for the ServerlessEndpointsClient.ListKeys method.
+type ServerlessEndpointsClientListKeysOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServerlessEndpointsClientListOptions contains the optional parameters for the ServerlessEndpointsClient.NewListPager method.
+type ServerlessEndpointsClientListOptions struct {
 	// Continuation token for pagination.
 	Skip *string
 }
@@ -745,6 +1520,12 @@ type WorkspaceConnectionsClientListOptions struct {
 	Target *string
 }
 
+// WorkspaceConnectionsClientListSecretsOptions contains the optional parameters for the WorkspaceConnectionsClient.ListSecrets
+// method.
+type WorkspaceConnectionsClientListSecretsOptions struct {
+	// placeholder for future optional parameters
+}
+
 // WorkspaceFeaturesClientListOptions contains the optional parameters for the WorkspaceFeaturesClient.NewListPager method.
 type WorkspaceFeaturesClientListOptions struct {
 	// placeholder for future optional parameters
@@ -759,6 +1540,9 @@ type WorkspacesClientBeginCreateOrUpdateOptions struct {
 
 // WorkspacesClientBeginDeleteOptions contains the optional parameters for the WorkspacesClient.BeginDelete method.
 type WorkspacesClientBeginDeleteOptions struct {
+	// Flag to indicate delete is a purge request.
+	ForceToPurge *bool
+
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }

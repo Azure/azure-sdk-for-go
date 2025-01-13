@@ -119,6 +119,9 @@ type Handle struct {
 	// REQUIRED; Client IP that opened the handle
 	ClientIP *string `xml:"ClientIp"`
 
+	// REQUIRED; Name of the client machine where the share is being mounted
+	ClientName *string `xml:"ClientName"`
+
 	// REQUIRED; FileId uniquely identifies the file or directory.
 	FileID *string `xml:"FileId"`
 
@@ -251,6 +254,7 @@ type ShareFileRangeList struct {
 type SharePermission struct {
 	// REQUIRED; The permission in the Security Descriptor Definition Language (SDDL).
 	Permission *string
+	Format     *FilePermissionFormat
 }
 
 // ShareProperties - Properties of a share.
@@ -262,12 +266,14 @@ type ShareProperties struct {
 	LastModified *time.Time `xml:"Last-Modified"`
 
 	// REQUIRED
-	Quota                     *int32     `xml:"Quota"`
-	AccessTier                *string    `xml:"AccessTier"`
-	AccessTierChangeTime      *time.Time `xml:"AccessTierChangeTime"`
-	AccessTierTransitionState *string    `xml:"AccessTierTransitionState"`
-	DeletedTime               *time.Time `xml:"DeletedTime"`
-	EnabledProtocols          *string    `xml:"EnabledProtocols"`
+	Quota                                *int32     `xml:"Quota"`
+	AccessTier                           *string    `xml:"AccessTier"`
+	AccessTierChangeTime                 *time.Time `xml:"AccessTierChangeTime"`
+	AccessTierTransitionState            *string    `xml:"AccessTierTransitionState"`
+	DeletedTime                          *time.Time `xml:"DeletedTime"`
+	EnableSnapshotVirtualDirectoryAccess *bool      `xml:"EnableSnapshotVirtualDirectoryAccess"`
+	EnabledProtocols                     *string    `xml:"EnabledProtocols"`
+	IncludedBurstIops                    *int64     `xml:"IncludedBurstIops"`
 
 	// When a share is leased, specifies whether the lease is of infinite or fixed duration.
 	LeaseDuration *LeaseDurationType `xml:"LeaseDuration"`
@@ -276,14 +282,20 @@ type ShareProperties struct {
 	LeaseState *LeaseStateType `xml:"LeaseState"`
 
 	// The current lease status of the share.
-	LeaseStatus                   *LeaseStatusType `xml:"LeaseStatus"`
-	NextAllowedQuotaDowngradeTime *time.Time       `xml:"NextAllowedQuotaDowngradeTime"`
-	ProvisionedBandwidthMiBps     *int32           `xml:"ProvisionedBandwidthMiBps"`
-	ProvisionedEgressMBps         *int32           `xml:"ProvisionedEgressMBps"`
-	ProvisionedIngressMBps        *int32           `xml:"ProvisionedIngressMBps"`
-	ProvisionedIops               *int32           `xml:"ProvisionedIops"`
-	RemainingRetentionDays        *int32           `xml:"RemainingRetentionDays"`
-	RootSquash                    *ShareRootSquash `xml:"RootSquash"`
+	LeaseStatus                                  *LeaseStatusType `xml:"LeaseStatus"`
+	MaxBurstCreditsForIops                       *int64           `xml:"MaxBurstCreditsForIops"`
+	NextAllowedProvisionedBandwidthDowngradeTime *time.Time       `xml:"NextAllowedProvisionedBandwidthDowngradeTime"`
+	NextAllowedProvisionedIopsDowngradeTime      *time.Time       `xml:"NextAllowedProvisionedIopsDowngradeTime"`
+	NextAllowedQuotaDowngradeTime                *time.Time       `xml:"NextAllowedQuotaDowngradeTime"`
+	PaidBurstingEnabled                          *bool            `xml:"PaidBurstingEnabled"`
+	PaidBurstingMaxBandwidthMibps                *int64           `xml:"PaidBurstingMaxBandwidthMibps"`
+	PaidBurstingMaxIops                          *int64           `xml:"PaidBurstingMaxIops"`
+	ProvisionedBandwidthMiBps                    *int32           `xml:"ProvisionedBandwidthMiBps"`
+	ProvisionedEgressMBps                        *int32           `xml:"ProvisionedEgressMBps"`
+	ProvisionedIngressMBps                       *int32           `xml:"ProvisionedIngressMBps"`
+	ProvisionedIops                              *int32           `xml:"ProvisionedIops"`
+	RemainingRetentionDays                       *int32           `xml:"RemainingRetentionDays"`
+	RootSquash                                   *ShareRootSquash `xml:"RootSquash"`
 }
 
 // ShareStats - Stats for the share.
@@ -309,7 +321,8 @@ type SMBMultichannel struct {
 }
 
 type StorageError struct {
-	Message *string
+	AuthenticationErrorDetail *string
+	Message                   *string
 }
 
 // StorageServiceProperties - Storage service properties.

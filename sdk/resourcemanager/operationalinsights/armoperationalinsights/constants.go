@@ -10,7 +10,7 @@ package armoperationalinsights
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights"
-	moduleVersion = "v1.2.0"
+	moduleVersion = "v2.0.0-beta.4"
 )
 
 // BillingType - Configures whether billing will be only on the cluster or each workspace will be billed by its proportional
@@ -116,6 +116,78 @@ const (
 func PossibleClusterSKUNameEnumValues() []ClusterSKUNameEnum {
 	return []ClusterSKUNameEnum{
 		ClusterSKUNameEnumCapacityReservation,
+	}
+}
+
+// ColumnDataTypeHintEnum - Column data type logical hint.
+type ColumnDataTypeHintEnum string
+
+const (
+	// ColumnDataTypeHintEnumArmPath - An Azure Resource Model (ARM) path: /subscriptions/{...}/resourceGroups/{...}/providers/Microsoft.{...}/{...}/{...}/{...}...
+	ColumnDataTypeHintEnumArmPath ColumnDataTypeHintEnum = "armPath"
+	// ColumnDataTypeHintEnumGUID - A standard 128-bit GUID following the standard shape, xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+	ColumnDataTypeHintEnumGUID ColumnDataTypeHintEnum = "guid"
+	// ColumnDataTypeHintEnumIP - A standard V4/V6 ip address following the standard shape, x.x.x.x/y:y:y:y:y:y:y:y
+	ColumnDataTypeHintEnumIP ColumnDataTypeHintEnum = "ip"
+	// ColumnDataTypeHintEnumURI - A string that matches the pattern of a URI, for example, scheme://username:password@host:1234/this/is/a/path?k1=v1&k2=v2#fragment
+	ColumnDataTypeHintEnumURI ColumnDataTypeHintEnum = "uri"
+)
+
+// PossibleColumnDataTypeHintEnumValues returns the possible values for the ColumnDataTypeHintEnum const type.
+func PossibleColumnDataTypeHintEnumValues() []ColumnDataTypeHintEnum {
+	return []ColumnDataTypeHintEnum{
+		ColumnDataTypeHintEnumArmPath,
+		ColumnDataTypeHintEnumGUID,
+		ColumnDataTypeHintEnumIP,
+		ColumnDataTypeHintEnumURI,
+	}
+}
+
+// ColumnTypeEnum - Column data type.
+type ColumnTypeEnum string
+
+const (
+	ColumnTypeEnumBoolean  ColumnTypeEnum = "boolean"
+	ColumnTypeEnumDateTime ColumnTypeEnum = "dateTime"
+	ColumnTypeEnumDynamic  ColumnTypeEnum = "dynamic"
+	ColumnTypeEnumGUID     ColumnTypeEnum = "guid"
+	ColumnTypeEnumInt      ColumnTypeEnum = "int"
+	ColumnTypeEnumLong     ColumnTypeEnum = "long"
+	ColumnTypeEnumReal     ColumnTypeEnum = "real"
+	ColumnTypeEnumString   ColumnTypeEnum = "string"
+)
+
+// PossibleColumnTypeEnumValues returns the possible values for the ColumnTypeEnum const type.
+func PossibleColumnTypeEnumValues() []ColumnTypeEnum {
+	return []ColumnTypeEnum{
+		ColumnTypeEnumBoolean,
+		ColumnTypeEnumDateTime,
+		ColumnTypeEnumDynamic,
+		ColumnTypeEnumGUID,
+		ColumnTypeEnumInt,
+		ColumnTypeEnumLong,
+		ColumnTypeEnumReal,
+		ColumnTypeEnumString,
+	}
+}
+
+// CreatedByType - The type of identity that created the resource.
+type CreatedByType string
+
+const (
+	CreatedByTypeApplication     CreatedByType = "Application"
+	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
+	CreatedByTypeUser            CreatedByType = "User"
+)
+
+// PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{
+		CreatedByTypeApplication,
+		CreatedByTypeKey,
+		CreatedByTypeManagedIdentity,
+		CreatedByTypeUser,
 	}
 }
 
@@ -234,6 +306,7 @@ const (
 	DataSourceTypeAlerts      DataSourceType = "Alerts"
 	DataSourceTypeAzureWatson DataSourceType = "AzureWatson"
 	DataSourceTypeCustomLogs  DataSourceType = "CustomLogs"
+	DataSourceTypeIngestion   DataSourceType = "Ingestion"
 	DataSourceTypeQuery       DataSourceType = "Query"
 )
 
@@ -243,24 +316,33 @@ func PossibleDataSourceTypeValues() []DataSourceType {
 		DataSourceTypeAlerts,
 		DataSourceTypeAzureWatson,
 		DataSourceTypeCustomLogs,
+		DataSourceTypeIngestion,
 		DataSourceTypeQuery,
 	}
 }
 
-// IdentityType - Type of managed service identity.
+// IdentityType - The type of identity that creates/modifies resources
 type IdentityType string
 
 const (
-	IdentityTypeNone           IdentityType = "None"
-	IdentityTypeSystemAssigned IdentityType = "SystemAssigned"
-	IdentityTypeUserAssigned   IdentityType = "UserAssigned"
+	IdentityTypeApplication     IdentityType = "application"
+	IdentityTypeKey             IdentityType = "key"
+	IdentityTypeManagedIdentity IdentityType = "managedIdentity"
+	IdentityTypeNone            IdentityType = "None"
+	IdentityTypeSystemAssigned  IdentityType = "SystemAssigned"
+	IdentityTypeUser            IdentityType = "user"
+	IdentityTypeUserAssigned    IdentityType = "UserAssigned"
 )
 
 // PossibleIdentityTypeValues returns the possible values for the IdentityType const type.
 func PossibleIdentityTypeValues() []IdentityType {
 	return []IdentityType{
+		IdentityTypeApplication,
+		IdentityTypeKey,
+		IdentityTypeManagedIdentity,
 		IdentityTypeNone,
 		IdentityTypeSystemAssigned,
+		IdentityTypeUser,
 		IdentityTypeUserAssigned,
 	}
 }
@@ -282,6 +364,29 @@ func PossibleLinkedServiceEntityStatusValues() []LinkedServiceEntityStatus {
 		LinkedServiceEntityStatusProvisioningAccount,
 		LinkedServiceEntityStatusSucceeded,
 		LinkedServiceEntityStatusUpdating,
+	}
+}
+
+// ProvisioningStateEnum - Table's current provisioning state. If set to 'updating', indicates a resource lock due to ongoing
+// operation, forbidding any update to the table until the ongoing operation is concluded.
+type ProvisioningStateEnum string
+
+const (
+	// ProvisioningStateEnumInProgress - Table schema is stable and without changes, table data is being updated.
+	ProvisioningStateEnumInProgress ProvisioningStateEnum = "InProgress"
+	// ProvisioningStateEnumSucceeded - Table state is stable and without changes, table is unlocked and open for new updates.
+	ProvisioningStateEnumSucceeded ProvisioningStateEnum = "Succeeded"
+	// ProvisioningStateEnumUpdating - Table schema is still being built and updated, table is currently locked for any changes
+	// till the procedure is done.
+	ProvisioningStateEnumUpdating ProvisioningStateEnum = "Updating"
+)
+
+// PossibleProvisioningStateEnumValues returns the possible values for the ProvisioningStateEnum const type.
+func PossibleProvisioningStateEnumValues() []ProvisioningStateEnum {
+	return []ProvisioningStateEnum{
+		ProvisioningStateEnumInProgress,
+		ProvisioningStateEnumSucceeded,
+		ProvisioningStateEnumUpdating,
 	}
 }
 
@@ -361,6 +466,25 @@ func PossibleSearchSortEnumValues() []SearchSortEnum {
 	}
 }
 
+// SourceEnum - Table's creator.
+type SourceEnum string
+
+const (
+	// SourceEnumCustomer - Tables created by the owner of the Workspace, and only found in this Workspace.
+	SourceEnumCustomer SourceEnum = "customer"
+	// SourceEnumMicrosoft - Tables provisioned by the system, as collected via Diagnostic Settings, the Agents, or any other
+	// standard data collection means.
+	SourceEnumMicrosoft SourceEnum = "microsoft"
+)
+
+// PossibleSourceEnumValues returns the possible values for the SourceEnum const type.
+func PossibleSourceEnumValues() []SourceEnum {
+	return []SourceEnum{
+		SourceEnumCustomer,
+		SourceEnumMicrosoft,
+	}
+}
+
 // StorageInsightState - The state of the storage insight connection to the workspace
 type StorageInsightState string
 
@@ -374,6 +498,73 @@ func PossibleStorageInsightStateValues() []StorageInsightState {
 	return []StorageInsightState{
 		StorageInsightStateERROR,
 		StorageInsightStateOK,
+	}
+}
+
+// TablePlanEnum - Instruct the system how to handle and charge the logs ingested to this table.
+type TablePlanEnum string
+
+const (
+	// TablePlanEnumAnalytics - Logs that allow monitoring and analytics.
+	TablePlanEnumAnalytics TablePlanEnum = "Analytics"
+	// TablePlanEnumBasic - Logs that are adjusted to support high volume low value verbose logs.
+	TablePlanEnumBasic TablePlanEnum = "Basic"
+)
+
+// PossibleTablePlanEnumValues returns the possible values for the TablePlanEnum const type.
+func PossibleTablePlanEnumValues() []TablePlanEnum {
+	return []TablePlanEnum{
+		TablePlanEnumAnalytics,
+		TablePlanEnumBasic,
+	}
+}
+
+// TableSubTypeEnum - The subtype describes what APIs can be used to interact with the table, and what features are available
+// against it.
+type TableSubTypeEnum string
+
+const (
+	// TableSubTypeEnumAny - The default subtype with which built-in tables are created.
+	TableSubTypeEnumAny TableSubTypeEnum = "Any"
+	// TableSubTypeEnumClassic - Indicates a table created through the Data Collector API or with the custom logs feature of the
+	// MMA agent, or any table against which Custom Fields were created.
+	TableSubTypeEnumClassic TableSubTypeEnum = "Classic"
+	// TableSubTypeEnumDataCollectionRuleBased - A table eligible to have data sent into it via any of the means supported by
+	// Data Collection Rules: the Data Collection Endpoint API, ingestion-time transformations, or any other mechanism provided
+	// by Data Collection Rules
+	TableSubTypeEnumDataCollectionRuleBased TableSubTypeEnum = "DataCollectionRuleBased"
+)
+
+// PossibleTableSubTypeEnumValues returns the possible values for the TableSubTypeEnum const type.
+func PossibleTableSubTypeEnumValues() []TableSubTypeEnum {
+	return []TableSubTypeEnum{
+		TableSubTypeEnumAny,
+		TableSubTypeEnumClassic,
+		TableSubTypeEnumDataCollectionRuleBased,
+	}
+}
+
+// TableTypeEnum - Table's creator.
+type TableTypeEnum string
+
+const (
+	// TableTypeEnumCustomLog - Custom log table.
+	TableTypeEnumCustomLog TableTypeEnum = "CustomLog"
+	// TableTypeEnumMicrosoft - Standard data collected by Azure Monitor.
+	TableTypeEnumMicrosoft TableTypeEnum = "Microsoft"
+	// TableTypeEnumRestoredLogs - Restored data.
+	TableTypeEnumRestoredLogs TableTypeEnum = "RestoredLogs"
+	// TableTypeEnumSearchResults - Data collected by a search job.
+	TableTypeEnumSearchResults TableTypeEnum = "SearchResults"
+)
+
+// PossibleTableTypeEnumValues returns the possible values for the TableTypeEnum const type.
+func PossibleTableTypeEnumValues() []TableTypeEnum {
+	return []TableTypeEnum{
+		TableTypeEnumCustomLog,
+		TableTypeEnumMicrosoft,
+		TableTypeEnumRestoredLogs,
+		TableTypeEnumSearchResults,
 	}
 }
 

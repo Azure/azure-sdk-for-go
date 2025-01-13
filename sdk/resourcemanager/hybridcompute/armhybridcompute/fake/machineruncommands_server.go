@@ -29,7 +29,7 @@ type MachineRunCommandsServer struct {
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, machineName string, runCommandName string, runCommandProperties armhybridcompute.MachineRunCommand, options *armhybridcompute.MachineRunCommandsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armhybridcompute.MachineRunCommandsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method MachineRunCommandsClient.BeginDelete
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, machineName string, runCommandName string, options *armhybridcompute.MachineRunCommandsClientBeginDeleteOptions) (resp azfake.PollerResponder[armhybridcompute.MachineRunCommandsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method MachineRunCommandsClient.Get
@@ -182,9 +182,9 @@ func (m *MachineRunCommandsServerTransport) dispatchBeginDelete(req *http.Reques
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		m.beginDelete.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		m.beginDelete.remove(req)

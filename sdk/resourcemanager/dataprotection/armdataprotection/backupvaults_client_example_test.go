@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/VaultCRUD/GetBackupVaultsInSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/VaultCRUD/GetBackupVaultsInSubscription.json
 func ExampleBackupVaultsClient_NewGetInSubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,6 +54,7 @@ func ExampleBackupVaultsClient_NewGetInSubscriptionPager() {
 		// 				Type: to.Ptr("None"),
 		// 			},
 		// 			Properties: &armdataprotection.BackupVault{
+		// 				BcdrSecurityLevel: to.Ptr(armdataprotection.BCDRSecurityLevelGood),
 		// 				FeatureSettings: &armdataprotection.FeatureSettings{
 		// 					CrossRegionRestoreSettings: &armdataprotection.CrossRegionRestoreSettings{
 		// 						State: to.Ptr(armdataprotection.CrossRegionRestoreStateEnabled),
@@ -86,6 +87,7 @@ func ExampleBackupVaultsClient_NewGetInSubscriptionPager() {
 		// 				Type: to.Ptr("None"),
 		// 			},
 		// 			Properties: &armdataprotection.BackupVault{
+		// 				BcdrSecurityLevel: to.Ptr(armdataprotection.BCDRSecurityLevelGood),
 		// 				FeatureSettings: &armdataprotection.FeatureSettings{
 		// 					CrossRegionRestoreSettings: &armdataprotection.CrossRegionRestoreSettings{
 		// 						State: to.Ptr(armdataprotection.CrossRegionRestoreStateEnabled),
@@ -110,7 +112,7 @@ func ExampleBackupVaultsClient_NewGetInSubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/VaultCRUD/GetBackupVaultsInResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/VaultCRUD/GetBackupVaultsInResourceGroup.json
 func ExampleBackupVaultsClient_NewGetInResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,6 +148,7 @@ func ExampleBackupVaultsClient_NewGetInResourceGroupPager() {
 		// 				Type: to.Ptr("None"),
 		// 			},
 		// 			Properties: &armdataprotection.BackupVault{
+		// 				BcdrSecurityLevel: to.Ptr(armdataprotection.BCDRSecurityLevelGood),
 		// 				FeatureSettings: &armdataprotection.FeatureSettings{
 		// 					CrossRegionRestoreSettings: &armdataprotection.CrossRegionRestoreSettings{
 		// 						State: to.Ptr(armdataprotection.CrossRegionRestoreStateEnabled),
@@ -180,6 +183,7 @@ func ExampleBackupVaultsClient_NewGetInResourceGroupPager() {
 		// 				TenantID: to.Ptr("83abe5cd-bcc3-441a-bd86-e6a75360cecc"),
 		// 			},
 		// 			Properties: &armdataprotection.BackupVault{
+		// 				BcdrSecurityLevel: to.Ptr(armdataprotection.BCDRSecurityLevelGood),
 		// 				FeatureSettings: &armdataprotection.FeatureSettings{
 		// 					CrossRegionRestoreSettings: &armdataprotection.CrossRegionRestoreSettings{
 		// 						State: to.Ptr(armdataprotection.CrossRegionRestoreStateEnabled),
@@ -209,7 +213,7 @@ func ExampleBackupVaultsClient_NewGetInResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/VaultCRUD/GetBackupVault.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/VaultCRUD/GetBackupVault.json
 func ExampleBackupVaultsClient_Get_getBackupVault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -239,6 +243,7 @@ func ExampleBackupVaultsClient_Get_getBackupVault() {
 	// 		Type: to.Ptr("None"),
 	// 	},
 	// 	Properties: &armdataprotection.BackupVault{
+	// 		BcdrSecurityLevel: to.Ptr(armdataprotection.BCDRSecurityLevelGood),
 	// 		FeatureSettings: &armdataprotection.FeatureSettings{
 	// 			CrossRegionRestoreSettings: &armdataprotection.CrossRegionRestoreSettings{
 	// 				State: to.Ptr(armdataprotection.CrossRegionRestoreStateEnabled),
@@ -266,7 +271,69 @@ func ExampleBackupVaultsClient_Get_getBackupVault() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/VaultCRUD/GetBackupVaultWithMSI.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/VaultCRUD/GetBackupVaultWithCMK.json
+func ExampleBackupVaultsClient_Get_getBackupVaultWithCmk() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewBackupVaultsClient().Get(ctx, "SampleResourceGroup", "swaggerExample", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.BackupVaultResource = armdataprotection.BackupVaultResource{
+	// 	Name: to.Ptr("swaggerExample"),
+	// 	Type: to.Ptr("Microsoft.DataProtection/Backupvaults"),
+	// 	ID: to.Ptr("/subscriptions/0b352192-dcac-4cc7-992e-a96190ccc68c/resourceGroups/SampleResourceGroup/providers/Microsoft.DataProtection/Backupvaults/swaggerExample"),
+	// 	Location: to.Ptr("WestUS"),
+	// 	Tags: map[string]*string{
+	// 		"key1": to.Ptr("val1"),
+	// 	},
+	// 	Identity: &armdataprotection.DppIdentityDetails{
+	// 		Type: to.Ptr("SystemAssigned"),
+	// 		PrincipalID: to.Ptr("c009b9a0-0024-417c-83cd-025d3776045d"),
+	// 		TenantID: to.Ptr("83abe5cd-bcc3-441a-bd86-e6a75360cecc"),
+	// 	},
+	// 	Properties: &armdataprotection.BackupVault{
+	// 		ProvisioningState: to.Ptr(armdataprotection.ProvisioningStateSucceeded),
+	// 		SecuritySettings: &armdataprotection.SecuritySettings{
+	// 			EncryptionSettings: &armdataprotection.EncryptionSettings{
+	// 				InfrastructureEncryption: to.Ptr(armdataprotection.InfrastructureEncryptionStateDisabled),
+	// 				KekIdentity: &armdataprotection.CmkKekIdentity{
+	// 					IdentityID: to.Ptr("/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi"),
+	// 					IdentityType: to.Ptr(armdataprotection.IdentityTypeUserAssigned),
+	// 				},
+	// 				KeyVaultProperties: &armdataprotection.CmkKeyVaultProperties{
+	// 					KeyURI: to.Ptr("https://cmk2xkv.vault.azure.net/keys/Key1/0767b348bb1a4c07baa6c4ec0055d2b3"),
+	// 				},
+	// 				State: to.Ptr(armdataprotection.EncryptionStateEnabled),
+	// 			},
+	// 			ImmutabilitySettings: &armdataprotection.ImmutabilitySettings{
+	// 				State: to.Ptr(armdataprotection.ImmutabilityStateDisabled),
+	// 			},
+	// 			SoftDeleteSettings: &armdataprotection.SoftDeleteSettings{
+	// 				RetentionDurationInDays: to.Ptr[float64](0),
+	// 				State: to.Ptr(armdataprotection.SoftDeleteStateOff),
+	// 			},
+	// 		},
+	// 		StorageSettings: []*armdataprotection.StorageSetting{
+	// 			{
+	// 				Type: to.Ptr(armdataprotection.StorageSettingTypesLocallyRedundant),
+	// 				DatastoreType: to.Ptr(armdataprotection.StorageSettingStoreTypesVaultStore),
+	// 		}},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/VaultCRUD/GetBackupVaultWithMSI.json
 func ExampleBackupVaultsClient_Get_getBackupVaultWithMsi() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -298,6 +365,7 @@ func ExampleBackupVaultsClient_Get_getBackupVaultWithMsi() {
 	// 		TenantID: to.Ptr("83abe5cd-bcc3-441a-bd86-e6a75360cecc"),
 	// 	},
 	// 	Properties: &armdataprotection.BackupVault{
+	// 		BcdrSecurityLevel: to.Ptr(armdataprotection.BCDRSecurityLevelGood),
 	// 		FeatureSettings: &armdataprotection.FeatureSettings{
 	// 			CrossRegionRestoreSettings: &armdataprotection.CrossRegionRestoreSettings{
 	// 				State: to.Ptr(armdataprotection.CrossRegionRestoreStateEnabled),
@@ -320,7 +388,7 @@ func ExampleBackupVaultsClient_Get_getBackupVaultWithMsi() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/VaultCRUD/PutBackupVault.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/VaultCRUD/PutBackupVault.json
 func ExampleBackupVaultsClient_BeginCreateOrUpdate_createBackupVault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -362,7 +430,7 @@ func ExampleBackupVaultsClient_BeginCreateOrUpdate_createBackupVault() {
 					DatastoreType: to.Ptr(armdataprotection.StorageSettingStoreTypesVaultStore),
 				}},
 		},
-	}, nil)
+	}, &armdataprotection.BackupVaultsClientBeginCreateOrUpdateOptions{XMSAuthorizationAuxiliary: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -412,7 +480,96 @@ func ExampleBackupVaultsClient_BeginCreateOrUpdate_createBackupVault() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/VaultCRUD/PutBackupVaultWithMSI.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/VaultCRUD/PutBackupVaultWithCMK.json
+func ExampleBackupVaultsClient_BeginCreateOrUpdate_createBackupVaultWithCmk() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewBackupVaultsClient().BeginCreateOrUpdate(ctx, "SampleResourceGroup", "swaggerExample", armdataprotection.BackupVaultResource{
+		Location: to.Ptr("WestUS"),
+		Tags: map[string]*string{
+			"key1": to.Ptr("val1"),
+		},
+		Identity: &armdataprotection.DppIdentityDetails{
+			Type: to.Ptr("None"),
+		},
+		Properties: &armdataprotection.BackupVault{
+			MonitoringSettings: &armdataprotection.MonitoringSettings{
+				AzureMonitorAlertSettings: &armdataprotection.AzureMonitorAlertSettings{
+					AlertsForAllJobFailures: to.Ptr(armdataprotection.AlertsStateEnabled),
+				},
+			},
+			SecuritySettings: &armdataprotection.SecuritySettings{
+				EncryptionSettings: &armdataprotection.EncryptionSettings{
+					InfrastructureEncryption: to.Ptr(armdataprotection.InfrastructureEncryptionStateEnabled),
+					KekIdentity: &armdataprotection.CmkKekIdentity{
+						IdentityID:   to.Ptr("/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi"),
+						IdentityType: to.Ptr(armdataprotection.IdentityTypeUserAssigned),
+					},
+					KeyVaultProperties: &armdataprotection.CmkKeyVaultProperties{
+						KeyURI: to.Ptr("https://cmk2xkv.vault.azure.net/keys/Key1/0767b348bb1a4c07baa6c4ec0055d2b3"),
+					},
+					State: to.Ptr(armdataprotection.EncryptionStateEnabled),
+				},
+				ImmutabilitySettings: &armdataprotection.ImmutabilitySettings{
+					State: to.Ptr(armdataprotection.ImmutabilityStateDisabled),
+				},
+				SoftDeleteSettings: &armdataprotection.SoftDeleteSettings{
+					RetentionDurationInDays: to.Ptr[float64](0),
+					State:                   to.Ptr(armdataprotection.SoftDeleteStateOff),
+				},
+			},
+			StorageSettings: []*armdataprotection.StorageSetting{
+				{
+					Type:          to.Ptr(armdataprotection.StorageSettingTypesLocallyRedundant),
+					DatastoreType: to.Ptr(armdataprotection.StorageSettingStoreTypesVaultStore),
+				}},
+		},
+	}, &armdataprotection.BackupVaultsClientBeginCreateOrUpdateOptions{XMSAuthorizationAuxiliary: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.BackupVaultResource = armdataprotection.BackupVaultResource{
+	// 	Name: to.Ptr("swaggerExample"),
+	// 	Type: to.Ptr("Microsoft.DataProtection/Backupvaults"),
+	// 	ID: to.Ptr("/subscriptions/0b352192-dcac-4cc7-992e-a96190ccc68c/resourceGroups/SampleResourceGroup/providers/Microsoft.DataProtection/Backupvaults/swaggerExample"),
+	// 	Location: to.Ptr("WestUS"),
+	// 	Tags: map[string]*string{
+	// 		"key1": to.Ptr("val1"),
+	// 	},
+	// 	Identity: &armdataprotection.DppIdentityDetails{
+	// 		Type: to.Ptr("None"),
+	// 	},
+	// 	Properties: &armdataprotection.BackupVault{
+	// 		MonitoringSettings: &armdataprotection.MonitoringSettings{
+	// 			AzureMonitorAlertSettings: &armdataprotection.AzureMonitorAlertSettings{
+	// 				AlertsForAllJobFailures: to.Ptr(armdataprotection.AlertsStateEnabled),
+	// 			},
+	// 		},
+	// 		ProvisioningState: to.Ptr(armdataprotection.ProvisioningStateSucceeded),
+	// 		StorageSettings: []*armdataprotection.StorageSetting{
+	// 			{
+	// 				Type: to.Ptr(armdataprotection.StorageSettingTypesLocallyRedundant),
+	// 				DatastoreType: to.Ptr(armdataprotection.StorageSettingStoreTypesVaultStore),
+	// 		}},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/VaultCRUD/PutBackupVaultWithMSI.json
 func ExampleBackupVaultsClient_BeginCreateOrUpdate_createBackupVaultWithMsi() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -454,7 +611,7 @@ func ExampleBackupVaultsClient_BeginCreateOrUpdate_createBackupVaultWithMsi() {
 					DatastoreType: to.Ptr(armdataprotection.StorageSettingStoreTypesVaultStore),
 				}},
 		},
-	}, nil)
+	}, &armdataprotection.BackupVaultsClientBeginCreateOrUpdateOptions{XMSAuthorizationAuxiliary: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -506,7 +663,7 @@ func ExampleBackupVaultsClient_BeginCreateOrUpdate_createBackupVaultWithMsi() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/VaultCRUD/DeleteBackupVault.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/VaultCRUD/DeleteBackupVault.json
 func ExampleBackupVaultsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -527,8 +684,8 @@ func ExampleBackupVaultsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/VaultCRUD/PatchBackupVault.json
-func ExampleBackupVaultsClient_BeginUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/VaultCRUD/PatchBackupVault.json
+func ExampleBackupVaultsClient_BeginUpdate_patchBackupVault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -549,7 +706,7 @@ func ExampleBackupVaultsClient_BeginUpdate() {
 		Tags: map[string]*string{
 			"newKey": to.Ptr("newVal"),
 		},
-	}, nil)
+	}, &armdataprotection.BackupVaultsClientBeginUpdateOptions{XMSAuthorizationAuxiliary: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -584,7 +741,101 @@ func ExampleBackupVaultsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/VaultCRUD/CheckBackupVaultsNameAvailability.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/VaultCRUD/PatchBackupVaultWithCMK.json
+func ExampleBackupVaultsClient_BeginUpdate_patchBackupVaultWithCmk() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewBackupVaultsClient().BeginUpdate(ctx, "SampleResourceGroup", "swaggerExample", armdataprotection.PatchResourceRequestInput{
+		Properties: &armdataprotection.PatchBackupVaultInput{
+			MonitoringSettings: &armdataprotection.MonitoringSettings{
+				AzureMonitorAlertSettings: &armdataprotection.AzureMonitorAlertSettings{
+					AlertsForAllJobFailures: to.Ptr(armdataprotection.AlertsStateEnabled),
+				},
+			},
+			SecuritySettings: &armdataprotection.SecuritySettings{
+				EncryptionSettings: &armdataprotection.EncryptionSettings{
+					InfrastructureEncryption: to.Ptr(armdataprotection.InfrastructureEncryptionStateEnabled),
+					KekIdentity: &armdataprotection.CmkKekIdentity{
+						IdentityType: to.Ptr(armdataprotection.IdentityTypeSystemAssigned),
+					},
+					KeyVaultProperties: &armdataprotection.CmkKeyVaultProperties{
+						KeyURI: to.Ptr("https://cmk2xkv.vault.azure.net/keys/Key1/0767b348bb1a4c07baa6c4ec0055d2b3"),
+					},
+					State: to.Ptr(armdataprotection.EncryptionStateEnabled),
+				},
+				ImmutabilitySettings: &armdataprotection.ImmutabilitySettings{
+					State: to.Ptr(armdataprotection.ImmutabilityStateDisabled),
+				},
+				SoftDeleteSettings: &armdataprotection.SoftDeleteSettings{
+					RetentionDurationInDays: to.Ptr[float64](90),
+					State:                   to.Ptr(armdataprotection.SoftDeleteStateOn),
+				},
+			},
+		},
+		Tags: map[string]*string{
+			"newKey": to.Ptr("newVal"),
+		},
+	}, &armdataprotection.BackupVaultsClientBeginUpdateOptions{XMSAuthorizationAuxiliary: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.BackupVaultResource = armdataprotection.BackupVaultResource{
+	// 	Name: to.Ptr("swaggerExample"),
+	// 	Type: to.Ptr("Microsoft.DataProtection/Backupvaults"),
+	// 	ID: to.Ptr("/subscriptions/0b352192-dcac-4cc7-992e-a96190ccc68c/resourceGroups/SampleResourceGroup/providers/Microsoft.DataProtection/Backupvaults/swaggerExample"),
+	// 	Location: to.Ptr("WestUS"),
+	// 	Tags: map[string]*string{
+	// 		"newKey": to.Ptr("newVal"),
+	// 	},
+	// 	Properties: &armdataprotection.BackupVault{
+	// 		MonitoringSettings: &armdataprotection.MonitoringSettings{
+	// 			AzureMonitorAlertSettings: &armdataprotection.AzureMonitorAlertSettings{
+	// 				AlertsForAllJobFailures: to.Ptr(armdataprotection.AlertsStateEnabled),
+	// 			},
+	// 		},
+	// 		ProvisioningState: to.Ptr(armdataprotection.ProvisioningStateSucceeded),
+	// 		SecuritySettings: &armdataprotection.SecuritySettings{
+	// 			EncryptionSettings: &armdataprotection.EncryptionSettings{
+	// 				InfrastructureEncryption: to.Ptr(armdataprotection.InfrastructureEncryptionStateEnabled),
+	// 				KekIdentity: &armdataprotection.CmkKekIdentity{
+	// 					IdentityType: to.Ptr(armdataprotection.IdentityTypeSystemAssigned),
+	// 				},
+	// 				KeyVaultProperties: &armdataprotection.CmkKeyVaultProperties{
+	// 					KeyURI: to.Ptr("https://cmk2xkv.vault.azure.net/keys/Key1/0767b348bb1a4c07baa6c4ec0055d2b3"),
+	// 				},
+	// 			},
+	// 			ImmutabilitySettings: &armdataprotection.ImmutabilitySettings{
+	// 				State: to.Ptr(armdataprotection.ImmutabilityStateDisabled),
+	// 			},
+	// 			SoftDeleteSettings: &armdataprotection.SoftDeleteSettings{
+	// 				RetentionDurationInDays: to.Ptr[float64](90),
+	// 				State: to.Ptr(armdataprotection.SoftDeleteStateOn),
+	// 			},
+	// 		},
+	// 		StorageSettings: []*armdataprotection.StorageSetting{
+	// 			{
+	// 				Type: to.Ptr(armdataprotection.StorageSettingTypesLocallyRedundant),
+	// 				DatastoreType: to.Ptr(armdataprotection.StorageSettingStoreTypesVaultStore),
+	// 		}},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81a4ee5a83ae38620c0e1404793caffe005d26e4/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/VaultCRUD/CheckBackupVaultsNameAvailability.json
 func ExampleBackupVaultsClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

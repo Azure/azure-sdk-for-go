@@ -182,6 +182,7 @@ func (s ShareFileRangeList) MarshalXML(enc *xml.Encoder, start xml.StartElement)
 // MarshalJSON implements the json.Marshaller interface for type SharePermission.
 func (s SharePermission) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "format", s.Format)
 	populate(objectMap, "permission", s.Permission)
 	return json.Marshal(objectMap)
 }
@@ -195,6 +196,9 @@ func (s *SharePermission) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "format":
+			err = unpopulate(val, "Format", &s.Format)
+			delete(rawMsg, key)
 		case "permission":
 			err = unpopulate(val, "Permission", &s.Permission)
 			delete(rawMsg, key)
@@ -211,16 +215,20 @@ func (s ShareProperties) MarshalXML(enc *xml.Encoder, start xml.StartElement) er
 	type alias ShareProperties
 	aux := &struct {
 		*alias
-		AccessTierChangeTime          *dateTimeRFC1123 `xml:"AccessTierChangeTime"`
-		DeletedTime                   *dateTimeRFC1123 `xml:"DeletedTime"`
-		LastModified                  *dateTimeRFC1123 `xml:"Last-Modified"`
-		NextAllowedQuotaDowngradeTime *dateTimeRFC1123 `xml:"NextAllowedQuotaDowngradeTime"`
+		AccessTierChangeTime                         *dateTimeRFC1123 `xml:"AccessTierChangeTime"`
+		DeletedTime                                  *dateTimeRFC1123 `xml:"DeletedTime"`
+		LastModified                                 *dateTimeRFC1123 `xml:"Last-Modified"`
+		NextAllowedProvisionedBandwidthDowngradeTime *dateTimeRFC1123 `xml:"NextAllowedProvisionedBandwidthDowngradeTime"`
+		NextAllowedProvisionedIopsDowngradeTime      *dateTimeRFC1123 `xml:"NextAllowedProvisionedIopsDowngradeTime"`
+		NextAllowedQuotaDowngradeTime                *dateTimeRFC1123 `xml:"NextAllowedQuotaDowngradeTime"`
 	}{
-		alias:                         (*alias)(&s),
-		AccessTierChangeTime:          (*dateTimeRFC1123)(s.AccessTierChangeTime),
-		DeletedTime:                   (*dateTimeRFC1123)(s.DeletedTime),
-		LastModified:                  (*dateTimeRFC1123)(s.LastModified),
-		NextAllowedQuotaDowngradeTime: (*dateTimeRFC1123)(s.NextAllowedQuotaDowngradeTime),
+		alias:                (*alias)(&s),
+		AccessTierChangeTime: (*dateTimeRFC1123)(s.AccessTierChangeTime),
+		DeletedTime:          (*dateTimeRFC1123)(s.DeletedTime),
+		LastModified:         (*dateTimeRFC1123)(s.LastModified),
+		NextAllowedProvisionedBandwidthDowngradeTime: (*dateTimeRFC1123)(s.NextAllowedProvisionedBandwidthDowngradeTime),
+		NextAllowedProvisionedIopsDowngradeTime:      (*dateTimeRFC1123)(s.NextAllowedProvisionedIopsDowngradeTime),
+		NextAllowedQuotaDowngradeTime:                (*dateTimeRFC1123)(s.NextAllowedQuotaDowngradeTime),
 	}
 	return enc.EncodeElement(aux, start)
 }
@@ -230,10 +238,12 @@ func (s *ShareProperties) UnmarshalXML(dec *xml.Decoder, start xml.StartElement)
 	type alias ShareProperties
 	aux := &struct {
 		*alias
-		AccessTierChangeTime          *dateTimeRFC1123 `xml:"AccessTierChangeTime"`
-		DeletedTime                   *dateTimeRFC1123 `xml:"DeletedTime"`
-		LastModified                  *dateTimeRFC1123 `xml:"Last-Modified"`
-		NextAllowedQuotaDowngradeTime *dateTimeRFC1123 `xml:"NextAllowedQuotaDowngradeTime"`
+		AccessTierChangeTime                         *dateTimeRFC1123 `xml:"AccessTierChangeTime"`
+		DeletedTime                                  *dateTimeRFC1123 `xml:"DeletedTime"`
+		LastModified                                 *dateTimeRFC1123 `xml:"Last-Modified"`
+		NextAllowedProvisionedBandwidthDowngradeTime *dateTimeRFC1123 `xml:"NextAllowedProvisionedBandwidthDowngradeTime"`
+		NextAllowedProvisionedIopsDowngradeTime      *dateTimeRFC1123 `xml:"NextAllowedProvisionedIopsDowngradeTime"`
+		NextAllowedQuotaDowngradeTime                *dateTimeRFC1123 `xml:"NextAllowedQuotaDowngradeTime"`
 	}{
 		alias: (*alias)(s),
 	}
@@ -243,6 +253,8 @@ func (s *ShareProperties) UnmarshalXML(dec *xml.Decoder, start xml.StartElement)
 	s.AccessTierChangeTime = (*time.Time)(aux.AccessTierChangeTime)
 	s.DeletedTime = (*time.Time)(aux.DeletedTime)
 	s.LastModified = (*time.Time)(aux.LastModified)
+	s.NextAllowedProvisionedBandwidthDowngradeTime = (*time.Time)(aux.NextAllowedProvisionedBandwidthDowngradeTime)
+	s.NextAllowedProvisionedIopsDowngradeTime = (*time.Time)(aux.NextAllowedProvisionedIopsDowngradeTime)
 	s.NextAllowedQuotaDowngradeTime = (*time.Time)(aux.NextAllowedQuotaDowngradeTime)
 	return nil
 }
@@ -250,6 +262,7 @@ func (s *ShareProperties) UnmarshalXML(dec *xml.Decoder, start xml.StartElement)
 // MarshalJSON implements the json.Marshaller interface for type StorageError.
 func (s StorageError) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "AuthenticationErrorDetail", s.AuthenticationErrorDetail)
 	populate(objectMap, "Message", s.Message)
 	return json.Marshal(objectMap)
 }
@@ -263,6 +276,9 @@ func (s *StorageError) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "AuthenticationErrorDetail":
+			err = unpopulate(val, "AuthenticationErrorDetail", &s.AuthenticationErrorDetail)
+			delete(rawMsg, key)
 		case "Message":
 			err = unpopulate(val, "Message", &s.Message)
 			delete(rawMsg, key)

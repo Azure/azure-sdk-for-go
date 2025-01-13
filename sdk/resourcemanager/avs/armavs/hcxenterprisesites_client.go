@@ -28,7 +28,7 @@ type HcxEnterpriseSitesClient struct {
 }
 
 // NewHcxEnterpriseSitesClient creates a new instance of HcxEnterpriseSitesClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewHcxEnterpriseSitesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*HcxEnterpriseSitesClient, error) {
@@ -43,14 +43,14 @@ func NewHcxEnterpriseSitesClient(subscriptionID string, credential azcore.TokenC
 	return client, nil
 }
 
-// CreateOrUpdate - Create or update an activation key for on-premises HCX site
+// CreateOrUpdate - Create a HcxEnterpriseSite
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - privateCloudName - The name of the private cloud.
-//   - hcxEnterpriseSiteName - Name of the HCX Enterprise Site in the private cloud
-//   - hcxEnterpriseSite - The HCX Enterprise Site
+//   - privateCloudName - Name of the private cloud
+//   - hcxEnterpriseSiteName - Name of the HCX Enterprise Site
+//   - hcxEnterpriseSite - Resource create parameters.
 //   - options - HcxEnterpriseSitesClientCreateOrUpdateOptions contains the optional parameters for the HcxEnterpriseSitesClient.CreateOrUpdate
 //     method.
 func (client *HcxEnterpriseSitesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, hcxEnterpriseSiteName string, hcxEnterpriseSite HcxEnterpriseSite, options *HcxEnterpriseSitesClientCreateOrUpdateOptions) (HcxEnterpriseSitesClientCreateOrUpdateResponse, error) {
@@ -99,7 +99,7 @@ func (client *HcxEnterpriseSitesClient) createOrUpdateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, hcxEnterpriseSite); err != nil {
@@ -117,13 +117,13 @@ func (client *HcxEnterpriseSitesClient) createOrUpdateHandleResponse(resp *http.
 	return result, nil
 }
 
-// Delete - Delete HCX on-premises key in a private cloud
+// Delete - Delete a HcxEnterpriseSite
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
-//   - hcxEnterpriseSiteName - Name of the HCX Enterprise Site in the private cloud
+//   - hcxEnterpriseSiteName - Name of the HCX Enterprise Site
 //   - options - HcxEnterpriseSitesClientDeleteOptions contains the optional parameters for the HcxEnterpriseSitesClient.Delete
 //     method.
 func (client *HcxEnterpriseSitesClient) Delete(ctx context.Context, resourceGroupName string, privateCloudName string, hcxEnterpriseSiteName string, options *HcxEnterpriseSitesClientDeleteOptions) (HcxEnterpriseSitesClientDeleteResponse, error) {
@@ -171,19 +171,19 @@ func (client *HcxEnterpriseSitesClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// Get - Get an HCX on-premises key by name in a private cloud
+// Get - Get a HcxEnterpriseSite
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
-//   - hcxEnterpriseSiteName - Name of the HCX Enterprise Site in the private cloud
+//   - hcxEnterpriseSiteName - Name of the HCX Enterprise Site
 //   - options - HcxEnterpriseSitesClientGetOptions contains the optional parameters for the HcxEnterpriseSitesClient.Get method.
 func (client *HcxEnterpriseSitesClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, hcxEnterpriseSiteName string, options *HcxEnterpriseSitesClientGetOptions) (HcxEnterpriseSitesClientGetResponse, error) {
 	var err error
@@ -231,7 +231,7 @@ func (client *HcxEnterpriseSitesClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -246,9 +246,9 @@ func (client *HcxEnterpriseSitesClient) getHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// NewListPager - List HCX on-premises key in a private cloud
+// NewListPager - List HcxEnterpriseSite resources by PrivateCloud
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - options - HcxEnterpriseSitesClientListOptions contains the optional parameters for the HcxEnterpriseSitesClient.NewListPager
@@ -296,7 +296,7 @@ func (client *HcxEnterpriseSitesClient) listCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

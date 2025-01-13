@@ -11,13 +11,16 @@ package armbilling
 import (
 	"context"
 	"errors"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"net/http"
-	"net/url"
-	"strings"
 )
 
 // AccountsClient contains the methods for the BillingAccounts group.
@@ -40,10 +43,219 @@ func NewAccountsClient(credential azcore.TokenCredential, options *arm.ClientOpt
 	return client, nil
 }
 
+// BeginAddPaymentTerms - Adds payment terms to all the billing profiles under the billing account. Currently, payment terms
+// can be added only on billing accounts that have Agreement Type as 'Microsoft Customer Agreement' and
+// AccountType as 'Enterprise'. This action needs pre-authorization and only Field Sellers are authorized to add the payment
+// terms and is not a self-serve action.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - parameters - The properties of payment term.
+//   - options - AccountsClientBeginAddPaymentTermsOptions contains the optional parameters for the AccountsClient.BeginAddPaymentTerms
+//     method.
+func (client *AccountsClient) BeginAddPaymentTerms(ctx context.Context, billingAccountName string, parameters []*PaymentTerm, options *AccountsClientBeginAddPaymentTermsOptions) (*runtime.Poller[AccountsClientAddPaymentTermsResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.addPaymentTerms(ctx, billingAccountName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccountsClientAddPaymentTermsResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AccountsClientAddPaymentTermsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// AddPaymentTerms - Adds payment terms to all the billing profiles under the billing account. Currently, payment terms can
+// be added only on billing accounts that have Agreement Type as 'Microsoft Customer Agreement' and
+// AccountType as 'Enterprise'. This action needs pre-authorization and only Field Sellers are authorized to add the payment
+// terms and is not a self-serve action.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+func (client *AccountsClient) addPaymentTerms(ctx context.Context, billingAccountName string, parameters []*PaymentTerm, options *AccountsClientBeginAddPaymentTermsOptions) (*http.Response, error) {
+	var err error
+	const operationName = "AccountsClient.BeginAddPaymentTerms"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.addPaymentTermsCreateRequest(ctx, billingAccountName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// addPaymentTermsCreateRequest creates the AddPaymentTerms request.
+func (client *AccountsClient) addPaymentTermsCreateRequest(ctx context.Context, billingAccountName string, parameters []*PaymentTerm, options *AccountsClientBeginAddPaymentTermsOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/addPaymentTerms"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginCancelPaymentTerms - Cancels all the payment terms on billing account that falls after the cancellation date in the
+// request. Currently, cancel payment terms is only served by admin actions and is not a self-serve action.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - parameters - Date after which any payment terms that needs to be cancelled.
+//   - options - AccountsClientBeginCancelPaymentTermsOptions contains the optional parameters for the AccountsClient.BeginCancelPaymentTerms
+//     method.
+func (client *AccountsClient) BeginCancelPaymentTerms(ctx context.Context, billingAccountName string, parameters time.Time, options *AccountsClientBeginCancelPaymentTermsOptions) (*runtime.Poller[AccountsClientCancelPaymentTermsResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.cancelPaymentTerms(ctx, billingAccountName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccountsClientCancelPaymentTermsResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AccountsClientCancelPaymentTermsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// CancelPaymentTerms - Cancels all the payment terms on billing account that falls after the cancellation date in the request.
+// Currently, cancel payment terms is only served by admin actions and is not a self-serve action.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+func (client *AccountsClient) cancelPaymentTerms(ctx context.Context, billingAccountName string, parameters time.Time, options *AccountsClientBeginCancelPaymentTermsOptions) (*http.Response, error) {
+	var err error
+	const operationName = "AccountsClient.BeginCancelPaymentTerms"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.cancelPaymentTermsCreateRequest(ctx, billingAccountName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// cancelPaymentTermsCreateRequest creates the CancelPaymentTerms request.
+func (client *AccountsClient) cancelPaymentTermsCreateRequest(ctx context.Context, billingAccountName string, parameters time.Time, options *AccountsClientBeginCancelPaymentTermsOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/cancelPaymentTerms"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// ConfirmTransition - Gets the transition details for a billing account that has transitioned from agreement type Microsoft
+// Online Services Program to agreement type Microsoft Customer Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - options - AccountsClientConfirmTransitionOptions contains the optional parameters for the AccountsClient.ConfirmTransition
+//     method.
+func (client *AccountsClient) ConfirmTransition(ctx context.Context, billingAccountName string, options *AccountsClientConfirmTransitionOptions) (AccountsClientConfirmTransitionResponse, error) {
+	var err error
+	const operationName = "AccountsClient.ConfirmTransition"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.confirmTransitionCreateRequest(ctx, billingAccountName, options)
+	if err != nil {
+		return AccountsClientConfirmTransitionResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return AccountsClientConfirmTransitionResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return AccountsClientConfirmTransitionResponse{}, err
+	}
+	resp, err := client.confirmTransitionHandleResponse(httpResp)
+	return resp, err
+}
+
+// confirmTransitionCreateRequest creates the ConfirmTransition request.
+func (client *AccountsClient) confirmTransitionCreateRequest(ctx context.Context, billingAccountName string, options *AccountsClientConfirmTransitionOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/confirmTransition"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// confirmTransitionHandleResponse handles the ConfirmTransition response.
+func (client *AccountsClient) confirmTransitionHandleResponse(resp *http.Response) (AccountsClientConfirmTransitionResponse, error) {
+	result := AccountsClientConfirmTransitionResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.TransitionDetails); err != nil {
+		return AccountsClientConfirmTransitionResponse{}, err
+	}
+	return result, nil
+}
+
 // Get - Gets a billing account by its ID.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
 //   - options - AccountsClientGetOptions contains the optional parameters for the AccountsClient.Get method.
 func (client *AccountsClient) Get(ctx context.Context, billingAccountName string, options *AccountsClientGetOptions) (AccountsClientGetResponse, error) {
@@ -80,10 +292,7 @@ func (client *AccountsClient) getCreateRequest(ctx context.Context, billingAccou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
-	if options != nil && options.Expand != nil {
-		reqQP.Set("$expand", *options.Expand)
-	}
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -100,7 +309,7 @@ func (client *AccountsClient) getHandleResponse(resp *http.Response) (AccountsCl
 
 // NewListPager - Lists the billing accounts that a user has access to.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 //   - options - AccountsClientListOptions contains the optional parameters for the AccountsClient.NewListPager method.
 func (client *AccountsClient) NewListPager(options *AccountsClientListOptions) *runtime.Pager[AccountsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AccountsClientListResponse]{
@@ -133,9 +342,42 @@ func (client *AccountsClient) listCreateRequest(ctx context.Context, options *Ac
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2024-04-01")
 	if options != nil && options.Expand != nil {
-		reqQP.Set("$expand", *options.Expand)
+		reqQP.Set("expand", *options.Expand)
+	}
+	if options != nil && options.Filter != nil {
+		reqQP.Set("filter", *options.Filter)
+	}
+	if options != nil && options.IncludeAll != nil {
+		reqQP.Set("includeAll", strconv.FormatBool(*options.IncludeAll))
+	}
+	if options != nil && options.IncludeAllWithoutBillingProfiles != nil {
+		reqQP.Set("includeAllWithoutBillingProfiles", strconv.FormatBool(*options.IncludeAllWithoutBillingProfiles))
+	}
+	if options != nil && options.IncludeDeleted != nil {
+		reqQP.Set("includeDeleted", strconv.FormatBool(*options.IncludeDeleted))
+	}
+	if options != nil && options.IncludePendingAgreement != nil {
+		reqQP.Set("includePendingAgreement", strconv.FormatBool(*options.IncludePendingAgreement))
+	}
+	if options != nil && options.IncludeResellee != nil {
+		reqQP.Set("includeResellee", strconv.FormatBool(*options.IncludeResellee))
+	}
+	if options != nil && options.LegalOwnerOID != nil {
+		reqQP.Set("legalOwnerOID", *options.LegalOwnerOID)
+	}
+	if options != nil && options.LegalOwnerTID != nil {
+		reqQP.Set("legalOwnerTID", *options.LegalOwnerTID)
+	}
+	if options != nil && options.Search != nil {
+		reqQP.Set("search", *options.Search)
+	}
+	if options != nil && options.Skip != nil {
+		reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
@@ -155,7 +397,7 @@ func (client *AccountsClient) listHandleResponse(resp *http.Response) (AccountsC
 // to create Azure subscriptions. The operation is supported only for billing accounts with agreement type Microsoft Customer
 // Agreement.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
 //   - options - AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionOptions contains the optional parameters for the
 //     AccountsClient.NewListInvoiceSectionsByCreateSubscriptionPermissionPager method.
@@ -194,7 +436,10 @@ func (client *AccountsClient) listInvoiceSectionsByCreateSubscriptionPermissionC
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2024-04-01")
+	if options != nil && options.Filter != nil {
+		reqQP.Set("filter", *options.Filter)
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -203,28 +448,31 @@ func (client *AccountsClient) listInvoiceSectionsByCreateSubscriptionPermissionC
 // listInvoiceSectionsByCreateSubscriptionPermissionHandleResponse handles the ListInvoiceSectionsByCreateSubscriptionPermission response.
 func (client *AccountsClient) listInvoiceSectionsByCreateSubscriptionPermissionHandleResponse(resp *http.Response) (AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse, error) {
 	result := AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.InvoiceSectionListWithCreateSubPermissionResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.InvoiceSectionWithCreateSubPermissionListResult); err != nil {
 		return AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse{}, err
 	}
 	return result, nil
 }
 
-// BeginUpdate - Updates the properties of a billing account. Currently, displayName and address can be updated. The operation
-// is supported only for billing accounts with agreement type Microsoft Customer Agreement.
+// BeginUpdate - Updates the properties of a billing account. Currently, displayName and address can be updated for billing
+// accounts with agreement type Microsoft Customer Agreement. Currently address and notification
+// email address can be updated for billing accounts with agreement type Microsoft Online Services Agreement. Currently, purchase
+// order number can be edited for billing accounts with agreement type
+// Enterprise Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
-//   - parameters - Request parameters that are provided to the update billing account operation.
+//   - parameters - A billing account.
 //   - options - AccountsClientBeginUpdateOptions contains the optional parameters for the AccountsClient.BeginUpdate method.
-func (client *AccountsClient) BeginUpdate(ctx context.Context, billingAccountName string, parameters AccountUpdateRequest, options *AccountsClientBeginUpdateOptions) (*runtime.Poller[AccountsClientUpdateResponse], error) {
+func (client *AccountsClient) BeginUpdate(ctx context.Context, billingAccountName string, parameters AccountPatch, options *AccountsClientBeginUpdateOptions) (*runtime.Poller[AccountsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, billingAccountName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccountsClientUpdateResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			FinalStateVia: runtime.FinalStateViaLocation,
 			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
@@ -235,12 +483,15 @@ func (client *AccountsClient) BeginUpdate(ctx context.Context, billingAccountNam
 	}
 }
 
-// Update - Updates the properties of a billing account. Currently, displayName and address can be updated. The operation
-// is supported only for billing accounts with agreement type Microsoft Customer Agreement.
+// Update - Updates the properties of a billing account. Currently, displayName and address can be updated for billing accounts
+// with agreement type Microsoft Customer Agreement. Currently address and notification
+// email address can be updated for billing accounts with agreement type Microsoft Online Services Agreement. Currently, purchase
+// order number can be edited for billing accounts with agreement type
+// Enterprise Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-05-01
-func (client *AccountsClient) update(ctx context.Context, billingAccountName string, parameters AccountUpdateRequest, options *AccountsClientBeginUpdateOptions) (*http.Response, error) {
+// Generated from API version 2024-04-01
+func (client *AccountsClient) update(ctx context.Context, billingAccountName string, parameters AccountPatch, options *AccountsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AccountsClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -262,7 +513,7 @@ func (client *AccountsClient) update(ctx context.Context, billingAccountName str
 }
 
 // updateCreateRequest creates the Update request.
-func (client *AccountsClient) updateCreateRequest(ctx context.Context, billingAccountName string, parameters AccountUpdateRequest, options *AccountsClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *AccountsClient) updateCreateRequest(ctx context.Context, billingAccountName string, parameters AccountPatch, options *AccountsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -273,11 +524,72 @@ func (client *AccountsClient) updateCreateRequest(ctx context.Context, billingAc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
 	}
 	return req, nil
+}
+
+// ValidatePaymentTerms - Validates payment terms on a billing account with agreement type 'Microsoft Customer Agreement'
+// and account type 'Enterprise'.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - parameters - The properties of payment term.
+//   - options - AccountsClientValidatePaymentTermsOptions contains the optional parameters for the AccountsClient.ValidatePaymentTerms
+//     method.
+func (client *AccountsClient) ValidatePaymentTerms(ctx context.Context, billingAccountName string, parameters []*PaymentTerm, options *AccountsClientValidatePaymentTermsOptions) (AccountsClientValidatePaymentTermsResponse, error) {
+	var err error
+	const operationName = "AccountsClient.ValidatePaymentTerms"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.validatePaymentTermsCreateRequest(ctx, billingAccountName, parameters, options)
+	if err != nil {
+		return AccountsClientValidatePaymentTermsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return AccountsClientValidatePaymentTermsResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return AccountsClientValidatePaymentTermsResponse{}, err
+	}
+	resp, err := client.validatePaymentTermsHandleResponse(httpResp)
+	return resp, err
+}
+
+// validatePaymentTermsCreateRequest creates the ValidatePaymentTerms request.
+func (client *AccountsClient) validatePaymentTermsCreateRequest(ctx context.Context, billingAccountName string, parameters []*PaymentTerm, options *AccountsClientValidatePaymentTermsOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/validatePaymentTerms"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// validatePaymentTermsHandleResponse handles the ValidatePaymentTerms response.
+func (client *AccountsClient) validatePaymentTermsHandleResponse(resp *http.Response) (AccountsClientValidatePaymentTermsResponse, error) {
+	result := AccountsClientValidatePaymentTermsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PaymentTermsEligibilityResult); err != nil {
+		return AccountsClientValidatePaymentTermsResponse{}, err
+	}
+	return result, nil
 }

@@ -19,7 +19,7 @@ jobs:
       displayName: 'Install autorest'
     - task: GoTool@0
       inputs:
-        version: '1.22.0'
+        version: '1.23.2'
       displayName: "Select Go Version"
 
     - template: /eng/pipelines/templates/steps/create-go-workspace.yml
@@ -78,11 +78,10 @@ jobs:
         testRunTitle: 'Test result on ${{ parameters.ServiceDirectory }}'
         failTaskOnFailedTests: true
 
-    - task: PublishCodeCoverageResults@1
+    - task: PublishCodeCoverageResults@2
       continueOnError: true
       condition: succeededOrFailed()
       inputs:
-        codeCoverageTool: Cobertura
         summaryFileLocation: '$(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}/coverage.xml'
         additionalCodeCoverageFiles: '$(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}/coverage.html'
         failIfCoverageEmpty: true

@@ -18,266 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/ProductsListByCustomer.json
-func ExampleProductsClient_NewListByCustomerPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewProductsClient().NewListByCustomerPager("{billingAccountName}", "{customerName}", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.ProductsListResult = armbilling.ProductsListResult{
-		// 	TotalCount: to.Ptr[int32](2),
-		// 	Value: []*armbilling.Product{
-		// 		{
-		// 			Name: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/products"),
-		// 			ID: to.Ptr("/providers/Microsoft.Billing/BillingAccounts/{billingAccountName}/products/00000000-0000-0000-0000-000000000000"),
-		// 			Properties: &armbilling.ProductProperties{
-		// 				AutoRenew: to.Ptr(armbilling.AutoRenewOn),
-		// 				AvailabilityID: to.Ptr("AvailabilityId1"),
-		// 				BillingFrequency: to.Ptr(armbilling.BillingFrequencyOneTime),
-		// 				BillingProfileDisplayName: to.Ptr("Contoso operations billing"),
-		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/11000000-0000-0000-0000-000000000000"),
-		// 				CustomerDisplayName: to.Ptr("Customer 1"),
-		// 				CustomerID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/customers/{customerName}"),
-		// 				DisplayName: to.Ptr("Eng Reservation (1a13s21awe)"),
-		// 				LastCharge: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](5000),
-		// 				},
-		// 				LastChargeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-15T17:32:28.000Z"); return t}()),
-		// 				ProductType: to.Ptr("Reservation"),
-		// 				ProductTypeID: to.Ptr("A12345"),
-		// 				PurchaseDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-01T17:32:28.000Z"); return t}()),
-		// 				Quantity: to.Ptr[float32](4),
-		// 				Reseller: &armbilling.Reseller{
-		// 					Description: to.Ptr("Reseller1"),
-		// 					ResellerID: to.Ptr("2c917292-b7bc-42f2-99a2-e498b9087c06"),
-		// 				},
-		// 				SKUDescription: to.Ptr("Enterprise Agreement Development"),
-		// 				SKUID: to.Ptr("0001"),
-		// 				Status: to.Ptr(armbilling.ProductStatusTypeActive),
-		// 				TenantID: to.Ptr("515a6d36-aaf8-4ca2-a5e8-c45deb0c5cce"),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("10000000-0000-0000-0000-000000000001"),
-		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/products"),
-		// 			ID: to.Ptr("/providers/Microsoft.Billing/BillingAccounts/{billingAccountName}/products/10000000-0000-0000-0000-000000000001"),
-		// 			Properties: &armbilling.ProductProperties{
-		// 				AutoRenew: to.Ptr(armbilling.AutoRenewOn),
-		// 				AvailabilityID: to.Ptr("AvailabilityId1"),
-		// 				BillingFrequency: to.Ptr(armbilling.BillingFrequencyMonthly),
-		// 				BillingProfileDisplayName: to.Ptr("Contoso operations billing"),
-		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/11000000-0000-0000-0000-000000000000"),
-		// 				CustomerDisplayName: to.Ptr("Customer 1"),
-		// 				CustomerID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/customers/{customerName}"),
-		// 				DisplayName: to.Ptr("Engineering Email"),
-		// 				LastCharge: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](500),
-		// 				},
-		// 				LastChargeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-15T17:32:28.000Z"); return t}()),
-		// 				ProductType: to.Ptr("Azure subscription"),
-		// 				ProductTypeID: to.Ptr("A12345"),
-		// 				PurchaseDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-01T17:32:28.000Z"); return t}()),
-		// 				Quantity: to.Ptr[float32](4),
-		// 				SKUDescription: to.Ptr("Enterprise Agreement Development"),
-		// 				SKUID: to.Ptr("0001"),
-		// 				Status: to.Ptr(armbilling.ProductStatusTypeActive),
-		// 				TenantID: to.Ptr("515a6d36-aaf8-4ca2-a5e8-c45deb0c5cce"),
-		// 			},
-		// 	}},
-		// }
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/ProductsListByBillingAccount.json
-func ExampleProductsClient_NewListByBillingAccountPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewProductsClient().NewListByBillingAccountPager("{billingAccountName}", &armbilling.ProductsClientListByBillingAccountOptions{Filter: nil})
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.ProductsListResult = armbilling.ProductsListResult{
-		// 	TotalCount: to.Ptr[int32](2),
-		// 	Value: []*armbilling.Product{
-		// 		{
-		// 			Name: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/products"),
-		// 			ID: to.Ptr("/providers/Microsoft.Billing/BillingAccounts/{billingAccountName}/products/00000000-0000-0000-0000-000000000000"),
-		// 			Properties: &armbilling.ProductProperties{
-		// 				AutoRenew: to.Ptr(armbilling.AutoRenewOn),
-		// 				AvailabilityID: to.Ptr("AvailabilityId1"),
-		// 				BillingFrequency: to.Ptr(armbilling.BillingFrequencyOneTime),
-		// 				BillingProfileDisplayName: to.Ptr("Contoso operations billing"),
-		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/11000000-0000-0000-0000-000000000000"),
-		// 				DisplayName: to.Ptr("Eng Reservation (1a13s21awe)"),
-		// 				InvoiceSectionDisplayName: to.Ptr("Contoso operations invoiceSection"),
-		// 				InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/22000000-0000-0000-0000-000000000000"),
-		// 				LastCharge: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](5000),
-		// 				},
-		// 				LastChargeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-15T17:32:28.000Z"); return t}()),
-		// 				ProductType: to.Ptr("Reservation"),
-		// 				ProductTypeID: to.Ptr("A12345"),
-		// 				PurchaseDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-01T17:32:28.000Z"); return t}()),
-		// 				Quantity: to.Ptr[float32](4),
-		// 				SKUDescription: to.Ptr("Enterprise Agreement Development"),
-		// 				SKUID: to.Ptr("0001"),
-		// 				Status: to.Ptr(armbilling.ProductStatusTypeActive),
-		// 				TenantID: to.Ptr("515a6d36-aaf8-4ca2-a5e8-c45deb0c5cce"),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("10000000-0000-0000-0000-000000000001"),
-		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/products"),
-		// 			ID: to.Ptr("/providers/Microsoft.Billing/BillingAccounts/{billingAccountName}/products/10000000-0000-0000-0000-000000000001"),
-		// 			Properties: &armbilling.ProductProperties{
-		// 				AutoRenew: to.Ptr(armbilling.AutoRenewOn),
-		// 				AvailabilityID: to.Ptr("AvailabilityId1"),
-		// 				BillingFrequency: to.Ptr(armbilling.BillingFrequencyMonthly),
-		// 				BillingProfileDisplayName: to.Ptr("Contoso operations billing"),
-		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/11000000-0000-0000-0000-000000000000"),
-		// 				DisplayName: to.Ptr("Engineering Email"),
-		// 				InvoiceSectionDisplayName: to.Ptr("Contoso operations invoiceSection"),
-		// 				InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/22000000-0000-0000-0000-000000000000"),
-		// 				LastCharge: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](5000),
-		// 				},
-		// 				LastChargeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-15T17:32:28.000Z"); return t}()),
-		// 				ProductType: to.Ptr("Azure subscription"),
-		// 				ProductTypeID: to.Ptr("A12345"),
-		// 				PurchaseDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-01T17:32:28.000Z"); return t}()),
-		// 				Quantity: to.Ptr[float32](4),
-		// 				SKUDescription: to.Ptr("Enterprise Agreement Development"),
-		// 				SKUID: to.Ptr("0001"),
-		// 				Status: to.Ptr(armbilling.ProductStatusTypeActive),
-		// 				TenantID: to.Ptr("515a6d36-aaf8-4ca2-a5e8-c45deb0c5cce"),
-		// 			},
-		// 	}},
-		// }
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/ProductsListByBillingProfile.json
-func ExampleProductsClient_NewListByBillingProfilePager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewProductsClient().NewListByBillingProfilePager("{billingAccountName}", "{billingProfileName}", &armbilling.ProductsClientListByBillingProfileOptions{Filter: nil})
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.ProductsListResult = armbilling.ProductsListResult{
-		// 	TotalCount: to.Ptr[int32](2),
-		// 	Value: []*armbilling.Product{
-		// 		{
-		// 			Name: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/products"),
-		// 			ID: to.Ptr("/providers/Microsoft.Billing/BillingAccounts/{billingAccountName}/products/00000000-0000-0000-0000-000000000000"),
-		// 			Properties: &armbilling.ProductProperties{
-		// 				AutoRenew: to.Ptr(armbilling.AutoRenewOn),
-		// 				AvailabilityID: to.Ptr("AvailabilityId1"),
-		// 				BillingFrequency: to.Ptr(armbilling.BillingFrequencyOneTime),
-		// 				BillingProfileDisplayName: to.Ptr("Contoso operations billing"),
-		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/11000000-0000-0000-0000-000000000000"),
-		// 				DisplayName: to.Ptr("Eng Reservation (1a13s21awe)"),
-		// 				InvoiceSectionDisplayName: to.Ptr("Contoso operations invoiceSection"),
-		// 				InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/22000000-0000-0000-0000-000000000000"),
-		// 				LastCharge: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](5000),
-		// 				},
-		// 				LastChargeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-15T17:32:28.000Z"); return t}()),
-		// 				ProductType: to.Ptr("Reservation"),
-		// 				ProductTypeID: to.Ptr("A12345"),
-		// 				PurchaseDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-01T17:32:28.000Z"); return t}()),
-		// 				Quantity: to.Ptr[float32](4),
-		// 				SKUDescription: to.Ptr("Enterprise Agreement Development"),
-		// 				SKUID: to.Ptr("0001"),
-		// 				Status: to.Ptr(armbilling.ProductStatusTypeActive),
-		// 				TenantID: to.Ptr("515a6d36-aaf8-4ca2-a5e8-c45deb0c5cce"),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("10000000-0000-0000-0000-000000000001"),
-		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/products"),
-		// 			ID: to.Ptr("/providers/Microsoft.Billing/BillingAccounts/{billingAccountName}/products/10000000-0000-0000-0000-000000000001"),
-		// 			Properties: &armbilling.ProductProperties{
-		// 				AutoRenew: to.Ptr(armbilling.AutoRenewOn),
-		// 				AvailabilityID: to.Ptr("AvailabilityId1"),
-		// 				BillingFrequency: to.Ptr(armbilling.BillingFrequencyMonthly),
-		// 				BillingProfileDisplayName: to.Ptr("Contoso operations billing"),
-		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/11000000-0000-0000-0000-000000000000"),
-		// 				DisplayName: to.Ptr("Engineering Email"),
-		// 				InvoiceSectionDisplayName: to.Ptr("Contoso operations invoiceSection"),
-		// 				InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/22000000-0000-0000-0000-000000000000"),
-		// 				LastCharge: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](5000),
-		// 				},
-		// 				LastChargeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-15T17:32:28.000Z"); return t}()),
-		// 				ProductType: to.Ptr("Azure subscription"),
-		// 				ProductTypeID: to.Ptr("A12345"),
-		// 				PurchaseDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-01T17:32:28.000Z"); return t}()),
-		// 				Quantity: to.Ptr[float32](4),
-		// 				SKUDescription: to.Ptr("Enterprise Agreement Development"),
-		// 				SKUID: to.Ptr("0001"),
-		// 				Status: to.Ptr(armbilling.ProductStatusTypeActive),
-		// 				TenantID: to.Ptr("515a6d36-aaf8-4ca2-a5e8-c45deb0c5cce"),
-		// 			},
-		// 	}},
-		// }
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/ProductsListByInvoiceSection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/productsListByInvoiceSection.json
 func ExampleProductsClient_NewListByInvoiceSectionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -288,7 +29,13 @@ func ExampleProductsClient_NewListByInvoiceSectionPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewProductsClient().NewListByInvoiceSectionPager("{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", &armbilling.ProductsClientListByInvoiceSectionOptions{Filter: nil})
+	pager := clientFactory.NewProductsClient().NewListByInvoiceSectionPager("a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31", "ea36e548-1505-41db-bebc-46fff3d37998", "Q7GV-UUVA-PJA-TGB", &armbilling.ProductsClientListByInvoiceSectionOptions{Filter: nil,
+		OrderBy: nil,
+		Top:     nil,
+		Skip:    nil,
+		Count:   nil,
+		Search:  nil,
+	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -299,69 +46,340 @@ func ExampleProductsClient_NewListByInvoiceSectionPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.ProductsListResult = armbilling.ProductsListResult{
-		// 	TotalCount: to.Ptr[int32](2),
+		// page.ProductListResult = armbilling.ProductListResult{
 		// 	Value: []*armbilling.Product{
 		// 		{
-		// 			Name: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 			Name: to.Ptr("6b96d3f2-9008-4a9d-912f-f87744185aa3"),
 		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/products"),
-		// 			ID: to.Ptr("/providers/Microsoft.Billing/BillingAccounts/{billingAccountName}/products/00000000-0000-0000-0000-000000000000"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProducts/6b96d3f2-9008-4a9d-912f-f87744185aa3"),
 		// 			Properties: &armbilling.ProductProperties{
-		// 				AutoRenew: to.Ptr(armbilling.AutoRenewOn),
-		// 				AvailabilityID: to.Ptr("AvailabilityId1"),
-		// 				BillingFrequency: to.Ptr(armbilling.BillingFrequencyOneTime),
 		// 				BillingProfileDisplayName: to.Ptr("Contoso operations billing"),
-		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/11000000-0000-0000-0000-000000000000"),
-		// 				DisplayName: to.Ptr("Eng Reservation (1a13s21awe)"),
+		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProfiles/ea36e548-1505-41db-bebc-46fff3d37998"),
+		// 				DisplayName: to.Ptr("My Product"),
 		// 				InvoiceSectionDisplayName: to.Ptr("Contoso operations invoiceSection"),
-		// 				InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}"),
-		// 				LastCharge: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](5000),
-		// 				},
-		// 				LastChargeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-15T17:32:28.000Z"); return t}()),
-		// 				ProductType: to.Ptr("Reservation"),
-		// 				ProductTypeID: to.Ptr("A12345"),
-		// 				PurchaseDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-01T17:32:28.000Z"); return t}()),
-		// 				Quantity: to.Ptr[float32](4),
-		// 				SKUDescription: to.Ptr("Enterprise Agreement Development"),
+		// 				InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProfiles/ea36e548-1505-41db-bebc-46fff3d37998/invoiceSections/Q7GV-UUVA-PJA-TGB"),
+		// 				SKUDescription: to.Ptr("Microsoft Azure Dev/Test"),
 		// 				SKUID: to.Ptr("0001"),
-		// 				Status: to.Ptr(armbilling.ProductStatusTypeActive),
-		// 				TenantID: to.Ptr("515a6d36-aaf8-4ca2-a5e8-c45deb0c5cce"),
+		// 				Status: to.Ptr(armbilling.ProductStatusActive),
 		// 			},
 		// 		},
 		// 		{
-		// 			Name: to.Ptr("10000000-0000-0000-0000-000000000001"),
+		// 			Name: to.Ptr("CD0BBD7A-461A-4D9A-9C59-EAE51A0D5D12"),
 		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/products"),
-		// 			ID: to.Ptr("/providers/Microsoft.Billing/BillingAccounts/{billingAccountName}/products/10000000-0000-0000-0000-000000000001"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProducts/CD0BBD7A-461A-4D9A-9C59-EAE51A0D5D12"),
 		// 			Properties: &armbilling.ProductProperties{
-		// 				AutoRenew: to.Ptr(armbilling.AutoRenewOn),
-		// 				AvailabilityID: to.Ptr("AvailabilityId1"),
-		// 				BillingFrequency: to.Ptr(armbilling.BillingFrequencyMonthly),
 		// 				BillingProfileDisplayName: to.Ptr("Contoso operations billing"),
-		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/11000000-0000-0000-0000-000000000000"),
-		// 				DisplayName: to.Ptr("Engineering Email"),
+		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProfiles/ea36e548-1505-41db-bebc-46fff3d37998"),
+		// 				DisplayName: to.Ptr("Test Product"),
 		// 				InvoiceSectionDisplayName: to.Ptr("Contoso operations invoiceSection"),
-		// 				InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}"),
-		// 				LastCharge: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](500),
-		// 				},
-		// 				LastChargeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-15T17:32:28.000Z"); return t}()),
-		// 				ProductType: to.Ptr("Azure subscription"),
-		// 				ProductTypeID: to.Ptr("A12345"),
-		// 				PurchaseDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-01T17:32:28.000Z"); return t}()),
-		// 				Quantity: to.Ptr[float32](4),
-		// 				SKUDescription: to.Ptr("Enterprise Agreement Development"),
+		// 				InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProfiles/ea36e548-1505-41db-bebc-46fff3d37998/invoiceSections/Q7GV-UUVA-PJA-TGB"),
+		// 				SKUDescription: to.Ptr("Microsoft Azure Dev/Test"),
 		// 				SKUID: to.Ptr("0001"),
-		// 				Status: to.Ptr(armbilling.ProductStatusTypeActive),
+		// 				Status: to.Ptr(armbilling.ProductStatusActive),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("90D31600-D46D-4084-84C6-1235CDAFFB56"),
+		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/products"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProducts/90D31600-D46D-4084-84C6-1235CDAFFB56"),
+		// 			Properties: &armbilling.ProductProperties{
+		// 				BillingProfileDisplayName: to.Ptr("Contoso operations billing"),
+		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProfiles/ea36e548-1505-41db-bebc-46fff3d37998"),
+		// 				DisplayName: to.Ptr("Dev Product"),
+		// 				InvoiceSectionDisplayName: to.Ptr("Contoso operations invoiceSection"),
+		// 				InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProfiles/ea36e548-1505-41db-bebc-46fff3d37998/invoiceSections/Q7GV-UUVA-PJA-TGB"),
+		// 				SKUDescription: to.Ptr("Microsoft Azure Dev/Test"),
+		// 				SKUID: to.Ptr("0001"),
+		// 				Status: to.Ptr(armbilling.ProductStatusActive),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("9e90f86b-22fc-42f3-bfe2-0ac3e7c01d32"),
+		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/products"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProducts/9e90f86b-22fc-42f3-bfe2-0ac3e7c01d32"),
+		// 			Properties: &armbilling.ProductProperties{
+		// 				BillingProfileDisplayName: to.Ptr("Contoso operations billing"),
+		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProfiles/ea36e548-1505-41db-bebc-46fff3d37998"),
+		// 				DisplayName: to.Ptr("Dev Test Product"),
+		// 				InvoiceSectionDisplayName: to.Ptr("Contoso operations invoiceSection"),
+		// 				InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProfiles/ea36e548-1505-41db-bebc-46fff3d37998/invoiceSections/Q7GV-UUVA-PJA-TGB"),
+		// 				SKUDescription: to.Ptr("Domain Name Registration ORG"),
+		// 				SKUID: to.Ptr("0001"),
+		// 				Status: to.Ptr(armbilling.ProductStatusActive),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/Product.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/productsListByBillingProfile.json
+func ExampleProductsClient_NewListByBillingProfilePager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewProductsClient().NewListByBillingProfilePager("a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31", "ea36e548-1505-41db-bebc-46fff3d37998", &armbilling.ProductsClientListByBillingProfileOptions{Filter: nil,
+		OrderBy: nil,
+		Top:     nil,
+		Skip:    nil,
+		Count:   nil,
+		Search:  nil,
+	})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.ProductListResult = armbilling.ProductListResult{
+		// 	Value: []*armbilling.Product{
+		// 		{
+		// 			Name: to.Ptr("6b96d3f2-9008-4a9d-912f-f87744185aa3"),
+		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/products"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProducts/6b96d3f2-9008-4a9d-912f-f87744185aa3"),
+		// 			Properties: &armbilling.ProductProperties{
+		// 				BillingProfileDisplayName: to.Ptr("Contoso operations billing"),
+		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProfiles/ea36e548-1505-41db-bebc-46fff3d37998"),
+		// 				DisplayName: to.Ptr("My Product"),
+		// 				InvoiceSectionDisplayName: to.Ptr("Contoso operations invoiceSection"),
+		// 				InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProfiles/ea36e548-1505-41db-bebc-46fff3d37998/invoiceSections/22000000-0000-0000-0000-000000000000"),
+		// 				SKUDescription: to.Ptr("Microsoft Azure Dev/Test"),
+		// 				SKUID: to.Ptr("0001"),
+		// 				Status: to.Ptr(armbilling.ProductStatusActive),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("CD0BBD7A-461A-4D9A-9C59-EAE51A0D5D12"),
+		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/products"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProducts/CD0BBD7A-461A-4D9A-9C59-EAE51A0D5D12"),
+		// 			Properties: &armbilling.ProductProperties{
+		// 				BillingProfileDisplayName: to.Ptr("Contoso operations billing"),
+		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProfiles/ea36e548-1505-41db-bebc-46fff3d37998"),
+		// 				DisplayName: to.Ptr("Test Product"),
+		// 				InvoiceSectionDisplayName: to.Ptr("Contoso operations invoiceSection"),
+		// 				InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProfiles/ea36e548-1505-41db-bebc-46fff3d37998/invoiceSections/22000000-0000-0000-0000-000000000000"),
+		// 				SKUDescription: to.Ptr("Microsoft Azure Dev/Test"),
+		// 				SKUID: to.Ptr("0001"),
+		// 				Status: to.Ptr(armbilling.ProductStatusActive),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("90D31600-D46D-4084-84C6-1235CDAFFB56"),
+		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/products"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProducts/90D31600-D46D-4084-84C6-1235CDAFFB56"),
+		// 			Properties: &armbilling.ProductProperties{
+		// 				BillingProfileDisplayName: to.Ptr("Contoso operations billing"),
+		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProfiles/ea36e548-1505-41db-bebc-46fff3d37998"),
+		// 				DisplayName: to.Ptr("Dev Product"),
+		// 				InvoiceSectionDisplayName: to.Ptr("Contoso operations invoiceSection"),
+		// 				InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProfiles/ea36e548-1505-41db-bebc-46fff3d37998/invoiceSections/22000000-0000-0000-0000-000000000000"),
+		// 				SKUDescription: to.Ptr("Microsoft Azure Dev/Test"),
+		// 				SKUID: to.Ptr("0001"),
+		// 				Status: to.Ptr(armbilling.ProductStatusActive),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("9e90f86b-22fc-42f3-bfe2-0ac3e7c01d32"),
+		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/products"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProducts/9e90f86b-22fc-42f3-bfe2-0ac3e7c01d32"),
+		// 			Properties: &armbilling.ProductProperties{
+		// 				BillingProfileDisplayName: to.Ptr("Contoso operations billing"),
+		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProfiles/ea36e548-1505-41db-bebc-46fff3d37998"),
+		// 				DisplayName: to.Ptr("Dev Test Product"),
+		// 				InvoiceSectionDisplayName: to.Ptr("Contoso operations invoiceSection"),
+		// 				InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProfiles/ea36e548-1505-41db-bebc-46fff3d37998/invoiceSections/22000000-0000-0000-0000-000000000000"),
+		// 				SKUDescription: to.Ptr("Domain Name Registration ORG"),
+		// 				SKUID: to.Ptr("0001"),
+		// 				Status: to.Ptr(armbilling.ProductStatusActive),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/productsListByCustomer.json
+func ExampleProductsClient_NewListByCustomerPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewProductsClient().NewListByCustomerPager("a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31", "Q7GV-UUVA-PJA-TGB", &armbilling.ProductsClientListByCustomerOptions{Filter: nil,
+		OrderBy: nil,
+		Top:     nil,
+		Skip:    nil,
+		Count:   nil,
+		Search:  nil,
+	})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.ProductListResult = armbilling.ProductListResult{
+		// 	Value: []*armbilling.Product{
+		// 		{
+		// 			Name: to.Ptr("6b96d3f2-9008-4a9d-912f-f87744185aa3"),
+		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/products"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProducts/6b96d3f2-9008-4a9d-912f-f87744185aa3"),
+		// 			Properties: &armbilling.ProductProperties{
+		// 				BillingProfileDisplayName: to.Ptr("BillingProfile1"),
+		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProfiles/ea36e548-1505-41db-bebc-46fff3d37998"),
+		// 				CustomerDisplayName: to.Ptr("Customer1"),
+		// 				CustomerID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProfiles/ea36e548-1505-41db-bebc-46fff3d37998/customers/Q7GV-UUVA-PJA-TGB"),
+		// 				DisplayName: to.Ptr("My Product"),
+		// 				SKUDescription: to.Ptr("Microsoft Azure Standard"),
+		// 				SKUID: to.Ptr("0002"),
+		// 				Status: to.Ptr(armbilling.ProductStatusActive),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("CD0BBD7A-461A-4D9A-9C59-EAE51A0D5D12"),
+		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/products"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProducts/CD0BBD7A-461A-4D9A-9C59-EAE51A0D5D12"),
+		// 			Properties: &armbilling.ProductProperties{
+		// 				BillingProfileDisplayName: to.Ptr("BillingProfile1"),
+		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProfiles/ea36e548-1505-41db-bebc-46fff3d37998"),
+		// 				CustomerDisplayName: to.Ptr("Customer1"),
+		// 				CustomerID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/customers/Q7GV-UUVA-PJA-TGB"),
+		// 				DisplayName: to.Ptr("Test Product"),
+		// 				SKUDescription: to.Ptr("Microsoft Azure Standard"),
+		// 				SKUID: to.Ptr("0002"),
+		// 				Status: to.Ptr(armbilling.ProductStatusActive),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("9e90f86b-22fc-42f3-bfe2-0ac3e7c01d32"),
+		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/products"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProducts/9e90f86b-22fc-42f3-bfe2-0ac3e7c01d32"),
+		// 			Properties: &armbilling.ProductProperties{
+		// 				BillingProfileDisplayName: to.Ptr("BillingProfile1"),
+		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProfiles/ea36e548-1505-41db-bebc-46fff3d37998"),
+		// 				CustomerDisplayName: to.Ptr("Customer1"),
+		// 				CustomerID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/customers/Q7GV-UUVA-PJA-TGB"),
+		// 				DisplayName: to.Ptr("Dev Test Product"),
+		// 				SKUDescription: to.Ptr("Domain Name Registration ORG"),
+		// 				SKUID: to.Ptr("0001"),
+		// 				Status: to.Ptr(armbilling.ProductStatusActive),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/productMove.json
+func ExampleProductsClient_BeginMove() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewProductsClient().BeginMove(ctx, "a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31", "6b96d3f2-9008-4a9d-912f-f87744185aa3", armbilling.MoveProductRequest{
+		DestinationInvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProfiles/ea36e548-1505-41db-bebc-46fff3d37998/invoiceSections/Q7GV-UUVA-PJA-TGB"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Product = armbilling.Product{
+	// 	Name: to.Ptr("6b96d3f2-9008-4a9d-912f-f87744185aa3"),
+	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/products"),
+	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/products/6b96d3f2-9008-4a9d-912f-f87744185aa3"),
+	// 	Properties: &armbilling.ProductProperties{
+	// 		BillingProfileDisplayName: to.Ptr("Contoso operations billing"),
+	// 		BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProfiles/ea36e548-1505-41db-bebc-46fff3d37998"),
+	// 		DisplayName: to.Ptr("My Product"),
+	// 		InvoiceSectionDisplayName: to.Ptr("Contoso operations invoiceSection"),
+	// 		InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProfiles/ea36e548-1505-41db-bebc-46fff3d37998/invoiceSections/Q7GV-UUVA-PJA-TGB"),
+	// 		SKUDescription: to.Ptr("Microsoft Azure Plan"),
+	// 		SKUID: to.Ptr("0001"),
+	// 		Status: to.Ptr(armbilling.ProductStatusActive),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/productValidateMoveFailure.json
+func ExampleProductsClient_ValidateMoveEligibility_productValidateMoveFailure() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewProductsClient().ValidateMoveEligibility(ctx, "a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31", "6b96d3f2-9008-4a9d-912f-f87744185aa3", armbilling.MoveProductRequest{
+		DestinationInvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProfiles/ea36e548-1505-41db-bebc-46fff3d37998/invoiceSections/Q7GV-UUVA-PJA-TGB"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.MoveProductEligibilityResult = armbilling.MoveProductEligibilityResult{
+	// 	ErrorDetails: &armbilling.MoveProductEligibilityResultErrorDetails{
+	// 		Code: to.Ptr(armbilling.MoveValidationErrorCodeProductInactive),
+	// 		Message: to.Ptr("Invoice Sections can only be changed for active products."),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/productValidateMoveSuccess.json
+func ExampleProductsClient_ValidateMoveEligibility_productValidateMoveSuccess() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewProductsClient().ValidateMoveEligibility(ctx, "a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31", "6b96d3f2-9008-4a9d-912f-f87744185aa3", armbilling.MoveProductRequest{
+		DestinationInvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProfiles/ea36e548-1505-41db-bebc-46fff3d37998/invoiceSections/Q7GV-UUVA-PJA-TGB"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.MoveProductEligibilityResult = armbilling.MoveProductEligibilityResult{
+	// 	IsMoveEligible: to.Ptr(true),
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/productsGet.json
 func ExampleProductsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -372,7 +390,7 @@ func ExampleProductsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewProductsClient().Get(ctx, "{billingAccountName}", "{productName}", nil)
+	res, err := clientFactory.NewProductsClient().Get(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "11111111-1111-1111-1111-111111111111", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -380,36 +398,28 @@ func ExampleProductsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Product = armbilling.Product{
-	// 	Name: to.Ptr("{productName}"),
+	// 	Name: to.Ptr("90000000-0000-0000-0000-000000000000"),
 	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/products"),
-	// 	ID: to.Ptr("/providers/Microsoft.Billing/BillingAccounts/{billingAccountName}/products/{productName}"),
+	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/products/90000000-0000-0000-0000-000000000000"),
 	// 	Properties: &armbilling.ProductProperties{
 	// 		AutoRenew: to.Ptr(armbilling.AutoRenewOn),
-	// 		AvailabilityID: to.Ptr("AvailabilityId1"),
-	// 		BillingFrequency: to.Ptr(armbilling.BillingFrequencyMonthly),
-	// 		BillingProfileDisplayName: to.Ptr("Contoso operations billing"),
-	// 		BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/11000000-0000-0000-0000-000000000000"),
-	// 		DisplayName: to.Ptr("AIP Dev"),
-	// 		InvoiceSectionDisplayName: to.Ptr("Contoso operations invoiceSection"),
-	// 		InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}"),
-	// 		LastCharge: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](5000),
-	// 		},
-	// 		LastChargeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-15T17:32:28.000Z"); return t}()),
-	// 		ProductType: to.Ptr("Subscription"),
-	// 		ProductTypeID: to.Ptr("A12345"),
-	// 		PurchaseDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-01T17:32:28.000Z"); return t}()),
-	// 		Quantity: to.Ptr[float32](4),
-	// 		SKUDescription: to.Ptr("Enterprise Agreement Development"),
+	// 		BillingProfileDisplayName: to.Ptr("Billing Profile Display Name"),
+	// 		BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx"),
+	// 		DisplayName: to.Ptr("My product"),
+	// 		InvoiceSectionDisplayName: to.Ptr("Invoice Section Display Name"),
+	// 		InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx/invoiceSections/yyyy-yyyy-yyy-yyy"),
+	// 		ProductType: to.Ptr("Seat-Based Product Type"),
+	// 		ProductTypeID: to.Ptr("XYZ56789"),
+	// 		PurchaseDate: to.Ptr("2023-01-04T22:39:34.2606750Z"),
+	// 		Quantity: to.Ptr[int64](1),
+	// 		SKUDescription: to.Ptr("SKU Description"),
 	// 		SKUID: to.Ptr("0001"),
-	// 		Status: to.Ptr(armbilling.ProductStatusTypeActive),
-	// 		TenantID: to.Ptr("515a6d36-aaf8-4ca2-a5e8-c45deb0c5cce"),
+	// 		Status: to.Ptr(armbilling.ProductStatusActive),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/UpdateProduct.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/productsUpdate.json
 func ExampleProductsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -420,9 +430,9 @@ func ExampleProductsClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewProductsClient().Update(ctx, "{billingAccountName}", "{productName}", armbilling.Product{
+	res, err := clientFactory.NewProductsClient().Update(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "11111111-1111-1111-1111-111111111111", armbilling.ProductPatch{
 		Properties: &armbilling.ProductProperties{
-			AutoRenew: to.Ptr(armbilling.AutoRenewOff),
+			AutoRenew: to.Ptr(armbilling.AutoRenewOn),
 		},
 	}, nil)
 	if err != nil {
@@ -432,87 +442,29 @@ func ExampleProductsClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Product = armbilling.Product{
-	// 	Name: to.Ptr("{productName}"),
+	// 	Name: to.Ptr("11111111-1111-1111-1111-111111111111"),
 	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/products"),
-	// 	ID: to.Ptr("/providers/Microsoft.Billing/BillingAccounts/{billingAccountName}/products/{productName}"),
-	// 	Properties: &armbilling.ProductProperties{
-	// 		AutoRenew: to.Ptr(armbilling.AutoRenewOff),
-	// 		AvailabilityID: to.Ptr("AvailabilityId1"),
-	// 		BillingFrequency: to.Ptr(armbilling.BillingFrequencyMonthly),
-	// 		BillingProfileDisplayName: to.Ptr("Contoso operations billing"),
-	// 		BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/11000000-0000-0000-0000-000000000000"),
-	// 		DisplayName: to.Ptr("AIP Dev"),
-	// 		InvoiceSectionDisplayName: to.Ptr("Contoso operations invoiceSection"),
-	// 		InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}"),
-	// 		LastCharge: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](5000),
-	// 		},
-	// 		LastChargeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-15T17:32:28.000Z"); return t}()),
-	// 		ProductType: to.Ptr("Subscription"),
-	// 		ProductTypeID: to.Ptr("A12345"),
-	// 		PurchaseDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-01T17:32:28.000Z"); return t}()),
-	// 		Quantity: to.Ptr[float32](4),
-	// 		SKUDescription: to.Ptr("Enterprise Agreement Development"),
-	// 		SKUID: to.Ptr("0001"),
-	// 		Status: to.Ptr(armbilling.ProductStatusTypeActive),
-	// 		TenantID: to.Ptr("515a6d36-aaf8-4ca2-a5e8-c45deb0c5cce"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/MoveProduct.json
-func ExampleProductsClient_Move() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewProductsClient().Move(ctx, "{billingAccountName}", "{productName}", armbilling.TransferProductRequestProperties{
-		DestinationInvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{newInvoiceSectionName}"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Product = armbilling.Product{
-	// 	Name: to.Ptr("{productName}"),
-	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/products"),
-	// 	ID: to.Ptr("/providers/Microsoft.Billing/BillingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{newInvoiceSectionName}/products/{productName}"),
+	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/products/11111111-1111-1111-1111-111111111111"),
 	// 	Properties: &armbilling.ProductProperties{
 	// 		AutoRenew: to.Ptr(armbilling.AutoRenewOn),
-	// 		AvailabilityID: to.Ptr("AvailabilityId1"),
-	// 		BillingFrequency: to.Ptr(armbilling.BillingFrequencyMonthly),
-	// 		BillingProfileDisplayName: to.Ptr("Contoso operations billing"),
-	// 		BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/11000000-0000-0000-0000-000000000000"),
-	// 		DisplayName: to.Ptr("Test Product"),
-	// 		InvoiceSectionDisplayName: to.Ptr("Contoso operations invoiceSection"),
-	// 		InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{newBillingProfileName}/invoiceSections/{newInvoiceSectionName}"),
-	// 		LastCharge: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](5000),
-	// 		},
-	// 		LastChargeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-15T17:32:28.000Z"); return t}()),
-	// 		ProductType: to.Ptr("Subscription"),
-	// 		ProductTypeID: to.Ptr("A12345"),
-	// 		PurchaseDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-01T17:32:28.000Z"); return t}()),
-	// 		Quantity: to.Ptr[float32](4),
-	// 		SKUDescription: to.Ptr("Enterprise Agreement Development"),
+	// 		BillingProfileDisplayName: to.Ptr("Billing Profile Display Name"),
+	// 		BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx"),
+	// 		DisplayName: to.Ptr("Product Display Name"),
+	// 		InvoiceSectionDisplayName: to.Ptr("Invoice Section Display Name"),
+	// 		InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx/invoiceSections/yyyy-yyyy-yyy-yyy"),
+	// 		ProductType: to.Ptr("Seat-Based Product Type"),
+	// 		ProductTypeID: to.Ptr("XYZ56789"),
+	// 		PurchaseDate: to.Ptr("2023-01-05T22:39:34.2606750Z"),
+	// 		Quantity: to.Ptr[int64](1),
+	// 		SKUDescription: to.Ptr("SKU Description"),
 	// 		SKUID: to.Ptr("0001"),
-	// 		Status: to.Ptr(armbilling.ProductStatusTypeActive),
-	// 		TenantID: to.Ptr("515a6d36-aaf8-4ca2-a5e8-c45deb0c5cce"),
+	// 		Status: to.Ptr(armbilling.ProductStatusActive),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/ValidateProductMoveFailure.json
-func ExampleProductsClient_ValidateMove_subscriptionMoveValidateFailure() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/productsListByBillingAccount.json
+func ExampleProductsClient_NewListByBillingAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -522,45 +474,85 @@ func ExampleProductsClient_ValidateMove_subscriptionMoveValidateFailure() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewProductsClient().ValidateMove(ctx, "{billingAccountName}", "{productName}", armbilling.TransferProductRequestProperties{
-		DestinationInvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{newInvoiceSectionName}"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
+	pager := clientFactory.NewProductsClient().NewListByBillingAccountPager("00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", &armbilling.ProductsClientListByBillingAccountOptions{Filter: nil,
+		OrderBy: nil,
+		Top:     nil,
+		Skip:    nil,
+		Count:   nil,
+		Search:  nil,
+	})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.ProductListResult = armbilling.ProductListResult{
+		// 	Value: []*armbilling.Product{
+		// 		{
+		// 			Name: to.Ptr("90000000-0000-0000-0000-000000000000"),
+		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/products"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/products/90000000-0000-0000-0000-000000000000"),
+		// 			Properties: &armbilling.ProductProperties{
+		// 				AutoRenew: to.Ptr(armbilling.AutoRenewOn),
+		// 				BillingProfileDisplayName: to.Ptr("Billing Profile Display Name"),
+		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx"),
+		// 				DisplayName: to.Ptr("My product"),
+		// 				InvoiceSectionDisplayName: to.Ptr("Invoice Section Display Name"),
+		// 				InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx/invoiceSections/yyyy-yyyy-yyy-yyy"),
+		// 				ProductType: to.Ptr("Seat-Based Product Type"),
+		// 				ProductTypeID: to.Ptr("XYZ56789"),
+		// 				PurchaseDate: to.Ptr("2023-01-04T22:39:34.2606750Z"),
+		// 				Quantity: to.Ptr[int64](1),
+		// 				SKUDescription: to.Ptr("SKU Description"),
+		// 				SKUID: to.Ptr("0001"),
+		// 				Status: to.Ptr(armbilling.ProductStatusActive),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("90000000-0000-0000-0000-000000000001"),
+		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/products"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/products/90000000-0000-0000-0000-000000000001"),
+		// 			Properties: &armbilling.ProductProperties{
+		// 				AutoRenew: to.Ptr(armbilling.AutoRenewOn),
+		// 				BillingProfileDisplayName: to.Ptr("Billing Profile Display Name"),
+		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx"),
+		// 				DisplayName: to.Ptr("Test product"),
+		// 				InvoiceSectionDisplayName: to.Ptr("Invoice Section Display Name"),
+		// 				InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx/invoiceSections/yyyy-yyyy-yyy-yyy"),
+		// 				ProductType: to.Ptr("Software Product Type"),
+		// 				ProductTypeID: to.Ptr("EFG456"),
+		// 				PurchaseDate: to.Ptr("2023-01-06T22:39:34.2606750Z"),
+		// 				Quantity: to.Ptr[int64](1),
+		// 				SKUDescription: to.Ptr("SKU Description"),
+		// 				SKUID: to.Ptr("0001"),
+		// 				Status: to.Ptr(armbilling.ProductStatusActive),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("90000000-0000-0000-0000-000000000002"),
+		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/products"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/products/90000000-0000-0000-0000-000000000002"),
+		// 			Properties: &armbilling.ProductProperties{
+		// 				AutoRenew: to.Ptr(armbilling.AutoRenewOn),
+		// 				BillingProfileDisplayName: to.Ptr("Billing Profile Display Name"),
+		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx"),
+		// 				DisplayName: to.Ptr("Dev product"),
+		// 				InvoiceSectionDisplayName: to.Ptr("Invoice Section Display Name"),
+		// 				InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx/invoiceSections/yyyy-yyyy-yyy-yyy"),
+		// 				ProductType: to.Ptr("Reservation Product Type"),
+		// 				ProductTypeID: to.Ptr("JKL789"),
+		// 				PurchaseDate: to.Ptr("2023-01-05T22:39:34.2606750Z"),
+		// 				Quantity: to.Ptr[int64](1),
+		// 				SKUDescription: to.Ptr("SKU Description"),
+		// 				SKUID: to.Ptr("0001"),
+		// 				Status: to.Ptr(armbilling.ProductStatusSuspended),
+		// 			},
+		// 	}},
+		// }
 	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ValidateProductTransferEligibilityResult = armbilling.ValidateProductTransferEligibilityResult{
-	// 	ErrorDetails: &armbilling.ValidateProductTransferEligibilityError{
-	// 		Code: to.Ptr(armbilling.ProductTransferValidationErrorCodeProductTypeNotSupported),
-	// 		Message: to.Ptr("Product '{productName}' is not allowed to be transferred."),
-	// 	},
-	// 	IsMoveEligible: to.Ptr(false),
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/ValidateProductMoveSuccess.json
-func ExampleProductsClient_ValidateMove_subscriptionMoveValidateSuccess() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewProductsClient().ValidateMove(ctx, "{billingAccountName}", "{productName}", armbilling.TransferProductRequestProperties{
-		DestinationInvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{newInvoiceSectionName}"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ValidateProductTransferEligibilityResult = armbilling.ValidateProductTransferEligibilityResult{
-	// 	IsMoveEligible: to.Ptr(true),
-	// }
 }

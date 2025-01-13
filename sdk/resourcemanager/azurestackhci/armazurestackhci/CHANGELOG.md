@@ -1,5 +1,222 @@
 # Release History
 
+## 2.0.0 (2024-08-22)
+### Breaking Changes
+
+- Function `*ExtensionsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, Extension, *ExtensionsClientBeginUpdateOptions)` to `(context.Context, string, string, string, string, ExtensionPatch, *ExtensionsClientBeginUpdateOptions)`
+
+### Features Added
+
+- New value `ArcSettingAggregateStateAccepted`, `ArcSettingAggregateStateDisableInProgress`, `ArcSettingAggregateStateProvisioning` added to enum type `ArcSettingAggregateState`
+- New value `ExtensionAggregateStateAccepted`, `ExtensionAggregateStateProvisioning`, `ExtensionAggregateStateUpgradeFailedRollbackSucceeded` added to enum type `ExtensionAggregateState`
+- New value `NodeArcStateAccepted`, `NodeArcStateDisableInProgress`, `NodeArcStateInProgress`, `NodeArcStatePartiallyConnected`, `NodeArcStatePartiallySucceeded`, `NodeArcStateProvisioning` added to enum type `NodeArcState`
+- New value `NodeExtensionStateAccepted`, `NodeExtensionStateInProgress`, `NodeExtensionStatePartiallyConnected`, `NodeExtensionStatePartiallySucceeded`, `NodeExtensionStateProvisioning` added to enum type `NodeExtensionState`
+- New value `ProvisioningStateConnected`, `ProvisioningStateCreating`, `ProvisioningStateDeleted`, `ProvisioningStateDeleting`, `ProvisioningStateDisableInProgress`, `ProvisioningStateDisconnected`, `ProvisioningStateError`, `ProvisioningStateInProgress`, `ProvisioningStateMoving`, `ProvisioningStateNotSpecified`, `ProvisioningStatePartiallyConnected`, `ProvisioningStatePartiallySucceeded`, `ProvisioningStateUpdating` added to enum type `ProvisioningState`
+- New value `StatusDeploymentFailed`, `StatusDeploymentInProgress`, `StatusDeploymentSuccess`, `StatusFailed`, `StatusInProgress`, `StatusNotSpecified`, `StatusSucceeded`, `StatusValidationFailed`, `StatusValidationInProgress`, `StatusValidationSuccess` added to enum type `Status`
+- New enum type `AccessLevel` with values `AccessLevelDiagnostics`, `AccessLevelDiagnosticsAndRepair`
+- New enum type `ArcExtensionState` with values `ArcExtensionStateAccepted`, `ArcExtensionStateCanceled`, `ArcExtensionStateCreating`, `ArcExtensionStateDeleted`, `ArcExtensionStateDeleting`, `ArcExtensionStateFailed`, `ArcExtensionStateMoving`, `ArcExtensionStateNotSpecified`, `ArcExtensionStateSucceeded`, `ArcExtensionStateUpdating`
+- New enum type `AvailabilityType` with values `AvailabilityTypeLocal`, `AvailabilityTypeNotify`, `AvailabilityTypeOnline`
+- New enum type `ClusterNodeType` with values `ClusterNodeTypeFirstParty`, `ClusterNodeTypeThirdParty`
+- New enum type `ComplianceAssignmentType` with values `ComplianceAssignmentTypeApplyAndAutoCorrect`, `ComplianceAssignmentTypeAudit`
+- New enum type `ComplianceStatus` with values `ComplianceStatusCompliant`, `ComplianceStatusNonCompliant`, `ComplianceStatusPending`
+- New enum type `ConnectivityStatus` with values `ConnectivityStatusConnected`, `ConnectivityStatusDisconnected`, `ConnectivityStatusNotConnectedRecently`, `ConnectivityStatusNotSpecified`, `ConnectivityStatusNotYetRegistered`, `ConnectivityStatusPartiallyConnected`
+- New enum type `DeploymentMode` with values `DeploymentModeDeploy`, `DeploymentModeValidate`
+- New enum type `DeviceKind` with values `DeviceKindHCI`
+- New enum type `DeviceState` with values `DeviceStateConnected`, `DeviceStateDisconnected`, `DeviceStateDraining`, `DeviceStateInMaintenance`, `DeviceStateNotSpecified`, `DeviceStateProcessing`, `DeviceStateRepairing`, `DeviceStateResuming`
+- New enum type `EceSecrets` with values `EceSecretsAzureStackLCMUserCredential`, `EceSecretsDefaultARBApplication`, `EceSecretsLocalAdminCredential`, `EceSecretsWitnessStorageKey`
+- New enum type `ExtensionManagedBy` with values `ExtensionManagedByAzure`, `ExtensionManagedByUser`
+- New enum type `HealthState` with values `HealthStateError`, `HealthStateFailure`, `HealthStateInProgress`, `HealthStateSuccess`, `HealthStateUnknown`, `HealthStateWarning`
+- New enum type `LogCollectionJobType` with values `LogCollectionJobTypeOnDemand`, `LogCollectionJobTypeScheduled`
+- New enum type `LogCollectionStatus` with values `LogCollectionStatusFailed`, `LogCollectionStatusInProgress`, `LogCollectionStatusNone`, `LogCollectionStatusSucceeded`
+- New enum type `ManagedServiceIdentityType` with values `ManagedServiceIdentityTypeNone`, `ManagedServiceIdentityTypeSystemAssigned`, `ManagedServiceIdentityTypeSystemAssignedUserAssigned`, `ManagedServiceIdentityTypeUserAssigned`
+- New enum type `OemActivation` with values `OemActivationDisabled`, `OemActivationEnabled`
+- New enum type `OperationType` with values `OperationTypeClusterProvisioning`, `OperationTypeClusterUpgrade`
+- New enum type `RebootRequirement` with values `RebootRequirementFalse`, `RebootRequirementTrue`, `RebootRequirementUnknown`
+- New enum type `RemoteSupportType` with values `RemoteSupportTypeEnable`, `RemoteSupportTypeRevoke`
+- New enum type `Severity` with values `SeverityCritical`, `SeverityHidden`, `SeverityInformational`, `SeverityWarning`
+- New enum type `SoftwareAssuranceIntent` with values `SoftwareAssuranceIntentDisable`, `SoftwareAssuranceIntentEnable`
+- New enum type `SoftwareAssuranceStatus` with values `SoftwareAssuranceStatusDisabled`, `SoftwareAssuranceStatusEnabled`
+- New enum type `State` with values `StateAdditionalContentRequired`, `StateDownloadFailed`, `StateDownloading`, `StateHasPrerequisite`, `StateHealthCheckFailed`, `StateHealthChecking`, `StateInstallationFailed`, `StateInstalled`, `StateInstalling`, `StateInvalid`, `StateNotApplicableBecauseAnotherUpdateIsInProgress`, `StateObsolete`, `StatePreparationFailed`, `StatePreparing`, `StateReady`, `StateReadyToInstall`, `StateRecalled`, `StateScanFailed`, `StateScanInProgress`
+- New enum type `StatusLevelTypes` with values `StatusLevelTypesError`, `StatusLevelTypesInfo`, `StatusLevelTypesWarning`
+- New enum type `UpdateRunPropertiesState` with values `UpdateRunPropertiesStateFailed`, `UpdateRunPropertiesStateInProgress`, `UpdateRunPropertiesStateSucceeded`, `UpdateRunPropertiesStateUnknown`
+- New enum type `UpdateSummariesPropertiesState` with values `UpdateSummariesPropertiesStateAppliedSuccessfully`, `UpdateSummariesPropertiesStateNeedsAttention`, `UpdateSummariesPropertiesStatePreparationFailed`, `UpdateSummariesPropertiesStatePreparationInProgress`, `UpdateSummariesPropertiesStateUnknown`, `UpdateSummariesPropertiesStateUpdateAvailable`, `UpdateSummariesPropertiesStateUpdateFailed`, `UpdateSummariesPropertiesStateUpdateInProgress`
+- New function `*ArcSettingsClient.ConsentAndInstallDefaultExtensions(context.Context, string, string, string, *ArcSettingsClientConsentAndInstallDefaultExtensionsOptions) (ArcSettingsClientConsentAndInstallDefaultExtensionsResponse, error)`
+- New function `*ArcSettingsClient.BeginInitializeDisableProcess(context.Context, string, string, string, *ArcSettingsClientBeginInitializeDisableProcessOptions) (*runtime.Poller[ArcSettingsClientInitializeDisableProcessResponse], error)`
+- New function `*ClientFactory.NewDeploymentSettingsClient() *DeploymentSettingsClient`
+- New function `*ClientFactory.NewEdgeDevicesClient() *EdgeDevicesClient`
+- New function `*ClientFactory.NewOffersClient() *OffersClient`
+- New function `*ClientFactory.NewPublishersClient() *PublishersClient`
+- New function `*ClientFactory.NewSKUsClient() *SKUsClient`
+- New function `*ClientFactory.NewSecuritySettingsClient() *SecuritySettingsClient`
+- New function `*ClientFactory.NewUpdateRunsClient() *UpdateRunsClient`
+- New function `*ClientFactory.NewUpdateSummariesClient() *UpdateSummariesClient`
+- New function `*ClientFactory.NewUpdatesClient() *UpdatesClient`
+- New function `*ClustersClient.BeginConfigureRemoteSupport(context.Context, string, string, RemoteSupportRequest, *ClustersClientBeginConfigureRemoteSupportOptions) (*runtime.Poller[ClustersClientConfigureRemoteSupportResponse], error)`
+- New function `*ClustersClient.BeginExtendSoftwareAssuranceBenefit(context.Context, string, string, SoftwareAssuranceChangeRequest, *ClustersClientBeginExtendSoftwareAssuranceBenefitOptions) (*runtime.Poller[ClustersClientExtendSoftwareAssuranceBenefitResponse], error)`
+- New function `*ClustersClient.BeginTriggerLogCollection(context.Context, string, string, LogCollectionRequest, *ClustersClientBeginTriggerLogCollectionOptions) (*runtime.Poller[ClustersClientTriggerLogCollectionResponse], error)`
+- New function `NewDeploymentSettingsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*DeploymentSettingsClient, error)`
+- New function `*DeploymentSettingsClient.BeginCreateOrUpdate(context.Context, string, string, string, DeploymentSetting, *DeploymentSettingsClientBeginCreateOrUpdateOptions) (*runtime.Poller[DeploymentSettingsClientCreateOrUpdateResponse], error)`
+- New function `*DeploymentSettingsClient.BeginDelete(context.Context, string, string, string, *DeploymentSettingsClientBeginDeleteOptions) (*runtime.Poller[DeploymentSettingsClientDeleteResponse], error)`
+- New function `*DeploymentSettingsClient.Get(context.Context, string, string, string, *DeploymentSettingsClientGetOptions) (DeploymentSettingsClientGetResponse, error)`
+- New function `*DeploymentSettingsClient.NewListByClustersPager(string, string, *DeploymentSettingsClientListByClustersOptions) *runtime.Pager[DeploymentSettingsClientListByClustersResponse]`
+- New function `*EdgeDevice.GetEdgeDevice() *EdgeDevice`
+- New function `NewEdgeDevicesClient(azcore.TokenCredential, *arm.ClientOptions) (*EdgeDevicesClient, error)`
+- New function `*EdgeDevicesClient.BeginCreateOrUpdate(context.Context, string, string, EdgeDeviceClassification, *EdgeDevicesClientBeginCreateOrUpdateOptions) (*runtime.Poller[EdgeDevicesClientCreateOrUpdateResponse], error)`
+- New function `*EdgeDevicesClient.BeginDelete(context.Context, string, string, *EdgeDevicesClientBeginDeleteOptions) (*runtime.Poller[EdgeDevicesClientDeleteResponse], error)`
+- New function `*EdgeDevicesClient.Get(context.Context, string, string, *EdgeDevicesClientGetOptions) (EdgeDevicesClientGetResponse, error)`
+- New function `*EdgeDevicesClient.NewListPager(string, *EdgeDevicesClientListOptions) *runtime.Pager[EdgeDevicesClientListResponse]`
+- New function `*EdgeDevicesClient.BeginValidate(context.Context, string, string, ValidateRequest, *EdgeDevicesClientBeginValidateOptions) (*runtime.Poller[EdgeDevicesClientValidateResponse], error)`
+- New function `*ExtensionsClient.BeginUpgrade(context.Context, string, string, string, string, ExtensionUpgradeParameters, *ExtensionsClientBeginUpgradeOptions) (*runtime.Poller[ExtensionsClientUpgradeResponse], error)`
+- New function `*HciEdgeDevice.GetEdgeDevice() *EdgeDevice`
+- New function `NewOffersClient(string, azcore.TokenCredential, *arm.ClientOptions) (*OffersClient, error)`
+- New function `*OffersClient.Get(context.Context, string, string, string, string, *OffersClientGetOptions) (OffersClientGetResponse, error)`
+- New function `*OffersClient.NewListByClusterPager(string, string, *OffersClientListByClusterOptions) *runtime.Pager[OffersClientListByClusterResponse]`
+- New function `*OffersClient.NewListByPublisherPager(string, string, string, *OffersClientListByPublisherOptions) *runtime.Pager[OffersClientListByPublisherResponse]`
+- New function `NewPublishersClient(string, azcore.TokenCredential, *arm.ClientOptions) (*PublishersClient, error)`
+- New function `*PublishersClient.Get(context.Context, string, string, string, *PublishersClientGetOptions) (PublishersClientGetResponse, error)`
+- New function `*PublishersClient.NewListByClusterPager(string, string, *PublishersClientListByClusterOptions) *runtime.Pager[PublishersClientListByClusterResponse]`
+- New function `NewSKUsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*SKUsClient, error)`
+- New function `*SKUsClient.Get(context.Context, string, string, string, string, string, *SKUsClientGetOptions) (SKUsClientGetResponse, error)`
+- New function `*SKUsClient.NewListByOfferPager(string, string, string, string, *SKUsClientListByOfferOptions) *runtime.Pager[SKUsClientListByOfferResponse]`
+- New function `NewSecuritySettingsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*SecuritySettingsClient, error)`
+- New function `*SecuritySettingsClient.BeginCreateOrUpdate(context.Context, string, string, string, SecuritySetting, *SecuritySettingsClientBeginCreateOrUpdateOptions) (*runtime.Poller[SecuritySettingsClientCreateOrUpdateResponse], error)`
+- New function `*SecuritySettingsClient.BeginDelete(context.Context, string, string, string, *SecuritySettingsClientBeginDeleteOptions) (*runtime.Poller[SecuritySettingsClientDeleteResponse], error)`
+- New function `*SecuritySettingsClient.Get(context.Context, string, string, string, *SecuritySettingsClientGetOptions) (SecuritySettingsClientGetResponse, error)`
+- New function `*SecuritySettingsClient.NewListByClustersPager(string, string, *SecuritySettingsClientListByClustersOptions) *runtime.Pager[SecuritySettingsClientListByClustersResponse]`
+- New function `NewUpdateRunsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*UpdateRunsClient, error)`
+- New function `*UpdateRunsClient.BeginDelete(context.Context, string, string, string, string, *UpdateRunsClientBeginDeleteOptions) (*runtime.Poller[UpdateRunsClientDeleteResponse], error)`
+- New function `*UpdateRunsClient.Get(context.Context, string, string, string, string, *UpdateRunsClientGetOptions) (UpdateRunsClientGetResponse, error)`
+- New function `*UpdateRunsClient.NewListPager(string, string, string, *UpdateRunsClientListOptions) *runtime.Pager[UpdateRunsClientListResponse]`
+- New function `*UpdateRunsClient.Put(context.Context, string, string, string, string, UpdateRun, *UpdateRunsClientPutOptions) (UpdateRunsClientPutResponse, error)`
+- New function `NewUpdateSummariesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*UpdateSummariesClient, error)`
+- New function `*UpdateSummariesClient.BeginDelete(context.Context, string, string, *UpdateSummariesClientBeginDeleteOptions) (*runtime.Poller[UpdateSummariesClientDeleteResponse], error)`
+- New function `*UpdateSummariesClient.Get(context.Context, string, string, *UpdateSummariesClientGetOptions) (UpdateSummariesClientGetResponse, error)`
+- New function `*UpdateSummariesClient.NewListPager(string, string, *UpdateSummariesClientListOptions) *runtime.Pager[UpdateSummariesClientListResponse]`
+- New function `*UpdateSummariesClient.Put(context.Context, string, string, UpdateSummaries, *UpdateSummariesClientPutOptions) (UpdateSummariesClientPutResponse, error)`
+- New function `NewUpdatesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*UpdatesClient, error)`
+- New function `*UpdatesClient.BeginDelete(context.Context, string, string, string, *UpdatesClientBeginDeleteOptions) (*runtime.Poller[UpdatesClientDeleteResponse], error)`
+- New function `*UpdatesClient.Get(context.Context, string, string, string, *UpdatesClientGetOptions) (UpdatesClientGetResponse, error)`
+- New function `*UpdatesClient.NewListPager(string, string, *UpdatesClientListOptions) *runtime.Pager[UpdatesClientListResponse]`
+- New function `*UpdatesClient.BeginPost(context.Context, string, string, string, *UpdatesClientBeginPostOptions) (*runtime.Poller[UpdatesClientPostResponse], error)`
+- New function `*UpdatesClient.Put(context.Context, string, string, string, Update, *UpdatesClientPutOptions) (UpdatesClientPutResponse, error)`
+- New struct `DefaultExtensionDetails`
+- New struct `DeploymentCluster`
+- New struct `DeploymentConfiguration`
+- New struct `DeploymentData`
+- New struct `DeploymentSecuritySettings`
+- New struct `DeploymentSetting`
+- New struct `DeploymentSettingAdapterPropertyOverrides`
+- New struct `DeploymentSettingHostNetwork`
+- New struct `DeploymentSettingIntents`
+- New struct `DeploymentSettingListResult`
+- New struct `DeploymentSettingStorageAdapterIPInfo`
+- New struct `DeploymentSettingStorageNetworks`
+- New struct `DeploymentSettingVirtualSwitchConfigurationOverrides`
+- New struct `DeploymentSettingsProperties`
+- New struct `DeploymentStep`
+- New struct `DeviceConfiguration`
+- New struct `EceActionStatus`
+- New struct `EceDeploymentSecrets`
+- New struct `EceReportedProperties`
+- New struct `EdgeDeviceListResult`
+- New struct `ExtensionInstanceView`
+- New struct `ExtensionInstanceViewStatus`
+- New struct `ExtensionPatch`
+- New struct `ExtensionPatchParameters`
+- New struct `ExtensionPatchProperties`
+- New struct `ExtensionProfile`
+- New struct `ExtensionUpgradeParameters`
+- New struct `HciEdgeDevice`
+- New struct `HciEdgeDeviceAdapterPropertyOverrides`
+- New struct `HciEdgeDeviceArcExtension`
+- New struct `HciEdgeDeviceHostNetwork`
+- New struct `HciEdgeDeviceIntents`
+- New struct `HciEdgeDeviceProperties`
+- New struct `HciEdgeDeviceStorageAdapterIPInfo`
+- New struct `HciEdgeDeviceStorageNetworks`
+- New struct `HciEdgeDeviceVirtualSwitchConfigurationOverrides`
+- New struct `HciNetworkProfile`
+- New struct `HciNicDetail`
+- New struct `HciOsProfile`
+- New struct `HciReportedProperties`
+- New struct `HciValidationFailureDetail`
+- New struct `IPPools`
+- New struct `InfrastructureNetwork`
+- New struct `IsolatedVMAttestationConfiguration`
+- New struct `LogCollectionError`
+- New struct `LogCollectionProperties`
+- New struct `LogCollectionRequest`
+- New struct `LogCollectionRequestProperties`
+- New struct `LogCollectionSession`
+- New struct `ManagedServiceIdentity`
+- New struct `NetworkController`
+- New struct `NicDetail`
+- New struct `Observability`
+- New struct `Offer`
+- New struct `OfferList`
+- New struct `OfferProperties`
+- New struct `OptionalServices`
+- New struct `PackageVersionInfo`
+- New struct `PerNodeRemoteSupportSession`
+- New struct `PhysicalNodes`
+- New struct `PrecheckResult`
+- New struct `PrecheckResultTags`
+- New struct `Publisher`
+- New struct `PublisherList`
+- New struct `PublisherProperties`
+- New struct `QosPolicyOverrides`
+- New struct `RemoteSupportNodeSettings`
+- New struct `RemoteSupportProperties`
+- New struct `RemoteSupportRequest`
+- New struct `RemoteSupportRequestProperties`
+- New struct `SKU`
+- New struct `SKUList`
+- New struct `SKUMappings`
+- New struct `SKUProperties`
+- New struct `SbeCredentials`
+- New struct `SbeDeploymentInfo`
+- New struct `SbeDeploymentPackageInfo`
+- New struct `SbePartnerInfo`
+- New struct `SbePartnerProperties`
+- New struct `ScaleUnits`
+- New struct `SdnIntegration`
+- New struct `SecurityComplianceStatus`
+- New struct `SecurityProperties`
+- New struct `SecuritySetting`
+- New struct `SecuritySettingListResult`
+- New struct `SoftwareAssuranceChangeRequest`
+- New struct `SoftwareAssuranceChangeRequestProperties`
+- New struct `SoftwareAssuranceProperties`
+- New struct `Step`
+- New struct `Storage`
+- New struct `SwitchDetail`
+- New struct `SwitchExtension`
+- New struct `Update`
+- New struct `UpdateList`
+- New struct `UpdatePrerequisite`
+- New struct `UpdateProperties`
+- New struct `UpdateRun`
+- New struct `UpdateRunList`
+- New struct `UpdateRunProperties`
+- New struct `UpdateStateProperties`
+- New struct `UpdateSummaries`
+- New struct `UpdateSummariesList`
+- New struct `UpdateSummariesProperties`
+- New struct `UserAssignedIdentity`
+- New struct `ValidateRequest`
+- New struct `ValidateResponse`
+- New field `DefaultExtensions` in struct `ArcSettingProperties`
+- New field `Identity` in struct `Cluster`
+- New field `EhcResourceID`, `LastLicensingTimestamp`, `NodeType`, `OSDisplayVersion`, `OemActivation` in struct `ClusterNode`
+- New field `Identity` in struct `ClusterPatch`
+- New field `ConnectivityStatus`, `IsolatedVMAttestationConfiguration`, `LogCollectionProperties`, `RemoteSupportProperties`, `ResourceProviderObjectID`, `SoftwareAssuranceProperties` in struct `ClusterProperties`
+- New field `ClusterType`, `Manufacturer`, `OemActivation`, `SupportedCapabilities` in struct `ClusterReportedProperties`
+- New field `EnableAutomaticUpgrade` in struct `ExtensionParameters`
+- New field `ManagedBy` in struct `ExtensionProperties`
+- New field `InstanceView`, `TypeHandlerVersion` in struct `PerNodeExtensionState`
+- New field `ArcNodeServicePrincipalObjectID` in struct `PerNodeState`
+
+
 ## 2.0.0-beta.2 (2023-11-30)
 ### Features Added
 

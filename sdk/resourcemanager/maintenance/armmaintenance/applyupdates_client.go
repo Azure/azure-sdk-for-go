@@ -28,8 +28,7 @@ type ApplyUpdatesClient struct {
 }
 
 // NewApplyUpdatesClient creates a new instance of ApplyUpdatesClient with the specified values.
-//   - subscriptionID - Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
-//     part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewApplyUpdatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ApplyUpdatesClient, error) {
@@ -47,7 +46,7 @@ func NewApplyUpdatesClient(subscriptionID string, credential azcore.TokenCredent
 // CreateOrUpdate - Apply maintenance updates to resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-10-01-preview
 //   - resourceGroupName - Resource group name
 //   - providerName - Resource provider name
 //   - resourceType - Resource type
@@ -104,7 +103,7 @@ func (client *ApplyUpdatesClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -119,10 +118,94 @@ func (client *ApplyUpdatesClient) createOrUpdateHandleResponse(resp *http.Respon
 	return result, nil
 }
 
+// CreateOrUpdateOrCancel - Apply maintenance updates to resource
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-10-01-preview
+//   - resourceGroupName - Resource group name
+//   - providerName - Resource provider name
+//   - resourceType - Resource type
+//   - resourceName - Resource identifier
+//   - applyUpdateName - ApplyUpdate name
+//   - applyUpdate - The ApplyUpdate
+//   - options - ApplyUpdatesClientCreateOrUpdateOrCancelOptions contains the optional parameters for the ApplyUpdatesClient.CreateOrUpdateOrCancel
+//     method.
+func (client *ApplyUpdatesClient) CreateOrUpdateOrCancel(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, applyUpdateName string, applyUpdate ApplyUpdate, options *ApplyUpdatesClientCreateOrUpdateOrCancelOptions) (ApplyUpdatesClientCreateOrUpdateOrCancelResponse, error) {
+	var err error
+	const operationName = "ApplyUpdatesClient.CreateOrUpdateOrCancel"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createOrUpdateOrCancelCreateRequest(ctx, resourceGroupName, providerName, resourceType, resourceName, applyUpdateName, applyUpdate, options)
+	if err != nil {
+		return ApplyUpdatesClientCreateOrUpdateOrCancelResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ApplyUpdatesClientCreateOrUpdateOrCancelResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		err = runtime.NewResponseError(httpResp)
+		return ApplyUpdatesClientCreateOrUpdateOrCancelResponse{}, err
+	}
+	resp, err := client.createOrUpdateOrCancelHandleResponse(httpResp)
+	return resp, err
+}
+
+// createOrUpdateOrCancelCreateRequest creates the CreateOrUpdateOrCancel request.
+func (client *ApplyUpdatesClient) createOrUpdateOrCancelCreateRequest(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, applyUpdateName string, applyUpdate ApplyUpdate, options *ApplyUpdatesClientCreateOrUpdateOrCancelOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/applyUpdates/{applyUpdateName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if providerName == "" {
+		return nil, errors.New("parameter providerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{providerName}", url.PathEscape(providerName))
+	if resourceType == "" {
+		return nil, errors.New("parameter resourceType cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", url.PathEscape(resourceType))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if applyUpdateName == "" {
+		return nil, errors.New("parameter applyUpdateName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{applyUpdateName}", url.PathEscape(applyUpdateName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-10-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, applyUpdate); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// createOrUpdateOrCancelHandleResponse handles the CreateOrUpdateOrCancel response.
+func (client *ApplyUpdatesClient) createOrUpdateOrCancelHandleResponse(resp *http.Response) (ApplyUpdatesClientCreateOrUpdateOrCancelResponse, error) {
+	result := ApplyUpdatesClientCreateOrUpdateOrCancelResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ApplyUpdate); err != nil {
+		return ApplyUpdatesClientCreateOrUpdateOrCancelResponse{}, err
+	}
+	return result, nil
+}
+
 // CreateOrUpdateParent - Apply maintenance updates to resource with parent
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-10-01-preview
 //   - resourceGroupName - Resource group name
 //   - providerName - Resource provider name
 //   - resourceParentType - Resource parent type
@@ -189,7 +272,7 @@ func (client *ApplyUpdatesClient) createOrUpdateParentCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -207,7 +290,7 @@ func (client *ApplyUpdatesClient) createOrUpdateParentHandleResponse(resp *http.
 // Get - Track maintenance updates to resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-10-01-preview
 //   - resourceGroupName - Resource group name
 //   - providerName - Resource provider name
 //   - resourceType - Resource type
@@ -268,7 +351,7 @@ func (client *ApplyUpdatesClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -286,7 +369,7 @@ func (client *ApplyUpdatesClient) getHandleResponse(resp *http.Response) (ApplyU
 // GetParent - Track maintenance updates to resource with parent
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-10-01-preview
 //   - resourceGroupName - Resource group name
 //   - providerName - Resource provider name
 //   - resourceParentType - Resource parent type
@@ -357,7 +440,7 @@ func (client *ApplyUpdatesClient) getParentCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -374,7 +457,7 @@ func (client *ApplyUpdatesClient) getParentHandleResponse(resp *http.Response) (
 
 // NewListPager - Get Configuration records within a subscription
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-10-01-preview
 //   - options - ApplyUpdatesClientListOptions contains the optional parameters for the ApplyUpdatesClient.NewListPager method.
 func (client *ApplyUpdatesClient) NewListPager(options *ApplyUpdatesClientListOptions) *runtime.Pager[ApplyUpdatesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ApplyUpdatesClientListResponse]{
@@ -412,7 +495,7 @@ func (client *ApplyUpdatesClient) listCreateRequest(ctx context.Context, options
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

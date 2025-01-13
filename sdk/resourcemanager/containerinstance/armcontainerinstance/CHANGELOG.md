@@ -1,5 +1,32 @@
 # Release History
 
+## 2.5.0-beta.1 (2024-10-23)
+### Features Added
+
+- New function `*ClientFactory.NewContainerGroupProfileClient() *ContainerGroupProfileClient`
+- New function `*ClientFactory.NewContainerGroupProfilesClient() *ContainerGroupProfilesClient`
+- New function `NewContainerGroupProfileClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ContainerGroupProfileClient, error)`
+- New function `*ContainerGroupProfileClient.GetByRevisionNumber(context.Context, string, string, string, *ContainerGroupProfileClientGetByRevisionNumberOptions) (ContainerGroupProfileClientGetByRevisionNumberResponse, error)`
+- New function `*ContainerGroupProfileClient.NewListAllRevisionsPager(string, string, *ContainerGroupProfileClientListAllRevisionsOptions) *runtime.Pager[ContainerGroupProfileClientListAllRevisionsResponse]`
+- New function `NewContainerGroupProfilesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ContainerGroupProfilesClient, error)`
+- New function `*ContainerGroupProfilesClient.CreateOrUpdate(context.Context, string, string, ContainerGroupProfile, *ContainerGroupProfilesClientCreateOrUpdateOptions) (ContainerGroupProfilesClientCreateOrUpdateResponse, error)`
+- New function `*ContainerGroupProfilesClient.Delete(context.Context, string, string, *ContainerGroupProfilesClientDeleteOptions) (ContainerGroupProfilesClientDeleteResponse, error)`
+- New function `*ContainerGroupProfilesClient.Get(context.Context, string, string, *ContainerGroupProfilesClientGetOptions) (ContainerGroupProfilesClientGetResponse, error)`
+- New function `*ContainerGroupProfilesClient.NewListByResourceGroupPager(string, *ContainerGroupProfilesClientListByResourceGroupOptions) *runtime.Pager[ContainerGroupProfilesClientListByResourceGroupResponse]`
+- New function `*ContainerGroupProfilesClient.NewListPager(*ContainerGroupProfilesClientListOptions) *runtime.Pager[ContainerGroupProfilesClientListResponse]`
+- New function `*ContainerGroupProfilesClient.Patch(context.Context, string, string, ContainerGroupProfilePatch, *ContainerGroupProfilesClientPatchOptions) (ContainerGroupProfilesClientPatchResponse, error)`
+- New struct `ConfigMap`
+- New struct `ContainerGroupProfile`
+- New struct `ContainerGroupProfileListResult`
+- New struct `ContainerGroupProfilePatch`
+- New struct `ContainerGroupProfileProperties`
+- New struct `ContainerGroupProfilePropertiesProperties`
+- New struct `ContainerGroupProfileReferenceDefinition`
+- New struct `StandbyPoolProfileDefinition`
+- New field `ContainerGroupProfile`, `IsCreatedFromStandbyPool`, `StandbyPoolProfile` in struct `ContainerGroupPropertiesProperties`
+- New field `ConfigMap` in struct `ContainerProperties`
+
+
 ## 2.4.0 (2023-11-24)
 ### Features Added
 

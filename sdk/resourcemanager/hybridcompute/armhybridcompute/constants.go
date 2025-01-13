@@ -10,8 +10,47 @@ package armhybridcompute
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute"
-	moduleVersion = "v2.0.0-beta.2"
+	moduleVersion = "v2.1.0-beta.1"
 )
+
+// AccessMode - Property that impacts a resource's logging behavior and its connectivity with other resources and public networks.
+type AccessMode string
+
+const (
+	// AccessModeAudit - Dry run mode, where traffic is evaluated against NSP Rules, logged but not enforced.
+	AccessModeAudit AccessMode = "audit"
+	// AccessModeEnforced - Indicates that resource access is controlled by the NSP definition.
+	AccessModeEnforced AccessMode = "enforced"
+	// AccessModeLearning - Enables traffic evaluation to fall back to resource-specific firewall configurations.
+	AccessModeLearning AccessMode = "learning"
+)
+
+// PossibleAccessModeValues returns the possible values for the AccessMode const type.
+func PossibleAccessModeValues() []AccessMode {
+	return []AccessMode{
+		AccessModeAudit,
+		AccessModeEnforced,
+		AccessModeLearning,
+	}
+}
+
+// AccessRuleDirection - Indicates direction of an access rule.
+type AccessRuleDirection string
+
+const (
+	// AccessRuleDirectionInbound - Traffic originates outside of network.
+	AccessRuleDirectionInbound AccessRuleDirection = "Inbound"
+	// AccessRuleDirectionOutbound - Traffic originates inside the network
+	AccessRuleDirectionOutbound AccessRuleDirection = "Outbound"
+)
+
+// PossibleAccessRuleDirectionValues returns the possible values for the AccessRuleDirection const type.
+func PossibleAccessRuleDirectionValues() []AccessRuleDirection {
+	return []AccessRuleDirection{
+		AccessRuleDirectionInbound,
+		AccessRuleDirectionOutbound,
+	}
+}
 
 // AgentConfigurationMode - Name of configuration mode to use. Modes are pre-defined configurations of security controls,
 // extension allowlists and guest configuration, maintained by Microsoft.
@@ -186,6 +225,55 @@ func PossibleExtensionsStatusLevelTypesValues() []ExtensionsStatusLevelTypes {
 	}
 }
 
+// GatewayType - The type of the Gateway resource.
+type GatewayType string
+
+const (
+	GatewayTypePublic GatewayType = "Public"
+)
+
+// PossibleGatewayTypeValues returns the possible values for the GatewayType const type.
+func PossibleGatewayTypeValues() []GatewayType {
+	return []GatewayType{
+		GatewayTypePublic,
+	}
+}
+
+// HotpatchEnablementStatus - Status of hotpatch enablement or disablement.
+type HotpatchEnablementStatus string
+
+const (
+	HotpatchEnablementStatusActionRequired    HotpatchEnablementStatus = "ActionRequired"
+	HotpatchEnablementStatusDisabled          HotpatchEnablementStatus = "Disabled"
+	HotpatchEnablementStatusEnabled           HotpatchEnablementStatus = "Enabled"
+	HotpatchEnablementStatusPendingEvaluation HotpatchEnablementStatus = "PendingEvaluation"
+	HotpatchEnablementStatusUnknown           HotpatchEnablementStatus = "Unknown"
+)
+
+// PossibleHotpatchEnablementStatusValues returns the possible values for the HotpatchEnablementStatus const type.
+func PossibleHotpatchEnablementStatusValues() []HotpatchEnablementStatus {
+	return []HotpatchEnablementStatus{
+		HotpatchEnablementStatusActionRequired,
+		HotpatchEnablementStatusDisabled,
+		HotpatchEnablementStatusEnabled,
+		HotpatchEnablementStatusPendingEvaluation,
+		HotpatchEnablementStatusUnknown,
+	}
+}
+
+type InstanceViewTypes string
+
+const (
+	InstanceViewTypesInstanceView InstanceViewTypes = "instanceView"
+)
+
+// PossibleInstanceViewTypesValues returns the possible values for the InstanceViewTypes const type.
+func PossibleInstanceViewTypesValues() []InstanceViewTypes {
+	return []InstanceViewTypes{
+		InstanceViewTypesInstanceView,
+	}
+}
+
 // LastAttemptStatusEnum - Specifies the status of Agent Upgrade.
 type LastAttemptStatusEnum string
 
@@ -270,19 +358,39 @@ func PossibleLicenseProfileProductTypeValues() []LicenseProfileProductType {
 type LicenseProfileSubscriptionStatus string
 
 const (
-	LicenseProfileSubscriptionStatusDisabled LicenseProfileSubscriptionStatus = "Disabled"
-	LicenseProfileSubscriptionStatusEnabled  LicenseProfileSubscriptionStatus = "Enabled"
-	LicenseProfileSubscriptionStatusEnabling LicenseProfileSubscriptionStatus = "Enabling"
-	LicenseProfileSubscriptionStatusUnknown  LicenseProfileSubscriptionStatus = "Unknown"
+	LicenseProfileSubscriptionStatusDisabled  LicenseProfileSubscriptionStatus = "Disabled"
+	LicenseProfileSubscriptionStatusDisabling LicenseProfileSubscriptionStatus = "Disabling"
+	LicenseProfileSubscriptionStatusEnabled   LicenseProfileSubscriptionStatus = "Enabled"
+	LicenseProfileSubscriptionStatusEnabling  LicenseProfileSubscriptionStatus = "Enabling"
+	LicenseProfileSubscriptionStatusFailed    LicenseProfileSubscriptionStatus = "Failed"
+	LicenseProfileSubscriptionStatusUnknown   LicenseProfileSubscriptionStatus = "Unknown"
 )
 
 // PossibleLicenseProfileSubscriptionStatusValues returns the possible values for the LicenseProfileSubscriptionStatus const type.
 func PossibleLicenseProfileSubscriptionStatusValues() []LicenseProfileSubscriptionStatus {
 	return []LicenseProfileSubscriptionStatus{
 		LicenseProfileSubscriptionStatusDisabled,
+		LicenseProfileSubscriptionStatusDisabling,
 		LicenseProfileSubscriptionStatusEnabled,
 		LicenseProfileSubscriptionStatusEnabling,
+		LicenseProfileSubscriptionStatusFailed,
 		LicenseProfileSubscriptionStatusUnknown,
+	}
+}
+
+// LicenseProfileSubscriptionStatusUpdate - Indicates the new subscription status of the OS or Product Features.
+type LicenseProfileSubscriptionStatusUpdate string
+
+const (
+	LicenseProfileSubscriptionStatusUpdateDisable LicenseProfileSubscriptionStatusUpdate = "Disable"
+	LicenseProfileSubscriptionStatusUpdateEnable  LicenseProfileSubscriptionStatusUpdate = "Enable"
+)
+
+// PossibleLicenseProfileSubscriptionStatusUpdateValues returns the possible values for the LicenseProfileSubscriptionStatusUpdate const type.
+func PossibleLicenseProfileSubscriptionStatusUpdateValues() []LicenseProfileSubscriptionStatusUpdate {
+	return []LicenseProfileSubscriptionStatusUpdate{
+		LicenseProfileSubscriptionStatusUpdateDisable,
+		LicenseProfileSubscriptionStatusUpdateEnable,
 	}
 }
 
@@ -458,6 +566,66 @@ func PossiblePatchServiceUsedValues() []PatchServiceUsed {
 	}
 }
 
+// ProgramYear - Describes the program year the volume license is for.
+type ProgramYear string
+
+const (
+	ProgramYearYear1 ProgramYear = "Year 1"
+	ProgramYearYear2 ProgramYear = "Year 2"
+	ProgramYearYear3 ProgramYear = "Year 3"
+)
+
+// PossibleProgramYearValues returns the possible values for the ProgramYear const type.
+func PossibleProgramYearValues() []ProgramYear {
+	return []ProgramYear{
+		ProgramYearYear1,
+		ProgramYearYear2,
+		ProgramYearYear3,
+	}
+}
+
+// ProvisioningIssueSeverity - Severity of the provisioning issue.
+type ProvisioningIssueSeverity string
+
+const (
+	// ProvisioningIssueSeverityError - Errors will cause association provisioning to fail.
+	ProvisioningIssueSeverityError ProvisioningIssueSeverity = "Error"
+	// ProvisioningIssueSeverityWarning - Warnings can cause connectivity issues after provisioning succeeds.
+	ProvisioningIssueSeverityWarning ProvisioningIssueSeverity = "Warning"
+)
+
+// PossibleProvisioningIssueSeverityValues returns the possible values for the ProvisioningIssueSeverity const type.
+func PossibleProvisioningIssueSeverityValues() []ProvisioningIssueSeverity {
+	return []ProvisioningIssueSeverity{
+		ProvisioningIssueSeverityError,
+		ProvisioningIssueSeverityWarning,
+	}
+}
+
+// ProvisioningIssueType - Type of provisioning issue.
+type ProvisioningIssueType string
+
+const (
+	// ProvisioningIssueTypeConfigurationPropagationFailure - Configuration failed to propagate.
+	ProvisioningIssueTypeConfigurationPropagationFailure ProvisioningIssueType = "ConfigurationPropagationFailure"
+	// ProvisioningIssueTypeMissingIdentityConfiguration - Identity configuration is missing.
+	ProvisioningIssueTypeMissingIdentityConfiguration ProvisioningIssueType = "MissingIdentityConfiguration"
+	// ProvisioningIssueTypeMissingPerimeterConfiguration - Perimeter configuration is missing.
+	ProvisioningIssueTypeMissingPerimeterConfiguration ProvisioningIssueType = "MissingPerimeterConfiguration"
+	// ProvisioningIssueTypeOther - Other failure.
+	ProvisioningIssueTypeOther ProvisioningIssueType = "Other"
+)
+
+// PossibleProvisioningIssueTypeValues returns the possible values for the ProvisioningIssueType const type.
+func PossibleProvisioningIssueTypeValues() []ProvisioningIssueType {
+	return []ProvisioningIssueType{
+		ProvisioningIssueTypeConfigurationPropagationFailure,
+		ProvisioningIssueTypeMissingIdentityConfiguration,
+		ProvisioningIssueTypeMissingPerimeterConfiguration,
+		ProvisioningIssueTypeOther,
+	}
+}
+
 // ProvisioningState - The provisioning state, which only appears in the response.
 type ProvisioningState string
 
@@ -497,6 +665,9 @@ const (
 	// PublicNetworkAccessTypeEnabled - Allows Azure Arc agents to communicate with Azure Arc services over both public (internet)
 	// and private endpoints.
 	PublicNetworkAccessTypeEnabled PublicNetworkAccessType = "Enabled"
+	// PublicNetworkAccessTypeSecuredByPerimeter - Azure Arc agent communication with Azure Arc services over public (internet)
+	// is enforced by Network Security Perimeter (NSP)
+	PublicNetworkAccessTypeSecuredByPerimeter PublicNetworkAccessType = "SecuredByPerimeter"
 )
 
 // PossiblePublicNetworkAccessTypeValues returns the possible values for the PublicNetworkAccessType const type.
@@ -504,6 +675,7 @@ func PossiblePublicNetworkAccessTypeValues() []PublicNetworkAccessType {
 	return []PublicNetworkAccessType{
 		PublicNetworkAccessTypeDisabled,
 		PublicNetworkAccessTypeEnabled,
+		PublicNetworkAccessTypeSecuredByPerimeter,
 	}
 }
 

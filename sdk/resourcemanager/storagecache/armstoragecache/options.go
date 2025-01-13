@@ -173,6 +173,36 @@ type CachesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ImportJobsClientBeginCreateOrUpdateOptions contains the optional parameters for the ImportJobsClient.BeginCreateOrUpdate
+// method.
+type ImportJobsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ImportJobsClientBeginDeleteOptions contains the optional parameters for the ImportJobsClient.BeginDelete method.
+type ImportJobsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ImportJobsClientBeginUpdateOptions contains the optional parameters for the ImportJobsClient.BeginUpdate method.
+type ImportJobsClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ImportJobsClientGetOptions contains the optional parameters for the ImportJobsClient.Get method.
+type ImportJobsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ImportJobsClientListByAmlFilesystemOptions contains the optional parameters for the ImportJobsClient.NewListByAmlFilesystemPager
+// method.
+type ImportJobsClientListByAmlFilesystemOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ManagementClientCheckAmlFSSubnetsOptions contains the optional parameters for the ManagementClient.CheckAmlFSSubnets method.
 type ManagementClientCheckAmlFSSubnetsOptions struct {
 	// Information about the subnets to validate.

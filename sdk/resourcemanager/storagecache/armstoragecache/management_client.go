@@ -46,7 +46,7 @@ func NewManagementClient(subscriptionID string, credential azcore.TokenCredentia
 // CheckAmlFSSubnets - Check that subnets will be valid for AML file system create calls.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01-preview
+// Generated from API version 2024-03-01
 //   - options - ManagementClientCheckAmlFSSubnetsOptions contains the optional parameters for the ManagementClient.CheckAmlFSSubnets
 //     method.
 func (client *ManagementClient) CheckAmlFSSubnets(ctx context.Context, options *ManagementClientCheckAmlFSSubnetsOptions) (ManagementClientCheckAmlFSSubnetsResponse, error) {
@@ -82,7 +82,7 @@ func (client *ManagementClient) checkAmlFSSubnetsCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01-preview")
+	reqQP.Set("api-version", "2024-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.AmlFilesystemSubnetInfo != nil {
@@ -97,7 +97,7 @@ func (client *ManagementClient) checkAmlFSSubnetsCreateRequest(ctx context.Conte
 // GetRequiredAmlFSSubnetsSize - Get the number of available IP addresses needed for the AML file system information provided.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01-preview
+// Generated from API version 2024-03-01
 //   - options - ManagementClientGetRequiredAmlFSSubnetsSizeOptions contains the optional parameters for the ManagementClient.GetRequiredAmlFSSubnetsSize
 //     method.
 func (client *ManagementClient) GetRequiredAmlFSSubnetsSize(ctx context.Context, options *ManagementClientGetRequiredAmlFSSubnetsSizeOptions) (ManagementClientGetRequiredAmlFSSubnetsSizeResponse, error) {
@@ -134,7 +134,7 @@ func (client *ManagementClient) getRequiredAmlFSSubnetsSizeCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01-preview")
+	reqQP.Set("api-version", "2024-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.RequiredAMLFilesystemSubnetsSizeInfo != nil {

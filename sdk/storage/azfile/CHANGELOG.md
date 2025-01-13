@@ -1,5 +1,68 @@
 # Release History
 
+## 1.5.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.5.0-beta.1 (2025-01-13)
+
+### Features Added
+* Add Premium access tier to Files Shares
+* Provisioned v2 billing model for Azure files
+
+## 1.4.0 (2024-11-13)
+
+### Features Added
+* Fix compareHeaders custom sorting algorithm for String To Sign.
+
+## 1.4.0-beta.1 (2024-10-22)
+
+### Features Added
+* Add Paid Burst IOPS/Bandwidth support for Premium Files.
+* REST API for binary ACE in Azure Files.
+
+### Other Changes
+* Updated `azidentity` version to `1.8.0`
+* Updated `azcore` version to `1.16.0`
+
+## 1.3.1 (2024-09-18)
+
+### Features Added
+* Upgraded service version to `2024-08-04`.
+
+
+
+## 1.3.1-beta.1 (2024-08-27)
+
+### Features Added
+* Snapshot management support via REST for NFS shares.
+* Upgraded service version to `2024-08-04`.
+
+### Other Changes
+* Updated `azcore` version to `1.14.0`
+
+## 1.3.0 (2024-07-18)
+
+### Other Changes
+* GetProperties() was called twice in DownloadFile method. Enhanced to call it only once, reducing latency.
+* Updated `azcore` version to `1.13.0`
+
+## 1.3.0-beta.1 (2024-06-14)
+
+### Features Added
+* Add Rename Support to List Ranges API
+* Updated service version to `2024-05-04`
+
+### Other Changes
+* Updated `azidentity` version to `1.6.0`
+* Updated `azcore` version to `1.12.0`
+
 ## 1.2.2 (2024-04-09)
 
 ### Bugs Fixed

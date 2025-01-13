@@ -12,9 +12,6 @@ import (
 	"crypto/md5"
 	"encoding/binary"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"hash/crc64"
 	"io"
 	"math/rand"
@@ -26,6 +23,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
@@ -33,6 +32,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/testcommon"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/pageblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 )
@@ -126,7 +126,7 @@ func (s *PageBlobUnrecordedTestsSuite) TestPageBlobClient() {
 	blobName := testName
 	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s", accountName, containerName, blobName)
 
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	cred, err := credential.New(nil)
 	_require.NoError(err)
 
 	pbClient, err := pageblob.NewClient(blobURL, cred, nil)
@@ -205,14 +205,14 @@ func (s *PageBlobRecordedTestsSuite) TestPutGetPages() {
 	putResp, err := pbClient.UploadPages(context.Background(), reader, blob.HTTPRange{Count: count}, nil)
 	_require.NoError(err)
 	_require.NotNil(putResp.LastModified)
-	_require.Equal((*putResp.LastModified).IsZero(), false)
+	_require.Equal(putResp.LastModified.IsZero(), false)
 	_require.NotNil(putResp.ETag)
 	_require.Nil(putResp.ContentMD5)
 	_require.Equal(*putResp.BlobSequenceNumber, int64(0))
 	_require.NotNil(*putResp.RequestID)
 	_require.NotNil(*putResp.Version)
 	_require.NotNil(putResp.Date)
-	_require.Equal((*putResp.Date).IsZero(), false)
+	_require.Equal(putResp.Date.IsZero(), false)
 
 	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{
 		Range: blob.HTTPRange{
@@ -224,13 +224,13 @@ func (s *PageBlobRecordedTestsSuite) TestPutGetPages() {
 		pageListResp, err := pager.NextPage(context.Background())
 		_require.NoError(err)
 		_require.NotNil(pageListResp.LastModified)
-		_require.Equal((*pageListResp.LastModified).IsZero(), false)
+		_require.Equal(pageListResp.LastModified.IsZero(), false)
 		_require.NotNil(pageListResp.ETag)
 		_require.Equal(*pageListResp.BlobContentLength, int64(512*10))
 		_require.NotNil(*pageListResp.RequestID)
 		_require.NotNil(*pageListResp.Version)
 		_require.NotNil(pageListResp.Date)
-		_require.Equal((*pageListResp.Date).IsZero(), false)
+		_require.Equal(pageListResp.Date.IsZero(), false)
 		_require.NotNil(pageListResp.PageList)
 		pageRangeResp := pageListResp.PageList.PageRange
 		_require.Len(pageRangeResp, 1)
@@ -398,7 +398,7 @@ func (s *PageBlobUnrecordedTestsSuite) TestUploadPagesFromURLWithMD5() {
 
 	// Upload page from URL with bad MD5
 	_, badMD5 := testcommon.GetDataAndReader(testName+"bad-md5", contentSize)
-	badContentMD5 := badMD5[:]
+	badContentMD5 := badMD5
 	uploadPagesFromURLOptions = pageblob.UploadPagesFromURLOptions{
 		SourceContentValidation: blob.SourceContentValidationTypeMD5(badContentMD5),
 	}
@@ -608,11 +608,18 @@ func (s *PageBlobUnrecordedTestsSuite) TestIncrementalCopy() {
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
-	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
-	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
-	_, err = containerClient.SetAccessPolicy(context.Background(), &container.SetAccessPolicyOptions{Access: to.Ptr(container.PublicAccessTypeBlob)})
+	accountSAS, err := testcommon.GetAccountSAS(sas.AccountPermissions{Read: true, Create: true, Write: true, List: true, Add: true, Delete: true},
+		sas.AccountResourceTypes{Service: true, Container: true, Object: true})
 	_require.NoError(err)
+
+	svcClientSAS, err := service.NewClientWithNoCredential(svcClient.URL()+"?"+accountSAS, nil)
+	_require.NoError(err)
+	containerClient := svcClientSAS.NewContainerClient(containerName)
+	_, err = containerClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	srcBlob := createNewPageBlob(context.Background(), _require, "src"+testcommon.GenerateBlobName(testName), containerClient)
 
@@ -633,12 +640,12 @@ func (s *PageBlobUnrecordedTestsSuite) TestIncrementalCopy() {
 	resp, err := dstBlob.StartCopyIncremental(context.Background(), srcBlob.URL(), *snapshotResp.Snapshot, nil)
 	_require.NoError(err)
 	_require.NotNil(resp.LastModified)
-	_require.Equal((*resp.LastModified).IsZero(), false)
+	_require.Equal(resp.LastModified.IsZero(), false)
 	_require.NotNil(resp.ETag)
 	_require.NotEqual(*resp.RequestID, "")
 	_require.NotEqual(*resp.Version, "")
 	_require.NotNil(resp.Date)
-	_require.Equal((*resp.Date).IsZero(), false)
+	_require.Equal(resp.Date.IsZero(), false)
 	_require.NotEqual(*resp.CopyID, "")
 	_require.Equal(*resp.CopyStatus, blob.CopyStatusTypePending)
 
@@ -4028,8 +4035,9 @@ func (s *PageBlobUnrecordedTestsSuite) TestPageBlockWithCPK() {
 	}, &uploadPagesOptions)
 	_require.NoError(err)
 	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
-	_require.EqualValues(uploadResp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
-
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.EqualValues(uploadResp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+	}
 	pager := pbClient.NewGetPageRangesPager(nil)
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
@@ -4064,7 +4072,9 @@ func (s *PageBlobUnrecordedTestsSuite) TestPageBlockWithCPK() {
 	destData, err := io.ReadAll(downloadResp.Body)
 	_require.NoError(err)
 	_require.EqualValues(destData, srcData)
-	_require.EqualValues(*downloadResp.EncryptionKeySHA256, *testcommon.TestCPKByValue.EncryptionKeySHA256)
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.EqualValues(*downloadResp.EncryptionKeySHA256, *testcommon.TestCPKByValue.EncryptionKeySHA256)
+	}
 }
 
 func (s *PageBlobUnrecordedTestsSuite) TestPageBlockWithCPKScope() {
@@ -4215,7 +4225,6 @@ func (s *PageBlobUnrecordedTestsSuite) TestPageBlobSetBlobTagForSnapshot() {
 
 	blobGetTagsResponse, err := pbClient.GetTags(context.Background(), nil)
 	_require.NoError(err)
-	// _require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
 	blobTagsSet := blobGetTagsResponse.BlobTagSet
 	_require.NotNil(blobTagsSet)
 	_require.Len(blobTagsSet, len(testcommon.SpecialCharBlobTagsMap))

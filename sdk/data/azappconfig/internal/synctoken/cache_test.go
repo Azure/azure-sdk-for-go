@@ -37,7 +37,7 @@ func TestCache(t *testing.T) {
 	require.NoError(t, stk.Set("id2=some;sn=2"))
 	f = stk.Get()
 	// NOTE: Get() ranges over a map and the order is non-deterministic so we can't perform a simple equals check
-	//require.EqualValues(t, "id=val2,id2=some", f)
+	// require.EqualValues(t, "id=val2,id2=some", f)
 	require.Contains(t, f, "id=val2")
 	require.Contains(t, f, "id2=some")
 	require.EqualValues(t, 1, strings.Count(f, ","))

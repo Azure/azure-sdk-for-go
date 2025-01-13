@@ -148,6 +148,22 @@ func (c *ClientFactory) NewContainerAppsAuthConfigsClient() *ContainerAppsAuthCo
 	}
 }
 
+// NewContainerAppsBuildsByContainerAppClient creates a new instance of ContainerAppsBuildsByContainerAppClient.
+func (c *ClientFactory) NewContainerAppsBuildsByContainerAppClient() *ContainerAppsBuildsByContainerAppClient {
+	return &ContainerAppsBuildsByContainerAppClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewContainerAppsBuildsClient creates a new instance of ContainerAppsBuildsClient.
+func (c *ClientFactory) NewContainerAppsBuildsClient() *ContainerAppsBuildsClient {
+	return &ContainerAppsBuildsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewContainerAppsClient creates a new instance of ContainerAppsClient.
 func (c *ClientFactory) NewContainerAppsClient() *ContainerAppsClient {
 	return &ContainerAppsClient{
@@ -164,6 +180,14 @@ func (c *ClientFactory) NewContainerAppsDiagnosticsClient() *ContainerAppsDiagno
 	}
 }
 
+// NewContainerAppsPatchesClient creates a new instance of ContainerAppsPatchesClient.
+func (c *ClientFactory) NewContainerAppsPatchesClient() *ContainerAppsPatchesClient {
+	return &ContainerAppsPatchesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewContainerAppsRevisionReplicasClient creates a new instance of ContainerAppsRevisionReplicasClient.
 func (c *ClientFactory) NewContainerAppsRevisionReplicasClient() *ContainerAppsRevisionReplicasClient {
 	return &ContainerAppsRevisionReplicasClient{
@@ -175,6 +199,14 @@ func (c *ClientFactory) NewContainerAppsRevisionReplicasClient() *ContainerAppsR
 // NewContainerAppsRevisionsClient creates a new instance of ContainerAppsRevisionsClient.
 func (c *ClientFactory) NewContainerAppsRevisionsClient() *ContainerAppsRevisionsClient {
 	return &ContainerAppsRevisionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewContainerAppsSessionPoolsClient creates a new instance of ContainerAppsSessionPoolsClient.
+func (c *ClientFactory) NewContainerAppsSessionPoolsClient() *ContainerAppsSessionPoolsClient {
+	return &ContainerAppsSessionPoolsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -220,6 +252,14 @@ func (c *ClientFactory) NewDotNetComponentsClient() *DotNetComponentsClient {
 	}
 }
 
+// NewFunctionsExtensionClient creates a new instance of FunctionsExtensionClient.
+func (c *ClientFactory) NewFunctionsExtensionClient() *FunctionsExtensionClient {
+	return &FunctionsExtensionClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewJavaComponentsClient creates a new instance of JavaComponentsClient.
 func (c *ClientFactory) NewJavaComponentsClient() *JavaComponentsClient {
 	return &JavaComponentsClient{
@@ -244,6 +284,14 @@ func (c *ClientFactory) NewJobsExecutionsClient() *JobsExecutionsClient {
 	}
 }
 
+// NewLogicAppsClient creates a new instance of LogicAppsClient.
+func (c *ClientFactory) NewLogicAppsClient() *LogicAppsClient {
+	return &LogicAppsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewManagedCertificatesClient creates a new instance of ManagedCertificatesClient.
 func (c *ClientFactory) NewManagedCertificatesClient() *ManagedCertificatesClient {
 	return &ManagedCertificatesClient{
@@ -255,6 +303,22 @@ func (c *ClientFactory) NewManagedCertificatesClient() *ManagedCertificatesClien
 // NewManagedEnvironmentDiagnosticsClient creates a new instance of ManagedEnvironmentDiagnosticsClient.
 func (c *ClientFactory) NewManagedEnvironmentDiagnosticsClient() *ManagedEnvironmentDiagnosticsClient {
 	return &ManagedEnvironmentDiagnosticsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewManagedEnvironmentPrivateEndpointConnectionsClient creates a new instance of ManagedEnvironmentPrivateEndpointConnectionsClient.
+func (c *ClientFactory) NewManagedEnvironmentPrivateEndpointConnectionsClient() *ManagedEnvironmentPrivateEndpointConnectionsClient {
+	return &ManagedEnvironmentPrivateEndpointConnectionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewManagedEnvironmentPrivateLinkResourcesClient creates a new instance of ManagedEnvironmentPrivateLinkResourcesClient.
+func (c *ClientFactory) NewManagedEnvironmentPrivateLinkResourcesClient() *ManagedEnvironmentPrivateLinkResourcesClient {
+	return &ManagedEnvironmentPrivateLinkResourcesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

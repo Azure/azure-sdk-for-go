@@ -3,15 +3,21 @@
 Param(
     [Parameter(Mandatory = $true)]
     [string] $serviceDirectory,
-    [string] $testTimeout = "10s"
+    [string] $testTimeout = "10s",
+    [bool] $enableRaceDetector = $false
 )
 
 $ErrorActionPreference = 'Stop'
-
 Push-Location sdk/$serviceDirectory
-Write-Host "##[command] Executing 'go test -timeout $testTimeout -v -coverprofile coverage.txt ./...' in sdk/$serviceDirectory"
 
-go test -timeout $testTimeout -v -coverprofile coverage.txt ./... | Tee-Object -FilePath outfile.txt
+if ($enableRaceDetector) {
+    Write-Host "##[command] Executing 'go test -timeout $testTimeout -race -v -coverprofile coverage.txt ./...' in sdk/$serviceDirectory"
+    go test -timeout $testTimeout -race -v -coverprofile coverage.txt ./... | Tee-Object -FilePath outfile.txt
+} else {
+    Write-Host "##[command] Executing 'go test -timeout $testTimeout -v -coverprofile coverage.txt ./...' in sdk/$serviceDirectory"
+    go test -timeout $testTimeout -v -coverprofile coverage.txt ./... | Tee-Object -FilePath outfile.txt
+}
+
 # go test will return a non-zero exit code on test failures so don't skip generating the report in this case
 $GOTESTEXITCODE = $LASTEXITCODE
 

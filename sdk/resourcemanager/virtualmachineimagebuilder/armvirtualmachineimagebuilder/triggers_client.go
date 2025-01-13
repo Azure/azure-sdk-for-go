@@ -47,7 +47,7 @@ func NewTriggersClient(subscriptionID string, credential azcore.TokenCredential,
 // BeginCreateOrUpdate - Create or update a trigger for the specified virtual machine image template
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-07-01
+// Generated from API version 2024-02-01
 //   - resourceGroupName - The name of the resource group.
 //   - imageTemplateName - The name of the image Template
 //   - triggerName - The name of the trigger
@@ -75,7 +75,7 @@ func (client *TriggersClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 // CreateOrUpdate - Create or update a trigger for the specified virtual machine image template
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-07-01
+// Generated from API version 2024-02-01
 func (client *TriggersClient) createOrUpdate(ctx context.Context, resourceGroupName string, imageTemplateName string, triggerName string, parameters Trigger, options *TriggersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TriggersClient.BeginCreateOrUpdate"
@@ -121,7 +121,7 @@ func (client *TriggersClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-07-01")
+	reqQP.Set("api-version", "2024-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -133,7 +133,7 @@ func (client *TriggersClient) createOrUpdateCreateRequest(ctx context.Context, r
 // BeginDelete - Delete a trigger for the specified virtual machine image template
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-07-01
+// Generated from API version 2024-02-01
 //   - resourceGroupName - The name of the resource group.
 //   - imageTemplateName - The name of the image Template
 //   - triggerName - The name of the trigger
@@ -159,7 +159,7 @@ func (client *TriggersClient) BeginDelete(ctx context.Context, resourceGroupName
 // Delete - Delete a trigger for the specified virtual machine image template
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-07-01
+// Generated from API version 2024-02-01
 func (client *TriggersClient) deleteOperation(ctx context.Context, resourceGroupName string, imageTemplateName string, triggerName string, options *TriggersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TriggersClient.BeginDelete"
@@ -205,7 +205,7 @@ func (client *TriggersClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-07-01")
+	reqQP.Set("api-version", "2024-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -214,7 +214,7 @@ func (client *TriggersClient) deleteCreateRequest(ctx context.Context, resourceG
 // Get - Get the specified trigger for the specified image template resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-07-01
+// Generated from API version 2024-02-01
 //   - resourceGroupName - The name of the resource group.
 //   - imageTemplateName - The name of the image Template
 //   - triggerName - The name of the trigger
@@ -265,7 +265,7 @@ func (client *TriggersClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-07-01")
+	reqQP.Set("api-version", "2024-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -282,7 +282,7 @@ func (client *TriggersClient) getHandleResponse(resp *http.Response) (TriggersCl
 
 // NewListByImageTemplatePager - List all triggers for the specified Image Template resource
 //
-// Generated from API version 2023-07-01
+// Generated from API version 2024-02-01
 //   - resourceGroupName - The name of the resource group.
 //   - imageTemplateName - The name of the image Template
 //   - options - TriggersClientListByImageTemplateOptions contains the optional parameters for the TriggersClient.NewListByImageTemplatePager
@@ -330,7 +330,7 @@ func (client *TriggersClient) listByImageTemplateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-07-01")
+	reqQP.Set("api-version", "2024-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

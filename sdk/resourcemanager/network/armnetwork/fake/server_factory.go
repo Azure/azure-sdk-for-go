@@ -59,9 +59,12 @@ type ServerFactory struct {
 	ExpressRouteProviderPortsLocationServer               ExpressRouteProviderPortsLocationServer
 	ExpressRouteServiceProvidersServer                    ExpressRouteServiceProvidersServer
 	FirewallPoliciesServer                                FirewallPoliciesServer
+	FirewallPolicyDeploymentsServer                       FirewallPolicyDeploymentsServer
+	FirewallPolicyDraftsServer                            FirewallPolicyDraftsServer
 	FirewallPolicyIdpsSignaturesServer                    FirewallPolicyIdpsSignaturesServer
 	FirewallPolicyIdpsSignaturesFilterValuesServer        FirewallPolicyIdpsSignaturesFilterValuesServer
 	FirewallPolicyIdpsSignaturesOverridesServer           FirewallPolicyIdpsSignaturesOverridesServer
+	FirewallPolicyRuleCollectionGroupDraftsServer         FirewallPolicyRuleCollectionGroupDraftsServer
 	FirewallPolicyRuleCollectionGroupsServer              FirewallPolicyRuleCollectionGroupsServer
 	FlowLogsServer                                        FlowLogsServer
 	GroupsServer                                          GroupsServer
@@ -75,6 +78,7 @@ type ServerFactory struct {
 	InterfaceLoadBalancersServer                          InterfaceLoadBalancersServer
 	InterfaceTapConfigurationsServer                      InterfaceTapConfigurationsServer
 	InterfacesServer                                      InterfacesServer
+	IpamPoolsServer                                       IpamPoolsServer
 	LoadBalancerBackendAddressPoolsServer                 LoadBalancerBackendAddressPoolsServer
 	LoadBalancerFrontendIPConfigurationsServer            LoadBalancerFrontendIPConfigurationsServer
 	LoadBalancerLoadBalancingRulesServer                  LoadBalancerLoadBalancingRulesServer
@@ -87,6 +91,7 @@ type ServerFactory struct {
 	ManagementGroupNetworkManagerConnectionsServer        ManagementGroupNetworkManagerConnectionsServer
 	ManagerCommitsServer                                  ManagerCommitsServer
 	ManagerDeploymentStatusServer                         ManagerDeploymentStatusServer
+	ManagerRoutingConfigurationsServer                    ManagerRoutingConfigurationsServer
 	ManagersServer                                        ManagersServer
 	NatGatewaysServer                                     NatGatewaysServer
 	NatRulesServer                                        NatRulesServer
@@ -100,6 +105,8 @@ type ServerFactory struct {
 	ProfilesServer                                        ProfilesServer
 	PublicIPAddressesServer                               PublicIPAddressesServer
 	PublicIPPrefixesServer                                PublicIPPrefixesServer
+	ReachabilityAnalysisIntentsServer                     ReachabilityAnalysisIntentsServer
+	ReachabilityAnalysisRunsServer                        ReachabilityAnalysisRunsServer
 	ResourceNavigationLinksServer                         ResourceNavigationLinksServer
 	RouteFilterRulesServer                                RouteFilterRulesServer
 	RouteFiltersServer                                    RouteFiltersServer
@@ -107,16 +114,22 @@ type ServerFactory struct {
 	RouteTablesServer                                     RouteTablesServer
 	RoutesServer                                          RoutesServer
 	RoutingIntentServer                                   RoutingIntentServer
+	RoutingRuleCollectionsServer                          RoutingRuleCollectionsServer
+	RoutingRulesServer                                    RoutingRulesServer
 	ScopeConnectionsServer                                ScopeConnectionsServer
 	SecurityAdminConfigurationsServer                     SecurityAdminConfigurationsServer
 	SecurityGroupsServer                                  SecurityGroupsServer
 	SecurityPartnerProvidersServer                        SecurityPartnerProvidersServer
 	SecurityRulesServer                                   SecurityRulesServer
+	SecurityUserConfigurationsServer                      SecurityUserConfigurationsServer
+	SecurityUserRuleCollectionsServer                     SecurityUserRuleCollectionsServer
+	SecurityUserRulesServer                               SecurityUserRulesServer
 	ServiceAssociationLinksServer                         ServiceAssociationLinksServer
 	ServiceEndpointPoliciesServer                         ServiceEndpointPoliciesServer
 	ServiceEndpointPolicyDefinitionsServer                ServiceEndpointPolicyDefinitionsServer
 	ServiceTagInformationServer                           ServiceTagInformationServer
 	ServiceTagsServer                                     ServiceTagsServer
+	StaticCidrsServer                                     StaticCidrsServer
 	StaticMembersServer                                   StaticMembersServer
 	SubnetsServer                                         SubnetsServer
 	SubscriptionNetworkManagerConnectionsServer           SubscriptionNetworkManagerConnectionsServer
@@ -130,6 +143,7 @@ type ServerFactory struct {
 	VPNSiteLinksServer                                    VPNSiteLinksServer
 	VPNSitesServer                                        VPNSitesServer
 	VPNSitesConfigurationServer                           VPNSitesConfigurationServer
+	VerifierWorkspacesServer                              VerifierWorkspacesServer
 	VipSwapServer                                         VipSwapServer
 	VirtualApplianceConnectionsServer                     VirtualApplianceConnectionsServer
 	VirtualApplianceSKUsServer                            VirtualApplianceSKUsServer
@@ -208,9 +222,12 @@ type ServerFactoryTransport struct {
 	trExpressRouteProviderPortsLocationServer               *ExpressRouteProviderPortsLocationServerTransport
 	trExpressRouteServiceProvidersServer                    *ExpressRouteServiceProvidersServerTransport
 	trFirewallPoliciesServer                                *FirewallPoliciesServerTransport
+	trFirewallPolicyDeploymentsServer                       *FirewallPolicyDeploymentsServerTransport
+	trFirewallPolicyDraftsServer                            *FirewallPolicyDraftsServerTransport
 	trFirewallPolicyIdpsSignaturesServer                    *FirewallPolicyIdpsSignaturesServerTransport
 	trFirewallPolicyIdpsSignaturesFilterValuesServer        *FirewallPolicyIdpsSignaturesFilterValuesServerTransport
 	trFirewallPolicyIdpsSignaturesOverridesServer           *FirewallPolicyIdpsSignaturesOverridesServerTransport
+	trFirewallPolicyRuleCollectionGroupDraftsServer         *FirewallPolicyRuleCollectionGroupDraftsServerTransport
 	trFirewallPolicyRuleCollectionGroupsServer              *FirewallPolicyRuleCollectionGroupsServerTransport
 	trFlowLogsServer                                        *FlowLogsServerTransport
 	trGroupsServer                                          *GroupsServerTransport
@@ -224,6 +241,7 @@ type ServerFactoryTransport struct {
 	trInterfaceLoadBalancersServer                          *InterfaceLoadBalancersServerTransport
 	trInterfaceTapConfigurationsServer                      *InterfaceTapConfigurationsServerTransport
 	trInterfacesServer                                      *InterfacesServerTransport
+	trIpamPoolsServer                                       *IpamPoolsServerTransport
 	trLoadBalancerBackendAddressPoolsServer                 *LoadBalancerBackendAddressPoolsServerTransport
 	trLoadBalancerFrontendIPConfigurationsServer            *LoadBalancerFrontendIPConfigurationsServerTransport
 	trLoadBalancerLoadBalancingRulesServer                  *LoadBalancerLoadBalancingRulesServerTransport
@@ -236,6 +254,7 @@ type ServerFactoryTransport struct {
 	trManagementGroupNetworkManagerConnectionsServer        *ManagementGroupNetworkManagerConnectionsServerTransport
 	trManagerCommitsServer                                  *ManagerCommitsServerTransport
 	trManagerDeploymentStatusServer                         *ManagerDeploymentStatusServerTransport
+	trManagerRoutingConfigurationsServer                    *ManagerRoutingConfigurationsServerTransport
 	trManagersServer                                        *ManagersServerTransport
 	trNatGatewaysServer                                     *NatGatewaysServerTransport
 	trNatRulesServer                                        *NatRulesServerTransport
@@ -249,6 +268,8 @@ type ServerFactoryTransport struct {
 	trProfilesServer                                        *ProfilesServerTransport
 	trPublicIPAddressesServer                               *PublicIPAddressesServerTransport
 	trPublicIPPrefixesServer                                *PublicIPPrefixesServerTransport
+	trReachabilityAnalysisIntentsServer                     *ReachabilityAnalysisIntentsServerTransport
+	trReachabilityAnalysisRunsServer                        *ReachabilityAnalysisRunsServerTransport
 	trResourceNavigationLinksServer                         *ResourceNavigationLinksServerTransport
 	trRouteFilterRulesServer                                *RouteFilterRulesServerTransport
 	trRouteFiltersServer                                    *RouteFiltersServerTransport
@@ -256,16 +277,22 @@ type ServerFactoryTransport struct {
 	trRouteTablesServer                                     *RouteTablesServerTransport
 	trRoutesServer                                          *RoutesServerTransport
 	trRoutingIntentServer                                   *RoutingIntentServerTransport
+	trRoutingRuleCollectionsServer                          *RoutingRuleCollectionsServerTransport
+	trRoutingRulesServer                                    *RoutingRulesServerTransport
 	trScopeConnectionsServer                                *ScopeConnectionsServerTransport
 	trSecurityAdminConfigurationsServer                     *SecurityAdminConfigurationsServerTransport
 	trSecurityGroupsServer                                  *SecurityGroupsServerTransport
 	trSecurityPartnerProvidersServer                        *SecurityPartnerProvidersServerTransport
 	trSecurityRulesServer                                   *SecurityRulesServerTransport
+	trSecurityUserConfigurationsServer                      *SecurityUserConfigurationsServerTransport
+	trSecurityUserRuleCollectionsServer                     *SecurityUserRuleCollectionsServerTransport
+	trSecurityUserRulesServer                               *SecurityUserRulesServerTransport
 	trServiceAssociationLinksServer                         *ServiceAssociationLinksServerTransport
 	trServiceEndpointPoliciesServer                         *ServiceEndpointPoliciesServerTransport
 	trServiceEndpointPolicyDefinitionsServer                *ServiceEndpointPolicyDefinitionsServerTransport
 	trServiceTagInformationServer                           *ServiceTagInformationServerTransport
 	trServiceTagsServer                                     *ServiceTagsServerTransport
+	trStaticCidrsServer                                     *StaticCidrsServerTransport
 	trStaticMembersServer                                   *StaticMembersServerTransport
 	trSubnetsServer                                         *SubnetsServerTransport
 	trSubscriptionNetworkManagerConnectionsServer           *SubscriptionNetworkManagerConnectionsServerTransport
@@ -279,6 +306,7 @@ type ServerFactoryTransport struct {
 	trVPNSiteLinksServer                                    *VPNSiteLinksServerTransport
 	trVPNSitesServer                                        *VPNSitesServerTransport
 	trVPNSitesConfigurationServer                           *VPNSitesConfigurationServerTransport
+	trVerifierWorkspacesServer                              *VerifierWorkspacesServerTransport
 	trVipSwapServer                                         *VipSwapServerTransport
 	trVirtualApplianceConnectionsServer                     *VirtualApplianceConnectionsServerTransport
 	trVirtualApplianceSKUsServer                            *VirtualApplianceSKUsServerTransport
@@ -512,6 +540,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewFirewallPoliciesServerTransport(&s.srv.FirewallPoliciesServer)
 		})
 		resp, err = s.trFirewallPoliciesServer.Do(req)
+	case "FirewallPolicyDeploymentsClient":
+		initServer(s, &s.trFirewallPolicyDeploymentsServer, func() *FirewallPolicyDeploymentsServerTransport {
+			return NewFirewallPolicyDeploymentsServerTransport(&s.srv.FirewallPolicyDeploymentsServer)
+		})
+		resp, err = s.trFirewallPolicyDeploymentsServer.Do(req)
+	case "FirewallPolicyDraftsClient":
+		initServer(s, &s.trFirewallPolicyDraftsServer, func() *FirewallPolicyDraftsServerTransport {
+			return NewFirewallPolicyDraftsServerTransport(&s.srv.FirewallPolicyDraftsServer)
+		})
+		resp, err = s.trFirewallPolicyDraftsServer.Do(req)
 	case "FirewallPolicyIdpsSignaturesClient":
 		initServer(s, &s.trFirewallPolicyIdpsSignaturesServer, func() *FirewallPolicyIdpsSignaturesServerTransport {
 			return NewFirewallPolicyIdpsSignaturesServerTransport(&s.srv.FirewallPolicyIdpsSignaturesServer)
@@ -527,6 +565,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewFirewallPolicyIdpsSignaturesOverridesServerTransport(&s.srv.FirewallPolicyIdpsSignaturesOverridesServer)
 		})
 		resp, err = s.trFirewallPolicyIdpsSignaturesOverridesServer.Do(req)
+	case "FirewallPolicyRuleCollectionGroupDraftsClient":
+		initServer(s, &s.trFirewallPolicyRuleCollectionGroupDraftsServer, func() *FirewallPolicyRuleCollectionGroupDraftsServerTransport {
+			return NewFirewallPolicyRuleCollectionGroupDraftsServerTransport(&s.srv.FirewallPolicyRuleCollectionGroupDraftsServer)
+		})
+		resp, err = s.trFirewallPolicyRuleCollectionGroupDraftsServer.Do(req)
 	case "FirewallPolicyRuleCollectionGroupsClient":
 		initServer(s, &s.trFirewallPolicyRuleCollectionGroupsServer, func() *FirewallPolicyRuleCollectionGroupsServerTransport {
 			return NewFirewallPolicyRuleCollectionGroupsServerTransport(&s.srv.FirewallPolicyRuleCollectionGroupsServer)
@@ -584,6 +627,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "InterfacesClient":
 		initServer(s, &s.trInterfacesServer, func() *InterfacesServerTransport { return NewInterfacesServerTransport(&s.srv.InterfacesServer) })
 		resp, err = s.trInterfacesServer.Do(req)
+	case "IpamPoolsClient":
+		initServer(s, &s.trIpamPoolsServer, func() *IpamPoolsServerTransport { return NewIpamPoolsServerTransport(&s.srv.IpamPoolsServer) })
+		resp, err = s.trIpamPoolsServer.Do(req)
 	case "LoadBalancerBackendAddressPoolsClient":
 		initServer(s, &s.trLoadBalancerBackendAddressPoolsServer, func() *LoadBalancerBackendAddressPoolsServerTransport {
 			return NewLoadBalancerBackendAddressPoolsServerTransport(&s.srv.LoadBalancerBackendAddressPoolsServer)
@@ -642,6 +688,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewManagerDeploymentStatusServerTransport(&s.srv.ManagerDeploymentStatusServer)
 		})
 		resp, err = s.trManagerDeploymentStatusServer.Do(req)
+	case "ManagerRoutingConfigurationsClient":
+		initServer(s, &s.trManagerRoutingConfigurationsServer, func() *ManagerRoutingConfigurationsServerTransport {
+			return NewManagerRoutingConfigurationsServerTransport(&s.srv.ManagerRoutingConfigurationsServer)
+		})
+		resp, err = s.trManagerRoutingConfigurationsServer.Do(req)
 	case "ManagersClient":
 		initServer(s, &s.trManagersServer, func() *ManagersServerTransport { return NewManagersServerTransport(&s.srv.ManagersServer) })
 		resp, err = s.trManagersServer.Do(req)
@@ -697,6 +748,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewPublicIPPrefixesServerTransport(&s.srv.PublicIPPrefixesServer)
 		})
 		resp, err = s.trPublicIPPrefixesServer.Do(req)
+	case "ReachabilityAnalysisIntentsClient":
+		initServer(s, &s.trReachabilityAnalysisIntentsServer, func() *ReachabilityAnalysisIntentsServerTransport {
+			return NewReachabilityAnalysisIntentsServerTransport(&s.srv.ReachabilityAnalysisIntentsServer)
+		})
+		resp, err = s.trReachabilityAnalysisIntentsServer.Do(req)
+	case "ReachabilityAnalysisRunsClient":
+		initServer(s, &s.trReachabilityAnalysisRunsServer, func() *ReachabilityAnalysisRunsServerTransport {
+			return NewReachabilityAnalysisRunsServerTransport(&s.srv.ReachabilityAnalysisRunsServer)
+		})
+		resp, err = s.trReachabilityAnalysisRunsServer.Do(req)
 	case "ResourceNavigationLinksClient":
 		initServer(s, &s.trResourceNavigationLinksServer, func() *ResourceNavigationLinksServerTransport {
 			return NewResourceNavigationLinksServerTransport(&s.srv.ResourceNavigationLinksServer)
@@ -724,6 +785,14 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewRoutingIntentServerTransport(&s.srv.RoutingIntentServer)
 		})
 		resp, err = s.trRoutingIntentServer.Do(req)
+	case "RoutingRuleCollectionsClient":
+		initServer(s, &s.trRoutingRuleCollectionsServer, func() *RoutingRuleCollectionsServerTransport {
+			return NewRoutingRuleCollectionsServerTransport(&s.srv.RoutingRuleCollectionsServer)
+		})
+		resp, err = s.trRoutingRuleCollectionsServer.Do(req)
+	case "RoutingRulesClient":
+		initServer(s, &s.trRoutingRulesServer, func() *RoutingRulesServerTransport { return NewRoutingRulesServerTransport(&s.srv.RoutingRulesServer) })
+		resp, err = s.trRoutingRulesServer.Do(req)
 	case "ScopeConnectionsClient":
 		initServer(s, &s.trScopeConnectionsServer, func() *ScopeConnectionsServerTransport {
 			return NewScopeConnectionsServerTransport(&s.srv.ScopeConnectionsServer)
@@ -749,6 +818,21 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewSecurityRulesServerTransport(&s.srv.SecurityRulesServer)
 		})
 		resp, err = s.trSecurityRulesServer.Do(req)
+	case "SecurityUserConfigurationsClient":
+		initServer(s, &s.trSecurityUserConfigurationsServer, func() *SecurityUserConfigurationsServerTransport {
+			return NewSecurityUserConfigurationsServerTransport(&s.srv.SecurityUserConfigurationsServer)
+		})
+		resp, err = s.trSecurityUserConfigurationsServer.Do(req)
+	case "SecurityUserRuleCollectionsClient":
+		initServer(s, &s.trSecurityUserRuleCollectionsServer, func() *SecurityUserRuleCollectionsServerTransport {
+			return NewSecurityUserRuleCollectionsServerTransport(&s.srv.SecurityUserRuleCollectionsServer)
+		})
+		resp, err = s.trSecurityUserRuleCollectionsServer.Do(req)
+	case "SecurityUserRulesClient":
+		initServer(s, &s.trSecurityUserRulesServer, func() *SecurityUserRulesServerTransport {
+			return NewSecurityUserRulesServerTransport(&s.srv.SecurityUserRulesServer)
+		})
+		resp, err = s.trSecurityUserRulesServer.Do(req)
 	case "ServiceAssociationLinksClient":
 		initServer(s, &s.trServiceAssociationLinksServer, func() *ServiceAssociationLinksServerTransport {
 			return NewServiceAssociationLinksServerTransport(&s.srv.ServiceAssociationLinksServer)
@@ -772,6 +856,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "ServiceTagsClient":
 		initServer(s, &s.trServiceTagsServer, func() *ServiceTagsServerTransport { return NewServiceTagsServerTransport(&s.srv.ServiceTagsServer) })
 		resp, err = s.trServiceTagsServer.Do(req)
+	case "StaticCidrsClient":
+		initServer(s, &s.trStaticCidrsServer, func() *StaticCidrsServerTransport { return NewStaticCidrsServerTransport(&s.srv.StaticCidrsServer) })
+		resp, err = s.trStaticCidrsServer.Do(req)
 	case "StaticMembersClient":
 		initServer(s, &s.trStaticMembersServer, func() *StaticMembersServerTransport {
 			return NewStaticMembersServerTransport(&s.srv.StaticMembersServer)
@@ -827,6 +914,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewVPNSitesConfigurationServerTransport(&s.srv.VPNSitesConfigurationServer)
 		})
 		resp, err = s.trVPNSitesConfigurationServer.Do(req)
+	case "VerifierWorkspacesClient":
+		initServer(s, &s.trVerifierWorkspacesServer, func() *VerifierWorkspacesServerTransport {
+			return NewVerifierWorkspacesServerTransport(&s.srv.VerifierWorkspacesServer)
+		})
+		resp, err = s.trVerifierWorkspacesServer.Do(req)
 	case "VipSwapClient":
 		initServer(s, &s.trVipSwapServer, func() *VipSwapServerTransport { return NewVipSwapServerTransport(&s.srv.VipSwapServer) })
 		resp, err = s.trVipSwapServer.Do(req)

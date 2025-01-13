@@ -29,7 +29,7 @@ type FrontendsInterfaceServer struct {
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, trafficControllerName string, frontendName string, resource armservicenetworking.Frontend, options *armservicenetworking.FrontendsInterfaceClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armservicenetworking.FrontendsInterfaceClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method FrontendsInterfaceClient.BeginDelete
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, trafficControllerName string, frontendName string, options *armservicenetworking.FrontendsInterfaceClientBeginDeleteOptions) (resp azfake.PollerResponder[armservicenetworking.FrontendsInterfaceClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method FrontendsInterfaceClient.Get
@@ -188,9 +188,9 @@ func (f *FrontendsInterfaceServerTransport) dispatchBeginDelete(req *http.Reques
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		f.beginDelete.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		f.beginDelete.remove(req)

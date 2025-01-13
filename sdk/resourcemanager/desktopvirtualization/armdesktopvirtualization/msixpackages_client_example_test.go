@@ -20,7 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/MsixPackage_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2024-04-03/examples/MsixPackage_Get.json
 func ExampleMSIXPackagesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,6 +42,14 @@ func ExampleMSIXPackagesClient_Get() {
 	// 	Name: to.Ptr("hostpool1/MsixPackageFullName"),
 	// 	Type: to.Ptr("Microsoft.DesktopVirtualization/hostpools/msixpackages"),
 	// 	ID: to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourcegroups/resourcegroup1/providers/Microsoft.DesktopVirtualization/hostpools/hostpool1/msixpackages/msixPackageFullName"),
+	// 	SystemData: &armdesktopvirtualization.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
+	// 		CreatedBy: to.Ptr("user1"),
+	// 		CreatedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("user2"),
+	// 		LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
+	// 	},
 	// 	Properties: &armdesktopvirtualization.MSIXPackageProperties{
 	// 		DisplayName: to.Ptr("dis"),
 	// 		ImagePath: to.Ptr("imagepath"),
@@ -69,18 +77,10 @@ func ExampleMSIXPackagesClient_Get() {
 	// 		PackageRelativePath: to.Ptr("MsixPackage_RelativePackageRoot"),
 	// 		Version: to.Ptr("version"),
 	// 	},
-	// 	SystemData: &armdesktopvirtualization.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
-	// 		CreatedBy: to.Ptr("user1"),
-	// 		CreatedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("user2"),
-	// 		LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/MsixPackage_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2024-04-03/examples/MsixPackage_Create.json
 func ExampleMSIXPackagesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,6 +130,14 @@ func ExampleMSIXPackagesClient_CreateOrUpdate() {
 	// 	Name: to.Ptr("hostpool1/MsixPackageFullName"),
 	// 	Type: to.Ptr("Microsoft.DesktopVirtualization/hostpools/msixpackages"),
 	// 	ID: to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourcegroups/resourcegroup1/providers/Microsoft.DesktopVirtualization/hostpools/hostpool1/msixpackages/msixPackageFullName"),
+	// 	SystemData: &armdesktopvirtualization.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
+	// 		CreatedBy: to.Ptr("user1"),
+	// 		CreatedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("user2"),
+	// 		LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
+	// 	},
 	// 	Properties: &armdesktopvirtualization.MSIXPackageProperties{
 	// 		DisplayName: to.Ptr("dis"),
 	// 		ImagePath: to.Ptr("imagepath"),
@@ -157,18 +165,10 @@ func ExampleMSIXPackagesClient_CreateOrUpdate() {
 	// 		PackageRelativePath: to.Ptr("MsixPackage_RelativePackageRoot"),
 	// 		Version: to.Ptr("version"),
 	// 	},
-	// 	SystemData: &armdesktopvirtualization.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
-	// 		CreatedBy: to.Ptr("user1"),
-	// 		CreatedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("user2"),
-	// 		LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/MsixPackage_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2024-04-03/examples/MsixPackage_Delete.json
 func ExampleMSIXPackagesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -185,7 +185,7 @@ func ExampleMSIXPackagesClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/MsixPackage_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2024-04-03/examples/MsixPackage_Update.json
 func ExampleMSIXPackagesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -214,6 +214,14 @@ func ExampleMSIXPackagesClient_Update() {
 	// 	Name: to.Ptr("hostpool1/MsixPackageFullName"),
 	// 	Type: to.Ptr("Microsoft.DesktopVirtualization/hostpools/msixpackages"),
 	// 	ID: to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourcegroups/resourcegroup1/providers/Microsoft.DesktopVirtualization/hostpools/hostpool1/msixpackages/msixPackageFullName"),
+	// 	SystemData: &armdesktopvirtualization.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
+	// 		CreatedBy: to.Ptr("user1"),
+	// 		CreatedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("user2"),
+	// 		LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
+	// 	},
 	// 	Properties: &armdesktopvirtualization.MSIXPackageProperties{
 	// 		DisplayName: to.Ptr("dis"),
 	// 		ImagePath: to.Ptr("imagepath"),
@@ -241,18 +249,10 @@ func ExampleMSIXPackagesClient_Update() {
 	// 		PackageRelativePath: to.Ptr("MsixPackage_RelativePackageRoot"),
 	// 		Version: to.Ptr("version"),
 	// 	},
-	// 	SystemData: &armdesktopvirtualization.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
-	// 		CreatedBy: to.Ptr("user1"),
-	// 		CreatedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("user2"),
-	// 		LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/MsixPackage_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2024-04-03/examples/MsixPackage_List.json
 func ExampleMSIXPackagesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -283,6 +283,14 @@ func ExampleMSIXPackagesClient_NewListPager() {
 		// 			Name: to.Ptr("hostpool1/MsixPackageFullName"),
 		// 			Type: to.Ptr("Microsoft.DesktopVirtualization/hostpools/msixpackages"),
 		// 			ID: to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourcegroups/resourcegroup1/providers/Microsoft.DesktopVirtualization/hostpools/hostpool1/msixpackages/msixPackageFullName"),
+		// 			SystemData: &armdesktopvirtualization.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
+		// 				CreatedBy: to.Ptr("user1"),
+		// 				CreatedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("user2"),
+		// 				LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
+		// 			},
 		// 			Properties: &armdesktopvirtualization.MSIXPackageProperties{
 		// 				DisplayName: to.Ptr("dis"),
 		// 				ImagePath: to.Ptr("imagepath"),
@@ -310,6 +318,11 @@ func ExampleMSIXPackagesClient_NewListPager() {
 		// 				PackageRelativePath: to.Ptr("MsixPackage_RelativePackageRoot"),
 		// 				Version: to.Ptr("version"),
 		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("hostpool1/MsixPackageFullName2"),
+		// 			Type: to.Ptr("Microsoft.DesktopVirtualization/hostpools/msixpackages"),
+		// 			ID: to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourcegroups/resourcegroup1/providers/Microsoft.DesktopVirtualization/hostpools/hostpool1/msixpackages/msixPackageFullName2"),
 		// 			SystemData: &armdesktopvirtualization.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
 		// 				CreatedBy: to.Ptr("user1"),
@@ -318,11 +331,6 @@ func ExampleMSIXPackagesClient_NewListPager() {
 		// 				LastModifiedBy: to.Ptr("user2"),
 		// 				LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
 		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("hostpool1/MsixPackageFullName2"),
-		// 			Type: to.Ptr("Microsoft.DesktopVirtualization/hostpools/msixpackages"),
-		// 			ID: to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourcegroups/resourcegroup1/providers/Microsoft.DesktopVirtualization/hostpools/hostpool1/msixpackages/msixPackageFullName2"),
 		// 			Properties: &armdesktopvirtualization.MSIXPackageProperties{
 		// 				DisplayName: to.Ptr("dis2"),
 		// 				ImagePath: to.Ptr("imagepath2"),
@@ -349,14 +357,6 @@ func ExampleMSIXPackagesClient_NewListPager() {
 		// 				PackageName: to.Ptr("MsixPackage_Name2"),
 		// 				PackageRelativePath: to.Ptr("MsixPackage_RelativePackageRoot2"),
 		// 				Version: to.Ptr("version2"),
-		// 			},
-		// 			SystemData: &armdesktopvirtualization.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
-		// 				CreatedBy: to.Ptr("user1"),
-		// 				CreatedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("user2"),
-		// 				LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
 		// 			},
 		// 	}},
 		// }

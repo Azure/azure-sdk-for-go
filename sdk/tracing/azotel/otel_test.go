@@ -21,6 +21,7 @@ import (
 	"go.opentelemetry.io/otel/codes"
 	tracesdk "go.opentelemetry.io/otel/sdk/trace"
 	"go.opentelemetry.io/otel/trace"
+	"go.opentelemetry.io/otel/trace/embedded"
 )
 
 func TestNewTracingProvider(t *testing.T) {
@@ -202,6 +203,8 @@ func (c *testExporter) Shutdown(ctx context.Context) error {
 }
 
 type testSpan struct {
+	embedded.Span
+
 	t            *testing.T
 	attributes   []attribute.KeyValue
 	eventName    string
@@ -209,6 +212,7 @@ type testSpan struct {
 	endCalled    bool
 	statusCode   codes.Code
 	statusDesc   string
+	link         trace.Link
 }
 
 func (ts *testSpan) End(options ...trace.SpanEndOption) {
@@ -218,6 +222,10 @@ func (ts *testSpan) End(options ...trace.SpanEndOption) {
 func (ts *testSpan) AddEvent(name string, options ...trace.EventOption) {
 	ts.eventName = name
 	ts.eventOptions = options
+}
+
+func (ts *testSpan) AddLink(link trace.Link) {
+	ts.link = link
 }
 
 func (ts *testSpan) IsRecording() bool {

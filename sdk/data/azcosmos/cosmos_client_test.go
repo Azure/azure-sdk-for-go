@@ -89,9 +89,9 @@ func TestEnsureErrorIsGeneratedOnResponse(t *testing.T) {
 		mock.WithBody(jsonString),
 		mock.WithStatusCode(404))
 
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
 	gem := &globalEndpointManager{preferredLocations: []string{}}
-	client := &Client{endpoint: srv.URL(), pipeline: pl, gem: gem}
+	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
 	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeDatabase,
 		resourceAddress: "",
@@ -128,9 +128,9 @@ func TestEnsureErrorIsNotGeneratedOnResponse(t *testing.T) {
 	srv.SetResponse(
 		mock.WithStatusCode(200))
 
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
 	gem := &globalEndpointManager{preferredLocations: []string{}}
-	client := &Client{endpoint: srv.URL(), pipeline: pl, gem: gem}
+	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
 	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeDatabase,
 		resourceAddress: "",
@@ -147,9 +147,9 @@ func TestRequestEnricherIsCalled(t *testing.T) {
 	srv.SetResponse(
 		mock.WithStatusCode(200))
 
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
 	gem := &globalEndpointManager{preferredLocations: []string{}}
-	client := &Client{endpoint: srv.URL(), pipeline: pl, gem: gem}
+	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
 	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeDatabase,
 		resourceAddress: "",
@@ -175,9 +175,9 @@ func TestNoOptionsIsCalled(t *testing.T) {
 	srv.SetResponse(
 		mock.WithStatusCode(200))
 
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
 	gem := &globalEndpointManager{preferredLocations: []string{}}
-	client := &Client{endpoint: srv.URL(), pipeline: pl, gem: gem}
+	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
 	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeDatabase,
 		resourceAddress: "",
@@ -193,9 +193,9 @@ func TestAttachContent(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
 	gem := &globalEndpointManager{preferredLocations: []string{}}
-	client := &Client{endpoint: srv.URL(), pipeline: pl, gem: gem}
+	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
 	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeDatabase,
 		resourceAddress: "",
@@ -245,9 +245,9 @@ func TestAttachContent(t *testing.T) {
 func TestCreateRequest(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
 	gem := &globalEndpointManager{preferredLocations: []string{}}
-	client := &Client{endpoint: srv.URL(), pipeline: pl, gem: gem}
+	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
 	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeDatabase,
 		resourceAddress: "",
@@ -290,9 +290,9 @@ func TestSendDelete(t *testing.T) {
 	srv.SetResponse(
 		mock.WithStatusCode(200))
 	verifier := pipelineVerifier{}
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
 	gem := &globalEndpointManager{preferredLocations: []string{}}
-	client := &Client{endpoint: srv.URL(), pipeline: pl, gem: gem}
+	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
 	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeDatabase,
 		resourceAddress: "",
@@ -314,9 +314,9 @@ func TestSendGet(t *testing.T) {
 	srv.SetResponse(
 		mock.WithStatusCode(200))
 	verifier := pipelineVerifier{}
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
 	gem := &globalEndpointManager{preferredLocations: []string{}}
-	client := &Client{endpoint: srv.URL(), pipeline: pl, gem: gem}
+	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
 	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeDatabase,
 		resourceAddress: "",
@@ -338,9 +338,9 @@ func TestSendPut(t *testing.T) {
 	srv.SetResponse(
 		mock.WithStatusCode(200))
 	verifier := pipelineVerifier{}
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
 	gem := &globalEndpointManager{preferredLocations: []string{}}
-	client := &Client{endpoint: srv.URL(), pipeline: pl, gem: gem}
+	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
 	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeDatabase,
 		resourceAddress: "",
@@ -372,9 +372,9 @@ func TestSendPost(t *testing.T) {
 	srv.SetResponse(
 		mock.WithStatusCode(200))
 	verifier := pipelineVerifier{}
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
 	gem := &globalEndpointManager{preferredLocations: []string{}}
-	client := &Client{endpoint: srv.URL(), pipeline: pl, gem: gem}
+	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
 	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeDatabase,
 		resourceAddress: "",
@@ -406,9 +406,9 @@ func TestSendQuery(t *testing.T) {
 	srv.SetResponse(
 		mock.WithStatusCode(200))
 	verifier := pipelineVerifier{}
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
 	gem := &globalEndpointManager{preferredLocations: []string{}}
-	client := &Client{endpoint: srv.URL(), pipeline: pl, gem: gem}
+	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
 	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeDatabase,
 		resourceAddress: "",
@@ -442,9 +442,9 @@ func TestSendQueryWithParameters(t *testing.T) {
 	srv.SetResponse(
 		mock.WithStatusCode(200))
 	verifier := pipelineVerifier{}
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
 	gem := &globalEndpointManager{preferredLocations: []string{}}
-	client := &Client{endpoint: srv.URL(), pipeline: pl, gem: gem}
+	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
 	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeDatabase,
 		resourceAddress: "",
@@ -485,9 +485,9 @@ func TestSendBatch(t *testing.T) {
 	srv.SetResponse(
 		mock.WithStatusCode(200))
 	verifier := pipelineVerifier{}
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
 	gem := &globalEndpointManager{preferredLocations: []string{}}
-	client := &Client{endpoint: srv.URL(), pipeline: pl, gem: gem}
+	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
 	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeDocument,
 		resourceAddress: "",
@@ -530,9 +530,9 @@ func TestSendPatch(t *testing.T) {
 	srv.SetResponse(
 		mock.WithStatusCode(200))
 	verifier := pipelineVerifier{}
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
 	gem := &globalEndpointManager{preferredLocations: []string{}}
-	client := &Client{endpoint: srv.URL(), pipeline: pl, gem: gem}
+	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
 	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeDatabase,
 		resourceAddress: "",
@@ -570,7 +570,7 @@ func TestSendPatch(t *testing.T) {
 }
 
 func TestCreateScopeFromEndpoint(t *testing.T) {
-	url := "https://foo.documents.azure.com:443/"
+	url, _ := url.Parse("https://foo.documents.azure.com:443/")
 	scope, err := createScopeFromEndpoint(url)
 	if err != nil {
 		t.Fatal(err)
@@ -590,6 +590,10 @@ func TestQueryDatabases(t *testing.T) {
 	jsonStringpage2 := []byte(`{"Databases":[{"id":"doc3"},{"id":"doc4"},{"id":"doc5"}]}`)
 
 	srv, close := mock.NewTLSServer()
+	defaultEndpoint, _ := url.Parse(srv.URL())
+	mockLocationCache := &locationCache{
+		defaultEndpoint: *defaultEndpoint,
+	}
 	defer close()
 	srv.AppendResponse(
 		mock.WithBody(jsonStringpage1),
@@ -607,9 +611,9 @@ func TestQueryDatabases(t *testing.T) {
 
 	verifier := pipelineVerifier{}
 
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
-	gem := &globalEndpointManager{preferredLocations: []string{}}
-	client := &Client{endpoint: srv.URL(), pipeline: pl, gem: gem}
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
+	gem := &globalEndpointManager{preferredLocations: []string{}, locationCache: mockLocationCache}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
 
 	receivedIds := []string{}
 	queryPager := client.NewQueryDatabasesPager("select * from c", nil)
@@ -674,6 +678,54 @@ func TestQueryDatabases(t *testing.T) {
 		if index == 1 && request.headers.Get(cosmosHeaderContinuationToken) != "someContinuationToken" {
 			t.Errorf("Expected ContinuationToken to be %s, but got %s", "someContinuationToken", request.headers.Get(cosmosHeaderContinuationToken))
 		}
+	}
+}
+
+func TestSpanResponseAttributes(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.SetResponse(
+		mock.WithStatusCode(200),
+		mock.WithHeader(cosmosHeaderRequestCharge, "13.42"),
+	)
+
+	matcher := &spanMatcher{
+		ExpectedSpans: []string{"test_span"},
+	}
+	tp := newSpanValidator(t, matcher)
+	internalClient, _ := azcore.NewClient(
+		"azcosmostest", "v1.0.0",
+		azruntime.PipelineOptions{Tracing: azruntime.TracingOptions{Namespace: "Microsoft.DocumentDB"}},
+		&policy.ClientOptions{Transport: srv, TracingProvider: tp},
+	)
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
+	operationContext := pipelineRequestOptions{
+		resourceType:    resourceTypeDatabase,
+		resourceAddress: "",
+	}
+
+	ctx := context.Background()
+	ctx, endSpan := azruntime.StartSpan(ctx, "test_span", client.internal.Tracer(), &azruntime.StartSpanOptions{})
+	_, err := client.sendGetRequest("/", ctx, operationContext, &DeleteDatabaseOptions{}, nil)
+	endSpan(err)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(matcher.MatchedSpans) != 1 {
+		t.Errorf("Unexpected number of spans")
+	}
+
+	span := matcher.MatchedSpans[0]
+	status_value := attributeValueForKey(span.attributes, "db.cosmosdb.status_code")
+	if status_value != 200 {
+		t.Fatalf("Expected db.cosmosdb.status_code attribute with 200 value, got %v", status_value)
+	}
+
+	charge_value := attributeValueForKey(span.attributes, "db.cosmosdb.request_charge")
+	if charge_value != float32(13.42) {
+		t.Fatalf("Expected db.cosmosdb.request_charge attribute with 13.42 value, got %v", charge_value)
 	}
 }
 

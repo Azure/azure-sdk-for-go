@@ -27,6 +27,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	azcred "github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azcertificates"
 	"github.com/stretchr/testify/require"
 )
@@ -285,7 +286,7 @@ func TestDisableChallengeResourceVerification(t *testing.T) {
 				},
 				DisableChallengeResourceVerification: test.disableVerify,
 			}
-			client, err := azcertificates.NewClient(vaultURL, &FakeCredential{}, options)
+			client, err := azcertificates.NewClient(vaultURL, &azcred.Fake{}, options)
 			require.NoError(t, err)
 			pager := client.NewListCertificatePropertiesPager(nil)
 			_, err = pager.NextPage(context.Background())
@@ -667,4 +668,32 @@ func TestUpdateCertificatePolicy(t *testing.T) {
 	require.Equal(t, policy.LifetimeActions, updateResp.CertificatePolicy.LifetimeActions)
 	require.Equal(t, policy.SecretProperties, updateResp.CertificatePolicy.SecretProperties)
 	require.Equal(t, policy.X509CertificateProperties, updateResp.CertificatePolicy.X509CertificateProperties)
+}
+
+func TestAPIVersion(t *testing.T) {
+	apiVersion := "7.3"
+	var requireVersion = func(req *http.Request) bool {
+		version := req.URL.Query().Get("api-version")
+		require.Equal(t, version, apiVersion)
+		return true
+	}
+	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer close()
+	srv.AppendResponse(
+		mock.WithStatusCode(200),
+		mock.WithPredicate(requireVersion),
+	)
+	srv.AppendResponse(mock.WithStatusCode(http.StatusInternalServerError))
+
+	opts := &azcertificates.ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			Transport:  srv,
+			APIVersion: apiVersion,
+		},
+	}
+	client, err := azcertificates.NewClient(vaultURL, &azcred.Fake{}, opts)
+	require.NoError(t, err)
+
+	_, err = client.GetCertificate(context.Background(), "name", "", nil)
+	require.NoError(t, err)
 }

@@ -13,11 +13,46 @@ import (
 	"context"
 	"log"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/AgreementsListByBillingAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/agreementByName.json
+func ExampleAgreementsClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAgreementsClient().Get(ctx, "10000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "ABC123", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Agreement = armbilling.Agreement{
+	// 	Name: to.Ptr("ABC123"),
+	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/agreements"),
+	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/10000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/agreements/ABC123"),
+	// 	Properties: &armbilling.AgreementProperties{
+	// 		AcceptanceMode: to.Ptr(armbilling.AcceptanceModeClickToAccept),
+	// 		AgreementLink: to.Ptr("https://contoso.com"),
+	// 		DisplayName: to.Ptr("Microsoft Customer Agreement"),
+	// 		EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-01T00:00:00.000Z"); return t}()),
+	// 		ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-11-01T00:00:00.000Z"); return t}()),
+	// 		LeadBillingAccountName: to.Ptr("20000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31"),
+	// 		Status: to.Ptr("Active"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/agreementsListByBillingAccount.json
 func ExampleAgreementsClient_NewListByBillingAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,7 +63,7 @@ func ExampleAgreementsClient_NewListByBillingAccountPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewAgreementsClient().NewListByBillingAccountPager("{billingAccountName}", &armbilling.AgreementsClientListByBillingAccountOptions{Expand: nil})
+	pager := clientFactory.NewAgreementsClient().NewListByBillingAccountPager("10000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", &armbilling.AgreementsClientListByBillingAccountOptions{Expand: to.Ptr("Participants")})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -42,16 +77,17 @@ func ExampleAgreementsClient_NewListByBillingAccountPager() {
 		// page.AgreementListResult = armbilling.AgreementListResult{
 		// 	Value: []*armbilling.Agreement{
 		// 		{
-		// 			Name: to.Ptr("Agreement1"),
+		// 			Name: to.Ptr("ABC123"),
 		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/agreements"),
-		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/agreements/Agreement1"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/10000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/agreements/ABC123"),
 		// 			Properties: &armbilling.AgreementProperties{
 		// 				AcceptanceMode: to.Ptr(armbilling.AcceptanceModeClickToAccept),
-		// 				AgreementLink: to.Ptr("https://agreementuri1.com"),
-		// 				Category: to.Ptr(armbilling.CategoryMicrosoftCustomerAgreement),
-		// 				EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-05T00:00:00.000Z"); return t}()),
-		// 				ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-05T00:00:00.000Z"); return t}()),
-		// 				Participants: []*armbilling.Participants{
+		// 				AgreementLink: to.Ptr("https://contoso.com"),
+		// 				DisplayName: to.Ptr("Microsoft Customer Agreement"),
+		// 				EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-01T00:00:00.000Z"); return t}()),
+		// 				ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-11-01T00:00:00.000Z"); return t}()),
+		// 				LeadBillingAccountName: to.Ptr("20000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31"),
+		// 				Participants: []*armbilling.Participant{
 		// 					{
 		// 						Email: to.Ptr("abc@contoso.com"),
 		// 						Status: to.Ptr("Accepted"),
@@ -62,72 +98,29 @@ func ExampleAgreementsClient_NewListByBillingAccountPager() {
 		// 						Status: to.Ptr("Declined"),
 		// 						StatusDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-02T00:00:00.000Z"); return t}()),
 		// 				}},
-		// 				Status: to.Ptr("Published"),
+		// 				Status: to.Ptr("Active"),
 		// 			},
 		// 		},
 		// 		{
-		// 			Name: to.Ptr("Agreement2"),
+		// 			Name: to.Ptr("DEF456"),
 		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/agreements"),
-		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/agreements/Agreement2"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/10000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/agreements/DEF456"),
 		// 			Properties: &armbilling.AgreementProperties{
 		// 				AcceptanceMode: to.Ptr(armbilling.AcceptanceModeESignEmbedded),
-		// 				AgreementLink: to.Ptr("https://agreementuri2.com"),
-		// 				Category: to.Ptr(armbilling.CategoryMicrosoftCustomerAgreement),
+		// 				AgreementLink: to.Ptr("https://contoso.com"),
+		// 				DisplayName: to.Ptr("Microsoft Customer Agreement"),
 		// 				EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-05T00:00:00.000Z"); return t}()),
-		// 				ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-05T00:00:00.000Z"); return t}()),
-		// 				Participants: []*armbilling.Participants{
+		// 				ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-05T00:00:00.000Z"); return t}()),
+		// 				LeadBillingAccountName: to.Ptr("20000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31"),
+		// 				Participants: []*armbilling.Participant{
 		// 					{
 		// 						Email: to.Ptr("abc@contoso.com"),
-		// 						Status: to.Ptr("Unknown"),
-		// 						StatusDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-01T00:00:00.000Z"); return t}()),
+		// 						Status: to.Ptr("Pending"),
+		// 						StatusDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-05T00:00:00.000Z"); return t}()),
 		// 				}},
 		// 				Status: to.Ptr("PendingSignature"),
 		// 			},
 		// 	}},
 		// }
 	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/AgreementByName.json
-func ExampleAgreementsClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewAgreementsClient().Get(ctx, "{billingAccountName}", "{agreementName}", &armbilling.AgreementsClientGetOptions{Expand: nil})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Agreement = armbilling.Agreement{
-	// 	Name: to.Ptr("{agreementName}"),
-	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/agreements"),
-	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/agreements/{agreementName}"),
-	// 	Properties: &armbilling.AgreementProperties{
-	// 		AcceptanceMode: to.Ptr(armbilling.AcceptanceModeClickToAccept),
-	// 		AgreementLink: to.Ptr("https://agreementuri1.com"),
-	// 		Category: to.Ptr(armbilling.CategoryMicrosoftCustomerAgreement),
-	// 		EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-05T00:00:00.000Z"); return t}()),
-	// 		ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-05T00:00:00.000Z"); return t}()),
-	// 		Participants: []*armbilling.Participants{
-	// 			{
-	// 				Email: to.Ptr("abc@contoso.com"),
-	// 				Status: to.Ptr("Accepted"),
-	// 				StatusDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-01T00:00:00.000Z"); return t}()),
-	// 			},
-	// 			{
-	// 				Email: to.Ptr("xyz@contoso.com"),
-	// 				Status: to.Ptr("Declined"),
-	// 				StatusDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-02T00:00:00.000Z"); return t}()),
-	// 		}},
-	// 		Status: to.Ptr("Published"),
-	// 	},
-	// }
 }

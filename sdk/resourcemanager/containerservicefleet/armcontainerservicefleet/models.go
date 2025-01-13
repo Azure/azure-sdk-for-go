@@ -32,6 +32,67 @@ type AgentProfile struct {
 	VMSize *string
 }
 
+// AutoUpgradeNodeImageSelection - The node image upgrade to be applied to the target clusters in auto upgrade.
+type AutoUpgradeNodeImageSelection struct {
+	// REQUIRED; The node image upgrade type.
+	Type *AutoUpgradeNodeImageSelectionType
+}
+
+// AutoUpgradeProfile - The AutoUpgradeProfile resource.
+type AutoUpgradeProfile struct {
+	// The resource-specific properties for this resource.
+	Properties *AutoUpgradeProfileProperties
+
+	// READ-ONLY; If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.
+	// Entity tags are used for comparing two or more entities from the same requested resource.
+	// HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range
+	// (section 14.27) header fields.
+	ETag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// AutoUpgradeProfileListResult - The response of a AutoUpgradeProfile list operation.
+type AutoUpgradeProfileListResult struct {
+	// REQUIRED; The AutoUpgradeProfile items on this page
+	Value []*AutoUpgradeProfile
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// AutoUpgradeProfileProperties - The properties of the AutoUpgradeProfile.
+type AutoUpgradeProfileProperties struct {
+	// REQUIRED; Configures how auto-upgrade will be run.
+	Channel *UpgradeChannel
+
+	// If set to False: the auto upgrade has effect - target managed clusters will be upgraded on schedule. If set to True: the
+	// auto upgrade has no effect - no upgrade will be run on the target managed
+	// clusters. This is a boolean and not an enum because enabled/disabled are all available states of the auto upgrade profile.
+	// By default, this is set to False.
+	Disabled *bool
+
+	// The node image upgrade to be applied to the target clusters in auto upgrade.
+	NodeImageSelection *AutoUpgradeNodeImageSelection
+
+	// The resource id of the UpdateStrategy resource to reference. If not specified, the auto upgrade will run on all clusters
+	// which are members of the fleet.
+	UpdateStrategyID *string
+
+	// READ-ONLY; The provisioning state of the AutoUpgradeProfile resource.
+	ProvisioningState *AutoUpgradeProfileProvisioningState
+}
+
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
@@ -133,7 +194,7 @@ type FleetListResult struct {
 	// REQUIRED; The Fleet items on this page
 	Value []*Fleet
 
-	// READ-ONLY; The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 
@@ -166,7 +227,7 @@ type FleetMemberListResult struct {
 	// REQUIRED; The FleetMember items on this page
 	Value []*FleetMember
 
-	// READ-ONLY; The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 
@@ -185,7 +246,7 @@ type FleetMemberProperties struct {
 
 // FleetMemberUpdate - The type used for update operations of the FleetMember.
 type FleetMemberUpdate struct {
-	// The updatable properties of the FleetMember.
+	// The resource-specific properties for this resource.
 	Properties *FleetMemberUpdateProperties
 }
 
@@ -242,7 +303,7 @@ type FleetUpdateStrategyListResult struct {
 	// REQUIRED; The FleetUpdateStrategy items on this page
 	Value []*FleetUpdateStrategy
 
-	// READ-ONLY; The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 
@@ -315,6 +376,13 @@ type MemberUpdateStatus struct {
 type NodeImageSelection struct {
 	// REQUIRED; The node image upgrade type.
 	Type *NodeImageSelectionType
+
+	// Custom node image versions to upgrade the nodes to. This field is required if node image selection type is Custom. Otherwise,
+	// it must be empty. For each node image family (e.g.,
+	// 'AKSUbuntu-1804gen2containerd'), this field can contain at most one version (e.g., only one of 'AKSUbuntu-1804gen2containerd-2023.01.12'
+	// or 'AKSUbuntu-1804gen2containerd-2023.02.12', not both). If the
+	// nodes belong to a family without a matching image version in this field, they are not upgraded.
+	CustomNodeImageVersions []*NodeImageVersion
 }
 
 // NodeImageSelectionStatus - The node image upgrade specs for the update run.
@@ -462,7 +530,7 @@ type UpdateRunListResult struct {
 	// REQUIRED; The UpdateRun items on this page
 	Value []*UpdateRun
 
-	// READ-ONLY; The link to the next page of items
+	// The link to the next page of items
 	NextLink *string
 }
 

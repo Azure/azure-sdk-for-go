@@ -10,6 +10,7 @@ import (
 	"regexp"
 	"sort"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 
@@ -439,8 +440,7 @@ func TestReceiverDetachWithPeekLock(t *testing.T) {
 	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
 	defer cleanup()
 
-	adminClient, err := admin.NewClientFromConnectionString(test.GetConnectionString(t), nil)
-	require.NoError(t, err)
+	adminClient := newAdminClientForTest(t, nil)
 
 	receiver, err := serviceBusClient.NewReceiverForQueue(queueName, nil)
 	require.NoError(t, err)
@@ -503,8 +503,7 @@ func TestReceiverDetachWithReceiveAndDelete(t *testing.T) {
 	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
 	defer cleanup()
 
-	adminClient, err := admin.NewClientFromConnectionString(test.GetConnectionString(t), nil)
-	require.NoError(t, err)
+	adminClient := newAdminClientForTest(t, nil)
 
 	receiver, err := serviceBusClient.NewReceiverForQueue(queueName, &ReceiverOptions{
 		ReceiveMode: ReceiveModeReceiveAndDelete,
@@ -737,7 +736,7 @@ func TestReceiverMultiReceiver(t *testing.T) {
 }
 
 func TestReceiverMultiTopic(t *testing.T) {
-	otherQueueName, cleanupOtherQueue := createQueue(t, test.GetConnectionString(t), nil)
+	otherQueueName, cleanupOtherQueue := createQueue(t, nil, nil)
 	defer cleanupOtherQueue()
 
 	client, cleanup, queueName := setupLiveTest(t, nil)
@@ -824,13 +823,13 @@ func TestReceiverMessageLockExpires(t *testing.T) {
 }
 
 func TestReceiverUnauthorizedCreds(t *testing.T) {
-	allPowerfulCS := test.GetConnectionString(t)
+	allPowerfulCS := test.MustGetEnvVar(t, test.EnvKeyConnectionString)
 	queueName := "testqueue"
 
 	t.Run("ListenOnly with Sender", func(t *testing.T) {
-		cs := test.GetConnectionStringListenOnly(t)
+		cs := test.MustGetEnvVar(t, test.EnvKeyConnectionStringListenOnly)
 
-		client, err := NewClientFromConnectionString(cs, nil)
+		client, err := NewClientFromConnectionString(cs, nil) // allowed connection string
 		require.NoError(t, err)
 
 		defer test.RequireClose(t, client)
@@ -849,9 +848,9 @@ func TestReceiverUnauthorizedCreds(t *testing.T) {
 	})
 
 	t.Run("SenderOnly with Receiver", func(t *testing.T) {
-		cs := test.GetConnectionStringSendOnly(t)
+		cs := test.MustGetEnvVar(t, test.EnvKeyConnectionStringSendOnly)
 
-		client, err := NewClientFromConnectionString(cs, nil)
+		client, err := NewClientFromConnectionString(cs, nil) // allowed connection string
 		require.NoError(t, err)
 
 		defer test.RequireClose(t, client)
@@ -872,7 +871,7 @@ func TestReceiverUnauthorizedCreds(t *testing.T) {
 		expiredCS, err := sas.CreateConnectionStringWithSASUsingExpiry(allPowerfulCS, time.Now().Add(-10*time.Minute))
 		require.NoError(t, err)
 
-		client, err := NewClientFromConnectionString(expiredCS, nil)
+		client, err := NewClientFromConnectionString(expiredCS, nil) // allowed connection string
 		require.NoError(t, err)
 
 		defer test.RequireClose(t, client)
@@ -907,7 +906,7 @@ func TestReceiverUnauthorizedCreds(t *testing.T) {
 			return
 		}
 
-		cliCred, err := azidentity.NewClientSecretCredential(identityVars.TenantID, identityVars.ClientID, "bogus-client-secret", nil)
+		cliCred, err := azidentity.NewClientSecretCredential("00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000000", "bogus-client-secret", nil)
 		require.NoError(t, err)
 
 		client, err := NewClient(identityVars.Endpoint, cliCred, nil)
@@ -1045,254 +1044,130 @@ func TestReceiveWithDifferentWaitTime(t *testing.T) {
 	require.Greater(t, bigger, base2)
 }
 
-func TestReceiverDeleteMessages(t *testing.T) {
-	init := func(t *testing.T, count int, queueProperties *admin.QueueProperties, retryOptions *RetryOptions) (*Sender, *Receiver) {
-		if retryOptions == nil {
-			retryOptions = &RetryOptions{}
+func TestReceiveCancelReleaser(t *testing.T) {
+	getLogs := test.CaptureLogsForTest(false)
+
+	client, cleanup, queueName := setupLiveTest(t, &liveTestOptions{
+		QueueProperties: &admin.QueueProperties{
+			// use a long lock time to really make it clear when we've accidentally
+			// orphaned a message.
+			LockDuration: to.Ptr("PT5M"),
+		},
+	})
+	defer cleanup()
+
+	receiver, err := client.NewReceiverForQueue(queueName, nil)
+	require.NoError(t, err)
+
+	sender, err := client.NewSender(queueName, nil)
+	require.NoError(t, err)
+
+	padding := make([]byte, 1)
+
+	var batch *MessageBatch
+	const numSent = 2000
+
+	t.Logf("Sending messages")
+SendLoop:
+	for i := 0; i < numSent; i++ {
+		if batch == nil {
+			tmpBatch, err := sender.NewMessageBatch(context.Background(), nil)
+			require.NoError(t, err)
+			batch = tmpBatch
 		}
 
-		if *queueProperties.EnablePartitioning {
-			t.Skipf("Dependent on service bug fix")
-			return nil, nil
+		err := batch.AddMessage(&Message{
+			MessageID: to.Ptr(fmt.Sprintf("%d", i)),
+			Body:      padding}, nil)
+
+		if errors.Is(err, ErrMessageTooLarge) {
+			err := sender.SendMessageBatch(context.Background(), batch, nil)
+			require.NoError(t, err)
+			batch = nil
+			i--
+			continue SendLoop
 		}
 
-		serviceBusClient, cleanup, queueName := setupLiveTest(t, &liveTestOptions{
-			QueueProperties: queueProperties,
-			ClientOptions: &ClientOptions{
-				RetryOptions: *retryOptions,
-			},
-		})
-		t.Cleanup(cleanup)
-
-		receiver, err := serviceBusClient.NewReceiverForQueue(queueName, nil)
-		require.NoError(t, err)
-
-		sender, err := serviceBusClient.NewSender(queueName, nil)
-		require.NoError(t, err)
-
-		if count > 0 {
-			var batch *MessageBatch
-
-			for i := 0; i < count; i++ {
-				if batch == nil {
-					tmpBatch, err := sender.NewMessageBatch(context.Background(), nil)
-					require.NoError(t, err)
-					batch = tmpBatch
-				}
-
-				err := batch.AddMessage(&Message{
-					Body: []byte(fmt.Sprintf("[%d] %s", i, t.Name())),
-				}, nil)
-
-				if err != nil {
-					if errors.Is(err, ErrMessageTooLarge) {
-						err = sender.SendMessageBatch(context.Background(), batch, nil)
-						require.NoError(t, err)
-
-						batch = nil
-						i--
-						continue
-					}
-					require.NoError(t, err)
-				} else if i == (count - 1) {
-					// last event, send whatever we have
-					err = sender.SendMessageBatch(context.Background(), batch, nil)
-					require.NoError(t, err)
-					batch = nil
-				}
-			}
-
-			require.Nil(t, batch)
-
-			// peek the last message so we can be sure the messages are available
-			msg := peekSingleMessageForTest(t, receiver, &PeekMessagesOptions{
-				FromSequenceNumber: to.Ptr(int64(count)),
-			})
-			require.Equal(t, fmt.Sprintf("[%d] %s", count-1, t.Name()), string(msg.Body))
+		if i == numSent-1 {
+			err := sender.SendMessageBatch(context.Background(), batch, nil)
+			require.NoError(t, err)
+			break SendLoop
 		}
-
-		return sender, receiver
 	}
 
-	props := []*admin.QueueProperties{
-		{EnablePartitioning: to.Ptr(false)},
-		{EnablePartitioning: to.Ptr(true)},
+	t.Logf("Receiving small subset of messages")
+	messages, err := receiver.ReceiveMessages(context.Background(), numSent, &ReceiveMessagesOptions{
+		// Receive with a high credit count, but too little time to actually get them all
+		// This will force us into a situation where the AMQP receiver will have a lot of messages
+		// in its prefetch cache, giving us a high chance of triggering a previous bug where early
+		// cancellation could result in us losing messages.
+		TimeAfterFirstMessage: time.Nanosecond,
+	})
+	require.NoError(t, err)
+
+	ids := &sync.Map{}
+
+	for _, msg := range messages {
+		require.NoError(t, receiver.CompleteMessage(context.Background(), msg, nil))
+		_, exists := ids.LoadOrStore(msg.MessageID, true)
+		require.False(t, exists)
 	}
 
-	for _, qp := range props {
-		testSuffix := fmt.Sprintf("(partitioned:%t)", *qp.EnablePartitioning)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+	defer cancel()
 
-		t.Run("EmptyQueue"+testSuffix, func(t *testing.T) {
-			_, receiver := init(t, 0, qp, nil)
+	expected := numSent - len(messages) // remove any messages we've already received. Usually it's just one but it's not
+	remaining := expected
 
-			// when the queue is empty you get back a zero count (and a 204 internally)
-			count, err := receiver.DeleteMessages(context.Background(), nil)
-			require.NoError(t, err)
-			require.Equal(t, int64(0), count)
-		})
+	t.Logf("Receiving remaining messages (%d)", remaining)
 
-		t.Run("DeleteOne"+testSuffix, func(t *testing.T) {
-			_, receiver := init(t, 1, qp, nil)
+	for remaining > 0 {
+		messages, err := receiver.ReceiveMessages(ctx, remaining, nil)
+		require.NoError(t, err)
+		require.NotEmpty(t, messages)
 
-			count, err := receiver.DeleteMessages(context.Background(), nil)
-			require.NoError(t, err)
-			require.Equal(t, int64(1), count)
+		t.Logf("Received %d messages", len(messages))
 
-			// no messages should be available.
-			ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-			defer cancel()
+		wg := sync.WaitGroup{}
 
-			messages, err := receiver.ReceiveMessages(ctx, 1, nil)
-			require.Empty(t, messages)
-			require.ErrorIs(t, err, context.DeadlineExceeded)
-		})
+		for _, msg := range messages {
+			msg := msg
+			wg.Add(1)
 
-		t.Run("BeforeEnqueueTime"+testSuffix, func(t *testing.T) {
-			_, receiver := init(t, 1, qp, nil)
+			go func() {
+				defer wg.Done()
+				require.NoError(t, receiver.CompleteMessage(context.Background(), msg, nil))
+				_, exists := ids.LoadOrStore(msg.MessageID, true)
+				require.False(t, exists)
+			}()
+		}
 
-			messages, err := receiver.PeekMessages(context.Background(), 1, &PeekMessagesOptions{
-				FromSequenceNumber: to.Ptr(int64(0)),
-			})
-			require.NoError(t, err)
-			require.Equal(t, "[0] "+t.Name(), string(messages[0].Body))
+		wg.Wait()
 
-			// attempt to delete on the exact time of the message, which will skip our messages
-			// since DeleteMessages's time boundary is not inclusive.
-			count, err := receiver.DeleteMessages(context.Background(), &DeleteMessagesOptions{
-				// this isn't inclusive so this won't delete anything
-				BeforeEnqueueTime: *messages[0].EnqueuedTime,
-			})
-			require.NoError(t, err)
-			require.Equal(t, int64(0), count)
+		remaining -= len(messages)
+	}
 
-			messages, err = receiver.PeekMessages(context.Background(), 1, &PeekMessagesOptions{
-				FromSequenceNumber: to.Ptr(int64(0)),
-			})
-			require.NoError(t, err)
-			require.Equal(t, "[0] "+t.Name(), string(messages[0].Body), "Message still exists - BeforeEnqueueTime is not inclusive.")
+	count := 0
+	ids.Range(func(_, _ any) bool {
+		count++
+		return true
+	})
 
-			// now actually delete it.
-			// attempt to delete on the exact time of the message - this should
-			// be skipped.
-			count, err = receiver.DeleteMessages(context.Background(), &DeleteMessagesOptions{
-				// include the event this time.
-				BeforeEnqueueTime: messages[0].EnqueuedTime.Add(time.Second),
-			})
-			require.NoError(t, err)
-			require.Equal(t, int64(1), count)
+	require.Equal(t, numSent, count)
 
-			messages, err = receiver.PeekMessages(context.Background(), 1, &PeekMessagesOptions{
-				FromSequenceNumber: to.Ptr(int64(0)),
-			})
-			require.NoError(t, err)
-			require.Empty(t, messages)
-		})
+	logs := getLogs()
 
-		t.Run("CountNegative"+testSuffix, func(t *testing.T) {
-			t.Skipf("Dependent on service bug fix")
+	found := 0
 
-			// currently this fails but it ends up retrying. For now I'm going to cut this off.
-			_, receiver := init(t, 1, qp, &RetryOptions{
-				MaxRetries: -1,
-			})
+	for _, log := range logs {
+		if strings.Contains(log, "Message releaser pausing. Released ") {
+			found++
+		}
+	}
 
-			count, err := receiver.DeleteMessages(context.Background(), &DeleteMessagesOptions{
-				Count: -1,
-			})
-
-			// rpc: failed, status code 408 and description: The operation did not complete within the allocated time 00:01:00 for object
-			require.Contains(t, err.Error(), "rpc: failed, status code 408 ")
-
-			// -1 doesn't do anything currently but it does cause the library to do retries.
-			require.Equal(t, int64(0), count)
-
-			ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-			defer cancel()
-
-			messages, err := receiver.ReceiveMessages(ctx, 1, nil)
-			require.NoError(t, err)
-
-			// message should still be there.
-			require.Equal(t, "[0] "+t.Name(), string(messages[0].Body))
-		})
-
-		t.Run("CountTooHigh"+testSuffix, func(t *testing.T) {
-			t.Skipf("Dependent on service bug fix")
-
-			// currently this fails but it ends up retrying. For now I'm going to cut this off.
-			_, receiver := init(t, 1, qp, &RetryOptions{
-				MaxRetries: -1,
-			})
-
-			count, err := receiver.DeleteMessages(context.Background(), &DeleteMessagesOptions{
-				Count: 4000 + 1,
-			})
-
-			// rpc: failed, status code 500 and description: The service was unable to process the request; please retry the operation.
-			require.Contains(t, err.Error(), "rpc: failed, status code 500 ")
-
-			// -1 doesn't do anything currently but it does cause the library to do retries.
-			require.Equal(t, int64(0), count)
-
-			ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-			defer cancel()
-
-			messages, err := receiver.ReceiveMessages(ctx, 1, nil)
-			require.NoError(t, err)
-
-			// message should still be there.
-			require.Equal(t, "[0] "+t.Name(), string(messages[0].Body))
-		})
-
-		t.Run("PurgeMessages"+testSuffix, func(t *testing.T) {
-			// create just enough messages to ensure we have to loop at least twice
-			// (in reality we'll probably loop a few times anyways since we don't always delete 4000 on
-			// each call)
-			_, receiver := init(t, 4000+1, qp, nil)
-
-			rounds := 0
-			total := int64(0)
-
-			purge := func() {
-				// NOTE: this is similar to our example functions that shows how to just loop and
-				// delete all messages
-
-				// This is a simple example showing how to delete messages in a loop.
-				now := time.Now()
-
-				for {
-					rounds++
-
-					count, err := receiver.DeleteMessages(context.TODO(), &DeleteMessagesOptions{
-						BeforeEnqueueTime: now,
-					})
-
-					if err != nil {
-						//  TODO: Update the following line with your application specific error handling logic
-						require.NoError(t, err)
-					}
-
-					if count == 0 {
-						break
-					}
-
-					total += count // added
-				}
-			}
-
-			purge()
-
-			require.GreaterOrEqual(t, rounds, 2)
-			require.Equal(t, int64(4001), total)
-
-			// queue should be empty
-			ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-			defer cancel()
-
-			messages, err := receiver.ReceiveMessages(ctx, 1, nil)
-			require.ErrorIs(t, err, context.DeadlineExceeded)
-			require.Empty(t, messages)
-		})
+	// This is a bit of a non-deterministic bit so I'm not going to fail the overall test
+	if found == 0 {
+		t.Logf("Failed to find our 'messages released' log entry: %#v", logs)
 	}
 }
 

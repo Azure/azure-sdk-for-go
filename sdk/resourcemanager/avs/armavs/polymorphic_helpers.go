@@ -11,7 +11,7 @@ package armavs
 import "encoding/json"
 
 func unmarshalAddonPropertiesClassification(rawMsg json.RawMessage) (AddonPropertiesClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -38,7 +38,7 @@ func unmarshalAddonPropertiesClassification(rawMsg json.RawMessage) (AddonProper
 }
 
 func unmarshalPlacementPolicyPropertiesClassification(rawMsg json.RawMessage) (PlacementPolicyPropertiesClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -61,7 +61,7 @@ func unmarshalPlacementPolicyPropertiesClassification(rawMsg json.RawMessage) (P
 }
 
 func unmarshalScriptExecutionParameterClassification(rawMsg json.RawMessage) (ScriptExecutionParameterClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -86,7 +86,7 @@ func unmarshalScriptExecutionParameterClassification(rawMsg json.RawMessage) (Sc
 }
 
 func unmarshalScriptExecutionParameterClassificationArray(rawMsg json.RawMessage) ([]ScriptExecutionParameterClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -105,7 +105,7 @@ func unmarshalScriptExecutionParameterClassificationArray(rawMsg json.RawMessage
 }
 
 func unmarshalWorkloadNetworkDhcpEntityClassification(rawMsg json.RawMessage) (WorkloadNetworkDhcpEntityClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any

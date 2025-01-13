@@ -57,7 +57,7 @@ func MostlyIdleReceiver(remainingArgs []string) {
 			queueName := fmt.Sprintf("mostly-idle-receiver-%s-%s", sc.Nano, duration)
 			shared.MustCreateAutoDeletingQueue(sc, queueName, nil)
 
-			client, err := azservicebus.NewClientFromConnectionString(sc.ConnectionString, nil)
+			client, err := azservicebus.NewClient(sc.Endpoint, sc.Cred, nil)
 			sc.PanicOnError("failed to create client", err)
 
 			defer func() {

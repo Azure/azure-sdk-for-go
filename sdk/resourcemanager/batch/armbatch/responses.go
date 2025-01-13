@@ -195,16 +195,27 @@ type LocationClientGetQuotasResponse struct {
 	LocationQuota
 }
 
-// LocationClientListSupportedCloudServiceSKUsResponse contains the response from method LocationClient.NewListSupportedCloudServiceSKUsPager.
-type LocationClientListSupportedCloudServiceSKUsResponse struct {
-	// The Batch List supported SKUs operation response.
-	SupportedSKUsResult
-}
-
 // LocationClientListSupportedVirtualMachineSKUsResponse contains the response from method LocationClient.NewListSupportedVirtualMachineSKUsPager.
 type LocationClientListSupportedVirtualMachineSKUsResponse struct {
 	// The Batch List supported SKUs operation response.
 	SupportedSKUsResult
+}
+
+// NetworkSecurityPerimeterClientGetConfigurationResponse contains the response from method NetworkSecurityPerimeterClient.GetConfiguration.
+type NetworkSecurityPerimeterClientGetConfigurationResponse struct {
+	// Network security perimeter (NSP) configuration resource
+	NetworkSecurityPerimeterConfiguration
+}
+
+// NetworkSecurityPerimeterClientListConfigurationsResponse contains the response from method NetworkSecurityPerimeterClient.NewListConfigurationsPager.
+type NetworkSecurityPerimeterClientListConfigurationsResponse struct {
+	// Result of a list NSP (network security perimeter) configurations request.
+	NetworkSecurityPerimeterConfigurationListResult
+}
+
+// NetworkSecurityPerimeterClientReconcileConfigurationResponse contains the response from method NetworkSecurityPerimeterClient.BeginReconcileConfiguration.
+type NetworkSecurityPerimeterClientReconcileConfigurationResponse struct {
+	// placeholder for future response values
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.

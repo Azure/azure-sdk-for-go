@@ -56,3 +56,6 @@ vendor/
 
 # Default Test Proxy tools install directory
 .proxy
+
+# Default sync TypeSpec Project directory
+TempTypeSpecFiles/

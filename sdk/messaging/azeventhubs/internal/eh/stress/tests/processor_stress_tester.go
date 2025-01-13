@@ -17,6 +17,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/checkpoints"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/test"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 )
 
@@ -80,10 +81,12 @@ func newProcessorStressTest(args []string) (*processorStressTest, error) {
 
 	containerName := testData.runID
 
-	containerClient, err := container.NewClientFromConnectionString(testData.StorageConnectionString, containerName, nil)
+	storageEndpoint := test.URLJoinPaths(testData.StorageEndpoint, containerName)
+
+	containerClient, err := container.NewClient(storageEndpoint, testData.Cred, nil)
 
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	blobStore, err := checkpoints.NewBlobStore(containerClient, nil)
@@ -120,7 +123,7 @@ func (inf *processorStressTest) Run(ctx context.Context) error {
 
 	// start up the processors - they'll stay alive for the entire test.
 	for i := 0; i < inf.numProcessors; i++ {
-		cc, proc, err := inf.newProcessorForTest(ctx)
+		cc, proc, err := inf.newProcessorForTest()
 
 		if err != nil {
 			return err
@@ -160,7 +163,7 @@ func (inf *processorStressTest) Run(ctx context.Context) error {
 
 	// this is the main driver for the entire test - we send, wait for the events to all be
 	// accounted for, and then send again.
-	producerClient, err := azeventhubs.NewProducerClientFromConnectionString(inf.ConnectionString, inf.HubName, nil)
+	producerClient, err := azeventhubs.NewProducerClient(inf.Namespace, inf.HubName, inf.Cred, nil)
 
 	if err != nil {
 		return err
@@ -263,7 +266,7 @@ func (inf *processorStressTest) receiveForever(ctx context.Context, partClient *
 		if errors.Is(err, context.DeadlineExceeded) && ctx.Err() == nil {
 			// this is fine - it just means we ran out of time waiting for events.
 			// This'll happen periodically in between tests when there are no messages.
-			inf.TC.TrackMetric(MetricDeadlineExceeded, 1.0, map[string]string{
+			inf.TC.TrackMetricWithProps(MetricDeadlineExceeded, 1.0, map[string]string{
 				"PartitionID": partClient.PartitionID(),
 			})
 			continue
@@ -272,7 +275,7 @@ func (inf *processorStressTest) receiveForever(ctx context.Context, partClient *
 		if ehErr := (*azeventhubs.Error)(nil); errors.As(err, &ehErr) && ehErr.Code == azeventhubs.ErrorCodeOwnershipLost {
 			// this can happen as partitions are rebalanced between processors - Event Hubs
 			// actually detaches us with this error.
-			inf.TC.TrackMetric(MetricOwnershipLost, 1.0, map[string]string{
+			inf.TC.TrackMetricWithProps(MetricNameOwnershipLost, 1.0, map[string]string{
 				"PartitionID": partClient.PartitionID(),
 			})
 			logger("Ownership lost")
@@ -293,7 +296,7 @@ func (inf *processorStressTest) receiveForever(ctx context.Context, partClient *
 				panic(err)
 			}
 
-			inf.TC.TrackMetric(MetricReceived, float64(len(events)), map[string]string{
+			inf.TC.TrackMetricWithProps(MetricNameReceived, float64(len(events)), map[string]string{
 				"PartitionID": partClient.PartitionID(),
 			})
 		}
@@ -368,11 +371,12 @@ func sliceToMap[T any](values []T, key func(v T) string) map[string]T {
 	return m
 }
 
-func (inf *processorStressTest) newProcessorForTest(ctx context.Context) (*azeventhubs.ConsumerClient, *azeventhubs.Processor, error) {
-	containerClient, err := container.NewClientFromConnectionString(inf.StorageConnectionString, inf.containerName, nil)
+func (inf *processorStressTest) newProcessorForTest() (*azeventhubs.ConsumerClient, *azeventhubs.Processor, error) {
+	storageEndpoint := test.URLJoinPaths(inf.StorageEndpoint, inf.containerName)
+	containerClient, err := container.NewClient(storageEndpoint, inf.Cred, nil)
 
 	if err != nil {
-		panic(err)
+		return nil, nil, err
 	}
 
 	cps, err := checkpoints.NewBlobStore(containerClient, nil)
@@ -381,7 +385,7 @@ func (inf *processorStressTest) newProcessorForTest(ctx context.Context) (*azeve
 		return nil, nil, err
 	}
 
-	cc, err := azeventhubs.NewConsumerClientFromConnectionString(inf.ConnectionString, inf.HubName, azeventhubs.DefaultConsumerGroup, nil)
+	cc, err := azeventhubs.NewConsumerClient(inf.Namespace, inf.HubName, azeventhubs.DefaultConsumerGroup, inf.Cred, nil)
 
 	if err != nil {
 		return nil, nil, err

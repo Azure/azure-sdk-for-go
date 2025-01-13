@@ -43,7 +43,7 @@ func ExampleServer() {
 			resp.SetResponse(http.StatusOK, vmResp, nil)
 
 			// to simulate the failure case, use errResp
-			//errResp.SetResponseError(http.StatusBadRequest, "ThisIsASimulatedError")
+			// errResp.SetResponseError(http.StatusBadRequest, "ThisIsASimulatedError")
 
 			return
 		},

@@ -10,6 +10,48 @@ package azopenai
 
 import "io"
 
+// AddUploadPartResponse contains the response from method Client.AddUploadPart.
+type AddUploadPartResponse struct {
+	// The upload Part represents a chunk of bytes we can add to an Upload object.
+	UploadPart
+}
+
+// CancelBatchResponse contains the response from method Client.CancelBatch.
+type CancelBatchResponse struct {
+	// The Batch object.
+	Batch
+}
+
+// CancelUploadResponse contains the response from method Client.CancelUpload.
+type CancelUploadResponse struct {
+	// The Upload object can accept byte chunks in the form of Parts.
+	Upload
+}
+
+// CompleteUploadResponse contains the response from method Client.CompleteUpload.
+type CompleteUploadResponse struct {
+	// The Upload object can accept byte chunks in the form of Parts.
+	Upload
+}
+
+// CreateBatchResponse contains the response from method Client.CreateBatch.
+type CreateBatchResponse struct {
+	// The Batch object.
+	Batch
+}
+
+// CreateUploadResponse contains the response from method Client.CreateUpload.
+type CreateUploadResponse struct {
+	// The Upload object can accept byte chunks in the form of Parts.
+	Upload
+}
+
+// DeleteFileResponse contains the response from method Client.DeleteFile.
+type DeleteFileResponse struct {
+	// A status response from a file deletion operation.
+	FileDeletionStatus
+}
+
 // GenerateSpeechFromTextResponse contains the response from method Client.GenerateSpeechFromText.
 type GenerateSpeechFromTextResponse struct {
 	// Body contains the streaming response.
@@ -26,6 +68,12 @@ type getAudioTranscriptionInternalResponse struct {
 type getAudioTranslationInternalResponse struct {
 	// Result information for an operation that translated spoken audio into written text.
 	AudioTranslation
+}
+
+// GetBatchResponse contains the response from method Client.GetBatch.
+type GetBatchResponse struct {
+	// The Batch object.
+	Batch
 }
 
 // GetChatCompletionsResponse contains the response from method Client.GetChatCompletions.
@@ -52,8 +100,37 @@ type GetEmbeddingsResponse struct {
 	Embeddings
 }
 
+// GetFileContentResponse contains the response from method Client.GetFileContent.
+type GetFileContentResponse struct {
+	Value []byte
+}
+
+// GetFileResponse contains the response from method Client.GetFile.
+type GetFileResponse struct {
+	// Represents an assistant that can call the model and use tools.
+	File
+}
+
 // GetImageGenerationsResponse contains the response from method Client.GetImageGenerations.
 type GetImageGenerationsResponse struct {
 	// The result of a successful image generation operation.
 	ImageGenerations
+}
+
+// ListBatchesResponse contains the response from method Client.ListBatches.
+type ListBatchesResponse struct {
+	// The response data for a requested list of items.
+	ListBatchesPage
+}
+
+// ListFilesResponse contains the response from method Client.ListFiles.
+type ListFilesResponse struct {
+	// The response data from a file list operation.
+	FileListResponse
+}
+
+// UploadFileResponse contains the response from method Client.UploadFile.
+type UploadFileResponse struct {
+	// Represents an assistant that can call the model and use tools.
+	File
 }

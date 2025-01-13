@@ -15,8 +15,15 @@ import (
 	"reflect"
 )
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type acrAccessToken.
-func (a *acrAccessToken) UnmarshalJSON(data []byte) error {
+// MarshalJSON implements the json.Marshaller interface for type ACRAccessToken.
+func (a ACRAccessToken) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "access_token", a.AccessToken)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACRAccessToken.
+func (a *ACRAccessToken) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -35,8 +42,15 @@ func (a *acrAccessToken) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type acrRefreshToken.
-func (a *acrRefreshToken) UnmarshalJSON(data []byte) error {
+// MarshalJSON implements the json.Marshaller interface for type ACRRefreshToken.
+func (a ACRRefreshToken) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "refresh_token", a.RefreshToken)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACRRefreshToken.
+func (a *ACRRefreshToken) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)

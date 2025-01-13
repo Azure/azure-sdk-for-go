@@ -29,8 +29,7 @@ type ContainersClient struct {
 }
 
 // NewContainersClient creates a new instance of ContainersClient with the specified values.
-//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-//     part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewContainersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContainersClient, error) {
@@ -48,8 +47,8 @@ func NewContainersClient(subscriptionID string, credential azcore.TokenCredentia
 // Attach - Attach to the output stream of a specific container instance in a specified resource group and container group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2024-05-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - containerGroupName - The name of the container group.
 //   - containerName - The name of the container instance.
 //   - options - ContainersClientAttachOptions contains the optional parameters for the ContainersClient.Attach method.
@@ -99,7 +98,7 @@ func (client *ContainersClient) attachCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2024-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -117,8 +116,8 @@ func (client *ContainersClient) attachHandleResponse(resp *http.Response) (Conta
 // ExecuteCommand - Executes a command for a specific container instance in a specified resource group and container group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2024-05-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - containerGroupName - The name of the container group.
 //   - containerName - The name of the container instance.
 //   - containerExecRequest - The request for the exec command.
@@ -170,7 +169,7 @@ func (client *ContainersClient) executeCommandCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2024-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, containerExecRequest); err != nil {
@@ -191,8 +190,8 @@ func (client *ContainersClient) executeCommandHandleResponse(resp *http.Response
 // ListLogs - Get the logs for a specified container instance in a specified resource group and container group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2024-05-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - containerGroupName - The name of the container group.
 //   - containerName - The name of the container instance.
 //   - options - ContainersClientListLogsOptions contains the optional parameters for the ContainersClient.ListLogs method.
@@ -242,7 +241,7 @@ func (client *ContainersClient) listLogsCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2024-05-01-preview")
 	if options != nil && options.Tail != nil {
 		reqQP.Set("tail", strconv.FormatInt(int64(*options.Tail), 10))
 	}

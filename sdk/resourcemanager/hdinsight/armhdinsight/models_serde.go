@@ -1510,6 +1510,7 @@ func (c *ClusterMonitoringResponse) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ClusterPatchParameters.
 func (c ClusterPatchParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "identity", c.Identity)
 	populate(objectMap, "tags", c.Tags)
 	return json.Marshal(objectMap)
 }
@@ -1523,6 +1524,9 @@ func (c *ClusterPatchParameters) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "identity":
+			err = unpopulate(val, "Identity", &c.Identity)
+			delete(rawMsg, key)
 		case "tags":
 			err = unpopulate(val, "Tags", &c.Tags)
 			delete(rawMsg, key)
@@ -2179,6 +2183,37 @@ func (i *IPConfigurationProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type IPTag.
+func (i IPTag) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "ipTagType", i.IPTagType)
+	populate(objectMap, "tag", i.Tag)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type IPTag.
+func (i *IPTag) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", i, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "ipTagType":
+			err = unpopulate(val, "IPTagType", &i.IPTagType)
+			delete(rawMsg, key)
+		case "tag":
+			err = unpopulate(val, "Tag", &i.Tag)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", i, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type KafkaRestProperties.
 func (k KafkaRestProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -2436,7 +2471,9 @@ func (n *NameAvailabilityCheckResult) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type NetworkProperties.
 func (n NetworkProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "outboundDependenciesManagedType", n.OutboundDependenciesManagedType)
 	populate(objectMap, "privateLink", n.PrivateLink)
+	populate(objectMap, "publicIpTag", n.PublicIPTag)
 	populate(objectMap, "resourceProviderConnection", n.ResourceProviderConnection)
 	return json.Marshal(objectMap)
 }
@@ -2450,8 +2487,14 @@ func (n *NetworkProperties) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "outboundDependenciesManagedType":
+			err = unpopulate(val, "OutboundDependenciesManagedType", &n.OutboundDependenciesManagedType)
+			delete(rawMsg, key)
 		case "privateLink":
 			err = unpopulate(val, "PrivateLink", &n.PrivateLink)
+			delete(rawMsg, key)
+		case "publicIpTag":
+			err = unpopulate(val, "PublicIPTag", &n.PublicIPTag)
 			delete(rawMsg, key)
 		case "resourceProviderConnection":
 			err = unpopulate(val, "ResourceProviderConnection", &n.ResourceProviderConnection)
@@ -4320,7 +4363,7 @@ func populateAny(m map[string]any, k string, v any) {
 }
 
 func unpopulate(data json.RawMessage, fn string, v any) error {
-	if data == nil {
+	if data == nil || string(data) == "null" {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {

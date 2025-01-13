@@ -19,14 +19,16 @@ import (
 
 // ServerFactory is a fake server for instances of the armscvmm.ClientFactory type.
 type ServerFactory struct {
-	AvailabilitySetsServer        AvailabilitySetsServer
-	CloudsServer                  CloudsServer
-	InventoryItemsServer          InventoryItemsServer
-	OperationsServer              OperationsServer
-	VirtualMachineTemplatesServer VirtualMachineTemplatesServer
-	VirtualMachinesServer         VirtualMachinesServer
-	VirtualNetworksServer         VirtualNetworksServer
-	VmmServersServer              VmmServersServer
+	AvailabilitySetsServer                  AvailabilitySetsServer
+	CloudsServer                            CloudsServer
+	GuestAgentsServer                       GuestAgentsServer
+	InventoryItemsServer                    InventoryItemsServer
+	OperationsServer                        OperationsServer
+	VMInstanceHybridIdentityMetadatasServer VMInstanceHybridIdentityMetadatasServer
+	VirtualMachineInstancesServer           VirtualMachineInstancesServer
+	VirtualMachineTemplatesServer           VirtualMachineTemplatesServer
+	VirtualNetworksServer                   VirtualNetworksServer
+	VmmServersServer                        VmmServersServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -41,16 +43,18 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armscvmm.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                             *ServerFactory
-	trMu                            sync.Mutex
-	trAvailabilitySetsServer        *AvailabilitySetsServerTransport
-	trCloudsServer                  *CloudsServerTransport
-	trInventoryItemsServer          *InventoryItemsServerTransport
-	trOperationsServer              *OperationsServerTransport
-	trVirtualMachineTemplatesServer *VirtualMachineTemplatesServerTransport
-	trVirtualMachinesServer         *VirtualMachinesServerTransport
-	trVirtualNetworksServer         *VirtualNetworksServerTransport
-	trVmmServersServer              *VmmServersServerTransport
+	srv                                       *ServerFactory
+	trMu                                      sync.Mutex
+	trAvailabilitySetsServer                  *AvailabilitySetsServerTransport
+	trCloudsServer                            *CloudsServerTransport
+	trGuestAgentsServer                       *GuestAgentsServerTransport
+	trInventoryItemsServer                    *InventoryItemsServerTransport
+	trOperationsServer                        *OperationsServerTransport
+	trVMInstanceHybridIdentityMetadatasServer *VMInstanceHybridIdentityMetadatasServerTransport
+	trVirtualMachineInstancesServer           *VirtualMachineInstancesServerTransport
+	trVirtualMachineTemplatesServer           *VirtualMachineTemplatesServerTransport
+	trVirtualNetworksServer                   *VirtualNetworksServerTransport
+	trVmmServersServer                        *VmmServersServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -74,6 +78,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "CloudsClient":
 		initServer(s, &s.trCloudsServer, func() *CloudsServerTransport { return NewCloudsServerTransport(&s.srv.CloudsServer) })
 		resp, err = s.trCloudsServer.Do(req)
+	case "GuestAgentsClient":
+		initServer(s, &s.trGuestAgentsServer, func() *GuestAgentsServerTransport { return NewGuestAgentsServerTransport(&s.srv.GuestAgentsServer) })
+		resp, err = s.trGuestAgentsServer.Do(req)
 	case "InventoryItemsClient":
 		initServer(s, &s.trInventoryItemsServer, func() *InventoryItemsServerTransport {
 			return NewInventoryItemsServerTransport(&s.srv.InventoryItemsServer)
@@ -82,16 +89,21 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
+	case "VMInstanceHybridIdentityMetadatasClient":
+		initServer(s, &s.trVMInstanceHybridIdentityMetadatasServer, func() *VMInstanceHybridIdentityMetadatasServerTransport {
+			return NewVMInstanceHybridIdentityMetadatasServerTransport(&s.srv.VMInstanceHybridIdentityMetadatasServer)
+		})
+		resp, err = s.trVMInstanceHybridIdentityMetadatasServer.Do(req)
+	case "VirtualMachineInstancesClient":
+		initServer(s, &s.trVirtualMachineInstancesServer, func() *VirtualMachineInstancesServerTransport {
+			return NewVirtualMachineInstancesServerTransport(&s.srv.VirtualMachineInstancesServer)
+		})
+		resp, err = s.trVirtualMachineInstancesServer.Do(req)
 	case "VirtualMachineTemplatesClient":
 		initServer(s, &s.trVirtualMachineTemplatesServer, func() *VirtualMachineTemplatesServerTransport {
 			return NewVirtualMachineTemplatesServerTransport(&s.srv.VirtualMachineTemplatesServer)
 		})
 		resp, err = s.trVirtualMachineTemplatesServer.Do(req)
-	case "VirtualMachinesClient":
-		initServer(s, &s.trVirtualMachinesServer, func() *VirtualMachinesServerTransport {
-			return NewVirtualMachinesServerTransport(&s.srv.VirtualMachinesServer)
-		})
-		resp, err = s.trVirtualMachinesServer.Do(req)
 	case "VirtualNetworksClient":
 		initServer(s, &s.trVirtualNetworksServer, func() *VirtualNetworksServerTransport {
 			return NewVirtualNetworksServerTransport(&s.srv.VirtualNetworksServer)

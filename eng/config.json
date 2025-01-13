@@ -30,7 +30,7 @@
         },
         {
             "Name": "azidentity/cache",
-            "CoverageGoal": 0.35
+            "CoverageGoal": 0.70
         },
         {
             "Name": "azqueue",
@@ -38,7 +38,7 @@
         },
         {
             "Name": "azdatalake",
-            "CoverageGoal": 0.60
+            "CoverageGoal": 0.25
         },
         {
             "Name": "azfile",
@@ -46,7 +46,15 @@
         },
         {
             "Name": "azopenai",
-            "CoverageGoal": 0.28
+            "CoverageGoal": 0.16
+        },
+        {
+            "Name": "ai/azopenaiassistants",
+            "CoverageGoal": 0.00
+        },
+        {
+            "Name": "ai/azopenaiextensions",
+            "CoverageGoal": 0.00
         },
         {
             "Name": "aztemplate",
@@ -63,6 +71,15 @@
         {
             "Name": "keyvault/azsecrets",
             "CoverageGoal": 0.86
+        },
+        {
+            "Name": "data/aztables",
+            "CoverageGoal": 0.77,
+            "EnvironmentVariables": {
+                "TABLES_STORAGE_ACCOUNT_NAME": "fakeaccount",
+                "TABLES_PRIMARY_STORAGE_ACCOUNT_KEY": "Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==",
+                "TABLES_SHARED_ACCESS_SIGNATURE": "?sig=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw=="
+            }
         },
         {
             "Name": "data",
@@ -91,11 +108,15 @@
         },
         {
             "Name": "messaging/azservicebus",
-            "CoverageGoal": 0.48
+            "CoverageGoal": 0.39
         },
         {
             "Name": "messaging/azeventhubs",
-            "CoverageGoal": 0.60
+            "CoverageGoal": 0.45
+        },
+        {
+            "Name": "messaging/eventgrid/aznamespaces",
+            "CoverageGoal": 0.00
         },
         {
             "Name": "messaging/internal",

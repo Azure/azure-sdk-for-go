@@ -11,7 +11,7 @@ package armmysqlflexibleservers
 import "encoding/json"
 
 func unmarshalBackupStoreDetailsClassification(rawMsg json.RawMessage) (BackupStoreDetailsClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -24,6 +24,29 @@ func unmarshalBackupStoreDetailsClassification(rawMsg json.RawMessage) (BackupSt
 		b = &FullBackupStoreDetails{}
 	default:
 		b = &BackupStoreDetails{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalOperationProgressResponseTypeClassification(rawMsg json.RawMessage) (OperationProgressResponseTypeClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b OperationProgressResponseTypeClassification
+	switch m["objectType"] {
+	case string(ObjectTypeBackupAndExportResponse):
+		b = &BackupAndExportResponseType{}
+	case string(ObjectTypeImportFromStorageResponse):
+		b = &ImportFromStorageResponseType{}
+	default:
+		b = &OperationProgressResponseType{}
 	}
 	if err := json.Unmarshal(rawMsg, b); err != nil {
 		return nil, err

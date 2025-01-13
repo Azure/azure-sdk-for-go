@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/ManagedEnvironments_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/ManagedEnvironments_Get.json
 func ExampleManagedEnvironmentsDiagnosticsClient_GetRoot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -64,6 +64,11 @@ func ExampleManagedEnvironmentsDiagnosticsClient_GetRoot() {
 	// 				Enabled: to.Ptr(true),
 	// 			},
 	// 		},
+	// 		PeerTrafficConfiguration: &armappcontainers.ManagedEnvironmentPropertiesPeerTrafficConfiguration{
+	// 			Encryption: &armappcontainers.ManagedEnvironmentPropertiesPeerTrafficConfigurationEncryption{
+	// 				Enabled: to.Ptr(true),
+	// 			},
+	// 		},
 	// 		ProvisioningState: to.Ptr(armappcontainers.EnvironmentProvisioningStateSucceeded),
 	// 		StaticIP: to.Ptr("20.42.33.145"),
 	// 		VnetConfiguration: &armappcontainers.VnetConfiguration{
@@ -72,6 +77,7 @@ func ExampleManagedEnvironmentsDiagnosticsClient_GetRoot() {
 	// 		WorkloadProfiles: []*armappcontainers.WorkloadProfile{
 	// 			{
 	// 				Name: to.Ptr("My-GP-01"),
+	// 				EnableFips: to.Ptr(true),
 	// 				MaximumCount: to.Ptr[int32](12),
 	// 				MinimumCount: to.Ptr[int32](3),
 	// 				WorkloadProfileType: to.Ptr("GeneralPurpose"),

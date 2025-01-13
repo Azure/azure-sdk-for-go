@@ -17,8 +17,7 @@ import (
 // Don't use this type directly, use NewClientFactory instead.
 type ClientFactory struct {
 	subscriptionID string
-	credential     azcore.TokenCredential
-	options        *arm.ClientOptions
+	internal       *arm.Client
 }
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
@@ -27,72 +26,91 @@ type ClientFactory struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
+	internal, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	return &ClientFactory{
-		subscriptionID: subscriptionID, credential: credential,
-		options: options.Clone(),
+		subscriptionID: subscriptionID,
+		internal:       internal,
 	}, nil
 }
 
 // NewAccessPolicyAssignmentClient creates a new instance of AccessPolicyAssignmentClient.
 func (c *ClientFactory) NewAccessPolicyAssignmentClient() *AccessPolicyAssignmentClient {
-	subClient, _ := NewAccessPolicyAssignmentClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &AccessPolicyAssignmentClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewAccessPolicyClient creates a new instance of AccessPolicyClient.
 func (c *ClientFactory) NewAccessPolicyClient() *AccessPolicyClient {
-	subClient, _ := NewAccessPolicyClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &AccessPolicyClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewAsyncOperationStatusClient creates a new instance of AsyncOperationStatusClient.
 func (c *ClientFactory) NewAsyncOperationStatusClient() *AsyncOperationStatusClient {
-	subClient, _ := NewAsyncOperationStatusClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &AsyncOperationStatusClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewClient creates a new instance of Client.
 func (c *ClientFactory) NewClient() *Client {
-	subClient, _ := NewClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &Client{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewFirewallRulesClient creates a new instance of FirewallRulesClient.
 func (c *ClientFactory) NewFirewallRulesClient() *FirewallRulesClient {
-	subClient, _ := NewFirewallRulesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &FirewallRulesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewLinkedServerClient creates a new instance of LinkedServerClient.
 func (c *ClientFactory) NewLinkedServerClient() *LinkedServerClient {
-	subClient, _ := NewLinkedServerClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &LinkedServerClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
-	subClient, _ := NewOperationsClient(c.credential, c.options)
-	return subClient
+	return &OperationsClient{
+		internal: c.internal,
+	}
 }
 
 // NewPatchSchedulesClient creates a new instance of PatchSchedulesClient.
 func (c *ClientFactory) NewPatchSchedulesClient() *PatchSchedulesClient {
-	subClient, _ := NewPatchSchedulesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &PatchSchedulesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewPrivateEndpointConnectionsClient creates a new instance of PrivateEndpointConnectionsClient.
 func (c *ClientFactory) NewPrivateEndpointConnectionsClient() *PrivateEndpointConnectionsClient {
-	subClient, _ := NewPrivateEndpointConnectionsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &PrivateEndpointConnectionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewPrivateLinkResourcesClient creates a new instance of PrivateLinkResourcesClient.
 func (c *ClientFactory) NewPrivateLinkResourcesClient() *PrivateLinkResourcesClient {
-	subClient, _ := NewPrivateLinkResourcesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &PrivateLinkResourcesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }

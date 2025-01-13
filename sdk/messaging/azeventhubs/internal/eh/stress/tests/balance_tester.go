@@ -70,7 +70,7 @@ func balanceTesterImpl(ctx context.Context, numProcessors int, strategy azeventh
 	}
 
 	args.numPartitions, err = func(ctx context.Context) (int, error) {
-		client, err := azeventhubs.NewProducerClientFromConnectionString(args.ConnectionString, args.HubName, nil)
+		client, err := azeventhubs.NewProducerClient(args.Namespace, args.HubName, args.Cred, nil)
 
 		if err != nil {
 			return 0, err
@@ -139,7 +139,7 @@ func (bt *balanceTester) Run(ctx context.Context) error {
 					log.Writef(EventBalanceTest, "Balance not achieved, resetting balancedCount: %s", ibErr)
 					balancedCount = 0
 
-					bt.TC.TrackEvent("Unbalanced", map[string]string{
+					bt.TC.TrackEventWithProps(EventUnbalanced, map[string]string{
 						"Message": ibErr.Error(),
 					})
 					continue
@@ -159,7 +159,7 @@ func (bt *balanceTester) Run(ctx context.Context) error {
 				balancedCount++
 				log.Writef(EventBalanceTest, "Balanced, with %d consecutive checks", balancedCount)
 
-				bt.TC.TrackEvent("Balanced", map[string]string{
+				bt.TC.TrackEventWithProps(EventBalanced, map[string]string{
 					"Count":           fmt.Sprintf("%d", balancedCount),
 					"DurationSeconds": fmt.Sprintf("%d", firstBalance/time.Second),
 				})
@@ -220,7 +220,9 @@ func (bt *balanceTester) process(ctx context.Context, name string) error {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
-	client, err := azeventhubs.NewConsumerClientFromConnectionString(bt.ConnectionString, bt.HubName, azeventhubs.DefaultConsumerGroup, nil)
+	client, err := azeventhubs.NewConsumerClient(bt.Namespace, bt.HubName, azeventhubs.DefaultConsumerGroup, bt.Cred, &azeventhubs.ConsumerClientOptions{
+		InstanceID: name,
+	})
 
 	if err != nil {
 		return err
@@ -228,7 +230,7 @@ func (bt *balanceTester) process(ctx context.Context, name string) error {
 
 	defer func() { _ = client.Close(ctx) }()
 
-	blobClient, err := azblob.NewClientFromConnectionString(bt.StorageConnectionString, nil)
+	blobClient, err := azblob.NewClient(bt.StorageEndpoint, bt.Cred, nil)
 
 	if err != nil {
 		return err
@@ -295,7 +297,7 @@ type unbalancedError error
 // It returns `nil` if no error occurred and the checkpoint store was balanced.
 // If the checkpoint store is NOT balanced it returns an unbalancedError
 func (bt *balanceTester) checkBalance(ctx context.Context) error {
-	blobClient, err := azblob.NewClientFromConnectionString(bt.StorageConnectionString, nil)
+	blobClient, err := azblob.NewClient(bt.StorageEndpoint, bt.Cred, nil)
 
 	if err != nil {
 		return err
@@ -325,7 +327,7 @@ func (bt *balanceTester) checkBalance(ctx context.Context) error {
 }
 
 func (bt *balanceTester) cleanupContainer() {
-	blobClient, err := azblob.NewClientFromConnectionString(bt.StorageConnectionString, nil)
+	blobClient, err := azblob.NewClient(bt.StorageEndpoint, bt.Cred, nil)
 
 	if err != nil {
 		return

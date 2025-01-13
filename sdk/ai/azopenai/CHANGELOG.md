@@ -1,6 +1,6 @@
 # Release History
 
-## 0.5.2 (Unreleased)
+## 0.7.2 (Unreleased)
 
 ### Features Added
 
@@ -8,15 +8,115 @@
 
 ### Bugs Fixed
 
-- EventReader can now handle chunks of text larger than 64k. Thank you @ChrisTrenkamp for finding the issue and suggesting a fix. (PR#22703)
-
 ### Other Changes
+
+## 0.7.1 (2024-11-13)
+
+### Features Added
+
+- `StreamOptions` parameter added to `ChatCompletionsOptions` and `CompletionsOptions`.
+- `MaxCompletionTokens` parameter added to `ChatCompletionsOptions`.
+- `ParallelToolCalls` parameter added to `ChatCompletionsOptions`.
+
+### Breaking Changes
+
+- `MongoDBChatExtensionParameters.Authentication`'s type has been changed to a `OnYourDataUsernameAndPasswordAuthenticationOptions`. (PR#23620)
+- `GetCompletions` and `GetCompletionsStream` now receive different options (`CompletionsOptions` and `CompletionsStreamOptions` respectively)
+- `GetChatCompletions` and `GetChatCompletionsStream` now receive different options (`ChatCompletionsOptions` and `ChatCompletionsStreamOptions` respectively)
+
+## 0.7.0 (2024-10-14)
+
+### Features Added
+
+- MongoDBChatExtensionConfiguration has been added as an "On Your Data" data source.
+- Several types now have union types for their content or dependency information:
+  - ChatRequestAssistantMessage.Content is now a ChatRequestAssistantMessageContent.
+  - ChatRequestSystemMessage.Content is now a ChatRequestSystemMessageContent.
+  - ChatRequestToolMessage.Content is now a ChatRequestToolMessageContent.
+  - MongoDBChatExtensionParameters.EmbeddingDependency is now a MongoDBChatExtensionParametersEmbeddingDependency
+
+### Breaking Changes
+
+- FunctionDefinition has been renamed to ChatCompletionsFunctionToolDefinitionFunction.
+- AzureCosmosDBChatExtensionParameters.RoleInformation has been removed.
+- AzureMachineLearningIndexChatExtension and related types have been removed.
+- Several types now have union types for their content or dependency information:
+  - ChatRequestAssistantMessage.Content is now a ChatRequestAssistantMessageContent.
+  - ChatRequestSystemMessage.Content is now a ChatRequestSystemMessageContent.
+  - ChatRequestToolMessage.Content is now a ChatRequestToolMessageContent.
+
+## 0.6.2 (2024-09-10)
+
+### Features Added
+
+- Added Batch and File APIs.
+
+### Breaking Changes
+
+- FunctionDefinition.Parameters has been changed to take JSON instead of an object/map. You can set it using code
+  similar to this:
+
+  ```go
+    parametersJSON, err := json.Marshal(map[string]any{
+      "required": []string{"location"},
+      "type":     "object",
+      "properties": map[string]any{
+        "location": map[string]any{
+          "type":        "string",
+          "description": "The city and state, e.g. San Francisco, CA",
+        },
+      },
+    })
+
+    if err != nil {
+      // TODO: Update the following line with your application specific error handling logic
+      log.Printf("ERROR: %s", err)
+      return
+    }
+
+    // and then, in ChatCompletionsOptions
+    opts := azopenai.ChatCompletionsOptions{
+      Functions: []azopenai.FunctionDefinition{
+        {
+          Name:        to.Ptr("get_current_weather"),
+          Description: to.Ptr("Get the current weather in a given location"),
+          Parameters: parametersJSON,
+        },
+      },
+    }
+  ```
+
+## 0.6.1 (2024-08-14)
+
+### Bugs Fixed
+
+- Client now respects the `InsecureAllowCredentialWithHTTP` flag for allowing non-HTTPS connections. Thank you @ukrocks007! (PR#23188)
+
+## 0.6.0 (2024-06-11)
+
+### Features Added
+
+- Updating to the `2024-05-01-preview` API version for Azure OpenAI. (PR#22967)
+
+### Breaking Changes
+
+- ContentFilterResultDetailsForPrompt.CustomBlocklists has been changed from a []ContentFilterBlocklistIDResult to a struct,
+  containing the slice of []ContentFilterBlocklistIDResult.
+- OnYourDataEndpointVectorizationSource.Authentication's type has changed to OnYourDataVectorSearchAuthenticationOptionsClassification
+- Casing has been corrected for fields:
+  - Filepath -> FilePath
+  - FilepathField -> FilePathField
+  - CustomBlocklists -> CustomBlockLists
+
+### Bugs Fixed
+
+- EventReader can now handle chunks of text larger than 64k. Thank you @ChrisTrenkamp for finding the issue and suggesting a fix. (PR#22703)
 
 ## 0.5.1 (2024-04-02)
 
 ### Features Added
 
-- Updating to the `2024-03-01-preview` API version. This adds support for using Dimensions with Embeddings as well as the ability to choose the embeddings format. 
+- Updating to the `2024-03-01-preview` API version. This adds support for using Dimensions with Embeddings as well as the ability to choose the embeddings format.
   This update also adds in the `Model` field for ChatCompletions responses. PR(#22603)
 
 ## 0.5.0 (2024-03-05)
@@ -36,8 +136,8 @@
 
 ### Bugs Fixed
 
-- `AudioTranscriptionOptions.Filename` and `AudioTranslationOptions.Filename` fields are now properly propagated, allowing 
-  for disambiguating the format of an audio file when OpenAI can't detect it. (PR#22210) 
+- `AudioTranscriptionOptions.Filename` and `AudioTranslationOptions.Filename` fields are now properly propagated, allowing
+  for disambiguating the format of an audio file when OpenAI can't detect it. (PR#22210)
 
 ## 0.4.0 (2023-12-11)
 
@@ -64,9 +164,11 @@ Support for many of the features mentioned in OpenAI's November Dev Day and Micr
 ## 0.3.0 (2023-09-26)
 
 ### Features Added
+
 - Support for Whisper audio APIs for transcription and translation using `GetAudioTranscription` and `GetAudioTranslation`.
 
 ### Breaking Changes
+
 - ChatChoiceContentFilterResults content filtering fields are now all typed as ContentFilterResult, instead of unique types for each field.
 - `PromptAnnotations` renamed to `PromptFilterResults` in `ChatCompletions` and `Completions`.
 
@@ -84,7 +186,7 @@ Support for many of the features mentioned in OpenAI's November Dev Day and Micr
 
 ### Bugs Fixed
 
-- EventReader, used by GetChatCompletionsStream and GetCompletionsStream for streaming results, would not return an 
+- EventReader, used by GetChatCompletionsStream and GetCompletionsStream for streaming results, would not return an
   error if the underlying Body reader was closed or EOF'd before the actual DONE: token arrived. This could result in an
   infinite loop for callers. (PR#21323)
 
@@ -96,4 +198,4 @@ Support for many of the features mentioned in OpenAI's November Dev Day and Micr
 
 ## 0.1.0 (2023-07-20)
 
-* Initial release of the `azopenai` library
+- Initial release of the `azopenai` library

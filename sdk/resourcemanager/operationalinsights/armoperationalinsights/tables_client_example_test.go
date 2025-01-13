@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/TablesList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ce13e8353a25125a41bc01705c0a7794dac32a7/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2021-12-01-preview/examples/TablesList.json
 func ExampleTablesClient_NewListByWorkspacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,32 +43,169 @@ func ExampleTablesClient_NewListByWorkspacePager() {
 		// page.TablesListResult = armoperationalinsights.TablesListResult{
 		// 	Value: []*armoperationalinsights.Table{
 		// 		{
-		// 			Name: to.Ptr("table1"),
-		// 			ID: to.Ptr("/subscriptions/594038b5-1093-476e-a366-482775671c11/resourcegroups/calbot-rg/providers/microsoft.operationalinsights/workspaces/testresourcelock/tables/table1"),
+		// 			Name: to.Ptr("AzureNetworkFlow"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-00000000000/resourcegroups/oiautorest6685/providers/Microsoft.OperationalInsights/workspaces/oiautorest6685/tables/AzureNetworkFlow"),
 		// 			Properties: &armoperationalinsights.TableProperties{
-		// 				RetentionInDays: to.Ptr[int32](30),
+		// 				Schema: &armoperationalinsights.Schema{
+		// 					Name: to.Ptr("AzureNetworkFlow"),
+		// 					Solutions: []*string{
+		// 						to.Ptr("LogManagement")},
+		// 						StandardColumns: []*armoperationalinsights.Column{
+		// 							{
+		// 								Name: to.Ptr("TenantId"),
+		// 								Type: to.Ptr(armoperationalinsights.ColumnTypeEnumGUID),
+		// 								IsDefaultDisplay: to.Ptr(false),
+		// 								IsHidden: to.Ptr(true),
+		// 							},
+		// 							{
+		// 								Name: to.Ptr("SourceSystem"),
+		// 								Type: to.Ptr(armoperationalinsights.ColumnTypeEnumString),
+		// 								IsDefaultDisplay: to.Ptr(false),
+		// 								IsHidden: to.Ptr(false),
+		// 							},
+		// 							{
+		// 								Name: to.Ptr("TimeGenerated"),
+		// 								Type: to.Ptr(armoperationalinsights.ColumnTypeEnumDateTime),
+		// 								IsDefaultDisplay: to.Ptr(false),
+		// 								IsHidden: to.Ptr(false),
+		// 							},
+		// 							{
+		// 								Name: to.Ptr("AgentID"),
+		// 								Type: to.Ptr(armoperationalinsights.ColumnTypeEnumString),
+		// 								IsDefaultDisplay: to.Ptr(false),
+		// 								IsHidden: to.Ptr(false),
+		// 							},
+		// 							{
+		// 								Name: to.Ptr("SourceIP"),
+		// 								Type: to.Ptr(armoperationalinsights.ColumnTypeEnumString),
+		// 								IsDefaultDisplay: to.Ptr(false),
+		// 								IsHidden: to.Ptr(false),
+		// 							},
+		// 							{
+		// 								Name: to.Ptr("Protocol"),
+		// 								Type: to.Ptr(armoperationalinsights.ColumnTypeEnumString),
+		// 								IsDefaultDisplay: to.Ptr(false),
+		// 								IsHidden: to.Ptr(false),
+		// 							},
+		// 							{
+		// 								Name: to.Ptr("SourcePort"),
+		// 								Type: to.Ptr(armoperationalinsights.ColumnTypeEnumInt),
+		// 								IsDefaultDisplay: to.Ptr(false),
+		// 								IsHidden: to.Ptr(false),
+		// 							},
+		// 							{
+		// 								Name: to.Ptr("DestinationPort"),
+		// 								Type: to.Ptr(armoperationalinsights.ColumnTypeEnumInt),
+		// 								IsDefaultDisplay: to.Ptr(false),
+		// 								IsHidden: to.Ptr(false),
+		// 							},
+		// 							{
+		// 								Name: to.Ptr("TcpFlags"),
+		// 								Type: to.Ptr(armoperationalinsights.ColumnTypeEnumInt),
+		// 								IsDefaultDisplay: to.Ptr(false),
+		// 								IsHidden: to.Ptr(false),
+		// 							},
+		// 							{
+		// 								Name: to.Ptr("Packets"),
+		// 								Type: to.Ptr(armoperationalinsights.ColumnTypeEnumInt),
+		// 								IsDefaultDisplay: to.Ptr(false),
+		// 								IsHidden: to.Ptr(false),
+		// 							},
+		// 							{
+		// 								Name: to.Ptr("Bytes"),
+		// 								Type: to.Ptr(armoperationalinsights.ColumnTypeEnumInt),
+		// 								IsDefaultDisplay: to.Ptr(false),
+		// 								IsHidden: to.Ptr(false),
+		// 							},
+		// 							{
+		// 								Name: to.Ptr("BytesOut"),
+		// 								Type: to.Ptr(armoperationalinsights.ColumnTypeEnumInt),
+		// 								IsDefaultDisplay: to.Ptr(false),
+		// 								IsHidden: to.Ptr(false),
+		// 							},
+		// 							{
+		// 								Name: to.Ptr("DurationInMs"),
+		// 								Type: to.Ptr(armoperationalinsights.ColumnTypeEnumInt),
+		// 								IsDefaultDisplay: to.Ptr(false),
+		// 								IsHidden: to.Ptr(false),
+		// 							},
+		// 							{
+		// 								Name: to.Ptr("RstCount"),
+		// 								Type: to.Ptr(armoperationalinsights.ColumnTypeEnumInt),
+		// 								IsDefaultDisplay: to.Ptr(false),
+		// 								IsHidden: to.Ptr(false),
+		// 							},
+		// 							{
+		// 								Name: to.Ptr("MaxSampleRtt"),
+		// 								Type: to.Ptr(armoperationalinsights.ColumnTypeEnumInt),
+		// 								IsDefaultDisplay: to.Ptr(false),
+		// 								IsHidden: to.Ptr(false),
+		// 						}},
+		// 						TableSubType: to.Ptr(armoperationalinsights.TableSubTypeEnumAny),
+		// 						TableType: to.Ptr(armoperationalinsights.TableTypeEnumMicrosoft),
+		// 					},
+		// 					ArchiveRetentionInDays: to.Ptr[int32](25),
+		// 					Plan: to.Ptr(armoperationalinsights.TablePlanEnumAnalytics),
+		// 					ProvisioningState: to.Ptr(armoperationalinsights.ProvisioningStateEnumSucceeded),
+		// 					RetentionInDays: to.Ptr[int32](45),
+		// 					TotalRetentionInDays: to.Ptr[int32](70),
+		// 				},
 		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("table2"),
-		// 			ID: to.Ptr("/subscriptions/594038b5-1093-476e-a366-482775671c11/resourcegroups/calbot-rg/providers/microsoft.operationalinsights/workspaces/testresourcelock/tables/table2"),
-		// 			Properties: &armoperationalinsights.TableProperties{
-		// 				RetentionInDays: to.Ptr[int32](30),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("table3"),
-		// 			ID: to.Ptr("/subscriptions/594038b5-1093-476e-a366-482775671c11/resourcegroups/calbot-rg/providers/microsoft.operationalinsights/workspaces/testresourcelock/tables/table3"),
-		// 			Properties: &armoperationalinsights.TableProperties{
-		// 				RetentionInDays: to.Ptr[int32](30),
-		// 			},
-		// 	}},
-		// }
+		// 			{
+		// 				Name: to.Ptr("SurfaceHubDns"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-00000000000/resourcegroups/oiautorest6685/providers/Microsoft.OperationalInsights/workspaces/oiautorest6685/tables/SurfaceHubDns"),
+		// 				Properties: &armoperationalinsights.TableProperties{
+		// 					Schema: &armoperationalinsights.Schema{
+		// 						Name: to.Ptr("SurfaceHubDns"),
+		// 						Solutions: []*string{
+		// 							to.Ptr("LogManagement")},
+		// 							StandardColumns: []*armoperationalinsights.Column{
+		// 								{
+		// 									Name: to.Ptr("TenantId"),
+		// 									Type: to.Ptr(armoperationalinsights.ColumnTypeEnumGUID),
+		// 									IsDefaultDisplay: to.Ptr(false),
+		// 									IsHidden: to.Ptr(true),
+		// 								},
+		// 								{
+		// 									Name: to.Ptr("SourceSystem"),
+		// 									Type: to.Ptr(armoperationalinsights.ColumnTypeEnumString),
+		// 									IsDefaultDisplay: to.Ptr(false),
+		// 									IsHidden: to.Ptr(false),
+		// 								},
+		// 								{
+		// 									Name: to.Ptr("TimeGenerated"),
+		// 									Type: to.Ptr(armoperationalinsights.ColumnTypeEnumDateTime),
+		// 									IsDefaultDisplay: to.Ptr(false),
+		// 									IsHidden: to.Ptr(false),
+		// 								},
+		// 								{
+		// 									Name: to.Ptr("QueryName"),
+		// 									Type: to.Ptr(armoperationalinsights.ColumnTypeEnumString),
+		// 									IsDefaultDisplay: to.Ptr(false),
+		// 									IsHidden: to.Ptr(false),
+		// 								},
+		// 								{
+		// 									Name: to.Ptr("ComputerName"),
+		// 									Type: to.Ptr(armoperationalinsights.ColumnTypeEnumString),
+		// 									IsDefaultDisplay: to.Ptr(false),
+		// 									IsHidden: to.Ptr(false),
+		// 							}},
+		// 							TableSubType: to.Ptr(armoperationalinsights.TableSubTypeEnumAny),
+		// 							TableType: to.Ptr(armoperationalinsights.TableTypeEnumMicrosoft),
+		// 						},
+		// 						ArchiveRetentionInDays: to.Ptr[int32](0),
+		// 						Plan: to.Ptr(armoperationalinsights.TablePlanEnumAnalytics),
+		// 						ProvisioningState: to.Ptr(armoperationalinsights.ProvisioningStateEnumSucceeded),
+		// 						RetentionInDays: to.Ptr[int32](30),
+		// 						TotalRetentionInDays: to.Ptr[int32](30),
+		// 					},
+		// 			}},
+		// 		}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/TablesUpdate.json
-func ExampleTablesClient_Update() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ce13e8353a25125a41bc01705c0a7794dac32a7/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2021-12-01-preview/examples/TablesUpsert.json
+func ExampleTablesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -78,27 +215,149 @@ func ExampleTablesClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewTablesClient().Update(ctx, "oiautorest6685", "oiautorest6685", "table1", armoperationalinsights.Table{
+	poller, err := clientFactory.NewTablesClient().BeginCreateOrUpdate(ctx, "oiautorest6685", "oiautorest6685", "AzureNetworkFlow", armoperationalinsights.Table{
 		Properties: &armoperationalinsights.TableProperties{
-			RetentionInDays: to.Ptr[int32](30),
+			Schema: &armoperationalinsights.Schema{
+				Name: to.Ptr("AzureNetworkFlow"),
+				Columns: []*armoperationalinsights.Column{
+					{
+						Name: to.Ptr("MyNewColumn"),
+						Type: to.Ptr(armoperationalinsights.ColumnTypeEnumGUID),
+					}},
+			},
+			RetentionInDays:      to.Ptr[int32](45),
+			TotalRetentionInDays: to.Ptr[int32](70),
 		},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Table = armoperationalinsights.Table{
-	// 	Name: to.Ptr("table1"),
-	// 	ID: to.Ptr("/subscriptions/594038b5-1093-476e-a366-482775671c11/resourcegroups/calbot-rg/providers/microsoft.operationalinsights/workspaces/testresourcelock/tables/table1"),
+	// 	Name: to.Ptr("AzureNetworkFlow"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-00000000000/resourcegroups/oiautorest6685/providers/Microsoft.OperationalInsights/workspaces/oiautorest6685/tables/AzureNetworkFlow"),
 	// 	Properties: &armoperationalinsights.TableProperties{
-	// 		RetentionInDays: to.Ptr[int32](30),
-	// 	},
-	// }
+	// 		Schema: &armoperationalinsights.Schema{
+	// 			Name: to.Ptr("AzureNetworkFlow"),
+	// 			Columns: []*armoperationalinsights.Column{
+	// 				{
+	// 					Name: to.Ptr("MyNewColumn"),
+	// 					Type: to.Ptr(armoperationalinsights.ColumnTypeEnumGUID),
+	// 					IsDefaultDisplay: to.Ptr(false),
+	// 					IsHidden: to.Ptr(false),
+	// 			}},
+	// 			Solutions: []*string{
+	// 				to.Ptr("LogManagement")},
+	// 				StandardColumns: []*armoperationalinsights.Column{
+	// 					{
+	// 						Name: to.Ptr("TenantId"),
+	// 						Type: to.Ptr(armoperationalinsights.ColumnTypeEnumGUID),
+	// 						IsDefaultDisplay: to.Ptr(false),
+	// 						IsHidden: to.Ptr(true),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("SourceSystem"),
+	// 						Type: to.Ptr(armoperationalinsights.ColumnTypeEnumString),
+	// 						IsDefaultDisplay: to.Ptr(false),
+	// 						IsHidden: to.Ptr(false),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("TimeGenerated"),
+	// 						Type: to.Ptr(armoperationalinsights.ColumnTypeEnumDateTime),
+	// 						IsDefaultDisplay: to.Ptr(false),
+	// 						IsHidden: to.Ptr(false),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("AgentID"),
+	// 						Type: to.Ptr(armoperationalinsights.ColumnTypeEnumString),
+	// 						IsDefaultDisplay: to.Ptr(false),
+	// 						IsHidden: to.Ptr(false),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("SourceIP"),
+	// 						Type: to.Ptr(armoperationalinsights.ColumnTypeEnumString),
+	// 						IsDefaultDisplay: to.Ptr(false),
+	// 						IsHidden: to.Ptr(false),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("Protocol"),
+	// 						Type: to.Ptr(armoperationalinsights.ColumnTypeEnumString),
+	// 						IsDefaultDisplay: to.Ptr(false),
+	// 						IsHidden: to.Ptr(false),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("SourcePort"),
+	// 						Type: to.Ptr(armoperationalinsights.ColumnTypeEnumInt),
+	// 						IsDefaultDisplay: to.Ptr(false),
+	// 						IsHidden: to.Ptr(false),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("DestinationPort"),
+	// 						Type: to.Ptr(armoperationalinsights.ColumnTypeEnumInt),
+	// 						IsDefaultDisplay: to.Ptr(false),
+	// 						IsHidden: to.Ptr(false),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("TcpFlags"),
+	// 						Type: to.Ptr(armoperationalinsights.ColumnTypeEnumInt),
+	// 						IsDefaultDisplay: to.Ptr(false),
+	// 						IsHidden: to.Ptr(false),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("Packets"),
+	// 						Type: to.Ptr(armoperationalinsights.ColumnTypeEnumInt),
+	// 						IsDefaultDisplay: to.Ptr(false),
+	// 						IsHidden: to.Ptr(false),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("Bytes"),
+	// 						Type: to.Ptr(armoperationalinsights.ColumnTypeEnumInt),
+	// 						IsDefaultDisplay: to.Ptr(false),
+	// 						IsHidden: to.Ptr(false),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("BytesOut"),
+	// 						Type: to.Ptr(armoperationalinsights.ColumnTypeEnumInt),
+	// 						IsDefaultDisplay: to.Ptr(false),
+	// 						IsHidden: to.Ptr(false),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("DurationInMs"),
+	// 						Type: to.Ptr(armoperationalinsights.ColumnTypeEnumInt),
+	// 						IsDefaultDisplay: to.Ptr(false),
+	// 						IsHidden: to.Ptr(false),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("RstCount"),
+	// 						Type: to.Ptr(armoperationalinsights.ColumnTypeEnumInt),
+	// 						IsDefaultDisplay: to.Ptr(false),
+	// 						IsHidden: to.Ptr(false),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("MaxSampleRtt"),
+	// 						Type: to.Ptr(armoperationalinsights.ColumnTypeEnumInt),
+	// 						IsDefaultDisplay: to.Ptr(false),
+	// 						IsHidden: to.Ptr(false),
+	// 				}},
+	// 				TableSubType: to.Ptr(armoperationalinsights.TableSubTypeEnumDataCollectionRuleBased),
+	// 				TableType: to.Ptr(armoperationalinsights.TableTypeEnumMicrosoft),
+	// 			},
+	// 			ArchiveRetentionInDays: to.Ptr[int32](25),
+	// 			Plan: to.Ptr(armoperationalinsights.TablePlanEnumAnalytics),
+	// 			ProvisioningState: to.Ptr(armoperationalinsights.ProvisioningStateEnumSucceeded),
+	// 			RetentionInDays: to.Ptr[int32](45),
+	// 			TotalRetentionInDays: to.Ptr[int32](70),
+	// 		},
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/TablesGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ce13e8353a25125a41bc01705c0a7794dac32a7/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2021-12-01-preview/examples/TablesGet.json
 func ExampleTablesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,7 +368,7 @@ func ExampleTablesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewTablesClient().Get(ctx, "oiautorest6685", "oiautorest6685", "table1", nil)
+	res, err := clientFactory.NewTablesClient().Get(ctx, "oiautorest6685", "oiautorest6685", "table1_SRCH", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -117,10 +376,120 @@ func ExampleTablesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Table = armoperationalinsights.Table{
-	// 	Name: to.Ptr("table1"),
-	// 	ID: to.Ptr("/subscriptions/594038b5-1093-476e-a366-482775671c11/resourcegroups/calbot-rg/providers/microsoft.operationalinsights/workspaces/testresourcelock/tables/table1"),
+	// 	Name: to.Ptr("table1_SRCH"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-00000000000/resourceGroups/oiautorest6685/providers/Microsoft.OperationalInsights/workspaces/oiautorest6685/tables/table1_SRCH"),
 	// 	Properties: &armoperationalinsights.TableProperties{
-	// 		RetentionInDays: to.Ptr[int32](30),
-	// 	},
-	// }
+	// 		Schema: &armoperationalinsights.Schema{
+	// 			Name: to.Ptr("table1_SRCH"),
+	// 			Columns: []*armoperationalinsights.Column{
+	// 			},
+	// 			SearchResults: &armoperationalinsights.SearchResults{
+	// 				Description: to.Ptr("This table was created using a Search Job with the following query: 'Heartbeat | where SourceSystem != '' | project SourceSystem'."),
+	// 				EndSearchTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-02T04:05:06.000Z"); return t}()),
+	// 				Limit: to.Ptr[int32](1000),
+	// 				Query: to.Ptr("Heartbeat | where SourceSystem != '' | project SourceSystem"),
+	// 				SourceTable: to.Ptr("Heartbeat"),
+	// 				StartSearchTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T04:05:06.000Z"); return t}()),
+	// 			},
+	// 			Solutions: []*string{
+	// 				to.Ptr("LogManagement")},
+	// 				StandardColumns: []*armoperationalinsights.Column{
+	// 					{
+	// 						Name: to.Ptr("TenantId"),
+	// 						Type: to.Ptr(armoperationalinsights.ColumnTypeEnumGUID),
+	// 						IsDefaultDisplay: to.Ptr(false),
+	// 						IsHidden: to.Ptr(false),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("SourceSystem"),
+	// 						Type: to.Ptr(armoperationalinsights.ColumnTypeEnumString),
+	// 						IsDefaultDisplay: to.Ptr(false),
+	// 						IsHidden: to.Ptr(false),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("MG"),
+	// 						Type: to.Ptr(armoperationalinsights.ColumnTypeEnumGUID),
+	// 						IsDefaultDisplay: to.Ptr(false),
+	// 						IsHidden: to.Ptr(false),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("ManagementGroupName"),
+	// 						Type: to.Ptr(armoperationalinsights.ColumnTypeEnumString),
+	// 						IsDefaultDisplay: to.Ptr(false),
+	// 						IsHidden: to.Ptr(false),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("TimeGenerated"),
+	// 						Type: to.Ptr(armoperationalinsights.ColumnTypeEnumDateTime),
+	// 						IsDefaultDisplay: to.Ptr(false),
+	// 						IsHidden: to.Ptr(false),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("Computer"),
+	// 						Type: to.Ptr(armoperationalinsights.ColumnTypeEnumString),
+	// 						IsDefaultDisplay: to.Ptr(false),
+	// 						IsHidden: to.Ptr(false),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("RawData"),
+	// 						Type: to.Ptr(armoperationalinsights.ColumnTypeEnumString),
+	// 						IsDefaultDisplay: to.Ptr(false),
+	// 						IsHidden: to.Ptr(false),
+	// 				}},
+	// 				TableSubType: to.Ptr(armoperationalinsights.TableSubTypeEnumDataCollectionRuleBased),
+	// 				TableType: to.Ptr(armoperationalinsights.TableTypeEnumSearchResults),
+	// 			},
+	// 			ArchiveRetentionInDays: to.Ptr[int32](0),
+	// 			Plan: to.Ptr(armoperationalinsights.TablePlanEnumAnalytics),
+	// 			ProvisioningState: to.Ptr(armoperationalinsights.ProvisioningStateEnumSucceeded),
+	// 			ResultStatistics: &armoperationalinsights.ResultStatistics{
+	// 				IngestedRecords: to.Ptr[int32](5),
+	// 				Progress: to.Ptr[float32](75),
+	// 			},
+	// 			RetentionInDays: to.Ptr[int32](50),
+	// 			TotalRetentionInDays: to.Ptr[int32](50),
+	// 		},
+	// 		SystemData: &armoperationalinsights.SystemDataAutoGenerated{
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T04:05:06.000Z"); return t}()),
+	// 			CreatedBy: to.Ptr("00000000-0000-0000-0000-00000000000"),
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ce13e8353a25125a41bc01705c0a7794dac32a7/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2021-12-01-preview/examples/TablesDelete.json
+func ExampleTablesClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoperationalinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewTablesClient().BeginDelete(ctx, "oiautorest6685", "oiautorest6685", "table1_CL", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ce13e8353a25125a41bc01705c0a7794dac32a7/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2021-12-01-preview/examples/TablesMigrate.json
+func ExampleTablesClient_Migrate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoperationalinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewTablesClient().Migrate(ctx, "oiautorest6685", "oiautorest6685", "table1_CL", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
 }

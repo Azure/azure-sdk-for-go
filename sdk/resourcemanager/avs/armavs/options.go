@@ -178,6 +178,30 @@ type HcxEnterpriseSitesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// IscsiPathsClientBeginCreateOrUpdateOptions contains the optional parameters for the IscsiPathsClient.BeginCreateOrUpdate
+// method.
+type IscsiPathsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// IscsiPathsClientBeginDeleteOptions contains the optional parameters for the IscsiPathsClient.BeginDelete method.
+type IscsiPathsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// IscsiPathsClientGetOptions contains the optional parameters for the IscsiPathsClient.Get method.
+type IscsiPathsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// IscsiPathsClientListByPrivateCloudOptions contains the optional parameters for the IscsiPathsClient.NewListByPrivateCloudPager
+// method.
+type IscsiPathsClientListByPrivateCloudOptions struct {
+	// placeholder for future optional parameters
+}
+
 // LocationsClientCheckQuotaAvailabilityOptions contains the optional parameters for the LocationsClient.CheckQuotaAvailability
 // method.
 type LocationsClientCheckQuotaAvailabilityOptions struct {
@@ -187,7 +211,7 @@ type LocationsClientCheckQuotaAvailabilityOptions struct {
 // LocationsClientCheckTrialAvailabilityOptions contains the optional parameters for the LocationsClient.CheckTrialAvailability
 // method.
 type LocationsClientCheckTrialAvailabilityOptions struct {
-	// The sku to check for trial availability
+	// Optionally, check for a specific SKU
 	SKU *SKU
 }
 
@@ -308,7 +332,7 @@ type ScriptExecutionsClientBeginDeleteOptions struct {
 // ScriptExecutionsClientGetExecutionLogsOptions contains the optional parameters for the ScriptExecutionsClient.GetExecutionLogs
 // method.
 type ScriptExecutionsClientGetExecutionLogsOptions struct {
-	// Name of the desired output stream to return. If not provided, will return all. An empty array will return nothing
+	// Name of the desired output stream to return. If not provided, will return all. An empty array will return nothing.
 	ScriptOutputStreamType []*ScriptOutputStreamType
 }
 

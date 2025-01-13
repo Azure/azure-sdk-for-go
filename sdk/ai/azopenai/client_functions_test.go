@@ -11,51 +11,46 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
 
-type Params struct {
-	Type       string                   `json:"type"`
-	Properties map[string]ParamProperty `json:"properties"`
-	Required   []string                 `json:"required,omitempty"`
-}
-
-type ParamProperty struct {
-	Type        string   `json:"type"`
-	Description string   `json:"description,omitempty"`
-	Enum        []string `json:"enum,omitempty"`
-}
-
 func TestGetChatCompletions_usingFunctions(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
 	// https://platform.openai.com/docs/guides/gpt/function-calling
+
+	parametersJSON, err := json.Marshal(map[string]any{
+		"required": []string{"location"},
+		"type":     "object",
+		"properties": map[string]any{
+			"location": map[string]any{
+				"type":        "string",
+				"description": "The city and state, e.g. San Francisco, CA",
+			},
+			"unit": map[string]any{
+				"type": "string",
+				"enum": []string{"celsius", "fahrenheit"},
+			},
+		},
+	})
+	require.NoError(t, err)
 
 	testFn := func(t *testing.T, chatClient *azopenai.Client, deploymentName string, toolChoice *azopenai.ChatCompletionsToolChoice) {
 		body := azopenai.ChatCompletionsOptions{
 			DeploymentName: &deploymentName,
 			Messages: []azopenai.ChatRequestMessageClassification{
 				&azopenai.ChatRequestAssistantMessage{
-					Content: to.Ptr("What's the weather like in Boston, MA, in celsius?"),
+					Content: azopenai.NewChatRequestAssistantMessageContent("What's the weather like in Boston, MA, in celsius?"),
 				},
 			},
 			Tools: []azopenai.ChatCompletionsToolDefinitionClassification{
 				&azopenai.ChatCompletionsFunctionToolDefinition{
-					Function: &azopenai.FunctionDefinition{
+					Function: &azopenai.ChatCompletionsFunctionToolDefinitionFunction{
 						Name:        to.Ptr("get_current_weather"),
 						Description: to.Ptr("Get the current weather in a given location"),
-						Parameters: Params{
-							Required: []string{"location"},
-							Type:     "object",
-							Properties: map[string]ParamProperty{
-								"location": {
-									Type:        "string",
-									Description: "The city and state, e.g. San Francisco, CA",
-								},
-								"unit": {
-									Type: "string",
-									Enum: []string{"celsius", "fahrenheit"},
-								},
-							},
-						},
+						Parameters:  parametersJSON,
 					},
 				},
 			},
@@ -127,6 +122,26 @@ func TestGetChatCompletions_usingFunctions(t *testing.T) {
 }
 
 func TestGetChatCompletions_usingFunctions_legacy(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
+	}
+
+	parametersJSON, err := json.Marshal(map[string]any{
+		"required": []string{"location"},
+		"type":     "object",
+		"properties": map[string]any{
+			"location": map[string]any{
+				"type":        "string",
+				"description": "The city and state, e.g. San Francisco, CA",
+			},
+			"unit": map[string]any{
+				"type": "string",
+				"enum": []string{"celsius", "fahrenheit"},
+			},
+		},
+	})
+	require.NoError(t, err)
+
 	testFn := func(t *testing.T, epm endpointWithModel) {
 		client := newTestClient(t, epm.Endpoint)
 
@@ -134,7 +149,7 @@ func TestGetChatCompletions_usingFunctions_legacy(t *testing.T) {
 			DeploymentName: &epm.Model,
 			Messages: []azopenai.ChatRequestMessageClassification{
 				&azopenai.ChatRequestAssistantMessage{
-					Content: to.Ptr("What's the weather like in Boston, MA, in celsius?"),
+					Content: azopenai.NewChatRequestAssistantMessageContent("What's the weather like in Boston, MA, in celsius?"),
 				},
 			},
 			FunctionCall: &azopenai.ChatCompletionsOptionsFunctionCall{
@@ -144,20 +159,7 @@ func TestGetChatCompletions_usingFunctions_legacy(t *testing.T) {
 				{
 					Name:        to.Ptr("get_current_weather"),
 					Description: to.Ptr("Get the current weather in a given location"),
-					Parameters: Params{
-						Required: []string{"location"},
-						Type:     "object",
-						Properties: map[string]ParamProperty{
-							"location": {
-								Type:        "string",
-								Description: "The city and state, e.g. San Francisco, CA",
-							},
-							"unit": {
-								Type: "string",
-								Enum: []string{"celsius", "fahrenheit"},
-							},
-						},
-					},
+					Parameters:  parametersJSON,
 				},
 			},
 			Temperature: to.Ptr[float32](0.0),
@@ -197,33 +199,36 @@ func TestGetChatCompletions_usingFunctions_legacy(t *testing.T) {
 }
 
 func TestGetChatCompletions_usingFunctions_streaming(t *testing.T) {
+	parametersJSON, err := json.Marshal(map[string]any{
+		"required": []string{"location"},
+		"type":     "object",
+		"properties": map[string]any{
+			"location": map[string]any{
+				"type":        "string",
+				"description": "The city and state, e.g. San Francisco, CA",
+			},
+			"unit": map[string]any{
+				"type": "string",
+				"enum": []string{"celsius", "fahrenheit"},
+			},
+		},
+	})
+	require.NoError(t, err)
+
 	testFn := func(t *testing.T, epm endpointWithModel) {
-		body := azopenai.ChatCompletionsOptions{
+		body := azopenai.ChatCompletionsStreamOptions{
 			DeploymentName: &epm.Model,
 			Messages: []azopenai.ChatRequestMessageClassification{
 				&azopenai.ChatRequestAssistantMessage{
-					Content: to.Ptr("What's the weather like in Boston, MA, in celsius?"),
+					Content: azopenai.NewChatRequestAssistantMessageContent("What's the weather like in Boston, MA, in celsius?"),
 				},
 			},
 			Tools: []azopenai.ChatCompletionsToolDefinitionClassification{
 				&azopenai.ChatCompletionsFunctionToolDefinition{
-					Function: &azopenai.FunctionDefinition{
+					Function: &azopenai.ChatCompletionsFunctionToolDefinitionFunction{
 						Name:        to.Ptr("get_current_weather"),
 						Description: to.Ptr("Get the current weather in a given location"),
-						Parameters: Params{
-							Required: []string{"location"},
-							Type:     "object",
-							Properties: map[string]ParamProperty{
-								"location": {
-									Type:        "string",
-									Description: "The city and state, e.g. San Francisco, CA",
-								},
-								"unit": {
-									Type: "string",
-									Enum: []string{"celsius", "fahrenheit"},
-								},
-							},
-						},
+						Parameters:  parametersJSON,
 					},
 				},
 			},

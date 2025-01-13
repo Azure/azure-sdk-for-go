@@ -169,6 +169,9 @@ type AmazonMWSLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type AmazonMWSLinkedService.
@@ -180,6 +183,7 @@ func (a *AmazonMWSLinkedService) GetLinkedService() *LinkedService {
 		Description:          a.Description,
 		Parameters:           a.Parameters,
 		Type:                 a.Type,
+		Version:              a.Version,
 	}
 }
 
@@ -360,6 +364,9 @@ type AmazonRdsForOracleLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type AmazonRdsForOracleLinkedService.
@@ -371,6 +378,7 @@ func (a *AmazonRdsForOracleLinkedService) GetLinkedService() *LinkedService {
 		Description:          a.Description,
 		Parameters:           a.Parameters,
 		Type:                 a.Type,
+		Version:              a.Version,
 	}
 }
 
@@ -522,6 +530,9 @@ type AmazonRdsForSQLServerLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type AmazonRdsForSQLServerLinkedService.
@@ -533,23 +544,110 @@ func (a *AmazonRdsForSQLServerLinkedService) GetLinkedService() *LinkedService {
 		Description:          a.Description,
 		Parameters:           a.Parameters,
 		Type:                 a.Type,
+		Version:              a.Version,
 	}
 }
 
 // AmazonRdsForSQLServerLinkedServiceTypeProperties - Amazon Rds for SQL Server linked service properties.
 type AmazonRdsForSQLServerLinkedServiceTypeProperties struct {
-	// REQUIRED; The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
-	ConnectionString any
-
 	// Sql always encrypted properties.
 	AlwaysEncryptedSettings *SQLAlwaysEncryptedProperties
+
+	// The application workload type when connecting to a server, used by recommended version. Possible values are ReadOnly and
+	// ReadWrite. Type: string (or Expression with resultType string).
+	ApplicationIntent any
+
+	// The type used for authentication. Type: string.
+	AuthenticationType *AmazonRdsForSQLAuthenticationType
+
+	// The default wait time (in seconds) before terminating the attempt to execute a command and generating an error, used by
+	// recommended version. Type: integer (or Expression with resultType integer).
+	CommandTimeout any
+
+	// The number of re-connections attempted after identifying that there was an idle connection failure, used by recommended
+	// version. This must be an integer between 0 and 255. Type: integer (or Expression
+	// with resultType integer).
+	ConnectRetryCount any
+
+	// The amount of time (in seconds) between each re-connection attempt after identifying that there was an idle connection
+	// failure, used by recommended version. This must be an integer between 1 and 60.
+	// Type: integer (or Expression with resultType integer).
+	ConnectRetryInterval any
+
+	// The length of time (in seconds) to wait for a connection to the server before terminating the attempt and generating an
+	// error, used by recommended version. Type: integer (or Expression with resultType
+	// integer).
+	ConnectTimeout any
+
+	// The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
+	ConnectionString any
+
+	// The name of the database, used by recommended version. Type: string (or Expression with resultType string).
+	Database any
+
+	// Indicate whether TLS encryption is required for all data sent between the client and server, used by recommended version.
+	// Possible values are true/yes/mandatory, false/no/optional and strict. Type:
+	// string (or Expression with resultType string).
+	Encrypt any
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string.
 	EncryptedCredential *string
 
+	// The name or address of the partner server to connect to if the primary server is down, used by recommended version. Type:
+	// string (or Expression with resultType string).
+	FailoverPartner any
+
+	// The host name to use when validating the server certificate for the connection. When not specified, the server name from
+	// the Data Source is used for certificate validation, used by recommended
+	// version. Type: string (or Expression with resultType string).
+	HostNameInCertificate any
+
+	// Indicate whether User ID and Password are specified in the connection (when false) or whether the current Windows account
+	// credentials are used for authentication (when true), used by recommended
+	// version. Type: Boolean (or Expression with resultType boolean).
+	IntegratedSecurity any
+
+	// The minimum time, in seconds, for the connection to live in the connection pool before being destroyed, used by recommended
+	// version. Type: integer (or Expression with resultType integer).
+	LoadBalanceTimeout any
+
+	// The maximum number of connections allowed in the connection pool for this specific connection string, used by recommended
+	// version. Type: integer (or Expression with resultType integer).
+	MaxPoolSize any
+
+	// The minimum number of connections allowed in the connection pool for this specific connection string, used by recommended
+	// version. Type: integer (or Expression with resultType integer).
+	MinPoolSize any
+
+	// If your application is connecting to an AlwaysOn availability group (AG) on different subnets, setting MultiSubnetFailover=true
+	// provides faster detection of and connection to the (currently) active
+	// server, used by recommended version. Type: Boolean (or Expression with resultType boolean).
+	MultiSubnetFailover any
+
+	// When true, an application can maintain multiple active result sets (MARS). When false, an application must process or cancel
+	// all result sets from one batch before it can execute any other batch on
+	// that connection, used by recommended version. Type: Boolean (or Expression with resultType boolean).
+	MultipleActiveResultSets any
+
+	// The size in bytes of the network packets used to communicate with an instance of server, used by recommended version. Type:
+	// integer (or Expression with resultType integer).
+	PacketSize any
+
 	// The on-premises Windows authentication password.
 	Password SecretBaseClassification
+
+	// Indicate whether the connection will be pooled or explicitly opened every time that the connection is requested, used by
+	// recommended version. Type: Boolean (or Expression with resultType boolean).
+	Pooling any
+
+	// The name or network address of the instance of SQL Server to which to connect, used by recommended version. Type: string
+	// (or Expression with resultType string).
+	Server any
+
+	// Indicate whether the channel will be encrypted while bypassing walking the certificate chain to validate trust, used by
+	// recommended version. Type: Boolean (or Expression with resultType boolean).
+	TrustServerCertificate any
 
 	// The on-premises Windows authentication user name. Type: string (or Expression with resultType string).
 	UserName any
@@ -714,6 +812,9 @@ type AmazonRedshiftLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type AmazonRedshiftLinkedService.
@@ -725,6 +826,7 @@ func (a *AmazonRedshiftLinkedService) GetLinkedService() *LinkedService {
 		Description:          a.Description,
 		Parameters:           a.Parameters,
 		Type:                 a.Type,
+		Version:              a.Version,
 	}
 }
 
@@ -896,6 +998,9 @@ type AmazonS3CompatibleLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type AmazonS3CompatibleLinkedService.
@@ -907,6 +1012,7 @@ func (a *AmazonS3CompatibleLinkedService) GetLinkedService() *LinkedService {
 		Description:          a.Description,
 		Parameters:           a.Parameters,
 		Type:                 a.Type,
+		Version:              a.Version,
 	}
 }
 
@@ -1120,6 +1226,9 @@ type AmazonS3LinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type AmazonS3LinkedService.
@@ -1131,6 +1240,7 @@ func (a *AmazonS3LinkedService) GetLinkedService() *LinkedService {
 		Description:          a.Description,
 		Parameters:           a.Parameters,
 		Type:                 a.Type,
+		Version:              a.Version,
 	}
 }
 
@@ -1271,6 +1381,9 @@ type AppFiguresLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type AppFiguresLinkedService.
@@ -1282,6 +1395,7 @@ func (a *AppFiguresLinkedService) GetLinkedService() *LinkedService {
 		Description:          a.Description,
 		Parameters:           a.Parameters,
 		Type:                 a.Type,
+		Version:              a.Version,
 	}
 }
 
@@ -1394,6 +1508,9 @@ type AsanaLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type AsanaLinkedService.
@@ -1405,6 +1522,7 @@ func (a *AsanaLinkedService) GetLinkedService() *LinkedService {
 		Description:          a.Description,
 		Parameters:           a.Parameters,
 		Type:                 a.Type,
+		Version:              a.Version,
 	}
 }
 
@@ -1664,6 +1782,9 @@ type AzureBatchLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type AzureBatchLinkedService.
@@ -1675,6 +1796,7 @@ func (a *AzureBatchLinkedService) GetLinkedService() *LinkedService {
 		Description:          a.Description,
 		Parameters:           a.Parameters,
 		Type:                 a.Type,
+		Version:              a.Version,
 	}
 }
 
@@ -1862,6 +1984,9 @@ type AzureBlobFSLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type AzureBlobFSLinkedService.
@@ -1873,6 +1998,7 @@ func (a *AzureBlobFSLinkedService) GetLinkedService() *LinkedService {
 		Description:          a.Description,
 		Parameters:           a.Parameters,
 		Type:                 a.Type,
+		Version:              a.Version,
 	}
 }
 
@@ -2155,6 +2281,9 @@ type AzureBlobStorageLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type AzureBlobStorageLinkedService.
@@ -2166,6 +2295,7 @@ func (a *AzureBlobStorageLinkedService) GetLinkedService() *LinkedService {
 		Description:          a.Description,
 		Parameters:           a.Parameters,
 		Type:                 a.Type,
+		Version:              a.Version,
 	}
 }
 
@@ -2449,6 +2579,9 @@ type AzureDataExplorerLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type AzureDataExplorerLinkedService.
@@ -2460,6 +2593,7 @@ func (a *AzureDataExplorerLinkedService) GetLinkedService() *LinkedService {
 		Description:          a.Description,
 		Parameters:           a.Parameters,
 		Type:                 a.Type,
+		Version:              a.Version,
 	}
 }
 
@@ -2654,6 +2788,9 @@ type AzureDataLakeAnalyticsLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type AzureDataLakeAnalyticsLinkedService.
@@ -2665,6 +2802,7 @@ func (a *AzureDataLakeAnalyticsLinkedService) GetLinkedService() *LinkedService 
 		Description:          a.Description,
 		Parameters:           a.Parameters,
 		Type:                 a.Type,
+		Version:              a.Version,
 	}
 }
 
@@ -2786,6 +2924,9 @@ type AzureDataLakeStoreLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type AzureDataLakeStoreLinkedService.
@@ -2797,6 +2938,7 @@ func (a *AzureDataLakeStoreLinkedService) GetLinkedService() *LinkedService {
 		Description:          a.Description,
 		Parameters:           a.Parameters,
 		Type:                 a.Type,
+		Version:              a.Version,
 	}
 }
 
@@ -3178,6 +3320,9 @@ type AzureDatabricksDeltaLakeLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type AzureDatabricksDeltaLakeLinkedService.
@@ -3189,6 +3334,7 @@ func (a *AzureDatabricksDeltaLakeLinkedService) GetLinkedService() *LinkedServic
 		Description:          a.Description,
 		Parameters:           a.Parameters,
 		Type:                 a.Type,
+		Version:              a.Version,
 	}
 }
 
@@ -3325,6 +3471,9 @@ type AzureDatabricksLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type AzureDatabricksLinkedService.
@@ -3336,6 +3485,7 @@ func (a *AzureDatabricksLinkedService) GetLinkedService() *LinkedService {
 		Description:          a.Description,
 		Parameters:           a.Parameters,
 		Type:                 a.Type,
+		Version:              a.Version,
 	}
 }
 
@@ -3440,6 +3590,9 @@ type AzureFileStorageLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type AzureFileStorageLinkedService.
@@ -3451,6 +3604,7 @@ func (a *AzureFileStorageLinkedService) GetLinkedService() *LinkedService {
 		Description:          a.Description,
 		Parameters:           a.Parameters,
 		Type:                 a.Type,
+		Version:              a.Version,
 	}
 }
 
@@ -3461,6 +3615,9 @@ type AzureFileStorageLinkedServiceTypeProperties struct {
 
 	// The connection string. It is mutually exclusive with sasUri property. Type: string, SecureString or AzureKeyVaultSecretReference.
 	ConnectionString any
+
+	// The credential reference containing authentication information.
+	Credential *CredentialReference
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string.
@@ -3482,6 +3639,9 @@ type AzureFileStorageLinkedServiceTypeProperties struct {
 	// SAS URI of the Azure File resource. It is mutually exclusive with connectionString property. Type: string, SecureString
 	// or AzureKeyVaultSecretReference.
 	SasURI any
+
+	// File service endpoint of the Azure File Storage resource. It is mutually exclusive with connectionString, sasUri property.
+	ServiceEndpoint any
 
 	// The azure file share snapshot version. Type: string (or Expression with resultType string).
 	Snapshot any
@@ -3714,6 +3874,9 @@ type AzureFunctionLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type AzureFunctionLinkedService.
@@ -3725,6 +3888,7 @@ func (a *AzureFunctionLinkedService) GetLinkedService() *LinkedService {
 		Description:          a.Description,
 		Parameters:           a.Parameters,
 		Type:                 a.Type,
+		Version:              a.Version,
 	}
 }
 
@@ -3774,6 +3938,9 @@ type AzureKeyVaultLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type AzureKeyVaultLinkedService.
@@ -3785,6 +3952,7 @@ func (a *AzureKeyVaultLinkedService) GetLinkedService() *LinkedService {
 		Description:          a.Description,
 		Parameters:           a.Parameters,
 		Type:                 a.Type,
+		Version:              a.Version,
 	}
 }
 
@@ -4033,6 +4201,9 @@ type AzureMLLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type AzureMLLinkedService.
@@ -4044,6 +4215,7 @@ func (a *AzureMLLinkedService) GetLinkedService() *LinkedService {
 		Description:          a.Description,
 		Parameters:           a.Parameters,
 		Type:                 a.Type,
+		Version:              a.Version,
 	}
 }
 
@@ -4101,6 +4273,9 @@ type AzureMLServiceLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type AzureMLServiceLinkedService.
@@ -4112,6 +4287,7 @@ func (a *AzureMLServiceLinkedService) GetLinkedService() *LinkedService {
 		Description:          a.Description,
 		Parameters:           a.Parameters,
 		Type:                 a.Type,
+		Version:              a.Version,
 	}
 }
 
@@ -4258,6 +4434,9 @@ type AzureMariaDBLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type AzureMariaDBLinkedService.
@@ -4269,6 +4448,7 @@ func (a *AzureMariaDBLinkedService) GetLinkedService() *LinkedService {
 		Description:          a.Description,
 		Parameters:           a.Parameters,
 		Type:                 a.Type,
+		Version:              a.Version,
 	}
 }
 
@@ -4413,6 +4593,9 @@ type AzureMySQLLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type AzureMySQLLinkedService.
@@ -4424,6 +4607,7 @@ func (a *AzureMySQLLinkedService) GetLinkedService() *LinkedService {
 		Description:          a.Description,
 		Parameters:           a.Parameters,
 		Type:                 a.Type,
+		Version:              a.Version,
 	}
 }
 
@@ -4621,6 +4805,9 @@ type AzurePostgreSQLLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type AzurePostgreSQLLinkedService.
@@ -4632,13 +4819,24 @@ func (a *AzurePostgreSQLLinkedService) GetLinkedService() *LinkedService {
 		Description:          a.Description,
 		Parameters:           a.Parameters,
 		Type:                 a.Type,
+		Version:              a.Version,
 	}
 }
 
 // AzurePostgreSQLLinkedServiceTypeProperties - Azure PostgreSQL linked service properties.
 type AzurePostgreSQLLinkedServiceTypeProperties struct {
+	// The time to wait (in seconds) while trying to execute a command before terminating the attempt and generating an error.
+	// Set to zero for infinity. Type: integer.
+	CommandTimeout any
+
 	// An ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
 	ConnectionString any
+
+	// Database name for connection. Type: string.
+	Database any
+
+	// Gets or sets the .NET encoding that will be used to encode/decode PostgreSQL string data. Type: string
+	Encoding any
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string.
@@ -4646,6 +4844,33 @@ type AzurePostgreSQLLinkedServiceTypeProperties struct {
 
 	// The Azure key vault secret reference of password in connection string.
 	Password *AzureKeyVaultSecretReference
+
+	// The port for the connection. Type: integer.
+	Port any
+
+	// Determines the size of the internal buffer uses when reading. Increasing may improve performance if transferring large
+	// values from the database. Type: integer.
+	ReadBufferSize any
+
+	// SSL mode for connection. Type: integer. 0: disable, 1:allow, 2: prefer, 3: require, 4: verify-ca, 5: verify-full. Type:
+	// integer.
+	SSLMode any
+
+	// Server name for connection. Type: string.
+	Server any
+
+	// The time to wait (in seconds) while trying to establish a connection before terminating the attempt and generating an error.
+	// Type: integer.
+	Timeout any
+
+	// Gets or sets the session timezone. Type: string.
+	Timezone any
+
+	// Whether to trust the server certificate without validating it. Type: boolean.
+	TrustServerCertificate any
+
+	// Username for authentication. Type: string.
+	Username any
 }
 
 // AzurePostgreSQLSink - A copy activity Azure PostgreSQL sink.
@@ -4874,6 +5099,9 @@ type AzureSQLDWLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type AzureSQLDWLinkedService.
@@ -4885,29 +5113,122 @@ func (a *AzureSQLDWLinkedService) GetLinkedService() *LinkedService {
 		Description:          a.Description,
 		Parameters:           a.Parameters,
 		Type:                 a.Type,
+		Version:              a.Version,
 	}
 }
 
 // AzureSQLDWLinkedServiceTypeProperties - Azure SQL Data Warehouse linked service properties.
 type AzureSQLDWLinkedServiceTypeProperties struct {
-	// REQUIRED; The connection string. Type: string, SecureString or AzureKeyVaultSecretReference. Type: string, SecureString
-	// or AzureKeyVaultSecretReference.
-	ConnectionString any
+	// The application workload type when connecting to a server, used by recommended version. Possible values are ReadOnly and
+	// ReadWrite. Type: string (or Expression with resultType string).
+	ApplicationIntent any
+
+	// The type used for authentication. Type: string.
+	AuthenticationType *AzureSQLDWAuthenticationType
 
 	// Indicates the azure cloud type of the service principle auth. Allowed values are AzurePublic, AzureChina, AzureUsGovernment,
 	// AzureGermany. Default value is the data factory regions’ cloud type. Type:
 	// string (or Expression with resultType string).
 	AzureCloudType any
 
+	// The default wait time (in seconds) before terminating the attempt to execute a command and generating an error, used by
+	// recommended version. Type: integer (or Expression with resultType integer).
+	CommandTimeout any
+
+	// The number of re-connections attempted after identifying that there was an idle connection failure, used by recommended
+	// version. This must be an integer between 0 and 255. Type: integer (or Expression
+	// with resultType integer).
+	ConnectRetryCount any
+
+	// The amount of time (in seconds) between each re-connection attempt after identifying that there was an idle connection
+	// failure, used by recommended version. This must be an integer between 1 and 60.
+	// Type: integer (or Expression with resultType integer).
+	ConnectRetryInterval any
+
+	// The length of time (in seconds) to wait for a connection to the server before terminating the attempt and generating an
+	// error, used by recommended version. Type: integer (or Expression with resultType
+	// integer).
+	ConnectTimeout any
+
+	// The connection string. Type: string, SecureString or AzureKeyVaultSecretReference. Type: string, SecureString or AzureKeyVaultSecretReference.
+	ConnectionString any
+
 	// The credential reference containing authentication information.
 	Credential *CredentialReference
+
+	// The name of the database, used by recommended version. Type: string (or Expression with resultType string).
+	Database any
+
+	// Indicate whether TLS encryption is required for all data sent between the client and server, used by recommended version.
+	// Possible values are true/yes/mandatory, false/no/optional and strict. Type:
+	// string (or Expression with resultType string).
+	Encrypt any
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string.
 	EncryptedCredential *string
 
+	// The name or address of the partner server to connect to if the primary server is down, used by recommended version. Type:
+	// string (or Expression with resultType string).
+	FailoverPartner any
+
+	// The host name to use when validating the server certificate for the connection. When not specified, the server name from
+	// the Data Source is used for certificate validation, used by recommended
+	// version. Type: string (or Expression with resultType string).
+	HostNameInCertificate any
+
+	// Indicate whether User ID and Password are specified in the connection (when false) or whether the current Windows account
+	// credentials are used for authentication (when true), used by recommended
+	// version. Type: Boolean (or Expression with resultType boolean).
+	IntegratedSecurity any
+
+	// The minimum time, in seconds, for the connection to live in the connection pool before being destroyed, used by recommended
+	// version. Type: integer (or Expression with resultType integer).
+	LoadBalanceTimeout any
+
+	// The maximum number of connections allowed in the connection pool for this specific connection string, used by recommended
+	// version. Type: integer (or Expression with resultType integer).
+	MaxPoolSize any
+
+	// The minimum number of connections allowed in the connection pool for this specific connection string, used by recommended
+	// version. Type: integer (or Expression with resultType integer).
+	MinPoolSize any
+
+	// If your application is connecting to an AlwaysOn availability group (AG) on different subnets, setting MultiSubnetFailover=true
+	// provides faster detection of and connection to the (currently) active
+	// server, used by recommended version. Type: Boolean (or Expression with resultType boolean).
+	MultiSubnetFailover any
+
+	// When true, an application can maintain multiple active result sets (MARS). When false, an application must process or cancel
+	// all result sets from one batch before it can execute any other batch on
+	// that connection, used by recommended version. Type: Boolean (or Expression with resultType boolean).
+	MultipleActiveResultSets any
+
+	// The size in bytes of the network packets used to communicate with an instance of server, used by recommended version. Type:
+	// integer (or Expression with resultType integer).
+	PacketSize any
+
 	// The Azure key vault secret reference of password in connection string.
 	Password *AzureKeyVaultSecretReference
+
+	// Indicate whether the connection will be pooled or explicitly opened every time that the connection is requested, used by
+	// recommended version. Type: Boolean (or Expression with resultType boolean).
+	Pooling any
+
+	// The name or network address of the instance of SQL Server to which to connect, used by recommended version. Type: string
+	// (or Expression with resultType string).
+	Server any
+
+	// The credential of the service principal object in Azure Active Directory. If servicePrincipalCredentialType is 'ServicePrincipalKey',
+	// servicePrincipalCredential can be SecureString or
+	// AzureKeyVaultSecretReference. If servicePrincipalCredentialType is 'ServicePrincipalCert', servicePrincipalCredential can
+	// only be AzureKeyVaultSecretReference.
+	ServicePrincipalCredential SecretBaseClassification
+
+	// The service principal credential type to use in Server-To-Server authentication. 'ServicePrincipalKey' for key/secret,
+	// 'ServicePrincipalCert' for certificate. Type: string (or Expression with
+	// resultType string).
+	ServicePrincipalCredentialType any
 
 	// The ID of the service principal used to authenticate against Azure SQL Data Warehouse. Type: string (or Expression with
 	// resultType string).
@@ -4918,6 +5239,13 @@ type AzureSQLDWLinkedServiceTypeProperties struct {
 
 	// The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType string).
 	Tenant any
+
+	// Indicate whether the channel will be encrypted while bypassing walking the certificate chain to validate trust, used by
+	// recommended version. Type: Boolean (or Expression with resultType boolean).
+	TrustServerCertificate any
+
+	// The user name to be used when connecting to server. Type: string (or Expression with resultType string).
+	UserName any
 }
 
 // AzureSQLDWTableDataset - The Azure SQL Data Warehouse dataset.
@@ -5003,6 +5331,9 @@ type AzureSQLDatabaseLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type AzureSQLDatabaseLinkedService.
@@ -5014,31 +5345,125 @@ func (a *AzureSQLDatabaseLinkedService) GetLinkedService() *LinkedService {
 		Description:          a.Description,
 		Parameters:           a.Parameters,
 		Type:                 a.Type,
+		Version:              a.Version,
 	}
 }
 
 // AzureSQLDatabaseLinkedServiceTypeProperties - Azure SQL Database linked service properties.
 type AzureSQLDatabaseLinkedServiceTypeProperties struct {
-	// REQUIRED; The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
-	ConnectionString any
-
 	// Sql always encrypted properties.
 	AlwaysEncryptedSettings *SQLAlwaysEncryptedProperties
+
+	// The application workload type when connecting to a server, used by recommended version. Possible values are ReadOnly and
+	// ReadWrite. Type: string (or Expression with resultType string).
+	ApplicationIntent any
+
+	// The type used for authentication. Type: string.
+	AuthenticationType *AzureSQLDatabaseAuthenticationType
 
 	// Indicates the azure cloud type of the service principle auth. Allowed values are AzurePublic, AzureChina, AzureUsGovernment,
 	// AzureGermany. Default value is the data factory regions’ cloud type. Type:
 	// string (or Expression with resultType string).
 	AzureCloudType any
 
+	// The default wait time (in seconds) before terminating the attempt to execute a command and generating an error, used by
+	// recommended version. Type: integer (or Expression with resultType integer).
+	CommandTimeout any
+
+	// The number of re-connections attempted after identifying that there was an idle connection failure, used by recommended
+	// version. This must be an integer between 0 and 255. Type: integer (or Expression
+	// with resultType integer).
+	ConnectRetryCount any
+
+	// The amount of time (in seconds) between each re-connection attempt after identifying that there was an idle connection
+	// failure, used by recommended version. This must be an integer between 1 and 60.
+	// Type: integer (or Expression with resultType integer).
+	ConnectRetryInterval any
+
+	// The length of time (in seconds) to wait for a connection to the server before terminating the attempt and generating an
+	// error, used by recommended version. Type: integer (or Expression with resultType
+	// integer).
+	ConnectTimeout any
+
+	// The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
+	ConnectionString any
+
 	// The credential reference containing authentication information.
 	Credential *CredentialReference
+
+	// The name of the database, used by recommended version. Type: string (or Expression with resultType string).
+	Database any
+
+	// Indicate whether TLS encryption is required for all data sent between the client and server, used by recommended version.
+	// Possible values are true/yes/mandatory, false/no/optional and strict. Type:
+	// string (or Expression with resultType string).
+	Encrypt any
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string.
 	EncryptedCredential *string
 
+	// The name or address of the partner server to connect to if the primary server is down, used by recommended version. Type:
+	// string (or Expression with resultType string).
+	FailoverPartner any
+
+	// The host name to use when validating the server certificate for the connection. When not specified, the server name from
+	// the Data Source is used for certificate validation, used by recommended
+	// version. Type: string (or Expression with resultType string).
+	HostNameInCertificate any
+
+	// Indicate whether User ID and Password are specified in the connection (when false) or whether the current Windows account
+	// credentials are used for authentication (when true), used by recommended
+	// version. Type: Boolean (or Expression with resultType boolean).
+	IntegratedSecurity any
+
+	// The minimum time, in seconds, for the connection to live in the connection pool before being destroyed, used by recommended
+	// version. Type: integer (or Expression with resultType integer).
+	LoadBalanceTimeout any
+
+	// The maximum number of connections allowed in the connection pool for this specific connection string, used by recommended
+	// version. Type: integer (or Expression with resultType integer).
+	MaxPoolSize any
+
+	// The minimum number of connections allowed in the connection pool for this specific connection string, used by recommended
+	// version. Type: integer (or Expression with resultType integer).
+	MinPoolSize any
+
+	// If your application is connecting to an AlwaysOn availability group (AG) on different subnets, setting MultiSubnetFailover=true
+	// provides faster detection of and connection to the (currently) active
+	// server, used by recommended version. Type: Boolean (or Expression with resultType boolean).
+	MultiSubnetFailover any
+
+	// When true, an application can maintain multiple active result sets (MARS). When false, an application must process or cancel
+	// all result sets from one batch before it can execute any other batch on
+	// that connection, used by recommended version. Type: Boolean (or Expression with resultType boolean).
+	MultipleActiveResultSets any
+
+	// The size in bytes of the network packets used to communicate with an instance of server, used by recommended version. Type:
+	// integer (or Expression with resultType integer).
+	PacketSize any
+
 	// The Azure key vault secret reference of password in connection string.
 	Password *AzureKeyVaultSecretReference
+
+	// Indicate whether the connection will be pooled or explicitly opened every time that the connection is requested, used by
+	// recommended version. Type: Boolean (or Expression with resultType boolean).
+	Pooling any
+
+	// The name or network address of the instance of SQL Server to which to connect, used by recommended version. Type: string
+	// (or Expression with resultType string).
+	Server any
+
+	// The credential of the service principal object in Azure Active Directory. If servicePrincipalCredentialType is 'ServicePrincipalKey',
+	// servicePrincipalCredential can be SecureString or
+	// AzureKeyVaultSecretReference. If servicePrincipalCredentialType is 'ServicePrincipalCert', servicePrincipalCredential can
+	// only be AzureKeyVaultSecretReference.
+	ServicePrincipalCredential SecretBaseClassification
+
+	// The service principal credential type to use in Server-To-Server authentication. 'ServicePrincipalKey' for key/secret,
+	// 'ServicePrincipalCert' for certificate. Type: string (or Expression with
+	// resultType string).
+	ServicePrincipalCredentialType any
 
 	// The ID of the service principal used to authenticate against Azure SQL Database. Type: string (or Expression with resultType
 	// string).
@@ -5049,6 +5474,13 @@ type AzureSQLDatabaseLinkedServiceTypeProperties struct {
 
 	// The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType string).
 	Tenant any
+
+	// Indicate whether the channel will be encrypted while bypassing walking the certificate chain to validate trust, used by
+	// recommended version. Type: Boolean (or Expression with resultType boolean).
+	TrustServerCertificate any
+
+	// The user name to be used when connecting to server. Type: string (or Expression with resultType string).
+	UserName any
 }
 
 // AzureSQLMILinkedService - Azure SQL Managed Instance linked service.
@@ -5073,6 +5505,9 @@ type AzureSQLMILinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type AzureSQLMILinkedService.
@@ -5084,31 +5519,125 @@ func (a *AzureSQLMILinkedService) GetLinkedService() *LinkedService {
 		Description:          a.Description,
 		Parameters:           a.Parameters,
 		Type:                 a.Type,
+		Version:              a.Version,
 	}
 }
 
 // AzureSQLMILinkedServiceTypeProperties - Azure SQL Managed Instance linked service properties.
 type AzureSQLMILinkedServiceTypeProperties struct {
-	// REQUIRED; The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
-	ConnectionString any
-
 	// Sql always encrypted properties.
 	AlwaysEncryptedSettings *SQLAlwaysEncryptedProperties
+
+	// The application workload type when connecting to a server, used by recommended version. Possible values are ReadOnly and
+	// ReadWrite. Type: string (or Expression with resultType string).
+	ApplicationIntent any
+
+	// The type used for authentication. Type: string.
+	AuthenticationType *AzureSQLMIAuthenticationType
 
 	// Indicates the azure cloud type of the service principle auth. Allowed values are AzurePublic, AzureChina, AzureUsGovernment,
 	// AzureGermany. Default value is the data factory regions’ cloud type. Type:
 	// string (or Expression with resultType string).
 	AzureCloudType any
 
+	// The default wait time (in seconds) before terminating the attempt to execute a command and generating an error, used by
+	// recommended version. Type: integer (or Expression with resultType integer).
+	CommandTimeout any
+
+	// The number of re-connections attempted after identifying that there was an idle connection failure, used by recommended
+	// version. This must be an integer between 0 and 255. Type: integer (or Expression
+	// with resultType integer).
+	ConnectRetryCount any
+
+	// The amount of time (in seconds) between each re-connection attempt after identifying that there was an idle connection
+	// failure, used by recommended version. This must be an integer between 1 and 60.
+	// Type: integer (or Expression with resultType integer).
+	ConnectRetryInterval any
+
+	// The length of time (in seconds) to wait for a connection to the server before terminating the attempt and generating an
+	// error, used by recommended version. Type: integer (or Expression with resultType
+	// integer).
+	ConnectTimeout any
+
+	// The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
+	ConnectionString any
+
 	// The credential reference containing authentication information.
 	Credential *CredentialReference
+
+	// The name of the database, used by recommended version. Type: string (or Expression with resultType string).
+	Database any
+
+	// Indicate whether TLS encryption is required for all data sent between the client and server, used by recommended version.
+	// Possible values are true/yes/mandatory, false/no/optional and strict. Type:
+	// string (or Expression with resultType string).
+	Encrypt any
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string.
 	EncryptedCredential *string
 
+	// The name or address of the partner server to connect to if the primary server is down, used by recommended version. Type:
+	// string (or Expression with resultType string).
+	FailoverPartner any
+
+	// The host name to use when validating the server certificate for the connection. When not specified, the server name from
+	// the Data Source is used for certificate validation, used by recommended
+	// version. Type: string (or Expression with resultType string).
+	HostNameInCertificate any
+
+	// Indicate whether User ID and Password are specified in the connection (when false) or whether the current Windows account
+	// credentials are used for authentication (when true), used by recommended
+	// version. Type: Boolean (or Expression with resultType boolean).
+	IntegratedSecurity any
+
+	// The minimum time, in seconds, for the connection to live in the connection pool before being destroyed, used by recommended
+	// version. Type: integer (or Expression with resultType integer).
+	LoadBalanceTimeout any
+
+	// The maximum number of connections allowed in the connection pool for this specific connection string, used by recommended
+	// version. Type: integer (or Expression with resultType integer).
+	MaxPoolSize any
+
+	// The minimum number of connections allowed in the connection pool for this specific connection string, used by recommended
+	// version. Type: integer (or Expression with resultType integer).
+	MinPoolSize any
+
+	// If your application is connecting to an AlwaysOn availability group (AG) on different subnets, setting MultiSubnetFailover=true
+	// provides faster detection of and connection to the (currently) active
+	// server, used by recommended version. Type: Boolean (or Expression with resultType boolean).
+	MultiSubnetFailover any
+
+	// When true, an application can maintain multiple active result sets (MARS). When false, an application must process or cancel
+	// all result sets from one batch before it can execute any other batch on
+	// that connection, used by recommended version. Type: Boolean (or Expression with resultType boolean).
+	MultipleActiveResultSets any
+
+	// The size in bytes of the network packets used to communicate with an instance of server, used by recommended version. Type:
+	// integer (or Expression with resultType integer).
+	PacketSize any
+
 	// The Azure key vault secret reference of password in connection string.
 	Password *AzureKeyVaultSecretReference
+
+	// Indicate whether the connection will be pooled or explicitly opened every time that the connection is requested, used by
+	// recommended version. Type: Boolean (or Expression with resultType boolean).
+	Pooling any
+
+	// The name or network address of the instance of SQL Server to which to connect, used by recommended version. Type: string
+	// (or Expression with resultType string).
+	Server any
+
+	// The credential of the service principal object in Azure Active Directory. If servicePrincipalCredentialType is 'ServicePrincipalKey',
+	// servicePrincipalCredential can be SecureString or
+	// AzureKeyVaultSecretReference. If servicePrincipalCredentialType is 'ServicePrincipalCert', servicePrincipalCredential can
+	// only be AzureKeyVaultSecretReference.
+	ServicePrincipalCredential SecretBaseClassification
+
+	// The service principal credential type to use in Server-To-Server authentication. 'ServicePrincipalKey' for key/secret,
+	// 'ServicePrincipalCert' for certificate. Type: string (or Expression with
+	// resultType string).
+	ServicePrincipalCredentialType any
 
 	// The ID of the service principal used to authenticate against Azure SQL Managed Instance. Type: string (or Expression with
 	// resultType string).
@@ -5119,6 +5648,13 @@ type AzureSQLMILinkedServiceTypeProperties struct {
 
 	// The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType string).
 	Tenant any
+
+	// Indicate whether the channel will be encrypted while bypassing walking the certificate chain to validate trust, used by
+	// recommended version. Type: Boolean (or Expression with resultType boolean).
+	TrustServerCertificate any
+
+	// The user name to be used when connecting to server. Type: string (or Expression with resultType string).
+	UserName any
 }
 
 // AzureSQLMITableDataset - The Azure SQL Managed Instance dataset.
@@ -5512,6 +6048,9 @@ type AzureSearchLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type AzureSearchLinkedService.
@@ -5523,6 +6062,7 @@ func (a *AzureSearchLinkedService) GetLinkedService() *LinkedService {
 		Description:          a.Description,
 		Parameters:           a.Parameters,
 		Type:                 a.Type,
+		Version:              a.Version,
 	}
 }
 
@@ -5561,6 +6101,9 @@ type AzureStorageLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type AzureStorageLinkedService.
@@ -5572,6 +6115,7 @@ func (a *AzureStorageLinkedService) GetLinkedService() *LinkedService {
 		Description:          a.Description,
 		Parameters:           a.Parameters,
 		Type:                 a.Type,
+		Version:              a.Version,
 	}
 }
 
@@ -5617,6 +6161,9 @@ type AzureSynapseArtifactsLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type AzureSynapseArtifactsLinkedService.
@@ -5628,6 +6175,7 @@ func (a *AzureSynapseArtifactsLinkedService) GetLinkedService() *LinkedService {
 		Description:          a.Description,
 		Parameters:           a.Parameters,
 		Type:                 a.Type,
+		Version:              a.Version,
 	}
 }
 
@@ -5821,7 +6369,7 @@ type AzureTableStorageLinkedService struct {
 	Type *string
 
 	// REQUIRED; Azure Table Storage linked service properties.
-	TypeProperties *AzureStorageLinkedServiceTypeProperties
+	TypeProperties *AzureTableStorageLinkedServiceTypeProperties
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
 	AdditionalProperties map[string]any
@@ -5837,6 +6385,9 @@ type AzureTableStorageLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type AzureTableStorageLinkedService.
@@ -5848,7 +6399,34 @@ func (a *AzureTableStorageLinkedService) GetLinkedService() *LinkedService {
 		Description:          a.Description,
 		Parameters:           a.Parameters,
 		Type:                 a.Type,
+		Version:              a.Version,
 	}
+}
+
+// AzureTableStorageLinkedServiceTypeProperties - Azure Table Storage linked service properties.
+type AzureTableStorageLinkedServiceTypeProperties struct {
+	// The Azure key vault secret reference of accountKey in connection string.
+	AccountKey *AzureKeyVaultSecretReference
+
+	// The connection string. It is mutually exclusive with sasUri property. Type: string, SecureString or AzureKeyVaultSecretReference.
+	ConnectionString any
+
+	// The credential reference containing authentication information.
+	Credential *CredentialReference
+
+	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
+	// Type: string.
+	EncryptedCredential *string
+
+	// The Azure key vault secret reference of sasToken in sas uri.
+	SasToken *AzureKeyVaultSecretReference
+
+	// SAS URI of the Azure Storage resource. It is mutually exclusive with connectionString property. Type: string, SecureString
+	// or AzureKeyVaultSecretReference.
+	SasURI any
+
+	// Table service endpoint of the Azure Table Storage resource. It is mutually exclusive with connectionString, sasUri property.
+	ServiceEndpoint any
 }
 
 // BigDataPoolParametrizationReference - Big data pool reference type.
@@ -6276,6 +6854,9 @@ type CassandraLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type CassandraLinkedService.
@@ -6287,6 +6868,7 @@ func (c *CassandraLinkedService) GetLinkedService() *LinkedService {
 		Description:          c.Description,
 		Parameters:           c.Parameters,
 		Type:                 c.Type,
+		Version:              c.Version,
 	}
 }
 
@@ -6647,6 +7229,9 @@ type CommonDataServiceForAppsLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type CommonDataServiceForAppsLinkedService.
@@ -6658,6 +7243,7 @@ func (c *CommonDataServiceForAppsLinkedService) GetLinkedService() *LinkedServic
 		Description:          c.Description,
 		Parameters:           c.Parameters,
 		Type:                 c.Type,
+		Version:              c.Version,
 	}
 }
 
@@ -6665,13 +7251,17 @@ func (c *CommonDataServiceForAppsLinkedService) GetLinkedService() *LinkedServic
 type CommonDataServiceForAppsLinkedServiceTypeProperties struct {
 	// REQUIRED; The authentication type to connect to Common Data Service for Apps server. 'Office365' for online scenario, 'Ifd'
 	// for on-premises with Ifd scenario. 'AADServicePrincipal' for Server-To-Server
-	// authentication in online scenario. Type: string (or Expression with resultType string).
+	// authentication in online scenario, 'Active Directory' for Dynamics on-premises with IFD. Type: string (or Expression with
+	// resultType string).
 	AuthenticationType any
 
 	// REQUIRED; The deployment type of the Common Data Service for Apps instance. 'Online' for Common Data Service for Apps Online
 	// and 'OnPremisesWithIfd' for Common Data Service for Apps on-premises with Ifd. Type:
 	// string (or Expression with resultType string).
 	DeploymentType any
+
+	// The Active Directory domain that will verify user credentials. Type: string (or Expression with resultType string).
+	Domain any
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string.
@@ -6860,6 +7450,9 @@ type ConcurLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type ConcurLinkedService.
@@ -6871,6 +7464,7 @@ func (c *ConcurLinkedService) GetLinkedService() *LinkedService {
 		Description:          c.Description,
 		Parameters:           c.Parameters,
 		Type:                 c.Type,
+		Version:              c.Version,
 	}
 }
 
@@ -7019,6 +7613,18 @@ type ConnectionStateProperties struct {
 
 	// READ-ONLY; The approval status
 	Status *string
+}
+
+// ContinuationSettingsReference - Continuation settings for execute data flow activity.
+type ContinuationSettingsReference struct {
+	// Continuation TTL in minutes.
+	ContinuationTTLInMinutes any
+
+	// Customized checkpoint key.
+	CustomizedCheckpointKey any
+
+	// Idle condition.
+	IdleCondition any
 }
 
 // ControlActivity - Base class for all control activities like IfCondition, ForEach , Until.
@@ -7287,6 +7893,9 @@ type CosmosDbLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type CosmosDbLinkedService.
@@ -7298,6 +7907,7 @@ func (c *CosmosDbLinkedService) GetLinkedService() *LinkedService {
 		Description:          c.Description,
 		Parameters:           c.Parameters,
 		Type:                 c.Type,
+		Version:              c.Version,
 	}
 }
 
@@ -7425,6 +8035,9 @@ type CosmosDbMongoDbAPILinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type CosmosDbMongoDbAPILinkedService.
@@ -7436,6 +8049,7 @@ func (c *CosmosDbMongoDbAPILinkedService) GetLinkedService() *LinkedService {
 		Description:          c.Description,
 		Parameters:           c.Parameters,
 		Type:                 c.Type,
+		Version:              c.Version,
 	}
 }
 
@@ -7723,6 +8337,9 @@ type CouchbaseLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type CouchbaseLinkedService.
@@ -7734,6 +8351,7 @@ func (c *CouchbaseLinkedService) GetLinkedService() *LinkedService {
 		Description:          c.Description,
 		Parameters:           c.Parameters,
 		Type:                 c.Type,
+		Version:              c.Version,
 	}
 }
 
@@ -8082,6 +8700,9 @@ type CustomDataSourceLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type CustomDataSourceLinkedService.
@@ -8093,6 +8714,7 @@ func (c *CustomDataSourceLinkedService) GetLinkedService() *LinkedService {
 		Description:          c.Description,
 		Parameters:           c.Parameters,
 		Type:                 c.Type,
+		Version:              c.Version,
 	}
 }
 
@@ -9005,6 +9627,9 @@ type DataworldLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type DataworldLinkedService.
@@ -9016,6 +9641,7 @@ func (d *DataworldLinkedService) GetLinkedService() *LinkedService {
 		Description:          d.Description,
 		Parameters:           d.Parameters,
 		Type:                 d.Type,
+		Version:              d.Version,
 	}
 }
 
@@ -9051,6 +9677,9 @@ type Db2LinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type Db2LinkedService.
@@ -9062,6 +9691,7 @@ func (d *Db2LinkedService) GetLinkedService() *LinkedService {
 		Description:          d.Description,
 		Parameters:           d.Parameters,
 		Type:                 d.Type,
+		Version:              d.Version,
 	}
 }
 
@@ -9755,6 +10385,9 @@ type DrillLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type DrillLinkedService.
@@ -9766,6 +10399,7 @@ func (d *DrillLinkedService) GetLinkedService() *LinkedService {
 		Description:          d.Description,
 		Parameters:           d.Parameters,
 		Type:                 d.Type,
+		Version:              d.Version,
 	}
 }
 
@@ -9910,6 +10544,9 @@ type DynamicsAXLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type DynamicsAXLinkedService.
@@ -9921,6 +10558,7 @@ func (d *DynamicsAXLinkedService) GetLinkedService() *LinkedService {
 		Description:          d.Description,
 		Parameters:           d.Parameters,
 		Type:                 d.Type,
+		Version:              d.Version,
 	}
 }
 
@@ -10144,6 +10782,9 @@ type DynamicsCrmLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type DynamicsCrmLinkedService.
@@ -10155,6 +10796,7 @@ func (d *DynamicsCrmLinkedService) GetLinkedService() *LinkedService {
 		Description:          d.Description,
 		Parameters:           d.Parameters,
 		Type:                 d.Type,
+		Version:              d.Version,
 	}
 }
 
@@ -10162,12 +10804,18 @@ func (d *DynamicsCrmLinkedService) GetLinkedService() *LinkedService {
 type DynamicsCrmLinkedServiceTypeProperties struct {
 	// REQUIRED; The authentication type to connect to Dynamics CRM server. 'Office365' for online scenario, 'Ifd' for on-premises
 	// with Ifd scenario, 'AADServicePrincipal' for Server-To-Server authentication in online
-	// scenario. Type: string (or Expression with resultType string).
+	// scenario, 'Active Directory' for Dynamics on-premises with IFD. Type: string (or Expression with resultType string).
 	AuthenticationType any
 
 	// REQUIRED; The deployment type of the Dynamics CRM instance. 'Online' for Dynamics CRM Online and 'OnPremisesWithIfd' for
 	// Dynamics CRM on-premises with Ifd. Type: string (or Expression with resultType string).
 	DeploymentType any
+
+	// The credential reference containing authentication information.
+	Credential *CredentialReference
+
+	// The Active Directory domain that will verify user credentials. Type: string (or Expression with resultType string).
+	Domain any
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string.
@@ -10382,6 +11030,9 @@ type DynamicsLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type DynamicsLinkedService.
@@ -10393,6 +11044,7 @@ func (d *DynamicsLinkedService) GetLinkedService() *LinkedService {
 		Description:          d.Description,
 		Parameters:           d.Parameters,
 		Type:                 d.Type,
+		Version:              d.Version,
 	}
 }
 
@@ -10400,7 +11052,7 @@ func (d *DynamicsLinkedService) GetLinkedService() *LinkedService {
 type DynamicsLinkedServiceTypeProperties struct {
 	// REQUIRED; The authentication type to connect to Dynamics server. 'Office365' for online scenario, 'Ifd' for on-premises
 	// with Ifd scenario, 'AADServicePrincipal' for Server-To-Server authentication in online
-	// scenario. Type: string (or Expression with resultType string).
+	// scenario, 'Active Directory' for Dynamics on-premises with IFD. Type: string (or Expression with resultType string).
 	AuthenticationType any
 
 	// REQUIRED; The deployment type of the Dynamics instance. 'Online' for Dynamics Online and 'OnPremisesWithIfd' for Dynamics
@@ -10409,6 +11061,9 @@ type DynamicsLinkedServiceTypeProperties struct {
 
 	// The credential reference containing authentication information.
 	Credential *CredentialReference
+
+	// The Active Directory domain that will verify user credentials. Type: string (or Expression with resultType string).
+	Domain any
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string.
@@ -10568,6 +11223,9 @@ type EloquaLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type EloquaLinkedService.
@@ -10579,6 +11237,7 @@ func (e *EloquaLinkedService) GetLinkedService() *LinkedService {
 		Description:          e.Description,
 		Parameters:           e.Parameters,
 		Type:                 e.Type,
+		Version:              e.Version,
 	}
 }
 
@@ -10954,6 +11613,9 @@ type ExecuteDataFlowActivityTypeProperties struct {
 	// Compute properties for data flow activity.
 	Compute *ExecuteDataFlowActivityTypePropertiesCompute
 
+	// Continuation settings for execute data flow activity.
+	ContinuationSettings *ContinuationSettingsReference
+
 	// Continue on error setting used for data flow execution. Enables processing to continue if a sink fails. Type: boolean (or
 	// Expression with resultType boolean)
 	ContinueOnError any
@@ -11077,6 +11739,9 @@ type ExecutePowerQueryActivityTypeProperties struct {
 
 	// Compute properties for data flow activity.
 	Compute *ExecuteDataFlowActivityTypePropertiesCompute
+
+	// Continuation settings for execute data flow activity.
+	ContinuationSettings *ContinuationSettingsReference
 
 	// Continue on error setting used for data flow execution. Enables processing to continue if a sink fails. Type: boolean (or
 	// Expression with resultType boolean)
@@ -11368,8 +12033,8 @@ type ExpressionV2 struct {
 	// List of nested expressions.
 	Operands []*ExpressionV2
 
-	// Expression operator value Type: string.
-	Operator *string
+	// Expression operator value Type: list of strings.
+	Operators []*string
 
 	// Type of expressions supported by the system. Type: string.
 	Type *ExpressionV2Type
@@ -11698,6 +12363,9 @@ type FileServerLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type FileServerLinkedService.
@@ -11709,6 +12377,7 @@ func (f *FileServerLinkedService) GetLinkedService() *LinkedService {
 		Description:          f.Description,
 		Parameters:           f.Parameters,
 		Type:                 f.Type,
+		Version:              f.Version,
 	}
 }
 
@@ -12293,6 +12962,9 @@ type FtpServerLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type FtpServerLinkedService.
@@ -12304,6 +12976,7 @@ func (f *FtpServerLinkedService) GetLinkedService() *LinkedService {
 		Description:          f.Description,
 		Parameters:           f.Parameters,
 		Type:                 f.Type,
+		Version:              f.Version,
 	}
 }
 
@@ -12545,6 +13218,9 @@ type GoogleAdWordsLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type GoogleAdWordsLinkedService.
@@ -12556,6 +13232,7 @@ func (g *GoogleAdWordsLinkedService) GetLinkedService() *LinkedService {
 		Description:          g.Description,
 		Parameters:           g.Parameters,
 		Type:                 g.Type,
+		Version:              g.Version,
 	}
 }
 
@@ -12765,6 +13442,9 @@ type GoogleBigQueryLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type GoogleBigQueryLinkedService.
@@ -12776,6 +13456,7 @@ func (g *GoogleBigQueryLinkedService) GetLinkedService() *LinkedService {
 		Description:          g.Description,
 		Parameters:           g.Parameters,
 		Type:                 g.Type,
+		Version:              g.Version,
 	}
 }
 
@@ -12965,6 +13646,9 @@ type GoogleBigQueryV2LinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type GoogleBigQueryV2LinkedService.
@@ -12976,6 +13660,7 @@ func (g *GoogleBigQueryV2LinkedService) GetLinkedService() *LinkedService {
 		Description:          g.Description,
 		Parameters:           g.Parameters,
 		Type:                 g.Type,
+		Version:              g.Version,
 	}
 }
 
@@ -13134,6 +13819,9 @@ type GoogleCloudStorageLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type GoogleCloudStorageLinkedService.
@@ -13145,6 +13833,7 @@ func (g *GoogleCloudStorageLinkedService) GetLinkedService() *LinkedService {
 		Description:          g.Description,
 		Parameters:           g.Parameters,
 		Type:                 g.Type,
+		Version:              g.Version,
 	}
 }
 
@@ -13278,6 +13967,9 @@ type GoogleSheetsLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type GoogleSheetsLinkedService.
@@ -13289,6 +13981,7 @@ func (g *GoogleSheetsLinkedService) GetLinkedService() *LinkedService {
 		Description:          g.Description,
 		Parameters:           g.Parameters,
 		Type:                 g.Type,
+		Version:              g.Version,
 	}
 }
 
@@ -13336,6 +14029,9 @@ type GreenplumLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type GreenplumLinkedService.
@@ -13347,6 +14043,7 @@ func (g *GreenplumLinkedService) GetLinkedService() *LinkedService {
 		Description:          g.Description,
 		Parameters:           g.Parameters,
 		Type:                 g.Type,
+		Version:              g.Version,
 	}
 }
 
@@ -13491,6 +14188,9 @@ type HBaseLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type HBaseLinkedService.
@@ -13502,6 +14202,7 @@ func (h *HBaseLinkedService) GetLinkedService() *LinkedService {
 		Description:          h.Description,
 		Parameters:           h.Parameters,
 		Type:                 h.Type,
+		Version:              h.Version,
 	}
 }
 
@@ -13767,6 +14468,9 @@ type HDInsightLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type HDInsightLinkedService.
@@ -13778,6 +14482,7 @@ func (h *HDInsightLinkedService) GetLinkedService() *LinkedService {
 		Description:          h.Description,
 		Parameters:           h.Parameters,
 		Type:                 h.Type,
+		Version:              h.Version,
 	}
 }
 
@@ -13926,6 +14631,9 @@ type HDInsightOnDemandLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type HDInsightOnDemandLinkedService.
@@ -13937,6 +14645,7 @@ func (h *HDInsightOnDemandLinkedService) GetLinkedService() *LinkedService {
 		Description:          h.Description,
 		Parameters:           h.Parameters,
 		Type:                 h.Type,
+		Version:              h.Version,
 	}
 }
 
@@ -14437,6 +15146,9 @@ type HTTPLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type HTTPLinkedService.
@@ -14448,6 +15160,7 @@ func (h *HTTPLinkedService) GetLinkedService() *LinkedService {
 		Description:          h.Description,
 		Parameters:           h.Parameters,
 		Type:                 h.Type,
+		Version:              h.Version,
 	}
 }
 
@@ -14619,6 +15332,9 @@ type HdfsLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type HdfsLinkedService.
@@ -14630,6 +15346,7 @@ func (h *HdfsLinkedService) GetLinkedService() *LinkedService {
 		Description:          h.Description,
 		Parameters:           h.Parameters,
 		Type:                 h.Type,
+		Version:              h.Version,
 	}
 }
 
@@ -14811,6 +15528,9 @@ type HiveLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type HiveLinkedService.
@@ -14822,6 +15542,7 @@ func (h *HiveLinkedService) GetLinkedService() *LinkedService {
 		Description:          h.Description,
 		Parameters:           h.Parameters,
 		Type:                 h.Type,
+		Version:              h.Version,
 	}
 }
 
@@ -15013,6 +15734,9 @@ type HubspotLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type HubspotLinkedService.
@@ -15024,6 +15748,7 @@ func (h *HubspotLinkedService) GetLinkedService() *LinkedService {
 		Description:          h.Description,
 		Parameters:           h.Parameters,
 		Type:                 h.Type,
+		Version:              h.Version,
 	}
 }
 
@@ -15162,6 +15887,125 @@ func (h *HubspotSource) GetTabularSource() *TabularSource {
 	}
 }
 
+// IcebergDataset - Iceberg dataset.
+type IcebergDataset struct {
+	// REQUIRED; Linked service reference.
+	LinkedServiceName *LinkedServiceReference
+
+	// REQUIRED; Type of dataset.
+	Type *string
+
+	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
+	AdditionalProperties map[string]any
+
+	// List of tags that can be used for describing the Dataset.
+	Annotations []any
+
+	// Dataset description.
+	Description *string
+
+	// The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder
+
+	// Parameters for dataset.
+	Parameters map[string]*ParameterSpecification
+
+	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
+	// DatasetSchemaDataElement.
+	Schema any
+
+	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
+	Structure any
+
+	// Iceberg dataset properties.
+	TypeProperties *IcebergDatasetTypeProperties
+}
+
+// GetDataset implements the DatasetClassification interface for type IcebergDataset.
+func (i *IcebergDataset) GetDataset() *Dataset {
+	return &Dataset{
+		AdditionalProperties: i.AdditionalProperties,
+		Annotations:          i.Annotations,
+		Description:          i.Description,
+		Folder:               i.Folder,
+		LinkedServiceName:    i.LinkedServiceName,
+		Parameters:           i.Parameters,
+		Schema:               i.Schema,
+		Structure:            i.Structure,
+		Type:                 i.Type,
+	}
+}
+
+// IcebergDatasetTypeProperties - Iceberg dataset properties.
+type IcebergDatasetTypeProperties struct {
+	// REQUIRED; The location of the iceberg storage. Setting a file name is not allowed for iceberg format.
+	Location DatasetLocationClassification
+}
+
+// IcebergSink - A copy activity Iceberg sink.
+type IcebergSink struct {
+	// REQUIRED; Copy sink type.
+	Type *string
+
+	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
+	AdditionalProperties map[string]any
+
+	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
+	DisableMetricsCollection any
+
+	// Iceberg format settings.
+	FormatSettings *IcebergWriteSettings
+
+	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
+	MaxConcurrentConnections any
+
+	// Sink retry count. Type: integer (or Expression with resultType integer).
+	SinkRetryCount any
+
+	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+	SinkRetryWait any
+
+	// Iceberg store settings.
+	StoreSettings StoreWriteSettingsClassification
+
+	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
+	WriteBatchSize any
+
+	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+	WriteBatchTimeout any
+}
+
+// GetCopySink implements the CopySinkClassification interface for type IcebergSink.
+func (i *IcebergSink) GetCopySink() *CopySink {
+	return &CopySink{
+		AdditionalProperties:     i.AdditionalProperties,
+		DisableMetricsCollection: i.DisableMetricsCollection,
+		MaxConcurrentConnections: i.MaxConcurrentConnections,
+		SinkRetryCount:           i.SinkRetryCount,
+		SinkRetryWait:            i.SinkRetryWait,
+		Type:                     i.Type,
+		WriteBatchSize:           i.WriteBatchSize,
+		WriteBatchTimeout:        i.WriteBatchTimeout,
+	}
+}
+
+// IcebergWriteSettings - Iceberg write settings.
+type IcebergWriteSettings struct {
+	// REQUIRED; The write setting type.
+	Type *string
+
+	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
+	AdditionalProperties map[string]any
+}
+
+// GetFormatWriteSettings implements the FormatWriteSettingsClassification interface for type IcebergWriteSettings.
+func (i *IcebergWriteSettings) GetFormatWriteSettings() *FormatWriteSettings {
+	return &FormatWriteSettings{
+		AdditionalProperties: i.AdditionalProperties,
+		Type:                 i.Type,
+	}
+}
+
 // IfConditionActivity - This activity evaluates a boolean expression and executes either the activities under the ifTrueActivities
 // property or the ifFalseActivities property depending on the result of the expression.
 type IfConditionActivity struct {
@@ -15271,6 +16115,9 @@ type ImpalaLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type ImpalaLinkedService.
@@ -15282,6 +16129,7 @@ func (i *ImpalaLinkedService) GetLinkedService() *LinkedService {
 		Description:          i.Description,
 		Parameters:           i.Parameters,
 		Type:                 i.Type,
+		Version:              i.Version,
 	}
 }
 
@@ -15466,6 +16314,9 @@ type InformixLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type InformixLinkedService.
@@ -15477,6 +16328,7 @@ func (i *InformixLinkedService) GetLinkedService() *LinkedService {
 		Description:          i.Description,
 		Parameters:           i.Parameters,
 		Type:                 i.Type,
+		Version:              i.Version,
 	}
 }
 
@@ -16292,6 +17144,9 @@ type JiraLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type JiraLinkedService.
@@ -16303,6 +17158,7 @@ func (j *JiraLinkedService) GetLinkedService() *LinkedService {
 		Description:          j.Description,
 		Parameters:           j.Parameters,
 		Type:                 j.Type,
+		Version:              j.Version,
 	}
 }
 
@@ -16464,6 +17320,9 @@ type LakeHouseLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type LakeHouseLinkedService.
@@ -16475,6 +17334,7 @@ func (l *LakeHouseLinkedService) GetLinkedService() *LinkedService {
 		Description:          l.Description,
 		Parameters:           l.Parameters,
 		Type:                 l.Type,
+		Version:              l.Version,
 	}
 }
 
@@ -16643,6 +17503,9 @@ func (l *LakeHouseTableDataset) GetDataset() *Dataset {
 
 // LakeHouseTableDatasetTypeProperties - Microsoft Fabric LakeHouse Table dataset properties.
 type LakeHouseTableDatasetTypeProperties struct {
+	// The schema name of Microsoft Fabric LakeHouse Table. Type: string (or Expression with resultType string).
+	Schema any
+
 	// The name of Microsoft Fabric LakeHouse Table. Type: string (or Expression with resultType string).
 	Table any
 }
@@ -16873,6 +17736,9 @@ type LinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type LinkedService.
@@ -17066,6 +17932,9 @@ type MagentoLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type MagentoLinkedService.
@@ -17077,6 +17946,7 @@ func (m *MagentoLinkedService) GetLinkedService() *LinkedService {
 		Description:          m.Description,
 		Parameters:           m.Parameters,
 		Type:                 m.Type,
+		Version:              m.Version,
 	}
 }
 
@@ -17222,6 +18092,9 @@ type ManagedIdentityCredential struct {
 
 	// Credential description.
 	Description *string
+
+	// Managed identity credential properties.
+	TypeProperties *ManagedIdentityTypeProperties
 }
 
 // GetCredential implements the CredentialClassification interface for type ManagedIdentityCredential.
@@ -17232,6 +18105,12 @@ func (m *ManagedIdentityCredential) GetCredential() *Credential {
 		Description:          m.Description,
 		Type:                 m.Type,
 	}
+}
+
+// ManagedIdentityTypeProperties - Managed identity type properties.
+type ManagedIdentityTypeProperties struct {
+	// The resource id of user assigned managed identity
+	ResourceID *string
 }
 
 // ManagedIntegrationRuntime - Managed integration runtime, including managed elastic and managed dedicated integration runtimes.
@@ -17687,6 +18566,9 @@ type MariaDBLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type MariaDBLinkedService.
@@ -17698,6 +18580,7 @@ func (m *MariaDBLinkedService) GetLinkedService() *LinkedService {
 		Description:          m.Description,
 		Parameters:           m.Parameters,
 		Type:                 m.Type,
+		Version:              m.Version,
 	}
 }
 
@@ -17710,7 +18593,8 @@ type MariaDBLinkedServiceTypeProperties struct {
 	Database any
 
 	// The version of the MariaDB driver. Type: string. V1 or empty for legacy driver, V2 for new driver. V1 can support connection
-	// string and property bag, V2 can only support connection string.
+	// string and property bag, V2 can only support connection string. The legacy
+	// driver is scheduled for deprecation by October 2024.
 	DriverVersion any
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
@@ -17723,8 +18607,17 @@ type MariaDBLinkedServiceTypeProperties struct {
 	// The port for the connection. Type: integer.
 	Port any
 
+	// This option specifies whether the driver uses TLS encryption and verification when connecting to MariaDB. E.g., SSLMode=.
+	// Options: DISABLED (0) / PREFERRED (1) (Default) / REQUIRED (2) / VERIFYCA (3)
+	// / VERIFYIDENTITY (4), REQUIRED (2) is recommended to only allow connections encrypted with SSL/TLS.
+	SSLMode any
+
 	// Server name for connection. Type: string.
 	Server any
+
+	// This option specifies whether to use a CA certificate from the system trust store, or from a specified PEM file. E.g. UseSystemTrustStore=;
+	// Options: Enabled (1) / Disabled (0) (Default)
+	UseSystemTrustStore any
 
 	// Username for authentication. Type: string.
 	Username any
@@ -17858,6 +18751,9 @@ type MarketoLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type MarketoLinkedService.
@@ -17869,6 +18765,7 @@ func (m *MarketoLinkedService) GetLinkedService() *LinkedService {
 		Description:          m.Description,
 		Parameters:           m.Parameters,
 		Type:                 m.Type,
+		Version:              m.Version,
 	}
 }
 
@@ -18035,6 +18932,9 @@ type MicrosoftAccessLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type MicrosoftAccessLinkedService.
@@ -18046,6 +18946,7 @@ func (m *MicrosoftAccessLinkedService) GetLinkedService() *LinkedService {
 		Description:          m.Description,
 		Parameters:           m.Parameters,
 		Type:                 m.Type,
+		Version:              m.Version,
 	}
 }
 
@@ -18290,6 +19191,9 @@ type MongoDbAtlasLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type MongoDbAtlasLinkedService.
@@ -18301,6 +19205,7 @@ func (m *MongoDbAtlasLinkedService) GetLinkedService() *LinkedService {
 		Description:          m.Description,
 		Parameters:           m.Parameters,
 		Type:                 m.Type,
+		Version:              m.Version,
 	}
 }
 
@@ -18515,6 +19420,9 @@ type MongoDbLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type MongoDbLinkedService.
@@ -18526,6 +19434,7 @@ func (m *MongoDbLinkedService) GetLinkedService() *LinkedService {
 		Description:          m.Description,
 		Parameters:           m.Parameters,
 		Type:                 m.Type,
+		Version:              m.Version,
 	}
 }
 
@@ -18683,6 +19592,9 @@ type MongoDbV2LinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type MongoDbV2LinkedService.
@@ -18694,6 +19606,7 @@ func (m *MongoDbV2LinkedService) GetLinkedService() *LinkedService {
 		Description:          m.Description,
 		Parameters:           m.Parameters,
 		Type:                 m.Type,
+		Version:              m.Version,
 	}
 }
 
@@ -18862,6 +19775,9 @@ type MySQLLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type MySQLLinkedService.
@@ -18873,13 +19789,24 @@ func (m *MySQLLinkedService) GetLinkedService() *LinkedService {
 		Description:          m.Description,
 		Parameters:           m.Parameters,
 		Type:                 m.Type,
+		Version:              m.Version,
 	}
 }
 
 // MySQLLinkedServiceTypeProperties - MySQL linked service properties.
 type MySQLLinkedServiceTypeProperties struct {
+	// This allows the special “zero” date value 0000-00-00 to be retrieved from the database. Type: boolean.
+	AllowZeroDateTime any
+
 	// The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
 	ConnectionString any
+
+	// The length of time (in seconds) to wait for a connection to the server before terminating the attempt and generating an
+	// error. Type: integer.
+	ConnectionTimeout any
+
+	// True to return DateTime.MinValue for date or datetime columns that have disallowed values. Type: boolean.
+	ConvertZeroDateTime any
 
 	// Database name for connection. Type: string.
 	Database any
@@ -18892,17 +19819,31 @@ type MySQLLinkedServiceTypeProperties struct {
 	// Type: string.
 	EncryptedCredential *string
 
+	// Determines which column type (if any) should be read as a GUID. Type: string. None: No column types are automatically read
+	// as a Guid; Char36: All CHAR(36) columns are read/written as a Guid using
+	// lowercase hex with hyphens, which matches UUID.
+	GUIDFormat any
+
 	// The Azure key vault secret reference of password in connection string.
 	Password *AzureKeyVaultSecretReference
 
 	// The port for the connection. Type: integer.
 	Port any
 
+	// The path to the client’s SSL certificate file in PEM format. SslKey must also be specified. Type: string.
+	SSLCert any
+
+	// The path to the client’s SSL private key in PEM format. SslCert must also be specified. Type: string.
+	SSLKey any
+
 	// SSL mode for connection. Type: integer. 0: disable, 1: prefer, 2: require, 3: verify-ca, 4: verify-full.
 	SSLMode any
 
 	// Server name for connection. Type: string.
 	Server any
+
+	// When set to true, TINYINT(1) values are returned as booleans. Type: bool.
+	TreatTinyAsBoolean any
 
 	// Use system trust store for connection. Type: integer. 0: enable, 1: disable.
 	UseSystemTrustStore any
@@ -19045,6 +19986,9 @@ type NetezzaLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type NetezzaLinkedService.
@@ -19056,6 +20000,7 @@ func (n *NetezzaLinkedService) GetLinkedService() *LinkedService {
 		Description:          n.Description,
 		Parameters:           n.Parameters,
 		Type:                 n.Type,
+		Version:              n.Version,
 	}
 }
 
@@ -19242,6 +20187,9 @@ type ODataLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type ODataLinkedService.
@@ -19253,6 +20201,7 @@ func (o *ODataLinkedService) GetLinkedService() *LinkedService {
 		Description:          o.Description,
 		Parameters:           o.Parameters,
 		Type:                 o.Type,
+		Version:              o.Version,
 	}
 }
 
@@ -19432,6 +20381,9 @@ type OdbcLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type OdbcLinkedService.
@@ -19443,6 +20395,7 @@ func (o *OdbcLinkedService) GetLinkedService() *LinkedService {
 		Description:          o.Description,
 		Parameters:           o.Parameters,
 		Type:                 o.Type,
+		Version:              o.Version,
 	}
 }
 
@@ -19708,6 +20661,9 @@ type Office365LinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type Office365LinkedService.
@@ -19719,6 +20675,7 @@ func (o *Office365LinkedService) GetLinkedService() *LinkedService {
 		Description:          o.Description,
 		Parameters:           o.Parameters,
 		Type:                 o.Type,
+		Version:              o.Version,
 	}
 }
 
@@ -19937,6 +20894,9 @@ type OracleCloudStorageLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type OracleCloudStorageLinkedService.
@@ -19948,6 +20908,7 @@ func (o *OracleCloudStorageLinkedService) GetLinkedService() *LinkedService {
 		Description:          o.Description,
 		Parameters:           o.Parameters,
 		Type:                 o.Type,
+		Version:              o.Version,
 	}
 }
 
@@ -20081,6 +21042,9 @@ type OracleLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type OracleLinkedService.
@@ -20092,6 +21056,7 @@ func (o *OracleLinkedService) GetLinkedService() *LinkedService {
 		Description:          o.Description,
 		Parameters:           o.Parameters,
 		Type:                 o.Type,
+		Version:              o.Version,
 	}
 }
 
@@ -20148,6 +21113,9 @@ type OracleServiceCloudLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type OracleServiceCloudLinkedService.
@@ -20159,6 +21127,7 @@ func (o *OracleServiceCloudLinkedService) GetLinkedService() *LinkedService {
 		Description:          o.Description,
 		Parameters:           o.Parameters,
 		Type:                 o.Type,
+		Version:              o.Version,
 	}
 }
 
@@ -20905,6 +21874,9 @@ type PaypalLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type PaypalLinkedService.
@@ -20916,6 +21888,7 @@ func (p *PaypalLinkedService) GetLinkedService() *LinkedService {
 		Description:          p.Description,
 		Parameters:           p.Parameters,
 		Type:                 p.Type,
+		Version:              p.Version,
 	}
 }
 
@@ -21085,6 +22058,9 @@ type PhoenixLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type PhoenixLinkedService.
@@ -21096,6 +22072,7 @@ func (p *PhoenixLinkedService) GetLinkedService() *LinkedService {
 		Description:          p.Description,
 		Parameters:           p.Parameters,
 		Type:                 p.Type,
+		Version:              p.Version,
 	}
 }
 
@@ -21470,6 +22447,9 @@ type PostgreSQLLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type PostgreSQLLinkedService.
@@ -21481,6 +22461,7 @@ func (p *PostgreSQLLinkedService) GetLinkedService() *LinkedService {
 		Description:          p.Description,
 		Parameters:           p.Parameters,
 		Type:                 p.Type,
+		Version:              p.Version,
 	}
 }
 
@@ -21637,6 +22618,9 @@ type PostgreSQLV2LinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type PostgreSQLV2LinkedService.
@@ -21648,11 +22632,15 @@ func (p *PostgreSQLV2LinkedService) GetLinkedService() *LinkedService {
 		Description:          p.Description,
 		Parameters:           p.Parameters,
 		Type:                 p.Type,
+		Version:              p.Version,
 	}
 }
 
 // PostgreSQLV2LinkedServiceTypeProperties - PostgreSqlV2 linked service properties.
 type PostgreSQLV2LinkedServiceTypeProperties struct {
+	// REQUIRED; The authentication type to use. Type: string.
+	AuthenticationType any
+
 	// REQUIRED; Database name for connection. Type: string.
 	Database any
 
@@ -21937,6 +22925,9 @@ type PrestoLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type PrestoLinkedService.
@@ -21948,6 +22939,7 @@ func (p *PrestoLinkedService) GetLinkedService() *LinkedService {
 		Description:          p.Description,
 		Parameters:           p.Parameters,
 		Type:                 p.Type,
+		Version:              p.Version,
 	}
 }
 
@@ -22253,6 +23245,9 @@ type QuickBooksLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type QuickBooksLinkedService.
@@ -22264,6 +23259,7 @@ func (q *QuickBooksLinkedService) GetLinkedService() *LinkedService {
 		Description:          q.Description,
 		Parameters:           q.Parameters,
 		Type:                 q.Type,
+		Version:              q.Version,
 	}
 }
 
@@ -22427,6 +23423,9 @@ type QuickbaseLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type QuickbaseLinkedService.
@@ -22438,6 +23437,7 @@ func (q *QuickbaseLinkedService) GetLinkedService() *LinkedService {
 		Description:          q.Description,
 		Parameters:           q.Parameters,
 		Type:                 q.Type,
+		Version:              q.Version,
 	}
 }
 
@@ -22692,6 +23692,9 @@ type ResponsysLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type ResponsysLinkedService.
@@ -22703,6 +23706,7 @@ func (r *ResponsysLinkedService) GetLinkedService() *LinkedService {
 		Description:          r.Description,
 		Parameters:           r.Parameters,
 		Type:                 r.Type,
+		Version:              r.Version,
 	}
 }
 
@@ -22930,6 +23934,9 @@ type RestServiceLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type RestServiceLinkedService.
@@ -22941,6 +23948,7 @@ func (r *RestServiceLinkedService) GetLinkedService() *LinkedService {
 		Description:          r.Description,
 		Parameters:           r.Parameters,
 		Type:                 r.Type,
+		Version:              r.Version,
 	}
 }
 
@@ -22990,6 +23998,19 @@ type RestServiceLinkedServiceTypeProperties struct {
 	// The scope of the access required. It describes what kind of access will be requested. Type: string (or Expression with
 	// resultType string).
 	Scope any
+
+	// The service principal credential type to use in Server-To-Server authentication. 'ServicePrincipalKey' for key/secret,
+	// 'ServicePrincipalCert' for certificate. Type: string (or Expression with
+	// resultType string).
+	ServicePrincipalCredentialType any
+
+	// Specify the base64 encoded certificate of your application registered in Azure Active Directory. Type: string (or Expression
+	// with resultType string).
+	ServicePrincipalEmbeddedCert SecretBaseClassification
+
+	// Specify the password of your certificate if your certificate has a password and you are using AadServicePrincipal authentication.
+	// Type: string (or Expression with resultType string).
+	ServicePrincipalEmbeddedCertPassword SecretBaseClassification
 
 	// The application's client ID used in AadServicePrincipal authentication type. Type: string (or Expression with resultType
 	// string).
@@ -23536,6 +24557,9 @@ type SQLServerLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type SQLServerLinkedService.
@@ -23547,23 +24571,113 @@ func (s *SQLServerLinkedService) GetLinkedService() *LinkedService {
 		Description:          s.Description,
 		Parameters:           s.Parameters,
 		Type:                 s.Type,
+		Version:              s.Version,
 	}
 }
 
 // SQLServerLinkedServiceTypeProperties - SQL Server linked service properties.
 type SQLServerLinkedServiceTypeProperties struct {
-	// REQUIRED; The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
-	ConnectionString any
-
 	// Sql always encrypted properties.
 	AlwaysEncryptedSettings *SQLAlwaysEncryptedProperties
+
+	// The application workload type when connecting to a server, used by recommended version. Possible values are ReadOnly and
+	// ReadWrite. Type: string (or Expression with resultType string).
+	ApplicationIntent any
+
+	// The type used for authentication. Type: string.
+	AuthenticationType *SQLServerAuthenticationType
+
+	// The default wait time (in seconds) before terminating the attempt to execute a command and generating an error, used by
+	// recommended version. Type: integer (or Expression with resultType integer).
+	CommandTimeout any
+
+	// The number of re-connections attempted after identifying that there was an idle connection failure, used by recommended
+	// version. This must be an integer between 0 and 255. Type: integer (or Expression
+	// with resultType integer).
+	ConnectRetryCount any
+
+	// The amount of time (in seconds) between each re-connection attempt after identifying that there was an idle connection
+	// failure, used by recommended version. This must be an integer between 1 and 60.
+	// Type: integer (or Expression with resultType integer).
+	ConnectRetryInterval any
+
+	// The length of time (in seconds) to wait for a connection to the server before terminating the attempt and generating an
+	// error, used by recommended version. Type: integer (or Expression with resultType
+	// integer).
+	ConnectTimeout any
+
+	// The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
+	ConnectionString any
+
+	// The credential reference containing authentication information.
+	Credential *CredentialReference
+
+	// The name of the database, used by recommended version. Type: string (or Expression with resultType string).
+	Database any
+
+	// Indicate whether TLS encryption is required for all data sent between the client and server, used by recommended version.
+	// Possible values are true/yes/mandatory, false/no/optional and strict. Type:
+	// string (or Expression with resultType string).
+	Encrypt any
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string.
 	EncryptedCredential *string
 
+	// The name or address of the partner server to connect to if the primary server is down, used by recommended version. Type:
+	// string (or Expression with resultType string).
+	FailoverPartner any
+
+	// The host name to use when validating the server certificate for the connection. When not specified, the server name from
+	// the Data Source is used for certificate validation, used by recommended
+	// version. Type: string (or Expression with resultType string).
+	HostNameInCertificate any
+
+	// Indicate whether User ID and Password are specified in the connection (when false) or whether the current Windows account
+	// credentials are used for authentication (when true), used by recommended
+	// version. Type: Boolean (or Expression with resultType boolean).
+	IntegratedSecurity any
+
+	// The minimum time, in seconds, for the connection to live in the connection pool before being destroyed, used by recommended
+	// version. Type: integer (or Expression with resultType integer).
+	LoadBalanceTimeout any
+
+	// The maximum number of connections allowed in the connection pool for this specific connection string, used by recommended
+	// version. Type: integer (or Expression with resultType integer).
+	MaxPoolSize any
+
+	// The minimum number of connections allowed in the connection pool for this specific connection string, used by recommended
+	// version. Type: integer (or Expression with resultType integer).
+	MinPoolSize any
+
+	// If your application is connecting to an AlwaysOn availability group (AG) on different subnets, setting MultiSubnetFailover=true
+	// provides faster detection of and connection to the (currently) active
+	// server, used by recommended version. Type: Boolean (or Expression with resultType boolean).
+	MultiSubnetFailover any
+
+	// When true, an application can maintain multiple active result sets (MARS). When false, an application must process or cancel
+	// all result sets from one batch before it can execute any other batch on
+	// that connection, used by recommended version. Type: Boolean (or Expression with resultType boolean).
+	MultipleActiveResultSets any
+
+	// The size in bytes of the network packets used to communicate with an instance of server, used by recommended version. Type:
+	// integer (or Expression with resultType integer).
+	PacketSize any
+
 	// The on-premises Windows authentication password.
 	Password SecretBaseClassification
+
+	// Indicate whether the connection will be pooled or explicitly opened every time that the connection is requested, used by
+	// recommended version. Type: Boolean (or Expression with resultType boolean).
+	Pooling any
+
+	// The name or network address of the instance of SQL Server to which to connect, used by recommended version. Type: string
+	// (or Expression with resultType string).
+	Server any
+
+	// Indicate whether the channel will be encrypted while bypassing walking the certificate chain to validate trust, used by
+	// recommended version. Type: Boolean (or Expression with resultType boolean).
+	TrustServerCertificate any
 
 	// The on-premises Windows authentication user name. Type: string (or Expression with resultType string).
 	UserName any
@@ -24148,6 +25262,9 @@ type SalesforceLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type SalesforceLinkedService.
@@ -24159,6 +25276,7 @@ func (s *SalesforceLinkedService) GetLinkedService() *LinkedService {
 		Description:          s.Description,
 		Parameters:           s.Parameters,
 		Type:                 s.Type,
+		Version:              s.Version,
 	}
 }
 
@@ -24208,6 +25326,9 @@ type SalesforceMarketingCloudLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type SalesforceMarketingCloudLinkedService.
@@ -24219,6 +25340,7 @@ func (s *SalesforceMarketingCloudLinkedService) GetLinkedService() *LinkedServic
 		Description:          s.Description,
 		Parameters:           s.Parameters,
 		Type:                 s.Type,
+		Version:              s.Version,
 	}
 }
 
@@ -24436,6 +25558,9 @@ type SalesforceServiceCloudLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type SalesforceServiceCloudLinkedService.
@@ -24447,6 +25572,7 @@ func (s *SalesforceServiceCloudLinkedService) GetLinkedService() *LinkedService 
 		Description:          s.Description,
 		Parameters:           s.Parameters,
 		Type:                 s.Type,
+		Version:              s.Version,
 	}
 }
 
@@ -24654,6 +25780,9 @@ type SalesforceServiceCloudV2LinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type SalesforceServiceCloudV2LinkedService.
@@ -24665,6 +25794,7 @@ func (s *SalesforceServiceCloudV2LinkedService) GetLinkedService() *LinkedServic
 		Description:          s.Description,
 		Parameters:           s.Parameters,
 		Type:                 s.Type,
+		Version:              s.Version,
 	}
 }
 
@@ -24830,7 +25960,14 @@ type SalesforceServiceCloudV2Source struct {
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
 	MaxConcurrentConnections any
 
-	// Database query. Type: string (or Expression with resultType string).
+	// You can only use Salesforce Object Query Language (SOQL) query with limitations. For SOQL limitations, see this article:
+	// https://developer.salesforce.com/docs/atlas.en-us.apiasynch.meta/api
+	// asynch/queries.htm#SOQL%20Considerations. If query is not specified, all the data of the Salesforce object specified in
+	// ObjectApiName/reportId in dataset will be retrieved. Type: string (or Expression
+	// with resultType string).
+	Query any
+
+	// Deprecating, please use 'query' property instead. Type: string (or Expression with resultType string).
 	SOQLQuery any
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
@@ -24991,6 +26128,9 @@ type SalesforceV2LinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type SalesforceV2LinkedService.
@@ -25002,6 +26142,7 @@ func (s *SalesforceV2LinkedService) GetLinkedService() *LinkedService {
 		Description:          s.Description,
 		Parameters:           s.Parameters,
 		Type:                 s.Type,
+		Version:              s.Version,
 	}
 }
 
@@ -25167,10 +26308,21 @@ type SalesforceV2Source struct {
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
 	MaxConcurrentConnections any
 
+	// Page size for each http request, too large pageSize will caused timeout, default 300,000. Type: integer (or Expression
+	// with resultType integer).
+	PageSize any
+
+	// You can only use Salesforce Object Query Language (SOQL) query with limitations. For SOQL limitations, see this article:
+	// https://developer.salesforce.com/docs/atlas.en-us.apiasynch.meta/api
+	// asynch/queries.htm#SOQL%20Considerations. If query is not specified, all the data of the Salesforce object specified in
+	// ObjectApiName/reportId in dataset will be retrieved. Type: string (or Expression
+	// with resultType string).
+	Query any
+
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	QueryTimeout any
 
-	// Database query. Type: string (or Expression with resultType string).
+	// Deprecating, please use 'query' property instead. Type: string (or Expression with resultType string).
 	SOQLQuery any
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
@@ -25228,6 +26380,9 @@ type SapBWLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type SapBWLinkedService.
@@ -25239,6 +26394,7 @@ func (s *SapBWLinkedService) GetLinkedService() *LinkedService {
 		Description:          s.Description,
 		Parameters:           s.Parameters,
 		Type:                 s.Type,
+		Version:              s.Version,
 	}
 }
 
@@ -25391,6 +26547,9 @@ type SapCloudForCustomerLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type SapCloudForCustomerLinkedService.
@@ -25402,6 +26561,7 @@ func (s *SapCloudForCustomerLinkedService) GetLinkedService() *LinkedService {
 		Description:          s.Description,
 		Parameters:           s.Parameters,
 		Type:                 s.Type,
+		Version:              s.Version,
 	}
 }
 
@@ -25611,6 +26771,9 @@ type SapEccLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type SapEccLinkedService.
@@ -25622,6 +26785,7 @@ func (s *SapEccLinkedService) GetLinkedService() *LinkedService {
 		Description:          s.Description,
 		Parameters:           s.Parameters,
 		Type:                 s.Type,
+		Version:              s.Version,
 	}
 }
 
@@ -25782,6 +26946,9 @@ type SapHanaLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type SapHanaLinkedService.
@@ -25793,6 +26960,7 @@ func (s *SapHanaLinkedService) GetLinkedService() *LinkedService {
 		Description:          s.Description,
 		Parameters:           s.Parameters,
 		Type:                 s.Type,
+		Version:              s.Version,
 	}
 }
 
@@ -25972,6 +27140,9 @@ type SapOdpLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type SapOdpLinkedService.
@@ -25983,6 +27154,7 @@ func (s *SapOdpLinkedService) GetLinkedService() *LinkedService {
 		Description:          s.Description,
 		Parameters:           s.Parameters,
 		Type:                 s.Type,
+		Version:              s.Version,
 	}
 }
 
@@ -26199,6 +27371,9 @@ type SapOpenHubLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type SapOpenHubLinkedService.
@@ -26210,6 +27385,7 @@ func (s *SapOpenHubLinkedService) GetLinkedService() *LinkedService {
 		Description:          s.Description,
 		Parameters:           s.Parameters,
 		Type:                 s.Type,
+		Version:              s.Version,
 	}
 }
 
@@ -26414,6 +27590,9 @@ type SapTableLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type SapTableLinkedService.
@@ -26425,6 +27604,7 @@ func (s *SapTableLinkedService) GetLinkedService() *LinkedService {
 		Description:          s.Description,
 		Parameters:           s.Parameters,
 		Type:                 s.Type,
+		Version:              s.Version,
 	}
 }
 
@@ -26829,8 +28009,9 @@ type ScriptActivityScriptBlock struct {
 	// REQUIRED; The query text. Type: string (or Expression with resultType string).
 	Text any
 
-	// REQUIRED; The type of the query. Type: string.
-	Type *ScriptType
+	// REQUIRED; The type of the query. Please refer to the ScriptType for valid options. Type: string (or Expression with resultType
+	// string).
+	Type any
 
 	// Array of script parameters. Type: array.
 	Parameters []*ScriptActivityParameter
@@ -27112,6 +28293,9 @@ type ServiceNowLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type ServiceNowLinkedService.
@@ -27123,6 +28307,7 @@ func (s *ServiceNowLinkedService) GetLinkedService() *LinkedService {
 		Description:          s.Description,
 		Parameters:           s.Parameters,
 		Type:                 s.Type,
+		Version:              s.Version,
 	}
 }
 
@@ -27289,6 +28474,9 @@ type ServiceNowV2LinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type ServiceNowV2LinkedService.
@@ -27300,6 +28488,7 @@ func (s *ServiceNowV2LinkedService) GetLinkedService() *LinkedService {
 		Description:          s.Description,
 		Parameters:           s.Parameters,
 		Type:                 s.Type,
+		Version:              s.Version,
 	}
 }
 
@@ -27400,6 +28589,9 @@ type ServiceNowV2Source struct {
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
 	MaxConcurrentConnections any
+
+	// Page size of the result. Type: integer (or Expression with resultType integer).
+	PageSize any
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	QueryTimeout any
@@ -27656,6 +28848,9 @@ type SftpServerLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type SftpServerLinkedService.
@@ -27667,6 +28862,7 @@ func (s *SftpServerLinkedService) GetLinkedService() *LinkedService {
 		Description:          s.Description,
 		Parameters:           s.Parameters,
 		Type:                 s.Type,
+		Version:              s.Version,
 	}
 }
 
@@ -27782,6 +28978,9 @@ type SharePointOnlineListLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type SharePointOnlineListLinkedService.
@@ -27793,6 +28992,7 @@ func (s *SharePointOnlineListLinkedService) GetLinkedService() *LinkedService {
 		Description:          s.Description,
 		Parameters:           s.Parameters,
 		Type:                 s.Type,
+		Version:              s.Version,
 	}
 }
 
@@ -27802,10 +29002,6 @@ type SharePointOnlineListLinkedServiceTypeProperties struct {
 	// site permission to this application. Type: string (or Expression with resultType
 	// string).
 	ServicePrincipalID any
-
-	// REQUIRED; The client secret of your application registered in Azure Active Directory. Type: string (or Expression with
-	// resultType string).
-	ServicePrincipalKey SecretBaseClassification
 
 	// REQUIRED; The URL of the SharePoint Online site. For example, https://contoso.sharepoint.com/sites/siteName. Type: string
 	// (or Expression with resultType string).
@@ -27818,6 +29014,23 @@ type SharePointOnlineListLinkedServiceTypeProperties struct {
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string.
 	EncryptedCredential *string
+
+	// The service principal credential type to use in Server-To-Server authentication. 'ServicePrincipalKey' for key/secret,
+	// 'ServicePrincipalCert' for certificate. Type: string (or Expression with
+	// resultType string).
+	ServicePrincipalCredentialType any
+
+	// Specify the base64 encoded certificate of your application registered in Azure Active Directory. Type: string (or Expression
+	// with resultType string).
+	ServicePrincipalEmbeddedCert SecretBaseClassification
+
+	// Specify the password of your certificate if your certificate has a password and you are using AadServicePrincipal authentication.
+	// Type: string (or Expression with resultType string).
+	ServicePrincipalEmbeddedCertPassword SecretBaseClassification
+
+	// The client secret of your application registered in Azure Active Directory. Type: string (or Expression with resultType
+	// string).
+	ServicePrincipalKey SecretBaseClassification
 }
 
 // SharePointOnlineListResourceDataset - The sharepoint online list resource dataset.
@@ -27933,6 +29146,9 @@ type ShopifyLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type ShopifyLinkedService.
@@ -27944,6 +29160,7 @@ func (s *ShopifyLinkedService) GetLinkedService() *LinkedService {
 		Description:          s.Description,
 		Parameters:           s.Parameters,
 		Type:                 s.Type,
+		Version:              s.Version,
 	}
 }
 
@@ -28108,6 +29325,9 @@ type SmartsheetLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type SmartsheetLinkedService.
@@ -28119,6 +29339,7 @@ func (s *SmartsheetLinkedService) GetLinkedService() *LinkedService {
 		Description:          s.Description,
 		Parameters:           s.Parameters,
 		Type:                 s.Type,
+		Version:              s.Version,
 	}
 }
 
@@ -28207,6 +29428,10 @@ type SnowflakeExportCopyCommand struct {
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
 	AdditionalProperties map[string]any
+
+	// The name of the snowflake storage integration to use for the copy operation. Type: string (or Expression with resultType
+	// string).
+	StorageIntegration any
 }
 
 // GetExportSettings implements the ExportSettingsClassification interface for type SnowflakeExportCopyCommand.
@@ -28234,6 +29459,10 @@ type SnowflakeImportCopyCommand struct {
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
 	AdditionalProperties map[string]any
+
+	// The name of the snowflake storage integration to use for the copy operation. Type: string (or Expression with resultType
+	// string).
+	StorageIntegration any
 }
 
 // GetImportSettings implements the ImportSettingsClassification interface for type SnowflakeImportCopyCommand.
@@ -28266,6 +29495,9 @@ type SnowflakeLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type SnowflakeLinkedService.
@@ -28277,6 +29509,7 @@ func (s *SnowflakeLinkedService) GetLinkedService() *LinkedService {
 		Description:          s.Description,
 		Parameters:           s.Parameters,
 		Type:                 s.Type,
+		Version:              s.Version,
 	}
 }
 
@@ -28316,6 +29549,9 @@ type SnowflakeLinkedV2ServiceTypeProperties struct {
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string.
 	EncryptedCredential *string
+
+	// The host name of the Snowflake account.
+	Host any
 
 	// The Azure key vault secret reference of password in connection string.
 	Password SecretBaseClassification
@@ -28493,6 +29729,9 @@ type SnowflakeV2LinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type SnowflakeV2LinkedService.
@@ -28504,6 +29743,7 @@ func (s *SnowflakeV2LinkedService) GetLinkedService() *LinkedService {
 		Description:          s.Description,
 		Parameters:           s.Parameters,
 		Type:                 s.Type,
+		Version:              s.Version,
 	}
 }
 
@@ -28636,6 +29876,9 @@ type SparkLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type SparkLinkedService.
@@ -28647,6 +29890,7 @@ func (s *SparkLinkedService) GetLinkedService() *LinkedService {
 		Description:          s.Description,
 		Parameters:           s.Parameters,
 		Type:                 s.Type,
+		Version:              s.Version,
 	}
 }
 
@@ -28828,6 +30072,9 @@ type SquareLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type SquareLinkedService.
@@ -28839,6 +30086,7 @@ func (s *SquareLinkedService) GetLinkedService() *LinkedService {
 		Description:          s.Description,
 		Parameters:           s.Parameters,
 		Type:                 s.Type,
+		Version:              s.Version,
 	}
 }
 
@@ -29394,6 +30642,9 @@ type SybaseLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type SybaseLinkedService.
@@ -29405,6 +30656,7 @@ func (s *SybaseLinkedService) GetLinkedService() *LinkedService {
 		Description:          s.Description,
 		Parameters:           s.Parameters,
 		Type:                 s.Type,
+		Version:              s.Version,
 	}
 }
 
@@ -29905,6 +31157,9 @@ type TeamDeskLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type TeamDeskLinkedService.
@@ -29916,6 +31171,7 @@ func (t *TeamDeskLinkedService) GetLinkedService() *LinkedService {
 		Description:          t.Description,
 		Parameters:           t.Parameters,
 		Type:                 t.Type,
+		Version:              t.Version,
 	}
 }
 
@@ -29963,6 +31219,9 @@ type TeradataLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type TeradataLinkedService.
@@ -29974,6 +31233,7 @@ func (t *TeradataLinkedService) GetLinkedService() *LinkedService {
 		Description:          t.Description,
 		Parameters:           t.Parameters,
 		Type:                 t.Type,
+		Version:              t.Version,
 	}
 }
 
@@ -30490,6 +31750,9 @@ type TwilioLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type TwilioLinkedService.
@@ -30501,6 +31764,7 @@ func (t *TwilioLinkedService) GetLinkedService() *LinkedService {
 		Description:          t.Description,
 		Parameters:           t.Parameters,
 		Type:                 t.Type,
+		Version:              t.Version,
 	}
 }
 
@@ -30758,6 +32022,9 @@ type VerticaLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type VerticaLinkedService.
@@ -30769,6 +32036,7 @@ func (v *VerticaLinkedService) GetLinkedService() *LinkedService {
 		Description:          v.Description,
 		Parameters:           v.Parameters,
 		Type:                 v.Type,
+		Version:              v.Version,
 	}
 }
 
@@ -30777,12 +32045,24 @@ type VerticaLinkedServiceTypeProperties struct {
 	// An ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
 	ConnectionString any
 
+	// Database name for connection. Type: string.
+	Database any
+
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string.
 	EncryptedCredential *string
 
+	// The port for the connection. Type: integer.
+	Port any
+
 	// The Azure key vault secret reference of password in connection string.
 	Pwd *AzureKeyVaultSecretReference
+
+	// Server name for connection. Type: string.
+	Server any
+
+	// Username for authentication. Type: string.
+	UID any
 }
 
 // VerticaSource - A copy activity Vertica source.
@@ -30978,6 +32258,9 @@ type WarehouseLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type WarehouseLinkedService.
@@ -30989,6 +32272,7 @@ func (w *WarehouseLinkedService) GetLinkedService() *LinkedService {
 		Description:          w.Description,
 		Parameters:           w.Parameters,
 		Type:                 w.Type,
+		Version:              w.Version,
 	}
 }
 
@@ -31541,6 +32825,9 @@ type WebLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type WebLinkedService.
@@ -31552,6 +32839,7 @@ func (w *WebLinkedService) GetLinkedService() *LinkedService {
 		Description:          w.Description,
 		Parameters:           w.Parameters,
 		Type:                 w.Type,
+		Version:              w.Version,
 	}
 }
 
@@ -31863,6 +33151,9 @@ type XeroLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type XeroLinkedService.
@@ -31874,6 +33165,7 @@ func (x *XeroLinkedService) GetLinkedService() *LinkedService {
 		Description:          x.Description,
 		Parameters:           x.Parameters,
 		Type:                 x.Type,
+		Version:              x.Version,
 	}
 }
 
@@ -32035,6 +33327,9 @@ type ZendeskLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type ZendeskLinkedService.
@@ -32046,6 +33341,7 @@ func (z *ZendeskLinkedService) GetLinkedService() *LinkedService {
 		Description:          z.Description,
 		Parameters:           z.Parameters,
 		Type:                 z.Type,
+		Version:              z.Version,
 	}
 }
 
@@ -32113,6 +33409,9 @@ type ZohoLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification
+
+	// Version of the linked service.
+	Version *string
 }
 
 // GetLinkedService implements the LinkedServiceClassification interface for type ZohoLinkedService.
@@ -32124,6 +33423,7 @@ func (z *ZohoLinkedService) GetLinkedService() *LinkedService {
 		Description:          z.Description,
 		Parameters:           z.Parameters,
 		Type:                 z.Type,
+		Version:              z.Version,
 	}
 }
 

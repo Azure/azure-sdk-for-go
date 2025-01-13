@@ -19,7 +19,7 @@ package armelastic
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic"
-	moduleVersion = "v0.10.0"
+	moduleVersion = "v1.0.0"
 )
 
 // CreatedByType - The type of identity that created the resource.

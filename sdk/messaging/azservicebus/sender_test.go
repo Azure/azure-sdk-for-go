@@ -12,7 +12,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
 	"github.com/stretchr/testify/require"
 )
 
@@ -211,7 +210,7 @@ func Test_Sender_SendMessages_resend(t *testing.T) {
 		}
 
 		messages[0].ApplicationProperties["Status"] = "resend"
-		newMsg := messageFromReceivedMessage(t, messages[0])
+		newMsg := messageFromReceivedMessage(messages[0])
 
 		err = sender.SendMessage(ctx, newMsg, nil)
 		require.NoError(t, err)
@@ -230,7 +229,7 @@ func Test_Sender_SendMessages_resend(t *testing.T) {
 	sendAndReceive(peekLockReceiver, true)
 }
 
-func messageFromReceivedMessage(t *testing.T, receivedMessage *ReceivedMessage) *Message {
+func messageFromReceivedMessage(receivedMessage *ReceivedMessage) *Message {
 	newMsg := &Message{
 		MessageID:             &receivedMessage.MessageID,
 		ContentType:           receivedMessage.ContentType,
@@ -320,14 +319,10 @@ func testScheduleMessages(t *testing.T, rawAMQP bool) {
 			}, nil)
 		require.NoError(t, err)
 	} else {
-		err := sender.SendAMQPAnnotatedMessage(ctx,
-			&AMQPAnnotatedMessage{
-				Body: AMQPAnnotatedMessageBody{
-					Data: [][]byte{[]byte("To the future (scheduled using the field)")},
-				},
-				MessageAnnotations: map[any]any{
-					"x-opt-scheduled-enqueue-time": &farFuture,
-				},
+		err := sender.SendMessage(ctx,
+			&Message{
+				Body:                 []byte("To the future (scheduled using the field)"),
+				ScheduledEnqueueTime: &farFuture,
 			}, nil)
 		require.NoError(t, err)
 	}
@@ -362,8 +357,7 @@ func TestSender_SendMessagesDetach(t *testing.T) {
 	sbc, cleanup, queueName := setupLiveTest(t, nil)
 	defer cleanup()
 
-	adminClient, err := admin.NewClientFromConnectionString(test.GetConnectionString(t), nil)
-	require.NoError(t, err)
+	adminClient := newAdminClientForTest(t, nil)
 
 	sender, err := sbc.NewSender(queueName, nil)
 	require.NoError(t, err)
@@ -416,8 +410,7 @@ func TestSender_SendMessageBatchDetach(t *testing.T) {
 	sbc, cleanup, queueName := setupLiveTest(t, nil)
 	defer cleanup()
 
-	adminClient, err := admin.NewClientFromConnectionString(test.GetConnectionString(t), nil)
-	require.NoError(t, err)
+	adminClient := newAdminClientForTest(t, nil)
 
 	sender, err := sbc.NewSender(queueName, nil)
 	require.NoError(t, err)

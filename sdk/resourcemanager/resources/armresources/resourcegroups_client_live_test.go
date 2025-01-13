@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v2/testutil"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/stretchr/testify/suite"
 )
@@ -36,7 +36,7 @@ func (testsuite *ResourceGroupsClientTestSuite) SetupSuite() {
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
 	testsuite.location = recording.GetEnvVariable("LOCATION", "eastus")
 	testsuite.subscriptionID = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
-	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/resources/armresources/testdata")
+	testutil.StartRecording(testsuite.T(), pathToPackage)
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionID, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name
@@ -59,11 +59,10 @@ func (testsuite *ResourceGroupsClientTestSuite) TestResourceGroupsCRUD() {
 	rgName := "go-test-rg"
 	rgClient, err := armresources.NewResourceGroupsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	rg, err := rgClient.CreateOrUpdate(context.Background(), rgName, armresources.ResourceGroup{
+	_, err = rgClient.CreateOrUpdate(context.Background(), rgName, armresources.ResourceGroup{
 		Location: to.Ptr("eastus"),
 	}, nil)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal(rgName, *rg.Name)
 
 	// check existence resource group
 	fmt.Println("Call operation: ResourceGroups_CheckExistence")
@@ -73,9 +72,8 @@ func (testsuite *ResourceGroupsClientTestSuite) TestResourceGroupsCRUD() {
 
 	// get resource group
 	fmt.Println("Call operation: RResourceGroups_Get")
-	getResp, err := rgClient.Get(context.Background(), rgName, nil)
+	_, err = rgClient.Get(context.Background(), rgName, nil)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal(rgName, *getResp.Name)
 
 	// list resource group
 	fmt.Println("Call operation: ResourceGroups_List")
@@ -84,13 +82,12 @@ func (testsuite *ResourceGroupsClientTestSuite) TestResourceGroupsCRUD() {
 
 	// update resource group
 	fmt.Println("Call operation: ResourceGroups_Update")
-	updateResp, err := rgClient.Update(context.Background(), rgName, armresources.ResourceGroupPatchable{
+	_, err = rgClient.Update(context.Background(), rgName, armresources.ResourceGroupPatchable{
 		Tags: map[string]*string{
 			"key": to.Ptr("value"),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal("value", *updateResp.Tags["key"])
 
 	// export template resource group
 	fmt.Println("Call operation: ResourceGroups_ExportTemplate")

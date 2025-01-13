@@ -47,6 +47,8 @@ const (
 	// Inherit inherits permissions from the parent folder (default when creating files/folders)
 	DefaultFilePermissionString = "inherit"
 
+	DefaultFilePermissionFormat = "Sddl"
+
 	// DefaultCurrentTimeString sets creation/last write times to now
 	DefaultCurrentTimeString = "now"
 
@@ -127,10 +129,8 @@ func ParseConnectionString(connectionString string) (ParsedConnectionString, err
 				ServiceURL: fmt.Sprintf("%v?%v", fileEndpoint, sharedAccessSignature),
 			}, nil
 		}
-	} else {
-		if accountName == "" {
-			return ParsedConnectionString{}, errors.New("connection string missing AccountName")
-		}
+	} else if accountName == "" {
+		return ParsedConnectionString{}, errors.New("connection string missing AccountName")
 	}
 
 	protocol, ok := connStrMap["DefaultEndpointsProtocol"]

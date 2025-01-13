@@ -48,6 +48,11 @@ type AgentProperties struct {
 	// A description for the Agent.
 	Description *string
 
+	// The WAN-link upload limit schedule that applies to any Job Run the agent executes. Data plane operations (migrating files)
+	// are affected. Control plane operations ensure seamless migration
+	// functionality and are not limited by this schedule. The schedule is interpreted with the agent's local time.
+	UploadLimitSchedule *UploadLimitSchedule
+
 	// READ-ONLY; The Agent status.
 	AgentStatus *AgentStatus
 
@@ -72,6 +77,9 @@ type AgentProperties struct {
 	// READ-ONLY; The provisioning state of this resource.
 	ProvisioningState *ProvisioningState
 
+	// READ-ONLY; The agent's local time zone represented in Windows format.
+	TimeZone *string
+
 	// READ-ONLY; Uptime of the Agent in seconds.
 	UptimeInSeconds *int64
 }
@@ -92,6 +100,11 @@ type AgentUpdateParameters struct {
 type AgentUpdateProperties struct {
 	// A description for the Agent.
 	Description *string
+
+	// The WAN-link upload limit schedule that applies to any Job Run the agent executes. Data plane operations (migrating files)
+	// are affected. Control plane operations ensure seamless migration
+	// functionality and are not limited by this schedule. The schedule is interpreted with the agent's local time.
+	UploadLimitSchedule *UploadLimitSchedule
 }
 
 // AzureKeyVaultSmbCredentials - The Azure Key Vault secret URIs which store the credentials.
@@ -754,6 +767,16 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType
 }
 
+// Time - The time of day.
+type Time struct {
+	// REQUIRED; The hour element of the time. Allowed values range from 0 (start of the selected day) to 24 (end of the selected
+	// day). Hour value 24 cannot be combined with any other minute value but 0.
+	Hour *int32
+
+	// The minute element of the time. Allowed values are 0 and 30. If not specified, its value defaults to 0.
+	Minute *Minute
+}
+
 // UpdateParameters - The Storage Mover resource.
 type UpdateParameters struct {
 	// The resource specific properties for the Storage Mover resource.
@@ -767,4 +790,29 @@ type UpdateParameters struct {
 type UpdateProperties struct {
 	// A description for the Storage Mover.
 	Description *string
+}
+
+// UploadLimitSchedule - The WAN-link upload limit schedule. Overlapping recurrences are not allowed.
+type UploadLimitSchedule struct {
+	// The set of weekly repeating recurrences of the WAN-link upload limit schedule.
+	WeeklyRecurrences []*UploadLimitWeeklyRecurrence
+}
+
+// UploadLimitWeeklyRecurrence - The weekly recurrence of the WAN-link upload limit schedule. The start time must be earlier
+// in the day than the end time. The recurrence must not span across multiple days.
+type UploadLimitWeeklyRecurrence struct {
+	// REQUIRED; The set of days of week for the schedule recurrence. A day must not be specified more than once in a recurrence.
+	Days []*DayOfWeek
+
+	// REQUIRED; The end time of the schedule recurrence. Full hour and 30-minute intervals are supported.
+	EndTime *Time
+
+	// REQUIRED; The WAN-link upload bandwidth (maximum data transfer rate) in megabits per second. Value of 0 indicates no throughput
+	// is allowed and any running migration job is effectively paused for the duration of
+	// this recurrence. Only data plane operations are governed by this limit. Control plane operations ensure seamless functionality.
+	// The agent may exceed this limit with control messages, if necessary.
+	LimitInMbps *int32
+
+	// REQUIRED; The start time of the schedule recurrence. Full hour and 30-minute intervals are supported.
+	StartTime *Time
 }

@@ -24,7 +24,8 @@ func RapidOpenCloseTest(remainingArgs []string) {
 	for round := 0; round < 100; round++ {
 		func() {
 			log.Printf("[%d] Open/Close", round)
-			client, err := azservicebus.NewClientFromConnectionString(sc.ConnectionString, nil)
+
+			client, err := azservicebus.NewClient(sc.Endpoint, sc.Cred, nil)
 			sc.PanicOnError("failed to create client", err)
 
 			defer func() {

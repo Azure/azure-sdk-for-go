@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b749953e21e5c3f275d839862323920ef7bf716e/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsForwardingRuleset_Put.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DnsForwardingRuleset_Put.json
 func ExampleDNSForwardingRulesetsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,6 +60,12 @@ func ExampleDNSForwardingRulesetsClient_BeginCreateOrUpdate() {
 	// 	Name: to.Ptr("sampleDnsForwardingRuleset"),
 	// 	Type: to.Ptr("Microsoft.Network/dnsForwardingRulesets"),
 	// 	ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsForwardingRulesets/sampleDnsForwardingRuleset"),
+	// 	SystemData: &armdnsresolver.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-03T01:01:01.107Z"); return t}()),
+	// 		CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-04T02:03:01.197Z"); return t}()),
+	// 		LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+	// 	},
 	// 	Location: to.Ptr("westus2"),
 	// 	Tags: map[string]*string{
 	// 		"key1": to.Ptr("value1"),
@@ -76,16 +82,10 @@ func ExampleDNSForwardingRulesetsClient_BeginCreateOrUpdate() {
 	// 		ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
 	// 		ResourceGUID: to.Ptr("a7e1a32c-498c-401c-a805-5bc3518257b8"),
 	// 	},
-	// 	SystemData: &armdnsresolver.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-03T01:01:01.107Z"); return t}()),
-	// 		CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-04T02:03:01.197Z"); return t}()),
-	// 		LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b749953e21e5c3f275d839862323920ef7bf716e/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsForwardingRuleset_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DnsForwardingRuleset_Patch.json
 func ExampleDNSForwardingRulesetsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,6 +115,12 @@ func ExampleDNSForwardingRulesetsClient_BeginUpdate() {
 	// 	Name: to.Ptr("sampleDnsForwardingRuleset"),
 	// 	Type: to.Ptr("Microsoft.Network/dnsForwardingRulesets"),
 	// 	ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsForwardingRulesets/sampleDnsForwardingRuleset"),
+	// 	SystemData: &armdnsresolver.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-03T01:01:01.107Z"); return t}()),
+	// 		CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-04T02:03:01.197Z"); return t}()),
+	// 		LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+	// 	},
 	// 	Location: to.Ptr("westus2"),
 	// 	Tags: map[string]*string{
 	// 		"key1": to.Ptr("value1"),
@@ -131,16 +137,10 @@ func ExampleDNSForwardingRulesetsClient_BeginUpdate() {
 	// 		ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
 	// 		ResourceGUID: to.Ptr("a7e1a32c-498c-401c-a805-5bc3518257b8"),
 	// 	},
-	// 	SystemData: &armdnsresolver.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-03T01:01:01.107Z"); return t}()),
-	// 		CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-04T02:03:01.197Z"); return t}()),
-	// 		LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b749953e21e5c3f275d839862323920ef7bf716e/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsForwardingRuleset_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DnsForwardingRuleset_Delete.json
 func ExampleDNSForwardingRulesetsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -161,7 +161,7 @@ func ExampleDNSForwardingRulesetsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b749953e21e5c3f275d839862323920ef7bf716e/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsForwardingRuleset_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DnsForwardingRuleset_Get.json
 func ExampleDNSForwardingRulesetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -183,6 +183,12 @@ func ExampleDNSForwardingRulesetsClient_Get() {
 	// 	Name: to.Ptr("sampleDnsForwardingRuleset"),
 	// 	Type: to.Ptr("Microsoft.Network/dnsForwardingRulesets"),
 	// 	ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsForwardingRulesets/sampleDnsForwardingRuleset"),
+	// 	SystemData: &armdnsresolver.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-03T01:01:01.107Z"); return t}()),
+	// 		CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-04T02:03:01.197Z"); return t}()),
+	// 		LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+	// 	},
 	// 	Location: to.Ptr("westus2"),
 	// 	Tags: map[string]*string{
 	// 		"key1": to.Ptr("value1"),
@@ -199,16 +205,10 @@ func ExampleDNSForwardingRulesetsClient_Get() {
 	// 		ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
 	// 		ResourceGUID: to.Ptr("a7e1a32c-498c-401c-a805-5bc3518257b8"),
 	// 	},
-	// 	SystemData: &armdnsresolver.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-03T01:01:01.107Z"); return t}()),
-	// 		CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-04T02:03:01.197Z"); return t}()),
-	// 		LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b749953e21e5c3f275d839862323920ef7bf716e/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsForwardingRuleset_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DnsForwardingRuleset_ListByResourceGroup.json
 func ExampleDNSForwardingRulesetsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -236,6 +236,12 @@ func ExampleDNSForwardingRulesetsClient_NewListByResourceGroupPager() {
 		// 			Name: to.Ptr("sampleDnsForwardingRuleset"),
 		// 			Type: to.Ptr("Microsoft.Network/dnsForwardingRulesets"),
 		// 			ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsForwardingRulesets/sampleDnsForwardingRuleset"),
+		// 			SystemData: &armdnsresolver.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-03T01:01:01.107Z"); return t}()),
+		// 				CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-04T02:03:01.197Z"); return t}()),
+		// 				LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+		// 			},
 		// 			Location: to.Ptr("westus2"),
 		// 			Tags: map[string]*string{
 		// 				"key1": to.Ptr("value1"),
@@ -252,17 +258,17 @@ func ExampleDNSForwardingRulesetsClient_NewListByResourceGroupPager() {
 		// 				ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
 		// 				ResourceGUID: to.Ptr("a7e1a32c-498c-401c-a805-5bc3518257b8"),
 		// 			},
-		// 			SystemData: &armdnsresolver.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-03T01:01:01.107Z"); return t}()),
-		// 				CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-04T02:03:01.197Z"); return t}()),
-		// 				LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-		// 			},
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("sampleDnsForwardingRuleset"),
 		// 			Type: to.Ptr("Microsoft.Network/dnsForwardingRulesets"),
 		// 			ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsForwardingRulesets/sampleDnsForwardingRuleset1"),
+		// 			SystemData: &armdnsresolver.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-04T01:01:01.107Z"); return t}()),
+		// 				CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-05T02:03:01.197Z"); return t}()),
+		// 				LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+		// 			},
 		// 			Location: to.Ptr("westus2"),
 		// 			Tags: map[string]*string{
 		// 				"key1": to.Ptr("value1"),
@@ -279,18 +285,12 @@ func ExampleDNSForwardingRulesetsClient_NewListByResourceGroupPager() {
 		// 				ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
 		// 				ResourceGUID: to.Ptr("c2aed17a-708d-48d1-89c3-d6a9b648d222"),
 		// 			},
-		// 			SystemData: &armdnsresolver.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-04T01:01:01.107Z"); return t}()),
-		// 				CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-05T02:03:01.197Z"); return t}()),
-		// 				LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b749953e21e5c3f275d839862323920ef7bf716e/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsForwardingRuleset_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DnsForwardingRuleset_ListBySubscription.json
 func ExampleDNSForwardingRulesetsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -318,6 +318,12 @@ func ExampleDNSForwardingRulesetsClient_NewListPager() {
 		// 			Name: to.Ptr("sampleDnsForwardingRuleset"),
 		// 			Type: to.Ptr("Microsoft.Network/dnsForwardingRulesets"),
 		// 			ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsForwardingRulesets/sampleDnsForwardingRuleset"),
+		// 			SystemData: &armdnsresolver.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-03T01:01:01.107Z"); return t}()),
+		// 				CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-04T02:03:01.197Z"); return t}()),
+		// 				LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+		// 			},
 		// 			Location: to.Ptr("westus2"),
 		// 			Tags: map[string]*string{
 		// 				"key1": to.Ptr("value1"),
@@ -334,17 +340,17 @@ func ExampleDNSForwardingRulesetsClient_NewListPager() {
 		// 				ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
 		// 				ResourceGUID: to.Ptr("a7e1a32c-498c-401c-a805-5bc3518257b8"),
 		// 			},
-		// 			SystemData: &armdnsresolver.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-03T01:01:01.107Z"); return t}()),
-		// 				CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-04T02:03:01.197Z"); return t}()),
-		// 				LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-		// 			},
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("sampleDnsForwardingRuleset"),
 		// 			Type: to.Ptr("Microsoft.Network/dnsForwardingRulesets"),
 		// 			ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsForwardingRulesets/sampleDnsForwardingRuleset1"),
+		// 			SystemData: &armdnsresolver.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-04T01:01:01.107Z"); return t}()),
+		// 				CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-05T02:03:01.197Z"); return t}()),
+		// 				LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+		// 			},
 		// 			Location: to.Ptr("westus2"),
 		// 			Tags: map[string]*string{
 		// 				"key1": to.Ptr("value1"),
@@ -361,18 +367,12 @@ func ExampleDNSForwardingRulesetsClient_NewListPager() {
 		// 				ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
 		// 				ResourceGUID: to.Ptr("a7e1a32c-498c-401c-a805-5bc3518257b8"),
 		// 			},
-		// 			SystemData: &armdnsresolver.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-04T01:01:01.107Z"); return t}()),
-		// 				CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-05T02:03:01.197Z"); return t}()),
-		// 				LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b749953e21e5c3f275d839862323920ef7bf716e/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsForwardingRuleset_ListByVirtualNetwork.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DnsForwardingRuleset_ListByVirtualNetwork.json
 func ExampleDNSForwardingRulesetsClient_NewListByVirtualNetworkPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

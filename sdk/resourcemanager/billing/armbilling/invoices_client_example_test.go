@@ -13,13 +13,15 @@ import (
 	"context"
 	"log"
 
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingAccountInvoicesList.json
-func ExampleInvoicesClient_NewListByBillingAccountPager_billingAccountInvoicesList() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/invoicesListByBillingProfile.json
+func ExampleInvoicesClient_NewListByBillingProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +31,15 @@ func ExampleInvoicesClient_NewListByBillingAccountPager_billingAccountInvoicesLi
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewInvoicesClient().NewListByBillingAccountPager("{billingAccountName}", "2018-01-01", "2018-06-30", nil)
+	pager := clientFactory.NewInvoicesClient().NewListByBillingProfilePager("00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "xxxx-xxxx-xxx-xxx", &armbilling.InvoicesClientListByBillingProfileOptions{PeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2023-01-01"); return t }()),
+		PeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2023-06-30"); return t }()),
+		Filter:        nil,
+		OrderBy:       nil,
+		Top:           nil,
+		Skip:          nil,
+		Count:         nil,
+		Search:        nil,
+	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -43,134 +53,145 @@ func ExampleInvoicesClient_NewListByBillingAccountPager_billingAccountInvoicesLi
 		// page.InvoiceListResult = armbilling.InvoiceListResult{
 		// 	Value: []*armbilling.Invoice{
 		// 		{
-		// 			Name: to.Ptr("1383723"),
+		// 			Name: to.Ptr("G123456789"),
 		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/invoices"),
-		// 			ID: to.Ptr("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoices/1383723"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/invoices/G123456789"),
 		// 			Properties: &armbilling.InvoiceProperties{
-		// 				AmountDue: &armbilling.Amount{
+		// 				AmountDue: &armbilling.InvoicePropertiesAmountDue{
 		// 					Currency: to.Ptr("USD"),
 		// 					Value: to.Ptr[float32](8.53),
 		// 				},
-		// 				AzurePrepaymentApplied: &armbilling.Amount{
+		// 				AzurePrepaymentApplied: &armbilling.InvoicePropertiesAzurePrepaymentApplied{
 		// 					Currency: to.Ptr("USD"),
 		// 					Value: to.Ptr[float32](25.46),
 		// 				},
-		// 				BilledAmount: &armbilling.Amount{
+		// 				BilledAmount: &armbilling.InvoicePropertiesBilledAmount{
 		// 					Currency: to.Ptr("USD"),
 		// 					Value: to.Ptr[float32](33.99),
 		// 				},
 		// 				BillingProfileDisplayName: to.Ptr("Contoso Operations Billing"),
-		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/11000000-0000-0000-0000-000000000000"),
-		// 				CreditAmount: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](1),
-		// 				},
-		// 				DocumentType: to.Ptr(armbilling.InvoiceDocumentTypeInvoice),
-		// 				Documents: []*armbilling.Document{
-		// 					{
-		// 						Kind: to.Ptr(armbilling.DocumentTypeInvoice),
-		// 						Source: to.Ptr(armbilling.DocumentSourceDRS),
-		// 						URL: to.Ptr("https://microsoft.com/invoice.pdf"),
-		// 				}},
-		// 				DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-16T17:32:28.000Z"); return t}()),
-		// 				FreeAzureCreditApplied: &armbilling.Amount{
+		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx"),
+		// 				CreditAmount: &armbilling.InvoicePropertiesCreditAmount{
 		// 					Currency: to.Ptr("USD"),
 		// 					Value: to.Ptr[float32](0),
 		// 				},
-		// 				InvoiceDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T17:32:28.000Z"); return t}()),
-		// 				InvoicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-15T17:32:28.000Z"); return t}()),
-		// 				InvoicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T17:32:28.000Z"); return t}()),
-		// 				IsMonthlyInvoice: to.Ptr(false),
-		// 				Payments: []*armbilling.PaymentProperties{
+		// 				DocumentType: to.Ptr(armbilling.InvoiceDocumentTypeInvoice),
+		// 				Documents: []*armbilling.InvoiceDocument{
 		// 					{
-		// 						Amount: &armbilling.Amount{
-		// 							Currency: to.Ptr("USD"),
-		// 							Value: to.Ptr[float32](1),
-		// 						},
-		// 						Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-14T17:32:28.000Z"); return t}()),
-		// 						PaymentMethodFamily: to.Ptr(armbilling.PaymentMethodFamilyCreditCard),
-		// 						PaymentMethodType: to.Ptr("visa"),
-		// 						PaymentType: to.Ptr("credited"),
+		// 						Name: to.Ptr("12345678"),
+		// 						Kind: to.Ptr(armbilling.InvoiceDocumentTypeInvoice),
+		// 					},
+		// 					{
+		// 						Name: to.Ptr("22345678"),
+		// 						Kind: to.Ptr(armbilling.InvoiceDocumentTypeTaxReceipt),
 		// 				}},
+		// 				DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-16T17:32:28.000Z"); return t}()),
+		// 				FreeAzureCreditApplied: &armbilling.InvoicePropertiesFreeAzureCreditApplied{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](0),
+		// 				},
+		// 				InvoiceDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-01T17:32:28.000Z"); return t}()),
+		// 				InvoicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-15T17:32:28.000Z"); return t}()),
+		// 				InvoicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-01T17:32:28.000Z"); return t}()),
+		// 				IsMonthlyInvoice: to.Ptr(false),
 		// 				PurchaseOrderNumber: to.Ptr("123456"),
+		// 				RebillDetails: &armbilling.InvoicePropertiesRebillDetails{
+		// 					CreditNoteDocumentID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/invoices/CreditNote2"),
+		// 					InvoiceDocumentID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/invoices/I000002"),
+		// 					RebillDetails: &armbilling.RebillDetails{
+		// 						CreditNoteDocumentID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/invoices/CreditNote"),
+		// 						InvoiceDocumentID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/invoices/I000001"),
+		// 					},
+		// 				},
 		// 				Status: to.Ptr(armbilling.InvoiceStatusDue),
-		// 				SubTotal: &armbilling.Amount{
+		// 				SubTotal: &armbilling.InvoicePropertiesSubTotal{
 		// 					Currency: to.Ptr("USD"),
 		// 					Value: to.Ptr[float32](33.99),
 		// 				},
-		// 				TaxAmount: &armbilling.Amount{
+		// 				TaxAmount: &armbilling.InvoicePropertiesTaxAmount{
 		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](0),
+		// 					Value: to.Ptr[float32](1),
 		// 				},
-		// 				TotalAmount: &armbilling.Amount{
+		// 				TotalAmount: &armbilling.InvoicePropertiesTotalAmount{
 		// 					Currency: to.Ptr("USD"),
 		// 					Value: to.Ptr[float32](7.53),
 		// 				},
 		// 			},
 		// 		},
 		// 		{
-		// 			Name: to.Ptr("1383724"),
+		// 			Name: to.Ptr("G987654321"),
 		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/invoices"),
-		// 			ID: to.Ptr("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoices/1383724"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/invoices/G987654321"),
 		// 			Properties: &armbilling.InvoiceProperties{
-		// 				AmountDue: &armbilling.Amount{
+		// 				AmountDue: &armbilling.InvoicePropertiesAmountDue{
 		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](16.53),
+		// 					Value: to.Ptr[float32](0),
 		// 				},
-		// 				AzurePrepaymentApplied: &armbilling.Amount{
+		// 				AzurePrepaymentApplied: &armbilling.InvoicePropertiesAzurePrepaymentApplied{
 		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](15.46),
+		// 					Value: to.Ptr[float32](25.46),
 		// 				},
-		// 				BilledAmount: &armbilling.Amount{
+		// 				BilledAmount: &armbilling.InvoicePropertiesBilledAmount{
 		// 					Currency: to.Ptr("USD"),
 		// 					Value: to.Ptr[float32](33.99),
 		// 				},
 		// 				BillingProfileDisplayName: to.Ptr("Contoso Operations Billing"),
-		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/11000000-0000-0000-0000-000000000000"),
-		// 				CreditAmount: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](2),
-		// 				},
-		// 				DocumentType: to.Ptr(armbilling.InvoiceDocumentTypeInvoice),
-		// 				Documents: []*armbilling.Document{
-		// 					{
-		// 						Kind: to.Ptr(armbilling.DocumentTypeTaxReceipt),
-		// 						Source: to.Ptr(armbilling.DocumentSourceDRS),
-		// 						URL: to.Ptr("https://microsoft.com/taxreceipt.pdf"),
-		// 				}},
-		// 				DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-01T17:32:28.000Z"); return t}()),
-		// 				FreeAzureCreditApplied: &armbilling.Amount{
+		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx"),
+		// 				CreditAmount: &armbilling.InvoicePropertiesCreditAmount{
 		// 					Currency: to.Ptr("USD"),
 		// 					Value: to.Ptr[float32](0),
 		// 				},
-		// 				InvoiceDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-01T17:32:28.000Z"); return t}()),
-		// 				InvoicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-28T17:32:28.000Z"); return t}()),
-		// 				InvoicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-01T17:32:28.000Z"); return t}()),
-		// 				IsMonthlyInvoice: to.Ptr(true),
-		// 				Payments: []*armbilling.PaymentProperties{
+		// 				DocumentType: to.Ptr(armbilling.InvoiceDocumentTypeInvoice),
+		// 				Documents: []*armbilling.InvoiceDocument{
 		// 					{
-		// 						Amount: &armbilling.Amount{
+		// 						Name: to.Ptr("12345678"),
+		// 						Kind: to.Ptr(armbilling.InvoiceDocumentTypeInvoice),
+		// 					},
+		// 					{
+		// 						Name: to.Ptr("22345678"),
+		// 						Kind: to.Ptr(armbilling.InvoiceDocumentTypeTaxReceipt),
+		// 				}},
+		// 				DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-16T17:32:28.000Z"); return t}()),
+		// 				FreeAzureCreditApplied: &armbilling.InvoicePropertiesFreeAzureCreditApplied{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](0),
+		// 				},
+		// 				InvoiceDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-01T17:32:28.000Z"); return t}()),
+		// 				InvoicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-15T17:32:28.000Z"); return t}()),
+		// 				InvoicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-01T17:32:28.000Z"); return t}()),
+		// 				IsMonthlyInvoice: to.Ptr(false),
+		// 				Payments: []*armbilling.Payment{
+		// 					{
+		// 						Amount: &armbilling.PaymentAmount{
 		// 							Currency: to.Ptr("USD"),
-		// 							Value: to.Ptr[float32](2),
+		// 							Value: to.Ptr[float32](33.99),
 		// 						},
-		// 						Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-14T17:32:28.000Z"); return t}()),
+		// 						Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-14T17:32:28.000Z"); return t}()),
 		// 						PaymentMethodFamily: to.Ptr(armbilling.PaymentMethodFamilyCreditCard),
 		// 						PaymentMethodType: to.Ptr("visa"),
-		// 						PaymentType: to.Ptr("credited"),
+		// 						PaymentType: to.Ptr("debited"),
 		// 				}},
-		// 				PurchaseOrderNumber: to.Ptr("123456"),
-		// 				Status: to.Ptr(armbilling.InvoiceStatus("PastDue")),
-		// 				SubTotal: &armbilling.Amount{
+		// 				PurchaseOrderNumber: to.Ptr("123455"),
+		// 				RebillDetails: &armbilling.InvoicePropertiesRebillDetails{
+		// 					CreditNoteDocumentID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/invoices/CreditNote2"),
+		// 					InvoiceDocumentID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/invoices/I000002"),
+		// 					RebillDetails: &armbilling.RebillDetails{
+		// 						CreditNoteDocumentID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/invoices/CreditNote"),
+		// 						InvoiceDocumentID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/invoices/I000001"),
+		// 					},
+		// 				},
+		// 				Status: to.Ptr(armbilling.InvoiceStatusPaid),
+		// 				SubTotal: &armbilling.InvoicePropertiesSubTotal{
 		// 					Currency: to.Ptr("USD"),
 		// 					Value: to.Ptr[float32](33.99),
 		// 				},
-		// 				TaxAmount: &armbilling.Amount{
+		// 				TaxAmount: &armbilling.InvoicePropertiesTaxAmount{
 		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](0),
+		// 					Value: to.Ptr[float32](1),
 		// 				},
-		// 				TotalAmount: &armbilling.Amount{
+		// 				TotalAmount: &armbilling.InvoicePropertiesTotalAmount{
 		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](16.53),
+		// 					Value: to.Ptr[float32](7.53),
 		// 				},
 		// 			},
 		// 	}},
@@ -178,8 +199,8 @@ func ExampleInvoicesClient_NewListByBillingAccountPager_billingAccountInvoicesLi
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingAccountInvoicesListWithRebillDetails.json
-func ExampleInvoicesClient_NewListByBillingAccountPager_billingAccountInvoicesListWithRebillDetails() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/invoicesDownloadDocumentsByBillingAccount.json
+func ExampleInvoicesClient_BeginDownloadDocumentsByBillingAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -189,987 +210,15 @@ func ExampleInvoicesClient_NewListByBillingAccountPager_billingAccountInvoicesLi
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewInvoicesClient().NewListByBillingAccountPager("{billingAccountName}", "2018-01-01", "2018-06-30", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.InvoiceListResult = armbilling.InvoiceListResult{
-		// 	Value: []*armbilling.Invoice{
-		// 		{
-		// 			Name: to.Ptr("I000003"),
-		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/invoices"),
-		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoices/I000003"),
-		// 			Properties: &armbilling.InvoiceProperties{
-		// 				AmountDue: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](8.53),
-		// 				},
-		// 				AzurePrepaymentApplied: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](25.46),
-		// 				},
-		// 				BilledAmount: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](33.99),
-		// 				},
-		// 				BillingProfileDisplayName: to.Ptr("Contoso Operations Billing"),
-		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/11000000-0000-0000-0000-000000000000"),
-		// 				CreditAmount: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](1),
-		// 				},
-		// 				DocumentType: to.Ptr(armbilling.InvoiceDocumentTypeInvoice),
-		// 				Documents: []*armbilling.Document{
-		// 					{
-		// 						Kind: to.Ptr(armbilling.DocumentTypeInvoice),
-		// 						Source: to.Ptr(armbilling.DocumentSourceDRS),
-		// 						URL: to.Ptr("https://microsoft.com/invoice.pdf"),
-		// 				}},
-		// 				DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-16T17:32:28.000Z"); return t}()),
-		// 				FreeAzureCreditApplied: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](0),
-		// 				},
-		// 				InvoiceDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T17:32:28.000Z"); return t}()),
-		// 				InvoicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-15T17:32:28.000Z"); return t}()),
-		// 				InvoicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T17:32:28.000Z"); return t}()),
-		// 				IsMonthlyInvoice: to.Ptr(false),
-		// 				Payments: []*armbilling.PaymentProperties{
-		// 					{
-		// 						Amount: &armbilling.Amount{
-		// 							Currency: to.Ptr("USD"),
-		// 							Value: to.Ptr[float32](1),
-		// 						},
-		// 						Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-14T17:32:28.000Z"); return t}()),
-		// 						PaymentMethodFamily: to.Ptr(armbilling.PaymentMethodFamilyCreditCard),
-		// 						PaymentMethodType: to.Ptr("visa"),
-		// 						PaymentType: to.Ptr("credited"),
-		// 				}},
-		// 				PurchaseOrderNumber: to.Ptr("123456"),
-		// 				RebillDetails: map[string]*armbilling.RebillDetails{
-		// 					"creditNoteDocumentId": &armbilling.RebillDetails{
-		// 					},
-		// 					"invoiceDocumentId": &armbilling.RebillDetails{
-		// 					},
-		// 					"rebillDetails": &armbilling.RebillDetails{
-		// 					},
-		// 				},
-		// 				Status: to.Ptr(armbilling.InvoiceStatusDue),
-		// 				SubTotal: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](33.99),
-		// 				},
-		// 				TaxAmount: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](0),
-		// 				},
-		// 				TotalAmount: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](7.53),
-		// 				},
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("1383724"),
-		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/invoices"),
-		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoices/1383724"),
-		// 			Properties: &armbilling.InvoiceProperties{
-		// 				AmountDue: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](16.53),
-		// 				},
-		// 				AzurePrepaymentApplied: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](15.46),
-		// 				},
-		// 				BilledAmount: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](33.99),
-		// 				},
-		// 				BillingProfileDisplayName: to.Ptr("Contoso Operations Billing"),
-		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/11000000-0000-0000-0000-000000000000"),
-		// 				CreditAmount: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](2),
-		// 				},
-		// 				DocumentType: to.Ptr(armbilling.InvoiceDocumentTypeInvoice),
-		// 				Documents: []*armbilling.Document{
-		// 					{
-		// 						Kind: to.Ptr(armbilling.DocumentTypeTaxReceipt),
-		// 						Source: to.Ptr(armbilling.DocumentSourceDRS),
-		// 						URL: to.Ptr("https://microsoft.com/taxreceipt.pdf"),
-		// 				}},
-		// 				DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-01T17:32:28.000Z"); return t}()),
-		// 				FreeAzureCreditApplied: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](0),
-		// 				},
-		// 				InvoiceDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-01T17:32:28.000Z"); return t}()),
-		// 				InvoicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-28T17:32:28.000Z"); return t}()),
-		// 				InvoicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-01T17:32:28.000Z"); return t}()),
-		// 				IsMonthlyInvoice: to.Ptr(true),
-		// 				Payments: []*armbilling.PaymentProperties{
-		// 					{
-		// 						Amount: &armbilling.Amount{
-		// 							Currency: to.Ptr("USD"),
-		// 							Value: to.Ptr[float32](2),
-		// 						},
-		// 						Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-14T17:32:28.000Z"); return t}()),
-		// 						PaymentMethodFamily: to.Ptr(armbilling.PaymentMethodFamilyCreditCard),
-		// 						PaymentMethodType: to.Ptr("visa"),
-		// 						PaymentType: to.Ptr("credited"),
-		// 				}},
-		// 				PurchaseOrderNumber: to.Ptr("123456"),
-		// 				Status: to.Ptr(armbilling.InvoiceStatus("PastDue")),
-		// 				SubTotal: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](33.99),
-		// 				},
-		// 				TaxAmount: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](0),
-		// 				},
-		// 				TotalAmount: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](16.53),
-		// 				},
-		// 			},
-		// 	}},
-		// }
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/InvoicesListByBillingProfile.json
-func ExampleInvoicesClient_NewListByBillingProfilePager_invoicesListByBillingProfile() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewInvoicesClient().NewListByBillingProfilePager("{billingAccountName}", "{billingProfileName}", "2018-01-01", "2018-06-30", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.InvoiceListResult = armbilling.InvoiceListResult{
-		// 	Value: []*armbilling.Invoice{
-		// 		{
-		// 			Name: to.Ptr("1383723"),
-		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/invoices"),
-		// 			ID: to.Ptr("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoices/1383723"),
-		// 			Properties: &armbilling.InvoiceProperties{
-		// 				AmountDue: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](8.53),
-		// 				},
-		// 				AzurePrepaymentApplied: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](25.46),
-		// 				},
-		// 				BilledAmount: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](33.99),
-		// 				},
-		// 				BillingProfileDisplayName: to.Ptr("Contoso Operations Billing"),
-		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"),
-		// 				CreditAmount: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](1),
-		// 				},
-		// 				DocumentType: to.Ptr(armbilling.InvoiceDocumentTypeInvoice),
-		// 				Documents: []*armbilling.Document{
-		// 					{
-		// 						Kind: to.Ptr(armbilling.DocumentTypeInvoice),
-		// 						Source: to.Ptr(armbilling.DocumentSourceDRS),
-		// 						URL: to.Ptr("https://microsoft.com/invoice.pdf"),
-		// 					},
-		// 					{
-		// 						Kind: to.Ptr(armbilling.DocumentTypeTaxReceipt),
-		// 						Source: to.Ptr(armbilling.DocumentSourceDRS),
-		// 						URL: to.Ptr("https://microsoft.com/taxDoc.pdf"),
-		// 				}},
-		// 				DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-16T17:32:28.000Z"); return t}()),
-		// 				FreeAzureCreditApplied: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](0),
-		// 				},
-		// 				InvoiceDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T17:32:28.000Z"); return t}()),
-		// 				InvoicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-15T17:32:28.000Z"); return t}()),
-		// 				InvoicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T17:32:28.000Z"); return t}()),
-		// 				IsMonthlyInvoice: to.Ptr(false),
-		// 				Payments: []*armbilling.PaymentProperties{
-		// 					{
-		// 						Amount: &armbilling.Amount{
-		// 							Currency: to.Ptr("USD"),
-		// 							Value: to.Ptr[float32](1),
-		// 						},
-		// 						Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-14T17:32:28.000Z"); return t}()),
-		// 						PaymentMethodFamily: to.Ptr(armbilling.PaymentMethodFamilyCreditCard),
-		// 						PaymentMethodType: to.Ptr("visa"),
-		// 						PaymentType: to.Ptr("credited"),
-		// 				}},
-		// 				PurchaseOrderNumber: to.Ptr("123456"),
-		// 				Status: to.Ptr(armbilling.InvoiceStatusDue),
-		// 				SubTotal: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](33.99),
-		// 				},
-		// 				TaxAmount: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](0),
-		// 				},
-		// 				TotalAmount: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](7.53),
-		// 				},
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("1383724"),
-		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/invoices"),
-		// 			ID: to.Ptr("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoices/1383724"),
-		// 			Properties: &armbilling.InvoiceProperties{
-		// 				AmountDue: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](16.53),
-		// 				},
-		// 				AzurePrepaymentApplied: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](15.46),
-		// 				},
-		// 				BilledAmount: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](33.99),
-		// 				},
-		// 				BillingProfileDisplayName: to.Ptr("Contoso Operations Billing"),
-		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"),
-		// 				CreditAmount: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](2),
-		// 				},
-		// 				DocumentType: to.Ptr(armbilling.InvoiceDocumentTypeInvoice),
-		// 				Documents: []*armbilling.Document{
-		// 					{
-		// 						Kind: to.Ptr(armbilling.DocumentTypeInvoice),
-		// 						Source: to.Ptr(armbilling.DocumentSourceDRS),
-		// 						URL: to.Ptr("https://microsoft.com/invoice.pdf"),
-		// 					},
-		// 					{
-		// 						Kind: to.Ptr(armbilling.DocumentTypeTaxReceipt),
-		// 						Source: to.Ptr(armbilling.DocumentSourceDRS),
-		// 						URL: to.Ptr("https://microsoft.com/taxDoc.pdf"),
-		// 				}},
-		// 				DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-01T17:32:28.000Z"); return t}()),
-		// 				FreeAzureCreditApplied: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](0),
-		// 				},
-		// 				InvoiceDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T17:32:28.000Z"); return t}()),
-		// 				InvoicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-28T17:32:28.000Z"); return t}()),
-		// 				InvoicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-01T17:32:28.000Z"); return t}()),
-		// 				IsMonthlyInvoice: to.Ptr(true),
-		// 				Payments: []*armbilling.PaymentProperties{
-		// 					{
-		// 						Amount: &armbilling.Amount{
-		// 							Currency: to.Ptr("USD"),
-		// 							Value: to.Ptr[float32](2),
-		// 						},
-		// 						Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-14T17:32:28.000Z"); return t}()),
-		// 						PaymentMethodFamily: to.Ptr(armbilling.PaymentMethodFamilyCreditCard),
-		// 						PaymentMethodType: to.Ptr("visa"),
-		// 						PaymentType: to.Ptr("credited"),
-		// 				}},
-		// 				PurchaseOrderNumber: to.Ptr("123456"),
-		// 				Status: to.Ptr(armbilling.InvoiceStatusDue),
-		// 				SubTotal: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](33.99),
-		// 				},
-		// 				TaxAmount: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](0),
-		// 				},
-		// 				TotalAmount: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](16.53),
-		// 				},
-		// 			},
-		// 	}},
-		// }
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/InvoicesListByBillingProfileWithRebillDetails.json
-func ExampleInvoicesClient_NewListByBillingProfilePager_invoicesListByBillingProfileWithRebillDetails() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewInvoicesClient().NewListByBillingProfilePager("{billingAccountName}", "{billingProfileName}", "2018-01-01", "2018-06-30", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.InvoiceListResult = armbilling.InvoiceListResult{
-		// 	Value: []*armbilling.Invoice{
-		// 		{
-		// 			Name: to.Ptr("I000003"),
-		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/invoices"),
-		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoices/I000003"),
-		// 			Properties: &armbilling.InvoiceProperties{
-		// 				AmountDue: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](8.53),
-		// 				},
-		// 				AzurePrepaymentApplied: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](25.46),
-		// 				},
-		// 				BilledAmount: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](33.99),
-		// 				},
-		// 				BillingProfileDisplayName: to.Ptr("Contoso Operations Billing"),
-		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"),
-		// 				CreditAmount: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](1),
-		// 				},
-		// 				DocumentType: to.Ptr(armbilling.InvoiceDocumentTypeInvoice),
-		// 				Documents: []*armbilling.Document{
-		// 					{
-		// 						Kind: to.Ptr(armbilling.DocumentTypeInvoice),
-		// 						Source: to.Ptr(armbilling.DocumentSourceDRS),
-		// 						URL: to.Ptr("https://microsoft.com/invoice.pdf"),
-		// 					},
-		// 					{
-		// 						Kind: to.Ptr(armbilling.DocumentTypeTaxReceipt),
-		// 						Source: to.Ptr(armbilling.DocumentSourceDRS),
-		// 						URL: to.Ptr("https://microsoft.com/taxDoc.pdf"),
-		// 				}},
-		// 				DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-16T17:32:28.000Z"); return t}()),
-		// 				FreeAzureCreditApplied: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](0),
-		// 				},
-		// 				InvoiceDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T17:32:28.000Z"); return t}()),
-		// 				InvoicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-15T17:32:28.000Z"); return t}()),
-		// 				InvoicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T17:32:28.000Z"); return t}()),
-		// 				IsMonthlyInvoice: to.Ptr(false),
-		// 				Payments: []*armbilling.PaymentProperties{
-		// 					{
-		// 						Amount: &armbilling.Amount{
-		// 							Currency: to.Ptr("USD"),
-		// 							Value: to.Ptr[float32](1),
-		// 						},
-		// 						Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-14T17:32:28.000Z"); return t}()),
-		// 						PaymentMethodFamily: to.Ptr(armbilling.PaymentMethodFamilyCreditCard),
-		// 						PaymentMethodType: to.Ptr("visa"),
-		// 						PaymentType: to.Ptr("credited"),
-		// 				}},
-		// 				PurchaseOrderNumber: to.Ptr("123456"),
-		// 				RebillDetails: map[string]*armbilling.RebillDetails{
-		// 					"creditNoteDocumentId": &armbilling.RebillDetails{
-		// 					},
-		// 					"invoiceDocumentId": &armbilling.RebillDetails{
-		// 					},
-		// 					"rebillDetails": &armbilling.RebillDetails{
-		// 					},
-		// 				},
-		// 				Status: to.Ptr(armbilling.InvoiceStatusDue),
-		// 				SubTotal: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](33.99),
-		// 				},
-		// 				TaxAmount: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](0),
-		// 				},
-		// 				TotalAmount: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](7.53),
-		// 				},
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("1383724"),
-		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/invoices"),
-		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoices/1383724"),
-		// 			Properties: &armbilling.InvoiceProperties{
-		// 				AmountDue: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](16.53),
-		// 				},
-		// 				AzurePrepaymentApplied: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](15.46),
-		// 				},
-		// 				BilledAmount: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](33.99),
-		// 				},
-		// 				BillingProfileDisplayName: to.Ptr("Contoso Operations Billing"),
-		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"),
-		// 				CreditAmount: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](2),
-		// 				},
-		// 				DocumentType: to.Ptr(armbilling.InvoiceDocumentTypeInvoice),
-		// 				Documents: []*armbilling.Document{
-		// 					{
-		// 						Kind: to.Ptr(armbilling.DocumentTypeInvoice),
-		// 						Source: to.Ptr(armbilling.DocumentSourceDRS),
-		// 						URL: to.Ptr("https://microsoft.com/invoice.pdf"),
-		// 					},
-		// 					{
-		// 						Kind: to.Ptr(armbilling.DocumentTypeTaxReceipt),
-		// 						Source: to.Ptr(armbilling.DocumentSourceDRS),
-		// 						URL: to.Ptr("https://microsoft.com/taxDoc.pdf"),
-		// 				}},
-		// 				DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-01T17:32:28.000Z"); return t}()),
-		// 				FreeAzureCreditApplied: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](0),
-		// 				},
-		// 				InvoiceDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T17:32:28.000Z"); return t}()),
-		// 				InvoicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-28T17:32:28.000Z"); return t}()),
-		// 				InvoicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-01T17:32:28.000Z"); return t}()),
-		// 				IsMonthlyInvoice: to.Ptr(true),
-		// 				Payments: []*armbilling.PaymentProperties{
-		// 					{
-		// 						Amount: &armbilling.Amount{
-		// 							Currency: to.Ptr("USD"),
-		// 							Value: to.Ptr[float32](2),
-		// 						},
-		// 						Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-14T17:32:28.000Z"); return t}()),
-		// 						PaymentMethodFamily: to.Ptr(armbilling.PaymentMethodFamilyCreditCard),
-		// 						PaymentMethodType: to.Ptr("visa"),
-		// 						PaymentType: to.Ptr("credited"),
-		// 				}},
-		// 				PurchaseOrderNumber: to.Ptr("123456"),
-		// 				Status: to.Ptr(armbilling.InvoiceStatusDue),
-		// 				SubTotal: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](33.99),
-		// 				},
-		// 				TaxAmount: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](0),
-		// 				},
-		// 				TotalAmount: &armbilling.Amount{
-		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](16.53),
-		// 				},
-		// 			},
-		// 	}},
-		// }
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/CreditNote.json
-func ExampleInvoicesClient_Get_creditNote() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewInvoicesClient().Get(ctx, "{billingAccountName}", "{invoiceName}", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Invoice = armbilling.Invoice{
-	// 	Name: to.Ptr("{invoiceName}"),
-	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/invoices"),
-	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoices/{invoiceName}"),
-	// 	Properties: &armbilling.InvoiceProperties{
-	// 		AmountDue: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](16.53),
-	// 		},
-	// 		AzurePrepaymentApplied: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](15.46),
-	// 		},
-	// 		BilledAmount: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](33.99),
-	// 		},
-	// 		BillingProfileDisplayName: to.Ptr("Contoso Operations Billing"),
-	// 		BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"),
-	// 		CreditAmount: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](2),
-	// 		},
-	// 		CreditForDocumentID: to.Ptr("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoices/I000001"),
-	// 		DocumentType: to.Ptr(armbilling.InvoiceDocumentTypeCreditNote),
-	// 		Documents: []*armbilling.Document{
-	// 			{
-	// 				Kind: to.Ptr(armbilling.DocumentTypeInvoice),
-	// 				Source: to.Ptr(armbilling.DocumentSourceDRS),
-	// 				URL: to.Ptr("https://microsoft.com/invoice.pdf"),
-	// 			},
-	// 			{
-	// 				Kind: to.Ptr(armbilling.DocumentTypeTaxReceipt),
-	// 				Source: to.Ptr(armbilling.DocumentSourceDRS),
-	// 				URL: to.Ptr("https://microsoft.com/taxDoc.pdf"),
-	// 		}},
-	// 		DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-16T17:32:28.000Z"); return t}()),
-	// 		FreeAzureCreditApplied: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](0),
-	// 		},
-	// 		InvoiceDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T17:32:28.000Z"); return t}()),
-	// 		InvoicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-15T17:32:28.000Z"); return t}()),
-	// 		InvoicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T17:32:28.000Z"); return t}()),
-	// 		IsMonthlyInvoice: to.Ptr(false),
-	// 		Payments: []*armbilling.PaymentProperties{
-	// 			{
-	// 				Amount: &armbilling.Amount{
-	// 					Currency: to.Ptr("USD"),
-	// 					Value: to.Ptr[float32](2),
-	// 				},
-	// 				Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-14T17:32:28.000Z"); return t}()),
-	// 				PaymentMethodFamily: to.Ptr(armbilling.PaymentMethodFamilyCreditCard),
-	// 				PaymentMethodType: to.Ptr("visa"),
-	// 				PaymentType: to.Ptr("credited"),
-	// 		}},
-	// 		PurchaseOrderNumber: to.Ptr("123456"),
-	// 		Status: to.Ptr(armbilling.InvoiceStatusPaid),
-	// 		SubTotal: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](33.99),
-	// 		},
-	// 		TaxAmount: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](0),
-	// 		},
-	// 		TotalAmount: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](16.53),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/Invoice.json
-func ExampleInvoicesClient_Get_invoice() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewInvoicesClient().Get(ctx, "{billingAccountName}", "{invoiceName}", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Invoice = armbilling.Invoice{
-	// 	Name: to.Ptr("{invoiceName}"),
-	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/invoices"),
-	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoices/{invoiceName}"),
-	// 	Properties: &armbilling.InvoiceProperties{
-	// 		AmountDue: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](16.53),
-	// 		},
-	// 		AzurePrepaymentApplied: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](15.46),
-	// 		},
-	// 		BilledAmount: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](33.99),
-	// 		},
-	// 		BillingProfileDisplayName: to.Ptr("Contoso Operations Billing"),
-	// 		BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"),
-	// 		CreditAmount: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](2),
-	// 		},
-	// 		DocumentType: to.Ptr(armbilling.InvoiceDocumentTypeInvoice),
-	// 		Documents: []*armbilling.Document{
-	// 			{
-	// 				Kind: to.Ptr(armbilling.DocumentTypeInvoice),
-	// 				Source: to.Ptr(armbilling.DocumentSourceDRS),
-	// 				URL: to.Ptr("https://microsoft.com/invoice.pdf"),
-	// 			},
-	// 			{
-	// 				Kind: to.Ptr(armbilling.DocumentTypeTaxReceipt),
-	// 				Source: to.Ptr(armbilling.DocumentSourceDRS),
-	// 				URL: to.Ptr("https://microsoft.com/taxDoc.pdf"),
-	// 		}},
-	// 		DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-16T17:32:28.000Z"); return t}()),
-	// 		FreeAzureCreditApplied: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](0),
-	// 		},
-	// 		InvoiceDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T17:32:28.000Z"); return t}()),
-	// 		InvoicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-15T17:32:28.000Z"); return t}()),
-	// 		InvoicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T17:32:28.000Z"); return t}()),
-	// 		IsMonthlyInvoice: to.Ptr(false),
-	// 		Payments: []*armbilling.PaymentProperties{
-	// 			{
-	// 				Amount: &armbilling.Amount{
-	// 					Currency: to.Ptr("USD"),
-	// 					Value: to.Ptr[float32](2),
-	// 				},
-	// 				Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-14T17:32:28.000Z"); return t}()),
-	// 				PaymentMethodFamily: to.Ptr(armbilling.PaymentMethodFamilyCreditCard),
-	// 				PaymentMethodType: to.Ptr("visa"),
-	// 				PaymentType: to.Ptr("credited"),
-	// 		}},
-	// 		PurchaseOrderNumber: to.Ptr("123456"),
-	// 		Status: to.Ptr(armbilling.InvoiceStatusDue),
-	// 		SubTotal: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](33.99),
-	// 		},
-	// 		TaxAmount: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](0),
-	// 		},
-	// 		TotalAmount: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](16.53),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/InvoiceWithRebillDetails.json
-func ExampleInvoicesClient_Get_invoiceWithRebillDetails() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewInvoicesClient().Get(ctx, "{billingAccountName}", "{invoiceName}", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Invoice = armbilling.Invoice{
-	// 	Name: to.Ptr("{invoiceName}"),
-	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/invoices"),
-	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoices/{invoiceName}"),
-	// 	Properties: &armbilling.InvoiceProperties{
-	// 		AmountDue: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](16.53),
-	// 		},
-	// 		AzurePrepaymentApplied: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](15.46),
-	// 		},
-	// 		BilledAmount: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](33.99),
-	// 		},
-	// 		BillingProfileDisplayName: to.Ptr("Contoso Operations Billing"),
-	// 		BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"),
-	// 		CreditAmount: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](2),
-	// 		},
-	// 		DocumentType: to.Ptr(armbilling.InvoiceDocumentTypeInvoice),
-	// 		Documents: []*armbilling.Document{
-	// 			{
-	// 				Kind: to.Ptr(armbilling.DocumentTypeInvoice),
-	// 				Source: to.Ptr(armbilling.DocumentSourceDRS),
-	// 				URL: to.Ptr("https://microsoft.com/invoice.pdf"),
-	// 			},
-	// 			{
-	// 				Kind: to.Ptr(armbilling.DocumentTypeTaxReceipt),
-	// 				Source: to.Ptr(armbilling.DocumentSourceDRS),
-	// 				URL: to.Ptr("https://microsoft.com/taxDoc.pdf"),
-	// 		}},
-	// 		DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-16T17:32:28.000Z"); return t}()),
-	// 		FreeAzureCreditApplied: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](0),
-	// 		},
-	// 		InvoiceDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T17:32:28.000Z"); return t}()),
-	// 		InvoicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-15T17:32:28.000Z"); return t}()),
-	// 		InvoicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T17:32:28.000Z"); return t}()),
-	// 		IsMonthlyInvoice: to.Ptr(false),
-	// 		Payments: []*armbilling.PaymentProperties{
-	// 			{
-	// 				Amount: &armbilling.Amount{
-	// 					Currency: to.Ptr("USD"),
-	// 					Value: to.Ptr[float32](2),
-	// 				},
-	// 				Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-14T17:32:28.000Z"); return t}()),
-	// 				PaymentMethodFamily: to.Ptr(armbilling.PaymentMethodFamilyCreditCard),
-	// 				PaymentMethodType: to.Ptr("visa"),
-	// 				PaymentType: to.Ptr("credited"),
-	// 		}},
-	// 		PurchaseOrderNumber: to.Ptr("123456"),
-	// 		RebillDetails: map[string]*armbilling.RebillDetails{
-	// 			"creditNoteDocumentId": &armbilling.RebillDetails{
-	// 			},
-	// 			"invoiceDocumentId": &armbilling.RebillDetails{
-	// 			},
-	// 			"rebillDetails": &armbilling.RebillDetails{
-	// 			},
-	// 		},
-	// 		Status: to.Ptr(armbilling.InvoiceStatusDue),
-	// 		SubTotal: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](33.99),
-	// 		},
-	// 		TaxAmount: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](0),
-	// 		},
-	// 		TotalAmount: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](16.53),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/VoidInvoice.json
-func ExampleInvoicesClient_Get_voidInvoice() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewInvoicesClient().Get(ctx, "{billingAccountName}", "{invoiceName}", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Invoice = armbilling.Invoice{
-	// 	Name: to.Ptr("{invoiceName}"),
-	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/invoices"),
-	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoices/{invoiceName}"),
-	// 	Properties: &armbilling.InvoiceProperties{
-	// 		AmountDue: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](16.53),
-	// 		},
-	// 		AzurePrepaymentApplied: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](15.46),
-	// 		},
-	// 		BilledAmount: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](33.99),
-	// 		},
-	// 		BilledDocumentID: to.Ptr("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoices/I000002"),
-	// 		BillingProfileDisplayName: to.Ptr("Contoso Operations Billing"),
-	// 		BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"),
-	// 		CreditAmount: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](2),
-	// 		},
-	// 		DocumentType: to.Ptr(armbilling.InvoiceDocumentTypeInvoice),
-	// 		Documents: []*armbilling.Document{
-	// 			{
-	// 				Kind: to.Ptr(armbilling.DocumentTypeInvoice),
-	// 				Source: to.Ptr(armbilling.DocumentSourceDRS),
-	// 				URL: to.Ptr("https://microsoft.com/invoice.pdf"),
-	// 			},
-	// 			{
-	// 				Kind: to.Ptr(armbilling.DocumentTypeTaxReceipt),
-	// 				Source: to.Ptr(armbilling.DocumentSourceDRS),
-	// 				URL: to.Ptr("https://microsoft.com/taxDoc.pdf"),
-	// 		}},
-	// 		DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-16T17:32:28.000Z"); return t}()),
-	// 		FreeAzureCreditApplied: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](0),
-	// 		},
-	// 		InvoiceDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T17:32:28.000Z"); return t}()),
-	// 		InvoicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-15T17:32:28.000Z"); return t}()),
-	// 		InvoicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T17:32:28.000Z"); return t}()),
-	// 		IsMonthlyInvoice: to.Ptr(false),
-	// 		Payments: []*armbilling.PaymentProperties{
-	// 			{
-	// 				Amount: &armbilling.Amount{
-	// 					Currency: to.Ptr("USD"),
-	// 					Value: to.Ptr[float32](2),
-	// 				},
-	// 				Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-14T17:32:28.000Z"); return t}()),
-	// 				PaymentMethodFamily: to.Ptr(armbilling.PaymentMethodFamilyCreditCard),
-	// 				PaymentMethodType: to.Ptr("visa"),
-	// 				PaymentType: to.Ptr("credited"),
-	// 		}},
-	// 		PurchaseOrderNumber: to.Ptr("123456"),
-	// 		Status: to.Ptr(armbilling.InvoiceStatusVoid),
-	// 		SubTotal: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](33.99),
-	// 		},
-	// 		TaxAmount: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](0),
-	// 		},
-	// 		TotalAmount: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](16.53),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/InvoiceById.json
-func ExampleInvoicesClient_GetByID() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewInvoicesClient().GetByID(ctx, "{invoiceName}", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Invoice = armbilling.Invoice{
-	// 	Name: to.Ptr("{invoiceName}"),
-	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/invoices"),
-	// 	ID: to.Ptr("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoices/{invoiceName}"),
-	// 	Properties: &armbilling.InvoiceProperties{
-	// 		AmountDue: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](16.53),
-	// 		},
-	// 		AzurePrepaymentApplied: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](15.46),
-	// 		},
-	// 		BilledAmount: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](33.99),
-	// 		},
-	// 		BillingProfileDisplayName: to.Ptr("Contoso Operations Billing"),
-	// 		BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"),
-	// 		CreditAmount: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](2),
-	// 		},
-	// 		Documents: []*armbilling.Document{
-	// 			{
-	// 				Kind: to.Ptr(armbilling.DocumentTypeInvoice),
-	// 				Source: to.Ptr(armbilling.DocumentSourceDRS),
-	// 				URL: to.Ptr("https://microsoft.com/invoice.pdf"),
-	// 			},
-	// 			{
-	// 				Kind: to.Ptr(armbilling.DocumentTypeTaxReceipt),
-	// 				Source: to.Ptr(armbilling.DocumentSourceDRS),
-	// 				URL: to.Ptr("https://microsoft.com/taxDoc.pdf"),
-	// 		}},
-	// 		DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-16T17:32:28.000Z"); return t}()),
-	// 		FreeAzureCreditApplied: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](0),
-	// 		},
-	// 		InvoiceDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T17:32:28.000Z"); return t}()),
-	// 		InvoicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-15T17:32:28.000Z"); return t}()),
-	// 		InvoicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T17:32:28.000Z"); return t}()),
-	// 		IsMonthlyInvoice: to.Ptr(false),
-	// 		Payments: []*armbilling.PaymentProperties{
-	// 			{
-	// 				Amount: &armbilling.Amount{
-	// 					Currency: to.Ptr("USD"),
-	// 					Value: to.Ptr[float32](2),
-	// 				},
-	// 				Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-14T17:32:28.000Z"); return t}()),
-	// 				PaymentMethodFamily: to.Ptr(armbilling.PaymentMethodFamilyCreditCard),
-	// 				PaymentMethodType: to.Ptr("visa"),
-	// 				PaymentType: to.Ptr("credited"),
-	// 		}},
-	// 		PurchaseOrderNumber: to.Ptr("123456"),
-	// 		Status: to.Ptr(armbilling.InvoiceStatusDue),
-	// 		SubTotal: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](33.99),
-	// 		},
-	// 		TaxAmount: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](0),
-	// 		},
-	// 		TotalAmount: &armbilling.Amount{
-	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](16.53),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/ModernInvoiceDownload.json
-func ExampleInvoicesClient_BeginDownloadInvoice() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewInvoicesClient().BeginDownloadInvoice(ctx, "{billingAccountName}", "{invoiceName}", "DRS_12345", nil)
+	poller, err := clientFactory.NewInvoicesClient().BeginDownloadDocumentsByBillingAccount(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", []*armbilling.DocumentDownloadRequest{
+		{
+			DocumentName: to.Ptr("12345678"),
+			InvoiceName:  to.Ptr("G123456789"),
+		},
+		{
+			DocumentName: to.Ptr("12345678"),
+			InvoiceName:  to.Ptr("G987654321"),
+		}}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1180,13 +229,14 @@ func ExampleInvoicesClient_BeginDownloadInvoice() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.DownloadURL = armbilling.DownloadURL{
+	// res.DocumentDownloadResult = armbilling.DocumentDownloadResult{
+	// 	ExpiryTime: to.Ptr("2023-02-16T17:32:28Z"),
 	// 	URL: to.Ptr("https://myaccount.blob.core.windows.net/invoices/1383724.pdf?sv=2019-02-02&sr=b&sp=r"),
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/MultipleModernInvoiceDownload.json
-func ExampleInvoicesClient_BeginDownloadMultipleBillingProfileInvoices() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/invoicesAmend.json
+func ExampleInvoicesClient_BeginAmend() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1196,10 +246,28 @@ func ExampleInvoicesClient_BeginDownloadMultipleBillingProfileInvoices() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewInvoicesClient().BeginDownloadMultipleBillingProfileInvoices(ctx, "{billingAccountName}", []*string{
-		to.Ptr("https://management.azure.com/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoices/{invoiceName}/download?downloadToken={downloadToken}&useCache=True&api-version=2020-05-01"),
-		to.Ptr("https://management.azure.com/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoices/{invoiceName}/download?downloadToken={downloadToken}&useCache=True&api-version=2020-05-01"),
-		to.Ptr("https://management.azure.com/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoices/{invoiceName}/download?downloadToken={downloadToken}&useCache=True&api-version=2020-05-01")}, nil)
+	poller, err := clientFactory.NewInvoicesClient().BeginAmend(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "G123456789", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/invoicesDownloadByBillingAccount.json
+func ExampleInvoicesClient_BeginDownloadByBillingAccount() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewInvoicesClient().BeginDownloadByBillingAccount(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "G123456789", &armbilling.InvoicesClientBeginDownloadByBillingAccountOptions{DocumentName: to.Ptr("12345678")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1210,12 +278,415 @@ func ExampleInvoicesClient_BeginDownloadMultipleBillingProfileInvoices() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.DownloadURL = armbilling.DownloadURL{
+	// res.DocumentDownloadResult = armbilling.DocumentDownloadResult{
+	// 	ExpiryTime: to.Ptr("2023-02-16T17:32:28Z"),
 	// 	URL: to.Ptr("https://myaccount.blob.core.windows.net/invoices/1383724.pdf?sv=2019-02-02&sr=b&sp=r"),
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingSubscriptionInvoicesList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/invoicesDownloadSummaryByBillingAccount.json
+func ExampleInvoicesClient_BeginDownloadSummaryByBillingAccount() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewInvoicesClient().BeginDownloadSummaryByBillingAccount(ctx, "123456789", "G123456789", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.DocumentDownloadResult = armbilling.DocumentDownloadResult{
+	// 	ExpiryTime: to.Ptr("2023-02-16T17:32:28Z"),
+	// 	URL: to.Ptr("https://myaccount.blob.core.windows.net/invoices/1383724_summary.pdf?sv=2019-02-02&sr=b&sp=r"),
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/invoicesGetByBillingAccount.json
+func ExampleInvoicesClient_GetByBillingAccount() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewInvoicesClient().GetByBillingAccount(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "G123456789", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Invoice = armbilling.Invoice{
+	// 	Name: to.Ptr("G123456789"),
+	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/invoices"),
+	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/invoices/G123456789"),
+	// 	Properties: &armbilling.InvoiceProperties{
+	// 		AmountDue: &armbilling.InvoicePropertiesAmountDue{
+	// 			Currency: to.Ptr("USD"),
+	// 			Value: to.Ptr[float32](8.53),
+	// 		},
+	// 		AzurePrepaymentApplied: &armbilling.InvoicePropertiesAzurePrepaymentApplied{
+	// 			Currency: to.Ptr("USD"),
+	// 			Value: to.Ptr[float32](25.46),
+	// 		},
+	// 		BilledAmount: &armbilling.InvoicePropertiesBilledAmount{
+	// 			Currency: to.Ptr("USD"),
+	// 			Value: to.Ptr[float32](33.99),
+	// 		},
+	// 		BillingProfileDisplayName: to.Ptr("Contoso Operations Billing"),
+	// 		BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx"),
+	// 		CreditAmount: &armbilling.InvoicePropertiesCreditAmount{
+	// 			Currency: to.Ptr("USD"),
+	// 			Value: to.Ptr[float32](0),
+	// 		},
+	// 		DocumentType: to.Ptr(armbilling.InvoiceDocumentTypeInvoice),
+	// 		Documents: []*armbilling.InvoiceDocument{
+	// 			{
+	// 				Name: to.Ptr("12345678"),
+	// 				Kind: to.Ptr(armbilling.InvoiceDocumentTypeInvoice),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("22345678"),
+	// 				Kind: to.Ptr(armbilling.InvoiceDocumentTypeTaxReceipt),
+	// 		}},
+	// 		DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-16T17:32:28.000Z"); return t}()),
+	// 		FreeAzureCreditApplied: &armbilling.InvoicePropertiesFreeAzureCreditApplied{
+	// 			Currency: to.Ptr("USD"),
+	// 			Value: to.Ptr[float32](0),
+	// 		},
+	// 		InvoiceDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-01T17:32:28.000Z"); return t}()),
+	// 		InvoicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-15T17:32:28.000Z"); return t}()),
+	// 		InvoicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-01T17:32:28.000Z"); return t}()),
+	// 		IsMonthlyInvoice: to.Ptr(false),
+	// 		PurchaseOrderNumber: to.Ptr("123456"),
+	// 		RebillDetails: &armbilling.InvoicePropertiesRebillDetails{
+	// 			CreditNoteDocumentID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/invoices/CreditNote2"),
+	// 			InvoiceDocumentID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/invoices/I000002"),
+	// 			RebillDetails: &armbilling.RebillDetails{
+	// 				CreditNoteDocumentID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/invoices/CreditNote"),
+	// 				InvoiceDocumentID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/invoices/I000001"),
+	// 			},
+	// 		},
+	// 		SpecialTaxationType: to.Ptr(armbilling.SpecialTaxationTypeSubtotalLevel),
+	// 		Status: to.Ptr(armbilling.InvoiceStatusDue),
+	// 		SubTotal: &armbilling.InvoicePropertiesSubTotal{
+	// 			Currency: to.Ptr("USD"),
+	// 			Value: to.Ptr[float32](33.99),
+	// 		},
+	// 		TaxAmount: &armbilling.InvoicePropertiesTaxAmount{
+	// 			Currency: to.Ptr("USD"),
+	// 			Value: to.Ptr[float32](1),
+	// 		},
+	// 		TotalAmount: &armbilling.InvoicePropertiesTotalAmount{
+	// 			Currency: to.Ptr("USD"),
+	// 			Value: to.Ptr[float32](7.53),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/invoicesListByBillingAccount.json
+func ExampleInvoicesClient_NewListByBillingAccountPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewInvoicesClient().NewListByBillingAccountPager("00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", &armbilling.InvoicesClientListByBillingAccountOptions{PeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2023-01-01"); return t }()),
+		PeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2023-06-30"); return t }()),
+		Filter:        nil,
+		OrderBy:       nil,
+		Top:           nil,
+		Skip:          nil,
+		Count:         nil,
+		Search:        nil,
+	})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.InvoiceListResult = armbilling.InvoiceListResult{
+		// 	Value: []*armbilling.Invoice{
+		// 		{
+		// 			Name: to.Ptr("G123456789"),
+		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/invoices"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/invoices/G123456789"),
+		// 			Properties: &armbilling.InvoiceProperties{
+		// 				AmountDue: &armbilling.InvoicePropertiesAmountDue{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](8.53),
+		// 				},
+		// 				AzurePrepaymentApplied: &armbilling.InvoicePropertiesAzurePrepaymentApplied{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](25.46),
+		// 				},
+		// 				BilledAmount: &armbilling.InvoicePropertiesBilledAmount{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](33.99),
+		// 				},
+		// 				BillingProfileDisplayName: to.Ptr("Contoso Operations Billing"),
+		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx"),
+		// 				CreditAmount: &armbilling.InvoicePropertiesCreditAmount{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](0),
+		// 				},
+		// 				DocumentType: to.Ptr(armbilling.InvoiceDocumentTypeInvoice),
+		// 				Documents: []*armbilling.InvoiceDocument{
+		// 					{
+		// 						Name: to.Ptr("12345678"),
+		// 						Kind: to.Ptr(armbilling.InvoiceDocumentTypeInvoice),
+		// 					},
+		// 					{
+		// 						Name: to.Ptr("22345678"),
+		// 						Kind: to.Ptr(armbilling.InvoiceDocumentTypeTaxReceipt),
+		// 				}},
+		// 				DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-16T17:32:28.000Z"); return t}()),
+		// 				FreeAzureCreditApplied: &armbilling.InvoicePropertiesFreeAzureCreditApplied{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](0),
+		// 				},
+		// 				InvoiceDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-01T17:32:28.000Z"); return t}()),
+		// 				InvoicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-15T17:32:28.000Z"); return t}()),
+		// 				InvoicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-01T17:32:28.000Z"); return t}()),
+		// 				IsMonthlyInvoice: to.Ptr(false),
+		// 				PurchaseOrderNumber: to.Ptr("123456"),
+		// 				RebillDetails: &armbilling.InvoicePropertiesRebillDetails{
+		// 					CreditNoteDocumentID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/invoices/CreditNote2"),
+		// 					InvoiceDocumentID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/invoices/I000002"),
+		// 					RebillDetails: &armbilling.RebillDetails{
+		// 						CreditNoteDocumentID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/invoices/CreditNote"),
+		// 						InvoiceDocumentID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/invoices/I000001"),
+		// 					},
+		// 				},
+		// 				Status: to.Ptr(armbilling.InvoiceStatusDue),
+		// 				SubTotal: &armbilling.InvoicePropertiesSubTotal{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](33.99),
+		// 				},
+		// 				TaxAmount: &armbilling.InvoicePropertiesTaxAmount{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](1),
+		// 				},
+		// 				TotalAmount: &armbilling.InvoicePropertiesTotalAmount{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](7.53),
+		// 				},
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("G987654321"),
+		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/invoices"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/invoices/G987654321"),
+		// 			Properties: &armbilling.InvoiceProperties{
+		// 				AmountDue: &armbilling.InvoicePropertiesAmountDue{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](0),
+		// 				},
+		// 				AzurePrepaymentApplied: &armbilling.InvoicePropertiesAzurePrepaymentApplied{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](25.46),
+		// 				},
+		// 				BilledAmount: &armbilling.InvoicePropertiesBilledAmount{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](33.99),
+		// 				},
+		// 				BillingProfileDisplayName: to.Ptr("Contoso Operations Billing"),
+		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx"),
+		// 				CreditAmount: &armbilling.InvoicePropertiesCreditAmount{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](0),
+		// 				},
+		// 				DocumentType: to.Ptr(armbilling.InvoiceDocumentTypeInvoice),
+		// 				Documents: []*armbilling.InvoiceDocument{
+		// 					{
+		// 						Name: to.Ptr("12345678"),
+		// 						Kind: to.Ptr(armbilling.InvoiceDocumentTypeInvoice),
+		// 					},
+		// 					{
+		// 						Name: to.Ptr("22345678"),
+		// 						Kind: to.Ptr(armbilling.InvoiceDocumentTypeTaxReceipt),
+		// 				}},
+		// 				DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-16T17:32:28.000Z"); return t}()),
+		// 				FreeAzureCreditApplied: &armbilling.InvoicePropertiesFreeAzureCreditApplied{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](0),
+		// 				},
+		// 				InvoiceDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-01T17:32:28.000Z"); return t}()),
+		// 				InvoicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-15T17:32:28.000Z"); return t}()),
+		// 				InvoicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-01T17:32:28.000Z"); return t}()),
+		// 				IsMonthlyInvoice: to.Ptr(false),
+		// 				Payments: []*armbilling.Payment{
+		// 					{
+		// 						Amount: &armbilling.PaymentAmount{
+		// 							Currency: to.Ptr("USD"),
+		// 							Value: to.Ptr[float32](33.99),
+		// 						},
+		// 						Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-14T17:32:28.000Z"); return t}()),
+		// 						PaymentMethodFamily: to.Ptr(armbilling.PaymentMethodFamilyCreditCard),
+		// 						PaymentMethodType: to.Ptr("visa"),
+		// 						PaymentType: to.Ptr("debited"),
+		// 				}},
+		// 				PurchaseOrderNumber: to.Ptr("123455"),
+		// 				RebillDetails: &armbilling.InvoicePropertiesRebillDetails{
+		// 					CreditNoteDocumentID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/invoices/CreditNote2"),
+		// 					InvoiceDocumentID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/invoices/I000002"),
+		// 					RebillDetails: &armbilling.RebillDetails{
+		// 						CreditNoteDocumentID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/invoices/CreditNote"),
+		// 						InvoiceDocumentID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/invoices/I000001"),
+		// 					},
+		// 				},
+		// 				Status: to.Ptr(armbilling.InvoiceStatusPaid),
+		// 				SubTotal: &armbilling.InvoicePropertiesSubTotal{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](33.99),
+		// 				},
+		// 				TaxAmount: &armbilling.InvoicePropertiesTaxAmount{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](1),
+		// 				},
+		// 				TotalAmount: &armbilling.InvoicePropertiesTotalAmount{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](7.53),
+		// 				},
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/invoicesDownloadDocumentsByBillingSubscription.json
+func ExampleInvoicesClient_BeginDownloadDocumentsByBillingSubscription() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewInvoicesClient().BeginDownloadDocumentsByBillingSubscription(ctx, []*armbilling.DocumentDownloadRequest{
+		{
+			DocumentName: to.Ptr("12345678"),
+			InvoiceName:  to.Ptr("E123456789"),
+		},
+		{
+			DocumentName: to.Ptr("12345678"),
+			InvoiceName:  to.Ptr("E987654321"),
+		}}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.DocumentDownloadResult = armbilling.DocumentDownloadResult{
+	// 	ExpiryTime: to.Ptr("2023-02-16T17:32:28Z"),
+	// 	URL: to.Ptr("https://myaccount.blob.core.windows.net/invoices/1383724.pdf?sv=2019-02-02&sr=b&sp=r"),
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/invoicesDownloadByBillingSubscription.json
+func ExampleInvoicesClient_BeginDownloadByBillingSubscription() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewInvoicesClient().BeginDownloadByBillingSubscription(ctx, "E123456789", &armbilling.InvoicesClientBeginDownloadByBillingSubscriptionOptions{DocumentName: to.Ptr("12345678")})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.DocumentDownloadResult = armbilling.DocumentDownloadResult{
+	// 	ExpiryTime: to.Ptr("2023-02-16T17:32:28Z"),
+	// 	URL: to.Ptr("https://myaccount.blob.core.windows.net/invoices/1383724.pdf?sv=2019-02-02&sr=b&sp=r"),
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/invoicesGetByBillingSubscription.json
+func ExampleInvoicesClient_GetByBillingSubscription() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewInvoicesClient().GetByBillingSubscription(ctx, "E123456789", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Invoice = armbilling.Invoice{
+	// 	Name: to.Ptr("E123456789"),
+	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/billingSubscriptions/invoices"),
+	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/default/billingSubscriptions/11111111-1111-1111-1111-111111111111/invoices/E123456789"),
+	// 	Properties: &armbilling.InvoiceProperties{
+	// 		AmountDue: &armbilling.InvoicePropertiesAmountDue{
+	// 			Currency: to.Ptr("USD"),
+	// 			Value: to.Ptr[float32](8.53),
+	// 		},
+	// 		BilledAmount: &armbilling.InvoicePropertiesBilledAmount{
+	// 			Currency: to.Ptr("USD"),
+	// 			Value: to.Ptr[float32](33.99),
+	// 		},
+	// 		DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-16T17:32:28.000Z"); return t}()),
+	// 		InvoiceDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-01T17:32:28.000Z"); return t}()),
+	// 		InvoicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-15T17:32:28.000Z"); return t}()),
+	// 		InvoicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-01T17:32:28.000Z"); return t}()),
+	// 		InvoiceType: to.Ptr(armbilling.InvoiceTypeAzureServices),
+	// 		PurchaseOrderNumber: to.Ptr("123456"),
+	// 		Status: to.Ptr(armbilling.InvoiceStatusDue),
+	// 		SubscriptionDisplayName: to.Ptr("Contoso Operations Billing"),
+	// 		SubscriptionID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/invoicesListByBillingSubscription.json
 func ExampleInvoicesClient_NewListByBillingSubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1226,7 +697,15 @@ func ExampleInvoicesClient_NewListByBillingSubscriptionPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewInvoicesClient().NewListByBillingSubscriptionPager("2018-01-01", "2018-06-30", nil)
+	pager := clientFactory.NewInvoicesClient().NewListByBillingSubscriptionPager(&armbilling.InvoicesClientListByBillingSubscriptionOptions{PeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2023-01-01"); return t }()),
+		PeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2023-06-30"); return t }()),
+		Filter:        nil,
+		OrderBy:       nil,
+		Top:           nil,
+		Skip:          nil,
+		Count:         nil,
+		Search:        nil,
+	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1240,72 +719,99 @@ func ExampleInvoicesClient_NewListByBillingSubscriptionPager() {
 		// page.InvoiceListResult = armbilling.InvoiceListResult{
 		// 	Value: []*armbilling.Invoice{
 		// 		{
-		// 			Name: to.Ptr("1383723"),
+		// 			Name: to.Ptr("E123456789"),
 		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/billingSubscriptions/invoices"),
-		// 			ID: to.Ptr("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingSubscriptions/11000000-0000-0000-0000-000000000000/invoices/1383723"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/default/billingSubscriptions/11111111-1111-1111-1111-111111111111/invoices/E123456789"),
 		// 			Properties: &armbilling.InvoiceProperties{
-		// 				AmountDue: &armbilling.Amount{
+		// 				AmountDue: &armbilling.InvoicePropertiesAmountDue{
 		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](2000),
+		// 					Value: to.Ptr[float32](8.53),
 		// 				},
-		// 				DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-16T17:32:28.000Z"); return t}()),
-		// 				InvoiceDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T17:32:28.000Z"); return t}()),
-		// 				InvoicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-15T17:32:28.000Z"); return t}()),
-		// 				InvoicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T17:32:28.000Z"); return t}()),
-		// 				InvoiceType: to.Ptr(armbilling.InvoiceType("AzureServices")),
+		// 				BilledAmount: &armbilling.InvoicePropertiesBilledAmount{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](33.99),
+		// 				},
+		// 				DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-16T17:32:28.000Z"); return t}()),
+		// 				InvoiceDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-01T17:32:28.000Z"); return t}()),
+		// 				InvoicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-15T17:32:28.000Z"); return t}()),
+		// 				InvoicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-01T17:32:28.000Z"); return t}()),
+		// 				InvoiceType: to.Ptr(armbilling.InvoiceTypeAzureServices),
 		// 				PurchaseOrderNumber: to.Ptr("123456"),
 		// 				Status: to.Ptr(armbilling.InvoiceStatusDue),
-		// 				SubscriptionID: to.Ptr("55000000-0000-0000-0000-000000000011"),
+		// 				SubscriptionDisplayName: to.Ptr("Contoso Operations Billing"),
+		// 				SubscriptionID: to.Ptr("11111111-1111-1111-1111-111111111111"),
 		// 			},
 		// 		},
 		// 		{
-		// 			Name: to.Ptr("1383724"),
+		// 			Name: to.Ptr("G123456789"),
 		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/billingSubscriptions/invoices"),
-		// 			ID: to.Ptr("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingSubscriptions/11000000-0000-0000-0000-000000000000/invoices/1383724"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/default/billingSubscriptions/11111111-1111-1111-1111-111111111111/invoices/G123456789"),
 		// 			Properties: &armbilling.InvoiceProperties{
-		// 				AmountDue: &armbilling.Amount{
+		// 				AmountDue: &armbilling.InvoicePropertiesAmountDue{
 		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](2000),
+		// 					Value: to.Ptr[float32](15.53),
 		// 				},
-		// 				BilledAmount: &armbilling.Amount{
+		// 				BilledAmount: &armbilling.InvoicePropertiesBilledAmount{
 		// 					Currency: to.Ptr("USD"),
-		// 					Value: to.Ptr[float32](2000),
+		// 					Value: to.Ptr[float32](55.99),
 		// 				},
-		// 				BillingProfileDisplayName: to.Ptr("Contoso Operations Billing"),
-		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/11000000-0000-0000-0000-000000000000"),
-		// 				Documents: []*armbilling.Document{
-		// 					{
-		// 						Kind: to.Ptr(armbilling.DocumentTypeInvoice),
-		// 						Source: to.Ptr(armbilling.DocumentSourceDRS),
-		// 						URL: to.Ptr("https://management.azure.com/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingSubscriptions/11000000-0000-0000-0000-000000000000/invoices/1383724/download"),
-		// 				}},
-		// 				DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-01T17:32:28.000Z"); return t}()),
-		// 				InvoiceDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-01T17:32:28.000Z"); return t}()),
-		// 				InvoicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-02T17:32:28.000Z"); return t}()),
-		// 				InvoicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-01T17:32:28.000Z"); return t}()),
+		// 				DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-16T17:32:28.000Z"); return t}()),
+		// 				InvoiceDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-01T17:32:28.000Z"); return t}()),
+		// 				InvoicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-15T17:32:28.000Z"); return t}()),
+		// 				InvoicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-01T17:32:28.000Z"); return t}()),
 		// 				InvoiceType: to.Ptr(armbilling.InvoiceTypeAzureMarketplace),
-		// 				Payments: []*armbilling.PaymentProperties{
+		// 				PurchaseOrderNumber: to.Ptr("123456"),
+		// 				Status: to.Ptr(armbilling.InvoiceStatusDue),
+		// 				SubscriptionDisplayName: to.Ptr("Contoso Operations Billing"),
+		// 				SubscriptionID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("E987654321"),
+		// 			Type: to.Ptr("Microsoft.Billing/billingAccounts/billingSubscriptions/invoices"),
+		// 			ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/default/billingSubscriptions/11111111-1111-1111-1111-111111111111/invoices/E987654321"),
+		// 			Properties: &armbilling.InvoiceProperties{
+		// 				AmountDue: &armbilling.InvoicePropertiesAmountDue{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](8.53),
+		// 				},
+		// 				BilledAmount: &armbilling.InvoicePropertiesBilledAmount{
+		// 					Currency: to.Ptr("USD"),
+		// 					Value: to.Ptr[float32](33.99),
+		// 				},
+		// 				Documents: []*armbilling.InvoiceDocument{
 		// 					{
-		// 						Amount: &armbilling.Amount{
+		// 						Name: to.Ptr("12345678"),
+		// 						Kind: to.Ptr(armbilling.InvoiceDocumentTypeInvoice),
+		// 				}},
+		// 				DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-16T17:32:28.000Z"); return t}()),
+		// 				InvoiceDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-01T17:32:28.000Z"); return t}()),
+		// 				InvoicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-15T17:32:28.000Z"); return t}()),
+		// 				InvoicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-01T17:32:28.000Z"); return t}()),
+		// 				InvoiceType: to.Ptr(armbilling.InvoiceTypeAzureSupport),
+		// 				Payments: []*armbilling.Payment{
+		// 					{
+		// 						Amount: &armbilling.PaymentAmount{
 		// 							Currency: to.Ptr("USD"),
 		// 							Value: to.Ptr[float32](2000),
 		// 						},
-		// 						Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-14T17:32:28.000Z"); return t}()),
+		// 						Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-14T17:32:28.000Z"); return t}()),
 		// 						PaymentMethodFamily: to.Ptr(armbilling.PaymentMethodFamilyCreditCard),
 		// 						PaymentMethodType: to.Ptr("visa"),
 		// 						PaymentType: to.Ptr("credited"),
 		// 				}},
 		// 				PurchaseOrderNumber: to.Ptr("123456"),
-		// 				Status: to.Ptr(armbilling.InvoiceStatusPaid),
-		// 				SubscriptionID: to.Ptr("55000000-0000-0000-0000-000000000011"),
+		// 				Status: to.Ptr(armbilling.InvoiceStatusDue),
+		// 				SubscriptionDisplayName: to.Ptr("Contoso Operations Billing"),
+		// 				SubscriptionID: to.Ptr("11111111-1111-1111-1111-111111111111"),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingSubscriptionInvoice.json
-func ExampleInvoicesClient_GetBySubscriptionAndInvoiceID() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/invoicesGet.json
+func ExampleInvoicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1315,7 +821,7 @@ func ExampleInvoicesClient_GetBySubscriptionAndInvoiceID() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewInvoicesClient().GetBySubscriptionAndInvoiceID(ctx, "{invoiceName}", nil)
+	res, err := clientFactory.NewInvoicesClient().Get(ctx, "G123456789", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1323,102 +829,70 @@ func ExampleInvoicesClient_GetBySubscriptionAndInvoiceID() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Invoice = armbilling.Invoice{
-	// 	Name: to.Ptr("1383724"),
-	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/billingSubscriptions/invoices"),
-	// 	ID: to.Ptr("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingSubscriptions/11000000-0000-0000-0000-000000000000/invoices/1383724"),
+	// 	Name: to.Ptr("G123456789"),
+	// 	Type: to.Ptr("Microsoft.Billing/billingAccounts/invoices"),
+	// 	ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/invoices/G123456789"),
 	// 	Properties: &armbilling.InvoiceProperties{
-	// 		AmountDue: &armbilling.Amount{
+	// 		AmountDue: &armbilling.InvoicePropertiesAmountDue{
 	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](2000),
+	// 			Value: to.Ptr[float32](8.53),
 	// 		},
-	// 		BilledAmount: &armbilling.Amount{
+	// 		AzurePrepaymentApplied: &armbilling.InvoicePropertiesAzurePrepaymentApplied{
 	// 			Currency: to.Ptr("USD"),
-	// 			Value: to.Ptr[float32](2000),
+	// 			Value: to.Ptr[float32](25.46),
+	// 		},
+	// 		BilledAmount: &armbilling.InvoicePropertiesBilledAmount{
+	// 			Currency: to.Ptr("USD"),
+	// 			Value: to.Ptr[float32](33.99),
 	// 		},
 	// 		BillingProfileDisplayName: to.Ptr("Contoso Operations Billing"),
-	// 		BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/11000000-0000-0000-0000-000000000000"),
-	// 		Documents: []*armbilling.Document{
+	// 		BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx"),
+	// 		CreditAmount: &armbilling.InvoicePropertiesCreditAmount{
+	// 			Currency: to.Ptr("USD"),
+	// 			Value: to.Ptr[float32](0),
+	// 		},
+	// 		DocumentType: to.Ptr(armbilling.InvoiceDocumentTypeInvoice),
+	// 		Documents: []*armbilling.InvoiceDocument{
 	// 			{
-	// 				Kind: to.Ptr(armbilling.DocumentTypeInvoice),
-	// 				Source: to.Ptr(armbilling.DocumentSourceDRS),
-	// 				URL: to.Ptr("https://management.azure.com/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingSubscriptions/11000000-0000-0000-0000-000000000000/invoices/1383724/download"),
-	// 		}},
-	// 		DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-01T17:32:28.000Z"); return t}()),
-	// 		InvoiceDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-01T17:32:28.000Z"); return t}()),
-	// 		InvoicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-02T17:32:28.000Z"); return t}()),
-	// 		InvoicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-01T17:32:28.000Z"); return t}()),
-	// 		InvoiceType: to.Ptr(armbilling.InvoiceTypeAzureMarketplace),
-	// 		Payments: []*armbilling.PaymentProperties{
+	// 				Name: to.Ptr("12345678"),
+	// 				Kind: to.Ptr(armbilling.InvoiceDocumentTypeInvoice),
+	// 			},
 	// 			{
-	// 				Amount: &armbilling.Amount{
-	// 					Currency: to.Ptr("USD"),
-	// 					Value: to.Ptr[float32](2000),
-	// 				},
-	// 				Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-14T17:32:28.000Z"); return t}()),
-	// 				PaymentMethodFamily: to.Ptr(armbilling.PaymentMethodFamilyCreditCard),
-	// 				PaymentMethodType: to.Ptr("visa"),
-	// 				PaymentType: to.Ptr("credited"),
+	// 				Name: to.Ptr("22345678"),
+	// 				Kind: to.Ptr(armbilling.InvoiceDocumentTypeTaxReceipt),
 	// 		}},
+	// 		DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-16T17:32:28.000Z"); return t}()),
+	// 		FreeAzureCreditApplied: &armbilling.InvoicePropertiesFreeAzureCreditApplied{
+	// 			Currency: to.Ptr("USD"),
+	// 			Value: to.Ptr[float32](0),
+	// 		},
+	// 		InvoiceDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-01T17:32:28.000Z"); return t}()),
+	// 		InvoicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-15T17:32:28.000Z"); return t}()),
+	// 		InvoicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-01T17:32:28.000Z"); return t}()),
+	// 		IsMonthlyInvoice: to.Ptr(false),
 	// 		PurchaseOrderNumber: to.Ptr("123456"),
-	// 		Status: to.Ptr(armbilling.InvoiceStatusPaid),
-	// 		SubscriptionID: to.Ptr("55000000-0000-0000-0000-000000000011"),
+	// 		RebillDetails: &armbilling.InvoicePropertiesRebillDetails{
+	// 			CreditNoteDocumentID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/invoices/CreditNote2"),
+	// 			InvoiceDocumentID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/invoices/I000002"),
+	// 			RebillDetails: &armbilling.RebillDetails{
+	// 				CreditNoteDocumentID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/invoices/CreditNote"),
+	// 				InvoiceDocumentID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/invoices/I000001"),
+	// 			},
+	// 		},
+	// 		SpecialTaxationType: to.Ptr(armbilling.SpecialTaxationTypeSubtotalLevel),
+	// 		Status: to.Ptr(armbilling.InvoiceStatusDue),
+	// 		SubTotal: &armbilling.InvoicePropertiesSubTotal{
+	// 			Currency: to.Ptr("USD"),
+	// 			Value: to.Ptr[float32](33.99),
+	// 		},
+	// 		TaxAmount: &armbilling.InvoicePropertiesTaxAmount{
+	// 			Currency: to.Ptr("USD"),
+	// 			Value: to.Ptr[float32](1),
+	// 		},
+	// 		TotalAmount: &armbilling.InvoicePropertiesTotalAmount{
+	// 			Currency: to.Ptr("USD"),
+	// 			Value: to.Ptr[float32](7.53),
+	// 		},
 	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingSubscriptionInvoiceDownload.json
-func ExampleInvoicesClient_BeginDownloadBillingSubscriptionInvoice() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewInvoicesClient().BeginDownloadBillingSubscriptionInvoice(ctx, "{invoiceName}", "DRS_12345", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.DownloadURL = armbilling.DownloadURL{
-	// 	URL: to.Ptr("https://myaccount.blob.core.windows.net/invoices/1383724.pdf?sv=2019-02-02&sr=b&sig=sp=r"),
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/MultipleBillingSubscriptionInvoiceDownload.json
-func ExampleInvoicesClient_BeginDownloadMultipleBillingSubscriptionInvoices() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbilling.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewInvoicesClient().BeginDownloadMultipleBillingSubscriptionInvoices(ctx, []*string{
-		to.Ptr("https://management.azure.com/providers/Microsoft.Billing/billingAccounts/default/billingSubscriptions/{subscriptionId}/invoices/{invoiceName}/download?downloadToken={downloadToken}&useCache=True&api-version=2020-05-01"),
-		to.Ptr("https://management.azure.com/providers/Microsoft.Billing/billingAccounts/default/billingSubscriptions/{subscriptionId}/invoices/{invoiceName}/download?downloadToken={downloadToken}&useCache=True&api-version=2020-05-01"),
-		to.Ptr("https://management.azure.com/providers/Microsoft.Billing/billingAccounts/default/billingSubscriptions/{subscriptionId}/invoices/{invoiceName}/download?downloadToken={downloadToken}&useCache=True&api-version=2020-05-01")}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.DownloadURL = armbilling.DownloadURL{
-	// 	URL: to.Ptr("https://myaccount.blob.core.windows.net/invoices/1383724.pdf?sv=2019-02-02&sr=b&sp=r"),
 	// }
 }

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/Desktop_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2024-04-03/examples/Desktop_Get.json
 func ExampleDesktopsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,13 +40,6 @@ func ExampleDesktopsClient_Get() {
 	// 	Name: to.Ptr("applicationGroup1/SessionDesktop"),
 	// 	Type: to.Ptr("Microsoft.DesktopVirtualization/applicationGroups/desktops"),
 	// 	ID: to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup1/providers/Microsoft.DesktopVirtualization/applicationGroups/applicationGroup1/applications/SessionDesktop"),
-	// 	Properties: &armdesktopvirtualization.DesktopProperties{
-	// 		Description: to.Ptr("des1"),
-	// 		FriendlyName: to.Ptr("friendly"),
-	// 		IconContent: []byte("VGhpcyBpcyBhIHN0cmluZyB0byBoYXNo"),
-	// 		IconHash: to.Ptr("bEQ1n2HysrGxCDvgt4bfOtkET8ydzh5SXGM0KGTBPVc"),
-	// 		ObjectID: to.Ptr("7877fb31-4bde-49fd-9df3-c046e0ec5325"),
-	// 	},
 	// 	SystemData: &armdesktopvirtualization.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user1"),
@@ -55,10 +48,17 @@ func ExampleDesktopsClient_Get() {
 	// 		LastModifiedBy: to.Ptr("user2"),
 	// 		LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
 	// 	},
+	// 	Properties: &armdesktopvirtualization.DesktopProperties{
+	// 		Description: to.Ptr("des1"),
+	// 		FriendlyName: to.Ptr("friendly"),
+	// 		IconContent: []byte("VGhpcyBpcyBhIHN0cmluZyB0byBoYXNo"),
+	// 		IconHash: to.Ptr("bEQ1n2HysrGxCDvgt4bfOtkET8ydzh5SXGM0KGTBPVc"),
+	// 		ObjectID: to.Ptr("7877fb31-4bde-49fd-9df3-c046e0ec5325"),
+	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/Desktop_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2024-04-03/examples/Desktop_Update.json
 func ExampleDesktopsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,13 +86,6 @@ func ExampleDesktopsClient_Update() {
 	// 	Name: to.Ptr("applicationGroup1/SessionDesktop"),
 	// 	Type: to.Ptr("Microsoft.DesktopVirtualization/applicationGroups/desktops"),
 	// 	ID: to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup1/providers/Microsoft.DesktopVirtualization/applicationGroups/applicationGroup1/desktops/SessionDesktop"),
-	// 	Properties: &armdesktopvirtualization.DesktopProperties{
-	// 		Description: to.Ptr("des1"),
-	// 		FriendlyName: to.Ptr("friendly"),
-	// 		IconContent: []byte("VGhpcyBpcyBhIHN0cmluZyB0byBoYXNo"),
-	// 		IconHash: to.Ptr("bEQ1n2HysrGxCDvgt4bfOtkET8ydzh5SXGM0KGTBPVc"),
-	// 		ObjectID: to.Ptr("7877fb31-4bde-49fd-9df3-c046e0ec5325"),
-	// 	},
 	// 	SystemData: &armdesktopvirtualization.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user1"),
@@ -101,10 +94,17 @@ func ExampleDesktopsClient_Update() {
 	// 		LastModifiedBy: to.Ptr("user2"),
 	// 		LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
 	// 	},
+	// 	Properties: &armdesktopvirtualization.DesktopProperties{
+	// 		Description: to.Ptr("des1"),
+	// 		FriendlyName: to.Ptr("friendly"),
+	// 		IconContent: []byte("VGhpcyBpcyBhIHN0cmluZyB0byBoYXNo"),
+	// 		IconHash: to.Ptr("bEQ1n2HysrGxCDvgt4bfOtkET8ydzh5SXGM0KGTBPVc"),
+	// 		ObjectID: to.Ptr("7877fb31-4bde-49fd-9df3-c046e0ec5325"),
+	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/Desktop_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2024-04-03/examples/Desktop_List.json
 func ExampleDesktopsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -135,13 +135,6 @@ func ExampleDesktopsClient_NewListPager() {
 		// 			Name: to.Ptr("applicationGroup1/SessionDesktop"),
 		// 			Type: to.Ptr("Microsoft.DesktopVirtualization/applicationGroups/desktops"),
 		// 			ID: to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup1/providers/Microsoft.DesktopVirtualization/applicationGroups/applicationGroup1/applications/SessionDesktop"),
-		// 			Properties: &armdesktopvirtualization.DesktopProperties{
-		// 				Description: to.Ptr("des1"),
-		// 				FriendlyName: to.Ptr("friendly"),
-		// 				IconContent: []byte("VGhpcyBpcyBhIHN0cmluZyB0byBoYXNo"),
-		// 				IconHash: to.Ptr("bEQ1n2HysrGxCDvgt4bfOtkET8ydzh5SXGM0KGTBPVc"),
-		// 				ObjectID: to.Ptr("7877fb31-4bde-49fd-9df3-c046e0ec5325"),
-		// 			},
 		// 			SystemData: &armdesktopvirtualization.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
 		// 				CreatedBy: to.Ptr("user1"),
@@ -149,6 +142,13 @@ func ExampleDesktopsClient_NewListPager() {
 		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("user2"),
 		// 				LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
+		// 			},
+		// 			Properties: &armdesktopvirtualization.DesktopProperties{
+		// 				Description: to.Ptr("des1"),
+		// 				FriendlyName: to.Ptr("friendly"),
+		// 				IconContent: []byte("VGhpcyBpcyBhIHN0cmluZyB0byBoYXNo"),
+		// 				IconHash: to.Ptr("bEQ1n2HysrGxCDvgt4bfOtkET8ydzh5SXGM0KGTBPVc"),
+		// 				ObjectID: to.Ptr("7877fb31-4bde-49fd-9df3-c046e0ec5325"),
 		// 			},
 		// 	}},
 		// }

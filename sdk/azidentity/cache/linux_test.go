@@ -7,39 +7,23 @@
 package cache
 
 import (
-	"context"
-	"errors"
 	"os"
 	"path/filepath"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
 )
 
-var (
-	ctx        = context.Background()
-	keyringErr error
-)
-
-func TestMain(m *testing.M) {
-	keyringErr = tryKeyring()
-	os.Exit(m.Run())
-}
-
 func TestKeyExistsButNotFile(t *testing.T) {
-	if keyringErr != nil {
-		t.Skip(keyringErr)
-	}
 	expected := []byte(t.Name())
-	a, err := newKeyring(t.Name())
+	a, err := storage(t.Name())
 	require.NoError(t, err)
 	err = a.Write(ctx, append([]byte("not"), expected...))
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, a.Delete(ctx)) })
 
-	p, err := internal.CacheFilePath(t.Name())
+	p, err := cacheFilePath(t.Name())
 	require.NoError(t, err)
 	require.NoError(t, os.Remove(p))
 
@@ -57,9 +41,6 @@ func TestKeyExistsButNotFile(t *testing.T) {
 }
 
 func TestReadWriteDelete(t *testing.T) {
-	if keyringErr != nil {
-		t.Skip(keyringErr)
-	}
 	for _, test := range []struct {
 		expected   []byte
 		desc, name string
@@ -115,9 +96,6 @@ func TestReadWriteDelete(t *testing.T) {
 }
 
 func TestTwoInstances(t *testing.T) {
-	if keyringErr != nil {
-		t.Skip(keyringErr)
-	}
 	for _, deleteFile := range []bool{false, true} {
 		s := "key and file exist"
 		if deleteFile {
@@ -155,24 +133,4 @@ func TestTwoInstances(t *testing.T) {
 			require.NoError(t, b.Delete(ctx))
 		})
 	}
-}
-
-func TestUnencryptedFallback(t *testing.T) {
-	before := tryKeyring
-	t.Cleanup(func() { tryKeyring = before })
-	tryKeyring = func() error { return errors.New("it didn't work") }
-
-	o := internal.TokenCachePersistenceOptions{Name: t.Name()}
-	_, err := storage(internal.TokenCachePersistenceOptions{})
-	require.Error(t, err)
-
-	p, err := internal.CacheFilePath(o.Name)
-	require.NoError(t, err)
-	require.NoFileExists(t, p)
-	defer os.Remove(p)
-	o.AllowUnencryptedStorage = true
-	k, err := storage(o)
-	require.NoError(t, err)
-	require.NoError(t, k.Write(ctx, []byte("data")))
-	require.FileExists(t, p)
 }

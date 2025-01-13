@@ -14,13 +14,9 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/cache/internal/aescbc"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/cache/internal/jwe"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/AzureAD/microsoft-authentication-extensions-for-go/cache/accessor"
-	"github.com/AzureAD/microsoft-authentication-extensions-for-go/cache/accessor/file"
 	"golang.org/x/sys/unix"
 )
 
@@ -30,49 +26,11 @@ const (
 )
 
 var (
-	cacheDir   = os.UserHomeDir
-	tryKeyring = func() error {
-		k, err := newKeyring("azidentity-test-cache")
-		if err != nil {
-			return err
-		}
-		// the Accessor interface requires contexts for these methods but this implementation
-		// doesn't use them, which is okay because these methods don't block on user interaction
-		ctx := context.Background()
-		err = k.Write(ctx, []byte("test"))
-		if err != nil {
-			return err
-		}
-		_, err = k.Read(ctx)
-		if err != nil {
-			return err
-		}
-		return k.Delete(ctx)
+	cacheDir = os.UserHomeDir
+	storage  = func(name string) (accessor.Accessor, error) {
+		return newKeyring(name)
 	}
 )
-
-func storage(o internal.TokenCachePersistenceOptions) (accessor.Accessor, error) {
-	name := o.Name
-	if name == "" {
-		name = defaultName
-	}
-	err := tryKeyring()
-	if err != nil {
-		msg := fmt.Sprintf("cache encryption is impossible because the key retention facility isn't usable: %s", err)
-		if o.AllowUnencryptedStorage {
-			f := ""
-			f, err = internal.CacheFilePath(name)
-			if err == nil {
-				log.Write(azidentity.EventAuthentication, msg+". Falling back to unencrypted storage")
-				return file.New(f)
-			}
-		} else {
-			err = errors.New(msg + ". Set AllowUnencryptedStorage on TokenCachePersistenceOptions to store the cache in plaintext instead of returning this error")
-		}
-		return nil, err
-	}
-	return newKeyring(name)
-}
 
 // keyring encrypts cache data with a key stored on the user keyring and writes the encrypted
 // data to a file. The encryption key, and thus the data, is lost when the system shuts down.
@@ -83,7 +41,7 @@ type keyring struct {
 }
 
 func newKeyring(name string) (*keyring, error) {
-	p, err := internal.CacheFilePath(name)
+	p, err := cacheFilePath(name)
 	if err != nil {
 		return nil, err
 	}
@@ -93,11 +51,18 @@ func newKeyring(name string) (*keyring, error) {
 	if err != nil {
 		return nil, fmt.Errorf("couldn't get the user keyring due to error %q", err)
 	}
-	// Attempt to link a persistent keyring to the user's plain old keyring. This enables adding
-	// "persistent" keys that survive all the user's login sessions being deleted. Like all other
-	// keys, persistent keys exist only in kernel memory and are therefore lost on shutdown. If
-	// the attempt fails--some systems don't support persistent keyrings--we just use the plain
-	// old keyring.
+	// Link the session keyring to the user keyring so the process possesses any key[ring] it links
+	// to the user keyring and thereby has permission to read/write/search them (see the "Possession"
+	// section of the keyrings man page). This step isn't always necessary but in some cases prevents
+	// weirdness such as a process adding keys it can't read. Ignore errors because failure here
+	// doesn't guarantee this process can't perform all required operations on the user keyring.
+	if sessionID, err := unix.KeyctlGetKeyringID(unix.KEY_SPEC_SESSION_KEYRING, true); err == nil {
+		_, _ = unix.KeyctlInt(unix.KEYCTL_LINK, ringID, sessionID, 0, 0)
+	}
+	// Attempt to link a persistent keyring to the user keyring. This keyring is persistent in that
+	// its linked keys survive all the user's login sessions being deleted but like all user keys,
+	// they exist only in memory and are therefore lost on system shutdown. If the attempt fails
+	// (some systems don't support persistent keyrings) continue with the user keyring.
 	if persistentRing, err := unix.KeyctlInt(unix.KEYCTL_GET_PERSISTENT, -1, ringID, 0, 0); err == nil {
 		ringID = persistentRing
 	}

@@ -56,6 +56,29 @@ func PossibleAudioTranscriptionFormatValues() []AudioTranscriptionFormat {
 	}
 }
 
+// AudioTranscriptionTimestampGranularity - Defines the timestamp granularities that can be requested on a verbose transcription
+// response.
+type AudioTranscriptionTimestampGranularity string
+
+const (
+	// AudioTranscriptionTimestampGranularitySegment - Indicates that responses should include timing and other information about
+	// each transcribed audio segment. Audio
+	// segment timestamp information does not incur any additional latency.
+	AudioTranscriptionTimestampGranularitySegment AudioTranscriptionTimestampGranularity = "segment"
+	// AudioTranscriptionTimestampGranularityWord - Indicates that responses should include timing information about each transcribed
+	// word. Note that generating word
+	// timestamp information will incur additional response latency.
+	AudioTranscriptionTimestampGranularityWord AudioTranscriptionTimestampGranularity = "word"
+)
+
+// PossibleAudioTranscriptionTimestampGranularityValues returns the possible values for the AudioTranscriptionTimestampGranularity const type.
+func PossibleAudioTranscriptionTimestampGranularityValues() []AudioTranscriptionTimestampGranularity {
+	return []AudioTranscriptionTimestampGranularity{
+		AudioTranscriptionTimestampGranularitySegment,
+		AudioTranscriptionTimestampGranularityWord,
+	}
+}
+
 // AudioTranslationFormat - Defines available options for the underlying response format of output translation information.
 type AudioTranslationFormat string
 
@@ -86,6 +109,26 @@ func PossibleAudioTranslationFormatValues() []AudioTranslationFormat {
 	}
 }
 
+// AzureChatExtensionRetrieveDocumentFilterReason - The reason for filtering the retrieved document.
+type AzureChatExtensionRetrieveDocumentFilterReason string
+
+const (
+	// AzureChatExtensionRetrieveDocumentFilterReasonRerank - The document is not filtered by original search score threshold,
+	// but is filtered by rerank score and `top_n_documents` configure.
+	AzureChatExtensionRetrieveDocumentFilterReasonRerank AzureChatExtensionRetrieveDocumentFilterReason = "rerank"
+	// AzureChatExtensionRetrieveDocumentFilterReasonScore - The document is filtered by original search score threshold defined
+	// by `strictness` configure.
+	AzureChatExtensionRetrieveDocumentFilterReasonScore AzureChatExtensionRetrieveDocumentFilterReason = "score"
+)
+
+// PossibleAzureChatExtensionRetrieveDocumentFilterReasonValues returns the possible values for the AzureChatExtensionRetrieveDocumentFilterReason const type.
+func PossibleAzureChatExtensionRetrieveDocumentFilterReasonValues() []AzureChatExtensionRetrieveDocumentFilterReason {
+	return []AzureChatExtensionRetrieveDocumentFilterReason{
+		AzureChatExtensionRetrieveDocumentFilterReasonRerank,
+		AzureChatExtensionRetrieveDocumentFilterReasonScore,
+	}
+}
+
 // AzureChatExtensionType - A representation of configuration data for a single Azure OpenAI chat extension. This will be
 // used by a chat completions request that should use Azure OpenAI chat extensions to augment the response
 // behavior. The use of this configuration is compatible only with Azure OpenAI.
@@ -94,13 +137,12 @@ type AzureChatExtensionType string
 const (
 	// AzureChatExtensionTypeAzureCosmosDB - Represents the use of Azure Cosmos DB as an Azure OpenAI chat extension.
 	AzureChatExtensionTypeAzureCosmosDB AzureChatExtensionType = "azure_cosmos_db"
-	// AzureChatExtensionTypeAzureMachineLearningIndex - Represents the use of Azure Machine Learning index as an Azure OpenAI
-	// chat extension.
-	AzureChatExtensionTypeAzureMachineLearningIndex AzureChatExtensionType = "azure_ml_index"
 	// AzureChatExtensionTypeAzureSearch - Represents the use of Azure AI Search as an Azure OpenAI chat extension.
 	AzureChatExtensionTypeAzureSearch AzureChatExtensionType = "azure_search"
 	// AzureChatExtensionTypeElasticsearch - Represents the use of Elasticsearch® index as an Azure OpenAI chat extension.
 	AzureChatExtensionTypeElasticsearch AzureChatExtensionType = "elasticsearch"
+	// AzureChatExtensionTypeMongoDB - Represents the use of a MongoDB chat extension.
+	AzureChatExtensionTypeMongoDB AzureChatExtensionType = "mongo_db"
 	// AzureChatExtensionTypePinecone - Represents the use of Pinecone index as an Azure OpenAI chat extension.
 	AzureChatExtensionTypePinecone AzureChatExtensionType = "pinecone"
 )
@@ -109,9 +151,9 @@ const (
 func PossibleAzureChatExtensionTypeValues() []AzureChatExtensionType {
 	return []AzureChatExtensionType{
 		AzureChatExtensionTypeAzureCosmosDB,
-		AzureChatExtensionTypeAzureMachineLearningIndex,
 		AzureChatExtensionTypeAzureSearch,
 		AzureChatExtensionTypeElasticsearch,
+		AzureChatExtensionTypeMongoDB,
 		AzureChatExtensionTypePinecone,
 	}
 }
@@ -141,6 +183,42 @@ func PossibleAzureSearchQueryTypeValues() []AzureSearchQueryType {
 		AzureSearchQueryTypeVector,
 		AzureSearchQueryTypeVectorSemanticHybrid,
 		AzureSearchQueryTypeVectorSimpleHybrid,
+	}
+}
+
+// BatchStatus - The status of a batch.
+type BatchStatus string
+
+const (
+	// BatchStatusCancelled - The batch was cancelled.
+	BatchStatusCancelled BatchStatus = "cancelled"
+	// BatchStatusCancelling - Cancellation of the batch has been initiated.
+	BatchStatusCancelling BatchStatus = "cancelling"
+	// BatchStatusCompleted - The batch has been completed and the results are ready.
+	BatchStatusCompleted BatchStatus = "completed"
+	// BatchStatusExpired - The batch was not able to complete within the 24-hour time window.
+	BatchStatusExpired BatchStatus = "expired"
+	// BatchStatusFailed - The input file has failed the validation process.
+	BatchStatusFailed BatchStatus = "failed"
+	// BatchStatusFinalizing - The batch has completed and the results are being prepared.
+	BatchStatusFinalizing BatchStatus = "finalizing"
+	// BatchStatusInProgress - The input file was successfully validated and the batch is currently being executed.
+	BatchStatusInProgress BatchStatus = "in_progress"
+	// BatchStatusValidating - The input file is being validated before the batch can begin.
+	BatchStatusValidating BatchStatus = "validating"
+)
+
+// PossibleBatchStatusValues returns the possible values for the BatchStatus const type.
+func PossibleBatchStatusValues() []BatchStatus {
+	return []BatchStatus{
+		BatchStatusCancelled,
+		BatchStatusCancelling,
+		BatchStatusCompleted,
+		BatchStatusExpired,
+		BatchStatusFailed,
+		BatchStatusFinalizing,
+		BatchStatusInProgress,
+		BatchStatusValidating,
 	}
 }
 
@@ -193,6 +271,8 @@ const (
 	// provide a standard chat
 	// completions response. Response content may still be influenced by the provided tool definitions.
 	ChatCompletionsToolSelectionPresetNone ChatCompletionsToolSelectionPreset = "none"
+	// ChatCompletionsToolSelectionPresetRequired - Specifies that the model must call one or more tools.
+	ChatCompletionsToolSelectionPresetRequired ChatCompletionsToolSelectionPreset = "required"
 )
 
 // PossibleChatCompletionsToolSelectionPresetValues returns the possible values for the ChatCompletionsToolSelectionPreset const type.
@@ -200,6 +280,7 @@ func PossibleChatCompletionsToolSelectionPresetValues() []ChatCompletionsToolSel
 	return []ChatCompletionsToolSelectionPreset{
 		ChatCompletionsToolSelectionPresetAuto,
 		ChatCompletionsToolSelectionPresetNone,
+		ChatCompletionsToolSelectionPresetRequired,
 	}
 }
 
@@ -319,6 +400,28 @@ func PossibleContentFilterSeverityValues() []ContentFilterSeverity {
 	}
 }
 
+// CreateUploadRequestPurpose - The intended purpose of the uploaded file.
+// Use 'assistants' for Assistants and Message files, 'vision' for Assistants image file inputs, 'batch' for Batch API, and
+// 'fine-tune' for Fine-tuning.
+type CreateUploadRequestPurpose string
+
+const (
+	CreateUploadRequestPurposeAssistants CreateUploadRequestPurpose = "assistants"
+	CreateUploadRequestPurposeBatch      CreateUploadRequestPurpose = "batch"
+	CreateUploadRequestPurposeFineTune   CreateUploadRequestPurpose = "fine-tune"
+	CreateUploadRequestPurposeVision     CreateUploadRequestPurpose = "vision"
+)
+
+// PossibleCreateUploadRequestPurposeValues returns the possible values for the CreateUploadRequestPurpose const type.
+func PossibleCreateUploadRequestPurposeValues() []CreateUploadRequestPurpose {
+	return []CreateUploadRequestPurpose{
+		CreateUploadRequestPurposeAssistants,
+		CreateUploadRequestPurposeBatch,
+		CreateUploadRequestPurposeFineTune,
+		CreateUploadRequestPurposeVision,
+	}
+}
+
 // ElasticsearchQueryType - The type of Elasticsearch® retrieval query that should be executed when using it as an Azure OpenAI
 // chat extension.
 type ElasticsearchQueryType string
@@ -353,6 +456,81 @@ func PossibleEmbeddingEncodingFormatValues() []EmbeddingEncodingFormat {
 	return []EmbeddingEncodingFormat{
 		EmbeddingEncodingFormatBase64,
 		EmbeddingEncodingFormatFloat,
+	}
+}
+
+// FilePurpose - The possible values denoting the intended usage of a file.
+type FilePurpose string
+
+const (
+	// FilePurposeAssistants - Indicates a file is used as input to assistants.
+	FilePurposeAssistants FilePurpose = "assistants"
+	// FilePurposeAssistantsOutput - Indicates a file is used as output by assistants.
+	FilePurposeAssistantsOutput FilePurpose = "assistants_output"
+	// FilePurposeBatch - Indicates a file is used as input to .
+	FilePurposeBatch FilePurpose = "batch"
+	// FilePurposeBatchOutput - Indicates a file is used as output by a vector store batch operation.
+	FilePurposeBatchOutput FilePurpose = "batch_output"
+	// FilePurposeFineTune - Indicates a file is used for fine tuning input.
+	FilePurposeFineTune FilePurpose = "fine-tune"
+	// FilePurposeFineTuneResults - Indicates a file is used for fine tuning results.
+	FilePurposeFineTuneResults FilePurpose = "fine-tune-results"
+	// FilePurposeVision - Indicates a file is used as input to a vision operation.
+	FilePurposeVision FilePurpose = "vision"
+)
+
+// PossibleFilePurposeValues returns the possible values for the FilePurpose const type.
+func PossibleFilePurposeValues() []FilePurpose {
+	return []FilePurpose{
+		FilePurposeAssistants,
+		FilePurposeAssistantsOutput,
+		FilePurposeBatch,
+		FilePurposeBatchOutput,
+		FilePurposeFineTune,
+		FilePurposeFineTuneResults,
+		FilePurposeVision,
+	}
+}
+
+// FileState - The state of the file.
+type FileState string
+
+const (
+	// FileStateDeleted - The entity has been deleted but may still be referenced by other entities predating the deletion. It
+	// can be categorized as a
+	// terminal state.
+	FileStateDeleted FileState = "deleted"
+	// FileStateDeleting - The entity is in the process to be deleted. This state is not returned by Azure OpenAI and exposed
+	// only for compatibility.
+	// It can be categorized as an active state.
+	FileStateDeleting FileState = "deleting"
+	// FileStateError - The operation has completed processing with a failure and cannot be further consumed. It can be categorized
+	// as a terminal state.
+	FileStateError FileState = "error"
+	// FileStatePending - The operation was created and is not queued to be processed in the future. It can be categorized as
+	// an inactive state.
+	FileStatePending FileState = "pending"
+	// FileStateProcessed - The operation has successfully processed and is ready for consumption. It can be categorized as a
+	// terminal state.
+	FileStateProcessed FileState = "processed"
+	// FileStateRunning - The operation has started to be processed. It can be categorized as an active state.
+	FileStateRunning FileState = "running"
+	// FileStateUploaded - The file has been uploaded but it's not yet processed. This state is not returned by Azure OpenAI and
+	// exposed only for
+	// compatibility. It can be categorized as an inactive state.
+	FileStateUploaded FileState = "uploaded"
+)
+
+// PossibleFileStateValues returns the possible values for the FileState const type.
+func PossibleFileStateValues() []FileState {
+	return []FileState{
+		FileStateDeleted,
+		FileStateDeleting,
+		FileStateError,
+		FileStatePending,
+		FileStateProcessed,
+		FileStateRunning,
+		FileStateUploaded,
 	}
 }
 
@@ -487,6 +665,8 @@ const (
 	OnYourDataAuthenticationTypeSystemAssignedManagedIdentity OnYourDataAuthenticationType = "system_assigned_managed_identity"
 	// OnYourDataAuthenticationTypeUserAssignedManagedIdentity - Authentication via user-assigned managed identity.
 	OnYourDataAuthenticationTypeUserAssignedManagedIdentity OnYourDataAuthenticationType = "user_assigned_managed_identity"
+	// OnYourDataAuthenticationTypeUsernameAndPassword - Authentication via username and password.
+	OnYourDataAuthenticationTypeUsernameAndPassword OnYourDataAuthenticationType = "username_and_password"
 )
 
 // PossibleOnYourDataAuthenticationTypeValues returns the possible values for the OnYourDataAuthenticationType const type.
@@ -499,6 +679,46 @@ func PossibleOnYourDataAuthenticationTypeValues() []OnYourDataAuthenticationType
 		OnYourDataAuthenticationTypeKeyAndKeyID,
 		OnYourDataAuthenticationTypeSystemAssignedManagedIdentity,
 		OnYourDataAuthenticationTypeUserAssignedManagedIdentity,
+		OnYourDataAuthenticationTypeUsernameAndPassword,
+	}
+}
+
+// OnYourDataContextProperty - The context property.
+type OnYourDataContextProperty string
+
+const (
+	// OnYourDataContextPropertyAllRetrievedDocuments - The `all_retrieved_documents` property.
+	OnYourDataContextPropertyAllRetrievedDocuments OnYourDataContextProperty = "all_retrieved_documents"
+	// OnYourDataContextPropertyCitations - The `citations` property.
+	OnYourDataContextPropertyCitations OnYourDataContextProperty = "citations"
+	// OnYourDataContextPropertyIntent - The `intent` property.
+	OnYourDataContextPropertyIntent OnYourDataContextProperty = "intent"
+)
+
+// PossibleOnYourDataContextPropertyValues returns the possible values for the OnYourDataContextProperty const type.
+func PossibleOnYourDataContextPropertyValues() []OnYourDataContextProperty {
+	return []OnYourDataContextProperty{
+		OnYourDataContextPropertyAllRetrievedDocuments,
+		OnYourDataContextPropertyCitations,
+		OnYourDataContextPropertyIntent,
+	}
+}
+
+// OnYourDataVectorSearchAuthenticationType - The authentication types supported with Azure OpenAI On Your Data vector search.
+type OnYourDataVectorSearchAuthenticationType string
+
+const (
+	// OnYourDataVectorSearchAuthenticationTypeAPIKey - Authentication via API key.
+	OnYourDataVectorSearchAuthenticationTypeAPIKey OnYourDataVectorSearchAuthenticationType = "api_key"
+	// OnYourDataVectorSearchAuthenticationTypeAccessToken - Authentication via access token.
+	OnYourDataVectorSearchAuthenticationTypeAccessToken OnYourDataVectorSearchAuthenticationType = "access_token"
+)
+
+// PossibleOnYourDataVectorSearchAuthenticationTypeValues returns the possible values for the OnYourDataVectorSearchAuthenticationType const type.
+func PossibleOnYourDataVectorSearchAuthenticationTypeValues() []OnYourDataVectorSearchAuthenticationType {
+	return []OnYourDataVectorSearchAuthenticationType{
+		OnYourDataVectorSearchAuthenticationTypeAPIKey,
+		OnYourDataVectorSearchAuthenticationTypeAccessToken,
 	}
 }
 
@@ -515,6 +735,8 @@ const (
 	// OnYourDataVectorizationSourceTypeEndpoint - Represents vectorization performed by public service calls to an Azure OpenAI
 	// embedding model.
 	OnYourDataVectorizationSourceTypeEndpoint OnYourDataVectorizationSourceType = "endpoint"
+	// OnYourDataVectorizationSourceTypeIntegrated - Represents the integrated vectorizer defined within the search resource.
+	OnYourDataVectorizationSourceTypeIntegrated OnYourDataVectorizationSourceType = "integrated"
 	// OnYourDataVectorizationSourceTypeModelID - Represents a specific embedding model ID as defined in the search service.
 	// Currently only supported by Elasticsearch®.
 	OnYourDataVectorizationSourceTypeModelID OnYourDataVectorizationSourceType = "model_id"
@@ -525,6 +747,7 @@ func PossibleOnYourDataVectorizationSourceTypeValues() []OnYourDataVectorization
 	return []OnYourDataVectorizationSourceType{
 		OnYourDataVectorizationSourceTypeDeploymentName,
 		OnYourDataVectorizationSourceTypeEndpoint,
+		OnYourDataVectorizationSourceTypeIntegrated,
 		OnYourDataVectorizationSourceTypeModelID,
 	}
 }
@@ -544,6 +767,12 @@ const (
 	// SpeechGenerationResponseFormatOpus - Use Opus as the audio output format. Opus is optimized for internet streaming and
 	// low latency.
 	SpeechGenerationResponseFormatOpus SpeechGenerationResponseFormat = "opus"
+	// SpeechGenerationResponseFormatPcm - Use uncompressed PCM as the audio output format, which is similar to WAV but contains
+	// raw samples in 24kHz (16-bit signed, low-endian), without the header.
+	SpeechGenerationResponseFormatPcm SpeechGenerationResponseFormat = "pcm"
+	// SpeechGenerationResponseFormatWav - Use uncompressed WAV as the audio output format, suitable for low-latency applications
+	// to avoid decoding overhead.
+	SpeechGenerationResponseFormatWav SpeechGenerationResponseFormat = "wav"
 )
 
 // PossibleSpeechGenerationResponseFormatValues returns the possible values for the SpeechGenerationResponseFormat const type.
@@ -553,6 +782,8 @@ func PossibleSpeechGenerationResponseFormatValues() []SpeechGenerationResponseFo
 		SpeechGenerationResponseFormatFlac,
 		SpeechGenerationResponseFormatMp3,
 		SpeechGenerationResponseFormatOpus,
+		SpeechGenerationResponseFormatPcm,
+		SpeechGenerationResponseFormatWav,
 	}
 }
 
@@ -583,5 +814,51 @@ func PossibleSpeechVoiceValues() []SpeechVoice {
 		SpeechVoiceNova,
 		SpeechVoiceOnyx,
 		SpeechVoiceShimmer,
+	}
+}
+
+// UploadPurpose - The intended purpose of the file.
+type UploadPurpose string
+
+const (
+	UploadPurposeAssistants       UploadPurpose = "assistants"
+	UploadPurposeAssistantsOutput UploadPurpose = "assistants_output"
+	UploadPurposeBatch            UploadPurpose = "batch"
+	UploadPurposeBatchOutput      UploadPurpose = "batch_output"
+	UploadPurposeFineTune         UploadPurpose = "fine-tune"
+	UploadPurposeFineTuneResults  UploadPurpose = "fine-tune-results"
+	UploadPurposeVision           UploadPurpose = "vision"
+)
+
+// PossibleUploadPurposeValues returns the possible values for the UploadPurpose const type.
+func PossibleUploadPurposeValues() []UploadPurpose {
+	return []UploadPurpose{
+		UploadPurposeAssistants,
+		UploadPurposeAssistantsOutput,
+		UploadPurposeBatch,
+		UploadPurposeBatchOutput,
+		UploadPurposeFineTune,
+		UploadPurposeFineTuneResults,
+		UploadPurposeVision,
+	}
+}
+
+// UploadStatus - The status of the Upload.
+type UploadStatus string
+
+const (
+	UploadStatusCancelled UploadStatus = "cancelled"
+	UploadStatusCompleted UploadStatus = "completed"
+	UploadStatusExpired   UploadStatus = "expired"
+	UploadStatusPending   UploadStatus = "pending"
+)
+
+// PossibleUploadStatusValues returns the possible values for the UploadStatus const type.
+func PossibleUploadStatusValues() []UploadStatus {
+	return []UploadStatus{
+		UploadStatusCancelled,
+		UploadStatusCompleted,
+		UploadStatusExpired,
+		UploadStatusPending,
 	}
 }

@@ -24,4 +24,5 @@ pr:
 extends:
   template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:
+    EnableRaceDetector: true
     ServiceDirectory: 'azidentity/cache'

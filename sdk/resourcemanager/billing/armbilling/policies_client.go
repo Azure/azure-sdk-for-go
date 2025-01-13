@@ -11,40 +11,410 @@ package armbilling
 import (
 	"context"
 	"errors"
+	"net/http"
+	"net/url"
+	"strings"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"net/http"
-	"net/url"
-	"strings"
 )
 
 // PoliciesClient contains the methods for the Policies group.
 // Don't use this type directly, use NewPoliciesClient() instead.
 type PoliciesClient struct {
-	internal *arm.Client
+	internal       *arm.Client
+	subscriptionID string
 }
 
 // NewPoliciesClient creates a new instance of PoliciesClient with the specified values.
+//   - subscriptionID - The ID that uniquely identifies a billing subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewPoliciesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*PoliciesClient, error) {
+func NewPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PoliciesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &PoliciesClient{
-		internal: cl,
+		subscriptionID: subscriptionID,
+		internal:       cl,
 	}
 	return client, nil
+}
+
+// BeginCreateOrUpdateByBillingAccount - Update the policies for a billing account of Enterprise Agreement type.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - parameters - A policy at billing account scope.
+//   - options - PoliciesClientBeginCreateOrUpdateByBillingAccountOptions contains the optional parameters for the PoliciesClient.BeginCreateOrUpdateByBillingAccount
+//     method.
+func (client *PoliciesClient) BeginCreateOrUpdateByBillingAccount(ctx context.Context, billingAccountName string, parameters AccountPolicy, options *PoliciesClientBeginCreateOrUpdateByBillingAccountOptions) (*runtime.Poller[PoliciesClientCreateOrUpdateByBillingAccountResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdateByBillingAccount(ctx, billingAccountName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PoliciesClientCreateOrUpdateByBillingAccountResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PoliciesClientCreateOrUpdateByBillingAccountResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// CreateOrUpdateByBillingAccount - Update the policies for a billing account of Enterprise Agreement type.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+func (client *PoliciesClient) createOrUpdateByBillingAccount(ctx context.Context, billingAccountName string, parameters AccountPolicy, options *PoliciesClientBeginCreateOrUpdateByBillingAccountOptions) (*http.Response, error) {
+	var err error
+	const operationName = "PoliciesClient.BeginCreateOrUpdateByBillingAccount"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createOrUpdateByBillingAccountCreateRequest(ctx, billingAccountName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// createOrUpdateByBillingAccountCreateRequest creates the CreateOrUpdateByBillingAccount request.
+func (client *PoliciesClient) createOrUpdateByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, parameters AccountPolicy, options *PoliciesClientBeginCreateOrUpdateByBillingAccountOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/policies/default"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginCreateOrUpdateByBillingProfile - Updates the policies for a billing profile. This operation is supported only for
+// billing accounts with agreement type Microsoft Customer Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingProfileName - The ID that uniquely identifies a billing profile.
+//   - parameters - A policy at billing profile scope.
+//   - options - PoliciesClientBeginCreateOrUpdateByBillingProfileOptions contains the optional parameters for the PoliciesClient.BeginCreateOrUpdateByBillingProfile
+//     method.
+func (client *PoliciesClient) BeginCreateOrUpdateByBillingProfile(ctx context.Context, billingAccountName string, billingProfileName string, parameters ProfilePolicy, options *PoliciesClientBeginCreateOrUpdateByBillingProfileOptions) (*runtime.Poller[PoliciesClientCreateOrUpdateByBillingProfileResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdateByBillingProfile(ctx, billingAccountName, billingProfileName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PoliciesClientCreateOrUpdateByBillingProfileResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PoliciesClientCreateOrUpdateByBillingProfileResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// CreateOrUpdateByBillingProfile - Updates the policies for a billing profile. This operation is supported only for billing
+// accounts with agreement type Microsoft Customer Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+func (client *PoliciesClient) createOrUpdateByBillingProfile(ctx context.Context, billingAccountName string, billingProfileName string, parameters ProfilePolicy, options *PoliciesClientBeginCreateOrUpdateByBillingProfileOptions) (*http.Response, error) {
+	var err error
+	const operationName = "PoliciesClient.BeginCreateOrUpdateByBillingProfile"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createOrUpdateByBillingProfileCreateRequest(ctx, billingAccountName, billingProfileName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// createOrUpdateByBillingProfileCreateRequest creates the CreateOrUpdateByBillingProfile request.
+func (client *PoliciesClient) createOrUpdateByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, parameters ProfilePolicy, options *PoliciesClientBeginCreateOrUpdateByBillingProfileOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/policies/default"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if billingProfileName == "" {
+		return nil, errors.New("parameter billingProfileName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginCreateOrUpdateByCustomer - Updates the policies for a customer. This operation is supported only for billing accounts
+// with agreement type Microsoft Partner Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingProfileName - The ID that uniquely identifies a billing profile.
+//   - customerName - The ID that uniquely identifies a customer.
+//   - parameters - A policy at customer scope.
+//   - options - PoliciesClientBeginCreateOrUpdateByCustomerOptions contains the optional parameters for the PoliciesClient.BeginCreateOrUpdateByCustomer
+//     method.
+func (client *PoliciesClient) BeginCreateOrUpdateByCustomer(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, parameters CustomerPolicy, options *PoliciesClientBeginCreateOrUpdateByCustomerOptions) (*runtime.Poller[PoliciesClientCreateOrUpdateByCustomerResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdateByCustomer(ctx, billingAccountName, billingProfileName, customerName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PoliciesClientCreateOrUpdateByCustomerResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PoliciesClientCreateOrUpdateByCustomerResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// CreateOrUpdateByCustomer - Updates the policies for a customer. This operation is supported only for billing accounts with
+// agreement type Microsoft Partner Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+func (client *PoliciesClient) createOrUpdateByCustomer(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, parameters CustomerPolicy, options *PoliciesClientBeginCreateOrUpdateByCustomerOptions) (*http.Response, error) {
+	var err error
+	const operationName = "PoliciesClient.BeginCreateOrUpdateByCustomer"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createOrUpdateByCustomerCreateRequest(ctx, billingAccountName, billingProfileName, customerName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// createOrUpdateByCustomerCreateRequest creates the CreateOrUpdateByCustomer request.
+func (client *PoliciesClient) createOrUpdateByCustomerCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, parameters CustomerPolicy, options *PoliciesClientBeginCreateOrUpdateByCustomerOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/customers/{customerName}/policies/default"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if billingProfileName == "" {
+		return nil, errors.New("parameter billingProfileName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
+	if customerName == "" {
+		return nil, errors.New("parameter customerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{customerName}", url.PathEscape(customerName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginCreateOrUpdateByCustomerAtBillingAccount - Updates the policies for a customer at billing account scope. This operation
+// is supported only for billing accounts with agreement type Microsoft Partner Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - customerName - The ID that uniquely identifies a customer.
+//   - parameters - A policy at customer scope.
+//   - options - PoliciesClientBeginCreateOrUpdateByCustomerAtBillingAccountOptions contains the optional parameters for the PoliciesClient.BeginCreateOrUpdateByCustomerAtBillingAccount
+//     method.
+func (client *PoliciesClient) BeginCreateOrUpdateByCustomerAtBillingAccount(ctx context.Context, billingAccountName string, customerName string, parameters CustomerPolicy, options *PoliciesClientBeginCreateOrUpdateByCustomerAtBillingAccountOptions) (*runtime.Poller[PoliciesClientCreateOrUpdateByCustomerAtBillingAccountResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdateByCustomerAtBillingAccount(ctx, billingAccountName, customerName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PoliciesClientCreateOrUpdateByCustomerAtBillingAccountResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PoliciesClientCreateOrUpdateByCustomerAtBillingAccountResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// CreateOrUpdateByCustomerAtBillingAccount - Updates the policies for a customer at billing account scope. This operation
+// is supported only for billing accounts with agreement type Microsoft Partner Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+func (client *PoliciesClient) createOrUpdateByCustomerAtBillingAccount(ctx context.Context, billingAccountName string, customerName string, parameters CustomerPolicy, options *PoliciesClientBeginCreateOrUpdateByCustomerAtBillingAccountOptions) (*http.Response, error) {
+	var err error
+	const operationName = "PoliciesClient.BeginCreateOrUpdateByCustomerAtBillingAccount"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createOrUpdateByCustomerAtBillingAccountCreateRequest(ctx, billingAccountName, customerName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// createOrUpdateByCustomerAtBillingAccountCreateRequest creates the CreateOrUpdateByCustomerAtBillingAccount request.
+func (client *PoliciesClient) createOrUpdateByCustomerAtBillingAccountCreateRequest(ctx context.Context, billingAccountName string, customerName string, parameters CustomerPolicy, options *PoliciesClientBeginCreateOrUpdateByCustomerAtBillingAccountOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/customers/{customerName}/policies/default"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if customerName == "" {
+		return nil, errors.New("parameter customerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{customerName}", url.PathEscape(customerName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// GetByBillingAccount - Get the policies for a billing account of Enterprise Agreement type.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - options - PoliciesClientGetByBillingAccountOptions contains the optional parameters for the PoliciesClient.GetByBillingAccount
+//     method.
+func (client *PoliciesClient) GetByBillingAccount(ctx context.Context, billingAccountName string, options *PoliciesClientGetByBillingAccountOptions) (PoliciesClientGetByBillingAccountResponse, error) {
+	var err error
+	const operationName = "PoliciesClient.GetByBillingAccount"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getByBillingAccountCreateRequest(ctx, billingAccountName, options)
+	if err != nil {
+		return PoliciesClientGetByBillingAccountResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return PoliciesClientGetByBillingAccountResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return PoliciesClientGetByBillingAccountResponse{}, err
+	}
+	resp, err := client.getByBillingAccountHandleResponse(httpResp)
+	return resp, err
+}
+
+// getByBillingAccountCreateRequest creates the GetByBillingAccount request.
+func (client *PoliciesClient) getByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, options *PoliciesClientGetByBillingAccountOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/policies/default"
+	if billingAccountName == "" {
+		return nil, errors.New("parameter billingAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getByBillingAccountHandleResponse handles the GetByBillingAccount response.
+func (client *PoliciesClient) getByBillingAccountHandleResponse(resp *http.Response) (PoliciesClientGetByBillingAccountResponse, error) {
+	result := PoliciesClientGetByBillingAccountResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AccountPolicy); err != nil {
+		return PoliciesClientGetByBillingAccountResponse{}, err
+	}
+	return result, nil
 }
 
 // GetByBillingProfile - Lists the policies for a billing profile. This operation is supported only for billing accounts with
 // agreement type Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
 //   - billingProfileName - The ID that uniquely identifies a billing profile.
 //   - options - PoliciesClientGetByBillingProfileOptions contains the optional parameters for the PoliciesClient.GetByBillingProfile
@@ -87,7 +457,7 @@ func (client *PoliciesClient) getByBillingProfileCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -96,7 +466,7 @@ func (client *PoliciesClient) getByBillingProfileCreateRequest(ctx context.Conte
 // getByBillingProfileHandleResponse handles the GetByBillingProfile response.
 func (client *PoliciesClient) getByBillingProfileHandleResponse(resp *http.Response) (PoliciesClientGetByBillingProfileResponse, error) {
 	result := PoliciesClientGetByBillingProfileResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Policy); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.ProfilePolicy); err != nil {
 		return PoliciesClientGetByBillingProfileResponse{}, err
 	}
 	return result, nil
@@ -106,17 +476,19 @@ func (client *PoliciesClient) getByBillingProfileHandleResponse(resp *http.Respo
 // type Microsoft Partner Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingProfileName - The ID that uniquely identifies a billing profile.
 //   - customerName - The ID that uniquely identifies a customer.
+//   - policyName - Service-defined resource names such as 'default' which are reserved resource names.
 //   - options - PoliciesClientGetByCustomerOptions contains the optional parameters for the PoliciesClient.GetByCustomer method.
-func (client *PoliciesClient) GetByCustomer(ctx context.Context, billingAccountName string, customerName string, options *PoliciesClientGetByCustomerOptions) (PoliciesClientGetByCustomerResponse, error) {
+func (client *PoliciesClient) GetByCustomer(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, policyName ServiceDefinedResourceName, options *PoliciesClientGetByCustomerOptions) (PoliciesClientGetByCustomerResponse, error) {
 	var err error
 	const operationName = "PoliciesClient.GetByCustomer"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getByCustomerCreateRequest(ctx, billingAccountName, customerName, options)
+	req, err := client.getByCustomerCreateRequest(ctx, billingAccountName, billingProfileName, customerName, policyName, options)
 	if err != nil {
 		return PoliciesClientGetByCustomerResponse{}, err
 	}
@@ -133,22 +505,30 @@ func (client *PoliciesClient) GetByCustomer(ctx context.Context, billingAccountN
 }
 
 // getByCustomerCreateRequest creates the GetByCustomer request.
-func (client *PoliciesClient) getByCustomerCreateRequest(ctx context.Context, billingAccountName string, customerName string, options *PoliciesClientGetByCustomerOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/customers/{customerName}/policies/default"
+func (client *PoliciesClient) getByCustomerCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, policyName ServiceDefinedResourceName, options *PoliciesClientGetByCustomerOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/customers/{customerName}/policies/{policyName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+	if billingProfileName == "" {
+		return nil, errors.New("parameter billingProfileName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
 	if customerName == "" {
 		return nil, errors.New("parameter customerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{customerName}", url.PathEscape(customerName))
+	if policyName == "" {
+		return nil, errors.New("parameter policyName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{policyName}", url.PathEscape(string(policyName)))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -163,104 +543,39 @@ func (client *PoliciesClient) getByCustomerHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// Update - Updates the policies for a billing profile. This operation is supported only for billing accounts with agreement
-// type Microsoft Customer Agreement.
+// GetByCustomerAtBillingAccount - Lists the policies for a customer at billing account scope. This operation is supported
+// only for billing accounts with agreement type Microsoft Partner Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-05-01
-//   - billingAccountName - The ID that uniquely identifies a billing account.
-//   - billingProfileName - The ID that uniquely identifies a billing profile.
-//   - parameters - Request parameters that are provided to the update policies operation.
-//   - options - PoliciesClientUpdateOptions contains the optional parameters for the PoliciesClient.Update method.
-func (client *PoliciesClient) Update(ctx context.Context, billingAccountName string, billingProfileName string, parameters Policy, options *PoliciesClientUpdateOptions) (PoliciesClientUpdateResponse, error) {
-	var err error
-	const operationName = "PoliciesClient.Update"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, billingAccountName, billingProfileName, parameters, options)
-	if err != nil {
-		return PoliciesClientUpdateResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return PoliciesClientUpdateResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PoliciesClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
-}
-
-// updateCreateRequest creates the Update request.
-func (client *PoliciesClient) updateCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, parameters Policy, options *PoliciesClientUpdateOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/policies/default"
-	if billingAccountName == "" {
-		return nil, errors.New("parameter billingAccountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
-	if billingProfileName == "" {
-		return nil, errors.New("parameter billingProfileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// updateHandleResponse handles the Update response.
-func (client *PoliciesClient) updateHandleResponse(resp *http.Response) (PoliciesClientUpdateResponse, error) {
-	result := PoliciesClientUpdateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Policy); err != nil {
-		return PoliciesClientUpdateResponse{}, err
-	}
-	return result, nil
-}
-
-// UpdateCustomer - Updates the policies for a customer. This operation is supported only for billing accounts with agreement
-// type Microsoft Partner Agreement.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
 //   - customerName - The ID that uniquely identifies a customer.
-//   - parameters - Request parameters that are provided to the update policies operation.
-//   - options - PoliciesClientUpdateCustomerOptions contains the optional parameters for the PoliciesClient.UpdateCustomer method.
-func (client *PoliciesClient) UpdateCustomer(ctx context.Context, billingAccountName string, customerName string, parameters CustomerPolicy, options *PoliciesClientUpdateCustomerOptions) (PoliciesClientUpdateCustomerResponse, error) {
+//   - options - PoliciesClientGetByCustomerAtBillingAccountOptions contains the optional parameters for the PoliciesClient.GetByCustomerAtBillingAccount
+//     method.
+func (client *PoliciesClient) GetByCustomerAtBillingAccount(ctx context.Context, billingAccountName string, customerName string, options *PoliciesClientGetByCustomerAtBillingAccountOptions) (PoliciesClientGetByCustomerAtBillingAccountResponse, error) {
 	var err error
-	const operationName = "PoliciesClient.UpdateCustomer"
+	const operationName = "PoliciesClient.GetByCustomerAtBillingAccount"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.updateCustomerCreateRequest(ctx, billingAccountName, customerName, parameters, options)
+	req, err := client.getByCustomerAtBillingAccountCreateRequest(ctx, billingAccountName, customerName, options)
 	if err != nil {
-		return PoliciesClientUpdateCustomerResponse{}, err
+		return PoliciesClientGetByCustomerAtBillingAccountResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return PoliciesClientUpdateCustomerResponse{}, err
+		return PoliciesClientGetByCustomerAtBillingAccountResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return PoliciesClientUpdateCustomerResponse{}, err
+		return PoliciesClientGetByCustomerAtBillingAccountResponse{}, err
 	}
-	resp, err := client.updateCustomerHandleResponse(httpResp)
+	resp, err := client.getByCustomerAtBillingAccountHandleResponse(httpResp)
 	return resp, err
 }
 
-// updateCustomerCreateRequest creates the UpdateCustomer request.
-func (client *PoliciesClient) updateCustomerCreateRequest(ctx context.Context, billingAccountName string, customerName string, parameters CustomerPolicy, options *PoliciesClientUpdateCustomerOptions) (*policy.Request, error) {
+// getByCustomerAtBillingAccountCreateRequest creates the GetByCustomerAtBillingAccount request.
+func (client *PoliciesClient) getByCustomerAtBillingAccountCreateRequest(ctx context.Context, billingAccountName string, customerName string, options *PoliciesClientGetByCustomerAtBillingAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/customers/{customerName}/policies/default"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -270,25 +585,79 @@ func (client *PoliciesClient) updateCustomerCreateRequest(ctx context.Context, b
 		return nil, errors.New("parameter customerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{customerName}", url.PathEscape(customerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
 	return req, nil
 }
 
-// updateCustomerHandleResponse handles the UpdateCustomer response.
-func (client *PoliciesClient) updateCustomerHandleResponse(resp *http.Response) (PoliciesClientUpdateCustomerResponse, error) {
-	result := PoliciesClientUpdateCustomerResponse{}
+// getByCustomerAtBillingAccountHandleResponse handles the GetByCustomerAtBillingAccount response.
+func (client *PoliciesClient) getByCustomerAtBillingAccountHandleResponse(resp *http.Response) (PoliciesClientGetByCustomerAtBillingAccountResponse, error) {
+	result := PoliciesClientGetByCustomerAtBillingAccountResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomerPolicy); err != nil {
-		return PoliciesClientUpdateCustomerResponse{}, err
+		return PoliciesClientGetByCustomerAtBillingAccountResponse{}, err
+	}
+	return result, nil
+}
+
+// GetBySubscription - Lists the policies that are managed by the Billing Admin for the defined subscriptions. This is supported
+// for Microsoft Online Services Program, Microsoft Customer Agreement and Microsoft Partner
+// Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - options - PoliciesClientGetBySubscriptionOptions contains the optional parameters for the PoliciesClient.GetBySubscription
+//     method.
+func (client *PoliciesClient) GetBySubscription(ctx context.Context, options *PoliciesClientGetBySubscriptionOptions) (PoliciesClientGetBySubscriptionResponse, error) {
+	var err error
+	const operationName = "PoliciesClient.GetBySubscription"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getBySubscriptionCreateRequest(ctx, options)
+	if err != nil {
+		return PoliciesClientGetBySubscriptionResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return PoliciesClientGetBySubscriptionResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return PoliciesClientGetBySubscriptionResponse{}, err
+	}
+	resp, err := client.getBySubscriptionHandleResponse(httpResp)
+	return resp, err
+}
+
+// getBySubscriptionCreateRequest creates the GetBySubscription request.
+func (client *PoliciesClient) getBySubscriptionCreateRequest(ctx context.Context, options *PoliciesClientGetBySubscriptionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Billing/policies/default"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getBySubscriptionHandleResponse handles the GetBySubscription response.
+func (client *PoliciesClient) getBySubscriptionHandleResponse(resp *http.Response) (PoliciesClientGetBySubscriptionResponse, error) {
+	result := PoliciesClientGetBySubscriptionResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionPolicy); err != nil {
+		return PoliciesClientGetBySubscriptionResponse{}, err
 	}
 	return result, nil
 }

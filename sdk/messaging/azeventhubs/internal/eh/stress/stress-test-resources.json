@@ -142,20 +142,20 @@
           ]
         }
       ]
-    },
+    }
   ],
   "outputs": {
     "EVENTHUB_NAME_STRESS": {
       "type": "string",
       "value": "[variables('eventHubName')]"
     },
-    "EVENTHUB_CONNECTION_STRING": {
+    "EVENTHUB_NAMESPACE": {
       "type": "string",
-      "value": "[listKeys(resourceId('Microsoft.EventHub/namespaces/authorizationRules', variables('namespaceName'), 'RootManageSharedAccessKey'), variables('apiVersion')).primaryConnectionString]"
+      "value": "[concat(variables('namespaceName'), '.servicebus.windows.net')]"
     },
-    "CHECKPOINTSTORE_STORAGE_CONNECTION_STRING": {
+    "CHECKPOINTSTORE_STORAGE_ENDPOINT": {
       "type": "string",
-      "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('storageEndpointSuffix'))]"
+      "value": "[reference(variables('storageAccountName')).primaryEndpoints.blob]"
     }
   }
 }

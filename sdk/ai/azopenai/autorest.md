@@ -2,10 +2,10 @@
 
 These settings apply only when `--go` is specified on the command line.
 
-``` yaml
+```yaml
 input-file:
-# this file is generated using the ./testdata/genopenapi.ps1 file.
-- ./testdata/generated/openapi.json
+  # this file is generated using the ./testdata/genopenapi.ps1 file.
+  - ./testdata/generated/openapi.json
 output-folder: ../azopenai
 clear-output-folder: false
 module: github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai
@@ -15,6 +15,7 @@ go: true
 use: "@autorest/go@4.0.0-preview.63"
 title: "OpenAI"
 slice-elements-byval: true
+rawjson-as-bytes: true
 # can't use this since it removes an innererror type that we want ()
 # remove-non-reference-schema: true
 ```
@@ -23,7 +24,7 @@ slice-elements-byval: true
 
 Fix deployment and endpoint parameters so they show up in the right spots
 
-``` yaml
+```yaml
 directive:
   # Add x-ms-parameter-location to parameters in x-ms-parameterized-host
   - from: swagger-document
@@ -48,18 +49,18 @@ directive:
           "description": "The model to use for this request."
       }
       return $;
-  - from: 
-    - models.go
-    - models_serde.go
-    - options.go
-    - client.go
+  - from:
+      - models.go
+      - models_serde.go
+      - options.go
+      - client.go
     where: $
     transform: |
       return $.replace(/Model \*string/g, 'DeploymentName *string')
         .replace(/populate\(objectMap, "model", (.)\.Model\)/g, 'populate(objectMap, "model", $1.DeploymentName)')
         .replace(/err = unpopulate\(val, "Model", &(.)\.Model\)/g, 'err = unpopulate(val, "Model", &$1.DeploymentName)')
         .replace(/Model:/g, "DeploymentName: ");
-  # hack - we have _one_ spot where we want to keep it as Model (ChatCompletions.Model) since 
+  # hack - we have _one_ spot where we want to keep it as Model (ChatCompletions.Model) since
   # it is the actual model name, not the deployment, in Azure OpenAI or OpenAI.
   - from: models.go
     where: $
@@ -74,7 +75,7 @@ directive:
 
 ## Polymorphic adjustments
 
-The polymorphic _input_ models all expose the discriminator but it's ignored when serializing 
+The polymorphic _input_ models all expose the discriminator but it's ignored when serializing
 (ie, each type already knows the value and fills it in). So we'll just hide it.
 
 `ChatRequestMessageClassification.Role`
@@ -85,8 +86,8 @@ directive:
     where: $.definitions.ChatRequestMessage
     transform: $.properties.role["x-ms-client-name"] = "InternalRoleRename"
   - from:
-    - models.go
-    - models_serde.go
+      - models.go
+      - models_serde.go
     where: $
     transform: return $.replace(/InternalRoleRename/g, "role")
 ```
@@ -99,8 +100,8 @@ directive:
     where: $.definitions.AzureChatExtensionConfiguration
     transform: $.properties.type["x-ms-client-name"] = "InternalChatExtensionTypeRename"
   - from:
-    - models.go
-    - models_serde.go
+      - models.go
+      - models_serde.go
     where: $
     transform: return $.replace(/InternalChatExtensionTypeRename/g, "configType")
 ```
@@ -113,8 +114,8 @@ directive:
     where: $.definitions.OnYourDataAuthenticationOptions
     transform: $.properties.type["x-ms-client-name"] = "InternalOYDAuthTypeRename"
   - from:
-    - models.go
-    - models_serde.go
+      - models.go
+      - models_serde.go
     where: $
     transform: return $.replace(/InternalOYDAuthTypeRename/g, "configType")
 ```
@@ -127,41 +128,82 @@ directive:
     where: $.definitions.ChatCompletionsResponseFormat
     transform: $.properties.type["x-ms-client-name"] = "InternalChatCompletionsResponseFormat"
   - from:
-    - models.go
-    - models_serde.go
+      - models.go
+      - models_serde.go
     where: $
     transform: return $.replace(/InternalChatCompletionsResponseFormat/g, "respType")
 ```
 
+Fix casing of some fields
+
+```yaml
+directive:
+  # Filepath -> FilePath
+  - from: swagger-document
+    where: $.definitions.AzureChatExtensionRetrievedDocument
+    transform: $.properties.filepath["x-ms-client-name"] = "FilePath"
+  - from: swagger-document
+    where: $.definitions.AzureChatExtensionDataSourceResponseCitation
+    transform: $.properties.filepath["x-ms-client-name"] = "FilePath"
+
+  # FilepathField -> FilePathField
+  - from: swagger-document
+    where: $.definitions.AzureCosmosDBFieldMappingOptions
+    transform: $.properties.filepath_field["x-ms-client-name"] = "FilePathField"
+  - from: swagger-document
+    where: $.definitions.AzureSearchIndexFieldMappingOptions
+    transform: $.properties.filepath_field["x-ms-client-name"] = "FilePathField"
+  - from: swagger-document
+    where: $.definitions.ElasticsearchIndexFieldMappingOptions
+    transform: $.properties.filepath_field["x-ms-client-name"] = "FilePathField"
+  - from: swagger-document
+    where: $.definitions.PineconeFieldMappingOptions
+    transform: $.properties.filepath_field["x-ms-client-name"] = "FilePathField"
+
+  # CustomBlocklist -> CustomBlockList
+  - from: swagger-document
+    where: $.definitions.ImageGenerationPromptFilterResults
+    transform: $.properties.custom_blocklists["x-ms-client-name"] = "CustomBlockLists"
+  - from: swagger-document
+    where: $.definitions.ContentFilterResultDetailsForPrompt
+    transform: $.properties.custom_blocklists["x-ms-client-name"] = "CustomBlockLists"
+  - from: swagger-document
+    where: $.definitions.ContentFilterResultsForChoice
+    transform: $.properties.custom_blocklists["x-ms-client-name"] = "CustomBlockLists"
+```
+
 ## Cleanup the audio transcription APIs
 
-We're wrapping the audio translation and transcription APIs, so we can eliminate some of 
+We're wrapping the audio translation and transcription APIs, so we can eliminate some of
 these autogenerated models and functions.
 
 ```yaml
 directive:
   # kill models
   - from:
-    - models.go
-    - models_serde.go
+      - models.go
+      - models_serde.go
     where: $
     transform: |
       const typesToRemove = [
         'XMSPathsHksgfdDeploymentsDeploymentidAudioTranscriptionsOverloadGetaudiotranscriptionasresponseobjectPostRequestbodyContentMultipartFormDataSchema',
         'XMSPaths1Ak7Ov3DeploymentsDeploymentidAudioTranslationsOverloadGetaudiotranslationasresponseobjectPostRequestbodyContentMultipartFormDataSchema',
         'Paths1G1Yr9HDeploymentsDeploymentidAudioTranslationsPostRequestbodyContentMultipartFormDataSchema',
-        'Paths1MlipaDeploymentsDeploymentidAudioTranscriptionsPostRequestbodyContentMultipartFormDataSchema'
+        'Paths1MlipaDeploymentsDeploymentidAudioTranscriptionsPostRequestbodyContentMultipartFormDataSchema',
+        'Paths1Filz8PFilesPostRequestbodyContentMultipartFormDataSchema',
+        'Paths46Ul4XUploadsUploadIDPartsPostRequestbodyContentMultipartFormDataSchema',
+        'BatchCreateResponse',
       ];
 
       for (let name of typesToRemove) {
-        $ = $.replace(new RegExp(`type ${name} struct.+?\n}`, "s"), "")
+        $ = $.replace(new RegExp(`(// ${name} - [\\w\\s\\.,]+\n)?type ${name} struct.+?\s*\}`, "s"), "")
         .replace(new RegExp(`// MarshalJSON implements the json.Marshaller interface for type ${name}.+?\n}`, "s"), "")
         .replace(new RegExp(`// UnmarshalJSON implements the json.Unmarshaller interface for type ${name}.+?\n}`, "s"), "");
       }
       return $;
   # kill API functions
   - from:
-    - client.go
+      - client.go
     where: $
     transform: |
       return $.replace(/\/\/ GetAudioTranscriptionAsPlainText -.+?\n\}\n/s, "")
@@ -172,14 +214,14 @@ directive:
         .replace(/\/\/ getAudioTranslationAsPlainTextHandleResponse.+?\n}\n/s, "");
   # remove other plain text models/options
   - from:
-    - options.go
+      - options.go
     where: $
     transform: |
       return $.replace(/\/\/ ClientGetAudioTranslationAsPlainTextOptions .+?\n\}\n/s, "")
       .replace(/\/\/ ClientGetAudioTranscriptionAsPlainTextOptions .+?\n\}\n/s, "");
   # remove other plain text models/options
   - from:
-    - responses.go
+      - responses.go
     where: $
     transform: |
       return $.replace(/\/\/ ClientGetAudioTranscriptionAsPlainTextResponse .+?\n\}\n/s, "")
@@ -188,7 +230,7 @@ directive:
   # fix any calls that don't use 'deploymentID'
   - from: client.go
     where: $
-    transform: | 
+    transform: |
       return $
         .replace(/, deploymentID string,/g, ",")
         .replace(/ctx, deploymentID, /g, "ctx, ")
@@ -196,28 +238,23 @@ directive:
 
 ## Move the Azure extensions into their own section of the options
 
-```yaml
-# TODO: rename and move.
-```
-
-
-We've moved these 'extension' data types into their own field. 
+We've moved these 'extension' data types into their own field.
 
 ```yaml
 directive:
-- from: swagger-document
-  where: $.definitions.ChatCompletionsOptions.properties.data_sources
-  transform: $["x-ms-client-name"] = "AzureExtensionsOptions"
+  - from: swagger-document
+    where: $.definitions.ChatCompletionsOptions.properties.data_sources
+    transform: $["x-ms-client-name"] = "AzureExtensionsOptions"
 ```
 
 ## Trim the Error object to match our Go conventions
- 
+
 ```yaml
 directive:
   - from: swagger-document
     where: $.definitions["Azure.Core.Foundations.Error"]
     transform: |
-      $.properties = { 
+      $.properties = {
         code: $.properties["code"],
         message: {
           ...$.properties["message"],
@@ -225,14 +262,14 @@ directive:
         },
       };
       $["x-ms-client-name"] = "Error";
-  
+
   - from: swagger-document
     where: $.definitions
     transform: delete $["Azure.Core.Foundations.InnerError"];
 
-  - from: 
-    - models.go
-    - models_serde.go
+  - from:
+      - models.go
+      - models_serde.go
     where: $
     transform: return $.replace(/InternalErrorMessageRename/g, "message");
 ```
@@ -245,9 +282,25 @@ directive:
   - from: client.go
     where: $
     transform: |
-      return $
-        .replace(/runtime\.JoinPaths\(client.endpoint, urlPath\)/g, "client.formatURL(urlPath, getDeployment(body))");
+      const urlPaths = [
+          ".+?/audio/speech",
+          ".+?/audio/transcriptions",
+          ".+?/audio/translations",
+          ".+?/chat/completions",
+          ".+?/completions",
+          ".+?/embeddings",
+          ".+?/images/generations"
+      ].join("|");
 
+      const re = new RegExp(
+        '(urlPath := "(?:' + urlPaths + ')"\\s+' +
+        '.+?)runtime\.JoinPaths\\(client\\.endpoint, urlPath\\)',
+        'gs');
+
+      return $.replace(re, "$1client.formatURL(urlPath, body.DeploymentName)");
+  - from: client.go
+    where: $
+    transform: return $.replace(/runtime\.JoinPaths\(client\.endpoint, urlPath\)/g, "client.formatURL(urlPath, nil)");
   # Allow custom parsing of the returned error, mostly for handling the content filtering errors.
   - from: client.go
     where: $
@@ -269,14 +322,6 @@ directive:
   - from: swagger-document
     where: $.paths
     transform: delete $["/operations/images/{operationId}"]
-
-  # Remove stream property from CompletionsOptions and ChatCompletionsOptions
-  - from: swagger-document
-    where: $.definitions["CompletionsOptions"]
-    transform: delete $.properties.stream;
-  - from: swagger-document
-    where: $.definitions["ChatCompletionsOptions"]
-    transform: delete $.properties.stream; 
 ```
 
 Changes for audio/whisper APIs.
@@ -300,12 +345,12 @@ directive:
     transform: $.operationId = "GetAudioTranscriptionInternal"
 
   # hide the generated functions, in favor of our public wrappers.
-  - from: 
-    - client.go
-    - models.go
-    - models_serde.go
-    - responses.go
-    - options.go
+  - from:
+      - client.go
+      - models.go
+      - models_serde.go
+      - responses.go
+      - options.go
     where: $
     transform: |
       return $
@@ -317,8 +362,13 @@ directive:
     where: $
     transform: |
       return $
-        .replace(/(func.*getAudio(?:Translation|Transcription)InternalCreateRequest\(.+?)options/g, "$1body")
-        .replace(/runtime\.SetMultipartFormData\(.+?\)/sg, "setMultipartFormData(req, file, *body)")
+        .replace(/(func.* getAudio(?:Translation|Transcription)InternalCreateRequest\(.+?)options/g, "$1body")
+        .replace(/(func.* uploadFileCreateRequest\(.+?)options/g, "$1body");
+  - from: client.go
+    where: $
+    transform: |
+      return $
+        .replace(/((?:getAudioTranscriptionInternalCreateRequest|getAudioTranslationInternalCreateRequest).+?)runtime\.SetMultipartFormData\(.+?\)/sg, "$1setMultipartFormData(req, file, *body)");
 
   # response type parsing (can be text/plain _or_ JSON)
   - from: client.go
@@ -339,20 +389,20 @@ directive:
 ```yaml
 directive:
   - from:
-    - options.go
-    - models_serde.go
-    - models.go
+      - options.go
+      - models_serde.go
+      - models.go
     where: $
     transform: |
       return $
         .replace(/AvgLogprob \*float32/g, "AvgLogProb *float32")
         .replace(/(a|c)\.AvgLogprob/g, "$1.AvgLogProb")
-  - from: 
-    - client.go
-    - models.go
-    - models_serde.go
-    - options.go
-    - responses.go
+  - from:
+      - client.go
+      - models.go
+      - models_serde.go
+      - options.go
+      - responses.go
     where: $
     transform: return $.replace(/Logprobs/g, "LogProbs")
 ```
@@ -371,7 +421,7 @@ directive:
     where: $
     transform: >-
       return $.replace(
-        /(\s+)urlPath\s*:=\s*"\/deployments\/\{deploymentId\}\/([^"]+)".+?url\.PathEscape.+?\n/gs, 
+        /(\s+)urlPath\s*:=\s*"\/deployments\/\{deploymentId\}\/([^"]+)".+?url\.PathEscape.+?\n/gs,
         "$1urlPath := \"$2\"\n")
 
   # splice out the auto-generated `deploymentID` field from the client
@@ -379,14 +429,14 @@ directive:
     where: $
     transform: >-
       return $.replace(
-        /(type Client struct[^}]+})/s, 
+        /(type Client struct[^}]+})/s,
         "type Client struct {\ninternal *azcore.Client; clientData;\n}")
 
-  - from: 
+  - from:
     - models_serde.go
     - models.go
     where: $
-    transform: | 
+    transform: |
       return $
         // remove some types that were generated to support the recursive error.
         .replace(/\/\/ AzureCoreFoundationsInnerErrorInnererror.+?\n}/s, "")
@@ -407,7 +457,7 @@ directive:
 
         // We have two "inner error" types that are identical (ErrorInnerError and InnerError). Let's eliminate the one that's not actually directly referenced.
         .replace(/\/\/azureCoreFoundationsInnerError.+?\n}/s, "")
-        
+
         //
         // Fix the AzureCoreFoundation naming to match our style.
         //
@@ -416,7 +466,7 @@ directive:
     where: $
     transform: >-
       return $.replace(
-        /type ServiceAPIVersions string.+PossibleServiceAPIVersionsValues.+?\n}/gs, 
+        /type ServiceAPIVersions string.+PossibleServiceAPIVersionsValues.+?\n}/gs,
         "")
 
   # delete client name prefix from method options and response types
@@ -448,16 +498,6 @@ directive:
   - from: models_serde.go
     where: $
     transform: return $.replace(/case "prompt_filter_results":/g, 'case "prompt_annotations":\nfallthrough\ncase "prompt_filter_results":')
-```
-
-Update the ChatRequestUserMessage to allow for []ChatCompletionRequestMessageContentPartText _or_
-a string.
-
-```yaml
-directive:
-  - from: models.go
-    where: $
-    transform: return $.replace(/Content any/g, 'Content ChatRequestUserMessageContent')
 ```
 
 Add in some types that are incorrectly not being exported in the generation
@@ -572,8 +612,8 @@ directive:
     where: $.definitions.ChatCompletionRequestMessageContentPart
     transform: $.properties.type["x-ms-client-name"] = "ChatCompletionRequestMessageContentPartTypeRename"
   - from:
-    - models.go
-    - models_serde.go
+      - models.go
+      - models_serde.go
     where: $
     transform: return $.replace(/ChatCompletionRequestMessageContentPartTypeRename/g, "partType")
 ```
@@ -586,42 +626,15 @@ directive:
   - from: polymorphic_helpers.go
     where: $
     transform: |
-      return $.replace(/(func unmarshalChatCompletionsToolCallClassification.+?var b ChatCompletionsToolCallClassification\n)/s, 
-        `$1\n` + 
+      return $.replace(/(func unmarshalChatCompletionsToolCallClassification.+?var b ChatCompletionsToolCallClassification\n)/s,
+        `$1\n` +
         `if m["type"] == nil && m["function"] != nil {\n` +
         `  // WORKAROUND: the streaming results don't contain the proper role for functions, so we need to add these in.\n` +
-        `  m["type"] = string(ChatRoleFunction)\n` + 
+        `  m["type"] = string(ChatRoleFunction)\n` +
         `}\n`);
 ```
 
-Fix ToolChoice discriminated union
-
-```yaml
-directive:
-  - from: swagger-document
-    where: $.definitions.ChatCompletionsOptions.properties
-    transform: $["tool_choice"]["x-ms-client-name"] = "ToolChoiceRenameMe"
-  - from: 
-    - models.go
-    - models_serde.go
-    where: $
-    transform: |
-      return $
-        .replace(/^\s+ToolChoiceRenameMe.+$/m, "ToolChoice *ChatCompletionsToolChoice")   // update the name _and_ type for the field
-        .replace(/ToolChoiceRenameMe/g, "ToolChoice")    // rename all other references
-        .replace(/populateAny\(objectMap, "tool_choice", c\.ToolChoice\)/, 'populate(objectMap, "tool_choice", c.ToolChoice)');   // treat field as typed so nil means omit.
-```
-
-```yaml
-directive:
-  - from: models.go
-    where: $
-    transform: return $.replace(/FunctionCall any/, "FunctionCall *ChatCompletionsOptionsFunctionCall");
-  - from: models_serde.go
-    where: $
-    transform: return $.replace(/populateAny\(objectMap, "function_call", c\.FunctionCall\)/, 'populate(objectMap, "function_call", c.FunctionCall)');
-```
-
+Embedding has two ways of coming back - base64 or already decoded into floats. This has to be handled manually.
 
 ```yaml
 directive:
@@ -645,8 +658,261 @@ directive:
   - from: models.go
     where: $
     transform: |
-      const text = "// - If using EmbeddingEncodingFormatFloat (the default), the value will be a []float32, in [EmbeddingItem.Embedding]\n" + 
+      const text = "// - If using EmbeddingEncodingFormatFloat (the default), the value will be a []float32, in [EmbeddingItem.Embedding]\n" +
         "// - If using EmbeddingEncodingFormatBase64, the value will be a base-64 string in [EmbeddingItem.EmbeddingBase64]\n";
-        
+
       return $.replace(/(EncodingFormat \*EmbeddingEncodingFormat)/, `${text}$1`);
+```
+
+Update docs for FunctionDefinition.Parameters to indicate it's intended to be serialized JSON bytes,
+not an object or map[string]any.
+
+```yaml
+directive:
+  - from: models.go
+    where: $
+    transform: |
+      const comment = `	// REQUIRED; The function definition details for the function tool. \n` +
+        `	// NOTE: this field is JSON text that describes a JSON schema. You can marshal a data\n` +
+        ` // structure using code similar to this:\n` +
+        ` //\n` +
+        `	//	jsonBytes, err := json.Marshal(map[string]any{\n` +
+        `	//		"required": []string{"location"},\n` +
+        `	// 		"type":     "object",\n` +
+        `	// 		"properties": map[string]any{\n` +
+        `	// 			"location": map[string]any{\n` +
+        `	//	 			"type":        "string",\n` +
+        `	// 				"description": "The city and state, e.g. San Francisco, CA",\n` +
+        `	// 			},\n` +
+        `	//		},\n` +
+        `	//	})\n` +
+        `	//\n` +
+        `	//	if err != nil {\n` +
+        `	// 		panic(err)\n` +
+        `	//	}\n` +
+        `	// \n` +
+        `	//	funcDef := &azopenai.FunctionDefinition{\n` +
+        `	// 		Name:        to.Ptr("get_current_weather"),\n` +
+        `	// 		Description: to.Ptr("Get the current weather in a given location"),\n` +
+        `	// 		Parameters:  jsonBytes,\n` +
+        `	// 	}`;
+      return $.replace(/Parameters \[\]byte/, comment + "\nParameters []byte");
+```
+
+## Unions
+
+Update the ChatRequestUserMessage to allow for []ChatCompletionRequestMessageContentPartText _or_
+a string.
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: |
+      $["ChatRequestUserMessageContent"] = {
+        "x-ms-external": true,
+        "type": "object", "properties": { "stub": { "type": "string" }}
+      };
+      return $;
+  - from: swagger-document
+    where: $.definitions.ChatRequestUserMessage.properties.content
+    transform: $["$ref"] = "#/definitions/ChatRequestUserMessageContent"; return $;
+```
+
+Update ChatRequestAssistantMessage.Content to use its custom type.
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: |
+      $["ChatRequestAssistantMessageContent"] = {
+        "x-ms-external": true,
+        "type": "object", "properties": { "stub": { "type": "string" }}
+      };
+      return $;
+  - from: swagger-document
+    where: $.definitions.ChatRequestAssistantMessage.properties.content
+    transform: $["$ref"] = "#/definitions/ChatRequestAssistantMessageContent"; return $;
+```
+
+Update ChatRequestSystemMessage.content to use its custom type.
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: |
+      $["ChatRequestSystemMessageContent"] = {
+        "x-ms-external": true,
+        "type": "object", "properties": { "stub": { "type": "string" }}
+      };
+      return $;
+  - from: swagger-document
+    where: $.definitions.ChatRequestSystemMessage.properties.content
+    transform: $["$ref"] = "#/definitions/ChatRequestSystemMessageContent"; return $;
+```
+
+Update ChatRequestToolMessage.content to use its custom type.
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: |
+      $["ChatRequestToolMessageContent"] = {
+        "x-ms-external": true,
+        "type": "object", "properties": { "stub": { "type": "string" }}
+      };
+      return $;
+  - from: swagger-document
+    where: $.definitions.ChatRequestToolMessage.properties.content
+    transform: $["$ref"] = "#/definitions/ChatRequestToolMessageContent"; return $;
+```
+
+Update MongoDBChatExtensionParameters.embedding_dependency to use its custom type.
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: |
+      $["MongoDBChatExtensionParametersEmbeddingDependency"] = {
+        "x-ms-external": true,
+        "type": "object", "properties": { "stub": { "type": "string" }}
+      };
+      return $;
+  - from: swagger-document
+    where: $.definitions.MongoDBChatExtensionParameters.properties.embedding_dependency
+    transform: $["$ref"] = "#/definitions/MongoDBChatExtensionParametersEmbeddingDependency"; return $;
+```
+
+\*ChatCompletionsToolChoice
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: |
+      $["ChatCompletionsToolChoice"] = {
+        "x-ms-external": true,
+        "type": "object", "properties": { "stub": { "type": "string" }}
+      };
+      return $;
+  - from: swagger-document
+    where: $.definitions.ChatCompletionsOptions.properties.tool_choice
+    transform: $["$ref"] = "#/definitions/ChatCompletionsToolChoice"; return $;
+```
+
+\*ChatCompletionsOptionsFunctionCall
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: |
+      $["ChatCompletionsOptionsFunctionCall"] = {
+        "x-ms-external": true,
+        "type": "object", "properties": { "stub": { "type": "string" }}
+      };
+      return $;
+  - from: swagger-document
+    where: $.definitions.ChatCompletionsOptions.properties.function_call
+    transform: $["$ref"] = "#/definitions/ChatCompletionsOptionsFunctionCall"; return $;
+```
+
+<!--
+Fix ToolChoice discriminated union
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.ChatCompletionsOptions.properties
+    transform: $["tool_choice"]["x-ms-client-name"] = "ToolChoiceRenameMe"
+  - from:
+    - models.go
+    - models_serde.go
+    where: $
+    transform: |
+      return $
+        .replace(/^\s+ToolChoiceRenameMe.+$/m, "ToolChoice *ChatCompletionsToolChoice")   // update the name _and_ type for the field
+        .replace(/ToolChoiceRenameMe/g, "ToolChoice")    // rename all other references
+        .replace(/populateAny\(objectMap, "tool_choice", c\.ToolChoice\)/, 'populate(objectMap, "tool_choice", c.ToolChoice)');   // treat field as typed so nil means omit.
+``` -->
+
+<!-- ToolChoice and FunctionCall have types so they don't need the 'RawMessage' treatment.
+
+```yaml
+directive:
+  - from: models.go
+    where: $
+    transform: return $.replace(/FunctionCall \[\]byte/, "FunctionCall *ChatCompletionsOptionsFunctionCall");
+  - from: models_serde.go
+    where: $
+    transform: return $.replace(/json\.RawMessage\(([a-z]\.(?:FunctionCall|ToolChoice))\)/g, "$1")
+
+``` -->
+
+## Pagers
+
+ListBatches is a pageable API.
+
+```yaml
+directive:
+  - from: client.go
+    where: $
+    transform: return $
+      .replace(/ListBatches([ (])/g, "listBatches$1")
+      .replace(/result\.ListBatchesResponse/g, "result.ListBatchesPage");
+  - from: responses.go
+    where: $
+    transform: return $.replace(/ListBatchesResponse\s+\}/g, "ListBatchesPage\n}");
+  - from:
+      - models.go
+      - models_serde.go
+    where: $
+    transform: return $
+      .replace(/ ListBatchesResponse/g, " ListBatchesPage")
+      .replace(/ListBatchesResponse\)/g, " ListBatchesPage)");
+```
+
+## Files
+
+```yaml
+directive:
+  - from: client.go
+    where: $
+    transform: return $.replace(/\/\/ uploadFileCreateRequest creates .+?return req, nil\s+}/s, "");
+```
+
+## Anonymous types
+
+Give names to anonymous types
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.paths['/batches'].get.responses['200'].schema
+    transform: $["x-ms-client-name"] = "ListBatchesPage"; return $;
+```
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.ChatCompletionsOptions.properties.stream_options
+    transform: $["$ref"] = "#/definitions/ChatCompletionStreamOptions"
+  - from: swagger-document
+    where: $.definitions.CompletionsOptions.properties.stream_options
+    transform: $["$ref"] = "#/definitions/ChatCompletionStreamOptions"
+```
+
+## Doc updates
+
+Hoisting the description for an anonymous type.
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.ChatCompletionsJsonSchemaResponseFormat.properties.json_schema
+    transform: $.description = $.properties.description.description; return $;
 ```

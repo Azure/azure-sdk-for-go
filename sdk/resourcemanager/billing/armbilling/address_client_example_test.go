@@ -18,8 +18,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/AddressInvalid.json
-func ExampleAddressClient_Validate_addressInvalid() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/addressValidateInvalid.json
+func ExampleAddressClient_Validate_addressValidateInvalid() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -42,7 +42,7 @@ func ExampleAddressClient_Validate_addressInvalid() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ValidateAddressResponse = armbilling.ValidateAddressResponse{
+	// res.AddressValidationResponse = armbilling.AddressValidationResponse{
 	// 	Status: to.Ptr(armbilling.AddressValidationStatusInvalid),
 	// 	SuggestedAddresses: []*armbilling.AddressDetails{
 	// 		{
@@ -63,8 +63,8 @@ func ExampleAddressClient_Validate_addressInvalid() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/AddressValid.json
-func ExampleAddressClient_Validate_addressValid() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c08ac9813477921ad8295b98ced8f82d11b8f913/specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/addressValidateValid.json
+func ExampleAddressClient_Validate_addressValidateValid() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -75,7 +75,7 @@ func ExampleAddressClient_Validate_addressValid() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewAddressClient().Validate(ctx, armbilling.AddressDetails{
-		AddressLine1: to.Ptr("1 Test Address"),
+		AddressLine1: to.Ptr("1 Test"),
 		City:         to.Ptr("bellevue"),
 		Country:      to.Ptr("us"),
 		PostalCode:   to.Ptr("12345"),
@@ -87,15 +87,7 @@ func ExampleAddressClient_Validate_addressValid() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ValidateAddressResponse = armbilling.ValidateAddressResponse{
+	// res.AddressValidationResponse = armbilling.AddressValidationResponse{
 	// 	Status: to.Ptr(armbilling.AddressValidationStatusValid),
-	// 	SuggestedAddresses: []*armbilling.AddressDetails{
-	// 		{
-	// 			AddressLine1: to.Ptr("1 Test Address"),
-	// 			City: to.Ptr("Bellevue"),
-	// 			Country: to.Ptr("US"),
-	// 			PostalCode: to.Ptr("12345-0000"),
-	// 			Region: to.Ptr("WA"),
-	// 	}},
 	// }
 }

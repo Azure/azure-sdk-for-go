@@ -19,6 +19,7 @@ import (
 
 // ServerFactory is a fake server for instances of the armcontainerservicefleet.ClientFactory type.
 type ServerFactory struct {
+	AutoUpgradeProfilesServer   AutoUpgradeProfilesServer
 	FleetMembersServer          FleetMembersServer
 	FleetUpdateStrategiesServer FleetUpdateStrategiesServer
 	FleetsServer                FleetsServer
@@ -40,6 +41,7 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 type ServerFactoryTransport struct {
 	srv                           *ServerFactory
 	trMu                          sync.Mutex
+	trAutoUpgradeProfilesServer   *AutoUpgradeProfilesServerTransport
 	trFleetMembersServer          *FleetMembersServerTransport
 	trFleetUpdateStrategiesServer *FleetUpdateStrategiesServerTransport
 	trFleetsServer                *FleetsServerTransport
@@ -60,6 +62,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "AutoUpgradeProfilesClient":
+		initServer(s, &s.trAutoUpgradeProfilesServer, func() *AutoUpgradeProfilesServerTransport {
+			return NewAutoUpgradeProfilesServerTransport(&s.srv.AutoUpgradeProfilesServer)
+		})
+		resp, err = s.trAutoUpgradeProfilesServer.Do(req)
 	case "FleetMembersClient":
 		initServer(s, &s.trFleetMembersServer, func() *FleetMembersServerTransport { return NewFleetMembersServerTransport(&s.srv.FleetMembersServer) })
 		resp, err = s.trFleetMembersServer.Do(req)

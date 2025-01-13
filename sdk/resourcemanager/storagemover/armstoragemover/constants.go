@@ -10,7 +10,7 @@ package armstoragemover
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagemover/armstoragemover"
-	moduleVersion = "v2.1.0"
+	moduleVersion = "v2.2.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -101,6 +101,32 @@ func PossibleCredentialTypeValues() []CredentialType {
 	}
 }
 
+// DayOfWeek - The day of week.
+type DayOfWeek string
+
+const (
+	DayOfWeekFriday    DayOfWeek = "Friday"
+	DayOfWeekMonday    DayOfWeek = "Monday"
+	DayOfWeekSaturday  DayOfWeek = "Saturday"
+	DayOfWeekSunday    DayOfWeek = "Sunday"
+	DayOfWeekThursday  DayOfWeek = "Thursday"
+	DayOfWeekTuesday   DayOfWeek = "Tuesday"
+	DayOfWeekWednesday DayOfWeek = "Wednesday"
+)
+
+// PossibleDayOfWeekValues returns the possible values for the DayOfWeek const type.
+func PossibleDayOfWeekValues() []DayOfWeek {
+	return []DayOfWeek{
+		DayOfWeekFriday,
+		DayOfWeekMonday,
+		DayOfWeekSaturday,
+		DayOfWeekSunday,
+		DayOfWeekThursday,
+		DayOfWeekTuesday,
+		DayOfWeekWednesday,
+	}
+}
+
 // EndpointType - The Endpoint resource type.
 type EndpointType string
 
@@ -143,14 +169,15 @@ func PossibleJobRunScanStatusValues() []JobRunScanStatus {
 type JobRunStatus string
 
 const (
-	JobRunStatusCancelRequested JobRunStatus = "CancelRequested"
-	JobRunStatusCanceled        JobRunStatus = "Canceled"
-	JobRunStatusCanceling       JobRunStatus = "Canceling"
-	JobRunStatusFailed          JobRunStatus = "Failed"
-	JobRunStatusQueued          JobRunStatus = "Queued"
-	JobRunStatusRunning         JobRunStatus = "Running"
-	JobRunStatusStarted         JobRunStatus = "Started"
-	JobRunStatusSucceeded       JobRunStatus = "Succeeded"
+	JobRunStatusCancelRequested             JobRunStatus = "CancelRequested"
+	JobRunStatusCanceled                    JobRunStatus = "Canceled"
+	JobRunStatusCanceling                   JobRunStatus = "Canceling"
+	JobRunStatusFailed                      JobRunStatus = "Failed"
+	JobRunStatusPausedByBandwidthManagement JobRunStatus = "PausedByBandwidthManagement"
+	JobRunStatusQueued                      JobRunStatus = "Queued"
+	JobRunStatusRunning                     JobRunStatus = "Running"
+	JobRunStatusStarted                     JobRunStatus = "Started"
+	JobRunStatusSucceeded                   JobRunStatus = "Succeeded"
 )
 
 // PossibleJobRunStatusValues returns the possible values for the JobRunStatus const type.
@@ -160,10 +187,27 @@ func PossibleJobRunStatusValues() []JobRunStatus {
 		JobRunStatusCanceled,
 		JobRunStatusCanceling,
 		JobRunStatusFailed,
+		JobRunStatusPausedByBandwidthManagement,
 		JobRunStatusQueued,
 		JobRunStatusRunning,
 		JobRunStatusStarted,
 		JobRunStatusSucceeded,
+	}
+}
+
+// Minute - The minute element of the time. Allowed values are 0 and 30. If not specified, its value defaults to 0.
+type Minute int32
+
+const (
+	MinuteThirty Minute = 30
+	MinuteZero   Minute = 0
+)
+
+// PossibleMinuteValues returns the possible values for the Minute const type.
+func PossibleMinuteValues() []Minute {
+	return []Minute{
+		MinuteThirty,
+		MinuteZero,
 	}
 }
 
@@ -204,16 +248,22 @@ func PossibleOriginValues() []Origin {
 	}
 }
 
-// ProvisioningState - The provisioning state of this resource.
+// ProvisioningState - The provisioning state of a resource.
 type ProvisioningState string
 
 const (
+	ProvisioningStateCanceled  ProvisioningState = "Canceled"
+	ProvisioningStateDeleting  ProvisioningState = "Deleting"
+	ProvisioningStateFailed    ProvisioningState = "Failed"
 	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
 )
 
 // PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return []ProvisioningState{
+		ProvisioningStateCanceled,
+		ProvisioningStateDeleting,
+		ProvisioningStateFailed,
 		ProvisioningStateSucceeded,
 	}
 }

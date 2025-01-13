@@ -17,58 +17,101 @@ import (
 // Don't use this type directly, use NewClientFactory instead.
 type ClientFactory struct {
 	subscriptionID string
-	credential     azcore.TokenCredential
-	options        *arm.ClientOptions
+	internal       *arm.Client
 }
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
 // The parameter values will be propagated to any client created from this factory.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
+	internal, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	return &ClientFactory{
-		subscriptionID: subscriptionID, credential: credential,
-		options: options.Clone(),
+		subscriptionID: subscriptionID,
+		internal:       internal,
 	}, nil
 }
 
 // NewDNSForwardingRulesetsClient creates a new instance of DNSForwardingRulesetsClient.
 func (c *ClientFactory) NewDNSForwardingRulesetsClient() *DNSForwardingRulesetsClient {
-	subClient, _ := NewDNSForwardingRulesetsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &DNSForwardingRulesetsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewDNSResolversClient creates a new instance of DNSResolversClient.
 func (c *ClientFactory) NewDNSResolversClient() *DNSResolversClient {
-	subClient, _ := NewDNSResolversClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &DNSResolversClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewDNSSecurityRulesClient creates a new instance of DNSSecurityRulesClient.
+func (c *ClientFactory) NewDNSSecurityRulesClient() *DNSSecurityRulesClient {
+	return &DNSSecurityRulesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewDomainListsClient creates a new instance of DomainListsClient.
+func (c *ClientFactory) NewDomainListsClient() *DomainListsClient {
+	return &DomainListsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewForwardingRulesClient creates a new instance of ForwardingRulesClient.
 func (c *ClientFactory) NewForwardingRulesClient() *ForwardingRulesClient {
-	subClient, _ := NewForwardingRulesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &ForwardingRulesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewInboundEndpointsClient creates a new instance of InboundEndpointsClient.
 func (c *ClientFactory) NewInboundEndpointsClient() *InboundEndpointsClient {
-	subClient, _ := NewInboundEndpointsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &InboundEndpointsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewOutboundEndpointsClient creates a new instance of OutboundEndpointsClient.
 func (c *ClientFactory) NewOutboundEndpointsClient() *OutboundEndpointsClient {
-	subClient, _ := NewOutboundEndpointsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &OutboundEndpointsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewPoliciesClient creates a new instance of PoliciesClient.
+func (c *ClientFactory) NewPoliciesClient() *PoliciesClient {
+	return &PoliciesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewPolicyVirtualNetworkLinksClient creates a new instance of PolicyVirtualNetworkLinksClient.
+func (c *ClientFactory) NewPolicyVirtualNetworkLinksClient() *PolicyVirtualNetworkLinksClient {
+	return &PolicyVirtualNetworkLinksClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewVirtualNetworkLinksClient creates a new instance of VirtualNetworkLinksClient.
 func (c *ClientFactory) NewVirtualNetworkLinksClient() *VirtualNetworkLinksClient {
-	subClient, _ := NewVirtualNetworkLinksClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &VirtualNetworkLinksClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }

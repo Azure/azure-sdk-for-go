@@ -1,5 +1,11 @@
 # Release History
 
+## 1.4.0-beta.2 (2024-06-21)
+### Features Added
+
+- New value `SearchBypassAzureServices` added to enum type `SearchBypass`
+
+
 ## 1.4.0-beta.1 (2024-03-22)
 ### Features Added
 

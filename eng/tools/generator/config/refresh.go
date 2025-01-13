@@ -7,10 +7,9 @@ import (
 	"encoding/json"
 	"errors"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/autorest/model"
-	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/common"
 )
+
+const Root = "github.com/Azure/azure-sdk-for-go"
 
 type RefreshInfo struct {
 	// AdditionalFlags are the additional options that will be used in the general refresh
@@ -19,14 +18,14 @@ type RefreshInfo struct {
 	Packages []string `json:"packages,omitempty"`
 }
 
-func (r RefreshInfo) AdditionalOptions() ([]model.Option, error) {
+func (r RefreshInfo) AdditionalOptions() ([]Option, error) {
 	return parseAdditionalOptions(r.AdditionalFlags)
 }
 
 func (r RefreshInfo) RelativePackages() []string {
 	var packages []string
 	for _, p := range r.Packages {
-		l := strings.TrimPrefix(strings.TrimPrefix(p, common.Root), "/")
+		l := strings.TrimPrefix(strings.TrimPrefix(p, Root), "/")
 		packages = append(packages, l)
 	}
 
@@ -38,11 +37,11 @@ func (r RefreshInfo) String() string {
 	return string(b)
 }
 
-func parseAdditionalOptions(input []string) ([]model.Option, error) {
+func parseAdditionalOptions(input []string) ([]Option, error) {
 	var errResult error
-	var options []model.Option
+	var options []Option
 	for _, f := range input {
-		o, err := model.NewOption(f)
+		o, err := NewOption(f)
 		if err != nil {
 			errResult = errors.Join(errResult, err)
 			continue

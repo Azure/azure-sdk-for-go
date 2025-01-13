@@ -226,18 +226,10 @@ func unmarshalCloudOfferingClassification(rawMsg json.RawMessage) (CloudOffering
 		b = &DefenderFoDatabasesAwsOffering{}
 	case string(OfferingTypeDefenderForDatabasesGcp):
 		b = &DefenderForDatabasesGcpOffering{}
-	case string(OfferingTypeDefenderForDevOpsAzureDevOps):
-		b = &DefenderForDevOpsAzureDevOpsOffering{}
-	case string(OfferingTypeDefenderForDevOpsGitLab):
-		b = &DefenderForDevOpsGitLabOffering{}
-	case string(OfferingTypeDefenderForDevOpsGithub):
-		b = &DefenderForDevOpsGithubOffering{}
 	case string(OfferingTypeDefenderForServersAws):
 		b = &DefenderForServersAwsOffering{}
 	case string(OfferingTypeDefenderForServersGcp):
 		b = &DefenderForServersGcpOffering{}
-	case string(OfferingTypeInformationProtectionAws):
-		b = &InformationProtectionAwsOffering{}
 	default:
 		b = &CloudOffering{}
 	}
@@ -360,6 +352,48 @@ func unmarshalGcpOrganizationalDataClassification(rawMsg json.RawMessage) (GcpOr
 		return nil, err
 	}
 	return b, nil
+}
+
+func unmarshalNotificationsSourceClassification(rawMsg json.RawMessage) (NotificationsSourceClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b NotificationsSourceClassification
+	switch m["sourceType"] {
+	case string(SourceTypeAlert):
+		b = &NotificationsSourceAlert{}
+	case string(SourceTypeAttackPath):
+		b = &NotificationsSourceAttackPath{}
+	default:
+		b = &NotificationsSource{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalNotificationsSourceClassificationArray(rawMsg json.RawMessage) ([]NotificationsSourceClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var rawMessages []json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fArray := make([]NotificationsSourceClassification, len(rawMessages))
+	for index, rawMessage := range rawMessages {
+		f, err := unmarshalNotificationsSourceClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fArray[index] = f
+	}
+	return fArray, nil
 }
 
 func unmarshalResourceDetailsClassification(rawMsg json.RawMessage) (ResourceDetailsClassification, error) {

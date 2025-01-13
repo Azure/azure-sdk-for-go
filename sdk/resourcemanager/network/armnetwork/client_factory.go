@@ -357,6 +357,22 @@ func (c *ClientFactory) NewFirewallPoliciesClient() *FirewallPoliciesClient {
 	}
 }
 
+// NewFirewallPolicyDeploymentsClient creates a new instance of FirewallPolicyDeploymentsClient.
+func (c *ClientFactory) NewFirewallPolicyDeploymentsClient() *FirewallPolicyDeploymentsClient {
+	return &FirewallPolicyDeploymentsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewFirewallPolicyDraftsClient creates a new instance of FirewallPolicyDraftsClient.
+func (c *ClientFactory) NewFirewallPolicyDraftsClient() *FirewallPolicyDraftsClient {
+	return &FirewallPolicyDraftsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewFirewallPolicyIdpsSignaturesClient creates a new instance of FirewallPolicyIdpsSignaturesClient.
 func (c *ClientFactory) NewFirewallPolicyIdpsSignaturesClient() *FirewallPolicyIdpsSignaturesClient {
 	return &FirewallPolicyIdpsSignaturesClient{
@@ -376,6 +392,14 @@ func (c *ClientFactory) NewFirewallPolicyIdpsSignaturesFilterValuesClient() *Fir
 // NewFirewallPolicyIdpsSignaturesOverridesClient creates a new instance of FirewallPolicyIdpsSignaturesOverridesClient.
 func (c *ClientFactory) NewFirewallPolicyIdpsSignaturesOverridesClient() *FirewallPolicyIdpsSignaturesOverridesClient {
 	return &FirewallPolicyIdpsSignaturesOverridesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewFirewallPolicyRuleCollectionGroupDraftsClient creates a new instance of FirewallPolicyRuleCollectionGroupDraftsClient.
+func (c *ClientFactory) NewFirewallPolicyRuleCollectionGroupDraftsClient() *FirewallPolicyRuleCollectionGroupDraftsClient {
+	return &FirewallPolicyRuleCollectionGroupDraftsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -485,6 +509,14 @@ func (c *ClientFactory) NewInterfacesClient() *InterfacesClient {
 	}
 }
 
+// NewIpamPoolsClient creates a new instance of IpamPoolsClient.
+func (c *ClientFactory) NewIpamPoolsClient() *IpamPoolsClient {
+	return &IpamPoolsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewLoadBalancerBackendAddressPoolsClient creates a new instance of LoadBalancerBackendAddressPoolsClient.
 func (c *ClientFactory) NewLoadBalancerBackendAddressPoolsClient() *LoadBalancerBackendAddressPoolsClient {
 	return &LoadBalancerBackendAddressPoolsClient{
@@ -575,6 +607,14 @@ func (c *ClientFactory) NewManagerCommitsClient() *ManagerCommitsClient {
 // NewManagerDeploymentStatusClient creates a new instance of ManagerDeploymentStatusClient.
 func (c *ClientFactory) NewManagerDeploymentStatusClient() *ManagerDeploymentStatusClient {
 	return &ManagerDeploymentStatusClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewManagerRoutingConfigurationsClient creates a new instance of ManagerRoutingConfigurationsClient.
+func (c *ClientFactory) NewManagerRoutingConfigurationsClient() *ManagerRoutingConfigurationsClient {
+	return &ManagerRoutingConfigurationsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -683,6 +723,22 @@ func (c *ClientFactory) NewPublicIPPrefixesClient() *PublicIPPrefixesClient {
 	}
 }
 
+// NewReachabilityAnalysisIntentsClient creates a new instance of ReachabilityAnalysisIntentsClient.
+func (c *ClientFactory) NewReachabilityAnalysisIntentsClient() *ReachabilityAnalysisIntentsClient {
+	return &ReachabilityAnalysisIntentsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewReachabilityAnalysisRunsClient creates a new instance of ReachabilityAnalysisRunsClient.
+func (c *ClientFactory) NewReachabilityAnalysisRunsClient() *ReachabilityAnalysisRunsClient {
+	return &ReachabilityAnalysisRunsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewResourceNavigationLinksClient creates a new instance of ResourceNavigationLinksClient.
 func (c *ClientFactory) NewResourceNavigationLinksClient() *ResourceNavigationLinksClient {
 	return &ResourceNavigationLinksClient{
@@ -739,6 +795,22 @@ func (c *ClientFactory) NewRoutingIntentClient() *RoutingIntentClient {
 	}
 }
 
+// NewRoutingRuleCollectionsClient creates a new instance of RoutingRuleCollectionsClient.
+func (c *ClientFactory) NewRoutingRuleCollectionsClient() *RoutingRuleCollectionsClient {
+	return &RoutingRuleCollectionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewRoutingRulesClient creates a new instance of RoutingRulesClient.
+func (c *ClientFactory) NewRoutingRulesClient() *RoutingRulesClient {
+	return &RoutingRulesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewScopeConnectionsClient creates a new instance of ScopeConnectionsClient.
 func (c *ClientFactory) NewScopeConnectionsClient() *ScopeConnectionsClient {
 	return &ScopeConnectionsClient{
@@ -779,6 +851,30 @@ func (c *ClientFactory) NewSecurityRulesClient() *SecurityRulesClient {
 	}
 }
 
+// NewSecurityUserConfigurationsClient creates a new instance of SecurityUserConfigurationsClient.
+func (c *ClientFactory) NewSecurityUserConfigurationsClient() *SecurityUserConfigurationsClient {
+	return &SecurityUserConfigurationsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewSecurityUserRuleCollectionsClient creates a new instance of SecurityUserRuleCollectionsClient.
+func (c *ClientFactory) NewSecurityUserRuleCollectionsClient() *SecurityUserRuleCollectionsClient {
+	return &SecurityUserRuleCollectionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewSecurityUserRulesClient creates a new instance of SecurityUserRulesClient.
+func (c *ClientFactory) NewSecurityUserRulesClient() *SecurityUserRulesClient {
+	return &SecurityUserRulesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewServiceAssociationLinksClient creates a new instance of ServiceAssociationLinksClient.
 func (c *ClientFactory) NewServiceAssociationLinksClient() *ServiceAssociationLinksClient {
 	return &ServiceAssociationLinksClient{
@@ -814,6 +910,14 @@ func (c *ClientFactory) NewServiceTagInformationClient() *ServiceTagInformationC
 // NewServiceTagsClient creates a new instance of ServiceTagsClient.
 func (c *ClientFactory) NewServiceTagsClient() *ServiceTagsClient {
 	return &ServiceTagsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewStaticCidrsClient creates a new instance of StaticCidrsClient.
+func (c *ClientFactory) NewStaticCidrsClient() *StaticCidrsClient {
+	return &StaticCidrsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -918,6 +1022,14 @@ func (c *ClientFactory) NewVPNSitesClient() *VPNSitesClient {
 // NewVPNSitesConfigurationClient creates a new instance of VPNSitesConfigurationClient.
 func (c *ClientFactory) NewVPNSitesConfigurationClient() *VPNSitesConfigurationClient {
 	return &VPNSitesConfigurationClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewVerifierWorkspacesClient creates a new instance of VerifierWorkspacesClient.
+func (c *ClientFactory) NewVerifierWorkspacesClient() *VerifierWorkspacesClient {
+	return &VerifierWorkspacesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

@@ -170,13 +170,6 @@ func (c *ClientFactory) NewAzureDevOpsReposClient() *AzureDevOpsReposClient {
 	}
 }
 
-// NewCenterClient creates a new instance of CenterClient.
-func (c *ClientFactory) NewCenterClient() *CenterClient {
-	return &CenterClient{
-		internal: c.internal,
-	}
-}
-
 // NewComplianceResultsClient creates a new instance of ComplianceResultsClient.
 func (c *ClientFactory) NewComplianceResultsClient() *ComplianceResultsClient {
 	return &ComplianceResultsClient{

@@ -11,7 +11,7 @@ package armwebpubsub
 import "encoding/json"
 
 func unmarshalEventListenerEndpointClassification(rawMsg json.RawMessage) (EventListenerEndpointClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -32,7 +32,7 @@ func unmarshalEventListenerEndpointClassification(rawMsg json.RawMessage) (Event
 }
 
 func unmarshalEventListenerFilterClassification(rawMsg json.RawMessage) (EventListenerFilterClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any

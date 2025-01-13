@@ -37,7 +37,7 @@ type VersionsClient struct {
 }
 
 // NewVersionsClient creates a new instance of VersionsClient with the specified values.
-//   - subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VersionsClient, error) {
@@ -54,7 +54,7 @@ func NewVersionsClient(subscriptionID string, credential azcore.TokenCredential,
 
 // NewListPager - Get a list of available versions for a region.
 //
-// Generated from API version 2023-02-01-preview
+// Generated from API version 2024-03-01
 //   - region - Region where elastic deployment will take place.
 //   - options - VersionsClientListOptions contains the optional parameters for the VersionsClient.NewListPager method.
 func (client *VersionsClient) NewListPager(region string, options *VersionsClientListOptions) *runtime.Pager[VersionsClientListResponse] {
@@ -92,7 +92,7 @@ func (client *VersionsClient) listCreateRequest(ctx context.Context, region stri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01-preview")
+	reqQP.Set("api-version", "2024-03-01")
 	reqQP.Set("region", region)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}

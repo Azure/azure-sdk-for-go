@@ -26,15 +26,10 @@ directive:
     where: $["x-ms-paths"]
     transform: >
         delete $["/{resourceId}/query?disambiguation_dummy"];
-  - from: swagger-document
-    where: $["paths"]
-    transform: >
-        delete $["/$batch"];
 
   # delete extra operations
   - remove-operation: Query_Get
   - remove-operation: Query_ResourceGet
-  - remove-operation: Query_Batch
 
   # delete metadata and batch models
   - remove-model: metadataResults
@@ -48,11 +43,6 @@ directive:
   - remove-model: metadataWorkspace
   - remove-model: metadataResource
   - remove-model: metadataPermissions
-  - remove-model: batchRequest
-  - remove-model: batchQueryRequest
-  - remove-model: batchResponse
-  - remove-model: batchQueryResponse
-  - remove-model: batchQueryResults
 
  # rename log operations to generate into a separate logs client
   - rename-operation:
@@ -61,6 +51,9 @@ directive:
   - rename-operation:
       from: Query_ResourceExecute
       to: Logs_QueryResource
+  - rename-operation:
+      from: Query_Batch
+      to: Logs_QueryBatch
 
   # rename Body.Workspaces to Body.AdditionalWorkspaces
   - from: swagger-document
@@ -69,13 +62,18 @@ directive:
   
   # rename Render to Visualization
   - from: swagger-document
-    where: $.definitions.queryResults.properties.render
+    where: $.definitions..render
     transform: $["x-ms-client-name"] = "Visualization"
 
   # rename LogsColumnType to ColumnType
   - from: swagger-document
     where: $.definitions.logsColumnType.x-ms-enum
     transform: $["name"] = "ColumnType"
+
+   # rename BatchQueryRequest.Workspace to BatchQueryRequest.WorkspaceID
+  - from: swagger-document
+    where: $.definitions.batchQueryRequest.properties.workspace
+    transform: $["x-ms-client-name"] = "WorkspaceID"
   
   # rename Prefer to Options
   - from: swagger-document

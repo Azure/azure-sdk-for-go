@@ -8,6 +8,11 @@
 
 package armnetapp
 
+// AccountsClientChangeKeyVaultResponse contains the response from method AccountsClient.BeginChangeKeyVault.
+type AccountsClientChangeKeyVaultResponse struct {
+	// placeholder for future response values
+}
+
 // AccountsClientCreateOrUpdateResponse contains the response from method AccountsClient.BeginCreateOrUpdate.
 type AccountsClientCreateOrUpdateResponse struct {
 	// NetApp account resource
@@ -16,6 +21,11 @@ type AccountsClientCreateOrUpdateResponse struct {
 
 // AccountsClientDeleteResponse contains the response from method AccountsClient.BeginDelete.
 type AccountsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// AccountsClientGetChangeKeyVaultInformationResponse contains the response from method AccountsClient.BeginGetChangeKeyVaultInformation.
+type AccountsClientGetChangeKeyVaultInformationResponse struct {
 	// placeholder for future response values
 }
 
@@ -39,6 +49,11 @@ type AccountsClientListResponse struct {
 
 // AccountsClientRenewCredentialsResponse contains the response from method AccountsClient.BeginRenewCredentials.
 type AccountsClientRenewCredentialsResponse struct {
+	// placeholder for future response values
+}
+
+// AccountsClientTransitionToCmkResponse contains the response from method AccountsClient.BeginTransitionToCmk.
+type AccountsClientTransitionToCmkResponse struct {
 	// placeholder for future response values
 }
 
@@ -77,10 +92,89 @@ type BackupPoliciesClientUpdateResponse struct {
 	BackupPolicy
 }
 
-// BackupsClientGetVolumeRestoreStatusResponse contains the response from method BackupsClient.GetVolumeRestoreStatus.
-type BackupsClientGetVolumeRestoreStatusResponse struct {
+// BackupVaultsClientCreateOrUpdateResponse contains the response from method BackupVaultsClient.BeginCreateOrUpdate.
+type BackupVaultsClientCreateOrUpdateResponse struct {
+	// Backup Vault information
+	BackupVault
+}
+
+// BackupVaultsClientDeleteResponse contains the response from method BackupVaultsClient.BeginDelete.
+type BackupVaultsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// BackupVaultsClientGetResponse contains the response from method BackupVaultsClient.Get.
+type BackupVaultsClientGetResponse struct {
+	// Backup Vault information
+	BackupVault
+}
+
+// BackupVaultsClientListByNetAppAccountResponse contains the response from method BackupVaultsClient.NewListByNetAppAccountPager.
+type BackupVaultsClientListByNetAppAccountResponse struct {
+	// List of Backup Vaults
+	BackupVaultsList
+}
+
+// BackupVaultsClientUpdateResponse contains the response from method BackupVaultsClient.BeginUpdate.
+type BackupVaultsClientUpdateResponse struct {
+	// Backup Vault information
+	BackupVault
+}
+
+// BackupsClientCreateResponse contains the response from method BackupsClient.BeginCreate.
+type BackupsClientCreateResponse struct {
+	// Backup under a Backup Vault
+	Backup
+}
+
+// BackupsClientDeleteResponse contains the response from method BackupsClient.BeginDelete.
+type BackupsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// BackupsClientGetLatestStatusResponse contains the response from method BackupsClient.GetLatestStatus.
+type BackupsClientGetLatestStatusResponse struct {
+	// Backup status
+	BackupStatus
+}
+
+// BackupsClientGetResponse contains the response from method BackupsClient.Get.
+type BackupsClientGetResponse struct {
+	// Backup under a Backup Vault
+	Backup
+}
+
+// BackupsClientGetVolumeLatestRestoreStatusResponse contains the response from method BackupsClient.GetVolumeLatestRestoreStatus.
+type BackupsClientGetVolumeLatestRestoreStatusResponse struct {
 	// Restore status
 	RestoreStatus
+}
+
+// BackupsClientListByVaultResponse contains the response from method BackupsClient.NewListByVaultPager.
+type BackupsClientListByVaultResponse struct {
+	// List of Backups
+	BackupsList
+}
+
+// BackupsClientUpdateResponse contains the response from method BackupsClient.BeginUpdate.
+type BackupsClientUpdateResponse struct {
+	// Backup under a Backup Vault
+	Backup
+}
+
+// BackupsUnderAccountClientMigrateBackupsResponse contains the response from method BackupsUnderAccountClient.BeginMigrateBackups.
+type BackupsUnderAccountClientMigrateBackupsResponse struct {
+	// placeholder for future response values
+}
+
+// BackupsUnderBackupVaultClientRestoreFilesResponse contains the response from method BackupsUnderBackupVaultClient.BeginRestoreFiles.
+type BackupsUnderBackupVaultClientRestoreFilesResponse struct {
+	// placeholder for future response values
+}
+
+// BackupsUnderVolumeClientMigrateBackupsResponse contains the response from method BackupsUnderVolumeClient.BeginMigrateBackups.
+type BackupsUnderVolumeClientMigrateBackupsResponse struct {
+	// placeholder for future response values
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
@@ -165,6 +259,18 @@ type ResourceQuotaLimitsClientGetResponse struct {
 type ResourceQuotaLimitsClientListResponse struct {
 	// List of Subscription Quota Items
 	SubscriptionQuotaItemList
+}
+
+// ResourceRegionInfosClientGetResponse contains the response from method ResourceRegionInfosClient.Get.
+type ResourceRegionInfosClientGetResponse struct {
+	// Information regarding regionInfo Item.
+	RegionInfoResource
+}
+
+// ResourceRegionInfosClientListResponse contains the response from method ResourceRegionInfosClient.NewListPager.
+type ResourceRegionInfosClientListResponse struct {
+	// List of regionInfo resources
+	RegionInfosList
 }
 
 // SnapshotPoliciesClientCreateResponse contains the response from method SnapshotPoliciesClient.Create.
@@ -323,6 +429,12 @@ type VolumeQuotaRulesClientUpdateResponse struct {
 	VolumeQuotaRule
 }
 
+// VolumesClientAuthorizeExternalReplicationResponse contains the response from method VolumesClient.BeginAuthorizeExternalReplication.
+type VolumesClientAuthorizeExternalReplicationResponse struct {
+	// Information about svm peering process
+	SvmPeerCommandResponse
+}
+
 // VolumesClientAuthorizeReplicationResponse contains the response from method VolumesClient.BeginAuthorizeReplication.
 type VolumesClientAuthorizeReplicationResponse struct {
 	// placeholder for future response values
@@ -354,6 +466,11 @@ type VolumesClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
+// VolumesClientFinalizeExternalReplicationResponse contains the response from method VolumesClient.BeginFinalizeExternalReplication.
+type VolumesClientFinalizeExternalReplicationResponse struct {
+	// placeholder for future response values
+}
+
 // VolumesClientFinalizeRelocationResponse contains the response from method VolumesClient.BeginFinalizeRelocation.
 type VolumesClientFinalizeRelocationResponse struct {
 	// placeholder for future response values
@@ -371,6 +488,12 @@ type VolumesClientListGetGroupIDListForLdapUserResponse struct {
 	GetGroupIDListForLDAPUserResponse
 }
 
+// VolumesClientListQuotaReportResponse contains the response from method VolumesClient.BeginListQuotaReport.
+type VolumesClientListQuotaReportResponse struct {
+	// Quota Report for volume
+	ListQuotaReportResponse
+}
+
 // VolumesClientListReplicationsResponse contains the response from method VolumesClient.NewListReplicationsPager.
 type VolumesClientListReplicationsResponse struct {
 	// List Replications
@@ -381,6 +504,17 @@ type VolumesClientListReplicationsResponse struct {
 type VolumesClientListResponse struct {
 	// List of volume resources
 	VolumeList
+}
+
+// VolumesClientPeerExternalClusterResponse contains the response from method VolumesClient.BeginPeerExternalCluster.
+type VolumesClientPeerExternalClusterResponse struct {
+	// Information about cluster peering process
+	ClusterPeerCommandResponse
+}
+
+// VolumesClientPerformReplicationTransferResponse contains the response from method VolumesClient.BeginPerformReplicationTransfer.
+type VolumesClientPerformReplicationTransferResponse struct {
+	// placeholder for future response values
 }
 
 // VolumesClientPoolChangeResponse contains the response from method VolumesClient.BeginPoolChange.
@@ -432,6 +566,11 @@ type VolumesClientRevertRelocationResponse struct {
 
 // VolumesClientRevertResponse contains the response from method VolumesClient.BeginRevert.
 type VolumesClientRevertResponse struct {
+	// placeholder for future response values
+}
+
+// VolumesClientSplitCloneFromParentResponse contains the response from method VolumesClient.BeginSplitCloneFromParent.
+type VolumesClientSplitCloneFromParentResponse struct {
 	// placeholder for future response values
 }
 

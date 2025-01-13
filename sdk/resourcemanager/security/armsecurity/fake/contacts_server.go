@@ -26,15 +26,15 @@ import (
 type ContactsServer struct {
 	// Create is the fake for method ContactsClient.Create
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	Create func(ctx context.Context, securityContactName string, securityContact armsecurity.Contact, options *armsecurity.ContactsClientCreateOptions) (resp azfake.Responder[armsecurity.ContactsClientCreateResponse], errResp azfake.ErrorResponder)
+	Create func(ctx context.Context, securityContactName armsecurity.SecurityContactName, securityContact armsecurity.Contact, options *armsecurity.ContactsClientCreateOptions) (resp azfake.Responder[armsecurity.ContactsClientCreateResponse], errResp azfake.ErrorResponder)
 
 	// Delete is the fake for method ContactsClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	Delete func(ctx context.Context, securityContactName string, options *armsecurity.ContactsClientDeleteOptions) (resp azfake.Responder[armsecurity.ContactsClientDeleteResponse], errResp azfake.ErrorResponder)
+	Delete func(ctx context.Context, securityContactName armsecurity.SecurityContactName, options *armsecurity.ContactsClientDeleteOptions) (resp azfake.Responder[armsecurity.ContactsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method ContactsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, securityContactName string, options *armsecurity.ContactsClientGetOptions) (resp azfake.Responder[armsecurity.ContactsClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, securityContactName armsecurity.SecurityContactName, options *armsecurity.ContactsClientGetOptions) (resp azfake.Responder[armsecurity.ContactsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method ContactsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -103,7 +103,13 @@ func (c *ContactsServerTransport) dispatchCreate(req *http.Request) (*http.Respo
 	if err != nil {
 		return nil, err
 	}
-	securityContactNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("securityContactName")])
+	securityContactNameParam, err := parseWithCast(matches[regex.SubexpIndex("securityContactName")], func(v string) (armsecurity.SecurityContactName, error) {
+		p, unescapeErr := url.PathUnescape(v)
+		if unescapeErr != nil {
+			return "", unescapeErr
+		}
+		return armsecurity.SecurityContactName(p), nil
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -132,7 +138,13 @@ func (c *ContactsServerTransport) dispatchDelete(req *http.Request) (*http.Respo
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	securityContactNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("securityContactName")])
+	securityContactNameParam, err := parseWithCast(matches[regex.SubexpIndex("securityContactName")], func(v string) (armsecurity.SecurityContactName, error) {
+		p, unescapeErr := url.PathUnescape(v)
+		if unescapeErr != nil {
+			return "", unescapeErr
+		}
+		return armsecurity.SecurityContactName(p), nil
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -161,7 +173,13 @@ func (c *ContactsServerTransport) dispatchGet(req *http.Request) (*http.Response
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	securityContactNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("securityContactName")])
+	securityContactNameParam, err := parseWithCast(matches[regex.SubexpIndex("securityContactName")], func(v string) (armsecurity.SecurityContactName, error) {
+		p, unescapeErr := url.PathUnescape(v)
+		if unescapeErr != nil {
+			return "", unescapeErr
+		}
+		return armsecurity.SecurityContactName(p), nil
+	})
 	if err != nil {
 		return nil, err
 	}

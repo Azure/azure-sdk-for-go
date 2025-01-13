@@ -1,5 +1,40 @@
 # Release History
 
+## 1.0.0 (2024-10-24)
+### Features Added
+
+- New function `NewBillingInfoClient(string, azcore.TokenCredential, *arm.ClientOptions) (*BillingInfoClient, error)`
+- New function `*BillingInfoClient.Get(context.Context, string, string, *BillingInfoClientGetOptions) (BillingInfoClientGetResponse, error)`
+- New function `*ClientFactory.NewBillingInfoClient() *BillingInfoClient`
+- New function `*ClientFactory.NewConnectedPartnerResourcesClient() *ConnectedPartnerResourcesClient`
+- New function `*ClientFactory.NewOpenAIClient() *OpenAIClient`
+- New function `NewConnectedPartnerResourcesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ConnectedPartnerResourcesClient, error)`
+- New function `*ConnectedPartnerResourcesClient.NewListPager(string, string, *ConnectedPartnerResourcesClientListOptions) *runtime.Pager[ConnectedPartnerResourcesClientListResponse]`
+- New function `NewOpenAIClient(string, azcore.TokenCredential, *arm.ClientOptions) (*OpenAIClient, error)`
+- New function `*OpenAIClient.CreateOrUpdate(context.Context, string, string, string, *OpenAIClientCreateOrUpdateOptions) (OpenAIClientCreateOrUpdateResponse, error)`
+- New function `*OpenAIClient.Delete(context.Context, string, string, string, *OpenAIClientDeleteOptions) (OpenAIClientDeleteResponse, error)`
+- New function `*OpenAIClient.Get(context.Context, string, string, string, *OpenAIClientGetOptions) (OpenAIClientGetResponse, error)`
+- New function `*OpenAIClient.GetStatus(context.Context, string, string, string, *OpenAIClientGetStatusOptions) (OpenAIClientGetStatusResponse, error)`
+- New function `*OpenAIClient.NewListPager(string, string, *OpenAIClientListOptions) *runtime.Pager[OpenAIClientListResponse]`
+- New function `*OrganizationsClient.GetElasticToAzureSubscriptionMapping(context.Context, *OrganizationsClientGetElasticToAzureSubscriptionMappingOptions) (OrganizationsClientGetElasticToAzureSubscriptionMappingResponse, error)`
+- New struct `BillingInfoResponse`
+- New struct `ConnectedPartnerResourceProperties`
+- New struct `ConnectedPartnerResourcesListFormat`
+- New struct `ConnectedPartnerResourcesListResponse`
+- New struct `OpenAIIntegrationProperties`
+- New struct `OpenAIIntegrationRPModel`
+- New struct `OpenAIIntegrationRPModelListResponse`
+- New struct `OpenAIIntegrationStatusResponse`
+- New struct `OpenAIIntegrationStatusResponseProperties`
+- New struct `OrganizationToAzureSubscriptionMappingResponse`
+- New struct `OrganizationToAzureSubscriptionMappingResponseProperties`
+- New struct `PartnerBillingEntity`
+- New struct `PlanDetails`
+- New field `ElasticsearchEndPoint` in struct `DeploymentInfoResponse`
+- New field `BilledAzureSubscriptionID`, `MarketplaceStatus`, `Subscribed` in struct `MarketplaceSaaSInfo`
+- New field `PlanDetails`, `SaaSAzureSubscriptionStatus`, `SourceCampaignID`, `SourceCampaignName`, `SubscriptionState` in struct `MonitorProperties`
+
+
 ## 0.10.0 (2023-11-24)
 ### Features Added
 

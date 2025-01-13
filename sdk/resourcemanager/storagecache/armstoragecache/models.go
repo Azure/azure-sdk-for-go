@@ -137,21 +137,6 @@ type AmlFilesystemArchiveStatus struct {
 	State *ArchiveStatusType
 }
 
-// AmlFilesystemCheckSubnetError - The error details provided when the checkAmlFSSubnets call fails.
-type AmlFilesystemCheckSubnetError struct {
-	// The error details for the AML file system's subnet.
-	FilesystemSubnet *AmlFilesystemCheckSubnetErrorFilesystemSubnet
-}
-
-// AmlFilesystemCheckSubnetErrorFilesystemSubnet - The error details for the AML file system's subnet.
-type AmlFilesystemCheckSubnetErrorFilesystemSubnet struct {
-	// The details of the AML file system subnet check.
-	Message *string
-
-	// The status of the AML file system subnet check.
-	Status *FilesystemSubnetStatusType
-}
-
 // AmlFilesystemClientInfo - AML file system client information
 type AmlFilesystemClientInfo struct {
 	// READ-ONLY; Container Storage Interface information for the AML file system.
@@ -209,8 +194,15 @@ type AmlFilesystemHsmSettings struct {
 	// permission to create SAS tokens on the storage account.
 	LoggingContainer *string
 
-	// Only blobs in the non-logging container that start with this path/prefix get hydrated into the cluster namespace.
+	// Only blobs in the non-logging container that start with this path/prefix get imported into the cluster namespace. This
+	// is only used during initial creation of the AML file system. It automatically
+	// creates an import job resource that can be deleted.
 	ImportPrefix *string
+
+	// Only blobs in the non-logging container that start with one of the paths/prefixes in this array get imported into the cluster
+	// namespace. This is only used during initial creation of the AML file
+	// system and has '/' as the default value. It automatically creates an import job resource that can be deleted.
+	ImportPrefixesInitial []*string
 }
 
 // AmlFilesystemIdentity - Managed Identity properties.
@@ -363,7 +355,7 @@ type AscOperation struct {
 	EndTime *string
 
 	// The error detail of the operation if any.
-	Error *ErrorResponse
+	Error *AscOperationErrorResponse
 
 	// The operation Id.
 	ID *string
@@ -379,6 +371,15 @@ type AscOperation struct {
 
 	// The status of the operation.
 	Status *string
+}
+
+// AscOperationErrorResponse - Describes the format of Error response.
+type AscOperationErrorResponse struct {
+	// Error code
+	Code *string
+
+	// Error message indicating why the operation failed.
+	Message *string
 }
 
 // AscOperationProperties - Additional operation-specific output.
@@ -690,21 +691,6 @@ type ClfsTarget struct {
 	Target *string
 }
 
-// CloudErrorBody - An error response.
-type CloudErrorBody struct {
-	// An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
-	Code *string
-
-	// A list of additional details about the error.
-	Details []*CloudErrorBody
-
-	// A message describing the error, intended to be suitable for display in a user interface.
-	Message *string
-
-	// The target of the particular error. For example, the name of the property in error.
-	Target *string
-}
-
 // Condition - Outstanding conditions that will need to be resolved.
 type Condition struct {
 	// READ-ONLY; The issue requiring attention.
@@ -714,13 +700,106 @@ type Condition struct {
 	Timestamp *time.Time
 }
 
-// ErrorResponse - Describes the format of Error response.
-type ErrorResponse struct {
-	// Error code
-	Code *string
+// ImportJob - An import job instance. Follows Azure Resource Manager standards: https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/resource-api-reference.md
+type ImportJob struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
 
-	// Error message indicating why the operation failed.
-	Message *string
+	// Properties of the import job.
+	Properties *ImportJobProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ImportJobProperties - Properties of the import job.
+type ImportJobProperties struct {
+	// How the import job will handle conflicts. For example, if the import job is trying to bring in a directory, but a file
+	// is at that path, how it handles it. Fail indicates that the import job should
+	// stop immediately and not do anything with the conflict. Skip indicates that it should pass over the conflict. OverwriteIfDirty
+	// causes the import job to delete and re-import the file or directory if it
+	// is a conflicting type, is dirty, or was not previously imported. OverwriteAlways extends OverwriteIfDirty to include releasing
+	// files that had been restored but were not dirty. Please reference
+	// https://learn.microsoft.com/en-us/azure/azure-managed-lustre/ for a thorough explanation of these resolution modes.
+	ConflictResolutionMode *ConflictResolutionMode
+
+	// An array of blob paths/prefixes that get imported into the cluster namespace. It has '/' as the default value.
+	ImportPrefixes []*string
+
+	// Total non-conflict oriented errors the import job will tolerate before exiting with failure. -1 means infinite. 0 means
+	// exit immediately and is the default.
+	MaximumErrors *int32
+
+	// READ-ONLY; ARM provisioning state.
+	ProvisioningState *ImportJobProvisioningStateType
+
+	// READ-ONLY; The status of the import
+	Status *ImportJobPropertiesStatus
+}
+
+// ImportJobPropertiesStatus - The status of the import
+type ImportJobPropertiesStatus struct {
+	// READ-ONLY; A recent and frequently updated rate of total files, directories, and symlinks imported per second.
+	BlobsImportedPerSecond *int64
+
+	// READ-ONLY; A recent and frequently updated rate of blobs walked per second.
+	BlobsWalkedPerSecond *int64
+
+	// READ-ONLY; The time of the last completed archive operation
+	LastCompletionTime *time.Time
+
+	// READ-ONLY; The time the latest archive operation started
+	LastStartedTime *time.Time
+
+	// READ-ONLY; The state of the import job. InProgress indicates the import is still running. Canceled indicates it has been
+	// canceled by the user. Completed indicates import finished, successfully importing all
+	// discovered blobs into the Lustre namespace. CompletedPartial indicates the import finished but some blobs either were found
+	// to be conflicting and could not be imported or other errors were
+	// encountered. Failed means the import was unable to complete due to a fatal error.
+	State *ImportStatusType
+
+	// READ-ONLY; The status message of the import job.
+	StatusMessage *string
+
+	// READ-ONLY; The total blobs that have been imported since import began.
+	TotalBlobsImported *int64
+
+	// READ-ONLY; The total blob objects walked.
+	TotalBlobsWalked *int64
+
+	// READ-ONLY; Number of conflicts in the import job.
+	TotalConflicts *int32
+
+	// READ-ONLY; Number of errors in the import job.
+	TotalErrors *int32
+}
+
+// ImportJobUpdate - An import job update instance.
+type ImportJobUpdate struct {
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// ImportJobsListResult - Result of the request to list import jobs. It contains a list of import jobs and a URL link to get
+// the next set of results.
+type ImportJobsListResult struct {
+	// URL to get the next set of import job list results, if there are any.
+	NextLink *string
+
+	// List of import jobs.
+	Value []*ImportJob
 }
 
 // KeyVaultKeyReference - Describes a reference to key vault key.
@@ -908,21 +987,6 @@ type RequiredAmlFilesystemSubnetsSizeInfo struct {
 	StorageCapacityTiB *float32
 }
 
-// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
-type Resource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
 // ResourceSKU - A resource SKU.
 type ResourceSKU struct {
 	// A list of capabilities of this SKU, such as throughput or ops/sec.
@@ -1078,24 +1142,6 @@ type StorageTargetProperties struct {
 	ProvisioningState *ProvisioningStateType
 }
 
-// StorageTargetResource - Resource used by a cache.
-type StorageTargetResource struct {
-	// READ-ONLY; Resource ID of the Storage Target.
-	ID *string
-
-	// READ-ONLY; Region name string.
-	Location *string
-
-	// READ-ONLY; Name of the Storage Target.
-	Name *string
-
-	// READ-ONLY; The system meta data relating to this resource.
-	SystemData *SystemData
-
-	// READ-ONLY; Type of the Storage Target; Microsoft.StorageCache/Cache/StorageTarget
-	Type *string
-}
-
 // StorageTargetSpaceAllocation - Storage Target space allocation properties.
 type StorageTargetSpaceAllocation struct {
 	// The percentage of cache space allocated for this storage target
@@ -1133,28 +1179,6 @@ type SystemData struct {
 
 	// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType
-}
-
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
-// and a 'location'
-type TrackedResource struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
 }
 
 // UnknownTarget - Properties pertaining to the UnknownTarget

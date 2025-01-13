@@ -10,7 +10,7 @@ package armmobilenetwork
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork"
-	moduleVersion = "v4.0.0"
+	moduleVersion = "v4.1.0"
 )
 
 // AuthenticationType - How to authenticate users who access local diagnostics APIs.
@@ -299,6 +299,27 @@ func PossibleNaptEnabledValues() []NaptEnabled {
 	return []NaptEnabled{
 		NaptEnabledDisabled,
 		NaptEnabledEnabled,
+	}
+}
+
+// NasEncryptionType - The supported NAS Encryption types.
+type NasEncryptionType string
+
+const (
+	// NasEncryptionTypeNEA0EEA0 - NAS signaling is not encrypted.
+	NasEncryptionTypeNEA0EEA0 NasEncryptionType = "NEA0/EEA0"
+	// NasEncryptionTypeNEA1EEA1 - NAS signaling is encrypted with SNOW 3G cipher.
+	NasEncryptionTypeNEA1EEA1 NasEncryptionType = "NEA1/EEA1"
+	// NasEncryptionTypeNEA2EEA2 - NAS signaling is encrypted with AES cipher.
+	NasEncryptionTypeNEA2EEA2 NasEncryptionType = "NEA2/EEA2"
+)
+
+// PossibleNasEncryptionTypeValues returns the possible values for the NasEncryptionType const type.
+func PossibleNasEncryptionTypeValues() []NasEncryptionType {
+	return []NasEncryptionType{
+		NasEncryptionTypeNEA0EEA0,
+		NasEncryptionTypeNEA1EEA1,
+		NasEncryptionTypeNEA2EEA2,
 	}
 }
 

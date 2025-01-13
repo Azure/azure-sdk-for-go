@@ -7,8 +7,9 @@
 package azcontainerregistry
 
 import (
-	"github.com/stretchr/testify/require"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestPossibleArtifactArchitectureValues(t *testing.T) {
@@ -32,9 +33,9 @@ func TestPossibleContentTypeValues(t *testing.T) {
 }
 
 func Test_possiblePostContentSchemaGrantTypeValues(t *testing.T) {
-	require.Equal(t, 3, len(possiblePostContentSchemaGrantTypeValues()))
+	require.Equal(t, 3, len(PossiblePostContentSchemaGrantTypeValues()))
 }
 
 func Test_possibleTokenGrantTypeValues(t *testing.T) {
-	require.Equal(t, 2, len(possibleTokenGrantTypeValues()))
+	require.Equal(t, 2, len(PossibleTokenGrantTypeValues()))
 }

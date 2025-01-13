@@ -28,7 +28,7 @@ type CheckNameAvailabilityWithoutLocationClient struct {
 }
 
 // NewCheckNameAvailabilityWithoutLocationClient creates a new instance of CheckNameAvailabilityWithoutLocationClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewCheckNameAvailabilityWithoutLocationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CheckNameAvailabilityWithoutLocationClient, error) {
@@ -46,7 +46,7 @@ func NewCheckNameAvailabilityWithoutLocationClient(subscriptionID string, creden
 // Execute - Check the availability of name for server
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-12-01-preview
+// Generated from API version 2023-12-30
 //   - nameAvailabilityRequest - The required parameters for checking if server name is available.
 //   - options - CheckNameAvailabilityWithoutLocationClientExecuteOptions contains the optional parameters for the CheckNameAvailabilityWithoutLocationClient.Execute
 //     method.
@@ -84,7 +84,7 @@ func (client *CheckNameAvailabilityWithoutLocationClient) executeCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2023-12-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, nameAvailabilityRequest); err != nil {

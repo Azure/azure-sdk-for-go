@@ -46,7 +46,7 @@ func NewProjectsClient(subscriptionID string, credential azcore.TokenCredential,
 // CreateOrUpdate - Creates or updates a Project resource, which is a logical grouping of related jobs.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01
+// Generated from API version 2024-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageMoverName - The name of the Storage Mover resource.
 //   - projectName - The name of the Project resource.
@@ -97,7 +97,7 @@ func (client *ProjectsClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01")
+	reqQP.Set("api-version", "2024-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, project); err != nil {
@@ -118,7 +118,7 @@ func (client *ProjectsClient) createOrUpdateHandleResponse(resp *http.Response) 
 // BeginDelete - Deletes a Project resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01
+// Generated from API version 2024-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageMoverName - The name of the Storage Mover resource.
 //   - projectName - The name of the Project resource.
@@ -144,7 +144,7 @@ func (client *ProjectsClient) BeginDelete(ctx context.Context, resourceGroupName
 // Delete - Deletes a Project resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01
+// Generated from API version 2024-07-01
 func (client *ProjectsClient) deleteOperation(ctx context.Context, resourceGroupName string, storageMoverName string, projectName string, options *ProjectsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ProjectsClient.BeginDelete"
@@ -190,7 +190,7 @@ func (client *ProjectsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01")
+	reqQP.Set("api-version", "2024-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -199,7 +199,7 @@ func (client *ProjectsClient) deleteCreateRequest(ctx context.Context, resourceG
 // Get - Gets a Project resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01
+// Generated from API version 2024-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageMoverName - The name of the Storage Mover resource.
 //   - projectName - The name of the Project resource.
@@ -250,7 +250,7 @@ func (client *ProjectsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01")
+	reqQP.Set("api-version", "2024-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -267,7 +267,7 @@ func (client *ProjectsClient) getHandleResponse(resp *http.Response) (ProjectsCl
 
 // NewListPager - Lists all Projects in a Storage Mover.
 //
-// Generated from API version 2023-10-01
+// Generated from API version 2024-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageMoverName - The name of the Storage Mover resource.
 //   - options - ProjectsClientListOptions contains the optional parameters for the ProjectsClient.NewListPager method.
@@ -314,7 +314,7 @@ func (client *ProjectsClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01")
+	reqQP.Set("api-version", "2024-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -332,7 +332,7 @@ func (client *ProjectsClient) listHandleResponse(resp *http.Response) (ProjectsC
 // Update - Updates properties for a Project resource. Properties not specified in the request body will be unchanged.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01
+// Generated from API version 2024-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageMoverName - The name of the Storage Mover resource.
 //   - projectName - The name of the Project resource.
@@ -383,7 +383,7 @@ func (client *ProjectsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01")
+	reqQP.Set("api-version", "2024-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, project); err != nil {

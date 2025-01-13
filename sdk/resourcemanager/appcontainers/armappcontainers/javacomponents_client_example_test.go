@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/JavaComponents_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/JavaComponents_List.json
 func ExampleJavaComponentsClient_NewListPager_listJavaComponents() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,7 +46,7 @@ func ExampleJavaComponentsClient_NewListPager_listJavaComponents() {
 		// 			Name: to.Ptr("blueshark"),
 		// 			Type: to.Ptr("Microsoft.App/managedEnvironments/javaComponents"),
 		// 			ID: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/myenvironment/javaComponents/blueshark"),
-		// 			Properties: &armappcontainers.JavaComponentProperties{
+		// 			Properties: &armappcontainers.SpringBootAdminComponent{
 		// 				ComponentType: to.Ptr(armappcontainers.JavaComponentTypeSpringBootAdmin),
 		// 				Configurations: []*armappcontainers.JavaComponentConfigurationProperty{
 		// 					{
@@ -58,13 +58,20 @@ func ExampleJavaComponentsClient_NewListPager_listJavaComponents() {
 		// 						Value: to.Ptr("10000ms"),
 		// 				}},
 		// 				ProvisioningState: to.Ptr(armappcontainers.JavaComponentProvisioningStateSucceeded),
+		// 				Scale: &armappcontainers.JavaComponentPropertiesScale{
+		// 					MaxReplicas: to.Ptr[int32](1),
+		// 					MinReplicas: to.Ptr[int32](1),
+		// 				},
+		// 				Ingress: &armappcontainers.JavaComponentIngress{
+		// 					Fqdn: to.Ptr("myjavacomponent.myenvironment.test.net"),
+		// 				},
 		// 			},
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("yellowcat"),
 		// 			Type: to.Ptr("Microsoft.App/managedEnvironments/javaComponents"),
 		// 			ID: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/myenvironment/javaComponents/yellowcat"),
-		// 			Properties: &armappcontainers.JavaComponentProperties{
+		// 			Properties: &armappcontainers.SpringCloudEurekaComponent{
 		// 				ComponentType: to.Ptr(armappcontainers.JavaComponentTypeSpringCloudEureka),
 		// 				Configurations: []*armappcontainers.JavaComponentConfigurationProperty{
 		// 					{
@@ -72,13 +79,51 @@ func ExampleJavaComponentsClient_NewListPager_listJavaComponents() {
 		// 						Value: to.Ptr("<GIT-URL>"),
 		// 				}},
 		// 				ProvisioningState: to.Ptr(armappcontainers.JavaComponentProvisioningStateSucceeded),
+		// 				Scale: &armappcontainers.JavaComponentPropertiesScale{
+		// 					MaxReplicas: to.Ptr[int32](1),
+		// 					MinReplicas: to.Ptr[int32](1),
+		// 				},
+		// 				Ingress: &armappcontainers.JavaComponentIngress{
+		// 					Fqdn: to.Ptr("myjavacomponent.myenvironment.test.net"),
+		// 				},
 		// 			},
-		// 	}},
-		// }
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("reddog"),
+		// 			Type: to.Ptr("Microsoft.App/managedEnvironments/javaComponents"),
+		// 			ID: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/myenvironment/javaComponents/reddog"),
+		// 			Properties: &armappcontainers.SpringCloudGatewayComponent{
+		// 				ComponentType: to.Ptr(armappcontainers.JavaComponentTypeSpringCloudGateway),
+		// 				Configurations: []*armappcontainers.JavaComponentConfigurationProperty{
+		// 					{
+		// 						PropertyName: to.Ptr("spring.cloud.gateway.enabled"),
+		// 						Value: to.Ptr("true"),
+		// 				}},
+		// 				ProvisioningState: to.Ptr(armappcontainers.JavaComponentProvisioningStateSucceeded),
+		// 				Scale: &armappcontainers.JavaComponentPropertiesScale{
+		// 					MaxReplicas: to.Ptr[int32](1),
+		// 					MinReplicas: to.Ptr[int32](1),
+		// 				},
+		// 				Ingress: &armappcontainers.JavaComponentIngress{
+		// 					Fqdn: to.Ptr("myjavacomponent.myenvironment.test.net"),
+		// 				},
+		// 				SpringCloudGatewayRoutes: []*armappcontainers.ScgRoute{
+		// 					{
+		// 						Filters: []*string{
+		// 							to.Ptr("SetPath=/{path}")},
+		// 							ID: to.Ptr("route1"),
+		// 							Predicates: []*string{
+		// 								to.Ptr("Path=/v1/{path}"),
+		// 								to.Ptr("After=2024-01-20T17:42:47.789-07:00[America/Denver]")},
+		// 								URI: to.Ptr("https://otherjavacomponent.myenvironment.test.net"),
+		// 						}},
+		// 					},
+		// 			}},
+		// 		}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/JavaComponents_List_ServiceBind.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/JavaComponents_List_ServiceBind.json
 func ExampleJavaComponentsClient_NewListPager_listJavaComponentsWithServiceBinds() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,7 +151,7 @@ func ExampleJavaComponentsClient_NewListPager_listJavaComponentsWithServiceBinds
 		// 			Name: to.Ptr("blueshark"),
 		// 			Type: to.Ptr("Microsoft.App/managedEnvironments/javaComponents"),
 		// 			ID: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/myenvironment/javaComponents/blueshark"),
-		// 			Properties: &armappcontainers.JavaComponentProperties{
+		// 			Properties: &armappcontainers.SpringBootAdminComponent{
 		// 				ComponentType: to.Ptr(armappcontainers.JavaComponentTypeSpringBootAdmin),
 		// 				Configurations: []*armappcontainers.JavaComponentConfigurationProperty{
 		// 					{
@@ -118,6 +163,10 @@ func ExampleJavaComponentsClient_NewListPager_listJavaComponentsWithServiceBinds
 		// 						Value: to.Ptr("10000ms"),
 		// 				}},
 		// 				ProvisioningState: to.Ptr(armappcontainers.JavaComponentProvisioningStateSucceeded),
+		// 				Scale: &armappcontainers.JavaComponentPropertiesScale{
+		// 					MaxReplicas: to.Ptr[int32](1),
+		// 					MinReplicas: to.Ptr[int32](1),
+		// 				},
 		// 				ServiceBinds: []*armappcontainers.JavaComponentServiceBind{
 		// 					{
 		// 						Name: to.Ptr("yellowcat"),
@@ -129,7 +178,7 @@ func ExampleJavaComponentsClient_NewListPager_listJavaComponentsWithServiceBinds
 		// 			Name: to.Ptr("yellowcat"),
 		// 			Type: to.Ptr("Microsoft.App/managedEnvironments/javaComponents"),
 		// 			ID: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/myenvironment/javaComponents/yellowcat"),
-		// 			Properties: &armappcontainers.JavaComponentProperties{
+		// 			Properties: &armappcontainers.SpringCloudEurekaComponent{
 		// 				ComponentType: to.Ptr(armappcontainers.JavaComponentTypeSpringCloudEureka),
 		// 				Configurations: []*armappcontainers.JavaComponentConfigurationProperty{
 		// 					{
@@ -137,6 +186,10 @@ func ExampleJavaComponentsClient_NewListPager_listJavaComponentsWithServiceBinds
 		// 						Value: to.Ptr("<GIT-URL>"),
 		// 				}},
 		// 				ProvisioningState: to.Ptr(armappcontainers.JavaComponentProvisioningStateSucceeded),
+		// 				Scale: &armappcontainers.JavaComponentPropertiesScale{
+		// 					MaxReplicas: to.Ptr[int32](1),
+		// 					MinReplicas: to.Ptr[int32](1),
+		// 				},
 		// 				ServiceBinds: []*armappcontainers.JavaComponentServiceBind{
 		// 					{
 		// 						Name: to.Ptr("blueshark"),
@@ -148,7 +201,7 @@ func ExampleJavaComponentsClient_NewListPager_listJavaComponentsWithServiceBinds
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/JavaComponents_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/JavaComponents_Get.json
 func ExampleJavaComponentsClient_Get_getJavaComponent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -170,7 +223,7 @@ func ExampleJavaComponentsClient_Get_getJavaComponent() {
 	// 	Name: to.Ptr("myjavacomponent"),
 	// 	Type: to.Ptr("Microsoft.App/managedEnvironments/javaComponents"),
 	// 	ID: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/myenvironment/javaComponents/myjavacomponent"),
-	// 	Properties: &armappcontainers.JavaComponentProperties{
+	// 	Properties: &armappcontainers.SpringBootAdminComponent{
 	// 		ComponentType: to.Ptr(armappcontainers.JavaComponentTypeSpringBootAdmin),
 	// 		Configurations: []*armappcontainers.JavaComponentConfigurationProperty{
 	// 			{
@@ -182,11 +235,18 @@ func ExampleJavaComponentsClient_Get_getJavaComponent() {
 	// 				Value: to.Ptr("10000ms"),
 	// 		}},
 	// 		ProvisioningState: to.Ptr(armappcontainers.JavaComponentProvisioningStateSucceeded),
+	// 		Scale: &armappcontainers.JavaComponentPropertiesScale{
+	// 			MaxReplicas: to.Ptr[int32](1),
+	// 			MinReplicas: to.Ptr[int32](1),
+	// 		},
+	// 		Ingress: &armappcontainers.JavaComponentIngress{
+	// 			Fqdn: to.Ptr("myjavacomponent.myenvironment.test.net"),
+	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/JavaComponents_Get_ServiceBind.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/JavaComponents_Get_ServiceBind.json
 func ExampleJavaComponentsClient_Get_getJavaComponentWithServiceBinds() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -208,7 +268,7 @@ func ExampleJavaComponentsClient_Get_getJavaComponentWithServiceBinds() {
 	// 	Name: to.Ptr("myjavacomponent"),
 	// 	Type: to.Ptr("Microsoft.App/managedEnvironments/javaComponents"),
 	// 	ID: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/myenvironment/javaComponents/myjavacomponent"),
-	// 	Properties: &armappcontainers.JavaComponentProperties{
+	// 	Properties: &armappcontainers.SpringBootAdminComponent{
 	// 		ComponentType: to.Ptr(armappcontainers.JavaComponentTypeSpringBootAdmin),
 	// 		Configurations: []*armappcontainers.JavaComponentConfigurationProperty{
 	// 			{
@@ -220,6 +280,10 @@ func ExampleJavaComponentsClient_Get_getJavaComponentWithServiceBinds() {
 	// 				Value: to.Ptr("10000ms"),
 	// 		}},
 	// 		ProvisioningState: to.Ptr(armappcontainers.JavaComponentProvisioningStateSucceeded),
+	// 		Scale: &armappcontainers.JavaComponentPropertiesScale{
+	// 			MaxReplicas: to.Ptr[int32](1),
+	// 			MinReplicas: to.Ptr[int32](1),
+	// 		},
 	// 		ServiceBinds: []*armappcontainers.JavaComponentServiceBind{
 	// 			{
 	// 				Name: to.Ptr("yellowcat"),
@@ -229,7 +293,7 @@ func ExampleJavaComponentsClient_Get_getJavaComponentWithServiceBinds() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/JavaComponents_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/JavaComponents_CreateOrUpdate.json
 func ExampleJavaComponentsClient_BeginCreateOrUpdate_createOrUpdateJavaComponent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -241,7 +305,7 @@ func ExampleJavaComponentsClient_BeginCreateOrUpdate_createOrUpdateJavaComponent
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewJavaComponentsClient().BeginCreateOrUpdate(ctx, "examplerg", "myenvironment", "myjavacomponent", armappcontainers.JavaComponent{
-		Properties: &armappcontainers.JavaComponentProperties{
+		Properties: &armappcontainers.SpringBootAdminComponent{
 			ComponentType: to.Ptr(armappcontainers.JavaComponentTypeSpringBootAdmin),
 			Configurations: []*armappcontainers.JavaComponentConfigurationProperty{
 				{
@@ -252,6 +316,10 @@ func ExampleJavaComponentsClient_BeginCreateOrUpdate_createOrUpdateJavaComponent
 					PropertyName: to.Ptr("spring.boot.admin.monitor.status-interval"),
 					Value:        to.Ptr("10000ms"),
 				}},
+			Scale: &armappcontainers.JavaComponentPropertiesScale{
+				MaxReplicas: to.Ptr[int32](1),
+				MinReplicas: to.Ptr[int32](1),
+			},
 		},
 	}, nil)
 	if err != nil {
@@ -268,7 +336,7 @@ func ExampleJavaComponentsClient_BeginCreateOrUpdate_createOrUpdateJavaComponent
 	// 	Name: to.Ptr("myjavacomponent"),
 	// 	Type: to.Ptr("Microsoft.App/managedEnvironments/javaComponents"),
 	// 	ID: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/myenvironment/javaComponents/myjavacomponent"),
-	// 	Properties: &armappcontainers.JavaComponentProperties{
+	// 	Properties: &armappcontainers.SpringBootAdminComponent{
 	// 		ComponentType: to.Ptr(armappcontainers.JavaComponentTypeSpringBootAdmin),
 	// 		Configurations: []*armappcontainers.JavaComponentConfigurationProperty{
 	// 			{
@@ -280,11 +348,18 @@ func ExampleJavaComponentsClient_BeginCreateOrUpdate_createOrUpdateJavaComponent
 	// 				Value: to.Ptr("10000ms"),
 	// 		}},
 	// 		ProvisioningState: to.Ptr(armappcontainers.JavaComponentProvisioningStateSucceeded),
+	// 		Scale: &armappcontainers.JavaComponentPropertiesScale{
+	// 			MaxReplicas: to.Ptr[int32](1),
+	// 			MinReplicas: to.Ptr[int32](1),
+	// 		},
+	// 		Ingress: &armappcontainers.JavaComponentIngress{
+	// 			Fqdn: to.Ptr("myjavacomponent.myenvironment.test.net"),
+	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/JavaComponents_CreateOrUpdate_ServiceBind.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/JavaComponents_CreateOrUpdate_ServiceBind.json
 func ExampleJavaComponentsClient_BeginCreateOrUpdate_createOrUpdateJavaComponentWithServiceBinds() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -296,7 +371,7 @@ func ExampleJavaComponentsClient_BeginCreateOrUpdate_createOrUpdateJavaComponent
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewJavaComponentsClient().BeginCreateOrUpdate(ctx, "examplerg", "myenvironment", "myjavacomponent", armappcontainers.JavaComponent{
-		Properties: &armappcontainers.JavaComponentProperties{
+		Properties: &armappcontainers.SpringBootAdminComponent{
 			ComponentType: to.Ptr(armappcontainers.JavaComponentTypeSpringBootAdmin),
 			Configurations: []*armappcontainers.JavaComponentConfigurationProperty{
 				{
@@ -307,6 +382,10 @@ func ExampleJavaComponentsClient_BeginCreateOrUpdate_createOrUpdateJavaComponent
 					PropertyName: to.Ptr("spring.boot.admin.monitor.status-interval"),
 					Value:        to.Ptr("10000ms"),
 				}},
+			Scale: &armappcontainers.JavaComponentPropertiesScale{
+				MaxReplicas: to.Ptr[int32](1),
+				MinReplicas: to.Ptr[int32](1),
+			},
 			ServiceBinds: []*armappcontainers.JavaComponentServiceBind{
 				{
 					Name:      to.Ptr("yellowcat"),
@@ -328,7 +407,7 @@ func ExampleJavaComponentsClient_BeginCreateOrUpdate_createOrUpdateJavaComponent
 	// 	Name: to.Ptr("myjavacomponent"),
 	// 	Type: to.Ptr("Microsoft.App/managedEnvironments/javaComponents"),
 	// 	ID: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/myenvironment/javaComponents/myjavacomponent"),
-	// 	Properties: &armappcontainers.JavaComponentProperties{
+	// 	Properties: &armappcontainers.SpringBootAdminComponent{
 	// 		ComponentType: to.Ptr(armappcontainers.JavaComponentTypeSpringBootAdmin),
 	// 		Configurations: []*armappcontainers.JavaComponentConfigurationProperty{
 	// 			{
@@ -340,6 +419,10 @@ func ExampleJavaComponentsClient_BeginCreateOrUpdate_createOrUpdateJavaComponent
 	// 				Value: to.Ptr("10000ms"),
 	// 		}},
 	// 		ProvisioningState: to.Ptr(armappcontainers.JavaComponentProvisioningStateSucceeded),
+	// 		Scale: &armappcontainers.JavaComponentPropertiesScale{
+	// 			MaxReplicas: to.Ptr[int32](1),
+	// 			MinReplicas: to.Ptr[int32](1),
+	// 		},
 	// 		ServiceBinds: []*armappcontainers.JavaComponentServiceBind{
 	// 			{
 	// 				Name: to.Ptr("yellowcat"),
@@ -349,7 +432,7 @@ func ExampleJavaComponentsClient_BeginCreateOrUpdate_createOrUpdateJavaComponent
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/JavaComponents_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/JavaComponents_Patch.json
 func ExampleJavaComponentsClient_BeginUpdate_patchJavaComponent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -361,7 +444,7 @@ func ExampleJavaComponentsClient_BeginUpdate_patchJavaComponent() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewJavaComponentsClient().BeginUpdate(ctx, "examplerg", "myenvironment", "myjavacomponent", armappcontainers.JavaComponent{
-		Properties: &armappcontainers.JavaComponentProperties{
+		Properties: &armappcontainers.SpringBootAdminComponent{
 			ComponentType: to.Ptr(armappcontainers.JavaComponentTypeSpringBootAdmin),
 			Configurations: []*armappcontainers.JavaComponentConfigurationProperty{
 				{
@@ -372,6 +455,10 @@ func ExampleJavaComponentsClient_BeginUpdate_patchJavaComponent() {
 					PropertyName: to.Ptr("spring.boot.admin.monitor.status-interval"),
 					Value:        to.Ptr("10000ms"),
 				}},
+			Scale: &armappcontainers.JavaComponentPropertiesScale{
+				MaxReplicas: to.Ptr[int32](1),
+				MinReplicas: to.Ptr[int32](1),
+			},
 		},
 	}, nil)
 	if err != nil {
@@ -388,7 +475,7 @@ func ExampleJavaComponentsClient_BeginUpdate_patchJavaComponent() {
 	// 	Name: to.Ptr("myjavacomponent"),
 	// 	Type: to.Ptr("Microsoft.App/managedEnvironments/javaComponents"),
 	// 	ID: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/myenvironment/javaComponents/myjavacomponent"),
-	// 	Properties: &armappcontainers.JavaComponentProperties{
+	// 	Properties: &armappcontainers.SpringBootAdminComponent{
 	// 		ComponentType: to.Ptr(armappcontainers.JavaComponentTypeSpringBootAdmin),
 	// 		Configurations: []*armappcontainers.JavaComponentConfigurationProperty{
 	// 			{
@@ -400,11 +487,18 @@ func ExampleJavaComponentsClient_BeginUpdate_patchJavaComponent() {
 	// 				Value: to.Ptr("10000ms"),
 	// 		}},
 	// 		ProvisioningState: to.Ptr(armappcontainers.JavaComponentProvisioningStateSucceeded),
+	// 		Scale: &armappcontainers.JavaComponentPropertiesScale{
+	// 			MaxReplicas: to.Ptr[int32](1),
+	// 			MinReplicas: to.Ptr[int32](1),
+	// 		},
+	// 		Ingress: &armappcontainers.JavaComponentIngress{
+	// 			Fqdn: to.Ptr("myjavacomponent.myenvironment.test.net"),
+	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/JavaComponents_Patch_ServiceBind.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/JavaComponents_Patch_ServiceBind.json
 func ExampleJavaComponentsClient_BeginUpdate_patchJavaComponentWithServiceBinds() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -416,7 +510,7 @@ func ExampleJavaComponentsClient_BeginUpdate_patchJavaComponentWithServiceBinds(
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewJavaComponentsClient().BeginUpdate(ctx, "examplerg", "myenvironment", "myjavacomponent", armappcontainers.JavaComponent{
-		Properties: &armappcontainers.JavaComponentProperties{
+		Properties: &armappcontainers.SpringBootAdminComponent{
 			ComponentType: to.Ptr(armappcontainers.JavaComponentTypeSpringBootAdmin),
 			Configurations: []*armappcontainers.JavaComponentConfigurationProperty{
 				{
@@ -427,6 +521,10 @@ func ExampleJavaComponentsClient_BeginUpdate_patchJavaComponentWithServiceBinds(
 					PropertyName: to.Ptr("spring.boot.admin.monitor.status-interval"),
 					Value:        to.Ptr("10000ms"),
 				}},
+			Scale: &armappcontainers.JavaComponentPropertiesScale{
+				MaxReplicas: to.Ptr[int32](1),
+				MinReplicas: to.Ptr[int32](1),
+			},
 			ServiceBinds: []*armappcontainers.JavaComponentServiceBind{
 				{
 					Name:      to.Ptr("yellowcat"),
@@ -448,7 +546,7 @@ func ExampleJavaComponentsClient_BeginUpdate_patchJavaComponentWithServiceBinds(
 	// 	Name: to.Ptr("myjavacomponent"),
 	// 	Type: to.Ptr("Microsoft.App/managedEnvironments/javaComponents"),
 	// 	ID: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/myenvironment/javaComponents/myjavacomponent"),
-	// 	Properties: &armappcontainers.JavaComponentProperties{
+	// 	Properties: &armappcontainers.SpringBootAdminComponent{
 	// 		ComponentType: to.Ptr(armappcontainers.JavaComponentTypeSpringBootAdmin),
 	// 		Configurations: []*armappcontainers.JavaComponentConfigurationProperty{
 	// 			{
@@ -460,6 +558,10 @@ func ExampleJavaComponentsClient_BeginUpdate_patchJavaComponentWithServiceBinds(
 	// 				Value: to.Ptr("10000ms"),
 	// 		}},
 	// 		ProvisioningState: to.Ptr(armappcontainers.JavaComponentProvisioningStateSucceeded),
+	// 		Scale: &armappcontainers.JavaComponentPropertiesScale{
+	// 			MaxReplicas: to.Ptr[int32](1),
+	// 			MinReplicas: to.Ptr[int32](1),
+	// 		},
 	// 		ServiceBinds: []*armappcontainers.JavaComponentServiceBind{
 	// 			{
 	// 				Name: to.Ptr("yellowcat"),
@@ -469,7 +571,7 @@ func ExampleJavaComponentsClient_BeginUpdate_patchJavaComponentWithServiceBinds(
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/JavaComponents_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/JavaComponents_Delete.json
 func ExampleJavaComponentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

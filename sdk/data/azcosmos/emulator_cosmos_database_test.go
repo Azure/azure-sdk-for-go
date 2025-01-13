@@ -10,7 +10,9 @@ import (
 
 func TestDatabaseCRUD(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
-	client := emulatorTests.getClient(t)
+	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{
+		ExpectedSpans: []string{"create_database baseDbTest", "read_database baseDbTest", "query_databases localhost", "delete_database baseDbTest", "read_database_throughput baseDbTest"},
+	}))
 
 	database := DatabaseProperties{ID: "baseDbTest"}
 
@@ -68,7 +70,9 @@ func TestDatabaseCRUD(t *testing.T) {
 
 func TestDatabaseWithOfferCRUD(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
-	client := emulatorTests.getClient(t)
+	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{
+		ExpectedSpans: []string{"create_database baseDbTest", "read_database baseDbTest", "delete_database baseDbTest", "read_database_throughput baseDbTest", "replace_database_throughput baseDbTest"},
+	}))
 
 	database := DatabaseProperties{ID: "baseDbTest"}
 	tp := NewManualThroughputProperties(400)
@@ -106,9 +110,18 @@ func TestDatabaseWithOfferCRUD(t *testing.T) {
 	}
 
 	newScale := NewManualThroughputProperties(500)
-	_, err = db.ReplaceThroughput(context.TODO(), newScale, nil)
+	throughputResponse, err = db.ReplaceThroughput(context.TODO(), newScale, nil)
 	if err != nil {
-		t.Errorf("Failed to read throughput: %v", err)
+		t.Fatalf("Failed to replace throughput: %v", err)
+	}
+
+	mt, hasManualThroughput = throughputResponse.ThroughputProperties.ManualThroughput()
+	if !hasManualThroughput {
+		t.Fatalf("Expected manual throughput to be available")
+	}
+
+	if mt != 500 {
+		t.Errorf("Unexpected throughput: %v", mt)
 	}
 
 	resp, err = db.Delete(context.TODO(), nil)

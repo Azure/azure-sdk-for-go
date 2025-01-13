@@ -64,6 +64,7 @@ stages:
                 - template: /eng/common/pipelines/templates/steps/retain-run.yml
                 - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
                   parameters:
+                    ServiceDirectory: '${{parameters.ServiceDirectory}}'
                     ${{ if startsWith(parameters.ServiceDirectory, '../') }}:
                       PackageName: "${{replace(parameters.ServiceDirectory, '../', '')}}"
                     ${{ else }}:

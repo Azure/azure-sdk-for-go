@@ -17,8 +17,7 @@ import (
 // Don't use this type directly, use NewClientFactory instead.
 type ClientFactory struct {
 	subscriptionID string
-	credential     azcore.TokenCredential
-	options        *arm.ClientOptions
+	internal       *arm.Client
 }
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
@@ -27,54 +26,67 @@ type ClientFactory struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
+	internal, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	return &ClientFactory{
-		subscriptionID: subscriptionID, credential: credential,
-		options: options.Clone(),
+		subscriptionID: subscriptionID,
+		internal:       internal,
 	}, nil
 }
 
 // NewMachinePoolsClient creates a new instance of MachinePoolsClient.
 func (c *ClientFactory) NewMachinePoolsClient() *MachinePoolsClient {
-	subClient, _ := NewMachinePoolsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &MachinePoolsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewOpenShiftClustersClient creates a new instance of OpenShiftClustersClient.
 func (c *ClientFactory) NewOpenShiftClustersClient() *OpenShiftClustersClient {
-	subClient, _ := NewOpenShiftClustersClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &OpenShiftClustersClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewOpenShiftVersionsClient creates a new instance of OpenShiftVersionsClient.
 func (c *ClientFactory) NewOpenShiftVersionsClient() *OpenShiftVersionsClient {
-	subClient, _ := NewOpenShiftVersionsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &OpenShiftVersionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
-	subClient, _ := NewOperationsClient(c.credential, c.options)
-	return subClient
+	return &OperationsClient{
+		internal: c.internal,
+	}
 }
 
 // NewSecretsClient creates a new instance of SecretsClient.
 func (c *ClientFactory) NewSecretsClient() *SecretsClient {
-	subClient, _ := NewSecretsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &SecretsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewSyncIdentityProvidersClient creates a new instance of SyncIdentityProvidersClient.
 func (c *ClientFactory) NewSyncIdentityProvidersClient() *SyncIdentityProvidersClient {
-	subClient, _ := NewSyncIdentityProvidersClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &SyncIdentityProvidersClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewSyncSetsClient creates a new instance of SyncSetsClient.
 func (c *ClientFactory) NewSyncSetsClient() *SyncSetsClient {
-	subClient, _ := NewSyncSetsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &SyncSetsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }

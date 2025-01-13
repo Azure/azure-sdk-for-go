@@ -9,13 +9,16 @@ package azsecrets_test
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"strings"
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
+	azcred "github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azsecrets"
 	"github.com/stretchr/testify/require"
 )
@@ -177,7 +180,7 @@ func TestDisableChallengeResourceVerification(t *testing.T) {
 				},
 				DisableChallengeResourceVerification: test.disableVerify,
 			}
-			client, err := azsecrets.NewClient(vaultURL, &FakeCredential{}, options)
+			client, err := azsecrets.NewClient(vaultURL, &azcred.Fake{}, options)
 			require.NoError(t, err)
 			pager := client.NewListSecretPropertiesPager(nil)
 			_, err = pager.NextPage(context.Background())
@@ -327,7 +330,7 @@ func TestListSecretVersions(t *testing.T) {
 }
 
 func TestNameRequired(t *testing.T) {
-	client, err := azsecrets.NewClient(fakeVaultURL, &FakeCredential{}, nil)
+	client, err := azsecrets.NewClient(fakeVaultURL, &azcred.Fake{}, nil)
 	require.NoError(t, err)
 	expected := "parameter name cannot be empty"
 	_, err = client.BackupSecret(context.Background(), "", nil)
@@ -380,4 +383,32 @@ func TestRecover(t *testing.T) {
 	require.Equal(t, setResp.Attributes, getResp.Attributes)
 	require.Equal(t, setResp.ID, getResp.ID)
 	require.Equal(t, setResp.ContentType, getResp.ContentType)
+}
+
+func TestAPIVersion(t *testing.T) {
+	apiVersion := "7.3"
+	var requireVersion = func(req *http.Request) bool {
+		version := req.URL.Query().Get("api-version")
+		require.Equal(t, version, apiVersion)
+		return true
+	}
+	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer close()
+	srv.AppendResponse(
+		mock.WithStatusCode(200),
+		mock.WithPredicate(requireVersion),
+	)
+	srv.AppendResponse(mock.WithStatusCode(http.StatusInternalServerError))
+
+	opts := &azsecrets.ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			Transport:  srv,
+			APIVersion: apiVersion,
+		},
+	}
+	client, err := azsecrets.NewClient(vaultURL, &azcred.Fake{}, opts)
+	require.NoError(t, err)
+
+	_, err = client.GetSecret(context.Background(), "name", "", nil)
+	require.NoError(t, err)
 }

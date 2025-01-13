@@ -6,4 +6,5 @@
 
 package cache
 
-const version = "v0.2.1" // nolint
+//lint:ignore U1000 used by automation
+const version = "v0.3.2"

@@ -8,6 +8,48 @@
 
 package armdesktopvirtualization
 
+// AppAttachPackageClientCreateOrUpdateOptions contains the optional parameters for the AppAttachPackageClient.CreateOrUpdate
+// method.
+type AppAttachPackageClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AppAttachPackageClientDeleteOptions contains the optional parameters for the AppAttachPackageClient.Delete method.
+type AppAttachPackageClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AppAttachPackageClientGetOptions contains the optional parameters for the AppAttachPackageClient.Get method.
+type AppAttachPackageClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AppAttachPackageClientListByResourceGroupOptions contains the optional parameters for the AppAttachPackageClient.NewListByResourceGroupPager
+// method.
+type AppAttachPackageClientListByResourceGroupOptions struct {
+	// OData filter expression. Valid properties for filtering are package name and host pool.
+	Filter *string
+}
+
+// AppAttachPackageClientListBySubscriptionOptions contains the optional parameters for the AppAttachPackageClient.NewListBySubscriptionPager
+// method.
+type AppAttachPackageClientListBySubscriptionOptions struct {
+	// OData filter expression. Valid properties for filtering are package name, host pool, and resource group.
+	Filter *string
+}
+
+// AppAttachPackageClientUpdateOptions contains the optional parameters for the AppAttachPackageClient.Update method.
+type AppAttachPackageClientUpdateOptions struct {
+	// Object containing App Attach Package definition.
+	AppAttachPackagePatch *AppAttachPackagePatch
+}
+
+// AppAttachPackageInfoClientImportOptions contains the optional parameters for the AppAttachPackageInfoClient.NewImportPager
+// method.
+type AppAttachPackageInfoClientImportOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ApplicationGroupsClientCreateOrUpdateOptions contains the optional parameters for the ApplicationGroupsClient.CreateOrUpdate
 // method.
 type ApplicationGroupsClientCreateOrUpdateOptions struct {
@@ -148,6 +190,12 @@ type HostPoolsClientListOptions struct {
 
 	// Number of items per page.
 	PageSize *int32
+}
+
+// HostPoolsClientListRegistrationTokensOptions contains the optional parameters for the HostPoolsClient.ListRegistrationTokens
+// method.
+type HostPoolsClientListRegistrationTokensOptions struct {
+	// placeholder for future optional parameters
 }
 
 // HostPoolsClientRetrieveRegistrationTokenOptions contains the optional parameters for the HostPoolsClient.RetrieveRegistrationToken

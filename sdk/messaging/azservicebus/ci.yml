@@ -30,11 +30,8 @@ extends:
     SupportedClouds: 'China'
     CloudConfig:
       Public:
-        SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
       UsGov:
-        SubscriptionConfiguration: $(sub-config-gov-test-resources)
       China:
-        SubscriptionConfiguration: $(sub-config-cn-test-resources)
         MatrixReplace:
           # Use dedicated pool with regional affinity to China cloud
           - Pool=(.*)-general/$1-asia

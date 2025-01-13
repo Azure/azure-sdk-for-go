@@ -256,6 +256,33 @@ func (i *ImageTemplate) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ImageTemplateAutoRun.
+func (i ImageTemplateAutoRun) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "state", i.State)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ImageTemplateAutoRun.
+func (i *ImageTemplateAutoRun) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", i, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "state":
+			err = unpopulate(val, "State", &i.State)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", i, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type ImageTemplateCustomizer.
 func (i ImageTemplateCustomizer) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -782,12 +809,14 @@ func (i *ImageTemplatePowerShellValidator) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ImageTemplateProperties.
 func (i ImageTemplateProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "autoRun", i.AutoRun)
 	populate(objectMap, "buildTimeoutInMinutes", i.BuildTimeoutInMinutes)
 	populate(objectMap, "customize", i.Customize)
 	populate(objectMap, "distribute", i.Distribute)
 	populate(objectMap, "errorHandling", i.ErrorHandling)
 	populate(objectMap, "exactStagingResourceGroup", i.ExactStagingResourceGroup)
 	populate(objectMap, "lastRunStatus", i.LastRunStatus)
+	populate(objectMap, "managedResourceTags", i.ManagedResourceTags)
 	populate(objectMap, "optimize", i.Optimize)
 	populate(objectMap, "provisioningError", i.ProvisioningError)
 	populate(objectMap, "provisioningState", i.ProvisioningState)
@@ -807,6 +836,9 @@ func (i *ImageTemplateProperties) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "autoRun":
+			err = unpopulate(val, "AutoRun", &i.AutoRun)
+			delete(rawMsg, key)
 		case "buildTimeoutInMinutes":
 			err = unpopulate(val, "BuildTimeoutInMinutes", &i.BuildTimeoutInMinutes)
 			delete(rawMsg, key)
@@ -824,6 +856,9 @@ func (i *ImageTemplateProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "lastRunStatus":
 			err = unpopulate(val, "LastRunStatus", &i.LastRunStatus)
+			delete(rawMsg, key)
+		case "managedResourceTags":
+			err = unpopulate(val, "ManagedResourceTags", &i.ManagedResourceTags)
 			delete(rawMsg, key)
 		case "optimize":
 			err = unpopulate(val, "Optimize", &i.Optimize)
@@ -1263,6 +1298,7 @@ func (i *ImageTemplateUpdateParameters) UnmarshalJSON(data []byte) error {
 func (i ImageTemplateUpdateParametersProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "distribute", i.Distribute)
+	populate(objectMap, "vmProfile", i.VMProfile)
 	return json.Marshal(objectMap)
 }
 
@@ -1277,6 +1313,9 @@ func (i *ImageTemplateUpdateParametersProperties) UnmarshalJSON(data []byte) err
 		switch key {
 		case "distribute":
 			i.Distribute, err = unmarshalImageTemplateDistributorClassificationArray(val)
+			delete(rawMsg, key)
+		case "vmProfile":
+			err = unpopulate(val, "VMProfile", &i.VMProfile)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -2115,6 +2154,7 @@ func (u *UserAssignedIdentity) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type VirtualNetworkConfig.
 func (v VirtualNetworkConfig) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "containerInstanceSubnetId", v.ContainerInstanceSubnetID)
 	populate(objectMap, "proxyVmSize", v.ProxyVMSize)
 	populate(objectMap, "subnetId", v.SubnetID)
 	return json.Marshal(objectMap)
@@ -2129,6 +2169,9 @@ func (v *VirtualNetworkConfig) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "containerInstanceSubnetId":
+			err = unpopulate(val, "ContainerInstanceSubnetID", &v.ContainerInstanceSubnetID)
+			delete(rawMsg, key)
 		case "proxyVmSize":
 			err = unpopulate(val, "ProxyVMSize", &v.ProxyVMSize)
 			delete(rawMsg, key)
@@ -2164,7 +2207,7 @@ func populateAny(m map[string]any, k string, v any) {
 }
 
 func unpopulate(data json.RawMessage, fn string, v any) error {
-	if data == nil {
+	if data == nil || string(data) == "null" {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {

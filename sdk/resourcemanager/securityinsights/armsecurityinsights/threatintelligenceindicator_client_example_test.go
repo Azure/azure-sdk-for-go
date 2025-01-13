@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/threatintelligence/CreateThreatIntelligence.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/threatintelligence/CreateThreatIntelligence.json
 func ExampleThreatIntelligenceIndicatorClient_CreateIndicator() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleThreatIntelligenceIndicatorClient_CreateIndicator() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewThreatIntelligenceIndicatorClient().CreateIndicator(ctx, "myRg", "myWorkspace", armsecurityinsights.ThreatIntelligenceIndicatorModel{
-		Kind: to.Ptr(armsecurityinsights.ThreatIntelligenceResourceInnerKindIndicator),
+		Kind: to.Ptr(armsecurityinsights.ThreatIntelligenceResourceKindEnumIndicator),
 		Properties: &armsecurityinsights.ThreatIntelligenceIndicatorProperties{
 			Description:        to.Ptr("debugging indicators"),
 			Confidence:         to.Ptr[int32](78),
@@ -49,7 +49,7 @@ func ExampleThreatIntelligenceIndicatorClient_CreateIndicator() {
 				to.Ptr("new schema")},
 			ThreatTypes: []*string{
 				to.Ptr("compromised")},
-			ValidFrom:  to.Ptr("2020-04-15T17:44:00.114052Z"),
+			ValidFrom:  to.Ptr("2021-09-15T17:44:00.114052Z"),
 			ValidUntil: to.Ptr(""),
 		},
 	}, nil)
@@ -65,11 +65,11 @@ func ExampleThreatIntelligenceIndicatorClient_CreateIndicator() {
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/ThreatIntelligence"),
 	// 		ID: to.Ptr("/subscriptions/bd794837-4d29-4647-9105-6339bfdb4e6a/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/ThreatIntelligence/180105c7-a28d-b1a2-4a78-234f6ec80fd6"),
 	// 		Etag: to.Ptr("\"0000322c-0000-0800-0000-5e976c960000\""),
-	// 		Kind: to.Ptr(armsecurityinsights.ThreatIntelligenceResourceInnerKindIndicator),
+	// 		Kind: to.Ptr(armsecurityinsights.ThreatIntelligenceResourceKindEnumIndicator),
 	// 		Properties: &armsecurityinsights.ThreatIntelligenceIndicatorProperties{
 	// 			Description: to.Ptr("debugging indicators"),
 	// 			Confidence: to.Ptr[int32](78),
-	// 			Created: to.Ptr("2020-04-15T20:20:38.6160949Z"),
+	// 			Created: to.Ptr("2021-09-15T20:20:38.6160949Z"),
 	// 			CreatedByRef: to.Ptr("contoso@contoso.com"),
 	// 			DisplayName: to.Ptr("new schema"),
 	// 			ExternalID: to.Ptr("indicator--a2b6a95e-2108-4a38-bd49-ef95811bbcd7"),
@@ -88,13 +88,13 @@ func ExampleThreatIntelligenceIndicatorClient_CreateIndicator() {
 	// 				to.Ptr("new schema")},
 	// 				ThreatTypes: []*string{
 	// 					to.Ptr("compromised")},
-	// 					ValidFrom: to.Ptr("2020-04-15T17:44:00.114052Z"),
+	// 					ValidFrom: to.Ptr("2021-09-15T17:44:00.114052Z"),
 	// 				},
 	// 			},
 	// 			                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/threatintelligence/GetThreatIntelligenceById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/threatintelligence/GetThreatIntelligenceById.json
 func ExampleThreatIntelligenceIndicatorClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,11 +118,11 @@ func ExampleThreatIntelligenceIndicatorClient_Get() {
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/ThreatIntelligence"),
 	// 		ID: to.Ptr("/subscriptions/bd794837-4d29-4647-9105-6339bfdb4e6a/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/ThreatIntelligence/e16ef847-962e-d7b6-9c8b-a33e4bd30e47"),
 	// 		Etag: to.Ptr("\"00002a2c-0000-0800-0000-5e97683b0000\""),
-	// 		Kind: to.Ptr(armsecurityinsights.ThreatIntelligenceResourceInnerKindIndicator),
+	// 		Kind: to.Ptr(armsecurityinsights.ThreatIntelligenceResourceKindEnumIndicator),
 	// 		Properties: &armsecurityinsights.ThreatIntelligenceIndicatorProperties{
 	// 			Description: to.Ptr("debugging indicators"),
 	// 			Confidence: to.Ptr[int32](78),
-	// 			Created: to.Ptr("2020-04-15T19:51:17.1050923Z"),
+	// 			Created: to.Ptr("2021-04-15T19:51:17.1050923Z"),
 	// 			CreatedByRef: to.Ptr("aztestConnectors@dataconnector.ccsctp.net"),
 	// 			DisplayName: to.Ptr("updated indicator"),
 	// 			ExternalID: to.Ptr("indicator--73be1729-babb-4348-a6c4-94621cae2530"),
@@ -132,7 +132,7 @@ func ExampleThreatIntelligenceIndicatorClient_Get() {
 	// 			},
 	// 			KillChainPhases: []*armsecurityinsights.ThreatIntelligenceKillChainPhase{
 	// 			},
-	// 			LastUpdatedTimeUTC: to.Ptr("2020-04-15T20:18:49.2259902Z"),
+	// 			LastUpdatedTimeUTC: to.Ptr("2021-04-15T20:18:49.2259902Z"),
 	// 			Pattern: to.Ptr("[url:value = 'https://abc.com']"),
 	// 			PatternType: to.Ptr("url"),
 	// 			Revoked: to.Ptr(false),
@@ -141,13 +141,13 @@ func ExampleThreatIntelligenceIndicatorClient_Get() {
 	// 				to.Ptr("patching tags")},
 	// 				ThreatTypes: []*string{
 	// 					to.Ptr("compromised")},
-	// 					ValidFrom: to.Ptr("2020-04-15T17:44:00.114052Z"),
+	// 					ValidFrom: to.Ptr("2021-04-15T17:44:00.114052Z"),
 	// 				},
 	// 			},
 	// 			                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/threatintelligence/UpdateThreatIntelligence.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/threatintelligence/UpdateThreatIntelligence.json
 func ExampleThreatIntelligenceIndicatorClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -159,7 +159,7 @@ func ExampleThreatIntelligenceIndicatorClient_Create() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewThreatIntelligenceIndicatorClient().Create(ctx, "myRg", "myWorkspace", "d9cd6f0b-96b9-3984-17cd-a779d1e15a93", armsecurityinsights.ThreatIntelligenceIndicatorModel{
-		Kind: to.Ptr(armsecurityinsights.ThreatIntelligenceResourceInnerKindIndicator),
+		Kind: to.Ptr(armsecurityinsights.ThreatIntelligenceResourceKindEnumIndicator),
 		Properties: &armsecurityinsights.ThreatIntelligenceIndicatorProperties{
 			Description:        to.Ptr("debugging indicators"),
 			Confidence:         to.Ptr[int32](78),
@@ -194,11 +194,11 @@ func ExampleThreatIntelligenceIndicatorClient_Create() {
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/ThreatIntelligence"),
 	// 		ID: to.Ptr("/subscriptions/bd794837-4d29-4647-9105-6339bfdb4e6a/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/ThreatIntelligence/180105c7-a28d-b1a2-4a78-234f6ec80fd6"),
 	// 		Etag: to.Ptr("\"0000322c-0000-0800-0000-5e976c960000\""),
-	// 		Kind: to.Ptr(armsecurityinsights.ThreatIntelligenceResourceInnerKindIndicator),
+	// 		Kind: to.Ptr(armsecurityinsights.ThreatIntelligenceResourceKindEnumIndicator),
 	// 		Properties: &armsecurityinsights.ThreatIntelligenceIndicatorProperties{
 	// 			Description: to.Ptr("debugging indicators"),
 	// 			Confidence: to.Ptr[int32](78),
-	// 			Created: to.Ptr("2020-04-15T20:20:38.6160949Z"),
+	// 			Created: to.Ptr("2021-04-15T20:20:38.6160949Z"),
 	// 			CreatedByRef: to.Ptr("contoso@contoso.com"),
 	// 			DisplayName: to.Ptr("new schema"),
 	// 			ExternalID: to.Ptr("indicator--a2b6a95e-2108-4a38-bd49-ef95811bbcd7"),
@@ -217,13 +217,13 @@ func ExampleThreatIntelligenceIndicatorClient_Create() {
 	// 				to.Ptr("new schema")},
 	// 				ThreatTypes: []*string{
 	// 					to.Ptr("compromised")},
-	// 					ValidFrom: to.Ptr("2020-04-15T17:44:00.114052Z"),
+	// 					ValidFrom: to.Ptr("2021-04-15T17:44:00.114052Z"),
 	// 				},
 	// 			},
 	// 			                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/threatintelligence/DeleteThreatIntelligence.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/threatintelligence/DeleteThreatIntelligence.json
 func ExampleThreatIntelligenceIndicatorClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -240,7 +240,7 @@ func ExampleThreatIntelligenceIndicatorClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/threatintelligence/QueryThreatIntelligence.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/threatintelligence/QueryThreatIntelligence.json
 func ExampleThreatIntelligenceIndicatorClient_NewQueryIndicatorsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -253,14 +253,14 @@ func ExampleThreatIntelligenceIndicatorClient_NewQueryIndicatorsPager() {
 	}
 	pager := clientFactory.NewThreatIntelligenceIndicatorClient().NewQueryIndicatorsPager("myRg", "myWorkspace", armsecurityinsights.ThreatIntelligenceFilteringCriteria{
 		MaxConfidence: to.Ptr[int32](80),
-		MaxValidUntil: to.Ptr("2020-04-25T17:44:00.114052Z"),
+		MaxValidUntil: to.Ptr("2021-04-25T17:44:00.114052Z"),
 		MinConfidence: to.Ptr[int32](25),
-		MinValidUntil: to.Ptr("2020-04-05T17:44:00.114052Z"),
+		MinValidUntil: to.Ptr("2021-04-05T17:44:00.114052Z"),
 		PageSize:      to.Ptr[int32](100),
 		SortBy: []*armsecurityinsights.ThreatIntelligenceSortingCriteria{
 			{
 				ItemKey:   to.Ptr("lastUpdatedTimeUtc"),
-				SortOrder: to.Ptr(armsecurityinsights.ThreatIntelligenceSortingOrderDescending),
+				SortOrder: to.Ptr(armsecurityinsights.ThreatIntelligenceSortingCriteriaEnumDescending),
 			}},
 		Sources: []*string{
 			to.Ptr("Azure Sentinel")},
@@ -282,11 +282,11 @@ func ExampleThreatIntelligenceIndicatorClient_NewQueryIndicatorsPager() {
 		// 			Type: to.Ptr("Microsoft.SecurityInsights/ThreatIntelligence"),
 		// 			ID: to.Ptr("/subscriptions/bd794837-4d29-4647-9105-6339bfdb4e6a/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/ThreatIntelligence/27d963e6-e6e4-e0f9-e9d7-c53985b3bbe8"),
 		// 			Etag: to.Ptr("\"00002f2c-0000-0800-0000-5e976a8e0000\""),
-		// 			Kind: to.Ptr(armsecurityinsights.ThreatIntelligenceResourceInnerKindIndicator),
+		// 			Kind: to.Ptr(armsecurityinsights.ThreatIntelligenceResourceKindEnumIndicator),
 		// 			Properties: &armsecurityinsights.ThreatIntelligenceIndicatorProperties{
 		// 				Description: to.Ptr("debugging indicators 2"),
 		// 				Confidence: to.Ptr[int32](90),
-		// 				Created: to.Ptr("2020-04-15T20:11:57.9666134Z"),
+		// 				Created: to.Ptr("2021-04-15T20:11:57.9666134Z"),
 		// 				CreatedByRef: to.Ptr("contoso@contoso.com"),
 		// 				DisplayName: to.Ptr("new schema 2"),
 		// 				ExternalID: to.Ptr("indicator--8516d567-0daa-4614-8745-e3591e1b48cf"),
@@ -318,7 +318,7 @@ func ExampleThreatIntelligenceIndicatorClient_NewQueryIndicatorsPager() {
 		// 					to.Ptr("new schema")},
 		// 					ThreatTypes: []*string{
 		// 						to.Ptr("compromised")},
-		// 						ValidFrom: to.Ptr("2020-04-15T17:44:00.114052Z"),
+		// 						ValidFrom: to.Ptr("2021-04-15T17:44:00.114052Z"),
 		// 					},
 		// 				},
 		// 				&armsecurityinsights.ThreatIntelligenceIndicatorModel{
@@ -326,11 +326,11 @@ func ExampleThreatIntelligenceIndicatorClient_NewQueryIndicatorsPager() {
 		// 					Type: to.Ptr("Microsoft.SecurityInsights/ThreatIntelligence"),
 		// 					ID: to.Ptr("/subscriptions/bd794837-4d29-4647-9105-6339bfdb4e6a/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/ThreatIntelligence/e16ef847-962e-d7b6-9c8b-a33e4bd30e47"),
 		// 					Etag: to.Ptr("\"00002a2c-0000-0800-0000-5e97683b0000\""),
-		// 					Kind: to.Ptr(armsecurityinsights.ThreatIntelligenceResourceInnerKindIndicator),
+		// 					Kind: to.Ptr(armsecurityinsights.ThreatIntelligenceResourceKindEnumIndicator),
 		// 					Properties: &armsecurityinsights.ThreatIntelligenceIndicatorProperties{
 		// 						Description: to.Ptr("debugging indicators"),
 		// 						Confidence: to.Ptr[int32](78),
-		// 						Created: to.Ptr("2020-04-15T19:51:17.1050923Z"),
+		// 						Created: to.Ptr("2021-04-15T19:51:17.1050923Z"),
 		// 						CreatedByRef: to.Ptr("contoso@contoso.com"),
 		// 						DisplayName: to.Ptr("updated indicator"),
 		// 						ExternalID: to.Ptr("indicator--73be1729-babb-4348-a6c4-94621cae2530"),
@@ -340,7 +340,7 @@ func ExampleThreatIntelligenceIndicatorClient_NewQueryIndicatorsPager() {
 		// 						},
 		// 						KillChainPhases: []*armsecurityinsights.ThreatIntelligenceKillChainPhase{
 		// 						},
-		// 						LastUpdatedTimeUTC: to.Ptr("2020-04-15T20:15:11.074903Z"),
+		// 						LastUpdatedTimeUTC: to.Ptr("2021-04-15T20:15:11.074903Z"),
 		// 						Pattern: to.Ptr("[url:value = 'https://www.contoso.com']"),
 		// 						PatternType: to.Ptr("url"),
 		// 						Revoked: to.Ptr(false),
@@ -349,14 +349,14 @@ func ExampleThreatIntelligenceIndicatorClient_NewQueryIndicatorsPager() {
 		// 							to.Ptr("patching tags")},
 		// 							ThreatTypes: []*string{
 		// 								to.Ptr("compromised")},
-		// 								ValidFrom: to.Ptr("2020-04-15T17:44:00.114052Z"),
+		// 								ValidFrom: to.Ptr("2021-04-15T17:44:00.114052Z"),
 		// 							},
 		// 					}},
 		// 				}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/threatintelligence/AppendTagsThreatIntelligence.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/threatintelligence/AppendTagsThreatIntelligence.json
 func ExampleThreatIntelligenceIndicatorClient_AppendTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -377,7 +377,7 @@ func ExampleThreatIntelligenceIndicatorClient_AppendTags() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/threatintelligence/ReplaceTagsThreatIntelligence.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c4f3c695f0250dcb261598a62004f0aef10b9db/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/threatintelligence/ReplaceTagsThreatIntelligence.json
 func ExampleThreatIntelligenceIndicatorClient_ReplaceTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -390,7 +390,7 @@ func ExampleThreatIntelligenceIndicatorClient_ReplaceTags() {
 	}
 	res, err := clientFactory.NewThreatIntelligenceIndicatorClient().ReplaceTags(ctx, "myRg", "myWorkspace", "d9cd6f0b-96b9-3984-17cd-a779d1e15a93", armsecurityinsights.ThreatIntelligenceIndicatorModel{
 		Etag: to.Ptr("\"0000262c-0000-0800-0000-5e9767060000\""),
-		Kind: to.Ptr(armsecurityinsights.ThreatIntelligenceResourceInnerKindIndicator),
+		Kind: to.Ptr(armsecurityinsights.ThreatIntelligenceResourceKindEnumIndicator),
 		Properties: &armsecurityinsights.ThreatIntelligenceIndicatorProperties{
 			ThreatIntelligenceTags: []*string{
 				to.Ptr("patching tags")},
@@ -408,11 +408,11 @@ func ExampleThreatIntelligenceIndicatorClient_ReplaceTags() {
 	// 		Type: to.Ptr("Microsoft.SecurityInsights/ThreatIntelligence"),
 	// 		ID: to.Ptr("/subscriptions/bd794837-4d29-4647-9105-6339bfdb4e6a/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/ThreatIntelligence/e16ef847-962e-d7b6-9c8b-a33e4bd30e47"),
 	// 		Etag: to.Ptr("\"00002a2c-0000-0800-0000-5e97683b0000\""),
-	// 		Kind: to.Ptr(armsecurityinsights.ThreatIntelligenceResourceInnerKindIndicator),
+	// 		Kind: to.Ptr(armsecurityinsights.ThreatIntelligenceResourceKindEnumIndicator),
 	// 		Properties: &armsecurityinsights.ThreatIntelligenceIndicatorProperties{
 	// 			Description: to.Ptr("debugging indicators"),
 	// 			Confidence: to.Ptr[int32](78),
-	// 			Created: to.Ptr("2020-04-15T19:51:17.1050923Z"),
+	// 			Created: to.Ptr("2021-04-15T19:51:17.1050923Z"),
 	// 			CreatedByRef: to.Ptr("aztestConnectors@dataconnector.ccsctp.net"),
 	// 			DisplayName: to.Ptr("updated indicator"),
 	// 			ExternalID: to.Ptr("indicator--73be1729-babb-4348-a6c4-94621cae2530"),
@@ -422,7 +422,7 @@ func ExampleThreatIntelligenceIndicatorClient_ReplaceTags() {
 	// 			},
 	// 			KillChainPhases: []*armsecurityinsights.ThreatIntelligenceKillChainPhase{
 	// 			},
-	// 			LastUpdatedTimeUTC: to.Ptr("2020-04-15T19:56:08.828946Z"),
+	// 			LastUpdatedTimeUTC: to.Ptr("2021-04-15T19:56:08.828946Z"),
 	// 			Pattern: to.Ptr("[url:value = 'https://abc.com']"),
 	// 			PatternType: to.Ptr("url"),
 	// 			Revoked: to.Ptr(false),
@@ -431,7 +431,7 @@ func ExampleThreatIntelligenceIndicatorClient_ReplaceTags() {
 	// 				to.Ptr("patching tags")},
 	// 				ThreatTypes: []*string{
 	// 					to.Ptr("compromised")},
-	// 					ValidFrom: to.Ptr("2020-04-15T17:44:00.114052Z"),
+	// 					ValidFrom: to.Ptr("2021-04-15T17:44:00.114052Z"),
 	// 				},
 	// 			},
 	// 			                        }

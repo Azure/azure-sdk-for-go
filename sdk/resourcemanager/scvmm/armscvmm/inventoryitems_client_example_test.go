@@ -18,8 +18,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/scvmm/armscvmm"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/CreateInventoryItem.json
-func ExampleInventoryItemsClient_Create() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/InventoryItems_ListByVmmServer_MaximumSet_Gen.json
+func ExampleInventoryItemsClient_NewListByVmmServerPager_inventoryItemsListByVmmServerMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,93 +29,7 @@ func ExampleInventoryItemsClient_Create() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewInventoryItemsClient().Create(ctx, "testrg", "ContosoVMMServer", "12345678-1234-1234-1234-123456789abc", &armscvmm.InventoryItemsClientCreateOptions{Body: &armscvmm.InventoryItem{
-		Properties: &armscvmm.CloudInventoryItem{
-			InventoryType: to.Ptr(armscvmm.InventoryTypeCloud),
-		},
-	},
-	})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.InventoryItem = armscvmm.InventoryItem{
-	// 	Name: to.Ptr("12345678-1234-1234-1234-123456789abc"),
-	// 	Type: to.Ptr("Microsoft.SCVMM/VMMServers/InventoryItems"),
-	// 	ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer/InventoryItems/12345678-1234-1234-1234-123456789abc"),
-	// 	Properties: &armscvmm.CloudInventoryItem{
-	// 		InventoryItemName: to.Ptr("contoso-cloud"),
-	// 		InventoryType: to.Ptr(armscvmm.InventoryTypeCloud),
-	// 		ManagedResourceID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/Clouds/contoso-cloud"),
-	// 		ProvisioningState: to.Ptr("Succeeded"),
-	// 		UUID: to.Ptr("12345678-1234-1234-1234-123456789abc"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/GetInventoryItem.json
-func ExampleInventoryItemsClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armscvmm.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewInventoryItemsClient().Get(ctx, "testrg", "ContosoVMMServer", "12345678-1234-1234-1234-123456789abc", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.InventoryItem = armscvmm.InventoryItem{
-	// 	Name: to.Ptr("12345678-1234-1234-1234-123456789abc"),
-	// 	Type: to.Ptr("Microsoft.SCVMM/VMMServers/InventoryItems"),
-	// 	ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer/InventoryItems/12345678-1234-1234-1234-123456789abc"),
-	// 	Properties: &armscvmm.CloudInventoryItem{
-	// 		InventoryItemName: to.Ptr("contoso-cloud"),
-	// 		InventoryType: to.Ptr(armscvmm.InventoryTypeCloud),
-	// 		ManagedResourceID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/Clouds/contoso-cloud"),
-	// 		ProvisioningState: to.Ptr("Succeeded"),
-	// 		UUID: to.Ptr("12345678-1234-1234-1234-123456789abc"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/DeleteInventoryItem.json
-func ExampleInventoryItemsClient_Delete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armscvmm.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	_, err = clientFactory.NewInventoryItemsClient().Delete(ctx, "testrg", "ContosoVMMServer", "12345678-1234-1234-1234-123456789abc", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/ListInventoryItemsByVMMServer.json
-func ExampleInventoryItemsClient_NewListByVMMServerPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armscvmm.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewInventoryItemsClient().NewListByVMMServerPager("testrg", "ContosoVMMServer", nil)
+	pager := clientFactory.NewInventoryItemsClient().NewListByVmmServerPager("rgscvmm", "X", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -126,20 +40,225 @@ func ExampleInventoryItemsClient_NewListByVMMServerPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.InventoryItemsList = armscvmm.InventoryItemsList{
+		// page.InventoryItemListResult = armscvmm.InventoryItemListResult{
 		// 	Value: []*armscvmm.InventoryItem{
 		// 		{
-		// 			Name: to.Ptr("12345678-1234-1234-1234-123456789abc"),
-		// 			Type: to.Ptr("Microsoft.SCVMM/VMMServers/InventoryItems"),
-		// 			ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer/InventoryItems/12345678-1234-1234-1234-123456789abc"),
-		// 			Properties: &armscvmm.CloudInventoryItem{
-		// 				InventoryItemName: to.Ptr("contoso-cloud"),
-		// 				InventoryType: to.Ptr(armscvmm.InventoryTypeCloud),
-		// 				ManagedResourceID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/Clouds/contoso-cloud"),
-		// 				ProvisioningState: to.Ptr("Succeeded"),
-		// 				UUID: to.Ptr("12345678-1234-1234-1234-123456789abc"),
+		// 			Name: to.Ptr("oimmcgxagnhmasgsmhdaigznub"),
+		// 			Type: to.Ptr("lfhuayaplzxdqzubmjvtgcan"),
+		// 			ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ScVmm/vmmServers/{vmmServerName}/inventoryItems/inventoryItemResourceName"),
+		// 			SystemData: &armscvmm.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-29T22:28:00.094Z"); return t}()),
+		// 				CreatedBy: to.Ptr("p"),
+		// 				CreatedByType: to.Ptr(armscvmm.CreatedByTypeUser),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-29T22:28:00.095Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("goxcwpyyqlxndquly"),
+		// 				LastModifiedByType: to.Ptr(armscvmm.CreatedByTypeUser),
+		// 			},
+		// 			Kind: to.Ptr("M\\d_,V."),
+		// 			Properties: &armscvmm.InventoryItemProperties{
+		// 				InventoryItemName: to.Ptr("kspgdhmlmycalwrepfmshoaoumna"),
+		// 				InventoryType: to.Ptr(armscvmm.InventoryType("InventoryItemProperties")),
+		// 				ManagedResourceID: to.Ptr("ictxvjzvurnkdgwabqyyfyckkkdx"),
+		// 				ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
+		// 				UUID: to.Ptr("jolmoxfopwfoje"),
 		// 			},
 		// 	}},
 		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/InventoryItems_ListByVmmServer_MinimumSet_Gen.json
+func ExampleInventoryItemsClient_NewListByVmmServerPager_inventoryItemsListByVmmServerMinimumSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armscvmm.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewInventoryItemsClient().NewListByVmmServerPager("rgscvmm", "H", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.InventoryItemListResult = armscvmm.InventoryItemListResult{
+		// 	Value: []*armscvmm.InventoryItem{
+		// 		{
+		// 			ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ScVmm/vmmServers/{vmmServerName}/inventoryItems/inventoryItemResourceName"),
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/InventoryItems_Get_MaximumSet_Gen.json
+func ExampleInventoryItemsClient_Get_inventoryItemsGetMaximumSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armscvmm.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewInventoryItemsClient().Get(ctx, "rgscvmm", "1", "2bFBede6-EEf8-becB-dBbd-B96DbBFdB3f3", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.InventoryItem = armscvmm.InventoryItem{
+	// 	Name: to.Ptr("oimmcgxagnhmasgsmhdaigznub"),
+	// 	Type: to.Ptr("lfhuayaplzxdqzubmjvtgcan"),
+	// 	ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ScVmm/vmmServers/{vmmServerName}/inventoryItems/inventoryItemResourceName"),
+	// 	SystemData: &armscvmm.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-29T22:28:00.094Z"); return t}()),
+	// 		CreatedBy: to.Ptr("p"),
+	// 		CreatedByType: to.Ptr(armscvmm.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-29T22:28:00.095Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("goxcwpyyqlxndquly"),
+	// 		LastModifiedByType: to.Ptr(armscvmm.CreatedByTypeUser),
+	// 	},
+	// 	Kind: to.Ptr("M\\d_,V."),
+	// 	Properties: &armscvmm.InventoryItemProperties{
+	// 		InventoryItemName: to.Ptr("kspgdhmlmycalwrepfmshoaoumna"),
+	// 		InventoryType: to.Ptr(armscvmm.InventoryType("InventoryItemProperties")),
+	// 		ManagedResourceID: to.Ptr("ictxvjzvurnkdgwabqyyfyckkkdx"),
+	// 		ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
+	// 		UUID: to.Ptr("jolmoxfopwfoje"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/InventoryItems_Get_MinimumSet_Gen.json
+func ExampleInventoryItemsClient_Get_inventoryItemsGetMinimumSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armscvmm.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewInventoryItemsClient().Get(ctx, "rgscvmm", "_", "cacb8Ceb-efAC-bebb-ae7C-dec8C5Bb7100", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.InventoryItem = armscvmm.InventoryItem{
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/InventoryItems_Create_MaximumSet_Gen.json
+func ExampleInventoryItemsClient_Create_inventoryItemsCreateMaximumSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armscvmm.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewInventoryItemsClient().Create(ctx, "rgscvmm", "O", "1BdDc2Ab-bDd9-Ebd6-bfdb-C0dbbdB5DEDf", armscvmm.InventoryItem{
+		Kind: to.Ptr("M\\d_,V."),
+		Properties: &armscvmm.InventoryItemProperties{
+			InventoryType: to.Ptr(armscvmm.InventoryType("InventoryItemProperties")),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.InventoryItem = armscvmm.InventoryItem{
+	// 	Name: to.Ptr("oimmcgxagnhmasgsmhdaigznub"),
+	// 	Type: to.Ptr("lfhuayaplzxdqzubmjvtgcan"),
+	// 	ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.ScVmm/vmmServers/{vmmServerName}/inventoryItems/inventoryItemResourceName"),
+	// 	SystemData: &armscvmm.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-29T22:28:00.094Z"); return t}()),
+	// 		CreatedBy: to.Ptr("p"),
+	// 		CreatedByType: to.Ptr(armscvmm.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-29T22:28:00.095Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("goxcwpyyqlxndquly"),
+	// 		LastModifiedByType: to.Ptr(armscvmm.CreatedByTypeUser),
+	// 	},
+	// 	Kind: to.Ptr("M\\d_,V."),
+	// 	Properties: &armscvmm.InventoryItemProperties{
+	// 		InventoryItemName: to.Ptr("kspgdhmlmycalwrepfmshoaoumna"),
+	// 		InventoryType: to.Ptr(armscvmm.InventoryType("InventoryItemProperties")),
+	// 		ManagedResourceID: to.Ptr("ictxvjzvurnkdgwabqyyfyckkkdx"),
+	// 		ProvisioningState: to.Ptr(armscvmm.ProvisioningStateSucceeded),
+	// 		UUID: to.Ptr("jolmoxfopwfoje"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/InventoryItems_Create_MinimumSet_Gen.json
+func ExampleInventoryItemsClient_Create_inventoryItemsCreateMinimumSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armscvmm.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewInventoryItemsClient().Create(ctx, "rgscvmm", ".", "bbFb0cBb-50ce-4bfc-3eeD-bC26AbCC257a", armscvmm.InventoryItem{}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.InventoryItem = armscvmm.InventoryItem{
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/InventoryItems_Delete_MaximumSet_Gen.json
+func ExampleInventoryItemsClient_Delete_inventoryItemsDeleteMaximumSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armscvmm.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewInventoryItemsClient().Delete(ctx, "rgscvmm", "b", "EcECadfd-Eaaa-e5Ce-ebdA-badeEd3c6af1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7753cb8917f0968713c013a1f25875e8bd8dc492/specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/InventoryItems_Delete_MinimumSet_Gen.json
+func ExampleInventoryItemsClient_Delete_inventoryItemsDeleteMinimumSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armscvmm.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewInventoryItemsClient().Delete(ctx, "rgscvmm", "_", "cDBcbae6-BC3d-52fe-CedC-7eFeaBFabb82", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }

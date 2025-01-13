@@ -21,7 +21,6 @@ import (
 const systemEventsGoFile = "system_events.go"
 const modelsGoFile = "models.go"
 const modelsSerdeGoFile = "models_serde.go"
-const constantsGoFile = "constants.go"
 
 const header = `//go:build go1.18
 // +build go1.18
@@ -30,10 +29,6 @@ const header = `//go:build go1.18
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 package azsystemevents
-
-// Type represents the value set in EventData.EventType or messaging.CloudEvent.Type
-// for system events.
-type Type string
 
 const (
 `
@@ -108,7 +103,7 @@ func getConstantValues(reader io.ReadCloser) (map[string]constant, error) {
 			}
 
 			if !ignorable {
-				log.Printf("===========> DIDN'T MATCH REGEX: %q ", comment)
+				log.Fatalf("Non-system event type not classified: %q ", comment)
 			}
 		}
 
@@ -147,7 +142,7 @@ func writeConstantsFile(path string, constants map[string]constant) error {
 
 		// ex:
 		// TypeAPIManagementAPICreated Type = "Microsoft.ApiManagement.APICreated" // maps to APIManagementAPICreatedEventData
-		buff := fmt.Sprintf("%s Type = \"%s\" // maps to %s\n", c.ConstantName, c.ConstantValue, c.GoType)
+		buff := fmt.Sprintf("%s = \"%s\" // maps to %s\n", c.ConstantName, c.ConstantValue, c.GoType)
 		_, err := writer.WriteString(buff)
 
 		if err != nil {

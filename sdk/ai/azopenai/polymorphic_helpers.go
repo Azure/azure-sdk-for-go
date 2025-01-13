@@ -22,12 +22,12 @@ func unmarshalAzureChatExtensionConfigurationClassification(rawMsg json.RawMessa
 	switch m["type"] {
 	case string(AzureChatExtensionTypeAzureCosmosDB):
 		b = &AzureCosmosDBChatExtensionConfiguration{}
-	case string(AzureChatExtensionTypeAzureMachineLearningIndex):
-		b = &AzureMachineLearningIndexChatExtensionConfiguration{}
 	case string(AzureChatExtensionTypeAzureSearch):
 		b = &AzureSearchChatExtensionConfiguration{}
 	case string(AzureChatExtensionTypeElasticsearch):
 		b = &ElasticsearchChatExtensionConfiguration{}
+	case string(AzureChatExtensionTypeMongoDB):
+		b = &MongoDBChatExtensionConfiguration{}
 	case string(AzureChatExtensionTypePinecone):
 		b = &PineconeChatExtensionConfiguration{}
 	default:
@@ -70,6 +70,8 @@ func unmarshalChatCompletionsResponseFormatClassification(rawMsg json.RawMessage
 	switch m["type"] {
 	case "json_object":
 		b = &ChatCompletionsJSONResponseFormat{}
+	case "json_schema":
+		b = &ChatCompletionsJSONSchemaResponseFormat{}
 	case "text":
 		b = &ChatCompletionsTextResponseFormat{}
 	default:
@@ -166,29 +168,6 @@ func unmarshalChatCompletionsToolDefinitionClassificationArray(rawMsg json.RawMe
 	return fArray, nil
 }
 
-func unmarshalChatFinishDetailsClassification(rawMsg json.RawMessage) (ChatFinishDetailsClassification, error) {
-	if rawMsg == nil || string(rawMsg) == "null" {
-		return nil, nil
-	}
-	var m map[string]any
-	if err := json.Unmarshal(rawMsg, &m); err != nil {
-		return nil, err
-	}
-	var b ChatFinishDetailsClassification
-	switch m["type"] {
-	case "max_tokens":
-		b = &MaxTokensFinishDetails{}
-	case "stop":
-		b = &StopFinishDetails{}
-	default:
-		b = &ChatFinishDetails{}
-	}
-	if err := json.Unmarshal(rawMsg, b); err != nil {
-		return nil, err
-	}
-	return b, nil
-}
-
 func unmarshalChatRequestMessageClassification(rawMsg json.RawMessage) (ChatRequestMessageClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
@@ -261,8 +240,33 @@ func unmarshalOnYourDataAuthenticationOptionsClassification(rawMsg json.RawMessa
 		b = &OnYourDataSystemAssignedManagedIdentityAuthenticationOptions{}
 	case string(OnYourDataAuthenticationTypeUserAssignedManagedIdentity):
 		b = &OnYourDataUserAssignedManagedIdentityAuthenticationOptions{}
+	case string(OnYourDataAuthenticationTypeUsernameAndPassword):
+		b = &OnYourDataUsernameAndPasswordAuthenticationOptions{}
 	default:
 		b = &OnYourDataAuthenticationOptions{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalOnYourDataVectorSearchAuthenticationOptionsClassification(rawMsg json.RawMessage) (OnYourDataVectorSearchAuthenticationOptionsClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b OnYourDataVectorSearchAuthenticationOptionsClassification
+	switch m["type"] {
+	case string(OnYourDataVectorSearchAuthenticationTypeAccessToken):
+		b = &OnYourDataVectorSearchAccessTokenAuthenticationOptions{}
+	case string(OnYourDataVectorSearchAuthenticationTypeAPIKey):
+		b = &OnYourDataVectorSearchAPIKeyAuthenticationOptions{}
+	default:
+		b = &OnYourDataVectorSearchAuthenticationOptions{}
 	}
 	if err := json.Unmarshal(rawMsg, b); err != nil {
 		return nil, err
@@ -284,6 +288,8 @@ func unmarshalOnYourDataVectorizationSourceClassification(rawMsg json.RawMessage
 		b = &OnYourDataDeploymentNameVectorizationSource{}
 	case string(OnYourDataVectorizationSourceTypeEndpoint):
 		b = &OnYourDataEndpointVectorizationSource{}
+	case string(OnYourDataVectorizationSourceTypeIntegrated):
+		b = &OnYourDataIntegratedVectorizationSource{}
 	case string(OnYourDataVectorizationSourceTypeModelID):
 		b = &OnYourDataModelIDVectorizationSource{}
 	default:

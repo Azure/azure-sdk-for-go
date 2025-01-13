@@ -20,6 +20,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"strconv"
 )
 
 // Server is a fake server for instances of the armdeploymentstacks.Client type.
@@ -83,6 +84,18 @@ type Server struct {
 	// NewListAtSubscriptionPager is the fake for method Client.NewListAtSubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListAtSubscriptionPager func(options *armdeploymentstacks.ClientListAtSubscriptionOptions) (resp azfake.PagerResponder[armdeploymentstacks.ClientListAtSubscriptionResponse])
+
+	// BeginValidateStackAtManagementGroup is the fake for method Client.BeginValidateStackAtManagementGroup
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusBadRequest
+	BeginValidateStackAtManagementGroup func(ctx context.Context, managementGroupID string, deploymentStackName string, deploymentStack armdeploymentstacks.DeploymentStack, options *armdeploymentstacks.ClientBeginValidateStackAtManagementGroupOptions) (resp azfake.PollerResponder[armdeploymentstacks.ClientValidateStackAtManagementGroupResponse], errResp azfake.ErrorResponder)
+
+	// BeginValidateStackAtResourceGroup is the fake for method Client.BeginValidateStackAtResourceGroup
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusBadRequest
+	BeginValidateStackAtResourceGroup func(ctx context.Context, resourceGroupName string, deploymentStackName string, deploymentStack armdeploymentstacks.DeploymentStack, options *armdeploymentstacks.ClientBeginValidateStackAtResourceGroupOptions) (resp azfake.PollerResponder[armdeploymentstacks.ClientValidateStackAtResourceGroupResponse], errResp azfake.ErrorResponder)
+
+	// BeginValidateStackAtSubscription is the fake for method Client.BeginValidateStackAtSubscription
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusBadRequest
+	BeginValidateStackAtSubscription func(ctx context.Context, deploymentStackName string, deploymentStack armdeploymentstacks.DeploymentStack, options *armdeploymentstacks.ClientBeginValidateStackAtSubscriptionOptions) (resp azfake.PollerResponder[armdeploymentstacks.ClientValidateStackAtSubscriptionResponse], errResp azfake.ErrorResponder)
 }
 
 // NewServerTransport creates a new instance of ServerTransport with the provided implementation.
@@ -100,6 +113,9 @@ func NewServerTransport(srv *Server) *ServerTransport {
 		newListAtManagementGroupPager:        newTracker[azfake.PagerResponder[armdeploymentstacks.ClientListAtManagementGroupResponse]](),
 		newListAtResourceGroupPager:          newTracker[azfake.PagerResponder[armdeploymentstacks.ClientListAtResourceGroupResponse]](),
 		newListAtSubscriptionPager:           newTracker[azfake.PagerResponder[armdeploymentstacks.ClientListAtSubscriptionResponse]](),
+		beginValidateStackAtManagementGroup:  newTracker[azfake.PollerResponder[armdeploymentstacks.ClientValidateStackAtManagementGroupResponse]](),
+		beginValidateStackAtResourceGroup:    newTracker[azfake.PollerResponder[armdeploymentstacks.ClientValidateStackAtResourceGroupResponse]](),
+		beginValidateStackAtSubscription:     newTracker[azfake.PollerResponder[armdeploymentstacks.ClientValidateStackAtSubscriptionResponse]](),
 	}
 }
 
@@ -116,6 +132,9 @@ type ServerTransport struct {
 	newListAtManagementGroupPager        *tracker[azfake.PagerResponder[armdeploymentstacks.ClientListAtManagementGroupResponse]]
 	newListAtResourceGroupPager          *tracker[azfake.PagerResponder[armdeploymentstacks.ClientListAtResourceGroupResponse]]
 	newListAtSubscriptionPager           *tracker[azfake.PagerResponder[armdeploymentstacks.ClientListAtSubscriptionResponse]]
+	beginValidateStackAtManagementGroup  *tracker[azfake.PollerResponder[armdeploymentstacks.ClientValidateStackAtManagementGroupResponse]]
+	beginValidateStackAtResourceGroup    *tracker[azfake.PollerResponder[armdeploymentstacks.ClientValidateStackAtResourceGroupResponse]]
+	beginValidateStackAtSubscription     *tracker[azfake.PollerResponder[armdeploymentstacks.ClientValidateStackAtSubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for ServerTransport.
@@ -160,6 +179,12 @@ func (s *ServerTransport) Do(req *http.Request) (*http.Response, error) {
 		resp, err = s.dispatchNewListAtResourceGroupPager(req)
 	case "Client.NewListAtSubscriptionPager":
 		resp, err = s.dispatchNewListAtSubscriptionPager(req)
+	case "Client.BeginValidateStackAtManagementGroup":
+		resp, err = s.dispatchBeginValidateStackAtManagementGroup(req)
+	case "Client.BeginValidateStackAtResourceGroup":
+		resp, err = s.dispatchBeginValidateStackAtResourceGroup(req)
+	case "Client.BeginValidateStackAtSubscription":
+		resp, err = s.dispatchBeginValidateStackAtSubscription(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
 	}
@@ -347,12 +372,21 @@ func (s *ServerTransport) dispatchBeginDeleteAtManagementGroup(req *http.Request
 			return nil, err
 		}
 		unmanageActionManagementGroupsParam := getOptional(armdeploymentstacks.UnmanageActionManagementGroupMode(unmanageActionManagementGroupsUnescaped))
+		bypassStackOutOfSyncErrorUnescaped, err := url.QueryUnescape(qp.Get("bypassStackOutOfSyncError"))
+		if err != nil {
+			return nil, err
+		}
+		bypassStackOutOfSyncErrorParam, err := parseOptional(bypassStackOutOfSyncErrorUnescaped, strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
 		var options *armdeploymentstacks.ClientBeginDeleteAtManagementGroupOptions
-		if unmanageActionResourcesParam != nil || unmanageActionResourceGroupsParam != nil || unmanageActionManagementGroupsParam != nil {
+		if unmanageActionResourcesParam != nil || unmanageActionResourceGroupsParam != nil || unmanageActionManagementGroupsParam != nil || bypassStackOutOfSyncErrorParam != nil {
 			options = &armdeploymentstacks.ClientBeginDeleteAtManagementGroupOptions{
 				UnmanageActionResources:        unmanageActionResourcesParam,
 				UnmanageActionResourceGroups:   unmanageActionResourceGroupsParam,
 				UnmanageActionManagementGroups: unmanageActionManagementGroupsParam,
+				BypassStackOutOfSyncError:      bypassStackOutOfSyncErrorParam,
 			}
 		}
 		respr, errRespr := s.srv.BeginDeleteAtManagementGroup(req.Context(), managementGroupIDParam, deploymentStackNameParam, options)
@@ -410,11 +444,26 @@ func (s *ServerTransport) dispatchBeginDeleteAtResourceGroup(req *http.Request) 
 			return nil, err
 		}
 		unmanageActionResourceGroupsParam := getOptional(armdeploymentstacks.UnmanageActionResourceGroupMode(unmanageActionResourceGroupsUnescaped))
+		unmanageActionManagementGroupsUnescaped, err := url.QueryUnescape(qp.Get("unmanageAction.ManagementGroups"))
+		if err != nil {
+			return nil, err
+		}
+		unmanageActionManagementGroupsParam := getOptional(armdeploymentstacks.UnmanageActionManagementGroupMode(unmanageActionManagementGroupsUnescaped))
+		bypassStackOutOfSyncErrorUnescaped, err := url.QueryUnescape(qp.Get("bypassStackOutOfSyncError"))
+		if err != nil {
+			return nil, err
+		}
+		bypassStackOutOfSyncErrorParam, err := parseOptional(bypassStackOutOfSyncErrorUnescaped, strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
 		var options *armdeploymentstacks.ClientBeginDeleteAtResourceGroupOptions
-		if unmanageActionResourcesParam != nil || unmanageActionResourceGroupsParam != nil {
+		if unmanageActionResourcesParam != nil || unmanageActionResourceGroupsParam != nil || unmanageActionManagementGroupsParam != nil || bypassStackOutOfSyncErrorParam != nil {
 			options = &armdeploymentstacks.ClientBeginDeleteAtResourceGroupOptions{
-				UnmanageActionResources:      unmanageActionResourcesParam,
-				UnmanageActionResourceGroups: unmanageActionResourceGroupsParam,
+				UnmanageActionResources:        unmanageActionResourcesParam,
+				UnmanageActionResourceGroups:   unmanageActionResourceGroupsParam,
+				UnmanageActionManagementGroups: unmanageActionManagementGroupsParam,
+				BypassStackOutOfSyncError:      bypassStackOutOfSyncErrorParam,
 			}
 		}
 		respr, errRespr := s.srv.BeginDeleteAtResourceGroup(req.Context(), resourceGroupNameParam, deploymentStackNameParam, options)
@@ -468,11 +517,26 @@ func (s *ServerTransport) dispatchBeginDeleteAtSubscription(req *http.Request) (
 			return nil, err
 		}
 		unmanageActionResourceGroupsParam := getOptional(armdeploymentstacks.UnmanageActionResourceGroupMode(unmanageActionResourceGroupsUnescaped))
+		unmanageActionManagementGroupsUnescaped, err := url.QueryUnescape(qp.Get("unmanageAction.ManagementGroups"))
+		if err != nil {
+			return nil, err
+		}
+		unmanageActionManagementGroupsParam := getOptional(armdeploymentstacks.UnmanageActionManagementGroupMode(unmanageActionManagementGroupsUnescaped))
+		bypassStackOutOfSyncErrorUnescaped, err := url.QueryUnescape(qp.Get("bypassStackOutOfSyncError"))
+		if err != nil {
+			return nil, err
+		}
+		bypassStackOutOfSyncErrorParam, err := parseOptional(bypassStackOutOfSyncErrorUnescaped, strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
 		var options *armdeploymentstacks.ClientBeginDeleteAtSubscriptionOptions
-		if unmanageActionResourcesParam != nil || unmanageActionResourceGroupsParam != nil {
+		if unmanageActionResourcesParam != nil || unmanageActionResourceGroupsParam != nil || unmanageActionManagementGroupsParam != nil || bypassStackOutOfSyncErrorParam != nil {
 			options = &armdeploymentstacks.ClientBeginDeleteAtSubscriptionOptions{
-				UnmanageActionResources:      unmanageActionResourcesParam,
-				UnmanageActionResourceGroups: unmanageActionResourceGroupsParam,
+				UnmanageActionResources:        unmanageActionResourcesParam,
+				UnmanageActionResourceGroups:   unmanageActionResourceGroupsParam,
+				UnmanageActionManagementGroups: unmanageActionManagementGroupsParam,
+				BypassStackOutOfSyncError:      bypassStackOutOfSyncErrorParam,
 			}
 		}
 		respr, errRespr := s.srv.BeginDeleteAtSubscription(req.Context(), deploymentStackNameParam, options)
@@ -793,5 +857,145 @@ func (s *ServerTransport) dispatchNewListAtSubscriptionPager(req *http.Request) 
 	if !server.PagerResponderMore(newListAtSubscriptionPager) {
 		s.newListAtSubscriptionPager.remove(req)
 	}
+	return resp, nil
+}
+
+func (s *ServerTransport) dispatchBeginValidateStackAtManagementGroup(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginValidateStackAtManagementGroup == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginValidateStackAtManagementGroup not implemented")}
+	}
+	beginValidateStackAtManagementGroup := s.beginValidateStackAtManagementGroup.get(req)
+	if beginValidateStackAtManagementGroup == nil {
+		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deploymentStacks/(?P<deploymentStackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validate`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdeploymentstacks.DeploymentStack](req)
+		if err != nil {
+			return nil, err
+		}
+		managementGroupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("managementGroupId")])
+		if err != nil {
+			return nil, err
+		}
+		deploymentStackNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentStackName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginValidateStackAtManagementGroup(req.Context(), managementGroupIDParam, deploymentStackNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginValidateStackAtManagementGroup = &respr
+		s.beginValidateStackAtManagementGroup.add(req, beginValidateStackAtManagementGroup)
+	}
+
+	resp, err := server.PollerResponderNext(beginValidateStackAtManagementGroup, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusBadRequest}, resp.StatusCode) {
+		s.beginValidateStackAtManagementGroup.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusBadRequest", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginValidateStackAtManagementGroup) {
+		s.beginValidateStackAtManagementGroup.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (s *ServerTransport) dispatchBeginValidateStackAtResourceGroup(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginValidateStackAtResourceGroup == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginValidateStackAtResourceGroup not implemented")}
+	}
+	beginValidateStackAtResourceGroup := s.beginValidateStackAtResourceGroup.get(req)
+	if beginValidateStackAtResourceGroup == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deploymentStacks/(?P<deploymentStackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validate`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdeploymentstacks.DeploymentStack](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		deploymentStackNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentStackName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginValidateStackAtResourceGroup(req.Context(), resourceGroupNameParam, deploymentStackNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginValidateStackAtResourceGroup = &respr
+		s.beginValidateStackAtResourceGroup.add(req, beginValidateStackAtResourceGroup)
+	}
+
+	resp, err := server.PollerResponderNext(beginValidateStackAtResourceGroup, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusBadRequest}, resp.StatusCode) {
+		s.beginValidateStackAtResourceGroup.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusBadRequest", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginValidateStackAtResourceGroup) {
+		s.beginValidateStackAtResourceGroup.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (s *ServerTransport) dispatchBeginValidateStackAtSubscription(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginValidateStackAtSubscription == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginValidateStackAtSubscription not implemented")}
+	}
+	beginValidateStackAtSubscription := s.beginValidateStackAtSubscription.get(req)
+	if beginValidateStackAtSubscription == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deploymentStacks/(?P<deploymentStackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validate`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdeploymentstacks.DeploymentStack](req)
+		if err != nil {
+			return nil, err
+		}
+		deploymentStackNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentStackName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginValidateStackAtSubscription(req.Context(), deploymentStackNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginValidateStackAtSubscription = &respr
+		s.beginValidateStackAtSubscription.add(req, beginValidateStackAtSubscription)
+	}
+
+	resp, err := server.PollerResponderNext(beginValidateStackAtSubscription, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusBadRequest}, resp.StatusCode) {
+		s.beginValidateStackAtSubscription.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusBadRequest", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginValidateStackAtSubscription) {
+		s.beginValidateStackAtSubscription.remove(req)
+	}
+
 	return resp, nil
 }

@@ -16,6 +16,11 @@ import (
 	generated "github.com/Azure/azure-sdk-for-go/sdk/data/aztables/internal"
 )
 
+var (
+	storageScope = []string{"https://storage.azure.com/.default"}
+	cosmosScope  = []string{"https://cosmos.azure.com/.default"}
+)
+
 // ServiceClient represents a client to the table service. It can be used to query
 // the available tables, create/delete tables, and various other service level operations.
 type ServiceClient struct {
@@ -27,8 +32,14 @@ type ServiceClient struct {
 // NewServiceClient creates a ServiceClient struct using the specified serviceURL, credential, and options.
 // Pass in nil for options to construct the client with the default ClientOptions.
 func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*ServiceClient, error) {
+	scope := storageScope
+
+	if isCosmosEndpoint(serviceURL) {
+		scope = cosmosScope
+	}
+
 	plOpts := runtime.PipelineOptions{
-		PerRetry: []policy.Policy{runtime.NewBearerTokenPolicy(cred, []string{"https://storage.azure.com/.default"}, nil)},
+		PerRetry: []policy.Policy{runtime.NewBearerTokenPolicy(cred, scope, nil)},
 	}
 	client, err := newClient(serviceURL, plOpts, options)
 	if err != nil {

@@ -27,4 +27,3 @@ extends:
   parameters:
     ServiceDirectory: 'messaging/azwebpubsub'
     UsePipelineProxy: false
-    

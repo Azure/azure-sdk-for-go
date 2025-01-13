@@ -14,13 +14,14 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
 
 func TestClientAssertionCredential(t *testing.T) {
-	key := struct{}{}
+	type key struct{}
 	calls := 0
 	getAssertion := func(c context.Context) (string, error) {
-		if v := c.Value(key); v == nil || !v.(bool) {
+		if v := c.Value(key{}); v == nil || !v.(bool) {
 			t.Fatal("unexpected context in getAssertion")
 		}
 		calls++
@@ -32,7 +33,7 @@ func TestClientAssertionCredential(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	ctx := context.WithValue(context.Background(), key, true)
+	ctx := context.WithValue(context.Background(), key{}, true)
 	_, err = cred.GetToken(ctx, testTRO)
 	if err != nil {
 		t.Fatal(err)
@@ -73,6 +74,9 @@ func TestClientAssertionCredentialNilCallback(t *testing.T) {
 }
 
 func TestClientAssertionCredential_Live(t *testing.T) {
+	if recording.GetRecordMode() == recording.LiveMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22879")
+	}
 	data, err := os.ReadFile(liveSP.pemPath)
 	if err != nil {
 		t.Fatalf(`failed to read cert: %v`, err)

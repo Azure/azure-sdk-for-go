@@ -14,7 +14,7 @@ import (
 )
 
 func unmarshalAzureBackupRestoreRequestClassification(rawMsg json.RawMessage) (armdataprotection.AzureBackupRestoreRequestClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -39,7 +39,7 @@ func unmarshalAzureBackupRestoreRequestClassification(rawMsg json.RawMessage) (a
 }
 
 func unmarshalFeatureValidationRequestBaseClassification(rawMsg json.RawMessage) (armdataprotection.FeatureValidationRequestBaseClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any

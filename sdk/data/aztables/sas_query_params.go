@@ -24,7 +24,7 @@ func FormatTimesForSASSigning(startTime, expiryTime time.Time) (string, string) 
 }
 
 // sasTimeFormat represents the format of a SAS start or expiry time. Use it when formatting/parsing a time.Time.
-const sasTimeFormat = "2006-01-02T15:04:05Z" //"2017-07-27T00:00:00Z" // ISO 8601
+const sasTimeFormat = "2006-01-02T15:04:05Z" // "2017-07-27T00:00:00Z" // ISO 8601
 
 // formatSASTimeWithDefaultFormat format time with ISO 8601 in "yyyy-MM-ddTHH:mm:ssZ".
 func formatSASTimeWithDefaultFormat(t *time.Time) string {

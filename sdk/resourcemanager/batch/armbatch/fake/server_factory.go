@@ -24,6 +24,7 @@ type ServerFactory struct {
 	ApplicationPackageServer        ApplicationPackageServer
 	CertificateServer               CertificateServer
 	LocationServer                  LocationServer
+	NetworkSecurityPerimeterServer  NetworkSecurityPerimeterServer
 	OperationsServer                OperationsServer
 	PoolServer                      PoolServer
 	PrivateEndpointConnectionServer PrivateEndpointConnectionServer
@@ -49,6 +50,7 @@ type ServerFactoryTransport struct {
 	trApplicationPackageServer        *ApplicationPackageServerTransport
 	trCertificateServer               *CertificateServerTransport
 	trLocationServer                  *LocationServerTransport
+	trNetworkSecurityPerimeterServer  *NetworkSecurityPerimeterServerTransport
 	trOperationsServer                *OperationsServerTransport
 	trPoolServer                      *PoolServerTransport
 	trPrivateEndpointConnectionServer *PrivateEndpointConnectionServerTransport
@@ -85,6 +87,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "LocationClient":
 		initServer(s, &s.trLocationServer, func() *LocationServerTransport { return NewLocationServerTransport(&s.srv.LocationServer) })
 		resp, err = s.trLocationServer.Do(req)
+	case "NetworkSecurityPerimeterClient":
+		initServer(s, &s.trNetworkSecurityPerimeterServer, func() *NetworkSecurityPerimeterServerTransport {
+			return NewNetworkSecurityPerimeterServerTransport(&s.srv.NetworkSecurityPerimeterServer)
+		})
+		resp, err = s.trNetworkSecurityPerimeterServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)

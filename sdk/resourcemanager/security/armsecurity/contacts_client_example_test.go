@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43974e07d3204c4b6f8396627f5430994a7f7c9/specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/SecurityContacts/GetSecurityContactsSubscription_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ac34f238dd6b9071f486b57e9f9f1a0c43ec6f6/specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/SecurityContacts/GetSecurityContactsSubscription_example.json
 func ExampleContactsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -47,17 +47,23 @@ func ExampleContactsClient_NewListPager() {
 		// 			Type: to.Ptr("Microsoft.Security/securityContact"),
 		// 			ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/securityContact/default"),
 		// 			Properties: &armsecurity.ContactProperties{
-		// 				AlertNotifications: &armsecurity.ContactPropertiesAlertNotifications{
-		// 					MinimalSeverity: to.Ptr(armsecurity.MinimalSeverityLow),
-		// 					State: to.Ptr(armsecurity.State("On")),
-		// 				},
 		// 				Emails: to.Ptr("john@contoso.com;Jane@contoso.com"),
+		// 				IsEnabled: to.Ptr(true),
 		// 				NotificationsByRole: &armsecurity.ContactPropertiesNotificationsByRole{
-		// 					Roles: []*armsecurity.Roles{
-		// 						to.Ptr(armsecurity.RolesOwner),
-		// 						to.Ptr(armsecurity.Roles("Admin"))},
+		// 					Roles: []*armsecurity.SecurityContactRole{
+		// 						to.Ptr(armsecurity.SecurityContactRoleOwner),
+		// 						to.Ptr(armsecurity.SecurityContactRole("Admin"))},
 		// 						State: to.Ptr(armsecurity.State("On")),
 		// 					},
+		// 					NotificationsSources: []armsecurity.NotificationsSourceClassification{
+		// 						&armsecurity.NotificationsSourceAttackPath{
+		// 							SourceType: to.Ptr(armsecurity.SourceTypeAttackPath),
+		// 							MinimalRiskLevel: to.Ptr(armsecurity.MinimalRiskLevelCritical),
+		// 						},
+		// 						&armsecurity.NotificationsSourceAlert{
+		// 							SourceType: to.Ptr(armsecurity.SourceTypeAlert),
+		// 							MinimalSeverity: to.Ptr(armsecurity.MinimalSeverityMedium),
+		// 					}},
 		// 					Phone: to.Ptr("(214)275-4038"),
 		// 				},
 		// 		}},
@@ -65,7 +71,7 @@ func ExampleContactsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43974e07d3204c4b6f8396627f5430994a7f7c9/specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/SecurityContacts/GetSecurityContact_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ac34f238dd6b9071f486b57e9f9f1a0c43ec6f6/specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/SecurityContacts/GetSecurityContact_example.json
 func ExampleContactsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,7 +82,7 @@ func ExampleContactsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewContactsClient().Get(ctx, "default", nil)
+	res, err := clientFactory.NewContactsClient().Get(ctx, armsecurity.SecurityContactNameDefault, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -88,22 +94,28 @@ func ExampleContactsClient_Get() {
 	// 	Type: to.Ptr("Microsoft.Security/securityContacts"),
 	// 	ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/securityContacts/default"),
 	// 	Properties: &armsecurity.ContactProperties{
-	// 		AlertNotifications: &armsecurity.ContactPropertiesAlertNotifications{
-	// 			MinimalSeverity: to.Ptr(armsecurity.MinimalSeverityLow),
-	// 			State: to.Ptr(armsecurity.State("On")),
-	// 		},
 	// 		Emails: to.Ptr("john@contoso.com;jane@contoso.com"),
+	// 		IsEnabled: to.Ptr(true),
 	// 		NotificationsByRole: &armsecurity.ContactPropertiesNotificationsByRole{
-	// 			Roles: []*armsecurity.Roles{
-	// 				to.Ptr(armsecurity.RolesOwner)},
+	// 			Roles: []*armsecurity.SecurityContactRole{
+	// 				to.Ptr(armsecurity.SecurityContactRoleOwner)},
 	// 				State: to.Ptr(armsecurity.State("On")),
 	// 			},
+	// 			NotificationsSources: []armsecurity.NotificationsSourceClassification{
+	// 				&armsecurity.NotificationsSourceAttackPath{
+	// 					SourceType: to.Ptr(armsecurity.SourceTypeAttackPath),
+	// 					MinimalRiskLevel: to.Ptr(armsecurity.MinimalRiskLevelCritical),
+	// 				},
+	// 				&armsecurity.NotificationsSourceAlert{
+	// 					SourceType: to.Ptr(armsecurity.SourceTypeAlert),
+	// 					MinimalSeverity: to.Ptr(armsecurity.MinimalSeverityMedium),
+	// 			}},
 	// 			Phone: to.Ptr("(214)275-4038"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43974e07d3204c4b6f8396627f5430994a7f7c9/specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/SecurityContacts/CreateSecurityContact_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ac34f238dd6b9071f486b57e9f9f1a0c43ec6f6/specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/SecurityContacts/CreateSecurityContact_example.json
 func ExampleContactsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,18 +126,24 @@ func ExampleContactsClient_Create() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewContactsClient().Create(ctx, "default", armsecurity.Contact{
+	res, err := clientFactory.NewContactsClient().Create(ctx, armsecurity.SecurityContactNameDefault, armsecurity.Contact{
 		Properties: &armsecurity.ContactProperties{
-			AlertNotifications: &armsecurity.ContactPropertiesAlertNotifications{
-				MinimalSeverity: to.Ptr(armsecurity.MinimalSeverityLow),
-				State:           to.Ptr(armsecurity.State("On")),
-			},
-			Emails: to.Ptr("john@contoso.com;jane@contoso.com"),
+			Emails:    to.Ptr("john@contoso.com;jane@contoso.com"),
+			IsEnabled: to.Ptr(true),
 			NotificationsByRole: &armsecurity.ContactPropertiesNotificationsByRole{
-				Roles: []*armsecurity.Roles{
-					to.Ptr(armsecurity.RolesOwner)},
+				Roles: []*armsecurity.SecurityContactRole{
+					to.Ptr(armsecurity.SecurityContactRoleOwner)},
 				State: to.Ptr(armsecurity.State("On")),
 			},
+			NotificationsSources: []armsecurity.NotificationsSourceClassification{
+				&armsecurity.NotificationsSourceAttackPath{
+					SourceType:       to.Ptr(armsecurity.SourceTypeAttackPath),
+					MinimalRiskLevel: to.Ptr(armsecurity.MinimalRiskLevelCritical),
+				},
+				&armsecurity.NotificationsSourceAlert{
+					SourceType:      to.Ptr(armsecurity.SourceTypeAlert),
+					MinimalSeverity: to.Ptr(armsecurity.MinimalSeverityMedium),
+				}},
 			Phone: to.Ptr("(214)275-4038"),
 		},
 	}, nil)
@@ -140,22 +158,28 @@ func ExampleContactsClient_Create() {
 	// 	Type: to.Ptr("Microsoft.Security/securityContact"),
 	// 	ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/securityContacts/default"),
 	// 	Properties: &armsecurity.ContactProperties{
-	// 		AlertNotifications: &armsecurity.ContactPropertiesAlertNotifications{
-	// 			MinimalSeverity: to.Ptr(armsecurity.MinimalSeverityLow),
-	// 			State: to.Ptr(armsecurity.State("On")),
-	// 		},
 	// 		Emails: to.Ptr("john@microsoft.com;jane@microsoft.com"),
+	// 		IsEnabled: to.Ptr(true),
 	// 		NotificationsByRole: &armsecurity.ContactPropertiesNotificationsByRole{
-	// 			Roles: []*armsecurity.Roles{
-	// 				to.Ptr(armsecurity.RolesOwner)},
+	// 			Roles: []*armsecurity.SecurityContactRole{
+	// 				to.Ptr(armsecurity.SecurityContactRoleOwner)},
 	// 				State: to.Ptr(armsecurity.State("On")),
 	// 			},
+	// 			NotificationsSources: []armsecurity.NotificationsSourceClassification{
+	// 				&armsecurity.NotificationsSourceAttackPath{
+	// 					SourceType: to.Ptr(armsecurity.SourceTypeAttackPath),
+	// 					MinimalRiskLevel: to.Ptr(armsecurity.MinimalRiskLevelCritical),
+	// 				},
+	// 				&armsecurity.NotificationsSourceAlert{
+	// 					SourceType: to.Ptr(armsecurity.SourceTypeAlert),
+	// 					MinimalSeverity: to.Ptr(armsecurity.MinimalSeverityMedium),
+	// 			}},
 	// 			Phone: to.Ptr("(214)275-4038"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43974e07d3204c4b6f8396627f5430994a7f7c9/specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/SecurityContacts/DeleteSecurityContact_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ac34f238dd6b9071f486b57e9f9f1a0c43ec6f6/specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/SecurityContacts/DeleteSecurityContact_example.json
 func ExampleContactsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,7 +190,7 @@ func ExampleContactsClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = clientFactory.NewContactsClient().Delete(ctx, "default", nil)
+	_, err = clientFactory.NewContactsClient().Delete(ctx, armsecurity.SecurityContactNameDefault, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

@@ -19,6 +19,8 @@ import (
 
 // ServerFactory is a fake server for instances of the armdesktopvirtualization.ClientFactory type.
 type ServerFactory struct {
+	AppAttachPackageServer             AppAttachPackageServer
+	AppAttachPackageInfoServer         AppAttachPackageInfoServer
 	ApplicationGroupsServer            ApplicationGroupsServer
 	ApplicationsServer                 ApplicationsServer
 	DesktopsServer                     DesktopsServer
@@ -51,6 +53,8 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 type ServerFactoryTransport struct {
 	srv                                  *ServerFactory
 	trMu                                 sync.Mutex
+	trAppAttachPackageServer             *AppAttachPackageServerTransport
+	trAppAttachPackageInfoServer         *AppAttachPackageInfoServerTransport
 	trApplicationGroupsServer            *ApplicationGroupsServerTransport
 	trApplicationsServer                 *ApplicationsServerTransport
 	trDesktopsServer                     *DesktopsServerTransport
@@ -82,6 +86,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "AppAttachPackageClient":
+		initServer(s, &s.trAppAttachPackageServer, func() *AppAttachPackageServerTransport {
+			return NewAppAttachPackageServerTransport(&s.srv.AppAttachPackageServer)
+		})
+		resp, err = s.trAppAttachPackageServer.Do(req)
+	case "AppAttachPackageInfoClient":
+		initServer(s, &s.trAppAttachPackageInfoServer, func() *AppAttachPackageInfoServerTransport {
+			return NewAppAttachPackageInfoServerTransport(&s.srv.AppAttachPackageInfoServer)
+		})
+		resp, err = s.trAppAttachPackageInfoServer.Do(req)
 	case "ApplicationGroupsClient":
 		initServer(s, &s.trApplicationGroupsServer, func() *ApplicationGroupsServerTransport {
 			return NewApplicationGroupsServerTransport(&s.srv.ApplicationGroupsServer)

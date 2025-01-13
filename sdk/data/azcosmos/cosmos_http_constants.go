@@ -78,6 +78,7 @@ const (
 	cosmosHeaderIsPartitionKeyDeletePending        string = "x-ms-cosmos-is-partition-key-delete-pending"
 	cosmosHeaderQueryExecutionInfo                 string = "x-ms-cosmos-query-execution-info"
 	headerXmsItemCount                             string = "x-ms-item-count"
+	headerDedicatedGatewayMaxAge                   string = "x-ms-dedicatedgateway-max-age"
 )
 
 const (

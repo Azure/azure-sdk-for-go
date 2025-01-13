@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b749953e21e5c3f275d839862323920ef7bf716e/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ForwardingRule_Put.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/ForwardingRule_Put.json
 func ExampleForwardingRulesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,6 +59,12 @@ func ExampleForwardingRulesClient_CreateOrUpdate() {
 	// 	Name: to.Ptr("sampleForwardingRule"),
 	// 	Type: to.Ptr("Microsoft.Network/dnsForwardingRulesets/forwardingRules"),
 	// 	ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsForwardingRulesets/sampleDnsForwardingRuleset/forwardingRules/sampleForwardingRule"),
+	// 	SystemData: &armdnsresolver.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.107Z"); return t}()),
+	// 		CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T02:03:01.197Z"); return t}()),
+	// 		LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+	// 	},
 	// 	Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 	Properties: &armdnsresolver.ForwardingRuleProperties{
 	// 		DomainName: to.Ptr("contoso.com."),
@@ -77,16 +83,10 @@ func ExampleForwardingRulesClient_CreateOrUpdate() {
 	// 				Port: to.Ptr[int32](53),
 	// 		}},
 	// 	},
-	// 	SystemData: &armdnsresolver.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.107Z"); return t}()),
-	// 		CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T02:03:01.197Z"); return t}()),
-	// 		LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b749953e21e5c3f275d839862323920ef7bf716e/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ForwardingRule_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/ForwardingRule_Patch.json
 func ExampleForwardingRulesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,6 +115,12 @@ func ExampleForwardingRulesClient_Update() {
 	// 	Name: to.Ptr("sampleForwardingRule"),
 	// 	Type: to.Ptr("Microsoft.Network/dnsForwardingRulesets/forwardingRules"),
 	// 	ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsForwardingRulesets/sampleDnsForwardingRuleset/forwardingRules/sampleForwardingRule"),
+	// 	SystemData: &armdnsresolver.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.107Z"); return t}()),
+	// 		CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T02:03:01.197Z"); return t}()),
+	// 		LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+	// 	},
 	// 	Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 	Properties: &armdnsresolver.ForwardingRuleProperties{
 	// 		DomainName: to.Ptr("contoso.com."),
@@ -133,16 +139,10 @@ func ExampleForwardingRulesClient_Update() {
 	// 				Port: to.Ptr[int32](53),
 	// 		}},
 	// 	},
-	// 	SystemData: &armdnsresolver.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.107Z"); return t}()),
-	// 		CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T02:03:01.197Z"); return t}()),
-	// 		LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b749953e21e5c3f275d839862323920ef7bf716e/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ForwardingRule_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/ForwardingRule_Delete.json
 func ExampleForwardingRulesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -159,7 +159,7 @@ func ExampleForwardingRulesClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b749953e21e5c3f275d839862323920ef7bf716e/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ForwardingRule_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/ForwardingRule_Get.json
 func ExampleForwardingRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -181,6 +181,12 @@ func ExampleForwardingRulesClient_Get() {
 	// 	Name: to.Ptr("sampleForwardingRule"),
 	// 	Type: to.Ptr("Microsoft.Network/dnsForwardingRulesets/forwardingRules"),
 	// 	ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsForwardingRulesets/sampleDnsForwardingRuleset/forwardingRules/sampleForwardingRule"),
+	// 	SystemData: &armdnsresolver.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.107Z"); return t}()),
+	// 		CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T02:03:01.197Z"); return t}()),
+	// 		LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+	// 	},
 	// 	Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 	Properties: &armdnsresolver.ForwardingRuleProperties{
 	// 		DomainName: to.Ptr("contoso.com."),
@@ -199,16 +205,10 @@ func ExampleForwardingRulesClient_Get() {
 	// 				Port: to.Ptr[int32](53),
 	// 		}},
 	// 	},
-	// 	SystemData: &armdnsresolver.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.107Z"); return t}()),
-	// 		CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T02:03:01.197Z"); return t}()),
-	// 		LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b749953e21e5c3f275d839862323920ef7bf716e/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ForwardingRule_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/ForwardingRule_List.json
 func ExampleForwardingRulesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -236,6 +236,12 @@ func ExampleForwardingRulesClient_NewListPager() {
 		// 			Name: to.Ptr("sampleForwardingRule"),
 		// 			Type: to.Ptr("Microsoft.Network/dnsForwardingRulesets/forwardingRules"),
 		// 			ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsForwardingRulesets/sampleDnsForwardingRuleset/forwardingRules/sampleForwardingRule"),
+		// 			SystemData: &armdnsresolver.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.107Z"); return t}()),
+		// 				CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T02:03:01.197Z"); return t}()),
+		// 				LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+		// 			},
 		// 			Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 			Properties: &armdnsresolver.ForwardingRuleProperties{
 		// 				DomainName: to.Ptr("contoso.com."),
@@ -254,17 +260,17 @@ func ExampleForwardingRulesClient_NewListPager() {
 		// 						Port: to.Ptr[int32](53),
 		// 				}},
 		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("sampleForwardingRule1"),
+		// 			Type: to.Ptr("Microsoft.Network/dnsForwardingRulesets/forwardingRules"),
+		// 			ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsForwardingRulesets/sampleDnsForwardingRuleset/forwardingRules/sampleForwardingRule1"),
 		// 			SystemData: &armdnsresolver.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.107Z"); return t}()),
 		// 				CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
 		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T02:03:01.197Z"); return t}()),
 		// 				LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
 		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("sampleForwardingRule1"),
-		// 			Type: to.Ptr("Microsoft.Network/dnsForwardingRulesets/forwardingRules"),
-		// 			ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsForwardingRulesets/sampleDnsForwardingRuleset/forwardingRules/sampleForwardingRule1"),
 		// 			Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 			Properties: &armdnsresolver.ForwardingRuleProperties{
 		// 				DomainName: to.Ptr("foobar.com."),
@@ -282,12 +288,6 @@ func ExampleForwardingRulesClient_NewListPager() {
 		// 						IPAddress: to.Ptr("10.0.0.4"),
 		// 						Port: to.Ptr[int32](53),
 		// 				}},
-		// 			},
-		// 			SystemData: &armdnsresolver.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.107Z"); return t}()),
-		// 				CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T02:03:01.197Z"); return t}()),
-		// 				LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
 		// 			},
 		// 	}},
 		// }

@@ -85,6 +85,9 @@ type GetPropertiesResponse struct {
 	// AcceptRanges contains the information returned from the Accept-Ranges header response.
 	AcceptRanges *string
 
+	// AccessControlList contains the combined list of access that are set for user, group and other on the file
+	AccessControlList *string
+
 	// AccessTier contains the information returned from the x-ms-access-tier header response.
 	AccessTier *string
 
@@ -292,6 +295,9 @@ func FormatGetPropertiesResponse(r *blob.GetPropertiesResponse, rawResponse *htt
 	}
 	if val := rawResponse.Header.Get("x-ms-permissions"); val != "" {
 		newResp.Permissions = &val
+	}
+	if val := rawResponse.Header.Get("x-ms-acl"); val != "" {
+		newResp.AccessControlList = &val
 	}
 	if val := rawResponse.Header.Get("x-ms-resource-type"); val != "" {
 		newResp.ResourceType = &val

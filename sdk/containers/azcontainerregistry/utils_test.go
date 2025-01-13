@@ -8,31 +8,42 @@ package azcontainerregistry
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry"
-	"github.com/stretchr/testify/require"
 	"os"
+	"os/exec"
+	"regexp"
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	azcloud "github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
+	"github.com/stretchr/testify/require"
 )
 
-const recordingDirectory = "sdk/containers/azcontainerregistry/testdata"
+const (
+	fakeACRRefreshToken = ".eyJqdGkiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJzdWIiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJuYmYiOjQ2NzA0MTEyMTIsImV4cCI6NDY3MDQyMjkxMiwiaWF0Ijo0NjcwNDExMjEyLCJpc3MiOiJBenVyZSBDb250YWluZXIgUmVnaXN0cnkiLCJhdWQiOiJhemFjcmxpdmV0ZXN0LmF6dXJlY3IuaW8iLCJ2ZXJzaW9uIjoiMS4wIiwicmlkIjoiMDAwMCIsImdyYW50X3R5cGUiOiJyZWZyZXNoX3Rva2VuIiwiYXBwaWQiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJwZXJtaXNzaW9ucyI6eyJBY3Rpb25zIjpbInJlYWQiLCJ3cml0ZSIsImRlbGV0ZSIsImRlbGV0ZWQvcmVhZCIsImRlbGV0ZWQvcmVzdG9yZS9hY3Rpb24iXSwiTm90QWN0aW9ucyI6bnVsbH0sInJvbGVzIjpbXX0=."
+	fakeDigest          = "sha256:00"
+	fakeLoginServer     = fakeRegistry + ".azurecr.io"
+	fakeRegistry        = recording.SanitizedValue
+	recordingDirectory  = "sdk/containers/azcontainerregistry/testdata"
+)
 
-// FakeCredential is an empty credential for testing.
-type FakeCredential struct {
-}
+var (
+	ctx = context.Background()
 
-// GetToken provide a fake access token.
-func (c *FakeCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	return azcore.AccessToken{Token: "Sanitized", ExpiresOn: time.Now().Add(time.Hour * 24).UTC()}, nil
-}
+	testConfig = struct {
+		cloud                     azcloud.Configuration
+		credential                azcore.TokenCredential
+		loginServer, registryName string
+	}{
+		cloud:        azcloud.AzurePublic,
+		credential:   &credential.Fake{},
+		loginServer:  fakeLoginServer,
+		registryName: fakeRegistry,
+	}
+)
 
 // getEndpointCredAndClientOptions will create a credential and a client options for test application.
 // The client options will initialize the transport for recording client add recording policy to the pipeline.
@@ -41,32 +52,11 @@ func (c *FakeCredential) GetToken(ctx context.Context, opts policy.TokenRequestO
 func getEndpointCredAndClientOptions(t *testing.T) (string, azcore.TokenCredential, azcore.ClientOptions) {
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
-
 	options := azcore.ClientOptions{
+		Cloud:     testConfig.cloud,
 		Transport: transport,
 	}
-
-	var cred azcore.TokenCredential
-	endpoint := "https://azacrlivetest.azurecr.io"
-	if recording.GetRecordMode() != recording.PlaybackMode {
-		cred, err = azidentity.NewDefaultAzureCredential(nil)
-		require.NoError(t, err)
-		if cloudEnv, ok := os.LookupEnv("AZCONTAINERREGISTRY_ENVIRONMENT"); ok {
-			if strings.EqualFold(cloudEnv, "AzureUSGovernment") {
-				options.Cloud = cloud.AzureGovernment
-			}
-			if strings.EqualFold(cloudEnv, "AzureChinaCloud") {
-				options.Cloud = cloud.AzureChina
-			}
-		}
-		if loginServer, ok := os.LookupEnv("LOGIN_SERVER"); ok {
-			endpoint = "https://" + loginServer
-		}
-	} else {
-		cred = &FakeCredential{}
-	}
-
-	return endpoint, cred, options
+	return "https://" + testConfig.loginServer, testConfig.credential, options
 }
 
 // startRecording starts the recording.
@@ -85,7 +75,31 @@ func TestMain(m *testing.M) {
 }
 
 func run(m *testing.M) int {
-	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		var err error
+		testConfig.credential, err = credential.New(nil)
+		if err != nil {
+			panic(err)
+		}
+		if testConfig.loginServer = os.Getenv("LOGIN_SERVER"); testConfig.loginServer == "" {
+			panic("no value for LOGIN_SERVER")
+		}
+		if testConfig.registryName = os.Getenv("REGISTRY_NAME"); testConfig.registryName == "" {
+			panic("no value for REGISTRY_NAME")
+		}
+		env := os.Getenv("AZCONTAINERREGISTRY_ENVIRONMENT")
+		switch {
+		case strings.EqualFold(env, "AzureUSGovernment"):
+			testConfig.cloud = azcloud.AzureGovernment
+		case strings.EqualFold(env, "AzureCloud"):
+			testConfig.cloud = azcloud.AzurePublic
+		case strings.EqualFold(env, "AzureChinaCloud"):
+			testConfig.cloud = azcloud.AzureChina
+		case len(env) > 0:
+			panic("unexpected value for AZCONTAINERREGISTRY_ENVIRONMENT: " + env)
+		}
+	}
+	if recording.GetRecordMode() != recording.LiveMode {
 		proxy, err := recording.StartTestProxy(recordingDirectory, nil)
 		if err != nil {
 			panic(err)
@@ -96,77 +110,69 @@ func run(m *testing.M) int {
 				panic(err)
 			}
 		}()
-	}
-	if recording.GetRecordMode() == recording.RecordingMode {
-		// sanitizer for any uuid string, e.g., subscriptionID
-		err := recording.AddGeneralRegexSanitizer("00000000-0000-0000-0000-000000000000", `[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}`, nil)
+		err = recording.RemoveRegisteredSanitizers([]string{
+			"AZSDK2003", // Location header
+			"AZSDK3401", // $..refresh_token (client needs a JWT; the sanitizer added below substitutes a static fake)
+		}, nil)
 		if err != nil {
 			panic(err)
 		}
-		// sanitizer for authentication
-		err = recording.AddBodyRegexSanitizer("access_token=Sanitized&", "access_token=[^&]+&", nil)
+		err = recording.AddBodyKeySanitizer("$..refresh_token", fakeACRRefreshToken, "", nil)
 		if err != nil {
 			panic(err)
 		}
-		err = recording.AddBodyRegexSanitizer("\"refresh_token\":\".eyJqdGkiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJzdWIiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJuYmYiOjQ2NzA0MTEyMTIsImV4cCI6NDY3MDQyMjkxMiwiaWF0Ijo0NjcwNDExMjEyLCJpc3MiOiJBenVyZSBDb250YWluZXIgUmVnaXN0cnkiLCJhdWQiOiJhemFjcmxpdmV0ZXN0LmF6dXJlY3IuaW8iLCJ2ZXJzaW9uIjoiMS4wIiwicmlkIjoiMDAwMCIsImdyYW50X3R5cGUiOiJyZWZyZXNoX3Rva2VuIiwiYXBwaWQiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJwZXJtaXNzaW9ucyI6eyJBY3Rpb25zIjpbInJlYWQiLCJ3cml0ZSIsImRlbGV0ZSIsImRlbGV0ZWQvcmVhZCIsImRlbGV0ZWQvcmVzdG9yZS9hY3Rpb24iXSwiTm90QWN0aW9ucyI6bnVsbH0sInJvbGVzIjpbXX0=.\"", "\"refresh_token\":\".+\"", nil)
+		err = recording.AddGeneralRegexSanitizer(fakeLoginServer, testConfig.loginServer, nil)
 		if err != nil {
 			panic(err)
-		}
-		err = recording.AddBodyRegexSanitizer("refresh_token=.eyJqdGkiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJzdWIiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJuYmYiOjQ2NzA0MTEyMTIsImV4cCI6NDY3MDQyMjkxMiwiaWF0Ijo0NjcwNDExMjEyLCJpc3MiOiJBenVyZSBDb250YWluZXIgUmVnaXN0cnkiLCJhdWQiOiJhemFjcmxpdmV0ZXN0LmF6dXJlY3IuaW8iLCJ2ZXJzaW9uIjoiMS4wIiwicmlkIjoiMDAwMCIsImdyYW50X3R5cGUiOiJyZWZyZXNoX3Rva2VuIiwiYXBwaWQiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJwZXJtaXNzaW9ucyI6eyJBY3Rpb25zIjpbInJlYWQiLCJ3cml0ZSIsImRlbGV0ZSIsImRlbGV0ZWQvcmVhZCIsImRlbGV0ZWQvcmVzdG9yZS9hY3Rpb24iXSwiTm90QWN0aW9ucyI6bnVsbH0sInJvbGVzIjpbXX0%3D.&", "refresh_token=[^&]+&", nil)
-		if err != nil {
-			panic(err)
-		}
-	}
-	if recording.GetRecordMode() == recording.LiveMode || recording.GetRecordMode() == recording.RecordingMode {
-		var clientCloud cloud.Configuration
-		if cloudEnv, ok := os.LookupEnv("AZCONTAINERREGISTRY_ENVIRONMENT"); ok {
-			if strings.EqualFold(cloudEnv, "AzureUSGovernment") {
-				clientCloud = cloud.AzureGovernment
-			}
-			if strings.EqualFold(cloudEnv, "AzureChinaCloud") {
-				clientCloud = cloud.AzureChina
-			}
-		}
-		cred, err := azidentity.NewDefaultAzureCredential(nil)
-		if err != nil {
-			panic(err)
-		}
-		subID := os.Getenv("AZURE_SUBSCRIPTION_ID")
-		if subID == "" {
-			panic("can not get subscription ID")
-		}
-		rg := os.Getenv("AZCONTAINERREGISTRY_RESOURCE_GROUP")
-		if rg == "" {
-			panic("can not get resource group name")
-		}
-		registryName := os.Getenv("REGISTRY_NAME")
-		if rg == "" {
-			panic("can not get registry name")
-		}
-
-		ctx := context.Background()
-		client, err := armcontainerregistry.NewRegistriesClient(subID, cred, &arm.ClientOptions{ClientOptions: azcore.ClientOptions{Cloud: clientCloud}})
-		if err != nil {
-			panic(err)
-		}
-		images := []string{"hello-world:latest", "alpine:3.17.1", "alpine:3.16.3", "alpine:3.15.6", "alpine:3.14.8", "ubuntu:20.04", "nginx:latest"}
-		for _, image := range images {
-			poller, err := client.BeginImportImage(ctx, rg, registryName, armcontainerregistry.ImportImageParameters{
-				Source: &armcontainerregistry.ImportSource{
-					SourceImage: to.Ptr("library/" + image),
-					RegistryURI: to.Ptr("docker.io"),
-				},
-				TargetTags: []*string{to.Ptr(image)},
-				Mode:       to.Ptr(armcontainerregistry.ImportModeForce),
-			}, nil)
-			if err != nil {
-				panic(err)
-			}
-			_, err = poller.PollUntilDone(ctx, nil)
-			if err != nil {
-				panic(err)
-			}
 		}
 	}
 	return m.Run()
+}
+
+// buildImage invokes the Azure CLI to build a new image in ACR for the given test. It returns the image's repository and digest.
+func buildImage(t *testing.T) (string, string) {
+	repository := strings.ReplaceAll(strings.ToLower(t.Name()), "/", "_")
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		return repository, fakeDigest
+	}
+
+	// build images in parallel, in separate goroutines, because building can be slow and may require retries in CI
+	t.Parallel()
+	ctx, cancel := context.WithTimeout(ctx, 3*time.Minute)
+	defer cancel()
+
+	ch := make(chan struct{})
+	var (
+		err error
+		out []byte
+	)
+	go func() {
+		defer close(ch)
+		for {
+			select {
+			case <-ctx.Done():
+				err = ctx.Err()
+				return
+			default:
+				cmd := exec.CommandContext(ctx, "az", "acr", "build", "-r", testConfig.registryName, "--image", repository, "--build-arg", "ID="+repository, ".")
+				cmd.Dir = "testdata"
+				out, err = cmd.CombinedOutput()
+				if err == nil {
+					return
+				}
+			}
+		}
+	}()
+	<-ch
+	require.NoError(t, err, string(out))
+
+	// this assumes the image has one layer digest i.e., it's FROM scratch and the Dockerfile touches the filesystem once
+	digest := string(regexp.MustCompile("(sha256:[0-9a-f]{64})").Find(out))
+	require.NotEmpty(t, digest, "failed to find digest in "+string(out))
+	if recording.GetRecordMode() == recording.RecordingMode {
+		_, sum, found := strings.Cut(digest, ":")
+		require.True(t, found)
+		require.NoError(t, recording.AddGeneralRegexSanitizer("00", sum, nil))
+	}
+	return repository, digest
 }

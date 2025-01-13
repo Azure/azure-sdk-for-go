@@ -2,6 +2,7 @@
 
 ## 0.6.0 (2024-03-14)
 
+### Features Added
 * Template package validating release pipeline
 
 ## 0.1.0 (2021-12-02)

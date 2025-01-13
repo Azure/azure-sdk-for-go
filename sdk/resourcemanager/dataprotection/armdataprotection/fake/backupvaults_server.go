@@ -176,7 +176,14 @@ func (b *BackupVaultsServerTransport) dispatchBeginCreateOrUpdate(req *http.Requ
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := b.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, vaultNameParam, body, nil)
+		xMSAuthorizationAuxiliaryParam := getOptional(getHeaderValue(req.Header, "x-ms-authorization-auxiliary"))
+		var options *armdataprotection.BackupVaultsClientBeginCreateOrUpdateOptions
+		if xMSAuthorizationAuxiliaryParam != nil {
+			options = &armdataprotection.BackupVaultsClientBeginCreateOrUpdateOptions{
+				XMSAuthorizationAuxiliary: xMSAuthorizationAuxiliaryParam,
+			}
+		}
+		respr, errRespr := b.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, vaultNameParam, body, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -371,7 +378,14 @@ func (b *BackupVaultsServerTransport) dispatchBeginUpdate(req *http.Request) (*h
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := b.srv.BeginUpdate(req.Context(), resourceGroupNameParam, vaultNameParam, body, nil)
+		xMSAuthorizationAuxiliaryParam := getOptional(getHeaderValue(req.Header, "x-ms-authorization-auxiliary"))
+		var options *armdataprotection.BackupVaultsClientBeginUpdateOptions
+		if xMSAuthorizationAuxiliaryParam != nil {
+			options = &armdataprotection.BackupVaultsClientBeginUpdateOptions{
+				XMSAuthorizationAuxiliary: xMSAuthorizationAuxiliaryParam,
+			}
+		}
+		respr, errRespr := b.srv.BeginUpdate(req.Context(), resourceGroupNameParam, vaultNameParam, body, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

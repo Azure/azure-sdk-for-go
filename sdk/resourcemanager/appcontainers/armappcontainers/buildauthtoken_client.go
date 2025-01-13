@@ -11,13 +11,14 @@ package armappcontainers
 import (
 	"context"
 	"errors"
+	"net/http"
+	"net/url"
+	"strings"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"net/http"
-	"net/url"
-	"strings"
 )
 
 // BuildAuthTokenClient contains the methods for the BuildAuthToken group.
@@ -46,7 +47,7 @@ func NewBuildAuthTokenClient(subscriptionID string, credential azcore.TokenCrede
 // List - Gets the token used to connect to the endpoint where source code can be uploaded for a build.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-02-preview
+// Generated from API version 2024-08-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - builderName - The name of the builder.
 //   - buildName - The name of a build.
@@ -97,7 +98,7 @@ func (client *BuildAuthTokenClient) listCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-02-preview")
+	reqQP.Set("api-version", "2024-08-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

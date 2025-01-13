@@ -106,7 +106,7 @@ func BatchStressTester(ctx context.Context) error {
 
 	log.Printf("Starting test with: batch size %d, wait time %s, prefetch: %d", params.batchSize, params.batchDuration, params.prefetch)
 
-	producerClient, err := azeventhubs.NewProducerClientFromConnectionString(testData.ConnectionString, testData.HubName, nil)
+	producerClient, err := azeventhubs.NewProducerClient(testData.Namespace, testData.HubName, testData.Cred, nil)
 
 	if err != nil {
 		return err
@@ -126,13 +126,13 @@ func BatchStressTester(ctx context.Context) error {
 	closeOrPanic(producerClient)
 
 	if err != nil {
-		log.Fatalf("Failed to send events to partition %s: %s", params.partitionID, err)
+		return fmt.Errorf("Failed to send events to partition %s: %s", params.partitionID, err)
 	}
 
 	log.Printf("Starting receive tests for partition %s", params.partitionID)
 	log.Printf("  Start position: %#v\nEnd position: %#v", sp, ep)
 
-	consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testData.ConnectionString, testData.HubName, azeventhubs.DefaultConsumerGroup, nil)
+	consumerClient, err := azeventhubs.NewConsumerClient(testData.Namespace, testData.HubName, azeventhubs.DefaultConsumerGroup, testData.Cred, nil)
 
 	if err != nil {
 		return err
@@ -142,12 +142,12 @@ func BatchStressTester(ctx context.Context) error {
 
 	// warm up the connection
 	if _, err := consumerClient.GetEventHubProperties(ctx, nil); err != nil {
-		log.Fatalf("Failed to warm up connection for consumer client: %s", err.Error())
+		return fmt.Errorf("Failed to warm up connection for consumer client: %s", err.Error())
 	}
 
 	for i := int64(0); i < params.rounds; i++ {
 		if err := consumeForBatchTester(context.Background(), i, consumerClient, sp, params, testData); err != nil {
-			log.Fatalf("Failed running round %d: %s", i, err.Error())
+			return fmt.Errorf("Failed running round %d: %s", i, err.Error())
 		}
 	}
 
@@ -190,7 +190,7 @@ func consumeForBatchTester(ctx context.Context, round int64, cc *azeventhubs.Con
 		if err != nil {
 			if errors.Is(err, context.DeadlineExceeded) || errors.Is(err, context.Canceled) {
 				// track these, we can use it as a proxy for "network was slow" or similar.
-				testData.TC.TrackMetric(MetricDeadlineExceeded, float64(1), nil)
+				testData.TC.TrackMetricWithProps(MetricDeadlineExceeded, float64(1), nil)
 				numCancels++
 
 				if numCancels >= cancelLimit {
@@ -213,7 +213,7 @@ func consumeForBatchTester(ctx context.Context, round int64, cc *azeventhubs.Con
 			panic(err)
 		}
 
-		testData.TC.TrackMetric(MetricReceived, float64(len(events)), nil)
+		testData.TC.TrackMetricWithProps(MetricNameReceived, float64(len(events)), nil)
 		total += len(events)
 
 		if total >= params.numToSend {

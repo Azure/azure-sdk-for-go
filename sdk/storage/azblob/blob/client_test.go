@@ -320,7 +320,7 @@ func (s *BlobUnrecordedTestsSuite) TestUploadDownloadBlockBlob() {
 		n, err = srcBlob.DownloadBuffer(context.Background(), buff, &b)
 		_require.NoError(err)
 		_require.Equal(int64(contentSize), n)
-		_require.Equal(contentMD5, md5.Sum(buff[:]))
+		_require.Equal(contentMD5, md5.Sum(buff))
 	}
 
 	testUploadDownload(0)         // zero byte blob.
@@ -549,7 +549,7 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopySourcePrivate() {
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.CannotVerifyCopySource)
 }
 
-//func (s *BlobUnrecordedTestsSuite) TestBlobStartCopyUsingSASSrc() {
+// func (s *BlobUnrecordedTestsSuite) TestBlobStartCopyUsingSASSrc() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
 //	svcClient, err := testcommon.GetServiceClient(s.T(),testcommon.TestAccountDefault, nil)
@@ -622,7 +622,7 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopySourcePrivate() {
 //	_require.Equal(*resp2.ContentLength, int64(len(testcommon.BlockBlobDefaultData)))
 //	_require.Equal(string(data), testcommon.BlockBlobDefaultData)
 //	_ = resp2.Body(nil).Close()
-//}
+// }
 
 func (s *BlobUnrecordedTestsSuite) TestBlobStartCopyUsingSASDest() {
 	_require := require.New(s.T())
@@ -662,7 +662,6 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopySourceIfModifiedSinceTrue() {
 	bbClient := testcommon.GetBlockBlobClient(testcommon.GenerateBlobName(testName), containerClient)
 	cResp, err := bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
 	_require.NoError(err)
-	//_require.Equal(cResp.RawResponse.StatusCode, 201)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, -10)
 	options := blob.StartCopyFromURLOptions{
@@ -693,7 +692,6 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopySourceIfModifiedSinceFalse() {
 	bbClient := testcommon.GetBlockBlobClient(blobName, containerClient)
 	cResp, err := bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
 	_require.NoError(err)
-	//_require.Equal(cResp.RawResponse.StatusCode, 201)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, 10)
 	options := blob.StartCopyFromURLOptions{
@@ -721,7 +719,6 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopySourceIfUnmodifiedSinceTrue() 
 	bbClient := testcommon.GetBlockBlobClient(blobName, containerClient)
 	cResp, err := bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
 	_require.NoError(err)
-	//_require.Equal(cResp.RawResponse.StatusCode, 201)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, 10)
 	options := blob.StartCopyFromURLOptions{
@@ -752,8 +749,6 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopySourceIfUnmodifiedSinceFalse()
 	bbClient := testcommon.GetBlockBlobClient(blobName, containerClient)
 	cResp, err := bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
 	_require.NoError(err)
-	//_require.Equal(cResp.RawResponse.StatusCode, 201)
-
 	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, -10)
 	options := blob.StartCopyFromURLOptions{
 		SourceModifiedAccessConditions: &blob.SourceModifiedAccessConditions{
@@ -899,7 +894,6 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopyDestIfModifiedSinceTrue() {
 
 	cResp, err := bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
 	_require.NoError(err)
-	//_require.Equal(cResp.RawResponse.StatusCode, 201)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, -10)
 
@@ -933,7 +927,6 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopyDestIfModifiedSinceFalse() {
 
 	cResp, err := bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
 	_require.NoError(err)
-	//_require.Equal(cResp.RawResponse.StatusCode, 201)
 
 	destBlobClient := testcommon.CreateNewBlockBlob(context.Background(), _require, "dst"+bbName, containerClient) // The blob must exist to have a last-modified time
 
@@ -946,7 +939,7 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopyDestIfModifiedSinceFalse() {
 		},
 	}
 	_, err = destBlobClient.StartCopyFromURL(context.Background(), bbClient.URL(), &options)
-	testcommon.ValidateBlobErrorCode(_require, err, bloberror.TargetConditionNotMet)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 }
 
 func (s *BlobRecordedTestsSuite) TestBlobStartCopyDestIfUnmodifiedSinceTrue() {
@@ -964,7 +957,6 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopyDestIfUnmodifiedSinceTrue() {
 
 	cResp, err := bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
 	_require.NoError(err)
-	//_require.Equal(cResp.RawResponse.StatusCode, 201)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, 10)
 
@@ -1081,7 +1073,7 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopyDestIfMatchFalse() {
 
 	_, err = destBlobClient.StartCopyFromURL(context.Background(), bbClient.URL(), &options)
 	_require.Error(err)
-	testcommon.ValidateBlobErrorCode(_require, err, bloberror.TargetConditionNotMet)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 }
 
 func (s *BlobRecordedTestsSuite) TestBlobStartCopyDestIfNoneMatchTrue() {
@@ -1148,17 +1140,28 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopyDestIfNoneMatchFalse() {
 
 	_, err = destBlobClient.StartCopyFromURL(context.Background(), bbClient.URL(), &options)
 	_require.Error(err)
-	testcommon.ValidateBlobErrorCode(_require, err, bloberror.TargetConditionNotMet)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 }
 
 func (s *BlobUnrecordedTestsSuite) TestBlobAbortCopyInProgress() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
-	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
-	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	svcClientSharedKey, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	accountSAS, err := testcommon.GetAccountSAS(sas.AccountPermissions{Read: true, Create: true, Write: true, List: true, Add: true, Delete: true},
+		sas.AccountResourceTypes{Service: true, Container: true, Object: true})
+	_require.NoError(err)
+
+	svcClientSAS, err := service.NewClientWithNoCredential(svcClientSharedKey.URL()+"?"+accountSAS, nil)
+	_require.NoError(err)
+
+	containerClient := svcClientSAS.NewContainerClient(containerName)
+	_, err = containerClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	blockBlobName := testcommon.GenerateBlobName(testName)
@@ -1168,12 +1171,6 @@ func (s *BlobUnrecordedTestsSuite) TestBlobAbortCopyInProgress() {
 	blobSize := 8 * 1024 * 1024
 	blobReader, _ := testcommon.GetDataAndReader(testName, blobSize)
 	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(blobReader), nil)
-	_require.NoError(err)
-
-	setAccessPolicyOptions := container.SetAccessPolicyOptions{
-		Access: to.Ptr(container.PublicAccessTypeBlob),
-	}
-	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions) // So that we don't have to create a SAS
 	_require.NoError(err)
 
 	// Must copy across accounts so it takes time to copy
@@ -1847,7 +1844,6 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadDataIfModifiedSinceFalse() {
 		}},
 	})
 	_require.NoError(err)
-	//testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 	_require.Equal(*resp.ErrorCode, string(bloberror.ConditionNotMet))
 }
 
@@ -2058,55 +2054,54 @@ func (s *BlobRecordedTestsSuite) TestBlobDeleteSnapshot() {
 	validateBlobDeleted(_require, snapshotURL)
 }
 
+// func (s *BlobRecordedTestsSuite) TestBlobDeleteSnapshotsInclude() {
+//	svcClient := testcommon.GetServiceClient()
+//	containerClient, _ := testcommon.CreateNewContainer(c, svcClient)
+//	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+//	bbClient, _ := createNewBlockBlob(c, containerClient)
 //
-////func (s *BlobRecordedTestsSuite) TestBlobDeleteSnapshotsInclude() {
-////	svcClient := testcommon.GetServiceClient()
-////	containerClient, _ := testcommon.CreateNewContainer(c, svcClient)
-////	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
-////	bbClient, _ := createNewBlockBlob(c, containerClient)
-////
-////	_, err := bbClient.CreateSnapshot(context.Background(), nil)
-////	_require.NoError(err)
-////
-////	deleteSnapshots := DeleteSnapshotsOptionInclude
-////	_, err = bbClient.Delete(context.Background(), &BlobDeleteOptions{
-////		DeleteSnapshots: &deleteSnapshots,
-////	})
-////	_require.NoError(err)
-////
-////	include := []ListBlobsIncludeItem{ListBlobsIncludeItemSnapshots}
-////	containerListBlobFlatSegmentOptions := ContainerListBlobsFlatOptions{
-////		Include: include,
-////	}
-////	blobs, errChan := containerClient.NewListBlobsFlatPager(ctx, 3, 0, &containerListBlobFlatSegmentOptions)
-////	_assert(<- errChan, chk.IsNil)
-////	_assert(<- blobs, chk.HasLen, 0)
-////}
+//	_, err := bbClient.CreateSnapshot(context.Background(), nil)
+//	_require.NoError(err)
 //
-////func (s *BlobRecordedTestsSuite) TestBlobDeleteSnapshotsOnly() {
-////	svcClient := testcommon.GetServiceClient()
-////	containerClient, _ := testcommon.CreateNewContainer(c, svcClient)
-////	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
-////	bbClient, _ := createNewBlockBlob(c, containerClient)
-////
-////	_, err := bbClient.CreateSnapshot(context.Background(), nil)
-////	_require.NoError(err)
-////	deleteSnapshot := DeleteSnapshotsOptionOnly
-////	deleteBlobOptions := blob.DeleteOptions{
-////		DeleteSnapshots: &deleteSnapshot,
-////	}
-////	_, err = bbClient.Delete(context.Background(), &deleteBlobOptions)
-////	_require.NoError(err)
-////
-////	include := []ListBlobsIncludeItem{ListBlobsIncludeItemSnapshots}
-////	containerListBlobFlatSegmentOptions := ContainerListBlobsFlatOptions{
-////		Include: include,
-////	}
-////	blobs, errChan := containerClient.NewListBlobsFlatPager(ctx, 3, 0, &containerListBlobFlatSegmentOptions)
-////	_assert(<- errChan, chk.IsNil)
-////	_assert(blobs, chk.HasLen, 1)
-////	_assert(*(<-blobs).Snapshot == "", chk.Equals, true)
-////}
+//	deleteSnapshots := DeleteSnapshotsOptionInclude
+//	_, err = bbClient.Delete(context.Background(), &BlobDeleteOptions{
+//		DeleteSnapshots: &deleteSnapshots,
+//	})
+//	_require.NoError(err)
+//
+//	include := []ListBlobsIncludeItem{ListBlobsIncludeItemSnapshots}
+//	containerListBlobFlatSegmentOptions := ContainerListBlobsFlatOptions{
+//		Include: include,
+//	}
+//	blobs, errChan := containerClient.NewListBlobsFlatPager(ctx, 3, 0, &containerListBlobFlatSegmentOptions)
+//	_assert(<- errChan, chk.IsNil)
+//	_assert(<- blobs, chk.HasLen, 0)
+// }
+
+// func (s *BlobRecordedTestsSuite) TestBlobDeleteSnapshotsOnly() {
+//	svcClient := testcommon.GetServiceClient()
+//	containerClient, _ := testcommon.CreateNewContainer(c, svcClient)
+//	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+//	bbClient, _ := createNewBlockBlob(c, containerClient)
+//
+//	_, err := bbClient.CreateSnapshot(context.Background(), nil)
+//	_require.NoError(err)
+//	deleteSnapshot := DeleteSnapshotsOptionOnly
+//	deleteBlobOptions := blob.DeleteOptions{
+//		DeleteSnapshots: &deleteSnapshot,
+//	}
+//	_, err = bbClient.Delete(context.Background(), &deleteBlobOptions)
+//	_require.NoError(err)
+//
+//	include := []ListBlobsIncludeItem{ListBlobsIncludeItemSnapshots}
+//	containerListBlobFlatSegmentOptions := ContainerListBlobsFlatOptions{
+//		Include: include,
+//	}
+//	blobs, errChan := containerClient.NewListBlobsFlatPager(ctx, 3, 0, &containerListBlobFlatSegmentOptions)
+//	_assert(<- errChan, chk.IsNil)
+//	_assert(blobs, chk.HasLen, 1)
+//	_assert(*(<-blobs).Snapshot == "", chk.Equals, true)
+// }
 
 func (s *BlobRecordedTestsSuite) TestBlobDeleteSnapshotsNoneWithSnapshots() {
 	_require := require.New(s.T())
@@ -2454,11 +2449,11 @@ func (s *BlobRecordedTestsSuite) TestBlobGetPropsAndMetadataIfUnmodifiedSinceTru
 	_require.EqualValues(resp.Metadata, testcommon.BasicMetadata)
 }
 
-//func (s *BlobRecordedTestsSuite) TestBlobGetPropsAndMetadataIfUnmodifiedSinceFalse() {
-//	// TODO: Not Working
+// func (s *BlobRecordedTestsSuite) TestBlobGetPropsAndMetadataIfUnmodifiedSinceFalse() {
+// TODO: Not Working
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
-////	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+//	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
@@ -2485,7 +2480,7 @@ func (s *BlobRecordedTestsSuite) TestBlobGetPropsAndMetadataIfUnmodifiedSinceTru
 //	}
 //	_, err = bbClient.GetProperties(context.Background(), &getBlobPropertiesOptions)
 //	_require.Error(err)
-//}
+// }
 
 func (s *BlobRecordedTestsSuite) TestBlobGetPropsAndMetadataIfMatchTrue() {
 	_require := require.New(s.T())
@@ -2930,7 +2925,6 @@ func (s *BlobRecordedTestsSuite) TestBlobSetMetadataInvalidField() {
 	_, err = bbClient.SetMetadata(context.Background(), map[string]*string{"Invalid field!": to.Ptr("value")}, nil)
 	_require.Error(err)
 	_require.Contains(err.Error(), testcommon.InvalidHeaderErrorSubstring)
-	//_require.Equal(strings.Contains(err.Error(), testcommon.InvalidHeaderErrorSubstring), true)
 }
 
 func validateMetadataSet(_require *require.Assertions, bbClient *blockblob.Client) {
@@ -3442,7 +3436,7 @@ func (s *BlobRecordedTestsSuite) TestBlobClientPartsSASQueryTimes() {
 	}
 }
 
-//func (s *BlobUnrecordedTestsSuite) TestDownloadBlockBlobUnexpectedEOF() {
+// func (s *BlobUnrecordedTestsSuite) TestDownloadBlockBlobUnexpectedEOF() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
 //	svcClient, err := testcommon.GetServiceClient(s.T(),testcommon.TestAccountDefault, nil)
@@ -3473,9 +3467,9 @@ func (s *BlobRecordedTestsSuite) TestBlobClientPartsSASQueryTimes() {
 //	buf, err := io.ReadAll(reader)
 //	_require.NoError(err)
 //	_require.EqualValues(buf, []byte(testcommon.BlockBlobDefaultData))
-//}
+// }
 
-//func InjectErrorInRetryReaderOptions(err error) *blob.RetryReaderOptions {
+// func InjectErrorInRetryReaderOptions(err error) *blob.RetryReaderOptions {
 //	return &blob.RetryReaderOptions{
 //		MaxRetryRequests:       1,
 //		doInjectError:          true,
@@ -3486,7 +3480,7 @@ func (s *BlobRecordedTestsSuite) TestBlobClientPartsSASQueryTimes() {
 //		CPKInfo:                nil,
 //		CPKScopeInfo:           nil,
 //	}
-//}
+// }
 
 func (s *BlobRecordedTestsSuite) TestBlobSetExpiry() {
 	_require := require.New(s.T())
@@ -3545,7 +3539,7 @@ func (s *BlobRecordedTestsSuite) TestSetImmutabilityPolicy() {
 
 	resp, err := bbClient.SetImmutabilityPolicy(context.Background(), currentTime, nil)
 	_require.NoError(err)
-	_require.Equal((*resp.ImmutabilityPolicyExpiry).UTC(), currentTime.UTC())
+	_require.Equal(resp.ImmutabilityPolicyExpiry.UTC(), currentTime.UTC())
 
 	_, err = bbClient.SetLegalHold(context.Background(), false, nil)
 	_require.NoError(err)

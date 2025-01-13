@@ -10,8 +10,26 @@ package armbatch
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch"
-	moduleVersion = "v2.3.0"
+	moduleVersion = "v3.0.0"
 )
+
+// AccessRuleDirection - Direction of Access Rule
+type AccessRuleDirection string
+
+const (
+	// AccessRuleDirectionInbound - Applies to inbound network traffic to the secured resources.
+	AccessRuleDirectionInbound AccessRuleDirection = "Inbound"
+	// AccessRuleDirectionOutbound - Applies to outbound network traffic from the secured resources
+	AccessRuleDirectionOutbound AccessRuleDirection = "Outbound"
+)
+
+// PossibleAccessRuleDirectionValues returns the possible values for the AccessRuleDirection const type.
+func PossibleAccessRuleDirectionValues() []AccessRuleDirection {
+	return []AccessRuleDirection{
+		AccessRuleDirectionInbound,
+		AccessRuleDirectionOutbound,
+	}
+}
 
 // AccountKeyType - The type of account key to regenerate.
 type AccountKeyType string
@@ -182,12 +200,10 @@ func PossibleCertificateProvisioningStateValues() []CertificateProvisioningState
 }
 
 // CertificateStoreLocation - The default value is currentUser. This property is applicable only for pools configured with
-// Windows nodes (that is, created with cloudServiceConfiguration, or with virtualMachineConfiguration using a
-// Windows image reference). For Linux compute nodes, the certificates are stored in a directory inside the task working directory
-// and an environment variable AZBATCHCERTIFICATES_DIR is supplied to the
-// task to query for this location. For certificates with visibility of 'remoteUser', a 'certs' directory is created in the
-// user's home directory (e.g., /home/{user-name}/certs) and certificates are
-// placed in that directory.
+// Windows compute nodes. For Linux compute nodes, the certificates are stored in a directory inside the task
+// working directory and an environment variable AZBATCHCERTIFICATES_DIR is supplied to the task to query for this location.
+// For certificates with visibility of 'remoteUser', a 'certs' directory is
+// created in the user's home directory (e.g., /home/{user-name}/certs) and certificates are placed in that directory.
 type CertificateStoreLocation string
 
 const (
@@ -276,6 +292,36 @@ func PossibleComputeNodeFillTypeValues() []ComputeNodeFillType {
 	}
 }
 
+// ContainerHostDataPath - The paths which will be mounted to container task's container.
+type ContainerHostDataPath string
+
+const (
+	// ContainerHostDataPathApplications - The applications path.
+	ContainerHostDataPathApplications ContainerHostDataPath = "Applications"
+	// ContainerHostDataPathJobPrep - The job-prep task path.
+	ContainerHostDataPathJobPrep ContainerHostDataPath = "JobPrep"
+	// ContainerHostDataPathShared - The path for multi-instances task to shared their files.
+	ContainerHostDataPathShared ContainerHostDataPath = "Shared"
+	// ContainerHostDataPathStartup - The path for start task.
+	ContainerHostDataPathStartup ContainerHostDataPath = "Startup"
+	// ContainerHostDataPathTask - The task path.
+	ContainerHostDataPathTask ContainerHostDataPath = "Task"
+	// ContainerHostDataPathVfsMounts - The path contains all virtual file systems are mounted on this node.
+	ContainerHostDataPathVfsMounts ContainerHostDataPath = "VfsMounts"
+)
+
+// PossibleContainerHostDataPathValues returns the possible values for the ContainerHostDataPath const type.
+func PossibleContainerHostDataPathValues() []ContainerHostDataPath {
+	return []ContainerHostDataPath{
+		ContainerHostDataPathApplications,
+		ContainerHostDataPathJobPrep,
+		ContainerHostDataPathShared,
+		ContainerHostDataPathStartup,
+		ContainerHostDataPathTask,
+		ContainerHostDataPathVfsMounts,
+	}
+}
+
 // ContainerType - The container technology to be used.
 type ContainerType string
 
@@ -311,6 +357,26 @@ func PossibleContainerWorkingDirectoryValues() []ContainerWorkingDirectory {
 	return []ContainerWorkingDirectory{
 		ContainerWorkingDirectoryContainerImageDefault,
 		ContainerWorkingDirectoryTaskWorkingDirectory,
+	}
+}
+
+// CreatedByType - The type of identity that created the resource.
+type CreatedByType string
+
+const (
+	CreatedByTypeApplication     CreatedByType = "Application"
+	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
+	CreatedByTypeUser            CreatedByType = "User"
+)
+
+// PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{
+		CreatedByTypeApplication,
+		CreatedByTypeKey,
+		CreatedByTypeManagedIdentity,
+		CreatedByTypeUser,
 	}
 }
 
@@ -448,6 +514,33 @@ func PossibleInterNodeCommunicationStateValues() []InterNodeCommunicationState {
 	}
 }
 
+// IssueType - Type of issue
+type IssueType string
+
+const (
+	// IssueTypeConfigurationPropagationFailure - An error occurred while applying the network security perimeter (NSP) configuration.
+	IssueTypeConfigurationPropagationFailure IssueType = "ConfigurationPropagationFailure"
+	// IssueTypeMissingIdentityConfiguration - An managed identity hasn't been associated with the resource. The resource will
+	// still be able to validate inbound traffic from the network security perimeter (NSP) or matching inbound access rules, but
+	// it won't be able to perform outbound access as a member of the NSP.
+	IssueTypeMissingIdentityConfiguration IssueType = "MissingIdentityConfiguration"
+	// IssueTypeMissingPerimeterConfiguration - A network connectivity issue is happening on the resource which could be addressed
+	// either by adding new resources to the network security perimeter (NSP) or by modifying access rules.
+	IssueTypeMissingPerimeterConfiguration IssueType = "MissingPerimeterConfiguration"
+	// IssueTypeUnknown - Unknown issue type
+	IssueTypeUnknown IssueType = "Unknown"
+)
+
+// PossibleIssueTypeValues returns the possible values for the IssueType const type.
+func PossibleIssueTypeValues() []IssueType {
+	return []IssueType{
+		IssueTypeConfigurationPropagationFailure,
+		IssueTypeMissingIdentityConfiguration,
+		IssueTypeMissingPerimeterConfiguration,
+		IssueTypeUnknown,
+	}
+}
+
 // KeySource - Type of the key source.
 type KeySource string
 
@@ -468,8 +561,7 @@ func PossibleKeySourceValues() []KeySource {
 	}
 }
 
-// LoginMode - Specifies login mode for the user. The default value for VirtualMachineConfiguration pools is interactive mode
-// and for CloudServiceConfiguration pools is batch mode.
+// LoginMode - Specifies login mode for the user. The default value is Interactive.
 type LoginMode string
 
 const (
@@ -523,6 +615,33 @@ func PossibleNetworkSecurityGroupRuleAccessValues() []NetworkSecurityGroupRuleAc
 	return []NetworkSecurityGroupRuleAccess{
 		NetworkSecurityGroupRuleAccessAllow,
 		NetworkSecurityGroupRuleAccessDeny,
+	}
+}
+
+// NetworkSecurityPerimeterConfigurationProvisioningState - Provisioning state of a network security perimeter configuration
+// that is being created or updated.
+type NetworkSecurityPerimeterConfigurationProvisioningState string
+
+const (
+	NetworkSecurityPerimeterConfigurationProvisioningStateAccepted  NetworkSecurityPerimeterConfigurationProvisioningState = "Accepted"
+	NetworkSecurityPerimeterConfigurationProvisioningStateCanceled  NetworkSecurityPerimeterConfigurationProvisioningState = "Canceled"
+	NetworkSecurityPerimeterConfigurationProvisioningStateCreating  NetworkSecurityPerimeterConfigurationProvisioningState = "Creating"
+	NetworkSecurityPerimeterConfigurationProvisioningStateDeleting  NetworkSecurityPerimeterConfigurationProvisioningState = "Deleting"
+	NetworkSecurityPerimeterConfigurationProvisioningStateFailed    NetworkSecurityPerimeterConfigurationProvisioningState = "Failed"
+	NetworkSecurityPerimeterConfigurationProvisioningStateSucceeded NetworkSecurityPerimeterConfigurationProvisioningState = "Succeeded"
+	NetworkSecurityPerimeterConfigurationProvisioningStateUpdating  NetworkSecurityPerimeterConfigurationProvisioningState = "Updating"
+)
+
+// PossibleNetworkSecurityPerimeterConfigurationProvisioningStateValues returns the possible values for the NetworkSecurityPerimeterConfigurationProvisioningState const type.
+func PossibleNetworkSecurityPerimeterConfigurationProvisioningStateValues() []NetworkSecurityPerimeterConfigurationProvisioningState {
+	return []NetworkSecurityPerimeterConfigurationProvisioningState{
+		NetworkSecurityPerimeterConfigurationProvisioningStateAccepted,
+		NetworkSecurityPerimeterConfigurationProvisioningStateCanceled,
+		NetworkSecurityPerimeterConfigurationProvisioningStateCreating,
+		NetworkSecurityPerimeterConfigurationProvisioningStateDeleting,
+		NetworkSecurityPerimeterConfigurationProvisioningStateFailed,
+		NetworkSecurityPerimeterConfigurationProvisioningStateSucceeded,
+		NetworkSecurityPerimeterConfigurationProvisioningStateUpdating,
 	}
 }
 
@@ -741,6 +860,8 @@ const (
 	PublicNetworkAccessTypeDisabled PublicNetworkAccessType = "Disabled"
 	// PublicNetworkAccessTypeEnabled - Enables connectivity to Azure Batch through public DNS.
 	PublicNetworkAccessTypeEnabled PublicNetworkAccessType = "Enabled"
+	// PublicNetworkAccessTypeSecuredByPerimeter - Secures connectivity to Azure Batch through NSP configuration.
+	PublicNetworkAccessTypeSecuredByPerimeter PublicNetworkAccessType = "SecuredByPerimeter"
 )
 
 // PossiblePublicNetworkAccessTypeValues returns the possible values for the PublicNetworkAccessType const type.
@@ -748,6 +869,30 @@ func PossiblePublicNetworkAccessTypeValues() []PublicNetworkAccessType {
 	return []PublicNetworkAccessType{
 		PublicNetworkAccessTypeDisabled,
 		PublicNetworkAccessTypeEnabled,
+		PublicNetworkAccessTypeSecuredByPerimeter,
+	}
+}
+
+// ResourceAssociationAccessMode - Access mode of the resource association
+type ResourceAssociationAccessMode string
+
+const (
+	// ResourceAssociationAccessModeAudit - Audit access mode - traffic to the resource that fails access checks is logged but
+	// not blocked
+	ResourceAssociationAccessModeAudit ResourceAssociationAccessMode = "Audit"
+	// ResourceAssociationAccessModeEnforced - Enforced access mode - traffic to the resource that failed access checks is blocked
+	ResourceAssociationAccessModeEnforced ResourceAssociationAccessMode = "Enforced"
+	// ResourceAssociationAccessModeLearning - Learning access mode - traffic to the resource is enabled for analysis but not
+	// blocked
+	ResourceAssociationAccessModeLearning ResourceAssociationAccessMode = "Learning"
+)
+
+// PossibleResourceAssociationAccessModeValues returns the possible values for the ResourceAssociationAccessMode const type.
+func PossibleResourceAssociationAccessModeValues() []ResourceAssociationAccessMode {
+	return []ResourceAssociationAccessMode{
+		ResourceAssociationAccessModeAudit,
+		ResourceAssociationAccessModeEnforced,
+		ResourceAssociationAccessModeLearning,
 	}
 }
 
@@ -770,6 +915,61 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 		ResourceIdentityTypeNone,
 		ResourceIdentityTypeSystemAssigned,
 		ResourceIdentityTypeUserAssigned,
+	}
+}
+
+// SecurityEncryptionTypes - Specifies the EncryptionType of the managed disk. It is set to VMGuestStateOnly for encryption
+// of just the VMGuestState blob, and NonPersistedTPM for not persisting firmware state in the VMGuestState
+// blob. Note: It can be set for only Confidential VMs and required when using Confidential VMs.
+type SecurityEncryptionTypes string
+
+const (
+	SecurityEncryptionTypesNonPersistedTPM  SecurityEncryptionTypes = "NonPersistedTPM"
+	SecurityEncryptionTypesVMGuestStateOnly SecurityEncryptionTypes = "VMGuestStateOnly"
+)
+
+// PossibleSecurityEncryptionTypesValues returns the possible values for the SecurityEncryptionTypes const type.
+func PossibleSecurityEncryptionTypesValues() []SecurityEncryptionTypes {
+	return []SecurityEncryptionTypes{
+		SecurityEncryptionTypesNonPersistedTPM,
+		SecurityEncryptionTypesVMGuestStateOnly,
+	}
+}
+
+// SecurityTypes - Specifies the SecurityType of the virtual machine. It has to be set to any specified value to enable UefiSettings.
+type SecurityTypes string
+
+const (
+	// SecurityTypesConfidentialVM - Azure confidential computing offers confidential VMs are for tenants with high security and
+	// confidentiality requirements. These VMs provide a strong, hardware-enforced boundary to help meet your security needs.
+	// You can use confidential VMs for migrations without making changes to your code, with the platform protecting your VM's
+	// state from being read or modified.
+	SecurityTypesConfidentialVM SecurityTypes = "confidentialVM"
+	// SecurityTypesTrustedLaunch - Trusted launch protects against advanced and persistent attack techniques.
+	SecurityTypesTrustedLaunch SecurityTypes = "trustedLaunch"
+)
+
+// PossibleSecurityTypesValues returns the possible values for the SecurityTypes const type.
+func PossibleSecurityTypesValues() []SecurityTypes {
+	return []SecurityTypes{
+		SecurityTypesConfidentialVM,
+		SecurityTypesTrustedLaunch,
+	}
+}
+
+// Severity - Severity of the issue.
+type Severity string
+
+const (
+	SeverityError   Severity = "Error"
+	SeverityWarning Severity = "Warning"
+)
+
+// PossibleSeverityValues returns the possible values for the Severity const type.
+func PossibleSeverityValues() []Severity {
+	return []Severity{
+		SeverityError,
+		SeverityWarning,
 	}
 }
 

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/PrivateEndpointConnection_ListByWorkspace.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2024-04-03/examples/PrivateEndpointConnection_ListByWorkspace.json
 func ExamplePrivateEndpointConnectionsClient_NewListByWorkspacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,6 +46,14 @@ func ExamplePrivateEndpointConnectionsClient_NewListByWorkspacePager() {
 		// 			Name: to.Ptr("workspace1.377103f1-5179-4bdf-8556-4cdd3207cc5b"),
 		// 			Type: to.Ptr("Microsoft.DesktopVirtualization/workspaces/privateEndpointConnections"),
 		// 			ID: to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup1/providers/Microsoft.DesktopVirtualization/workspaces/workspace1/privateEndpointConnections/workspace1.377103f1-5179-4bdf-8556-4cdd3207cc5b"),
+		// 			SystemData: &armdesktopvirtualization.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
+		// 				CreatedBy: to.Ptr("user1"),
+		// 				CreatedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("user2"),
+		// 				LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
+		// 			},
 		// 			Properties: &armdesktopvirtualization.PrivateEndpointConnectionProperties{
 		// 				PrivateEndpoint: &armdesktopvirtualization.PrivateEndpoint{
 		// 					ID: to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup2/providers/Microsoft.Network/privateEndpoints/endpointName1"),
@@ -57,20 +65,12 @@ func ExamplePrivateEndpointConnectionsClient_NewListByWorkspacePager() {
 		// 				},
 		// 				ProvisioningState: to.Ptr(armdesktopvirtualization.PrivateEndpointConnectionProvisioningStateSucceeded),
 		// 			},
-		// 			SystemData: &armdesktopvirtualization.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
-		// 				CreatedBy: to.Ptr("user1"),
-		// 				CreatedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("user2"),
-		// 				LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
-		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/PrivateEndpointConnection_GetByWorkspace.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2024-04-03/examples/PrivateEndpointConnection_GetByWorkspace.json
 func ExamplePrivateEndpointConnectionsClient_GetByWorkspace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,6 +92,14 @@ func ExamplePrivateEndpointConnectionsClient_GetByWorkspace() {
 	// 	Name: to.Ptr("workspace1.377103f1-5179-4bdf-8556-4cdd3207cc5b"),
 	// 	Type: to.Ptr("Microsoft.DesktopVirtualization/workspaces/privateEndpointConnections"),
 	// 	ID: to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup1/providers/Microsoft.DesktopVirtualization/workspaces/workspace1/privateEndpointConnections/workspace1.377103f1-5179-4bdf-8556-4cdd3207cc5b"),
+	// 	SystemData: &armdesktopvirtualization.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
+	// 		CreatedBy: to.Ptr("user1"),
+	// 		CreatedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("user2"),
+	// 		LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
+	// 	},
 	// 	Properties: &armdesktopvirtualization.PrivateEndpointConnectionProperties{
 	// 		PrivateEndpoint: &armdesktopvirtualization.PrivateEndpoint{
 	// 			ID: to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup2/providers/Microsoft.Network/privateEndpoints/endpointName1"),
@@ -103,18 +111,10 @@ func ExamplePrivateEndpointConnectionsClient_GetByWorkspace() {
 	// 		},
 	// 		ProvisioningState: to.Ptr(armdesktopvirtualization.PrivateEndpointConnectionProvisioningStateSucceeded),
 	// 	},
-	// 	SystemData: &armdesktopvirtualization.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
-	// 		CreatedBy: to.Ptr("user1"),
-	// 		CreatedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("user2"),
-	// 		LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/PrivateEndpointConnection_DeleteByWorkspace.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2024-04-03/examples/PrivateEndpointConnection_DeleteByWorkspace.json
 func ExamplePrivateEndpointConnectionsClient_DeleteByWorkspace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,7 +131,7 @@ func ExamplePrivateEndpointConnectionsClient_DeleteByWorkspace() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/PrivateEndpointConnection_UpdateByWorkspace.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2024-04-03/examples/PrivateEndpointConnection_UpdateByWorkspace.json
 func ExamplePrivateEndpointConnectionsClient_UpdateByWorkspace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -161,6 +161,14 @@ func ExamplePrivateEndpointConnectionsClient_UpdateByWorkspace() {
 	// 	Name: to.Ptr("workspace1.377103f1-5179-4bdf-8556-4cdd3207cc5b"),
 	// 	Type: to.Ptr("Microsoft.DesktopVirtualization/workspaces/privateEndpointConnections"),
 	// 	ID: to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup1/providers/Microsoft.DesktopVirtualization/workspaces/workspace1/privateEndpointConnections/workspace1.377103f1-5179-4bdf-8556-4cdd3207cc5b"),
+	// 	SystemData: &armdesktopvirtualization.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
+	// 		CreatedBy: to.Ptr("user1"),
+	// 		CreatedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("user2"),
+	// 		LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
+	// 	},
 	// 	Properties: &armdesktopvirtualization.PrivateEndpointConnectionProperties{
 	// 		PrivateEndpoint: &armdesktopvirtualization.PrivateEndpoint{
 	// 			ID: to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup2/providers/Microsoft.Network/privateEndpoints/endpointName1"),
@@ -172,18 +180,10 @@ func ExamplePrivateEndpointConnectionsClient_UpdateByWorkspace() {
 	// 		},
 	// 		ProvisioningState: to.Ptr(armdesktopvirtualization.PrivateEndpointConnectionProvisioningStateSucceeded),
 	// 	},
-	// 	SystemData: &armdesktopvirtualization.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
-	// 		CreatedBy: to.Ptr("user1"),
-	// 		CreatedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("user2"),
-	// 		LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/PrivateEndpointConnection_ListByHostPool.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2024-04-03/examples/PrivateEndpointConnection_ListByHostPool.json
 func ExamplePrivateEndpointConnectionsClient_NewListByHostPoolPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -214,6 +214,14 @@ func ExamplePrivateEndpointConnectionsClient_NewListByHostPoolPager() {
 		// 			Name: to.Ptr("hostPool1.377103f1-5179-4bdf-8556-4cdd3207cc5b"),
 		// 			Type: to.Ptr("Microsoft.DesktopVirtualization/hostpools/privateEndpointConnections"),
 		// 			ID: to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup1/providers/Microsoft.DesktopVirtualization/hostpools/hostPool1/privateEndpointConnections/hostPool1.377103f1-5179-4bdf-8556-4cdd3207cc5b"),
+		// 			SystemData: &armdesktopvirtualization.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
+		// 				CreatedBy: to.Ptr("user1"),
+		// 				CreatedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("user2"),
+		// 				LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
+		// 			},
 		// 			Properties: &armdesktopvirtualization.PrivateEndpointConnectionProperties{
 		// 				PrivateEndpoint: &armdesktopvirtualization.PrivateEndpoint{
 		// 					ID: to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup2/providers/Microsoft.Network/privateEndpoints/endpointName1"),
@@ -225,20 +233,12 @@ func ExamplePrivateEndpointConnectionsClient_NewListByHostPoolPager() {
 		// 				},
 		// 				ProvisioningState: to.Ptr(armdesktopvirtualization.PrivateEndpointConnectionProvisioningStateSucceeded),
 		// 			},
-		// 			SystemData: &armdesktopvirtualization.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
-		// 				CreatedBy: to.Ptr("user1"),
-		// 				CreatedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("user2"),
-		// 				LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
-		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/PrivateEndpointConnection_GetByHostPool.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2024-04-03/examples/PrivateEndpointConnection_GetByHostPool.json
 func ExamplePrivateEndpointConnectionsClient_GetByHostPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -260,6 +260,14 @@ func ExamplePrivateEndpointConnectionsClient_GetByHostPool() {
 	// 	Name: to.Ptr("hostPool1.377103f1-5179-4bdf-8556-4cdd3207cc5b"),
 	// 	Type: to.Ptr("Microsoft.DesktopVirtualization/hostpools/privateEndpointConnections"),
 	// 	ID: to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup1/providers/Microsoft.DesktopVirtualization/hostpools/hostPool1/privateEndpointConnections/hostPool1.377103f1-5179-4bdf-8556-4cdd3207cc5b"),
+	// 	SystemData: &armdesktopvirtualization.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
+	// 		CreatedBy: to.Ptr("user1"),
+	// 		CreatedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("user2"),
+	// 		LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
+	// 	},
 	// 	Properties: &armdesktopvirtualization.PrivateEndpointConnectionProperties{
 	// 		PrivateEndpoint: &armdesktopvirtualization.PrivateEndpoint{
 	// 			ID: to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup2/providers/Microsoft.Network/privateEndpoints/endpointName1"),
@@ -271,18 +279,10 @@ func ExamplePrivateEndpointConnectionsClient_GetByHostPool() {
 	// 		},
 	// 		ProvisioningState: to.Ptr(armdesktopvirtualization.PrivateEndpointConnectionProvisioningStateSucceeded),
 	// 	},
-	// 	SystemData: &armdesktopvirtualization.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
-	// 		CreatedBy: to.Ptr("user1"),
-	// 		CreatedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("user2"),
-	// 		LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/PrivateEndpointConnection_DeleteByHostPool.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2024-04-03/examples/PrivateEndpointConnection_DeleteByHostPool.json
 func ExamplePrivateEndpointConnectionsClient_DeleteByHostPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -299,7 +299,7 @@ func ExamplePrivateEndpointConnectionsClient_DeleteByHostPool() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/PrivateEndpointConnection_UpdateByHostPool.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2024-04-03/examples/PrivateEndpointConnection_UpdateByHostPool.json
 func ExamplePrivateEndpointConnectionsClient_UpdateByHostPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -329,6 +329,14 @@ func ExamplePrivateEndpointConnectionsClient_UpdateByHostPool() {
 	// 	Name: to.Ptr("hostPool1.377103f1-5179-4bdf-8556-4cdd3207cc5b"),
 	// 	Type: to.Ptr("Microsoft.DesktopVirtualization/hostpools/privateEndpointConnections"),
 	// 	ID: to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup1/providers/Microsoft.DesktopVirtualization/hostpools/hostPool1/privateEndpointConnections/hostPool1.377103f1-5179-4bdf-8556-4cdd3207cc5b"),
+	// 	SystemData: &armdesktopvirtualization.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
+	// 		CreatedBy: to.Ptr("user1"),
+	// 		CreatedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("user2"),
+	// 		LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
+	// 	},
 	// 	Properties: &armdesktopvirtualization.PrivateEndpointConnectionProperties{
 	// 		PrivateEndpoint: &armdesktopvirtualization.PrivateEndpoint{
 	// 			ID: to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup2/providers/Microsoft.Network/privateEndpoints/endpointName1"),
@@ -339,14 +347,6 @@ func ExamplePrivateEndpointConnectionsClient_UpdateByHostPool() {
 	// 			Status: to.Ptr(armdesktopvirtualization.PrivateEndpointServiceConnectionStatusApproved),
 	// 		},
 	// 		ProvisioningState: to.Ptr(armdesktopvirtualization.PrivateEndpointConnectionProvisioningStateSucceeded),
-	// 	},
-	// 	SystemData: &armdesktopvirtualization.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
-	// 		CreatedBy: to.Ptr("user1"),
-	// 		CreatedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("user2"),
-	// 		LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
 	// 	},
 	// }
 }

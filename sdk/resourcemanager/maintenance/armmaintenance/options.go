@@ -19,6 +19,12 @@ type ApplyUpdatesClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ApplyUpdatesClientCreateOrUpdateOrCancelOptions contains the optional parameters for the ApplyUpdatesClient.CreateOrUpdateOrCancel
+// method.
+type ApplyUpdatesClientCreateOrUpdateOrCancelOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ApplyUpdatesClientCreateOrUpdateParentOptions contains the optional parameters for the ApplyUpdatesClient.CreateOrUpdateParent
 // method.
 type ApplyUpdatesClientCreateOrUpdateParentOptions struct {
@@ -187,6 +193,11 @@ type PublicMaintenanceConfigurationsClientGetOptions struct {
 // PublicMaintenanceConfigurationsClientListOptions contains the optional parameters for the PublicMaintenanceConfigurationsClient.NewListPager
 // method.
 type PublicMaintenanceConfigurationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScheduledEventClientAcknowledgeOptions contains the optional parameters for the ScheduledEventClient.Acknowledge method.
+type ScheduledEventClientAcknowledgeOptions struct {
 	// placeholder for future optional parameters
 }
 

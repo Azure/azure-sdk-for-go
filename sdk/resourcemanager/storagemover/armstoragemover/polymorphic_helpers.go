@@ -11,7 +11,7 @@ package armstoragemover
 import "encoding/json"
 
 func unmarshalEndpointBasePropertiesClassification(rawMsg json.RawMessage) (EndpointBasePropertiesClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -38,7 +38,7 @@ func unmarshalEndpointBasePropertiesClassification(rawMsg json.RawMessage) (Endp
 }
 
 func unmarshalEndpointBaseUpdatePropertiesClassification(rawMsg json.RawMessage) (EndpointBaseUpdatePropertiesClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any

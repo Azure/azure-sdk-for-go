@@ -19,7 +19,7 @@ func ConstantDetachmentSender(remainingArgs []string) {
 	sc := shared.MustCreateStressContext("ConstantDetachmentSender", nil)
 	defer sc.End()
 
-	adminClient, err := admin.NewClientFromConnectionString(sc.ConnectionString, nil)
+	adminClient, err := admin.NewClient(sc.Endpoint, sc.Cred, nil)
 	sc.PanicOnError("failed to create admin client", err)
 
 	wg := sync.WaitGroup{}
@@ -60,7 +60,6 @@ func ConstantDetachmentSender(remainingArgs []string) {
 			}, nil)
 			sc.PanicOnError("failed to add message", err)
 
-			err = shared.ForceQueueDetach(sc.Context, adminClient, queueName)
 			sc.PanicOnError("failed updating queue", err)
 
 			err = sender.SendMessageBatch(sc.Context, batch, nil)
@@ -78,7 +77,7 @@ func createDetachResources(sc *shared.StressContext, name string) (string, *shar
 
 	shared.MustCreateAutoDeletingQueue(sc, queueName, nil)
 
-	client, err := azservicebus.NewClientFromConnectionString(sc.ConnectionString, nil)
+	client, err := azservicebus.NewClient(sc.Endpoint, sc.Cred, nil)
 	sc.PanicOnError("failed to create client", err)
 
 	sender, err := shared.NewTrackingSender(sc.TC, client, queueName, nil)
@@ -88,7 +87,7 @@ func createDetachResources(sc *shared.StressContext, name string) (string, *shar
 }
 
 func checkMessages(sc *shared.StressContext, queueName string, numSent int) {
-	client, err := azservicebus.NewClientFromConnectionString(sc.ConnectionString, nil)
+	client, err := azservicebus.NewClient(sc.Endpoint, sc.Cred, nil)
 	sc.PanicOnError("failed to create client", err)
 
 	receiver, err := shared.NewTrackingReceiverForQueue(sc.TC, client, queueName, &azservicebus.ReceiverOptions{

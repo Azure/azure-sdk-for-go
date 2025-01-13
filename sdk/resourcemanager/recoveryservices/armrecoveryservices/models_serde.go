@@ -19,7 +19,9 @@ import (
 // MarshalJSON implements the json.Marshaller interface for type AzureMonitorAlertSettings.
 func (a AzureMonitorAlertSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "alertsForAllFailoverIssues", a.AlertsForAllFailoverIssues)
 	populate(objectMap, "alertsForAllJobFailures", a.AlertsForAllJobFailures)
+	populate(objectMap, "alertsForAllReplicationIssues", a.AlertsForAllReplicationIssues)
 	return json.Marshal(objectMap)
 }
 
@@ -32,8 +34,14 @@ func (a *AzureMonitorAlertSettings) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "alertsForAllFailoverIssues":
+			err = unpopulate(val, "AlertsForAllFailoverIssues", &a.AlertsForAllFailoverIssues)
+			delete(rawMsg, key)
 		case "alertsForAllJobFailures":
 			err = unpopulate(val, "AlertsForAllJobFailures", &a.AlertsForAllJobFailures)
+			delete(rawMsg, key)
+		case "alertsForAllReplicationIssues":
+			err = unpopulate(val, "AlertsForAllReplicationIssues", &a.AlertsForAllReplicationIssues)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -225,6 +233,7 @@ func (c *CheckNameAvailabilityResult) UnmarshalJSON(data []byte) error {
 func (c ClassicAlertSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "alertsForCriticalOperations", c.AlertsForCriticalOperations)
+	populate(objectMap, "emailNotificationsForSiteRecovery", c.EmailNotificationsForSiteRecovery)
 	return json.Marshal(objectMap)
 }
 
@@ -239,6 +248,9 @@ func (c *ClassicAlertSettings) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "alertsForCriticalOperations":
 			err = unpopulate(val, "AlertsForCriticalOperations", &c.AlertsForCriticalOperations)
+			delete(rawMsg, key)
+		case "emailNotificationsForSiteRecovery":
+			err = unpopulate(val, "EmailNotificationsForSiteRecovery", &c.EmailNotificationsForSiteRecovery)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -654,6 +666,76 @@ func (e *ErrorAdditionalInfo) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "type":
 			err = unpopulate(val, "Type", &e.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", e, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ErrorDetail.
+func (e ErrorDetail) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "additionalInfo", e.AdditionalInfo)
+	populate(objectMap, "code", e.Code)
+	populate(objectMap, "details", e.Details)
+	populate(objectMap, "message", e.Message)
+	populate(objectMap, "target", e.Target)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ErrorDetail.
+func (e *ErrorDetail) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", e, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "additionalInfo":
+			err = unpopulate(val, "AdditionalInfo", &e.AdditionalInfo)
+			delete(rawMsg, key)
+		case "code":
+			err = unpopulate(val, "Code", &e.Code)
+			delete(rawMsg, key)
+		case "details":
+			err = unpopulate(val, "Details", &e.Details)
+			delete(rawMsg, key)
+		case "message":
+			err = unpopulate(val, "Message", &e.Message)
+			delete(rawMsg, key)
+		case "target":
+			err = unpopulate(val, "Target", &e.Target)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", e, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ErrorResponse.
+func (e ErrorResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "error", e.Error)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ErrorResponse.
+func (e *ErrorResponse) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", e, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "error":
+			err = unpopulate(val, "Error", &e.Error)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1279,7 +1361,9 @@ func (p *PrivateLinkServiceConnectionState) UnmarshalJSON(data []byte) error {
 func (r RawCertificateData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "authType", r.AuthType)
-	populateByteArray(objectMap, "certificate", r.Certificate, runtime.Base64StdFormat)
+	populateByteArray(objectMap, "certificate", r.Certificate, func() any {
+		return runtime.EncodeByteArray(r.Certificate, runtime.Base64StdFormat)
+	})
 	return json.Marshal(objectMap)
 }
 
@@ -1296,7 +1380,9 @@ func (r *RawCertificateData) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "AuthType", &r.AuthType)
 			delete(rawMsg, key)
 		case "certificate":
-			err = runtime.DecodeByteArray(string(val), &r.Certificate, runtime.Base64StdFormat)
+			if val != nil && string(val) != "null" {
+				err = runtime.DecodeByteArray(string(val), &r.Certificate, runtime.Base64StdFormat)
+			}
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1485,7 +1571,9 @@ func (r ResourceCertificateAndAADDetails) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "aadTenantId", r.AADTenantID)
 	objectMap["authType"] = "AzureActiveDirectory"
 	populate(objectMap, "azureManagementEndpointAudience", r.AzureManagementEndpointAudience)
-	populateByteArray(objectMap, "certificate", r.Certificate, runtime.Base64StdFormat)
+	populateByteArray(objectMap, "certificate", r.Certificate, func() any {
+		return runtime.EncodeByteArray(r.Certificate, runtime.Base64StdFormat)
+	})
 	populate(objectMap, "friendlyName", r.FriendlyName)
 	populate(objectMap, "issuer", r.Issuer)
 	populate(objectMap, "resourceId", r.ResourceID)
@@ -1524,7 +1612,9 @@ func (r *ResourceCertificateAndAADDetails) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "AzureManagementEndpointAudience", &r.AzureManagementEndpointAudience)
 			delete(rawMsg, key)
 		case "certificate":
-			err = runtime.DecodeByteArray(string(val), &r.Certificate, runtime.Base64StdFormat)
+			if val != nil && string(val) != "null" {
+				err = runtime.DecodeByteArray(string(val), &r.Certificate, runtime.Base64StdFormat)
+			}
 			delete(rawMsg, key)
 		case "friendlyName":
 			err = unpopulate(val, "FriendlyName", &r.FriendlyName)
@@ -1568,7 +1658,9 @@ func (r *ResourceCertificateAndAADDetails) UnmarshalJSON(data []byte) error {
 func (r ResourceCertificateAndAcsDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	objectMap["authType"] = "AccessControlService"
-	populateByteArray(objectMap, "certificate", r.Certificate, runtime.Base64StdFormat)
+	populateByteArray(objectMap, "certificate", r.Certificate, func() any {
+		return runtime.EncodeByteArray(r.Certificate, runtime.Base64StdFormat)
+	})
 	populate(objectMap, "friendlyName", r.FriendlyName)
 	populate(objectMap, "globalAcsHostName", r.GlobalAcsHostName)
 	populate(objectMap, "globalAcsNamespace", r.GlobalAcsNamespace)
@@ -1595,7 +1687,9 @@ func (r *ResourceCertificateAndAcsDetails) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "AuthType", &r.AuthType)
 			delete(rawMsg, key)
 		case "certificate":
-			err = runtime.DecodeByteArray(string(val), &r.Certificate, runtime.Base64StdFormat)
+			if val != nil && string(val) != "null" {
+				err = runtime.DecodeByteArray(string(val), &r.Certificate, runtime.Base64StdFormat)
+			}
 			delete(rawMsg, key)
 		case "friendlyName":
 			err = unpopulate(val, "FriendlyName", &r.FriendlyName)
@@ -1639,7 +1733,9 @@ func (r *ResourceCertificateAndAcsDetails) UnmarshalJSON(data []byte) error {
 func (r ResourceCertificateDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	objectMap["authType"] = r.AuthType
-	populateByteArray(objectMap, "certificate", r.Certificate, runtime.Base64StdFormat)
+	populateByteArray(objectMap, "certificate", r.Certificate, func() any {
+		return runtime.EncodeByteArray(r.Certificate, runtime.Base64StdFormat)
+	})
 	populate(objectMap, "friendlyName", r.FriendlyName)
 	populate(objectMap, "issuer", r.Issuer)
 	populate(objectMap, "resourceId", r.ResourceID)
@@ -1663,7 +1759,9 @@ func (r *ResourceCertificateDetails) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "AuthType", &r.AuthType)
 			delete(rawMsg, key)
 		case "certificate":
-			err = runtime.DecodeByteArray(string(val), &r.Certificate, runtime.Base64StdFormat)
+			if val != nil && string(val) != "null" {
+				err = runtime.DecodeByteArray(string(val), &r.Certificate, runtime.Base64StdFormat)
+			}
 			delete(rawMsg, key)
 		case "friendlyName":
 			err = unpopulate(val, "FriendlyName", &r.FriendlyName)
@@ -1802,6 +1900,7 @@ func (s *SecuritySettings) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SoftDeleteSettings.
 func (s SoftDeleteSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "enhancedSecurityState", s.EnhancedSecurityState)
 	populate(objectMap, "softDeleteRetentionPeriodInDays", s.SoftDeleteRetentionPeriodInDays)
 	populate(objectMap, "softDeleteState", s.SoftDeleteState)
 	return json.Marshal(objectMap)
@@ -1816,6 +1915,9 @@ func (s *SoftDeleteSettings) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "enhancedSecurityState":
+			err = unpopulate(val, "EnhancedSecurityState", &s.EnhancedSecurityState)
+			delete(rawMsg, key)
 		case "softDeleteRetentionPeriodInDays":
 			err = unpopulate(val, "SoftDeleteRetentionPeriodInDays", &s.SoftDeleteRetentionPeriodInDays)
 			delete(rawMsg, key)
@@ -2233,6 +2335,7 @@ func (v *VaultList) UnmarshalJSON(data []byte) error {
 func (v VaultProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "backupStorageVersion", v.BackupStorageVersion)
+	populate(objectMap, "bcdrSecurityLevel", v.BcdrSecurityLevel)
 	populate(objectMap, "encryption", v.Encryption)
 	populate(objectMap, "monitoringSettings", v.MonitoringSettings)
 	populate(objectMap, "moveDetails", v.MoveDetails)
@@ -2243,6 +2346,7 @@ func (v VaultProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "provisioningState", v.ProvisioningState)
 	populate(objectMap, "publicNetworkAccess", v.PublicNetworkAccess)
 	populate(objectMap, "redundancySettings", v.RedundancySettings)
+	populate(objectMap, "resourceGuardOperationRequests", v.ResourceGuardOperationRequests)
 	populate(objectMap, "restoreSettings", v.RestoreSettings)
 	populate(objectMap, "secureScore", v.SecureScore)
 	populate(objectMap, "securitySettings", v.SecuritySettings)
@@ -2261,6 +2365,9 @@ func (v *VaultProperties) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "backupStorageVersion":
 			err = unpopulate(val, "BackupStorageVersion", &v.BackupStorageVersion)
+			delete(rawMsg, key)
+		case "bcdrSecurityLevel":
+			err = unpopulate(val, "BcdrSecurityLevel", &v.BcdrSecurityLevel)
 			delete(rawMsg, key)
 		case "encryption":
 			err = unpopulate(val, "Encryption", &v.Encryption)
@@ -2291,6 +2398,9 @@ func (v *VaultProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "redundancySettings":
 			err = unpopulate(val, "RedundancySettings", &v.RedundancySettings)
+			delete(rawMsg, key)
+		case "resourceGuardOperationRequests":
+			err = unpopulate(val, "ResourceGuardOperationRequests", &v.ResourceGuardOperationRequests)
 			delete(rawMsg, key)
 		case "restoreSettings":
 			err = unpopulate(val, "RestoreSettings", &v.RestoreSettings)
@@ -2515,18 +2625,18 @@ func populateAny(m map[string]any, k string, v any) {
 	}
 }
 
-func populateByteArray(m map[string]any, k string, b []byte, f runtime.Base64Encoding) {
+func populateByteArray[T any](m map[string]any, k string, b []T, convert func() any) {
 	if azcore.IsNullValue(b) {
 		m[k] = nil
 	} else if len(b) == 0 {
 		return
 	} else {
-		m[k] = runtime.EncodeByteArray(b, f)
+		m[k] = convert()
 	}
 }
 
 func unpopulate(data json.RawMessage, fn string, v any) error {
-	if data == nil {
+	if data == nil || string(data) == "null" {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {

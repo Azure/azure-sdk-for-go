@@ -903,6 +903,45 @@ type ApplicationsList struct {
 	Value []*Application
 }
 
+// ArcAutoProvisioning - The ARC autoprovisioning configuration
+type ArcAutoProvisioning struct {
+	// Configuration for servers Arc auto provisioning for a given environment
+	Configuration *ArcAutoProvisioningConfiguration
+
+	// Is arc auto provisioning enabled
+	Enabled *bool
+}
+
+// ArcAutoProvisioningAws - The ARC autoprovisioning configuration for an AWS environment
+type ArcAutoProvisioningAws struct {
+	// The cloud role ARN in AWS for this feature
+	CloudRoleArn *string
+
+	// Configuration for servers Arc auto provisioning for a given environment
+	Configuration *ArcAutoProvisioningConfiguration
+
+	// Is arc auto provisioning enabled
+	Enabled *bool
+}
+
+// ArcAutoProvisioningConfiguration - Configuration for servers Arc auto provisioning for a given environment
+type ArcAutoProvisioningConfiguration struct {
+	// Optional Arc private link scope resource id to link the Arc agent
+	PrivateLinkScope *string
+
+	// Optional HTTP proxy endpoint to use for the Arc agent
+	Proxy *string
+}
+
+// ArcAutoProvisioningGcp - The ARC autoprovisioning configuration for an GCP environment
+type ArcAutoProvisioningGcp struct {
+	// Configuration for servers Arc auto provisioning for a given environment
+	Configuration *ArcAutoProvisioningConfiguration
+
+	// Is arc auto provisioning enabled
+	Enabled *bool
+}
+
 // AscLocation - The ASC location of the subscription is in the "name" field
 type AscLocation struct {
 	// An empty set of properties
@@ -1360,6 +1399,9 @@ type AutomationActionEventHub struct {
 	// The target Event Hub Azure Resource ID.
 	EventHubResourceID *string
 
+	// Indicates whether the trusted service is enabled or not.
+	IsTrustedServiceEnabled *bool
+
 	// READ-ONLY; The target Event Hub SAS policy name.
 	SasPolicyName *string
 }
@@ -1392,7 +1434,7 @@ func (a *AutomationActionLogicApp) GetAutomationAction() *AutomationAction {
 	}
 }
 
-// AutomationActionWorkspace - The Log Analytics Workspace to which event data will be exported. Security alerts data will
+// AutomationActionWorkspace - The�Log�Analytics�Workspace�to�which�event data will be exported. Security alerts data will
 // reside in the 'SecurityAlert' table and the assessments data will reside in the 'SecurityRecommendation'
 // table (under the 'Security'/'SecurityCenterFree' solutions). Note that in order to view the data in the workspace, the
 // Security Center Log Analytics free/standard solution needs to be enabled on that
@@ -1486,6 +1528,15 @@ type AutomationTriggeringRule struct {
 
 	// The data type of the compared operands (string, integer, floating point number or a boolean [true/false]]
 	PropertyType *PropertyType
+}
+
+// AutomationUpdateModel - The update model of security automation resource.
+type AutomationUpdateModel struct {
+	// Security automation data
+	Properties *AutomationProperties
+
+	// A list of key value pairs that describe the resource.
+	Tags map[string]*string
 }
 
 // AutomationValidationStatus - The security automation model state property bag.
@@ -2391,44 +2442,38 @@ type Contact struct {
 
 // ContactList - List of security contacts response
 type ContactList struct {
+	// REQUIRED; List of security contacts
+	Value []*Contact
+
 	// READ-ONLY; The URI to fetch the next page.
 	NextLink *string
-
-	// READ-ONLY; List of security contacts
-	Value []*Contact
 }
 
 // ContactProperties - Describes security contact properties
 type ContactProperties struct {
-	// Defines whether to send email notifications about new security alerts
-	AlertNotifications *ContactPropertiesAlertNotifications
-
 	// List of email addresses which will get notifications from Microsoft Defender for Cloud by the configurations defined in
 	// this security contact.
 	Emails *string
+
+	// Indicates whether the security contact is enabled.
+	IsEnabled *bool
 
 	// Defines whether to send email notifications from Microsoft Defender for Cloud to persons with specific RBAC roles on the
 	// subscription.
 	NotificationsByRole *ContactPropertiesNotificationsByRole
 
+	// A collection of sources types which evaluate the email notification.
+	NotificationsSources []NotificationsSourceClassification
+
 	// The security contact's phone number
 	Phone *string
-}
-
-// ContactPropertiesAlertNotifications - Defines whether to send email notifications about new security alerts
-type ContactPropertiesAlertNotifications struct {
-	// Defines the minimal alert severity which will be sent as email notifications
-	MinimalSeverity *MinimalSeverity
-
-	// Defines if email notifications will be sent about new security alerts
-	State *State
 }
 
 // ContactPropertiesNotificationsByRole - Defines whether to send email notifications from Microsoft Defender for Cloud to
 // persons with specific RBAC roles on the subscription.
 type ContactPropertiesNotificationsByRole struct {
 	// Defines which RBAC roles will get email notifications from Microsoft Defender for Cloud. List of allowed RBAC roles:
-	Roles []*Roles
+	Roles []*SecurityContactRole
 
 	// Defines whether to send email notifications from AMicrosoft Defender for Cloud to persons with specific RBAC roles on the
 	// subscription.
@@ -2770,7 +2815,7 @@ type DefenderCspmAwsOffering struct {
 	// REQUIRED; The type of the security offering.
 	OfferingType *OfferingType
 
-	// Defenders CSPM Cloud infrastructure entitlement management (CIEM) offering configurations
+	// Defenders CSPM Permissions Management offering configurations
 	Ciem *DefenderCspmAwsOfferingCiem
 
 	// The Microsoft Defender Data Sensitivity discovery configuration
@@ -2785,7 +2830,7 @@ type DefenderCspmAwsOffering struct {
 	// The Microsoft Defender container image assessment configuration
 	MdcContainersImageAssessment *DefenderCspmAwsOfferingMdcContainersImageAssessment
 
-	// The Microsoft Defender for Server VM scanning configuration
+	// The Microsoft Defender for CSPM offering VM scanning configuration
 	VMScanners *DefenderCspmAwsOfferingVMScanners
 
 	// READ-ONLY; The offering description.
@@ -2800,27 +2845,27 @@ func (d *DefenderCspmAwsOffering) GetCloudOffering() *CloudOffering {
 	}
 }
 
-// DefenderCspmAwsOfferingCiem - Defenders CSPM Cloud infrastructure entitlement management (CIEM) offering configurations
+// DefenderCspmAwsOfferingCiem - Defenders CSPM Permissions Management offering configurations
 type DefenderCspmAwsOfferingCiem struct {
-	// Defender CSPM CIEM discovery configuration
+	// Defender CSPM Permissions Management discovery configuration
 	CiemDiscovery *DefenderCspmAwsOfferingCiemDiscovery
 
-	// Defender CSPM CIEM AWS OIDC (open id connect) configuration
+	// AWS Defender CSPM Permissions Management OIDC (open id connect) connection configurations
 	CiemOidc *DefenderCspmAwsOfferingCiemOidc
 }
 
-// DefenderCspmAwsOfferingCiemDiscovery - Defender CSPM CIEM discovery configuration
+// DefenderCspmAwsOfferingCiemDiscovery - Defender CSPM Permissions Management discovery configuration
 type DefenderCspmAwsOfferingCiemDiscovery struct {
-	// The cloud role ARN in AWS for CIEM discovery
+	// The cloud role ARN in AWS for Permissions Management discovery
 	CloudRoleArn *string
 }
 
-// DefenderCspmAwsOfferingCiemOidc - Defender CSPM CIEM AWS OIDC (open id connect) configuration
+// DefenderCspmAwsOfferingCiemOidc - AWS Defender CSPM Permissions Management OIDC (open id connect) connection configurations
 type DefenderCspmAwsOfferingCiemOidc struct {
 	// the azure active directory app name used of authenticating against AWS
 	AzureActiveDirectoryAppName *string
 
-	// The cloud role ARN in AWS for CIEM oidc connection
+	// The cloud role ARN in AWS for Permissions Management used for oidc connection
 	CloudRoleArn *string
 }
 
@@ -2860,25 +2905,16 @@ type DefenderCspmAwsOfferingMdcContainersImageAssessment struct {
 	Enabled *bool
 }
 
-// DefenderCspmAwsOfferingVMScanners - The Microsoft Defender for Server VM scanning configuration
+// DefenderCspmAwsOfferingVMScanners - The Microsoft Defender for CSPM offering VM scanning configuration
 type DefenderCspmAwsOfferingVMScanners struct {
-	// configuration for Microsoft Defender for Server VM scanning
-	Configuration *DefenderCspmAwsOfferingVMScannersConfiguration
-
-	// Is Microsoft Defender for Server VM scanning enabled
-	Enabled *bool
-}
-
-// DefenderCspmAwsOfferingVMScannersConfiguration - configuration for Microsoft Defender for Server VM scanning
-type DefenderCspmAwsOfferingVMScannersConfiguration struct {
 	// The cloud role ARN in AWS for this feature
 	CloudRoleArn *string
 
-	// VM tags that indicates that VM should not be scanned
-	ExclusionTags map[string]*string
+	// Configuration for VM scanning
+	Configuration *VMScannersBaseConfiguration
 
-	// The scanning mode for the VM scan.
-	ScanningMode *ScanningMode
+	// Is VM scanning enabled
+	Enabled *bool
 }
 
 // DefenderCspmGcpOffering - The CSPM P1 for GCP offering
@@ -2886,7 +2922,7 @@ type DefenderCspmGcpOffering struct {
 	// REQUIRED; The type of the security offering.
 	OfferingType *OfferingType
 
-	// GCP Defenders CSPM Cloud infrastructure entitlement management (CIEM) discovery offering configurations
+	// GCP Defenders CSPM Permissions Management OIDC (Open ID connect) connection configurations
 	CiemDiscovery *DefenderCspmGcpOfferingCiemDiscovery
 
 	// The Microsoft Defender Data Sensitivity discovery configuration
@@ -2898,7 +2934,7 @@ type DefenderCspmGcpOffering struct {
 	// The Microsoft Defender Container image assessment configuration
 	MdcContainersImageAssessment *DefenderCspmGcpOfferingMdcContainersImageAssessment
 
-	// The Microsoft Defender for Server VM scanning configuration
+	// The Microsoft Defender for CSPM VM scanning configuration
 	VMScanners *DefenderCspmGcpOfferingVMScanners
 
 	// READ-ONLY; The offering description.
@@ -2913,16 +2949,15 @@ func (d *DefenderCspmGcpOffering) GetCloudOffering() *CloudOffering {
 	}
 }
 
-// DefenderCspmGcpOfferingCiemDiscovery - GCP Defenders CSPM Cloud infrastructure entitlement management (CIEM) discovery
-// offering configurations
+// DefenderCspmGcpOfferingCiemDiscovery - GCP Defenders CSPM Permissions Management OIDC (Open ID connect) connection configurations
 type DefenderCspmGcpOfferingCiemDiscovery struct {
 	// the azure active directory app name used of authenticating against GCP workload identity federation
 	AzureActiveDirectoryAppName *string
 
-	// The service account email address in GCP for CIEM discovery offering
+	// The service account email address in GCP for Permissions Management offering
 	ServiceAccountEmailAddress *string
 
-	// The GCP workload identity provider id for CIEM discovery offering
+	// The GCP workload identity provider id for Permissions Management offering
 	WorkloadIdentityProviderID *string
 }
 
@@ -2962,22 +2997,13 @@ type DefenderCspmGcpOfferingMdcContainersImageAssessment struct {
 	WorkloadIdentityProviderID *string
 }
 
-// DefenderCspmGcpOfferingVMScanners - The Microsoft Defender for Server VM scanning configuration
+// DefenderCspmGcpOfferingVMScanners - The Microsoft Defender for CSPM VM scanning configuration
 type DefenderCspmGcpOfferingVMScanners struct {
-	// configuration for Microsoft Defender for Server VM scanning
-	Configuration *DefenderCspmGcpOfferingVMScannersConfiguration
+	// Configuration for VM scanning
+	Configuration *VMScannersBaseConfiguration
 
-	// Is Microsoft Defender for Server VM scanning enabled
+	// Is VM scanning enabled
 	Enabled *bool
-}
-
-// DefenderCspmGcpOfferingVMScannersConfiguration - configuration for Microsoft Defender for Server VM scanning
-type DefenderCspmGcpOfferingVMScannersConfiguration struct {
-	// VM tags that indicates that VM should not be scanned
-	ExclusionTags map[string]*string
-
-	// The scanning mode for the VM scan.
-	ScanningMode *ScanningMode
 }
 
 // DefenderFoDatabasesAwsOffering - The Defender for Databases AWS offering
@@ -3011,20 +3037,11 @@ type DefenderFoDatabasesAwsOfferingArcAutoProvisioning struct {
 	// The cloud role ARN in AWS for this feature
 	CloudRoleArn *string
 
-	// Configuration for servers Arc auto provisioning
-	Configuration *DefenderFoDatabasesAwsOfferingArcAutoProvisioningConfiguration
+	// Configuration for servers Arc auto provisioning for a given environment
+	Configuration *ArcAutoProvisioningConfiguration
 
 	// Is arc auto provisioning enabled
 	Enabled *bool
-}
-
-// DefenderFoDatabasesAwsOfferingArcAutoProvisioningConfiguration - Configuration for servers Arc auto provisioning
-type DefenderFoDatabasesAwsOfferingArcAutoProvisioningConfiguration struct {
-	// Optional Arc private link scope resource id to link the Arc agent
-	PrivateLinkScope *string
-
-	// Optional http proxy endpoint to use for the Arc agent
-	Proxy *string
 }
 
 // DefenderFoDatabasesAwsOfferingDatabasesDspm - The databases data security posture management (DSPM) configuration
@@ -3050,20 +3067,20 @@ type DefenderForContainersAwsOffering struct {
 	// REQUIRED; The type of the security offering.
 	OfferingType *OfferingType
 
-	// Is audit logs pipeline auto provisioning enabled
-	AutoProvisioning *bool
-
 	// The cloudwatch to kinesis connection configuration
 	CloudWatchToKinesis *DefenderForContainersAwsOfferingCloudWatchToKinesis
 
-	// The container vulnerability assessment configuration
-	ContainerVulnerabilityAssessment *DefenderForContainersAwsOfferingContainerVulnerabilityAssessment
+	// The externalId used by the data reader to prevent the confused deputy attack
+	DataCollectionExternalID *string
 
-	// The container vulnerability assessment task configuration
-	ContainerVulnerabilityAssessmentTask *DefenderForContainersAwsOfferingContainerVulnerabilityAssessmentTask
+	// Is audit logs data collection enabled
+	EnableAuditLogsAutoProvisioning *bool
 
-	// Enable container vulnerability assessment feature
-	EnableContainerVulnerabilityAssessment *bool
+	// Is Microsoft Defender for Cloud Kubernetes agent auto provisioning enabled
+	EnableDefenderAgentAutoProvisioning *bool
+
+	// Is Policy Kubernetes agent auto provisioning enabled
+	EnablePolicyAgentAutoProvisioning *bool
 
 	// The kinesis to s3 connection configuration
 	KinesisToS3 *DefenderForContainersAwsOfferingKinesisToS3
@@ -3071,8 +3088,8 @@ type DefenderForContainersAwsOffering struct {
 	// The retention time in days of kube audit logs set on the CloudWatch log group
 	KubeAuditRetentionTime *int64
 
-	// The kubernetes to scuba connection configuration
-	KubernetesScubaReader *DefenderForContainersAwsOfferingKubernetesScubaReader
+	// The kubernetes data collection connection configuration
+	KubernetesDataCollection *DefenderForContainersAwsOfferingKubernetesDataCollection
 
 	// The kubernetes service connection configuration
 	KubernetesService *DefenderForContainersAwsOfferingKubernetesService
@@ -3083,8 +3100,8 @@ type DefenderForContainersAwsOffering struct {
 	// The Microsoft Defender container image assessment configuration
 	MdcContainersImageAssessment *DefenderForContainersAwsOfferingMdcContainersImageAssessment
 
-	// The externalId used by the data reader to prevent the confused deputy attack
-	ScubaExternalID *string
+	// The Microsoft Defender for Container K8s VM host scanning configuration
+	VMScanners *DefenderForContainersAwsOfferingVMScanners
 
 	// READ-ONLY; The offering description.
 	Description *string
@@ -3104,26 +3121,14 @@ type DefenderForContainersAwsOfferingCloudWatchToKinesis struct {
 	CloudRoleArn *string
 }
 
-// DefenderForContainersAwsOfferingContainerVulnerabilityAssessment - The container vulnerability assessment configuration
-type DefenderForContainersAwsOfferingContainerVulnerabilityAssessment struct {
-	// The cloud role ARN in AWS for this feature
-	CloudRoleArn *string
-}
-
-// DefenderForContainersAwsOfferingContainerVulnerabilityAssessmentTask - The container vulnerability assessment task configuration
-type DefenderForContainersAwsOfferingContainerVulnerabilityAssessmentTask struct {
-	// The cloud role ARN in AWS for this feature
-	CloudRoleArn *string
-}
-
 // DefenderForContainersAwsOfferingKinesisToS3 - The kinesis to s3 connection configuration
 type DefenderForContainersAwsOfferingKinesisToS3 struct {
 	// The cloud role ARN in AWS used by Kinesis to transfer data into S3
 	CloudRoleArn *string
 }
 
-// DefenderForContainersAwsOfferingKubernetesScubaReader - The kubernetes to scuba connection configuration
-type DefenderForContainersAwsOfferingKubernetesScubaReader struct {
+// DefenderForContainersAwsOfferingKubernetesDataCollection - The kubernetes data collection connection configuration
+type DefenderForContainersAwsOfferingKubernetesDataCollection struct {
 	// The cloud role ARN in AWS for this feature used for reading data
 	CloudRoleArn *string
 }
@@ -3153,19 +3158,34 @@ type DefenderForContainersAwsOfferingMdcContainersImageAssessment struct {
 	Enabled *bool
 }
 
+// DefenderForContainersAwsOfferingVMScanners - The Microsoft Defender for Container K8s VM host scanning configuration
+type DefenderForContainersAwsOfferingVMScanners struct {
+	// The cloud role ARN in AWS for this feature
+	CloudRoleArn *string
+
+	// Configuration for VM scanning
+	Configuration *VMScannersBaseConfiguration
+
+	// Is VM scanning enabled
+	Enabled *bool
+}
+
 // DefenderForContainersGcpOffering - The containers GCP offering
 type DefenderForContainersGcpOffering struct {
 	// REQUIRED; The type of the security offering.
 	OfferingType *OfferingType
 
-	// Is audit logs data collection enabled
-	AuditLogsAutoProvisioningFlag *bool
-
 	// The native cloud connection configuration
 	DataPipelineNativeCloudConnection *DefenderForContainersGcpOfferingDataPipelineNativeCloudConnection
 
+	// Is audit logs data collection enabled
+	EnableAuditLogsAutoProvisioning *bool
+
 	// Is Microsoft Defender for Cloud Kubernetes agent auto provisioning enabled
-	DefenderAgentAutoProvisioningFlag *bool
+	EnableDefenderAgentAutoProvisioning *bool
+
+	// Is Policy Kubernetes agent auto provisioning enabled
+	EnablePolicyAgentAutoProvisioning *bool
 
 	// The Microsoft Defender Container agentless discovery configuration
 	MdcContainersAgentlessDiscoveryK8S *DefenderForContainersGcpOfferingMdcContainersAgentlessDiscoveryK8S
@@ -3176,8 +3196,8 @@ type DefenderForContainersGcpOffering struct {
 	// The native cloud connection configuration
 	NativeCloudConnection *DefenderForContainersGcpOfferingNativeCloudConnection
 
-	// Is Policy Kubernetes agent auto provisioning enabled
-	PolicyAgentAutoProvisioningFlag *bool
+	// The Microsoft Defender for Container K8s VM host scanning configuration
+	VMScanners *DefenderForContainersGcpOfferingVMScanners
 
 	// READ-ONLY; The offering description.
 	Description *string
@@ -3234,6 +3254,15 @@ type DefenderForContainersGcpOfferingNativeCloudConnection struct {
 	WorkloadIdentityProviderID *string
 }
 
+// DefenderForContainersGcpOfferingVMScanners - The Microsoft Defender for Container K8s VM host scanning configuration
+type DefenderForContainersGcpOfferingVMScanners struct {
+	// Configuration for VM scanning
+	Configuration *VMScannersBaseConfiguration
+
+	// Is VM scanning enabled
+	Enabled *bool
+}
+
 // DefenderForDatabasesGcpOffering - The Defender for Databases GCP offering configurations
 type DefenderForDatabasesGcpOffering struct {
 	// REQUIRED; The type of the security offering.
@@ -3259,20 +3288,11 @@ func (d *DefenderForDatabasesGcpOffering) GetCloudOffering() *CloudOffering {
 
 // DefenderForDatabasesGcpOfferingArcAutoProvisioning - The ARC autoprovisioning configuration
 type DefenderForDatabasesGcpOfferingArcAutoProvisioning struct {
-	// Configuration for servers Arc auto provisioning
-	Configuration *DefenderForDatabasesGcpOfferingArcAutoProvisioningConfiguration
+	// Configuration for servers Arc auto provisioning for a given environment
+	Configuration *ArcAutoProvisioningConfiguration
 
 	// Is arc auto provisioning enabled
 	Enabled *bool
-}
-
-// DefenderForDatabasesGcpOfferingArcAutoProvisioningConfiguration - Configuration for servers Arc auto provisioning
-type DefenderForDatabasesGcpOfferingArcAutoProvisioningConfiguration struct {
-	// Optional Arc private link scope resource id to link the Arc agent
-	PrivateLinkScope *string
-
-	// Optional http proxy endpoint to use for the Arc agent
-	Proxy *string
 }
 
 // DefenderForDatabasesGcpOfferingDefenderForDatabasesArcAutoProvisioning - The native cloud connection configuration
@@ -3282,57 +3302,6 @@ type DefenderForDatabasesGcpOfferingDefenderForDatabasesArcAutoProvisioning stru
 
 	// The GCP workload identity provider id for this offering
 	WorkloadIdentityProviderID *string
-}
-
-// DefenderForDevOpsAzureDevOpsOffering - The Defender for DevOps for Azure DevOps offering
-type DefenderForDevOpsAzureDevOpsOffering struct {
-	// REQUIRED; The type of the security offering.
-	OfferingType *OfferingType
-
-	// READ-ONLY; The offering description.
-	Description *string
-}
-
-// GetCloudOffering implements the CloudOfferingClassification interface for type DefenderForDevOpsAzureDevOpsOffering.
-func (d *DefenderForDevOpsAzureDevOpsOffering) GetCloudOffering() *CloudOffering {
-	return &CloudOffering{
-		Description:  d.Description,
-		OfferingType: d.OfferingType,
-	}
-}
-
-// DefenderForDevOpsGitLabOffering - The Defender for DevOps for Gitlab offering
-type DefenderForDevOpsGitLabOffering struct {
-	// REQUIRED; The type of the security offering.
-	OfferingType *OfferingType
-
-	// READ-ONLY; The offering description.
-	Description *string
-}
-
-// GetCloudOffering implements the CloudOfferingClassification interface for type DefenderForDevOpsGitLabOffering.
-func (d *DefenderForDevOpsGitLabOffering) GetCloudOffering() *CloudOffering {
-	return &CloudOffering{
-		Description:  d.Description,
-		OfferingType: d.OfferingType,
-	}
-}
-
-// DefenderForDevOpsGithubOffering - The Defender for DevOps for Github offering
-type DefenderForDevOpsGithubOffering struct {
-	// REQUIRED; The type of the security offering.
-	OfferingType *OfferingType
-
-	// READ-ONLY; The offering description.
-	Description *string
-}
-
-// GetCloudOffering implements the CloudOfferingClassification interface for type DefenderForDevOpsGithubOffering.
-func (d *DefenderForDevOpsGithubOffering) GetCloudOffering() *CloudOffering {
-	return &CloudOffering{
-		Description:  d.Description,
-		OfferingType: d.OfferingType,
-	}
 }
 
 // DefenderForServersAwsOffering - The Defender for Servers AWS offering
@@ -3375,20 +3344,11 @@ type DefenderForServersAwsOfferingArcAutoProvisioning struct {
 	// The cloud role ARN in AWS for this feature
 	CloudRoleArn *string
 
-	// Configuration for servers Arc auto provisioning
-	Configuration *DefenderForServersAwsOfferingArcAutoProvisioningConfiguration
+	// Configuration for servers Arc auto provisioning for a given environment
+	Configuration *ArcAutoProvisioningConfiguration
 
 	// Is arc auto provisioning enabled
 	Enabled *bool
-}
-
-// DefenderForServersAwsOfferingArcAutoProvisioningConfiguration - Configuration for servers Arc auto provisioning
-type DefenderForServersAwsOfferingArcAutoProvisioningConfiguration struct {
-	// Optional Arc private link scope resource id to link the Arc agent
-	PrivateLinkScope *string
-
-	// Optional HTTP proxy endpoint to use for the Arc agent
-	Proxy *string
 }
 
 // DefenderForServersAwsOfferingDefenderForServers - The Defender for servers connection configuration
@@ -3414,23 +3374,14 @@ type DefenderForServersAwsOfferingSubPlan struct {
 
 // DefenderForServersAwsOfferingVMScanners - The Microsoft Defender for Server VM scanning configuration
 type DefenderForServersAwsOfferingVMScanners struct {
-	// configuration for Microsoft Defender for Server VM scanning
-	Configuration *DefenderForServersAwsOfferingVMScannersConfiguration
-
-	// Is Microsoft Defender for Server VM scanning enabled
-	Enabled *bool
-}
-
-// DefenderForServersAwsOfferingVMScannersConfiguration - configuration for Microsoft Defender for Server VM scanning
-type DefenderForServersAwsOfferingVMScannersConfiguration struct {
 	// The cloud role ARN in AWS for this feature
 	CloudRoleArn *string
 
-	// VM tags that indicates that VM should not be scanned
-	ExclusionTags map[string]*string
+	// Configuration for VM scanning
+	Configuration *VMScannersBaseConfiguration
 
-	// The scanning mode for the VM scan.
-	ScanningMode *ScanningMode
+	// Is VM scanning enabled
+	Enabled *bool
 }
 
 // DefenderForServersAwsOfferingVaAutoProvisioning - The Vulnerability Assessment autoprovisioning configuration
@@ -3485,20 +3436,11 @@ func (d *DefenderForServersGcpOffering) GetCloudOffering() *CloudOffering {
 
 // DefenderForServersGcpOfferingArcAutoProvisioning - The ARC autoprovisioning configuration
 type DefenderForServersGcpOfferingArcAutoProvisioning struct {
-	// Configuration for servers Arc auto provisioning
-	Configuration *DefenderForServersGcpOfferingArcAutoProvisioningConfiguration
+	// Configuration for servers Arc auto provisioning for a given environment
+	Configuration *ArcAutoProvisioningConfiguration
 
 	// Is arc auto provisioning enabled
 	Enabled *bool
-}
-
-// DefenderForServersGcpOfferingArcAutoProvisioningConfiguration - Configuration for servers Arc auto provisioning
-type DefenderForServersGcpOfferingArcAutoProvisioningConfiguration struct {
-	// Optional Arc private link scope resource id to link the Arc agent
-	PrivateLinkScope *string
-
-	// Optional HTTP proxy endpoint to use for the Arc agent
-	Proxy *string
 }
 
 // DefenderForServersGcpOfferingDefenderForServers - The Defender for servers connection configuration
@@ -3527,20 +3469,11 @@ type DefenderForServersGcpOfferingSubPlan struct {
 
 // DefenderForServersGcpOfferingVMScanners - The Microsoft Defender for Server VM scanning configuration
 type DefenderForServersGcpOfferingVMScanners struct {
-	// configuration for Microsoft Defender for Server VM scanning
-	Configuration *DefenderForServersGcpOfferingVMScannersConfiguration
+	// Configuration for VM scanning
+	Configuration *VMScannersBaseConfiguration
 
-	// Is Microsoft Defender for Server VM scanning enabled
+	// Is VM scanning enabled
 	Enabled *bool
-}
-
-// DefenderForServersGcpOfferingVMScannersConfiguration - configuration for Microsoft Defender for Server VM scanning
-type DefenderForServersGcpOfferingVMScannersConfiguration struct {
-	// VM tags that indicate that VM should not be scanned
-	ExclusionTags map[string]*string
-
-	// The scanning mode for the VM scan.
-	ScanningMode *ScanningMode
 }
 
 // DefenderForServersGcpOfferingVaAutoProvisioning - The Vulnerability Assessment autoprovisioning configuration
@@ -5059,32 +4992,6 @@ type InfoType struct {
 	Name *string
 }
 
-// InformationProtectionAwsOffering - The information protection for AWS offering
-type InformationProtectionAwsOffering struct {
-	// REQUIRED; The type of the security offering.
-	OfferingType *OfferingType
-
-	// The native cloud connection configuration
-	InformationProtection *InformationProtectionAwsOfferingInformationProtection
-
-	// READ-ONLY; The offering description.
-	Description *string
-}
-
-// GetCloudOffering implements the CloudOfferingClassification interface for type InformationProtectionAwsOffering.
-func (i *InformationProtectionAwsOffering) GetCloudOffering() *CloudOffering {
-	return &CloudOffering{
-		Description:  i.Description,
-		OfferingType: i.OfferingType,
-	}
-}
-
-// InformationProtectionAwsOfferingInformationProtection - The native cloud connection configuration
-type InformationProtectionAwsOfferingInformationProtection struct {
-	// The cloud role ARN in AWS for this feature
-	CloudRoleArn *string
-}
-
 // InformationProtectionKeyword - The information type keyword.
 type InformationProtectionKeyword struct {
 	// Indicates whether the keyword can be applied on numeric types or not.
@@ -5987,6 +5894,47 @@ func (m *MqttD2CMessagesNotInAllowedRange) GetTimeWindowCustomAlertRule() *TimeW
 		MinThreshold:   m.MinThreshold,
 		RuleType:       m.RuleType,
 		TimeWindowSize: m.TimeWindowSize,
+	}
+}
+
+// NotificationsSource - A valid notification source type
+type NotificationsSource struct {
+	// REQUIRED; The source type that will trigger the notification
+	SourceType *SourceType
+}
+
+// GetNotificationsSource implements the NotificationsSourceClassification interface for type NotificationsSource.
+func (n *NotificationsSource) GetNotificationsSource() *NotificationsSource { return n }
+
+// NotificationsSourceAlert - Alert notification source
+type NotificationsSourceAlert struct {
+	// REQUIRED; The source type that will trigger the notification
+	SourceType *SourceType
+
+	// Defines the minimal alert severity which will be sent as email notifications
+	MinimalSeverity *MinimalSeverity
+}
+
+// GetNotificationsSource implements the NotificationsSourceClassification interface for type NotificationsSourceAlert.
+func (n *NotificationsSourceAlert) GetNotificationsSource() *NotificationsSource {
+	return &NotificationsSource{
+		SourceType: n.SourceType,
+	}
+}
+
+// NotificationsSourceAttackPath - Attack path notification source
+type NotificationsSourceAttackPath struct {
+	// REQUIRED; The source type that will trigger the notification
+	SourceType *SourceType
+
+	// Defines the minimal attach path risk level which will be sent as email notifications
+	MinimalRiskLevel *MinimalRiskLevel
+}
+
+// GetNotificationsSource implements the NotificationsSourceClassification interface for type NotificationsSourceAttackPath.
+func (n *NotificationsSourceAttackPath) GetNotificationsSource() *NotificationsSource {
+	return &NotificationsSource{
+		SourceType: n.SourceType,
 	}
 }
 
@@ -7911,6 +7859,45 @@ type VMRecommendation struct {
 
 	// The full resource id of the machine
 	ResourceID *string
+}
+
+// VMScannersAws - A VM scanning configuration for a security offering of a Aws environment
+type VMScannersAws struct {
+	// The cloud role ARN in AWS for this feature
+	CloudRoleArn *string
+
+	// Configuration for VM scanning
+	Configuration *VMScannersBaseConfiguration
+
+	// Is VM scanning enabled
+	Enabled *bool
+}
+
+// VMScannersBase - A VM scanning configuration for a security offering of a given environment
+type VMScannersBase struct {
+	// Configuration for VM scanning
+	Configuration *VMScannersBaseConfiguration
+
+	// Is VM scanning enabled
+	Enabled *bool
+}
+
+// VMScannersBaseConfiguration - Configuration for VM scanning
+type VMScannersBaseConfiguration struct {
+	// Tags that indicates that a resource should not be scanned
+	ExclusionTags map[string]*string
+
+	// The scanning mode for the VM scan.
+	ScanningMode *ScanningMode
+}
+
+// VMScannersGcp - A VM scanning configuration for a security offering of a GCP environment
+type VMScannersGcp struct {
+	// Configuration for VM scanning
+	Configuration *VMScannersBaseConfiguration
+
+	// Is VM scanning enabled
+	Enabled *bool
 }
 
 // VaRule - vulnerability assessment rule metadata details.

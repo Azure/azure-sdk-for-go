@@ -46,7 +46,7 @@ func NewJobsClient(subscriptionID string, credential azcore.TokenCredential, opt
 // BeginCancel - Cancels a Job (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2024-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - Name of Azure Machine Learning workspace.
 //   - id - The name and identifier for the Job. This is case-sensitive.
@@ -72,7 +72,7 @@ func (client *JobsClient) BeginCancel(ctx context.Context, resourceGroupName str
 // Cancel - Cancels a Job (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2024-04-01
 func (client *JobsClient) cancel(ctx context.Context, resourceGroupName string, workspaceName string, id string, options *JobsClientBeginCancelOptions) (*http.Response, error) {
 	var err error
 	const operationName = "JobsClient.BeginCancel"
@@ -118,16 +118,17 @@ func (client *JobsClient) cancelCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// CreateOrUpdate - Creates and executes a Job.
+// CreateOrUpdate - Creates and executes a Job. For update case, the Tags in the definition passed in will replace Tags in
+// the existing job.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2024-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - Name of Azure Machine Learning workspace.
 //   - id - The name and identifier for the Job. This is case-sensitive.
@@ -179,7 +180,7 @@ func (client *JobsClient) createOrUpdateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -200,7 +201,7 @@ func (client *JobsClient) createOrUpdateHandleResponse(resp *http.Response) (Job
 // BeginDelete - Deletes a Job (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2024-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - Name of Azure Machine Learning workspace.
 //   - id - The name and identifier for the Job. This is case-sensitive.
@@ -212,7 +213,8 @@ func (client *JobsClient) BeginDelete(ctx context.Context, resourceGroupName str
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[JobsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -225,7 +227,7 @@ func (client *JobsClient) BeginDelete(ctx context.Context, resourceGroupName str
 // Delete - Deletes a Job (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2024-04-01
 func (client *JobsClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, id string, options *JobsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "JobsClient.BeginDelete"
@@ -271,7 +273,7 @@ func (client *JobsClient) deleteCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -280,7 +282,7 @@ func (client *JobsClient) deleteCreateRequest(ctx context.Context, resourceGroup
 // Get - Gets a Job by name/id.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2024-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - Name of Azure Machine Learning workspace.
 //   - id - The name and identifier for the Job. This is case-sensitive.
@@ -331,7 +333,7 @@ func (client *JobsClient) getCreateRequest(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -348,7 +350,7 @@ func (client *JobsClient) getHandleResponse(resp *http.Response) (JobsClientGetR
 
 // NewListPager - Lists Jobs in the workspace.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2024-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - Name of Azure Machine Learning workspace.
 //   - options - JobsClientListOptions contains the optional parameters for the JobsClient.NewListPager method.
@@ -395,18 +397,21 @@ func (client *JobsClient) listCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", *options.Skip)
 	}
+	reqQP.Set("api-version", "2024-04-01")
 	if options != nil && options.JobType != nil {
 		reqQP.Set("jobType", *options.JobType)
 	}
-	if options != nil && options.Tag != nil {
-		reqQP.Set("tag", *options.Tag)
-	}
 	if options != nil && options.ListViewType != nil {
 		reqQP.Set("listViewType", string(*options.ListViewType))
+	}
+	if options != nil && options.Properties != nil {
+		reqQP.Set("properties", *options.Properties)
+	}
+	if options != nil && options.Tag != nil {
+		reqQP.Set("tag", *options.Tag)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}

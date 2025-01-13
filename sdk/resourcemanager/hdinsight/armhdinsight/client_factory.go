@@ -17,8 +17,7 @@ import (
 // Don't use this type directly, use NewClientFactory instead.
 type ClientFactory struct {
 	subscriptionID string
-	credential     azcore.TokenCredential
-	options        *arm.ClientOptions
+	internal       *arm.Client
 }
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
@@ -28,78 +27,99 @@ type ClientFactory struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
+	internal, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	return &ClientFactory{
-		subscriptionID: subscriptionID, credential: credential,
-		options: options.Clone(),
+		subscriptionID: subscriptionID,
+		internal:       internal,
 	}, nil
 }
 
 // NewApplicationsClient creates a new instance of ApplicationsClient.
 func (c *ClientFactory) NewApplicationsClient() *ApplicationsClient {
-	subClient, _ := NewApplicationsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &ApplicationsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewClustersClient creates a new instance of ClustersClient.
 func (c *ClientFactory) NewClustersClient() *ClustersClient {
-	subClient, _ := NewClustersClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &ClustersClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewConfigurationsClient creates a new instance of ConfigurationsClient.
 func (c *ClientFactory) NewConfigurationsClient() *ConfigurationsClient {
-	subClient, _ := NewConfigurationsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &ConfigurationsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewExtensionsClient creates a new instance of ExtensionsClient.
 func (c *ClientFactory) NewExtensionsClient() *ExtensionsClient {
-	subClient, _ := NewExtensionsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &ExtensionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewLocationsClient creates a new instance of LocationsClient.
 func (c *ClientFactory) NewLocationsClient() *LocationsClient {
-	subClient, _ := NewLocationsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &LocationsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
-	subClient, _ := NewOperationsClient(c.credential, c.options)
-	return subClient
+	return &OperationsClient{
+		internal: c.internal,
+	}
 }
 
 // NewPrivateEndpointConnectionsClient creates a new instance of PrivateEndpointConnectionsClient.
 func (c *ClientFactory) NewPrivateEndpointConnectionsClient() *PrivateEndpointConnectionsClient {
-	subClient, _ := NewPrivateEndpointConnectionsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &PrivateEndpointConnectionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewPrivateLinkResourcesClient creates a new instance of PrivateLinkResourcesClient.
 func (c *ClientFactory) NewPrivateLinkResourcesClient() *PrivateLinkResourcesClient {
-	subClient, _ := NewPrivateLinkResourcesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &PrivateLinkResourcesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewScriptActionsClient creates a new instance of ScriptActionsClient.
 func (c *ClientFactory) NewScriptActionsClient() *ScriptActionsClient {
-	subClient, _ := NewScriptActionsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &ScriptActionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewScriptExecutionHistoryClient creates a new instance of ScriptExecutionHistoryClient.
 func (c *ClientFactory) NewScriptExecutionHistoryClient() *ScriptExecutionHistoryClient {
-	subClient, _ := NewScriptExecutionHistoryClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &ScriptExecutionHistoryClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewVirtualMachinesClient creates a new instance of VirtualMachinesClient.
 func (c *ClientFactory) NewVirtualMachinesClient() *VirtualMachinesClient {
-	subClient, _ := NewVirtualMachinesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &VirtualMachinesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }

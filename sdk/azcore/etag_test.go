@@ -50,6 +50,7 @@ func TestETagWeak(t *testing.T) {
 	require.Falsef(t, et5.IsWeak(), "expected etag to be strong")
 }
 
+// nolint: gocritic // ETag comparisons with same receiver and args are expected
 func TestETagEquality(t *testing.T) {
 	weakTag := createETag("W/\"\"")
 	weakTag1 := createETag("W/\"1\"")
@@ -75,6 +76,7 @@ func TestETagEquality(t *testing.T) {
 	require.Falsef(t, strongTag2.Equals(weakTag2), "Expected etags to not be equal")
 }
 
+// nolint: gocritic // ETag comparisons with same receiver and args are expected
 func TestEtagAny(t *testing.T) {
 	anyETag := ETagAny
 	star := createETag("*")

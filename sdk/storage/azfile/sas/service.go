@@ -45,7 +45,7 @@ func (v SignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKeyCredent
 
 	resource := "s"
 	if v.FilePath == "" {
-		//Make sure the permission characters are in the correct order
+		// Make sure the permission characters are in the correct order
 		perms, err := parseSharePermissions(v.Permissions)
 		if err != nil {
 			return QueryParameters{}, err
@@ -120,7 +120,7 @@ func getCanonicalName(account string, shareName string, filePath string) string 
 	// File:  "/file/account/sharename/directoryname/filename"
 	elements := []string{"/file/", account, "/", shareName}
 	if filePath != "" {
-		dfp := strings.Replace(filePath, "\\", "/", -1)
+		dfp := strings.ReplaceAll(filePath, "\\", "/")
 		if dfp[0] == '/' {
 			dfp = dfp[1:]
 		}

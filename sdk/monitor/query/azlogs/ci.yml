@@ -28,7 +28,6 @@ extends:
     ServiceDirectory: 'monitor/query/azlogs'
     RunLiveTests: true
     UsePipelineProxy: false
-    SupportedClouds: 'Public,UsGov,China'
     EnvVars:
       AZURE_CLIENT_ID: $(AZLOGS_CLIENT_ID)
       AZURE_TENANT_ID: $(AZLOGS_TENANT_ID)

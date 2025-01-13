@@ -88,6 +88,16 @@ type DeploymentProperties struct {
 	Overrides map[string]*string
 }
 
+type ExportTemplateRequest struct {
+	InstanceName     *string
+	InstanceStage    *string
+	ResourceGroupIDs []*string
+	SiteID           *string
+
+	// Template Name
+	TemplateName *string
+}
+
 // GitHubOAuthCallRequest - GitHubOAuth request object
 type GitHubOAuthCallRequest struct {
 	// The URL the client will redirect to on successful authentication. If empty, no redirect will occur.
@@ -120,7 +130,7 @@ type GitHubOAuthResponse struct {
 	// Properties of a workflow.
 	Properties *GitHubOAuthProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -186,6 +196,106 @@ type GitHubWorkflowProfileOidcCredentials struct {
 	AzureTenantID *string
 }
 
+// IacGitHubProfile - GitHub Profile of a IacProfile.
+type IacGitHubProfile struct {
+	// Repository Branch Name
+	BranchName *string
+
+	// Repository Main Branch
+	RepositoryMainBranch *string
+
+	// Repository Name
+	RepositoryName *string
+
+	// Repository Owner
+	RepositoryOwner *string
+
+	// READ-ONLY; Determines the authorization status of requests.
+	AuthStatus *AuthorizationStatus
+
+	// READ-ONLY; The status of the Pull Request submitted against the users repository.
+	PrStatus *PullRequestStatus
+
+	// READ-ONLY; The number associated with the submitted pull request.
+	PullNumber *int32
+}
+
+// IacProfile - Resource representation of a IacProfile.
+type IacProfile struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Properties of a IacProfile.
+	Properties *IacProfileProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+type IacProfileListResult struct {
+	// The list of IacProfiles.
+	Value []*IacProfile
+
+	// READ-ONLY; The URL to the next set of IacProfile results.
+	NextLink *string
+}
+
+// IacProfileProperties - Properties of a IacProfile.
+type IacProfileProperties struct {
+	// GitHub Profile of a IacProfile
+	GithubProfile *IacGitHubProfile
+	Stages        []*StageProperties
+	Templates     []*IacTemplateProperties
+
+	// Terraform Profile of a IacProfile
+	TerraformProfile *TerraformProfile
+}
+
+type IacTemplateDetails struct {
+	// Count of the product
+	Count *int32
+
+	// Naming convention of this product
+	NamingConvention *string
+
+	// The name of the products.
+	ProductName *string
+}
+
+// IacTemplateProperties - Properties of a IacTemplate.
+type IacTemplateProperties struct {
+	// the sample instance name of the template
+	InstanceName *string
+
+	// the source stage of the template
+	InstanceStage *string
+
+	// Determines the authorization status of requests.
+	QuickStartTemplateType *QuickStartTemplateType
+
+	// the source store of the template
+	SourceResourceID *string
+	TemplateDetails  []*IacTemplateDetails
+
+	// Template Name
+	TemplateName *string
+}
+
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
 	// Localized display information for this particular operation.
@@ -235,6 +345,38 @@ type OperationListResult struct {
 	Value []*Operation
 }
 
+type PrLinkResponse struct {
+	// The link of the pull request.
+	PrLink *string
+}
+
+type ScaleProperty struct {
+	// Number of the store
+	NumberOfStores *int32
+
+	// The region of the store
+	Region *string
+
+	// The stage of the store
+	Stage *string
+}
+
+type ScaleTemplateRequest struct {
+	ScaleProperties []*ScaleProperty
+
+	// Template Name
+	TemplateName *string
+}
+
+// StageProperties - Properties of a Stage.
+type StageProperties struct {
+	Dependencies   []*string
+	GitEnvironment *string
+
+	// Stage Name
+	StageName *string
+}
+
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
@@ -262,6 +404,21 @@ type TagsObject struct {
 	Tags map[string]*string
 }
 
+// TerraformProfile - Terraform backend profile.
+type TerraformProfile struct {
+	// Terraform Storage Account Name
+	StorageAccountName *string
+
+	// Terraform Storage Account Resource Group
+	StorageAccountResourceGroup *string
+
+	// Terraform Storage Account Subscription
+	StorageAccountSubscription *string
+
+	// Terraform Container Name
+	StorageContainerName *string
+}
+
 // Workflow - Resource representation of a workflow
 type Workflow struct {
 	// REQUIRED; The geo-location where the resource lives
@@ -273,7 +430,7 @@ type Workflow struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource

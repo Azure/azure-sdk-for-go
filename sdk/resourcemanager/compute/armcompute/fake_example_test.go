@@ -16,8 +16,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v5"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v5/fake"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v6/fake"
 )
 
 func ExampleVirtualMachinesServer() {
@@ -43,7 +43,7 @@ func ExampleVirtualMachinesServer() {
 			resp.SetResponse(http.StatusOK, vmResp, nil)
 
 			// to simulate the failure case, use errResp
-			//errResp.SetResponseError(http.StatusBadRequest, "ThisIsASimulatedError")
+			// errResp.SetResponseError(http.StatusBadRequest, "ThisIsASimulatedError")
 
 			return
 		},

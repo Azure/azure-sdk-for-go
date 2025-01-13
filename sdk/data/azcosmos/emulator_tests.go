@@ -14,6 +14,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 )
 
 type emulatorTests struct {
@@ -41,9 +42,12 @@ func newEmulatorTestsWithEndpoint(t *testing.T, e string) *emulatorTests {
 	}
 }
 
-func (e *emulatorTests) getClient(t *testing.T) *Client {
+func (e *emulatorTests) getClient(t *testing.T, tp tracing.Provider) *Client {
 	cred, _ := NewKeyCredential(e.key)
-	client, err := NewClientWithKey(e.host, cred, nil)
+	options := &ClientOptions{ClientOptions: azcore.ClientOptions{
+		TracingProvider: tp,
+	}}
+	client, err := NewClientWithKey(e.host, cred, options)
 	if err != nil {
 		t.Fatalf("Failed to create client: %v", err)
 	}
@@ -51,9 +55,12 @@ func (e *emulatorTests) getClient(t *testing.T) *Client {
 	return client
 }
 
-func (e *emulatorTests) getAadClient(t *testing.T) *Client {
+func (e *emulatorTests) getAadClient(t *testing.T, tp tracing.Provider) *Client {
 	cred := &emulatorTokenCredential{}
-	client, err := NewClient(e.host, cred, nil)
+	options := &ClientOptions{ClientOptions: azcore.ClientOptions{
+		TracingProvider: tp,
+	}}
+	client, err := NewClient(e.host, cred, options)
 	if err != nil {
 		t.Fatalf("Failed to create client: %v", err)
 	}

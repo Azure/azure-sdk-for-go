@@ -24,13 +24,13 @@ type DNSForwardingRuleset struct {
 	// READ-ONLY; ETag of the DNS forwarding ruleset.
 	Etag *string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -84,17 +84,169 @@ type DNSResolver struct {
 	// READ-ONLY; ETag of the DNS resolver.
 	Etag *string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
+}
+
+// DNSSecurityRule - Describes a DNS security rule.
+type DNSSecurityRule struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// REQUIRED; Properties of the DNS security rule.
+	Properties *DNSSecurityRuleProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; ETag of the DNS security rule.
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// DNSSecurityRuleAction - The action to take on DNS requests that match the DNS security rule.
+type DNSSecurityRuleAction struct {
+	// The type of action to take.
+	ActionType *ActionType
+
+	// The response code for block actions.
+	BlockResponseCode *BlockResponseCode
+}
+
+// DNSSecurityRuleListResult - The response to an enumeration operation on DNS security rules within a DNS resolver policy.
+type DNSSecurityRuleListResult struct {
+	// Enumeration of the DNS security rules.
+	Value []*DNSSecurityRule
+
+	// READ-ONLY; The continuation token for the next page of results.
+	NextLink *string
+}
+
+// DNSSecurityRulePatch - Describes a DNS security rule for PATCH operation.
+type DNSSecurityRulePatch struct {
+	// Updatable properties of the DNS security rule.
+	Properties *DNSSecurityRulePatchProperties
+
+	// Tags for DNS security rule.
+	Tags map[string]*string
+}
+
+// DNSSecurityRulePatchProperties - Represents the updatable properties of a DNS security rule.
+type DNSSecurityRulePatchProperties struct {
+	// The action to take on DNS requests that match the DNS security rule.
+	Action *DNSSecurityRuleAction
+
+	// DNS resolver policy domains lists that the DNS security rule applies to.
+	DNSResolverDomainLists []*SubResource
+
+	// The state of DNS security rule.
+	DNSSecurityRuleState *DNSSecurityRuleState
+
+	// The priority of the DNS security rule.
+	Priority *int32
+}
+
+// DNSSecurityRuleProperties - Represents the properties of a DNS security rule.
+type DNSSecurityRuleProperties struct {
+	// REQUIRED; The action to take on DNS requests that match the DNS security rule.
+	Action *DNSSecurityRuleAction
+
+	// REQUIRED; DNS resolver policy domains lists that the DNS security rule applies to.
+	DNSResolverDomainLists []*SubResource
+
+	// REQUIRED; The priority of the DNS security rule.
+	Priority *int32
+
+	// The state of DNS security rule.
+	DNSSecurityRuleState *DNSSecurityRuleState
+
+	// READ-ONLY; The current provisioning state of the DNS security rule. This is a read-only property and any attempt to set
+	// this value will be ignored.
+	ProvisioningState *ProvisioningState
+}
+
+// DomainList - Describes a DNS resolver domain list.
+type DomainList struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// REQUIRED; Properties of the DNS resolver domain list.
+	Properties *DomainListProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; ETag of the DNS resolver domain list.
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// DomainListPatch - Describes a DNS resolver domain list for PATCH operation.
+type DomainListPatch struct {
+	// Updatable properties of the DNS resolver policy virtual network link.
+	Properties *DomainListPatchProperties
+
+	// Tags for DNS resolver domain list.
+	Tags map[string]*string
+}
+
+// DomainListPatchProperties - Represents the updatable properties of a DNS resolver domain list.
+type DomainListPatchProperties struct {
+	// The domains in the domain list.
+	Domains []*string
+}
+
+// DomainListProperties - Represents the properties of a DNS resolver domain list.
+type DomainListProperties struct {
+	// REQUIRED; The domains in the domain list.
+	Domains []*string
+
+	// READ-ONLY; The current provisioning state of the DNS resolver domain list. This is a read-only property and any attempt
+	// to set this value will be ignored.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; The resourceGuid property of the DNS resolver domain list resource.
+	ResourceGUID *string
+}
+
+// DomainListResult - The response to an enumeration operation on DNS resolver domain lists.
+type DomainListResult struct {
+	// Enumeration of the DNS resolver domain lists.
+	Value []*DomainList
+
+	// READ-ONLY; The continuation token for the next page of results.
+	NextLink *string
 }
 
 // ForwardingRule - Describes a forwarding rule within a DNS forwarding ruleset.
@@ -105,13 +257,13 @@ type ForwardingRule struct {
 	// READ-ONLY; ETag of the forwarding rule.
 	Etag *string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -190,13 +342,13 @@ type InboundEndpoint struct {
 	// READ-ONLY; ETag of the inbound endpoint.
 	Etag *string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -254,13 +406,13 @@ type OutboundEndpoint struct {
 	// READ-ONLY; ETag of the outbound endpoint.
 	Etag *string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -299,6 +451,110 @@ type OutboundEndpointProperties struct {
 type Patch struct {
 	// Tags for DNS Resolver.
 	Tags map[string]*string
+}
+
+// Policy - Describes a DNS resolver policy.
+type Policy struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Properties of the DNS resolver policy.
+	Properties *PolicyProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; ETag of the DNS resolver policy.
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// PolicyListResult - The response to an enumeration operation on DNS resolver policies.
+type PolicyListResult struct {
+	// Enumeration of the DNS resolver policies.
+	Value []*Policy
+
+	// READ-ONLY; The continuation token for the next page of results.
+	NextLink *string
+}
+
+// PolicyPatch - Describes a DNS resolver policy for PATCH operation.
+type PolicyPatch struct {
+	// Tags for DNS resolver policy.
+	Tags map[string]*string
+}
+
+// PolicyProperties - Represents the properties of a DNS resolver policy.
+type PolicyProperties struct {
+	// READ-ONLY; The current provisioning state of the DNS resolver policy. This is a read-only property and any attempt to set
+	// this value will be ignored.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; The resourceGuid property of the DNS resolver policy resource.
+	ResourceGUID *string
+}
+
+// PolicyVirtualNetworkLink - Describes a DNS resolver policy virtual network link.
+type PolicyVirtualNetworkLink struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// REQUIRED; Properties of the DNS resolver policy virtual network link.
+	Properties *PolicyVirtualNetworkLinkProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; ETag of the DNS resolver policy virtual network link.
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// PolicyVirtualNetworkLinkListResult - The response to an enumeration operation on DNS resolver policy virtual network links.
+type PolicyVirtualNetworkLinkListResult struct {
+	// Enumeration of the DNS resolver policy virtual network links.
+	Value []*PolicyVirtualNetworkLink
+
+	// READ-ONLY; The continuation token for the next page of results.
+	NextLink *string
+}
+
+// PolicyVirtualNetworkLinkPatch - Describes a DNS resolver policy virtual network link for PATCH operation.
+type PolicyVirtualNetworkLinkPatch struct {
+	// Tags for the DNS resolver policy virtual network link.
+	Tags map[string]*string
+}
+
+// PolicyVirtualNetworkLinkProperties - Represents the properties of a DNS resolver policy virtual network link.
+type PolicyVirtualNetworkLinkProperties struct {
+	// REQUIRED; The reference to the virtual network. This cannot be changed after creation.
+	VirtualNetwork *SubResource
+
+	// READ-ONLY; The current provisioning state of the DNS resolver policy virtual network link. This is a read-only property
+	// and any attempt to set this value will be ignored.
+	ProvisioningState *ProvisioningState
 }
 
 // Properties - Represents the properties of a DNS resolver.
@@ -390,13 +646,13 @@ type VirtualNetworkLink struct {
 	// READ-ONLY; ETag of the virtual network link.
 	Etag *string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"

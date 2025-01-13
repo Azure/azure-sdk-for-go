@@ -103,6 +103,8 @@ func (a AgentProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "memoryInMB", a.MemoryInMB)
 	populate(objectMap, "numberOfCores", a.NumberOfCores)
 	populate(objectMap, "provisioningState", a.ProvisioningState)
+	populate(objectMap, "timeZone", a.TimeZone)
+	populate(objectMap, "uploadLimitSchedule", a.UploadLimitSchedule)
 	populate(objectMap, "uptimeInSeconds", a.UptimeInSeconds)
 	return json.Marshal(objectMap)
 }
@@ -148,6 +150,12 @@ func (a *AgentProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "provisioningState":
 			err = unpopulate(val, "ProvisioningState", &a.ProvisioningState)
+			delete(rawMsg, key)
+		case "timeZone":
+			err = unpopulate(val, "TimeZone", &a.TimeZone)
+			delete(rawMsg, key)
+		case "uploadLimitSchedule":
+			err = unpopulate(val, "UploadLimitSchedule", &a.UploadLimitSchedule)
 			delete(rawMsg, key)
 		case "uptimeInSeconds":
 			err = unpopulate(val, "UptimeInSeconds", &a.UptimeInSeconds)
@@ -222,6 +230,7 @@ func (a *AgentUpdateParameters) UnmarshalJSON(data []byte) error {
 func (a AgentUpdateProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "description", a.Description)
+	populate(objectMap, "uploadLimitSchedule", a.UploadLimitSchedule)
 	return json.Marshal(objectMap)
 }
 
@@ -236,6 +245,9 @@ func (a *AgentUpdateProperties) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "description":
 			err = unpopulate(val, "Description", &a.Description)
+			delete(rawMsg, key)
+		case "uploadLimitSchedule":
+			err = unpopulate(val, "UploadLimitSchedule", &a.UploadLimitSchedule)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1700,6 +1712,37 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type Time.
+func (t Time) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "hour", t.Hour)
+	populate(objectMap, "minute", t.Minute)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type Time.
+func (t *Time) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", t, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "hour":
+			err = unpopulate(val, "Hour", &t.Hour)
+			delete(rawMsg, key)
+		case "minute":
+			err = unpopulate(val, "Minute", &t.Minute)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", t, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type UpdateParameters.
 func (u UpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -1758,6 +1801,72 @@ func (u *UpdateProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type UploadLimitSchedule.
+func (u UploadLimitSchedule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "weeklyRecurrences", u.WeeklyRecurrences)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type UploadLimitSchedule.
+func (u *UploadLimitSchedule) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", u, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "weeklyRecurrences":
+			err = unpopulate(val, "WeeklyRecurrences", &u.WeeklyRecurrences)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", u, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type UploadLimitWeeklyRecurrence.
+func (u UploadLimitWeeklyRecurrence) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "days", u.Days)
+	populate(objectMap, "endTime", u.EndTime)
+	populate(objectMap, "limitInMbps", u.LimitInMbps)
+	populate(objectMap, "startTime", u.StartTime)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type UploadLimitWeeklyRecurrence.
+func (u *UploadLimitWeeklyRecurrence) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", u, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "days":
+			err = unpopulate(val, "Days", &u.Days)
+			delete(rawMsg, key)
+		case "endTime":
+			err = unpopulate(val, "EndTime", &u.EndTime)
+			delete(rawMsg, key)
+		case "limitInMbps":
+			err = unpopulate(val, "LimitInMbps", &u.LimitInMbps)
+			delete(rawMsg, key)
+		case "startTime":
+			err = unpopulate(val, "StartTime", &u.StartTime)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", u, err)
+		}
+	}
+	return nil
+}
+
 func populate(m map[string]any, k string, v any) {
 	if v == nil {
 		return
@@ -1779,7 +1888,7 @@ func populateAny(m map[string]any, k string, v any) {
 }
 
 func unpopulate(data json.RawMessage, fn string, v any) error {
-	if data == nil {
+	if data == nil || string(data) == "null" {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {

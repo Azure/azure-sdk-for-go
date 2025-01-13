@@ -10,7 +10,7 @@ package armappcontainers
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers"
-	moduleVersion = "v3.0.0-beta.1"
+	moduleVersion = "v3.1.0-beta.1"
 )
 
 // AccessMode - Access mode for storage
@@ -337,6 +337,22 @@ func PossibleContainerAppReplicaRunningStateValues() []ContainerAppReplicaRunnin
 	}
 }
 
+// ContainerType - The container type of the sessions.
+type ContainerType string
+
+const (
+	ContainerTypeCustomContainer ContainerType = "CustomContainer"
+	ContainerTypePythonLTS       ContainerType = "PythonLTS"
+)
+
+// PossibleContainerTypeValues returns the possible values for the ContainerType const type.
+func PossibleContainerTypeValues() []ContainerType {
+	return []ContainerType{
+		ContainerTypeCustomContainer,
+		ContainerTypePythonLTS,
+	}
+}
+
 // CookieExpirationConvention - The convention used when determining the session cookie's expiration.
 type CookieExpirationConvention string
 
@@ -391,6 +407,24 @@ func PossibleDNSVerificationTestResultValues() []DNSVerificationTestResult {
 	}
 }
 
+// DetectionStatus - The status of the patch detection.
+type DetectionStatus string
+
+const (
+	DetectionStatusFailed              DetectionStatus = "Failed"
+	DetectionStatusRegistryLoginFailed DetectionStatus = "RegistryLoginFailed"
+	DetectionStatusSucceeded           DetectionStatus = "Succeeded"
+)
+
+// PossibleDetectionStatusValues returns the possible values for the DetectionStatus const type.
+func PossibleDetectionStatusValues() []DetectionStatus {
+	return []DetectionStatus{
+		DetectionStatusFailed,
+		DetectionStatusRegistryLoginFailed,
+		DetectionStatusSucceeded,
+	}
+}
+
 // DotNetComponentProvisioningState - Provisioning state of the .NET Component.
 type DotNetComponentProvisioningState string
 
@@ -417,15 +451,13 @@ func PossibleDotNetComponentProvisioningStateValues() []DotNetComponentProvision
 type DotNetComponentType string
 
 const (
-	DotNetComponentTypeAspireDashboard         DotNetComponentType = "AspireDashboard"
-	DotNetComponentTypeAspireResourceServerAPI DotNetComponentType = "AspireResourceServerApi"
+	DotNetComponentTypeAspireDashboard DotNetComponentType = "AspireDashboard"
 )
 
 // PossibleDotNetComponentTypeValues returns the possible values for the DotNetComponentType const type.
 func PossibleDotNetComponentTypeValues() []DotNetComponentType {
 	return []DotNetComponentType{
 		DotNetComponentTypeAspireDashboard,
-		DotNetComponentTypeAspireResourceServerAPI,
 	}
 }
 
@@ -461,6 +493,20 @@ func PossibleEnvironmentProvisioningStateValues() []EnvironmentProvisioningState
 	}
 }
 
+// ExecutionType - The execution type of the session pool.
+type ExecutionType string
+
+const (
+	ExecutionTypeTimed ExecutionType = "Timed"
+)
+
+// PossibleExecutionTypeValues returns the possible values for the ExecutionType const type.
+func PossibleExecutionTypeValues() []ExecutionType {
+	return []ExecutionType{
+		ExecutionTypeTimed,
+	}
+}
+
 // ExtendedLocationTypes - The type of extendedLocation.
 type ExtendedLocationTypes string
 
@@ -490,6 +536,44 @@ func PossibleForwardProxyConventionValues() []ForwardProxyConvention {
 		ForwardProxyConventionCustom,
 		ForwardProxyConventionNoProxy,
 		ForwardProxyConventionStandard,
+	}
+}
+
+// IdentitySettingsLifeCycle - Use to select the lifecycle stages of a Container App during which the Managed Identity should
+// be available.
+type IdentitySettingsLifeCycle string
+
+const (
+	IdentitySettingsLifeCycleAll  IdentitySettingsLifeCycle = "All"
+	IdentitySettingsLifeCycleInit IdentitySettingsLifeCycle = "Init"
+	IdentitySettingsLifeCycleMain IdentitySettingsLifeCycle = "Main"
+	IdentitySettingsLifeCycleNone IdentitySettingsLifeCycle = "None"
+)
+
+// PossibleIdentitySettingsLifeCycleValues returns the possible values for the IdentitySettingsLifeCycle const type.
+func PossibleIdentitySettingsLifeCycleValues() []IdentitySettingsLifeCycle {
+	return []IdentitySettingsLifeCycle{
+		IdentitySettingsLifeCycleAll,
+		IdentitySettingsLifeCycleInit,
+		IdentitySettingsLifeCycleMain,
+		IdentitySettingsLifeCycleNone,
+	}
+}
+
+// ImageType - The type of the image. Set to CloudBuild to let the system manages the image, where user will not be able to
+// update image through image field. Set to ContainerImage for user provided image.
+type ImageType string
+
+const (
+	ImageTypeCloudBuild     ImageType = "CloudBuild"
+	ImageTypeContainerImage ImageType = "ContainerImage"
+)
+
+// PossibleImageTypeValues returns the possible values for the ImageType const type.
+func PossibleImageTypeValues() []ImageType {
+	return []ImageType{
+		ImageTypeCloudBuild,
+		ImageTypeContainerImage,
 	}
 }
 
@@ -575,17 +659,21 @@ func PossibleJavaComponentProvisioningStateValues() []JavaComponentProvisioningS
 type JavaComponentType string
 
 const (
-	JavaComponentTypeSpringBootAdmin   JavaComponentType = "SpringBootAdmin"
-	JavaComponentTypeSpringCloudConfig JavaComponentType = "SpringCloudConfig"
-	JavaComponentTypeSpringCloudEureka JavaComponentType = "SpringCloudEureka"
+	JavaComponentTypeNacos              JavaComponentType = "Nacos"
+	JavaComponentTypeSpringBootAdmin    JavaComponentType = "SpringBootAdmin"
+	JavaComponentTypeSpringCloudConfig  JavaComponentType = "SpringCloudConfig"
+	JavaComponentTypeSpringCloudEureka  JavaComponentType = "SpringCloudEureka"
+	JavaComponentTypeSpringCloudGateway JavaComponentType = "SpringCloudGateway"
 )
 
 // PossibleJavaComponentTypeValues returns the possible values for the JavaComponentType const type.
 func PossibleJavaComponentTypeValues() []JavaComponentType {
 	return []JavaComponentType{
+		JavaComponentTypeNacos,
 		JavaComponentTypeSpringBootAdmin,
 		JavaComponentTypeSpringCloudConfig,
 		JavaComponentTypeSpringCloudEureka,
+		JavaComponentTypeSpringCloudGateway,
 	}
 }
 
@@ -637,6 +725,64 @@ func PossibleJobProvisioningStateValues() []JobProvisioningState {
 	}
 }
 
+// JobRunningState - Current running state of the job
+type JobRunningState string
+
+const (
+	JobRunningStateProgressing JobRunningState = "Progressing"
+	JobRunningStateReady       JobRunningState = "Ready"
+	JobRunningStateSuspended   JobRunningState = "Suspended"
+)
+
+// PossibleJobRunningStateValues returns the possible values for the JobRunningState const type.
+func PossibleJobRunningStateValues() []JobRunningState {
+	return []JobRunningState{
+		JobRunningStateProgressing,
+		JobRunningStateReady,
+		JobRunningStateSuspended,
+	}
+}
+
+// Kind - Metadata used to render different experiences for resources of the same type; e.g. WorkflowApp is a kind of Microsoft.App/ContainerApps
+// type. If supported, the resource provider must validate and
+// persist this value.
+type Kind string
+
+const (
+	KindWorkflowapp Kind = "workflowapp"
+)
+
+// PossibleKindValues returns the possible values for the Kind const type.
+func PossibleKindValues() []Kind {
+	return []Kind{
+		KindWorkflowapp,
+	}
+}
+
+// Level - The specified logger's log level.
+type Level string
+
+const (
+	LevelDebug Level = "debug"
+	LevelError Level = "error"
+	LevelInfo  Level = "info"
+	LevelOff   Level = "off"
+	LevelTrace Level = "trace"
+	LevelWarn  Level = "warn"
+)
+
+// PossibleLevelValues returns the possible values for the Level const type.
+func PossibleLevelValues() []Level {
+	return []Level{
+		LevelDebug,
+		LevelError,
+		LevelInfo,
+		LevelOff,
+		LevelTrace,
+		LevelWarn,
+	}
+}
+
 // LogLevel - Sets the log level for the Dapr sidecar. Allowed values are debug, info, warn, error. Default is info.
 type LogLevel string
 
@@ -654,6 +800,21 @@ func PossibleLogLevelValues() []LogLevel {
 		LogLevelError,
 		LogLevelInfo,
 		LogLevelWarn,
+	}
+}
+
+type LogicAppsProxyMethod string
+
+const (
+	LogicAppsProxyMethodGET  LogicAppsProxyMethod = "GET"
+	LogicAppsProxyMethodPOST LogicAppsProxyMethod = "POST"
+)
+
+// PossibleLogicAppsProxyMethodValues returns the possible values for the LogicAppsProxyMethod const type.
+func PossibleLogicAppsProxyMethodValues() []LogicAppsProxyMethod {
+	return []LogicAppsProxyMethod{
+		LogicAppsProxyMethodGET,
+		LogicAppsProxyMethodPOST,
 	}
 }
 
@@ -692,6 +853,154 @@ func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 		ManagedServiceIdentityTypeSystemAssigned,
 		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
 		ManagedServiceIdentityTypeUserAssigned,
+	}
+}
+
+// PatchApplyStatus - The status of the patch once it has been provisioned
+type PatchApplyStatus string
+
+const (
+	PatchApplyStatusCanceled               PatchApplyStatus = "Canceled"
+	PatchApplyStatusCreatingRevision       PatchApplyStatus = "CreatingRevision"
+	PatchApplyStatusImagePushPullFailed    PatchApplyStatus = "ImagePushPullFailed"
+	PatchApplyStatusManuallySkipped        PatchApplyStatus = "ManuallySkipped"
+	PatchApplyStatusNotStarted             PatchApplyStatus = "NotStarted"
+	PatchApplyStatusRebaseFailed           PatchApplyStatus = "RebaseFailed"
+	PatchApplyStatusRebaseInProgress       PatchApplyStatus = "RebaseInProgress"
+	PatchApplyStatusRevisionCreationFailed PatchApplyStatus = "RevisionCreationFailed"
+	PatchApplyStatusSucceeded              PatchApplyStatus = "Succeeded"
+)
+
+// PossiblePatchApplyStatusValues returns the possible values for the PatchApplyStatus const type.
+func PossiblePatchApplyStatusValues() []PatchApplyStatus {
+	return []PatchApplyStatus{
+		PatchApplyStatusCanceled,
+		PatchApplyStatusCreatingRevision,
+		PatchApplyStatusImagePushPullFailed,
+		PatchApplyStatusManuallySkipped,
+		PatchApplyStatusNotStarted,
+		PatchApplyStatusRebaseFailed,
+		PatchApplyStatusRebaseInProgress,
+		PatchApplyStatusRevisionCreationFailed,
+		PatchApplyStatusSucceeded,
+	}
+}
+
+// PatchType - The type for the patch.
+type PatchType string
+
+const (
+	PatchTypeFrameworkAndOSSecurity PatchType = "FrameworkAndOSSecurity"
+	PatchTypeFrameworkSecurity      PatchType = "FrameworkSecurity"
+	PatchTypeOSSecurity             PatchType = "OSSecurity"
+	PatchTypeOther                  PatchType = "Other"
+)
+
+// PossiblePatchTypeValues returns the possible values for the PatchType const type.
+func PossiblePatchTypeValues() []PatchType {
+	return []PatchType{
+		PatchTypeFrameworkAndOSSecurity,
+		PatchTypeFrameworkSecurity,
+		PatchTypeOSSecurity,
+		PatchTypeOther,
+	}
+}
+
+// PatchingMode - Patching mode for the container app. Null or default in this field will be interpreted as Automatic by RP.
+// Automatic mode will automatically apply available patches. Manual mode will require the user
+// to manually apply patches. Disabled mode will stop patch detection and auto patching.
+type PatchingMode string
+
+const (
+	PatchingModeAutomatic PatchingMode = "Automatic"
+	PatchingModeDisabled  PatchingMode = "Disabled"
+	PatchingModeManual    PatchingMode = "Manual"
+)
+
+// PossiblePatchingModeValues returns the possible values for the PatchingMode const type.
+func PossiblePatchingModeValues() []PatchingMode {
+	return []PatchingMode{
+		PatchingModeAutomatic,
+		PatchingModeDisabled,
+		PatchingModeManual,
+	}
+}
+
+// PoolManagementType - The pool management type of the session pool.
+type PoolManagementType string
+
+const (
+	PoolManagementTypeDynamic PoolManagementType = "Dynamic"
+	PoolManagementTypeManual  PoolManagementType = "Manual"
+)
+
+// PossiblePoolManagementTypeValues returns the possible values for the PoolManagementType const type.
+func PossiblePoolManagementTypeValues() []PoolManagementType {
+	return []PoolManagementType{
+		PoolManagementTypeDynamic,
+		PoolManagementTypeManual,
+	}
+}
+
+// PrivateEndpointConnectionProvisioningState - The current provisioning state.
+type PrivateEndpointConnectionProvisioningState string
+
+const (
+	PrivateEndpointConnectionProvisioningStateCanceled  PrivateEndpointConnectionProvisioningState = "Canceled"
+	PrivateEndpointConnectionProvisioningStateDeleting  PrivateEndpointConnectionProvisioningState = "Deleting"
+	PrivateEndpointConnectionProvisioningStateFailed    PrivateEndpointConnectionProvisioningState = "Failed"
+	PrivateEndpointConnectionProvisioningStatePending   PrivateEndpointConnectionProvisioningState = "Pending"
+	PrivateEndpointConnectionProvisioningStateSucceeded PrivateEndpointConnectionProvisioningState = "Succeeded"
+	PrivateEndpointConnectionProvisioningStateUpdating  PrivateEndpointConnectionProvisioningState = "Updating"
+	PrivateEndpointConnectionProvisioningStateWaiting   PrivateEndpointConnectionProvisioningState = "Waiting"
+)
+
+// PossiblePrivateEndpointConnectionProvisioningStateValues returns the possible values for the PrivateEndpointConnectionProvisioningState const type.
+func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
+	return []PrivateEndpointConnectionProvisioningState{
+		PrivateEndpointConnectionProvisioningStateCanceled,
+		PrivateEndpointConnectionProvisioningStateDeleting,
+		PrivateEndpointConnectionProvisioningStateFailed,
+		PrivateEndpointConnectionProvisioningStatePending,
+		PrivateEndpointConnectionProvisioningStateSucceeded,
+		PrivateEndpointConnectionProvisioningStateUpdating,
+		PrivateEndpointConnectionProvisioningStateWaiting,
+	}
+}
+
+// PrivateEndpointServiceConnectionStatus - The private endpoint connection status.
+type PrivateEndpointServiceConnectionStatus string
+
+const (
+	PrivateEndpointServiceConnectionStatusApproved     PrivateEndpointServiceConnectionStatus = "Approved"
+	PrivateEndpointServiceConnectionStatusDisconnected PrivateEndpointServiceConnectionStatus = "Disconnected"
+	PrivateEndpointServiceConnectionStatusPending      PrivateEndpointServiceConnectionStatus = "Pending"
+	PrivateEndpointServiceConnectionStatusRejected     PrivateEndpointServiceConnectionStatus = "Rejected"
+)
+
+// PossiblePrivateEndpointServiceConnectionStatusValues returns the possible values for the PrivateEndpointServiceConnectionStatus const type.
+func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
+	return []PrivateEndpointServiceConnectionStatus{
+		PrivateEndpointServiceConnectionStatusApproved,
+		PrivateEndpointServiceConnectionStatusDisconnected,
+		PrivateEndpointServiceConnectionStatusPending,
+		PrivateEndpointServiceConnectionStatusRejected,
+	}
+}
+
+// PublicNetworkAccess - Property to allow or block all public traffic. Allowed Values: 'Enabled', 'Disabled'.
+type PublicNetworkAccess string
+
+const (
+	PublicNetworkAccessDisabled PublicNetworkAccess = "Disabled"
+	PublicNetworkAccessEnabled  PublicNetworkAccess = "Enabled"
+)
+
+// PossiblePublicNetworkAccessValues returns the possible values for the PublicNetworkAccess const type.
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return []PublicNetworkAccess{
+		PublicNetworkAccessDisabled,
+		PublicNetworkAccessEnabled,
 	}
 }
 
@@ -775,6 +1084,44 @@ func PossibleSchemeValues() []Scheme {
 	}
 }
 
+// SessionNetworkStatus - Network status for the sessions.
+type SessionNetworkStatus string
+
+const (
+	SessionNetworkStatusEgressDisabled SessionNetworkStatus = "EgressDisabled"
+	SessionNetworkStatusEgressEnabled  SessionNetworkStatus = "EgressEnabled"
+)
+
+// PossibleSessionNetworkStatusValues returns the possible values for the SessionNetworkStatus const type.
+func PossibleSessionNetworkStatusValues() []SessionNetworkStatus {
+	return []SessionNetworkStatus{
+		SessionNetworkStatusEgressDisabled,
+		SessionNetworkStatusEgressEnabled,
+	}
+}
+
+// SessionPoolProvisioningState - Provisioning state of the session pool.
+type SessionPoolProvisioningState string
+
+const (
+	SessionPoolProvisioningStateCanceled   SessionPoolProvisioningState = "Canceled"
+	SessionPoolProvisioningStateDeleting   SessionPoolProvisioningState = "Deleting"
+	SessionPoolProvisioningStateFailed     SessionPoolProvisioningState = "Failed"
+	SessionPoolProvisioningStateInProgress SessionPoolProvisioningState = "InProgress"
+	SessionPoolProvisioningStateSucceeded  SessionPoolProvisioningState = "Succeeded"
+)
+
+// PossibleSessionPoolProvisioningStateValues returns the possible values for the SessionPoolProvisioningState const type.
+func PossibleSessionPoolProvisioningStateValues() []SessionPoolProvisioningState {
+	return []SessionPoolProvisioningState{
+		SessionPoolProvisioningStateCanceled,
+		SessionPoolProvisioningStateDeleting,
+		SessionPoolProvisioningStateFailed,
+		SessionPoolProvisioningStateInProgress,
+		SessionPoolProvisioningStateSucceeded,
+	}
+}
+
 // SourceControlOperationState - Current provisioning State of the operation
 type SourceControlOperationState string
 
@@ -803,6 +1150,7 @@ const (
 	StorageTypeEmptyDir     StorageType = "EmptyDir"
 	StorageTypeNfsAzureFile StorageType = "NfsAzureFile"
 	StorageTypeSecret       StorageType = "Secret"
+	StorageTypeSmb          StorageType = "Smb"
 )
 
 // PossibleStorageTypeValues returns the possible values for the StorageType const type.
@@ -812,6 +1160,7 @@ func PossibleStorageTypeValues() []StorageType {
 		StorageTypeEmptyDir,
 		StorageTypeNfsAzureFile,
 		StorageTypeSecret,
+		StorageTypeSmb,
 	}
 }
 
@@ -868,5 +1217,49 @@ func PossibleUnauthenticatedClientActionV2Values() []UnauthenticatedClientAction
 		UnauthenticatedClientActionV2RedirectToLoginPage,
 		UnauthenticatedClientActionV2Return401,
 		UnauthenticatedClientActionV2Return403,
+	}
+}
+
+// WorkflowHealthState - Gets or sets the workflow health state.
+type WorkflowHealthState string
+
+const (
+	WorkflowHealthStateHealthy      WorkflowHealthState = "Healthy"
+	WorkflowHealthStateNotSpecified WorkflowHealthState = "NotSpecified"
+	WorkflowHealthStateUnhealthy    WorkflowHealthState = "Unhealthy"
+	WorkflowHealthStateUnknown      WorkflowHealthState = "Unknown"
+)
+
+// PossibleWorkflowHealthStateValues returns the possible values for the WorkflowHealthState const type.
+func PossibleWorkflowHealthStateValues() []WorkflowHealthState {
+	return []WorkflowHealthState{
+		WorkflowHealthStateHealthy,
+		WorkflowHealthStateNotSpecified,
+		WorkflowHealthStateUnhealthy,
+		WorkflowHealthStateUnknown,
+	}
+}
+
+// WorkflowState - The workflow state.
+type WorkflowState string
+
+const (
+	WorkflowStateCompleted    WorkflowState = "Completed"
+	WorkflowStateDeleted      WorkflowState = "Deleted"
+	WorkflowStateDisabled     WorkflowState = "Disabled"
+	WorkflowStateEnabled      WorkflowState = "Enabled"
+	WorkflowStateNotSpecified WorkflowState = "NotSpecified"
+	WorkflowStateSuspended    WorkflowState = "Suspended"
+)
+
+// PossibleWorkflowStateValues returns the possible values for the WorkflowState const type.
+func PossibleWorkflowStateValues() []WorkflowState {
+	return []WorkflowState{
+		WorkflowStateCompleted,
+		WorkflowStateDeleted,
+		WorkflowStateDisabled,
+		WorkflowStateEnabled,
+		WorkflowStateNotSpecified,
+		WorkflowStateSuspended,
 	}
 }

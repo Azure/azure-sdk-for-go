@@ -13,8 +13,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
 	"github.com/Azure/go-amqp"
+	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
 )
 
@@ -129,67 +131,6 @@ func TestReceiverOptions(t *testing.T) {
 	require.EqualValues(t, "topic/Subscriptions/subscription/$Transfer/$DeadLetterQueue", path)
 }
 
-func TestReceiver_releaserFunc(t *testing.T) {
-	receiver, err := newReceiver(defaultNewReceiverArgsForTest(), nil)
-	receiver.amqpLinks = &internal.FakeAMQPLinks{}
-	require.NoError(t, err)
-
-	successfulReleases := 0
-
-	messagesCh := make(chan *amqp.Message, 1)
-
-	messagesCh <- &amqp.Message{
-		Data: [][]byte{[]byte("hello")},
-	}
-
-	receiverClosed := make(chan struct{})
-
-	amqpReceiver := internal.FakeAMQPReceiver{
-		ReceiveFn: func(ctx context.Context) (*amqp.Message, error) {
-			select {
-			case m := <-messagesCh:
-				return m, nil
-			case <-ctx.Done():
-				return nil, ctx.Err()
-			}
-		},
-		ReleaseMessageFn: func(ctx context.Context, msg *amqp.Message) error {
-			require.Equal(t, "hello", string(msg.Data[0]))
-			successfulReleases++
-
-			go func() {
-				err := receiver.Close(context.Background())
-				require.NoError(t, err)
-
-				close(receiverClosed)
-			}()
-
-			return nil
-		},
-	}
-
-	logsFn := test.CaptureLogsForTest(false)
-
-	releaserFn := receiver.newReleaserFunc(&amqpReceiver)
-	releaserFn()
-
-	require.Equal(t, 1+1, amqpReceiver.ReceiveCalled, "called twice - once to receive a message, the second time blocks")
-	require.Equal(t, 1, amqpReceiver.ReleaseMessageCalled)
-
-	_ = amqpReceiver.Close(context.Background())
-
-	t.Logf("Waiting for receiver to shut down")
-	<-receiverClosed
-	t.Logf("Receiver has closed")
-
-	logs := logsFn()
-
-	require.Contains(t,
-		logs,
-		fmt.Sprintf("[azsb.Receiver] [prefix] Message releaser pausing. Released %d messages", successfulReleases),
-	)
-}
-
 func TestReceiver_releaserFunc_errorOnFirstMessage(t *testing.T) {
 	receiver, err := newReceiver(defaultNewReceiverArgsForTest(), nil)
 	require.NoError(t, err)
@@ -234,16 +175,10 @@ func TestReceiver_releaserFunc_receiveAndDeleteIsNoop(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	amqpReceiver := internal.FakeAMQPReceiver{
-		ReceiveFn: func(ctx context.Context) (*amqp.Message, error) {
-			panic("Should not be used in this test")
-		},
-		ReleaseMessageFn: func(ctx context.Context, msg *amqp.Message) error {
-			panic("Should not be used in this test")
-		},
-	}
+	ctrl := gomock.NewController(t)
+	amqpReceiver := mock.NewMockAMQPReceiver(ctrl)
 
-	releaserFn := receiver.newReleaserFunc(&amqpReceiver)
+	releaserFn := receiver.newReleaserFunc(amqpReceiver)
 
 	// cancelling is still the empty function
 	cancelFn := receiver.cancelReleaser.Load().(func() string)
@@ -252,9 +187,102 @@ func TestReceiver_releaserFunc_receiveAndDeleteIsNoop(t *testing.T) {
 	// in this case you don't need to cancel anything - it's just no-op
 	// Note it'll just exit immediately, the "releaser" doesn't block here.
 	releaserFn()
+}
 
-	require.LessOrEqual(t, 0, amqpReceiver.ReceiveCalled)
-	require.LessOrEqual(t, 0, amqpReceiver.ReleaseMessageCalled)
+func TestReceiver_releaserFunc_cancelBetweenReceiveAndReleaseStillReleases(t *testing.T) {
+	// Issue: https://github.com/Azure/azure-sdk-for-go/issues/23893
+	receiver, err := newReceiver(defaultNewReceiverArgsForTest(), nil)
+	require.NoError(t, err)
+
+	ctrl := gomock.NewController(t)
+	amqpReceiver := mock.NewMockAMQPReceiver(ctrl)
+
+	releaserFn := receiver.newReleaserFunc(amqpReceiver)
+	cancelReleaser := receiver.cancelReleaser.Swap(emptyCancelFn).(func() string)
+
+	amqpReceiver.EXPECT().LinkName().Return("link-name").AnyTimes()
+	amqpReceiver.EXPECT().Receive(gomock.Any(), gomock.Any()).DoAndReturn(func(ctx context.Context, o *amqp.ReceiveOptions) (*amqp.Message, error) {
+		if ctx.Err() != nil {
+			return nil, ctx.Err()
+		}
+
+		// cancelReleaser blocks waiting for the releaser itself to exit. We can't block on waiting for it here or else we'll deadlock.
+		go func() { cancelReleaser() }()
+
+		for ctx.Err() == nil {
+			time.Sleep(10 * time.Millisecond) // allow the context cancellation to happen
+		}
+
+		// simulate that our cancellation occurred _after_ the ReceiveMessages() call
+		// NOTE: in the real world this can also happen if the amqp.Receiver is returning prefetched
+		// messages since it ignores the context's cancellation state.
+		return &amqp.Message{}, nil
+	})
+
+	amqpReceiver.EXPECT().ReleaseMessage(gomock.Any(), gomock.Any())
+
+	releaserFn()
+}
+
+func TestReceiver_releaserFunc_cancelReceive(t *testing.T) {
+	receiver, err := newReceiver(defaultNewReceiverArgsForTest(), nil)
+	require.NoError(t, err)
+
+	ctrl := gomock.NewController(t)
+	amqpReceiver := mock.NewMockAMQPReceiver(ctrl)
+
+	releaserFn := receiver.newReleaserFunc(amqpReceiver)
+	cancelReleaser := receiver.cancelReleaser.Swap(emptyCancelFn).(func() string)
+
+	amqpReceiver.EXPECT().LinkName().Return("link-name").AnyTimes()
+	amqpReceiver.EXPECT().Receive(gomock.Any(), gomock.Any()).DoAndReturn(func(ctx context.Context, o *amqp.ReceiveOptions) (*amqp.Message, error) {
+		if ctx.Err() != nil {
+			return nil, ctx.Err()
+		}
+
+		// cancelReleaser blocks waiting for the releaser itself to exit. We can't block on waiting for it here or else we'll deadlock.
+		go func() { cancelReleaser() }()
+
+		for ctx.Err() == nil {
+			time.Sleep(10 * time.Millisecond) // allow the context cancellation to happen
+		}
+
+		// simulates the cancellation occurring while we were receiving, thus cancelling the call.
+		return nil, ctx.Err()
+	})
+
+	releaserFn()
+}
+
+func TestReceiver_releaserFunc_releaseTimesOut(t *testing.T) {
+	receiver, err := newReceiver(defaultNewReceiverArgsForTest(), nil)
+	require.NoError(t, err)
+
+	ctrl := gomock.NewController(t)
+	amqpReceiver := mock.NewMockAMQPReceiver(ctrl)
+
+	releaserFn := receiver.newReleaserFunc(amqpReceiver)
+
+	amqpReceiver.EXPECT().LinkName().Return("link-name").AnyTimes()
+	amqpReceiver.EXPECT().Receive(gomock.Any(), gomock.Any()).DoAndReturn(func(ctx context.Context, o *amqp.ReceiveOptions) (*amqp.Message, error) {
+		if ctx.Err() != nil {
+			return nil, ctx.Err()
+		}
+
+		return &amqp.Message{}, nil
+	})
+
+	receiver.defaultReleaserTimeout = time.Millisecond // shorten this so the release call times out properly.
+
+	amqpReceiver.EXPECT().ReleaseMessage(gomock.Any(), gomock.Any()).DoAndReturn(func(ctx context.Context, msg *amqp.Message) error {
+		for ctx.Err() == nil {
+			time.Sleep(10 * time.Millisecond) // allow the context cancellation to happen
+		}
+
+		return ctx.Err()
+	})
+
+	releaserFn()
 }
 
 func TestReceiver_fetchMessages_FirstMessageFailure(t *testing.T) {

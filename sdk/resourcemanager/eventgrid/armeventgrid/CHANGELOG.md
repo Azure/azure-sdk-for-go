@@ -1,5 +1,36 @@
 # Release History
 
+## 2.3.0-beta.2 (2024-04-30)
+### Breaking Changes
+
+- Type of `NetworkSecurityPerimeterProfileAccessRuleProperties.Subscriptions` has been changed from `[]*string` to `[]*NetworkSecurityPerimeterSubscription`
+
+### Features Added
+
+- New enum type `CustomDomainIdentityType` with values `CustomDomainIdentityTypeSystemAssigned`, `CustomDomainIdentityTypeUserAssigned`
+- New enum type `CustomDomainValidationState` with values `CustomDomainValidationStateApproved`, `CustomDomainValidationStateErrorRetrievingDNSRecord`, `CustomDomainValidationStatePending`
+- New enum type `CustomJwtAuthenticationManagedIdentityType` with values `CustomJwtAuthenticationManagedIdentityTypeSystemAssigned`, `CustomJwtAuthenticationManagedIdentityTypeUserAssigned`
+- New function `*NamespaceTopicEventSubscriptionsClient.GetFullURL(context.Context, string, string, string, string, *NamespaceTopicEventSubscriptionsClientGetFullURLOptions) (NamespaceTopicEventSubscriptionsClientGetFullURLResponse, error)`
+- New function `*NamespacesClient.BeginValidateCustomDomainOwnership(context.Context, string, string, *NamespacesClientBeginValidateCustomDomainOwnershipOptions) (*runtime.Poller[NamespacesClientValidateCustomDomainOwnershipResponse], error)`
+- New struct `CustomDomainConfiguration`
+- New struct `CustomDomainIdentity`
+- New struct `CustomDomainOwnershipValidationResult`
+- New struct `CustomJwtAuthenticationManagedIdentity`
+- New struct `CustomJwtAuthenticationSettings`
+- New struct `IssuerCertificateInfo`
+- New struct `NetworkSecurityPerimeterSubscription`
+- New struct `SubscriptionFullURL`
+- New struct `UpdateTopicsConfigurationInfo`
+- New field `CustomJwtAuthentication` in struct `ClientAuthenticationSettings`
+- New field `TopicsConfiguration` in struct `NamespaceUpdateParameterProperties`
+- New field `Destination` in struct `PushInfo`
+- New field `ExpirationTimeUTC` in struct `SubscriptionProperties`
+- New field `ExpirationTimeUTC` in struct `SubscriptionUpdateParametersProperties`
+- New field `CustomDomains` in struct `TopicSpacesConfiguration`
+- New field `CustomDomains` in struct `TopicsConfiguration`
+- New field `CustomDomains` in struct `UpdateTopicSpacesConfigurationInfo`
+
+
 ## 2.3.0-beta.1 (2023-11-24)
 ### Features Added
 

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.1 (Unreleased)
+## 1.2.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,44 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.0 (2024-11-12)
+
+### Features Added
+* Added API for creating Hierarchical PartitionKeys. See [PR 23577](https://github.com/Azure/azure-sdk-for-go/pull/23577)
+* Set all Telemetry spans to have the Kind of SpanKindClient. See [PR 23618](https://github.com/Azure/azure-sdk-for-go/pull/23618)
+* Set request_charge and status_code on all trace spans. See [PR 23652](https://github.com/Azure/azure-sdk-for-go/pull/23652)
+
+### Bugs Fixed
+* Pager Telemetry spans are now more consistent with the rest of the spans. See [PR 23658](https://github.com/Azure/azure-sdk-for-go/pull/23658)
+
+## 1.1.0 (2024-09-10)
+
+### Features Added
+* Added support for OpenTelemetry trace spans. See [PR 23268](https://github.com/Azure/azure-sdk-for-go/pull/23268)
+* Added support for MaxIntegratedCacheStaleness option See [PR 23406](https://github.com/Azure/azure-sdk-for-go/pull/23406)
+
+### Bugs Fixed
+* Fixed sending `Prefer` header with `return=minimal` value on metadata operations. See [PR 23335](https://github.com/Azure/azure-sdk-for-go/pull/23335)
+* Fixed routing metadata requests to satellite regions when using ClientOptions.PreferredRegions and multiple write region accounts. See [PR 23339](https://github.com/Azure/azure-sdk-for-go/pull/23339)
+
+## 1.0.3 (2024-06-17)
+
+### Bugs Fixed
+
+* Fixed data race on clientRetryPolicy. See [PR 23061](https://github.com/Azure/azure-sdk-for-go/pull/23061)
+
+## 1.0.2 (2024-06-11)
+
+### Bugs Fixed
+
+* Fixed ReplaceThroughput operations on Database and Container. See [PR 22923](https://github.com/Azure/azure-sdk-for-go/pull/22923)
+
+## 1.0.1 (2024-05-02)
+
+### Bugs Fixed
+
+* Reduces minimum required go version to 1.21
 
 ## 1.0.0 (2024-04-09)
 

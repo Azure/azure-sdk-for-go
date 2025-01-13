@@ -12,18 +12,33 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/http"
+	"net/url"
+	"regexp"
+	"strconv"
+	"time"
+
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
-	"net/http"
-	"net/url"
-	"regexp"
 )
 
 // AccountsServer is a fake server for instances of the armbilling.AccountsClient type.
 type AccountsServer struct {
+	// BeginAddPaymentTerms is the fake for method AccountsClient.BeginAddPaymentTerms
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginAddPaymentTerms func(ctx context.Context, billingAccountName string, parameters []*armbilling.PaymentTerm, options *armbilling.AccountsClientBeginAddPaymentTermsOptions) (resp azfake.PollerResponder[armbilling.AccountsClientAddPaymentTermsResponse], errResp azfake.ErrorResponder)
+
+	// BeginCancelPaymentTerms is the fake for method AccountsClient.BeginCancelPaymentTerms
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginCancelPaymentTerms func(ctx context.Context, billingAccountName string, parameters time.Time, options *armbilling.AccountsClientBeginCancelPaymentTermsOptions) (resp azfake.PollerResponder[armbilling.AccountsClientCancelPaymentTermsResponse], errResp azfake.ErrorResponder)
+
+	// ConfirmTransition is the fake for method AccountsClient.ConfirmTransition
+	// HTTP status codes to indicate success: http.StatusOK
+	ConfirmTransition func(ctx context.Context, billingAccountName string, options *armbilling.AccountsClientConfirmTransitionOptions) (resp azfake.Responder[armbilling.AccountsClientConfirmTransitionResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method AccountsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, billingAccountName string, options *armbilling.AccountsClientGetOptions) (resp azfake.Responder[armbilling.AccountsClientGetResponse], errResp azfake.ErrorResponder)
@@ -38,7 +53,11 @@ type AccountsServer struct {
 
 	// BeginUpdate is the fake for method AccountsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, billingAccountName string, parameters armbilling.AccountUpdateRequest, options *armbilling.AccountsClientBeginUpdateOptions) (resp azfake.PollerResponder[armbilling.AccountsClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate func(ctx context.Context, billingAccountName string, parameters armbilling.AccountPatch, options *armbilling.AccountsClientBeginUpdateOptions) (resp azfake.PollerResponder[armbilling.AccountsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// ValidatePaymentTerms is the fake for method AccountsClient.ValidatePaymentTerms
+	// HTTP status codes to indicate success: http.StatusOK
+	ValidatePaymentTerms func(ctx context.Context, billingAccountName string, parameters []*armbilling.PaymentTerm, options *armbilling.AccountsClientValidatePaymentTermsOptions) (resp azfake.Responder[armbilling.AccountsClientValidatePaymentTermsResponse], errResp azfake.ErrorResponder)
 }
 
 // NewAccountsServerTransport creates a new instance of AccountsServerTransport with the provided implementation.
@@ -46,8 +65,10 @@ type AccountsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewAccountsServerTransport(srv *AccountsServer) *AccountsServerTransport {
 	return &AccountsServerTransport{
-		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armbilling.AccountsClientListResponse]](),
+		srv:                     srv,
+		beginAddPaymentTerms:    newTracker[azfake.PollerResponder[armbilling.AccountsClientAddPaymentTermsResponse]](),
+		beginCancelPaymentTerms: newTracker[azfake.PollerResponder[armbilling.AccountsClientCancelPaymentTermsResponse]](),
+		newListPager:            newTracker[azfake.PagerResponder[armbilling.AccountsClientListResponse]](),
 		newListInvoiceSectionsByCreateSubscriptionPermissionPager: newTracker[azfake.PagerResponder[armbilling.AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse]](),
 		beginUpdate: newTracker[azfake.PollerResponder[armbilling.AccountsClientUpdateResponse]](),
 	}
@@ -57,6 +78,8 @@ func NewAccountsServerTransport(srv *AccountsServer) *AccountsServerTransport {
 // Don't use this type directly, use NewAccountsServerTransport instead.
 type AccountsServerTransport struct {
 	srv                                                       *AccountsServer
+	beginAddPaymentTerms                                      *tracker[azfake.PollerResponder[armbilling.AccountsClientAddPaymentTermsResponse]]
+	beginCancelPaymentTerms                                   *tracker[azfake.PollerResponder[armbilling.AccountsClientCancelPaymentTermsResponse]]
 	newListPager                                              *tracker[azfake.PagerResponder[armbilling.AccountsClientListResponse]]
 	newListInvoiceSectionsByCreateSubscriptionPermissionPager *tracker[azfake.PagerResponder[armbilling.AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse]]
 	beginUpdate                                               *tracker[azfake.PollerResponder[armbilling.AccountsClientUpdateResponse]]
@@ -74,6 +97,12 @@ func (a *AccountsServerTransport) Do(req *http.Request) (*http.Response, error) 
 	var err error
 
 	switch method {
+	case "AccountsClient.BeginAddPaymentTerms":
+		resp, err = a.dispatchBeginAddPaymentTerms(req)
+	case "AccountsClient.BeginCancelPaymentTerms":
+		resp, err = a.dispatchBeginCancelPaymentTerms(req)
+	case "AccountsClient.ConfirmTransition":
+		resp, err = a.dispatchConfirmTransition(req)
 	case "AccountsClient.Get":
 		resp, err = a.dispatchGet(req)
 	case "AccountsClient.NewListPager":
@@ -82,6 +111,8 @@ func (a *AccountsServerTransport) Do(req *http.Request) (*http.Response, error) 
 		resp, err = a.dispatchNewListInvoiceSectionsByCreateSubscriptionPermissionPager(req)
 	case "AccountsClient.BeginUpdate":
 		resp, err = a.dispatchBeginUpdate(req)
+	case "AccountsClient.ValidatePaymentTerms":
+		resp, err = a.dispatchValidatePaymentTerms(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
 	}
@@ -90,6 +121,123 @@ func (a *AccountsServerTransport) Do(req *http.Request) (*http.Response, error) 
 		return nil, err
 	}
 
+	return resp, nil
+}
+
+func (a *AccountsServerTransport) dispatchBeginAddPaymentTerms(req *http.Request) (*http.Response, error) {
+	if a.srv.BeginAddPaymentTerms == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginAddPaymentTerms not implemented")}
+	}
+	beginAddPaymentTerms := a.beginAddPaymentTerms.get(req)
+	if beginAddPaymentTerms == nil {
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/addPaymentTerms`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 1 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[[]*armbilling.PaymentTerm](req)
+		if err != nil {
+			return nil, err
+		}
+		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginAddPaymentTerms(req.Context(), billingAccountNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginAddPaymentTerms = &respr
+		a.beginAddPaymentTerms.add(req, beginAddPaymentTerms)
+	}
+
+	resp, err := server.PollerResponderNext(beginAddPaymentTerms, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		a.beginAddPaymentTerms.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginAddPaymentTerms) {
+		a.beginAddPaymentTerms.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (a *AccountsServerTransport) dispatchBeginCancelPaymentTerms(req *http.Request) (*http.Response, error) {
+	if a.srv.BeginCancelPaymentTerms == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCancelPaymentTerms not implemented")}
+	}
+	beginCancelPaymentTerms := a.beginCancelPaymentTerms.get(req)
+	if beginCancelPaymentTerms == nil {
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancelPaymentTerms`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 1 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[dateTimeRFC3339](req)
+		if err != nil {
+			return nil, err
+		}
+		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginCancelPaymentTerms(req.Context(), billingAccountNameParam, time.Time(body), nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCancelPaymentTerms = &respr
+		a.beginCancelPaymentTerms.add(req, beginCancelPaymentTerms)
+	}
+
+	resp, err := server.PollerResponderNext(beginCancelPaymentTerms, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		a.beginCancelPaymentTerms.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginCancelPaymentTerms) {
+		a.beginCancelPaymentTerms.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (a *AccountsServerTransport) dispatchConfirmTransition(req *http.Request) (*http.Response, error) {
+	if a.srv.ConfirmTransition == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ConfirmTransition not implemented")}
+	}
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/confirmTransition`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 1 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.ConfirmTransition(req.Context(), billingAccountNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).TransitionDetails, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 
@@ -103,23 +251,11 @@ func (a *AccountsServerTransport) dispatchGet(req *http.Request) (*http.Response
 	if matches == nil || len(matches) < 1 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	qp := req.URL.Query()
 	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
 	if err != nil {
 		return nil, err
 	}
-	expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
-	if err != nil {
-		return nil, err
-	}
-	expandParam := getOptional(expandUnescaped)
-	var options *armbilling.AccountsClientGetOptions
-	if expandParam != nil {
-		options = &armbilling.AccountsClientGetOptions{
-			Expand: expandParam,
-		}
-	}
-	respr, errRespr := a.srv.Get(req.Context(), billingAccountNameParam, options)
+	respr, errRespr := a.srv.Get(req.Context(), billingAccountNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -141,15 +277,114 @@ func (a *AccountsServerTransport) dispatchNewListPager(req *http.Request) (*http
 	newListPager := a.newListPager.get(req)
 	if newListPager == nil {
 		qp := req.URL.Query()
-		expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
+		includeAllUnescaped, err := url.QueryUnescape(qp.Get("includeAll"))
+		if err != nil {
+			return nil, err
+		}
+		includeAllParam, err := parseOptional(includeAllUnescaped, strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		includeAllWithoutBillingProfilesUnescaped, err := url.QueryUnescape(qp.Get("includeAllWithoutBillingProfiles"))
+		if err != nil {
+			return nil, err
+		}
+		includeAllWithoutBillingProfilesParam, err := parseOptional(includeAllWithoutBillingProfilesUnescaped, strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		includeDeletedUnescaped, err := url.QueryUnescape(qp.Get("includeDeleted"))
+		if err != nil {
+			return nil, err
+		}
+		includeDeletedParam, err := parseOptional(includeDeletedUnescaped, strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		includePendingAgreementUnescaped, err := url.QueryUnescape(qp.Get("includePendingAgreement"))
+		if err != nil {
+			return nil, err
+		}
+		includePendingAgreementParam, err := parseOptional(includePendingAgreementUnescaped, strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		includeReselleeUnescaped, err := url.QueryUnescape(qp.Get("includeResellee"))
+		if err != nil {
+			return nil, err
+		}
+		includeReselleeParam, err := parseOptional(includeReselleeUnescaped, strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		legalOwnerTIDUnescaped, err := url.QueryUnescape(qp.Get("legalOwnerTID"))
+		if err != nil {
+			return nil, err
+		}
+		legalOwnerTIDParam := getOptional(legalOwnerTIDUnescaped)
+		legalOwnerOIDUnescaped, err := url.QueryUnescape(qp.Get("legalOwnerOID"))
+		if err != nil {
+			return nil, err
+		}
+		legalOwnerOIDParam := getOptional(legalOwnerOIDUnescaped)
+		filterUnescaped, err := url.QueryUnescape(qp.Get("filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
+		expandUnescaped, err := url.QueryUnescape(qp.Get("expand"))
 		if err != nil {
 			return nil, err
 		}
 		expandParam := getOptional(expandUnescaped)
+		topUnescaped, err := url.QueryUnescape(qp.Get("top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		skipUnescaped, err := url.QueryUnescape(qp.Get("skip"))
+		if err != nil {
+			return nil, err
+		}
+		skipParam, err := parseOptional(skipUnescaped, func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		searchUnescaped, err := url.QueryUnescape(qp.Get("search"))
+		if err != nil {
+			return nil, err
+		}
+		searchParam := getOptional(searchUnescaped)
 		var options *armbilling.AccountsClientListOptions
-		if expandParam != nil {
+		if includeAllParam != nil || includeAllWithoutBillingProfilesParam != nil || includeDeletedParam != nil || includePendingAgreementParam != nil || includeReselleeParam != nil || legalOwnerTIDParam != nil || legalOwnerOIDParam != nil || filterParam != nil || expandParam != nil || topParam != nil || skipParam != nil || searchParam != nil {
 			options = &armbilling.AccountsClientListOptions{
-				Expand: expandParam,
+				IncludeAll:                       includeAllParam,
+				IncludeAllWithoutBillingProfiles: includeAllWithoutBillingProfilesParam,
+				IncludeDeleted:                   includeDeletedParam,
+				IncludePendingAgreement:          includePendingAgreementParam,
+				IncludeResellee:                  includeReselleeParam,
+				LegalOwnerTID:                    legalOwnerTIDParam,
+				LegalOwnerOID:                    legalOwnerOIDParam,
+				Filter:                           filterParam,
+				Expand:                           expandParam,
+				Top:                              topParam,
+				Skip:                             skipParam,
+				Search:                           searchParam,
 			}
 		}
 		resp := a.srv.NewListPager(options)
@@ -185,11 +420,23 @@ func (a *AccountsServerTransport) dispatchNewListInvoiceSectionsByCreateSubscrip
 		if matches == nil || len(matches) < 1 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
 		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
 		if err != nil {
 			return nil, err
 		}
-		resp := a.srv.NewListInvoiceSectionsByCreateSubscriptionPermissionPager(billingAccountNameParam, nil)
+		filterUnescaped, err := url.QueryUnescape(qp.Get("filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
+		var options *armbilling.AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionOptions
+		if filterParam != nil {
+			options = &armbilling.AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionOptions{
+				Filter: filterParam,
+			}
+		}
+		resp := a.srv.NewListInvoiceSectionsByCreateSubscriptionPermissionPager(billingAccountNameParam, options)
 		newListInvoiceSectionsByCreateSubscriptionPermissionPager = &resp
 		a.newListInvoiceSectionsByCreateSubscriptionPermissionPager.add(req, newListInvoiceSectionsByCreateSubscriptionPermissionPager)
 		server.PagerResponderInjectNextLinks(newListInvoiceSectionsByCreateSubscriptionPermissionPager, req, func(page *armbilling.AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse, createLink func() string) {
@@ -222,7 +469,7 @@ func (a *AccountsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.
 		if matches == nil || len(matches) < 1 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armbilling.AccountUpdateRequest](req)
+		body, err := server.UnmarshalRequestAsJSON[armbilling.AccountPatch](req)
 		if err != nil {
 			return nil, err
 		}
@@ -251,5 +498,38 @@ func (a *AccountsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.
 		a.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (a *AccountsServerTransport) dispatchValidatePaymentTerms(req *http.Request) (*http.Response, error) {
+	if a.srv.ValidatePaymentTerms == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ValidatePaymentTerms not implemented")}
+	}
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validatePaymentTerms`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 1 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[[]*armbilling.PaymentTerm](req)
+	if err != nil {
+		return nil, err
+	}
+	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.ValidatePaymentTerms(req.Context(), billingAccountNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PaymentTermsEligibilityResult, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }

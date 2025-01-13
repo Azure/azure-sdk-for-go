@@ -271,7 +271,7 @@ func performUploadAndDownloadFileTestWithChecksums(t *testing.T, _require *requi
 		_ = os.Remove(name)
 	}(fileName)
 
-	//body := bytes.NewReader(fileData)
+	// body := bytes.NewReader(fileData)
 	crc64Value := crc64.Checksum(fileData, shared.CRC64Table)
 	crc := make([]byte, 8)
 	binary.LittleEndian.PutUint64(crc, crc64Value)
@@ -567,7 +567,6 @@ func performUploadAndDownloadBufferTest(t *testing.T, _require *require.Assertio
 		})
 	assert.NoError(t, errTransferred)
 	_require.NoError(err)
-	//_require.Equal(response.StatusCode, 201)
 
 	// Set up buffer to download the blob to
 	var destBuffer []byte

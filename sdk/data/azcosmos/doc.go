@@ -63,8 +63,8 @@ Create a database and obtain a `DatabaseClient` to perform operations on your ne
 	handle(err)
 	client, err := azcosmos.NewClientWithKey("myAccountEndpointURL", cred, nil)
 	handle(err)
-	database := azcosmos.DatabaseProperties{ID: "myDatabase"}
-	response, err := client.CreateDatabase(context, database, nil)
+	databaseProperties := azcosmos.DatabaseProperties{ID: "myDatabase"}
+	response, err := client.CreateDatabase(context, databaseProperties, nil)
 	handle(err)
 	database, err := azcosmos.NewDatabase("myDatabase")
 	handle(err)
@@ -141,13 +141,13 @@ Querying items
 
 Querying items with parametrized queries
 
-	&opt := azcosmos.QueryOptions{
-		azcosmos.QueryParameters: []QueryParameter{
+	opt := azcosmos.QueryOptions{
+		QueryParameters: []azcosmos.QueryParameter{
 			{"@value", "2"},
 		},
 	}
 	pk := azcosmos.NewPartitionKeyString("myPartitionKeyValue")
-	queryPager := container.NewQueryItemsPager("select * from docs c where c.value = @value", pk, opt)
+	queryPager := container.NewQueryItemsPager("select * from docs c where c.value = @value", pk, &opt)
 	for queryPager.More() {
 		queryResponse, err := queryPager.NextPage(context)
 		if err != nil {

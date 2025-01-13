@@ -45,7 +45,7 @@ func SendAndReceiveDrain(remainingArgs []string) {
 		LockDuration: to.Ptr(lockDuration),
 	})
 
-	client, err := azservicebus.NewClientFromConnectionString(sc.ConnectionString, nil)
+	client, err := azservicebus.NewClient(sc.Endpoint, sc.Cred, nil)
 	sc.PanicOnError("failed to create client", err)
 
 	sender, err := shared.NewTrackingSender(sc.TC, client, queueName, nil)
@@ -73,13 +73,13 @@ func SendAndReceiveDrain(remainingArgs []string) {
 				// this is bad - it means we didn't get _any_ messages within an entire
 				// minute and might indicate that we're hitting the customer bug.
 
-				log.Printf("Exceeded the timeout, trying one more time real fast")
+				log.Printf("Exceeded the timeout, trying one more time real fast to see what the bug might be...")
 
 				// let's see if there is some other momentary issue happening here by doing a quick receive again.
 				ctx, cancel := context.WithTimeout(sc.Context, time.Minute)
 				defer cancel()
 				messages, err = receiver.ReceiveMessages(ctx, numToSend+100, nil)
-				sc.PanicOnError("Exceeded a minute while waiting for messages", err)
+				sc.Failf("Exceeded a minute while waiting for messages (got %d messages in second try). Error: %#v", len(messages), err)
 			}
 
 			log.Printf("Got %d messages, completing...", len(messages))

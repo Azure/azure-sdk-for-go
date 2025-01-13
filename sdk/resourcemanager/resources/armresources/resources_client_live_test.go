@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v2/testutil"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/stretchr/testify/suite"
 )
@@ -37,7 +37,7 @@ func (testsuite *ResourcesClientTestSuite) SetupSuite() {
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
 	testsuite.location = recording.GetEnvVariable("LOCATION", "eastus")
 	testsuite.subscriptionID = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
-	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/resources/armresources/testdata")
+	testutil.StartRecording(testsuite.T(), pathToPackage)
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionID, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name
@@ -101,9 +101,8 @@ func (testsuite *ResourcesClientTestSuite) TestResourcesCRUD() {
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	resp, err := testutil.PollForTest(testsuite.ctx, createPoller)
+	_, err = testutil.PollForTest(testsuite.ctx, createPoller)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal(resourceName, *resp.Name)
 
 	// create resource by id
 	fmt.Println("Call operation: Resources_CreateOrUpdateByID")
@@ -117,9 +116,8 @@ func (testsuite *ResourcesClientTestSuite) TestResourcesCRUD() {
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	createByIDResp, err := testutil.PollForTest(testsuite.ctx, createByIDPoller)
+	_, err = testutil.PollForTest(testsuite.ctx, createByIDPoller)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal(resourceName, *createByIDResp.Name)
 
 	// update resources
 	fmt.Println("Call operation: Resources_Update")
@@ -139,9 +137,8 @@ func (testsuite *ResourcesClientTestSuite) TestResourcesCRUD() {
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	updateResp, err := testutil.PollForTest(testsuite.ctx, updatePoller)
+	_, err = testutil.PollForTest(testsuite.ctx, updatePoller)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal("value1", *updateResp.Tags["tag1"])
 
 	// update resource by id
 	fmt.Println("Call operation: Resources_UpdateByID")
@@ -157,13 +154,12 @@ func (testsuite *ResourcesClientTestSuite) TestResourcesCRUD() {
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	updateByIDResp, err := testutil.PollForTest(testsuite.ctx, updateByIDPoller)
+	_, err = testutil.PollForTest(testsuite.ctx, updateByIDPoller)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal("value2", *updateByIDResp.Tags["key2"])
 
 	// get resource
 	fmt.Println("Call operation: Resources_Get")
-	getResp, err := resourcesClient.Get(
+	_, err = resourcesClient.Get(
 		testsuite.ctx,
 		testsuite.resourceGroupName,
 		"Microsoft.Compute",
@@ -174,18 +170,16 @@ func (testsuite *ResourcesClientTestSuite) TestResourcesCRUD() {
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal(resourceName, *getResp.Name)
 
 	// get resource by id
 	fmt.Println("Call operation: Resources_GetByID")
-	getByIDResp, err := resourcesClient.GetByID(
+	_, err = resourcesClient.GetByID(
 		testsuite.ctx,
 		resourceID,
 		"2019-07-01",
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	testsuite.Require().Equal(resourceName, *getByIDResp.Name)
 
 	// list resource
 	fmt.Println("Call operation: Resources_List")

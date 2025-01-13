@@ -1,5 +1,19 @@
 # Release History
 
+## 2.2.0 (2024-06-21)
+### Features Added
+
+- New value `JobRunStatusPausedByBandwidthManagement` added to enum type `JobRunStatus`
+- New value `ProvisioningStateCanceled`, `ProvisioningStateDeleting`, `ProvisioningStateFailed` added to enum type `ProvisioningState`
+- New enum type `DayOfWeek` with values `DayOfWeekFriday`, `DayOfWeekMonday`, `DayOfWeekSaturday`, `DayOfWeekSunday`, `DayOfWeekThursday`, `DayOfWeekTuesday`, `DayOfWeekWednesday`
+- New enum type `Minute` with values `MinuteThirty`, `MinuteZero`
+- New struct `Time`
+- New struct `UploadLimitSchedule`
+- New struct `UploadLimitWeeklyRecurrence`
+- New field `TimeZone`, `UploadLimitSchedule` in struct `AgentProperties`
+- New field `UploadLimitSchedule` in struct `AgentUpdateProperties`
+
+
 ## 2.1.0 (2023-11-24)
 ### Features Added
 

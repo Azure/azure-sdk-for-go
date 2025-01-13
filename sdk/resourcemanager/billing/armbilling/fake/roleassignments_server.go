@@ -12,28 +12,70 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/http"
+	"net/url"
+	"regexp"
+	"strconv"
+
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
-	"net/http"
-	"net/url"
-	"regexp"
 )
 
 // RoleAssignmentsServer is a fake server for instances of the armbilling.RoleAssignmentsClient type.
 type RoleAssignmentsServer struct {
+	// BeginCreateByBillingAccount is the fake for method RoleAssignmentsClient.BeginCreateByBillingAccount
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginCreateByBillingAccount func(ctx context.Context, billingAccountName string, parameters armbilling.RoleAssignmentProperties, options *armbilling.RoleAssignmentsClientBeginCreateByBillingAccountOptions) (resp azfake.PollerResponder[armbilling.RoleAssignmentsClientCreateByBillingAccountResponse], errResp azfake.ErrorResponder)
+
+	// BeginCreateByBillingProfile is the fake for method RoleAssignmentsClient.BeginCreateByBillingProfile
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginCreateByBillingProfile func(ctx context.Context, billingAccountName string, billingProfileName string, parameters armbilling.RoleAssignmentProperties, options *armbilling.RoleAssignmentsClientBeginCreateByBillingProfileOptions) (resp azfake.PollerResponder[armbilling.RoleAssignmentsClientCreateByBillingProfileResponse], errResp azfake.ErrorResponder)
+
+	// BeginCreateByCustomer is the fake for method RoleAssignmentsClient.BeginCreateByCustomer
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginCreateByCustomer func(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, parameters armbilling.RoleAssignmentProperties, options *armbilling.RoleAssignmentsClientBeginCreateByCustomerOptions) (resp azfake.PollerResponder[armbilling.RoleAssignmentsClientCreateByCustomerResponse], errResp azfake.ErrorResponder)
+
+	// BeginCreateByInvoiceSection is the fake for method RoleAssignmentsClient.BeginCreateByInvoiceSection
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginCreateByInvoiceSection func(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, parameters armbilling.RoleAssignmentProperties, options *armbilling.RoleAssignmentsClientBeginCreateByInvoiceSectionOptions) (resp azfake.PollerResponder[armbilling.RoleAssignmentsClientCreateByInvoiceSectionResponse], errResp azfake.ErrorResponder)
+
+	// BeginCreateOrUpdateByBillingAccount is the fake for method RoleAssignmentsClient.BeginCreateOrUpdateByBillingAccount
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginCreateOrUpdateByBillingAccount func(ctx context.Context, billingAccountName string, billingRoleAssignmentName string, parameters armbilling.RoleAssignment, options *armbilling.RoleAssignmentsClientBeginCreateOrUpdateByBillingAccountOptions) (resp azfake.PollerResponder[armbilling.RoleAssignmentsClientCreateOrUpdateByBillingAccountResponse], errResp azfake.ErrorResponder)
+
+	// BeginCreateOrUpdateByDepartment is the fake for method RoleAssignmentsClient.BeginCreateOrUpdateByDepartment
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginCreateOrUpdateByDepartment func(ctx context.Context, billingAccountName string, departmentName string, billingRoleAssignmentName string, parameters armbilling.RoleAssignment, options *armbilling.RoleAssignmentsClientBeginCreateOrUpdateByDepartmentOptions) (resp azfake.PollerResponder[armbilling.RoleAssignmentsClientCreateOrUpdateByDepartmentResponse], errResp azfake.ErrorResponder)
+
+	// BeginCreateOrUpdateByEnrollmentAccount is the fake for method RoleAssignmentsClient.BeginCreateOrUpdateByEnrollmentAccount
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginCreateOrUpdateByEnrollmentAccount func(ctx context.Context, billingAccountName string, enrollmentAccountName string, billingRoleAssignmentName string, parameters armbilling.RoleAssignment, options *armbilling.RoleAssignmentsClientBeginCreateOrUpdateByEnrollmentAccountOptions) (resp azfake.PollerResponder[armbilling.RoleAssignmentsClientCreateOrUpdateByEnrollmentAccountResponse], errResp azfake.ErrorResponder)
+
 	// DeleteByBillingAccount is the fake for method RoleAssignmentsClient.DeleteByBillingAccount
-	// HTTP status codes to indicate success: http.StatusOK
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
 	DeleteByBillingAccount func(ctx context.Context, billingAccountName string, billingRoleAssignmentName string, options *armbilling.RoleAssignmentsClientDeleteByBillingAccountOptions) (resp azfake.Responder[armbilling.RoleAssignmentsClientDeleteByBillingAccountResponse], errResp azfake.ErrorResponder)
 
 	// DeleteByBillingProfile is the fake for method RoleAssignmentsClient.DeleteByBillingProfile
-	// HTTP status codes to indicate success: http.StatusOK
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
 	DeleteByBillingProfile func(ctx context.Context, billingAccountName string, billingProfileName string, billingRoleAssignmentName string, options *armbilling.RoleAssignmentsClientDeleteByBillingProfileOptions) (resp azfake.Responder[armbilling.RoleAssignmentsClientDeleteByBillingProfileResponse], errResp azfake.ErrorResponder)
 
+	// DeleteByCustomer is the fake for method RoleAssignmentsClient.DeleteByCustomer
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
+	DeleteByCustomer func(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, billingRoleAssignmentName string, options *armbilling.RoleAssignmentsClientDeleteByCustomerOptions) (resp azfake.Responder[armbilling.RoleAssignmentsClientDeleteByCustomerResponse], errResp azfake.ErrorResponder)
+
+	// DeleteByDepartment is the fake for method RoleAssignmentsClient.DeleteByDepartment
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
+	DeleteByDepartment func(ctx context.Context, billingAccountName string, departmentName string, billingRoleAssignmentName string, options *armbilling.RoleAssignmentsClientDeleteByDepartmentOptions) (resp azfake.Responder[armbilling.RoleAssignmentsClientDeleteByDepartmentResponse], errResp azfake.ErrorResponder)
+
+	// DeleteByEnrollmentAccount is the fake for method RoleAssignmentsClient.DeleteByEnrollmentAccount
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
+	DeleteByEnrollmentAccount func(ctx context.Context, billingAccountName string, enrollmentAccountName string, billingRoleAssignmentName string, options *armbilling.RoleAssignmentsClientDeleteByEnrollmentAccountOptions) (resp azfake.Responder[armbilling.RoleAssignmentsClientDeleteByEnrollmentAccountResponse], errResp azfake.ErrorResponder)
+
 	// DeleteByInvoiceSection is the fake for method RoleAssignmentsClient.DeleteByInvoiceSection
-	// HTTP status codes to indicate success: http.StatusOK
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
 	DeleteByInvoiceSection func(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, billingRoleAssignmentName string, options *armbilling.RoleAssignmentsClientDeleteByInvoiceSectionOptions) (resp azfake.Responder[armbilling.RoleAssignmentsClientDeleteByInvoiceSectionResponse], errResp azfake.ErrorResponder)
 
 	// GetByBillingAccount is the fake for method RoleAssignmentsClient.GetByBillingAccount
@@ -43,6 +85,18 @@ type RoleAssignmentsServer struct {
 	// GetByBillingProfile is the fake for method RoleAssignmentsClient.GetByBillingProfile
 	// HTTP status codes to indicate success: http.StatusOK
 	GetByBillingProfile func(ctx context.Context, billingAccountName string, billingProfileName string, billingRoleAssignmentName string, options *armbilling.RoleAssignmentsClientGetByBillingProfileOptions) (resp azfake.Responder[armbilling.RoleAssignmentsClientGetByBillingProfileResponse], errResp azfake.ErrorResponder)
+
+	// GetByCustomer is the fake for method RoleAssignmentsClient.GetByCustomer
+	// HTTP status codes to indicate success: http.StatusOK
+	GetByCustomer func(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, billingRoleAssignmentName string, options *armbilling.RoleAssignmentsClientGetByCustomerOptions) (resp azfake.Responder[armbilling.RoleAssignmentsClientGetByCustomerResponse], errResp azfake.ErrorResponder)
+
+	// GetByDepartment is the fake for method RoleAssignmentsClient.GetByDepartment
+	// HTTP status codes to indicate success: http.StatusOK
+	GetByDepartment func(ctx context.Context, billingAccountName string, departmentName string, billingRoleAssignmentName string, options *armbilling.RoleAssignmentsClientGetByDepartmentOptions) (resp azfake.Responder[armbilling.RoleAssignmentsClientGetByDepartmentResponse], errResp azfake.ErrorResponder)
+
+	// GetByEnrollmentAccount is the fake for method RoleAssignmentsClient.GetByEnrollmentAccount
+	// HTTP status codes to indicate success: http.StatusOK
+	GetByEnrollmentAccount func(ctx context.Context, billingAccountName string, enrollmentAccountName string, billingRoleAssignmentName string, options *armbilling.RoleAssignmentsClientGetByEnrollmentAccountOptions) (resp azfake.Responder[armbilling.RoleAssignmentsClientGetByEnrollmentAccountResponse], errResp azfake.ErrorResponder)
 
 	// GetByInvoiceSection is the fake for method RoleAssignmentsClient.GetByInvoiceSection
 	// HTTP status codes to indicate success: http.StatusOK
@@ -56,9 +110,37 @@ type RoleAssignmentsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByBillingProfilePager func(billingAccountName string, billingProfileName string, options *armbilling.RoleAssignmentsClientListByBillingProfileOptions) (resp azfake.PagerResponder[armbilling.RoleAssignmentsClientListByBillingProfileResponse])
 
+	// NewListByCustomerPager is the fake for method RoleAssignmentsClient.NewListByCustomerPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByCustomerPager func(billingAccountName string, billingProfileName string, customerName string, options *armbilling.RoleAssignmentsClientListByCustomerOptions) (resp azfake.PagerResponder[armbilling.RoleAssignmentsClientListByCustomerResponse])
+
+	// NewListByDepartmentPager is the fake for method RoleAssignmentsClient.NewListByDepartmentPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByDepartmentPager func(billingAccountName string, departmentName string, options *armbilling.RoleAssignmentsClientListByDepartmentOptions) (resp azfake.PagerResponder[armbilling.RoleAssignmentsClientListByDepartmentResponse])
+
+	// NewListByEnrollmentAccountPager is the fake for method RoleAssignmentsClient.NewListByEnrollmentAccountPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByEnrollmentAccountPager func(billingAccountName string, enrollmentAccountName string, options *armbilling.RoleAssignmentsClientListByEnrollmentAccountOptions) (resp azfake.PagerResponder[armbilling.RoleAssignmentsClientListByEnrollmentAccountResponse])
+
 	// NewListByInvoiceSectionPager is the fake for method RoleAssignmentsClient.NewListByInvoiceSectionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByInvoiceSectionPager func(billingAccountName string, billingProfileName string, invoiceSectionName string, options *armbilling.RoleAssignmentsClientListByInvoiceSectionOptions) (resp azfake.PagerResponder[armbilling.RoleAssignmentsClientListByInvoiceSectionResponse])
+
+	// BeginResolveByBillingAccount is the fake for method RoleAssignmentsClient.BeginResolveByBillingAccount
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginResolveByBillingAccount func(ctx context.Context, billingAccountName string, options *armbilling.RoleAssignmentsClientBeginResolveByBillingAccountOptions) (resp azfake.PollerResponder[armbilling.RoleAssignmentsClientResolveByBillingAccountResponse], errResp azfake.ErrorResponder)
+
+	// BeginResolveByBillingProfile is the fake for method RoleAssignmentsClient.BeginResolveByBillingProfile
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginResolveByBillingProfile func(ctx context.Context, billingAccountName string, billingProfileName string, options *armbilling.RoleAssignmentsClientBeginResolveByBillingProfileOptions) (resp azfake.PollerResponder[armbilling.RoleAssignmentsClientResolveByBillingProfileResponse], errResp azfake.ErrorResponder)
+
+	// BeginResolveByCustomer is the fake for method RoleAssignmentsClient.BeginResolveByCustomer
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginResolveByCustomer func(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, options *armbilling.RoleAssignmentsClientBeginResolveByCustomerOptions) (resp azfake.PollerResponder[armbilling.RoleAssignmentsClientResolveByCustomerResponse], errResp azfake.ErrorResponder)
+
+	// BeginResolveByInvoiceSection is the fake for method RoleAssignmentsClient.BeginResolveByInvoiceSection
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginResolveByInvoiceSection func(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, options *armbilling.RoleAssignmentsClientBeginResolveByInvoiceSectionOptions) (resp azfake.PollerResponder[armbilling.RoleAssignmentsClientResolveByInvoiceSectionResponse], errResp azfake.ErrorResponder)
 }
 
 // NewRoleAssignmentsServerTransport creates a new instance of RoleAssignmentsServerTransport with the provided implementation.
@@ -66,20 +148,48 @@ type RoleAssignmentsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewRoleAssignmentsServerTransport(srv *RoleAssignmentsServer) *RoleAssignmentsServerTransport {
 	return &RoleAssignmentsServerTransport{
-		srv:                          srv,
-		newListByBillingAccountPager: newTracker[azfake.PagerResponder[armbilling.RoleAssignmentsClientListByBillingAccountResponse]](),
-		newListByBillingProfilePager: newTracker[azfake.PagerResponder[armbilling.RoleAssignmentsClientListByBillingProfileResponse]](),
-		newListByInvoiceSectionPager: newTracker[azfake.PagerResponder[armbilling.RoleAssignmentsClientListByInvoiceSectionResponse]](),
+		srv:                                    srv,
+		beginCreateByBillingAccount:            newTracker[azfake.PollerResponder[armbilling.RoleAssignmentsClientCreateByBillingAccountResponse]](),
+		beginCreateByBillingProfile:            newTracker[azfake.PollerResponder[armbilling.RoleAssignmentsClientCreateByBillingProfileResponse]](),
+		beginCreateByCustomer:                  newTracker[azfake.PollerResponder[armbilling.RoleAssignmentsClientCreateByCustomerResponse]](),
+		beginCreateByInvoiceSection:            newTracker[azfake.PollerResponder[armbilling.RoleAssignmentsClientCreateByInvoiceSectionResponse]](),
+		beginCreateOrUpdateByBillingAccount:    newTracker[azfake.PollerResponder[armbilling.RoleAssignmentsClientCreateOrUpdateByBillingAccountResponse]](),
+		beginCreateOrUpdateByDepartment:        newTracker[azfake.PollerResponder[armbilling.RoleAssignmentsClientCreateOrUpdateByDepartmentResponse]](),
+		beginCreateOrUpdateByEnrollmentAccount: newTracker[azfake.PollerResponder[armbilling.RoleAssignmentsClientCreateOrUpdateByEnrollmentAccountResponse]](),
+		newListByBillingAccountPager:           newTracker[azfake.PagerResponder[armbilling.RoleAssignmentsClientListByBillingAccountResponse]](),
+		newListByBillingProfilePager:           newTracker[azfake.PagerResponder[armbilling.RoleAssignmentsClientListByBillingProfileResponse]](),
+		newListByCustomerPager:                 newTracker[azfake.PagerResponder[armbilling.RoleAssignmentsClientListByCustomerResponse]](),
+		newListByDepartmentPager:               newTracker[azfake.PagerResponder[armbilling.RoleAssignmentsClientListByDepartmentResponse]](),
+		newListByEnrollmentAccountPager:        newTracker[azfake.PagerResponder[armbilling.RoleAssignmentsClientListByEnrollmentAccountResponse]](),
+		newListByInvoiceSectionPager:           newTracker[azfake.PagerResponder[armbilling.RoleAssignmentsClientListByInvoiceSectionResponse]](),
+		beginResolveByBillingAccount:           newTracker[azfake.PollerResponder[armbilling.RoleAssignmentsClientResolveByBillingAccountResponse]](),
+		beginResolveByBillingProfile:           newTracker[azfake.PollerResponder[armbilling.RoleAssignmentsClientResolveByBillingProfileResponse]](),
+		beginResolveByCustomer:                 newTracker[azfake.PollerResponder[armbilling.RoleAssignmentsClientResolveByCustomerResponse]](),
+		beginResolveByInvoiceSection:           newTracker[azfake.PollerResponder[armbilling.RoleAssignmentsClientResolveByInvoiceSectionResponse]](),
 	}
 }
 
 // RoleAssignmentsServerTransport connects instances of armbilling.RoleAssignmentsClient to instances of RoleAssignmentsServer.
 // Don't use this type directly, use NewRoleAssignmentsServerTransport instead.
 type RoleAssignmentsServerTransport struct {
-	srv                          *RoleAssignmentsServer
-	newListByBillingAccountPager *tracker[azfake.PagerResponder[armbilling.RoleAssignmentsClientListByBillingAccountResponse]]
-	newListByBillingProfilePager *tracker[azfake.PagerResponder[armbilling.RoleAssignmentsClientListByBillingProfileResponse]]
-	newListByInvoiceSectionPager *tracker[azfake.PagerResponder[armbilling.RoleAssignmentsClientListByInvoiceSectionResponse]]
+	srv                                    *RoleAssignmentsServer
+	beginCreateByBillingAccount            *tracker[azfake.PollerResponder[armbilling.RoleAssignmentsClientCreateByBillingAccountResponse]]
+	beginCreateByBillingProfile            *tracker[azfake.PollerResponder[armbilling.RoleAssignmentsClientCreateByBillingProfileResponse]]
+	beginCreateByCustomer                  *tracker[azfake.PollerResponder[armbilling.RoleAssignmentsClientCreateByCustomerResponse]]
+	beginCreateByInvoiceSection            *tracker[azfake.PollerResponder[armbilling.RoleAssignmentsClientCreateByInvoiceSectionResponse]]
+	beginCreateOrUpdateByBillingAccount    *tracker[azfake.PollerResponder[armbilling.RoleAssignmentsClientCreateOrUpdateByBillingAccountResponse]]
+	beginCreateOrUpdateByDepartment        *tracker[azfake.PollerResponder[armbilling.RoleAssignmentsClientCreateOrUpdateByDepartmentResponse]]
+	beginCreateOrUpdateByEnrollmentAccount *tracker[azfake.PollerResponder[armbilling.RoleAssignmentsClientCreateOrUpdateByEnrollmentAccountResponse]]
+	newListByBillingAccountPager           *tracker[azfake.PagerResponder[armbilling.RoleAssignmentsClientListByBillingAccountResponse]]
+	newListByBillingProfilePager           *tracker[azfake.PagerResponder[armbilling.RoleAssignmentsClientListByBillingProfileResponse]]
+	newListByCustomerPager                 *tracker[azfake.PagerResponder[armbilling.RoleAssignmentsClientListByCustomerResponse]]
+	newListByDepartmentPager               *tracker[azfake.PagerResponder[armbilling.RoleAssignmentsClientListByDepartmentResponse]]
+	newListByEnrollmentAccountPager        *tracker[azfake.PagerResponder[armbilling.RoleAssignmentsClientListByEnrollmentAccountResponse]]
+	newListByInvoiceSectionPager           *tracker[azfake.PagerResponder[armbilling.RoleAssignmentsClientListByInvoiceSectionResponse]]
+	beginResolveByBillingAccount           *tracker[azfake.PollerResponder[armbilling.RoleAssignmentsClientResolveByBillingAccountResponse]]
+	beginResolveByBillingProfile           *tracker[azfake.PollerResponder[armbilling.RoleAssignmentsClientResolveByBillingProfileResponse]]
+	beginResolveByCustomer                 *tracker[azfake.PollerResponder[armbilling.RoleAssignmentsClientResolveByCustomerResponse]]
+	beginResolveByInvoiceSection           *tracker[azfake.PollerResponder[armbilling.RoleAssignmentsClientResolveByInvoiceSectionResponse]]
 }
 
 // Do implements the policy.Transporter interface for RoleAssignmentsServerTransport.
@@ -94,30 +204,418 @@ func (r *RoleAssignmentsServerTransport) Do(req *http.Request) (*http.Response, 
 	var err error
 
 	switch method {
+	case "RoleAssignmentsClient.BeginCreateByBillingAccount":
+		resp, err = r.dispatchBeginCreateByBillingAccount(req)
+	case "RoleAssignmentsClient.BeginCreateByBillingProfile":
+		resp, err = r.dispatchBeginCreateByBillingProfile(req)
+	case "RoleAssignmentsClient.BeginCreateByCustomer":
+		resp, err = r.dispatchBeginCreateByCustomer(req)
+	case "RoleAssignmentsClient.BeginCreateByInvoiceSection":
+		resp, err = r.dispatchBeginCreateByInvoiceSection(req)
+	case "RoleAssignmentsClient.BeginCreateOrUpdateByBillingAccount":
+		resp, err = r.dispatchBeginCreateOrUpdateByBillingAccount(req)
+	case "RoleAssignmentsClient.BeginCreateOrUpdateByDepartment":
+		resp, err = r.dispatchBeginCreateOrUpdateByDepartment(req)
+	case "RoleAssignmentsClient.BeginCreateOrUpdateByEnrollmentAccount":
+		resp, err = r.dispatchBeginCreateOrUpdateByEnrollmentAccount(req)
 	case "RoleAssignmentsClient.DeleteByBillingAccount":
 		resp, err = r.dispatchDeleteByBillingAccount(req)
 	case "RoleAssignmentsClient.DeleteByBillingProfile":
 		resp, err = r.dispatchDeleteByBillingProfile(req)
+	case "RoleAssignmentsClient.DeleteByCustomer":
+		resp, err = r.dispatchDeleteByCustomer(req)
+	case "RoleAssignmentsClient.DeleteByDepartment":
+		resp, err = r.dispatchDeleteByDepartment(req)
+	case "RoleAssignmentsClient.DeleteByEnrollmentAccount":
+		resp, err = r.dispatchDeleteByEnrollmentAccount(req)
 	case "RoleAssignmentsClient.DeleteByInvoiceSection":
 		resp, err = r.dispatchDeleteByInvoiceSection(req)
 	case "RoleAssignmentsClient.GetByBillingAccount":
 		resp, err = r.dispatchGetByBillingAccount(req)
 	case "RoleAssignmentsClient.GetByBillingProfile":
 		resp, err = r.dispatchGetByBillingProfile(req)
+	case "RoleAssignmentsClient.GetByCustomer":
+		resp, err = r.dispatchGetByCustomer(req)
+	case "RoleAssignmentsClient.GetByDepartment":
+		resp, err = r.dispatchGetByDepartment(req)
+	case "RoleAssignmentsClient.GetByEnrollmentAccount":
+		resp, err = r.dispatchGetByEnrollmentAccount(req)
 	case "RoleAssignmentsClient.GetByInvoiceSection":
 		resp, err = r.dispatchGetByInvoiceSection(req)
 	case "RoleAssignmentsClient.NewListByBillingAccountPager":
 		resp, err = r.dispatchNewListByBillingAccountPager(req)
 	case "RoleAssignmentsClient.NewListByBillingProfilePager":
 		resp, err = r.dispatchNewListByBillingProfilePager(req)
+	case "RoleAssignmentsClient.NewListByCustomerPager":
+		resp, err = r.dispatchNewListByCustomerPager(req)
+	case "RoleAssignmentsClient.NewListByDepartmentPager":
+		resp, err = r.dispatchNewListByDepartmentPager(req)
+	case "RoleAssignmentsClient.NewListByEnrollmentAccountPager":
+		resp, err = r.dispatchNewListByEnrollmentAccountPager(req)
 	case "RoleAssignmentsClient.NewListByInvoiceSectionPager":
 		resp, err = r.dispatchNewListByInvoiceSectionPager(req)
+	case "RoleAssignmentsClient.BeginResolveByBillingAccount":
+		resp, err = r.dispatchBeginResolveByBillingAccount(req)
+	case "RoleAssignmentsClient.BeginResolveByBillingProfile":
+		resp, err = r.dispatchBeginResolveByBillingProfile(req)
+	case "RoleAssignmentsClient.BeginResolveByCustomer":
+		resp, err = r.dispatchBeginResolveByCustomer(req)
+	case "RoleAssignmentsClient.BeginResolveByInvoiceSection":
+		resp, err = r.dispatchBeginResolveByInvoiceSection(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
 	}
 
 	if err != nil {
 		return nil, err
+	}
+
+	return resp, nil
+}
+
+func (r *RoleAssignmentsServerTransport) dispatchBeginCreateByBillingAccount(req *http.Request) (*http.Response, error) {
+	if r.srv.BeginCreateByBillingAccount == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateByBillingAccount not implemented")}
+	}
+	beginCreateByBillingAccount := r.beginCreateByBillingAccount.get(req)
+	if beginCreateByBillingAccount == nil {
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/createBillingRoleAssignment`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 1 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armbilling.RoleAssignmentProperties](req)
+		if err != nil {
+			return nil, err
+		}
+		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginCreateByBillingAccount(req.Context(), billingAccountNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCreateByBillingAccount = &respr
+		r.beginCreateByBillingAccount.add(req, beginCreateByBillingAccount)
+	}
+
+	resp, err := server.PollerResponderNext(beginCreateByBillingAccount, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		r.beginCreateByBillingAccount.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginCreateByBillingAccount) {
+		r.beginCreateByBillingAccount.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (r *RoleAssignmentsServerTransport) dispatchBeginCreateByBillingProfile(req *http.Request) (*http.Response, error) {
+	if r.srv.BeginCreateByBillingProfile == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateByBillingProfile not implemented")}
+	}
+	beginCreateByBillingProfile := r.beginCreateByBillingProfile.get(req)
+	if beginCreateByBillingProfile == nil {
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/createBillingRoleAssignment`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armbilling.RoleAssignmentProperties](req)
+		if err != nil {
+			return nil, err
+		}
+		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		billingProfileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingProfileName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginCreateByBillingProfile(req.Context(), billingAccountNameParam, billingProfileNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCreateByBillingProfile = &respr
+		r.beginCreateByBillingProfile.add(req, beginCreateByBillingProfile)
+	}
+
+	resp, err := server.PollerResponderNext(beginCreateByBillingProfile, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		r.beginCreateByBillingProfile.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginCreateByBillingProfile) {
+		r.beginCreateByBillingProfile.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (r *RoleAssignmentsServerTransport) dispatchBeginCreateByCustomer(req *http.Request) (*http.Response, error) {
+	if r.srv.BeginCreateByCustomer == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateByCustomer not implemented")}
+	}
+	beginCreateByCustomer := r.beginCreateByCustomer.get(req)
+	if beginCreateByCustomer == nil {
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customers/(?P<customerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/createBillingRoleAssignment`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armbilling.RoleAssignmentProperties](req)
+		if err != nil {
+			return nil, err
+		}
+		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		billingProfileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingProfileName")])
+		if err != nil {
+			return nil, err
+		}
+		customerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("customerName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginCreateByCustomer(req.Context(), billingAccountNameParam, billingProfileNameParam, customerNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCreateByCustomer = &respr
+		r.beginCreateByCustomer.add(req, beginCreateByCustomer)
+	}
+
+	resp, err := server.PollerResponderNext(beginCreateByCustomer, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		r.beginCreateByCustomer.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginCreateByCustomer) {
+		r.beginCreateByCustomer.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (r *RoleAssignmentsServerTransport) dispatchBeginCreateByInvoiceSection(req *http.Request) (*http.Response, error) {
+	if r.srv.BeginCreateByInvoiceSection == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateByInvoiceSection not implemented")}
+	}
+	beginCreateByInvoiceSection := r.beginCreateByInvoiceSection.get(req)
+	if beginCreateByInvoiceSection == nil {
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/invoiceSections/(?P<invoiceSectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/createBillingRoleAssignment`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armbilling.RoleAssignmentProperties](req)
+		if err != nil {
+			return nil, err
+		}
+		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		billingProfileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingProfileName")])
+		if err != nil {
+			return nil, err
+		}
+		invoiceSectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("invoiceSectionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginCreateByInvoiceSection(req.Context(), billingAccountNameParam, billingProfileNameParam, invoiceSectionNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCreateByInvoiceSection = &respr
+		r.beginCreateByInvoiceSection.add(req, beginCreateByInvoiceSection)
+	}
+
+	resp, err := server.PollerResponderNext(beginCreateByInvoiceSection, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		r.beginCreateByInvoiceSection.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginCreateByInvoiceSection) {
+		r.beginCreateByInvoiceSection.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (r *RoleAssignmentsServerTransport) dispatchBeginCreateOrUpdateByBillingAccount(req *http.Request) (*http.Response, error) {
+	if r.srv.BeginCreateOrUpdateByBillingAccount == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdateByBillingAccount not implemented")}
+	}
+	beginCreateOrUpdateByBillingAccount := r.beginCreateOrUpdateByBillingAccount.get(req)
+	if beginCreateOrUpdateByBillingAccount == nil {
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleAssignments/(?P<billingRoleAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armbilling.RoleAssignment](req)
+		if err != nil {
+			return nil, err
+		}
+		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		billingRoleAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingRoleAssignmentName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginCreateOrUpdateByBillingAccount(req.Context(), billingAccountNameParam, billingRoleAssignmentNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCreateOrUpdateByBillingAccount = &respr
+		r.beginCreateOrUpdateByBillingAccount.add(req, beginCreateOrUpdateByBillingAccount)
+	}
+
+	resp, err := server.PollerResponderNext(beginCreateOrUpdateByBillingAccount, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		r.beginCreateOrUpdateByBillingAccount.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginCreateOrUpdateByBillingAccount) {
+		r.beginCreateOrUpdateByBillingAccount.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (r *RoleAssignmentsServerTransport) dispatchBeginCreateOrUpdateByDepartment(req *http.Request) (*http.Response, error) {
+	if r.srv.BeginCreateOrUpdateByDepartment == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdateByDepartment not implemented")}
+	}
+	beginCreateOrUpdateByDepartment := r.beginCreateOrUpdateByDepartment.get(req)
+	if beginCreateOrUpdateByDepartment == nil {
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/departments/(?P<departmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleAssignments/(?P<billingRoleAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armbilling.RoleAssignment](req)
+		if err != nil {
+			return nil, err
+		}
+		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		departmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("departmentName")])
+		if err != nil {
+			return nil, err
+		}
+		billingRoleAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingRoleAssignmentName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginCreateOrUpdateByDepartment(req.Context(), billingAccountNameParam, departmentNameParam, billingRoleAssignmentNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCreateOrUpdateByDepartment = &respr
+		r.beginCreateOrUpdateByDepartment.add(req, beginCreateOrUpdateByDepartment)
+	}
+
+	resp, err := server.PollerResponderNext(beginCreateOrUpdateByDepartment, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		r.beginCreateOrUpdateByDepartment.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginCreateOrUpdateByDepartment) {
+		r.beginCreateOrUpdateByDepartment.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (r *RoleAssignmentsServerTransport) dispatchBeginCreateOrUpdateByEnrollmentAccount(req *http.Request) (*http.Response, error) {
+	if r.srv.BeginCreateOrUpdateByEnrollmentAccount == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdateByEnrollmentAccount not implemented")}
+	}
+	beginCreateOrUpdateByEnrollmentAccount := r.beginCreateOrUpdateByEnrollmentAccount.get(req)
+	if beginCreateOrUpdateByEnrollmentAccount == nil {
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enrollmentAccounts/(?P<enrollmentAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleAssignments/(?P<billingRoleAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armbilling.RoleAssignment](req)
+		if err != nil {
+			return nil, err
+		}
+		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		enrollmentAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("enrollmentAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		billingRoleAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingRoleAssignmentName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginCreateOrUpdateByEnrollmentAccount(req.Context(), billingAccountNameParam, enrollmentAccountNameParam, billingRoleAssignmentNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCreateOrUpdateByEnrollmentAccount = &respr
+		r.beginCreateOrUpdateByEnrollmentAccount.add(req, beginCreateOrUpdateByEnrollmentAccount)
+	}
+
+	resp, err := server.PollerResponderNext(beginCreateOrUpdateByEnrollmentAccount, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		r.beginCreateOrUpdateByEnrollmentAccount.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginCreateOrUpdateByEnrollmentAccount) {
+		r.beginCreateOrUpdateByEnrollmentAccount.remove(req)
 	}
 
 	return resp, nil
@@ -146,10 +644,10 @@ func (r *RoleAssignmentsServerTransport) dispatchDeleteByBillingAccount(req *htt
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RoleAssignment, req)
+	resp, err := server.NewResponse(respContent, req, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -183,10 +681,125 @@ func (r *RoleAssignmentsServerTransport) dispatchDeleteByBillingProfile(req *htt
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RoleAssignment, req)
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (r *RoleAssignmentsServerTransport) dispatchDeleteByCustomer(req *http.Request) (*http.Response, error) {
+	if r.srv.DeleteByCustomer == nil {
+		return nil, &nonRetriableError{errors.New("fake for method DeleteByCustomer not implemented")}
+	}
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customers/(?P<customerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleAssignments/(?P<billingRoleAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+	if err != nil {
+		return nil, err
+	}
+	billingProfileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingProfileName")])
+	if err != nil {
+		return nil, err
+	}
+	customerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("customerName")])
+	if err != nil {
+		return nil, err
+	}
+	billingRoleAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingRoleAssignmentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.DeleteByCustomer(req.Context(), billingAccountNameParam, billingProfileNameParam, customerNameParam, billingRoleAssignmentNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (r *RoleAssignmentsServerTransport) dispatchDeleteByDepartment(req *http.Request) (*http.Response, error) {
+	if r.srv.DeleteByDepartment == nil {
+		return nil, &nonRetriableError{errors.New("fake for method DeleteByDepartment not implemented")}
+	}
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/departments/(?P<departmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleAssignments/(?P<billingRoleAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+	if err != nil {
+		return nil, err
+	}
+	departmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("departmentName")])
+	if err != nil {
+		return nil, err
+	}
+	billingRoleAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingRoleAssignmentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.DeleteByDepartment(req.Context(), billingAccountNameParam, departmentNameParam, billingRoleAssignmentNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (r *RoleAssignmentsServerTransport) dispatchDeleteByEnrollmentAccount(req *http.Request) (*http.Response, error) {
+	if r.srv.DeleteByEnrollmentAccount == nil {
+		return nil, &nonRetriableError{errors.New("fake for method DeleteByEnrollmentAccount not implemented")}
+	}
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enrollmentAccounts/(?P<enrollmentAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleAssignments/(?P<billingRoleAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+	if err != nil {
+		return nil, err
+	}
+	enrollmentAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("enrollmentAccountName")])
+	if err != nil {
+		return nil, err
+	}
+	billingRoleAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingRoleAssignmentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.DeleteByEnrollmentAccount(req.Context(), billingAccountNameParam, enrollmentAccountNameParam, billingRoleAssignmentNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -224,10 +837,10 @@ func (r *RoleAssignmentsServerTransport) dispatchDeleteByInvoiceSection(req *htt
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RoleAssignment, req)
+	resp, err := server.NewResponse(respContent, req, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -304,6 +917,121 @@ func (r *RoleAssignmentsServerTransport) dispatchGetByBillingProfile(req *http.R
 	return resp, nil
 }
 
+func (r *RoleAssignmentsServerTransport) dispatchGetByCustomer(req *http.Request) (*http.Response, error) {
+	if r.srv.GetByCustomer == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetByCustomer not implemented")}
+	}
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customers/(?P<customerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleAssignments/(?P<billingRoleAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+	if err != nil {
+		return nil, err
+	}
+	billingProfileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingProfileName")])
+	if err != nil {
+		return nil, err
+	}
+	customerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("customerName")])
+	if err != nil {
+		return nil, err
+	}
+	billingRoleAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingRoleAssignmentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.GetByCustomer(req.Context(), billingAccountNameParam, billingProfileNameParam, customerNameParam, billingRoleAssignmentNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RoleAssignment, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (r *RoleAssignmentsServerTransport) dispatchGetByDepartment(req *http.Request) (*http.Response, error) {
+	if r.srv.GetByDepartment == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetByDepartment not implemented")}
+	}
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/departments/(?P<departmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleAssignments/(?P<billingRoleAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+	if err != nil {
+		return nil, err
+	}
+	departmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("departmentName")])
+	if err != nil {
+		return nil, err
+	}
+	billingRoleAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingRoleAssignmentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.GetByDepartment(req.Context(), billingAccountNameParam, departmentNameParam, billingRoleAssignmentNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RoleAssignment, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (r *RoleAssignmentsServerTransport) dispatchGetByEnrollmentAccount(req *http.Request) (*http.Response, error) {
+	if r.srv.GetByEnrollmentAccount == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetByEnrollmentAccount not implemented")}
+	}
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enrollmentAccounts/(?P<enrollmentAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleAssignments/(?P<billingRoleAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+	if err != nil {
+		return nil, err
+	}
+	enrollmentAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("enrollmentAccountName")])
+	if err != nil {
+		return nil, err
+	}
+	billingRoleAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingRoleAssignmentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.GetByEnrollmentAccount(req.Context(), billingAccountNameParam, enrollmentAccountNameParam, billingRoleAssignmentNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RoleAssignment, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (r *RoleAssignmentsServerTransport) dispatchGetByInvoiceSection(req *http.Request) (*http.Response, error) {
 	if r.srv.GetByInvoiceSection == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetByInvoiceSection not implemented")}
@@ -357,11 +1085,53 @@ func (r *RoleAssignmentsServerTransport) dispatchNewListByBillingAccountPager(re
 		if matches == nil || len(matches) < 1 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
 		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
 		if err != nil {
 			return nil, err
 		}
-		resp := r.srv.NewListByBillingAccountPager(billingAccountNameParam, nil)
+		filterUnescaped, err := url.QueryUnescape(qp.Get("filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
+		topUnescaped, err := url.QueryUnescape(qp.Get("top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		skipUnescaped, err := url.QueryUnescape(qp.Get("skip"))
+		if err != nil {
+			return nil, err
+		}
+		skipParam, err := parseOptional(skipUnescaped, func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armbilling.RoleAssignmentsClientListByBillingAccountOptions
+		if filterParam != nil || topParam != nil || skipParam != nil {
+			options = &armbilling.RoleAssignmentsClientListByBillingAccountOptions{
+				Filter: filterParam,
+				Top:    topParam,
+				Skip:   skipParam,
+			}
+		}
+		resp := r.srv.NewListByBillingAccountPager(billingAccountNameParam, options)
 		newListByBillingAccountPager = &resp
 		r.newListByBillingAccountPager.add(req, newListByBillingAccountPager)
 		server.PagerResponderInjectNextLinks(newListByBillingAccountPager, req, func(page *armbilling.RoleAssignmentsClientListByBillingAccountResponse, createLink func() string) {
@@ -394,6 +1164,7 @@ func (r *RoleAssignmentsServerTransport) dispatchNewListByBillingProfilePager(re
 		if matches == nil || len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
 		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
 		if err != nil {
 			return nil, err
@@ -402,7 +1173,48 @@ func (r *RoleAssignmentsServerTransport) dispatchNewListByBillingProfilePager(re
 		if err != nil {
 			return nil, err
 		}
-		resp := r.srv.NewListByBillingProfilePager(billingAccountNameParam, billingProfileNameParam, nil)
+		filterUnescaped, err := url.QueryUnescape(qp.Get("filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
+		topUnescaped, err := url.QueryUnescape(qp.Get("top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		skipUnescaped, err := url.QueryUnescape(qp.Get("skip"))
+		if err != nil {
+			return nil, err
+		}
+		skipParam, err := parseOptional(skipUnescaped, func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armbilling.RoleAssignmentsClientListByBillingProfileOptions
+		if filterParam != nil || topParam != nil || skipParam != nil {
+			options = &armbilling.RoleAssignmentsClientListByBillingProfileOptions{
+				Filter: filterParam,
+				Top:    topParam,
+				Skip:   skipParam,
+			}
+		}
+		resp := r.srv.NewListByBillingProfilePager(billingAccountNameParam, billingProfileNameParam, options)
 		newListByBillingProfilePager = &resp
 		r.newListByBillingProfilePager.add(req, newListByBillingProfilePager)
 		server.PagerResponderInjectNextLinks(newListByBillingProfilePager, req, func(page *armbilling.RoleAssignmentsClientListByBillingProfileResponse, createLink func() string) {
@@ -423,6 +1235,175 @@ func (r *RoleAssignmentsServerTransport) dispatchNewListByBillingProfilePager(re
 	return resp, nil
 }
 
+func (r *RoleAssignmentsServerTransport) dispatchNewListByCustomerPager(req *http.Request) (*http.Response, error) {
+	if r.srv.NewListByCustomerPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByCustomerPager not implemented")}
+	}
+	newListByCustomerPager := r.newListByCustomerPager.get(req)
+	if newListByCustomerPager == nil {
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customers/(?P<customerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleAssignments`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		billingProfileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingProfileName")])
+		if err != nil {
+			return nil, err
+		}
+		customerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("customerName")])
+		if err != nil {
+			return nil, err
+		}
+		filterUnescaped, err := url.QueryUnescape(qp.Get("filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
+		topUnescaped, err := url.QueryUnescape(qp.Get("top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		skipUnescaped, err := url.QueryUnescape(qp.Get("skip"))
+		if err != nil {
+			return nil, err
+		}
+		skipParam, err := parseOptional(skipUnescaped, func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armbilling.RoleAssignmentsClientListByCustomerOptions
+		if filterParam != nil || topParam != nil || skipParam != nil {
+			options = &armbilling.RoleAssignmentsClientListByCustomerOptions{
+				Filter: filterParam,
+				Top:    topParam,
+				Skip:   skipParam,
+			}
+		}
+		resp := r.srv.NewListByCustomerPager(billingAccountNameParam, billingProfileNameParam, customerNameParam, options)
+		newListByCustomerPager = &resp
+		r.newListByCustomerPager.add(req, newListByCustomerPager)
+		server.PagerResponderInjectNextLinks(newListByCustomerPager, req, func(page *armbilling.RoleAssignmentsClientListByCustomerResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByCustomerPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		r.newListByCustomerPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByCustomerPager) {
+		r.newListByCustomerPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (r *RoleAssignmentsServerTransport) dispatchNewListByDepartmentPager(req *http.Request) (*http.Response, error) {
+	if r.srv.NewListByDepartmentPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByDepartmentPager not implemented")}
+	}
+	newListByDepartmentPager := r.newListByDepartmentPager.get(req)
+	if newListByDepartmentPager == nil {
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/departments/(?P<departmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleAssignments`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		departmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("departmentName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := r.srv.NewListByDepartmentPager(billingAccountNameParam, departmentNameParam, nil)
+		newListByDepartmentPager = &resp
+		r.newListByDepartmentPager.add(req, newListByDepartmentPager)
+		server.PagerResponderInjectNextLinks(newListByDepartmentPager, req, func(page *armbilling.RoleAssignmentsClientListByDepartmentResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByDepartmentPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		r.newListByDepartmentPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByDepartmentPager) {
+		r.newListByDepartmentPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (r *RoleAssignmentsServerTransport) dispatchNewListByEnrollmentAccountPager(req *http.Request) (*http.Response, error) {
+	if r.srv.NewListByEnrollmentAccountPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByEnrollmentAccountPager not implemented")}
+	}
+	newListByEnrollmentAccountPager := r.newListByEnrollmentAccountPager.get(req)
+	if newListByEnrollmentAccountPager == nil {
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enrollmentAccounts/(?P<enrollmentAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingRoleAssignments`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		enrollmentAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("enrollmentAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := r.srv.NewListByEnrollmentAccountPager(billingAccountNameParam, enrollmentAccountNameParam, nil)
+		newListByEnrollmentAccountPager = &resp
+		r.newListByEnrollmentAccountPager.add(req, newListByEnrollmentAccountPager)
+		server.PagerResponderInjectNextLinks(newListByEnrollmentAccountPager, req, func(page *armbilling.RoleAssignmentsClientListByEnrollmentAccountResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByEnrollmentAccountPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		r.newListByEnrollmentAccountPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByEnrollmentAccountPager) {
+		r.newListByEnrollmentAccountPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (r *RoleAssignmentsServerTransport) dispatchNewListByInvoiceSectionPager(req *http.Request) (*http.Response, error) {
 	if r.srv.NewListByInvoiceSectionPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByInvoiceSectionPager not implemented")}
@@ -435,6 +1416,7 @@ func (r *RoleAssignmentsServerTransport) dispatchNewListByInvoiceSectionPager(re
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
 		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
 		if err != nil {
 			return nil, err
@@ -447,7 +1429,48 @@ func (r *RoleAssignmentsServerTransport) dispatchNewListByInvoiceSectionPager(re
 		if err != nil {
 			return nil, err
 		}
-		resp := r.srv.NewListByInvoiceSectionPager(billingAccountNameParam, billingProfileNameParam, invoiceSectionNameParam, nil)
+		filterUnescaped, err := url.QueryUnescape(qp.Get("filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
+		topUnescaped, err := url.QueryUnescape(qp.Get("top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		skipUnescaped, err := url.QueryUnescape(qp.Get("skip"))
+		if err != nil {
+			return nil, err
+		}
+		skipParam, err := parseOptional(skipUnescaped, func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armbilling.RoleAssignmentsClientListByInvoiceSectionOptions
+		if filterParam != nil || topParam != nil || skipParam != nil {
+			options = &armbilling.RoleAssignmentsClientListByInvoiceSectionOptions{
+				Filter: filterParam,
+				Top:    topParam,
+				Skip:   skipParam,
+			}
+		}
+		resp := r.srv.NewListByInvoiceSectionPager(billingAccountNameParam, billingProfileNameParam, invoiceSectionNameParam, options)
 		newListByInvoiceSectionPager = &resp
 		r.newListByInvoiceSectionPager.add(req, newListByInvoiceSectionPager)
 		server.PagerResponderInjectNextLinks(newListByInvoiceSectionPager, req, func(page *armbilling.RoleAssignmentsClientListByInvoiceSectionResponse, createLink func() string) {
@@ -465,5 +1488,269 @@ func (r *RoleAssignmentsServerTransport) dispatchNewListByInvoiceSectionPager(re
 	if !server.PagerResponderMore(newListByInvoiceSectionPager) {
 		r.newListByInvoiceSectionPager.remove(req)
 	}
+	return resp, nil
+}
+
+func (r *RoleAssignmentsServerTransport) dispatchBeginResolveByBillingAccount(req *http.Request) (*http.Response, error) {
+	if r.srv.BeginResolveByBillingAccount == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginResolveByBillingAccount not implemented")}
+	}
+	beginResolveByBillingAccount := r.beginResolveByBillingAccount.get(req)
+	if beginResolveByBillingAccount == nil {
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resolveBillingRoleAssignments`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 1 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		resolveScopeDisplayNamesUnescaped, err := url.QueryUnescape(qp.Get("resolveScopeDisplayNames"))
+		if err != nil {
+			return nil, err
+		}
+		resolveScopeDisplayNamesParam, err := parseOptional(resolveScopeDisplayNamesUnescaped, strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		filterUnescaped, err := url.QueryUnescape(qp.Get("filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
+		var options *armbilling.RoleAssignmentsClientBeginResolveByBillingAccountOptions
+		if resolveScopeDisplayNamesParam != nil || filterParam != nil {
+			options = &armbilling.RoleAssignmentsClientBeginResolveByBillingAccountOptions{
+				ResolveScopeDisplayNames: resolveScopeDisplayNamesParam,
+				Filter:                   filterParam,
+			}
+		}
+		respr, errRespr := r.srv.BeginResolveByBillingAccount(req.Context(), billingAccountNameParam, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginResolveByBillingAccount = &respr
+		r.beginResolveByBillingAccount.add(req, beginResolveByBillingAccount)
+	}
+
+	resp, err := server.PollerResponderNext(beginResolveByBillingAccount, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		r.beginResolveByBillingAccount.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginResolveByBillingAccount) {
+		r.beginResolveByBillingAccount.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (r *RoleAssignmentsServerTransport) dispatchBeginResolveByBillingProfile(req *http.Request) (*http.Response, error) {
+	if r.srv.BeginResolveByBillingProfile == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginResolveByBillingProfile not implemented")}
+	}
+	beginResolveByBillingProfile := r.beginResolveByBillingProfile.get(req)
+	if beginResolveByBillingProfile == nil {
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resolveBillingRoleAssignments`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		billingProfileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingProfileName")])
+		if err != nil {
+			return nil, err
+		}
+		resolveScopeDisplayNamesUnescaped, err := url.QueryUnescape(qp.Get("resolveScopeDisplayNames"))
+		if err != nil {
+			return nil, err
+		}
+		resolveScopeDisplayNamesParam, err := parseOptional(resolveScopeDisplayNamesUnescaped, strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		filterUnescaped, err := url.QueryUnescape(qp.Get("filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
+		var options *armbilling.RoleAssignmentsClientBeginResolveByBillingProfileOptions
+		if resolveScopeDisplayNamesParam != nil || filterParam != nil {
+			options = &armbilling.RoleAssignmentsClientBeginResolveByBillingProfileOptions{
+				ResolveScopeDisplayNames: resolveScopeDisplayNamesParam,
+				Filter:                   filterParam,
+			}
+		}
+		respr, errRespr := r.srv.BeginResolveByBillingProfile(req.Context(), billingAccountNameParam, billingProfileNameParam, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginResolveByBillingProfile = &respr
+		r.beginResolveByBillingProfile.add(req, beginResolveByBillingProfile)
+	}
+
+	resp, err := server.PollerResponderNext(beginResolveByBillingProfile, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		r.beginResolveByBillingProfile.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginResolveByBillingProfile) {
+		r.beginResolveByBillingProfile.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (r *RoleAssignmentsServerTransport) dispatchBeginResolveByCustomer(req *http.Request) (*http.Response, error) {
+	if r.srv.BeginResolveByCustomer == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginResolveByCustomer not implemented")}
+	}
+	beginResolveByCustomer := r.beginResolveByCustomer.get(req)
+	if beginResolveByCustomer == nil {
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customers/(?P<customerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resolveBillingRoleAssignments`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		billingProfileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingProfileName")])
+		if err != nil {
+			return nil, err
+		}
+		customerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("customerName")])
+		if err != nil {
+			return nil, err
+		}
+		resolveScopeDisplayNamesUnescaped, err := url.QueryUnescape(qp.Get("resolveScopeDisplayNames"))
+		if err != nil {
+			return nil, err
+		}
+		resolveScopeDisplayNamesParam, err := parseOptional(resolveScopeDisplayNamesUnescaped, strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		filterUnescaped, err := url.QueryUnescape(qp.Get("filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
+		var options *armbilling.RoleAssignmentsClientBeginResolveByCustomerOptions
+		if resolveScopeDisplayNamesParam != nil || filterParam != nil {
+			options = &armbilling.RoleAssignmentsClientBeginResolveByCustomerOptions{
+				ResolveScopeDisplayNames: resolveScopeDisplayNamesParam,
+				Filter:                   filterParam,
+			}
+		}
+		respr, errRespr := r.srv.BeginResolveByCustomer(req.Context(), billingAccountNameParam, billingProfileNameParam, customerNameParam, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginResolveByCustomer = &respr
+		r.beginResolveByCustomer.add(req, beginResolveByCustomer)
+	}
+
+	resp, err := server.PollerResponderNext(beginResolveByCustomer, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		r.beginResolveByCustomer.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginResolveByCustomer) {
+		r.beginResolveByCustomer.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (r *RoleAssignmentsServerTransport) dispatchBeginResolveByInvoiceSection(req *http.Request) (*http.Response, error) {
+	if r.srv.BeginResolveByInvoiceSection == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginResolveByInvoiceSection not implemented")}
+	}
+	beginResolveByInvoiceSection := r.beginResolveByInvoiceSection.get(req)
+	if beginResolveByInvoiceSection == nil {
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/invoiceSections/(?P<invoiceSectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resolveBillingRoleAssignments`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		billingProfileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingProfileName")])
+		if err != nil {
+			return nil, err
+		}
+		invoiceSectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("invoiceSectionName")])
+		if err != nil {
+			return nil, err
+		}
+		resolveScopeDisplayNamesUnescaped, err := url.QueryUnescape(qp.Get("resolveScopeDisplayNames"))
+		if err != nil {
+			return nil, err
+		}
+		resolveScopeDisplayNamesParam, err := parseOptional(resolveScopeDisplayNamesUnescaped, strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		filterUnescaped, err := url.QueryUnescape(qp.Get("filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
+		var options *armbilling.RoleAssignmentsClientBeginResolveByInvoiceSectionOptions
+		if resolveScopeDisplayNamesParam != nil || filterParam != nil {
+			options = &armbilling.RoleAssignmentsClientBeginResolveByInvoiceSectionOptions{
+				ResolveScopeDisplayNames: resolveScopeDisplayNamesParam,
+				Filter:                   filterParam,
+			}
+		}
+		respr, errRespr := r.srv.BeginResolveByInvoiceSection(req.Context(), billingAccountNameParam, billingProfileNameParam, invoiceSectionNameParam, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginResolveByInvoiceSection = &respr
+		r.beginResolveByInvoiceSection.add(req, beginResolveByInvoiceSection)
+	}
+
+	resp, err := server.PollerResponderNext(beginResolveByInvoiceSection, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		r.beginResolveByInvoiceSection.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginResolveByInvoiceSection) {
+		r.beginResolveByInvoiceSection.remove(req)
+	}
+
 	return resp, nil
 }

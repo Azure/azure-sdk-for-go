@@ -7,7 +7,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 )
@@ -44,14 +43,14 @@ func CopyDir(src, dst string) error {
 
 	// get the collection of directory entries under src.
 	// for each entry build its corresponding path under dst.
-	entries, err := ioutil.ReadDir(src)
+	entries, err := os.ReadDir(src)
 	if err != nil {
 		return err
 	}
 
 	for _, entry := range entries {
 		// skip symlinks
-		if entry.Mode()&os.ModeSymlink != 0 {
+		if entry.Type()&os.ModeSymlink != 0 {
 			continue
 		}
 

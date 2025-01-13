@@ -98,11 +98,19 @@ func (c cosmosOffers) ReplaceThroughputIfExists(
 	readRequestCharge := readResponse.RequestCharge
 	readResponse.ThroughputProperties.offer = properties.offer
 
+	// EnableContentResponseOnWrite enforced to true for metadata operations
+	// Otherwise Offer updates return 404
+	returnResponse := true
+	h := &headerOptionsOverride{
+		enableContentResponseOnWrite: &returnResponse,
+	}
+
 	operationContext := pipelineRequestOptions{
-		resourceType:     resourceTypeOffer,
-		resourceAddress:  readResponse.ThroughputProperties.offerId,
-		isRidBased:       true,
-		isWriteOperation: true,
+		resourceType:          resourceTypeOffer,
+		resourceAddress:       readResponse.ThroughputProperties.offerId,
+		isRidBased:            true,
+		isWriteOperation:      true,
+		headerOptionsOverride: h,
 	}
 
 	path, err := generatePathForNameBased(resourceTypeOffer, readResponse.ThroughputProperties.selfLink, false)

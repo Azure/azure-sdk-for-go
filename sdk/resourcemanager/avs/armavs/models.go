@@ -12,22 +12,25 @@ import "time"
 
 // Addon - An addon resource
 type Addon struct {
-	// The properties of an addon resource
+	// The resource-specific properties for this resource.
 	Properties AddonPropertiesClassification
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // AddonArcProperties - The properties of an Arc addon
 type AddonArcProperties struct {
-	// REQUIRED; The type of private cloud addon
+	// REQUIRED; Addon type
 	AddonType *AddonType
 
 	// The VMware vCenter resource ID
@@ -47,7 +50,7 @@ func (a *AddonArcProperties) GetAddonProperties() *AddonProperties {
 
 // AddonHcxProperties - The properties of an HCX addon
 type AddonHcxProperties struct {
-	// REQUIRED; The type of private cloud addon
+	// REQUIRED; Addon type
 	AddonType *AddonType
 
 	// REQUIRED; The HCX offer, example VMware MaaS Cloud Provider (Enterprise)
@@ -65,18 +68,18 @@ func (a *AddonHcxProperties) GetAddonProperties() *AddonProperties {
 	}
 }
 
-// AddonList - A paged list of addons
+// AddonList - The response of a Addon list operation.
 type AddonList struct {
-	// READ-ONLY; URL to get the next page if any
-	NextLink *string
-
-	// READ-ONLY; The items on a page
+	// REQUIRED; The Addon items on this page
 	Value []*Addon
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // AddonProperties - The properties of an addon
 type AddonProperties struct {
-	// REQUIRED; The type of private cloud addon
+	// REQUIRED; Addon type
 	AddonType *AddonType
 
 	// READ-ONLY; The state of the addon provisioning
@@ -88,7 +91,7 @@ func (a *AddonProperties) GetAddonProperties() *AddonProperties { return a }
 
 // AddonSrmProperties - The properties of a Site Recovery Manager (SRM) addon
 type AddonSrmProperties struct {
-	// REQUIRED; The type of private cloud addon
+	// REQUIRED; Addon type
 	AddonType *AddonType
 
 	// The Site Recovery Manager (SRM) license
@@ -108,7 +111,7 @@ func (a *AddonSrmProperties) GetAddonProperties() *AddonProperties {
 
 // AddonVrProperties - The properties of a vSphere Replication (VR) addon
 type AddonVrProperties struct {
-	// REQUIRED; The type of private cloud addon
+	// REQUIRED; Addon type
 	AddonType *AddonType
 
 	// REQUIRED; The vSphere Replication Server (VRS) count
@@ -170,26 +173,29 @@ type Circuit struct {
 
 // CloudLink - A cloud link resource
 type CloudLink struct {
-	// The properties of a cloud link.
+	// The resource-specific properties for this resource.
 	Properties *CloudLinkProperties
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// CloudLinkList - A paged list of cloud links
+// CloudLinkList - The response of a CloudLink list operation.
 type CloudLinkList struct {
-	// READ-ONLY; URL to get the next page if any
-	NextLink *string
-
-	// READ-ONLY; The items on a page
+	// REQUIRED; The CloudLink items on this page
 	Value []*CloudLink
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // CloudLinkProperties - The properties of a cloud link.
@@ -197,35 +203,41 @@ type CloudLinkProperties struct {
 	// Identifier of the other private cloud participating in the link.
 	LinkedCloud *string
 
+	// READ-ONLY; The provisioning state of the resource.
+	ProvisioningState *CloudLinkProvisioningState
+
 	// READ-ONLY; The state of the cloud link.
 	Status *CloudLinkStatus
 }
 
 // Cluster - A cluster resource
 type Cluster struct {
-	// REQUIRED; The cluster SKU
+	// REQUIRED; The SKU (Stock Keeping Unit) assigned to this resource.
 	SKU *SKU
 
-	// The properties of a cluster resource
+	// The resource-specific properties for this resource.
 	Properties *ClusterProperties
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// ClusterList - A paged list of clusters
+// ClusterList - The response of a Cluster list operation.
 type ClusterList struct {
-	// READ-ONLY; URL to get the next page if any
-	NextLink *string
-
-	// READ-ONLY; The items on a page
+	// REQUIRED; The Cluster items on this page
 	Value []*Cluster
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // ClusterProperties - The properties of a cluster
@@ -235,6 +247,9 @@ type ClusterProperties struct {
 
 	// The hosts
 	Hosts []*string
+
+	// Name of the vsan datastore associated with the cluster
+	VsanDatastoreName *string
 
 	// READ-ONLY; The identity
 	ClusterID *int32
@@ -247,6 +262,9 @@ type ClusterProperties struct {
 type ClusterUpdate struct {
 	// The properties of a cluster resource that may be updated
 	Properties *ClusterUpdateProperties
+
+	// The SKU (Stock Keeping Unit) assigned to this resource.
+	SKU *SKU
 }
 
 // ClusterUpdateProperties - The properties of a cluster that may be updated
@@ -275,32 +293,38 @@ type ClusterZoneList struct {
 
 // Datastore - A datastore resource
 type Datastore struct {
-	// The properties of a datastore resource
+	// The resource-specific properties for this resource.
 	Properties *DatastoreProperties
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// DatastoreList - A paged list of datastores
+// DatastoreList - The response of a Datastore list operation.
 type DatastoreList struct {
-	// READ-ONLY; URL to get the next page if any
-	NextLink *string
-
-	// READ-ONLY; The items on a page
+	// REQUIRED; The Datastore items on this page
 	Value []*Datastore
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // DatastoreProperties - The properties of a datastore
 type DatastoreProperties struct {
 	// An iSCSI volume
 	DiskPoolVolume *DiskPoolVolume
+
+	// An Elastic SAN volume
+	ElasticSanVolume *ElasticSanVolume
 
 	// An Azure NetApp Files volume
 	NetAppVolume *NetAppVolume
@@ -325,6 +349,12 @@ type DiskPoolVolume struct {
 
 	// READ-ONLY; Device path
 	Path *string
+}
+
+// ElasticSanVolume - An Elastic SAN volume from Microsoft.ElasticSan provider
+type ElasticSanVolume struct {
+	// REQUIRED; Azure resource ID of the Elastic SAN Volume
+	TargetID *string
 }
 
 // Encryption - The properties of customer managed encryption key
@@ -359,38 +389,50 @@ type EncryptionKeyVaultProperties struct {
 
 // Endpoints - Endpoint addresses
 type Endpoints struct {
-	// READ-ONLY; Endpoint for the HCX Cloud Manager
+	// READ-ONLY; Endpoint FQDN for the HCX Cloud Manager
 	HcxCloudManager *string
 
-	// READ-ONLY; Endpoint for the NSX-T Data Center manager
+	// READ-ONLY; Endpoint IP for the HCX Cloud Manager
+	HcxCloudManagerIP *string
+
+	// READ-ONLY; Endpoint FQDN for the NSX-T Data Center manager
 	NsxtManager *string
 
-	// READ-ONLY; Endpoint for Virtual Center Server Appliance
+	// READ-ONLY; Endpoint IP for the NSX-T Data Center manager
+	NsxtManagerIP *string
+
+	// READ-ONLY; Endpoint IP for Virtual Center Server Appliance
+	VcenterIP *string
+
+	// READ-ONLY; Endpoint FQDN for Virtual Center Server Appliance
 	Vcsa *string
 }
 
 // ExpressRouteAuthorization - ExpressRoute Circuit Authorization
 type ExpressRouteAuthorization struct {
-	// READ-ONLY; Resource ID.
-	ID *string
-
-	// READ-ONLY; Resource name.
-	Name *string
-
-	// READ-ONLY; The properties of an ExpressRoute Circuit Authorization resource
+	// The resource-specific properties for this resource.
 	Properties *ExpressRouteAuthorizationProperties
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// ExpressRouteAuthorizationList - A paged list of ExpressRoute Circuit Authorizations
+// ExpressRouteAuthorizationList - The response of a ExpressRouteAuthorization list operation.
 type ExpressRouteAuthorizationList struct {
-	// READ-ONLY; URL to get the next page if any
-	NextLink *string
-
-	// READ-ONLY; The items on a page
+	// REQUIRED; The ExpressRouteAuthorization items on this page
 	Value []*ExpressRouteAuthorization
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // ExpressRouteAuthorizationProperties - The properties of an ExpressRoute Circuit Authorization resource
@@ -410,26 +452,29 @@ type ExpressRouteAuthorizationProperties struct {
 
 // GlobalReachConnection - A global reach connection resource
 type GlobalReachConnection struct {
-	// The properties of a global reach connection resource
+	// The resource-specific properties for this resource.
 	Properties *GlobalReachConnectionProperties
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// GlobalReachConnectionList - A paged list of global reach connections
+// GlobalReachConnectionList - The response of a GlobalReachConnection list operation.
 type GlobalReachConnectionList struct {
-	// READ-ONLY; URL to get the next page if any
-	NextLink *string
-
-	// READ-ONLY; The items on a page
+	// REQUIRED; The GlobalReachConnection items on this page
 	Value []*GlobalReachConnection
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // GlobalReachConnectionProperties - The properties of a global reach connection
@@ -455,32 +500,38 @@ type GlobalReachConnectionProperties struct {
 
 // HcxEnterpriseSite - An HCX Enterprise Site resource
 type HcxEnterpriseSite struct {
-	// READ-ONLY; Resource ID.
-	ID *string
-
-	// READ-ONLY; Resource name.
-	Name *string
-
-	// READ-ONLY; The properties of an HCX Enterprise Site resource
+	// The resource-specific properties for this resource.
 	Properties *HcxEnterpriseSiteProperties
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// HcxEnterpriseSiteList - A paged list of HCX Enterprise Sites
+// HcxEnterpriseSiteList - The response of a HcxEnterpriseSite list operation.
 type HcxEnterpriseSiteList struct {
-	// READ-ONLY; URL to get the next page if any
-	NextLink *string
-
-	// READ-ONLY; The items on a page
+	// REQUIRED; The HcxEnterpriseSite items on this page
 	Value []*HcxEnterpriseSite
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // HcxEnterpriseSiteProperties - The properties of an HCX Enterprise Site
 type HcxEnterpriseSiteProperties struct {
 	// READ-ONLY; The activation key
 	ActivationKey *string
+
+	// READ-ONLY; The provisioning state of the resource.
+	ProvisioningState *HcxEnterpriseSiteProvisioningState
 
 	// READ-ONLY; The status of the HCX Enterprise Site
 	Status *HcxEnterpriseSiteStatus
@@ -519,16 +570,40 @@ type IdentitySource struct {
 	Username *string
 }
 
-// LogSpecification - Specifications of the Log for Azure Monitoring
-type LogSpecification struct {
-	// Blob duration of the log
-	BlobDuration *string
+// IscsiPath - An iSCSI path resource
+type IscsiPath struct {
+	// The resource-specific properties for this resource.
+	Properties *IscsiPathProperties
 
-	// Localized friendly display name of the log
-	DisplayName *string
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
 
-	// Name of the log
+	// READ-ONLY; The name of the resource
 	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// IscsiPathListResult - The response of a IscsiPath list operation.
+type IscsiPathListResult struct {
+	// REQUIRED; The IscsiPath items on this page
+	Value []*IscsiPath
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// IscsiPathProperties - The properties of an iSCSI path resource
+type IscsiPathProperties struct {
+	// REQUIRED; CIDR Block for iSCSI path.
+	NetworkBlock *string
+
+	// READ-ONLY; The state of the iSCSI path provisioning
+	ProvisioningState *IscsiPathProvisioningState
 }
 
 // ManagementCluster - The properties of a management cluster
@@ -539,68 +614,14 @@ type ManagementCluster struct {
 	// The hosts
 	Hosts []*string
 
+	// Name of the vsan datastore associated with the cluster
+	VsanDatastoreName *string
+
 	// READ-ONLY; The identity
 	ClusterID *int32
 
 	// READ-ONLY; The state of the cluster provisioning
 	ProvisioningState *ClusterProvisioningState
-}
-
-// MetricDimension - Specifications of the Dimension of metrics
-type MetricDimension struct {
-	// Localized friendly display name of the dimension
-	DisplayName *string
-
-	// Name of the dimension as it appears in MDM
-	InternalName *string
-
-	// Name of the dimension
-	Name *string
-
-	// A boolean flag indicating whether this dimension should be included for the shoebox export scenario
-	ToBeExportedForShoebox *bool
-}
-
-// MetricSpecification - Specifications of the Metrics for Azure Monitoring
-type MetricSpecification struct {
-	// Only provide one value for this field. Valid values: Average, Minimum, Maximum, Total, Count.
-	AggregationType *string
-
-	// Name of the metric category that the metric belongs to. A metric can only belong to a single category.
-	Category *string
-
-	// Dimensions of the metric
-	Dimensions []*MetricDimension
-
-	// Localized friendly description of the metric
-	DisplayDescription *string
-
-	// Localized friendly display name of the metric
-	DisplayName *string
-
-	// Whether or not the service is using regional MDM accounts.
-	EnableRegionalMdmAccount *string
-
-	// Optional. If set to true, then zero will be returned for time duration where no metric is emitted/published.
-	FillGapWithZero *bool
-
-	// Name of the metric
-	Name *string
-
-	// The name of the MDM account.
-	SourceMdmAccount *string
-
-	// The name of the MDM namespace.
-	SourceMdmNamespace *string
-
-	// Supported aggregation types
-	SupportedAggregationTypes []*string
-
-	// Supported time grain types
-	SupportedTimeGrainTypes []*string
-
-	// Unit that makes sense for the metric
-	Unit *string
 }
 
 // NetAppVolume - An Azure NetApp Files volume from Microsoft.NetApp provider
@@ -609,52 +630,53 @@ type NetAppVolume struct {
 	ID *string
 }
 
-// Operation - A REST API operation
+// Operation - Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
-	// Gets or sets a value indicating whether the operation is a data action or not
-	IsDataAction *bool
-
-	// Origin of the operation
-	Origin *string
-
-	// Properties of the operation
-	Properties *OperationProperties
-
-	// READ-ONLY; Contains the localized display information for this operation
+	// Localized display information for this particular operation.
 	Display *OperationDisplay
 
-	// READ-ONLY; Name of the operation being performed on this object
+	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+	ActionType *ActionType
+
+	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
+	// operations.
+	IsDataAction *bool
+
+	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
+	// "Microsoft.Compute/virtualMachines/capture/action"
 	Name *string
+
+	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+	// value is "user,system"
+	Origin *Origin
 }
 
-// OperationDisplay - Contains the localized display information for this operation
+// OperationDisplay - Localized display information for this particular operation.
 type OperationDisplay struct {
-	// READ-ONLY; Localized friendly description for the operation
+	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
 	Description *string
 
-	// READ-ONLY; Localized friendly name for the operation
+	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
+	// Machine", "Restart Virtual Machine".
 	Operation *string
 
-	// READ-ONLY; Localized friendly form of the resource provider name
+	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
+	// Compute".
 	Provider *string
 
-	// READ-ONLY; Localized friendly form of the resource type related to this operation
+	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
+	// Schedule Collections".
 	Resource *string
 }
 
-// OperationList - Pageable list of operations
-type OperationList struct {
-	// READ-ONLY; URL to get the next page if any
+// OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
+// get the next set of results.
+type OperationListResult struct {
+	// READ-ONLY; URL to get the next set of operation list results (if there are any).
 	NextLink *string
 
-	// READ-ONLY; List of operations
+	// READ-ONLY; List of operations supported by the resource provider
 	Value []*Operation
-}
-
-// OperationProperties - Extra Operation properties
-type OperationProperties struct {
-	// Service specifications of the operation
-	ServiceSpecification *ServiceSpecification
 }
 
 // PSCredentialExecutionParameter - a powershell credential object
@@ -662,7 +684,7 @@ type PSCredentialExecutionParameter struct {
 	// REQUIRED; The parameter name
 	Name *string
 
-	// REQUIRED; The type of execution parameter
+	// REQUIRED; script execution parameter type
 	Type *ScriptExecutionParameterType
 
 	// password for login
@@ -680,33 +702,36 @@ func (p *PSCredentialExecutionParameter) GetScriptExecutionParameter() *ScriptEx
 	}
 }
 
-// PlacementPoliciesList - Represents list of placement policies
+// PlacementPoliciesList - The response of a PlacementPolicy list operation.
 type PlacementPoliciesList struct {
-	// READ-ONLY; URL to get the next page if any
-	NextLink *string
-
-	// READ-ONLY; The items on the page
+	// REQUIRED; The PlacementPolicy items on this page
 	Value []*PlacementPolicy
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // PlacementPolicy - A vSphere Distributed Resource Scheduler (DRS) placement policy
 type PlacementPolicy struct {
-	// placement policy properties
+	// The resource-specific properties for this resource.
 	Properties PlacementPolicyPropertiesClassification
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // PlacementPolicyProperties - Abstract placement policy properties
 type PlacementPolicyProperties struct {
-	// REQUIRED; placement policy type
+	// REQUIRED; Placement Policy type
 	Type *PlacementPolicyType
 
 	// Display name of the placement policy
@@ -750,55 +775,61 @@ type PlacementPolicyUpdateProperties struct {
 
 // PrivateCloud - A private cloud resource
 type PrivateCloud struct {
-	// REQUIRED; The private cloud SKU
-	SKU *SKU
-
-	// The identity of the private cloud, if configured.
-	Identity *PrivateCloudIdentity
-
-	// Resource location
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// The properties of a private cloud resource
+	// REQUIRED; The SKU (Stock Keeping Unit) assigned to this resource.
+	SKU *SKU
+
+	// The managed service identities assigned to this resource.
+	Identity *PrivateCloudIdentity
+
+	// The resource-specific properties for this resource.
 	Properties *PrivateCloudProperties
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// PrivateCloudIdentity - Identity for the virtual machine.
+// PrivateCloudIdentity - Managed service identity (either system assigned, or none)
 type PrivateCloudIdentity struct {
-	// The type of identity used for the private cloud. The type 'SystemAssigned' refers to an implicitly created identity. The
-	// type 'None' will remove any identities from the Private Cloud.
+	// REQUIRED; Type of managed service identity (either system assigned, or none).
 	Type *ResourceIdentityType
 
-	// READ-ONLY; The principal ID of private cloud identity. This property will only be provided for a system assigned identity.
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
 	PrincipalID *string
 
-	// READ-ONLY; The tenant ID associated with the private cloud. This property will only be provided for a system assigned identity.
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
 	TenantID *string
 }
 
-// PrivateCloudList - A paged list of private clouds
+// PrivateCloudList - The response of a PrivateCloud list operation.
 type PrivateCloudList struct {
-	// READ-ONLY; URL to get the next page if any
-	NextLink *string
-
-	// READ-ONLY; The items on the page
+	// REQUIRED; The PrivateCloud items on this page
 	Value []*PrivateCloud
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // PrivateCloudProperties - The properties of a private cloud resource
 type PrivateCloudProperties struct {
+	// REQUIRED; The default cluster used for management
+	ManagementCluster *ManagementCluster
+
 	// REQUIRED; The block of addresses should be unique across VNet in your subscription as well as on-premise. Make sure the
 	// CIDR format is conformed to (A.B.C.D/X) where A,B,C,D are between 0 and 255, and X is
 	// between 0 and 22
@@ -809,6 +840,9 @@ type PrivateCloudProperties struct {
 
 	// An ExpressRoute Circuit
 	Circuit *Circuit
+
+	// The type of DNS zone to use.
+	DNSZoneType *DNSZoneType
 
 	// Customer managed key encryption, can be enabled or disabled
 	Encryption *Encryption
@@ -824,9 +858,6 @@ type PrivateCloudProperties struct {
 	// Connectivity to internet is enabled or disabled
 	Internet *InternetEnum
 
-	// The default cluster used for management
-	ManagementCluster *ManagementCluster
-
 	// Optionally, set the NSX-T Manager password when the private cloud is created
 	NsxtPassword *string
 
@@ -835,6 +866,9 @@ type PrivateCloudProperties struct {
 
 	// Optionally, set the vCenter admin password when the private cloud is created
 	VcenterPassword *string
+
+	// Azure resource ID of the virtual network
+	VirtualNetworkID *string
 
 	// READ-ONLY; The endpoints
 	Endpoints *Endpoints
@@ -867,13 +901,16 @@ type PrivateCloudProperties struct {
 
 // PrivateCloudUpdate - An update to a private cloud resource
 type PrivateCloudUpdate struct {
-	// The identity of the private cloud, if configured.
+	// The managed service identities assigned to this resource.
 	Identity *PrivateCloudIdentity
 
 	// The updatable properties of a private cloud resource
 	Properties *PrivateCloudUpdateProperties
 
-	// Resource tags
+	// The SKU (Stock Keeping Unit) assigned to this resource.
+	SKU *SKU
+
+	// Resource tags.
 	Tags map[string]*string
 }
 
@@ -881,6 +918,9 @@ type PrivateCloudUpdate struct {
 type PrivateCloudUpdateProperties struct {
 	// Properties describing how the cloud is distributed across availability zones
 	Availability *AvailabilityProperties
+
+	// The type of DNS zone to use.
+	DNSZoneType *DNSZoneType
 
 	// Customer managed key encryption, can be enabled or disabled
 	Encryption *Encryption
@@ -911,58 +951,84 @@ type Quota struct {
 
 // SKU - The resource model definition representing SKU
 type SKU struct {
-	// REQUIRED; The name of the SKU.
+	// REQUIRED; The name of the SKU. E.g. P3. It is typically a letter+number code
 	Name *string
+
+	// If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the
+	// resource this may be omitted.
+	Capacity *int32
+
+	// If the service has different generations of hardware, for the same SKU, then that can be captured here.
+	Family *string
+
+	// The SKU size. When the name field is the combination of tier and some other value, this would be the standalone code.
+	Size *string
+
+	// This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not required
+	// on a PUT.
+	Tier *SKUTier
 }
 
 // ScriptCmdlet - A cmdlet available for script execution
 type ScriptCmdlet struct {
-	// The properties of a script cmdlet resource
+	// The resource-specific properties for this resource.
 	Properties *ScriptCmdletProperties
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // ScriptCmdletProperties - Properties of a pre-canned script
 type ScriptCmdletProperties struct {
+	// READ-ONLY; Specifies whether a script cmdlet is intended to be invoked only through automation or visible to customers
+	Audience *ScriptCmdletAudience
+
 	// READ-ONLY; Description of the scripts functionality
 	Description *string
 
 	// READ-ONLY; Parameters the script will accept
 	Parameters []*ScriptParameter
 
+	// READ-ONLY; The provisioning state of the resource.
+	ProvisioningState *ScriptCmdletProvisioningState
+
 	// READ-ONLY; Recommended time limit for execution
 	Timeout *string
 }
 
-// ScriptCmdletsList - Pageable list of scripts/cmdlets
+// ScriptCmdletsList - The response of a ScriptCmdlet list operation.
 type ScriptCmdletsList struct {
-	// READ-ONLY; URL to get the next page if any
-	NextLink *string
-
-	// READ-ONLY; List of scripts
+	// REQUIRED; The ScriptCmdlet items on this page
 	Value []*ScriptCmdlet
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // ScriptExecution - An instance of a script executed by a user - custom or AVS
 type ScriptExecution struct {
-	// The properties of a script execution resource
+	// The resource-specific properties for this resource.
 	Properties *ScriptExecutionProperties
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -971,7 +1037,7 @@ type ScriptExecutionParameter struct {
 	// REQUIRED; The parameter name
 	Name *string
 
-	// REQUIRED; The type of execution parameter
+	// REQUIRED; script execution parameter type
 	Type *ScriptExecutionParameterType
 }
 
@@ -1026,27 +1092,30 @@ type ScriptExecutionProperties struct {
 	Warnings []*string
 }
 
-// ScriptExecutionsList - Pageable list of script executions
+// ScriptExecutionsList - The response of a ScriptExecution list operation.
 type ScriptExecutionsList struct {
-	// READ-ONLY; URL to get the next page if any
-	NextLink *string
-
-	// READ-ONLY; List of scripts
+	// REQUIRED; The ScriptExecution items on this page
 	Value []*ScriptExecution
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // ScriptPackage - Script Package resources available for execution
 type ScriptPackage struct {
-	// ScriptPackage resource properties
+	// The resource-specific properties for this resource.
 	Properties *ScriptPackageProperties
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -1058,6 +1127,9 @@ type ScriptPackageProperties struct {
 	// READ-ONLY; User friendly description of the package
 	Description *string
 
+	// READ-ONLY; The provisioning state of the resource.
+	ProvisioningState *ScriptPackageProvisioningState
+
 	// READ-ONLY; Link to support by the package vendor
 	URI *string
 
@@ -1065,13 +1137,13 @@ type ScriptPackageProperties struct {
 	Version *string
 }
 
-// ScriptPackagesList - A list of the available script packages
+// ScriptPackagesList - The response of a ScriptPackage list operation.
 type ScriptPackagesList struct {
-	// READ-ONLY; URL to get the next page if any
-	NextLink *string
-
-	// READ-ONLY; List of script package resources
+	// REQUIRED; The ScriptPackage items on this page
 	Value []*ScriptPackage
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // ScriptParameter - An parameter that the script will accept
@@ -1097,7 +1169,7 @@ type ScriptSecureStringExecutionParameter struct {
 	// REQUIRED; The parameter name
 	Name *string
 
-	// REQUIRED; The type of execution parameter
+	// REQUIRED; script execution parameter type
 	Type *ScriptExecutionParameterType
 
 	// A secure value for the passed parameter, not to be stored in logs
@@ -1117,7 +1189,7 @@ type ScriptStringExecutionParameter struct {
 	// REQUIRED; The parameter name
 	Name *string
 
-	// REQUIRED; The type of execution parameter
+	// REQUIRED; script execution parameter type
 	Type *ScriptExecutionParameterType
 
 	// The value for the passed parameter
@@ -1132,13 +1204,25 @@ func (s *ScriptStringExecutionParameter) GetScriptExecutionParameter() *ScriptEx
 	}
 }
 
-// ServiceSpecification - Service specification payload
-type ServiceSpecification struct {
-	// Specifications of the Log for Azure Monitoring
-	LogSpecifications []*LogSpecification
+// SystemData - Metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// The timestamp of resource creation (UTC).
+	CreatedAt *time.Time
 
-	// Specifications of the Metrics for Azure Monitoring
-	MetricSpecifications []*MetricSpecification
+	// The identity that created the resource.
+	CreatedBy *string
+
+	// The type of identity that created the resource.
+	CreatedByType *CreatedByType
+
+	// The timestamp of resource last modification (UTC)
+	LastModifiedAt *time.Time
+
+	// The identity that last modified the resource.
+	LastModifiedBy *string
+
+	// The type of identity that last modified the resource.
+	LastModifiedByType *CreatedByType
 }
 
 // Trial - Subscription trial availability
@@ -1158,7 +1242,7 @@ type VMHostPlacementPolicyProperties struct {
 	// REQUIRED; Host members list
 	HostMembers []*string
 
-	// REQUIRED; placement policy type
+	// REQUIRED; Placement Policy type
 	Type *PlacementPolicyType
 
 	// REQUIRED; Virtual machine members list
@@ -1195,7 +1279,7 @@ type VMPlacementPolicyProperties struct {
 	// REQUIRED; placement policy affinity type
 	AffinityType *AffinityType
 
-	// REQUIRED; placement policy type
+	// REQUIRED; Placement Policy type
 	Type *PlacementPolicyType
 
 	// REQUIRED; Virtual machine members list
@@ -1223,16 +1307,19 @@ func (v *VMPlacementPolicyProperties) GetPlacementPolicyProperties() *PlacementP
 
 // VirtualMachine - Virtual Machine
 type VirtualMachine struct {
-	// Virtual machine properties.
+	// The resource-specific properties for this resource.
 	Properties *VirtualMachineProperties
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -1247,6 +1334,9 @@ type VirtualMachineProperties struct {
 	// READ-ONLY; Virtual machine managed object reference id
 	MoRefID *string
 
+	// READ-ONLY; The provisioning state of the resource.
+	ProvisioningState *VirtualMachineProvisioningState
+
 	// READ-ONLY; Whether VM DRS-driven movement is restricted (enabled) or not (disabled)
 	RestrictMovement *VirtualMachineRestrictMovementState
 }
@@ -1257,39 +1347,48 @@ type VirtualMachineRestrictMovement struct {
 	RestrictMovement *VirtualMachineRestrictMovementState
 }
 
-// VirtualMachinesList - A list of Virtual Machines
+// VirtualMachinesList - The response of a VirtualMachine list operation.
 type VirtualMachinesList struct {
-	// READ-ONLY; URL to get the next page if any
-	NextLink *string
-
-	// READ-ONLY; The items to be displayed on the page
+	// REQUIRED; The VirtualMachine items on this page
 	Value []*VirtualMachine
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // WorkloadNetwork - Workload Network
 type WorkloadNetwork struct {
-	// READ-ONLY; Resource ID.
+	// The resource-specific properties for this resource.
+	Properties *WorkloadNetworkProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // WorkloadNetworkDNSService - NSX DNS Service
 type WorkloadNetworkDNSService struct {
-	// DNS Service properties
+	// The resource-specific properties for this resource.
 	Properties *WorkloadNetworkDNSServiceProperties
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -1320,27 +1419,30 @@ type WorkloadNetworkDNSServiceProperties struct {
 	Status *DNSServiceStatusEnum
 }
 
-// WorkloadNetworkDNSServicesList - A list of NSX DNS Services
+// WorkloadNetworkDNSServicesList - The response of a WorkloadNetworkDnsService list operation.
 type WorkloadNetworkDNSServicesList struct {
-	// READ-ONLY; URL to get the next page if any
-	NextLink *string
-
-	// READ-ONLY; The items on the page
+	// REQUIRED; The WorkloadNetworkDnsService items on this page
 	Value []*WorkloadNetworkDNSService
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // WorkloadNetworkDNSZone - NSX DNS Zone
 type WorkloadNetworkDNSZone struct {
-	// DNS Zone properties
+	// The resource-specific properties for this resource.
 	Properties *WorkloadNetworkDNSZoneProperties
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -1368,27 +1470,30 @@ type WorkloadNetworkDNSZoneProperties struct {
 	ProvisioningState *WorkloadNetworkDNSZoneProvisioningState
 }
 
-// WorkloadNetworkDNSZonesList - A list of NSX DNS Zones
+// WorkloadNetworkDNSZonesList - The response of a WorkloadNetworkDnsZone list operation.
 type WorkloadNetworkDNSZonesList struct {
-	// READ-ONLY; URL to get the next page if any
-	NextLink *string
-
-	// READ-ONLY; The items on the page
+	// REQUIRED; The WorkloadNetworkDnsZone items on this page
 	Value []*WorkloadNetworkDNSZone
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // WorkloadNetworkDhcp - NSX DHCP
 type WorkloadNetworkDhcp struct {
-	// DHCP properties.
+	// The resource-specific properties for this resource.
 	Properties WorkloadNetworkDhcpEntityClassification
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -1415,13 +1520,13 @@ func (w *WorkloadNetworkDhcpEntity) GetWorkloadNetworkDhcpEntity() *WorkloadNetw
 	return w
 }
 
-// WorkloadNetworkDhcpList - A list of NSX dhcp entities
+// WorkloadNetworkDhcpList - The response of a WorkloadNetworkDhcp list operation.
 type WorkloadNetworkDhcpList struct {
-	// READ-ONLY; URL to get the next page if any
-	NextLink *string
-
-	// READ-ONLY; The items on the page
+	// REQUIRED; The WorkloadNetworkDhcp items on this page
 	Value []*WorkloadNetworkDhcp
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // WorkloadNetworkDhcpRelay - NSX DHCP Relay
@@ -1493,26 +1598,29 @@ func (w *WorkloadNetworkDhcpServer) GetWorkloadNetworkDhcpEntity() *WorkloadNetw
 
 // WorkloadNetworkGateway - NSX Gateway.
 type WorkloadNetworkGateway struct {
-	// Gateway properties.
+	// The resource-specific properties for this resource.
 	Properties *WorkloadNetworkGatewayProperties
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// WorkloadNetworkGatewayList - A list of NSX Gateways
+// WorkloadNetworkGatewayList - The response of a WorkloadNetworkGateway list operation.
 type WorkloadNetworkGatewayList struct {
-	// READ-ONLY; URL to get the next page if any
-	NextLink *string
-
-	// READ-ONLY; The items on the page
+	// REQUIRED; The WorkloadNetworkGateway items on this page
 	Value []*WorkloadNetworkGateway
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // WorkloadNetworkGatewayProperties - Properties of a NSX Gateway.
@@ -1522,39 +1630,45 @@ type WorkloadNetworkGatewayProperties struct {
 
 	// READ-ONLY; NSX Gateway Path.
 	Path *string
+
+	// READ-ONLY; The provisioning state of the resource.
+	ProvisioningState *WorkloadNetworkProvisioningState
 }
 
-// WorkloadNetworkList - A list of workload networks
+// WorkloadNetworkList - The response of a WorkloadNetwork list operation.
 type WorkloadNetworkList struct {
-	// READ-ONLY; URL to get the next page if any
-	NextLink *string
-
-	// READ-ONLY; The items on the page
+	// REQUIRED; The WorkloadNetwork items on this page
 	Value []*WorkloadNetwork
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // WorkloadNetworkPortMirroring - NSX Port Mirroring
 type WorkloadNetworkPortMirroring struct {
-	// Port Mirroring Properties.
+	// The resource-specific properties for this resource.
 	Properties *WorkloadNetworkPortMirroringProperties
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// WorkloadNetworkPortMirroringList - A list of NSX Port Mirroring
+// WorkloadNetworkPortMirroringList - The response of a WorkloadNetworkPortMirroring list operation.
 type WorkloadNetworkPortMirroringList struct {
-	// READ-ONLY; URL to get the next page if any
-	NextLink *string
-
-	// READ-ONLY; The items on the page
+	// REQUIRED; The WorkloadNetworkPortMirroring items on this page
 	Value []*WorkloadNetworkPortMirroring
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // WorkloadNetworkPortMirroringProperties - NSX Port Mirroring Properties
@@ -1581,18 +1695,27 @@ type WorkloadNetworkPortMirroringProperties struct {
 	Status *PortMirroringStatusEnum
 }
 
+// WorkloadNetworkProperties - The properties of a workload network
+type WorkloadNetworkProperties struct {
+	// READ-ONLY; The provisioning state of the resource.
+	ProvisioningState *WorkloadNetworkProvisioningState
+}
+
 // WorkloadNetworkPublicIP - NSX Public IP Block
 type WorkloadNetworkPublicIP struct {
-	// Public IP Block properties
+	// The resource-specific properties for this resource.
 	Properties *WorkloadNetworkPublicIPProperties
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -1611,27 +1734,30 @@ type WorkloadNetworkPublicIPProperties struct {
 	PublicIPBlock *string
 }
 
-// WorkloadNetworkPublicIPsList - A list of NSX Public IP Blocks
+// WorkloadNetworkPublicIPsList - The response of a WorkloadNetworkPublicIP list operation.
 type WorkloadNetworkPublicIPsList struct {
-	// READ-ONLY; URL to get the next page if any
-	NextLink *string
-
-	// READ-ONLY; The items on the page
+	// REQUIRED; The WorkloadNetworkPublicIP items on this page
 	Value []*WorkloadNetworkPublicIP
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // WorkloadNetworkSegment - NSX Segment
 type WorkloadNetworkSegment struct {
-	// The properties of a Workload Segment proxy resource.
+	// The resource-specific properties for this resource.
 	Properties *WorkloadNetworkSegmentProperties
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -1674,27 +1800,30 @@ type WorkloadNetworkSegmentSubnet struct {
 	GatewayAddress *string
 }
 
-// WorkloadNetworkSegmentsList - A list of NSX Segments
+// WorkloadNetworkSegmentsList - The response of a WorkloadNetworkSegment list operation.
 type WorkloadNetworkSegmentsList struct {
-	// READ-ONLY; URL to get the next page if any
-	NextLink *string
-
-	// READ-ONLY; The items on the page
+	// REQUIRED; The WorkloadNetworkSegment items on this page
 	Value []*WorkloadNetworkSegment
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // WorkloadNetworkVMGroup - NSX VM Group
 type WorkloadNetworkVMGroup struct {
-	// VM Group properties.
+	// The resource-specific properties for this resource.
 	Properties *WorkloadNetworkVMGroupProperties
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -1716,27 +1845,30 @@ type WorkloadNetworkVMGroupProperties struct {
 	Status *VMGroupStatusEnum
 }
 
-// WorkloadNetworkVMGroupsList - A list of NSX VM Groups
+// WorkloadNetworkVMGroupsList - The response of a WorkloadNetworkVMGroup list operation.
 type WorkloadNetworkVMGroupsList struct {
-	// READ-ONLY; URL to get the next page if any
-	NextLink *string
-
-	// READ-ONLY; The items on the page
+	// REQUIRED; The WorkloadNetworkVMGroup items on this page
 	Value []*WorkloadNetworkVMGroup
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // WorkloadNetworkVirtualMachine - NSX Virtual Machine
 type WorkloadNetworkVirtualMachine struct {
-	// Virtual machine properties.
+	// The resource-specific properties for this resource.
 	Properties *WorkloadNetworkVirtualMachineProperties
 
-	// READ-ONLY; Resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -1745,15 +1877,18 @@ type WorkloadNetworkVirtualMachineProperties struct {
 	// Display name of the VM.
 	DisplayName *string
 
+	// READ-ONLY; The provisioning state of the resource.
+	ProvisioningState *WorkloadNetworkProvisioningState
+
 	// READ-ONLY; Virtual machine type.
 	VMType *VMTypeEnum
 }
 
-// WorkloadNetworkVirtualMachinesList - A list of NSX Virtual Machines
+// WorkloadNetworkVirtualMachinesList - The response of a WorkloadNetworkVirtualMachine list operation.
 type WorkloadNetworkVirtualMachinesList struct {
-	// READ-ONLY; URL to get the next page if any
-	NextLink *string
-
-	// READ-ONLY; The items on the page
+	// REQUIRED; The WorkloadNetworkVirtualMachine items on this page
 	Value []*WorkloadNetworkVirtualMachine
+
+	// The link to the next page of items
+	NextLink *string
 }

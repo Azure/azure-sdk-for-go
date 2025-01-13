@@ -92,8 +92,8 @@ func (gem *globalEndpointManager) shouldRefresh() bool {
 	return time.Since(gem.lastUpdateTime) > gem.refreshTimeInterval
 }
 
-func (gem *globalEndpointManager) ResolveServiceEndpoint(locationIndex int, isWriteOperation, useWriteEndpoint bool) url.URL {
-	return gem.locationCache.resolveServiceEndpoint(locationIndex, isWriteOperation, useWriteEndpoint)
+func (gem *globalEndpointManager) ResolveServiceEndpoint(locationIndex int, resourceType resourceType, isWriteOperation, useWriteEndpoint bool) url.URL {
+	return gem.locationCache.resolveServiceEndpoint(locationIndex, resourceType, isWriteOperation, useWriteEndpoint)
 }
 
 func (gem *globalEndpointManager) Update(ctx context.Context, forceRefresh bool) error {

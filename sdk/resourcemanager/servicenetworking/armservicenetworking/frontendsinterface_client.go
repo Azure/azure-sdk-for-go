@@ -46,7 +46,7 @@ func NewFrontendsInterfaceClient(subscriptionID string, credential azcore.TokenC
 // BeginCreateOrUpdate - Create a Frontend
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - trafficControllerName - traffic controller name for path
 //   - frontendName - Frontends
@@ -74,7 +74,7 @@ func (client *FrontendsInterfaceClient) BeginCreateOrUpdate(ctx context.Context,
 // CreateOrUpdate - Create a Frontend
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-05-01-preview
 func (client *FrontendsInterfaceClient) createOrUpdate(ctx context.Context, resourceGroupName string, trafficControllerName string, frontendName string, resource Frontend, options *FrontendsInterfaceClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FrontendsInterfaceClient.BeginCreateOrUpdate"
@@ -120,7 +120,7 @@ func (client *FrontendsInterfaceClient) createOrUpdateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
+	reqQP.Set("api-version", "2024-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -132,7 +132,7 @@ func (client *FrontendsInterfaceClient) createOrUpdateCreateRequest(ctx context.
 // BeginDelete - Delete a Frontend
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - trafficControllerName - traffic controller name for path
 //   - frontendName - Frontends
@@ -159,7 +159,7 @@ func (client *FrontendsInterfaceClient) BeginDelete(ctx context.Context, resourc
 // Delete - Delete a Frontend
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-05-01-preview
 func (client *FrontendsInterfaceClient) deleteOperation(ctx context.Context, resourceGroupName string, trafficControllerName string, frontendName string, options *FrontendsInterfaceClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FrontendsInterfaceClient.BeginDelete"
@@ -174,7 +174,7 @@ func (client *FrontendsInterfaceClient) deleteOperation(ctx context.Context, res
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}
@@ -205,7 +205,7 @@ func (client *FrontendsInterfaceClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
+	reqQP.Set("api-version", "2024-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -214,7 +214,7 @@ func (client *FrontendsInterfaceClient) deleteCreateRequest(ctx context.Context,
 // Get - Get a Frontend
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - trafficControllerName - traffic controller name for path
 //   - frontendName - Frontends
@@ -265,7 +265,7 @@ func (client *FrontendsInterfaceClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
+	reqQP.Set("api-version", "2024-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -282,7 +282,7 @@ func (client *FrontendsInterfaceClient) getHandleResponse(resp *http.Response) (
 
 // NewListByTrafficControllerPager - List Frontend resources by TrafficController
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - trafficControllerName - traffic controller name for path
 //   - options - FrontendsInterfaceClientListByTrafficControllerOptions contains the optional parameters for the FrontendsInterfaceClient.NewListByTrafficControllerPager
@@ -330,7 +330,7 @@ func (client *FrontendsInterfaceClient) listByTrafficControllerCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
+	reqQP.Set("api-version", "2024-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -348,7 +348,7 @@ func (client *FrontendsInterfaceClient) listByTrafficControllerHandleResponse(re
 // Update - Update a Frontend
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-01
+// Generated from API version 2024-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - trafficControllerName - traffic controller name for path
 //   - frontendName - Frontends
@@ -401,7 +401,7 @@ func (client *FrontendsInterfaceClient) updateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
+	reqQP.Set("api-version", "2024-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

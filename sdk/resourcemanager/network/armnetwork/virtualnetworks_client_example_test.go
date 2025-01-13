@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v5"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v6"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualNetworkDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/VirtualNetworkDelete.json
 func ExampleVirtualNetworksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExampleVirtualNetworksClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualNetworkGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/VirtualNetworkGet.json
 func ExampleVirtualNetworksClient_Get_getVirtualNetwork() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +87,7 @@ func ExampleVirtualNetworksClient_Get_getVirtualNetwork() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualNetworkGetWithSubnetDelegation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/VirtualNetworkGetWithSubnetDelegation.json
 func ExampleVirtualNetworksClient_Get_getVirtualNetworkWithADelegatedSubnet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,7 +147,7 @@ func ExampleVirtualNetworksClient_Get_getVirtualNetworkWithADelegatedSubnet() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualNetworkGetWithServiceAssociationLink.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/VirtualNetworkGetWithServiceAssociationLink.json
 func ExampleVirtualNetworksClient_Get_getVirtualNetworkWithServiceAssociationLinks() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -220,7 +220,7 @@ func ExampleVirtualNetworksClient_Get_getVirtualNetworkWithServiceAssociationLin
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualNetworkCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/VirtualNetworkCreate.json
 func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetwork() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -271,7 +271,7 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetwork() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualNetworkCreateWithBgpCommunities.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/VirtualNetworkCreateWithBgpCommunities.json
 func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithBgpCommunities() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -341,7 +341,7 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithBg
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualNetworkCreateSubnetWithDelegation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/VirtualNetworkCreateSubnetWithDelegation.json
 func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithDelegatedSubnets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -423,7 +423,7 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithDe
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualNetworkCreateWithEncryption.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/VirtualNetworkCreateWithEncryption.json
 func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithEncryption() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -494,7 +494,100 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithEn
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualNetworkCreateServiceEndpoints.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/VirtualNetworkCreateWithIpamPool.json
+func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithIpamPool() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualNetworksClient().BeginCreateOrUpdate(ctx, "rg1", "test-vnet", armnetwork.VirtualNetwork{
+		Location: to.Ptr("eastus"),
+		Properties: &armnetwork.VirtualNetworkPropertiesFormat{
+			AddressSpace: &armnetwork.AddressSpace{
+				IpamPoolPrefixAllocations: []*armnetwork.IpamPoolPrefixAllocation{
+					{
+						NumberOfIPAddresses: to.Ptr("65536"),
+						Pool: &armnetwork.IpamPoolPrefixAllocationPool{
+							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkManagers/nm1/ipamPools/testIpamPool"),
+						},
+					}},
+			},
+			Subnets: []*armnetwork.Subnet{
+				{
+					Name: to.Ptr("test-1"),
+					Properties: &armnetwork.SubnetPropertiesFormat{
+						IpamPoolPrefixAllocations: []*armnetwork.IpamPoolPrefixAllocation{
+							{
+								NumberOfIPAddresses: to.Ptr("80"),
+								Pool: &armnetwork.IpamPoolPrefixAllocationPool{
+									ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkManagers/nm1/ipamPools/testIpamPool"),
+								},
+							}},
+					},
+				}},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.VirtualNetwork = armnetwork.VirtualNetwork{
+	// 	Name: to.Ptr("test-vnet"),
+	// 	Type: to.Ptr("Microsoft.Network/virtualNetworks"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/test-vnet"),
+	// 	Location: to.Ptr("eastus2euap"),
+	// 	Properties: &armnetwork.VirtualNetworkPropertiesFormat{
+	// 		AddressSpace: &armnetwork.AddressSpace{
+	// 			AddressPrefixes: []*string{
+	// 				to.Ptr("10.0.0.0/22")},
+	// 				IpamPoolPrefixAllocations: []*armnetwork.IpamPoolPrefixAllocation{
+	// 					{
+	// 						AllocatedAddressPrefixes: []*string{
+	// 							to.Ptr("10.0.0.0/22")},
+	// 							NumberOfIPAddresses: to.Ptr("800"),
+	// 							Pool: &armnetwork.IpamPoolPrefixAllocationPool{
+	// 								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkManagers/nm1/ipamPools/testIpamPool"),
+	// 							},
+	// 					}},
+	// 				},
+	// 				ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 				Subnets: []*armnetwork.Subnet{
+	// 					{
+	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/subnet1"),
+	// 						Name: to.Ptr("subnet1"),
+	// 						Properties: &armnetwork.SubnetPropertiesFormat{
+	// 							AddressPrefixes: []*string{
+	// 								to.Ptr("10.0.0.0/26"),
+	// 								to.Ptr("10.0.0.64/28")},
+	// 								IpamPoolPrefixAllocations: []*armnetwork.IpamPoolPrefixAllocation{
+	// 									{
+	// 										AllocatedAddressPrefixes: []*string{
+	// 											to.Ptr("10.0.0.0/26"),
+	// 											to.Ptr("10.0.0.64/28")},
+	// 											NumberOfIPAddresses: to.Ptr("80"),
+	// 											Pool: &armnetwork.IpamPoolPrefixAllocationPool{
+	// 												ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkManagers/nm1/ipamPools/testIpamPool"),
+	// 											},
+	// 									}},
+	// 									ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 								},
+	// 						}},
+	// 					},
+	// 				}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/VirtualNetworkCreateServiceEndpoints.json
 func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithServiceEndpoints() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -573,7 +666,7 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithSe
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualNetworkCreateServiceEndpointPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/VirtualNetworkCreateServiceEndpointPolicy.json
 func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithServiceEndpointsAndServiceEndpointPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -660,7 +753,7 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithSe
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualNetworkCreateSubnet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/VirtualNetworkCreateSubnet.json
 func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithSubnet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -723,7 +816,7 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithSu
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualNetworkCreateSubnetWithAddressPrefixes.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/VirtualNetworkCreateSubnetWithAddressPrefixes.json
 func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithSubnetContainingAddressPrefixes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -790,7 +883,7 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithSu
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualNetworkUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/VirtualNetworkUpdateTags.json
 func ExampleVirtualNetworksClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -836,7 +929,7 @@ func ExampleVirtualNetworksClient_UpdateTags() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualNetworkListAll.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/VirtualNetworkListAll.json
 func ExampleVirtualNetworksClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -913,7 +1006,7 @@ func ExampleVirtualNetworksClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualNetworkList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/VirtualNetworkList.json
 func ExampleVirtualNetworksClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -990,7 +1083,7 @@ func ExampleVirtualNetworksClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualNetworkCheckIPAddressAvailability.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/VirtualNetworkCheckIPAddressAvailability.json
 func ExampleVirtualNetworksClient_CheckIPAddressAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1019,7 +1112,7 @@ func ExampleVirtualNetworksClient_CheckIPAddressAvailability() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualNetworkListUsage.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/VirtualNetworkListUsage.json
 func ExampleVirtualNetworksClient_NewListUsagePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1067,7 +1160,7 @@ func ExampleVirtualNetworksClient_NewListUsagePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualNetworkGetDdosProtectionStatus.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/VirtualNetworkGetDdosProtectionStatus.json
 func ExampleVirtualNetworksClient_BeginListDdosProtectionStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

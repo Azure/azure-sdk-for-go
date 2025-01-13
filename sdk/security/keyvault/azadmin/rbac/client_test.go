@@ -9,11 +9,14 @@ package rbac_test
 import (
 	"context"
 	"math/rand"
+	"net/http"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	azcred "github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin/rbac"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
@@ -161,8 +164,13 @@ func TestRoleAssignment(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, name, *createdAssignment.Name)
 	require.Equal(t, scope, *createdAssignment.Properties.Scope)
-	require.Equal(t, principalID, *createdAssignment.Properties.PrincipalID)
 	require.Equal(t, roleDefinitionID, *createdAssignment.Properties.RoleDefinitionID)
+
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		require.Equal(t, "00000000-0000-0000-0000-000000000000", *createdAssignment.Properties.PrincipalID)
+	} else {
+		require.Equal(t, principalID, *createdAssignment.Properties.PrincipalID)
+	}
 
 	// test if able to get role assignment
 	gotAssignment, err := client.GetRoleAssignment(context.Background(), scope, name, nil)
@@ -237,4 +245,34 @@ func TestDeleteRoleAssignment_FailureInvalidRole(t *testing.T) {
 	require.Nil(t, res.Type)
 
 	testSerde(t, &res)
+}
+
+func TestAPIVersion(t *testing.T) {
+	apiVersion := "7.3"
+	var requireVersion = func(t *testing.T) func(req *http.Request) bool {
+		return func(r *http.Request) bool {
+			version := r.URL.Query().Get("api-version")
+			require.Equal(t, version, apiVersion)
+			return true
+		}
+	}
+	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer close()
+	srv.AppendResponse(
+		mock.WithStatusCode(200),
+		mock.WithPredicate(requireVersion(t)),
+	)
+	srv.AppendResponse(mock.WithStatusCode(http.StatusInternalServerError))
+
+	opts := &rbac.ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			Transport:  srv,
+			APIVersion: apiVersion,
+		},
+	}
+	client, err := rbac.NewClient(hsmURL, &azcred.Fake{}, opts)
+	require.NoError(t, err)
+
+	_, err = client.GetRoleAssignment(context.Background(), rbac.RoleScopeGlobal, "name", nil)
+	require.NoError(t, err)
 }

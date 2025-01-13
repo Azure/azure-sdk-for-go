@@ -17,10 +17,9 @@ import (
 func TestBatchAdd(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, deleteAndStop := initClientTest(t, service, true, NewSpanValidator(t, SpanMatcher{
+			client := initClientTest(t, service, true, NewSpanValidator(t, SpanMatcher{
 				Name: "Client.SubmitTransaction",
 			}))
-			defer deleteAndStop()
 			err := recording.SetBodilessMatcher(t, nil)
 			require.NoError(t, err)
 			err = recording.AddGeneralRegexSanitizer("batch_00000000-0000-0000-0000-000000000000", "batch_[0-9A-Fa-f]{8}[-]([0-9A-Fa-f]{4}[-]?){3}[0-9a-fA-F]{12}", nil)
@@ -55,8 +54,7 @@ func TestBatchAdd(t *testing.T) {
 func TestBatchInsert(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, deleteAndStop := initClientTest(t, service, true, tracing.Provider{})
-			defer deleteAndStop()
+			client := initClientTest(t, service, true, tracing.Provider{})
 			err := recording.SetBodilessMatcher(t, nil)
 			require.NoError(t, err)
 			err = recording.AddGeneralRegexSanitizer("batch_00000000-0000-0000-0000-000000000000", "batch_[0-9A-Fa-f]{8}[-]([0-9A-Fa-f]{4}[-]?){3}[0-9a-fA-F]{12}", nil)
@@ -96,8 +94,7 @@ func TestBatchInsert(t *testing.T) {
 func TestBatchMixed(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, deleteAndStop := initClientTest(t, service, true, tracing.Provider{})
-			defer deleteAndStop()
+			client := initClientTest(t, service, true, tracing.Provider{})
 			err := recording.SetBodilessMatcher(t, nil)
 			require.NoError(t, err)
 			err = recording.AddGeneralRegexSanitizer("batch_00000000-0000-0000-0000-000000000000", "batch_[0-9A-Fa-f]{8}[-]([0-9A-Fa-f]{4}[-]?){3}[0-9a-fA-F]{12}", nil)
@@ -196,11 +193,8 @@ func TestBatchMixed(t *testing.T) {
 func TestBatchError(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, deleteAndStop := initClientTest(t, service, true, tracing.Provider{})
-			defer deleteAndStop()
+			client := initClientTest(t, service, true, tracing.Provider{})
 			err := recording.SetBodilessMatcher(t, nil)
-			require.NoError(t, err)
-			err = recording.AddGeneralRegexSanitizer("batch_00000000-0000-0000-0000-000000000000", "batch_[0-9A-Fa-f]{8}[-]([0-9A-Fa-f]{4}[-]?){3}[0-9a-fA-F]{12}", nil)
 			require.NoError(t, err)
 
 			entitiesToCreate := createComplexEntities(3, "partition")
@@ -237,11 +231,8 @@ func TestBatchError(t *testing.T) {
 func TestBatchErrorHandleResponse(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, deleteAndStop := initClientTest(t, service, true, tracing.Provider{})
-			defer deleteAndStop()
+			client := initClientTest(t, service, true, tracing.Provider{})
 			err := recording.SetBodilessMatcher(t, nil)
-			require.NoError(t, err)
-			err = recording.AddGeneralRegexSanitizer("batch_00000000-0000-0000-0000-000000000000", "batch_[0-9A-Fa-f]{8}[-]([0-9A-Fa-f]{4}[-]?){3}[0-9a-fA-F]{12}", nil)
 			require.NoError(t, err)
 
 			entitiesToCreate := createComplexEntities(3, "partition")
@@ -278,11 +269,8 @@ func TestBatchErrorHandleResponse(t *testing.T) {
 func TestBatchComplex(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, deleteAndStop := initClientTest(t, service, true, tracing.Provider{})
-			defer deleteAndStop()
+			client := initClientTest(t, service, true, tracing.Provider{})
 			err := recording.SetBodilessMatcher(t, nil)
-			require.NoError(t, err)
-			err = recording.AddGeneralRegexSanitizer("batch_00000000-0000-0000-0000-000000000000", "batch_[0-9A-Fa-f]{8}[-]([0-9A-Fa-f]{4}[-]?){3}[0-9a-fA-F]{12}", nil)
 			require.NoError(t, err)
 
 			edmEntity := createEdmEntity(1, "pk01")

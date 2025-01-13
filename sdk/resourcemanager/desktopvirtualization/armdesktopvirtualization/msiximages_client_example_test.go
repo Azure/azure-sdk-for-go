@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/MsixImage_Expand_Post.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4883fa5dbf6f2c9093fac8ce334547e9dfac68fa/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2024-04-03/examples/MsixImage_Expand_Post.json
 func ExampleMsixImagesClient_NewExpandPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -47,7 +47,7 @@ func ExampleMsixImagesClient_NewExpandPager() {
 		// 		{
 		// 			Name: to.Ptr("hostpool1/expandmsiximage"),
 		// 			Type: to.Ptr("Microsoft.DesktopVirtualization/hostpools/expandmsiximage"),
-		// 			ID: to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourcegroups/resourceGroup1/providers/Microsoft.DesktopVirtualization/hostpools/hostpool1/expandmsiximage"),
+		// 			ID: to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourcegroups/resourceGroup1/providers/Microsoft.DesktopVirtualization/hostPools/hostpool1/expandMsixImage/msixImage"),
 		// 			Properties: &armdesktopvirtualization.ExpandMsixImageProperties{
 		// 				DisplayName: to.Ptr("displayname"),
 		// 				ImagePath: to.Ptr("imagepath"),
@@ -77,7 +77,7 @@ func ExampleMsixImagesClient_NewExpandPager() {
 		// 		{
 		// 			Name: to.Ptr("hostpool1/expandmsiximage"),
 		// 			Type: to.Ptr("Microsoft.DesktopVirtualization/hostpools/expandmsiximage"),
-		// 			ID: to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourcegroups/resourceGroup1/providers/Microsoft.DesktopVirtualization/hostpools/hostpool1/expandmsiximage"),
+		// 			ID: to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourcegroups/resourceGroup1/providers/Microsoft.DesktopVirtualization/hostpools/hostpool1/expandmsiximage/msixImageURI"),
 		// 			Properties: &armdesktopvirtualization.ExpandMsixImageProperties{
 		// 				DisplayName: to.Ptr("displayname2"),
 		// 				ImagePath: to.Ptr("imagepath"),

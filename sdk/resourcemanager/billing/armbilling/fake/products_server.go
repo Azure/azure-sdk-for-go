@@ -12,15 +12,16 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/http"
+	"net/url"
+	"regexp"
+	"strconv"
+
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
-	"net/http"
-	"net/url"
-	"regexp"
-	"strconv"
 )
 
 // ProductsServer is a fake server for instances of the armbilling.ProductsClient type.
@@ -45,17 +46,17 @@ type ProductsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByInvoiceSectionPager func(billingAccountName string, billingProfileName string, invoiceSectionName string, options *armbilling.ProductsClientListByInvoiceSectionOptions) (resp azfake.PagerResponder[armbilling.ProductsClientListByInvoiceSectionResponse])
 
-	// Move is the fake for method ProductsClient.Move
+	// BeginMove is the fake for method ProductsClient.BeginMove
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	Move func(ctx context.Context, billingAccountName string, productName string, parameters armbilling.TransferProductRequestProperties, options *armbilling.ProductsClientMoveOptions) (resp azfake.Responder[armbilling.ProductsClientMoveResponse], errResp azfake.ErrorResponder)
+	BeginMove func(ctx context.Context, billingAccountName string, productName string, parameters armbilling.MoveProductRequest, options *armbilling.ProductsClientBeginMoveOptions) (resp azfake.PollerResponder[armbilling.ProductsClientMoveResponse], errResp azfake.ErrorResponder)
 
 	// Update is the fake for method ProductsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
-	Update func(ctx context.Context, billingAccountName string, productName string, parameters armbilling.Product, options *armbilling.ProductsClientUpdateOptions) (resp azfake.Responder[armbilling.ProductsClientUpdateResponse], errResp azfake.ErrorResponder)
+	Update func(ctx context.Context, billingAccountName string, productName string, parameters armbilling.ProductPatch, options *armbilling.ProductsClientUpdateOptions) (resp azfake.Responder[armbilling.ProductsClientUpdateResponse], errResp azfake.ErrorResponder)
 
-	// ValidateMove is the fake for method ProductsClient.ValidateMove
+	// ValidateMoveEligibility is the fake for method ProductsClient.ValidateMoveEligibility
 	// HTTP status codes to indicate success: http.StatusOK
-	ValidateMove func(ctx context.Context, billingAccountName string, productName string, parameters armbilling.TransferProductRequestProperties, options *armbilling.ProductsClientValidateMoveOptions) (resp azfake.Responder[armbilling.ProductsClientValidateMoveResponse], errResp azfake.ErrorResponder)
+	ValidateMoveEligibility func(ctx context.Context, billingAccountName string, productName string, parameters armbilling.MoveProductRequest, options *armbilling.ProductsClientValidateMoveEligibilityOptions) (resp azfake.Responder[armbilling.ProductsClientValidateMoveEligibilityResponse], errResp azfake.ErrorResponder)
 }
 
 // NewProductsServerTransport creates a new instance of ProductsServerTransport with the provided implementation.
@@ -68,6 +69,7 @@ func NewProductsServerTransport(srv *ProductsServer) *ProductsServerTransport {
 		newListByBillingProfilePager: newTracker[azfake.PagerResponder[armbilling.ProductsClientListByBillingProfileResponse]](),
 		newListByCustomerPager:       newTracker[azfake.PagerResponder[armbilling.ProductsClientListByCustomerResponse]](),
 		newListByInvoiceSectionPager: newTracker[azfake.PagerResponder[armbilling.ProductsClientListByInvoiceSectionResponse]](),
+		beginMove:                    newTracker[azfake.PollerResponder[armbilling.ProductsClientMoveResponse]](),
 	}
 }
 
@@ -79,6 +81,7 @@ type ProductsServerTransport struct {
 	newListByBillingProfilePager *tracker[azfake.PagerResponder[armbilling.ProductsClientListByBillingProfileResponse]]
 	newListByCustomerPager       *tracker[azfake.PagerResponder[armbilling.ProductsClientListByCustomerResponse]]
 	newListByInvoiceSectionPager *tracker[azfake.PagerResponder[armbilling.ProductsClientListByInvoiceSectionResponse]]
+	beginMove                    *tracker[azfake.PollerResponder[armbilling.ProductsClientMoveResponse]]
 }
 
 // Do implements the policy.Transporter interface for ProductsServerTransport.
@@ -103,12 +106,12 @@ func (p *ProductsServerTransport) Do(req *http.Request) (*http.Response, error) 
 		resp, err = p.dispatchNewListByCustomerPager(req)
 	case "ProductsClient.NewListByInvoiceSectionPager":
 		resp, err = p.dispatchNewListByInvoiceSectionPager(req)
-	case "ProductsClient.Move":
-		resp, err = p.dispatchMove(req)
+	case "ProductsClient.BeginMove":
+		resp, err = p.dispatchBeginMove(req)
 	case "ProductsClient.Update":
 		resp, err = p.dispatchUpdate(req)
-	case "ProductsClient.ValidateMove":
-		resp, err = p.dispatchValidateMove(req)
+	case "ProductsClient.ValidateMoveEligibility":
+		resp, err = p.dispatchValidateMoveEligibility(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
 	}
@@ -170,15 +173,66 @@ func (p *ProductsServerTransport) dispatchNewListByBillingAccountPager(req *http
 		if err != nil {
 			return nil, err
 		}
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		filterUnescaped, err := url.QueryUnescape(qp.Get("filter"))
 		if err != nil {
 			return nil, err
 		}
 		filterParam := getOptional(filterUnescaped)
+		orderByUnescaped, err := url.QueryUnescape(qp.Get("orderBy"))
+		if err != nil {
+			return nil, err
+		}
+		orderByParam := getOptional(orderByUnescaped)
+		topUnescaped, err := url.QueryUnescape(qp.Get("top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		skipUnescaped, err := url.QueryUnescape(qp.Get("skip"))
+		if err != nil {
+			return nil, err
+		}
+		skipParam, err := parseOptional(skipUnescaped, func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		countUnescaped, err := url.QueryUnescape(qp.Get("count"))
+		if err != nil {
+			return nil, err
+		}
+		countParam, err := parseOptional(countUnescaped, strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		searchUnescaped, err := url.QueryUnescape(qp.Get("search"))
+		if err != nil {
+			return nil, err
+		}
+		searchParam := getOptional(searchUnescaped)
 		var options *armbilling.ProductsClientListByBillingAccountOptions
-		if filterParam != nil {
+		if filterParam != nil || orderByParam != nil || topParam != nil || skipParam != nil || countParam != nil || searchParam != nil {
 			options = &armbilling.ProductsClientListByBillingAccountOptions{
-				Filter: filterParam,
+				Filter:  filterParam,
+				OrderBy: orderByParam,
+				Top:     topParam,
+				Skip:    skipParam,
+				Count:   countParam,
+				Search:  searchParam,
 			}
 		}
 		resp := p.srv.NewListByBillingAccountPager(billingAccountNameParam, options)
@@ -223,15 +277,66 @@ func (p *ProductsServerTransport) dispatchNewListByBillingProfilePager(req *http
 		if err != nil {
 			return nil, err
 		}
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		filterUnescaped, err := url.QueryUnescape(qp.Get("filter"))
 		if err != nil {
 			return nil, err
 		}
 		filterParam := getOptional(filterUnescaped)
+		orderByUnescaped, err := url.QueryUnescape(qp.Get("orderBy"))
+		if err != nil {
+			return nil, err
+		}
+		orderByParam := getOptional(orderByUnescaped)
+		topUnescaped, err := url.QueryUnescape(qp.Get("top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		skipUnescaped, err := url.QueryUnescape(qp.Get("skip"))
+		if err != nil {
+			return nil, err
+		}
+		skipParam, err := parseOptional(skipUnescaped, func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		countUnescaped, err := url.QueryUnescape(qp.Get("count"))
+		if err != nil {
+			return nil, err
+		}
+		countParam, err := parseOptional(countUnescaped, strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		searchUnescaped, err := url.QueryUnescape(qp.Get("search"))
+		if err != nil {
+			return nil, err
+		}
+		searchParam := getOptional(searchUnescaped)
 		var options *armbilling.ProductsClientListByBillingProfileOptions
-		if filterParam != nil {
+		if filterParam != nil || orderByParam != nil || topParam != nil || skipParam != nil || countParam != nil || searchParam != nil {
 			options = &armbilling.ProductsClientListByBillingProfileOptions{
-				Filter: filterParam,
+				Filter:  filterParam,
+				OrderBy: orderByParam,
+				Top:     topParam,
+				Skip:    skipParam,
+				Count:   countParam,
+				Search:  searchParam,
 			}
 		}
 		resp := p.srv.NewListByBillingProfilePager(billingAccountNameParam, billingProfileNameParam, options)
@@ -267,6 +372,7 @@ func (p *ProductsServerTransport) dispatchNewListByCustomerPager(req *http.Reque
 		if matches == nil || len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
 		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
 		if err != nil {
 			return nil, err
@@ -275,7 +381,69 @@ func (p *ProductsServerTransport) dispatchNewListByCustomerPager(req *http.Reque
 		if err != nil {
 			return nil, err
 		}
-		resp := p.srv.NewListByCustomerPager(billingAccountNameParam, customerNameParam, nil)
+		filterUnescaped, err := url.QueryUnescape(qp.Get("filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
+		orderByUnescaped, err := url.QueryUnescape(qp.Get("orderBy"))
+		if err != nil {
+			return nil, err
+		}
+		orderByParam := getOptional(orderByUnescaped)
+		topUnescaped, err := url.QueryUnescape(qp.Get("top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		skipUnescaped, err := url.QueryUnescape(qp.Get("skip"))
+		if err != nil {
+			return nil, err
+		}
+		skipParam, err := parseOptional(skipUnescaped, func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		countUnescaped, err := url.QueryUnescape(qp.Get("count"))
+		if err != nil {
+			return nil, err
+		}
+		countParam, err := parseOptional(countUnescaped, strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		searchUnescaped, err := url.QueryUnescape(qp.Get("search"))
+		if err != nil {
+			return nil, err
+		}
+		searchParam := getOptional(searchUnescaped)
+		var options *armbilling.ProductsClientListByCustomerOptions
+		if filterParam != nil || orderByParam != nil || topParam != nil || skipParam != nil || countParam != nil || searchParam != nil {
+			options = &armbilling.ProductsClientListByCustomerOptions{
+				Filter:  filterParam,
+				OrderBy: orderByParam,
+				Top:     topParam,
+				Skip:    skipParam,
+				Count:   countParam,
+				Search:  searchParam,
+			}
+		}
+		resp := p.srv.NewListByCustomerPager(billingAccountNameParam, customerNameParam, options)
 		newListByCustomerPager = &resp
 		p.newListByCustomerPager.add(req, newListByCustomerPager)
 		server.PagerResponderInjectNextLinks(newListByCustomerPager, req, func(page *armbilling.ProductsClientListByCustomerResponse, createLink func() string) {
@@ -321,15 +489,66 @@ func (p *ProductsServerTransport) dispatchNewListByInvoiceSectionPager(req *http
 		if err != nil {
 			return nil, err
 		}
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		filterUnescaped, err := url.QueryUnescape(qp.Get("filter"))
 		if err != nil {
 			return nil, err
 		}
 		filterParam := getOptional(filterUnescaped)
+		orderByUnescaped, err := url.QueryUnescape(qp.Get("orderBy"))
+		if err != nil {
+			return nil, err
+		}
+		orderByParam := getOptional(orderByUnescaped)
+		topUnescaped, err := url.QueryUnescape(qp.Get("top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		skipUnescaped, err := url.QueryUnescape(qp.Get("skip"))
+		if err != nil {
+			return nil, err
+		}
+		skipParam, err := parseOptional(skipUnescaped, func(v string) (int64, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 64)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return p, nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		countUnescaped, err := url.QueryUnescape(qp.Get("count"))
+		if err != nil {
+			return nil, err
+		}
+		countParam, err := parseOptional(countUnescaped, strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		searchUnescaped, err := url.QueryUnescape(qp.Get("search"))
+		if err != nil {
+			return nil, err
+		}
+		searchParam := getOptional(searchUnescaped)
 		var options *armbilling.ProductsClientListByInvoiceSectionOptions
-		if filterParam != nil {
+		if filterParam != nil || orderByParam != nil || topParam != nil || skipParam != nil || countParam != nil || searchParam != nil {
 			options = &armbilling.ProductsClientListByInvoiceSectionOptions{
-				Filter: filterParam,
+				Filter:  filterParam,
+				OrderBy: orderByParam,
+				Top:     topParam,
+				Skip:    skipParam,
+				Count:   countParam,
+				Search:  searchParam,
 			}
 		}
 		resp := p.srv.NewListByInvoiceSectionPager(billingAccountNameParam, billingProfileNameParam, invoiceSectionNameParam, options)
@@ -353,46 +572,51 @@ func (p *ProductsServerTransport) dispatchNewListByInvoiceSectionPager(req *http
 	return resp, nil
 }
 
-func (p *ProductsServerTransport) dispatchMove(req *http.Request) (*http.Response, error) {
-	if p.srv.Move == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Move not implemented")}
+func (p *ProductsServerTransport) dispatchBeginMove(req *http.Request) (*http.Response, error) {
+	if p.srv.BeginMove == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginMove not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/products/(?P<productName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/move`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	beginMove := p.beginMove.get(req)
+	if beginMove == nil {
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/products/(?P<productName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/move`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armbilling.MoveProductRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		productNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("productName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginMove(req.Context(), billingAccountNameParam, productNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginMove = &respr
+		p.beginMove.add(req, beginMove)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armbilling.TransferProductRequestProperties](req)
+
+	resp, err := server.PollerResponderNext(beginMove, req)
 	if err != nil {
 		return nil, err
 	}
-	billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
-	if err != nil {
-		return nil, err
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		p.beginMove.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	productNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("productName")])
-	if err != nil {
-		return nil, err
+	if !server.PollerResponderMore(beginMove) {
+		p.beginMove.remove(req)
 	}
-	respr, errRespr := p.srv.Move(req.Context(), billingAccountNameParam, productNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Product, req)
-	if err != nil {
-		return nil, err
-	}
-	if val := server.GetResponse(respr).Location; val != nil {
-		resp.Header.Set("Location", *val)
-	}
-	if val := server.GetResponse(respr).RetryAfter; val != nil {
-		resp.Header.Set("Retry-After", strconv.FormatInt(int64(*val), 10))
-	}
+
 	return resp, nil
 }
 
@@ -406,7 +630,7 @@ func (p *ProductsServerTransport) dispatchUpdate(req *http.Request) (*http.Respo
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armbilling.Product](req)
+	body, err := server.UnmarshalRequestAsJSON[armbilling.ProductPatch](req)
 	if err != nil {
 		return nil, err
 	}
@@ -433,9 +657,9 @@ func (p *ProductsServerTransport) dispatchUpdate(req *http.Request) (*http.Respo
 	return resp, nil
 }
 
-func (p *ProductsServerTransport) dispatchValidateMove(req *http.Request) (*http.Response, error) {
-	if p.srv.ValidateMove == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ValidateMove not implemented")}
+func (p *ProductsServerTransport) dispatchValidateMoveEligibility(req *http.Request) (*http.Response, error) {
+	if p.srv.ValidateMoveEligibility == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ValidateMoveEligibility not implemented")}
 	}
 	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/products/(?P<productName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validateMoveEligibility`
 	regex := regexp.MustCompile(regexStr)
@@ -443,7 +667,7 @@ func (p *ProductsServerTransport) dispatchValidateMove(req *http.Request) (*http
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armbilling.TransferProductRequestProperties](req)
+	body, err := server.UnmarshalRequestAsJSON[armbilling.MoveProductRequest](req)
 	if err != nil {
 		return nil, err
 	}
@@ -455,7 +679,7 @@ func (p *ProductsServerTransport) dispatchValidateMove(req *http.Request) (*http
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := p.srv.ValidateMove(req.Context(), billingAccountNameParam, productNameParam, body, nil)
+	respr, errRespr := p.srv.ValidateMoveEligibility(req.Context(), billingAccountNameParam, productNameParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -463,7 +687,7 @@ func (p *ProductsServerTransport) dispatchValidateMove(req *http.Request) (*http
 	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ValidateProductTransferEligibilityResult, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).MoveProductEligibilityResult, req)
 	if err != nil {
 		return nil, err
 	}

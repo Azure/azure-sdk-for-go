@@ -38,10 +38,27 @@ type ClusterJobsClientRunJobResponse struct {
 	ClusterJob
 }
 
+// ClusterLibrariesClientListResponse contains the response from method ClusterLibrariesClient.NewListPager.
+type ClusterLibrariesClientListResponse struct {
+	// Collection of libraries in the cluster.
+	ClusterLibraryList
+}
+
+// ClusterLibrariesClientManageLibrariesResponse contains the response from method ClusterLibrariesClient.BeginManageLibraries.
+type ClusterLibrariesClientManageLibrariesResponse struct {
+	// placeholder for future response values
+}
+
 // ClusterPoolAvailableUpgradesClientListResponse contains the response from method ClusterPoolAvailableUpgradesClient.NewListPager.
 type ClusterPoolAvailableUpgradesClientListResponse struct {
 	// collection of cluster pool available upgrade.
 	ClusterPoolAvailableUpgradeList
+}
+
+// ClusterPoolUpgradeHistoriesClientListResponse contains the response from method ClusterPoolUpgradeHistoriesClient.NewListPager.
+type ClusterPoolUpgradeHistoriesClientListResponse struct {
+	// Represents a list of cluster pool upgrade history.
+	ClusterPoolUpgradeHistoryListResult
 }
 
 // ClusterPoolsClientCreateOrUpdateResponse contains the response from method ClusterPoolsClient.BeginCreateOrUpdate.
@@ -83,6 +100,12 @@ type ClusterPoolsClientUpdateTagsResponse struct {
 type ClusterPoolsClientUpgradeResponse struct {
 	// Cluster pool.
 	ClusterPool
+}
+
+// ClusterUpgradeHistoriesClientListResponse contains the response from method ClusterUpgradeHistoriesClient.NewListPager.
+type ClusterUpgradeHistoriesClientListResponse struct {
+	// Represents a list of cluster upgrade history.
+	ClusterUpgradeHistoryListResult
 }
 
 // ClustersClientCreateResponse contains the response from method ClustersClient.BeginCreate.
@@ -134,6 +157,12 @@ type ClustersClientResizeResponse struct {
 
 // ClustersClientUpdateResponse contains the response from method ClustersClient.BeginUpdate.
 type ClustersClientUpdateResponse struct {
+	// The cluster.
+	Cluster
+}
+
+// ClustersClientUpgradeManualRollbackResponse contains the response from method ClustersClient.BeginUpgradeManualRollback.
+type ClustersClientUpgradeManualRollbackResponse struct {
 	// The cluster.
 	Cluster
 }

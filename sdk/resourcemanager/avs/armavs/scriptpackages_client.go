@@ -28,7 +28,7 @@ type ScriptPackagesClient struct {
 }
 
 // NewScriptPackagesClient creates a new instance of ScriptPackagesClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewScriptPackagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ScriptPackagesClient, error) {
@@ -43,13 +43,13 @@ func NewScriptPackagesClient(subscriptionID string, credential azcore.TokenCrede
 	return client, nil
 }
 
-// Get - Get a script package available to run on a private cloud
+// Get - Get a ScriptPackage
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
-//   - scriptPackageName - Name of the script package in the private cloud
+//   - scriptPackageName - Name of the script package.
 //   - options - ScriptPackagesClientGetOptions contains the optional parameters for the ScriptPackagesClient.Get method.
 func (client *ScriptPackagesClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, scriptPackageName string, options *ScriptPackagesClientGetOptions) (ScriptPackagesClientGetResponse, error) {
 	var err error
@@ -97,7 +97,7 @@ func (client *ScriptPackagesClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -112,9 +112,9 @@ func (client *ScriptPackagesClient) getHandleResponse(resp *http.Response) (Scri
 	return result, nil
 }
 
-// NewListPager - List script packages available to run on the private cloud
+// NewListPager - List ScriptPackage resources by PrivateCloud
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - options - ScriptPackagesClientListOptions contains the optional parameters for the ScriptPackagesClient.NewListPager method.
@@ -161,7 +161,7 @@ func (client *ScriptPackagesClient) listCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/playwrighttesting/armplaywrighttesting"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3eb9ec8e9c8f717c6b461c4c0f49a4662fb948fd/specification/playwrighttesting/resource-manager/Microsoft.AzurePlaywrightService/preview/2023-10-01-preview/examples/Accounts_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/2bde125befabb21807a2021765901f20e3e74ec8/specification/playwrighttesting/resource-manager/Microsoft.AzurePlaywrightService/stable/2024-12-01/examples/Accounts_ListBySubscription.json
 func ExampleAccountsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,6 +60,7 @@ func ExampleAccountsClient_NewListBySubscriptionPager() {
 		// 			},
 		// 			Properties: &armplaywrighttesting.AccountProperties{
 		// 				DashboardURI: to.Ptr("https://dashboard.00000000-0000-0000-0000-000000000000.domain.com"),
+		// 				LocalAuth: to.Ptr(armplaywrighttesting.EnablementStatusEnabled),
 		// 				ProvisioningState: to.Ptr(armplaywrighttesting.ProvisioningStateSucceeded),
 		// 				RegionalAffinity: to.Ptr(armplaywrighttesting.EnablementStatusEnabled),
 		// 				Reporting: to.Ptr(armplaywrighttesting.EnablementStatusEnabled),
@@ -70,7 +71,34 @@ func ExampleAccountsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3eb9ec8e9c8f717c6b461c4c0f49a4662fb948fd/specification/playwrighttesting/resource-manager/Microsoft.AzurePlaywrightService/preview/2023-10-01-preview/examples/Accounts_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/2bde125befabb21807a2021765901f20e3e74ec8/specification/playwrighttesting/resource-manager/Microsoft.AzurePlaywrightService/stable/2024-12-01/examples/Accounts_CheckNameAvailability.json
+func ExampleAccountsClient_CheckNameAvailability() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armplaywrighttesting.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAccountsClient().CheckNameAvailability(ctx, armplaywrighttesting.CheckNameAvailabilityRequest{
+		Name: to.Ptr("dummyName"),
+		Type: to.Ptr("Microsoft.AzurePlaywrightService/Accounts"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.CheckNameAvailabilityResponse = armplaywrighttesting.CheckNameAvailabilityResponse{
+	// 	Message: to.Ptr("Test message."),
+	// 	NameAvailable: to.Ptr(true),
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/2bde125befabb21807a2021765901f20e3e74ec8/specification/playwrighttesting/resource-manager/Microsoft.AzurePlaywrightService/stable/2024-12-01/examples/Accounts_ListByResourceGroup.json
 func ExampleAccountsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -112,6 +140,7 @@ func ExampleAccountsClient_NewListByResourceGroupPager() {
 		// 			},
 		// 			Properties: &armplaywrighttesting.AccountProperties{
 		// 				DashboardURI: to.Ptr("https://dashboard.00000000-0000-0000-0000-000000000000.domain.com"),
+		// 				LocalAuth: to.Ptr(armplaywrighttesting.EnablementStatusEnabled),
 		// 				ProvisioningState: to.Ptr(armplaywrighttesting.ProvisioningStateSucceeded),
 		// 				RegionalAffinity: to.Ptr(armplaywrighttesting.EnablementStatusEnabled),
 		// 				Reporting: to.Ptr(armplaywrighttesting.EnablementStatusEnabled),
@@ -122,7 +151,7 @@ func ExampleAccountsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3eb9ec8e9c8f717c6b461c4c0f49a4662fb948fd/specification/playwrighttesting/resource-manager/Microsoft.AzurePlaywrightService/preview/2023-10-01-preview/examples/Accounts_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/2bde125befabb21807a2021765901f20e3e74ec8/specification/playwrighttesting/resource-manager/Microsoft.AzurePlaywrightService/stable/2024-12-01/examples/Accounts_Get.json
 func ExampleAccountsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,6 +187,7 @@ func ExampleAccountsClient_Get() {
 	// 	},
 	// 	Properties: &armplaywrighttesting.AccountProperties{
 	// 		DashboardURI: to.Ptr("https://dashboard.00000000-0000-0000-0000-000000000000.domain.com"),
+	// 		LocalAuth: to.Ptr(armplaywrighttesting.EnablementStatusEnabled),
 	// 		ProvisioningState: to.Ptr(armplaywrighttesting.ProvisioningStateSucceeded),
 	// 		RegionalAffinity: to.Ptr(armplaywrighttesting.EnablementStatusEnabled),
 	// 		Reporting: to.Ptr(armplaywrighttesting.EnablementStatusEnabled),
@@ -166,7 +196,7 @@ func ExampleAccountsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3eb9ec8e9c8f717c6b461c4c0f49a4662fb948fd/specification/playwrighttesting/resource-manager/Microsoft.AzurePlaywrightService/preview/2023-10-01-preview/examples/Accounts_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/2bde125befabb21807a2021765901f20e3e74ec8/specification/playwrighttesting/resource-manager/Microsoft.AzurePlaywrightService/stable/2024-12-01/examples/Accounts_CreateOrUpdate.json
 func ExampleAccountsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -214,6 +244,7 @@ func ExampleAccountsClient_BeginCreateOrUpdate() {
 	// 	},
 	// 	Properties: &armplaywrighttesting.AccountProperties{
 	// 		DashboardURI: to.Ptr("https://dashboard.00000000-0000-0000-0000-000000000000.domain.com"),
+	// 		LocalAuth: to.Ptr(armplaywrighttesting.EnablementStatusEnabled),
 	// 		ProvisioningState: to.Ptr(armplaywrighttesting.ProvisioningStateSucceeded),
 	// 		RegionalAffinity: to.Ptr(armplaywrighttesting.EnablementStatusEnabled),
 	// 		Reporting: to.Ptr(armplaywrighttesting.EnablementStatusEnabled),
@@ -222,7 +253,7 @@ func ExampleAccountsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3eb9ec8e9c8f717c6b461c4c0f49a4662fb948fd/specification/playwrighttesting/resource-manager/Microsoft.AzurePlaywrightService/preview/2023-10-01-preview/examples/Accounts_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/2bde125befabb21807a2021765901f20e3e74ec8/specification/playwrighttesting/resource-manager/Microsoft.AzurePlaywrightService/stable/2024-12-01/examples/Accounts_Update.json
 func ExampleAccountsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -266,6 +297,7 @@ func ExampleAccountsClient_Update() {
 	// 	},
 	// 	Properties: &armplaywrighttesting.AccountProperties{
 	// 		DashboardURI: to.Ptr("https://dashboard.00000000-0000-0000-0000-000000000000.domain.com"),
+	// 		LocalAuth: to.Ptr(armplaywrighttesting.EnablementStatusEnabled),
 	// 		ProvisioningState: to.Ptr(armplaywrighttesting.ProvisioningStateSucceeded),
 	// 		RegionalAffinity: to.Ptr(armplaywrighttesting.EnablementStatusEnabled),
 	// 		Reporting: to.Ptr(armplaywrighttesting.EnablementStatusEnabled),
@@ -274,7 +306,7 @@ func ExampleAccountsClient_Update() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3eb9ec8e9c8f717c6b461c4c0f49a4662fb948fd/specification/playwrighttesting/resource-manager/Microsoft.AzurePlaywrightService/preview/2023-10-01-preview/examples/Accounts_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/2bde125befabb21807a2021765901f20e3e74ec8/specification/playwrighttesting/resource-manager/Microsoft.AzurePlaywrightService/stable/2024-12-01/examples/Accounts_Delete.json
 func ExampleAccountsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

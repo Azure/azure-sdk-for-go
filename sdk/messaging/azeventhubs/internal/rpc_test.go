@@ -181,9 +181,6 @@ func TestRPCLinkNonErrorRequiresNoRecovery(t *testing.T) {
 	require.Equal(t, 200, resp.Code)
 	require.Equal(t, "response from service", resp.Message.Value)
 
-	acceptedMessage := <-tester.Accepted
-	require.Equal(t, "response from service", acceptedMessage.Value, "successfully received message is accepted")
-
 	require.NoError(t, link.Close(context.Background()))
 
 	logMessages := getLogs()
@@ -219,9 +216,6 @@ func TestRPCLinkNonErrorLockLostDoesNotBreakAnything(t *testing.T) {
 	require.ErrorAs(t, err, &rpcErr)
 	require.Equal(t, 400, rpcErr.RPCCode())
 
-	acceptedMessage := <-tester.Accepted
-	require.Equal(t, "response from service", acceptedMessage.Value, "successfully received message is accepted")
-
 	// validate that a normal error doesn't cause the response router to shut down
 	resp, err = link.RPC(context.Background(), &amqp.Message{
 		ApplicationProperties: map[string]any{
@@ -232,8 +226,6 @@ func TestRPCLinkNonErrorLockLostDoesNotBreakAnything(t *testing.T) {
 	})
 	require.NoError(t, err)
 	require.Equal(t, "response from service", resp.Message.Value)
-	acceptedMessage = <-tester.Accepted
-	require.Equal(t, "response from service", acceptedMessage.Value, "successfully received message is accepted")
 }
 
 func TestRPCLinkClosingClean_SessionCreationFailed(t *testing.T) {
@@ -404,10 +396,26 @@ func TestRPCLinkCancelClientSideWait(t *testing.T) {
 
 }
 
+func TestRPCLinkUsesCorrectFlags(t *testing.T) {
+	tester := NewRPCTester(t)
+
+	link, err := NewRPCLink(context.Background(), RPCLinkArgs{
+		Client: &rpcTesterClient{
+			session: tester,
+		},
+		Address:  "some-address",
+		LogEvent: "rpctesting",
+	})
+	require.NoError(t, err)
+	require.NoError(t, link.Close(context.Background()))
+
+	require.Equal(t, amqp.SenderSettleModeSettled, *tester.receiverOpts.RequestedSenderSettleMode)
+	require.Equal(t, amqp.ReceiverSettleModeFirst, *tester.receiverOpts.SettlementMode)
+}
+
 func NewRPCTester(t *testing.T) *rpcTester {
 	return &rpcTester{t: t,
 		ResponsesCh:    make(chan *rpcTestResp, 1000),
-		Accepted:       make(chan *amqp.Message, 1),
 		RPCLoopStarted: make(chan struct{}, 1),
 	}
 }
@@ -421,10 +429,8 @@ func NewRPCTester(t *testing.T) *rpcTester {
 type rpcTester struct {
 	amqpwrap.AMQPSenderCloser
 	amqpwrap.AMQPReceiverCloser
+	receiverOpts *amqp.ReceiverOptions
 
-	// Accepted contains all the messages where we called AcceptMessage(msg)
-	// We only call this when we
-	Accepted    chan *amqp.Message
 	ResponsesCh chan *rpcTestResp
 	t           *testing.T
 
@@ -465,6 +471,7 @@ func (c *rpcTesterClient) NewSession(ctx context.Context, opts *amqp.SessionOpti
 func (c *rpcTesterClient) Close() error { return nil }
 
 func (tester *rpcTester) NewReceiver(ctx context.Context, source string, partitionID string, opts *amqp.ReceiverOptions) (amqpwrap.AMQPReceiverCloser, error) {
+	tester.receiverOpts = opts
 	return tester, nil
 }
 
@@ -481,12 +488,6 @@ func (tester *rpcTester) LinkName() string {
 }
 
 // receiver functions
-
-func (tester *rpcTester) AcceptMessage(ctx context.Context, msg *amqp.Message) error {
-	require.NotNil(tester.t, tester.Accepted, "No messages should be AcceptMessage()'d since the tester.Accepted channel was nil")
-	tester.Accepted <- msg
-	return nil
-}
 
 func (tester *rpcTester) Receive(ctx context.Context, o *amqp.ReceiveOptions) (*amqp.Message, error) {
 	tester.closeRPCLoopStarted.Do(func() {

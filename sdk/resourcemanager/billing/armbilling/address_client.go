@@ -10,11 +10,12 @@ package armbilling
 
 import (
 	"context"
+	"net/http"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"net/http"
 )
 
 // AddressClient contains the methods for the Address group.
@@ -40,15 +41,16 @@ func NewAddressClient(credential azcore.TokenCredential, options *arm.ClientOpti
 // Validate - Validates an address. Use the operation to validate an address before using it as soldTo or a billTo address.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
+//   - parameters - Address details.
 //   - options - AddressClientValidateOptions contains the optional parameters for the AddressClient.Validate method.
-func (client *AddressClient) Validate(ctx context.Context, address AddressDetails, options *AddressClientValidateOptions) (AddressClientValidateResponse, error) {
+func (client *AddressClient) Validate(ctx context.Context, parameters AddressDetails, options *AddressClientValidateOptions) (AddressClientValidateResponse, error) {
 	var err error
 	const operationName = "AddressClient.Validate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.validateCreateRequest(ctx, address, options)
+	req, err := client.validateCreateRequest(ctx, parameters, options)
 	if err != nil {
 		return AddressClientValidateResponse{}, err
 	}
@@ -65,17 +67,17 @@ func (client *AddressClient) Validate(ctx context.Context, address AddressDetail
 }
 
 // validateCreateRequest creates the Validate request.
-func (client *AddressClient) validateCreateRequest(ctx context.Context, address AddressDetails, options *AddressClientValidateOptions) (*policy.Request, error) {
+func (client *AddressClient) validateCreateRequest(ctx context.Context, parameters AddressDetails, options *AddressClientValidateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/validateAddress"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, address); err != nil {
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
 	}
 	return req, nil
@@ -84,7 +86,7 @@ func (client *AddressClient) validateCreateRequest(ctx context.Context, address 
 // validateHandleResponse handles the Validate response.
 func (client *AddressClient) validateHandleResponse(resp *http.Response) (AddressClientValidateResponse, error) {
 	result := AddressClientValidateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ValidateAddressResponse); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.AddressValidationResponse); err != nil {
 		return AddressClientValidateResponse{}, err
 	}
 	return result, nil

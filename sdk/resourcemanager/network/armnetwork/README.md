@@ -1,7 +1,5 @@
 # Azure Network Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v5)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v5)
-
 The `armnetwork` module provides operations for working with Azure Network.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/network/armnetwork)
@@ -20,12 +18,12 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Network module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v5
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v6
 ```
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Network.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Network. The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -35,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Network module consists of one or more clients.  We provide a client factory which could be used to create any client in this module.
+Azure Network module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armnetwork.NewClientFactory(<subscription ID>, cred, nil)
@@ -54,7 +52,7 @@ clientFactory, err := armnetwork.NewClientFactory(<subscription ID>, cred, &opti
 
 ## Clients
 
-A client groups a set of related APIs, providing access to its functionality.  Create one or more clients to access the APIs you require using client factory.
+A client groups a set of related APIs, providing access to its functionality. Create one or more clients to access the APIs you require using client factory.
 
 ```go
 client := clientFactory.NewAdminRuleCollectionsClient()

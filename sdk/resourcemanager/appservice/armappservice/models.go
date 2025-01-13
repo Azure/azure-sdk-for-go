@@ -194,7 +194,9 @@ type AppCertificate struct {
 	// REQUIRED; Resource Location.
 	Location *string
 
-	// Kind of resource.
+	// Kind of resource. If the resource is an app, you can refer to https://github.com/Azure/app-service-linux-docs/blob/master/ThingsYouShouldKnow/kindproperty.md#app-service-resource-kind-reference
+	// for
+	// details supported values for kind.
 	Kind *string
 
 	// Certificate resource specific properties
@@ -805,6 +807,9 @@ type AzureStorageInfoValue struct {
 	// Path to mount the storage within the site's runtime environment.
 	MountPath *string
 
+	// Mounting protocol to use for the storage account.
+	Protocol *AzureStorageProtocol
+
 	// Name of the file share (container name, for Blob storage).
 	ShareName *string
 
@@ -1110,7 +1115,9 @@ type CertificateOrder struct {
 	// REQUIRED; Resource Location.
 	Location *string
 
-	// Kind of resource.
+	// Kind of resource. If the resource is an app, you can refer to https://github.com/Azure/app-service-linux-docs/blob/master/ThingsYouShouldKnow/kindproperty.md#app-service-resource-kind-reference
+	// for
+	// details supported values for kind.
 	Kind *string
 
 	// AppServiceCertificateOrder resource specific properties
@@ -1321,7 +1328,9 @@ type CertificateResource struct {
 	// REQUIRED; Resource Location.
 	Location *string
 
-	// Kind of resource.
+	// Kind of resource. If the resource is an app, you can refer to https://github.com/Azure/app-service-linux-docs/blob/master/ThingsYouShouldKnow/kindproperty.md#app-service-resource-kind-reference
+	// for
+	// details supported values for kind.
 	Kind *string
 
 	// Core resource properties
@@ -1338,6 +1347,12 @@ type CertificateResource struct {
 
 	// READ-ONLY; Resource type.
 	Type *string
+}
+
+// CipherSuites - Describes valid TLS cipher suites.
+type CipherSuites struct {
+	// List of TLS Cipher Suites that are supported by App Service.
+	Suites []*string
 }
 
 // ClientRegistration - The configuration settings of the app registration for providers that have client ids and client secrets
@@ -1503,7 +1518,9 @@ type ContainerApp struct {
 	// REQUIRED; Resource Location.
 	Location *string
 
-	// Kind of resource.
+	// Kind of resource. If the resource is an app, you can refer to https://github.com/Azure/app-service-linux-docs/blob/master/ThingsYouShouldKnow/kindproperty.md#app-service-resource-kind-reference
+	// for
+	// details supported values for kind.
 	Kind *string
 
 	// ContainerApp resource specific properties
@@ -2816,7 +2833,9 @@ type Domain struct {
 	// REQUIRED; Resource Location.
 	Location *string
 
-	// Kind of resource.
+	// Kind of resource. If the resource is an app, you can refer to https://github.com/Azure/app-service-linux-docs/blob/master/ThingsYouShouldKnow/kindproperty.md#app-service-resource-kind-reference
+	// for
+	// details supported values for kind.
 	Kind *string
 
 	// Domain resource specific properties
@@ -3196,7 +3215,9 @@ type EnvironmentResource struct {
 	// REQUIRED; Resource Location.
 	Location *string
 
-	// Kind of resource.
+	// Kind of resource. If the resource is an app, you can refer to https://github.com/Azure/app-service-linux-docs/blob/master/ThingsYouShouldKnow/kindproperty.md#app-service-resource-kind-reference
+	// for
+	// details supported values for kind.
 	Kind *string
 
 	// Core resource properties
@@ -3224,6 +3245,14 @@ type EnvironmentVar struct {
 	SecretRef *string
 
 	// Non-secret environment variable value.
+	Value *string
+}
+
+type EnvironmentVariable struct {
+	// REQUIRED; Environment variable name
+	Name *string
+
+	// REQUIRED; Environment variable value
 	Value *string
 }
 
@@ -3434,6 +3463,18 @@ type FrontEndConfiguration struct {
 	Kind *FrontEndServiceType
 }
 
+// FunctionAppConfig - Function app configuration.
+type FunctionAppConfig struct {
+	// Function app deployment configuration.
+	Deployment *FunctionsDeployment
+
+	// Function app runtime settings.
+	Runtime *FunctionsRuntime
+
+	// Function app scale and concurrency settings.
+	ScaleAndConcurrency *FunctionsScaleAndConcurrency
+}
+
 // FunctionAppMajorVersion - Function App stack major version.
 type FunctionAppMajorVersion struct {
 	// READ-ONLY; Function App stack major version (display only).
@@ -3633,6 +3674,87 @@ type FunctionSecrets struct {
 
 	// Trigger URL.
 	TriggerURL *string
+}
+
+// FunctionsAlwaysReadyConfig - Sets the number of 'Always Ready' instances for a function group or a specific function.
+type FunctionsAlwaysReadyConfig struct {
+	// Sets the number of 'Always Ready' instances for a given function group or a specific function. For additional information
+	// see https://aka.ms/flexconsumption/alwaysready.
+	InstanceCount *int32
+
+	// Either a function group or a function name is required. For additional information see https://aka.ms/flexconsumption/alwaysready.
+	Name *string
+}
+
+// FunctionsDeployment - Configuration section for the function app deployment.
+type FunctionsDeployment struct {
+	// Storage for deployed package used by the function app.
+	Storage *FunctionsDeploymentStorage
+}
+
+// FunctionsDeploymentStorage - Storage for deployed package used by the function app.
+type FunctionsDeploymentStorage struct {
+	// Authentication method to access the storage account for deployment.
+	Authentication *FunctionsDeploymentStorageAuthentication
+
+	// Property to select Azure Storage type. Available options: blobContainer.
+	Type *FunctionsDeploymentStorageType
+
+	// Property to set the URL for the selected Azure Storage type. Example: For blobContainer, the value could be https://.blob.core.windows.net/.
+	Value *string
+}
+
+// FunctionsDeploymentStorageAuthentication - Authentication method to access the storage account for deployment.
+type FunctionsDeploymentStorageAuthentication struct {
+	// Use this property for StorageAccountConnectionString. Set the name of the app setting that has the storage account connection
+	// string. Do not set a value for this property when using other
+	// authentication type.
+	StorageAccountConnectionStringName *string
+
+	// Property to select authentication type to access the selected storage account. Available options: SystemAssignedIdentity,
+	// UserAssignedIdentity, StorageAccountConnectionString.
+	Type *AuthenticationType
+
+	// Use this property for UserAssignedIdentity. Set the resource ID of the identity. Do not set a value for this property when
+	// using other authentication type.
+	UserAssignedIdentityResourceID *string
+}
+
+// FunctionsRuntime - Function app runtime name and version.
+type FunctionsRuntime struct {
+	// Function app runtime name. Available options: dotnet-isolated, node, java, powershell, python, custom
+	Name *RuntimeName
+
+	// Function app runtime version. Example: 8 (for dotnet-isolated)
+	Version *string
+}
+
+// FunctionsScaleAndConcurrency - Scale and concurrency settings for the function app.
+type FunctionsScaleAndConcurrency struct {
+	// 'Always Ready' configuration for the function app.
+	AlwaysReady []*FunctionsAlwaysReadyConfig
+
+	// Set the amount of memory allocated to each instance of the function app in MB. CPU and network bandwidth are allocated
+	// proportionally.
+	InstanceMemoryMB *int32
+
+	// The maximum number of instances for the function app.
+	MaximumInstanceCount *int32
+
+	// Scale and concurrency settings for the function app triggers.
+	Triggers *FunctionsScaleAndConcurrencyTriggers
+}
+
+// FunctionsScaleAndConcurrencyTriggers - Scale and concurrency settings for the function app triggers.
+type FunctionsScaleAndConcurrencyTriggers struct {
+	// Scale and concurrency settings for the HTTP trigger.
+	HTTP *FunctionsScaleAndConcurrencyTriggersHTTP
+}
+
+// FunctionsScaleAndConcurrencyTriggersHTTP - Scale and concurrency settings for the HTTP trigger.
+type FunctionsScaleAndConcurrencyTriggersHTTP struct {
+	// The maximum number of concurrent HTTP trigger invocations per instance.
+	PerInstanceConcurrency *int32
 }
 
 // GeoRegion - Geographical region.
@@ -4331,7 +4453,9 @@ type KubeEnvironment struct {
 	// Extended Location.
 	ExtendedLocation *ExtendedLocation
 
-	// Kind of resource.
+	// Kind of resource. If the resource is an app, you can refer to https://github.com/Azure/app-service-linux-docs/blob/master/ThingsYouShouldKnow/kindproperty.md#app-service-resource-kind-reference
+	// for
+	// details supported values for kind.
 	Kind *string
 
 	// KubeEnvironment resource specific properties
@@ -5090,7 +5214,9 @@ type Plan struct {
 	// Extended Location.
 	ExtendedLocation *ExtendedLocation
 
-	// Kind of resource.
+	// Kind of resource. If the resource is an app, you can refer to https://github.com/Azure/app-service-linux-docs/blob/master/ThingsYouShouldKnow/kindproperty.md#app-service-resource-kind-reference
+	// for
+	// details supported values for kind.
 	Kind *string
 
 	// AppServicePlan resource specific properties
@@ -5292,7 +5418,9 @@ type PremierAddOn struct {
 	// REQUIRED; Resource Location.
 	Location *string
 
-	// Kind of resource.
+	// Kind of resource. If the resource is an app, you can refer to https://github.com/Azure/app-service-linux-docs/blob/master/ThingsYouShouldKnow/kindproperty.md#app-service-resource-kind-reference
+	// for
+	// details supported values for kind.
 	Kind *string
 
 	// PremierAddOn resource specific properties
@@ -6438,7 +6566,9 @@ type Resource struct {
 	// REQUIRED; Resource Location.
 	Location *string
 
-	// Kind of resource.
+	// Kind of resource. If the resource is an app, you can refer to https://github.com/Azure/app-service-linux-docs/blob/master/ThingsYouShouldKnow/kindproperty.md#app-service-resource-kind-reference
+	// for
+	// details supported values for kind.
 	Kind *string
 
 	// Resource tags.
@@ -6748,7 +6878,9 @@ type Revision struct {
 	// REQUIRED; Resource Location.
 	Location *string
 
-	// Kind of resource.
+	// Kind of resource. If the resource is an app, you can refer to https://github.com/Azure/app-service-linux-docs/blob/master/ThingsYouShouldKnow/kindproperty.md#app-service-resource-kind-reference
+	// for
+	// details supported values for kind.
 	Kind *string
 
 	// Revision resource specific properties
@@ -6983,7 +7115,9 @@ type Site struct {
 	// Managed service identity.
 	Identity *ManagedServiceIdentity
 
-	// Kind of resource.
+	// Kind of resource. If the resource is an app, you can refer to https://github.com/Azure/app-service-linux-docs/blob/master/ThingsYouShouldKnow/kindproperty.md#app-service-resource-kind-reference
+	// for
+	// details supported values for kind.
 	Kind *string
 
 	// Site resource specific properties
@@ -7542,6 +7676,92 @@ type SiteConfigurationSnapshotInfoProperties struct {
 	Time *time.Time
 }
 
+// SiteContainer - Container of a site
+type SiteContainer struct {
+	// Kind of resource.
+	Kind *string
+
+	// SiteContainer resource specific properties
+	Properties *SiteContainerProperties
+
+	// READ-ONLY; Resource Id.
+	ID *string
+
+	// READ-ONLY; Resource Name.
+	Name *string
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
+// SiteContainerCollection - Collection of site containers
+type SiteContainerCollection struct {
+	// REQUIRED; Collection of resources.
+	Value []*SiteContainer
+
+	// READ-ONLY; Link to next page of resources.
+	NextLink *string
+}
+
+// SiteContainerProperties - SiteContainer resource specific properties
+type SiteContainerProperties struct {
+	// REQUIRED; Image Name
+	Image *string
+
+	// REQUIRED; true if the container is the main site container; false otherwise.
+	IsMain *bool
+
+	// Auth Type
+	AuthType *AuthType
+
+	// List of environment variables
+	EnvironmentVariables []*EnvironmentVariable
+
+	// Password Secret
+	PasswordSecret *string
+
+	// StartUp Command
+	StartUpCommand *string
+
+	// Target Port
+	TargetPort *string
+
+	// UserManagedIdentity ClientId
+	UserManagedIdentityClientID *string
+
+	// User Name
+	UserName *string
+
+	// List of volume mounts
+	VolumeMounts []*VolumeMount
+
+	// READ-ONLY; Created Time
+	CreatedTime *time.Time
+
+	// READ-ONLY; Last Modified Time
+	LastModifiedTime *time.Time
+}
+
+type SiteDNSConfig struct {
+	// Alternate DNS server to be used by apps. This property replicates the WEBSITEDNSALT_SERVER app setting.
+	DNSAltServer *string
+
+	// Custom time for DNS to be cached in seconds. Allowed range: 0-60. Default is 30 seconds. 0 means caching disabled.
+	DNSMaxCacheTimeout *int32
+
+	// Total number of retries for dns lookup. Allowed range: 1-5. Default is 3.
+	DNSRetryAttemptCount *int32
+
+	// Timeout for a single dns lookup in seconds. Allowed range: 1-30. Default is 3.
+	DNSRetryAttemptTimeout *int32
+
+	// List of custom DNS servers to be used by an app for lookups. Maximum 5 dns servers can be set.
+	DNSServers []*string
+
+	// READ-ONLY; Indicates that sites using Virtual network custom DNS servers are still sorting the list of DNS servers. Read-Only.
+	DNSLegacySortOrder *bool
+}
+
 // SiteExtensionInfo - Site Extension Information.
 type SiteExtensionInfo struct {
 	// Kind of resource.
@@ -7738,6 +7958,9 @@ type SitePatchResourceProperties struct {
 	// Unique identifier that verifies the custom domains assigned to the app. Customer will add this id to a txt record for verification.
 	CustomDomainVerificationID *string
 
+	// Property to configure various DNS related settings for a site.
+	DNSConfiguration *SiteDNSConfig
+
 	// Maximum allowed daily memory-time quota (applicable on dynamic apps only).
 	DailyMemoryTimeQuota *int32
 
@@ -7882,6 +8105,9 @@ type SitePhpErrorLogFlagProperties struct {
 
 // SiteProperties - Site resource specific properties
 type SiteProperties struct {
+	// Specifies the scope of uniqueness for the default hostname during resource creation
+	AutoGeneratedDomainNameLabelScope *AutoGeneratedDomainNameLabelScope
+
 	// true to enable client affinity; false to stop sending session affinity cookies, which route client requests in the same
 	// session to the same instance. Default is true.
 	ClientAffinityEnabled *bool
@@ -7907,6 +8133,9 @@ type SiteProperties struct {
 	// Unique identifier that verifies the custom domains assigned to the app. Customer will add this id to a txt record for verification.
 	CustomDomainVerificationID *string
 
+	// Property to configure various DNS related settings for a site.
+	DNSConfiguration *SiteDNSConfig
+
 	// Maximum allowed daily memory-time quota (applicable on dynamic apps only).
 	DailyMemoryTimeQuota *int32
 
@@ -7915,6 +8144,12 @@ type SiteProperties struct {
 
 	// true if the app is enabled; otherwise, false. Setting this value to false disables the app (takes the app offline).
 	Enabled *bool
+
+	// Whether to use end to end encryption between the FrontEnd and the Worker
+	EndToEndEncryptionEnabled *bool
+
+	// Configuration specific of the Azure Function app.
+	FunctionAppConfig *FunctionAppConfig
 
 	// HttpsOnly: configures a web site to accept only https requests. Issues redirect for http requests
 	HTTPSOnly *bool
@@ -7931,6 +8166,9 @@ type SiteProperties struct {
 
 	// Hyper-V sandbox.
 	HyperV *bool
+
+	// Specifies the IP mode of the app.
+	IPMode *IPMode
 
 	// Obsolete: Hyper-V sandbox.
 	IsXenon *bool
@@ -7971,6 +8209,9 @@ type SiteProperties struct {
 	// the form
 	// /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}
 	VirtualNetworkSubnetID *string
+
+	// To enable Backup and Restore operations over virtual network
+	VnetBackupRestoreEnabled *bool
 
 	// To enable accessing content over virtual network
 	VnetContentShareEnabled *bool
@@ -8023,6 +8264,10 @@ type SiteProperties struct {
 
 	// READ-ONLY; Name of the resource group the app belongs to. Read-only.
 	ResourceGroup *string
+
+	// READ-ONLY; Current SKU of application based on associated App Service Plan. Some valid SKU values are Free, Shared, Basic,
+	// Dynamic, FlexConsumption, Standard, Premium, PremiumV2, PremiumV3, Isolated, IsolatedV2
+	SKU *string
 
 	// READ-ONLY; Status of the last deployment slot swap operation.
 	SlotSwapStatus *SlotSwapStatus
@@ -8522,7 +8767,9 @@ type StaticSiteARMResource struct {
 	// Managed service identity.
 	Identity *ManagedServiceIdentity
 
-	// Kind of resource.
+	// Kind of resource. If the resource is an app, you can refer to https://github.com/Azure/app-service-linux-docs/blob/master/ThingsYouShouldKnow/kindproperty.md#app-service-resource-kind-reference
+	// for
+	// details supported values for kind.
 	Kind *string
 
 	// Core resource properties
@@ -10067,6 +10314,20 @@ type VnetValidationTestFailureProperties struct {
 	TestName *string
 }
 
+type VolumeMount struct {
+	// REQUIRED; Target path on the container where volume is mounted on
+	ContainerMountPath *string
+
+	// REQUIRED; Sub path in the volume where volume is mounted from.
+	VolumeSubPath *string
+
+	// Config Data to be mounted on the volume
+	Data *string
+
+	// Boolean to specify if the mount is read only on the container
+	ReadOnly *bool
+}
+
 // WebAppCollection - Collection of App Service apps.
 type WebAppCollection struct {
 	// REQUIRED; Collection of resources.
@@ -10283,7 +10544,10 @@ type WebSiteInstanceStatusProperties struct {
 
 	// Link to the console to web app instance
 	HealthCheckURL *string
-	State          *SiteRuntimeState
+
+	// The physical zone that the instance is in
+	PhysicalZone *string
+	State        *SiteRuntimeState
 
 	// Link to the GetStatusApi in Kudu
 	StatusURL *string

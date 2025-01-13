@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/ContainerAppsDiagnostics_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/ContainerAppsDiagnostics_List.json
 func ExampleContainerAppsDiagnosticsClient_NewListDetectorsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,7 +67,7 @@ func ExampleContainerAppsDiagnosticsClient_NewListDetectorsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/ContainerAppsDiagnostics_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/ContainerAppsDiagnostics_Get.json
 func ExampleContainerAppsDiagnosticsClient_GetDetector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,7 +139,7 @@ func ExampleContainerAppsDiagnosticsClient_GetDetector() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/Revisions_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/Revisions_List.json
 func ExampleContainerAppsDiagnosticsClient_NewListRevisionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -204,7 +204,7 @@ func ExampleContainerAppsDiagnosticsClient_NewListRevisionsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/Revisions_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/Revisions_Get.json
 func ExampleContainerAppsDiagnosticsClient_GetRevision() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -225,7 +225,7 @@ func ExampleContainerAppsDiagnosticsClient_GetRevision() {
 	// res.Revision = armappcontainers.Revision{
 	// 	Name: to.Ptr("testcontainerApp0-pjxhsye"),
 	// 	Type: to.Ptr("Microsoft.App/containerApps/revisions"),
-	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.AppcontainerApps/testcontainerApp0/revisions/testcontainerApp0-pjxhsye"),
+	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/testcontainerApp0/revisions/testcontainerApp0-pjxhsye"),
 	// 	Properties: &armappcontainers.RevisionProperties{
 	// 		Active: to.Ptr(true),
 	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-24T21:24:22.000Z"); return t}()),
@@ -262,7 +262,7 @@ func ExampleContainerAppsDiagnosticsClient_GetRevision() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d74afb775446d7f0bc1810fdc5a128c56289e854/specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/ContainerApps_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/ContainerApps_Get.json
 func ExampleContainerAppsDiagnosticsClient_GetRoot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -285,6 +285,17 @@ func ExampleContainerAppsDiagnosticsClient_GetRoot() {
 	// 	Type: to.Ptr("Microsoft.App/containerApps"),
 	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/testcontainerApp0"),
 	// 	Location: to.Ptr("East US"),
+	// 	Identity: &armappcontainers.ManagedServiceIdentity{
+	// 		Type: to.Ptr(armappcontainers.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
+	// 		PrincipalID: to.Ptr("24adfa4f-dedf-8dc0-ca29-b6d1a69ab319"),
+	// 		TenantID: to.Ptr("23adfa4f-eedf-1dc0-ba29-a6d1a69ab3d0"),
+	// 		UserAssignedIdentities: map[string]*armappcontainers.UserAssignedIdentity{
+	// 			"/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity": &armappcontainers.UserAssignedIdentity{
+	// 				ClientID: to.Ptr("14adfa4f-eedf-1dc0-ba29-a6d1a69ab3df"),
+	// 				PrincipalID: to.Ptr("74adfa4f-dedf-8dc0-ca29-b6d1a69ab312"),
+	// 			},
+	// 		},
+	// 	},
 	// 	Properties: &armappcontainers.ContainerAppProperties{
 	// 		Configuration: &armappcontainers.Configuration{
 	// 			Dapr: &armappcontainers.Dapr{
@@ -296,6 +307,15 @@ func ExampleContainerAppsDiagnosticsClient_GetRoot() {
 	// 				HTTPReadBufferSize: to.Ptr[int32](30),
 	// 				LogLevel: to.Ptr(armappcontainers.LogLevelDebug),
 	// 			},
+	// 			IdentitySettings: []*armappcontainers.IdentitySettings{
+	// 				{
+	// 					Identity: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity"),
+	// 					Lifecycle: to.Ptr(armappcontainers.IdentitySettingsLifeCycleAll),
+	// 				},
+	// 				{
+	// 					Identity: to.Ptr("system"),
+	// 					Lifecycle: to.Ptr(armappcontainers.IdentitySettingsLifeCycleInit),
+	// 			}},
 	// 			Ingress: &armappcontainers.Ingress{
 	// 				CustomDomains: []*armappcontainers.CustomDomain{
 	// 					{
@@ -341,6 +361,24 @@ func ExampleContainerAppsDiagnosticsClient_GetRoot() {
 	// 				Transport: to.Ptr(armappcontainers.IngressTransportMethodAuto),
 	// 			},
 	// 			MaxInactiveRevisions: to.Ptr[int32](10),
+	// 			Runtime: &armappcontainers.Runtime{
+	// 				Dotnet: &armappcontainers.RuntimeDotnet{
+	// 					AutoConfigureDataProtection: to.Ptr(true),
+	// 				},
+	// 				Java: &armappcontainers.RuntimeJava{
+	// 					EnableMetrics: to.Ptr(true),
+	// 					JavaAgent: &armappcontainers.RuntimeJavaAgent{
+	// 						Enabled: to.Ptr(true),
+	// 						Logging: &armappcontainers.RuntimeJavaAgentLogging{
+	// 							LoggerSettings: []*armappcontainers.LoggerSetting{
+	// 								{
+	// 									Level: to.Ptr(armappcontainers.LevelDebug),
+	// 									Logger: to.Ptr("org.springframework.boot"),
+	// 							}},
+	// 						},
+	// 					},
+	// 				},
+	// 			},
 	// 			Service: &armappcontainers.Service{
 	// 				Type: to.Ptr("redis"),
 	// 			},
@@ -381,14 +419,28 @@ func ExampleContainerAppsDiagnosticsClient_GetRoot() {
 	// 					},
 	// 			}},
 	// 			Scale: &armappcontainers.Scale{
+	// 				CooldownPeriod: to.Ptr[int32](350),
 	// 				MaxReplicas: to.Ptr[int32](5),
 	// 				MinReplicas: to.Ptr[int32](1),
+	// 				PollingInterval: to.Ptr[int32](35),
 	// 				Rules: []*armappcontainers.ScaleRule{
 	// 					{
 	// 						Name: to.Ptr("httpscalingrule"),
 	// 						HTTP: &armappcontainers.HTTPScaleRule{
 	// 							Metadata: map[string]*string{
 	// 								"concurrentRequests": to.Ptr("50"),
+	// 							},
+	// 						},
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("servicebus"),
+	// 						Custom: &armappcontainers.CustomScaleRule{
+	// 							Type: to.Ptr("azure-servicebus"),
+	// 							Identity: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity"),
+	// 							Metadata: map[string]*string{
+	// 								"messageCount": to.Ptr("5"),
+	// 								"namespace": to.Ptr("mynamespace"),
+	// 								"queueName": to.Ptr("myqueue"),
 	// 							},
 	// 						},
 	// 				}},

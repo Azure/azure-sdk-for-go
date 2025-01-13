@@ -589,6 +589,24 @@ type HomeNetworkPublicKey struct {
 	URL *string
 }
 
+// IPv4Route - An IPv4 route.
+type IPv4Route struct {
+	// The destination IPv4 prefix.
+	Destination *string
+
+	// A list of next hops for the destination.
+	NextHops []*IPv4RouteNextHop
+}
+
+// IPv4RouteNextHop - The next hop in an IPv4 route.
+type IPv4RouteNextHop struct {
+	// The next hop address.
+	Address *string
+
+	// The priority of this next hop. Next hops with lower preference values are preferred.
+	Priority *int32
+}
+
 // IdentityAndTagsObject - Identity and Tags object for patch operations.
 type IdentityAndTagsObject struct {
 	// The managed service identity associated with this resource.
@@ -618,8 +636,14 @@ type Installation struct {
 
 // InterfaceProperties - Interface properties
 type InterfaceProperties struct {
+	// The IPv4 addresses of the endpoints to send BFD probes to.
+	BfdIPv4Endpoints []*string
+
 	// The IPv4 address.
 	IPv4Address *string
+
+	// The list of IPv4 addresses, for a multi-node system.
+	IPv4AddressList []*string
 
 	// The default IPv4 gateway (router).
 	IPv4Gateway *string
@@ -629,6 +653,9 @@ type InterfaceProperties struct {
 
 	// The logical name for this interface. This should match one of the interfaces configured on your Azure Stack Edge device.
 	Name *string
+
+	// VLAN identifier of the network interface. Example: 501.
+	VlanID *int32
 }
 
 // KeyVaultKey - An Azure key vault key.
@@ -917,6 +944,9 @@ type PacketCoreControlPlanePropertiesFormat struct {
 	// value to allow for GTP encapsulation.
 	UeMtu *int32
 
+	// The user consent configuration for the packet core.
+	UserConsent *UserConsentConfiguration
+
 	// The desired version of the packet core software.
 	Version *string
 
@@ -1093,6 +1123,9 @@ type PinholeTimeouts struct {
 
 // Platform specific packet core control plane version properties.
 type Platform struct {
+	// The list of versions to which a high availability upgrade from this version is supported.
+	HaUpgradesAvailable []*string
+
 	// The maximum software version of the platform where this packet core version can be deployed.
 	MaximumPlatformSoftwareVersion *string
 
@@ -1275,6 +1308,45 @@ type ResourceID struct {
 	ID *string
 }
 
+// RoutingInfoListResult - Response for the list routing information API service call.
+type RoutingInfoListResult struct {
+	// A list of the routing information for the packet core control plane
+	Value []*RoutingInfoModel
+
+	// READ-ONLY; The URL to get the next set of results.
+	NextLink *string
+}
+
+// RoutingInfoModel - Routing information
+type RoutingInfoModel struct {
+	// REQUIRED; Routing information properties
+	Properties *RoutingInfoPropertiesFormat
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// RoutingInfoPropertiesFormat - Routing information properties
+type RoutingInfoPropertiesFormat struct {
+	// A list of IPv4 routes.
+	ControlPlaneAccessRoutes []*IPv4Route
+
+	// A list of IPv4 routes.
+	UserPlaneAccessRoutes []*IPv4Route
+
+	// A list of attached data networks and their IPv4 routes.
+	UserPlaneDataRoutes []*UserPlaneDataRoutesItem
+}
+
 // Service resource. Must be created in the same location as its parent mobile network.
 type Service struct {
 	// REQUIRED; The geo-location where the resource lives
@@ -1364,6 +1436,11 @@ type ServiceResourceID struct {
 
 // SignalingConfiguration - Signaling configuration for the packet core.
 type SignalingConfiguration struct {
+	// An ordered list of NAS encryption algorithms, used to encrypt control plane traffic between the UE and packet core, in
+	// order from most to least preferred. If not specified, the packet core will use a
+	// built-in default ordering.
+	NasEncryption []*NasEncryptionType
+
 	// Configuration enabling 4G NAS reroute.
 	NasReroute *NASRerouteConfiguration
 }
@@ -1384,6 +1461,15 @@ type Sim struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
+}
+
+// SimClone - The SIMs to clone.
+type SimClone struct {
+	// A list of SIM resource names to be cloned.
+	Sims []*string
+
+	// The SIM Group where the SIMs should be cloned.
+	TargetSimGroupID *SimGroupResourceID
 }
 
 // SimDeleteList - The SIMs to delete.
@@ -1453,6 +1539,15 @@ type SimListResult struct {
 
 	// READ-ONLY; The URL to get the next set of results.
 	NextLink *string
+}
+
+// SimMove - The SIMs to move.
+type SimMove struct {
+	// A list of SIM resource names to be moved.
+	Sims []*string
+
+	// The SIM Group where the SIMs should be moved.
+	TargetSimGroupID *SimGroupResourceID
 }
 
 // SimNameAndEncryptedProperties - SIM name and encrypted properties.
@@ -2058,4 +2153,17 @@ type UserAssignedIdentity struct {
 
 	// READ-ONLY; The principal ID of the assigned identity.
 	PrincipalID *string
+}
+
+type UserConsentConfiguration struct {
+	// Allow Microsoft to access non-PII telemetry information from the packet core.
+	AllowSupportTelemetryAccess *bool
+}
+
+type UserPlaneDataRoutesItem struct {
+	// Reference to an attached data network resource.
+	AttachedDataNetwork *AttachedDataNetworkResourceID
+
+	// A list of IPv4 routes.
+	Routes []*IPv4Route
 }

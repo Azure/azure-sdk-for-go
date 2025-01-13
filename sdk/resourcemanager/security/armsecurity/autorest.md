@@ -6,10 +6,10 @@
 azure-arm: true
 tag: package-composite-v3
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/b43974e07d3204c4b6f8396627f5430994a7f7c9/specification/security/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/b43974e07d3204c4b6f8396627f5430994a7f7c9/specification/security/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/9ac34f238dd6b9071f486b57e9f9f1a0c43ec6f6/specification/security/resource-manager/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/9ac34f238dd6b9071f486b57e9f9f1a0c43ec6f6/specification/security/resource-manager/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 0.13.0
+module-version: 0.14.0
 directive:
 - from: externalSecuritySolutions.json
   where: $.definitions['ExternalSecuritySolutionKind']

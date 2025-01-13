@@ -29,6 +29,7 @@ type ServerFactory struct {
 	PacketCoreControlPlaneVersionsServer PacketCoreControlPlaneVersionsServer
 	PacketCoreControlPlanesServer        PacketCoreControlPlanesServer
 	PacketCoreDataPlanesServer           PacketCoreDataPlanesServer
+	RoutingInfoServer                    RoutingInfoServer
 	ServicesServer                       ServicesServer
 	SimGroupsServer                      SimGroupsServer
 	SimPoliciesServer                    SimPoliciesServer
@@ -62,6 +63,7 @@ type ServerFactoryTransport struct {
 	trPacketCoreControlPlaneVersionsServer *PacketCoreControlPlaneVersionsServerTransport
 	trPacketCoreControlPlanesServer        *PacketCoreControlPlanesServerTransport
 	trPacketCoreDataPlanesServer           *PacketCoreDataPlanesServerTransport
+	trRoutingInfoServer                    *RoutingInfoServerTransport
 	trServicesServer                       *ServicesServerTransport
 	trSimGroupsServer                      *SimGroupsServerTransport
 	trSimPoliciesServer                    *SimPoliciesServerTransport
@@ -130,6 +132,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewPacketCoreDataPlanesServerTransport(&s.srv.PacketCoreDataPlanesServer)
 		})
 		resp, err = s.trPacketCoreDataPlanesServer.Do(req)
+	case "RoutingInfoClient":
+		initServer(s, &s.trRoutingInfoServer, func() *RoutingInfoServerTransport { return NewRoutingInfoServerTransport(&s.srv.RoutingInfoServer) })
+		resp, err = s.trRoutingInfoServer.Do(req)
 	case "ServicesClient":
 		initServer(s, &s.trServicesServer, func() *ServicesServerTransport { return NewServicesServerTransport(&s.srv.ServicesServer) })
 		resp, err = s.trServicesServer.Do(req)

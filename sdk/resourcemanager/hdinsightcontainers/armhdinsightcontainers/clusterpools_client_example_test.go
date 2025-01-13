@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsightcontainers/armhdinsightcontainers"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/GetClusterPool.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0219f9da9de5833fc380f57d6b026f68b5df6f93/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2024-05-01-preview/examples/GetClusterPool.json
 func ExampleClusterPoolsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -63,17 +63,21 @@ func ExampleClusterPoolsClient_Get() {
 	// 			ClusterPoolVersion: to.Ptr("1.2"),
 	// 		},
 	// 		ComputeProfile: &armhdinsightcontainers.ClusterPoolResourcePropertiesComputeProfile{
-	// 			Count: to.Ptr[int32](3),
-	// 			VMSize: to.Ptr("Standard_D3_v2"),
+	// 			AvailabilityZones: []*string{
+	// 				to.Ptr("1"),
+	// 				to.Ptr("2"),
+	// 				to.Ptr("3")},
+	// 				Count: to.Ptr[int32](3),
+	// 				VMSize: to.Ptr("Standard_D3_v2"),
+	// 			},
+	// 			DeploymentID: to.Ptr("45cd32aead6e4a91b079a0cdbfac8c36"),
+	// 			ManagedResourceGroupName: to.Ptr("hdi-45cd32aead6e4a91b079a0cdbfac8c36"),
+	// 			ProvisioningState: to.Ptr(armhdinsightcontainers.ProvisioningStatusSucceeded),
 	// 		},
-	// 		DeploymentID: to.Ptr("45cd32aead6e4a91b079a0cdbfac8c36"),
-	// 		ManagedResourceGroupName: to.Ptr("hdi-45cd32aead6e4a91b079a0cdbfac8c36"),
-	// 		ProvisioningState: to.Ptr(armhdinsightcontainers.ProvisioningStatusSucceeded),
-	// 	},
-	// }
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/CreateClusterPool.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0219f9da9de5833fc380f57d6b026f68b5df6f93/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2024-05-01-preview/examples/CreateClusterPool.json
 func ExampleClusterPoolsClient_BeginCreateOrUpdate_clusterPoolPut() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -91,6 +95,10 @@ func ExampleClusterPoolsClient_BeginCreateOrUpdate_clusterPoolPut() {
 				ClusterPoolVersion: to.Ptr("1.2"),
 			},
 			ComputeProfile: &armhdinsightcontainers.ClusterPoolResourcePropertiesComputeProfile{
+				AvailabilityZones: []*string{
+					to.Ptr("1"),
+					to.Ptr("2"),
+					to.Ptr("3")},
 				VMSize: to.Ptr("Standard_D3_v2"),
 			},
 		},
@@ -132,17 +140,21 @@ func ExampleClusterPoolsClient_BeginCreateOrUpdate_clusterPoolPut() {
 	// 			ClusterPoolVersion: to.Ptr("1.2"),
 	// 		},
 	// 		ComputeProfile: &armhdinsightcontainers.ClusterPoolResourcePropertiesComputeProfile{
-	// 			Count: to.Ptr[int32](3),
-	// 			VMSize: to.Ptr("Standard_D3_v2"),
+	// 			AvailabilityZones: []*string{
+	// 				to.Ptr("1"),
+	// 				to.Ptr("2"),
+	// 				to.Ptr("3")},
+	// 				Count: to.Ptr[int32](3),
+	// 				VMSize: to.Ptr("Standard_D3_v2"),
+	// 			},
+	// 			DeploymentID: to.Ptr("45cd32aead6e4a91b079a0cdbfac8c36"),
+	// 			ManagedResourceGroupName: to.Ptr("hdi-45cd32aead6e4a91b079a0cdbfac8c36"),
+	// 			ProvisioningState: to.Ptr(armhdinsightcontainers.ProvisioningStatusSucceeded),
 	// 		},
-	// 		DeploymentID: to.Ptr("45cd32aead6e4a91b079a0cdbfac8c36"),
-	// 		ManagedResourceGroupName: to.Ptr("hdi-45cd32aead6e4a91b079a0cdbfac8c36"),
-	// 		ProvisioningState: to.Ptr(armhdinsightcontainers.ProvisioningStatusSucceeded),
-	// 	},
-	// }
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/CreateClusterPoolWithPrivateAks.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0219f9da9de5833fc380f57d6b026f68b5df6f93/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2024-05-01-preview/examples/CreateClusterPoolWithPrivateAks.json
 func ExampleClusterPoolsClient_BeginCreateOrUpdate_clusterPoolPutWithPrivateAks() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -160,6 +172,10 @@ func ExampleClusterPoolsClient_BeginCreateOrUpdate_clusterPoolPutWithPrivateAks(
 				ClusterPoolVersion: to.Ptr("1.2"),
 			},
 			ComputeProfile: &armhdinsightcontainers.ClusterPoolResourcePropertiesComputeProfile{
+				AvailabilityZones: []*string{
+					to.Ptr("1"),
+					to.Ptr("2"),
+					to.Ptr("3")},
 				VMSize: to.Ptr("Standard_D3_v2"),
 			},
 			NetworkProfile: &armhdinsightcontainers.ClusterPoolResourcePropertiesNetworkProfile{
@@ -205,21 +221,25 @@ func ExampleClusterPoolsClient_BeginCreateOrUpdate_clusterPoolPutWithPrivateAks(
 	// 			ClusterPoolVersion: to.Ptr("1.2"),
 	// 		},
 	// 		ComputeProfile: &armhdinsightcontainers.ClusterPoolResourcePropertiesComputeProfile{
-	// 			Count: to.Ptr[int32](3),
-	// 			VMSize: to.Ptr("Standard_D3_v2"),
+	// 			AvailabilityZones: []*string{
+	// 				to.Ptr("1"),
+	// 				to.Ptr("2"),
+	// 				to.Ptr("3")},
+	// 				Count: to.Ptr[int32](3),
+	// 				VMSize: to.Ptr("Standard_D3_v2"),
+	// 			},
+	// 			DeploymentID: to.Ptr("45cd32aead6e4a91b079a0cdbfac8c36"),
+	// 			ManagedResourceGroupName: to.Ptr("hdi-45cd32aead6e4a91b079a0cdbfac8c36"),
+	// 			NetworkProfile: &armhdinsightcontainers.ClusterPoolResourcePropertiesNetworkProfile{
+	// 				EnablePrivateAPIServer: to.Ptr(true),
+	// 				SubnetID: to.Ptr("/subscriptions/subid/resourceGroups/hiloResourcegroup/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armhdinsightcontainers.ProvisioningStatusSucceeded),
 	// 		},
-	// 		DeploymentID: to.Ptr("45cd32aead6e4a91b079a0cdbfac8c36"),
-	// 		ManagedResourceGroupName: to.Ptr("hdi-45cd32aead6e4a91b079a0cdbfac8c36"),
-	// 		NetworkProfile: &armhdinsightcontainers.ClusterPoolResourcePropertiesNetworkProfile{
-	// 			EnablePrivateAPIServer: to.Ptr(true),
-	// 			SubnetID: to.Ptr("/subscriptions/subid/resourceGroups/hiloResourcegroup/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
-	// 		},
-	// 		ProvisioningState: to.Ptr(armhdinsightcontainers.ProvisioningStatusSucceeded),
-	// 	},
-	// }
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/CreateClusterPoolWithUDRAks.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0219f9da9de5833fc380f57d6b026f68b5df6f93/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2024-05-01-preview/examples/CreateClusterPoolWithUDRAks.json
 func ExampleClusterPoolsClient_BeginCreateOrUpdate_clusterPoolPutWithUdrAks() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -237,6 +257,10 @@ func ExampleClusterPoolsClient_BeginCreateOrUpdate_clusterPoolPutWithUdrAks() {
 				ClusterPoolVersion: to.Ptr("1.2"),
 			},
 			ComputeProfile: &armhdinsightcontainers.ClusterPoolResourcePropertiesComputeProfile{
+				AvailabilityZones: []*string{
+					to.Ptr("1"),
+					to.Ptr("2"),
+					to.Ptr("3")},
 				VMSize: to.Ptr("Standard_D3_v2"),
 			},
 			NetworkProfile: &armhdinsightcontainers.ClusterPoolResourcePropertiesNetworkProfile{
@@ -282,21 +306,25 @@ func ExampleClusterPoolsClient_BeginCreateOrUpdate_clusterPoolPutWithUdrAks() {
 	// 			ClusterPoolVersion: to.Ptr("1.2"),
 	// 		},
 	// 		ComputeProfile: &armhdinsightcontainers.ClusterPoolResourcePropertiesComputeProfile{
-	// 			Count: to.Ptr[int32](3),
-	// 			VMSize: to.Ptr("Standard_D3_v2"),
+	// 			AvailabilityZones: []*string{
+	// 				to.Ptr("1"),
+	// 				to.Ptr("2"),
+	// 				to.Ptr("3")},
+	// 				Count: to.Ptr[int32](3),
+	// 				VMSize: to.Ptr("Standard_D3_v2"),
+	// 			},
+	// 			DeploymentID: to.Ptr("45cd32aead6e4a91b079a0cdbfac8c36"),
+	// 			ManagedResourceGroupName: to.Ptr("hdi-45cd32aead6e4a91b079a0cdbfac8c36"),
+	// 			NetworkProfile: &armhdinsightcontainers.ClusterPoolResourcePropertiesNetworkProfile{
+	// 				OutboundType: to.Ptr(armhdinsightcontainers.OutboundTypeUserDefinedRouting),
+	// 				SubnetID: to.Ptr("/subscriptions/subid/resourceGroups/hiloResourcegroup/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armhdinsightcontainers.ProvisioningStatusSucceeded),
 	// 		},
-	// 		DeploymentID: to.Ptr("45cd32aead6e4a91b079a0cdbfac8c36"),
-	// 		ManagedResourceGroupName: to.Ptr("hdi-45cd32aead6e4a91b079a0cdbfac8c36"),
-	// 		NetworkProfile: &armhdinsightcontainers.ClusterPoolResourcePropertiesNetworkProfile{
-	// 			OutboundType: to.Ptr(armhdinsightcontainers.OutboundTypeUserDefinedRouting),
-	// 			SubnetID: to.Ptr("/subscriptions/subid/resourceGroups/hiloResourcegroup/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
-	// 		},
-	// 		ProvisioningState: to.Ptr(armhdinsightcontainers.ProvisioningStatusSucceeded),
-	// 	},
-	// }
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/PatchClusterPool.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0219f9da9de5833fc380f57d6b026f68b5df6f93/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2024-05-01-preview/examples/PatchClusterPool.json
 func ExampleClusterPoolsClient_BeginUpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -350,17 +378,21 @@ func ExampleClusterPoolsClient_BeginUpdateTags() {
 	// 			AksClusterResourceID: to.Ptr("/subscriptions/subid/resourceGroups/hdi-45cd32aead6e4a91b079a0cdbfac8c36/providers/Microsoft.ContainerService/managedClusters/clusterpool1"),
 	// 		},
 	// 		ComputeProfile: &armhdinsightcontainers.ClusterPoolResourcePropertiesComputeProfile{
-	// 			Count: to.Ptr[int32](3),
-	// 			VMSize: to.Ptr("Standard_D3_v2"),
+	// 			AvailabilityZones: []*string{
+	// 				to.Ptr("1"),
+	// 				to.Ptr("2"),
+	// 				to.Ptr("3")},
+	// 				Count: to.Ptr[int32](3),
+	// 				VMSize: to.Ptr("Standard_D3_v2"),
+	// 			},
+	// 			DeploymentID: to.Ptr("45cd32aead6e4a91b079a0cdbfac8c36"),
+	// 			ManagedResourceGroupName: to.Ptr("hdi-45cd32aead6e4a91b079a0cdbfac8c36"),
+	// 			ProvisioningState: to.Ptr(armhdinsightcontainers.ProvisioningStatusSucceeded),
 	// 		},
-	// 		DeploymentID: to.Ptr("45cd32aead6e4a91b079a0cdbfac8c36"),
-	// 		ManagedResourceGroupName: to.Ptr("hdi-45cd32aead6e4a91b079a0cdbfac8c36"),
-	// 		ProvisioningState: to.Ptr(armhdinsightcontainers.ProvisioningStatusSucceeded),
-	// 	},
-	// }
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/DeleteClusterPool.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0219f9da9de5833fc380f57d6b026f68b5df6f93/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2024-05-01-preview/examples/DeleteClusterPool.json
 func ExampleClusterPoolsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -381,7 +413,7 @@ func ExampleClusterPoolsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/ListClusterPoolsSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0219f9da9de5833fc380f57d6b026f68b5df6f93/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2024-05-01-preview/examples/ListClusterPoolsSubscription.json
 func ExampleClusterPoolsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -428,19 +460,23 @@ func ExampleClusterPoolsClient_NewListBySubscriptionPager() {
 		// 					ClusterPoolVersion: to.Ptr("1.2"),
 		// 				},
 		// 				ComputeProfile: &armhdinsightcontainers.ClusterPoolResourcePropertiesComputeProfile{
-		// 					Count: to.Ptr[int32](3),
-		// 					VMSize: to.Ptr("Standard_D3_v2"),
+		// 					AvailabilityZones: []*string{
+		// 						to.Ptr("1"),
+		// 						to.Ptr("2"),
+		// 						to.Ptr("3")},
+		// 						Count: to.Ptr[int32](3),
+		// 						VMSize: to.Ptr("Standard_D3_v2"),
+		// 					},
+		// 					DeploymentID: to.Ptr("45cd32aead6e4a91b079a0cdbfac8c36"),
+		// 					ManagedResourceGroupName: to.Ptr("hdi-45cd32aead6e4a91b079a0cdbfac8c36"),
+		// 					ProvisioningState: to.Ptr(armhdinsightcontainers.ProvisioningStatusSucceeded),
 		// 				},
-		// 				DeploymentID: to.Ptr("45cd32aead6e4a91b079a0cdbfac8c36"),
-		// 				ManagedResourceGroupName: to.Ptr("hdi-45cd32aead6e4a91b079a0cdbfac8c36"),
-		// 				ProvisioningState: to.Ptr(armhdinsightcontainers.ProvisioningStatusSucceeded),
-		// 			},
-		// 	}},
-		// }
+		// 		}},
+		// 	}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/ListClusterPools.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0219f9da9de5833fc380f57d6b026f68b5df6f93/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2024-05-01-preview/examples/ListClusterPools.json
 func ExampleClusterPoolsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -499,7 +535,7 @@ func ExampleClusterPoolsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/UpgradeAKSPatchVersionForClusterPool.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0219f9da9de5833fc380f57d6b026f68b5df6f93/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2024-05-01-preview/examples/UpgradeAKSPatchVersionForClusterPool.json
 func ExampleClusterPoolsClient_BeginUpgrade_clusterPoolsUpgradeAksPatchVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -554,17 +590,21 @@ func ExampleClusterPoolsClient_BeginUpgrade_clusterPoolsUpgradeAksPatchVersion()
 	// 			ClusterPoolVersion: to.Ptr("1.2"),
 	// 		},
 	// 		ComputeProfile: &armhdinsightcontainers.ClusterPoolResourcePropertiesComputeProfile{
-	// 			Count: to.Ptr[int32](3),
-	// 			VMSize: to.Ptr("Standard_D3_v2"),
+	// 			AvailabilityZones: []*string{
+	// 				to.Ptr("1"),
+	// 				to.Ptr("2"),
+	// 				to.Ptr("3")},
+	// 				Count: to.Ptr[int32](3),
+	// 				VMSize: to.Ptr("Standard_D3_v2"),
+	// 			},
+	// 			DeploymentID: to.Ptr("45cd32aead6e4a91b079a0cdbfac8c36"),
+	// 			ManagedResourceGroupName: to.Ptr("hdi-45cd32aead6e4a91b079a0cdbfac8c36"),
+	// 			ProvisioningState: to.Ptr(armhdinsightcontainers.ProvisioningStatusSucceeded),
 	// 		},
-	// 		DeploymentID: to.Ptr("45cd32aead6e4a91b079a0cdbfac8c36"),
-	// 		ManagedResourceGroupName: to.Ptr("hdi-45cd32aead6e4a91b079a0cdbfac8c36"),
-	// 		ProvisioningState: to.Ptr(armhdinsightcontainers.ProvisioningStatusSucceeded),
-	// 	},
-	// }
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/UpgradeNodeOsForClusterPool.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0219f9da9de5833fc380f57d6b026f68b5df6f93/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2024-05-01-preview/examples/UpgradeNodeOsForClusterPool.json
 func ExampleClusterPoolsClient_BeginUpgrade_clusterPoolsUpgradeNodeOs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -617,12 +657,16 @@ func ExampleClusterPoolsClient_BeginUpgrade_clusterPoolsUpgradeNodeOs() {
 	// 			ClusterPoolVersion: to.Ptr("1.2"),
 	// 		},
 	// 		ComputeProfile: &armhdinsightcontainers.ClusterPoolResourcePropertiesComputeProfile{
-	// 			Count: to.Ptr[int32](3),
-	// 			VMSize: to.Ptr("Standard_D3_v2"),
+	// 			AvailabilityZones: []*string{
+	// 				to.Ptr("1"),
+	// 				to.Ptr("2"),
+	// 				to.Ptr("3")},
+	// 				Count: to.Ptr[int32](3),
+	// 				VMSize: to.Ptr("Standard_D3_v2"),
+	// 			},
+	// 			DeploymentID: to.Ptr("45cd32aead6e4a91b079a0cdbfac8c36"),
+	// 			ManagedResourceGroupName: to.Ptr("hdi-45cd32aead6e4a91b079a0cdbfac8c36"),
+	// 			ProvisioningState: to.Ptr(armhdinsightcontainers.ProvisioningStatusSucceeded),
 	// 		},
-	// 		DeploymentID: to.Ptr("45cd32aead6e4a91b079a0cdbfac8c36"),
-	// 		ManagedResourceGroupName: to.Ptr("hdi-45cd32aead6e4a91b079a0cdbfac8c36"),
-	// 		ProvisioningState: to.Ptr(armhdinsightcontainers.ProvisioningStatusSucceeded),
-	// 	},
-	// }
+	// 	}
 }

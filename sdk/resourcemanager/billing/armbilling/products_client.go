@@ -11,14 +11,15 @@ package armbilling
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ProductsClient contains the methods for the Products group.
@@ -45,7 +46,7 @@ func NewProductsClient(credential azcore.TokenCredential, options *arm.ClientOpt
 // Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
 //   - productName - The ID that uniquely identifies a product.
 //   - options - ProductsClientGetOptions contains the optional parameters for the ProductsClient.Get method.
@@ -87,7 +88,7 @@ func (client *ProductsClient) getCreateRequest(ctx context.Context, billingAccou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -106,7 +107,7 @@ func (client *ProductsClient) getHandleResponse(resp *http.Response) (ProductsCl
 // The operation is supported for billing accounts with agreement type Microsoft Customer Agreement or
 // Microsoft Partner Agreement.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
 //   - options - ProductsClientListByBillingAccountOptions contains the optional parameters for the ProductsClient.NewListByBillingAccountPager
 //     method.
@@ -145,9 +146,24 @@ func (client *ProductsClient) listByBillingAccountCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2024-04-01")
+	if options != nil && options.Count != nil {
+		reqQP.Set("count", strconv.FormatBool(*options.Count))
+	}
 	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+		reqQP.Set("filter", *options.Filter)
+	}
+	if options != nil && options.OrderBy != nil {
+		reqQP.Set("orderBy", *options.OrderBy)
+	}
+	if options != nil && options.Search != nil {
+		reqQP.Set("search", *options.Search)
+	}
+	if options != nil && options.Skip != nil {
+		reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
@@ -157,7 +173,7 @@ func (client *ProductsClient) listByBillingAccountCreateRequest(ctx context.Cont
 // listByBillingAccountHandleResponse handles the ListByBillingAccount response.
 func (client *ProductsClient) listByBillingAccountHandleResponse(resp *http.Response) (ProductsClientListByBillingAccountResponse, error) {
 	result := ProductsClientListByBillingAccountResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ProductsListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.ProductListResult); err != nil {
 		return ProductsClientListByBillingAccountResponse{}, err
 	}
 	return result, nil
@@ -167,7 +183,7 @@ func (client *ProductsClient) listByBillingAccountHandleResponse(resp *http.Resp
 // The operation is supported for billing accounts with agreement type Microsoft Customer Agreement or
 // Microsoft Partner Agreement.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
 //   - billingProfileName - The ID that uniquely identifies a billing profile.
 //   - options - ProductsClientListByBillingProfileOptions contains the optional parameters for the ProductsClient.NewListByBillingProfilePager
@@ -211,9 +227,24 @@ func (client *ProductsClient) listByBillingProfileCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2024-04-01")
+	if options != nil && options.Count != nil {
+		reqQP.Set("count", strconv.FormatBool(*options.Count))
+	}
 	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+		reqQP.Set("filter", *options.Filter)
+	}
+	if options != nil && options.OrderBy != nil {
+		reqQP.Set("orderBy", *options.OrderBy)
+	}
+	if options != nil && options.Search != nil {
+		reqQP.Set("search", *options.Search)
+	}
+	if options != nil && options.Skip != nil {
+		reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
@@ -223,7 +254,7 @@ func (client *ProductsClient) listByBillingProfileCreateRequest(ctx context.Cont
 // listByBillingProfileHandleResponse handles the ListByBillingProfile response.
 func (client *ProductsClient) listByBillingProfileHandleResponse(resp *http.Response) (ProductsClientListByBillingProfileResponse, error) {
 	result := ProductsClientListByBillingProfileResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ProductsListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.ProductListResult); err != nil {
 		return ProductsClientListByBillingProfileResponse{}, err
 	}
 	return result, nil
@@ -232,7 +263,7 @@ func (client *ProductsClient) listByBillingProfileHandleResponse(resp *http.Resp
 // NewListByCustomerPager - Lists the products for a customer. These don't include products billed based on usage.The operation
 // is supported only for billing accounts with agreement type Microsoft Partner Agreement.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
 //   - customerName - The ID that uniquely identifies a customer.
 //   - options - ProductsClientListByCustomerOptions contains the optional parameters for the ProductsClient.NewListByCustomerPager
@@ -276,7 +307,25 @@ func (client *ProductsClient) listByCustomerCreateRequest(ctx context.Context, b
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2024-04-01")
+	if options != nil && options.Count != nil {
+		reqQP.Set("count", strconv.FormatBool(*options.Count))
+	}
+	if options != nil && options.Filter != nil {
+		reqQP.Set("filter", *options.Filter)
+	}
+	if options != nil && options.OrderBy != nil {
+		reqQP.Set("orderBy", *options.OrderBy)
+	}
+	if options != nil && options.Search != nil {
+		reqQP.Set("search", *options.Search)
+	}
+	if options != nil && options.Skip != nil {
+		reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -285,7 +334,7 @@ func (client *ProductsClient) listByCustomerCreateRequest(ctx context.Context, b
 // listByCustomerHandleResponse handles the ListByCustomer response.
 func (client *ProductsClient) listByCustomerHandleResponse(resp *http.Response) (ProductsClientListByCustomerResponse, error) {
 	result := ProductsClientListByCustomerResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ProductsListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.ProductListResult); err != nil {
 		return ProductsClientListByCustomerResponse{}, err
 	}
 	return result, nil
@@ -294,7 +343,7 @@ func (client *ProductsClient) listByCustomerHandleResponse(resp *http.Response) 
 // NewListByInvoiceSectionPager - Lists the products for an invoice section. These don't include products billed based on
 // usage. The operation is supported only for billing accounts with agreement type Microsoft Customer Agreement.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
 //   - billingProfileName - The ID that uniquely identifies a billing profile.
 //   - invoiceSectionName - The ID that uniquely identifies an invoice section.
@@ -343,9 +392,24 @@ func (client *ProductsClient) listByInvoiceSectionCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2024-04-01")
+	if options != nil && options.Count != nil {
+		reqQP.Set("count", strconv.FormatBool(*options.Count))
+	}
 	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+		reqQP.Set("filter", *options.Filter)
+	}
+	if options != nil && options.OrderBy != nil {
+		reqQP.Set("orderBy", *options.OrderBy)
+	}
+	if options != nil && options.Search != nil {
+		reqQP.Set("search", *options.Search)
+	}
+	if options != nil && options.Skip != nil {
+		reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
@@ -355,10 +419,38 @@ func (client *ProductsClient) listByInvoiceSectionCreateRequest(ctx context.Cont
 // listByInvoiceSectionHandleResponse handles the ListByInvoiceSection response.
 func (client *ProductsClient) listByInvoiceSectionHandleResponse(resp *http.Response) (ProductsClientListByInvoiceSectionResponse, error) {
 	result := ProductsClientListByInvoiceSectionResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ProductsListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.ProductListResult); err != nil {
 		return ProductsClientListByInvoiceSectionResponse{}, err
 	}
 	return result, nil
+}
+
+// BeginMove - Moves a product's charges to a new invoice section. The new invoice section must belong to the same billing
+// profile as the existing invoice section. This operation is supported only for products that
+// are purchased with a recurring charge and for billing accounts with agreement type Microsoft Customer Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - productName - The ID that uniquely identifies a product.
+//   - parameters - The properties of the product to initiate a transfer.
+//   - options - ProductsClientBeginMoveOptions contains the optional parameters for the ProductsClient.BeginMove method.
+func (client *ProductsClient) BeginMove(ctx context.Context, billingAccountName string, productName string, parameters MoveProductRequest, options *ProductsClientBeginMoveOptions) (*runtime.Poller[ProductsClientMoveResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.move(ctx, billingAccountName, productName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ProductsClientMoveResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ProductsClientMoveResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
 }
 
 // Move - Moves a product's charges to a new invoice section. The new invoice section must belong to the same billing profile
@@ -366,35 +458,30 @@ func (client *ProductsClient) listByInvoiceSectionHandleResponse(resp *http.Resp
 // are purchased with a recurring charge and for billing accounts with agreement type Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-05-01
-//   - billingAccountName - The ID that uniquely identifies a billing account.
-//   - productName - The ID that uniquely identifies a product.
-//   - parameters - Request parameters that are provided to the move product operation.
-//   - options - ProductsClientMoveOptions contains the optional parameters for the ProductsClient.Move method.
-func (client *ProductsClient) Move(ctx context.Context, billingAccountName string, productName string, parameters TransferProductRequestProperties, options *ProductsClientMoveOptions) (ProductsClientMoveResponse, error) {
+// Generated from API version 2024-04-01
+func (client *ProductsClient) move(ctx context.Context, billingAccountName string, productName string, parameters MoveProductRequest, options *ProductsClientBeginMoveOptions) (*http.Response, error) {
 	var err error
-	const operationName = "ProductsClient.Move"
+	const operationName = "ProductsClient.BeginMove"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.moveCreateRequest(ctx, billingAccountName, productName, parameters, options)
 	if err != nil {
-		return ProductsClientMoveResponse{}, err
+		return nil, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ProductsClientMoveResponse{}, err
+		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
 		err = runtime.NewResponseError(httpResp)
-		return ProductsClientMoveResponse{}, err
+		return nil, err
 	}
-	resp, err := client.moveHandleResponse(httpResp)
-	return resp, err
+	return httpResp, nil
 }
 
 // moveCreateRequest creates the Move request.
-func (client *ProductsClient) moveCreateRequest(ctx context.Context, billingAccountName string, productName string, parameters TransferProductRequestProperties, options *ProductsClientMoveOptions) (*policy.Request, error) {
+func (client *ProductsClient) moveCreateRequest(ctx context.Context, billingAccountName string, productName string, parameters MoveProductRequest, options *ProductsClientBeginMoveOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/products/{productName}/move"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -409,7 +496,7 @@ func (client *ProductsClient) moveCreateRequest(ctx context.Context, billingAcco
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -418,36 +505,16 @@ func (client *ProductsClient) moveCreateRequest(ctx context.Context, billingAcco
 	return req, nil
 }
 
-// moveHandleResponse handles the Move response.
-func (client *ProductsClient) moveHandleResponse(resp *http.Response) (ProductsClientMoveResponse, error) {
-	result := ProductsClientMoveResponse{}
-	if val := resp.Header.Get("Location"); val != "" {
-		result.Location = &val
-	}
-	if val := resp.Header.Get("Retry-After"); val != "" {
-		retryAfter32, err := strconv.ParseInt(val, 10, 32)
-		retryAfter := int32(retryAfter32)
-		if err != nil {
-			return ProductsClientMoveResponse{}, err
-		}
-		result.RetryAfter = &retryAfter
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Product); err != nil {
-		return ProductsClientMoveResponse{}, err
-	}
-	return result, nil
-}
-
 // Update - Updates the properties of a Product. Currently, auto renew can be updated. The operation is supported only for
 // billing accounts with agreement type Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
 //   - productName - The ID that uniquely identifies a product.
-//   - parameters - Request parameters that are provided to the update product operation.
+//   - parameters - A product.
 //   - options - ProductsClientUpdateOptions contains the optional parameters for the ProductsClient.Update method.
-func (client *ProductsClient) Update(ctx context.Context, billingAccountName string, productName string, parameters Product, options *ProductsClientUpdateOptions) (ProductsClientUpdateResponse, error) {
+func (client *ProductsClient) Update(ctx context.Context, billingAccountName string, productName string, parameters ProductPatch, options *ProductsClientUpdateOptions) (ProductsClientUpdateResponse, error) {
 	var err error
 	const operationName = "ProductsClient.Update"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -470,7 +537,7 @@ func (client *ProductsClient) Update(ctx context.Context, billingAccountName str
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ProductsClient) updateCreateRequest(ctx context.Context, billingAccountName string, productName string, parameters Product, options *ProductsClientUpdateOptions) (*policy.Request, error) {
+func (client *ProductsClient) updateCreateRequest(ctx context.Context, billingAccountName string, productName string, parameters ProductPatch, options *ProductsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/products/{productName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -485,7 +552,7 @@ func (client *ProductsClient) updateCreateRequest(ctx context.Context, billingAc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -503,40 +570,41 @@ func (client *ProductsClient) updateHandleResponse(resp *http.Response) (Product
 	return result, nil
 }
 
-// ValidateMove - Validates if a product's charges can be moved to a new invoice section. This operation is supported only
-// for products that are purchased with a recurring charge and for billing accounts with agreement
+// ValidateMoveEligibility - Validates if a product's charges can be moved to a new invoice section. This operation is supported
+// only for products that are purchased with a recurring charge and for billing accounts with agreement
 // type Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-05-01
+// Generated from API version 2024-04-01
 //   - billingAccountName - The ID that uniquely identifies a billing account.
 //   - productName - The ID that uniquely identifies a product.
-//   - parameters - Request parameters that are provided to the validate move eligibility operation.
-//   - options - ProductsClientValidateMoveOptions contains the optional parameters for the ProductsClient.ValidateMove method.
-func (client *ProductsClient) ValidateMove(ctx context.Context, billingAccountName string, productName string, parameters TransferProductRequestProperties, options *ProductsClientValidateMoveOptions) (ProductsClientValidateMoveResponse, error) {
+//   - parameters - The properties of the product to initiate a transfer.
+//   - options - ProductsClientValidateMoveEligibilityOptions contains the optional parameters for the ProductsClient.ValidateMoveEligibility
+//     method.
+func (client *ProductsClient) ValidateMoveEligibility(ctx context.Context, billingAccountName string, productName string, parameters MoveProductRequest, options *ProductsClientValidateMoveEligibilityOptions) (ProductsClientValidateMoveEligibilityResponse, error) {
 	var err error
-	const operationName = "ProductsClient.ValidateMove"
+	const operationName = "ProductsClient.ValidateMoveEligibility"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.validateMoveCreateRequest(ctx, billingAccountName, productName, parameters, options)
+	req, err := client.validateMoveEligibilityCreateRequest(ctx, billingAccountName, productName, parameters, options)
 	if err != nil {
-		return ProductsClientValidateMoveResponse{}, err
+		return ProductsClientValidateMoveEligibilityResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ProductsClientValidateMoveResponse{}, err
+		return ProductsClientValidateMoveEligibilityResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return ProductsClientValidateMoveResponse{}, err
+		return ProductsClientValidateMoveEligibilityResponse{}, err
 	}
-	resp, err := client.validateMoveHandleResponse(httpResp)
+	resp, err := client.validateMoveEligibilityHandleResponse(httpResp)
 	return resp, err
 }
 
-// validateMoveCreateRequest creates the ValidateMove request.
-func (client *ProductsClient) validateMoveCreateRequest(ctx context.Context, billingAccountName string, productName string, parameters TransferProductRequestProperties, options *ProductsClientValidateMoveOptions) (*policy.Request, error) {
+// validateMoveEligibilityCreateRequest creates the ValidateMoveEligibility request.
+func (client *ProductsClient) validateMoveEligibilityCreateRequest(ctx context.Context, billingAccountName string, productName string, parameters MoveProductRequest, options *ProductsClientValidateMoveEligibilityOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/products/{productName}/validateMoveEligibility"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -551,7 +619,7 @@ func (client *ProductsClient) validateMoveCreateRequest(ctx context.Context, bil
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-05-01")
+	reqQP.Set("api-version", "2024-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -560,11 +628,11 @@ func (client *ProductsClient) validateMoveCreateRequest(ctx context.Context, bil
 	return req, nil
 }
 
-// validateMoveHandleResponse handles the ValidateMove response.
-func (client *ProductsClient) validateMoveHandleResponse(resp *http.Response) (ProductsClientValidateMoveResponse, error) {
-	result := ProductsClientValidateMoveResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ValidateProductTransferEligibilityResult); err != nil {
-		return ProductsClientValidateMoveResponse{}, err
+// validateMoveEligibilityHandleResponse handles the ValidateMoveEligibility response.
+func (client *ProductsClient) validateMoveEligibilityHandleResponse(resp *http.Response) (ProductsClientValidateMoveEligibilityResponse, error) {
+	result := ProductsClientValidateMoveEligibilityResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.MoveProductEligibilityResult); err != nil {
+		return ProductsClientValidateMoveEligibilityResponse{}, err
 	}
 	return result, nil
 }

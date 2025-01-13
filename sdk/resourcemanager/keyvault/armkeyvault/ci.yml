@@ -26,3 +26,4 @@ extends:
   parameters:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/keyvault/armkeyvault'
+    UsePipelineProxy: false

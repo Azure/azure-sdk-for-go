@@ -29,7 +29,8 @@ func TestDeviceCodeCredential_GetTokenInvalidCredentials(t *testing.T) {
 }
 
 func TestDeviceCodeCredential_UserPromptError(t *testing.T) {
-	expectedCtx := context.WithValue(context.Background(), struct{}{}, "")
+	type key struct{}
+	expectedCtx := context.WithValue(context.Background(), key{}, "")
 	expected := DeviceCodeMessage{UserCode: "user code", VerificationURL: "http://localhost", Message: "message"}
 	success := "it worked"
 	options := DeviceCodeCredentialOptions{

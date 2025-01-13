@@ -13,7 +13,12 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/monitor/query/azlogs"
 )
 
-var client azlogs.Client
+var (
+	client      azlogs.Client
+	kustoQuery1 string
+	kustoQuery2 string
+	kustoQuery3 string
+)
 
 type queryResult struct {
 	Bool   bool
@@ -161,6 +166,34 @@ func ExampleClient_QueryResource() {
 	for _, table := range res.Tables {
 		for _, row := range table.Rows {
 			fmt.Println(row)
+		}
+	}
+}
+
+func ExampleClient_QueryBatch() {
+	// `QueryBatch` is an advanced method allowing users to execute multiple log queries in a single request.
+
+	workspaceID := "g4d1e129-fb1e-4b0a-b234-250abc987ea65" // example Azure Log Analytics Workspace ID
+	timespan := azlogs.NewTimeInterval(time.Date(2022, 12, 25, 0, 0, 0, 0, time.UTC), time.Date(2022, 12, 25, 12, 0, 0, 0, time.UTC))
+
+	batchRequest := azlogs.BatchRequest{[]azlogs.BatchQueryRequest{
+		{Body: &azlogs.QueryBody{Query: to.Ptr(kustoQuery1), Timespan: to.Ptr(timespan)}, ID: to.Ptr("1"), WorkspaceID: to.Ptr(workspaceID)},
+		{Body: &azlogs.QueryBody{Query: to.Ptr(kustoQuery2), Timespan: to.Ptr(timespan)}, ID: to.Ptr("2"), WorkspaceID: to.Ptr(workspaceID)},
+		{Body: &azlogs.QueryBody{Query: to.Ptr(kustoQuery3), Timespan: to.Ptr(timespan)}, ID: to.Ptr("3"), WorkspaceID: to.Ptr(workspaceID)},
+	}}
+
+	res, err := client.QueryBatch(context.TODO(), batchRequest, nil)
+	if err != nil {
+		//TODO: handle error
+	}
+
+	// `QueryBatch` can return results in any order, usually by time it takes each individual query to complete.
+	// Use the `ID` field to identify the correct response.
+	responses := res.Responses
+	fmt.Println("ID's of successful responses:")
+	for _, response := range responses {
+		if response.Body.Error == nil {
+			fmt.Println(*response.ID)
 		}
 	}
 }

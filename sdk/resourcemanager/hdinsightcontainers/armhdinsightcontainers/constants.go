@@ -10,7 +10,7 @@ package armhdinsightcontainers
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsightcontainers/armhdinsightcontainers"
-	moduleVersion = "v0.3.0"
+	moduleVersion = "v0.4.0"
 )
 
 // Action - A string property that indicates the action to be performed on the Flink job. It can have one of the following
@@ -79,12 +79,28 @@ func PossibleAutoscaleTypeValues() []AutoscaleType {
 	}
 }
 
+type Category string
+
+const (
+	CategoryCustom     Category = "custom"
+	CategoryPredefined Category = "predefined"
+)
+
+// PossibleCategoryValues returns the possible values for the Category const type.
+func PossibleCategoryValues() []Category {
+	return []Category{
+		CategoryCustom,
+		CategoryPredefined,
+	}
+}
+
 // ClusterAvailableUpgradeType - Type of upgrade.
 type ClusterAvailableUpgradeType string
 
 const (
-	ClusterAvailableUpgradeTypeAKSPatchUpgrade ClusterAvailableUpgradeType = "AKSPatchUpgrade"
-	ClusterAvailableUpgradeTypeHotfixUpgrade   ClusterAvailableUpgradeType = "HotfixUpgrade"
+	ClusterAvailableUpgradeTypeAKSPatchUpgrade     ClusterAvailableUpgradeType = "AKSPatchUpgrade"
+	ClusterAvailableUpgradeTypeHotfixUpgrade       ClusterAvailableUpgradeType = "HotfixUpgrade"
+	ClusterAvailableUpgradeTypePatchVersionUpgrade ClusterAvailableUpgradeType = "PatchVersionUpgrade"
 )
 
 // PossibleClusterAvailableUpgradeTypeValues returns the possible values for the ClusterAvailableUpgradeType const type.
@@ -92,6 +108,7 @@ func PossibleClusterAvailableUpgradeTypeValues() []ClusterAvailableUpgradeType {
 	return []ClusterAvailableUpgradeType{
 		ClusterAvailableUpgradeTypeAKSPatchUpgrade,
 		ClusterAvailableUpgradeTypeHotfixUpgrade,
+		ClusterAvailableUpgradeTypePatchVersionUpgrade,
 	}
 }
 
@@ -111,6 +128,38 @@ func PossibleClusterPoolAvailableUpgradeTypeValues() []ClusterPoolAvailableUpgra
 	}
 }
 
+// ClusterPoolUpgradeHistoryType - Type of upgrade.
+type ClusterPoolUpgradeHistoryType string
+
+const (
+	ClusterPoolUpgradeHistoryTypeAKSPatchUpgrade ClusterPoolUpgradeHistoryType = "AKSPatchUpgrade"
+	ClusterPoolUpgradeHistoryTypeNodeOsUpgrade   ClusterPoolUpgradeHistoryType = "NodeOsUpgrade"
+)
+
+// PossibleClusterPoolUpgradeHistoryTypeValues returns the possible values for the ClusterPoolUpgradeHistoryType const type.
+func PossibleClusterPoolUpgradeHistoryTypeValues() []ClusterPoolUpgradeHistoryType {
+	return []ClusterPoolUpgradeHistoryType{
+		ClusterPoolUpgradeHistoryTypeAKSPatchUpgrade,
+		ClusterPoolUpgradeHistoryTypeNodeOsUpgrade,
+	}
+}
+
+// ClusterPoolUpgradeHistoryUpgradeResultType - Result of this upgrade.
+type ClusterPoolUpgradeHistoryUpgradeResultType string
+
+const (
+	ClusterPoolUpgradeHistoryUpgradeResultTypeFailed  ClusterPoolUpgradeHistoryUpgradeResultType = "Failed"
+	ClusterPoolUpgradeHistoryUpgradeResultTypeSucceed ClusterPoolUpgradeHistoryUpgradeResultType = "Succeed"
+)
+
+// PossibleClusterPoolUpgradeHistoryUpgradeResultTypeValues returns the possible values for the ClusterPoolUpgradeHistoryUpgradeResultType const type.
+func PossibleClusterPoolUpgradeHistoryUpgradeResultTypeValues() []ClusterPoolUpgradeHistoryUpgradeResultType {
+	return []ClusterPoolUpgradeHistoryUpgradeResultType{
+		ClusterPoolUpgradeHistoryUpgradeResultTypeFailed,
+		ClusterPoolUpgradeHistoryUpgradeResultTypeSucceed,
+	}
+}
+
 // ClusterPoolUpgradeType - Type of upgrade.
 type ClusterPoolUpgradeType string
 
@@ -127,12 +176,71 @@ func PossibleClusterPoolUpgradeTypeValues() []ClusterPoolUpgradeType {
 	}
 }
 
+// ClusterUpgradeHistorySeverityType - Severity of this upgrade.
+type ClusterUpgradeHistorySeverityType string
+
+const (
+	ClusterUpgradeHistorySeverityTypeCritical ClusterUpgradeHistorySeverityType = "critical"
+	ClusterUpgradeHistorySeverityTypeHigh     ClusterUpgradeHistorySeverityType = "high"
+	ClusterUpgradeHistorySeverityTypeLow      ClusterUpgradeHistorySeverityType = "low"
+	ClusterUpgradeHistorySeverityTypeMedium   ClusterUpgradeHistorySeverityType = "medium"
+)
+
+// PossibleClusterUpgradeHistorySeverityTypeValues returns the possible values for the ClusterUpgradeHistorySeverityType const type.
+func PossibleClusterUpgradeHistorySeverityTypeValues() []ClusterUpgradeHistorySeverityType {
+	return []ClusterUpgradeHistorySeverityType{
+		ClusterUpgradeHistorySeverityTypeCritical,
+		ClusterUpgradeHistorySeverityTypeHigh,
+		ClusterUpgradeHistorySeverityTypeLow,
+		ClusterUpgradeHistorySeverityTypeMedium,
+	}
+}
+
+// ClusterUpgradeHistoryType - Type of upgrade.
+type ClusterUpgradeHistoryType string
+
+const (
+	ClusterUpgradeHistoryTypeAKSPatchUpgrade             ClusterUpgradeHistoryType = "AKSPatchUpgrade"
+	ClusterUpgradeHistoryTypeHotfixUpgrade               ClusterUpgradeHistoryType = "HotfixUpgrade"
+	ClusterUpgradeHistoryTypeHotfixUpgradeRollback       ClusterUpgradeHistoryType = "HotfixUpgradeRollback"
+	ClusterUpgradeHistoryTypePatchVersionUpgrade         ClusterUpgradeHistoryType = "PatchVersionUpgrade"
+	ClusterUpgradeHistoryTypePatchVersionUpgradeRollback ClusterUpgradeHistoryType = "PatchVersionUpgradeRollback"
+)
+
+// PossibleClusterUpgradeHistoryTypeValues returns the possible values for the ClusterUpgradeHistoryType const type.
+func PossibleClusterUpgradeHistoryTypeValues() []ClusterUpgradeHistoryType {
+	return []ClusterUpgradeHistoryType{
+		ClusterUpgradeHistoryTypeAKSPatchUpgrade,
+		ClusterUpgradeHistoryTypeHotfixUpgrade,
+		ClusterUpgradeHistoryTypeHotfixUpgradeRollback,
+		ClusterUpgradeHistoryTypePatchVersionUpgrade,
+		ClusterUpgradeHistoryTypePatchVersionUpgradeRollback,
+	}
+}
+
+// ClusterUpgradeHistoryUpgradeResultType - Result of this upgrade.
+type ClusterUpgradeHistoryUpgradeResultType string
+
+const (
+	ClusterUpgradeHistoryUpgradeResultTypeFailed  ClusterUpgradeHistoryUpgradeResultType = "Failed"
+	ClusterUpgradeHistoryUpgradeResultTypeSucceed ClusterUpgradeHistoryUpgradeResultType = "Succeed"
+)
+
+// PossibleClusterUpgradeHistoryUpgradeResultTypeValues returns the possible values for the ClusterUpgradeHistoryUpgradeResultType const type.
+func PossibleClusterUpgradeHistoryUpgradeResultTypeValues() []ClusterUpgradeHistoryUpgradeResultType {
+	return []ClusterUpgradeHistoryUpgradeResultType{
+		ClusterUpgradeHistoryUpgradeResultTypeFailed,
+		ClusterUpgradeHistoryUpgradeResultTypeSucceed,
+	}
+}
+
 // ClusterUpgradeType - Type of upgrade.
 type ClusterUpgradeType string
 
 const (
-	ClusterUpgradeTypeAKSPatchUpgrade ClusterUpgradeType = "AKSPatchUpgrade"
-	ClusterUpgradeTypeHotfixUpgrade   ClusterUpgradeType = "HotfixUpgrade"
+	ClusterUpgradeTypeAKSPatchUpgrade     ClusterUpgradeType = "AKSPatchUpgrade"
+	ClusterUpgradeTypeHotfixUpgrade       ClusterUpgradeType = "HotfixUpgrade"
+	ClusterUpgradeTypePatchVersionUpgrade ClusterUpgradeType = "PatchVersionUpgrade"
 )
 
 // PossibleClusterUpgradeTypeValues returns the possible values for the ClusterUpgradeType const type.
@@ -140,6 +248,7 @@ func PossibleClusterUpgradeTypeValues() []ClusterUpgradeType {
 	return []ClusterUpgradeType{
 		ClusterUpgradeTypeAKSPatchUpgrade,
 		ClusterUpgradeTypeHotfixUpgrade,
+		ClusterUpgradeTypePatchVersionUpgrade,
 	}
 }
 
@@ -325,6 +434,40 @@ func PossibleKeyVaultObjectTypeValues() []KeyVaultObjectType {
 	}
 }
 
+// LibraryManagementAction - The library management action.
+type LibraryManagementAction string
+
+const (
+	LibraryManagementActionInstall   LibraryManagementAction = "Install"
+	LibraryManagementActionUninstall LibraryManagementAction = "Uninstall"
+)
+
+// PossibleLibraryManagementActionValues returns the possible values for the LibraryManagementAction const type.
+func PossibleLibraryManagementActionValues() []LibraryManagementAction {
+	return []LibraryManagementAction{
+		LibraryManagementActionInstall,
+		LibraryManagementActionUninstall,
+	}
+}
+
+// ManagedIdentityType - The type of managed identity.
+type ManagedIdentityType string
+
+const (
+	ManagedIdentityTypeCluster  ManagedIdentityType = "cluster"
+	ManagedIdentityTypeInternal ManagedIdentityType = "internal"
+	ManagedIdentityTypeUser     ManagedIdentityType = "user"
+)
+
+// PossibleManagedIdentityTypeValues returns the possible values for the ManagedIdentityType const type.
+func PossibleManagedIdentityTypeValues() []ManagedIdentityType {
+	return []ManagedIdentityType{
+		ManagedIdentityTypeCluster,
+		ManagedIdentityTypeInternal,
+		ManagedIdentityTypeUser,
+	}
+}
+
 // MetastoreDbConnectionAuthenticationMode - The authentication mode to connect to your Hive metastore database. More details:
 // https://learn.microsoft.com/en-us/azure/azure-sql/database/logins-create-manage?view=azuresql#authentication-and-authorization
 type MetastoreDbConnectionAuthenticationMode string
@@ -478,6 +621,44 @@ func PossibleSeverityValues() []Severity {
 		SeverityHigh,
 		SeverityLow,
 		SeverityMedium,
+	}
+}
+
+// Status - Status of the library.
+type Status string
+
+const (
+	StatusINSTALLED       Status = "INSTALLED"
+	StatusINSTALLFAILED   Status = "INSTALL_FAILED"
+	StatusINSTALLING      Status = "INSTALLING"
+	StatusUNINSTALLFAILED Status = "UNINSTALL_FAILED"
+	StatusUNINSTALLING    Status = "UNINSTALLING"
+)
+
+// PossibleStatusValues returns the possible values for the Status const type.
+func PossibleStatusValues() []Status {
+	return []Status{
+		StatusINSTALLED,
+		StatusINSTALLFAILED,
+		StatusINSTALLING,
+		StatusUNINSTALLFAILED,
+		StatusUNINSTALLING,
+	}
+}
+
+// Type - Type of the library.
+type Type string
+
+const (
+	TypeMaven Type = "maven"
+	TypePypi  Type = "pypi"
+)
+
+// PossibleTypeValues returns the possible values for the Type const type.
+func PossibleTypeValues() []Type {
+	return []Type{
+		TypeMaven,
+		TypePypi,
 	}
 }
 

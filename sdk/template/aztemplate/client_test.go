@@ -14,9 +14,6 @@ import (
 )
 
 func TestOutput(t *testing.T) {
-
-	//options := &ClientOptions{}
-
 	cred, _ := azidentity.NewDefaultAzureCredential(nil)
 
 	client, _ := NewClient(cred, nil)

@@ -43,10 +43,99 @@ func NewReplicationLinksClient(subscriptionID string, credential azcore.TokenCre
 	return client, nil
 }
 
+// BeginCreateOrUpdate - Updates the replication link type.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-05-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serverName - The name of the server.
+//   - databaseName - The name of the database.
+//   - options - ReplicationLinksClientBeginCreateOrUpdateOptions contains the optional parameters for the ReplicationLinksClient.BeginCreateOrUpdate
+//     method.
+func (client *ReplicationLinksClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, parameters ReplicationLink, options *ReplicationLinksClientBeginCreateOrUpdateOptions) (*runtime.Poller[ReplicationLinksClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, databaseName, linkID, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationLinksClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationLinksClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// CreateOrUpdate - Updates the replication link type.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-05-01-preview
+func (client *ReplicationLinksClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, parameters ReplicationLink, options *ReplicationLinksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ReplicationLinksClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, databaseName, linkID, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+func (client *ReplicationLinksClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, parameters ReplicationLink, options *ReplicationLinksClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if serverName == "" {
+		return nil, errors.New("parameter serverName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
+	if databaseName == "" {
+		return nil, errors.New("parameter databaseName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+	if linkID == "" {
+		return nil, errors.New("parameter linkID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{linkId}", url.PathEscape(linkID))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // BeginDelete - Deletes the replication link.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serverName - The name of the server.
@@ -73,7 +162,7 @@ func (client *ReplicationLinksClient) BeginDelete(ctx context.Context, resourceG
 // Delete - Deletes the replication link.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2023-05-01-preview
 func (client *ReplicationLinksClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, options *ReplicationLinksClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationLinksClient.BeginDelete"
@@ -123,7 +212,7 @@ func (client *ReplicationLinksClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -131,7 +220,7 @@ func (client *ReplicationLinksClient) deleteCreateRequest(ctx context.Context, r
 // BeginFailover - Fails over from the current primary server to this server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serverName - The name of the server.
@@ -159,7 +248,7 @@ func (client *ReplicationLinksClient) BeginFailover(ctx context.Context, resourc
 // Failover - Fails over from the current primary server to this server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2023-05-01-preview
 func (client *ReplicationLinksClient) failover(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, options *ReplicationLinksClientBeginFailoverOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationLinksClient.BeginFailover"
@@ -209,7 +298,7 @@ func (client *ReplicationLinksClient) failoverCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -218,7 +307,7 @@ func (client *ReplicationLinksClient) failoverCreateRequest(ctx context.Context,
 // BeginFailoverAllowDataLoss - Fails over from the current primary server to this server allowing data loss.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serverName - The name of the server.
@@ -246,7 +335,7 @@ func (client *ReplicationLinksClient) BeginFailoverAllowDataLoss(ctx context.Con
 // FailoverAllowDataLoss - Fails over from the current primary server to this server allowing data loss.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2023-05-01-preview
 func (client *ReplicationLinksClient) failoverAllowDataLoss(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, options *ReplicationLinksClientBeginFailoverAllowDataLossOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationLinksClient.BeginFailoverAllowDataLoss"
@@ -296,7 +385,7 @@ func (client *ReplicationLinksClient) failoverAllowDataLossCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -305,7 +394,7 @@ func (client *ReplicationLinksClient) failoverAllowDataLossCreateRequest(ctx con
 // Get - Gets a replication link.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serverName - The name of the server.
@@ -362,7 +451,7 @@ func (client *ReplicationLinksClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -379,7 +468,7 @@ func (client *ReplicationLinksClient) getHandleResponse(resp *http.Response) (Re
 
 // NewListByDatabasePager - Gets a list of replication links on database.
 //
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serverName - The name of the server.
@@ -433,7 +522,7 @@ func (client *ReplicationLinksClient) listByDatabaseCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -450,7 +539,7 @@ func (client *ReplicationLinksClient) listByDatabaseHandleResponse(resp *http.Re
 
 // NewListByServerPager - Gets a list of replication links.
 //
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serverName - The name of the server.
@@ -499,7 +588,7 @@ func (client *ReplicationLinksClient) listByServerCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -512,4 +601,93 @@ func (client *ReplicationLinksClient) listByServerHandleResponse(resp *http.Resp
 		return ReplicationLinksClientListByServerResponse{}, err
 	}
 	return result, nil
+}
+
+// BeginUpdate - Updates the replication link type.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-05-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serverName - The name of the server.
+//   - databaseName - The name of the database.
+//   - options - ReplicationLinksClientBeginUpdateOptions contains the optional parameters for the ReplicationLinksClient.BeginUpdate
+//     method.
+func (client *ReplicationLinksClient) BeginUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, parameters ReplicationLinkUpdate, options *ReplicationLinksClientBeginUpdateOptions) (*runtime.Poller[ReplicationLinksClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, serverName, databaseName, linkID, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationLinksClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationLinksClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// Update - Updates the replication link type.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-05-01-preview
+func (client *ReplicationLinksClient) update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, parameters ReplicationLinkUpdate, options *ReplicationLinksClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ReplicationLinksClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, serverName, databaseName, linkID, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the Update request.
+func (client *ReplicationLinksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, parameters ReplicationLinkUpdate, options *ReplicationLinksClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if serverName == "" {
+		return nil, errors.New("parameter serverName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
+	if databaseName == "" {
+		return nil, errors.New("parameter databaseName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+	if linkID == "" {
+		return nil, errors.New("parameter linkID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{linkId}", url.PathEscape(linkID))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
 }

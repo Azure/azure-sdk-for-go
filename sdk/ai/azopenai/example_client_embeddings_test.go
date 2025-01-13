@@ -14,11 +14,11 @@ import (
 )
 
 func ExampleClient_GetEmbeddings() {
-	azureOpenAIKey := os.Getenv("AOAI_API_KEY")
+	azureOpenAIKey := os.Getenv("AOAI_EMBEDDINGS_API_KEY")
 	modelDeploymentID := os.Getenv("AOAI_EMBEDDINGS_MODEL")
 
 	// Ex: "https://<your-azure-openai-host>.openai.azure.com"
-	azureOpenAIEndpoint := os.Getenv("AOAI_ENDPOINT")
+	azureOpenAIEndpoint := os.Getenv("AOAI_EMBEDDINGS_ENDPOINT")
 
 	if azureOpenAIKey == "" || modelDeploymentID == "" || azureOpenAIEndpoint == "" {
 		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
@@ -32,8 +32,9 @@ func ExampleClient_GetEmbeddings() {
 	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, nil)
 
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	resp, err := client.GetEmbeddings(context.TODO(), azopenai.EmbeddingsOptions{
@@ -42,8 +43,9 @@ func ExampleClient_GetEmbeddings() {
 	}, nil)
 
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
 	}
 
 	for _, embed := range resp.Data {

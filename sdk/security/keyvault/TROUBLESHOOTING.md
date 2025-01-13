@@ -6,17 +6,18 @@ common to these SDKs.
 
 ## Table of Contents
 
-* [Troubleshoot Authentication Issues](#troubleshooting-authentication-issues)
+* [Authentication Errors](#authentication-errors)
   * [HTTP 401 Errors](#http-401-errors)
     * [Frequent HTTP 401 Errors in Logs](#frequent-http-401-errors-in-logs)
-    * [Other Authentication Issues](#other-authentication-issues)
   * [HTTP 403 Errors](#http-403-errors)
     * [Operation Not Permitted](#operation-not-permitted)
     * [Access Denied to First Party Service](#access-denied-to-first-party-service)
-  * [HTTP 429: Too Many Requests](#http-429-too-many-requests)
+  * [Other Authentication Issues](#other-authentication-issues)
+    * [Incorrect Challenge Resource](#incorrect-challenge-resource)
 * [Other Service Errors](#other-service-errors)
+  * [HTTP 429: Too many requests](#http-429-too-many-requests)
 
-## Troubleshoot Authentication Issues
+## Authentication Errors
 
 ### HTTP 401 Errors
 
@@ -24,14 +25,7 @@ HTTP 401 errors may indicate authentication problems.
 
 #### Frequent HTTP 401 Errors in Logs
 
-Most often, this is expected. Azure Key Vault issues a challenge for initial requests that force authentication. You
-may see 401 responses in logs during application startup. If you don't see subsequent errors from the Key Vault client,
-these 401 responses are the expected authentication challenges.
-
-#### Other Authentication Issues
-
-If you are using the `azidentity` module to authenticate Azure Key Vault clients, please see its
-[troubleshooting guide](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/azidentity/TROUBLESHOOTING.md).
+Most often, this is expected. A Key Vault client sends its first request without authorization to discover authentication parameters. This can cause a 401 response to appear in logs without a corresponding error.
 
 ### HTTP 403 Errors
 
@@ -100,6 +94,37 @@ The error `message` may also contain the tenant ID (`tid`) and application ID (`
    trusted services.
 2. You logged into a Microsoft Account (MSA). See [above](#operation-not-permitted) for troubleshooting steps.
 
+### Other Authentication Issues
+
+If you are using the `azidentity` module to authenticate Azure Key Vault clients, please see its
+[troubleshooting guide](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/azidentity/TROUBLESHOOTING.md).
+
+#### Incorrect challenge resource
+
+If the client returns an error with a message similar to:
+
+```text
+challenge resource 'myvault.vault.azure.net' doesn't match the requested domain. Set DisableChallengeResourceVerification to true in your client options to disable. See https://aka.ms/azsdk/blog/vault-uri for more information
+```
+
+Check that the resources is expected - that you're not receiving a challenge from an unknown host which may indicate an incorrect request URI. If it is correct but you are using a mock service or non-transparent proxy for testing, set `DisableChallengeResourceVerification` to true in your client options:
+
+```go
+vaultURL := "https://myvault.vault.azure.net"
+credential, err := azidentity.NewDefaultAzureCredential(nil)
+options := azsecrets.ClientOptions{
+    DisableChallengeResourceVerification: true,
+}
+client := azsecrets.NewClient(vaultURI, credential, &options)
+```
+
+Read our [release notes][release_notes_resource] for more information about this change.
+
+## Other Service Errors
+
+To troubleshoot Key Vault errors not described in this guide,
+see [Azure Key Vault REST API Error Codes](https://learn.microsoft.com/azure/key-vault/general/rest-error-codes).
+
 ### HTTP 429: Too Many Requests
 
 If you get an error or see logs describing an HTTP 429 response, you may be making too many requests to Key Vault too quickly.
@@ -113,9 +138,6 @@ Possible solutions include:
 See the [Azure Key Vault throttling guide](https://learn.microsoft.com/azure/key-vault/general/overview-throttling)
 for more information.
 
-## Other Service Errors
-
-To troubleshoot Key Vault errors not described in this guide,
-see [Azure Key Vault REST API Error Codes](https://learn.microsoft.com/azure/key-vault/general/rest-error-codes).
-
+[azidentity]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
 [DefaultAzureCredential]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/azidentity/README.md#defaultazurecredential
+[release_notes_resource]: https://devblogs.microsoft.com/azure-sdk/guidance-for-applications-using-the-key-vault-libraries/

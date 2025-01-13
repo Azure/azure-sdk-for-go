@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -82,7 +82,7 @@ type WorkloadNetworksServer struct {
 
 	// Get is the fake for method WorkloadNetworksClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, privateCloudName string, workloadNetworkName armavs.WorkloadNetworkName, options *armavs.WorkloadNetworksClientGetOptions) (resp azfake.Responder[armavs.WorkloadNetworksClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, privateCloudName string, options *armavs.WorkloadNetworksClientGetOptions) (resp azfake.Responder[armavs.WorkloadNetworksClientGetResponse], errResp azfake.ErrorResponder)
 
 	// GetDNSService is the fake for method WorkloadNetworksClient.GetDNSService
 	// HTTP status codes to indicate success: http.StatusOK
@@ -1067,10 +1067,10 @@ func (w *WorkloadNetworksServerTransport) dispatchGet(req *http.Request) (*http.
 	if w.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AVS/privateClouds/(?P<privateCloudName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/workloadNetworks/(?P<workloadNetworkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AVS/privateClouds/(?P<privateCloudName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/workloadNetworks/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -1081,17 +1081,7 @@ func (w *WorkloadNetworksServerTransport) dispatchGet(req *http.Request) (*http.
 	if err != nil {
 		return nil, err
 	}
-	workloadNetworkNameParam, err := parseWithCast(matches[regex.SubexpIndex("workloadNetworkName")], func(v string) (armavs.WorkloadNetworkName, error) {
-		p, unescapeErr := url.PathUnescape(v)
-		if unescapeErr != nil {
-			return "", unescapeErr
-		}
-		return armavs.WorkloadNetworkName(p), nil
-	})
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.Get(req.Context(), resourceGroupNameParam, privateCloudNameParam, workloadNetworkNameParam, nil)
+	respr, errRespr := w.srv.Get(req.Context(), resourceGroupNameParam, privateCloudNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

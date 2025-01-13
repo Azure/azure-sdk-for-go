@@ -22,6 +22,7 @@ func TestThroughputResponseParsing(t *testing.T) {
 
 	properties.offerId = "HFln"
 	properties.offerResourceId = "4SRTANCD3Dw="
+	properties.resource = "4SRGHYCD3Dw="
 	properties.ETag = &etag
 	jsonString, err := json.Marshal(&properties)
 	if err != nil {
@@ -63,6 +64,10 @@ func TestThroughputResponseParsing(t *testing.T) {
 		t.Fatalf("parsedResponse.ThroughputProperties.offerResourceId is %s, expected %s", parsedResponse.ThroughputProperties.offerResourceId, properties.offerResourceId)
 	}
 
+	if parsedResponse.ThroughputProperties.resource != properties.resource {
+		t.Fatalf("parsedResponse.ThroughputProperties.resource is %s, expected %s", parsedResponse.ThroughputProperties.resource, properties.resource)
+	}
+
 	if *parsedResponse.ThroughputProperties.ETag != *properties.ETag {
 		t.Fatalf("parsedResponse.ThroughputProperties.ETag is %s, expected %s", *parsedResponse.ThroughputProperties.ETag, *properties.ETag)
 	}
@@ -87,6 +92,7 @@ func TestThroughputResponseParsingWithPreviousRU(t *testing.T) {
 	properties := NewManualThroughputProperties(400)
 	properties.offerId = "HFln"
 	properties.offerResourceId = "4SRTANCD3Dw="
+	properties.resource = "4SRGHYCD3Dw="
 	properties.ETag = &etag
 	jsonString, err := json.Marshal(&properties)
 	if err != nil {
@@ -127,6 +133,10 @@ func TestThroughputResponseParsingWithPreviousRU(t *testing.T) {
 
 	if parsedResponse.ThroughputProperties.offerResourceId != properties.offerResourceId {
 		t.Fatalf("parsedResponse.ThroughputProperties.offerResourceId is %s, expected %s", parsedResponse.ThroughputProperties.offerResourceId, properties.offerResourceId)
+	}
+
+	if parsedResponse.ThroughputProperties.resource != properties.resource {
+		t.Fatalf("parsedResponse.ThroughputProperties.resource is %s, expected %s", parsedResponse.ThroughputProperties.resource, properties.resource)
 	}
 
 	if *parsedResponse.ThroughputProperties.ETag != *properties.ETag {

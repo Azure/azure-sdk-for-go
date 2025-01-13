@@ -235,8 +235,7 @@ func TestPagerResponder(t *testing.T) {
 	iterations = 0
 	for pagerResp.More() {
 		resp, err := pagerResp.Next(req)
-		switch iterations {
-		case 0:
+		if iterations == 0 {
 			require.NoError(t, err)
 			require.NotNil(t, resp)
 			page, err := unmarshal[widgets](resp)

@@ -46,7 +46,7 @@ func NewMachineRunCommandsClient(subscriptionID string, credential azcore.TokenC
 // BeginCreateOrUpdate - The operation to create or update a run command.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-03-preview
+// Generated from API version 2024-07-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - machineName - The name of the hybrid machine.
 //   - runCommandName - The name of the run command.
@@ -74,7 +74,7 @@ func (client *MachineRunCommandsClient) BeginCreateOrUpdate(ctx context.Context,
 // CreateOrUpdate - The operation to create or update a run command.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-03-preview
+// Generated from API version 2024-07-31-preview
 func (client *MachineRunCommandsClient) createOrUpdate(ctx context.Context, resourceGroupName string, machineName string, runCommandName string, runCommandProperties MachineRunCommand, options *MachineRunCommandsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MachineRunCommandsClient.BeginCreateOrUpdate"
@@ -120,7 +120,7 @@ func (client *MachineRunCommandsClient) createOrUpdateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-03-preview")
+	reqQP.Set("api-version", "2024-07-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, runCommandProperties); err != nil {
@@ -132,7 +132,7 @@ func (client *MachineRunCommandsClient) createOrUpdateCreateRequest(ctx context.
 // BeginDelete - The operation to delete a run command.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-03-preview
+// Generated from API version 2024-07-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - machineName - The name of the hybrid machine.
 //   - runCommandName - The name of the run command.
@@ -159,7 +159,7 @@ func (client *MachineRunCommandsClient) BeginDelete(ctx context.Context, resourc
 // Delete - The operation to delete a run command.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-03-preview
+// Generated from API version 2024-07-31-preview
 func (client *MachineRunCommandsClient) deleteOperation(ctx context.Context, resourceGroupName string, machineName string, runCommandName string, options *MachineRunCommandsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MachineRunCommandsClient.BeginDelete"
@@ -174,7 +174,7 @@ func (client *MachineRunCommandsClient) deleteOperation(ctx context.Context, res
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}
@@ -205,7 +205,7 @@ func (client *MachineRunCommandsClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-03-preview")
+	reqQP.Set("api-version", "2024-07-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -214,7 +214,7 @@ func (client *MachineRunCommandsClient) deleteCreateRequest(ctx context.Context,
 // Get - The operation to get a run command.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-03-preview
+// Generated from API version 2024-07-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - machineName - The name of the hybrid machine.
 //   - runCommandName - The name of the run command.
@@ -265,7 +265,7 @@ func (client *MachineRunCommandsClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-03-preview")
+	reqQP.Set("api-version", "2024-07-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -282,7 +282,7 @@ func (client *MachineRunCommandsClient) getHandleResponse(resp *http.Response) (
 
 // NewListPager - The operation to get all the run commands of a non-Azure machine.
 //
-// Generated from API version 2023-10-03-preview
+// Generated from API version 2024-07-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - machineName - The name of the hybrid machine.
 //   - options - MachineRunCommandsClientListOptions contains the optional parameters for the MachineRunCommandsClient.NewListPager
@@ -333,7 +333,7 @@ func (client *MachineRunCommandsClient) listCreateRequest(ctx context.Context, r
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2023-10-03-preview")
+	reqQP.Set("api-version", "2024-07-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -5,7 +5,6 @@ package report
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 
@@ -23,7 +22,7 @@ func GetPackages(dir string) ([]string, error) {
 		}
 		if info.IsDir() {
 			// check if leaf dir
-			fi, err := ioutil.ReadDir(path)
+			fi, err := os.ReadDir(path)
 			if err != nil {
 				return err
 			}

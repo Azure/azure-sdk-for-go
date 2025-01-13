@@ -43,7 +43,7 @@ func NewLinkersClient(credential azcore.TokenCredential, options *arm.ClientOpti
 // BeginCreateDryrun - create a dryrun job to do necessary check before actual creation
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01-preview
+// Generated from API version 2024-07-01-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource to be connected.
 //   - dryrunName - The name of dryrun.
 //   - parameters - dryrun resource.
@@ -70,7 +70,7 @@ func (client *LinkersClient) BeginCreateDryrun(ctx context.Context, resourceURI 
 // CreateDryrun - create a dryrun job to do necessary check before actual creation
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01-preview
+// Generated from API version 2024-07-01-preview
 func (client *LinkersClient) createDryrun(ctx context.Context, resourceURI string, dryrunName string, parameters DryrunResource, options *LinkersClientBeginCreateDryrunOptions) (*http.Response, error) {
 	var err error
 	const operationName = "LinkersClient.BeginCreateDryrun"
@@ -105,7 +105,7 @@ func (client *LinkersClient) createDryrunCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01-preview")
+	reqQP.Set("api-version", "2024-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -117,7 +117,7 @@ func (client *LinkersClient) createDryrunCreateRequest(ctx context.Context, reso
 // DeleteDryrun - delete a dryrun job
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01-preview
+// Generated from API version 2024-07-01-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource to be connected.
 //   - dryrunName - The name of dryrun.
 //   - options - LinkersClientDeleteDryrunOptions contains the optional parameters for the LinkersClient.DeleteDryrun method.
@@ -155,7 +155,7 @@ func (client *LinkersClient) deleteDryrunCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01-preview")
+	reqQP.Set("api-version", "2024-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -164,7 +164,7 @@ func (client *LinkersClient) deleteDryrunCreateRequest(ctx context.Context, reso
 // GenerateConfigurations - Generate configurations for a Linker.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01-preview
+// Generated from API version 2024-07-01-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource to be connected.
 //   - linkerName - The name Linker resource.
 //   - options - LinkersClientGenerateConfigurationsOptions contains the optional parameters for the LinkersClient.GenerateConfigurations
@@ -204,7 +204,7 @@ func (client *LinkersClient) generateConfigurationsCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01-preview")
+	reqQP.Set("api-version", "2024-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
@@ -228,7 +228,7 @@ func (client *LinkersClient) generateConfigurationsHandleResponse(resp *http.Res
 // GetDryrun - get a dryrun job
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01-preview
+// Generated from API version 2024-07-01-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource to be connected.
 //   - dryrunName - The name of dryrun.
 //   - options - LinkersClientGetDryrunOptions contains the optional parameters for the LinkersClient.GetDryrun method.
@@ -267,7 +267,7 @@ func (client *LinkersClient) getDryrunCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01-preview")
+	reqQP.Set("api-version", "2024-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -284,7 +284,7 @@ func (client *LinkersClient) getDryrunHandleResponse(resp *http.Response) (Linke
 
 // NewListDaprConfigurationsPager - List the dapr configuration supported by Service Connector.
 //
-// Generated from API version 2023-04-01-preview
+// Generated from API version 2024-07-01-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource to be connected.
 //   - options - LinkersClientListDaprConfigurationsOptions contains the optional parameters for the LinkersClient.NewListDaprConfigurationsPager
 //     method.
@@ -320,7 +320,7 @@ func (client *LinkersClient) listDaprConfigurationsCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01-preview")
+	reqQP.Set("api-version", "2024-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -337,7 +337,7 @@ func (client *LinkersClient) listDaprConfigurationsHandleResponse(resp *http.Res
 
 // NewListDryrunPager - list dryrun jobs
 //
-// Generated from API version 2023-04-01-preview
+// Generated from API version 2024-07-01-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource to be connected.
 //   - options - LinkersClientListDryrunOptions contains the optional parameters for the LinkersClient.NewListDryrunPager method.
 func (client *LinkersClient) NewListDryrunPager(resourceURI string, options *LinkersClientListDryrunOptions) *runtime.Pager[LinkersClientListDryrunResponse] {
@@ -372,7 +372,7 @@ func (client *LinkersClient) listDryrunCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01-preview")
+	reqQP.Set("api-version", "2024-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -390,7 +390,7 @@ func (client *LinkersClient) listDryrunHandleResponse(resp *http.Response) (Link
 // BeginUpdateDryrun - add a dryrun job to do necessary check before actual creation
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01-preview
+// Generated from API version 2024-07-01-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource to be connected.
 //   - dryrunName - The name of dryrun.
 //   - parameters - dryrun resource.
@@ -417,7 +417,7 @@ func (client *LinkersClient) BeginUpdateDryrun(ctx context.Context, resourceURI 
 // UpdateDryrun - add a dryrun job to do necessary check before actual creation
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01-preview
+// Generated from API version 2024-07-01-preview
 func (client *LinkersClient) updateDryrun(ctx context.Context, resourceURI string, dryrunName string, parameters DryrunPatch, options *LinkersClientBeginUpdateDryrunOptions) (*http.Response, error) {
 	var err error
 	const operationName = "LinkersClient.BeginUpdateDryrun"
@@ -452,7 +452,7 @@ func (client *LinkersClient) updateDryrunCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01-preview")
+	reqQP.Set("api-version", "2024-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

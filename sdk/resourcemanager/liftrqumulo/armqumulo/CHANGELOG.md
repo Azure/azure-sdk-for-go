@@ -1,5 +1,19 @@
 # Release History
 
+## 2.0.0 (2024-07-31)
+### Breaking Changes
+
+- Type of `FileSystemResourceProperties.StorageSKU` has been changed from `*StorageSKU` to `*string`
+- `ProvisioningStateNotSpecified` from enum `ProvisioningState` has been removed
+- Enum `StorageSKU` has been removed
+- Field `InitialCapacity` of struct `FileSystemResourceProperties` has been removed
+- Field `ClusterLoginURL`, `PrivateIPs` of struct `FileSystemResourceUpdateProperties` has been removed
+
+### Features Added
+
+- New field `TermUnit` in struct `MarketplaceDetails`
+
+
 ## 1.1.0 (2023-11-24)
 ### Features Added
 

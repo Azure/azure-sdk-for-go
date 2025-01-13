@@ -43,7 +43,7 @@ func ExampleMetricsServer() {
 			resp.SetResponse(http.StatusOK, listResp, nil)
 
 			// to simulate the failure case, use errResp
-			//errResp.SetResponseError(http.StatusBadRequest, "ThisIsASimulatedError")
+			// errResp.SetResponseError(http.StatusBadRequest, "ThisIsASimulatedError")
 
 			return
 		},

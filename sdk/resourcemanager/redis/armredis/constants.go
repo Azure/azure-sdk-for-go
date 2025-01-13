@@ -10,7 +10,7 @@ package armredis
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis"
-	moduleVersion = "v3.1.0"
+	moduleVersion = "v3.2.0"
 )
 
 // AccessPolicyAssignmentProvisioningState - Provisioning state of an access policy assignment set

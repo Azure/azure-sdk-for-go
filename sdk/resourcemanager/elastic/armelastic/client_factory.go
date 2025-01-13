@@ -26,148 +26,212 @@ import (
 // Don't use this type directly, use NewClientFactory instead.
 type ClientFactory struct {
 	subscriptionID string
-	credential     azcore.TokenCredential
-	options        *arm.ClientOptions
+	internal       *arm.Client
 }
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
 // The parameter values will be propagated to any client created from this factory.
-//   - subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
+	internal, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	return &ClientFactory{
-		subscriptionID: subscriptionID, credential: credential,
-		options: options.Clone(),
+		subscriptionID: subscriptionID,
+		internal:       internal,
 	}, nil
 }
 
 // NewAllTrafficFiltersClient creates a new instance of AllTrafficFiltersClient.
 func (c *ClientFactory) NewAllTrafficFiltersClient() *AllTrafficFiltersClient {
-	subClient, _ := NewAllTrafficFiltersClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &AllTrafficFiltersClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewAssociateTrafficFilterClient creates a new instance of AssociateTrafficFilterClient.
 func (c *ClientFactory) NewAssociateTrafficFilterClient() *AssociateTrafficFilterClient {
-	subClient, _ := NewAssociateTrafficFilterClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &AssociateTrafficFilterClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewBillingInfoClient creates a new instance of BillingInfoClient.
+func (c *ClientFactory) NewBillingInfoClient() *BillingInfoClient {
+	return &BillingInfoClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewConnectedPartnerResourcesClient creates a new instance of ConnectedPartnerResourcesClient.
+func (c *ClientFactory) NewConnectedPartnerResourcesClient() *ConnectedPartnerResourcesClient {
+	return &ConnectedPartnerResourcesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewCreateAndAssociateIPFilterClient creates a new instance of CreateAndAssociateIPFilterClient.
 func (c *ClientFactory) NewCreateAndAssociateIPFilterClient() *CreateAndAssociateIPFilterClient {
-	subClient, _ := NewCreateAndAssociateIPFilterClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &CreateAndAssociateIPFilterClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewCreateAndAssociatePLFilterClient creates a new instance of CreateAndAssociatePLFilterClient.
 func (c *ClientFactory) NewCreateAndAssociatePLFilterClient() *CreateAndAssociatePLFilterClient {
-	subClient, _ := NewCreateAndAssociatePLFilterClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &CreateAndAssociatePLFilterClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewDeploymentInfoClient creates a new instance of DeploymentInfoClient.
 func (c *ClientFactory) NewDeploymentInfoClient() *DeploymentInfoClient {
-	subClient, _ := NewDeploymentInfoClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &DeploymentInfoClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewDetachAndDeleteTrafficFilterClient creates a new instance of DetachAndDeleteTrafficFilterClient.
 func (c *ClientFactory) NewDetachAndDeleteTrafficFilterClient() *DetachAndDeleteTrafficFilterClient {
-	subClient, _ := NewDetachAndDeleteTrafficFilterClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &DetachAndDeleteTrafficFilterClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewDetachTrafficFilterClient creates a new instance of DetachTrafficFilterClient.
 func (c *ClientFactory) NewDetachTrafficFilterClient() *DetachTrafficFilterClient {
-	subClient, _ := NewDetachTrafficFilterClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &DetachTrafficFilterClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewExternalUserClient creates a new instance of ExternalUserClient.
 func (c *ClientFactory) NewExternalUserClient() *ExternalUserClient {
-	subClient, _ := NewExternalUserClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &ExternalUserClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewListAssociatedTrafficFiltersClient creates a new instance of ListAssociatedTrafficFiltersClient.
 func (c *ClientFactory) NewListAssociatedTrafficFiltersClient() *ListAssociatedTrafficFiltersClient {
-	subClient, _ := NewListAssociatedTrafficFiltersClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &ListAssociatedTrafficFiltersClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewMonitorClient creates a new instance of MonitorClient.
 func (c *ClientFactory) NewMonitorClient() *MonitorClient {
-	subClient, _ := NewMonitorClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &MonitorClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewMonitoredResourcesClient creates a new instance of MonitoredResourcesClient.
 func (c *ClientFactory) NewMonitoredResourcesClient() *MonitoredResourcesClient {
-	subClient, _ := NewMonitoredResourcesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &MonitoredResourcesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewMonitorsClient creates a new instance of MonitorsClient.
 func (c *ClientFactory) NewMonitorsClient() *MonitorsClient {
-	subClient, _ := NewMonitorsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &MonitorsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewOpenAIClient creates a new instance of OpenAIClient.
+func (c *ClientFactory) NewOpenAIClient() *OpenAIClient {
+	return &OpenAIClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
-	subClient, _ := NewOperationsClient(c.credential, c.options)
-	return subClient
+	return &OperationsClient{
+		internal: c.internal,
+	}
 }
 
 // NewOrganizationsClient creates a new instance of OrganizationsClient.
 func (c *ClientFactory) NewOrganizationsClient() *OrganizationsClient {
-	subClient, _ := NewOrganizationsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &OrganizationsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewTagRulesClient creates a new instance of TagRulesClient.
 func (c *ClientFactory) NewTagRulesClient() *TagRulesClient {
-	subClient, _ := NewTagRulesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &TagRulesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewTrafficFiltersClient creates a new instance of TrafficFiltersClient.
 func (c *ClientFactory) NewTrafficFiltersClient() *TrafficFiltersClient {
-	subClient, _ := NewTrafficFiltersClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &TrafficFiltersClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewUpgradableVersionsClient creates a new instance of UpgradableVersionsClient.
 func (c *ClientFactory) NewUpgradableVersionsClient() *UpgradableVersionsClient {
-	subClient, _ := NewUpgradableVersionsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &UpgradableVersionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewVMCollectionClient creates a new instance of VMCollectionClient.
 func (c *ClientFactory) NewVMCollectionClient() *VMCollectionClient {
-	subClient, _ := NewVMCollectionClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &VMCollectionClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewVMHostClient creates a new instance of VMHostClient.
 func (c *ClientFactory) NewVMHostClient() *VMHostClient {
-	subClient, _ := NewVMHostClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &VMHostClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewVMIngestionClient creates a new instance of VMIngestionClient.
 func (c *ClientFactory) NewVMIngestionClient() *VMIngestionClient {
-	subClient, _ := NewVMIngestionClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &VMIngestionClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }
 
 // NewVersionsClient creates a new instance of VersionsClient.
 func (c *ClientFactory) NewVersionsClient() *VersionsClient {
-	subClient, _ := NewVersionsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
+	return &VersionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
 }

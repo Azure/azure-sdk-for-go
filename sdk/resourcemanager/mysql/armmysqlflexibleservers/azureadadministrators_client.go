@@ -28,7 +28,7 @@ type AzureADAdministratorsClient struct {
 }
 
 // NewAzureADAdministratorsClient creates a new instance of AzureADAdministratorsClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAzureADAdministratorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AzureADAdministratorsClient, error) {
@@ -46,7 +46,7 @@ func NewAzureADAdministratorsClient(subscriptionID string, credential azcore.Tok
 // BeginCreateOrUpdate - Creates or updates an existing Azure Active Directory administrator.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-12-01-preview
+// Generated from API version 2023-06-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - administratorName - The name of the Azure AD Administrator.
@@ -73,7 +73,7 @@ func (client *AzureADAdministratorsClient) BeginCreateOrUpdate(ctx context.Conte
 // CreateOrUpdate - Creates or updates an existing Azure Active Directory administrator.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-12-01-preview
+// Generated from API version 2023-06-01-preview
 func (client *AzureADAdministratorsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, administratorName AdministratorName, parameters AzureADAdministrator, options *AzureADAdministratorsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AzureADAdministratorsClient.BeginCreateOrUpdate"
@@ -119,7 +119,7 @@ func (client *AzureADAdministratorsClient) createOrUpdateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -131,7 +131,7 @@ func (client *AzureADAdministratorsClient) createOrUpdateCreateRequest(ctx conte
 // BeginDelete - Deletes an Azure AD Administrator.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-12-01-preview
+// Generated from API version 2023-06-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - administratorName - The name of the Azure AD Administrator.
@@ -158,7 +158,7 @@ func (client *AzureADAdministratorsClient) BeginDelete(ctx context.Context, reso
 // Delete - Deletes an Azure AD Administrator.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-12-01-preview
+// Generated from API version 2023-06-01-preview
 func (client *AzureADAdministratorsClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, administratorName AdministratorName, options *AzureADAdministratorsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AzureADAdministratorsClient.BeginDelete"
@@ -204,7 +204,7 @@ func (client *AzureADAdministratorsClient) deleteCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -213,7 +213,7 @@ func (client *AzureADAdministratorsClient) deleteCreateRequest(ctx context.Conte
 // Get - Gets information about an azure ad administrator.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-12-01-preview
+// Generated from API version 2023-06-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - administratorName - The name of the Azure AD Administrator.
@@ -265,7 +265,7 @@ func (client *AzureADAdministratorsClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -282,7 +282,7 @@ func (client *AzureADAdministratorsClient) getHandleResponse(resp *http.Response
 
 // NewListByServerPager - List all the AAD administrators in a given server.
 //
-// Generated from API version 2021-12-01-preview
+// Generated from API version 2023-06-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - AzureADAdministratorsClientListByServerOptions contains the optional parameters for the AzureADAdministratorsClient.NewListByServerPager
@@ -330,7 +330,7 @@ func (client *AzureADAdministratorsClient) listByServerCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -61,12 +61,16 @@ type ManagedInstancesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListOutboundNetworkDependenciesByManagedInstancePager func(resourceGroupName string, managedInstanceName string, options *armsql.ManagedInstancesClientListOutboundNetworkDependenciesByManagedInstanceOptions) (resp azfake.PagerResponder[armsql.ManagedInstancesClientListOutboundNetworkDependenciesByManagedInstanceResponse])
 
+	// BeginRefreshStatus is the fake for method ManagedInstancesClient.BeginRefreshStatus
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginRefreshStatus func(ctx context.Context, resourceGroupName string, managedInstanceName string, options *armsql.ManagedInstancesClientBeginRefreshStatusOptions) (resp azfake.PollerResponder[armsql.ManagedInstancesClientRefreshStatusResponse], errResp azfake.ErrorResponder)
+
 	// BeginStart is the fake for method ManagedInstancesClient.BeginStart
-	// HTTP status codes to indicate success: http.StatusAccepted
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginStart func(ctx context.Context, resourceGroupName string, managedInstanceName string, options *armsql.ManagedInstancesClientBeginStartOptions) (resp azfake.PollerResponder[armsql.ManagedInstancesClientStartResponse], errResp azfake.ErrorResponder)
 
 	// BeginStop is the fake for method ManagedInstancesClient.BeginStop
-	// HTTP status codes to indicate success: http.StatusAccepted
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginStop func(ctx context.Context, resourceGroupName string, managedInstanceName string, options *armsql.ManagedInstancesClientBeginStopOptions) (resp azfake.PollerResponder[armsql.ManagedInstancesClientStopResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdate is the fake for method ManagedInstancesClient.BeginUpdate
@@ -88,9 +92,10 @@ func NewManagedInstancesServerTransport(srv *ManagedInstancesServer) *ManagedIns
 		newListByManagedInstancePager: newTracker[azfake.PagerResponder[armsql.ManagedInstancesClientListByManagedInstanceResponse]](),
 		newListByResourceGroupPager:   newTracker[azfake.PagerResponder[armsql.ManagedInstancesClientListByResourceGroupResponse]](),
 		newListOutboundNetworkDependenciesByManagedInstancePager: newTracker[azfake.PagerResponder[armsql.ManagedInstancesClientListOutboundNetworkDependenciesByManagedInstanceResponse]](),
-		beginStart:  newTracker[azfake.PollerResponder[armsql.ManagedInstancesClientStartResponse]](),
-		beginStop:   newTracker[azfake.PollerResponder[armsql.ManagedInstancesClientStopResponse]](),
-		beginUpdate: newTracker[azfake.PollerResponder[armsql.ManagedInstancesClientUpdateResponse]](),
+		beginRefreshStatus: newTracker[azfake.PollerResponder[armsql.ManagedInstancesClientRefreshStatusResponse]](),
+		beginStart:         newTracker[azfake.PollerResponder[armsql.ManagedInstancesClientStartResponse]](),
+		beginStop:          newTracker[azfake.PollerResponder[armsql.ManagedInstancesClientStopResponse]](),
+		beginUpdate:        newTracker[azfake.PollerResponder[armsql.ManagedInstancesClientUpdateResponse]](),
 	}
 }
 
@@ -106,6 +111,7 @@ type ManagedInstancesServerTransport struct {
 	newListByManagedInstancePager                            *tracker[azfake.PagerResponder[armsql.ManagedInstancesClientListByManagedInstanceResponse]]
 	newListByResourceGroupPager                              *tracker[azfake.PagerResponder[armsql.ManagedInstancesClientListByResourceGroupResponse]]
 	newListOutboundNetworkDependenciesByManagedInstancePager *tracker[azfake.PagerResponder[armsql.ManagedInstancesClientListOutboundNetworkDependenciesByManagedInstanceResponse]]
+	beginRefreshStatus                                       *tracker[azfake.PollerResponder[armsql.ManagedInstancesClientRefreshStatusResponse]]
 	beginStart                                               *tracker[azfake.PollerResponder[armsql.ManagedInstancesClientStartResponse]]
 	beginStop                                                *tracker[azfake.PollerResponder[armsql.ManagedInstancesClientStopResponse]]
 	beginUpdate                                              *tracker[azfake.PollerResponder[armsql.ManagedInstancesClientUpdateResponse]]
@@ -141,6 +147,8 @@ func (m *ManagedInstancesServerTransport) Do(req *http.Request) (*http.Response,
 		resp, err = m.dispatchNewListByResourceGroupPager(req)
 	case "ManagedInstancesClient.NewListOutboundNetworkDependenciesByManagedInstancePager":
 		resp, err = m.dispatchNewListOutboundNetworkDependenciesByManagedInstancePager(req)
+	case "ManagedInstancesClient.BeginRefreshStatus":
+		resp, err = m.dispatchBeginRefreshStatus(req)
 	case "ManagedInstancesClient.BeginStart":
 		resp, err = m.dispatchBeginStart(req)
 	case "ManagedInstancesClient.BeginStop":
@@ -637,6 +645,50 @@ func (m *ManagedInstancesServerTransport) dispatchNewListOutboundNetworkDependen
 	return resp, nil
 }
 
+func (m *ManagedInstancesServerTransport) dispatchBeginRefreshStatus(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginRefreshStatus == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRefreshStatus not implemented")}
+	}
+	beginRefreshStatus := m.beginRefreshStatus.get(req)
+	if beginRefreshStatus == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/managedInstances/(?P<managedInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/refreshExternalGovernanceStatus`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		managedInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managedInstanceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginRefreshStatus(req.Context(), resourceGroupNameParam, managedInstanceNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRefreshStatus = &respr
+		m.beginRefreshStatus.add(req, beginRefreshStatus)
+	}
+
+	resp, err := server.PollerResponderNext(beginRefreshStatus, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		m.beginRefreshStatus.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRefreshStatus) {
+		m.beginRefreshStatus.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (m *ManagedInstancesServerTransport) dispatchBeginStart(req *http.Request) (*http.Response, error) {
 	if m.srv.BeginStart == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginStart not implemented")}
@@ -670,9 +722,9 @@ func (m *ManagedInstancesServerTransport) dispatchBeginStart(req *http.Request) 
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		m.beginStart.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginStart) {
 		m.beginStart.remove(req)
@@ -714,9 +766,9 @@ func (m *ManagedInstancesServerTransport) dispatchBeginStop(req *http.Request) (
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		m.beginStop.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginStop) {
 		m.beginStop.remove(req)

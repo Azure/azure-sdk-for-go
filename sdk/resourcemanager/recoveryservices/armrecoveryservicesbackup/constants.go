@@ -10,7 +10,7 @@ package armrecoveryservicesbackup
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup"
-	moduleVersion = "v4.0.0"
+	moduleVersion = "v4.1.0"
 )
 
 // AcquireStorageAccountLock - Whether storage account lock is to be acquired for this container or not.
@@ -568,6 +568,19 @@ func PossibleIAASVMPolicyTypeValues() []IAASVMPolicyType {
 		IAASVMPolicyTypeInvalid,
 		IAASVMPolicyTypeV1,
 		IAASVMPolicyTypeV2,
+	}
+}
+
+type IaasVMSnapshotConsistencyType string
+
+const (
+	IaasVMSnapshotConsistencyTypeOnlyCrashConsistent IaasVMSnapshotConsistencyType = "OnlyCrashConsistent"
+)
+
+// PossibleIaasVMSnapshotConsistencyTypeValues returns the possible values for the IaasVMSnapshotConsistencyType const type.
+func PossibleIaasVMSnapshotConsistencyTypeValues() []IaasVMSnapshotConsistencyType {
+	return []IaasVMSnapshotConsistencyType{
+		IaasVMSnapshotConsistencyTypeOnlyCrashConsistent,
 	}
 }
 

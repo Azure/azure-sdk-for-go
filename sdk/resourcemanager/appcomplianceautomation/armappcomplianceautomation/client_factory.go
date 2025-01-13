@@ -16,8 +16,7 @@ import (
 // ClientFactory is a client factory used to create any client in this module.
 // Don't use this type directly, use NewClientFactory instead.
 type ClientFactory struct {
-	credential azcore.TokenCredential
-	options    *arm.ClientOptions
+	internal *arm.Client
 }
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
@@ -25,42 +24,60 @@ type ClientFactory struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
+	internal, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	return &ClientFactory{
-		credential: credential,
-		options:    options.Clone(),
+		internal: internal,
 	}, nil
+}
+
+// NewEvidenceClient creates a new instance of EvidenceClient.
+func (c *ClientFactory) NewEvidenceClient() *EvidenceClient {
+	return &EvidenceClient{
+		internal: c.internal,
+	}
 }
 
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
-	subClient, _ := NewOperationsClient(c.credential, c.options)
-	return subClient
+	return &OperationsClient{
+		internal: c.internal,
+	}
+}
+
+// NewProviderActionsClient creates a new instance of ProviderActionsClient.
+func (c *ClientFactory) NewProviderActionsClient() *ProviderActionsClient {
+	return &ProviderActionsClient{
+		internal: c.internal,
+	}
 }
 
 // NewReportClient creates a new instance of ReportClient.
 func (c *ClientFactory) NewReportClient() *ReportClient {
-	subClient, _ := NewReportClient(c.credential, c.options)
-	return subClient
+	return &ReportClient{
+		internal: c.internal,
+	}
 }
 
-// NewReportsClient creates a new instance of ReportsClient.
-func (c *ClientFactory) NewReportsClient() *ReportsClient {
-	subClient, _ := NewReportsClient(c.credential, c.options)
-	return subClient
+// NewScopingConfigurationClient creates a new instance of ScopingConfigurationClient.
+func (c *ClientFactory) NewScopingConfigurationClient() *ScopingConfigurationClient {
+	return &ScopingConfigurationClient{
+		internal: c.internal,
+	}
 }
 
 // NewSnapshotClient creates a new instance of SnapshotClient.
 func (c *ClientFactory) NewSnapshotClient() *SnapshotClient {
-	subClient, _ := NewSnapshotClient(c.credential, c.options)
-	return subClient
+	return &SnapshotClient{
+		internal: c.internal,
+	}
 }
 
-// NewSnapshotsClient creates a new instance of SnapshotsClient.
-func (c *ClientFactory) NewSnapshotsClient() *SnapshotsClient {
-	subClient, _ := NewSnapshotsClient(c.credential, c.options)
-	return subClient
+// NewWebhookClient creates a new instance of WebhookClient.
+func (c *ClientFactory) NewWebhookClient() *WebhookClient {
+	return &WebhookClient{
+		internal: c.internal,
+	}
 }

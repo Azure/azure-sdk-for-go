@@ -22,7 +22,7 @@ var (
 `), nil
 	}
 	mockAzdTokenProviderFailure = func(context.Context, []string, string) ([]byte, error) {
-		return nil, newAuthenticationFailedError(credNameAzureCLI, "mock provider error", nil, nil)
+		return nil, newAuthenticationFailedError(credNameAzureCLI, "mock provider error", nil)
 	}
 )
 

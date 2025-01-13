@@ -110,7 +110,14 @@ func (r *RestoresServerTransport) dispatchBeginTrigger(req *http.Request) (*http
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := r.srv.BeginTrigger(req.Context(), vaultNameParam, resourceGroupNameParam, fabricNameParam, containerNameParam, protectedItemNameParam, recoveryPointIDParam, body, nil)
+		xMSAuthorizationAuxiliaryParam := getOptional(getHeaderValue(req.Header, "x-ms-authorization-auxiliary"))
+		var options *armrecoveryservicesbackup.RestoresClientBeginTriggerOptions
+		if xMSAuthorizationAuxiliaryParam != nil {
+			options = &armrecoveryservicesbackup.RestoresClientBeginTriggerOptions{
+				XMSAuthorizationAuxiliary: xMSAuthorizationAuxiliaryParam,
+			}
+		}
+		respr, errRespr := r.srv.BeginTrigger(req.Context(), vaultNameParam, resourceGroupNameParam, fabricNameParam, containerNameParam, protectedItemNameParam, recoveryPointIDParam, body, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

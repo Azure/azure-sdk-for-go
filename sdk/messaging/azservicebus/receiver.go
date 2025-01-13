@@ -56,7 +56,13 @@ type Receiver struct {
 	receiving                bool
 	retryOptions             RetryOptions
 	settler                  *messageSettler
-	defaultReleaserTimeout   time.Duration // defaults to 1min, settable for unit tests.
+
+	// sessionID is the actual session ID for this receiver - it's used in some management
+	// operations that are otherwise the same between session receivers and non-session
+	// receivers.
+	sessionID *string
+
+	defaultReleaserTimeout time.Duration // defaults to 1min, settable for unit tests.
 }
 
 // ReceiverOptions contains options for the `Client.NewReceiverForQueue` or `Client.NewReceiverForSubscription`

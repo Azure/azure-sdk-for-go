@@ -1,16 +1,10 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.3.0-beta.1 (2025-01-13)
 
 ### Features Added
 
 - ProducerClient and ConsumerClient allow the endpoint to be overridden with CustomEndpoint, allowing the use of TCP proxies with AMQP.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 1.2.3 (2024-10-14)
 

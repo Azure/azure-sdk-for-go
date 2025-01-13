@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.0-beta.1 (2025-01-10)
+## 1.5.0-beta.1 (2025-01-13)
 
 ### Features Added
 * Add Premium access tier to Files Shares

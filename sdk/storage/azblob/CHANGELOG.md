@@ -1,6 +1,6 @@
 # Release History
 
-## 1.6.0-beta.1 (2025-01-10)
+## 1.6.0-beta.1 (2025-01-13)
 
 ### Features Added
 * Added permissions & resourcetype parameters in listblob response.

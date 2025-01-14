@@ -196,7 +196,18 @@ func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) (*manag
 	c.azClient = client
 
 	if log.Should(EventAuthentication) {
-		log.Writef(EventAuthentication, "Managed Identity Credential will use %s managed identity", env)
+		msg := fmt.Sprintf("%s will use %s managed identity", credNameManagedIdentity, env)
+		if options.ID != nil {
+			kind := "client"
+			switch options.ID.(type) {
+			case ObjectID:
+				kind = "object"
+			case ResourceID:
+				kind = "resource"
+			}
+			msg += fmt.Sprintf(" with %s ID %q", kind, options.ID.String())
+		}
+		log.Write(EventAuthentication, msg)
 	}
 
 	return &c, nil

@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+* `NewManagedIdentityCredential` logs the configured user-assigned identity, if any
 
 ## 1.8.1 (2025-01-15)
 

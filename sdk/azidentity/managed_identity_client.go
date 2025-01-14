@@ -277,7 +277,8 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKi
 			if err == nil && strings.Contains(string(body), "unreachable") {
 				return azcore.AccessToken{}, newCredentialUnavailableError(credNameManagedIdentity, fmt.Sprintf("unexpected response %q", string(body)))
 			}
-		default:
+		}
+		if c.chained {
 			// the response may be from something other than IMDS, for example a proxy returning
 			// 404. Return credentialUnavailableError so credential chains continue to their
 			// next credential, include the response in the error message to help debugging

@@ -18,3 +18,6 @@ linters-settings:
       - evalOrder
     disabled-checks:
       - ifElseChain
+  govet:
+    enable:
+      - fieldalignment

@@ -18,8 +18,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloadssapvirtualinstance/armworkloadssapvirtualinstance"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_Create_Custom_Image.json
-func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConfigurationWithAzureComputeGalleryImage() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_InvokeAvailabilityZoneDetails_eastus.json
+func ExampleSapVirtualInstancesClient_InvokeAvailabilityZoneDetails_sapAvailabilityZoneDetailsInEastUs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,8 +29,2041 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
-		Location: to.Ptr("eastus"),
+	res, err := clientFactory.NewSapVirtualInstancesClient().InvokeAvailabilityZoneDetails(ctx, "eastus", armworkloadssapvirtualinstance.SAPAvailabilityZoneDetailsRequest{
+		AppLocation:  to.Ptr("eastus"),
+		DatabaseType: to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseTypeHANA),
+		SapProduct:   to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.SAPAvailabilityZoneDetailsResult = armworkloadssapvirtualinstance.SAPAvailabilityZoneDetailsResult{
+	// 	AvailabilityZonePairs: []*armworkloadssapvirtualinstance.SAPAvailabilityZonePair{
+	// 		{
+	// 			ZoneA: to.Ptr[int64](1),
+	// 			ZoneB: to.Ptr[int64](2),
+	// 	}},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_InvokeAvailabilityZoneDetails_northeurope.json
+func ExampleSapVirtualInstancesClient_InvokeAvailabilityZoneDetails_sapAvailabilityZoneDetailsInNorthEurope() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewSapVirtualInstancesClient().InvokeAvailabilityZoneDetails(ctx, "northeurope", armworkloadssapvirtualinstance.SAPAvailabilityZoneDetailsRequest{
+		AppLocation:  to.Ptr("northeurope"),
+		DatabaseType: to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseTypeHANA),
+		SapProduct:   to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.SAPAvailabilityZoneDetailsResult = armworkloadssapvirtualinstance.SAPAvailabilityZoneDetailsResult{
+	// 	AvailabilityZonePairs: []*armworkloadssapvirtualinstance.SAPAvailabilityZonePair{
+	// 		{
+	// 			ZoneA: to.Ptr[int64](2),
+	// 			ZoneB: to.Ptr[int64](3),
+	// 	}},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_InvokeDiskConfigurations_NonProd.json
+func ExampleSapVirtualInstancesClient_InvokeDiskConfigurations_sapDiskConfigurationsForInputEnvironmentNonProd() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewSapVirtualInstancesClient().InvokeDiskConfigurations(ctx, "centralus", armworkloadssapvirtualinstance.SAPDiskConfigurationsRequest{
+		AppLocation:    to.Ptr("eastus"),
+		DatabaseType:   to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseTypeHANA),
+		DbVMSKU:        to.Ptr("Standard_M32ts"),
+		DeploymentType: to.Ptr(armworkloadssapvirtualinstance.SAPDeploymentTypeThreeTier),
+		Environment:    to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeNonProd),
+		SapProduct:     to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.SAPDiskConfigurationsResult = armworkloadssapvirtualinstance.SAPDiskConfigurationsResult{
+	// 	VolumeConfigurations: map[string]*armworkloadssapvirtualinstance.SAPDiskConfiguration{
+	// 		"backup": &armworkloadssapvirtualinstance.SAPDiskConfiguration{
+	// 			RecommendedConfiguration: &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+	// 				Count: to.Ptr[int64](2),
+	// 				SizeGB: to.Ptr[int64](256),
+	// 				SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 					Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
+	// 				},
+	// 			},
+	// 			SupportedConfigurations: []*armworkloadssapvirtualinstance.DiskDetails{
+	// 				{
+	// 					DiskTier: to.Ptr("E10"),
+	// 					IopsReadWrite: to.Ptr[int64](500),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](6),
+	// 					MbpsReadWrite: to.Ptr[int64](60),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](0),
+	// 					SizeGB: to.Ptr[int64](128),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
+	// 					},
+	// 				},
+	// 				{
+	// 					DiskTier: to.Ptr("E15"),
+	// 					IopsReadWrite: to.Ptr[int64](500),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](6),
+	// 					MbpsReadWrite: to.Ptr[int64](60),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](0),
+	// 					SizeGB: to.Ptr[int64](256),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
+	// 					},
+	// 				},
+	// 				{
+	// 					DiskTier: to.Ptr("E20"),
+	// 					IopsReadWrite: to.Ptr[int64](500),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](6),
+	// 					MbpsReadWrite: to.Ptr[int64](60),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](0),
+	// 					SizeGB: to.Ptr[int64](512),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
+	// 					},
+	// 				},
+	// 				{
+	// 					DiskTier: to.Ptr("P10"),
+	// 					IopsReadWrite: to.Ptr[int64](500),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](6),
+	// 					MbpsReadWrite: to.Ptr[int64](100),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](0),
+	// 					SizeGB: to.Ptr[int64](128),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 					},
+	// 				},
+	// 				{
+	// 					DiskTier: to.Ptr("P15"),
+	// 					IopsReadWrite: to.Ptr[int64](1100),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](6),
+	// 					MbpsReadWrite: to.Ptr[int64](125),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](0),
+	// 					SizeGB: to.Ptr[int64](256),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 					},
+	// 				},
+	// 				{
+	// 					DiskTier: to.Ptr("P20"),
+	// 					IopsReadWrite: to.Ptr[int64](2300),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](6),
+	// 					MbpsReadWrite: to.Ptr[int64](150),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](0),
+	// 					SizeGB: to.Ptr[int64](512),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 					},
+	// 			}},
+	// 		},
+	// 		"hana/data": &armworkloadssapvirtualinstance.SAPDiskConfiguration{
+	// 			RecommendedConfiguration: &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+	// 				Count: to.Ptr[int64](4),
+	// 				SizeGB: to.Ptr[int64](128),
+	// 				SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 					Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 				},
+	// 			},
+	// 			SupportedConfigurations: []*armworkloadssapvirtualinstance.DiskDetails{
+	// 				{
+	// 					DiskTier: to.Ptr("P10"),
+	// 					IopsReadWrite: to.Ptr[int64](500),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](5),
+	// 					MbpsReadWrite: to.Ptr[int64](100),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](4),
+	// 					SizeGB: to.Ptr[int64](128),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 					},
+	// 			}},
+	// 		},
+	// 		"hana/log": &armworkloadssapvirtualinstance.SAPDiskConfiguration{
+	// 			RecommendedConfiguration: &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+	// 				Count: to.Ptr[int64](3),
+	// 				SizeGB: to.Ptr[int64](128),
+	// 				SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 					Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 				},
+	// 			},
+	// 			SupportedConfigurations: []*armworkloadssapvirtualinstance.DiskDetails{
+	// 				{
+	// 					DiskTier: to.Ptr("P10"),
+	// 					IopsReadWrite: to.Ptr[int64](500),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](5),
+	// 					MbpsReadWrite: to.Ptr[int64](100),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](3),
+	// 					SizeGB: to.Ptr[int64](128),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 					},
+	// 			}},
+	// 		},
+	// 		"hana/shared": &armworkloadssapvirtualinstance.SAPDiskConfiguration{
+	// 			RecommendedConfiguration: &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+	// 				Count: to.Ptr[int64](1),
+	// 				SizeGB: to.Ptr[int64](256),
+	// 				SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 					Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
+	// 				},
+	// 			},
+	// 			SupportedConfigurations: []*armworkloadssapvirtualinstance.DiskDetails{
+	// 				{
+	// 					DiskTier: to.Ptr("P15"),
+	// 					IopsReadWrite: to.Ptr[int64](1100),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 					MbpsReadWrite: to.Ptr[int64](125),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 					SizeGB: to.Ptr[int64](256),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 					},
+	// 				},
+	// 				{
+	// 					DiskTier: to.Ptr("P20"),
+	// 					IopsReadWrite: to.Ptr[int64](2300),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 					MbpsReadWrite: to.Ptr[int64](150),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 					SizeGB: to.Ptr[int64](512),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 					},
+	// 				},
+	// 				{
+	// 					DiskTier: to.Ptr("P30"),
+	// 					IopsReadWrite: to.Ptr[int64](5000),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 					MbpsReadWrite: to.Ptr[int64](200),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 					SizeGB: to.Ptr[int64](1024),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 					},
+	// 				},
+	// 				{
+	// 					DiskTier: to.Ptr("P40"),
+	// 					IopsReadWrite: to.Ptr[int64](7500),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 					MbpsReadWrite: to.Ptr[int64](250),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 					SizeGB: to.Ptr[int64](2048),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 					},
+	// 				},
+	// 				{
+	// 					DiskTier: to.Ptr("P50"),
+	// 					IopsReadWrite: to.Ptr[int64](7500),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 					MbpsReadWrite: to.Ptr[int64](250),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 					SizeGB: to.Ptr[int64](4096),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 					},
+	// 				},
+	// 				{
+	// 					DiskTier: to.Ptr("E15"),
+	// 					IopsReadWrite: to.Ptr[int64](500),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 					MbpsReadWrite: to.Ptr[int64](60),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 					SizeGB: to.Ptr[int64](256),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
+	// 					},
+	// 				},
+	// 				{
+	// 					DiskTier: to.Ptr("E20"),
+	// 					IopsReadWrite: to.Ptr[int64](500),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 					MbpsReadWrite: to.Ptr[int64](60),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 					SizeGB: to.Ptr[int64](512),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
+	// 					},
+	// 				},
+	// 				{
+	// 					DiskTier: to.Ptr("E30"),
+	// 					IopsReadWrite: to.Ptr[int64](500),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 					MbpsReadWrite: to.Ptr[int64](60),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 					SizeGB: to.Ptr[int64](1024),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
+	// 					},
+	// 				},
+	// 				{
+	// 					DiskTier: to.Ptr("E40"),
+	// 					IopsReadWrite: to.Ptr[int64](500),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 					MbpsReadWrite: to.Ptr[int64](60),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 					SizeGB: to.Ptr[int64](2048),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
+	// 					},
+	// 				},
+	// 				{
+	// 					DiskTier: to.Ptr("E50"),
+	// 					IopsReadWrite: to.Ptr[int64](500),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 					MbpsReadWrite: to.Ptr[int64](60),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 					SizeGB: to.Ptr[int64](4096),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
+	// 					},
+	// 			}},
+	// 		},
+	// 		"os": &armworkloadssapvirtualinstance.SAPDiskConfiguration{
+	// 			RecommendedConfiguration: &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+	// 				Count: to.Ptr[int64](1),
+	// 				SizeGB: to.Ptr[int64](64),
+	// 				SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 					Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
+	// 				},
+	// 			},
+	// 			SupportedConfigurations: []*armworkloadssapvirtualinstance.DiskDetails{
+	// 				{
+	// 					DiskTier: to.Ptr("P6"),
+	// 					IopsReadWrite: to.Ptr[int64](240),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 					MbpsReadWrite: to.Ptr[int64](50),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 					SizeGB: to.Ptr[int64](64),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 					},
+	// 				},
+	// 				{
+	// 					DiskTier: to.Ptr("P10"),
+	// 					IopsReadWrite: to.Ptr[int64](500),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 					MbpsReadWrite: to.Ptr[int64](100),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 					SizeGB: to.Ptr[int64](128),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 					},
+	// 				},
+	// 				{
+	// 					DiskTier: to.Ptr("P6"),
+	// 					IopsReadWrite: to.Ptr[int64](500),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 					MbpsReadWrite: to.Ptr[int64](60),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 					SizeGB: to.Ptr[int64](64),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
+	// 					},
+	// 				},
+	// 				{
+	// 					DiskTier: to.Ptr("P10"),
+	// 					IopsReadWrite: to.Ptr[int64](500),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 					MbpsReadWrite: to.Ptr[int64](60),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 					SizeGB: to.Ptr[int64](128),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
+	// 					},
+	// 			}},
+	// 		},
+	// 		"usr/sap": &armworkloadssapvirtualinstance.SAPDiskConfiguration{
+	// 			RecommendedConfiguration: &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+	// 				Count: to.Ptr[int64](1),
+	// 				SizeGB: to.Ptr[int64](128),
+	// 				SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 					Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 				},
+	// 			},
+	// 			SupportedConfigurations: []*armworkloadssapvirtualinstance.DiskDetails{
+	// 				{
+	// 					DiskTier: to.Ptr("P10"),
+	// 					IopsReadWrite: to.Ptr[int64](500),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 					MbpsReadWrite: to.Ptr[int64](100),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 					SizeGB: to.Ptr[int64](128),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 					},
+	// 				},
+	// 				{
+	// 					DiskTier: to.Ptr("P10"),
+	// 					IopsReadWrite: to.Ptr[int64](1100),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 					MbpsReadWrite: to.Ptr[int64](125),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 					SizeGB: to.Ptr[int64](256),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 					},
+	// 				},
+	// 				{
+	// 					DiskTier: to.Ptr("P10"),
+	// 					IopsReadWrite: to.Ptr[int64](2300),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 					MbpsReadWrite: to.Ptr[int64](150),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 					SizeGB: to.Ptr[int64](512),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 					},
+	// 				},
+	// 				{
+	// 					DiskTier: to.Ptr("E10"),
+	// 					IopsReadWrite: to.Ptr[int64](500),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 					MbpsReadWrite: to.Ptr[int64](60),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 					SizeGB: to.Ptr[int64](128),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
+	// 					},
+	// 				},
+	// 				{
+	// 					DiskTier: to.Ptr("E15"),
+	// 					IopsReadWrite: to.Ptr[int64](500),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 					MbpsReadWrite: to.Ptr[int64](60),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 					SizeGB: to.Ptr[int64](256),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
+	// 					},
+	// 				},
+	// 				{
+	// 					DiskTier: to.Ptr("E20"),
+	// 					IopsReadWrite: to.Ptr[int64](500),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 					MbpsReadWrite: to.Ptr[int64](60),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 					SizeGB: to.Ptr[int64](512),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
+	// 					},
+	// 			}},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_InvokeDiskConfigurations_Prod.json
+func ExampleSapVirtualInstancesClient_InvokeDiskConfigurations_sapDiskConfigurationsForInputEnvironmentProd() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewSapVirtualInstancesClient().InvokeDiskConfigurations(ctx, "centralus", armworkloadssapvirtualinstance.SAPDiskConfigurationsRequest{
+		AppLocation:    to.Ptr("eastus"),
+		DatabaseType:   to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseTypeHANA),
+		DbVMSKU:        to.Ptr("Standard_M32ts"),
+		DeploymentType: to.Ptr(armworkloadssapvirtualinstance.SAPDeploymentTypeThreeTier),
+		Environment:    to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeProd),
+		SapProduct:     to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.SAPDiskConfigurationsResult = armworkloadssapvirtualinstance.SAPDiskConfigurationsResult{
+	// 	VolumeConfigurations: map[string]*armworkloadssapvirtualinstance.SAPDiskConfiguration{
+	// 		"backup": &armworkloadssapvirtualinstance.SAPDiskConfiguration{
+	// 			RecommendedConfiguration: &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+	// 				Count: to.Ptr[int64](2),
+	// 				SizeGB: to.Ptr[int64](256),
+	// 				SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 					Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 				},
+	// 			},
+	// 			SupportedConfigurations: []*armworkloadssapvirtualinstance.DiskDetails{
+	// 				{
+	// 					DiskTier: to.Ptr("P10"),
+	// 					IopsReadWrite: to.Ptr[int64](500),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](6),
+	// 					MbpsReadWrite: to.Ptr[int64](100),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](0),
+	// 					SizeGB: to.Ptr[int64](128),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 					},
+	// 				},
+	// 				{
+	// 					DiskTier: to.Ptr("P15"),
+	// 					IopsReadWrite: to.Ptr[int64](1100),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](6),
+	// 					MbpsReadWrite: to.Ptr[int64](125),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](0),
+	// 					SizeGB: to.Ptr[int64](256),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 					},
+	// 				},
+	// 				{
+	// 					DiskTier: to.Ptr("P20"),
+	// 					IopsReadWrite: to.Ptr[int64](2300),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](6),
+	// 					MbpsReadWrite: to.Ptr[int64](150),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](0),
+	// 					SizeGB: to.Ptr[int64](512),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 					},
+	// 			}},
+	// 		},
+	// 		"hana/data": &armworkloadssapvirtualinstance.SAPDiskConfiguration{
+	// 			RecommendedConfiguration: &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+	// 				Count: to.Ptr[int64](4),
+	// 				SizeGB: to.Ptr[int64](128),
+	// 				SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 					Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 				},
+	// 			},
+	// 			SupportedConfigurations: []*armworkloadssapvirtualinstance.DiskDetails{
+	// 				{
+	// 					DiskTier: to.Ptr("P10"),
+	// 					IopsReadWrite: to.Ptr[int64](500),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](5),
+	// 					MbpsReadWrite: to.Ptr[int64](100),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](4),
+	// 					SizeGB: to.Ptr[int64](128),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 					},
+	// 			}},
+	// 		},
+	// 		"hana/log": &armworkloadssapvirtualinstance.SAPDiskConfiguration{
+	// 			RecommendedConfiguration: &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+	// 				Count: to.Ptr[int64](3),
+	// 				SizeGB: to.Ptr[int64](128),
+	// 				SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 					Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 				},
+	// 			},
+	// 			SupportedConfigurations: []*armworkloadssapvirtualinstance.DiskDetails{
+	// 				{
+	// 					DiskTier: to.Ptr("P10"),
+	// 					IopsReadWrite: to.Ptr[int64](500),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](5),
+	// 					MbpsReadWrite: to.Ptr[int64](100),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](3),
+	// 					SizeGB: to.Ptr[int64](128),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 					},
+	// 			}},
+	// 		},
+	// 		"hana/shared": &armworkloadssapvirtualinstance.SAPDiskConfiguration{
+	// 			RecommendedConfiguration: &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+	// 				Count: to.Ptr[int64](1),
+	// 				SizeGB: to.Ptr[int64](256),
+	// 				SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 					Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 				},
+	// 			},
+	// 			SupportedConfigurations: []*armworkloadssapvirtualinstance.DiskDetails{
+	// 				{
+	// 					DiskTier: to.Ptr("P15"),
+	// 					IopsReadWrite: to.Ptr[int64](1100),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 					MbpsReadWrite: to.Ptr[int64](125),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 					SizeGB: to.Ptr[int64](256),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 					},
+	// 				},
+	// 				{
+	// 					DiskTier: to.Ptr("P20"),
+	// 					IopsReadWrite: to.Ptr[int64](2300),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 					MbpsReadWrite: to.Ptr[int64](150),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 					SizeGB: to.Ptr[int64](512),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 					},
+	// 				},
+	// 				{
+	// 					DiskTier: to.Ptr("P30"),
+	// 					IopsReadWrite: to.Ptr[int64](5000),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 					MbpsReadWrite: to.Ptr[int64](200),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 					SizeGB: to.Ptr[int64](1024),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 					},
+	// 				},
+	// 				{
+	// 					DiskTier: to.Ptr("P40"),
+	// 					IopsReadWrite: to.Ptr[int64](7500),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 					MbpsReadWrite: to.Ptr[int64](250),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 					SizeGB: to.Ptr[int64](2048),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 					},
+	// 				},
+	// 				{
+	// 					DiskTier: to.Ptr("P50"),
+	// 					IopsReadWrite: to.Ptr[int64](7500),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 					MbpsReadWrite: to.Ptr[int64](250),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 					SizeGB: to.Ptr[int64](4096),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 					},
+	// 			}},
+	// 		},
+	// 		"os": &armworkloadssapvirtualinstance.SAPDiskConfiguration{
+	// 			RecommendedConfiguration: &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+	// 				Count: to.Ptr[int64](1),
+	// 				SizeGB: to.Ptr[int64](64),
+	// 				SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 					Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 				},
+	// 			},
+	// 			SupportedConfigurations: []*armworkloadssapvirtualinstance.DiskDetails{
+	// 				{
+	// 					DiskTier: to.Ptr("P6"),
+	// 					IopsReadWrite: to.Ptr[int64](240),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 					MbpsReadWrite: to.Ptr[int64](50),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 					SizeGB: to.Ptr[int64](64),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 					},
+	// 				},
+	// 				{
+	// 					DiskTier: to.Ptr("P10"),
+	// 					IopsReadWrite: to.Ptr[int64](500),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 					MbpsReadWrite: to.Ptr[int64](100),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 					SizeGB: to.Ptr[int64](128),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 					},
+	// 			}},
+	// 		},
+	// 		"usr/sap": &armworkloadssapvirtualinstance.SAPDiskConfiguration{
+	// 			RecommendedConfiguration: &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+	// 				Count: to.Ptr[int64](1),
+	// 				SizeGB: to.Ptr[int64](128),
+	// 				SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 					Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 				},
+	// 			},
+	// 			SupportedConfigurations: []*armworkloadssapvirtualinstance.DiskDetails{
+	// 				{
+	// 					DiskTier: to.Ptr("P10"),
+	// 					IopsReadWrite: to.Ptr[int64](500),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 					MbpsReadWrite: to.Ptr[int64](100),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 					SizeGB: to.Ptr[int64](128),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 					},
+	// 				},
+	// 				{
+	// 					DiskTier: to.Ptr("P10"),
+	// 					IopsReadWrite: to.Ptr[int64](1100),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 					MbpsReadWrite: to.Ptr[int64](125),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 					SizeGB: to.Ptr[int64](256),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 					},
+	// 				},
+	// 				{
+	// 					DiskTier: to.Ptr("P10"),
+	// 					IopsReadWrite: to.Ptr[int64](2300),
+	// 					MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 					MbpsReadWrite: to.Ptr[int64](150),
+	// 					MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 					SizeGB: to.Ptr[int64](512),
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 					},
+	// 			}},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_InvokeSapSupportedSku_DistributedHA_AvSet.json
+func ExampleSapVirtualInstancesClient_InvokeSapSupportedSKU_sapSupportedSkUsForDistributedHaEnvironmentWithAvailabilitySet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewSapVirtualInstancesClient().InvokeSapSupportedSKU(ctx, "centralus", armworkloadssapvirtualinstance.SAPSupportedSKUsRequest{
+		AppLocation:          to.Ptr("eastus"),
+		DatabaseType:         to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseTypeHANA),
+		DeploymentType:       to.Ptr(armworkloadssapvirtualinstance.SAPDeploymentTypeThreeTier),
+		Environment:          to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeProd),
+		HighAvailabilityType: to.Ptr(armworkloadssapvirtualinstance.SAPHighAvailabilityTypeAvailabilitySet),
+		SapProduct:           to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.SAPSupportedResourceSKUsResult = armworkloadssapvirtualinstance.SAPSupportedResourceSKUsResult{
+	// 	SupportedSKUs: []*armworkloadssapvirtualinstance.SAPSupportedSKU{
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(true),
+	// 			IsDatabaseCertified: to.Ptr(false),
+	// 			VMSKU: to.Ptr("Standard_E4ds_v4"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(true),
+	// 			IsDatabaseCertified: to.Ptr(false),
+	// 			VMSKU: to.Ptr("Standard_E8ds_v4"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(true),
+	// 			IsDatabaseCertified: to.Ptr(false),
+	// 			VMSKU: to.Ptr("Standard_E16ds_v4"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(true),
+	// 			IsDatabaseCertified: to.Ptr(false),
+	// 			VMSKU: to.Ptr("Standard_E20ds_v4"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(true),
+	// 			IsDatabaseCertified: to.Ptr(false),
+	// 			VMSKU: to.Ptr("Standard_E32ds_v4"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(true),
+	// 			IsDatabaseCertified: to.Ptr(false),
+	// 			VMSKU: to.Ptr("Standard_E48ds_v4"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(true),
+	// 			IsDatabaseCertified: to.Ptr(false),
+	// 			VMSKU: to.Ptr("Standard_E64ds_v4"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(false),
+	// 			IsDatabaseCertified: to.Ptr(true),
+	// 			VMSKU: to.Ptr("Standard_M32Is"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(false),
+	// 			IsDatabaseCertified: to.Ptr(true),
+	// 			VMSKU: to.Ptr("Standard_M32ts"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(false),
+	// 			IsDatabaseCertified: to.Ptr(true),
+	// 			VMSKU: to.Ptr("Standard_M64Is"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(false),
+	// 			IsDatabaseCertified: to.Ptr(true),
+	// 			VMSKU: to.Ptr("Standard_M64ms"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(false),
+	// 			IsDatabaseCertified: to.Ptr(true),
+	// 			VMSKU: to.Ptr("Standard_M64s"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(false),
+	// 			IsDatabaseCertified: to.Ptr(true),
+	// 			VMSKU: to.Ptr("Standard_M128ms"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(false),
+	// 			IsDatabaseCertified: to.Ptr(true),
+	// 			VMSKU: to.Ptr("Standard_M128s"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(false),
+	// 			IsDatabaseCertified: to.Ptr(true),
+	// 			VMSKU: to.Ptr("Standard_M208ms_v2"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(false),
+	// 			IsDatabaseCertified: to.Ptr(true),
+	// 			VMSKU: to.Ptr("Standard_M208s_v2"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(false),
+	// 			IsDatabaseCertified: to.Ptr(true),
+	// 			VMSKU: to.Ptr("Standard_M416ms_v2"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(false),
+	// 			IsDatabaseCertified: to.Ptr(true),
+	// 			VMSKU: to.Ptr("Standard_M416s_v2"),
+	// 	}},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_InvokeSapSupportedSku_Distributed.json
+func ExampleSapVirtualInstancesClient_InvokeSapSupportedSKU_sapSupportedSkUsForDistributedNonHaEnvironment() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewSapVirtualInstancesClient().InvokeSapSupportedSKU(ctx, "centralus", armworkloadssapvirtualinstance.SAPSupportedSKUsRequest{
+		AppLocation:    to.Ptr("eastus"),
+		DatabaseType:   to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseTypeHANA),
+		DeploymentType: to.Ptr(armworkloadssapvirtualinstance.SAPDeploymentTypeThreeTier),
+		Environment:    to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeProd),
+		SapProduct:     to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.SAPSupportedResourceSKUsResult = armworkloadssapvirtualinstance.SAPSupportedResourceSKUsResult{
+	// 	SupportedSKUs: []*armworkloadssapvirtualinstance.SAPSupportedSKU{
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(true),
+	// 			IsDatabaseCertified: to.Ptr(false),
+	// 			VMSKU: to.Ptr("Standard_E4ds_v4"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(true),
+	// 			IsDatabaseCertified: to.Ptr(false),
+	// 			VMSKU: to.Ptr("Standard_E8ds_v4"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(true),
+	// 			IsDatabaseCertified: to.Ptr(false),
+	// 			VMSKU: to.Ptr("Standard_E16ds_v4"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(true),
+	// 			IsDatabaseCertified: to.Ptr(false),
+	// 			VMSKU: to.Ptr("Standard_E20ds_v4"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(true),
+	// 			IsDatabaseCertified: to.Ptr(false),
+	// 			VMSKU: to.Ptr("Standard_E32ds_v4"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(true),
+	// 			IsDatabaseCertified: to.Ptr(false),
+	// 			VMSKU: to.Ptr("Standard_E48ds_v4"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(true),
+	// 			IsDatabaseCertified: to.Ptr(false),
+	// 			VMSKU: to.Ptr("Standard_E64ds_v4"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(false),
+	// 			IsDatabaseCertified: to.Ptr(true),
+	// 			VMSKU: to.Ptr("Standard_M32Is"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(false),
+	// 			IsDatabaseCertified: to.Ptr(true),
+	// 			VMSKU: to.Ptr("Standard_M32ts"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(false),
+	// 			IsDatabaseCertified: to.Ptr(true),
+	// 			VMSKU: to.Ptr("Standard_M64Is"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(false),
+	// 			IsDatabaseCertified: to.Ptr(true),
+	// 			VMSKU: to.Ptr("Standard_M64ms"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(false),
+	// 			IsDatabaseCertified: to.Ptr(true),
+	// 			VMSKU: to.Ptr("Standard_M64s"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(false),
+	// 			IsDatabaseCertified: to.Ptr(true),
+	// 			VMSKU: to.Ptr("Standard_M128ms"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(false),
+	// 			IsDatabaseCertified: to.Ptr(true),
+	// 			VMSKU: to.Ptr("Standard_M128s"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(false),
+	// 			IsDatabaseCertified: to.Ptr(true),
+	// 			VMSKU: to.Ptr("Standard_M208ms_v2"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(false),
+	// 			IsDatabaseCertified: to.Ptr(true),
+	// 			VMSKU: to.Ptr("Standard_M208s_v2"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(false),
+	// 			IsDatabaseCertified: to.Ptr(true),
+	// 			VMSKU: to.Ptr("Standard_M416ms_v2"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(false),
+	// 			IsDatabaseCertified: to.Ptr(true),
+	// 			VMSKU: to.Ptr("Standard_M416s_v2"),
+	// 	}},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_InvokeSapSupportedSku_SingleServer.json
+func ExampleSapVirtualInstancesClient_InvokeSapSupportedSKU_sapSupportedSkUsForSingleServer() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewSapVirtualInstancesClient().InvokeSapSupportedSKU(ctx, "centralus", armworkloadssapvirtualinstance.SAPSupportedSKUsRequest{
+		AppLocation:    to.Ptr("eastus"),
+		DatabaseType:   to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseTypeHANA),
+		DeploymentType: to.Ptr(armworkloadssapvirtualinstance.SAPDeploymentTypeSingleServer),
+		Environment:    to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeNonProd),
+		SapProduct:     to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.SAPSupportedResourceSKUsResult = armworkloadssapvirtualinstance.SAPSupportedResourceSKUsResult{
+	// 	SupportedSKUs: []*armworkloadssapvirtualinstance.SAPSupportedSKU{
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(true),
+	// 			IsDatabaseCertified: to.Ptr(false),
+	// 			VMSKU: to.Ptr("Standard_E32ds_v4"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(true),
+	// 			IsDatabaseCertified: to.Ptr(false),
+	// 			VMSKU: to.Ptr("Standard_E48ds_v4"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(true),
+	// 			IsDatabaseCertified: to.Ptr(false),
+	// 			VMSKU: to.Ptr("Standard_E64ds_v4"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(true),
+	// 			IsDatabaseCertified: to.Ptr(true),
+	// 			VMSKU: to.Ptr("Standard_M32ts"),
+	// 	}},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_InvokeSapSupportedSku_DistributedHA_AvZone.json
+func ExampleSapVirtualInstancesClient_InvokeSapSupportedSKU_sapSupportedSkusForHaWithAvailabilityZone() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewSapVirtualInstancesClient().InvokeSapSupportedSKU(ctx, "centralus", armworkloadssapvirtualinstance.SAPSupportedSKUsRequest{
+		AppLocation:          to.Ptr("eastus"),
+		DatabaseType:         to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseTypeHANA),
+		DeploymentType:       to.Ptr(armworkloadssapvirtualinstance.SAPDeploymentTypeThreeTier),
+		Environment:          to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeProd),
+		HighAvailabilityType: to.Ptr(armworkloadssapvirtualinstance.SAPHighAvailabilityTypeAvailabilityZone),
+		SapProduct:           to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.SAPSupportedResourceSKUsResult = armworkloadssapvirtualinstance.SAPSupportedResourceSKUsResult{
+	// 	SupportedSKUs: []*armworkloadssapvirtualinstance.SAPSupportedSKU{
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(true),
+	// 			IsDatabaseCertified: to.Ptr(true),
+	// 			VMSKU: to.Ptr("Standard_E32ds_v4"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(true),
+	// 			IsDatabaseCertified: to.Ptr(true),
+	// 			VMSKU: to.Ptr("Standard_E48ds_v4"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(true),
+	// 			IsDatabaseCertified: to.Ptr(true),
+	// 			VMSKU: to.Ptr("Standard_E64ds_v4"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(true),
+	// 			IsDatabaseCertified: to.Ptr(true),
+	// 			VMSKU: to.Ptr("Standard_M32Is"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(true),
+	// 			IsDatabaseCertified: to.Ptr(true),
+	// 			VMSKU: to.Ptr("Standard_M32ts"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(true),
+	// 			IsDatabaseCertified: to.Ptr(true),
+	// 			VMSKU: to.Ptr("Standard_M64Is"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(true),
+	// 			IsDatabaseCertified: to.Ptr(true),
+	// 			VMSKU: to.Ptr("Standard_M64ms"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(true),
+	// 			IsDatabaseCertified: to.Ptr(true),
+	// 			VMSKU: to.Ptr("Standard_M64s"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(true),
+	// 			IsDatabaseCertified: to.Ptr(true),
+	// 			VMSKU: to.Ptr("Standard_M128ms"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(true),
+	// 			IsDatabaseCertified: to.Ptr(true),
+	// 			VMSKU: to.Ptr("Standard_M128s"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(true),
+	// 			IsDatabaseCertified: to.Ptr(true),
+	// 			VMSKU: to.Ptr("Standard_M208ms_v2"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(true),
+	// 			IsDatabaseCertified: to.Ptr(true),
+	// 			VMSKU: to.Ptr("Standard_M208s_v2"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(true),
+	// 			IsDatabaseCertified: to.Ptr(true),
+	// 			VMSKU: to.Ptr("Standard_M416ms_v2"),
+	// 		},
+	// 		{
+	// 			IsAppServerCertified: to.Ptr(true),
+	// 			IsDatabaseCertified: to.Ptr(true),
+	// 			VMSKU: to.Ptr("Standard_M416s_v2"),
+	// 	}},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_InvokeSizingRecommendations_S4HANA_HA_AvSet.json
+func ExampleSapVirtualInstancesClient_InvokeSizingRecommendations_sapSizingRecommendationsForHaWithAvailabilitySet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewSapVirtualInstancesClient().InvokeSizingRecommendations(ctx, "centralus", armworkloadssapvirtualinstance.SAPSizingRecommendationRequest{
+		AppLocation:          to.Ptr("eastus"),
+		DatabaseType:         to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseTypeHANA),
+		DbMemory:             to.Ptr[int64](1024),
+		DbScaleMethod:        to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseScaleMethodScaleUp),
+		DeploymentType:       to.Ptr(armworkloadssapvirtualinstance.SAPDeploymentTypeThreeTier),
+		Environment:          to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeProd),
+		HighAvailabilityType: to.Ptr(armworkloadssapvirtualinstance.SAPHighAvailabilityTypeAvailabilitySet),
+		SapProduct:           to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
+		Saps:                 to.Ptr[int64](75000),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armworkloadssapvirtualinstance.SapVirtualInstancesClientInvokeSizingRecommendationsResponse{
+	// 	                            SAPSizingRecommendationResultClassification: &armworkloadssapvirtualinstance.ThreeTierRecommendationResult{
+	// 		DeploymentType: to.Ptr(armworkloadssapvirtualinstance.SAPDeploymentTypeThreeTier),
+	// 		ApplicationServerInstanceCount: to.Ptr[int64](3),
+	// 		ApplicationServerVMSKU: to.Ptr("Standard_E16ds_v4"),
+	// 		CentralServerInstanceCount: to.Ptr[int64](2),
+	// 		CentralServerVMSKU: to.Ptr("Standard_E8ds_v4"),
+	// 		DatabaseInstanceCount: to.Ptr[int64](2),
+	// 		DbVMSKU: to.Ptr("Standard_M64s"),
+	// 	},
+	// 	                        }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_InvokeSizingRecommendations_S4HANA_HA_AvZone.json
+func ExampleSapVirtualInstancesClient_InvokeSizingRecommendations_sapSizingRecommendationsForHaWithAvailabilityZone() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewSapVirtualInstancesClient().InvokeSizingRecommendations(ctx, "centralus", armworkloadssapvirtualinstance.SAPSizingRecommendationRequest{
+		AppLocation:          to.Ptr("eastus"),
+		DatabaseType:         to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseTypeHANA),
+		DbMemory:             to.Ptr[int64](1024),
+		DbScaleMethod:        to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseScaleMethodScaleUp),
+		DeploymentType:       to.Ptr(armworkloadssapvirtualinstance.SAPDeploymentTypeThreeTier),
+		Environment:          to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeProd),
+		HighAvailabilityType: to.Ptr(armworkloadssapvirtualinstance.SAPHighAvailabilityTypeAvailabilityZone),
+		SapProduct:           to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
+		Saps:                 to.Ptr[int64](75000),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armworkloadssapvirtualinstance.SapVirtualInstancesClientInvokeSizingRecommendationsResponse{
+	// 	                            SAPSizingRecommendationResultClassification: &armworkloadssapvirtualinstance.ThreeTierRecommendationResult{
+	// 		DeploymentType: to.Ptr(armworkloadssapvirtualinstance.SAPDeploymentTypeThreeTier),
+	// 		ApplicationServerInstanceCount: to.Ptr[int64](6),
+	// 		ApplicationServerVMSKU: to.Ptr("Standard_E8ds_v4"),
+	// 		CentralServerInstanceCount: to.Ptr[int64](2),
+	// 		CentralServerVMSKU: to.Ptr("Standard_E4ds_v4"),
+	// 		DatabaseInstanceCount: to.Ptr[int64](2),
+	// 		DbVMSKU: to.Ptr("Standard_M64s"),
+	// 	},
+	// 	                        }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_InvokeSizingRecommendations_S4HANA_Distributed.json
+func ExampleSapVirtualInstancesClient_InvokeSizingRecommendations_sapSizingRecommendationsForNonHaDistributedSystem() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewSapVirtualInstancesClient().InvokeSizingRecommendations(ctx, "centralus", armworkloadssapvirtualinstance.SAPSizingRecommendationRequest{
+		AppLocation:    to.Ptr("eastus"),
+		DatabaseType:   to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseTypeHANA),
+		DbMemory:       to.Ptr[int64](1024),
+		DbScaleMethod:  to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseScaleMethodScaleUp),
+		DeploymentType: to.Ptr(armworkloadssapvirtualinstance.SAPDeploymentTypeThreeTier),
+		Environment:    to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeProd),
+		SapProduct:     to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
+		Saps:           to.Ptr[int64](20000),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armworkloadssapvirtualinstance.SapVirtualInstancesClientInvokeSizingRecommendationsResponse{
+	// 	                            SAPSizingRecommendationResultClassification: &armworkloadssapvirtualinstance.ThreeTierRecommendationResult{
+	// 		DeploymentType: to.Ptr(armworkloadssapvirtualinstance.SAPDeploymentTypeThreeTier),
+	// 		ApplicationServerInstanceCount: to.Ptr[int64](2),
+	// 		ApplicationServerVMSKU: to.Ptr("Standard_E8ds_v4"),
+	// 		CentralServerInstanceCount: to.Ptr[int64](1),
+	// 		CentralServerVMSKU: to.Ptr("Standard_E4ds_v4"),
+	// 		DatabaseInstanceCount: to.Ptr[int64](1),
+	// 		DbVMSKU: to.Ptr("Standard_M64s"),
+	// 	},
+	// 	                        }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_InvokeSizingRecommendations_S4HANA_SingleServer.json
+func ExampleSapVirtualInstancesClient_InvokeSizingRecommendations_sapSizingRecommendationsForSingleServer() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewSapVirtualInstancesClient().InvokeSizingRecommendations(ctx, "centralus", armworkloadssapvirtualinstance.SAPSizingRecommendationRequest{
+		AppLocation:    to.Ptr("eastus"),
+		DatabaseType:   to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseTypeHANA),
+		DbMemory:       to.Ptr[int64](2000),
+		DbScaleMethod:  to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseScaleMethodScaleUp),
+		DeploymentType: to.Ptr(armworkloadssapvirtualinstance.SAPDeploymentTypeSingleServer),
+		Environment:    to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeNonProd),
+		SapProduct:     to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
+		Saps:           to.Ptr[int64](60000),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armworkloadssapvirtualinstance.SapVirtualInstancesClientInvokeSizingRecommendationsResponse{
+	// 	                            SAPSizingRecommendationResultClassification: &armworkloadssapvirtualinstance.SingleServerRecommendationResult{
+	// 		DeploymentType: to.Ptr(armworkloadssapvirtualinstance.SAPDeploymentTypeSingleServer),
+	// 		VMSKU: to.Ptr("Standard_M128s"),
+	// 	},
+	// 	                        }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_ListBySubscription.json
+func ExampleSapVirtualInstancesClient_NewListBySubscriptionPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewSapVirtualInstancesClient().NewListBySubscriptionPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.SAPVirtualInstanceListResult = armworkloadssapvirtualinstance.SAPVirtualInstanceListResult{
+		// 	Value: []*armworkloadssapvirtualinstance.SAPVirtualInstance{
+		// 		{
+		// 			Name: to.Ptr("X00"),
+		// 			Type: to.Ptr("Microsoft.Workloads/sapVirtualInstances"),
+		// 			ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00"),
+		// 			SystemData: &armworkloadssapvirtualinstance.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+		// 				CreatedBy: to.Ptr("user@xyz.com"),
+		// 				CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("user@xyz.com"),
+		// 				LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
+		// 			},
+		// 			Location: to.Ptr("westcentralus"),
+		// 			Tags: map[string]*string{
+		// 			},
+		// 			Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
+		// 				Configuration: &armworkloadssapvirtualinstance.DeploymentConfiguration{
+		// 					ConfigurationType: to.Ptr(armworkloadssapvirtualinstance.SAPConfigurationTypeDeployment),
+		// 					AppLocation: to.Ptr("eastus"),
+		// 					InfrastructureConfiguration: &armworkloadssapvirtualinstance.ThreeTierConfiguration{
+		// 						AppResourceGroup: to.Ptr("X00-RG"),
+		// 						DeploymentType: to.Ptr(armworkloadssapvirtualinstance.SAPDeploymentTypeThreeTier),
+		// 						ApplicationServer: &armworkloadssapvirtualinstance.ApplicationServerConfiguration{
+		// 							InstanceCount: to.Ptr[int64](10),
+		// 							SubnetID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Networks/virtualNetworks/vnet1/subnets/subnetId3"),
+		// 							VirtualMachineConfiguration: &armworkloadssapvirtualinstance.VirtualMachineConfiguration{
+		// 								ImageReference: &armworkloadssapvirtualinstance.ImageReference{
+		// 									Offer: to.Ptr("RHEL-SAP"),
+		// 									Publisher: to.Ptr("RedHat"),
+		// 									SKU: to.Ptr("84sapha-gen2"),
+		// 									Version: to.Ptr("latest"),
+		// 								},
+		// 								OSProfile: &armworkloadssapvirtualinstance.OSProfile{
+		// 									AdminUsername: to.Ptr("{your-username}"),
+		// 									OSConfiguration: &armworkloadssapvirtualinstance.LinuxConfiguration{
+		// 										OSType: to.Ptr(armworkloadssapvirtualinstance.OSTypeLinux),
+		// 										DisablePasswordAuthentication: to.Ptr(true),
+		// 										SSHKeyPair: &armworkloadssapvirtualinstance.SSHKeyPair{
+		// 											PublicKey: to.Ptr("abc"),
+		// 										},
+		// 									},
+		// 								},
+		// 								VMSize: to.Ptr("Standard_D8s_v3"),
+		// 							},
+		// 						},
+		// 						CentralServer: &armworkloadssapvirtualinstance.CentralServerConfiguration{
+		// 							InstanceCount: to.Ptr[int64](1),
+		// 							SubnetID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Networks/virtualNetworks/vnet1/subnets/subnetId1"),
+		// 							VirtualMachineConfiguration: &armworkloadssapvirtualinstance.VirtualMachineConfiguration{
+		// 								ImageReference: &armworkloadssapvirtualinstance.ImageReference{
+		// 									Offer: to.Ptr("RHEL-SAP"),
+		// 									Publisher: to.Ptr("RedHat"),
+		// 									SKU: to.Ptr("84sapha-gen2"),
+		// 									Version: to.Ptr("latest"),
+		// 								},
+		// 								OSProfile: &armworkloadssapvirtualinstance.OSProfile{
+		// 									AdminUsername: to.Ptr("{your-username}"),
+		// 									OSConfiguration: &armworkloadssapvirtualinstance.LinuxConfiguration{
+		// 										OSType: to.Ptr(armworkloadssapvirtualinstance.OSTypeLinux),
+		// 										DisablePasswordAuthentication: to.Ptr(true),
+		// 										SSHKeyPair: &armworkloadssapvirtualinstance.SSHKeyPair{
+		// 											PublicKey: to.Ptr("abc"),
+		// 										},
+		// 									},
+		// 								},
+		// 								VMSize: to.Ptr("Standard_D8s_v3"),
+		// 							},
+		// 						},
+		// 						DatabaseServer: &armworkloadssapvirtualinstance.DatabaseConfiguration{
+		// 							DatabaseType: to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseTypeHANA),
+		// 							InstanceCount: to.Ptr[int64](1),
+		// 							SubnetID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Networks/virtualNetworks/vnet1/subnets/subnetId2"),
+		// 							VirtualMachineConfiguration: &armworkloadssapvirtualinstance.VirtualMachineConfiguration{
+		// 								ImageReference: &armworkloadssapvirtualinstance.ImageReference{
+		// 									Offer: to.Ptr("RHEL-SAP"),
+		// 									Publisher: to.Ptr("RedHat"),
+		// 									SKU: to.Ptr("84sapha-gen2"),
+		// 									Version: to.Ptr("latest"),
+		// 								},
+		// 								OSProfile: &armworkloadssapvirtualinstance.OSProfile{
+		// 									AdminUsername: to.Ptr("{your-username}"),
+		// 									OSConfiguration: &armworkloadssapvirtualinstance.LinuxConfiguration{
+		// 										OSType: to.Ptr(armworkloadssapvirtualinstance.OSTypeLinux),
+		// 										DisablePasswordAuthentication: to.Ptr(true),
+		// 										SSHKeyPair: &armworkloadssapvirtualinstance.SSHKeyPair{
+		// 											PublicKey: to.Ptr("abc"),
+		// 										},
+		// 									},
+		// 								},
+		// 								VMSize: to.Ptr("Standard_D8s_v3"),
+		// 							},
+		// 						},
+		// 					},
+		// 					SoftwareConfiguration: &armworkloadssapvirtualinstance.ServiceInitiatedSoftwareConfiguration{
+		// 						SoftwareInstallationType: to.Ptr(armworkloadssapvirtualinstance.SAPSoftwareInstallationTypeServiceInitiated),
+		// 						BomURL: to.Ptr("https://myaccount.blob.core.windows.net/mycontainer/myblob"),
+		// 						SapBitsStorageAccountID: to.Ptr("/subscriptions/49d64d54-e966-4c46-a868-1999802b762c/resourceGroups/ajgupt-test/providers/Microsoft.Storage/storageAccounts/ajguptsavnet"),
+		// 						SapFqdn: to.Ptr("sapsystem.contoso.net"),
+		// 						SoftwareVersion: to.Ptr("SAP S/4HANA 2020 FPS01"),
+		// 					},
+		// 				},
+		// 				Environment: to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeProd),
+		// 				Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
+		// 				ManagedResourceGroupConfiguration: &armworkloadssapvirtualinstance.ManagedRGConfiguration{
+		// 					Name: to.Ptr("mrg-x00-6d875e77-e412-4d7d-9af4-8895278b4443"),
+		// 				},
+		// 				ProvisioningState: to.Ptr(armworkloadssapvirtualinstance.SapVirtualInstanceProvisioningStateSucceeded),
+		// 				SapProduct: to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
+		// 				State: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStateRegistrationComplete),
+		// 				Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatusRunning),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("X01"),
+		// 			Type: to.Ptr("Microsoft.Workloads/sapVirtualInstances"),
+		// 			ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X01"),
+		// 			SystemData: &armworkloadssapvirtualinstance.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+		// 				CreatedBy: to.Ptr("user@xyz.com"),
+		// 				CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("user@xyz.com"),
+		// 				LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
+		// 			},
+		// 			Location: to.Ptr("westcentralus"),
+		// 			Tags: map[string]*string{
+		// 			},
+		// 			Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
+		// 				Configuration: &armworkloadssapvirtualinstance.DeploymentConfiguration{
+		// 					ConfigurationType: to.Ptr(armworkloadssapvirtualinstance.SAPConfigurationTypeDeployment),
+		// 					AppLocation: to.Ptr("eastus"),
+		// 					InfrastructureConfiguration: &armworkloadssapvirtualinstance.ThreeTierConfiguration{
+		// 						AppResourceGroup: to.Ptr("X00-RG"),
+		// 						DeploymentType: to.Ptr(armworkloadssapvirtualinstance.SAPDeploymentTypeThreeTier),
+		// 						ApplicationServer: &armworkloadssapvirtualinstance.ApplicationServerConfiguration{
+		// 							InstanceCount: to.Ptr[int64](10),
+		// 							SubnetID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Networks/virtualNetworks/vnet1/subnets/subnetId3"),
+		// 							VirtualMachineConfiguration: &armworkloadssapvirtualinstance.VirtualMachineConfiguration{
+		// 								ImageReference: &armworkloadssapvirtualinstance.ImageReference{
+		// 									Offer: to.Ptr("RHEL-SAP"),
+		// 									Publisher: to.Ptr("RedHat"),
+		// 									SKU: to.Ptr("84sapha-gen2"),
+		// 									Version: to.Ptr("latest"),
+		// 								},
+		// 								OSProfile: &armworkloadssapvirtualinstance.OSProfile{
+		// 									AdminUsername: to.Ptr("{your-username}"),
+		// 									OSConfiguration: &armworkloadssapvirtualinstance.LinuxConfiguration{
+		// 										OSType: to.Ptr(armworkloadssapvirtualinstance.OSTypeLinux),
+		// 										DisablePasswordAuthentication: to.Ptr(true),
+		// 										SSHKeyPair: &armworkloadssapvirtualinstance.SSHKeyPair{
+		// 											PublicKey: to.Ptr("abc"),
+		// 										},
+		// 									},
+		// 								},
+		// 								VMSize: to.Ptr("Standard_D8s_v3"),
+		// 							},
+		// 						},
+		// 						CentralServer: &armworkloadssapvirtualinstance.CentralServerConfiguration{
+		// 							InstanceCount: to.Ptr[int64](1),
+		// 							SubnetID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Networks/virtualNetworks/vnet1/subnets/subnetId1"),
+		// 							VirtualMachineConfiguration: &armworkloadssapvirtualinstance.VirtualMachineConfiguration{
+		// 								ImageReference: &armworkloadssapvirtualinstance.ImageReference{
+		// 									Offer: to.Ptr("RHEL-SAP"),
+		// 									Publisher: to.Ptr("RedHat"),
+		// 									SKU: to.Ptr("84sapha-gen2"),
+		// 									Version: to.Ptr("latest"),
+		// 								},
+		// 								OSProfile: &armworkloadssapvirtualinstance.OSProfile{
+		// 									AdminUsername: to.Ptr("{your-username}"),
+		// 									OSConfiguration: &armworkloadssapvirtualinstance.LinuxConfiguration{
+		// 										OSType: to.Ptr(armworkloadssapvirtualinstance.OSTypeLinux),
+		// 										DisablePasswordAuthentication: to.Ptr(true),
+		// 										SSHKeyPair: &armworkloadssapvirtualinstance.SSHKeyPair{
+		// 											PublicKey: to.Ptr("abc"),
+		// 										},
+		// 									},
+		// 								},
+		// 								VMSize: to.Ptr("Standard_D8s_v3"),
+		// 							},
+		// 						},
+		// 						DatabaseServer: &armworkloadssapvirtualinstance.DatabaseConfiguration{
+		// 							DatabaseType: to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseTypeHANA),
+		// 							InstanceCount: to.Ptr[int64](1),
+		// 							SubnetID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Networks/virtualNetworks/vnet1/subnets/subnetId2"),
+		// 							VirtualMachineConfiguration: &armworkloadssapvirtualinstance.VirtualMachineConfiguration{
+		// 								ImageReference: &armworkloadssapvirtualinstance.ImageReference{
+		// 									Offer: to.Ptr("RHEL-SAP"),
+		// 									Publisher: to.Ptr("RedHat"),
+		// 									SKU: to.Ptr("84sapha-gen2"),
+		// 									Version: to.Ptr("latest"),
+		// 								},
+		// 								OSProfile: &armworkloadssapvirtualinstance.OSProfile{
+		// 									AdminUsername: to.Ptr("{your-username}"),
+		// 									OSConfiguration: &armworkloadssapvirtualinstance.LinuxConfiguration{
+		// 										OSType: to.Ptr(armworkloadssapvirtualinstance.OSTypeLinux),
+		// 										DisablePasswordAuthentication: to.Ptr(true),
+		// 										SSHKeyPair: &armworkloadssapvirtualinstance.SSHKeyPair{
+		// 											PublicKey: to.Ptr("abc"),
+		// 										},
+		// 									},
+		// 								},
+		// 								VMSize: to.Ptr("Standard_D8s_v3"),
+		// 							},
+		// 						},
+		// 					},
+		// 					SoftwareConfiguration: &armworkloadssapvirtualinstance.ServiceInitiatedSoftwareConfiguration{
+		// 						SoftwareInstallationType: to.Ptr(armworkloadssapvirtualinstance.SAPSoftwareInstallationTypeServiceInitiated),
+		// 						BomURL: to.Ptr("https://myaccount.blob.core.windows.net/mycontainer/myblob"),
+		// 						SapBitsStorageAccountID: to.Ptr("/subscriptions/49d64d54-e966-4c46-a868-1999802b762c/resourceGroups/ajgupt-test/providers/Microsoft.Storage/storageAccounts/ajguptsavnet"),
+		// 						SapFqdn: to.Ptr("sapsystem.contoso.net"),
+		// 						SoftwareVersion: to.Ptr("SAP S/4HANA 2020 FPS01"),
+		// 					},
+		// 				},
+		// 				Environment: to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeProd),
+		// 				Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
+		// 				ProvisioningState: to.Ptr(armworkloadssapvirtualinstance.SapVirtualInstanceProvisioningStateSucceeded),
+		// 				SapProduct: to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
+		// 				State: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStateRegistrationComplete),
+		// 				Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatusRunning),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_ListByResourceGroup.json
+func ExampleSapVirtualInstancesClient_NewListByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewSapVirtualInstancesClient().NewListByResourceGroupPager("test-rg", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.SAPVirtualInstanceListResult = armworkloadssapvirtualinstance.SAPVirtualInstanceListResult{
+		// 	Value: []*armworkloadssapvirtualinstance.SAPVirtualInstance{
+		// 		{
+		// 			Name: to.Ptr("X00"),
+		// 			Type: to.Ptr("Microsoft.Workloads/sapVirtualInstances"),
+		// 			ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00"),
+		// 			SystemData: &armworkloadssapvirtualinstance.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+		// 				CreatedBy: to.Ptr("user@xyz.com"),
+		// 				CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("user@xyz.com"),
+		// 				LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
+		// 			},
+		// 			Location: to.Ptr("westcentralus"),
+		// 			Tags: map[string]*string{
+		// 			},
+		// 			Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
+		// 				Configuration: &armworkloadssapvirtualinstance.DeploymentConfiguration{
+		// 					ConfigurationType: to.Ptr(armworkloadssapvirtualinstance.SAPConfigurationTypeDeployment),
+		// 					AppLocation: to.Ptr("eastus"),
+		// 					InfrastructureConfiguration: &armworkloadssapvirtualinstance.ThreeTierConfiguration{
+		// 						AppResourceGroup: to.Ptr("X00-RG"),
+		// 						DeploymentType: to.Ptr(armworkloadssapvirtualinstance.SAPDeploymentTypeThreeTier),
+		// 						ApplicationServer: &armworkloadssapvirtualinstance.ApplicationServerConfiguration{
+		// 							InstanceCount: to.Ptr[int64](10),
+		// 							SubnetID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Networks/virtualNetworks/vnet1/subnets/subnetId3"),
+		// 							VirtualMachineConfiguration: &armworkloadssapvirtualinstance.VirtualMachineConfiguration{
+		// 								ImageReference: &armworkloadssapvirtualinstance.ImageReference{
+		// 									Offer: to.Ptr("RHEL-SAP"),
+		// 									Publisher: to.Ptr("RedHat"),
+		// 									SKU: to.Ptr("84sapha-gen2"),
+		// 									Version: to.Ptr("latest"),
+		// 								},
+		// 								OSProfile: &armworkloadssapvirtualinstance.OSProfile{
+		// 									AdminUsername: to.Ptr("{your-username}"),
+		// 									OSConfiguration: &armworkloadssapvirtualinstance.LinuxConfiguration{
+		// 										OSType: to.Ptr(armworkloadssapvirtualinstance.OSTypeLinux),
+		// 										DisablePasswordAuthentication: to.Ptr(true),
+		// 										SSHKeyPair: &armworkloadssapvirtualinstance.SSHKeyPair{
+		// 											PublicKey: to.Ptr("abc"),
+		// 										},
+		// 									},
+		// 								},
+		// 								VMSize: to.Ptr("Standard_D8s_v3"),
+		// 							},
+		// 						},
+		// 						CentralServer: &armworkloadssapvirtualinstance.CentralServerConfiguration{
+		// 							InstanceCount: to.Ptr[int64](1),
+		// 							SubnetID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Networks/virtualNetworks/vnet1/subnets/subnetId1"),
+		// 							VirtualMachineConfiguration: &armworkloadssapvirtualinstance.VirtualMachineConfiguration{
+		// 								ImageReference: &armworkloadssapvirtualinstance.ImageReference{
+		// 									Offer: to.Ptr("RHEL-SAP"),
+		// 									Publisher: to.Ptr("RedHat"),
+		// 									SKU: to.Ptr("84sapha-gen2"),
+		// 									Version: to.Ptr("latest"),
+		// 								},
+		// 								OSProfile: &armworkloadssapvirtualinstance.OSProfile{
+		// 									AdminUsername: to.Ptr("{your-username}"),
+		// 									OSConfiguration: &armworkloadssapvirtualinstance.LinuxConfiguration{
+		// 										OSType: to.Ptr(armworkloadssapvirtualinstance.OSTypeLinux),
+		// 										DisablePasswordAuthentication: to.Ptr(true),
+		// 										SSHKeyPair: &armworkloadssapvirtualinstance.SSHKeyPair{
+		// 											PublicKey: to.Ptr("abc"),
+		// 										},
+		// 									},
+		// 								},
+		// 								VMSize: to.Ptr("Standard_D8s_v3"),
+		// 							},
+		// 						},
+		// 						DatabaseServer: &armworkloadssapvirtualinstance.DatabaseConfiguration{
+		// 							DatabaseType: to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseTypeHANA),
+		// 							InstanceCount: to.Ptr[int64](1),
+		// 							SubnetID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Networks/virtualNetworks/vnet1/subnets/subnetId2"),
+		// 							VirtualMachineConfiguration: &armworkloadssapvirtualinstance.VirtualMachineConfiguration{
+		// 								ImageReference: &armworkloadssapvirtualinstance.ImageReference{
+		// 									Offer: to.Ptr("RHEL-SAP"),
+		// 									Publisher: to.Ptr("RedHat"),
+		// 									SKU: to.Ptr("84sapha-gen2"),
+		// 									Version: to.Ptr("latest"),
+		// 								},
+		// 								OSProfile: &armworkloadssapvirtualinstance.OSProfile{
+		// 									AdminUsername: to.Ptr("{your-username}"),
+		// 									OSConfiguration: &armworkloadssapvirtualinstance.LinuxConfiguration{
+		// 										OSType: to.Ptr(armworkloadssapvirtualinstance.OSTypeLinux),
+		// 										DisablePasswordAuthentication: to.Ptr(true),
+		// 										SSHKeyPair: &armworkloadssapvirtualinstance.SSHKeyPair{
+		// 											PublicKey: to.Ptr("abc"),
+		// 										},
+		// 									},
+		// 								},
+		// 								VMSize: to.Ptr("Standard_D8s_v3"),
+		// 							},
+		// 						},
+		// 					},
+		// 					SoftwareConfiguration: &armworkloadssapvirtualinstance.ServiceInitiatedSoftwareConfiguration{
+		// 						SoftwareInstallationType: to.Ptr(armworkloadssapvirtualinstance.SAPSoftwareInstallationTypeServiceInitiated),
+		// 						BomURL: to.Ptr("https://myaccount.blob.core.windows.net/mycontainer/myblob"),
+		// 						SapBitsStorageAccountID: to.Ptr("/subscriptions/49d64d54-e966-4c46-a868-1999802b762c/resourceGroups/ajgupt-test/providers/Microsoft.Storage/storageAccounts/ajguptsavnet"),
+		// 						SapFqdn: to.Ptr("sapsystem.contoso.net"),
+		// 						SoftwareVersion: to.Ptr("SAP S/4HANA 2020 FPS01"),
+		// 					},
+		// 				},
+		// 				Environment: to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeProd),
+		// 				Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
+		// 				ManagedResourceGroupConfiguration: &armworkloadssapvirtualinstance.ManagedRGConfiguration{
+		// 					Name: to.Ptr("mrg-x00-6d875e77-e412-4d7d-9af4-8895278b4443"),
+		// 				},
+		// 				ProvisioningState: to.Ptr(armworkloadssapvirtualinstance.SapVirtualInstanceProvisioningStateSucceeded),
+		// 				SapProduct: to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
+		// 				State: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStateRegistrationComplete),
+		// 				Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatusRunning),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("X01"),
+		// 			Type: to.Ptr("Microsoft.Workloads/sapVirtualInstances"),
+		// 			ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X01"),
+		// 			SystemData: &armworkloadssapvirtualinstance.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+		// 				CreatedBy: to.Ptr("user@xyz.com"),
+		// 				CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("user@xyz.com"),
+		// 				LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
+		// 			},
+		// 			Location: to.Ptr("westcentralus"),
+		// 			Tags: map[string]*string{
+		// 			},
+		// 			Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
+		// 				Configuration: &armworkloadssapvirtualinstance.DeploymentConfiguration{
+		// 					ConfigurationType: to.Ptr(armworkloadssapvirtualinstance.SAPConfigurationTypeDeployment),
+		// 					AppLocation: to.Ptr("eastus"),
+		// 					InfrastructureConfiguration: &armworkloadssapvirtualinstance.ThreeTierConfiguration{
+		// 						AppResourceGroup: to.Ptr("X00-RG"),
+		// 						DeploymentType: to.Ptr(armworkloadssapvirtualinstance.SAPDeploymentTypeThreeTier),
+		// 						ApplicationServer: &armworkloadssapvirtualinstance.ApplicationServerConfiguration{
+		// 							InstanceCount: to.Ptr[int64](10),
+		// 							SubnetID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Networks/virtualNetworks/vnet1/subnets/subnetId3"),
+		// 							VirtualMachineConfiguration: &armworkloadssapvirtualinstance.VirtualMachineConfiguration{
+		// 								ImageReference: &armworkloadssapvirtualinstance.ImageReference{
+		// 									Offer: to.Ptr("RHEL-SAP"),
+		// 									Publisher: to.Ptr("RedHat"),
+		// 									SKU: to.Ptr("84sapha-gen2"),
+		// 									Version: to.Ptr("latest"),
+		// 								},
+		// 								OSProfile: &armworkloadssapvirtualinstance.OSProfile{
+		// 									AdminUsername: to.Ptr("{your-username}"),
+		// 									OSConfiguration: &armworkloadssapvirtualinstance.LinuxConfiguration{
+		// 										OSType: to.Ptr(armworkloadssapvirtualinstance.OSTypeLinux),
+		// 										DisablePasswordAuthentication: to.Ptr(true),
+		// 										SSHKeyPair: &armworkloadssapvirtualinstance.SSHKeyPair{
+		// 											PublicKey: to.Ptr("abc"),
+		// 										},
+		// 									},
+		// 								},
+		// 								VMSize: to.Ptr("Standard_D8s_v3"),
+		// 							},
+		// 						},
+		// 						CentralServer: &armworkloadssapvirtualinstance.CentralServerConfiguration{
+		// 							InstanceCount: to.Ptr[int64](1),
+		// 							SubnetID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Networks/virtualNetworks/vnet1/subnets/subnetId1"),
+		// 							VirtualMachineConfiguration: &armworkloadssapvirtualinstance.VirtualMachineConfiguration{
+		// 								ImageReference: &armworkloadssapvirtualinstance.ImageReference{
+		// 									Offer: to.Ptr("RHEL-SAP"),
+		// 									Publisher: to.Ptr("RedHat"),
+		// 									SKU: to.Ptr("84sapha-gen2"),
+		// 									Version: to.Ptr("latest"),
+		// 								},
+		// 								OSProfile: &armworkloadssapvirtualinstance.OSProfile{
+		// 									AdminUsername: to.Ptr("{your-username}"),
+		// 									OSConfiguration: &armworkloadssapvirtualinstance.LinuxConfiguration{
+		// 										OSType: to.Ptr(armworkloadssapvirtualinstance.OSTypeLinux),
+		// 										DisablePasswordAuthentication: to.Ptr(true),
+		// 										SSHKeyPair: &armworkloadssapvirtualinstance.SSHKeyPair{
+		// 											PublicKey: to.Ptr("abc"),
+		// 										},
+		// 									},
+		// 								},
+		// 								VMSize: to.Ptr("Standard_D8s_v3"),
+		// 							},
+		// 						},
+		// 						DatabaseServer: &armworkloadssapvirtualinstance.DatabaseConfiguration{
+		// 							DatabaseType: to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseTypeHANA),
+		// 							InstanceCount: to.Ptr[int64](1),
+		// 							SubnetID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Networks/virtualNetworks/vnet1/subnets/subnetId2"),
+		// 							VirtualMachineConfiguration: &armworkloadssapvirtualinstance.VirtualMachineConfiguration{
+		// 								ImageReference: &armworkloadssapvirtualinstance.ImageReference{
+		// 									Offer: to.Ptr("RHEL-SAP"),
+		// 									Publisher: to.Ptr("RedHat"),
+		// 									SKU: to.Ptr("84sapha-gen2"),
+		// 									Version: to.Ptr("latest"),
+		// 								},
+		// 								OSProfile: &armworkloadssapvirtualinstance.OSProfile{
+		// 									AdminUsername: to.Ptr("{your-username}"),
+		// 									OSConfiguration: &armworkloadssapvirtualinstance.LinuxConfiguration{
+		// 										OSType: to.Ptr(armworkloadssapvirtualinstance.OSTypeLinux),
+		// 										DisablePasswordAuthentication: to.Ptr(true),
+		// 										SSHKeyPair: &armworkloadssapvirtualinstance.SSHKeyPair{
+		// 											PublicKey: to.Ptr("abc"),
+		// 										},
+		// 									},
+		// 								},
+		// 								VMSize: to.Ptr("Standard_D8s_v3"),
+		// 							},
+		// 						},
+		// 					},
+		// 					SoftwareConfiguration: &armworkloadssapvirtualinstance.ServiceInitiatedSoftwareConfiguration{
+		// 						SoftwareInstallationType: to.Ptr(armworkloadssapvirtualinstance.SAPSoftwareInstallationTypeServiceInitiated),
+		// 						BomURL: to.Ptr("https://myaccount.blob.core.windows.net/mycontainer/myblob"),
+		// 						SapBitsStorageAccountID: to.Ptr("/subscriptions/49d64d54-e966-4c46-a868-1999802b762c/resourceGroups/ajgupt-test/providers/Microsoft.Storage/storageAccounts/ajguptsavnet"),
+		// 						SapFqdn: to.Ptr("sapsystem.contoso.net"),
+		// 						SoftwareVersion: to.Ptr("SAP S/4HANA 2020 FPS01"),
+		// 					},
+		// 				},
+		// 				Environment: to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeProd),
+		// 				Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
+		// 				ProvisioningState: to.Ptr(armworkloadssapvirtualinstance.SapVirtualInstanceProvisioningStateSucceeded),
+		// 				SapProduct: to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
+		// 				State: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStateRegistrationComplete),
+		// 				Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatusRunning),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_GetAcssInstallationBlocked.json
+func ExampleSapVirtualInstancesClient_Get_sapVirtualInstancesGetWithAcssInstallationBlocked() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewSapVirtualInstancesClient().Get(ctx, "test-rg", "X00", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.SAPVirtualInstance = armworkloadssapvirtualinstance.SAPVirtualInstance{
+	// 	Name: to.Ptr("X00"),
+	// 	Type: to.Ptr("Microsoft.Workloads/sapVirtualInstances"),
+	// 	ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00"),
+	// 	SystemData: &armworkloadssapvirtualinstance.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 		CreatedBy: to.Ptr("user@xyz.com"),
+	// 		CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("user@xyz.com"),
+	// 		LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
+	// 	},
+	// 	Location: to.Ptr("westcentralus"),
+	// 	Tags: map[string]*string{
+	// 	},
+	// 	Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
+	// 		Configuration: &armworkloadssapvirtualinstance.DeploymentConfiguration{
+	// 			ConfigurationType: to.Ptr(armworkloadssapvirtualinstance.SAPConfigurationTypeDeployment),
+	// 			AppLocation: to.Ptr("eastus"),
+	// 			InfrastructureConfiguration: &armworkloadssapvirtualinstance.ThreeTierConfiguration{
+	// 				AppResourceGroup: to.Ptr("X00-RG"),
+	// 				DeploymentType: to.Ptr(armworkloadssapvirtualinstance.SAPDeploymentTypeThreeTier),
+	// 				ApplicationServer: &armworkloadssapvirtualinstance.ApplicationServerConfiguration{
+	// 					InstanceCount: to.Ptr[int64](10),
+	// 					SubnetID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Networks/virtualNetworks/vnet1/subnets/subnetId3"),
+	// 					VirtualMachineConfiguration: &armworkloadssapvirtualinstance.VirtualMachineConfiguration{
+	// 						ImageReference: &armworkloadssapvirtualinstance.ImageReference{
+	// 							ID: to.Ptr("/subscriptions/49d64d54-e966-4c46-a868-1999802b762c/resourceGroups/test-rg/providers/Microsoft.Compute/galleries/testgallery/images/rhelimagetest/versions/0.0.1"),
+	// 						},
+	// 						OSProfile: &armworkloadssapvirtualinstance.OSProfile{
+	// 							AdminUsername: to.Ptr("{your-username}"),
+	// 							OSConfiguration: &armworkloadssapvirtualinstance.LinuxConfiguration{
+	// 								OSType: to.Ptr(armworkloadssapvirtualinstance.OSTypeLinux),
+	// 								DisablePasswordAuthentication: to.Ptr(true),
+	// 								SSH: &armworkloadssapvirtualinstance.SSHConfiguration{
+	// 									PublicKeys: []*armworkloadssapvirtualinstance.SSHPublicKey{
+	// 										{
+	// 											KeyData: to.Ptr("ssh-rsa public key"),
+	// 									}},
+	// 								},
+	// 							},
+	// 						},
+	// 						VMSize: to.Ptr("Standard_D8s_v3"),
+	// 					},
+	// 				},
+	// 				CentralServer: &armworkloadssapvirtualinstance.CentralServerConfiguration{
+	// 					InstanceCount: to.Ptr[int64](1),
+	// 					SubnetID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Networks/virtualNetworks/vnet1/subnets/subnetId1"),
+	// 					VirtualMachineConfiguration: &armworkloadssapvirtualinstance.VirtualMachineConfiguration{
+	// 						ImageReference: &armworkloadssapvirtualinstance.ImageReference{
+	// 							ID: to.Ptr("/subscriptions/49d64d54-e966-4c46-a868-1999802b762c/resourceGroups/test-rg/providers/Microsoft.Compute/galleries/testgallery/images/rhelimagetest/versions/0.0.1"),
+	// 						},
+	// 						OSProfile: &armworkloadssapvirtualinstance.OSProfile{
+	// 							AdminUsername: to.Ptr("{your-username}"),
+	// 							OSConfiguration: &armworkloadssapvirtualinstance.LinuxConfiguration{
+	// 								OSType: to.Ptr(armworkloadssapvirtualinstance.OSTypeLinux),
+	// 								DisablePasswordAuthentication: to.Ptr(true),
+	// 								SSH: &armworkloadssapvirtualinstance.SSHConfiguration{
+	// 									PublicKeys: []*armworkloadssapvirtualinstance.SSHPublicKey{
+	// 										{
+	// 											KeyData: to.Ptr("ssh-rsa public key"),
+	// 									}},
+	// 								},
+	// 							},
+	// 						},
+	// 						VMSize: to.Ptr("Standard_D8s_v3"),
+	// 					},
+	// 				},
+	// 				DatabaseServer: &armworkloadssapvirtualinstance.DatabaseConfiguration{
+	// 					DatabaseType: to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseTypeHANA),
+	// 					InstanceCount: to.Ptr[int64](1),
+	// 					SubnetID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Networks/virtualNetworks/vnet1/subnets/subnetId2"),
+	// 					VirtualMachineConfiguration: &armworkloadssapvirtualinstance.VirtualMachineConfiguration{
+	// 						ImageReference: &armworkloadssapvirtualinstance.ImageReference{
+	// 							ID: to.Ptr("/subscriptions/49d64d54-e966-4c46-a868-1999802b762c/resourceGroups/test-rg/providers/Microsoft.Compute/galleries/testgallery/images/rhelimagetest/versions/0.0.1"),
+	// 						},
+	// 						OSProfile: &armworkloadssapvirtualinstance.OSProfile{
+	// 							AdminUsername: to.Ptr("{your-username}"),
+	// 							OSConfiguration: &armworkloadssapvirtualinstance.LinuxConfiguration{
+	// 								OSType: to.Ptr(armworkloadssapvirtualinstance.OSTypeLinux),
+	// 								DisablePasswordAuthentication: to.Ptr(true),
+	// 								SSH: &armworkloadssapvirtualinstance.SSHConfiguration{
+	// 									PublicKeys: []*armworkloadssapvirtualinstance.SSHPublicKey{
+	// 										{
+	// 											KeyData: to.Ptr("ssh-rsa public key"),
+	// 									}},
+	// 								},
+	// 							},
+	// 						},
+	// 						VMSize: to.Ptr("Standard_D8s_v3"),
+	// 					},
+	// 				},
+	// 			},
+	// 			SoftwareConfiguration: &armworkloadssapvirtualinstance.ServiceInitiatedSoftwareConfiguration{
+	// 				SoftwareInstallationType: to.Ptr(armworkloadssapvirtualinstance.SAPSoftwareInstallationTypeServiceInitiated),
+	// 				BomURL: to.Ptr("https://myaccount.blob.core.windows.net/mycontainer/myblob"),
+	// 				SapBitsStorageAccountID: to.Ptr("/subscriptions/49d64d54-e966-4c46-a868-1999802b762c/resourceGroups/ajgupt-test/providers/Microsoft.Storage/storageAccounts/ajguptsavnet"),
+	// 				SapFqdn: to.Ptr("sapsystem.contoso.net"),
+	// 				SoftwareVersion: to.Ptr("SAP S/4HANA 2020 FPS01"),
+	// 			},
+	// 		},
+	// 		Environment: to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeProd),
+	// 		Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
+	// 		ManagedResourceGroupConfiguration: &armworkloadssapvirtualinstance.ManagedRGConfiguration{
+	// 			Name: to.Ptr("mrg-x00-6d875e77-e412-4d7d-9af4-8895278b4443"),
+	// 		},
+	// 		ProvisioningState: to.Ptr(armworkloadssapvirtualinstance.SapVirtualInstanceProvisioningStateSucceeded),
+	// 		SapProduct: to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
+	// 		State: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStateACSSInstallationBlocked),
+	// 		Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatusRunning),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_Get.json
+func ExampleSapVirtualInstancesClient_Get_sapVirtualInstancesGet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewSapVirtualInstancesClient().Get(ctx, "test-rg", "X00", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.SAPVirtualInstance = armworkloadssapvirtualinstance.SAPVirtualInstance{
+	// 	Name: to.Ptr("X00"),
+	// 	Type: to.Ptr("Microsoft.Workloads/sapVirtualInstances"),
+	// 	ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00"),
+	// 	SystemData: &armworkloadssapvirtualinstance.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 		CreatedBy: to.Ptr("user@xyz.com"),
+	// 		CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("user@xyz.com"),
+	// 		LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
+	// 	},
+	// 	Location: to.Ptr("westcentralus"),
+	// 	Tags: map[string]*string{
+	// 	},
+	// 	Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
+	// 		Configuration: &armworkloadssapvirtualinstance.DeploymentConfiguration{
+	// 			ConfigurationType: to.Ptr(armworkloadssapvirtualinstance.SAPConfigurationTypeDeployment),
+	// 			AppLocation: to.Ptr("eastus"),
+	// 			InfrastructureConfiguration: &armworkloadssapvirtualinstance.ThreeTierConfiguration{
+	// 				AppResourceGroup: to.Ptr("X00-RG"),
+	// 				DeploymentType: to.Ptr(armworkloadssapvirtualinstance.SAPDeploymentTypeThreeTier),
+	// 				ApplicationServer: &armworkloadssapvirtualinstance.ApplicationServerConfiguration{
+	// 					InstanceCount: to.Ptr[int64](10),
+	// 					SubnetID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Networks/virtualNetworks/vnet1/subnets/subnetId3"),
+	// 					VirtualMachineConfiguration: &armworkloadssapvirtualinstance.VirtualMachineConfiguration{
+	// 						ImageReference: &armworkloadssapvirtualinstance.ImageReference{
+	// 							Offer: to.Ptr("RHEL-SAP"),
+	// 							Publisher: to.Ptr("RedHat"),
+	// 							SKU: to.Ptr("84sapha-gen2"),
+	// 							Version: to.Ptr("latest"),
+	// 						},
+	// 						OSProfile: &armworkloadssapvirtualinstance.OSProfile{
+	// 							AdminUsername: to.Ptr("{your-username}"),
+	// 							OSConfiguration: &armworkloadssapvirtualinstance.LinuxConfiguration{
+	// 								OSType: to.Ptr(armworkloadssapvirtualinstance.OSTypeLinux),
+	// 								DisablePasswordAuthentication: to.Ptr(true),
+	// 								SSH: &armworkloadssapvirtualinstance.SSHConfiguration{
+	// 									PublicKeys: []*armworkloadssapvirtualinstance.SSHPublicKey{
+	// 										{
+	// 											KeyData: to.Ptr("ssh-rsa public key"),
+	// 									}},
+	// 								},
+	// 							},
+	// 						},
+	// 						VMSize: to.Ptr("Standard_D8s_v3"),
+	// 					},
+	// 				},
+	// 				CentralServer: &armworkloadssapvirtualinstance.CentralServerConfiguration{
+	// 					InstanceCount: to.Ptr[int64](1),
+	// 					SubnetID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Networks/virtualNetworks/vnet1/subnets/subnetId1"),
+	// 					VirtualMachineConfiguration: &armworkloadssapvirtualinstance.VirtualMachineConfiguration{
+	// 						ImageReference: &armworkloadssapvirtualinstance.ImageReference{
+	// 							Offer: to.Ptr("RHEL-SAP"),
+	// 							Publisher: to.Ptr("RedHat"),
+	// 							SKU: to.Ptr("84sapha-gen2"),
+	// 							Version: to.Ptr("latest"),
+	// 						},
+	// 						OSProfile: &armworkloadssapvirtualinstance.OSProfile{
+	// 							AdminUsername: to.Ptr("{your-username}"),
+	// 							OSConfiguration: &armworkloadssapvirtualinstance.LinuxConfiguration{
+	// 								OSType: to.Ptr(armworkloadssapvirtualinstance.OSTypeLinux),
+	// 								DisablePasswordAuthentication: to.Ptr(true),
+	// 								SSH: &armworkloadssapvirtualinstance.SSHConfiguration{
+	// 									PublicKeys: []*armworkloadssapvirtualinstance.SSHPublicKey{
+	// 										{
+	// 											KeyData: to.Ptr("ssh-rsa public key"),
+	// 									}},
+	// 								},
+	// 							},
+	// 						},
+	// 						VMSize: to.Ptr("Standard_D8s_v3"),
+	// 					},
+	// 				},
+	// 				DatabaseServer: &armworkloadssapvirtualinstance.DatabaseConfiguration{
+	// 					DatabaseType: to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseTypeHANA),
+	// 					InstanceCount: to.Ptr[int64](1),
+	// 					SubnetID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Networks/virtualNetworks/vnet1/subnets/subnetId2"),
+	// 					VirtualMachineConfiguration: &armworkloadssapvirtualinstance.VirtualMachineConfiguration{
+	// 						ImageReference: &armworkloadssapvirtualinstance.ImageReference{
+	// 							Offer: to.Ptr("RHEL-SAP"),
+	// 							Publisher: to.Ptr("RedHat"),
+	// 							SKU: to.Ptr("84sapha-gen2"),
+	// 							Version: to.Ptr("latest"),
+	// 						},
+	// 						OSProfile: &armworkloadssapvirtualinstance.OSProfile{
+	// 							AdminUsername: to.Ptr("{your-username}"),
+	// 							OSConfiguration: &armworkloadssapvirtualinstance.LinuxConfiguration{
+	// 								OSType: to.Ptr(armworkloadssapvirtualinstance.OSTypeLinux),
+	// 								DisablePasswordAuthentication: to.Ptr(true),
+	// 								SSH: &armworkloadssapvirtualinstance.SSHConfiguration{
+	// 									PublicKeys: []*armworkloadssapvirtualinstance.SSHPublicKey{
+	// 										{
+	// 											KeyData: to.Ptr("ssh-rsa public key"),
+	// 									}},
+	// 								},
+	// 							},
+	// 						},
+	// 						VMSize: to.Ptr("Standard_D8s_v3"),
+	// 					},
+	// 				},
+	// 			},
+	// 			SoftwareConfiguration: &armworkloadssapvirtualinstance.ServiceInitiatedSoftwareConfiguration{
+	// 				SoftwareInstallationType: to.Ptr(armworkloadssapvirtualinstance.SAPSoftwareInstallationTypeServiceInitiated),
+	// 				BomURL: to.Ptr("https://myaccount.blob.core.windows.net/mycontainer/myblob"),
+	// 				SapBitsStorageAccountID: to.Ptr("/subscriptions/49d64d54-e966-4c46-a868-1999802b762c/resourceGroups/ajgupt-test/providers/Microsoft.Storage/storageAccounts/ajguptsavnet"),
+	// 				SapFqdn: to.Ptr("sapsystem.contoso.net"),
+	// 				SoftwareVersion: to.Ptr("SAP S/4HANA 2020 FPS01"),
+	// 			},
+	// 		},
+	// 		Environment: to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeProd),
+	// 		Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
+	// 		ManagedResourceGroupConfiguration: &armworkloadssapvirtualinstance.ManagedRGConfiguration{
+	// 			Name: to.Ptr("mrg-x00-6d875e77-e412-4d7d-9af4-8895278b4443"),
+	// 		},
+	// 		ProvisioningState: to.Ptr(armworkloadssapvirtualinstance.SapVirtualInstanceProvisioningStateSucceeded),
+	// 		SapProduct: to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
+	// 		State: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStateRegistrationComplete),
+	// 		Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatusRunning),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_CreateInfraOsComputeGalleryImage.json
+func ExampleSapVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConfigurationWithAzureComputeGalleryImage() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSapVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
+		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
 			Configuration: &armworkloadssapvirtualinstance.DeploymentConfiguration{
@@ -140,7 +2173,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 	// 		LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 		LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("eastus"),
+	// 	Location: to.Ptr("westcentralus"),
 	// 	Tags: map[string]*string{
 	// 	},
 	// 	Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
@@ -235,8 +2268,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_Create_CustomFullResourceNames_Distributed.json
-func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConfigurationWithCustomResourceNamesForDistributedSystem() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_CreateInfraOsCustomResourceNamesDS.json
+func ExampleSapVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConfigurationWithCustomResourceNamesForDistributedSystem() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -246,8 +2279,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
-		Location: to.Ptr("eastus"),
+	poller, err := clientFactory.NewSapVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
+		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
 			Configuration: &armworkloadssapvirtualinstance.DeploymentWithOSConfiguration{
@@ -414,10 +2447,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 				},
 			},
 			Environment: to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeProd),
-			ManagedResourceGroupConfiguration: &armworkloadssapvirtualinstance.ManagedRGConfiguration{
-				Name: to.Ptr("mrg-X00-8e17e36c-42e9-4cd5-a078-7b44883414e0"),
-			},
-			SapProduct: to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
+			SapProduct:  to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
 		},
 	}, nil)
 	if err != nil {
@@ -442,7 +2472,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 	// 		LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 		LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("eastus"),
+	// 	Location: to.Ptr("westcentralus"),
 	// 	Tags: map[string]*string{
 	// 	},
 	// 	Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
@@ -608,9 +2638,6 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 	// 									},
 	// 									Environment: to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeProd),
 	// 									Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateUnknown),
-	// 									ManagedResourceGroupConfiguration: &armworkloadssapvirtualinstance.ManagedRGConfiguration{
-	// 										Name: to.Ptr("mrg-X00-8e17e36c-42e9-4cd5-a078-7b44883414e0"),
-	// 									},
 	// 									ProvisioningState: to.Ptr(armworkloadssapvirtualinstance.SapVirtualInstanceProvisioningStateSucceeded),
 	// 									SapProduct: to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
 	// 									State: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStateSoftwareInstallationPending),
@@ -619,8 +2646,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 	// 							}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_Create_CustomFullResourceNames_HA_AvSet.json
-func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConfigurationWithCustomResourceNamesForHaSystemWithAvailabilitySet() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_CreateInfraOsCustomResourceNamesHaAvailabilitySet.json
+func ExampleSapVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConfigurationWithCustomResourceNamesForHaSystemWithAvailabilitySet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -630,8 +2657,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
-		Location: to.Ptr("eastus"),
+	poller, err := clientFactory.NewSapVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
+		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
 			Configuration: &armworkloadssapvirtualinstance.DeploymentWithOSConfiguration{
@@ -851,10 +2878,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 				},
 			},
 			Environment: to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeProd),
-			ManagedResourceGroupConfiguration: &armworkloadssapvirtualinstance.ManagedRGConfiguration{
-				Name: to.Ptr("mrg-X00-8e17e36c-42e9-4cd5-a078-7b44883414e0"),
-			},
-			SapProduct: to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
+			SapProduct:  to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
 		},
 	}, nil)
 	if err != nil {
@@ -879,7 +2903,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 	// 		LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 		LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("eastus"),
+	// 	Location: to.Ptr("westcentralus"),
 	// 	Tags: map[string]*string{
 	// 	},
 	// 	Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
@@ -1098,9 +3122,6 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 	// 																		},
 	// 																		Environment: to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeProd),
 	// 																		Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateUnknown),
-	// 																		ManagedResourceGroupConfiguration: &armworkloadssapvirtualinstance.ManagedRGConfiguration{
-	// 																			Name: to.Ptr("mrg-X00-8e17e36c-42e9-4cd5-a078-7b44883414e0"),
-	// 																		},
 	// 																		ProvisioningState: to.Ptr(armworkloadssapvirtualinstance.SapVirtualInstanceProvisioningStateSucceeded),
 	// 																		SapProduct: to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
 	// 																		State: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStateSoftwareInstallationPending),
@@ -1109,8 +3130,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 	// 																}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_Create_CustomFullResourceNames_HA_AvZone.json
-func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConfigurationWithCustomResourceNamesForHaSystemWithAvailabilityZone() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_CreateInfraOsCustomResourceNamesHaAvailabilityZone.json
+func ExampleSapVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConfigurationWithCustomResourceNamesForHaSystemWithAvailabilityZone() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1120,8 +3141,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
-		Location: to.Ptr("eastus"),
+	poller, err := clientFactory.NewSapVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
+		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
 			Configuration: &armworkloadssapvirtualinstance.DeploymentWithOSConfiguration{
@@ -1338,10 +3359,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 				},
 			},
 			Environment: to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeProd),
-			ManagedResourceGroupConfiguration: &armworkloadssapvirtualinstance.ManagedRGConfiguration{
-				Name: to.Ptr("mrg-X00-8e17e36c-42e9-4cd5-a078-7b44883414e0"),
-			},
-			SapProduct: to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
+			SapProduct:  to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
 		},
 	}, nil)
 	if err != nil {
@@ -1366,7 +3384,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 	// 		LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 		LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("eastus"),
+	// 	Location: to.Ptr("westcentralus"),
 	// 	Tags: map[string]*string{
 	// 	},
 	// 	Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
@@ -1582,9 +3600,6 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 	// 																		},
 	// 																		Environment: to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeProd),
 	// 																		Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateUnknown),
-	// 																		ManagedResourceGroupConfiguration: &armworkloadssapvirtualinstance.ManagedRGConfiguration{
-	// 																			Name: to.Ptr("mrg-X00-8e17e36c-42e9-4cd5-a078-7b44883414e0"),
-	// 																		},
 	// 																		ProvisioningState: to.Ptr(armworkloadssapvirtualinstance.SapVirtualInstanceProvisioningStateSucceeded),
 	// 																		SapProduct: to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
 	// 																		State: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStateSoftwareInstallationPending),
@@ -1593,8 +3608,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 	// 																}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_Create_CustomFullResourceNames_SingleServer.json
-func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConfigurationWithCustomResourceNamesForSingleServerSystem() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_CreateInfraOsCustomResourceNamesSingleServer.json
+func ExampleSapVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConfigurationWithCustomResourceNamesForSingleServerSystem() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1604,8 +3619,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
-		Location: to.Ptr("eastus"),
+	poller, err := clientFactory.NewSapVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
+		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
 			Configuration: &armworkloadssapvirtualinstance.DeploymentWithOSConfiguration{
@@ -1645,10 +3660,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 				},
 			},
 			Environment: to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeNonProd),
-			ManagedResourceGroupConfiguration: &armworkloadssapvirtualinstance.ManagedRGConfiguration{
-				Name: to.Ptr("mrg-X00-8e17e36c-42e9-4cd5-a078-7b44883414e0"),
-			},
-			SapProduct: to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
+			SapProduct:  to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
 		},
 	}, nil)
 	if err != nil {
@@ -1673,7 +3685,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 	// 		LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 		LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("eastus"),
+	// 	Location: to.Ptr("westcentralus"),
 	// 	Tags: map[string]*string{
 	// 	},
 	// 	Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
@@ -1740,9 +3752,6 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 	// 						},
 	// 						Environment: to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeNonProd),
 	// 						Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateUnknown),
-	// 						ManagedResourceGroupConfiguration: &armworkloadssapvirtualinstance.ManagedRGConfiguration{
-	// 							Name: to.Ptr("mrg-X00-8e17e36c-42e9-4cd5-a078-7b44883414e0"),
-	// 						},
 	// 						ProvisioningState: to.Ptr(armworkloadssapvirtualinstance.SapVirtualInstanceProvisioningStateSucceeded),
 	// 						SapProduct: to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
 	// 						State: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStateSoftwareInstallationPending),
@@ -1751,8 +3760,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_Create_WithOSConfig_WithTrustedAccess.json
-func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConfigurationWithTrustedAccessEnabled() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_CreateInfraWithOsTrustedAccess.json
+func ExampleSapVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConfigurationWithTrustedAccessEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1762,8 +3771,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
-		Location: to.Ptr("eastus"),
+	poller, err := clientFactory.NewSapVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
+		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
 			Configuration: &armworkloadssapvirtualinstance.DeploymentWithOSConfiguration{
@@ -1877,7 +3886,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 	// 		LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 		LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("eastus"),
+	// 	Location: to.Ptr("westcentralus"),
 	// 	Tags: map[string]*string{
 	// 	},
 	// 	Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
@@ -1973,8 +3982,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_Create_Distributed.json
-func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureOnlyForDistributedSystem() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_CreateInfraDS.json
+func ExampleSapVirtualInstancesClient_BeginCreate_createInfrastructureOnlyForDistributedSystem() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1984,8 +3993,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureOnlyForDis
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
-		Location: to.Ptr("eastus"),
+	poller, err := clientFactory.NewSapVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
+		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
 			Configuration: &armworkloadssapvirtualinstance.DeploymentConfiguration{
@@ -2101,7 +4110,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureOnlyForDis
 	// 		LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 		LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("eastus"),
+	// 	Location: to.Ptr("westcentralus"),
 	// 	Tags: map[string]*string{
 	// 	},
 	// 	Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
@@ -2202,8 +4211,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureOnlyForDis
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_Create_HA_AvSet.json
-func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureOnlyForHaSystemWithAvailabilitySet() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_CreateInfraHaAvailabilitySet.json
+func ExampleSapVirtualInstancesClient_BeginCreate_createInfrastructureOnlyForHaSystemWithAvailabilitySet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -2213,8 +4222,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureOnlyForHaS
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
-		Location: to.Ptr("eastus"),
+	poller, err := clientFactory.NewSapVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
+		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
 			Configuration: &armworkloadssapvirtualinstance.DeploymentConfiguration{
@@ -2333,7 +4342,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureOnlyForHaS
 	// 		LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 		LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("eastus"),
+	// 	Location: to.Ptr("westcentralus"),
 	// 	Tags: map[string]*string{
 	// 	},
 	// 	Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
@@ -2437,8 +4446,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureOnlyForHaS
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_Create_HA_AvZone.json
-func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureOnlyForHaSystemWithAvailabilityZone() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_CreateInfraHaAvailabilityZone.json
+func ExampleSapVirtualInstancesClient_BeginCreate_createInfrastructureOnlyForHaSystemWithAvailabilityZone() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -2448,8 +4457,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureOnlyForHaS
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
-		Location: to.Ptr("eastus"),
+	poller, err := clientFactory.NewSapVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
+		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
 			Configuration: &armworkloadssapvirtualinstance.DeploymentConfiguration{
@@ -2568,7 +4577,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureOnlyForHaS
 	// 		LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 		LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("eastus"),
+	// 	Location: to.Ptr("westcentralus"),
 	// 	Tags: map[string]*string{
 	// 	},
 	// 	Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
@@ -2672,8 +4681,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureOnlyForHaS
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_Create_SingleServer.json
-func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureOnlyForSingleServerSystem() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_CreateInfraSingleServer.json
+func ExampleSapVirtualInstancesClient_BeginCreate_createInfrastructureOnlyForSingleServerSystem() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -2683,8 +4692,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureOnlyForSin
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
-		Location: to.Ptr("eastus"),
+	poller, err := clientFactory.NewSapVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
+		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
 			Configuration: &armworkloadssapvirtualinstance.DeploymentConfiguration{
@@ -2748,7 +4757,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureOnlyForSin
 	// 		LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 		LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("eastus"),
+	// 	Location: to.Ptr("westcentralus"),
 	// 	Tags: map[string]*string{
 	// 	},
 	// 	Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
@@ -2794,8 +4803,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureOnlyForSin
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_Create_DiskDetails_Distributed.json
-func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithDiskAndOsConfigurationForDistributedSystemRecommended() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_CreateInfraDiskOsDSRecommended.json
+func ExampleSapVirtualInstancesClient_BeginCreate_createInfrastructureWithDiskAndOsConfigurationForDistributedSystemRecommended() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -2805,8 +4814,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithDiskAn
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
-		Location: to.Ptr("eastus"),
+	poller, err := clientFactory.NewSapVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
+		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
 			Configuration: &armworkloadssapvirtualinstance.DeploymentWithOSConfiguration{
@@ -2965,7 +4974,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithDiskAn
 	// 		LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 		LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("eastus"),
+	// 	Location: to.Ptr("westcentralus"),
 	// 	Tags: map[string]*string{
 	// 	},
 	// 	Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
@@ -3106,8 +5115,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithDiskAn
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_Create_DiskDetails_HA_AvSet.json
-func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithDiskAndOsConfigurationForHaSystemWithAvailabilitySetRecommended() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_CreateInfraDiskOsHaAvailabilitySetRecommended.json
+func ExampleSapVirtualInstancesClient_BeginCreate_createInfrastructureWithDiskAndOsConfigurationForHaSystemWithAvailabilitySetRecommended() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -3117,8 +5126,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithDiskAn
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
-		Location: to.Ptr("eastus"),
+	poller, err := clientFactory.NewSapVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
+		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
 			Configuration: &armworkloadssapvirtualinstance.DeploymentWithOSConfiguration{
@@ -3280,7 +5289,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithDiskAn
 	// 		LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 		LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("eastus"),
+	// 	Location: to.Ptr("westcentralus"),
 	// 	Tags: map[string]*string{
 	// 	},
 	// 	Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
@@ -3424,8 +5433,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithDiskAn
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_Create_DiskDetails_HA_AvZone.json
-func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithDiskAndOsConfigurationForHaSystemWithAvailabilityZoneRecommended() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_CreateInfraDiskOsHaAvailabilityZoneRecommended.json
+func ExampleSapVirtualInstancesClient_BeginCreate_createInfrastructureWithDiskAndOsConfigurationForHaSystemWithAvailabilityZoneRecommended() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -3435,8 +5444,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithDiskAn
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
-		Location: to.Ptr("eastus"),
+	poller, err := clientFactory.NewSapVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
+		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
 			Configuration: &armworkloadssapvirtualinstance.DeploymentWithOSConfiguration{
@@ -3598,7 +5607,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithDiskAn
 	// 		LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 		LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("eastus"),
+	// 	Location: to.Ptr("westcentralus"),
 	// 	Tags: map[string]*string{
 	// 	},
 	// 	Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
@@ -3742,8 +5751,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithDiskAn
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_Create_DiskDetails_SingleServer.json
-func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithDiskAndOsConfigurationsForSingleServerSystemRecommended() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_CreateInfraDiskOsSingleServerRecommended.json
+func ExampleSapVirtualInstancesClient_BeginCreate_createInfrastructureWithDiskAndOsConfigurationsForSingleServerSystemRecommended() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -3753,8 +5762,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithDiskAn
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
-		Location: to.Ptr("eastus"),
+	poller, err := clientFactory.NewSapVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
+		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
 			Configuration: &armworkloadssapvirtualinstance.DeploymentWithOSConfiguration{
@@ -3865,7 +5874,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithDiskAn
 	// 		LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 		LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("eastus"),
+	// 	Location: to.Ptr("westcentralus"),
 	// 	Tags: map[string]*string{
 	// 	},
 	// 	Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
@@ -3960,8 +5969,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithDiskAn
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_Create_WithOSConfig_Distributed.json
-func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConfigurationForDistributedSystemRecommended() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_CreateInfraOsDSRecommended.json
+func ExampleSapVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConfigurationForDistributedSystemRecommended() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -3971,8 +5980,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
-		Location: to.Ptr("eastus"),
+	poller, err := clientFactory.NewSapVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
+		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
 			Configuration: &armworkloadssapvirtualinstance.DeploymentWithOSConfiguration{
@@ -4085,7 +6094,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 	// 		LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 		LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("eastus"),
+	// 	Location: to.Ptr("westcentralus"),
 	// 	Tags: map[string]*string{
 	// 	},
 	// 	Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
@@ -4180,8 +6189,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_Create_WithOSConfig_HA_AvSet.json
-func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConfigurationForHaSystemWithAvailabilitySetRecommended() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_CreateInfraOsHaAvailabilitySetRecommended.json
+func ExampleSapVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConfigurationForHaSystemWithAvailabilitySetRecommended() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -4191,8 +6200,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
-		Location: to.Ptr("eastus"),
+	poller, err := clientFactory.NewSapVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
+		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
 			Configuration: &armworkloadssapvirtualinstance.DeploymentWithOSConfiguration{
@@ -4308,7 +6317,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 	// 		LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 		LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("eastus"),
+	// 	Location: to.Ptr("westcentralus"),
 	// 	Tags: map[string]*string{
 	// 	},
 	// 	Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
@@ -4406,8 +6415,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_Create_WithOSConfig_HA_AvZone.json
-func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConfigurationForHaSystemWithAvailabilityZoneRecommended() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_CreateInfraOsHaAvailabilityZoneRecommended.json
+func ExampleSapVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConfigurationForHaSystemWithAvailabilityZoneRecommended() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -4417,8 +6426,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
-		Location: to.Ptr("eastus"),
+	poller, err := clientFactory.NewSapVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
+		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
 			Configuration: &armworkloadssapvirtualinstance.DeploymentWithOSConfiguration{
@@ -4534,7 +6543,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 	// 		LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 		LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("eastus"),
+	// 	Location: to.Ptr("westcentralus"),
 	// 	Tags: map[string]*string{
 	// 	},
 	// 	Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
@@ -4632,8 +6641,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_Create_WithOSConfig_SingleServer.json
-func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConfigurationForSingleServerSystemRecommended() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_CreateInfraOsSIngleServerRecommended.json
+func ExampleSapVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConfigurationForSingleServerSystemRecommended() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -4643,8 +6652,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
-		Location: to.Ptr("eastus"),
+	poller, err := clientFactory.NewSapVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
+		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
 			Configuration: &armworkloadssapvirtualinstance.DeploymentWithOSConfiguration{
@@ -4709,7 +6718,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 	// 		LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 		LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("eastus"),
+	// 	Location: to.Ptr("westcentralus"),
 	// 	Tags: map[string]*string{
 	// 	},
 	// 	Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
@@ -4758,8 +6767,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOsConf
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_Create_Distributed_CreateTransport.json
-func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithANewSapTransportDirectoryFileshare() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_CreateInfraWithNewFileshare.json
+func ExampleSapVirtualInstancesClient_BeginCreate_createInfrastructureWithANewSapTransportDirectoryFileshare() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -4769,8 +6778,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithANewSa
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
-		Location: to.Ptr("eastus"),
+	poller, err := clientFactory.NewSapVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
+		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
 			Configuration: &armworkloadssapvirtualinstance.DeploymentWithOSConfiguration{
@@ -4854,7 +6863,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithANewSa
 					},
 					StorageConfiguration: &armworkloadssapvirtualinstance.StorageConfiguration{
 						TransportFileShareConfiguration: &armworkloadssapvirtualinstance.CreateAndMountFileShareConfiguration{
-							ConfigurationType:  to.Ptr(armworkloadssapvirtualinstance.ConfigurationTypeCreateAndMount),
+							ConfigurationType:  to.Ptr(armworkloadssapvirtualinstance.FileShareConfigurationTypeCreateAndMount),
 							ResourceGroup:      to.Ptr("rgName"),
 							StorageAccountName: to.Ptr("storageName"),
 						},
@@ -4890,7 +6899,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithANewSa
 	// 		LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 		LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("eastus"),
+	// 	Location: to.Ptr("westcentralus"),
 	// 	Tags: map[string]*string{
 	// 	},
 	// 	Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
@@ -4972,7 +6981,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithANewSa
 	// 				},
 	// 				StorageConfiguration: &armworkloadssapvirtualinstance.StorageConfiguration{
 	// 					TransportFileShareConfiguration: &armworkloadssapvirtualinstance.CreateAndMountFileShareConfiguration{
-	// 						ConfigurationType: to.Ptr(armworkloadssapvirtualinstance.ConfigurationTypeCreateAndMount),
+	// 						ConfigurationType: to.Ptr(armworkloadssapvirtualinstance.FileShareConfigurationTypeCreateAndMount),
 	// 						ResourceGroup: to.Ptr("rgName"),
 	// 						StorageAccountName: to.Ptr("storageName"),
 	// 					},
@@ -4992,8 +7001,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithANewSa
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_Create_Distributed_MountTransport.json
-func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithAnExistingSapTransportDirectoryFileshare() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_CreateInfraWithExistingFileshare.json
+func ExampleSapVirtualInstancesClient_BeginCreate_createInfrastructureWithAnExistingSapTransportDirectoryFileshare() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -5003,8 +7012,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithAnExis
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
-		Location: to.Ptr("eastus"),
+	poller, err := clientFactory.NewSapVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
+		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
 			Configuration: &armworkloadssapvirtualinstance.DeploymentWithOSConfiguration{
@@ -5088,7 +7097,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithAnExis
 					},
 					StorageConfiguration: &armworkloadssapvirtualinstance.StorageConfiguration{
 						TransportFileShareConfiguration: &armworkloadssapvirtualinstance.MountFileShareConfiguration{
-							ConfigurationType: to.Ptr(armworkloadssapvirtualinstance.ConfigurationTypeMount),
+							ConfigurationType: to.Ptr(armworkloadssapvirtualinstance.FileShareConfigurationTypeMount),
 							ID:                to.Ptr("/subscriptions/49d64d54-e888-4c46-a868-1936802b762c/resourceGroups/testrg/providers/Microsoft.Network/privateEndpoints/endpoint"),
 							PrivateEndpointID: to.Ptr("/subscriptions/49d64d54-e888-4c46-a868-1936802b762c/resourceGroups/testrg/providers/Microsoft.Network/privateEndpoints/endpoint"),
 						},
@@ -5124,7 +7133,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithAnExis
 	// 		LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 		LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("eastus"),
+	// 	Location: to.Ptr("westcentralus"),
 	// 	Tags: map[string]*string{
 	// 	},
 	// 	Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
@@ -5206,7 +7215,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithAnExis
 	// 				},
 	// 				StorageConfiguration: &armworkloadssapvirtualinstance.StorageConfiguration{
 	// 					TransportFileShareConfiguration: &armworkloadssapvirtualinstance.MountFileShareConfiguration{
-	// 						ConfigurationType: to.Ptr(armworkloadssapvirtualinstance.ConfigurationTypeMount),
+	// 						ConfigurationType: to.Ptr(armworkloadssapvirtualinstance.FileShareConfigurationTypeMount),
 	// 						ID: to.Ptr("/subscriptions/49d64d54-e888-4c46-a868-1936802b762c/resourceGroups/testrg/providers/Microsoft.Network/privateEndpoints/endpoint"),
 	// 						PrivateEndpointID: to.Ptr("/subscriptions/49d64d54-e888-4c46-a868-1936802b762c/resourceGroups/testrg/providers/Microsoft.Network/privateEndpoints/endpoint"),
 	// 					},
@@ -5226,8 +7235,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithAnExis
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_Create_Distributed_SkipTransport.json
-func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithoutASapTransportDirectoryFileshare() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_CreateInfraWithoutFileshare.json
+func ExampleSapVirtualInstancesClient_BeginCreate_createInfrastructureWithoutASapTransportDirectoryFileshare() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -5237,8 +7246,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithoutASa
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
-		Location: to.Ptr("eastus"),
+	poller, err := clientFactory.NewSapVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
+		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
 			Configuration: &armworkloadssapvirtualinstance.DeploymentWithOSConfiguration{
@@ -5322,7 +7331,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithoutASa
 					},
 					StorageConfiguration: &armworkloadssapvirtualinstance.StorageConfiguration{
 						TransportFileShareConfiguration: &armworkloadssapvirtualinstance.SkipFileShareConfiguration{
-							ConfigurationType: to.Ptr(armworkloadssapvirtualinstance.ConfigurationTypeSkip),
+							ConfigurationType: to.Ptr(armworkloadssapvirtualinstance.FileShareConfigurationTypeSkip),
 						},
 					},
 				},
@@ -5356,7 +7365,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithoutASa
 	// 		LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 		LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("eastus"),
+	// 	Location: to.Ptr("westcentralus"),
 	// 	Tags: map[string]*string{
 	// 	},
 	// 	Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
@@ -5438,7 +7447,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithoutASa
 	// 				},
 	// 				StorageConfiguration: &armworkloadssapvirtualinstance.StorageConfiguration{
 	// 					TransportFileShareConfiguration: &armworkloadssapvirtualinstance.SkipFileShareConfiguration{
-	// 						ConfigurationType: to.Ptr(armworkloadssapvirtualinstance.ConfigurationTypeSkip),
+	// 						ConfigurationType: to.Ptr(armworkloadssapvirtualinstance.FileShareConfigurationTypeSkip),
 	// 					},
 	// 				},
 	// 			},
@@ -5456,8 +7465,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithoutASa
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_DetectInstallation_Distributed.json
-func ExampleSAPVirtualInstancesClient_BeginCreate_detectSapSoftwareInstallationOnADistributedSystem() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_CreateDetectDS.json
+func ExampleSapVirtualInstancesClient_BeginCreate_detectSapSoftwareInstallationOnADistributedSystem() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -5467,7 +7476,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_detectSapSoftwareInstallationO
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
+	poller, err := clientFactory.NewSapVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
 		Location: to.Ptr("eastus2"),
 		Tags: map[string]*string{
 			"created by": to.Ptr("azureuser"),
@@ -5689,8 +7698,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_detectSapSoftwareInstallationO
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_DetectInstallation_SingleServer.json
-func ExampleSAPVirtualInstancesClient_BeginCreate_detectSapSoftwareInstallationOnASingleServerSystem() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_CreateDetectSingleServer.json
+func ExampleSapVirtualInstancesClient_BeginCreate_detectSapSoftwareInstallationOnASingleServerSystem() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -5700,8 +7709,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_detectSapSoftwareInstallationO
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
-		Location: to.Ptr("eastus"),
+	poller, err := clientFactory.NewSapVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
+		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
 			Configuration: &armworkloadssapvirtualinstance.DeploymentWithOSConfiguration{
@@ -5770,7 +7779,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_detectSapSoftwareInstallationO
 	// 		LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 		LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("eastus"),
+	// 	Location: to.Ptr("westcentralus"),
 	// 	Tags: map[string]*string{
 	// 	},
 	// 	Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
@@ -5821,8 +7830,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_detectSapSoftwareInstallationO
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_DetectInstallation_HA_AvSet.json
-func ExampleSAPVirtualInstancesClient_BeginCreate_detectSapSoftwareInstallationOnAnHaSystemWithAvailabilitySet() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_CreateDetectHaAvailabilitySet.json
+func ExampleSapVirtualInstancesClient_BeginCreate_detectSapSoftwareInstallationOnAnHaSystemWithAvailabilitySet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -5832,8 +7841,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_detectSapSoftwareInstallationO
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
-		Location: to.Ptr("eastus"),
+	poller, err := clientFactory.NewSapVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
+		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
 			Configuration: &armworkloadssapvirtualinstance.DeploymentWithOSConfiguration{
@@ -5953,7 +7962,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_detectSapSoftwareInstallationO
 	// 		LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 		LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("eastus"),
+	// 	Location: to.Ptr("westcentralus"),
 	// 	Tags: map[string]*string{
 	// 	},
 	// 	Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
@@ -6053,8 +8062,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_detectSapSoftwareInstallationO
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_DetectInstallation_HA_AvZone.json
-func ExampleSAPVirtualInstancesClient_BeginCreate_detectSapSoftwareInstallationOnAnHaSystemWithAvailabilityZone() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_CreateDetectHaAvailabilityZone.json
+func ExampleSapVirtualInstancesClient_BeginCreate_detectSapSoftwareInstallationOnAnHaSystemWithAvailabilityZone() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -6064,8 +8073,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_detectSapSoftwareInstallationO
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
-		Location: to.Ptr("eastus"),
+	poller, err := clientFactory.NewSapVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
+		Location: to.Ptr("westcentralus"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
 			Configuration: &armworkloadssapvirtualinstance.DeploymentWithOSConfiguration{
@@ -6185,7 +8194,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_detectSapSoftwareInstallationO
 	// 		LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 		LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("eastus"),
+	// 	Location: to.Ptr("westcentralus"),
 	// 	Tags: map[string]*string{
 	// 	},
 	// 	Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
@@ -6285,8 +8294,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_detectSapSoftwareInstallationO
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_Install_Distributed.json
-func ExampleSAPVirtualInstancesClient_BeginCreate_installSapSoftwareOnDistributedSystem() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_CreateInstallDS.json
+func ExampleSapVirtualInstancesClient_BeginCreate_installSapSoftwareOnDistributedSystem() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -6296,7 +8305,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_installSapSoftwareOnDistribute
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
+	poller, err := clientFactory.NewSapVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
 		Location: to.Ptr("eastus2"),
 		Tags: map[string]*string{
 			"created by": to.Ptr("azureuser"),
@@ -6522,8 +8531,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_installSapSoftwareOnDistribute
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_Install_SingleServer.json
-func ExampleSAPVirtualInstancesClient_BeginCreate_installSapSoftwareOnSingleServerSystem() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_CreateInstallSingleServer.json
+func ExampleSapVirtualInstancesClient_BeginCreate_installSapSoftwareOnSingleServerSystem() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -6533,7 +8542,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_installSapSoftwareOnSingleServ
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
+	poller, err := clientFactory.NewSapVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
 		Location: to.Ptr("eastus2"),
 		Tags:     map[string]*string{},
 		Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
@@ -6703,8 +8712,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_installSapSoftwareOnSingleServ
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_Create_Discover_CustomMrgStorageAccountName.json
-func ExampleSAPVirtualInstancesClient_BeginCreate_registerExistingSapSystemAsVirtualInstanceForSapSolutionsWithOptionalCustomizations() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_CreateRegisterSapSolutionsCustom.json
+func ExampleSapVirtualInstancesClient_BeginCreate_registerExistingSapSystemAsVirtualInstanceForSapSolutionsWithOptionalCustomizations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -6714,7 +8723,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_registerExistingSapSystemAsVir
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
+	poller, err := clientFactory.NewSapVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
 		Location: to.Ptr("northeurope"),
 		Tags: map[string]*string{
 			"createdby": to.Ptr("abc@microsoft.com"),
@@ -6773,8 +8782,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_registerExistingSapSystemAsVir
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_Create_Discover.json
-func ExampleSAPVirtualInstancesClient_BeginCreate_registerExistingSapSystemAsVirtualInstanceForSapSolutions() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_CreateRegisterSapSolutions.json
+func ExampleSapVirtualInstancesClient_BeginCreate_registerExistingSapSystemAsVirtualInstanceForSapSolutions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -6784,7 +8793,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_registerExistingSapSystemAsVir
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
+	poller, err := clientFactory.NewSapVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
 		Location: to.Ptr("northeurope"),
 		Tags: map[string]*string{
 			"createdby": to.Ptr("abc@microsoft.com"),
@@ -6841,8 +8850,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_registerExistingSapSystemAsVir
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_Create_Discover_TrustedAccessEnable.json
-func ExampleSAPVirtualInstancesClient_BeginCreate_registerWithTrustedAccessEnabled() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_CreateRegisterWithTrustedAccess.json
+func ExampleSapVirtualInstancesClient_BeginCreate_registerWithTrustedAccessEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -6852,7 +8861,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_registerWithTrustedAccessEnabl
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
+	poller, err := clientFactory.NewSapVirtualInstancesClient().BeginCreate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.SAPVirtualInstance{
 		Location: to.Ptr("northeurope"),
 		Tags: map[string]*string{
 			"createdby": to.Ptr("abc@microsoft.com"),
@@ -6911,8 +8920,8 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_registerWithTrustedAccessEnabl
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_Get_ACSSInstallationBlocked.json
-func ExampleSAPVirtualInstancesClient_Get_sapVirtualInstancesGetWithAcssInstallationBlocked() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_UpdateTrustedAccess.json
+func ExampleSapVirtualInstancesClient_BeginUpdate_sapVirtualInstancesTrustedAccessEnableUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -6922,282 +8931,9 @@ func ExampleSAPVirtualInstancesClient_Get_sapVirtualInstancesGetWithAcssInstalla
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewSAPVirtualInstancesClient().Get(ctx, "test-rg", "X00", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.SAPVirtualInstance = armworkloadssapvirtualinstance.SAPVirtualInstance{
-	// 	Name: to.Ptr("X00"),
-	// 	Type: to.Ptr("Microsoft.Workloads/sapVirtualInstances"),
-	// 	ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00"),
-	// 	SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
-	// 		CreatedBy: to.Ptr("user@xyz.com"),
-	// 		CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("user@xyz.com"),
-	// 		LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 	},
-	// 	Location: to.Ptr("eastus"),
-	// 	Tags: map[string]*string{
-	// 	},
-	// 	Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
-	// 		Configuration: &armworkloadssapvirtualinstance.DeploymentConfiguration{
-	// 			ConfigurationType: to.Ptr(armworkloadssapvirtualinstance.SAPConfigurationTypeDeployment),
-	// 			AppLocation: to.Ptr("eastus"),
-	// 			InfrastructureConfiguration: &armworkloadssapvirtualinstance.ThreeTierConfiguration{
-	// 				AppResourceGroup: to.Ptr("X00-RG"),
-	// 				DeploymentType: to.Ptr(armworkloadssapvirtualinstance.SAPDeploymentTypeThreeTier),
-	// 				ApplicationServer: &armworkloadssapvirtualinstance.ApplicationServerConfiguration{
-	// 					InstanceCount: to.Ptr[int64](10),
-	// 					SubnetID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Networks/virtualNetworks/vnet1/subnets/subnetId3"),
-	// 					VirtualMachineConfiguration: &armworkloadssapvirtualinstance.VirtualMachineConfiguration{
-	// 						ImageReference: &armworkloadssapvirtualinstance.ImageReference{
-	// 							ID: to.Ptr("/subscriptions/49d64d54-e966-4c46-a868-1999802b762c/resourceGroups/test-rg/providers/Microsoft.Compute/galleries/testgallery/images/rhelimagetest/versions/0.0.1"),
-	// 						},
-	// 						OSProfile: &armworkloadssapvirtualinstance.OSProfile{
-	// 							AdminUsername: to.Ptr("{your-username}"),
-	// 							OSConfiguration: &armworkloadssapvirtualinstance.LinuxConfiguration{
-	// 								OSType: to.Ptr(armworkloadssapvirtualinstance.OSTypeLinux),
-	// 								DisablePasswordAuthentication: to.Ptr(true),
-	// 								SSH: &armworkloadssapvirtualinstance.SSHConfiguration{
-	// 									PublicKeys: []*armworkloadssapvirtualinstance.SSHPublicKey{
-	// 										{
-	// 											KeyData: to.Ptr("ssh-rsa public key"),
-	// 									}},
-	// 								},
-	// 							},
-	// 						},
-	// 						VMSize: to.Ptr("Standard_D8s_v3"),
-	// 					},
-	// 				},
-	// 				CentralServer: &armworkloadssapvirtualinstance.CentralServerConfiguration{
-	// 					InstanceCount: to.Ptr[int64](1),
-	// 					SubnetID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Networks/virtualNetworks/vnet1/subnets/subnetId1"),
-	// 					VirtualMachineConfiguration: &armworkloadssapvirtualinstance.VirtualMachineConfiguration{
-	// 						ImageReference: &armworkloadssapvirtualinstance.ImageReference{
-	// 							ID: to.Ptr("/subscriptions/49d64d54-e966-4c46-a868-1999802b762c/resourceGroups/test-rg/providers/Microsoft.Compute/galleries/testgallery/images/rhelimagetest/versions/0.0.1"),
-	// 						},
-	// 						OSProfile: &armworkloadssapvirtualinstance.OSProfile{
-	// 							AdminUsername: to.Ptr("{your-username}"),
-	// 							OSConfiguration: &armworkloadssapvirtualinstance.LinuxConfiguration{
-	// 								OSType: to.Ptr(armworkloadssapvirtualinstance.OSTypeLinux),
-	// 								DisablePasswordAuthentication: to.Ptr(true),
-	// 								SSH: &armworkloadssapvirtualinstance.SSHConfiguration{
-	// 									PublicKeys: []*armworkloadssapvirtualinstance.SSHPublicKey{
-	// 										{
-	// 											KeyData: to.Ptr("ssh-rsa public key"),
-	// 									}},
-	// 								},
-	// 							},
-	// 						},
-	// 						VMSize: to.Ptr("Standard_D8s_v3"),
-	// 					},
-	// 				},
-	// 				DatabaseServer: &armworkloadssapvirtualinstance.DatabaseConfiguration{
-	// 					DatabaseType: to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseTypeHANA),
-	// 					InstanceCount: to.Ptr[int64](1),
-	// 					SubnetID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Networks/virtualNetworks/vnet1/subnets/subnetId2"),
-	// 					VirtualMachineConfiguration: &armworkloadssapvirtualinstance.VirtualMachineConfiguration{
-	// 						ImageReference: &armworkloadssapvirtualinstance.ImageReference{
-	// 							ID: to.Ptr("/subscriptions/49d64d54-e966-4c46-a868-1999802b762c/resourceGroups/test-rg/providers/Microsoft.Compute/galleries/testgallery/images/rhelimagetest/versions/0.0.1"),
-	// 						},
-	// 						OSProfile: &armworkloadssapvirtualinstance.OSProfile{
-	// 							AdminUsername: to.Ptr("{your-username}"),
-	// 							OSConfiguration: &armworkloadssapvirtualinstance.LinuxConfiguration{
-	// 								OSType: to.Ptr(armworkloadssapvirtualinstance.OSTypeLinux),
-	// 								DisablePasswordAuthentication: to.Ptr(true),
-	// 								SSH: &armworkloadssapvirtualinstance.SSHConfiguration{
-	// 									PublicKeys: []*armworkloadssapvirtualinstance.SSHPublicKey{
-	// 										{
-	// 											KeyData: to.Ptr("ssh-rsa public key"),
-	// 									}},
-	// 								},
-	// 							},
-	// 						},
-	// 						VMSize: to.Ptr("Standard_D8s_v3"),
-	// 					},
-	// 				},
-	// 			},
-	// 			SoftwareConfiguration: &armworkloadssapvirtualinstance.ServiceInitiatedSoftwareConfiguration{
-	// 				SoftwareInstallationType: to.Ptr(armworkloadssapvirtualinstance.SAPSoftwareInstallationTypeServiceInitiated),
-	// 				BomURL: to.Ptr("https://myaccount.blob.core.windows.net/mycontainer/myblob"),
-	// 				SapBitsStorageAccountID: to.Ptr("/subscriptions/49d64d54-e966-4c46-a868-1999802b762c/resourceGroups/ajgupt-test/providers/Microsoft.Storage/storageAccounts/ajguptsavnet"),
-	// 				SapFqdn: to.Ptr("sapsystem.contoso.net"),
-	// 				SoftwareVersion: to.Ptr("SAP S/4HANA 2020 FPS01"),
-	// 			},
-	// 		},
-	// 		Environment: to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeProd),
-	// 		Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
-	// 		ManagedResourceGroupConfiguration: &armworkloadssapvirtualinstance.ManagedRGConfiguration{
-	// 			Name: to.Ptr("mrg-x00-6d875e77-e412-4d7d-9af4-8895278b4443"),
-	// 		},
-	// 		ProvisioningState: to.Ptr(armworkloadssapvirtualinstance.SapVirtualInstanceProvisioningStateSucceeded),
-	// 		SapProduct: to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
-	// 		State: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStateACSSInstallationBlocked),
-	// 		Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatusRunning),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_Get.json
-func ExampleSAPVirtualInstancesClient_Get_sapVirtualInstancesGet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewSAPVirtualInstancesClient().Get(ctx, "test-rg", "X00", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.SAPVirtualInstance = armworkloadssapvirtualinstance.SAPVirtualInstance{
-	// 	Name: to.Ptr("X00"),
-	// 	Type: to.Ptr("Microsoft.Workloads/sapVirtualInstances"),
-	// 	ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00"),
-	// 	SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
-	// 		CreatedBy: to.Ptr("user@xyz.com"),
-	// 		CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("user@xyz.com"),
-	// 		LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 	},
-	// 	Location: to.Ptr("eastus"),
-	// 	Tags: map[string]*string{
-	// 	},
-	// 	Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
-	// 		Configuration: &armworkloadssapvirtualinstance.DeploymentConfiguration{
-	// 			ConfigurationType: to.Ptr(armworkloadssapvirtualinstance.SAPConfigurationTypeDeployment),
-	// 			AppLocation: to.Ptr("eastus"),
-	// 			InfrastructureConfiguration: &armworkloadssapvirtualinstance.ThreeTierConfiguration{
-	// 				AppResourceGroup: to.Ptr("X00-RG"),
-	// 				DeploymentType: to.Ptr(armworkloadssapvirtualinstance.SAPDeploymentTypeThreeTier),
-	// 				ApplicationServer: &armworkloadssapvirtualinstance.ApplicationServerConfiguration{
-	// 					InstanceCount: to.Ptr[int64](10),
-	// 					SubnetID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Networks/virtualNetworks/vnet1/subnets/subnetId3"),
-	// 					VirtualMachineConfiguration: &armworkloadssapvirtualinstance.VirtualMachineConfiguration{
-	// 						ImageReference: &armworkloadssapvirtualinstance.ImageReference{
-	// 							Offer: to.Ptr("RHEL-SAP"),
-	// 							Publisher: to.Ptr("RedHat"),
-	// 							SKU: to.Ptr("84sapha-gen2"),
-	// 							Version: to.Ptr("latest"),
-	// 						},
-	// 						OSProfile: &armworkloadssapvirtualinstance.OSProfile{
-	// 							AdminUsername: to.Ptr("{your-username}"),
-	// 							OSConfiguration: &armworkloadssapvirtualinstance.LinuxConfiguration{
-	// 								OSType: to.Ptr(armworkloadssapvirtualinstance.OSTypeLinux),
-	// 								DisablePasswordAuthentication: to.Ptr(true),
-	// 								SSH: &armworkloadssapvirtualinstance.SSHConfiguration{
-	// 									PublicKeys: []*armworkloadssapvirtualinstance.SSHPublicKey{
-	// 										{
-	// 											KeyData: to.Ptr("ssh-rsa public key"),
-	// 									}},
-	// 								},
-	// 							},
-	// 						},
-	// 						VMSize: to.Ptr("Standard_D8s_v3"),
-	// 					},
-	// 				},
-	// 				CentralServer: &armworkloadssapvirtualinstance.CentralServerConfiguration{
-	// 					InstanceCount: to.Ptr[int64](1),
-	// 					SubnetID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Networks/virtualNetworks/vnet1/subnets/subnetId1"),
-	// 					VirtualMachineConfiguration: &armworkloadssapvirtualinstance.VirtualMachineConfiguration{
-	// 						ImageReference: &armworkloadssapvirtualinstance.ImageReference{
-	// 							Offer: to.Ptr("RHEL-SAP"),
-	// 							Publisher: to.Ptr("RedHat"),
-	// 							SKU: to.Ptr("84sapha-gen2"),
-	// 							Version: to.Ptr("latest"),
-	// 						},
-	// 						OSProfile: &armworkloadssapvirtualinstance.OSProfile{
-	// 							AdminUsername: to.Ptr("{your-username}"),
-	// 							OSConfiguration: &armworkloadssapvirtualinstance.LinuxConfiguration{
-	// 								OSType: to.Ptr(armworkloadssapvirtualinstance.OSTypeLinux),
-	// 								DisablePasswordAuthentication: to.Ptr(true),
-	// 								SSH: &armworkloadssapvirtualinstance.SSHConfiguration{
-	// 									PublicKeys: []*armworkloadssapvirtualinstance.SSHPublicKey{
-	// 										{
-	// 											KeyData: to.Ptr("ssh-rsa public key"),
-	// 									}},
-	// 								},
-	// 							},
-	// 						},
-	// 						VMSize: to.Ptr("Standard_D8s_v3"),
-	// 					},
-	// 				},
-	// 				DatabaseServer: &armworkloadssapvirtualinstance.DatabaseConfiguration{
-	// 					DatabaseType: to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseTypeHANA),
-	// 					InstanceCount: to.Ptr[int64](1),
-	// 					SubnetID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Networks/virtualNetworks/vnet1/subnets/subnetId2"),
-	// 					VirtualMachineConfiguration: &armworkloadssapvirtualinstance.VirtualMachineConfiguration{
-	// 						ImageReference: &armworkloadssapvirtualinstance.ImageReference{
-	// 							Offer: to.Ptr("RHEL-SAP"),
-	// 							Publisher: to.Ptr("RedHat"),
-	// 							SKU: to.Ptr("84sapha-gen2"),
-	// 							Version: to.Ptr("latest"),
-	// 						},
-	// 						OSProfile: &armworkloadssapvirtualinstance.OSProfile{
-	// 							AdminUsername: to.Ptr("{your-username}"),
-	// 							OSConfiguration: &armworkloadssapvirtualinstance.LinuxConfiguration{
-	// 								OSType: to.Ptr(armworkloadssapvirtualinstance.OSTypeLinux),
-	// 								DisablePasswordAuthentication: to.Ptr(true),
-	// 								SSH: &armworkloadssapvirtualinstance.SSHConfiguration{
-	// 									PublicKeys: []*armworkloadssapvirtualinstance.SSHPublicKey{
-	// 										{
-	// 											KeyData: to.Ptr("ssh-rsa public key"),
-	// 									}},
-	// 								},
-	// 							},
-	// 						},
-	// 						VMSize: to.Ptr("Standard_D8s_v3"),
-	// 					},
-	// 				},
-	// 			},
-	// 			SoftwareConfiguration: &armworkloadssapvirtualinstance.ServiceInitiatedSoftwareConfiguration{
-	// 				SoftwareInstallationType: to.Ptr(armworkloadssapvirtualinstance.SAPSoftwareInstallationTypeServiceInitiated),
-	// 				BomURL: to.Ptr("https://myaccount.blob.core.windows.net/mycontainer/myblob"),
-	// 				SapBitsStorageAccountID: to.Ptr("/subscriptions/49d64d54-e966-4c46-a868-1999802b762c/resourceGroups/ajgupt-test/providers/Microsoft.Storage/storageAccounts/ajguptsavnet"),
-	// 				SapFqdn: to.Ptr("sapsystem.contoso.net"),
-	// 				SoftwareVersion: to.Ptr("SAP S/4HANA 2020 FPS01"),
-	// 			},
-	// 		},
-	// 		Environment: to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeProd),
-	// 		Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
-	// 		ManagedResourceGroupConfiguration: &armworkloadssapvirtualinstance.ManagedRGConfiguration{
-	// 			Name: to.Ptr("mrg-x00-6d875e77-e412-4d7d-9af4-8895278b4443"),
-	// 		},
-	// 		ProvisioningState: to.Ptr(armworkloadssapvirtualinstance.SapVirtualInstanceProvisioningStateSucceeded),
-	// 		SapProduct: to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
-	// 		State: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStateRegistrationComplete),
-	// 		Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatusRunning),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_TrustedAccessEnable_Update.json
-func ExampleSAPVirtualInstancesClient_BeginUpdate_sapVirtualInstancesTrustedAccessEnableUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginUpdate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.UpdateSAPVirtualInstanceRequest{
-		Identity: &armworkloadssapvirtualinstance.UserAssignedServiceIdentity{
-			Type: to.Ptr(armworkloadssapvirtualinstance.ManagedServiceIdentityTypeNone),
+	poller, err := clientFactory.NewSapVirtualInstancesClient().BeginUpdate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.UpdateSAPVirtualInstanceRequest{
+		Identity: &armworkloadssapvirtualinstance.SAPVirtualInstanceIdentity{
+			Type: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceIdentityTypeNone),
 		},
 		Properties: &armworkloadssapvirtualinstance.UpdateSAPVirtualInstanceProperties{
 			ManagedResourcesNetworkAccessType: to.Ptr(armworkloadssapvirtualinstance.ManagedResourcesNetworkAccessTypePrivate),
@@ -7228,12 +8964,12 @@ func ExampleSAPVirtualInstancesClient_BeginUpdate_sapVirtualInstancesTrustedAcce
 	// 		LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 		LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("eastus"),
+	// 	Location: to.Ptr("westcentralus"),
 	// 	Tags: map[string]*string{
 	// 		"key1": to.Ptr("svi1"),
 	// 	},
-	// 	Identity: &armworkloadssapvirtualinstance.UserAssignedServiceIdentity{
-	// 		Type: to.Ptr(armworkloadssapvirtualinstance.ManagedServiceIdentityTypeNone),
+	// 	Identity: &armworkloadssapvirtualinstance.SAPVirtualInstanceIdentity{
+	// 		Type: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceIdentityTypeNone),
 	// 	},
 	// 	Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
 	// 		Configuration: &armworkloadssapvirtualinstance.DeploymentConfiguration{
@@ -7253,8 +8989,8 @@ func ExampleSAPVirtualInstancesClient_BeginUpdate_sapVirtualInstancesTrustedAcce
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_Update.json
-func ExampleSAPVirtualInstancesClient_BeginUpdate_sapVirtualInstancesUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_Update.json
+func ExampleSapVirtualInstancesClient_BeginUpdate_sapVirtualInstancesUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -7264,10 +9000,11 @@ func ExampleSAPVirtualInstancesClient_BeginUpdate_sapVirtualInstancesUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginUpdate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.UpdateSAPVirtualInstanceRequest{
-		Identity: &armworkloadssapvirtualinstance.UserAssignedServiceIdentity{
-			Type: to.Ptr(armworkloadssapvirtualinstance.ManagedServiceIdentityTypeNone),
+	poller, err := clientFactory.NewSapVirtualInstancesClient().BeginUpdate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.UpdateSAPVirtualInstanceRequest{
+		Identity: &armworkloadssapvirtualinstance.SAPVirtualInstanceIdentity{
+			Type: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceIdentityTypeNone),
 		},
+		Properties: &armworkloadssapvirtualinstance.UpdateSAPVirtualInstanceProperties{},
 		Tags: map[string]*string{
 			"key1": to.Ptr("svi1"),
 		},
@@ -7294,12 +9031,12 @@ func ExampleSAPVirtualInstancesClient_BeginUpdate_sapVirtualInstancesUpdate() {
 	// 		LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 		LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("eastus"),
+	// 	Location: to.Ptr("westcentralus"),
 	// 	Tags: map[string]*string{
 	// 		"key1": to.Ptr("svi1"),
 	// 	},
-	// 	Identity: &armworkloadssapvirtualinstance.UserAssignedServiceIdentity{
-	// 		Type: to.Ptr(armworkloadssapvirtualinstance.ManagedServiceIdentityTypeNone),
+	// 	Identity: &armworkloadssapvirtualinstance.SAPVirtualInstanceIdentity{
+	// 		Type: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceIdentityTypeNone),
 	// 	},
 	// 	Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
 	// 		Configuration: &armworkloadssapvirtualinstance.DeploymentConfiguration{
@@ -7318,8 +9055,8 @@ func ExampleSAPVirtualInstancesClient_BeginUpdate_sapVirtualInstancesUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_Delete.json
-func ExampleSAPVirtualInstancesClient_BeginDelete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_Delete.json
+func ExampleSapVirtualInstancesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -7329,7 +9066,7 @@ func ExampleSAPVirtualInstancesClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginDelete(ctx, "test-rg", "X00", nil)
+	poller, err := clientFactory.NewSapVirtualInstancesClient().BeginDelete(ctx, "test-rg", "X00", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -7339,8 +9076,8 @@ func ExampleSAPVirtualInstancesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_ListByResourceGroup.json
-func ExampleSAPVirtualInstancesClient_NewListByResourceGroupPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_Start.json
+func ExampleSapVirtualInstancesClient_BeginStart_sapVirtualInstancesStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -7350,572 +9087,7 @@ func ExampleSAPVirtualInstancesClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewSAPVirtualInstancesClient().NewListByResourceGroupPager("test-rg", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.SAPVirtualInstanceList = armworkloadssapvirtualinstance.SAPVirtualInstanceList{
-		// 	Value: []*armworkloadssapvirtualinstance.SAPVirtualInstance{
-		// 		{
-		// 			Name: to.Ptr("X00"),
-		// 			Type: to.Ptr("Microsoft.Workloads/sapVirtualInstances"),
-		// 			ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00"),
-		// 			SystemData: &armworkloadssapvirtualinstance.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
-		// 				CreatedBy: to.Ptr("user@xyz.com"),
-		// 				CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("user@xyz.com"),
-		// 				LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-		// 			},
-		// 			Location: to.Ptr("eastus"),
-		// 			Tags: map[string]*string{
-		// 			},
-		// 			Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
-		// 				Configuration: &armworkloadssapvirtualinstance.DeploymentConfiguration{
-		// 					ConfigurationType: to.Ptr(armworkloadssapvirtualinstance.SAPConfigurationTypeDeployment),
-		// 					AppLocation: to.Ptr("eastus"),
-		// 					InfrastructureConfiguration: &armworkloadssapvirtualinstance.ThreeTierConfiguration{
-		// 						AppResourceGroup: to.Ptr("X00-RG"),
-		// 						DeploymentType: to.Ptr(armworkloadssapvirtualinstance.SAPDeploymentTypeThreeTier),
-		// 						ApplicationServer: &armworkloadssapvirtualinstance.ApplicationServerConfiguration{
-		// 							InstanceCount: to.Ptr[int64](10),
-		// 							SubnetID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Networks/virtualNetworks/vnet1/subnets/subnetId3"),
-		// 							VirtualMachineConfiguration: &armworkloadssapvirtualinstance.VirtualMachineConfiguration{
-		// 								ImageReference: &armworkloadssapvirtualinstance.ImageReference{
-		// 									Offer: to.Ptr("RHEL-SAP"),
-		// 									Publisher: to.Ptr("RedHat"),
-		// 									SKU: to.Ptr("84sapha-gen2"),
-		// 									Version: to.Ptr("latest"),
-		// 								},
-		// 								OSProfile: &armworkloadssapvirtualinstance.OSProfile{
-		// 									AdminUsername: to.Ptr("{your-username}"),
-		// 									OSConfiguration: &armworkloadssapvirtualinstance.LinuxConfiguration{
-		// 										OSType: to.Ptr(armworkloadssapvirtualinstance.OSTypeLinux),
-		// 										DisablePasswordAuthentication: to.Ptr(true),
-		// 										SSH: &armworkloadssapvirtualinstance.SSHConfiguration{
-		// 											PublicKeys: []*armworkloadssapvirtualinstance.SSHPublicKey{
-		// 												{
-		// 													KeyData: to.Ptr("ssh-rsa public key"),
-		// 											}},
-		// 										},
-		// 									},
-		// 								},
-		// 								VMSize: to.Ptr("Standard_D8s_v3"),
-		// 							},
-		// 						},
-		// 						CentralServer: &armworkloadssapvirtualinstance.CentralServerConfiguration{
-		// 							InstanceCount: to.Ptr[int64](1),
-		// 							SubnetID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Networks/virtualNetworks/vnet1/subnets/subnetId1"),
-		// 							VirtualMachineConfiguration: &armworkloadssapvirtualinstance.VirtualMachineConfiguration{
-		// 								ImageReference: &armworkloadssapvirtualinstance.ImageReference{
-		// 									Offer: to.Ptr("RHEL-SAP"),
-		// 									Publisher: to.Ptr("RedHat"),
-		// 									SKU: to.Ptr("84sapha-gen2"),
-		// 									Version: to.Ptr("latest"),
-		// 								},
-		// 								OSProfile: &armworkloadssapvirtualinstance.OSProfile{
-		// 									AdminUsername: to.Ptr("{your-username}"),
-		// 									OSConfiguration: &armworkloadssapvirtualinstance.LinuxConfiguration{
-		// 										OSType: to.Ptr(armworkloadssapvirtualinstance.OSTypeLinux),
-		// 										DisablePasswordAuthentication: to.Ptr(true),
-		// 										SSH: &armworkloadssapvirtualinstance.SSHConfiguration{
-		// 											PublicKeys: []*armworkloadssapvirtualinstance.SSHPublicKey{
-		// 												{
-		// 													KeyData: to.Ptr("ssh-rsa public key"),
-		// 											}},
-		// 										},
-		// 									},
-		// 								},
-		// 								VMSize: to.Ptr("Standard_D8s_v3"),
-		// 							},
-		// 						},
-		// 						DatabaseServer: &armworkloadssapvirtualinstance.DatabaseConfiguration{
-		// 							DatabaseType: to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseTypeHANA),
-		// 							InstanceCount: to.Ptr[int64](1),
-		// 							SubnetID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Networks/virtualNetworks/vnet1/subnets/subnetId2"),
-		// 							VirtualMachineConfiguration: &armworkloadssapvirtualinstance.VirtualMachineConfiguration{
-		// 								ImageReference: &armworkloadssapvirtualinstance.ImageReference{
-		// 									Offer: to.Ptr("RHEL-SAP"),
-		// 									Publisher: to.Ptr("RedHat"),
-		// 									SKU: to.Ptr("84sapha-gen2"),
-		// 									Version: to.Ptr("latest"),
-		// 								},
-		// 								OSProfile: &armworkloadssapvirtualinstance.OSProfile{
-		// 									AdminUsername: to.Ptr("{your-username}"),
-		// 									OSConfiguration: &armworkloadssapvirtualinstance.LinuxConfiguration{
-		// 										OSType: to.Ptr(armworkloadssapvirtualinstance.OSTypeLinux),
-		// 										DisablePasswordAuthentication: to.Ptr(true),
-		// 										SSH: &armworkloadssapvirtualinstance.SSHConfiguration{
-		// 											PublicKeys: []*armworkloadssapvirtualinstance.SSHPublicKey{
-		// 												{
-		// 													KeyData: to.Ptr("ssh-rsa public key"),
-		// 											}},
-		// 										},
-		// 									},
-		// 								},
-		// 								VMSize: to.Ptr("Standard_D8s_v3"),
-		// 							},
-		// 						},
-		// 					},
-		// 					SoftwareConfiguration: &armworkloadssapvirtualinstance.ServiceInitiatedSoftwareConfiguration{
-		// 						SoftwareInstallationType: to.Ptr(armworkloadssapvirtualinstance.SAPSoftwareInstallationTypeServiceInitiated),
-		// 						BomURL: to.Ptr("https://myaccount.blob.core.windows.net/mycontainer/myblob"),
-		// 						SapBitsStorageAccountID: to.Ptr("/subscriptions/49d64d54-e966-4c46-a868-1999802b762c/resourceGroups/ajgupt-test/providers/Microsoft.Storage/storageAccounts/ajguptsavnet"),
-		// 						SapFqdn: to.Ptr("sapsystem.contoso.net"),
-		// 						SoftwareVersion: to.Ptr("SAP S/4HANA 2020 FPS01"),
-		// 					},
-		// 				},
-		// 				Environment: to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeProd),
-		// 				Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
-		// 				ManagedResourceGroupConfiguration: &armworkloadssapvirtualinstance.ManagedRGConfiguration{
-		// 					Name: to.Ptr("mrg-x00-6d875e77-e412-4d7d-9af4-8895278b4443"),
-		// 				},
-		// 				ProvisioningState: to.Ptr(armworkloadssapvirtualinstance.SapVirtualInstanceProvisioningStateSucceeded),
-		// 				SapProduct: to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
-		// 				State: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStateRegistrationComplete),
-		// 				Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatusRunning),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("X01"),
-		// 			Type: to.Ptr("Microsoft.Workloads/sapVirtualInstances"),
-		// 			ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X01"),
-		// 			SystemData: &armworkloadssapvirtualinstance.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
-		// 				CreatedBy: to.Ptr("user@xyz.com"),
-		// 				CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("user@xyz.com"),
-		// 				LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-		// 			},
-		// 			Location: to.Ptr("eastus"),
-		// 			Tags: map[string]*string{
-		// 			},
-		// 			Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
-		// 				Configuration: &armworkloadssapvirtualinstance.DeploymentConfiguration{
-		// 					ConfigurationType: to.Ptr(armworkloadssapvirtualinstance.SAPConfigurationTypeDeployment),
-		// 					AppLocation: to.Ptr("eastus"),
-		// 					InfrastructureConfiguration: &armworkloadssapvirtualinstance.ThreeTierConfiguration{
-		// 						AppResourceGroup: to.Ptr("X00-RG"),
-		// 						DeploymentType: to.Ptr(armworkloadssapvirtualinstance.SAPDeploymentTypeThreeTier),
-		// 						ApplicationServer: &armworkloadssapvirtualinstance.ApplicationServerConfiguration{
-		// 							InstanceCount: to.Ptr[int64](10),
-		// 							SubnetID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Networks/virtualNetworks/vnet1/subnets/subnetId3"),
-		// 							VirtualMachineConfiguration: &armworkloadssapvirtualinstance.VirtualMachineConfiguration{
-		// 								ImageReference: &armworkloadssapvirtualinstance.ImageReference{
-		// 									Offer: to.Ptr("RHEL-SAP"),
-		// 									Publisher: to.Ptr("RedHat"),
-		// 									SKU: to.Ptr("84sapha-gen2"),
-		// 									Version: to.Ptr("latest"),
-		// 								},
-		// 								OSProfile: &armworkloadssapvirtualinstance.OSProfile{
-		// 									AdminUsername: to.Ptr("{your-username}"),
-		// 									OSConfiguration: &armworkloadssapvirtualinstance.LinuxConfiguration{
-		// 										OSType: to.Ptr(armworkloadssapvirtualinstance.OSTypeLinux),
-		// 										DisablePasswordAuthentication: to.Ptr(true),
-		// 										SSH: &armworkloadssapvirtualinstance.SSHConfiguration{
-		// 											PublicKeys: []*armworkloadssapvirtualinstance.SSHPublicKey{
-		// 												{
-		// 													KeyData: to.Ptr("ssh-rsa public key"),
-		// 											}},
-		// 										},
-		// 									},
-		// 								},
-		// 								VMSize: to.Ptr("Standard_D8s_v3"),
-		// 							},
-		// 						},
-		// 						CentralServer: &armworkloadssapvirtualinstance.CentralServerConfiguration{
-		// 							InstanceCount: to.Ptr[int64](1),
-		// 							SubnetID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Networks/virtualNetworks/vnet1/subnets/subnetId1"),
-		// 							VirtualMachineConfiguration: &armworkloadssapvirtualinstance.VirtualMachineConfiguration{
-		// 								ImageReference: &armworkloadssapvirtualinstance.ImageReference{
-		// 									Offer: to.Ptr("RHEL-SAP"),
-		// 									Publisher: to.Ptr("RedHat"),
-		// 									SKU: to.Ptr("84sapha-gen2"),
-		// 									Version: to.Ptr("latest"),
-		// 								},
-		// 								OSProfile: &armworkloadssapvirtualinstance.OSProfile{
-		// 									AdminUsername: to.Ptr("{your-username}"),
-		// 									OSConfiguration: &armworkloadssapvirtualinstance.LinuxConfiguration{
-		// 										OSType: to.Ptr(armworkloadssapvirtualinstance.OSTypeLinux),
-		// 										DisablePasswordAuthentication: to.Ptr(true),
-		// 										SSH: &armworkloadssapvirtualinstance.SSHConfiguration{
-		// 											PublicKeys: []*armworkloadssapvirtualinstance.SSHPublicKey{
-		// 												{
-		// 													KeyData: to.Ptr("ssh-rsa public key"),
-		// 											}},
-		// 										},
-		// 									},
-		// 								},
-		// 								VMSize: to.Ptr("Standard_D8s_v3"),
-		// 							},
-		// 						},
-		// 						DatabaseServer: &armworkloadssapvirtualinstance.DatabaseConfiguration{
-		// 							DatabaseType: to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseTypeHANA),
-		// 							InstanceCount: to.Ptr[int64](1),
-		// 							SubnetID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Networks/virtualNetworks/vnet1/subnets/subnetId2"),
-		// 							VirtualMachineConfiguration: &armworkloadssapvirtualinstance.VirtualMachineConfiguration{
-		// 								ImageReference: &armworkloadssapvirtualinstance.ImageReference{
-		// 									Offer: to.Ptr("RHEL-SAP"),
-		// 									Publisher: to.Ptr("RedHat"),
-		// 									SKU: to.Ptr("84sapha-gen2"),
-		// 									Version: to.Ptr("latest"),
-		// 								},
-		// 								OSProfile: &armworkloadssapvirtualinstance.OSProfile{
-		// 									AdminUsername: to.Ptr("{your-username}"),
-		// 									OSConfiguration: &armworkloadssapvirtualinstance.LinuxConfiguration{
-		// 										OSType: to.Ptr(armworkloadssapvirtualinstance.OSTypeLinux),
-		// 										DisablePasswordAuthentication: to.Ptr(true),
-		// 										SSH: &armworkloadssapvirtualinstance.SSHConfiguration{
-		// 											PublicKeys: []*armworkloadssapvirtualinstance.SSHPublicKey{
-		// 												{
-		// 													KeyData: to.Ptr("ssh-rsa public key"),
-		// 											}},
-		// 										},
-		// 									},
-		// 								},
-		// 								VMSize: to.Ptr("Standard_D8s_v3"),
-		// 							},
-		// 						},
-		// 					},
-		// 					SoftwareConfiguration: &armworkloadssapvirtualinstance.ServiceInitiatedSoftwareConfiguration{
-		// 						SoftwareInstallationType: to.Ptr(armworkloadssapvirtualinstance.SAPSoftwareInstallationTypeServiceInitiated),
-		// 						BomURL: to.Ptr("https://myaccount.blob.core.windows.net/mycontainer/myblob"),
-		// 						SapBitsStorageAccountID: to.Ptr("/subscriptions/49d64d54-e966-4c46-a868-1999802b762c/resourceGroups/ajgupt-test/providers/Microsoft.Storage/storageAccounts/ajguptsavnet"),
-		// 						SapFqdn: to.Ptr("sapsystem.contoso.net"),
-		// 						SoftwareVersion: to.Ptr("SAP S/4HANA 2020 FPS01"),
-		// 					},
-		// 				},
-		// 				Environment: to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeProd),
-		// 				Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
-		// 				ProvisioningState: to.Ptr(armworkloadssapvirtualinstance.SapVirtualInstanceProvisioningStateSucceeded),
-		// 				SapProduct: to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
-		// 				State: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStateRegistrationComplete),
-		// 				Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatusRunning),
-		// 			},
-		// 	}},
-		// }
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_ListBySubscription.json
-func ExampleSAPVirtualInstancesClient_NewListBySubscriptionPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewSAPVirtualInstancesClient().NewListBySubscriptionPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.SAPVirtualInstanceList = armworkloadssapvirtualinstance.SAPVirtualInstanceList{
-		// 	Value: []*armworkloadssapvirtualinstance.SAPVirtualInstance{
-		// 		{
-		// 			Name: to.Ptr("X00"),
-		// 			Type: to.Ptr("Microsoft.Workloads/sapVirtualInstances"),
-		// 			ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00"),
-		// 			SystemData: &armworkloadssapvirtualinstance.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
-		// 				CreatedBy: to.Ptr("user@xyz.com"),
-		// 				CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("user@xyz.com"),
-		// 				LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-		// 			},
-		// 			Location: to.Ptr("eastus"),
-		// 			Tags: map[string]*string{
-		// 			},
-		// 			Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
-		// 				Configuration: &armworkloadssapvirtualinstance.DeploymentConfiguration{
-		// 					ConfigurationType: to.Ptr(armworkloadssapvirtualinstance.SAPConfigurationTypeDeployment),
-		// 					AppLocation: to.Ptr("eastus"),
-		// 					InfrastructureConfiguration: &armworkloadssapvirtualinstance.ThreeTierConfiguration{
-		// 						AppResourceGroup: to.Ptr("X00-RG"),
-		// 						DeploymentType: to.Ptr(armworkloadssapvirtualinstance.SAPDeploymentTypeThreeTier),
-		// 						ApplicationServer: &armworkloadssapvirtualinstance.ApplicationServerConfiguration{
-		// 							InstanceCount: to.Ptr[int64](10),
-		// 							SubnetID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Networks/virtualNetworks/vnet1/subnets/subnetId3"),
-		// 							VirtualMachineConfiguration: &armworkloadssapvirtualinstance.VirtualMachineConfiguration{
-		// 								ImageReference: &armworkloadssapvirtualinstance.ImageReference{
-		// 									Offer: to.Ptr("RHEL-SAP"),
-		// 									Publisher: to.Ptr("RedHat"),
-		// 									SKU: to.Ptr("84sapha-gen2"),
-		// 									Version: to.Ptr("latest"),
-		// 								},
-		// 								OSProfile: &armworkloadssapvirtualinstance.OSProfile{
-		// 									AdminUsername: to.Ptr("{your-username}"),
-		// 									OSConfiguration: &armworkloadssapvirtualinstance.LinuxConfiguration{
-		// 										OSType: to.Ptr(armworkloadssapvirtualinstance.OSTypeLinux),
-		// 										DisablePasswordAuthentication: to.Ptr(true),
-		// 										SSH: &armworkloadssapvirtualinstance.SSHConfiguration{
-		// 											PublicKeys: []*armworkloadssapvirtualinstance.SSHPublicKey{
-		// 												{
-		// 													KeyData: to.Ptr("ssh-rsa public key"),
-		// 											}},
-		// 										},
-		// 									},
-		// 								},
-		// 								VMSize: to.Ptr("Standard_D8s_v3"),
-		// 							},
-		// 						},
-		// 						CentralServer: &armworkloadssapvirtualinstance.CentralServerConfiguration{
-		// 							InstanceCount: to.Ptr[int64](1),
-		// 							SubnetID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Networks/virtualNetworks/vnet1/subnets/subnetId1"),
-		// 							VirtualMachineConfiguration: &armworkloadssapvirtualinstance.VirtualMachineConfiguration{
-		// 								ImageReference: &armworkloadssapvirtualinstance.ImageReference{
-		// 									Offer: to.Ptr("RHEL-SAP"),
-		// 									Publisher: to.Ptr("RedHat"),
-		// 									SKU: to.Ptr("84sapha-gen2"),
-		// 									Version: to.Ptr("latest"),
-		// 								},
-		// 								OSProfile: &armworkloadssapvirtualinstance.OSProfile{
-		// 									AdminUsername: to.Ptr("{your-username}"),
-		// 									OSConfiguration: &armworkloadssapvirtualinstance.LinuxConfiguration{
-		// 										OSType: to.Ptr(armworkloadssapvirtualinstance.OSTypeLinux),
-		// 										DisablePasswordAuthentication: to.Ptr(true),
-		// 										SSH: &armworkloadssapvirtualinstance.SSHConfiguration{
-		// 											PublicKeys: []*armworkloadssapvirtualinstance.SSHPublicKey{
-		// 												{
-		// 													KeyData: to.Ptr("ssh-rsa public key"),
-		// 											}},
-		// 										},
-		// 									},
-		// 								},
-		// 								VMSize: to.Ptr("Standard_D8s_v3"),
-		// 							},
-		// 						},
-		// 						DatabaseServer: &armworkloadssapvirtualinstance.DatabaseConfiguration{
-		// 							DatabaseType: to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseTypeHANA),
-		// 							InstanceCount: to.Ptr[int64](1),
-		// 							SubnetID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Networks/virtualNetworks/vnet1/subnets/subnetId2"),
-		// 							VirtualMachineConfiguration: &armworkloadssapvirtualinstance.VirtualMachineConfiguration{
-		// 								ImageReference: &armworkloadssapvirtualinstance.ImageReference{
-		// 									Offer: to.Ptr("RHEL-SAP"),
-		// 									Publisher: to.Ptr("RedHat"),
-		// 									SKU: to.Ptr("84sapha-gen2"),
-		// 									Version: to.Ptr("latest"),
-		// 								},
-		// 								OSProfile: &armworkloadssapvirtualinstance.OSProfile{
-		// 									AdminUsername: to.Ptr("{your-username}"),
-		// 									OSConfiguration: &armworkloadssapvirtualinstance.LinuxConfiguration{
-		// 										OSType: to.Ptr(armworkloadssapvirtualinstance.OSTypeLinux),
-		// 										DisablePasswordAuthentication: to.Ptr(true),
-		// 										SSH: &armworkloadssapvirtualinstance.SSHConfiguration{
-		// 											PublicKeys: []*armworkloadssapvirtualinstance.SSHPublicKey{
-		// 												{
-		// 													KeyData: to.Ptr("ssh-rsa public key"),
-		// 											}},
-		// 										},
-		// 									},
-		// 								},
-		// 								VMSize: to.Ptr("Standard_D8s_v3"),
-		// 							},
-		// 						},
-		// 					},
-		// 					SoftwareConfiguration: &armworkloadssapvirtualinstance.ServiceInitiatedSoftwareConfiguration{
-		// 						SoftwareInstallationType: to.Ptr(armworkloadssapvirtualinstance.SAPSoftwareInstallationTypeServiceInitiated),
-		// 						BomURL: to.Ptr("https://myaccount.blob.core.windows.net/mycontainer/myblob"),
-		// 						SapBitsStorageAccountID: to.Ptr("/subscriptions/49d64d54-e966-4c46-a868-1999802b762c/resourceGroups/ajgupt-test/providers/Microsoft.Storage/storageAccounts/ajguptsavnet"),
-		// 						SapFqdn: to.Ptr("sapsystem.contoso.net"),
-		// 						SoftwareVersion: to.Ptr("SAP S/4HANA 2020 FPS01"),
-		// 					},
-		// 				},
-		// 				Environment: to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeProd),
-		// 				Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
-		// 				ManagedResourceGroupConfiguration: &armworkloadssapvirtualinstance.ManagedRGConfiguration{
-		// 					Name: to.Ptr("mrg-x00-6d875e77-e412-4d7d-9af4-8895278b4443"),
-		// 				},
-		// 				ProvisioningState: to.Ptr(armworkloadssapvirtualinstance.SapVirtualInstanceProvisioningStateSucceeded),
-		// 				SapProduct: to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
-		// 				State: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStateRegistrationComplete),
-		// 				Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatusRunning),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("X01"),
-		// 			Type: to.Ptr("Microsoft.Workloads/sapVirtualInstances"),
-		// 			ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X01"),
-		// 			SystemData: &armworkloadssapvirtualinstance.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
-		// 				CreatedBy: to.Ptr("user@xyz.com"),
-		// 				CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("user@xyz.com"),
-		// 				LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-		// 			},
-		// 			Location: to.Ptr("eastus"),
-		// 			Tags: map[string]*string{
-		// 			},
-		// 			Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
-		// 				Configuration: &armworkloadssapvirtualinstance.DeploymentConfiguration{
-		// 					ConfigurationType: to.Ptr(armworkloadssapvirtualinstance.SAPConfigurationTypeDeployment),
-		// 					AppLocation: to.Ptr("eastus"),
-		// 					InfrastructureConfiguration: &armworkloadssapvirtualinstance.ThreeTierConfiguration{
-		// 						AppResourceGroup: to.Ptr("X00-RG"),
-		// 						DeploymentType: to.Ptr(armworkloadssapvirtualinstance.SAPDeploymentTypeThreeTier),
-		// 						ApplicationServer: &armworkloadssapvirtualinstance.ApplicationServerConfiguration{
-		// 							InstanceCount: to.Ptr[int64](10),
-		// 							SubnetID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Networks/virtualNetworks/vnet1/subnets/subnetId3"),
-		// 							VirtualMachineConfiguration: &armworkloadssapvirtualinstance.VirtualMachineConfiguration{
-		// 								ImageReference: &armworkloadssapvirtualinstance.ImageReference{
-		// 									Offer: to.Ptr("RHEL-SAP"),
-		// 									Publisher: to.Ptr("RedHat"),
-		// 									SKU: to.Ptr("84sapha-gen2"),
-		// 									Version: to.Ptr("latest"),
-		// 								},
-		// 								OSProfile: &armworkloadssapvirtualinstance.OSProfile{
-		// 									AdminUsername: to.Ptr("{your-username}"),
-		// 									OSConfiguration: &armworkloadssapvirtualinstance.LinuxConfiguration{
-		// 										OSType: to.Ptr(armworkloadssapvirtualinstance.OSTypeLinux),
-		// 										DisablePasswordAuthentication: to.Ptr(true),
-		// 										SSH: &armworkloadssapvirtualinstance.SSHConfiguration{
-		// 											PublicKeys: []*armworkloadssapvirtualinstance.SSHPublicKey{
-		// 												{
-		// 													KeyData: to.Ptr("ssh-rsa public key"),
-		// 											}},
-		// 										},
-		// 									},
-		// 								},
-		// 								VMSize: to.Ptr("Standard_D8s_v3"),
-		// 							},
-		// 						},
-		// 						CentralServer: &armworkloadssapvirtualinstance.CentralServerConfiguration{
-		// 							InstanceCount: to.Ptr[int64](1),
-		// 							SubnetID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Networks/virtualNetworks/vnet1/subnets/subnetId1"),
-		// 							VirtualMachineConfiguration: &armworkloadssapvirtualinstance.VirtualMachineConfiguration{
-		// 								ImageReference: &armworkloadssapvirtualinstance.ImageReference{
-		// 									Offer: to.Ptr("RHEL-SAP"),
-		// 									Publisher: to.Ptr("RedHat"),
-		// 									SKU: to.Ptr("84sapha-gen2"),
-		// 									Version: to.Ptr("latest"),
-		// 								},
-		// 								OSProfile: &armworkloadssapvirtualinstance.OSProfile{
-		// 									AdminUsername: to.Ptr("{your-username}"),
-		// 									OSConfiguration: &armworkloadssapvirtualinstance.LinuxConfiguration{
-		// 										OSType: to.Ptr(armworkloadssapvirtualinstance.OSTypeLinux),
-		// 										DisablePasswordAuthentication: to.Ptr(true),
-		// 										SSH: &armworkloadssapvirtualinstance.SSHConfiguration{
-		// 											PublicKeys: []*armworkloadssapvirtualinstance.SSHPublicKey{
-		// 												{
-		// 													KeyData: to.Ptr("ssh-rsa public key"),
-		// 											}},
-		// 										},
-		// 									},
-		// 								},
-		// 								VMSize: to.Ptr("Standard_D8s_v3"),
-		// 							},
-		// 						},
-		// 						DatabaseServer: &armworkloadssapvirtualinstance.DatabaseConfiguration{
-		// 							DatabaseType: to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseTypeHANA),
-		// 							InstanceCount: to.Ptr[int64](1),
-		// 							SubnetID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Networks/virtualNetworks/vnet1/subnets/subnetId2"),
-		// 							VirtualMachineConfiguration: &armworkloadssapvirtualinstance.VirtualMachineConfiguration{
-		// 								ImageReference: &armworkloadssapvirtualinstance.ImageReference{
-		// 									Offer: to.Ptr("RHEL-SAP"),
-		// 									Publisher: to.Ptr("RedHat"),
-		// 									SKU: to.Ptr("84sapha-gen2"),
-		// 									Version: to.Ptr("latest"),
-		// 								},
-		// 								OSProfile: &armworkloadssapvirtualinstance.OSProfile{
-		// 									AdminUsername: to.Ptr("{your-username}"),
-		// 									OSConfiguration: &armworkloadssapvirtualinstance.LinuxConfiguration{
-		// 										OSType: to.Ptr(armworkloadssapvirtualinstance.OSTypeLinux),
-		// 										DisablePasswordAuthentication: to.Ptr(true),
-		// 										SSH: &armworkloadssapvirtualinstance.SSHConfiguration{
-		// 											PublicKeys: []*armworkloadssapvirtualinstance.SSHPublicKey{
-		// 												{
-		// 													KeyData: to.Ptr("ssh-rsa public key"),
-		// 											}},
-		// 										},
-		// 									},
-		// 								},
-		// 								VMSize: to.Ptr("Standard_D8s_v3"),
-		// 							},
-		// 						},
-		// 					},
-		// 					SoftwareConfiguration: &armworkloadssapvirtualinstance.ServiceInitiatedSoftwareConfiguration{
-		// 						SoftwareInstallationType: to.Ptr(armworkloadssapvirtualinstance.SAPSoftwareInstallationTypeServiceInitiated),
-		// 						BomURL: to.Ptr("https://myaccount.blob.core.windows.net/mycontainer/myblob"),
-		// 						SapBitsStorageAccountID: to.Ptr("/subscriptions/49d64d54-e966-4c46-a868-1999802b762c/resourceGroups/ajgupt-test/providers/Microsoft.Storage/storageAccounts/ajguptsavnet"),
-		// 						SapFqdn: to.Ptr("sapsystem.contoso.net"),
-		// 						SoftwareVersion: to.Ptr("SAP S/4HANA 2020 FPS01"),
-		// 					},
-		// 				},
-		// 				Environment: to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeProd),
-		// 				Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
-		// 				ProvisioningState: to.Ptr(armworkloadssapvirtualinstance.SapVirtualInstanceProvisioningStateSucceeded),
-		// 				SapProduct: to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
-		// 				State: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStateRegistrationComplete),
-		// 				Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatusRunning),
-		// 			},
-		// 	}},
-		// }
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_Start.json
-func ExampleSAPVirtualInstancesClient_BeginStart_startTheSapSystem() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginStart(ctx, "test-rg", "X00", &armworkloadssapvirtualinstance.SAPVirtualInstancesClientBeginStartOptions{Body: nil})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.OperationStatusResult = armworkloadssapvirtualinstance.OperationStatusResult{
-	// 	Name: to.Ptr("1e4193c3-206e-4916-b124-1da16175eb0e"),
-	// 	EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:38:07.000Z"); return t}()),
-	// 	ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/operations/locations/centralus/1e4193c3-206e-4916-b124-1da16175eb0e"),
-	// 	StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:36:07.000Z"); return t}()),
-	// 	Status: to.Ptr("Succeeded"),
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_Start_WithInfraOperations.json
-func ExampleSAPVirtualInstancesClient_BeginStart_startTheVirtualMachinesAndTheSapSystem() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginStart(ctx, "test-rg", "X00", &armworkloadssapvirtualinstance.SAPVirtualInstancesClientBeginStartOptions{Body: &armworkloadssapvirtualinstance.StartRequest{
+	poller, err := clientFactory.NewSapVirtualInstancesClient().BeginStart(ctx, "test-rg", "X00", &armworkloadssapvirtualinstance.SapVirtualInstancesClientBeginStartOptions{Body: &armworkloadssapvirtualinstance.StartRequest{
 		StartVM: to.Ptr(true),
 	},
 	})
@@ -7938,8 +9110,8 @@ func ExampleSAPVirtualInstancesClient_BeginStart_startTheVirtualMachinesAndTheSa
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_Stop.json
-func ExampleSAPVirtualInstancesClient_BeginStop_sapVirtualInstancesStop() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_StartWithInfraOperations.json
+func ExampleSapVirtualInstancesClient_BeginStart_sapVirtualInstancesStartWithInfraOperations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -7949,7 +9121,41 @@ func ExampleSAPVirtualInstancesClient_BeginStop_sapVirtualInstancesStop() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginStop(ctx, "test-rg", "X00", &armworkloadssapvirtualinstance.SAPVirtualInstancesClientBeginStopOptions{Body: &armworkloadssapvirtualinstance.StopRequest{
+	poller, err := clientFactory.NewSapVirtualInstancesClient().BeginStart(ctx, "test-rg", "X00", &armworkloadssapvirtualinstance.SapVirtualInstancesClientBeginStartOptions{Body: &armworkloadssapvirtualinstance.StartRequest{
+		StartVM: to.Ptr(true),
+	},
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.OperationStatusResult = armworkloadssapvirtualinstance.OperationStatusResult{
+	// 	Name: to.Ptr("1e4193c3-206e-4916-b124-1da16175eb0e"),
+	// 	EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:38:07.000Z"); return t}()),
+	// 	ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/operations/locations/centralus/1e4193c3-206e-4916-b124-1da16175eb0e"),
+	// 	StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:36:07.000Z"); return t}()),
+	// 	Status: to.Ptr("Succeeded"),
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_Stop.json
+func ExampleSapVirtualInstancesClient_BeginStop_sapVirtualInstancesStop() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSapVirtualInstancesClient().BeginStop(ctx, "test-rg", "X00", &armworkloadssapvirtualinstance.SapVirtualInstancesClientBeginStopOptions{Body: &armworkloadssapvirtualinstance.StopRequest{
 		SoftStopTimeoutSeconds: to.Ptr[int64](0),
 	},
 	})
@@ -7972,8 +9178,8 @@ func ExampleSAPVirtualInstancesClient_BeginStop_sapVirtualInstancesStop() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_Stop_WithInfraOperations.json
-func ExampleSAPVirtualInstancesClient_BeginStop_stopTheVirtualMachineSAndTheSapSystemOnIt() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_SoftStop.json
+func ExampleSapVirtualInstancesClient_BeginStop_softStopOfSapVirtualInstancesStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -7983,7 +9189,76 @@ func ExampleSAPVirtualInstancesClient_BeginStop_stopTheVirtualMachineSAndTheSapS
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginStop(ctx, "test-rg", "X00", &armworkloadssapvirtualinstance.SAPVirtualInstancesClientBeginStopOptions{Body: &armworkloadssapvirtualinstance.StopRequest{
+	poller, err := clientFactory.NewSapVirtualInstancesClient().BeginStop(ctx, "test-rg", "X00", &armworkloadssapvirtualinstance.SapVirtualInstancesClientBeginStopOptions{Body: &armworkloadssapvirtualinstance.StopRequest{
+		SoftStopTimeoutSeconds: to.Ptr[int64](300),
+	},
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.OperationStatusResult = armworkloadssapvirtualinstance.OperationStatusResult{
+	// 	Name: to.Ptr("1e4193c3-206e-4916-b124-1da16175eb0e"),
+	// 	EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:38:07.000Z"); return t}()),
+	// 	ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/operations/locations/centralus/1e4193c3-206e-4916-b124-1da16175eb0e"),
+	// 	StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:36:07.000Z"); return t}()),
+	// 	Status: to.Ptr("Succeeded"),
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_SoftStopVMAndSystem.json
+func ExampleSapVirtualInstancesClient_BeginStop_softStopTheVirtualMachineSAndTheSapSystemOnIt() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSapVirtualInstancesClient().BeginStop(ctx, "test-rg", "X00", &armworkloadssapvirtualinstance.SapVirtualInstancesClientBeginStopOptions{Body: &armworkloadssapvirtualinstance.StopRequest{
+		DeallocateVM:           to.Ptr(true),
+		SoftStopTimeoutSeconds: to.Ptr[int64](300),
+	},
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.OperationStatusResult = armworkloadssapvirtualinstance.OperationStatusResult{
+	// 	Name: to.Ptr("1e4193c3-206e-4916-b124-1da16175eb0e"),
+	// 	EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:38:07.000Z"); return t}()),
+	// 	ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/operations/locations/centralus/1e4193c3-206e-4916-b124-1da16175eb0e"),
+	// 	StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:36:07.000Z"); return t}()),
+	// 	Status: to.Ptr("Succeeded"),
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapVirtualInstances_StopVMAndSystem.json
+func ExampleSapVirtualInstancesClient_BeginStop_stopTheVirtualMachineSAndTheSapSystemOnIt() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSapVirtualInstancesClient().BeginStop(ctx, "test-rg", "X00", &armworkloadssapvirtualinstance.SapVirtualInstancesClientBeginStopOptions{Body: &armworkloadssapvirtualinstance.StopRequest{
 		DeallocateVM:           to.Ptr(true),
 		SoftStopTimeoutSeconds: to.Ptr[int64](0),
 	},

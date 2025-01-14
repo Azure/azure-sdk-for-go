@@ -41,7 +41,7 @@ type ApplicationServerVMDetails struct {
 	// READ-ONLY; Defines the type of application server VM.
 	Type *ApplicationServerVirtualMachineType
 
-	// READ-ONLY
+	// READ-ONLY; The virtual machine id.
 	VirtualMachineID *string
 }
 
@@ -80,16 +80,24 @@ type CentralServerVMDetails struct {
 	// READ-ONLY; Defines the type of central server VM.
 	Type *CentralServerVirtualMachineType
 
-	// READ-ONLY
+	// READ-ONLY; The virtual machine id.
 	VirtualMachineID *string
+}
+
+type Components1IrwhnvSchemasSapvirtualinstanceidentityPropertiesUserassignedidentitiesAdditionalproperties struct {
+	// READ-ONLY; The client ID of the assigned identity.
+	ClientID *string
+
+	// READ-ONLY; The principal ID of the assigned identity.
+	PrincipalID *string
 }
 
 // CreateAndMountFileShareConfiguration - Gets or sets the file share configuration where the transport directory fileshare
 // is created and mounted as a part of the create infra flow. Please pre-create the resource group you intend to place
 // the transport directory in. The storage account and fileshare will be auto-created by the ACSS and doesn't need to be pre-created.
 type CreateAndMountFileShareConfiguration struct {
-	// REQUIRED; The type of file share config.
-	ConfigurationType *ConfigurationType
+	// REQUIRED; The type of file share config, eg: Mount/CreateAndMount/Skip.
+	ConfigurationType *FileShareConfigurationType
 
 	// The name of transport file share resource group. This should be pre created by the customer. The app rg is used in case
 	// of missing input.
@@ -146,7 +154,7 @@ type DatabaseVMDetails struct {
 	// Storage.
 	StorageDetails []*StorageInformation
 
-	// READ-ONLY
+	// READ-ONLY; The virtual machine id.
 	VirtualMachineID *string
 }
 
@@ -161,7 +169,7 @@ type DeployerVMPackages struct {
 
 // DeploymentConfiguration - Deployment Configuration.
 type DeploymentConfiguration struct {
-	// REQUIRED; The configuration Type.
+	// REQUIRED; The configuration type. Eg: Deployment/Discovery
 	ConfigurationType *SAPConfigurationType
 
 	// The geo-location where the SAP system is to be created.
@@ -183,7 +191,7 @@ func (d *DeploymentConfiguration) GetSAPConfiguration() *SAPConfiguration {
 
 // DeploymentWithOSConfiguration - Deployment along with OS Configuration.
 type DeploymentWithOSConfiguration struct {
-	// REQUIRED; The configuration Type.
+	// REQUIRED; The configuration type. Eg: Deployment/Discovery
 	ConfigurationType *SAPConfigurationType
 
 	// The geo-location where the SAP system is to be created.
@@ -208,7 +216,7 @@ func (d *DeploymentWithOSConfiguration) GetSAPConfiguration() *SAPConfiguration 
 
 // DiscoveryConfiguration - Discovery Details.
 type DiscoveryConfiguration struct {
-	// REQUIRED; The configuration Type.
+	// REQUIRED; The configuration type. Eg: Deployment/Discovery
 	ConfigurationType *SAPConfigurationType
 
 	// The virtual machine ID of the Central Server.
@@ -361,7 +369,7 @@ type ErrorDetail struct {
 // ExternalInstallationSoftwareConfiguration - The SAP Software configuration Input when the software is installed externally
 // outside the service.
 type ExternalInstallationSoftwareConfiguration struct {
-	// REQUIRED; The SAP software installation Type.
+	// REQUIRED; The SAP software installation type.
 	SoftwareInstallationType *SAPSoftwareInstallationType
 
 	// The resource ID of the virtual machine containing the central server instance.
@@ -378,8 +386,8 @@ func (e *ExternalInstallationSoftwareConfiguration) GetSoftwareConfiguration() *
 // FileShareConfiguration - File Share configuration details, populated with information on storage configuration mounted
 // on the VIS. The createAndMount option is selected in case of missing input.
 type FileShareConfiguration struct {
-	// REQUIRED; The type of file share config.
-	ConfigurationType *ConfigurationType
+	// REQUIRED; The type of file share config, eg: Mount/CreateAndMount/Skip.
+	ConfigurationType *FileShareConfigurationType
 }
 
 // GetFileShareConfiguration implements the FileShareConfigurationClassification interface for type FileShareConfiguration.
@@ -442,7 +450,7 @@ type InfrastructureConfiguration struct {
 	// REQUIRED; The application resource group where SAP system resources will be deployed.
 	AppResourceGroup *string
 
-	// REQUIRED; The type of SAP deployment, single server or Three tier.
+	// REQUIRED; The SAP deployment type. Eg: SingleServer/ThreeTier.
 	DeploymentType *SAPDeploymentType
 }
 
@@ -451,8 +459,9 @@ func (i *InfrastructureConfiguration) GetInfrastructureConfiguration() *Infrastr
 	return i
 }
 
-// LinuxConfiguration - Specifies the Linux operating system settings on the virtual machine.
-// For a list of supported Linux distributions, see Linux on Azure-Endorsed Distributions [https://docs.microsoft.com/azure/virtual-machines/linux/endorsed-distros].
+// LinuxConfiguration - Specifies the Linux operating system settings on the virtual machine. For a list of supported Linux
+// distributions, see Linux on Azure-Endorsed Distributions
+// [https://docs.microsoft.com/azure/virtual-machines/linux/endorsed-distros].
 type LinuxConfiguration struct {
 	// REQUIRED; The OS Type
 	OSType *OSType
@@ -476,7 +485,7 @@ func (l *LinuxConfiguration) GetOSConfiguration() *OSConfiguration {
 
 // LoadBalancerDetails - The Load Balancer details such as Load Balancer ID.
 type LoadBalancerDetails struct {
-	// READ-ONLY
+	// READ-ONLY; Fully qualified resource ID for the load balancer.
 	ID *string
 }
 
@@ -530,8 +539,8 @@ type MessageServerProperties struct {
 // MountFileShareConfiguration - Gets or sets the file share configuration where the transport directory fileshare already
 // exists, and user wishes to mount the fileshare as a part of the create infra flow.
 type MountFileShareConfiguration struct {
-	// REQUIRED; The type of file share config.
-	ConfigurationType *ConfigurationType
+	// REQUIRED; The type of file share config, eg: Mount/CreateAndMount/Skip.
+	ConfigurationType *FileShareConfigurationType
 
 	// REQUIRED; The fileshare resource ID
 	ID *string
@@ -681,6 +690,9 @@ type OperationStatusResult struct {
 
 	// The start time of the operation.
 	StartTime *time.Time
+
+	// READ-ONLY; Fully qualified ID of the resource against which the original async operation was started.
+	ResourceID *string
 }
 
 // OsSapConfiguration - Defines the OS and SAP Configurations for Deployment
@@ -697,13 +709,13 @@ type SAPApplicationServerInstance struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// Defines the SAP Application Server instance properties.
+	// The resource-specific properties for this resource.
 	Properties *SAPApplicationServerProperties
 
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -716,13 +728,13 @@ type SAPApplicationServerInstance struct {
 	Type *string
 }
 
-// SAPApplicationServerInstanceList - Defines the collection of SAP Application Server Instance resources.
-type SAPApplicationServerInstanceList struct {
-	// Gets the value of next link.
-	NextLink *string
-
-	// Gets the list of SAP Application Server instance resources.
+// SAPApplicationServerInstanceListResult - The response of a SAPApplicationServerInstance list operation.
+type SAPApplicationServerInstanceListResult struct {
+	// REQUIRED; The SAPApplicationServerInstance items on this page
 	Value []*SAPApplicationServerInstance
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // SAPApplicationServerProperties - Defines the SAP Application Server instance properties.
@@ -803,27 +815,18 @@ type SAPAvailabilityZonePair struct {
 	ZoneB *int64
 }
 
-// SAPCentralInstanceList - Defines the collection of SAP Central Services Instance resources.
-type SAPCentralInstanceList struct {
-	// Gets the value of next link.
-	NextLink *string
-
-	// Gets the list of SAP central services instance resources.
-	Value []*SAPCentralServerInstance
-}
-
 // SAPCentralServerInstance - Define the SAP Central Services Instance resource.
 type SAPCentralServerInstance struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// Defines the SAP Central Services Instance properties.
+	// The resource-specific properties for this resource.
 	Properties *SAPCentralServerProperties
 
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -834,6 +837,15 @@ type SAPCentralServerInstance struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
+}
+
+// SAPCentralServerInstanceListResult - The response of a SAPCentralServerInstance list operation.
+type SAPCentralServerInstanceListResult struct {
+	// REQUIRED; The SAPCentralServerInstance items on this page
+	Value []*SAPCentralServerInstance
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // SAPCentralServerProperties - Defines the SAP Central Services Instance properties.
@@ -883,7 +895,7 @@ type SAPCentralServerProperties struct {
 
 // SAPConfiguration - The SAP Configuration.
 type SAPConfiguration struct {
-	// REQUIRED; The configuration Type.
+	// REQUIRED; The configuration type. Eg: Deployment/Discovery
 	ConfigurationType *SAPConfigurationType
 }
 
@@ -895,13 +907,13 @@ type SAPDatabaseInstance struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// Defines the Database properties.
+	// The resource-specific properties for this resource.
 	Properties *SAPDatabaseProperties
 
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -914,13 +926,13 @@ type SAPDatabaseInstance struct {
 	Type *string
 }
 
-// SAPDatabaseInstanceList - Defines the collection of SAP Database Instances.
-type SAPDatabaseInstanceList struct {
-	// Gets the value of next link.
-	NextLink *string
-
-	// Gets the list of SAP Database instances.
+// SAPDatabaseInstanceListResult - The response of a SAPDatabaseInstance list operation.
+type SAPDatabaseInstanceListResult struct {
+	// REQUIRED; The SAPDatabaseInstance items on this page
 	Value []*SAPDatabaseInstance
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // SAPDatabaseProperties - Defines the Database properties.
@@ -1000,7 +1012,7 @@ type SAPInstallWithoutOSConfigSoftwareConfiguration struct {
 	// REQUIRED; The SAP bits storage account id.
 	SapBitsStorageAccountID *string
 
-	// REQUIRED; The SAP software installation Type.
+	// REQUIRED; The SAP software installation type.
 	SoftwareInstallationType *SAPSoftwareInstallationType
 
 	// REQUIRED; The software version to install.
@@ -1049,7 +1061,7 @@ type SAPSizingRecommendationRequest struct {
 
 // SAPSizingRecommendationResult - The SAP sizing recommendation result.
 type SAPSizingRecommendationResult struct {
-	// REQUIRED; The type of SAP deployment, single server or Three tier.
+	// REQUIRED; The deployment type. Eg: SingleServer/ThreeTier
 	DeploymentType *SAPDeploymentType
 }
 
@@ -1102,16 +1114,16 @@ type SAPVirtualInstance struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// REQUIRED; Defines the Virtual Instance for SAP solutions resource properties.
-	Properties *SAPVirtualInstanceProperties
+	// The managed service identities assigned to this resource.
+	Identity *SAPVirtualInstanceIdentity
 
-	// Managed service identity (user assigned identities)
-	Identity *UserAssignedServiceIdentity
+	// The resource-specific properties for this resource.
+	Properties *SAPVirtualInstanceProperties
 
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1130,13 +1142,22 @@ type SAPVirtualInstanceError struct {
 	Properties *ErrorDefinition
 }
 
-// SAPVirtualInstanceList - Defines the collection of Virtual Instance for SAP solutions resources.
-type SAPVirtualInstanceList struct {
-	// Gets the value of next link.
-	NextLink *string
+// SAPVirtualInstanceIdentity - Managed service identity (user assigned identities)
+type SAPVirtualInstanceIdentity struct {
+	// REQUIRED; The type of managed identity assigned to this resource.
+	Type *SAPVirtualInstanceIdentityType
 
-	// Gets the list of Virtual Instances for SAP solutions resources.
+	// The identities assigned to this resource by the user.
+	UserAssignedIdentities map[string]*Components1IrwhnvSchemasSapvirtualinstanceidentityPropertiesUserassignedidentitiesAdditionalproperties
+}
+
+// SAPVirtualInstanceListResult - The response of a SAPVirtualInstance list operation.
+type SAPVirtualInstanceListResult struct {
+	// REQUIRED; The SAPVirtualInstance items on this page
 	Value []*SAPVirtualInstance
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // SAPVirtualInstanceProperties - Defines the Virtual Instance for SAP solutions resource properties.
@@ -1184,7 +1205,8 @@ type SSHConfiguration struct {
 }
 
 // SSHKeyPair - The SSH Key-pair used to authenticate with the VM. The key needs to be at least 2048-bit and in ssh-rsa format.
-// For creating ssh keys, see Create SSH keys on Linux and Mac for Linux VMs in Azure [https://docs.microsoft.com/azure/virtual-machines/linux/create-ssh-keys-detailed].
+// For creating ssh keys, see Create SSH keys on Linux and Mac for Linux VMs in Azure
+// [https://docs.microsoft.com/azure/virtual-machines/linux/create-ssh-keys-detailed].
 type SSHKeyPair struct {
 	// SSH private key.
 	PrivateKey *string
@@ -1216,7 +1238,7 @@ type ServiceInitiatedSoftwareConfiguration struct {
 	// REQUIRED; The FQDN to set for the SAP system during install.
 	SapFqdn *string
 
-	// REQUIRED; The SAP software installation Type.
+	// REQUIRED; The SAP software installation type.
 	SoftwareInstallationType *SAPSoftwareInstallationType
 
 	// REQUIRED; The software version to install.
@@ -1248,7 +1270,7 @@ type SingleServerConfiguration struct {
 	// REQUIRED; The application resource group where SAP system resources will be deployed.
 	AppResourceGroup *string
 
-	// REQUIRED; The type of SAP deployment, single server or Three tier.
+	// REQUIRED; The SAP deployment type. Eg: SingleServer/ThreeTier.
 	DeploymentType *SAPDeploymentType
 
 	// REQUIRED; The subnet id.
@@ -1281,7 +1303,7 @@ func (s *SingleServerConfiguration) GetInfrastructureConfiguration() *Infrastruc
 // SingleServerCustomResourceNames - The resource-names input to specify custom names for underlying azure resources that
 // are part of a single server SAP system.
 type SingleServerCustomResourceNames struct {
-	// REQUIRED; The pattern type to be used for resource naming.
+	// REQUIRED; The naming pattern type.
 	NamingPatternType *NamingPatternType
 }
 
@@ -1293,7 +1315,7 @@ func (s *SingleServerCustomResourceNames) GetSingleServerCustomResourceNames() *
 // SingleServerFullResourceNames - The resource name object where the specified values will be full resource names of the
 // corresponding resources in a single server SAP system.
 type SingleServerFullResourceNames struct {
-	// REQUIRED; The pattern type to be used for resource naming.
+	// REQUIRED; The naming pattern type.
 	NamingPatternType *NamingPatternType
 
 	// The resource names object for virtual machine and related resources.
@@ -1309,7 +1331,7 @@ func (s *SingleServerFullResourceNames) GetSingleServerCustomResourceNames() *Si
 
 // SingleServerRecommendationResult - The recommended configuration for a single server SAP system.
 type SingleServerRecommendationResult struct {
-	// REQUIRED; The type of SAP deployment, single server or Three tier.
+	// REQUIRED; The deployment type. Eg: SingleServer/ThreeTier
 	DeploymentType *SAPDeploymentType
 
 	// The recommended VM SKU for single server.
@@ -1326,8 +1348,8 @@ func (s *SingleServerRecommendationResult) GetSAPSizingRecommendationResult() *S
 // SkipFileShareConfiguration - Gets or sets the file share configuration for scenarios where transport directory fileshare
 // is not created or required.
 type SkipFileShareConfiguration struct {
-	// REQUIRED; The type of file share config.
-	ConfigurationType *ConfigurationType
+	// REQUIRED; The type of file share config, eg: Mount/CreateAndMount/Skip.
+	ConfigurationType *FileShareConfigurationType
 }
 
 // GetFileShareConfiguration implements the FileShareConfigurationClassification interface for type SkipFileShareConfiguration.
@@ -1339,7 +1361,7 @@ func (s *SkipFileShareConfiguration) GetFileShareConfiguration() *FileShareConfi
 
 // SoftwareConfiguration - The SAP Software configuration Input.
 type SoftwareConfiguration struct {
-	// REQUIRED; The SAP software installation Type.
+	// REQUIRED; The SAP software installation type.
 	SoftwareInstallationType *SAPSoftwareInstallationType
 }
 
@@ -1372,7 +1394,7 @@ type StorageConfiguration struct {
 
 // StorageInformation - Storage details of all the Storage accounts attached to the VM. For e.g. NFS on AFS Shared Storage.
 type StorageInformation struct {
-	// READ-ONLY
+	// READ-ONLY; Fully qualified resource ID for the storage account.
 	ID *string
 }
 
@@ -1412,7 +1434,7 @@ type ThreeTierConfiguration struct {
 	// REQUIRED; The database configuration.
 	DatabaseServer *DatabaseConfiguration
 
-	// REQUIRED; The type of SAP deployment, single server or Three tier.
+	// REQUIRED; The SAP deployment type. Eg: SingleServer/ThreeTier.
 	DeploymentType *SAPDeploymentType
 
 	// The set of custom names to be used for underlying azure resources that are part of the SAP system.
@@ -1478,7 +1500,7 @@ func (t *ThreeTierFullResourceNames) GetThreeTierCustomResourceNames() *ThreeTie
 
 // ThreeTierRecommendationResult - The recommended configuration for a three tier SAP system.
 type ThreeTierRecommendationResult struct {
-	// REQUIRED; The type of SAP deployment, single server or Three tier.
+	// REQUIRED; The deployment type. Eg: SingleServer/ThreeTier
 	DeploymentType *SAPDeploymentType
 
 	// The application server instance count.
@@ -1525,7 +1547,7 @@ type UpdateSAPDatabaseInstanceRequest struct {
 	Tags map[string]*string
 }
 
-// UpdateSAPVirtualInstanceProperties - Defines the properties to be updated for Virtual Instance for SAP.
+// UpdateSAPVirtualInstanceProperties - Defines the update request body properties for updating Virtual Instance for SAP.
 type UpdateSAPVirtualInstanceProperties struct {
 	// Specifies the network access configuration for the resources that will be deployed in the Managed Resource Group. The options
 	// to choose from are Public and Private. If 'Private' is chosen, the Storage
@@ -1538,31 +1560,13 @@ type UpdateSAPVirtualInstanceProperties struct {
 // UpdateSAPVirtualInstanceRequest - Defines the request body for updating Virtual Instance for SAP.
 type UpdateSAPVirtualInstanceRequest struct {
 	// Managed service identity (user assigned identities)
-	Identity *UserAssignedServiceIdentity
+	Identity *SAPVirtualInstanceIdentity
 
-	// Defines the properties to be updated for Virtual Instance for SAP.
+	// The update properties.
 	Properties *UpdateSAPVirtualInstanceProperties
 
 	// Gets or sets the Resource tags.
 	Tags map[string]*string
-}
-
-// UserAssignedIdentity - User assigned identity properties
-type UserAssignedIdentity struct {
-	// READ-ONLY; The client ID of the assigned identity.
-	ClientID *string
-
-	// READ-ONLY; The principal ID of the assigned identity.
-	PrincipalID *string
-}
-
-// UserAssignedServiceIdentity - Managed service identity (user assigned identities)
-type UserAssignedServiceIdentity struct {
-	// REQUIRED; Type of manage identity
-	Type *ManagedServiceIdentityType
-
-	// User assigned identities dictionary
-	UserAssignedIdentities map[string]*UserAssignedIdentity
 }
 
 // VirtualMachineConfiguration - Defines the virtual machine configuration.

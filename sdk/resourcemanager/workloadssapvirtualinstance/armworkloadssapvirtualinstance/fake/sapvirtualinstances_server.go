@@ -23,72 +23,88 @@ import (
 	"regexp"
 )
 
-// SAPVirtualInstancesServer is a fake server for instances of the armworkloadssapvirtualinstance.SAPVirtualInstancesClient type.
-type SAPVirtualInstancesServer struct {
-	// BeginCreate is the fake for method SAPVirtualInstancesClient.BeginCreate
+// SapVirtualInstancesServer is a fake server for instances of the armworkloadssapvirtualinstance.SapVirtualInstancesClient type.
+type SapVirtualInstancesServer struct {
+	// BeginCreate is the fake for method SapVirtualInstancesClient.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreate func(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, body armworkloadssapvirtualinstance.SAPVirtualInstance, options *armworkloadssapvirtualinstance.SAPVirtualInstancesClientBeginCreateOptions) (resp azfake.PollerResponder[armworkloadssapvirtualinstance.SAPVirtualInstancesClientCreateResponse], errResp azfake.ErrorResponder)
+	BeginCreate func(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, resource armworkloadssapvirtualinstance.SAPVirtualInstance, options *armworkloadssapvirtualinstance.SapVirtualInstancesClientBeginCreateOptions) (resp azfake.PollerResponder[armworkloadssapvirtualinstance.SapVirtualInstancesClientCreateResponse], errResp azfake.ErrorResponder)
 
-	// BeginDelete is the fake for method SAPVirtualInstancesClient.BeginDelete
+	// BeginDelete is the fake for method SapVirtualInstancesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *armworkloadssapvirtualinstance.SAPVirtualInstancesClientBeginDeleteOptions) (resp azfake.PollerResponder[armworkloadssapvirtualinstance.SAPVirtualInstancesClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *armworkloadssapvirtualinstance.SapVirtualInstancesClientBeginDeleteOptions) (resp azfake.PollerResponder[armworkloadssapvirtualinstance.SapVirtualInstancesClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method SAPVirtualInstancesClient.Get
+	// Get is the fake for method SapVirtualInstancesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *armworkloadssapvirtualinstance.SAPVirtualInstancesClientGetOptions) (resp azfake.Responder[armworkloadssapvirtualinstance.SAPVirtualInstancesClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *armworkloadssapvirtualinstance.SapVirtualInstancesClientGetOptions) (resp azfake.Responder[armworkloadssapvirtualinstance.SapVirtualInstancesClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListByResourceGroupPager is the fake for method SAPVirtualInstancesClient.NewListByResourceGroupPager
+	// InvokeAvailabilityZoneDetails is the fake for method SapVirtualInstancesClient.InvokeAvailabilityZoneDetails
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armworkloadssapvirtualinstance.SAPVirtualInstancesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armworkloadssapvirtualinstance.SAPVirtualInstancesClientListByResourceGroupResponse])
+	InvokeAvailabilityZoneDetails func(ctx context.Context, location string, body armworkloadssapvirtualinstance.SAPAvailabilityZoneDetailsRequest, options *armworkloadssapvirtualinstance.SapVirtualInstancesClientInvokeAvailabilityZoneDetailsOptions) (resp azfake.Responder[armworkloadssapvirtualinstance.SapVirtualInstancesClientInvokeAvailabilityZoneDetailsResponse], errResp azfake.ErrorResponder)
 
-	// NewListBySubscriptionPager is the fake for method SAPVirtualInstancesClient.NewListBySubscriptionPager
+	// InvokeDiskConfigurations is the fake for method SapVirtualInstancesClient.InvokeDiskConfigurations
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListBySubscriptionPager func(options *armworkloadssapvirtualinstance.SAPVirtualInstancesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armworkloadssapvirtualinstance.SAPVirtualInstancesClientListBySubscriptionResponse])
+	InvokeDiskConfigurations func(ctx context.Context, location string, body armworkloadssapvirtualinstance.SAPDiskConfigurationsRequest, options *armworkloadssapvirtualinstance.SapVirtualInstancesClientInvokeDiskConfigurationsOptions) (resp azfake.Responder[armworkloadssapvirtualinstance.SapVirtualInstancesClientInvokeDiskConfigurationsResponse], errResp azfake.ErrorResponder)
 
-	// BeginStart is the fake for method SAPVirtualInstancesClient.BeginStart
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginStart func(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *armworkloadssapvirtualinstance.SAPVirtualInstancesClientBeginStartOptions) (resp azfake.PollerResponder[armworkloadssapvirtualinstance.SAPVirtualInstancesClientStartResponse], errResp azfake.ErrorResponder)
+	// InvokeSapSupportedSKU is the fake for method SapVirtualInstancesClient.InvokeSapSupportedSKU
+	// HTTP status codes to indicate success: http.StatusOK
+	InvokeSapSupportedSKU func(ctx context.Context, location string, body armworkloadssapvirtualinstance.SAPSupportedSKUsRequest, options *armworkloadssapvirtualinstance.SapVirtualInstancesClientInvokeSapSupportedSKUOptions) (resp azfake.Responder[armworkloadssapvirtualinstance.SapVirtualInstancesClientInvokeSapSupportedSKUResponse], errResp azfake.ErrorResponder)
 
-	// BeginStop is the fake for method SAPVirtualInstancesClient.BeginStop
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginStop func(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *armworkloadssapvirtualinstance.SAPVirtualInstancesClientBeginStopOptions) (resp azfake.PollerResponder[armworkloadssapvirtualinstance.SAPVirtualInstancesClientStopResponse], errResp azfake.ErrorResponder)
+	// InvokeSizingRecommendations is the fake for method SapVirtualInstancesClient.InvokeSizingRecommendations
+	// HTTP status codes to indicate success: http.StatusOK
+	InvokeSizingRecommendations func(ctx context.Context, location string, body armworkloadssapvirtualinstance.SAPSizingRecommendationRequest, options *armworkloadssapvirtualinstance.SapVirtualInstancesClientInvokeSizingRecommendationsOptions) (resp azfake.Responder[armworkloadssapvirtualinstance.SapVirtualInstancesClientInvokeSizingRecommendationsResponse], errResp azfake.ErrorResponder)
 
-	// BeginUpdate is the fake for method SAPVirtualInstancesClient.BeginUpdate
+	// NewListByResourceGroupPager is the fake for method SapVirtualInstancesClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, options *armworkloadssapvirtualinstance.SapVirtualInstancesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armworkloadssapvirtualinstance.SapVirtualInstancesClientListByResourceGroupResponse])
+
+	// NewListBySubscriptionPager is the fake for method SapVirtualInstancesClient.NewListBySubscriptionPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListBySubscriptionPager func(options *armworkloadssapvirtualinstance.SapVirtualInstancesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armworkloadssapvirtualinstance.SapVirtualInstancesClientListBySubscriptionResponse])
+
+	// BeginStart is the fake for method SapVirtualInstancesClient.BeginStart
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, body armworkloadssapvirtualinstance.UpdateSAPVirtualInstanceRequest, options *armworkloadssapvirtualinstance.SAPVirtualInstancesClientBeginUpdateOptions) (resp azfake.PollerResponder[armworkloadssapvirtualinstance.SAPVirtualInstancesClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginStart func(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *armworkloadssapvirtualinstance.SapVirtualInstancesClientBeginStartOptions) (resp azfake.PollerResponder[armworkloadssapvirtualinstance.SapVirtualInstancesClientStartResponse], errResp azfake.ErrorResponder)
+
+	// BeginStop is the fake for method SapVirtualInstancesClient.BeginStop
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginStop func(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *armworkloadssapvirtualinstance.SapVirtualInstancesClientBeginStopOptions) (resp azfake.PollerResponder[armworkloadssapvirtualinstance.SapVirtualInstancesClientStopResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method SapVirtualInstancesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, properties armworkloadssapvirtualinstance.UpdateSAPVirtualInstanceRequest, options *armworkloadssapvirtualinstance.SapVirtualInstancesClientBeginUpdateOptions) (resp azfake.PollerResponder[armworkloadssapvirtualinstance.SapVirtualInstancesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
-// NewSAPVirtualInstancesServerTransport creates a new instance of SAPVirtualInstancesServerTransport with the provided implementation.
-// The returned SAPVirtualInstancesServerTransport instance is connected to an instance of armworkloadssapvirtualinstance.SAPVirtualInstancesClient via the
+// NewSapVirtualInstancesServerTransport creates a new instance of SapVirtualInstancesServerTransport with the provided implementation.
+// The returned SapVirtualInstancesServerTransport instance is connected to an instance of armworkloadssapvirtualinstance.SapVirtualInstancesClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewSAPVirtualInstancesServerTransport(srv *SAPVirtualInstancesServer) *SAPVirtualInstancesServerTransport {
-	return &SAPVirtualInstancesServerTransport{
+func NewSapVirtualInstancesServerTransport(srv *SapVirtualInstancesServer) *SapVirtualInstancesServerTransport {
+	return &SapVirtualInstancesServerTransport{
 		srv:                         srv,
-		beginCreate:                 newTracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SAPVirtualInstancesClientCreateResponse]](),
-		beginDelete:                 newTracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SAPVirtualInstancesClientDeleteResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armworkloadssapvirtualinstance.SAPVirtualInstancesClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armworkloadssapvirtualinstance.SAPVirtualInstancesClientListBySubscriptionResponse]](),
-		beginStart:                  newTracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SAPVirtualInstancesClientStartResponse]](),
-		beginStop:                   newTracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SAPVirtualInstancesClientStopResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SAPVirtualInstancesClientUpdateResponse]](),
+		beginCreate:                 newTracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SapVirtualInstancesClientCreateResponse]](),
+		beginDelete:                 newTracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SapVirtualInstancesClientDeleteResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armworkloadssapvirtualinstance.SapVirtualInstancesClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armworkloadssapvirtualinstance.SapVirtualInstancesClientListBySubscriptionResponse]](),
+		beginStart:                  newTracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SapVirtualInstancesClientStartResponse]](),
+		beginStop:                   newTracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SapVirtualInstancesClientStopResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SapVirtualInstancesClientUpdateResponse]](),
 	}
 }
 
-// SAPVirtualInstancesServerTransport connects instances of armworkloadssapvirtualinstance.SAPVirtualInstancesClient to instances of SAPVirtualInstancesServer.
-// Don't use this type directly, use NewSAPVirtualInstancesServerTransport instead.
-type SAPVirtualInstancesServerTransport struct {
-	srv                         *SAPVirtualInstancesServer
-	beginCreate                 *tracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SAPVirtualInstancesClientCreateResponse]]
-	beginDelete                 *tracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SAPVirtualInstancesClientDeleteResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armworkloadssapvirtualinstance.SAPVirtualInstancesClientListByResourceGroupResponse]]
-	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armworkloadssapvirtualinstance.SAPVirtualInstancesClientListBySubscriptionResponse]]
-	beginStart                  *tracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SAPVirtualInstancesClientStartResponse]]
-	beginStop                   *tracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SAPVirtualInstancesClientStopResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SAPVirtualInstancesClientUpdateResponse]]
+// SapVirtualInstancesServerTransport connects instances of armworkloadssapvirtualinstance.SapVirtualInstancesClient to instances of SapVirtualInstancesServer.
+// Don't use this type directly, use NewSapVirtualInstancesServerTransport instead.
+type SapVirtualInstancesServerTransport struct {
+	srv                         *SapVirtualInstancesServer
+	beginCreate                 *tracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SapVirtualInstancesClientCreateResponse]]
+	beginDelete                 *tracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SapVirtualInstancesClientDeleteResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armworkloadssapvirtualinstance.SapVirtualInstancesClientListByResourceGroupResponse]]
+	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armworkloadssapvirtualinstance.SapVirtualInstancesClientListBySubscriptionResponse]]
+	beginStart                  *tracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SapVirtualInstancesClientStartResponse]]
+	beginStop                   *tracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SapVirtualInstancesClientStopResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armworkloadssapvirtualinstance.SapVirtualInstancesClientUpdateResponse]]
 }
 
-// Do implements the policy.Transporter interface for SAPVirtualInstancesServerTransport.
-func (s *SAPVirtualInstancesServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for SapVirtualInstancesServerTransport.
+func (s *SapVirtualInstancesServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
@@ -99,21 +115,29 @@ func (s *SAPVirtualInstancesServerTransport) Do(req *http.Request) (*http.Respon
 	var err error
 
 	switch method {
-	case "SAPVirtualInstancesClient.BeginCreate":
+	case "SapVirtualInstancesClient.BeginCreate":
 		resp, err = s.dispatchBeginCreate(req)
-	case "SAPVirtualInstancesClient.BeginDelete":
+	case "SapVirtualInstancesClient.BeginDelete":
 		resp, err = s.dispatchBeginDelete(req)
-	case "SAPVirtualInstancesClient.Get":
+	case "SapVirtualInstancesClient.Get":
 		resp, err = s.dispatchGet(req)
-	case "SAPVirtualInstancesClient.NewListByResourceGroupPager":
+	case "SapVirtualInstancesClient.InvokeAvailabilityZoneDetails":
+		resp, err = s.dispatchInvokeAvailabilityZoneDetails(req)
+	case "SapVirtualInstancesClient.InvokeDiskConfigurations":
+		resp, err = s.dispatchInvokeDiskConfigurations(req)
+	case "SapVirtualInstancesClient.InvokeSapSupportedSKU":
+		resp, err = s.dispatchInvokeSapSupportedSKU(req)
+	case "SapVirtualInstancesClient.InvokeSizingRecommendations":
+		resp, err = s.dispatchInvokeSizingRecommendations(req)
+	case "SapVirtualInstancesClient.NewListByResourceGroupPager":
 		resp, err = s.dispatchNewListByResourceGroupPager(req)
-	case "SAPVirtualInstancesClient.NewListBySubscriptionPager":
+	case "SapVirtualInstancesClient.NewListBySubscriptionPager":
 		resp, err = s.dispatchNewListBySubscriptionPager(req)
-	case "SAPVirtualInstancesClient.BeginStart":
+	case "SapVirtualInstancesClient.BeginStart":
 		resp, err = s.dispatchBeginStart(req)
-	case "SAPVirtualInstancesClient.BeginStop":
+	case "SapVirtualInstancesClient.BeginStop":
 		resp, err = s.dispatchBeginStop(req)
-	case "SAPVirtualInstancesClient.BeginUpdate":
+	case "SapVirtualInstancesClient.BeginUpdate":
 		resp, err = s.dispatchBeginUpdate(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
@@ -126,7 +150,7 @@ func (s *SAPVirtualInstancesServerTransport) Do(req *http.Request) (*http.Respon
 	return resp, nil
 }
 
-func (s *SAPVirtualInstancesServerTransport) dispatchBeginCreate(req *http.Request) (*http.Response, error) {
+func (s *SapVirtualInstancesServerTransport) dispatchBeginCreate(req *http.Request) (*http.Response, error) {
 	if s.srv.BeginCreate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreate not implemented")}
 	}
@@ -174,7 +198,7 @@ func (s *SAPVirtualInstancesServerTransport) dispatchBeginCreate(req *http.Reque
 	return resp, nil
 }
 
-func (s *SAPVirtualInstancesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
+func (s *SapVirtualInstancesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
 	if s.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
@@ -218,7 +242,7 @@ func (s *SAPVirtualInstancesServerTransport) dispatchBeginDelete(req *http.Reque
 	return resp, nil
 }
 
-func (s *SAPVirtualInstancesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+func (s *SapVirtualInstancesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
@@ -251,7 +275,139 @@ func (s *SAPVirtualInstancesServerTransport) dispatchGet(req *http.Request) (*ht
 	return resp, nil
 }
 
-func (s *SAPVirtualInstancesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+func (s *SapVirtualInstancesServerTransport) dispatchInvokeAvailabilityZoneDetails(req *http.Request) (*http.Response, error) {
+	if s.srv.InvokeAvailabilityZoneDetails == nil {
+		return nil, &nonRetriableError{errors.New("fake for method InvokeAvailabilityZoneDetails not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Workloads/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sapVirtualInstanceMetadata/default/getAvailabilityZoneDetails`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armworkloadssapvirtualinstance.SAPAvailabilityZoneDetailsRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.InvokeAvailabilityZoneDetails(req.Context(), locationParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SAPAvailabilityZoneDetailsResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *SapVirtualInstancesServerTransport) dispatchInvokeDiskConfigurations(req *http.Request) (*http.Response, error) {
+	if s.srv.InvokeDiskConfigurations == nil {
+		return nil, &nonRetriableError{errors.New("fake for method InvokeDiskConfigurations not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Workloads/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sapVirtualInstanceMetadata/default/getDiskConfigurations`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armworkloadssapvirtualinstance.SAPDiskConfigurationsRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.InvokeDiskConfigurations(req.Context(), locationParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SAPDiskConfigurationsResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *SapVirtualInstancesServerTransport) dispatchInvokeSapSupportedSKU(req *http.Request) (*http.Response, error) {
+	if s.srv.InvokeSapSupportedSKU == nil {
+		return nil, &nonRetriableError{errors.New("fake for method InvokeSapSupportedSKU not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Workloads/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sapVirtualInstanceMetadata/default/getSapSupportedSku`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armworkloadssapvirtualinstance.SAPSupportedSKUsRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.InvokeSapSupportedSKU(req.Context(), locationParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SAPSupportedResourceSKUsResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *SapVirtualInstancesServerTransport) dispatchInvokeSizingRecommendations(req *http.Request) (*http.Response, error) {
+	if s.srv.InvokeSizingRecommendations == nil {
+		return nil, &nonRetriableError{errors.New("fake for method InvokeSizingRecommendations not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Workloads/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sapVirtualInstanceMetadata/default/getSizingRecommendations`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armworkloadssapvirtualinstance.SAPSizingRecommendationRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.InvokeSizingRecommendations(req.Context(), locationParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SAPSizingRecommendationResultClassification, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *SapVirtualInstancesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if s.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
@@ -270,7 +426,7 @@ func (s *SAPVirtualInstancesServerTransport) dispatchNewListByResourceGroupPager
 		resp := s.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
 		newListByResourceGroupPager = &resp
 		s.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armworkloadssapvirtualinstance.SAPVirtualInstancesClientListByResourceGroupResponse, createLink func() string) {
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armworkloadssapvirtualinstance.SapVirtualInstancesClientListByResourceGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -288,7 +444,7 @@ func (s *SAPVirtualInstancesServerTransport) dispatchNewListByResourceGroupPager
 	return resp, nil
 }
 
-func (s *SAPVirtualInstancesServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+func (s *SapVirtualInstancesServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
 	if s.srv.NewListBySubscriptionPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
 	}
@@ -303,7 +459,7 @@ func (s *SAPVirtualInstancesServerTransport) dispatchNewListBySubscriptionPager(
 		resp := s.srv.NewListBySubscriptionPager(nil)
 		newListBySubscriptionPager = &resp
 		s.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armworkloadssapvirtualinstance.SAPVirtualInstancesClientListBySubscriptionResponse, createLink func() string) {
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armworkloadssapvirtualinstance.SapVirtualInstancesClientListBySubscriptionResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -321,7 +477,7 @@ func (s *SAPVirtualInstancesServerTransport) dispatchNewListBySubscriptionPager(
 	return resp, nil
 }
 
-func (s *SAPVirtualInstancesServerTransport) dispatchBeginStart(req *http.Request) (*http.Response, error) {
+func (s *SapVirtualInstancesServerTransport) dispatchBeginStart(req *http.Request) (*http.Response, error) {
 	if s.srv.BeginStart == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginStart not implemented")}
 	}
@@ -345,9 +501,9 @@ func (s *SAPVirtualInstancesServerTransport) dispatchBeginStart(req *http.Reques
 		if err != nil {
 			return nil, err
 		}
-		var options *armworkloadssapvirtualinstance.SAPVirtualInstancesClientBeginStartOptions
+		var options *armworkloadssapvirtualinstance.SapVirtualInstancesClientBeginStartOptions
 		if !reflect.ValueOf(body).IsZero() {
-			options = &armworkloadssapvirtualinstance.SAPVirtualInstancesClientBeginStartOptions{
+			options = &armworkloadssapvirtualinstance.SapVirtualInstancesClientBeginStartOptions{
 				Body: &body,
 			}
 		}
@@ -375,7 +531,7 @@ func (s *SAPVirtualInstancesServerTransport) dispatchBeginStart(req *http.Reques
 	return resp, nil
 }
 
-func (s *SAPVirtualInstancesServerTransport) dispatchBeginStop(req *http.Request) (*http.Response, error) {
+func (s *SapVirtualInstancesServerTransport) dispatchBeginStop(req *http.Request) (*http.Response, error) {
 	if s.srv.BeginStop == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginStop not implemented")}
 	}
@@ -399,9 +555,9 @@ func (s *SAPVirtualInstancesServerTransport) dispatchBeginStop(req *http.Request
 		if err != nil {
 			return nil, err
 		}
-		var options *armworkloadssapvirtualinstance.SAPVirtualInstancesClientBeginStopOptions
+		var options *armworkloadssapvirtualinstance.SapVirtualInstancesClientBeginStopOptions
 		if !reflect.ValueOf(body).IsZero() {
-			options = &armworkloadssapvirtualinstance.SAPVirtualInstancesClientBeginStopOptions{
+			options = &armworkloadssapvirtualinstance.SapVirtualInstancesClientBeginStopOptions{
 				Body: &body,
 			}
 		}
@@ -429,7 +585,7 @@ func (s *SAPVirtualInstancesServerTransport) dispatchBeginStop(req *http.Request
 	return resp, nil
 }
 
-func (s *SAPVirtualInstancesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+func (s *SapVirtualInstancesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if s.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}

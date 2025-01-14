@@ -18,8 +18,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloadssapvirtualinstance/armworkloadssapvirtualinstance"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapcentralinstances/SAPCentralInstances_Get.json
-func ExampleSAPCentralInstancesClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapCentralServerInstances_ListBySapVirtualInstance.json
+func ExampleSapCentralServerInstancesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,93 @@ func ExampleSAPCentralInstancesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewSAPCentralInstancesClient().Get(ctx, "test-rg", "X00", "centralServer", nil)
+	pager := clientFactory.NewSapCentralServerInstancesClient().NewListPager("test-rg", "X00", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.SAPCentralServerInstanceListResult = armworkloadssapvirtualinstance.SAPCentralServerInstanceListResult{
+		// 	Value: []*armworkloadssapvirtualinstance.SAPCentralServerInstance{
+		// 		{
+		// 			Name: to.Ptr("centralServer"),
+		// 			Type: to.Ptr("Microsoft.Workloads/sapVirtualInstances/centralInstances"),
+		// 			ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00/centralInstances/centralServer"),
+		// 			SystemData: &armworkloadssapvirtualinstance.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+		// 				CreatedBy: to.Ptr("user@xyz.com"),
+		// 				CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("user@xyz.com"),
+		// 				LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
+		// 			},
+		// 			Location: to.Ptr("westcentralus"),
+		// 			Tags: map[string]*string{
+		// 			},
+		// 			Properties: &armworkloadssapvirtualinstance.SAPCentralServerProperties{
+		// 				EnqueueReplicationServerProperties: &armworkloadssapvirtualinstance.EnqueueReplicationServerProperties{
+		// 					ErsVersion: to.Ptr(armworkloadssapvirtualinstance.EnqueueReplicationServerTypeEnqueueReplicator1),
+		// 					Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
+		// 					Hostname: to.Ptr("vh-ers1"),
+		// 					InstanceNo: to.Ptr("00"),
+		// 					IPAddress: to.Ptr("10.0.0.5"),
+		// 					KernelPatch: to.Ptr("patch 300"),
+		// 					KernelVersion: to.Ptr("777"),
+		// 				},
+		// 				EnqueueServerProperties: &armworkloadssapvirtualinstance.EnqueueServerProperties{
+		// 					Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
+		// 					Hostname: to.Ptr("vh-ascs1"),
+		// 					IPAddress: to.Ptr("10.0.0.5"),
+		// 					Port: to.Ptr[int64](3600),
+		// 				},
+		// 				GatewayServerProperties: &armworkloadssapvirtualinstance.GatewayServerProperties{
+		// 					Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
+		// 					Port: to.Ptr[int64](3300),
+		// 				},
+		// 				Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
+		// 				InstanceNo: to.Ptr("00"),
+		// 				KernelPatch: to.Ptr("patch 300"),
+		// 				KernelVersion: to.Ptr("777"),
+		// 				MessageServerProperties: &armworkloadssapvirtualinstance.MessageServerProperties{
+		// 					Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
+		// 					Hostname: to.Ptr("vh-ascs1"),
+		// 					HTTPPort: to.Ptr[int64](8100),
+		// 					HTTPSPort: to.Ptr[int64](44400),
+		// 					InternalMsPort: to.Ptr[int64](3900),
+		// 					IPAddress: to.Ptr("10.0.0.5"),
+		// 					MSPort: to.Ptr[int64](3600),
+		// 				},
+		// 				ProvisioningState: to.Ptr(armworkloadssapvirtualinstance.SapVirtualInstanceProvisioningStateSucceeded),
+		// 				Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatusRunning),
+		// 				Subnet: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/SAP-E2ETest-rg/providers/Microsoft.Network/virtualNetworks/loop-test-vnet/subnets/loopsubnet"),
+		// 				VMDetails: []*armworkloadssapvirtualinstance.CentralServerVMDetails{
+		// 					{
+		// 						Type: to.Ptr(armworkloadssapvirtualinstance.CentralServerVirtualMachineTypePrimary),
+		// 						VirtualMachineID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Compute/virtualMachines/cs-vm"),
+		// 				}},
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapCentralInstances_Get.json
+func ExampleSapCentralServerInstancesClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewSapCentralServerInstancesClient().Get(ctx, "test-rg", "X00", "centralServer", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -48,7 +134,7 @@ func ExampleSAPCentralInstancesClient_Get() {
 	// 		LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 		LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("eastus"),
+	// 	Location: to.Ptr("westcentralus"),
 	// 	Tags: map[string]*string{
 	// 	},
 	// 	Properties: &armworkloadssapvirtualinstance.SAPCentralServerProperties{
@@ -96,8 +182,8 @@ func ExampleSAPCentralInstancesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapcentralinstances/SAPCentralInstances_Create_HA_AvSet.json
-func ExampleSAPCentralInstancesClient_BeginCreate_createSapCentralInstancesForHaSystemWithAvailabilitySet() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapCentralInstances_CreateForHaWithAvailabilitySet.json
+func ExampleSapCentralServerInstancesClient_BeginCreate_createSapCentralInstancesForHaSystemWithAvailabilitySet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -107,8 +193,8 @@ func ExampleSAPCentralInstancesClient_BeginCreate_createSapCentralInstancesForHa
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPCentralInstancesClient().BeginCreate(ctx, "test-rg", "X00", "centralServer", armworkloadssapvirtualinstance.SAPCentralServerInstance{
-		Location:   to.Ptr("eastus"),
+	poller, err := clientFactory.NewSapCentralServerInstancesClient().BeginCreate(ctx, "test-rg", "X00", "centralServer", armworkloadssapvirtualinstance.SAPCentralServerInstance{
+		Location:   to.Ptr("westcentralus"),
 		Tags:       map[string]*string{},
 		Properties: &armworkloadssapvirtualinstance.SAPCentralServerProperties{},
 	}, nil)
@@ -134,7 +220,7 @@ func ExampleSAPCentralInstancesClient_BeginCreate_createSapCentralInstancesForHa
 	// 		LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 		LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("eastus"),
+	// 	Location: to.Ptr("westcentralus"),
 	// 	Tags: map[string]*string{
 	// 	},
 	// 	Properties: &armworkloadssapvirtualinstance.SAPCentralServerProperties{
@@ -197,8 +283,8 @@ func ExampleSAPCentralInstancesClient_BeginCreate_createSapCentralInstancesForHa
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapcentralinstances/SAPCentralInstances_Create.json
-func ExampleSAPCentralInstancesClient_BeginCreate_sapCentralInstancesCreate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapCentralInstances_Create.json
+func ExampleSapCentralServerInstancesClient_BeginCreate_sapCentralServerInstancesCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -208,8 +294,8 @@ func ExampleSAPCentralInstancesClient_BeginCreate_sapCentralInstancesCreate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPCentralInstancesClient().BeginCreate(ctx, "test-rg", "X00", "centralServer", armworkloadssapvirtualinstance.SAPCentralServerInstance{
-		Location:   to.Ptr("eastus"),
+	poller, err := clientFactory.NewSapCentralServerInstancesClient().BeginCreate(ctx, "test-rg", "X00", "centralServer", armworkloadssapvirtualinstance.SAPCentralServerInstance{
+		Location:   to.Ptr("westcentralus"),
 		Tags:       map[string]*string{},
 		Properties: &armworkloadssapvirtualinstance.SAPCentralServerProperties{},
 	}, nil)
@@ -235,7 +321,7 @@ func ExampleSAPCentralInstancesClient_BeginCreate_sapCentralInstancesCreate() {
 	// 		LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 		LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("eastus"),
+	// 	Location: to.Ptr("westcentralus"),
 	// 	Tags: map[string]*string{
 	// 	},
 	// 	Properties: &armworkloadssapvirtualinstance.SAPCentralServerProperties{
@@ -283,8 +369,8 @@ func ExampleSAPCentralInstancesClient_BeginCreate_sapCentralInstancesCreate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapcentralinstances/SAPCentralInstances_Update.json
-func ExampleSAPCentralInstancesClient_Update() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapCentralInstances_Update.json
+func ExampleSapCentralServerInstancesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -294,7 +380,7 @@ func ExampleSAPCentralInstancesClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewSAPCentralInstancesClient().Update(ctx, "test-rg", "X00", "centralServer", armworkloadssapvirtualinstance.UpdateSAPCentralInstanceRequest{
+	res, err := clientFactory.NewSapCentralServerInstancesClient().Update(ctx, "test-rg", "X00", "centralServer", armworkloadssapvirtualinstance.UpdateSAPCentralInstanceRequest{
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 		},
@@ -317,7 +403,7 @@ func ExampleSAPCentralInstancesClient_Update() {
 	// 		LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 		LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 	},
-	// 	Location: to.Ptr("eastus"),
+	// 	Location: to.Ptr("westcentralus"),
 	// 	Tags: map[string]*string{
 	// 	},
 	// 	Properties: &armworkloadssapvirtualinstance.SAPCentralServerProperties{
@@ -365,8 +451,8 @@ func ExampleSAPCentralInstancesClient_Update() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapcentralinstances/SAPCentralInstances_Delete.json
-func ExampleSAPCentralInstancesClient_BeginDelete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapCentralInstances_Delete.json
+func ExampleSapCentralServerInstancesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -376,7 +462,7 @@ func ExampleSAPCentralInstancesClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPCentralInstancesClient().BeginDelete(ctx, "test-rg", "X00", "centralServer", nil)
+	poller, err := clientFactory.NewSapCentralServerInstancesClient().BeginDelete(ctx, "test-rg", "X00", "centralServer", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -386,8 +472,8 @@ func ExampleSAPCentralInstancesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapcentralinstances/SAPCentralInstances_List.json
-func ExampleSAPCentralInstancesClient_NewListPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapCentralInstances_StartInstance.json
+func ExampleSapCentralServerInstancesClient_BeginStart_startTheSapCentralServicesInstance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -397,93 +483,7 @@ func ExampleSAPCentralInstancesClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewSAPCentralInstancesClient().NewListPager("test-rg", "X00", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.SAPCentralInstanceList = armworkloadssapvirtualinstance.SAPCentralInstanceList{
-		// 	Value: []*armworkloadssapvirtualinstance.SAPCentralServerInstance{
-		// 		{
-		// 			Name: to.Ptr("centralServer"),
-		// 			Type: to.Ptr("Microsoft.Workloads/sapVirtualInstances/centralInstances"),
-		// 			ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00/centralInstances/centralServer"),
-		// 			SystemData: &armworkloadssapvirtualinstance.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
-		// 				CreatedBy: to.Ptr("user@xyz.com"),
-		// 				CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("user@xyz.com"),
-		// 				LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-		// 			},
-		// 			Location: to.Ptr("eastus"),
-		// 			Tags: map[string]*string{
-		// 			},
-		// 			Properties: &armworkloadssapvirtualinstance.SAPCentralServerProperties{
-		// 				EnqueueReplicationServerProperties: &armworkloadssapvirtualinstance.EnqueueReplicationServerProperties{
-		// 					ErsVersion: to.Ptr(armworkloadssapvirtualinstance.EnqueueReplicationServerTypeEnqueueReplicator1),
-		// 					Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
-		// 					Hostname: to.Ptr("vh-ers1"),
-		// 					InstanceNo: to.Ptr("00"),
-		// 					IPAddress: to.Ptr("10.0.0.5"),
-		// 					KernelPatch: to.Ptr("patch 300"),
-		// 					KernelVersion: to.Ptr("777"),
-		// 				},
-		// 				EnqueueServerProperties: &armworkloadssapvirtualinstance.EnqueueServerProperties{
-		// 					Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
-		// 					Hostname: to.Ptr("vh-ascs1"),
-		// 					IPAddress: to.Ptr("10.0.0.5"),
-		// 					Port: to.Ptr[int64](3600),
-		// 				},
-		// 				GatewayServerProperties: &armworkloadssapvirtualinstance.GatewayServerProperties{
-		// 					Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
-		// 					Port: to.Ptr[int64](3300),
-		// 				},
-		// 				Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
-		// 				InstanceNo: to.Ptr("00"),
-		// 				KernelPatch: to.Ptr("patch 300"),
-		// 				KernelVersion: to.Ptr("777"),
-		// 				MessageServerProperties: &armworkloadssapvirtualinstance.MessageServerProperties{
-		// 					Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
-		// 					Hostname: to.Ptr("vh-ascs1"),
-		// 					HTTPPort: to.Ptr[int64](8100),
-		// 					HTTPSPort: to.Ptr[int64](44400),
-		// 					InternalMsPort: to.Ptr[int64](3900),
-		// 					IPAddress: to.Ptr("10.0.0.5"),
-		// 					MSPort: to.Ptr[int64](3600),
-		// 				},
-		// 				ProvisioningState: to.Ptr(armworkloadssapvirtualinstance.SapVirtualInstanceProvisioningStateSucceeded),
-		// 				Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatusRunning),
-		// 				Subnet: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/SAP-E2ETest-rg/providers/Microsoft.Network/virtualNetworks/loop-test-vnet/subnets/loopsubnet"),
-		// 				VMDetails: []*armworkloadssapvirtualinstance.CentralServerVMDetails{
-		// 					{
-		// 						Type: to.Ptr(armworkloadssapvirtualinstance.CentralServerVirtualMachineTypePrimary),
-		// 						VirtualMachineID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Compute/virtualMachines/cs-vm"),
-		// 				}},
-		// 			},
-		// 	}},
-		// }
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapcentralinstances/SAPCentralInstances_StartInstance.json
-func ExampleSAPCentralInstancesClient_BeginStartInstance_startTheSapCentralServicesInstance() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSAPCentralInstancesClient().BeginStartInstance(ctx, "test-rg", "X00", "centralServer", &armworkloadssapvirtualinstance.SAPCentralInstancesClientBeginStartInstanceOptions{Body: nil})
+	poller, err := clientFactory.NewSapCentralServerInstancesClient().BeginStart(ctx, "test-rg", "X00", "centralServer", &armworkloadssapvirtualinstance.SapCentralServerInstancesClientBeginStartOptions{Body: &armworkloadssapvirtualinstance.StartRequest{}})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -503,8 +503,8 @@ func ExampleSAPCentralInstancesClient_BeginStartInstance_startTheSapCentralServi
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapcentralinstances/SAPCentralInstances_StartInstance_WithInfraOperations.json
-func ExampleSAPCentralInstancesClient_BeginStartInstance_startTheVirtualMachineSAndTheSapCentralServicesInstanceOnIt() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapCentralInstances_StartInstanceVM.json
+func ExampleSapCentralServerInstancesClient_BeginStart_startTheVirtualMachineSAndTheSapCentralServicesInstanceOnIt() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -514,7 +514,7 @@ func ExampleSAPCentralInstancesClient_BeginStartInstance_startTheVirtualMachineS
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPCentralInstancesClient().BeginStartInstance(ctx, "test-rg", "X00", "centralServer", &armworkloadssapvirtualinstance.SAPCentralInstancesClientBeginStartInstanceOptions{Body: &armworkloadssapvirtualinstance.StartRequest{
+	poller, err := clientFactory.NewSapCentralServerInstancesClient().BeginStart(ctx, "test-rg", "X00", "centralServer", &armworkloadssapvirtualinstance.SapCentralServerInstancesClientBeginStartOptions{Body: &armworkloadssapvirtualinstance.StartRequest{
 		StartVM: to.Ptr(true),
 	},
 	})
@@ -537,8 +537,8 @@ func ExampleSAPCentralInstancesClient_BeginStartInstance_startTheVirtualMachineS
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapcentralinstances/SAPCentralInstances_StopInstance_WithInfraOperations.json
-func ExampleSAPCentralInstancesClient_BeginStopInstance_stopTheSapCentralServicesInstanceAndItsUnderlyingVirtualMachineS() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapCentralInstances_StopInstanceVM.json
+func ExampleSapCentralServerInstancesClient_BeginStop_stopTheSapCentralServicesInstanceAndItsUnderlyingVirtualMachineS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -548,7 +548,7 @@ func ExampleSAPCentralInstancesClient_BeginStopInstance_stopTheSapCentralService
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPCentralInstancesClient().BeginStopInstance(ctx, "test-rg", "X00", "centralServer", &armworkloadssapvirtualinstance.SAPCentralInstancesClientBeginStopInstanceOptions{Body: &armworkloadssapvirtualinstance.StopRequest{
+	poller, err := clientFactory.NewSapCentralServerInstancesClient().BeginStop(ctx, "test-rg", "X00", "centralServer", &armworkloadssapvirtualinstance.SapCentralServerInstancesClientBeginStopOptions{Body: &armworkloadssapvirtualinstance.StopRequest{
 		DeallocateVM: to.Ptr(true),
 	},
 	})
@@ -571,8 +571,8 @@ func ExampleSAPCentralInstancesClient_BeginStopInstance_stopTheSapCentralService
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/examples/sapcentralinstances/SAPCentralInstances_StopInstance.json
-func ExampleSAPCentralInstancesClient_BeginStopInstance_stopTheSapCentralServicesInstance() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/SapCentralInstances_StopInstance.json
+func ExampleSapCentralServerInstancesClient_BeginStop_stopTheSapCentralServicesInstance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -582,7 +582,7 @@ func ExampleSAPCentralInstancesClient_BeginStopInstance_stopTheSapCentralService
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPCentralInstancesClient().BeginStopInstance(ctx, "test-rg", "X00", "centralServer", &armworkloadssapvirtualinstance.SAPCentralInstancesClientBeginStopInstanceOptions{Body: &armworkloadssapvirtualinstance.StopRequest{
+	poller, err := clientFactory.NewSapCentralServerInstancesClient().BeginStop(ctx, "test-rg", "X00", "centralServer", &armworkloadssapvirtualinstance.SapCentralServerInstancesClientBeginStopOptions{Body: &armworkloadssapvirtualinstance.StopRequest{
 		SoftStopTimeoutSeconds: to.Ptr[int64](1200),
 	},
 	})

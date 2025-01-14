@@ -26,3 +26,4 @@ extends:
   parameters:
     IncludeRelease: true
     ServiceDirectory: 'resourcemanager/workloadssapvirtualinstance/armworkloadssapvirtualinstance'
+    UsePipelineProxy: false

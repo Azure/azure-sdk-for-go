@@ -1,12 +1,10 @@
 # Release History
 
-## 1.8.0-beta.2 (Unreleased)
+## 1.8.0-beta.2 (2025-01-14)
 
 ### Features Added
 
 - ServiceBusClient allows the endpoint to be overridden with ServiceBusClientOptions.CustomEndpoint, to use TCP proxies with AMQP. (PR#23843)
-
-### Breaking Changes
 
 ### Bugs Fixed
 

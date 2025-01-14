@@ -168,7 +168,8 @@ func GetExportsFromTag(sdkRepo repo.SDKRepository, packagePath, tag string) (*ex
 
 	// get exports
 	result, err := exports.Get(packagePath)
-	if err != nil {
+	// bypass the error if the package doesn't contain any exports, return nil
+	if err != nil && !strings.Contains(err.Error(), "doesn't contain any exports") {
 		return nil, err
 	}
 

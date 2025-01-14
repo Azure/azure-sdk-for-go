@@ -233,7 +233,7 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKi
 			}
 			return azcore.AccessToken{}, newCredentialUnavailableError(credNameManagedIdentity, msg)
 		}
-		// send normal token requests from now on because someothing responded
+		// send normal token requests from now on because something responded
 		c.probeIMDS = false
 	}
 

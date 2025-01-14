@@ -4,9 +4,9 @@ go 1.22.0
 
 require (
 	github.com/Azure/azure-sdk-for-go v68.0.0+incompatible
-	github.com/Azure/azure-sdk-for-go/eng/tools/internal v0.0.0-20241219033537-d9d44c0d1d48
+	github.com/Azure/azure-sdk-for-go/eng/tools/internal v0.0.0-20250113193948-bf1e31b5690c
 	github.com/spf13/cobra v1.8.1
-	golang.org/x/tools v0.28.0
+	golang.org/x/tools v0.29.0
 )
 
 require (

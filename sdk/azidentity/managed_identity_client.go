@@ -60,14 +60,14 @@ const (
 )
 
 type managedIdentityClient struct {
-	azClient *azcore.Client
-	// chained indicates whether the client is part of a credential chain. If true, the client will return
-	// a credentialUnavailableError instead of an AuthenticationFailedError for an unexpected IMDS response.
-	chained   bool
+	azClient  *azcore.Client
 	endpoint  string
 	id        ManagedIDKind
 	msiType   msiType
 	probeIMDS bool
+	// chained indicates whether the client is part of a credential chain. If true, the client will return
+	// a credentialUnavailableError instead of an AuthenticationFailedError for an unexpected IMDS response.
+	chained bool
 }
 
 // arcKeyDirectory returns the directory expected to contain Azure Arc keys

@@ -25,7 +25,7 @@ const (
 	ResourceLocation = "eastus2"
 )
 
-type postgresqlflexibleserversOperationsTestSuite struct {
+type PostgresqlflexibleserversOperationsTestSuite struct {
 	suite.Suite
 	ctx               context.Context
 	cred              azcore.TokenCredential
@@ -35,7 +35,7 @@ type postgresqlflexibleserversOperationsTestSuite struct {
 	subscriptionId    string
 }
 
-func (testsuite *postgresqlflexibleserversOperationsTestSuite) SetupSuite() {
+func (testsuite *PostgresqlflexibleserversOperationsTestSuite) SetupSuite() {
 	testutil.StartRecording(testsuite.T(), pathToPackage)
 
 	testsuite.ctx = context.Background()
@@ -53,16 +53,16 @@ func (testsuite *postgresqlflexibleserversOperationsTestSuite) SetupSuite() {
 }
 
 func TestPostgresqlflexibleserversOperationsTestSuite(t *testing.T) {
-	suite.Run(t, new(postgresqlflexibleserversOperationsTestSuite))
+	suite.Run(t, new(PostgresqlflexibleserversOperationsTestSuite))
 }
 
-func (testsuite *postgresqlflexibleserversOperationsTestSuite) TearDownSuite() {
+func (testsuite *PostgresqlflexibleserversOperationsTestSuite) TearDownSuite() {
 	_, err := testutil.DeleteResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName)
 	testsuite.Require().NoError(err)
 	testutil.StopRecording(testsuite.T())
 }
 
-func (testsuite *postgresqlflexibleserversOperationsTestSuite) TestOperationsNewListPager() {
+func (testsuite *PostgresqlflexibleserversOperationsTestSuite) TestOperationsNewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	testsuite.Require().NoError(err)
 	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory(testsuite.subscriptionId, cred, testsuite.options)
@@ -71,7 +71,7 @@ func (testsuite *postgresqlflexibleserversOperationsTestSuite) TestOperationsNew
 	testsuite.Require().NoError(err)
 }
 
-func (testsuite *postgresqlflexibleserversOperationsTestSuite) Prepare() {
+func (testsuite *PostgresqlflexibleserversOperationsTestSuite) Prepare() {
 	// get default credential
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	testsuite.Require().NoError(err)

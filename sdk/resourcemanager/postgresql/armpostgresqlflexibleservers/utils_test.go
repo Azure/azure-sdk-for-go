@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	pathToPackage = "sdk/resourcemanager/postgresqlflexibleservers/armpostgresqlflexibleservers/testdata"
+	pathToPackage = "sdk/resourcemanager/postgresql/armpostgresqlflexibleservers/testdata"
 )
 
 func TestMain(m *testing.M) {

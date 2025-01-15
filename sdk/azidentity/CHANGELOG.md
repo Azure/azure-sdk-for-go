@@ -1,10 +1,6 @@
 # Release History
 
-## 1.8.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.8.1 (2025-01-15)
 
 ### Bugs Fixed
 * User credential types inconsistently log access token scopes

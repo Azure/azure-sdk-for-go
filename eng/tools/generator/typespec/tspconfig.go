@@ -117,7 +117,19 @@ func ParseTypeSpecConfig(tspconfigPath string) (*TypeSpecConfig, error) {
 	return &tspConfig, err
 }
 
-func (tc *TypeSpecConfig) GetPackageModuleRelativePath() string {
+func (tc *TypeSpecConfig) GetPackageRelativePath() string {
+	goConfig := tc.Options["@azure-tools/typespec-go"].(map[string]interface{})
+	if goConfig["package-dir"] == nil {
+		return tc.GetModuleRelativePath()
+	} else {
+		if goConfig["service-dir"] == nil {
+			goConfig["service-dir"] = tc.Parameters["service-dir"].(map[string]interface {})["default"]
+		}
+		return goConfig["service-dir"].(string) + "/" + goConfig["package-dir"].(string)
+	}
+}
+
+func (tc *TypeSpecConfig) GetModuleRelativePath() string {
 	goConfig := tc.Options["@azure-tools/typespec-go"].(map[string]interface{})
 	if goConfig["module"] == nil {
 		return ""
@@ -180,9 +192,9 @@ func (tc TypeSpecConfig) ExistEmitOption(emit string) bool {
 	return err == nil
 }
 
-// GetModuleName return [rpName, packageName]
-// module: github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/{rpName}/{packageName}
-func (tc TypeSpecConfig) GetModuleName() ([2]string, error) {
+// GetRpAndPackageName return [rpName, packageName]
+// module: github.com/Azure/azure-sdk-for-go/sdk/.../{rpName}/{packageName}
+func (tc TypeSpecConfig) GetRpAndPackageName() ([2]string, error) {
 	option, err := tc.EmitOption(string(TypeSpec_GO))
 	if err != nil {
 		return [2]string{}, err
@@ -191,9 +203,6 @@ func (tc TypeSpecConfig) GetModuleName() ([2]string, error) {
 	module := (option.(map[string]any))["module"].(string)
 	s := strings.Split(module, "/")
 	l := len(s)
-	if l != 7 {
-		return [2]string{}, fmt.Errorf("module is invalid and must be in the format of `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/{rpName}/{packageName}`")
-	}
 	if !strings.Contains(s[l-1], "arm") && !strings.Contains(s[l-1], "az") {
 		return [2]string{}, fmt.Errorf("packageName is invalid and must start with `arm` or `az`")
 	}

@@ -30,8 +30,8 @@ const (
 	sdk_remote_url    = "https://github.com/Azure/azure-sdk-for-go.git"
 )
 
-func GetAllVersionTags(packageModuleRelativePath string) ([]string, error) {
-	arr := strings.Split(packageModuleRelativePath, "/")
+func GetAllVersionTags(moduleRelativePath string) ([]string, error) {
+	arr := strings.Split(moduleRelativePath, "/")
 	log.Printf("Fetching all release tags from GitHub for RP: '%s' Package: '%s' ...", arr[len(arr)-2], arr[len(arr)-1])
 	client := http.Client{}
 	res, err := client.Get(sdk_tag_fetch_url)
@@ -52,7 +52,7 @@ func GetAllVersionTags(packageModuleRelativePath string) ([]string, error) {
 	versionTag := make(map[string]string)
 	for _, tag := range result {
 		tagName := tag["ref"].(string)
-		if strings.Contains(tagName, packageModuleRelativePath+"/v") {
+		if strings.Contains(tagName, moduleRelativePath+"/v") {
 			m := regexp.MustCompile(semver.SemVerRegex).FindString(tagName)
 			versions = append(versions, m)
 			versionTag[m] = tagName

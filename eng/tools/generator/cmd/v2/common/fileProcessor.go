@@ -396,7 +396,6 @@ func AddChangelogToFile(changelog *Changelog, version *semver.Version, packageRo
 
 // replace `{{NewClientName}}` placeholder in README.md by first func name according to `^New.+Method$` pattern
 func ReplaceNewClientNamePlaceholder(packageRootPath string, exports exports.Content) error {
-	path := filepath.Join(packageRootPath, "README.md")
 	var clientName string
 	for _, k := range SortFuncItem(exports.Funcs) {
 		v := exports.Funcs[k]
@@ -404,6 +403,12 @@ func ReplaceNewClientNamePlaceholder(packageRootPath string, exports exports.Con
 			clientName = k
 			break
 		}
+	}
+
+	path := filepath.Join(packageRootPath, "README.md")
+
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		return nil
 	}
 
 	b, err := os.ReadFile(path)
@@ -419,9 +424,13 @@ func UpdateModuleDefinition(packageRootPath, packageModuleRelativePath string, v
 	if version.Major() > 1 {
 		path := filepath.Join(packageRootPath, "go.mod")
 
+		if _, err := os.Stat(path); os.IsNotExist(err) {
+			return nil
+		}
+
 		b, err := os.ReadFile(path)
 		if err != nil {
-			return fmt.Errorf("cannot parse version from changelog")
+			return fmt.Errorf("cannot read go.mod")
 		}
 
 		lines := strings.Split(string(b), "\n")
@@ -690,6 +699,11 @@ func ReplaceReadmeNewClientName(packageRootPath string, exports exports.Content)
 
 func ReplaceConstModuleVersion(packagePath string, newVersion string) error {
 	path := filepath.Join(packagePath, "constants.go")
+
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		return nil
+	}
+
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return err

@@ -125,24 +125,37 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 				SpecRepoURL:    input.RepoHTTPSURL,
 				TypeSpecConfig: tsc,
 			}
-
-			module, err := tsc.GetModuleName()
+			
+			rpAndNamespaceName, err := tsc.GetRpAndPackageName()
 			if err != nil {
 				errorBuilder.add(err)
 				continue
 			}
-			packageModuleRelativePath := tsc.GetPackageModuleRelativePath()
-			if packageModuleRelativePath == "" {
+
+			packageRelativePath := tsc.GetPackageRelativePath()
+			if packageRelativePath == "" {
 				errorBuilder.add(fmt.Errorf("package module relative path not found in %s", tspconfigPath))
 				continue
 			}
+
+			moduleRelativePath := tsc.GetModuleRelativePath()
+			if moduleRelativePath == "" {
+				errorBuilder.add(fmt.Errorf("module relative path not found in %s", tspconfigPath))
+				continue
+			}
+
+			if !strings.HasPrefix(packageRelativePath, moduleRelativePath) {
+				errorBuilder.add(fmt.Errorf("module relative path '%s' is not a prefix of package relative path '%s', please check your tspconfig.yaml file", moduleRelativePath, packageRelativePath))
+				continue
+			}
+
 			namespaceResult, err := generateCtx.GenerateForTypeSpec(&common.GenerateParam{
-				RPName:              module[0],
-				NamespaceName:       module[1],
+				RPName:              rpAndNamespaceName[0],
+				NamespaceName:       rpAndNamespaceName[1],
 				SkipGenerateExample: true,
 				GoVersion:           ctx.goVersion,
 				TspClientOptions:    []string{"--debug"},
-			}, packageModuleRelativePath)
+			}, packageRelativePath, moduleRelativePath)
 			if err != nil {
 				errorBuilder.add(err)
 				continue
@@ -151,8 +164,8 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 				breaking := namespaceResult.Changelog.HasBreakingChanges()
 				breakingChangeItems := namespaceResult.Changelog.GetBreakingChangeItems()
 
-				srcFolder := filepath.Join(sdkRepo.Root(), packageModuleRelativePath)
-				apiViewArtifact := filepath.Join(sdkRepo.Root(), packageModuleRelativePath+".gosource")
+				srcFolder := filepath.Join(sdkRepo.Root(), packageRelativePath)
+				apiViewArtifact := filepath.Join(sdkRepo.Root(), packageRelativePath+".gosource")
 				err := zipDirectory(srcFolder, apiViewArtifact)
 				if err != nil {
 					fmt.Println(err)
@@ -160,16 +173,16 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 
 				results = append(results, pipeline.PackageResult{
 					Version:         namespaceResult.Version,
-					PackageName:     packageModuleRelativePath,
-					Path:            []string{packageModuleRelativePath},
-					PackageFolder:   packageModuleRelativePath,
+					PackageName:     packageRelativePath,
+					Path:            []string{packageRelativePath},
+					PackageFolder:   packageRelativePath,
 					TypespecProject: []string{tspProjectFolder},
 					Changelog: &pipeline.Changelog{
 						Content:             &content,
 						HasBreakingChange:   &breaking,
 						BreakingChangeItems: &breakingChangeItems,
 					},
-					APIViewArtifact: packageModuleRelativePath + ".gosource",
+					APIViewArtifact: packageRelativePath + ".gosource",
 					Language:        "Go",
 				})
 

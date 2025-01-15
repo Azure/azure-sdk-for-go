@@ -1,6 +1,6 @@
 # Release History
 
-## 1.4.0-beta.1 (Unreleased)
+## 1.4.0-beta.1 (2025-01-15)
 
 ### Other Changes
 * Updated `azblob` version to `v1.6.0-beta.1`

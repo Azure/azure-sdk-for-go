@@ -108,7 +108,18 @@ func TestClient_GetChatCompletions(t *testing.T) {
 			resp.ChatCompletions.Choices[i].ContentFilterResults = nil
 		}
 
+		// Exclude Usage field from comparison as they can change
+		expectedUsage := expected.Usage
+		actualUsage := resp.ChatCompletions.Usage
+		expected.Usage = nil
+		resp.ChatCompletions.Usage = nil
+
 		require.Equal(t, expected, resp.ChatCompletions)
+
+		// Compare the usage numbers, but allow for a small margin of error
+		require.InDelta(t, *expectedUsage.CompletionTokens, *actualUsage.CompletionTokens, 5)
+		require.InDelta(t, *expectedUsage.PromptTokens, *actualUsage.PromptTokens, 5)
+		require.InDelta(t, *expectedUsage.TotalTokens, *actualUsage.TotalTokens, 5)
 	}
 
 	t.Run("AzureOpenAI", func(t *testing.T) {

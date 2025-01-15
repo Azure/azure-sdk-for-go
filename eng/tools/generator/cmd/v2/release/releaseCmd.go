@@ -183,10 +183,21 @@ func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash str
 
 	if existTypeSpec {
 		log.Printf("Generate SDK through TypeSpec...")
-		packageModuleRelativePath := generateCtx.TypeSpecConfig.GetPackageModuleRelativePath()
-		if packageModuleRelativePath == "" {
+
+		packageRelativePath := generateCtx.TypeSpecConfig.GetPackageRelativePath()
+		if packageRelativePath == "" {
 			return fmt.Errorf("package module relative path not found")
 		}
+
+		moduleRelativePath := generateCtx.TypeSpecConfig.GetModuleRelativePath()
+		if moduleRelativePath == "" {
+			return fmt.Errorf("module relative path not found in %s", generateCtx.TypeSpecConfig.Path)
+		}
+
+		if !strings.HasPrefix(packageRelativePath, moduleRelativePath) {
+			return fmt.Errorf("module relative path '%s' is not a prefix of package relative path '%s', please check your tspconfig.yaml file", moduleRelativePath, packageRelativePath)
+		}
+
 		result, err = generateCtx.GenerateForTypeSpec(&common.GenerateParam{
 			RPName:               c.rpName,
 			NamespaceName:        c.namespaceName,
@@ -198,7 +209,7 @@ func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash str
 			GoVersion:            c.flags.GoVersion,
 			TypeSpecEmitOption:   c.flags.TypeSpecGoOption,
 			TspClientOptions:     c.flags.TspClientOption,
-		}, packageModuleRelativePath)
+		}, packageRelativePath, moduleRelativePath)
 	} else {
 		log.Printf("Generate SDK through AutoRest...")
 		result, err = generateCtx.GenerateForSingleRPNamespace(&common.GenerateParam{

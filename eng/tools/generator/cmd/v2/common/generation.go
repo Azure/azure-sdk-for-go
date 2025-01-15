@@ -235,7 +235,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 
 	log.Printf("Start to generate changelog for package...")
 	newExports, err := exports.Get(packagePath)
-	if err != nil {
+	if err != nil && !strings.Contains(err.Error(), "doesn't contain any exports") {
 		return nil, err
 	}
 	changelog, err := GetChangelogForPackage(oriExports, &newExports)
@@ -374,9 +374,10 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 	}
 }
 
-func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam, packageModuleRelativePath string) (*GenerateResult, error) {
-	packagePath := filepath.Join(ctx.SDKPath, packageModuleRelativePath)
-	changelogPath := filepath.Join(packagePath, ChangelogFileName)
+func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam, packageRelativePath string, moduleRelativePath string) (*GenerateResult, error) {
+	packagePath := filepath.Join(ctx.SDKPath, packageRelativePath)
+	modulePath := filepath.Join(ctx.SDKPath, moduleRelativePath)
+	changelogPath := filepath.Join(modulePath, ChangelogFileName)
 
 	version, err := semver.NewVersion("0.1.0")
 	if err != nil {
@@ -393,21 +394,23 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam, pa
 	onBoard := false
 	if _, err := os.Stat(changelogPath); os.IsNotExist(err) {
 		onBoard = true
-		log.Printf("Package '%s' changelog not exist, do onboard process", packagePath)
+		log.Printf("Module '%s' changelog not exist, do onboard process", modulePath)
 		if generateParam.SpecificPackageTitle == "" {
 			generateParam.SpecificPackageTitle = strings.Title(generateParam.RPName)
 		}
 
 		log.Printf("Start to use template to generate new rp folder and basic package files...")
 		sdkBasicInfo := map[string]any{
-			"rpName":         generateParam.RPName,
-			"packageName":    generateParam.NamespaceName,
-			"packageTitle":   generateParam.SpecificPackageTitle,
-			"packageVersion": version.String(),
-			"releaseDate":    generateParam.ReleaseDate,
-			"goVersion":      generateParam.GoVersion,
+			"rpName":             generateParam.RPName,
+			"packageName":        generateParam.NamespaceName,
+			"moduleRelativePath": moduleRelativePath,
+			"serviceDir":         strings.Replace(moduleRelativePath, "sdk/", "", 1),
+			"packageTitle":       generateParam.SpecificPackageTitle,
+			"packageVersion":     version.String(),
+			"releaseDate":        generateParam.ReleaseDate,
+			"goVersion":          generateParam.GoVersion,
 		}
-		err = typespec.ParseTypeSpecTemplates(filepath.Join(ctx.SDKPath, "eng/tools/generator/template/typespec"), packagePath, sdkBasicInfo, nil)
+		err = typespec.ParseTypeSpecTemplates(filepath.Join(ctx.SDKPath, "eng/tools/generator/template/typespec"), modulePath, sdkBasicInfo, nil)
 		if err != nil {
 			return nil, err
 		}
@@ -448,13 +451,13 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam, pa
 	if !onBoard {
 		log.Printf("Get ori exports for changelog generation...")
 
-		tags, err := GetAllVersionTags(packageModuleRelativePath)
+		tags, err := GetAllVersionTags(moduleRelativePath)
 		if err != nil {
 			return nil, err
 		}
 
 		if len(tags) == 0 {
-			return nil, fmt.Errorf("github.com/Azure/azure-sdk-for-go/%s hasn't been released, it's supposed to OnBoard", packageModuleRelativePath)
+			return nil, fmt.Errorf("github.com/Azure/azure-sdk-for-go/%s hasn't been released, it's supposed to OnBoard", packageRelativePath)
 		}
 
 		previousVersionTag := GetPreviousVersionTag(isCurrentPreview, tags)
@@ -470,7 +473,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam, pa
 
 	log.Printf("Start to generate changelog for package...")
 	newExports, err := exports.Get(packagePath)
-	if err != nil {
+	if err != nil && !strings.Contains(err.Error(), "doesn't contain any exports") {
 		return nil, err
 	}
 	changelog, err := GetChangelogForPackage(oriExports, &newExports)
@@ -484,7 +487,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam, pa
 	var prl PullRequestLabel
 	if onBoard {
 		log.Printf("Replace {{NewClientName}} placeholder in the README.md ")
-		if err = ReplaceNewClientNamePlaceholder(packagePath, newExports); err != nil {
+		if err = ReplaceNewClientNamePlaceholder(modulePath, newExports); err != nil {
 			return nil, err
 		}
 
@@ -500,7 +503,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam, pa
 			}
 
 			log.Printf("Replace version in CHANGELOG.md...")
-			if err = UpdateOnboardChangelogVersion(packagePath, version.String()); err != nil {
+			if err = UpdateOnboardChangelogVersion(modulePath, version.String()); err != nil {
 				return nil, err
 			}
 
@@ -516,8 +519,18 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam, pa
 			return nil, err
 		}
 
-		log.Printf("##[command]Executing go mod tidy in %s\n", packagePath)
-		if err = ExecuteGo(packagePath, "mod", "tidy"); err != nil {
+		if packageRelativePath != moduleRelativePath {
+			// remove go.mod for sub package
+			goModPath := filepath.Join(packagePath, "go.mod")
+			if _, err := os.Stat(goModPath); !os.IsNotExist(err) {
+				if err = os.Remove(goModPath); err != nil {
+					return nil, err
+				}
+			}
+		}
+
+		log.Printf("##[command]Executing go mod tidy in %s\n", modulePath)
+		if err = ExecuteGo(modulePath, "mod", "tidy"); err != nil {
 			return nil, err
 		}
 
@@ -540,13 +553,13 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam, pa
 		}
 
 		log.Printf("Add changelog to file...")
-		changelogMd, err := AddChangelogToFile(changelog, version, packagePath, generateParam.ReleaseDate)
+		changelogMd, err := AddChangelogToFile(changelog, version, modulePath, generateParam.ReleaseDate)
 		if err != nil {
 			return nil, err
 		}
 
 		log.Printf("Update module definition if v2+...")
-		err = UpdateModuleDefinition(packagePath, packageModuleRelativePath, version)
+		err = UpdateModuleDefinition(packagePath, packageRelativePath, version)
 		if err != nil {
 			return nil, err
 		}
@@ -561,7 +574,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam, pa
 			return nil, err
 		}
 
-		baseModule := fmt.Sprintf("%s/%s", "github.com/Azure/azure-sdk-for-go", packageModuleRelativePath)
+		baseModule := fmt.Sprintf("%s/%s", "github.com/Azure/azure-sdk-for-go", packageRelativePath)
 		if _, err := os.Stat(filepath.Join(packagePath, "fake")); !os.IsNotExist(err) && oldModuleVersion.Major() != version.Major() {
 			log.Printf("Replace fake module v2+...")
 			if err = ReplaceModule(version, packagePath, baseModule, ".go"); err != nil {
@@ -578,12 +591,12 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam, pa
 		}
 
 		log.Printf("Replace README.md module...")
-		if err = replaceReadmeModule(packagePath, packageModuleRelativePath, version.String()); err != nil {
+		if err = replaceReadmeModule(modulePath, packageRelativePath, version.String()); err != nil {
 			return nil, err
 		}
 
 		log.Printf("Replace README.md NewClient name...")
-		if err = ReplaceReadmeNewClientName(packagePath, newExports); err != nil {
+		if err = ReplaceReadmeNewClientName(modulePath, newExports); err != nil {
 			return nil, err
 		}
 
@@ -614,8 +627,8 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam, pa
 			return nil, err
 		}
 
-		log.Printf("##[command]Executing go mod tidy in %s\n", packagePath)
-		if err = ExecuteGo(packagePath, "mod", "tidy"); err != nil {
+		log.Printf("##[command]Executing go mod tidy in %s\n", modulePath)
+		if err = ExecuteGo(modulePath, "mod", "tidy"); err != nil {
 			return nil, err
 		}
 

@@ -1,5 +1,15 @@
 # Release History
 
+## 1.4.0-beta.1 (Unreleased)
+
+### Other Changes
+* Updated `azblob` version to `v1.6.0-beta.1`
+
+## 1.3.0 (2024-11-13)
+
+### Features Added
+* Fix compareHeaders custom sorting algorithm for String To Sign.
+
 ## 1.3.0-beta.1 (2024-10-23)
 
 ### Other Changes

@@ -168,6 +168,10 @@ func run(m *testing.M) int {
 		if err != nil {
 			panic(err)
 		}
+		err = recording.AddBodyKeySanitizer("expires_on", fmt.Sprint(time.Now().Add(time.Hour).Unix()), "", nil)
+		if err != nil {
+			panic(err)
+		}
 	case recording.RecordingMode:
 		// replace path variables with fake values to simplify matching (the real values aren't secret)
 		pathVars := map[string]string{

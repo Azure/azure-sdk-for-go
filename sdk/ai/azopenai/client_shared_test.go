@@ -169,7 +169,7 @@ var azureOpenAI, openAI = func() (testVars, testVars) {
 			},
 			Vision: endpointWithModel{
 				Endpoint: ifAzure(azure, servers.SWECentral, servers.OpenAI),
-				Model:    ifAzure(azure, "gpt-4-vision-preview", "gpt-4-vision-preview"),
+				Model:    ifAzure(azure, "gpt-4o", "gpt-4o"),
 			},
 			Whisper: endpointWithModel{
 				Endpoint: ifAzure(azure, servers.USNorthCentral, servers.OpenAI),

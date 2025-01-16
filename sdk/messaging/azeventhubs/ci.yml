@@ -27,7 +27,6 @@ extends:
     ServiceDirectory: 'messaging/azeventhubs'
     # (live tests not yet ready to run)
     RunLiveTests: true
-    SupportedClouds: 'Public,UsGov,China'
     EnvVars:
       AZURE_CLIENT_ID: $(AZEVENTHUBS_CLIENT_ID)
       AZURE_TENANT_ID: $(AZEVENTHUBS_TENANT_ID)

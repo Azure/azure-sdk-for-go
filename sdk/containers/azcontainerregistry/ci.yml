@@ -28,5 +28,4 @@ extends:
     RunLiveTests: true
     UsePipelineProxy: false
     TestRunTime: '30m'
-    SupportedClouds: 'Public,UsGov'
     PersistOidcToken: true

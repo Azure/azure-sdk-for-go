@@ -57,13 +57,6 @@ func (c *ClientFactory) NewGroupQuotaLimitsRequestClient() *GroupQuotaLimitsRequ
 	}
 }
 
-// NewGroupQuotaLocationSettingsClient creates a new instance of GroupQuotaLocationSettingsClient.
-func (c *ClientFactory) NewGroupQuotaLocationSettingsClient() *GroupQuotaLocationSettingsClient {
-	return &GroupQuotaLocationSettingsClient{
-		internal: c.internal,
-	}
-}
-
 // NewGroupQuotaSubscriptionAllocationClient creates a new instance of GroupQuotaSubscriptionAllocationClient.
 func (c *ClientFactory) NewGroupQuotaSubscriptionAllocationClient() *GroupQuotaSubscriptionAllocationClient {
 	return &GroupQuotaSubscriptionAllocationClient{
@@ -92,13 +85,6 @@ func (c *ClientFactory) NewGroupQuotaSubscriptionsClient() *GroupQuotaSubscripti
 	return &GroupQuotaSubscriptionsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
-	}
-}
-
-// NewGroupQuotaUsagesClient creates a new instance of GroupQuotaUsagesClient.
-func (c *ClientFactory) NewGroupQuotaUsagesClient() *GroupQuotaUsagesClient {
-	return &GroupQuotaUsagesClient{
-		internal: c.internal,
 	}
 }
 

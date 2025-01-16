@@ -15,68 +15,6 @@ import (
 	"reflect"
 )
 
-// MarshalJSON implements the json.Marshaller interface for type AdditionalAttributes.
-func (a AdditionalAttributes) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "environment", a.Environment)
-	populate(objectMap, "groupId", a.GroupID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AdditionalAttributes.
-func (a *AdditionalAttributes) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", a, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "environment":
-			err = unpopulate(val, "Environment", &a.Environment)
-			delete(rawMsg, key)
-		case "groupId":
-			err = unpopulate(val, "GroupID", &a.GroupID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", a, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AdditionalAttributesPatch.
-func (a AdditionalAttributesPatch) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "environment", a.Environment)
-	populate(objectMap, "groupId", a.GroupID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AdditionalAttributesPatch.
-func (a *AdditionalAttributesPatch) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", a, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "environment":
-			err = unpopulate(val, "Environment", &a.Environment)
-			delete(rawMsg, key)
-		case "groupId":
-			err = unpopulate(val, "GroupID", &a.GroupID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", a, err)
-		}
-	}
-	return nil
-}
-
 // MarshalJSON implements the json.Marshaller interface for type AllocatedQuotaToSubscriptionList.
 func (a AllocatedQuotaToSubscriptionList) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -336,33 +274,6 @@ func (a *AllocationRequestStatusProperties) UnmarshalJSON(data []byte) error {
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", a, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BillingAccountID.
-func (b BillingAccountID) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "id", b.ID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type BillingAccountID.
-func (b *BillingAccountID) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", b, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, "ID", &b.ID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", b, err)
 		}
 	}
 	return nil
@@ -644,7 +555,7 @@ func (g GroupQuotaDetails) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "comment", g.Comment)
 	populate(objectMap, "limit", g.Limit)
 	populate(objectMap, "name", g.Name)
-	populate(objectMap, "region", g.Region)
+	populate(objectMap, "resourceName", g.ResourceName)
 	populate(objectMap, "unit", g.Unit)
 	return json.Marshal(objectMap)
 }
@@ -673,8 +584,8 @@ func (g *GroupQuotaDetails) UnmarshalJSON(data []byte) error {
 		case "name":
 			err = unpopulate(val, "Name", &g.Name)
 			delete(rawMsg, key)
-		case "region":
-			err = unpopulate(val, "Region", &g.Region)
+		case "resourceName":
+			err = unpopulate(val, "ResourceName", &g.ResourceName)
 			delete(rawMsg, key)
 		case "unit":
 			err = unpopulate(val, "Unit", &g.Unit)
@@ -721,6 +632,33 @@ func (g *GroupQuotaDetailsName) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type GroupQuotaLimit.
 func (g GroupQuotaLimit) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "properties", g.Properties)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type GroupQuotaLimit.
+func (g *GroupQuotaLimit) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", g, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "properties":
+			err = unpopulate(val, "Properties", &g.Properties)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", g, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type GroupQuotaLimitList.
+func (g GroupQuotaLimitList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
 	populate(objectMap, "id", g.ID)
 	populate(objectMap, "name", g.Name)
 	populate(objectMap, "properties", g.Properties)
@@ -729,8 +667,8 @@ func (g GroupQuotaLimit) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type GroupQuotaLimit.
-func (g *GroupQuotaLimit) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type GroupQuotaLimitList.
+func (g *GroupQuotaLimitList) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", g, err)
@@ -761,16 +699,17 @@ func (g *GroupQuotaLimit) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type GroupQuotaLimitList.
-func (g GroupQuotaLimitList) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type GroupQuotaLimitListProperties.
+func (g GroupQuotaLimitListProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "nextLink", g.NextLink)
+	populate(objectMap, "provisioningState", g.ProvisioningState)
 	populate(objectMap, "value", g.Value)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type GroupQuotaLimitList.
-func (g *GroupQuotaLimitList) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type GroupQuotaLimitListProperties.
+func (g *GroupQuotaLimitListProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", g, err)
@@ -781,8 +720,62 @@ func (g *GroupQuotaLimitList) UnmarshalJSON(data []byte) error {
 		case "nextLink":
 			err = unpopulate(val, "NextLink", &g.NextLink)
 			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, "ProvisioningState", &g.ProvisioningState)
+			delete(rawMsg, key)
 		case "value":
 			err = unpopulate(val, "Value", &g.Value)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", g, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type GroupQuotaLimitProperties.
+func (g GroupQuotaLimitProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "allocatedToSubscriptions", g.AllocatedToSubscriptions)
+	populate(objectMap, "availableLimit", g.AvailableLimit)
+	populate(objectMap, "comment", g.Comment)
+	populate(objectMap, "limit", g.Limit)
+	populate(objectMap, "name", g.Name)
+	populate(objectMap, "resourceName", g.ResourceName)
+	populate(objectMap, "unit", g.Unit)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type GroupQuotaLimitProperties.
+func (g *GroupQuotaLimitProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", g, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "allocatedToSubscriptions":
+			err = unpopulate(val, "AllocatedToSubscriptions", &g.AllocatedToSubscriptions)
+			delete(rawMsg, key)
+		case "availableLimit":
+			err = unpopulate(val, "AvailableLimit", &g.AvailableLimit)
+			delete(rawMsg, key)
+		case "comment":
+			err = unpopulate(val, "Comment", &g.Comment)
+			delete(rawMsg, key)
+		case "limit":
+			err = unpopulate(val, "Limit", &g.Limit)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, "Name", &g.Name)
+			delete(rawMsg, key)
+		case "resourceName":
+			err = unpopulate(val, "ResourceName", &g.ResourceName)
+			delete(rawMsg, key)
+		case "unit":
+			err = unpopulate(val, "Unit", &g.Unit)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1204,115 +1197,6 @@ func (g *GroupQuotaUsagesBaseName) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type GroupQuotasEnforcementListResponse.
-func (g GroupQuotasEnforcementListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "nextLink", g.NextLink)
-	populate(objectMap, "value", g.Value)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type GroupQuotasEnforcementListResponse.
-func (g *GroupQuotasEnforcementListResponse) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", g, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "nextLink":
-			err = unpopulate(val, "NextLink", &g.NextLink)
-			delete(rawMsg, key)
-		case "value":
-			err = unpopulate(val, "Value", &g.Value)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", g, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type GroupQuotasEnforcementResponse.
-func (g GroupQuotasEnforcementResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "id", g.ID)
-	populate(objectMap, "name", g.Name)
-	populate(objectMap, "properties", g.Properties)
-	populate(objectMap, "systemData", g.SystemData)
-	populate(objectMap, "type", g.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type GroupQuotasEnforcementResponse.
-func (g *GroupQuotasEnforcementResponse) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", g, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, "ID", &g.ID)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, "Name", &g.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, "Properties", &g.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, "SystemData", &g.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, "Type", &g.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", g, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type GroupQuotasEnforcementResponseProperties.
-func (g GroupQuotasEnforcementResponseProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "enforcementEnabled", g.EnforcementEnabled)
-	populate(objectMap, "faultCode", g.FaultCode)
-	populate(objectMap, "provisioningState", g.ProvisioningState)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type GroupQuotasEnforcementResponseProperties.
-func (g *GroupQuotasEnforcementResponseProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", g, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "enforcementEnabled":
-			err = unpopulate(val, "EnforcementEnabled", &g.EnforcementEnabled)
-			delete(rawMsg, key)
-		case "faultCode":
-			err = unpopulate(val, "FaultCode", &g.FaultCode)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, "ProvisioningState", &g.ProvisioningState)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", g, err)
-		}
-	}
-	return nil
-}
-
 // MarshalJSON implements the json.Marshaller interface for type GroupQuotasEntity.
 func (g GroupQuotasEntity) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -1359,7 +1243,6 @@ func (g *GroupQuotasEntity) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type GroupQuotasEntityBase.
 func (g GroupQuotasEntityBase) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalAttributes", g.AdditionalAttributes)
 	populate(objectMap, "displayName", g.DisplayName)
 	populate(objectMap, "provisioningState", g.ProvisioningState)
 	return json.Marshal(objectMap)
@@ -1374,9 +1257,6 @@ func (g *GroupQuotasEntityBase) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "additionalAttributes":
-			err = unpopulate(val, "AdditionalAttributes", &g.AdditionalAttributes)
-			delete(rawMsg, key)
 		case "displayName":
 			err = unpopulate(val, "DisplayName", &g.DisplayName)
 			delete(rawMsg, key)
@@ -1394,7 +1274,6 @@ func (g *GroupQuotasEntityBase) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type GroupQuotasEntityBasePatch.
 func (g GroupQuotasEntityBasePatch) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "additionalAttributes", g.AdditionalAttributes)
 	populate(objectMap, "displayName", g.DisplayName)
 	populate(objectMap, "provisioningState", g.ProvisioningState)
 	return json.Marshal(objectMap)
@@ -1409,9 +1288,6 @@ func (g *GroupQuotasEntityBasePatch) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "additionalAttributes":
-			err = unpopulate(val, "AdditionalAttributes", &g.AdditionalAttributes)
-			delete(rawMsg, key)
 		case "displayName":
 			err = unpopulate(val, "DisplayName", &g.DisplayName)
 			delete(rawMsg, key)
@@ -1469,16 +1345,16 @@ func (g *GroupQuotasEntityPatch) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type GroupingID.
-func (g GroupingID) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type GroupQuotasEntityPatchProperties.
+func (g GroupQuotasEntityPatchProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "groupingIdType", g.GroupingIDType)
-	populate(objectMap, "value", g.Value)
+	populate(objectMap, "displayName", g.DisplayName)
+	populate(objectMap, "provisioningState", g.ProvisioningState)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type GroupingID.
-func (g *GroupingID) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type GroupQuotasEntityPatchProperties.
+func (g *GroupQuotasEntityPatchProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", g, err)
@@ -1486,11 +1362,42 @@ func (g *GroupingID) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "groupingIdType":
-			err = unpopulate(val, "GroupingIDType", &g.GroupingIDType)
+		case "displayName":
+			err = unpopulate(val, "DisplayName", &g.DisplayName)
 			delete(rawMsg, key)
-		case "value":
-			err = unpopulate(val, "Value", &g.Value)
+		case "provisioningState":
+			err = unpopulate(val, "ProvisioningState", &g.ProvisioningState)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", g, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type GroupQuotasEntityProperties.
+func (g GroupQuotasEntityProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "displayName", g.DisplayName)
+	populate(objectMap, "provisioningState", g.ProvisioningState)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type GroupQuotasEntityProperties.
+func (g *GroupQuotasEntityProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", g, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "displayName":
+			err = unpopulate(val, "DisplayName", &g.DisplayName)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, "ProvisioningState", &g.ProvisioningState)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -2719,6 +2626,33 @@ func (s *SubscriptionQuotaAllocationRequestList) UnmarshalJSON(data []byte) erro
 // MarshalJSON implements the json.Marshaller interface for type SubscriptionQuotaAllocations.
 func (s SubscriptionQuotaAllocations) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "properties", s.Properties)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SubscriptionQuotaAllocations.
+func (s *SubscriptionQuotaAllocations) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "properties":
+			err = unpopulate(val, "Properties", &s.Properties)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SubscriptionQuotaAllocationsList.
+func (s SubscriptionQuotaAllocationsList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
 	populate(objectMap, "id", s.ID)
 	populate(objectMap, "name", s.Name)
 	populate(objectMap, "properties", s.Properties)
@@ -2727,8 +2661,8 @@ func (s SubscriptionQuotaAllocations) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type SubscriptionQuotaAllocations.
-func (s *SubscriptionQuotaAllocations) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type SubscriptionQuotaAllocationsList.
+func (s *SubscriptionQuotaAllocationsList) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", s, err)
@@ -2759,16 +2693,17 @@ func (s *SubscriptionQuotaAllocations) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SubscriptionQuotaAllocationsList.
-func (s SubscriptionQuotaAllocationsList) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type SubscriptionQuotaAllocationsListProperties.
+func (s SubscriptionQuotaAllocationsListProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "nextLink", s.NextLink)
+	populate(objectMap, "provisioningState", s.ProvisioningState)
 	populate(objectMap, "value", s.Value)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type SubscriptionQuotaAllocationsList.
-func (s *SubscriptionQuotaAllocationsList) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type SubscriptionQuotaAllocationsListProperties.
+func (s *SubscriptionQuotaAllocationsListProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", s, err)
@@ -2779,8 +2714,50 @@ func (s *SubscriptionQuotaAllocationsList) UnmarshalJSON(data []byte) error {
 		case "nextLink":
 			err = unpopulate(val, "NextLink", &s.NextLink)
 			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, "ProvisioningState", &s.ProvisioningState)
+			delete(rawMsg, key)
 		case "value":
 			err = unpopulate(val, "Value", &s.Value)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SubscriptionQuotaAllocationsProperties.
+func (s SubscriptionQuotaAllocationsProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "limit", s.Limit)
+	populate(objectMap, "name", s.Name)
+	populate(objectMap, "resourceName", s.ResourceName)
+	populate(objectMap, "shareableQuota", s.ShareableQuota)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SubscriptionQuotaAllocationsProperties.
+func (s *SubscriptionQuotaAllocationsProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "limit":
+			err = unpopulate(val, "Limit", &s.Limit)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, "Name", &s.Name)
+			delete(rawMsg, key)
+		case "resourceName":
+			err = unpopulate(val, "ResourceName", &s.ResourceName)
+			delete(rawMsg, key)
+		case "shareableQuota":
+			err = unpopulate(val, "ShareableQuota", &s.ShareableQuota)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -2826,7 +2803,7 @@ func (s SubscriptionQuotaDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "limit", s.Limit)
 	populate(objectMap, "name", s.Name)
-	populate(objectMap, "region", s.Region)
+	populate(objectMap, "resourceName", s.ResourceName)
 	populate(objectMap, "shareableQuota", s.ShareableQuota)
 	return json.Marshal(objectMap)
 }
@@ -2846,8 +2823,8 @@ func (s *SubscriptionQuotaDetails) UnmarshalJSON(data []byte) error {
 		case "name":
 			err = unpopulate(val, "Name", &s.Name)
 			delete(rawMsg, key)
-		case "region":
-			err = unpopulate(val, "Region", &s.Region)
+		case "resourceName":
+			err = unpopulate(val, "ResourceName", &s.ResourceName)
 			delete(rawMsg, key)
 		case "shareableQuota":
 			err = unpopulate(val, "ShareableQuota", &s.ShareableQuota)

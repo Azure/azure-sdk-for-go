@@ -3,6 +3,7 @@
 ## 1.5.0-beta.2 (Unreleased)
 
 ### Features Added
+* Upgraded service version to `2025-05-05`.
 
 ### Breaking Changes
 
@@ -36,8 +37,6 @@
 
 ### Features Added
 * Upgraded service version to `2024-08-04`.
-
-
 
 ## 1.3.1-beta.1 (2024-08-27)
 

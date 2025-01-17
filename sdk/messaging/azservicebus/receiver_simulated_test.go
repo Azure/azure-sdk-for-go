@@ -348,6 +348,7 @@ func TestReceiver_UserFacingErrors(t *testing.T) {
 
 	receiver.tracer = tracing.NewSpanValidator(t, tracing.SpanMatcher{
 		Name:   "Receiver.PeekMessages",
+		Kind:   tracing.SpanKindConsumer,
 		Status: tracing.SpanStatusError,
 		Attributes: []tracing.Attribute{
 			{Key: tracing.DestinationName, Value: "queue"},
@@ -364,6 +365,7 @@ func TestReceiver_UserFacingErrors(t *testing.T) {
 
 	receiver.tracer = tracing.NewSpanValidator(t, tracing.SpanMatcher{
 		Name:   "Receiver.ReceiveDeferredMessages",
+		Kind:   tracing.SpanKindConsumer,
 		Status: tracing.SpanStatusError,
 		Attributes: []tracing.Attribute{
 			{Key: tracing.DestinationName, Value: "queue"},
@@ -380,6 +382,7 @@ func TestReceiver_UserFacingErrors(t *testing.T) {
 
 	receiver.tracer = tracing.NewSpanValidator(t, tracing.SpanMatcher{
 		Name:   "Receiver.ReceiveMessages",
+		Kind:   tracing.SpanKindConsumer,
 		Status: tracing.SpanStatusUnset,
 		Attributes: []tracing.Attribute{
 			{Key: tracing.DestinationName, Value: "queue"},
@@ -409,6 +412,7 @@ func TestReceiver_UserFacingErrors(t *testing.T) {
 
 	receiver.settler.tracer = tracing.NewSpanValidator(t, tracing.SpanMatcher{
 		Name:   "Receiver.AbandonMessage",
+		Kind:   tracing.SpanKindConsumer,
 		Status: tracing.SpanStatusError,
 		Attributes: []tracing.Attribute{
 			{Key: tracing.DestinationName, Value: "queue"},
@@ -425,6 +429,7 @@ func TestReceiver_UserFacingErrors(t *testing.T) {
 
 	receiver.settler.tracer = tracing.NewSpanValidator(t, tracing.SpanMatcher{
 		Name:   "Receiver.CompleteMessage",
+		Kind:   tracing.SpanKindConsumer,
 		Status: tracing.SpanStatusError,
 		Attributes: []tracing.Attribute{
 			{Key: tracing.DestinationName, Value: "queue"},
@@ -441,6 +446,7 @@ func TestReceiver_UserFacingErrors(t *testing.T) {
 
 	receiver.settler.tracer = tracing.NewSpanValidator(t, tracing.SpanMatcher{
 		Name:   "Receiver.DeadLetterMessage",
+		Kind:   tracing.SpanKindConsumer,
 		Status: tracing.SpanStatusError,
 		Attributes: []tracing.Attribute{
 			{Key: tracing.DestinationName, Value: "queue"},
@@ -457,6 +463,7 @@ func TestReceiver_UserFacingErrors(t *testing.T) {
 
 	receiver.settler.tracer = tracing.NewSpanValidator(t, tracing.SpanMatcher{
 		Name:   "Receiver.DeferMessage",
+		Kind:   tracing.SpanKindConsumer,
 		Status: tracing.SpanStatusError,
 		Attributes: []tracing.Attribute{
 			{Key: tracing.DestinationName, Value: "queue"},
@@ -473,6 +480,7 @@ func TestReceiver_UserFacingErrors(t *testing.T) {
 
 	receiver.tracer = tracing.NewSpanValidator(t, tracing.SpanMatcher{
 		Name:   "Receiver.RenewMessageLock",
+		Kind:   tracing.SpanKindConsumer,
 		Status: tracing.SpanStatusError,
 		Attributes: []tracing.Attribute{
 			{Key: tracing.DestinationName, Value: "queue"},
@@ -808,6 +816,7 @@ func TestSessionReceiverUserFacingErrors_Methods(t *testing.T) {
 	// that to get a session receiver.
 	client.tracer = tracing.NewSpanValidator(t, tracing.SpanMatcher{
 		Name:   "SessionReceiver.AcceptSession",
+		Kind:   tracing.SpanKindConsumer,
 		Status: tracing.SpanStatusUnset,
 		Attributes: []tracing.Attribute{
 			{Key: tracing.DestinationName, Value: "queue"},
@@ -824,6 +833,7 @@ func TestSessionReceiverUserFacingErrors_Methods(t *testing.T) {
 
 	receiver.inner.tracer = tracing.NewSpanValidator(t, tracing.SpanMatcher{
 		Name:   "SessionReceiver.GetSessionState",
+		Kind:   tracing.SpanKindConsumer,
 		Status: tracing.SpanStatusError,
 		Attributes: []tracing.Attribute{
 			{Key: tracing.DestinationName, Value: "queue"},
@@ -837,6 +847,7 @@ func TestSessionReceiverUserFacingErrors_Methods(t *testing.T) {
 
 	receiver.inner.tracer = tracing.NewSpanValidator(t, tracing.SpanMatcher{
 		Name:   "SessionReceiver.SetSessionState",
+		Kind:   tracing.SpanKindConsumer,
 		Status: tracing.SpanStatusError,
 		Attributes: []tracing.Attribute{
 			{Key: tracing.DestinationName, Value: "queue"},
@@ -849,6 +860,7 @@ func TestSessionReceiverUserFacingErrors_Methods(t *testing.T) {
 
 	receiver.inner.tracer = tracing.NewSpanValidator(t, tracing.SpanMatcher{
 		Name:   "SessionReceiver.RenewSessionLock",
+		Kind:   tracing.SpanKindConsumer,
 		Status: tracing.SpanStatusError,
 		Attributes: []tracing.Attribute{
 			{Key: tracing.DestinationName, Value: "queue"},

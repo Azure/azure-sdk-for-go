@@ -5,19 +5,15 @@ package tracing
 
 import (
 	"context"
+	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 )
 
 type Attribute = tracing.Attribute
-type SpanKind = tracing.SpanKind
 type Tracer = tracing.Tracer
 type Provider = tracing.Provider
-
-func NewNoOpTracer() *Tracer {
-	return &Tracer{}
-}
 
 type TracerOptions struct {
 	Tracer     Tracer
@@ -31,5 +27,17 @@ func StartSpan(ctx context.Context, options *TracerOptions) (context.Context, fu
 	if options == nil || options.SpanName == "" {
 		return ctx, func(error) {}
 	}
-	return runtime.StartSpan(ctx, string(options.SpanName), options.Tracer, &runtime.StartSpanOptions{Attributes: options.Attributes})
+	spanKind := SpanKindInternal
+	spanCaller := strings.Split(string(options.SpanName), ".")[0]
+	if spanCaller == "Sender" {
+		spanKind = SpanKindProducer
+	} else if spanCaller == "Receiver" || spanCaller == "SessionReceiver" {
+		spanKind = SpanKindConsumer
+	}
+
+	return runtime.StartSpan(ctx, string(options.SpanName), options.Tracer,
+		&runtime.StartSpanOptions{
+			Kind:       spanKind,
+			Attributes: options.Attributes,
+		})
 }

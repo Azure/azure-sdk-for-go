@@ -60,7 +60,7 @@ func getSessionSpanAttributes(entityPath string, operationName tracing.Messaging
 }
 
 func getMessageSpanAttributes(message amqpCompatibleMessage) []tracing.Attribute {
-	attrs := []tracing.Attribute{}
+	var attrs []tracing.Attribute
 	if message != nil {
 		amqpMessage := message.toAMQPMessage()
 		if amqpMessage != nil && amqpMessage.Properties != nil {
@@ -76,7 +76,7 @@ func getMessageSpanAttributes(message amqpCompatibleMessage) []tracing.Attribute
 }
 
 func getReceivedMessageSpanAttributes(receivedMessage *ReceivedMessage) []tracing.Attribute {
-	attrs := []tracing.Attribute{}
+	var attrs []tracing.Attribute
 	if receivedMessage != nil {
 		message := receivedMessage.Message()
 		attrs = getMessageSpanAttributes(message)
@@ -93,7 +93,7 @@ func getMessageBatchSpanAttributes(size int) []tracing.Attribute {
 }
 
 func getEntityPathAttributes(entityPath string) []tracing.Attribute {
-	attrs := []tracing.Attribute{}
+	var attrs []tracing.Attribute
 	queueOrTopic, subscription := splitEntityPath(entityPath)
 	if queueOrTopic != "" {
 		attrs = append(attrs, tracing.Attribute{Key: tracing.DestinationName, Value: queueOrTopic})

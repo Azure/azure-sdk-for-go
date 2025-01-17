@@ -3,6 +3,8 @@
 
 package tracing
 
+import "github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
+
 type SpanName string
 
 const (
@@ -25,6 +27,15 @@ const (
 	GetSessionStateSpanName  SpanName = "SessionReceiver.GetSessionState"
 	SetSessionStateSpanName  SpanName = "SessionReceiver.SetSessionState"
 	RenewSessionLockSpanName SpanName = "SessionReceiver.RenewSessionLock"
+)
+
+type SpanKind = tracing.SpanKind
+
+const (
+	SpanKindInternal tracing.SpanKind = tracing.SpanKindInternal
+	SpanKindClient   tracing.SpanKind = tracing.SpanKindClient
+	SpanKindProducer tracing.SpanKind = tracing.SpanKindProducer
+	SpanKindConsumer tracing.SpanKind = tracing.SpanKindConsumer
 )
 
 // OTel-specific messaging attributes

@@ -20,6 +20,7 @@ const (
 type SpanStatus = tracing.SpanStatus
 
 // NewSpanValidator creates a Provider that verifies a span was created that matches the specified SpanMatcher.
+// The returned Provider can be used to create a client with a tracing provider that will validate spans in unit tests.
 func NewSpanValidator(t *testing.T, matcher SpanMatcher) Provider {
 	return tracing.NewProvider(func(name, version string) Tracer {
 		tt := matchingTracer{
@@ -29,6 +30,9 @@ func NewSpanValidator(t *testing.T, matcher SpanMatcher) Provider {
 		t.Cleanup(func() {
 			require.NotNil(t, tt.match, "didn't find a span with name %s", tt.matcher.Name)
 			require.True(t, tt.match.ended, "span wasn't ended")
+			if tt.matcher.Kind != 0 {
+				require.EqualValues(t, tt.matcher.Kind, tt.match.kind, "span kind values don't match")
+			}
 			require.EqualValues(t, matcher.Status, tt.match.status, "span status values don't match")
 			require.ElementsMatch(t, matcher.Attributes, tt.match.attrs, "span attributes don't match")
 		})
@@ -48,6 +52,7 @@ func NewSpanValidator(t *testing.T, matcher SpanMatcher) Provider {
 // SpanMatcher contains the values to match when a span is created.
 type SpanMatcher struct {
 	Name       string
+	Kind       SpanKind
 	Status     SpanStatus
 	Attributes []Attribute
 }
@@ -57,13 +62,14 @@ type matchingTracer struct {
 	match   *span
 }
 
-func (mt *matchingTracer) Start(ctx context.Context, spanName string, kind tracing.SpanKind, attrs []Attribute) (context.Context, tracing.Span) {
+func (mt *matchingTracer) Start(ctx context.Context, spanName string, kind SpanKind, attrs []Attribute) (context.Context, tracing.Span) {
 	if spanName != mt.matcher.Name {
 		return ctx, tracing.Span{}
 	}
 	// span name matches our matcher, track it
 	mt.match = &span{
 		name:  spanName,
+		kind:  kind,
 		attrs: attrs,
 	}
 	return ctx, tracing.NewSpan(tracing.SpanImpl{
@@ -75,6 +81,7 @@ func (mt *matchingTracer) Start(ctx context.Context, spanName string, kind traci
 
 type span struct {
 	name   string
+	kind   SpanKind
 	status SpanStatus
 	desc   string
 	attrs  []Attribute

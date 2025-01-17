@@ -48,6 +48,7 @@ func TestSender_UserFacingError(t *testing.T) {
 
 	sender.tracer = tracing.NewSpanValidator(t, tracing.SpanMatcher{
 		Name:   "Sender.SendMessage",
+		Kind:   tracing.SpanKindProducer,
 		Status: tracing.SpanStatusError,
 		Attributes: []tracing.Attribute{
 			{Key: tracing.DestinationName, Value: "queue"},
@@ -62,6 +63,7 @@ func TestSender_UserFacingError(t *testing.T) {
 	msgID := "testID"
 	sender.tracer = tracing.NewSpanValidator(t, tracing.SpanMatcher{
 		Name:   "Sender.SendMessage",
+		Kind:   tracing.SpanKindProducer,
 		Status: tracing.SpanStatusError,
 		Attributes: []tracing.Attribute{
 			{Key: tracing.DestinationName, Value: "queue"},
@@ -76,6 +78,7 @@ func TestSender_UserFacingError(t *testing.T) {
 
 	sender.tracer = tracing.NewSpanValidator(t, tracing.SpanMatcher{
 		Name:   "Sender.CancelScheduledMessages",
+		Kind:   tracing.SpanKindProducer,
 		Status: tracing.SpanStatusError,
 		Attributes: []tracing.Attribute{
 			{Key: tracing.DestinationName, Value: "queue"},
@@ -90,6 +93,7 @@ func TestSender_UserFacingError(t *testing.T) {
 
 	sender.tracer = tracing.NewSpanValidator(t, tracing.SpanMatcher{
 		Name:   "Sender.ScheduleMessages",
+		Kind:   tracing.SpanKindProducer,
 		Status: tracing.SpanStatusError,
 		Attributes: []tracing.Attribute{
 			{Key: tracing.DestinationName, Value: "queue"},
@@ -114,6 +118,7 @@ func TestSender_UserFacingError(t *testing.T) {
 
 	sender.tracer = tracing.NewSpanValidator(t, tracing.SpanMatcher{
 		Name:   "Sender.SendMessageBatch",
+		Kind:   tracing.SpanKindProducer,
 		Status: tracing.SpanStatusError,
 		Attributes: []tracing.Attribute{
 			{Key: tracing.DestinationName, Value: "queue"},

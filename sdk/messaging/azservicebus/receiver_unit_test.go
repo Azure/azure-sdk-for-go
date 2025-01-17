@@ -29,6 +29,7 @@ func TestReceiver_ReceiveMessages_AMQPLinksFailure(t *testing.T) {
 	receiver := &Receiver{
 		tracer: tracing.NewSpanValidator(t, tracing.SpanMatcher{
 			Name:   "Receiver.ReceiveMessages",
+			Kind:   tracing.SpanKindConsumer,
 			Status: tracing.SpanStatusError,
 			Attributes: []tracing.Attribute{
 				{Key: tracing.OperationName, Value: "receive"},
@@ -75,6 +76,7 @@ func TestReceiverCancellationUnitTests(t *testing.T) {
 		r := &Receiver{
 			tracer: tracing.NewSpanValidator(t, tracing.SpanMatcher{
 				Name:   "Receiver.ReceiveMessages",
+				Kind:   tracing.SpanKindConsumer,
 				Status: tracing.SpanStatusError,
 				Attributes: []tracing.Attribute{
 					{Key: tracing.OperationName, Value: "receive"},
@@ -105,6 +107,7 @@ func TestReceiverCancellationUnitTests(t *testing.T) {
 		r := &Receiver{
 			tracer: tracing.NewSpanValidator(t, tracing.SpanMatcher{
 				Name:   "Receiver.ReceiveMessages",
+				Kind:   tracing.SpanKindConsumer,
 				Status: tracing.SpanStatusError,
 				Attributes: []tracing.Attribute{
 					{Key: tracing.OperationName, Value: "receive"},

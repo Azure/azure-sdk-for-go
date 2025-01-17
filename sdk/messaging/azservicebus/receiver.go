@@ -209,6 +209,18 @@ func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options
 		return nil, errors.New("receiver is already receiving messages. ReceiveMessages() cannot be called concurrently")
 	}
 
+	var err error
+	to := &tracing.TracerOptions{
+		Tracer:   r.tracer,
+		SpanName: tracing.ReceiveSpanName,
+		Attributes: append(
+			getReceiverSpanAttributes(r.entityPath, tracing.ReceiveOperationName),
+			getMessageBatchSpanAttributes(maxMessages)...),
+	}
+
+	ctx, endSpan := tracing.StartSpan(ctx, to)
+	defer func() { endSpan(err) }()
+
 	messages, err := r.receiveMessagesImpl(ctx, maxMessages, options)
 	return messages, internal.TransformError(err)
 }
@@ -389,18 +401,6 @@ func (r *Receiver) DeadLetterMessage(ctx context.Context, message *ReceivedMessa
 }
 
 func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, options *ReceiveMessagesOptions) ([]*ReceivedMessage, error) {
-	var err error
-	to := &tracing.TracerOptions{
-		Tracer:   r.tracer,
-		SpanName: tracing.ReceiveSpanName,
-		Attributes: append(
-			getReceiverSpanAttributes(r.entityPath, tracing.ReceiveOperationName),
-			getMessageBatchSpanAttributes(maxMessages)...),
-	}
-
-	ctx, endSpan := tracing.StartSpan(ctx, to)
-	defer func() { endSpan(err) }()
-
 	cancelReleaser := r.cancelReleaser.Swap(emptyCancelFn).(func() string)
 	_ = cancelReleaser()
 
@@ -414,7 +414,7 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 
 	var linksWithID *internal.LinksWithID
 
-	err = r.amqpLinks.Retry(ctx, EventReceiver, "receiveMessages.getlinks", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
+	err := r.amqpLinks.Retry(ctx, EventReceiver, "receiveMessages.getlinks", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		linksWithID = lwid
 		return nil
 	}, r.retryOptions, nil)

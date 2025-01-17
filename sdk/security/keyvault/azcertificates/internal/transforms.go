@@ -47,7 +47,7 @@ func main() {
 	regexReplace("client.go", `options \*ListCertificatePropertiesVersionsOptions\) \(\*policy`, "_ *ListCertificatePropertiesVersionsOptions) (*policy")
 
 	// replace Error with ErrorInfo
-	regexReplace("models.go", `Error \*Error`, `Error *ErrorInfo`)
-	regexReplace("models.go", `(?:\/\/.*\s)+type Error struct.+\{(?:\s.+\s)+\}`, "")
-	regexReplace("models_serde.go", `(?:\/\/.*\s)+func \(\w \*?Error\).*\{\s(?:.+\s)+\}\s`, "")
+	regexReplace("models.go", `Error \*KeyVaultErrorError`, `Error *ErrorInfo`)
+	regexReplace("models.go", `type KeyVaultErrorError struct.+\{(?:\s.+\s)+\}`, "")
+	regexReplace("models_serde.go", `(?:\/\/.*\s)+func \(\w \*?KeyVaultErrorError\).*\{\s(?:.+\s)+\}\s`, "")
 }

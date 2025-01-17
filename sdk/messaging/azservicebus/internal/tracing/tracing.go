@@ -41,3 +41,29 @@ func StartSpan(ctx context.Context, options *TracerOptions) (context.Context, fu
 			Attributes: options.Attributes,
 		})
 }
+
+func GetEntityPathAttributes(entityPath string) []tracing.Attribute {
+	var attrs []tracing.Attribute
+	queueOrTopic, subscription := splitEntityPath(entityPath)
+	if queueOrTopic != "" {
+		attrs = append(attrs, tracing.Attribute{Key: DestinationName, Value: queueOrTopic})
+	}
+	if subscription != "" {
+		attrs = append(attrs, tracing.Attribute{Key: SubscriptionName, Value: subscription})
+	}
+	return attrs
+}
+
+func splitEntityPath(entityPath string) (string, string) {
+	queueOrTopic := ""
+	subscription := ""
+
+	path := strings.Split(entityPath, "/")
+	if len(path) >= 1 {
+		queueOrTopic = path[0]
+	}
+	if len(path) >= 3 && path[1] == "Subscriptions" {
+		subscription = path[2]
+	}
+	return queueOrTopic, subscription
+}

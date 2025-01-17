@@ -8,6 +8,8 @@ import "github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 type SpanName string
 
 const (
+	NegotiateClaimSpanName SpanName = "Namespace.NegotiateClaim"
+
 	SendSpanName            SpanName = "Sender.SendMessage"
 	SendBatchSpanName       SpanName = "Sender.SendMessageBatch"
 	ScheduleSpanName        SpanName = "Sender.ScheduleMessages"

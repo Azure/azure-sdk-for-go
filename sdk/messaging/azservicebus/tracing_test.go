@@ -154,20 +154,3 @@ func TestGetMessageBatchSpanAttributes(t *testing.T) {
 	result := getMessageBatchSpanAttributes(1)
 	require.ElementsMatch(t, expectedAttrs, result)
 }
-
-func TestGetEntityPathAttributes(t *testing.T) {
-	entityPath := "queue"
-	expectedAttrs := []tracing.Attribute{
-		{Key: tracing.DestinationName, Value: entityPath},
-	}
-	result := getEntityPathAttributes(entityPath)
-	require.ElementsMatch(t, expectedAttrs, result)
-
-	entityPath = "topic/subscription"
-	expectedAttrs = []tracing.Attribute{
-		{Key: tracing.DestinationName, Value: "topic"},
-		{Key: tracing.SubscriptionName, Value: "subscription"},
-	}
-	result = getEntityPathAttributes(entityPath)
-	require.ElementsMatch(t, expectedAttrs, result)
-}

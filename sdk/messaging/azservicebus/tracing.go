@@ -4,8 +4,6 @@
 package azservicebus
 
 import (
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 )
@@ -39,7 +37,7 @@ func getSenderSpanAttributes(queueOrTopic string, operationName tracing.Messagin
 }
 
 func getReceiverSpanAttributes(entityPath string, operationName tracing.MessagingOperationName) []tracing.Attribute {
-	attrs := getEntityPathAttributes(entityPath)
+	attrs := tracing.GetEntityPathAttributes(entityPath)
 	attrs = append(attrs, tracing.Attribute{Key: tracing.OperationName, Value: string(operationName)})
 
 	if operationName == tracing.CompleteOperationName || operationName == tracing.AbandonOperationName ||
@@ -53,7 +51,7 @@ func getReceiverSpanAttributes(entityPath string, operationName tracing.Messagin
 }
 
 func getSessionSpanAttributes(entityPath string, operationName tracing.MessagingOperationName) []tracing.Attribute {
-	attrs := getEntityPathAttributes(entityPath)
+	attrs := tracing.GetEntityPathAttributes(entityPath)
 	attrs = append(attrs, tracing.Attribute{Key: tracing.OperationName, Value: string(operationName)})
 	attrs = append(attrs, tracing.Attribute{Key: tracing.OperationType, Value: string(tracing.SessionOperationType)})
 	return attrs
@@ -90,30 +88,4 @@ func getReceivedMessageSpanAttributes(receivedMessage *ReceivedMessage) []tracin
 
 func getMessageBatchSpanAttributes(size int) []tracing.Attribute {
 	return []tracing.Attribute{{Key: tracing.BatchMessageCount, Value: int64(size)}}
-}
-
-func getEntityPathAttributes(entityPath string) []tracing.Attribute {
-	var attrs []tracing.Attribute
-	queueOrTopic, subscription := splitEntityPath(entityPath)
-	if queueOrTopic != "" {
-		attrs = append(attrs, tracing.Attribute{Key: tracing.DestinationName, Value: queueOrTopic})
-	}
-	if subscription != "" {
-		attrs = append(attrs, tracing.Attribute{Key: tracing.SubscriptionName, Value: subscription})
-	}
-	return attrs
-}
-
-func splitEntityPath(entityPath string) (string, string) {
-	queueOrTopic := ""
-	subscription := ""
-
-	path := strings.Split(entityPath, "/")
-	if len(path) == 1 {
-		queueOrTopic = path[0]
-	} else if len(path) == 2 {
-		queueOrTopic = path[0]
-		subscription = path[1]
-	}
-	return queueOrTopic, subscription
 }

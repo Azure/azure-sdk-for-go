@@ -21,6 +21,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/conn"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/sbauth"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/go-amqp"
 )
@@ -37,6 +38,8 @@ type (
 		//   Godoc: https://pkg.go.dev/sync/atomic#pkg-note-BUG
 		//   PR: https://github.com/Azure/azure-sdk-for-go/pull/16847
 		connID uint64
+
+		tracer tracing.Tracer
 
 		FQDN          string
 		TokenProvider *sbauth.TokenProvider
@@ -164,6 +167,13 @@ func NamespaceWithRetryOptions(retryOptions exported.RetryOptions) NamespaceOpti
 func NamespaceWithNewClientFn(fn func(ctx context.Context) (amqpwrap.AMQPClient, error)) NamespaceOption {
 	return func(ns *Namespace) error {
 		ns.newClientFn = fn
+		return nil
+	}
+}
+
+func NamespaceWithTracer(tracer tracing.Tracer) NamespaceOption {
+	return func(ns *Namespace) error {
+		ns.tracer = tracer
 		return nil
 	}
 }
@@ -428,6 +438,12 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 
 			log.Writef(exported.EventAuth, "(%s) next refresh in %s", entityPath, nextClaimAt)
 
+			to := &tracing.TracerOptions{
+				Tracer:     ns.tracer,
+				SpanName:   tracing.NegotiateClaimSpanName,
+				Attributes: tracing.GetEntityPathAttributes(entityPath),
+			}
+
 			select {
 			case <-refreshCtx.Done():
 				return
@@ -442,7 +458,7 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 
 						expiresOn = tmpExpiresOn
 						return nil
-					}, IsFatalSBError, ns.RetryOptions, nil)
+					}, IsFatalSBError, ns.RetryOptions, to)
 
 					if err == nil {
 						break

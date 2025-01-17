@@ -7,6 +7,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 	"github.com/stretchr/testify/require"
 )
 
@@ -41,4 +42,21 @@ func TestStartSpan(t *testing.T) {
 	subCtx2, endSpan2 := StartSpan(ctx, &TracerOptions{Tracer: tracer, SpanName: "Sender.TestSpan"})
 	defer endSpan2(nil)
 	require.NotEqual(t, ctx, subCtx2)
+}
+
+func TestGetEntityPathAttributes(t *testing.T) {
+	entityPath := "queueName"
+	expectedAttrs := []tracing.Attribute{
+		{Key: DestinationName, Value: entityPath},
+	}
+	result := GetEntityPathAttributes(entityPath)
+	require.ElementsMatch(t, expectedAttrs, result)
+
+	entityPath = "topicName/Subscriptions/subscriptionName"
+	expectedAttrs = []tracing.Attribute{
+		{Key: DestinationName, Value: "topicName"},
+		{Key: SubscriptionName, Value: "subscriptionName"},
+	}
+	result = GetEntityPathAttributes(entityPath)
+	require.ElementsMatch(t, expectedAttrs, result)
 }

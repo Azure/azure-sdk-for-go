@@ -155,6 +155,7 @@ func newClientImpl(creds clientCreds, args clientImplArgs) (*Client, error) {
 
 	if args.ClientOptions != nil {
 		tracingProvider = args.ClientOptions.TracingProvider
+
 		client.retryOptions = args.ClientOptions.RetryOptions
 
 		if args.ClientOptions.TLSConfig != nil {
@@ -176,10 +177,12 @@ func newClientImpl(creds clientCreds, args clientImplArgs) (*Client, error) {
 		nsOptions = append(nsOptions, internal.NamespaceWithRetryOptions(args.ClientOptions.RetryOptions))
 	}
 
+	client.tracer = newTracer(tracingProvider, getFullyQualifiedNamespace(creds))
+	nsOptions = append(nsOptions, internal.NamespaceWithTracer(client.tracer))
+
 	nsOptions = append(nsOptions, args.NSOptions...)
 
 	client.namespace, err = internal.NewNamespace(nsOptions...)
-	client.tracer = newTracer(tracingProvider, getFullyQualifiedNamespace(creds))
 
 	return client, err
 }

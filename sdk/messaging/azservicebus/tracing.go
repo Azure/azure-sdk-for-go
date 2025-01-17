@@ -30,92 +30,78 @@ func newTracer(provider tracing.Provider, hostName string) tracing.Tracer {
 	return tracer
 }
 
-func setSenderSpanAttributes(queueOrTopic string, operationName tracing.MessagingOperationName) tracing.SetAttributesFn {
-	return func(attrs []tracing.Attribute) []tracing.Attribute {
-		attrs = append(attrs,
-			tracing.Attribute{Key: tracing.DestinationName, Value: queueOrTopic},
-			tracing.Attribute{Key: tracing.OperationType, Value: string(tracing.SendOperationType)},
-			tracing.Attribute{Key: tracing.OperationName, Value: string(operationName)},
-		)
-		return attrs
-	}
+func getSenderSpanAttributes(queueOrTopic string, operationName tracing.MessagingOperationName) []tracing.Attribute {
+	return append([]tracing.Attribute{},
+		tracing.Attribute{Key: tracing.DestinationName, Value: queueOrTopic},
+		tracing.Attribute{Key: tracing.OperationType, Value: string(tracing.SendOperationType)},
+		tracing.Attribute{Key: tracing.OperationName, Value: string(operationName)},
+	)
 }
 
-func setReceiverSpanAttributes(entityPath string, operationName tracing.MessagingOperationName) tracing.SetAttributesFn {
-	return func(attrs []tracing.Attribute) []tracing.Attribute {
-		attrs = setEntityPathAttributes(entityPath)(attrs)
-		attrs = append(attrs, tracing.Attribute{Key: tracing.OperationName, Value: string(operationName)})
+func getReceiverSpanAttributes(entityPath string, operationName tracing.MessagingOperationName) []tracing.Attribute {
+	attrs := getEntityPathAttributes(entityPath)
+	attrs = append(attrs, tracing.Attribute{Key: tracing.OperationName, Value: string(operationName)})
 
-		if operationName == tracing.CompleteOperationName || operationName == tracing.AbandonOperationName ||
-			operationName == tracing.DeadLetterOperationName || operationName == tracing.DeferOperationName {
-			attrs = append(attrs, tracing.Attribute{Key: tracing.DispositionStatus, Value: string(operationName)})
-			attrs = append(attrs, tracing.Attribute{Key: tracing.OperationType, Value: string(tracing.SettleOperationType)})
-		} else {
-			attrs = append(attrs, tracing.Attribute{Key: tracing.OperationType, Value: string(tracing.ReceiveOperationType)})
-		}
-
-		return attrs
+	if operationName == tracing.CompleteOperationName || operationName == tracing.AbandonOperationName ||
+		operationName == tracing.DeadLetterOperationName || operationName == tracing.DeferOperationName {
+		attrs = append(attrs, tracing.Attribute{Key: tracing.DispositionStatus, Value: string(operationName)})
+		attrs = append(attrs, tracing.Attribute{Key: tracing.OperationType, Value: string(tracing.SettleOperationType)})
+	} else {
+		attrs = append(attrs, tracing.Attribute{Key: tracing.OperationType, Value: string(tracing.ReceiveOperationType)})
 	}
+	return attrs
 }
 
-func setSessionSpanAttributes(entityPath string, operationName tracing.MessagingOperationName) tracing.SetAttributesFn {
-	return func(attrs []tracing.Attribute) []tracing.Attribute {
-		attrs = setEntityPathAttributes(entityPath)(attrs)
-		attrs = append(attrs, tracing.Attribute{Key: tracing.OperationName, Value: string(operationName)})
-		attrs = append(attrs, tracing.Attribute{Key: tracing.OperationType, Value: string(tracing.SessionOperationType)})
-		return attrs
-	}
+func getSessionSpanAttributes(entityPath string, operationName tracing.MessagingOperationName) []tracing.Attribute {
+	attrs := getEntityPathAttributes(entityPath)
+	attrs = append(attrs, tracing.Attribute{Key: tracing.OperationName, Value: string(operationName)})
+	attrs = append(attrs, tracing.Attribute{Key: tracing.OperationType, Value: string(tracing.SessionOperationType)})
+	return attrs
 }
 
-func setMessageSpanAttributes(message amqpCompatibleMessage) tracing.SetAttributesFn {
-	return func(attrs []tracing.Attribute) []tracing.Attribute {
-		if message != nil {
-			amqpMessage := message.toAMQPMessage()
-			if amqpMessage != nil && amqpMessage.Properties != nil {
-				if amqpMessage.Properties.MessageID != nil && amqpMessage.Properties.MessageID != "" {
-					attrs = append(attrs, tracing.Attribute{Key: tracing.MessageID, Value: amqpMessage.Properties.MessageID})
-				}
-				if amqpMessage.Properties.CorrelationID != nil {
-					attrs = append(attrs, tracing.Attribute{Key: tracing.ConversationID, Value: amqpMessage.Properties.CorrelationID})
-				}
+func getMessageSpanAttributes(message amqpCompatibleMessage) []tracing.Attribute {
+	attrs := []tracing.Attribute{}
+	if message != nil {
+		amqpMessage := message.toAMQPMessage()
+		if amqpMessage != nil && amqpMessage.Properties != nil {
+			if amqpMessage.Properties.MessageID != nil && amqpMessage.Properties.MessageID != "" {
+				attrs = append(attrs, tracing.Attribute{Key: tracing.MessageID, Value: amqpMessage.Properties.MessageID})
+			}
+			if amqpMessage.Properties.CorrelationID != nil {
+				attrs = append(attrs, tracing.Attribute{Key: tracing.ConversationID, Value: amqpMessage.Properties.CorrelationID})
 			}
 		}
-		return attrs
 	}
+	return attrs
 }
 
-func setReceivedMessageSpanAttributes(receivedMessage *ReceivedMessage) tracing.SetAttributesFn {
-	return func(attrs []tracing.Attribute) []tracing.Attribute {
-		if receivedMessage != nil {
-			message := receivedMessage.Message()
-			attrs = setMessageSpanAttributes(message)(attrs)
-			attrs = append(attrs, tracing.Attribute{Key: tracing.DeliveryCount, Value: int64(receivedMessage.DeliveryCount)})
-			if receivedMessage.EnqueuedTime != nil {
-				attrs = append(attrs, tracing.Attribute{Key: tracing.EnqueuedTime, Value: receivedMessage.EnqueuedTime.Unix()})
-			}
+func getReceivedMessageSpanAttributes(receivedMessage *ReceivedMessage) []tracing.Attribute {
+	attrs := []tracing.Attribute{}
+	if receivedMessage != nil {
+		message := receivedMessage.Message()
+		attrs = getMessageSpanAttributes(message)
+		attrs = append(attrs, tracing.Attribute{Key: tracing.DeliveryCount, Value: int64(receivedMessage.DeliveryCount)})
+		if receivedMessage.EnqueuedTime != nil {
+			attrs = append(attrs, tracing.Attribute{Key: tracing.EnqueuedTime, Value: receivedMessage.EnqueuedTime.Unix()})
 		}
-		return attrs
 	}
+	return attrs
 }
 
-func setMessageBatchSpanAttributes(size int) tracing.SetAttributesFn {
-	return func(attrs []tracing.Attribute) []tracing.Attribute {
-		attrs = append(attrs, tracing.Attribute{Key: tracing.BatchMessageCount, Value: int64(size)})
-		return attrs
-	}
+func getMessageBatchSpanAttributes(size int) []tracing.Attribute {
+	return []tracing.Attribute{{Key: tracing.BatchMessageCount, Value: int64(size)}}
 }
 
-func setEntityPathAttributes(entityPath string) tracing.SetAttributesFn {
-	return func(attrs []tracing.Attribute) []tracing.Attribute {
-		queueOrTopic, subscription := splitEntityPath(entityPath)
-		if queueOrTopic != "" {
-			attrs = append(attrs, tracing.Attribute{Key: tracing.DestinationName, Value: queueOrTopic})
-		}
-		if subscription != "" {
-			attrs = append(attrs, tracing.Attribute{Key: tracing.SubscriptionName, Value: subscription})
-		}
-		return attrs
+func getEntityPathAttributes(entityPath string) []tracing.Attribute {
+	attrs := []tracing.Attribute{}
+	queueOrTopic, subscription := splitEntityPath(entityPath)
+	if queueOrTopic != "" {
+		attrs = append(attrs, tracing.Attribute{Key: tracing.DestinationName, Value: queueOrTopic})
 	}
+	if subscription != "" {
+		attrs = append(attrs, tracing.Attribute{Key: tracing.SubscriptionName, Value: subscription})
+	}
+	return attrs
 }
 
 func splitEntityPath(entityPath string) (string, string) {

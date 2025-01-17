@@ -18,6 +18,7 @@ import (
 type (
 	// Sender is used to send messages as well as schedule them to be delivered at a later date.
 	Sender struct {
+		tracer         tracing.Tracer
 		queueOrTopic   string
 		cleanupOnClose func()
 		links          internal.AMQPLinks
@@ -94,10 +95,18 @@ type SendMessageBatchOptions struct {
 // Message batches can be created using [Sender.NewMessageBatch].
 // If the operation fails it can return an [*azservicebus.Error] type if the failure is actionable.
 func (s *Sender) SendMessageBatch(ctx context.Context, batch *MessageBatch, options *SendMessageBatchOptions) error {
-	sc := tracing.NewSpanConfig(tracing.SendBatchSpanName, setSenderSpanAttributes(s.queueOrTopic, tracing.SendOperationName), setMessageBatchSpanAttributes(int(batch.NumMessages())))
+	to := &tracing.TracerOptions{
+		Tracer:   s.tracer,
+		SpanName: tracing.SendBatchSpanName,
+		Attributes: append(
+			getSenderSpanAttributes(s.queueOrTopic, tracing.SendOperationName),
+			getMessageBatchSpanAttributes(int(batch.NumMessages()))...,
+		),
+	}
+
 	err := s.links.Retry(ctx, EventSender, "SendMessageBatch", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		return lwid.Sender.Send(ctx, batch.toAMQPMessage(), nil)
-	}, RetryOptions(s.retryOptions), sc)
+	}, RetryOptions(s.retryOptions), to)
 
 	return internal.TransformError(err)
 }
@@ -112,7 +121,7 @@ type ScheduleMessagesOptions struct {
 // delivered can be cancelled using `Receiver.CancelScheduleMessage(s)`
 // If the operation fails it can return an [*azservicebus.Error] type if the failure is actionable.
 func (s *Sender) ScheduleMessages(ctx context.Context, messages []*Message, scheduledEnqueueTime time.Time, options *ScheduleMessagesOptions) ([]int64, error) {
-	sequenceNumbers, err := scheduleMessages(ctx, s.links, s.retryOptions, messages, scheduledEnqueueTime)
+	sequenceNumbers, err := scheduleMessages(ctx, s.tracer, s.links, s.retryOptions, messages, scheduledEnqueueTime)
 	return sequenceNumbers, err
 }
 
@@ -126,12 +135,18 @@ type ScheduleAMQPAnnotatedMessagesOptions struct {
 // delivered can be cancelled using `Receiver.CancelScheduleMessage(s)`
 // If the operation fails it can return an [*azservicebus.Error] type if the failure is actionable.
 func (s *Sender) ScheduleAMQPAnnotatedMessages(ctx context.Context, messages []*AMQPAnnotatedMessage, scheduledEnqueueTime time.Time, options *ScheduleAMQPAnnotatedMessagesOptions) ([]int64, error) {
-	sequenceNumbers, err := scheduleMessages(ctx, s.links, s.retryOptions, messages, scheduledEnqueueTime)
+	sequenceNumbers, err := scheduleMessages(ctx, s.tracer, s.links, s.retryOptions, messages, scheduledEnqueueTime)
 	return sequenceNumbers, err
 }
 
-func scheduleMessages[T amqpCompatibleMessage](ctx context.Context, links internal.AMQPLinks, retryOptions RetryOptions, messages []T, scheduledEnqueueTime time.Time) ([]int64, error) {
-	sc := tracing.NewSpanConfig(tracing.ScheduleSpanName, setSenderSpanAttributes(links.EntityPath(), tracing.ScheduleOperationName), setMessageBatchSpanAttributes(len(messages)))
+func scheduleMessages[T amqpCompatibleMessage](ctx context.Context, tracer tracing.Tracer, links internal.AMQPLinks, retryOptions RetryOptions, messages []T, scheduledEnqueueTime time.Time) ([]int64, error) {
+	to := &tracing.TracerOptions{
+		Tracer:   tracer,
+		SpanName: tracing.ScheduleSpanName,
+		Attributes: append(
+			getSenderSpanAttributes(links.EntityPath(), tracing.ScheduleOperationName),
+			getMessageBatchSpanAttributes(len(messages))...),
+	}
 
 	var amqpMessages []*amqp.Message
 
@@ -149,7 +164,7 @@ func scheduleMessages[T amqpCompatibleMessage](ctx context.Context, links intern
 		}
 		sequenceNumbers = sn
 		return nil
-	}, retryOptions, sc)
+	}, retryOptions, to)
 
 	return sequenceNumbers, internal.TransformError(err)
 }
@@ -164,11 +179,17 @@ type CancelScheduledMessagesOptions struct {
 // CancelScheduledMessages cancels multiple messages that were scheduled.
 // If the operation fails it can return an [*azservicebus.Error] type if the failure is actionable.
 func (s *Sender) CancelScheduledMessages(ctx context.Context, sequenceNumbers []int64, options *CancelScheduledMessagesOptions) error {
-	sc := tracing.NewSpanConfig(tracing.CancelScheduledSpanName, setSenderSpanAttributes(s.queueOrTopic, tracing.CancelScheduledOperationName), setMessageBatchSpanAttributes(len(sequenceNumbers)))
+	to := &tracing.TracerOptions{
+		Tracer:   s.tracer,
+		SpanName: tracing.CancelScheduledSpanName,
+		Attributes: append(
+			getSenderSpanAttributes(s.queueOrTopic, tracing.CancelScheduledOperationName),
+			getMessageBatchSpanAttributes(len(sequenceNumbers))...),
+	}
 
 	err := s.links.Retry(ctx, EventSender, "CancelScheduledMessages", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		return internal.CancelScheduledMessages(ctx, lwv.RPC, lwv.Sender.LinkName(), sequenceNumbers)
-	}, s.retryOptions, sc)
+	}, s.retryOptions, to)
 
 	return internal.TransformError(err)
 }
@@ -180,11 +201,17 @@ func (s *Sender) Close(ctx context.Context) error {
 }
 
 func (s *Sender) sendMessage(ctx context.Context, message amqpCompatibleMessage) error {
-	sc := tracing.NewSpanConfig(tracing.SendSpanName, setSenderSpanAttributes(s.queueOrTopic, tracing.SendOperationName), setMessageSpanAttributes(message))
+	to := &tracing.TracerOptions{
+		Tracer:   s.tracer,
+		SpanName: tracing.SendSpanName,
+		Attributes: append(
+			getSenderSpanAttributes(s.queueOrTopic, tracing.SendOperationName),
+			getMessageSpanAttributes(message)...),
+	}
 
 	err := s.links.Retry(ctx, EventSender, "SendMessage", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		return lwid.Sender.Send(ctx, message.toAMQPMessage(), nil)
-	}, RetryOptions(s.retryOptions), sc)
+	}, RetryOptions(s.retryOptions), to)
 
 	if amqpErr := (*amqp.Error)(nil); errors.As(err, &amqpErr) && amqpErr.Condition == amqp.ErrCondMessageSizeExceeded {
 		return ErrMessageTooLarge
@@ -223,13 +250,13 @@ func newSender(args newSenderArgs) (*Sender, error) {
 	}
 
 	sender := &Sender{
+		tracer:         args.tracer,
 		queueOrTopic:   args.queueOrTopic,
 		cleanupOnClose: args.cleanupOnClose,
 		retryOptions:   args.retryOptions,
 	}
 
 	sender.links = internal.NewAMQPLinks(internal.NewAMQPLinksArgs{
-		Tracer:              args.tracer,
 		NS:                  args.ns,
 		EntityPath:          args.queueOrTopic,
 		CreateLinkFunc:      sender.createSenderLink,

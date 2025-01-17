@@ -43,8 +43,6 @@ type FakeAMQPSession struct {
 type FakeAMQPLinks struct {
 	AMQPLinks
 
-	Tr tracing.Tracer
-
 	Closed              int
 	CloseIfNeededCalled int
 
@@ -201,9 +199,9 @@ func (l *FakeAMQPLinks) Get(ctx context.Context) (*LinksWithID, error) {
 	}
 }
 
-func (l *FakeAMQPLinks) Retry(ctx context.Context, eventName log.Event, operation string, fn RetryWithLinksFn, o exported.RetryOptions, sc *tracing.SpanConfig) error {
+func (l *FakeAMQPLinks) Retry(ctx context.Context, eventName log.Event, operation string, fn RetryWithLinksFn, o exported.RetryOptions, to *tracing.TracerOptions) error {
 	var err error
-	ctx, endSpan := tracing.StartSpan(ctx, l.Tr, sc)
+	ctx, endSpan := tracing.StartSpan(ctx, to)
 	defer func() { endSpan(err) }()
 
 	lwr, err := l.Get(ctx)
@@ -222,14 +220,6 @@ func (l *FakeAMQPLinks) Writef(evt azlog.Event, format string, args ...any) {
 
 func (l *FakeAMQPLinks) Prefix() string {
 	return "prefix"
-}
-
-func (l *FakeAMQPLinks) Tracer() tracing.Tracer {
-	return l.Tr
-}
-
-func (l *FakeAMQPLinks) SetTracer(t tracing.Tracer) {
-	l.Tr = t
 }
 
 func (l *FakeAMQPLinks) Close(ctx context.Context, permanently bool) error {

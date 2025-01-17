@@ -43,7 +43,7 @@ type AMQPLinks interface {
 	Get(ctx context.Context) (*LinksWithID, error)
 
 	// Retry will run your callback, recovering links when necessary.
-	Retry(ctx context.Context, name log.Event, operation string, fn RetryWithLinksFn, o exported.RetryOptions, sc *tracing.SpanConfig) error
+	Retry(ctx context.Context, name log.Event, operation string, fn RetryWithLinksFn, o exported.RetryOptions, to *tracing.TracerOptions) error
 
 	// RecoverIfNeeded will check if an error requires recovery, and will recover
 	// the link or, possibly, the connection.
@@ -67,12 +67,6 @@ type AMQPLinks interface {
 
 	// Prefix is the current logging prefix, usable for logging and continuity.
 	Prefix() string
-
-	// Tracer returns the tracer for the AMQPLinks instance.
-	Tracer() tracing.Tracer
-
-	// SetTracer sets the tracer for the AMQPLinks instance.
-	SetTracer(tracing.Tracer)
 }
 
 // AMQPLinksImpl manages the set of AMQP links (and detritus) typically needed to work
@@ -91,8 +85,6 @@ type AMQPLinksImpl struct {
 	//   Godoc: https://pkg.go.dev/sync/atomic#pkg-note-BUG
 	//   PR: https://github.com/Azure/azure-sdk-for-go/pull/16847
 	id LinkID
-
-	tracer tracing.Tracer
 
 	entityPath     string
 	managementPath string
@@ -131,7 +123,6 @@ type AMQPLinksImpl struct {
 type CreateLinkFunc func(ctx context.Context, session amqpwrap.AMQPSession) (amqpwrap.AMQPSenderCloser, amqpwrap.AMQPReceiverCloser, error)
 
 type NewAMQPLinksArgs struct {
-	Tracer              tracing.Tracer
 	NS                  NamespaceForAMQPLinks
 	EntityPath          string
 	CreateLinkFunc      CreateLinkFunc
@@ -142,7 +133,6 @@ type NewAMQPLinksArgs struct {
 // management link for a specific entity path.
 func NewAMQPLinks(args NewAMQPLinksArgs) AMQPLinks {
 	l := &AMQPLinksImpl{
-		tracer:              args.Tracer,
 		entityPath:          args.EntityPath,
 		managementPath:      fmt.Sprintf("%s/$management", args.EntityPath),
 		audience:            args.NS.GetEntityAudience(args.EntityPath),
@@ -154,14 +144,6 @@ func NewAMQPLinks(args NewAMQPLinksArgs) AMQPLinks {
 	}
 
 	return l
-}
-
-func (links *AMQPLinksImpl) Tracer() tracing.Tracer {
-	return links.tracer
-}
-
-func (links *AMQPLinksImpl) SetTracer(tracer tracing.Tracer) {
-	links.tracer = tracer
 }
 
 // ManagementPath is the management path for the associated entity.
@@ -334,7 +316,7 @@ func (l *AMQPLinksImpl) Get(ctx context.Context) (*LinksWithID, error) {
 	}, nil
 }
 
-func (links *AMQPLinksImpl) Retry(ctx context.Context, eventName log.Event, operation string, fn RetryWithLinksFn, o exported.RetryOptions, sc *tracing.SpanConfig) error {
+func (links *AMQPLinksImpl) Retry(ctx context.Context, eventName log.Event, operation string, fn RetryWithLinksFn, o exported.RetryOptions, to *tracing.TracerOptions) error {
 	var lastID LinkID
 
 	didQuickRetry := false
@@ -343,7 +325,7 @@ func (links *AMQPLinksImpl) Retry(ctx context.Context, eventName log.Event, oper
 		return links.getRecoveryKindFunc(err) == RecoveryKindFatal
 	}
 
-	return utils.Retry(ctx, links.tracer, eventName, links.Prefix()+"("+operation+")", func(ctx context.Context, args *utils.RetryFnArgs) error {
+	return utils.Retry(ctx, eventName, links.Prefix()+"("+operation+")", func(ctx context.Context, args *utils.RetryFnArgs) error {
 		if err := links.RecoverIfNeeded(ctx, lastID, args.LastErr); err != nil {
 			return err
 		}
@@ -385,7 +367,7 @@ func (links *AMQPLinksImpl) Retry(ctx context.Context, eventName log.Event, oper
 		}
 
 		return nil
-	}, isFatalErrorFunc, o, sc)
+	}, isFatalErrorFunc, o, to)
 }
 
 // EntityPath is the full entity path for the queue/topic/subscription.

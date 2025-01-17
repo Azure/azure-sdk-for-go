@@ -219,7 +219,11 @@ type GetSessionStateOptions struct {
 // GetSessionState retrieves state associated with the session.
 // If the operation fails it can return an [*azservicebus.Error] type if the failure is actionable.
 func (sr *SessionReceiver) GetSessionState(ctx context.Context, options *GetSessionStateOptions) ([]byte, error) {
-	sc := tracing.NewSpanConfig(tracing.GetSessionStateSpanName, setSessionSpanAttributes(sr.inner.entityPath, tracing.GetSessionStateOperationName))
+	to := &tracing.TracerOptions{
+		Tracer:     sr.inner.tracer,
+		SpanName:   tracing.GetSessionStateSpanName,
+		Attributes: getSessionSpanAttributes(sr.inner.entityPath, tracing.GetSessionStateOperationName),
+	}
 
 	var sessionState []byte
 
@@ -232,7 +236,7 @@ func (sr *SessionReceiver) GetSessionState(ctx context.Context, options *GetSess
 
 		sessionState = s
 		return nil
-	}, sr.inner.retryOptions, sc)
+	}, sr.inner.retryOptions, to)
 
 	return sessionState, internal.TransformError(err)
 }
@@ -246,10 +250,15 @@ type SetSessionStateOptions struct {
 // Pass nil for the state parameter to clear the stored session state.
 // If the operation fails it can return an [*azservicebus.Error] type if the failure is actionable.
 func (sr *SessionReceiver) SetSessionState(ctx context.Context, state []byte, options *SetSessionStateOptions) error {
-	sc := tracing.NewSpanConfig(tracing.SetSessionStateSpanName, setSessionSpanAttributes(sr.inner.entityPath, tracing.SetSessionStateOperationName))
+	to := &tracing.TracerOptions{
+		Tracer:     sr.inner.tracer,
+		SpanName:   tracing.SetSessionStateSpanName,
+		Attributes: getSessionSpanAttributes(sr.inner.entityPath, tracing.SetSessionStateOperationName),
+	}
+
 	err := sr.inner.amqpLinks.Retry(ctx, EventReceiver, "SetSessionState", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		return internal.SetSessionState(ctx, lwv.RPC, lwv.Receiver.LinkName(), sr.SessionID(), state)
-	}, sr.inner.retryOptions, sc)
+	}, sr.inner.retryOptions, to)
 
 	return internal.TransformError(err)
 }
@@ -263,7 +272,11 @@ type RenewSessionLockOptions struct {
 // using `LockedUntil`.
 // If the operation fails it can return an [*azservicebus.Error] type if the failure is actionable.
 func (sr *SessionReceiver) RenewSessionLock(ctx context.Context, options *RenewSessionLockOptions) error {
-	sc := tracing.NewSpanConfig(tracing.RenewSessionLockSpanName, setSessionSpanAttributes(sr.inner.entityPath, tracing.RenewSessionLockOperationName))
+	to := &tracing.TracerOptions{
+		Tracer:     sr.inner.tracer,
+		SpanName:   tracing.RenewSessionLockSpanName,
+		Attributes: getSessionSpanAttributes(sr.inner.entityPath, tracing.RenewSessionLockOperationName),
+	}
 	err := sr.inner.amqpLinks.Retry(ctx, EventReceiver, "RenewSessionLock", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		newLockedUntil, err := internal.RenewSessionLock(ctx, lwv.RPC, lwv.Receiver.LinkName(), *sr.sessionID)
 
@@ -273,7 +286,7 @@ func (sr *SessionReceiver) RenewSessionLock(ctx context.Context, options *RenewS
 
 		sr.lockedUntil = newLockedUntil
 		return nil
-	}, sr.inner.retryOptions, sc)
+	}, sr.inner.retryOptions, to)
 
 	return internal.TransformError(err)
 }
@@ -281,8 +294,12 @@ func (sr *SessionReceiver) RenewSessionLock(ctx context.Context, options *RenewS
 // init ensures the link was created, guaranteeing that we get our expected session lock.
 func (sr *SessionReceiver) init(ctx context.Context) error {
 	var err error
-	sc := tracing.NewSpanConfig(tracing.AcceptSessionSpanName, setSessionSpanAttributes(sr.inner.entityPath, tracing.AcceptSessionOperationName))
-	ctx, endSpan := tracing.StartSpan(ctx, sr.inner.amqpLinks.Tracer(), sc)
+	to := &tracing.TracerOptions{
+		Tracer:     sr.inner.tracer,
+		SpanName:   tracing.AcceptSessionSpanName,
+		Attributes: getSessionSpanAttributes(sr.inner.entityPath, tracing.AcceptSessionOperationName),
+	}
+	ctx, endSpan := tracing.StartSpan(ctx, to)
 	defer func() { endSpan(err) }()
 
 	// initialize the links

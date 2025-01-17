@@ -15,32 +15,21 @@ type SpanKind = tracing.SpanKind
 type Tracer = tracing.Tracer
 type Provider = tracing.Provider
 
-func NewNoOpTracer() Tracer {
-	return Tracer{}
+func NewNoOpTracer() *Tracer {
+	return &Tracer{}
 }
 
-type SpanConfig struct {
-	name       SpanName
-	attributes []Attribute
-}
-
-type SetAttributesFn func([]Attribute) []Attribute
-
-func NewSpanConfig(name SpanName, options ...SetAttributesFn) *SpanConfig {
-	sc := &SpanConfig{name: name}
-	for _, fn := range options {
-		sc.attributes = fn(sc.attributes)
-	}
-	return sc
+type TracerOptions struct {
+	Tracer     Tracer
+	SpanName   SpanName
+	Attributes []Attribute
 }
 
 // StartSpan creates a span with the specified name and attributes.
 // If no span name is provided, no span is created.
-func StartSpan(ctx context.Context, tracer Tracer, sc *SpanConfig) (context.Context, func(error)) {
-	if sc == nil || sc.name == "" {
+func StartSpan(ctx context.Context, options *TracerOptions) (context.Context, func(error)) {
+	if options == nil || options.SpanName == "" {
 		return ctx, func(error) {}
 	}
-	return runtime.StartSpan(ctx, string(sc.name), tracer, &StartSpanOptions{Attributes: sc.attributes})
+	return runtime.StartSpan(ctx, string(options.SpanName), options.Tracer, &runtime.StartSpanOptions{Attributes: options.Attributes})
 }
-
-type StartSpanOptions = runtime.StartSpanOptions

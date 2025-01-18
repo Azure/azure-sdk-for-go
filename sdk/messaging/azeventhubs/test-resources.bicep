@@ -109,6 +109,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2019-04-01' = {
   }
   kind: 'StorageV2'
   properties: {
+    allowSharedKeyAccess: false
     networkAcls: {
       bypass: 'AzureServices'
       virtualNetworkRules: []
@@ -138,68 +139,6 @@ resource storageAccountName_default_container 'Microsoft.Storage/storageAccounts
   ]
 }
 
-resource iot 'Microsoft.Devices/IotHubs@2018-04-01' = {
-  name: iotName
-  location: location
-  sku: {
-    name: 'S1'
-    capacity: 1
-  }
-  properties: {
-    ipFilterRules: []
-    eventHubEndpoints: {
-      events: {
-        retentionTimeInDays: 1
-        partitionCount: 4
-      }
-    }
-    routing: {
-      endpoints: {
-        serviceBusQueues: []
-        serviceBusTopics: []
-        eventHubs: []
-        storageContainers: []
-      }
-      routes: []
-      fallbackRoute: {
-        name: '$fallback'
-        source: 'DeviceMessages'
-        condition: 'true'
-        endpointNames: [
-          'events'
-        ]
-        isEnabled: true
-      }
-    }
-    storageEndpoints: {
-      '$default': {
-        sasTtlAsIso8601: 'PT1H'
-        connectionString: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${listKeys(storageAccount.id, storageApiVersion).keys[0].value};EndpointSuffix=${storageEndpointSuffix}'
-        containerName: containerName
-      }
-    }
-    messagingEndpoints: {
-      fileNotifications: {
-        lockDurationAsIso8601: 'PT1M'
-        ttlAsIso8601: 'PT1H'
-        maxDeliveryCount: 10
-      }
-    }
-    enableFileUploadNotifications: false
-    cloudToDevice: {
-      maxDeliveryCount: 10
-      defaultTtlAsIso8601: 'PT1H'
-      feedback: {
-        lockDurationAsIso8601: 'PT1M'
-        ttlAsIso8601: 'PT1H'
-        maxDeliveryCount: 10
-      }
-    }
-    features: 'None'
-  }
-}
-output IOTHUB_CONNECTION_STRING string = 'HostName=${reference(iot.id, providers('Microsoft.Devices', 'IoTHubs').apiVersions[0]).hostName};SharedAccessKeyName=iothubowner;SharedAccessKey=${listKeys(iot.id, providers('Microsoft.Devices', 'IoTHubs').apiVersions[0]).value[0].primaryKey}'
-
 // used for TokenCredential tests
 output EVENTHUB_NAMESPACE string = '${namespace.name}.servicebus.windows.net'
 output CHECKPOINTSTORE_STORAGE_ENDPOINT string = storageAccount.properties.primaryEndpoints.blob
@@ -219,7 +158,7 @@ output EVENTHUB_CONNECTION_STRING_SEND_ONLY string = listKeys(
   resourceId('Microsoft.EventHub/namespaces/authorizationRules', namespaceName, authorizedSendOnly.name),
   apiVersion
 ).primaryConnectionString
-output CHECKPOINTSTORE_STORAGE_CONNECTION_STRING string = 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${listKeys(storageAccount.id, storageApiVersion).keys[0].value};EndpointSuffix=${storageEndpointSuffix}'
+// output CHECKPOINTSTORE_STORAGE_CONNECTION_STRING string = 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${listKeys(storageAccount.id, storageApiVersion).keys[0].value};EndpointSuffix=${storageEndpointSuffix}'
 
 output RESOURCE_GROUP string = resourceGroup().name
 output AZURE_SUBSCRIPTION_ID string = subscription().subscriptionId

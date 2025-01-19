@@ -31,6 +31,18 @@ type AdministratorsClientListByServerOptions struct {
 	// placeholder for future optional parameters
 }
 
+// BackupsClientBeginCreateOptions contains the optional parameters for the BackupsClient.BeginCreate method.
+type BackupsClientBeginCreateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// BackupsClientBeginDeleteOptions contains the optional parameters for the BackupsClient.BeginDelete method.
+type BackupsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // BackupsClientGetOptions contains the optional parameters for the BackupsClient.Get method.
 type BackupsClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -195,9 +207,9 @@ type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PostgreSQLManagementClientCheckMigrationNameAvailabilityOptions contains the optional parameters for the PostgreSQLManagementClient.CheckMigrationNameAvailability
+// PostgreSQLServerManagementClientCheckMigrationNameAvailabilityOptions contains the optional parameters for the PostgreSQLServerManagementClient.CheckMigrationNameAvailability
 // method.
-type PostgreSQLManagementClientCheckMigrationNameAvailabilityOptions struct {
+type PostgreSQLServerManagementClientCheckMigrationNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -235,11 +247,6 @@ type PrivateLinkResourcesClientGetOptions struct {
 // PrivateLinkResourcesClientListByServerOptions contains the optional parameters for the PrivateLinkResourcesClient.NewListByServerPager
 // method.
 type PrivateLinkResourcesClientListByServerOptions struct {
-	// placeholder for future optional parameters
-}
-
-// QuotaUsagesClientListOptions contains the optional parameters for the QuotaUsagesClient.NewListPager method.
-type QuotaUsagesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 

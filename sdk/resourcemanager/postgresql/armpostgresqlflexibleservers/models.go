@@ -168,10 +168,10 @@ type ConfigurationListResult struct {
 
 // ConfigurationProperties - The properties of a configuration.
 type ConfigurationProperties struct {
-	// Source of the configuration.
+	// Source of the configuration. Required to update the configuration.
 	Source *string
 
-	// Value of the configuration.
+	// Value of the configuration. Required to update the configuration.
 	Value *string
 
 	// READ-ONLY; Allowed values of the configuration.
@@ -757,8 +757,8 @@ type MigrationResourceProperties struct {
 	// Indicates whether to setup LogicalReplicationOnSourceDb, if needed
 	SetupLogicalReplicationOnSourceDbIfNeeded *LogicalReplicationOnSourceDbEnum
 
-	// Source server fully qualified domain name or ip. It is a optional value, if customer provide it, dms will always use it
-	// for connection
+	// Source server fully qualified domain name (FQDN) or IP address. It is a optional value, if customer provide it, migration
+	// service will always use it for connection
 	SourceDbServerFullyQualifiedDomainName *string
 
 	// ResourceId of the source database server in case the sourceType is PostgreSQLSingleServer. For other source types this
@@ -772,8 +772,8 @@ type MigrationResourceProperties struct {
 	// Indicates whether the data migration should start right away
 	StartDataMigration *StartDataMigrationEnum
 
-	// Target server fully qualified domain name or ip. It is a optional value, if customer provide it, dms will always use it
-	// for connection
+	// Target server fully qualified domain name (FQDN) or IP address. It is a optional value, if customer provide it, migration
+	// service will always use it for connection
 	TargetDbServerFullyQualifiedDomainName *string
 
 	// To trigger cutover for entire migration we need to send this flag as True
@@ -829,8 +829,8 @@ type MigrationResourcePropertiesForPatch struct {
 	// Indicates whether to setup LogicalReplicationOnSourceDb, if needed
 	SetupLogicalReplicationOnSourceDbIfNeeded *LogicalReplicationOnSourceDbEnum
 
-	// Source server fully qualified domain name or ip. It is a optional value, if customer provide it, dms will always use it
-	// for connection
+	// Source server fully qualified domain name (FQDN) or IP address. It is a optional value, if customer provide it, migration
+	// service will always use it for connection
 	SourceDbServerFullyQualifiedDomainName *string
 
 	// ResourceId of the source database server
@@ -839,8 +839,8 @@ type MigrationResourcePropertiesForPatch struct {
 	// Indicates whether the data migration should start right away
 	StartDataMigration *StartDataMigrationEnum
 
-	// Target server fully qualified domain name or ip. It is a optional value, if customer provide it, dms will always use it
-	// for connection
+	// Target server fully qualified domain name (FQDN) or IP address. It is a optional value, if customer provide it, migration
+	// service will always use it for connection
 	TargetDbServerFullyQualifiedDomainName *string
 
 	// To trigger cutover for entire migration we need to send this flag as True
@@ -899,15 +899,6 @@ type NameAvailability struct {
 
 	// READ-ONLY; type of the server
 	Type *string
-}
-
-// NameProperty - Name property for quota usage
-type NameProperty struct {
-	// Localized name
-	LocalizedValue *string
-
-	// Name value
-	Value *string
 }
 
 // Network properties of a server.
@@ -1066,33 +1057,6 @@ type PrivateLinkServiceConnectionState struct {
 
 	// Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
 	Status *PrivateEndpointServiceConnectionStatus
-}
-
-// QuotaUsage - Quota usage for flexible servers
-type QuotaUsage struct {
-	// Current Quota usage value
-	CurrentValue *int64
-
-	// Fully qualified ARM resource Id
-	ID *string
-
-	// Quota limit
-	Limit *int64
-
-	// Name of quota usage for flexible servers
-	Name *NameProperty
-
-	// Quota unit
-	Unit *string
-}
-
-// QuotaUsagesListResult - Capability for the PostgreSQL server
-type QuotaUsagesListResult struct {
-	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string
-
-	// READ-ONLY; A list of quota usages.
-	Value []*QuotaUsage
 }
 
 // Replica properties of a server
@@ -1297,6 +1261,10 @@ type ServerProperties struct {
 }
 
 type ServerPropertiesForUpdate struct {
+	// The administrator's login name of a server. Can only be specified when the server is trying to switch to password authentication
+	// and does not have default administrator login.
+	AdministratorLogin *string
+
 	// The password of the administrator login.
 	AdministratorLoginPassword *string
 

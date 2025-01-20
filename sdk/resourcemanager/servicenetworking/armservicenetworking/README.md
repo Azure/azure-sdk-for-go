@@ -18,7 +18,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Servicenetworking module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicenetworking/armservicenetworking
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicenetworking/armservicenetworking/v2
 ```
 
 ## Authorization

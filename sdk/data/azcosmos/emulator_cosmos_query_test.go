@@ -208,6 +208,34 @@ func TestCrossPartitionQuery(t *testing.T) {
 		receivedIds)
 }
 
+func TestCrossPartitionQueryRejectedWhenEnableCrossPartitionIsFalse(t *testing.T) {
+	emulatorTests := newEmulatorTests(t)
+	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{
+		ExpectedSpans: []string{"query_items aContainer"},
+	}))
+
+	database := emulatorTests.createDatabase(t, context.TODO(), client, "queryTests")
+	defer emulatorTests.deleteDatabase(t, context.TODO(), database)
+	properties := ContainerProperties{
+		ID: "aContainer",
+		PartitionKeyDefinition: PartitionKeyDefinition{
+			Paths: []string{"/pk"},
+		},
+	}
+
+	_, err := database.CreateContainer(context.TODO(), properties, nil)
+	assert.NoError(t, err)
+
+	container, _ := database.NewContainer("aContainer")
+	assert.NoError(t, createSampleItems(container, 2, 10))
+
+	enableCrossPartitionQuery := false
+	opt := QueryOptions{PageSizeHint: 5, EnableCrossPartitionQuery: &enableCrossPartitionQuery}
+	queryPager := container.NewQueryItemsPager("select * from c", NewPartitionKey(), &opt)
+	_, err = collectResultIds(t, 5, queryPager, &opt, parseIdProperty)
+	assert.Error(t, err)
+}
+
 func TestCrossPartitionQueryFailsIfGatewayCannotSatisfyRequest(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
 	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{

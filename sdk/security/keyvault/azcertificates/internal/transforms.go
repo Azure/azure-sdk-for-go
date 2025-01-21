@@ -45,9 +45,16 @@ func main() {
 	regexReplace("client.go", `\sif options != nil && options.Maxresults != nil \{\s+.+\)\s+\}\s`, "")
 	regexReplace("client.go", `options \*ListIssuerPropertiesOptions\) \(\*policy`, "_ *ListIssuerPropertiesOptions) (*policy")
 	regexReplace("client.go", `options \*ListCertificatePropertiesVersionsOptions\) \(\*policy`, "_ *ListCertificatePropertiesVersionsOptions) (*policy")
+	regexReplace("options.go", `{\n\n}`, `{
+		// placeholder for future optional parameters
+	}`)
 
 	// replace Error with ErrorInfo
 	regexReplace("models.go", `Error \*KeyVaultErrorError`, `Error *ErrorInfo`)
 	regexReplace("models.go", `type KeyVaultErrorError struct.+\{(?:\s.+\s)+\}`, "")
 	regexReplace("models_serde.go", `(?:\/\/.*\s)+func \(\w \*?KeyVaultErrorError\).*\{\s(?:.+\s)+\}\s`, "")
+
+	// clean up doc comments
+	regexReplace("models.go", `For valid values\, see JsonWebKeyCurveName\.`, "")
+	regexReplace("constants.go", `For valid values\, see JsonWebKeyCurveName\.`, "")
 }

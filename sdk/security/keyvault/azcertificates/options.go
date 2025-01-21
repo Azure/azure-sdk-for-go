@@ -78,6 +78,7 @@ type ListCertificatePropertiesOptions struct {
 // ListCertificatePropertiesVersionsOptions contains the optional parameters for the Client.NewListCertificatePropertiesVersionsPager
 // method.
 type ListCertificatePropertiesVersionsOptions struct {
+	// placeholder for future optional parameters
 }
 
 // ListDeletedCertificatePropertiesOptions contains the optional parameters for the Client.NewListDeletedCertificatePropertiesPager
@@ -89,6 +90,7 @@ type ListDeletedCertificatePropertiesOptions struct {
 
 // ListIssuerPropertiesOptions contains the optional parameters for the Client.NewListIssuerPropertiesPager method.
 type ListIssuerPropertiesOptions struct {
+	// placeholder for future optional parameters
 }
 
 // MergeCertificateOptions contains the optional parameters for the Client.MergeCertificate method.

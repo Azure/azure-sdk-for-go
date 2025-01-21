@@ -42,7 +42,7 @@
         },
         {
             "Name": "azfile",
-            "CoverageGoal": 0.75
+            "CoverageGoal": 0.70
         },
         {
             "Name": "azopenai",

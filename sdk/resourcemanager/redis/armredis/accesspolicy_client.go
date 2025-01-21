@@ -46,7 +46,7 @@ func NewAccessPolicyClient(subscriptionID string, credential azcore.TokenCredent
 // BeginCreateUpdate - Adds an access policy to the redis cache
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cacheName - The name of the Redis cache.
 //   - accessPolicyName - The name of the access policy that is being added to the Redis cache.
@@ -73,7 +73,7 @@ func (client *AccessPolicyClient) BeginCreateUpdate(ctx context.Context, resourc
 // CreateUpdate - Adds an access policy to the redis cache
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2024-11-01
 func (client *AccessPolicyClient) createUpdate(ctx context.Context, resourceGroupName string, cacheName string, accessPolicyName string, parameters CacheAccessPolicy, options *AccessPolicyClientBeginCreateUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AccessPolicyClient.BeginCreateUpdate"
@@ -119,7 +119,7 @@ func (client *AccessPolicyClient) createUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2024-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -131,7 +131,7 @@ func (client *AccessPolicyClient) createUpdateCreateRequest(ctx context.Context,
 // BeginDelete - Deletes the access policy from a redis cache
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cacheName - The name of the Redis cache.
 //   - accessPolicyName - The name of the access policy that is being added to the Redis cache.
@@ -158,7 +158,7 @@ func (client *AccessPolicyClient) BeginDelete(ctx context.Context, resourceGroup
 // Delete - Deletes the access policy from a redis cache
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2024-11-01
 func (client *AccessPolicyClient) deleteOperation(ctx context.Context, resourceGroupName string, cacheName string, accessPolicyName string, options *AccessPolicyClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AccessPolicyClient.BeginDelete"
@@ -204,7 +204,7 @@ func (client *AccessPolicyClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2024-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -213,7 +213,7 @@ func (client *AccessPolicyClient) deleteCreateRequest(ctx context.Context, resou
 // Get - Gets the detailed information about an access policy of a redis cache
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cacheName - The name of the Redis cache.
 //   - accessPolicyName - The name of the access policy that is being added to the Redis cache.
@@ -264,7 +264,7 @@ func (client *AccessPolicyClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2024-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -281,7 +281,7 @@ func (client *AccessPolicyClient) getHandleResponse(resp *http.Response) (Access
 
 // NewListPager - Gets the list of access policies associated with this redis cache
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cacheName - The name of the Redis cache.
 //   - options - AccessPolicyClientListOptions contains the optional parameters for the AccessPolicyClient.NewListPager method.
@@ -328,7 +328,7 @@ func (client *AccessPolicyClient) listCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2024-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

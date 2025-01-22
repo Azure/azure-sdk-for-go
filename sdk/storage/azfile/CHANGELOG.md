@@ -1,6 +1,8 @@
 # Release History
 
 ## 1.5.0 (2025-01-23)
+
+### Features Added
 * Upgraded service version to `2025-01-05`.
 
 ## 1.5.0-beta.1 (2025-01-13)

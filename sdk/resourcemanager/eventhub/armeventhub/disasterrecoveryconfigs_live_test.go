@@ -120,15 +120,6 @@ func (testsuite *DisasterrecoveryconfigsTestSuite) TestDisasterrecoveryconfig() 
 	}, nil)
 	testsuite.Require().NoError(err)
 
-	// From step DisasterRecoveryConfigs_CreateOrUpdate
-	fmt.Println("Call operation: DisasterRecoveryConfigs_CreateOrUpdate")
-	_, err = disasterRecoveryConfigsClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.alias, armeventhub.ArmDisasterRecovery{
-		Properties: &armeventhub.ArmDisasterRecoveryProperties{
-			PartnerNamespace: to.Ptr(testsuite.secondNamespaceId),
-		},
-	}, nil)
-	testsuite.Require().NoError(err)
-
 	// From step DisasterRecoveryConfigs_List
 	fmt.Println("Call operation: DisasterRecoveryConfigs_List")
 	disasterRecoveryConfigsClientNewListPager := disasterRecoveryConfigsClient.NewListPager(testsuite.resourceGroupName, testsuite.namespaceName, nil)

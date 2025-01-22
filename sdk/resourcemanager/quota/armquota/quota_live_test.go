@@ -115,7 +115,6 @@ func (testsuite *QuotaTestSuite) TestQuotaOperation() {
 
 // Microsoft.Quota/usages/{resourceName}
 func (testsuite *QuotaTestSuite) TestUsages() {
-	var resourceName string
 	var err error
 	// From step Usages_List
 	fmt.Println("Call operation: Usages_List")
@@ -123,10 +122,8 @@ func (testsuite *QuotaTestSuite) TestUsages() {
 	testsuite.Require().NoError(err)
 	usagesClientNewListPager := usagesClient.NewListPager("subscriptions/"+testsuite.subscriptionId+"/providers/Microsoft.Network/locations/eastus", nil)
 	for usagesClientNewListPager.More() {
-		nextResult, err := usagesClientNewListPager.NextPage(testsuite.ctx)
+		_, err = usagesClientNewListPager.NextPage(testsuite.ctx)
 		testsuite.Require().NoError(err)
-
-		resourceName = *nextResult.Value[0].Name
 		break
 	}
 }

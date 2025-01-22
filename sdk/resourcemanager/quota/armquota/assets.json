@@ -2,5 +2,5 @@
   "AssetsRepo": "Azure/azure-sdk-assets",
   "AssetsRepoPrefixPath": "go",
   "TagPrefix": "go/resourcemanager/quota/armquota",
-  "Tag": "go/resourcemanager/quota/armquota_8143ca27f8"
+  "Tag": "go/resourcemanager/quota/armquota_7c98e07d30"
 }

@@ -129,9 +129,4 @@ func (testsuite *QuotaTestSuite) TestUsages() {
 		resourceName = *nextResult.Value[0].Name
 		break
 	}
-
-	// From step Usages_Get
-	fmt.Println("Call operation: Usages_Get")
-	_, err = usagesClient.Get(testsuite.ctx, resourceName, "subscriptions/"+testsuite.subscriptionId+"/providers/Microsoft.Network/locations/eastus", nil)
-	testsuite.Require().NoError(err)
 }

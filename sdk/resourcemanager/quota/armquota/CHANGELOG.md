@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.2 (2025-01-16)
+## 1.1.0-beta.2 (2025-02-22)
 ### Breaking Changes
 
 - Function `*GroupQuotaSubscriptionAllocationRequestClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, AllocationRequestStatus, *GroupQuotaSubscriptionAllocationRequestClientBeginUpdateOptions)` to `(context.Context, string, string, string, string, SubscriptionQuotaAllocationsList, *GroupQuotaSubscriptionAllocationRequestClientBeginUpdateOptions)`

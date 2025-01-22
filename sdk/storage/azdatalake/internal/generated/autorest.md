@@ -22,6 +22,18 @@ export-clients: true
 use: "@autorest/go@4.0.0-preview.65"
 ```
 
+### Add ListBlobsShowOnly value 'directories'
+```yaml
+directive:
+- from: swagger-document
+  where: $.parameters.ListBlobsShowOnly
+  transform: >
+    if (!$.enum.includes("directories")) {
+        $.enum.push("directories");
+    }
+
+```
+
 ### Remove FileSystem and PathName from parameter list since they are not needed
 ``` yaml
 directive:

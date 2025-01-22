@@ -8,11 +8,12 @@ package filesystem_test
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/file"
 	"strconv"
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/file"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -1728,6 +1729,147 @@ func (s *RecordedTestSuite) TestFilesystemListPathsWithEncryptionContext() {
 			break
 		}
 	}
+}
+
+func (s *UnrecordedTestSuite) TestFilesystemListDirectoryPaths() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	dirClient := fsClient.NewDirectoryClient(testName + "dir1")
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	dirClient = fsClient.NewDirectoryClient(testName + "dir2")
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	pager := fsClient.NewListDirectoryPathsPager(nil)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		_require.Equal(3, len(resp.ListPathsHierarchySegmentResponse.Segment.PathItems))
+		if err != nil {
+			break
+		}
+	}
+}
+
+func (s *UnrecordedTestSuite) TestFilesystemListDirectoryPathsMaxResults() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	dirClient := fsClient.NewDirectoryClient(testName + "dir1")
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	dirClient = fsClient.NewDirectoryClient(testName + "dir2")
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	pages := 3
+	count := 0
+	opts := filesystem.ListDirectoryPathsOptions{
+		MaxResults: to.Ptr(int32(1)),
+	}
+
+	pager := fsClient.NewListDirectoryPathsPager(&opts)
+	for pager.More() {
+		_, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		count += 1
+		if err != nil {
+			break
+		}
+	}
+	_require.Equal(pages, count)
+}
+
+func (s *UnrecordedTestSuite) TestFilesystemListDirectoryPathsWithPrefix() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	dirClient := fsClient.NewDirectoryClient(testName + "dir1")
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	dirClient = fsClient.NewDirectoryClient(testName + "dir2")
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	opts := filesystem.ListDirectoryPathsOptions{
+		Prefix: to.Ptr("Test"),
+	}
+
+	pager := fsClient.NewListDirectoryPathsPager(&opts)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		_require.Equal(3, len(resp.ListPathsHierarchySegmentResponse.Segment.PathItems))
+		if err != nil {
+			break
+		}
+	}
+}
+
+func (s *UnrecordedTestSuite) TestFilesystemListDirectoryPathsContinuation() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	dirClient := fsClient.NewDirectoryClient(testName + "dir1")
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	dirClient = fsClient.NewDirectoryClient(testName + "dir2")
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	opts := filesystem.ListDirectoryPathsOptions{
+		MaxResults: to.Ptr(int32(2)),
+	}
+
+	pager := fsClient.NewListDirectoryPathsPager(&opts)
+
+	resp, err := pager.NextPage(context.Background())
+	_require.NoError(err)
+	_require.Equal(2, len(resp.ListPathsHierarchySegmentResponse.Segment.PathItems))
+	_require.NotNil(resp.NextMarker)
+
+	token := resp.NextMarker
+	pager = fsClient.NewListDeletedPathsPager(&filesystem.ListDeletedPathsOptions{
+		Marker: token,
+	})
+	resp, err = pager.NextPage(context.Background())
+	_require.NoError(err)
+	_require.Equal(1, len(resp.ListPathsHierarchySegmentResponse.Segment.PathItems))
+	_require.Equal("", *resp.NextMarker)
 }
 
 func (s *RecordedTestSuite) TestFilesystemListDeletedPaths() {

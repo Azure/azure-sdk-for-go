@@ -42,7 +42,7 @@ type QueryOptions struct {
 	// EnableCrossPartitionQuery configures the behavior of the query engine when executing queries.
 	// If set to true, the query engine will set the 'x-ms-documentdb-query-enablecrosspartition' header to true for cross-partition queries.
 	// If set to false, cross-partition queries will be rejected.
-	// The default value, if this is not set, is TRUE.
+	// The default value, if this is not set, is true.
 	EnableCrossPartitionQuery *bool
 }
 

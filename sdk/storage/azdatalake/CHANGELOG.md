@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Fix panic when invalid sas is passed to get-properties call.
 
 ### Other Changes
 

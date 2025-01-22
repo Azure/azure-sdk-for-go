@@ -47,7 +47,7 @@ func NewNetworkSecurityPerimeterConfigurationsClient(subscriptionID string, cred
 // BeginCreateOrUpdate - Refreshes any information about the association.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-01-01
+// Generated from API version 2024-05-01-preview
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - namespaceName - The Namespace name
 //   - resourceAssociationName - The ResourceAssociation Name
@@ -60,7 +60,8 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) BeginCreateOrUpdate(
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkSecurityPerimeterConfigurationsClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -73,7 +74,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) BeginCreateOrUpdate(
 // CreateOrUpdate - Refreshes any information about the association.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-01-01
+// Generated from API version 2024-05-01-preview
 func (client *NetworkSecurityPerimeterConfigurationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, resourceAssociationName string, options *NetworkSecurityPerimeterConfigurationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkSecurityPerimeterConfigurationsClient.BeginCreateOrUpdate"
@@ -119,7 +120,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) createOrUpdateCreate
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-01")
+	reqQP.Set("api-version", "2024-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

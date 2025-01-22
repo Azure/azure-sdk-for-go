@@ -98,9 +98,43 @@ func NewWorkloadIdentityCredential(options *WorkloadIdentityCredentialOptions) (
 		ClientOptions:              options.ClientOptions,
 		DisableInstanceDiscovery:   options.DisableInstanceDiscovery,
 	}
-	sni := os.Getenv("AZURE_AURELIA_SNI_NAME")
-	host := os.Getenv("AZURE_AURELIA_TOKEN_ENDPOINT")
+	sni := os.Getenv("AZURE_KUBERNETES_SNI_NAME")
+	host := os.Getenv("AZURE_KUBERNETES_TOKEN_ENDPOINT")
+	
 	if sni != "" && host != "" {
+		var aksSNIPolicyCA *x509.CertPool
+
+		caFile, caFileSet := os.LookupEnv("AZURE_KUBERNETES_CA_FILE")
+		caData, caDataSet := os.LookupEnv("AZURE_KUBERNETES_CA_DATA")
+
+		if caFileSet && caDataSet {
+			return nil, errors.New("both AZURE_KUBERNETES_CA_FILE and AZURE_KUBERNETES_CA_DATA are set. Only one should be set")
+		}
+		if caFileSet {
+			content, err := os.ReadFile(caFile)
+			if err != nil {
+				return nil, err
+			}
+			certPool := x509.NewCertPool()
+			if ok := certPool.AppendCertsFromPEM(content); !ok {
+				return nil, errors.New("could not load cert file from AZURE_KUBERNETES_CA_FILE")
+			}
+
+			aksSNIPolicyCA = certPool
+
+		} else if caDataSet {
+			certPool := x509.NewCertPool()
+			if ok := certPool.AppendCertsFromPEM([]byte(caData)); !ok {
+				return nil, errors.New("could not load cert file from AZURE_KUBERNETES_CA_DATA")
+			}
+
+			aksSNIPolicyCA = certPool
+		}
+
+		if aksSNIPolicyCA == nil {
+			return nil, errors.New("could not load a valid SNI certificate")
+		}
+
 		co := caco.ClientOptions
 		co.Transport = &http.Client{
 			Transport: &http.Transport{
@@ -162,8 +196,6 @@ func (w *WorkloadIdentityCredential) getAssertion(context.Context) (string, erro
 	return w.assertion, nil
 }
 
-// aksSNIPolicyCA enables tests to configure aksSNIPolicy to trust a test server's cert
-var aksSNIPolicyCA *x509.CertPool
 
 type aksSNIPolicy struct {
 	h  string

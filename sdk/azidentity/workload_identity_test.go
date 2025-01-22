@@ -14,6 +14,7 @@ import (
 	"crypto/x509"
 	"encoding/base64"
 	"encoding/json"
+	"encoding/pem"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -239,42 +240,56 @@ func TestWorkloadIdentityCredential_SNIPolicy(t *testing.T) {
 	}
 	ts.StartTLS()
 	cert := ts.Certificate()
+	pemData := pem.EncodeToMemory(&pem.Block{
+		Type:  "CERTIFICATE",
+		Bytes: cert.Raw,
+	})
+	certFile := filepath.Join(t.TempDir(), t.Name())
+	require.NoError(t, os.WriteFile(certFile, pemData, 0600))
 	expected = cert.DNSNames[0]
-	ca := x509.NewCertPool()
-	ca.AddCert(cert)
-	aksSNIPolicyCA = ca
+
 	u, err := url.Parse(ts.URL)
 	require.NoError(t, err)
 
 	f := filepath.Join(t.TempDir(), t.Name())
 	require.NoError(t, os.WriteFile(f, []byte(tokenValue), 0600))
 
-	for k, v := range map[string]string{
-		"AZURE_AURELIA_SNI_NAME":       expected,
-		"AZURE_AURELIA_TOKEN_ENDPOINT": u.Host,
-		azureClientID:                  fakeClientID,
-		azureFederatedTokenFile:        f,
-		azureTenantID:                  fakeTenantID,
-	} {
-		t.Setenv(k, v)
+	params := map[string]string{
+		"AZURE_KUBERNETES_CA_FILE": certFile,
+		"AZURE_KUBERNETES_CA_DATA": string(pemData),
 	}
 
-	cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
-		ClientOptions: policy.ClientOptions{
-			Transport: &mockSTS{
-				tokenRequestCallback: func(*http.Request) *http.Response {
-					t.Fatal("credential should have sent token request to endpoint specified in environment variable")
-					return nil
-				},
-			},
-		},
-	})
-	require.NoError(t, err)
+	for k, v := range params {
+		t.Run("CAFile", func(t *testing.T) {
+			t.Setenv(k, v)
+			for k, v := range map[string]string{
+				"AZURE_KUBERNETES_SNI_NAME":       expected,
+				"AZURE_KUBERNETES_TOKEN_ENDPOINT": u.Host,
+				azureClientID:                     fakeClientID,
+				azureFederatedTokenFile:           f,
+				azureTenantID:                     fakeTenantID,
+			} {
+				t.Setenv(k, v)
+			}
 
-	tk, err := cred.GetToken(ctx, testTRO)
-	require.NoError(t, err)
-	require.Equal(t, tokenValue, tk.Token)
-	require.True(t, called, "test bug: test server's GetCertificate function wasn't called")
+			cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
+				ClientOptions: policy.ClientOptions{
+					Transport: &mockSTS{
+						tokenRequestCallback: func(*http.Request) *http.Response {
+							t.Fatal("credential should have sent token request to endpoint specified in environment variable")
+							return nil
+						},
+					},
+				},
+			})
+			require.NoError(t, err)
+
+			tk, err := cred.GetToken(ctx, testTRO)
+			require.NoError(t, err)
+			require.Equal(t, tokenValue, tk.Token)
+			require.True(t, called, "test bug: test server's GetCertificate function wasn't called")
+		})
+	}
 }
 
 func TestWorkloadIdentityCredential_NoFile(t *testing.T) {

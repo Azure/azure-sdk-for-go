@@ -32,20 +32,15 @@ if (!$moduleProperties)
 }
 
 $incrementVersion = !$NewVersionString;
-$semVer = [AzureEngSemanticVersion]::ParseVersionString($moduleProperties.Version);
 
 if ($incrementVersion) {
+  $semVer = [AzureEngSemanticVersion]::ParseVersionString($moduleProperties.Version);
   if (!$semVer) {
     LogError "Could not parse existing version $($moduleProperties.Version)"
     exit 1
   }
 
-  if ($semVer.PrereleaseLabel -ne "zzz") {
-    $semVer.PrereleaseNumber++
-  }
-  else {
-    $semVer.Patch++
-  }
+  $semVer.IncrementAndSetToPrerelease('Patch')
 }
 else {
   $semVer = [AzureEngSemanticVersion]::ParseVersionString($NewVersionString)

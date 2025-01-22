@@ -87,20 +87,17 @@ func execute(inputPath, outputPath, goVersion string) error {
 }
 
 func IsManagementPlaneProject(input *pipeline.GenerateInput) bool {
-	tspResult, autorestResult := true, true
 	for _, tspProjectFolder := range input.RelatedTypeSpecProjectFolder {
 		if !strings.Contains(tspProjectFolder, ".Management") {
-			tspResult = false
-			break
+			return false
 		}
 	}
 	for _, readme := range input.RelatedReadmeMdFiles {
 		if !strings.Contains(readme, "resource-manager") {
-			autorestResult = false
-			break
+			return false
 		}
 	}
-	return tspResult && autorestResult
+	return true
 }
 
 type automationContext struct {

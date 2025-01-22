@@ -76,10 +76,31 @@ func execute(inputPath, outputPath, goVersion string) error {
 		}
 	}
 	if err != nil {
-		return err
+		// Temporary strategy: Only if the project is a management plane project, the generator will return an error.
+		if IsManagementPlaneProject(input) {
+			return err
+		}
+		fmt.Println(err)
 	}
 
 	return nil
+}
+
+func IsManagementPlaneProject(input *pipeline.GenerateInput) bool {
+	tspResult, autorestResult := true, true
+	for _, tspProjectFolder := range input.RelatedTypeSpecProjectFolder {
+		if !strings.Contains(tspProjectFolder, ".Management") {
+			tspResult = false
+			break
+		}
+	}
+	for _, readme := range input.RelatedReadmeMdFiles {
+		if !strings.Contains(readme, "resource-manager") {
+			autorestResult = false
+			break
+		}
+	}
+	return tspResult && autorestResult
 }
 
 type automationContext struct {

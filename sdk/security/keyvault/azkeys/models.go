@@ -23,7 +23,7 @@ type CreateKeyParameters struct {
 	// The attributes of a key managed by the key vault service.
 	KeyAttributes *KeyAttributes
 
-	// Json web key operations. For more information on possible key operations, see JsonWebKeyOperation.
+	// Json web key operations.
 	KeyOps []*KeyOperation
 
 	// The key size in bits. For example: 2048, 3072, or 4096 for RSA.
@@ -39,7 +39,7 @@ type CreateKeyParameters struct {
 	Tags map[string]*string
 }
 
-// DeletedKey - A DeletedKeyBundle consisting of a WebKey plus its Attributes and deletion info
+// DeletedKey - A DeletedKey consisting of a WebKey plus its Attributes and deletion info
 type DeletedKey struct {
 	// The key management attributes.
 	Attributes *KeyAttributes
@@ -149,7 +149,7 @@ type JSONWebKey struct {
 	// Key identifier.
 	KID *ID
 
-	// Json web key operations. For more information on possible key operations, see JsonWebKeyOperation.
+	// Json web key operations.
 	KeyOps []*KeyOperation
 
 	// JsonWebKey Key Type (kty), as defined in https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
@@ -393,7 +393,7 @@ type RestoreKeyParameters struct {
 
 // SignParameters - The key operations parameters.
 type SignParameters struct {
-	// REQUIRED; The signing/verification algorithm identifier. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm.
+	// REQUIRED; The signing/verification algorithm identifier.
 	Algorithm *SignatureAlgorithm
 
 	// REQUIRED; The value to operate on.
@@ -405,7 +405,7 @@ type UpdateKeyParameters struct {
 	// The attributes of a key managed by the key vault service.
 	KeyAttributes *KeyAttributes
 
-	// Json web key operations. For more information on possible key operations, see JsonWebKeyOperation.
+	// Json web key operations.
 	KeyOps []*KeyOperation
 
 	// The policy rules under which the key can be exported.
@@ -417,7 +417,7 @@ type UpdateKeyParameters struct {
 
 // VerifyParameters - The key verify parameters.
 type VerifyParameters struct {
-	// REQUIRED; The signing/verification algorithm. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm.
+	// REQUIRED; The signing/verification algorithm.
 	Algorithm *SignatureAlgorithm
 
 	// REQUIRED; The digest used for signing.

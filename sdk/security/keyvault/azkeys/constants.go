@@ -109,7 +109,7 @@ func PossibleKeyEncryptionAlgorithmValues() []KeyEncryptionAlgorithm {
 	}
 }
 
-// KeyOperation - JSON web key operations. For more information, see JsonWebKeyOperation.
+// KeyOperation - JSON web key operations.
 type KeyOperation string
 
 const (
@@ -192,8 +192,7 @@ func PossibleKeyTypeValues() []KeyType {
 	}
 }
 
-// SignatureAlgorithm - The signing/verification algorithm identifier. For more information on possible algorithm types, see
-// JsonWebKeySignatureAlgorithm.
+// SignatureAlgorithm - The signing/verification algorithm identifier.
 type SignatureAlgorithm string
 
 const (

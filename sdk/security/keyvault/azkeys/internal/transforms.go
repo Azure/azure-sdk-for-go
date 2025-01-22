@@ -52,9 +52,8 @@ func main() {
 	regexReplace("constants.go", `const \(\n\/\/ DeletionRecoveryLevel(?:.+\s)+\)`, "")
 
 	// fix up doc comments
-	regexReplace("models.go", `\/\/ A DeletedKeyBundle`, `// A DeletedKey`)
-	regexReplace("responses.go", `\/\/ A DeletedKeyBundle`, `// A DeletedKey`)
-	regexReplace("models.go", `For valid values\, see JsonWebKeyCurveName\.`, ``)
-	regexReplace("constants.go", `For valid values\, see JsonWebKeyCurveName\.`, ``)
-	regexReplace("models.go", `For valid values\, see JsonWebKeyType\.`, ``)
+	regexReplace("models.go", `DeletedKeyBundle`, `DeletedKey`)
+	regexReplace("responses.go", `DeletedKeyBundle`, `DeletedKey`)
+	regexReplace("models.go", `For.*?, see((.|\n\/\/)*)\.`, "")
+	regexReplace("constants.go", `For.*?, see((.|\n\/\/)*)\.`, "")
 }

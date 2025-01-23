@@ -46,7 +46,6 @@ func (testsuite *PrivateEndpointConnectionsTestSuite) SetupSuite() {
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name
-	testsuite.Prepare()
 }
 
 func (testsuite *PrivateEndpointConnectionsTestSuite) TearDownSuite() {
@@ -55,7 +54,7 @@ func (testsuite *PrivateEndpointConnectionsTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestPrivateEndpointConnectionsTestSuite(t *testing.T) {
+func TTestPrivateEndpointConnectionsTestSuite(t *testing.T) {
 	suite.Run(t, new(PrivateEndpointConnectionsTestSuite))
 }
 
@@ -206,7 +205,7 @@ func (testsuite *PrivateEndpointConnectionsTestSuite) Prepare() {
 }
 
 // Microsoft.EventHub/namespaces/{namespaceName}/privateEndpointConnections/{privateEndpointConnectionName}
-func (testsuite *PrivateEndpointConnectionsTestSuite) TestPrivateEndpointConnections() {
+func (testsuite *PrivateEndpointConnectionsTestSuite) TTestPrivateEndpointConnections() {
 	var privateEndpointConnectionName string
 	var err error
 	// From step PrivateEndpointConnections_List

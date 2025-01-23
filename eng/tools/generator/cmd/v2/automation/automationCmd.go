@@ -162,7 +162,14 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 				TspClientOptions:    []string{"--debug"},
 			}, packageModuleRelativePath)
 			if err != nil {
+				// save the error package for monitoring
 				errorBuilder.add(err)
+				errorPackageResult := pipeline.PackageResult{
+					PackageName:     packageModuleRelativePath,
+					HasExceptions:   true,
+					TypespecProject: []string{tspProjectFolder},
+				}
+				results = append(results, errorPackageResult)
 				continue
 			} else {
 				content := namespaceResult.ChangelogMD
@@ -227,6 +234,17 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 		namespaceResults, errors := generateCtx.GenerateForAutomation(readme, input.RepoHTTPSURL, ctx.goVersion)
 		if len(errors) != 0 {
 			errorBuilder.add(errors...)
+			for _, result := range namespaceResults {
+				if !result.HasError {
+					continue
+				}
+				errorPackageResult := pipeline.PackageResult{
+					PackageName:   result.PackageName,
+					HasExceptions: true,
+					ReadmeMd:      []string{readme},
+				}
+				results = append(results, errorPackageResult)
+			}
 			continue
 		}
 

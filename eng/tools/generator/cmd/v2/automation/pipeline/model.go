@@ -86,6 +86,7 @@ type PackageResult struct {
 	APIViewArtifact     string                          `json:"apiViewArtifact,omitempty"`
 	Language            string                          `json:"language,omitempty"`
 	TypespecProject     []string                        `json:"typespecProject,omitempty"`
+	HasExceptions       bool                            `json:"hasExceptions,omitempty"`
 }
 
 // Changelog ...

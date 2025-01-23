@@ -39,6 +39,7 @@ type GenerateResult struct {
 	Changelog         Changelog
 	ChangelogMD       string
 	PullRequestLabels string
+	HasError          bool
 }
 
 type GenerateParam struct {
@@ -94,6 +95,7 @@ func (ctx *GenerateContext) GenerateForAutomation(readme, repo, goVersion string
 			})
 			if err != nil {
 				errors = append(errors, fmt.Errorf("failed to generate for rp: %s, namespace: %s: %+v", rpName, packageInfo.Name, err))
+				result = append(result, GenerateResult{PackageName: packageInfo.Name, HasError: true})
 				continue
 			}
 			result = append(result, *singleResult)

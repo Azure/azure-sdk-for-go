@@ -11,7 +11,6 @@ import (
 	"fmt"
 	"strings"
 	"testing"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiassistants"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -118,7 +117,7 @@ func TestVectorStores(t *testing.T) {
 			Azure: azure,
 		})
 
-		seed := time.Now().UnixNano()
+		seed := getRandomName(t, "test-vector-stores")
 
 		// create a couple of vector stores in the (unlikely) case, that we don't have enough to test with...
 		resp1, err := client.CreateVectorStore(context.Background(), azopenaiassistants.VectorStoreBody{
@@ -181,7 +180,7 @@ func TestVectorStoresWithBatch(t *testing.T) {
 			Azure: azure,
 		})
 
-		seed := time.Now().UnixNano()
+		seed := getRandomName(t, "test-vector-stores-with-batch")
 
 		createVectorResp, err := client.CreateVectorStore(context.Background(), azopenaiassistants.VectorStoreBody{
 			Name: to.Ptr(fmt.Sprintf("go-vsb-%X", seed)),

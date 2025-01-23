@@ -10,5 +10,4 @@ require:
 license-header: MICROSOFT_MIT_NO_VERSION
 module-version: 1.4.0-beta.1
 tag: package-2024-05-preview
-version: 3.9.7
 ```

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.4.0-beta.1 (2025-01-22)
+## 1.4.0-beta.1 (2025-01-23)
 ### Features Added
 
 - New value `CleanupPolicyRetentionDescriptionDeleteOrCompact` added to enum type `CleanupPolicyRetentionDescription`

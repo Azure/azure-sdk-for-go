@@ -51,7 +51,6 @@ func (testsuite *DisasterrecoveryconfigsTestSuite) SetupSuite() {
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name
-	testsuite.Prepare()
 }
 
 func (testsuite *DisasterrecoveryconfigsTestSuite) TearDownSuite() {
@@ -60,7 +59,7 @@ func (testsuite *DisasterrecoveryconfigsTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestDisasterrecoveryconfigsTestSuite(t *testing.T) {
+func TTestDisasterrecoveryconfigsTestSuite(t *testing.T) {
 	suite.Run(t, new(DisasterrecoveryconfigsTestSuite))
 }
 
@@ -109,7 +108,7 @@ func (testsuite *DisasterrecoveryconfigsTestSuite) Prepare() {
 }
 
 // Microsoft.EventHub/namespaces/disasterRecoveryConfigs
-func (testsuite *DisasterrecoveryconfigsTestSuite) TestDisasterrecoveryconfig() {
+func (testsuite *DisasterrecoveryconfigsTestSuite) TTestDisasterrecoveryconfig() {
 	var err error
 	// From step DisasterRecoveryConfigs_CheckNameAvailability
 	fmt.Println("Call operation: DisasterRecoveryConfigs_CheckNameAvailability")

@@ -28,3 +28,8 @@ pipelines:
           lastModifiedDate: 2025-01-24
         spotbugs:
           lastModifiedDate: 2025-01-24
+      source:
+        credscan:
+          lastModifiedDate: 2025-01-24
+        armory:
+          lastModifiedDate: 2025-01-24

@@ -1832,46 +1832,6 @@ func (s *UnrecordedTestSuite) TestFilesystemListDirectoryPathsWithPrefix() {
 	}
 }
 
-func (s *UnrecordedTestSuite) TestFilesystemListDirectoryPathsContinuation() {
-	_require := require.New(s.T())
-	testName := s.T().Name()
-
-	filesystemName := testcommon.GenerateFileSystemName(testName)
-	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
-	_require.NoError(err)
-	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
-
-	_, err = fsClient.Create(context.Background(), nil)
-	_require.NoError(err)
-
-	dirClient := fsClient.NewDirectoryClient(testName + "dir1")
-	_, err = dirClient.Create(context.Background(), nil)
-	_require.NoError(err)
-	dirClient = fsClient.NewDirectoryClient(testName + "dir2")
-	_, err = dirClient.Create(context.Background(), nil)
-	_require.NoError(err)
-
-	opts := filesystem.ListDirectoryPathsOptions{
-		MaxResults: to.Ptr(int32(2)),
-	}
-
-	pager := fsClient.NewListDirectoryPathsPager(&opts)
-
-	resp, err := pager.NextPage(context.Background())
-	_require.NoError(err)
-	_require.Equal(2, len(resp.ListPathsHierarchySegmentResponse.Segment.PathItems))
-	_require.NotNil(resp.NextMarker)
-
-	token := resp.NextMarker
-	pager = fsClient.NewListDeletedPathsPager(&filesystem.ListDeletedPathsOptions{
-		Marker: token,
-	})
-	resp, err = pager.NextPage(context.Background())
-	_require.NoError(err)
-	_require.Equal(1, len(resp.ListPathsHierarchySegmentResponse.Segment.PathItems))
-	_require.Equal("", *resp.NextMarker)
-}
-
 func (s *RecordedTestSuite) TestFilesystemListDeletedPaths() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

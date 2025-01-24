@@ -14,7 +14,7 @@ import (
 )
 
 func unmarshalDataConnectionClassification(rawMsg json.RawMessage) (armkusto.DataConnectionClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -41,7 +41,7 @@ func unmarshalDataConnectionClassification(rawMsg json.RawMessage) (armkusto.Dat
 }
 
 func unmarshalDatabaseClassification(rawMsg json.RawMessage) (armkusto.DatabaseClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any

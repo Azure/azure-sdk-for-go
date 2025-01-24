@@ -46,7 +46,7 @@ func NewDatabaseClient(subscriptionID string, credential azcore.TokenCredential,
 // InviteFollower - Generates an invitation token that allows attaching a follower database to this database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-15
+// Generated from API version 2024-04-13
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - databaseName - The name of the database in the Kusto cluster.
@@ -98,7 +98,7 @@ func (client *DatabaseClient) inviteFollowerCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-15")
+	reqQP.Set("api-version", "2024-04-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

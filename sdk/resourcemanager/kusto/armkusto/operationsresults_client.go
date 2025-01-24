@@ -46,7 +46,7 @@ func NewOperationsResultsClient(subscriptionID string, credential azcore.TokenCr
 // Get - Returns operation results.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-15
+// Generated from API version 2024-04-13
 //   - location - The name of Azure region.
 //   - operationID - The ID of an ongoing async operation.
 //   - options - OperationsResultsClientGetOptions contains the optional parameters for the OperationsResultsClient.Get method.
@@ -92,7 +92,7 @@ func (client *OperationsResultsClient) getCreateRequest(ctx context.Context, loc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-15")
+	reqQP.Set("api-version", "2024-04-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

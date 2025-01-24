@@ -1,4 +1,4 @@
-# Azure Impactreporting Module for Go
+# Azure Impact Reporting Module for Go
 
 The `armimpactreporting` module provides operations for working with Azure Impactreporting.
 

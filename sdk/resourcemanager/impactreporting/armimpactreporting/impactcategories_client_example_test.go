@@ -60,8 +60,8 @@ func ExampleImpactCategoriesClient_NewListBySubscriptionPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewImpactCategoriesClient().NewListBySubscriptionPager(&ImpactCategoriesClientListBySubscriptionOptions{
-		resourceType: to.Ptr("microsoft.compute/virtualmachines")})
+	pager := clientFactory.NewImpactCategoriesClient().NewListBySubscriptionPager(&armimpactreporting.ImpactCategoriesClientListBySubscriptionOptions{
+		ResourceType: to.Ptr("microsoft.compute/virtualmachines")})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

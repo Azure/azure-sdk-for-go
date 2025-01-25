@@ -1,3 +1,4 @@
+//go:build go1.9
 // +build go1.9
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -17,6 +18,7 @@ import (
 	"go/parser"
 	"go/printer"
 	"go/token"
+	"io/fs"
 	"log"
 	"os"
 	"os/exec"
@@ -56,8 +58,8 @@ func BuildProfile(packageList ListDefinition, name, outputLocation string, outpu
 			pkgDir = abs
 		}
 		go func(pd string) {
-			filepath.Walk(pd, func(path string, info os.FileInfo, err error) error {
-				if !info.IsDir() {
+			filepath.WalkDir(pd, func(path string, d fs.DirEntry, err error) error {
+				if !d.IsDir() {
 					return nil
 				}
 				fs := token.NewFileSet()

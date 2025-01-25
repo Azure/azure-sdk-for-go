@@ -5,6 +5,7 @@ package report
 
 import (
 	"fmt"
+	"io/fs"
 	"os"
 	"path/filepath"
 
@@ -16,11 +17,11 @@ const apiDirSuffix = "api"
 // GetPackages returns all the go sdk packages under the given root directory
 func GetPackages(dir string) ([]string, error) {
 	var pkgDirs []string
-	err := filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
+	err := filepath.WalkDir(dir, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
-		if info.IsDir() {
+		if d.IsDir() {
 			// check if leaf dir
 			fi, err := os.ReadDir(path)
 			if err != nil {

@@ -1,3 +1,4 @@
+//go:build go1.9
 // +build go1.9
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -7,6 +8,7 @@ package model
 
 import (
 	"fmt"
+	"io/fs"
 	"io/ioutil"
 	"log"
 	"os"
@@ -111,9 +113,9 @@ func GetLatestPackages(rootDir string, includePreview bool, verboseLog *log.Logg
 
 	tracker := latestTracker{}
 
-	filepath.Walk(rootDir, func(currentPath string, info os.FileInfo, openErr error) error {
+	filepath.WalkDir(rootDir, func(currentPath string, d fs.DirEntry, openErr error) error {
 		pi, err := DeconstructPath(currentPath)
-		if err != nil || !info.IsDir() {
+		if err != nil || !d.IsDir() {
 			return nil
 		} else if !predicate(currentPath) {
 			verboseLog.Printf("%q rejected by Predicate", currentPath)

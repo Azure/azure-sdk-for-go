@@ -11,7 +11,7 @@ package armkusto
 import "encoding/json"
 
 func unmarshalDataConnectionClassification(rawMsg json.RawMessage) (DataConnectionClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -38,7 +38,7 @@ func unmarshalDataConnectionClassification(rawMsg json.RawMessage) (DataConnecti
 }
 
 func unmarshalDataConnectionClassificationArray(rawMsg json.RawMessage) ([]DataConnectionClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -57,7 +57,7 @@ func unmarshalDataConnectionClassificationArray(rawMsg json.RawMessage) ([]DataC
 }
 
 func unmarshalDatabaseClassification(rawMsg json.RawMessage) (DatabaseClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -80,7 +80,7 @@ func unmarshalDatabaseClassification(rawMsg json.RawMessage) (DatabaseClassifica
 }
 
 func unmarshalDatabaseClassificationArray(rawMsg json.RawMessage) ([]DatabaseClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage

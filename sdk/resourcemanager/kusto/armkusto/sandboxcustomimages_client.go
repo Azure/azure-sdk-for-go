@@ -46,7 +46,7 @@ func NewSandboxCustomImagesClient(subscriptionID string, credential azcore.Token
 // CheckNameAvailability - Checks that the sandbox custom image resource name is valid and is not already in use.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-15
+// Generated from API version 2024-04-13
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - resourceName - The name of the resource.
@@ -94,7 +94,7 @@ func (client *SandboxCustomImagesClient) checkNameAvailabilityCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-15")
+	reqQP.Set("api-version", "2024-04-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resourceName); err != nil {
@@ -115,7 +115,7 @@ func (client *SandboxCustomImagesClient) checkNameAvailabilityHandleResponse(res
 // BeginCreateOrUpdate - Creates or updates a sandbox custom image.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-15
+// Generated from API version 2024-04-13
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - sandboxCustomImageName - The name of the sandbox custom image.
@@ -142,7 +142,7 @@ func (client *SandboxCustomImagesClient) BeginCreateOrUpdate(ctx context.Context
 // CreateOrUpdate - Creates or updates a sandbox custom image.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-15
+// Generated from API version 2024-04-13
 func (client *SandboxCustomImagesClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, sandboxCustomImageName string, parameters SandboxCustomImage, options *SandboxCustomImagesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SandboxCustomImagesClient.BeginCreateOrUpdate"
@@ -188,7 +188,7 @@ func (client *SandboxCustomImagesClient) createOrUpdateCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-15")
+	reqQP.Set("api-version", "2024-04-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -200,7 +200,7 @@ func (client *SandboxCustomImagesClient) createOrUpdateCreateRequest(ctx context
 // BeginDelete - Deletes a sandbox custom image.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-15
+// Generated from API version 2024-04-13
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - sandboxCustomImageName - The name of the sandbox custom image.
@@ -226,7 +226,7 @@ func (client *SandboxCustomImagesClient) BeginDelete(ctx context.Context, resour
 // Delete - Deletes a sandbox custom image.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-15
+// Generated from API version 2024-04-13
 func (client *SandboxCustomImagesClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, sandboxCustomImageName string, options *SandboxCustomImagesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SandboxCustomImagesClient.BeginDelete"
@@ -272,7 +272,7 @@ func (client *SandboxCustomImagesClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-15")
+	reqQP.Set("api-version", "2024-04-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -281,7 +281,7 @@ func (client *SandboxCustomImagesClient) deleteCreateRequest(ctx context.Context
 // Get - Returns a sandbox custom image
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-15
+// Generated from API version 2024-04-13
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - sandboxCustomImageName - The name of the sandbox custom image.
@@ -332,7 +332,7 @@ func (client *SandboxCustomImagesClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-15")
+	reqQP.Set("api-version", "2024-04-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -349,7 +349,7 @@ func (client *SandboxCustomImagesClient) getHandleResponse(resp *http.Response) 
 
 // NewListByClusterPager - Returns the list of the existing sandbox custom images of the given Kusto cluster.
 //
-// Generated from API version 2023-08-15
+// Generated from API version 2024-04-13
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - options - SandboxCustomImagesClientListByClusterOptions contains the optional parameters for the SandboxCustomImagesClient.NewListByClusterPager
@@ -398,7 +398,7 @@ func (client *SandboxCustomImagesClient) listByClusterCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-15")
+	reqQP.Set("api-version", "2024-04-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -416,7 +416,7 @@ func (client *SandboxCustomImagesClient) listByClusterHandleResponse(resp *http.
 // BeginUpdate - Updates a sandbox custom image.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-15
+// Generated from API version 2024-04-13
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - sandboxCustomImageName - The name of the sandbox custom image.
@@ -443,7 +443,7 @@ func (client *SandboxCustomImagesClient) BeginUpdate(ctx context.Context, resour
 // Update - Updates a sandbox custom image.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-15
+// Generated from API version 2024-04-13
 func (client *SandboxCustomImagesClient) update(ctx context.Context, resourceGroupName string, clusterName string, sandboxCustomImageName string, parameters SandboxCustomImage, options *SandboxCustomImagesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SandboxCustomImagesClient.BeginUpdate"
@@ -489,7 +489,7 @@ func (client *SandboxCustomImagesClient) updateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-15")
+	reqQP.Set("api-version", "2024-04-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

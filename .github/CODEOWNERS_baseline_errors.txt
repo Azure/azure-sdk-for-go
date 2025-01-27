@@ -11,14 +11,12 @@ dipidoo is not a public member of Azure.
 Frey-Wang is not a public member of Azure.
 ingave is not a public member of Azure.
 julienstroheker is not a public member of Azure.
-lirenhe is not a public member of Azure.
 maertendMSFT is not a public member of Azure.
 omzevall is not a public member of Azure.
 orhasban is not a public member of Azure.
 robch is not a public member of Azure.
 romahamu is not a public member of Azure.
 ryogok is not a public member of Azure.
-schaabs is not a public member of Azure.
 seanmck is not a public member of Azure.
 sijuman is not a public member of Azure.
 sgellock is not a public member of Azure.

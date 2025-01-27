@@ -7,10 +7,11 @@
 package filesystem
 
 import (
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
-	"time"
 )
 
 // GetAccessPolicyResponse contains the response from method FileSystemClient.GetAccessPolicy.
@@ -144,6 +145,9 @@ type UndeletePathResponse = generated.PathClientUndeleteResponse
 
 // ListDeletedPathsSegmentResponse contains the response from method FileSystemClient.ListPathsSegment.
 type ListDeletedPathsSegmentResponse = generated.FileSystemClientListPathHierarchySegmentResponse
+
+// ListDirectoryPathsSegmentResponse contains the response from method FileSystemClient.ListDirectoryPathsSegmentResponse.
+type ListDirectoryPathsSegmentResponse = generated.FileSystemClientListPathHierarchySegmentResponse
 
 // ListPathsHierarchySegmentResponse contains the response from method FileSystemClient.ListPathsHierarchySegment.
 type ListPathsHierarchySegmentResponse = generated.ListPathsHierarchySegmentResponse

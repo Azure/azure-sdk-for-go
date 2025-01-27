@@ -4,12 +4,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-// FOR FS CLIENT WE STORE THE GENERATED DATALAKE LAYER WITH BLOB ENDPOINT IN ORDER TO USE DELETED PATH LISTING
+// FOR FS CLIENT WE STORE THE GENERATED DATALAKE LAYER WITH BLOB ENDPOINT IN ORDER TO USE DELETED/DIRECTORY PATH LISTING
 
 package filesystem
 
 import (
 	"context"
+	"net/http"
+	"strings"
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -23,9 +27,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
-	"net/http"
-	"strings"
-	"time"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -302,6 +303,41 @@ func (fs *Client) NewListPathsPager(recursive bool, options *ListPathsOptions) *
 				return ListPathsSegmentResponse{}, runtime.NewResponseError(resp)
 			}
 			newResp, err := fs.generatedFSClientWithDFS().ListPathsHandleResponse(resp)
+			return newResp, exported.ConvertToDFSError(err)
+		},
+	})
+}
+
+// NewListDirectoryPathsPager operation returns a pager of the directory paths under the specified filesystem.
+func (fs *Client) NewListDirectoryPathsPager(options *ListDirectoryPathsOptions) *runtime.Pager[ListDirectoryPathsSegmentResponse] {
+	listOptions := options.format()
+	return runtime.NewPager(runtime.PagingHandler[ListDirectoryPathsSegmentResponse]{
+		More: func(page ListDeletedPathsSegmentResponse) bool {
+			return page.NextMarker != nil && len(*page.NextMarker) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ListDirectoryPathsSegmentResponse) (ListDirectoryPathsSegmentResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = fs.generatedFSClientWithBlob().ListBlobHierarchySegmentCreateRequest(ctx, &listOptions)
+				err = exported.ConvertToDFSError(err)
+			} else {
+				listOptions.Marker = page.NextMarker
+				req, err = fs.generatedFSClientWithBlob().ListBlobHierarchySegmentCreateRequest(ctx, &listOptions)
+				err = exported.ConvertToDFSError(err)
+			}
+			if err != nil {
+				return ListDirectoryPathsSegmentResponse{}, err
+			}
+			resp, err := fs.generatedFSClientWithBlob().InternalClient().Pipeline().Do(req)
+			err = exported.ConvertToDFSError(err)
+			if err != nil {
+				return ListDirectoryPathsSegmentResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ListDirectoryPathsSegmentResponse{}, runtime.NewResponseError(resp)
+			}
+			newResp, err := fs.generatedFSClientWithBlob().ListBlobHierarchySegmentHandleResponse(resp)
 			return newResp, exported.ConvertToDFSError(err)
 		},
 	})

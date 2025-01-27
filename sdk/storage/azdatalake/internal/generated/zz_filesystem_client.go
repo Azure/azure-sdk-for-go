@@ -8,13 +8,14 @@ package generated
 import (
 	"context"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // FileSystemClient contains the methods for the FileSystem group.
@@ -290,7 +291,7 @@ func (client *FileSystemClient) ListBlobHierarchySegmentCreateRequest(ctx contex
 	}
 	reqQP.Set("restype", "container")
 	if options != nil && options.Showonly != nil {
-		reqQP.Set("showonly", "deleted")
+		reqQP.Set("showonly", string(*options.Showonly))
 	}
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))

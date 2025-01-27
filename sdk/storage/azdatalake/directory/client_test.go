@@ -2500,7 +2500,7 @@ func (s *UnrecordedTestSuite) TestDirectoryRenameUsingSAS() {
 
 	_, err = srcDirClient.GetProperties(context.Background(), nil)
 	_require.Error(err)
-	testcommon.ValidateErrorCode(_require, err, datalakeerror.PathNotFound)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.BlobNotFound)
 }
 
 func (s *RecordedTestSuite) TestDirRenameNoOptions() {

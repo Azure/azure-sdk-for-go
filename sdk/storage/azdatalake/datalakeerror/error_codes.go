@@ -70,7 +70,7 @@ const (
 	PathBeingRehydrated                               StorageErrorCode = "PathBeingRehydrated"
 	PathImmutableDueToPolicy                          StorageErrorCode = "PathImmutableDueToPolicy"
 	PathNotArchived                                   StorageErrorCode = "PathNotArchived"
-	PathNotFound                                      StorageErrorCode = "PathNotFound"
+	BlobNotFound                                      StorageErrorCode = "BlobNotFound"
 	PathOverwritten                                   StorageErrorCode = "PathOverwritten"
 	PathTierInadequateForContentLength                StorageErrorCode = "PathTierInadequateForContentLength"
 	PathUsesCustomerSpecifiedEncryption               StorageErrorCode = "PathUsesCustomerSpecifiedEncryption"

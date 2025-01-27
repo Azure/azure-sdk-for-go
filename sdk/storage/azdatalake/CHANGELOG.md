@@ -4,7 +4,7 @@
 
 ### Features Added
 * Upgraded service version to `2025-01-05`.
-* * Updated `azidentity` version to `1.8.1`
+* Updated `azidentity` version to `1.8.1`
 
 ### Bugs Fixed
 * Fix panic when invalid sas is passed to get-properties call. Fixes [#23912](https://github.com/Azure/azure-sdk-for-go/issues/23912)

@@ -146,6 +146,9 @@ func extractTestProxyArchive(archivePath string, outputDir string) error {
 		}
 
 		targetPath := filepath.Join(outputDir, header.Name)
+		if !strings.HasPrefix(targetPath, filepath.Clean(outputDir)) {
+			return fmt.Errorf("illegal file path: %q", header.Name)
+		}
 
 		log.Println("Extracting", targetPath)
 

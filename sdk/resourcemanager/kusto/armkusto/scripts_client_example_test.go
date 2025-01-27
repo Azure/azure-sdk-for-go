@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoScriptsListByDatabase.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8adce17dc500f338f86f18af30aac61dcb71c5f/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoScriptsListByDatabase.json
 func ExampleScriptsClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,6 +49,8 @@ func ExampleScriptsClient_NewListByDatabasePager() {
 		// 			Properties: &armkusto.ScriptProperties{
 		// 				ContinueOnErrors: to.Ptr(true),
 		// 				ForceUpdateTag: to.Ptr("2bcf3c21-ffd1-4444-b9dd-e52e00ee53fe"),
+		// 				PrincipalPermissionsAction: to.Ptr(armkusto.PrincipalPermissionsActionRemovePermissionOnScriptCompletion),
+		// 				ScriptLevel: to.Ptr(armkusto.ScriptLevelDatabase),
 		// 				ScriptURL: to.Ptr("https://mysa.blob.core.windows.net/container/script.txt"),
 		// 			},
 		// 			SystemData: &armkusto.SystemData{
@@ -67,6 +69,8 @@ func ExampleScriptsClient_NewListByDatabasePager() {
 		// 			Properties: &armkusto.ScriptProperties{
 		// 				ContinueOnErrors: to.Ptr(true),
 		// 				ForceUpdateTag: to.Ptr("2bcf3c21-ffd1-4444-b9dd-e52e00ee53fe"),
+		// 				PrincipalPermissionsAction: to.Ptr(armkusto.PrincipalPermissionsActionRetainPermissionOnScriptCompletion),
+		// 				ScriptLevel: to.Ptr(armkusto.ScriptLevelCluster),
 		// 				ScriptURL: to.Ptr("https://mysa.blob.core.windows.net/container/script2.txt"),
 		// 			},
 		// 			SystemData: &armkusto.SystemData{
@@ -82,7 +86,7 @@ func ExampleScriptsClient_NewListByDatabasePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoScriptsGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8adce17dc500f338f86f18af30aac61dcb71c5f/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoScriptsGet.json
 func ExampleScriptsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,6 +111,8 @@ func ExampleScriptsClient_Get() {
 	// 	Properties: &armkusto.ScriptProperties{
 	// 		ContinueOnErrors: to.Ptr(true),
 	// 		ForceUpdateTag: to.Ptr("2bcf3c21-ffd1-4444-b9dd-e52e00ee53fe"),
+	// 		PrincipalPermissionsAction: to.Ptr(armkusto.PrincipalPermissionsActionRemovePermissionOnScriptCompletion),
+	// 		ScriptLevel: to.Ptr(armkusto.ScriptLevelDatabase),
 	// 		ScriptURL: to.Ptr("https://mysa.blob.core.windows.net/container/script.txt"),
 	// 	},
 	// 	SystemData: &armkusto.SystemData{
@@ -120,7 +126,7 @@ func ExampleScriptsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoScriptsCreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8adce17dc500f338f86f18af30aac61dcb71c5f/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoScriptsCreateOrUpdate.json
 func ExampleScriptsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -133,10 +139,12 @@ func ExampleScriptsClient_BeginCreateOrUpdate() {
 	}
 	poller, err := clientFactory.NewScriptsClient().BeginCreateOrUpdate(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", "kustoScript", armkusto.Script{
 		Properties: &armkusto.ScriptProperties{
-			ContinueOnErrors:  to.Ptr(true),
-			ForceUpdateTag:    to.Ptr("2bcf3c21-ffd1-4444-b9dd-e52e00ee53fe"),
-			ScriptURL:         to.Ptr("https://mysa.blob.core.windows.net/container/script.txt"),
-			ScriptURLSasToken: to.Ptr("?sv=2019-02-02&st=2019-04-29T22%3A18%3A26Z&se=2019-04-30T02%3A23%3A26Z&sr=b&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https&sig=********************************"),
+			ContinueOnErrors:           to.Ptr(true),
+			ForceUpdateTag:             to.Ptr("2bcf3c21-ffd1-4444-b9dd-e52e00ee53fe"),
+			PrincipalPermissionsAction: to.Ptr(armkusto.PrincipalPermissionsActionRemovePermissionOnScriptCompletion),
+			ScriptLevel:                to.Ptr(armkusto.ScriptLevelDatabase),
+			ScriptURL:                  to.Ptr("https://mysa.blob.core.windows.net/container/script.txt"),
+			ScriptURLSasToken:          to.Ptr("?sv=2019-02-02&st=2019-04-29T22%3A18%3A26Z&se=2019-04-30T02%3A23%3A26Z&sr=b&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https&sig=********************************"),
 		},
 	}, nil)
 	if err != nil {
@@ -156,6 +164,8 @@ func ExampleScriptsClient_BeginCreateOrUpdate() {
 	// 	Properties: &armkusto.ScriptProperties{
 	// 		ContinueOnErrors: to.Ptr(true),
 	// 		ForceUpdateTag: to.Ptr("2bcf3c21-ffd1-4444-b9dd-e52e00ee53fe"),
+	// 		PrincipalPermissionsAction: to.Ptr(armkusto.PrincipalPermissionsActionRemovePermissionOnScriptCompletion),
+	// 		ScriptLevel: to.Ptr(armkusto.ScriptLevelDatabase),
 	// 		ScriptURL: to.Ptr("https://mysa.blob.core.windows.net/container/script.txt"),
 	// 	},
 	// 	SystemData: &armkusto.SystemData{
@@ -169,7 +179,7 @@ func ExampleScriptsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoScriptsUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8adce17dc500f338f86f18af30aac61dcb71c5f/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoScriptsUpdate.json
 func ExampleScriptsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -182,10 +192,12 @@ func ExampleScriptsClient_BeginUpdate() {
 	}
 	poller, err := clientFactory.NewScriptsClient().BeginUpdate(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", "kustoScript", armkusto.Script{
 		Properties: &armkusto.ScriptProperties{
-			ContinueOnErrors:  to.Ptr(true),
-			ForceUpdateTag:    to.Ptr("2bcf3c21-ffd1-4444-b9dd-e52e00ee53fe"),
-			ScriptURL:         to.Ptr("https://mysa.blob.core.windows.net/container/script.txt"),
-			ScriptURLSasToken: to.Ptr("?sv=2019-02-02&st=2019-04-29T22%3A18%3A26Z&se=2019-04-30T02%3A23%3A26Z&sr=b&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https&sig=********************************"),
+			ContinueOnErrors:           to.Ptr(true),
+			ForceUpdateTag:             to.Ptr("2bcf3c21-ffd1-4444-b9dd-e52e00ee53fe"),
+			PrincipalPermissionsAction: to.Ptr(armkusto.PrincipalPermissionsActionRemovePermissionOnScriptCompletion),
+			ScriptLevel:                to.Ptr(armkusto.ScriptLevelDatabase),
+			ScriptURL:                  to.Ptr("https://mysa.blob.core.windows.net/container/script.txt"),
+			ScriptURLSasToken:          to.Ptr("?sv=2019-02-02&st=2019-04-29T22%3A18%3A26Z&se=2019-04-30T02%3A23%3A26Z&sr=b&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https&sig=********************************"),
 		},
 	}, nil)
 	if err != nil {
@@ -205,6 +217,8 @@ func ExampleScriptsClient_BeginUpdate() {
 	// 	Properties: &armkusto.ScriptProperties{
 	// 		ContinueOnErrors: to.Ptr(true),
 	// 		ForceUpdateTag: to.Ptr("2bcf3c21-ffd1-4444-b9dd-e52e00ee53fe"),
+	// 		PrincipalPermissionsAction: to.Ptr(armkusto.PrincipalPermissionsActionRemovePermissionOnScriptCompletion),
+	// 		ScriptLevel: to.Ptr(armkusto.ScriptLevelDatabase),
 	// 		ScriptURL: to.Ptr("https://mysa.blob.core.windows.net/container/script.txt"),
 	// 	},
 	// 	SystemData: &armkusto.SystemData{
@@ -218,7 +232,7 @@ func ExampleScriptsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoScriptsDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8adce17dc500f338f86f18af30aac61dcb71c5f/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoScriptsDelete.json
 func ExampleScriptsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -239,7 +253,7 @@ func ExampleScriptsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoScriptsCheckNameAvailability.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8adce17dc500f338f86f18af30aac61dcb71c5f/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoScriptsCheckNameAvailability.json
 func ExampleScriptsClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

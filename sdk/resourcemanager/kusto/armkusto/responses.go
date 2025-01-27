@@ -68,6 +68,11 @@ type ClusterPrincipalAssignmentsClientListResponse struct {
 	ClusterPrincipalAssignmentListResult
 }
 
+// ClustersClientAddCalloutPoliciesResponse contains the response from method ClustersClient.BeginAddCalloutPolicies.
+type ClustersClientAddCalloutPoliciesResponse struct {
+	// placeholder for future response values
+}
+
 // ClustersClientAddLanguageExtensionsResponse contains the response from method ClustersClient.BeginAddLanguageExtensions.
 type ClustersClientAddLanguageExtensionsResponse struct {
 	// placeholder for future response values
@@ -112,6 +117,18 @@ type ClustersClientListByResourceGroupResponse struct {
 	ClusterListResult
 }
 
+// ClustersClientListCalloutPoliciesResponse contains the response from method ClustersClient.NewListCalloutPoliciesPager.
+type ClustersClientListCalloutPoliciesResponse struct {
+	// A list of the service's callout policy objects.
+	CalloutPoliciesList
+}
+
+// ClustersClientListFollowerDatabasesGetResponse contains the response from method ClustersClient.NewListFollowerDatabasesGetPager.
+type ClustersClientListFollowerDatabasesGetResponse struct {
+	// The list Kusto database principals operation response.
+	FollowerDatabaseListResultGet
+}
+
 // ClustersClientListFollowerDatabasesResponse contains the response from method ClustersClient.NewListFollowerDatabasesPager.
 type ClustersClientListFollowerDatabasesResponse struct {
 	// The list Kusto database principals operation response.
@@ -150,6 +167,11 @@ type ClustersClientListSKUsResponse struct {
 
 // ClustersClientMigrateResponse contains the response from method ClustersClient.BeginMigrate.
 type ClustersClientMigrateResponse struct {
+	// placeholder for future response values
+}
+
+// ClustersClientRemoveCalloutPolicyResponse contains the response from method ClustersClient.BeginRemoveCalloutPolicy.
+type ClustersClientRemoveCalloutPolicyResponse struct {
 	// placeholder for future response values
 }
 

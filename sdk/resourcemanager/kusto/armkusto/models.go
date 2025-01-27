@@ -119,6 +119,36 @@ type AzureSKU struct {
 	Capacity *int32
 }
 
+// CalloutPoliciesList - A list of the service's callout policy objects.
+type CalloutPoliciesList struct {
+	// The URL to get the next set of callout policies list results if there are any.
+	NextLink *string
+
+	// A list of the service's callout policies.
+	Value []*CalloutPolicy
+}
+
+// CalloutPolicy - Configuration for external callout policies, including URI patterns, access types, and service types.
+type CalloutPolicy struct {
+	// Type of the callout service, specifying the kind of external resource or service being accessed.
+	CalloutType *CalloutType
+
+	// Regular expression or FQDN pattern for the callout URI.
+	CalloutURIRegex *string
+
+	// Indicates whether outbound access is permitted for the specified URI pattern.
+	OutboundAccess *OutboundAccess
+
+	// READ-ONLY; Unique identifier for the callout configuration.
+	CalloutID *string
+}
+
+// CalloutPolicyToRemove - Configuration for an external callout policy to remove.
+type CalloutPolicyToRemove struct {
+	// Unique identifier for the callout configuration.
+	CalloutID *string
+}
+
 // CheckNameRequest - The result returned from a database check name availability request.
 type CheckNameRequest struct {
 	// REQUIRED; Resource name.
@@ -271,6 +301,9 @@ type ClusterProperties struct {
 	// The list of ips in the format of CIDR allowed to connect to the cluster.
 	AllowedIPRangeList []*string
 
+	// List of callout policies for egress from Cluster.
+	CalloutPolicies []*CalloutPolicy
+
 	// A boolean value that indicates if the cluster could be automatically stopped (due to lack of data or no activity for many
 	// days).
 	EnableAutoStop *bool
@@ -338,6 +371,9 @@ type ClusterProperties struct {
 
 	// READ-ONLY; The cluster URI.
 	URI *string
+
+	// READ-ONLY; Indicates whether the cluster is zonal or non-zonal.
+	ZoneStatus *ZoneStatus
 }
 
 // ClusterUpdate - Class representing an update to a Kusto cluster.
@@ -833,10 +869,43 @@ type FollowerDatabaseDefinition struct {
 	TableLevelSharingProperties *TableLevelSharingProperties
 }
 
+// FollowerDatabaseDefinitionGet - A class representing follower database object.
+type FollowerDatabaseDefinitionGet struct {
+	// Follower database definition.
+	Properties *FollowerDatabaseProperties
+}
+
 // FollowerDatabaseListResult - The list Kusto database principals operation response.
 type FollowerDatabaseListResult struct {
 	// The list of follower database result.
 	Value []*FollowerDatabaseDefinition
+}
+
+// FollowerDatabaseListResultGet - The list Kusto database principals operation response.
+type FollowerDatabaseListResultGet struct {
+	// The URL to get the next set of follower databases list results if there are any.
+	NextLink *string
+
+	// The list of follower database result.
+	Value []*FollowerDatabaseDefinitionGet
+}
+
+// FollowerDatabaseProperties - A class representing the properties of a follower database object.
+type FollowerDatabaseProperties struct {
+	// REQUIRED; Resource name of the attached database configuration in the follower cluster.
+	AttachedDatabaseConfigurationName *string
+
+	// REQUIRED; Resource id of the cluster that follows a database owned by this cluster.
+	ClusterResourceID *string
+
+	// READ-ONLY; The database name owned by this cluster that was followed. * in case following all databases.
+	DatabaseName *string
+
+	// READ-ONLY; The origin of the following setup.
+	DatabaseShareOrigin *DatabaseShareOrigin
+
+	// READ-ONLY; Table level sharing specifications
+	TableLevelSharingProperties *TableLevelSharingProperties
 }
 
 // Identity for the resource.
@@ -1471,7 +1540,12 @@ type SandboxCustomImageProperties struct {
 	// REQUIRED; The language name, for example Python.
 	Language *Language
 
-	// REQUIRED; The version of the language.
+	// The base image name on which the custom image is built on top of. It can be one of the LanguageExtensionImageName (e.g.:
+	// 'Python3108', 'Python3108_DL') or the name of an existing custom image. Either
+	// this property or languageVersion should be specified.
+	BaseImageName *string
+
+	// The version of the language. Either this property or baseImageName should be specified.
 	LanguageVersion *string
 
 	// The requirements file content.
@@ -1542,9 +1616,15 @@ type ScriptProperties struct {
 	// A unique string. If changed the script will be applied again.
 	ForceUpdateTag *string
 
+	// Indicates if the permissions for the script caller are kept following completion of the script.
+	PrincipalPermissionsAction *PrincipalPermissionsAction
+
 	// The script content. This property should be used when the script is provide inline and not through file in a SA. Must not
 	// be used together with scriptUrl and scriptUrlSasToken properties.
 	ScriptContent *string
+
+	// Differentiates between the type of script commands included - Database or Cluster. The default is Database.
+	ScriptLevel *ScriptLevel
 
 	// The url to the KQL script blob file. Must not be used together with scriptContent property
 	ScriptURL *string

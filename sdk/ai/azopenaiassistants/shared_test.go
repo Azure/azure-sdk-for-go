@@ -346,3 +346,10 @@ func getValue[T any](v *T, def T) T {
 
 	return *v
 }
+
+func getRandomName(t *testing.T, prefix string) string {
+	seed, err := recording.GenerateAlphaNumericID(t, prefix, 6+len(prefix), true)
+	require.NoError(t, err)
+
+	return seed
+}

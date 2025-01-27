@@ -83,6 +83,21 @@ func PossibleListBlobsIncludeItemValues() []ListBlobsIncludeItem {
 	}
 }
 
+type ListBlobsShowOnly string
+
+const (
+	ListBlobsShowOnlyDeleted     ListBlobsShowOnly = "deleted"
+	ListBlobsShowOnlyDirectories ListBlobsShowOnly = "directories"
+)
+
+// PossibleListBlobsShowOnlyValues returns the possible values for the ListBlobsShowOnly const type.
+func PossibleListBlobsShowOnlyValues() []ListBlobsShowOnly {
+	return []ListBlobsShowOnly{
+		ListBlobsShowOnlyDeleted,
+		ListBlobsShowOnlyDirectories,
+	}
+}
+
 type PathExpiryOptions string
 
 const (

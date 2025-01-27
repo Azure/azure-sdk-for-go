@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Fix panic when invalid sas is passed to get-properties call. Fixes [#23912](https://github.com/Azure/azure-sdk-for-go/issues/23912)
 * Added NewListDirectoryPathPager. Fixes [#23852](https://github.com/Azure/azure-sdk-for-go/issues/23852), [#21083](https://github.com/Azure/azure-sdk-for-go/issues/21083), [#18921](https://github.com/Azure/azure-sdk-for-go/issues/18921)
 
 ### Other Changes

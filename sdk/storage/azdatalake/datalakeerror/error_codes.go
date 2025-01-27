@@ -70,7 +70,7 @@ const (
 	PathBeingRehydrated                               StorageErrorCode = "PathBeingRehydrated"
 	PathImmutableDueToPolicy                          StorageErrorCode = "PathImmutableDueToPolicy"
 	PathNotArchived                                   StorageErrorCode = "PathNotArchived"
-	BlobNotFound                                      StorageErrorCode = "BlobNotFound"
+	PathNotFound                                      StorageErrorCode = "PathNotFound"
 	PathOverwritten                                   StorageErrorCode = "PathOverwritten"
 	PathTierInadequateForContentLength                StorageErrorCode = "PathTierInadequateForContentLength"
 	PathUsesCustomerSpecifiedEncryption               StorageErrorCode = "PathUsesCustomerSpecifiedEncryption"
@@ -171,6 +171,9 @@ const (
 )
 
 var (
+	// BlobNotFound - Error is returned when resource is not found.
+	BlobNotFound = bloberror.BlobNotFound
+
 	// MissingSharedKeyCredential - Error is returned when SAS URL is being created without SharedKeyCredential.
 	MissingSharedKeyCredential = bloberror.MissingSharedKeyCredential
 

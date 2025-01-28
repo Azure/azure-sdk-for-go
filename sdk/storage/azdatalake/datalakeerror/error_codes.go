@@ -65,6 +65,7 @@ const (
 	AuthorizationResourceTypeMismatch                 StorageErrorCode = "AuthorizationResourceTypeMismatch"
 	AuthorizationServiceMismatch                      StorageErrorCode = "AuthorizationServiceMismatch"
 	AuthorizationSourceIPMismatch                     StorageErrorCode = "AuthorizationSourceIPMismatch"
+	BlobNotFound                                      StorageErrorCode = "BlobNotFound"
 	PathAlreadyExists                                 StorageErrorCode = "PathAlreadyExists"
 	PathArchived                                      StorageErrorCode = "PathArchived"
 	PathBeingRehydrated                               StorageErrorCode = "PathBeingRehydrated"
@@ -172,7 +173,6 @@ const (
 
 var (
 	// BlobNotFound - Error is returned when resource is not found.
-	BlobNotFound = bloberror.BlobNotFound
 
 	// MissingSharedKeyCredential - Error is returned when SAS URL is being created without SharedKeyCredential.
 	MissingSharedKeyCredential = bloberror.MissingSharedKeyCredential

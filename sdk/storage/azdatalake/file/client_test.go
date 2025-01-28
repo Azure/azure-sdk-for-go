@@ -91,12 +91,6 @@ type UnrecordedTestSuite struct {
 	suite.Suite
 }
 
-//	func validateFileDeleted(_require *require.Assertions, fileClient *file.Client) {
-//		_, err := fileClient.GetAccessControl(context.Background(), nil)
-//		_require.Error(err)
-//
-//		testcommon.ValidateErrorCode(_require, err, datalakeerror.PathNotFound)
-//	}
 type userAgentTest struct{}
 
 func (u userAgentTest) Do(req *policy.Request) (*http.Response, error) {
@@ -1045,7 +1039,7 @@ func (s *UnrecordedTestSuite) TestFileSetExpiryTypeAbsoluteTime() {
 	time.Sleep(time.Second * 7)
 
 	_, err = fClient.GetProperties(context.Background(), nil)
-	testcommon.ValidateErrorCode(_require, err, datalakeerror.PathNotFound)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.BlobNotFound)
 
 }
 
@@ -2381,7 +2375,7 @@ func (s *UnrecordedTestSuite) TestFileRenameUsingSAS() {
 
 	_, err = srcFileClient.GetProperties(context.Background(), nil)
 	_require.Error(err)
-	testcommon.ValidateErrorCode(_require, err, datalakeerror.PathNotFound)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.BlobNotFound)
 }
 
 func (s *RecordedTestSuite) TestRenameNoOptions() {
@@ -5679,11 +5673,11 @@ func (s *UnrecordedTestSuite) TestGetPropertiesWithInvalidSAS() {
 		Delete: false,
 	}
 	sasURL, err := fClient.GetSASURL(permissions, expiry, nil)
-	_require.NoError(err)
+	_require.Error(err)
 
 	fClientWithInvalidSAS, _ := file.NewClientWithNoCredential(sasURL, nil)
 
 	// Attempt to call GetProperties (Issue# https://github.com/Azure/azure-sdk-for-go/issues/23912)
 	_, err = fClientWithInvalidSAS.GetProperties(context.Background(), nil)
-	_require.NoError(err)
+	_require.Error(err)
 }

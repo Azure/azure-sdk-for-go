@@ -41,6 +41,26 @@ func PossibleCopyStatusTypeValues() []CopyStatusType {
 	return generated.PossibleCopyStatusTypeValues()
 }
 
+// NfsFileType specifies the type of the file or directory.
+type NfsFileType = generated.NfsFileType
+
+type ModeCopyMode = generated.ModeCopyMode
+
+type OwnerCopyMode = generated.OwnerCopyMode
+
+const (
+	// NFSFileTypeRegular Default and only value for the parameter NFS File Type.
+	NFSFileTypeRegular   NfsFileType = generated.NfsFileTypeRegular
+	NfsFileTypeDirectory NfsFileType = generated.NfsFileTypeDirectory
+	NfsFileTypeSymlink   NfsFileType = generated.NfsFileTypeSymLink
+
+	OwnerCopyModeOverride OwnerCopyMode = generated.OwnerCopyModeOverride
+	OwnerCopyModeSource   OwnerCopyMode = generated.OwnerCopyModeSource
+
+	ModeCopyModeOverride ModeCopyMode = generated.ModeCopyModeOverride
+	ModeCopyModeSource   ModeCopyMode = generated.ModeCopyModeSource
+)
+
 // PermissionCopyModeType determines the copy behavior of the security descriptor of the file.
 //   - source: The security descriptor on the destination file is copied from the source file.
 //   - override: The security descriptor on the destination file is determined via the x-ms-file-permission or x-ms-file-permission-key header.

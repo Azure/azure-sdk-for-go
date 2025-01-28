@@ -25,13 +25,13 @@ func (p *Permissions) Format(defaultFilePermissionStr string) (*string, *string)
 }
 
 // FormatPermissions returns file permission string and permission key.
-func FormatPermissions(p *Permissions, defaultPermission *string) (*string, *string) {
+func FormatPermissions(p *Permissions) (*string, *string) {
 	if p == nil {
-		return defaultPermission, nil
+		return nil, nil
 	}
 
 	if p.Permission == nil && p.PermissionKey == nil {
-		return defaultPermission, nil
+		return nil, nil
 	} else {
 		return p.Permission, p.PermissionKey
 	}

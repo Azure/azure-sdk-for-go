@@ -30,7 +30,7 @@ type TestAccountType string
 const (
 	TestAccountDefault    TestAccountType = ""
 	TestAccountSecondary  TestAccountType = "SECONDARY_"
-	TestAccountPremium    TestAccountType = "PREMIUM_"
+	TestAccountPremium    TestAccountType = "SEAN_PREMIUM_"
 	TestAccountSoftDelete TestAccountType = "SOFT_DELETE_"
 )
 

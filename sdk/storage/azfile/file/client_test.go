@@ -420,6 +420,42 @@ func (f *FileRecordedTestsSuite) TestFileCreateNegativeMetadataInvalid() {
 	_require.Error(err)
 }
 
+func (f *FileRecordedTestsSuite) TestCreateFileNFS() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountPremium)
+	_require.NoError(err)
+	shareName := testcommon.GenerateShareName(testName)
+	shareURL := "https://" + cred.AccountName() + ".file.core.windows.net/" + shareName
+
+	owner := "345"
+	group := "123"
+	fileMode := "7777"
+
+	options := &share.ClientOptions{}
+	testcommon.SetClientOptions(f.T(), &options.ClientOptions)
+	premiumShareClient, err := share.NewClientWithSharedKeyCredential(shareURL, cred, options)
+	_require.NoError(err)
+
+	_, err = premiumShareClient.Create(context.Background(), &share.CreateOptions{
+		EnabledProtocols: to.Ptr("NFS"),
+	})
+	defer testcommon.DeleteShare(context.Background(), _require, premiumShareClient)
+	_require.NoError(err)
+	fClient := premiumShareClient.NewRootDirectoryClient().NewFileClient(testcommon.GenerateFileName(testName))
+	resp, err := fClient.Create(context.Background(), 1024, &file.CreateOptions{
+		Owner:    to.Ptr(owner),
+		Group:    to.Ptr(group),
+		FileMode: to.Ptr(fileMode),
+	})
+	_require.NoError(err)
+	_require.Equal(*resp.FileMode, fileMode)
+	_require.Equal(*resp.Group, group)
+	_require.Equal(*resp.Owner, owner)
+	_require.Equal(*resp.NfsFileType, file.NfsFileType("Regular"))
+}
+
 func (f *FileUnrecordedTestsSuite) TestFileGetSetPropertiesNonDefault() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
@@ -494,9 +530,6 @@ func (f *FileUnrecordedTestsSuite) TestFileGetSetPropertiesNonDefault() {
 	_require.EqualValues(fileAttributes, fileAttributes2)
 
 	_require.EqualValues(getResp.FileCreationTime.Format(testcommon.ISO8601), creationTime.UTC().Format(testcommon.ISO8601))
-	// _require.EqualValues(getResp.FileCreationTime.Format(testcommon.ISO8601), lastWriteTime.UTC().Format(testcommon.ISO8601))
-	// _require.EqualValues(getResp.FileCreationTime.Format(testcommon.ISO8601), changeTime.UTC().Format(testcommon.ISO8601))
-
 	_require.NotNil(getResp.ETag)
 	_require.NotNil(getResp.RequestID)
 	_require.NotNil(getResp.Version)
@@ -606,6 +639,70 @@ func (f *FileUnrecordedTestsSuite) TestFileSetHTTPHeaders() {
 	_require.NotNil(setResp.Version)
 	_require.Equal(setResp.Date.IsZero(), false)
 	_require.NotNil(setResp.IsServerEncrypted)
+}
+
+func (f *FileRecordedTestsSuite) TestFileSetHTTPHeadersNfs() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountPremium)
+	_require.NoError(err)
+	shareName := testcommon.GenerateShareName(testName)
+	shareURL := "https://" + cred.AccountName() + ".file.core.windows.net/" + shareName
+
+	owner := "345"
+	group := "123"
+	fileMode := "7777"
+
+	options := &share.ClientOptions{}
+	testcommon.SetClientOptions(f.T(), &options.ClientOptions)
+	premiumShareClient, err := share.NewClientWithSharedKeyCredential(shareURL, cred, options)
+	_require.NoError(err)
+
+	_, err = premiumShareClient.Create(context.Background(), &share.CreateOptions{
+		EnabledProtocols: to.Ptr("NFS"),
+	})
+	defer testcommon.DeleteShare(context.Background(), _require, premiumShareClient)
+	_require.NoError(err)
+	fClient := premiumShareClient.NewRootDirectoryClient().NewFileClient(testcommon.GenerateFileName(testName))
+
+	_, err = fClient.Create(context.Background(), 0, nil)
+	_require.NoError(err)
+
+	md5Str := "MDAwMDAwMDA="
+	testMd5 := []byte(md5Str)
+
+	opts := &file.SetHTTPHeadersOptions{
+		HTTPHeaders: &file.HTTPHeaders{
+			ContentType:        to.Ptr("text/html"),
+			ContentEncoding:    to.Ptr("gzip"),
+			ContentLanguage:    to.Ptr("en"),
+			ContentMD5:         testMd5,
+			CacheControl:       to.Ptr("no-transform"),
+			ContentDisposition: to.Ptr("attachment"),
+		},
+		Owner:    to.Ptr(owner),
+		Group:    to.Ptr(group),
+		FileMode: to.Ptr(fileMode),
+	}
+	setResp, err := fClient.SetHTTPHeaders(context.Background(), opts)
+	_require.NoError(err)
+	_require.NotNil(setResp.ETag)
+	_require.Equal(setResp.LastModified.IsZero(), false)
+	_require.NotNil(setResp.RequestID)
+	_require.NotNil(setResp.Version)
+	_require.Equal(setResp.Date.IsZero(), false)
+	_require.NotNil(setResp.IsServerEncrypted)
+	_require.NotNil(setResp.LinkCount)
+	_require.Equal(*setResp.FileMode, fileMode)
+	_require.Equal(*setResp.Group, group)
+	_require.Equal(*setResp.Owner, owner)
+
+	getResp, err := fClient.GetProperties(context.Background(), nil)
+	_require.NotNil(getResp.LinkCount)
+	_require.NotNil(getResp.FileType)
+	_require.Equal(*getResp.FileMode, fileMode)
+	_require.Equal(*getResp.Group, group)
+	_require.Equal(*getResp.Owner, owner)
 }
 
 func (f *FileRecordedTestsSuite) TestFilePreservePermissions() {
@@ -1604,6 +1701,54 @@ func (f *FileUnrecordedTestsSuite) TestFileStartCopyUsingSASSrc() {
 	_require.NoError(err)
 	_require.Equal(*dResp.ContentLength, int64(len(testcommon.FileDefaultData)))
 	_require.Equal(string(data), testcommon.FileDefaultData)
+}
+
+func (f *FileRecordedTestsSuite) TestFileStartCopyModeCopyModeNfs() {
+
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountPremium)
+	_require.NoError(err)
+	shareName := testcommon.GenerateShareName(testName)
+	shareURL := "https://" + cred.AccountName() + ".file.core.windows.net/" + shareName
+
+	owner := "345"
+	group := "123"
+	mode := "6444"
+
+	options := &share.ClientOptions{}
+	testcommon.SetClientOptions(f.T(), &options.ClientOptions)
+	premiumShareClient, err := share.NewClientWithSharedKeyCredential(shareURL, cred, options)
+	_require.NoError(err)
+
+	_, err = premiumShareClient.Create(context.Background(), &share.CreateOptions{
+		EnabledProtocols: to.Ptr("NFS"),
+	})
+	defer testcommon.DeleteShare(context.Background(), _require, premiumShareClient)
+	_require.NoError(err)
+
+	fClient := premiumShareClient.NewRootDirectoryClient().NewFileClient("src" + testcommon.GenerateFileName(testName))
+	copyFClient := premiumShareClient.NewRootDirectoryClient().NewFileClient("dst" + testcommon.GenerateFileName(testName))
+
+	_, err = fClient.Create(context.Background(), 0, nil)
+	_require.NoError(err)
+
+	_, err = copyFClient.StartCopyFromURL(context.Background(), fClient.URL(), &file.StartCopyFromURLOptions{
+		Owner:             to.Ptr(owner),
+		Group:             to.Ptr(group),
+		FileMode:          to.Ptr(mode),
+		FileOwnerCopyMode: to.Ptr(file.OwnerCopyModeOverride),
+		FileModeCopyMode:  to.Ptr(file.ModeCopyModeOverride),
+	})
+	_require.NoError(err)
+
+	time.Sleep(4 * time.Second)
+
+	resp, err := copyFClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*resp.Group, group)
+	_require.Equal(*resp.Owner, owner)
 }
 
 func (f *FileRecordedTestsSuite) TestFileAbortCopyNoCopyStarted() {

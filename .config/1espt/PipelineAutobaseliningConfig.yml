@@ -602,6 +602,11 @@ pipelines:
           lastModifiedDate: 2025-01-28
         binskim:
           lastModifiedDate: 2025-01-28
+      source:
+        credscan:
+          lastModifiedDate: 2025-01-29
+        armory:
+          lastModifiedDate: 2025-01-29
   1842:
     retail:
       binary:

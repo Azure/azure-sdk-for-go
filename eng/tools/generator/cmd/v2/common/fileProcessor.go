@@ -139,16 +139,16 @@ func ReadV2ModuleNameToGetNamespace(path string) (map[string][]PackageInfo, erro
 // remove all sdk generated files in given path
 func CleanSDKGeneratedFiles(path string) error {
 	log.Printf("Removing all sdk generated files in '%s'...", path)
-	return filepath.Walk(path, func(path string, info fs.FileInfo, err error) error {
+	return filepath.WalkDir(path, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
 
-		if info.IsDir() {
+		if d.IsDir() {
 			return nil
 		}
 
-		if strings.HasSuffix(info.Name(), ".go") {
+		if strings.HasSuffix(d.Name(), ".go") {
 			b, err := os.ReadFile(path)
 			if err != nil {
 				return err
@@ -553,16 +553,16 @@ func replaceModuleImport(path, rpName, namespaceName, previousVersion, currentVe
 		return nil
 	}
 
-	return filepath.Walk(filepath.Join(path, subPath), func(path string, info fs.FileInfo, err error) error {
+	return filepath.WalkDir(filepath.Join(path, subPath), func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
-		if info.IsDir() {
+		if d.IsDir() {
 			return nil
 		}
 		suffix := false
 		for i := 0; i < len(suffixes) && !suffix; i++ {
-			suffix = strings.HasSuffix(info.Name(), suffixes[i])
+			suffix = strings.HasSuffix(d.Name(), suffixes[i])
 		}
 
 		if suffix {
@@ -705,16 +705,16 @@ func ReplaceConstModuleVersion(packagePath string, newVersion string) error {
 }
 
 func ReplaceModule(newVersion *semver.Version, packagePath, baseModule string, suffixs ...string) error {
-	return filepath.Walk(packagePath, func(path string, info fs.FileInfo, err error) error {
+	return filepath.WalkDir(packagePath, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
 
-		if info.IsDir() {
+		if d.IsDir() {
 			return nil
 		}
 
-		hasSuffix := slices.ContainsFunc(suffixs, func(s string) bool { return strings.HasSuffix(info.Name(), s) })
+		hasSuffix := slices.ContainsFunc(suffixs, func(s string) bool { return strings.HasSuffix(d.Name(), s) })
 		if len(suffixs) == 0 || hasSuffix {
 			if err = ReplaceImport(path, baseModule, newVersion.Major()); err != nil {
 				return err

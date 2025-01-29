@@ -18,6 +18,9 @@ import (
 // SharedKeyCredential contains an account's name and its primary or secondary key.
 type SharedKeyCredential = exported.SharedKeyCredential
 
+// NfsFileType specifies the type of the file or directory.
+type NfsFileType = generated.NfsFileType
+
 // NewSharedKeyCredential creates an immutable SharedKeyCredential containing the
 // storage account's name and either its primary or secondary key.
 func NewSharedKeyCredential(accountName, accountKey string) (*SharedKeyCredential, error) {
@@ -43,6 +46,14 @@ type CreateOptions struct {
 	// binary, the permission is returned as a base64 string representing the binary
 	// encoding of the permission
 	FilePermissionFormat *FilePermissionFormat
+	// NFS only. The file mode of the file or directory
+	FileMode *string
+	// NFS only. The owner of the file or directory.
+	Owner *string
+	// NFS only. The owning group of the file or directory.
+	Group *string
+	// NFS only. Type of the file or directory.
+	NfsFileType *NfsFileType
 }
 
 func (o *CreateOptions) format() *generated.DirectoryClientCreateOptions {
@@ -60,6 +71,9 @@ func (o *CreateOptions) format() *generated.DirectoryClientCreateOptions {
 		FilePermission:    permission,
 		FilePermissionKey: permissionKey,
 		Metadata:          o.Metadata,
+		FileMode:          o.FileMode,
+		Owner:             o.Owner,
+		Group:             o.Group,
 	}
 
 	if permissionKey != nil && *permissionKey != shared.DefaultFilePermissionString {
@@ -166,6 +180,14 @@ type SetPropertiesOptions struct {
 	FilePermissions *file.Permissions
 	// FilePermissionFormat contains the format of the file permissions, Can be sddl (Default) or Binary.
 	FilePermissionFormat *FilePermissionFormat
+	// NFS only. The file mode of the file or directory
+	FileMode *string
+	// NFS only. The owner of the file or directory.
+	Owner *string
+	// NFS only. The owning group of the file or directory.
+	Group *string
+	// NFS only. Type of the file or directory.
+	NfsFileType *NfsFileType
 }
 
 func (o *SetPropertiesOptions) format() *generated.DirectoryClientSetPropertiesOptions {
@@ -183,6 +205,9 @@ func (o *SetPropertiesOptions) format() *generated.DirectoryClientSetPropertiesO
 		FileLastWriteTime: fileLastWriteTime,
 		FilePermission:    permission,
 		FilePermissionKey: permissionKey,
+		FileMode:          o.FileMode,
+		Owner:             o.Owner,
+		Group:             o.Group,
 	}
 
 	if permissionKey != nil && *permissionKey != shared.DefaultPreserveString {

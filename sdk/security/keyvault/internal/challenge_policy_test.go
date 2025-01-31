@@ -11,7 +11,10 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"net/http/httptest"
 	"strings"
+	"sync"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -354,4 +357,65 @@ func TestParseTenant(t *testing.T) {
 	sampleURL := "https://login.microsoftonline.com/" + expected
 	actual = parseTenant(sampleURL)
 	require.Equal(t, expected, actual, "tenant was not properly parsed, got %s, expected %s", actual, expected)
+}
+
+func TestChallengePolicy_ConcurrentRequests(t *testing.T) {
+	concurrentRequestCount := 3
+
+	serverAuthenticateRequests := atomic.Int32{}
+	serverAuthenticatedRequests := atomic.Int32{}
+	var srv *httptest.Server
+	srv = httptest.NewUnstartedServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		authz := r.Header.Values("Authorization")
+		if len(authz) == 0 {
+			// Initial request without Authorization header. Send a
+			// challenge response to the client.
+			serverAuthenticateRequests.Add(1)
+			resource := srv.URL
+			w.Header().Add("WWW-Authenticate", fmt.Sprintf(`Bearer authorization="https://login.microsoftonline.com/{tenant}", resource="%s"`, resource))
+			w.WriteHeader(401)
+		} else {
+			// Authenticated request.
+			serverAuthenticatedRequests.Add(1)
+			if len(authz) != 1 || authz[0] != "Bearer ***" {
+				t.Errorf(`unexpected Authorization "%s"`, authz)
+			}
+			// Return nothing.
+			w.WriteHeader(200)
+		}
+	}))
+	defer srv.Close()
+	srv.StartTLS()
+
+	cred := credentialFunc(func(ctx context.Context, tro policy.TokenRequestOptions) (azcore.AccessToken, error) {
+		return azcore.AccessToken{Token: "***", ExpiresOn: time.Now().Add(time.Hour)}, nil
+	})
+	p := NewKeyVaultChallengePolicy(cred, &KeyVaultChallengePolicyOptions{
+		// Challenge resource verification will always fail because we
+		// use local IPs instead of domain names and subdomains in this
+		// test.
+		DisableChallengeResourceVerification: true,
+	})
+	pl := runtime.NewPipeline("", "",
+		runtime.PipelineOptions{PerRetry: []policy.Policy{p}},
+		&policy.ClientOptions{Transport: srv.Client()},
+	)
+
+	wg := sync.WaitGroup{}
+	for i := 0; i < concurrentRequestCount; i += 1 {
+		go (func() {
+			defer wg.Done()
+			req, err := runtime.NewRequest(context.Background(), "GET", srv.URL)
+			require.NoError(t, err)
+			res, err := pl.Do(req)
+			require.NoError(t, err)
+			defer res.Body.Close()
+		})()
+		wg.Add(1)
+	}
+	wg.Wait()
+
+	require.GreaterOrEqual(t, int(serverAuthenticateRequests.Load()), 1, "client should have sent at least one preflight request")
+	require.LessOrEqual(t, int(serverAuthenticateRequests.Load()), concurrentRequestCount, "client should have sent no more preflight requests than client requests")
+	require.EqualValues(t, concurrentRequestCount, serverAuthenticatedRequests.Load(), "client preflight request count should equal server preflight request count")
 }

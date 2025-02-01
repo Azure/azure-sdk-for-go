@@ -22,10 +22,12 @@ type ServerFactory struct {
 	AdminKeysServer                              AdminKeysServer
 	ManagementServer                             ManagementServer
 	NetworkSecurityPerimeterConfigurationsServer NetworkSecurityPerimeterConfigurationsServer
+	OfferingsServer                              OfferingsServer
 	OperationsServer                             OperationsServer
 	PrivateEndpointConnectionsServer             PrivateEndpointConnectionsServer
 	PrivateLinkResourcesServer                   PrivateLinkResourcesServer
 	QueryKeysServer                              QueryKeysServer
+	ServiceServer                                ServiceServer
 	ServicesServer                               ServicesServer
 	SharedPrivateLinkResourcesServer             SharedPrivateLinkResourcesServer
 	UsagesServer                                 UsagesServer
@@ -48,10 +50,12 @@ type ServerFactoryTransport struct {
 	trAdminKeysServer                              *AdminKeysServerTransport
 	trManagementServer                             *ManagementServerTransport
 	trNetworkSecurityPerimeterConfigurationsServer *NetworkSecurityPerimeterConfigurationsServerTransport
+	trOfferingsServer                              *OfferingsServerTransport
 	trOperationsServer                             *OperationsServerTransport
 	trPrivateEndpointConnectionsServer             *PrivateEndpointConnectionsServerTransport
 	trPrivateLinkResourcesServer                   *PrivateLinkResourcesServerTransport
 	trQueryKeysServer                              *QueryKeysServerTransport
+	trServiceServer                                *ServiceServerTransport
 	trServicesServer                               *ServicesServerTransport
 	trSharedPrivateLinkResourcesServer             *SharedPrivateLinkResourcesServerTransport
 	trUsagesServer                                 *UsagesServerTransport
@@ -81,6 +85,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewNetworkSecurityPerimeterConfigurationsServerTransport(&s.srv.NetworkSecurityPerimeterConfigurationsServer)
 		})
 		resp, err = s.trNetworkSecurityPerimeterConfigurationsServer.Do(req)
+	case "OfferingsClient":
+		initServer(s, &s.trOfferingsServer, func() *OfferingsServerTransport { return NewOfferingsServerTransport(&s.srv.OfferingsServer) })
+		resp, err = s.trOfferingsServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
@@ -97,6 +104,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "QueryKeysClient":
 		initServer(s, &s.trQueryKeysServer, func() *QueryKeysServerTransport { return NewQueryKeysServerTransport(&s.srv.QueryKeysServer) })
 		resp, err = s.trQueryKeysServer.Do(req)
+	case "ServiceClient":
+		initServer(s, &s.trServiceServer, func() *ServiceServerTransport { return NewServiceServerTransport(&s.srv.ServiceServer) })
+		resp, err = s.trServiceServer.Do(req)
 	case "ServicesClient":
 		initServer(s, &s.trServicesServer, func() *ServicesServerTransport { return NewServicesServerTransport(&s.srv.ServicesServer) })
 		resp, err = s.trServicesServer.Do(req)

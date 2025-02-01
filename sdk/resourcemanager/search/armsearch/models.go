@@ -8,6 +8,8 @@
 
 package armsearch
 
+import "time"
+
 // AdminKeyResult - Response containing the primary and secondary admin API keys for a given Azure AI Search service.
 type AdminKeyResult struct {
 	// READ-ONLY; The primary admin API key of the search service.
@@ -72,6 +74,11 @@ type EncryptionWithCmk struct {
 	// more than one unencrypted object, and enforcement is enabled, the service is marked as
 	// noncompliant.
 	EncryptionComplianceStatus *SearchEncryptionComplianceStatus
+}
+
+type FeatureOffering struct {
+	// The name of the feature offered in this region.
+	Name *FeatureName
 }
 
 // IPRule - The IP restriction rule of the Azure AI Search service.
@@ -222,6 +229,26 @@ type NetworkSecurityPerimeterConfigurationProperties struct {
 
 	// READ-ONLY
 	ProvisioningState *string
+}
+
+type OfferingsByRegion struct {
+	// The list of features offered in this region.
+	Features []*FeatureOffering
+
+	// The name of the region.
+	RegionName *string
+
+	// The list of SKUs offered in this region.
+	SKUs []*SKUOffering
+}
+
+// OfferingsListResult - The response containing a list of features and SKUs offered in various regions.
+type OfferingsListResult struct {
+	// The list of regions with their respective features and SKUs offered.
+	Value []*OfferingsByRegion
+
+	// READ-ONLY; The URL to get the next set of offerings, if any.
+	NextLink *string
 }
 
 // Operation - Describes a REST API operation.
@@ -497,6 +524,38 @@ type SKU struct {
 	Name *SKUName
 }
 
+type SKUOffering struct {
+	// The limits associated with this SKU offered in this region.
+	Limits *SKUOfferingLimits
+
+	// Defines the SKU of a search service, which determines billing rate and capacity limits.
+	SKU *SKU
+}
+
+// SKUOfferingLimits - The limits associated with this SKU offered in this region.
+type SKUOfferingLimits struct {
+	// The maximum number of indexers available for this SKU.
+	Indexers *int32
+
+	// The maximum number of indexes available for this SKU.
+	Indexes *int32
+
+	// The maximum storage size in Gigabytes available for this SKU per partition.
+	PartitionStorageInGigabytes *int32
+
+	// The maximum vector storage size in Gigabytes available for this SKU per partition.
+	PartitionVectorStorageInGigabytes *int32
+
+	// The maximum number of partitions available for this SKU.
+	Partitions *int32
+
+	// The maximum number of replicas available for this SKU.
+	Replicas *int32
+
+	// The maximum number of search units available for this SKU.
+	SearchUnits *int32
+}
+
 // Service - Describes an Azure AI Search service and its current state.
 type Service struct {
 	// REQUIRED; The geo-location where the resource lives
@@ -521,6 +580,9 @@ type Service struct {
 	// READ-ONLY; The name of the resource
 	Name *string
 
+	// READ-ONLY; Azure Resource Manager metadata of the search service containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
@@ -541,6 +603,9 @@ type ServiceProperties struct {
 	// is set to true.
 	AuthOptions *DataPlaneAuthOptions
 
+	// Configure this property to support the search service using either the default compute or Azure Confidential Compute.
+	ComputeType *ComputeType
+
 	// When set to true, calls to the search service will not be permitted to utilize API keys for authentication. This cannot
 	// be set to true if 'dataPlaneAuthOptions' are defined.
 	DisableLocalAuth *bool
@@ -552,6 +617,9 @@ type ServiceProperties struct {
 
 	// Specifies any policy regarding encryption of resources (such as indexes) using customer manager keys within a search service.
 	EncryptionWithCmk *EncryptionWithCmk
+
+	// The endpoint of the Azure AI Search service.
+	Endpoint *string
 
 	// Applicable only for the standard3 SKU. You can set this property to enable up to 3 high density partitions that allow up
 	// to 1000 indexes, which is much higher than the maximum indexes allowed for any
@@ -596,6 +664,10 @@ type ServiceProperties struct {
 	// because the free service uses capacity that is already set up.
 	ProvisioningState *ProvisioningState
 
+	// READ-ONLY; The date and time the search service was last upgraded. This field will be null until the service gets upgraded
+	// for the first time.
+	ServiceUpgradeDate *time.Time
+
 	// READ-ONLY; The list of shared private link resources managed by the Azure AI Search service.
 	SharedPrivateLinkResources []*SharedPrivateLinkResource
 
@@ -613,6 +685,9 @@ type ServiceProperties struct {
 
 	// READ-ONLY; The details of the search service status.
 	StatusDetails *string
+
+	// READ-ONLY; Indicates whether or not the search service has an upgrade available.
+	UpgradeAvailable *bool
 }
 
 // ServiceUpdate - The parameters used to update an Azure AI Search service.
@@ -640,6 +715,9 @@ type ServiceUpdate struct {
 
 	// READ-ONLY; The name of the resource
 	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
@@ -718,6 +796,27 @@ type SharedPrivateLinkResourceProperties struct {
 
 	// Status of the shared private link resource. Valid values are Pending, Approved, Rejected or Disconnected.
 	Status *SharedPrivateLinkResourceStatus
+}
+
+// SystemData - Metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// The timestamp of resource creation (UTC).
+	CreatedAt *time.Time
+
+	// The identity that created the resource.
+	CreatedBy *string
+
+	// The type of identity that created the resource.
+	CreatedByType *CreatedByType
+
+	// The timestamp of resource last modification (UTC)
+	LastModifiedAt *time.Time
+
+	// The identity that last modified the resource.
+	LastModifiedBy *string
+
+	// The type of identity that last modified the resource.
+	LastModifiedByType *CreatedByType
 }
 
 // UserAssignedManagedIdentity - The details of the user assigned managed identity assigned to the search service.

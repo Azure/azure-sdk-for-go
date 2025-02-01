@@ -1,5 +1,28 @@
 # Release History
 
+## 1.4.0-beta.3 (2025-02-28)
+### Features Added
+
+- New enum type `ComputeType` with values `ComputeTypeConfidential`, `ComputeTypeDefault`
+- New enum type `CreatedByType` with values `CreatedByTypeApplication`, `CreatedByTypeKey`, `CreatedByTypeManagedIdentity`, `CreatedByTypeUser`
+- New enum type `FeatureName` with values `FeatureNameAvailabilityZones`, `FeatureNameDocumentIntelligence`, `FeatureNameGrok`, `FeatureNameImageVectorization`, `FeatureNameMegaStore`, `FeatureNameQueryRewrite`, `FeatureNameS3`, `FeatureNameSemanticSearch`, `FeatureNameStorageOptimized`
+- New function `*ClientFactory.NewOfferingsClient() *OfferingsClient`
+- New function `*ClientFactory.NewServiceClient() *ServiceClient`
+- New function `NewOfferingsClient(azcore.TokenCredential, *arm.ClientOptions) (*OfferingsClient, error)`
+- New function `*OfferingsClient.NewListPager(*OfferingsClientListOptions) *runtime.Pager[OfferingsClientListResponse]`
+- New function `NewServiceClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ServiceClient, error)`
+- New function `*ServiceClient.BeginUpgrade(context.Context, string, string, *ServiceClientBeginUpgradeOptions) (*runtime.Poller[ServiceClientUpgradeResponse], error)`
+- New struct `FeatureOffering`
+- New struct `OfferingsByRegion`
+- New struct `OfferingsListResult`
+- New struct `SKUOffering`
+- New struct `SKUOfferingLimits`
+- New struct `SystemData`
+- New field `SystemData` in struct `Service`
+- New field `ComputeType`, `Endpoint`, `ServiceUpgradeDate`, `UpgradeAvailable` in struct `ServiceProperties`
+- New field `SystemData` in struct `ServiceUpdate`
+
+
 ## 1.4.0-beta.2 (2024-06-21)
 ### Features Added
 

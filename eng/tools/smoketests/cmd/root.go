@@ -85,7 +85,7 @@ func findModuleDirectories(root string) []string {
 	err := filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
 		handle(err)
 		if strings.Contains(d.Name(), "go.mod") && !inIgnoredDirectories(path) {
-			path = strings.ReplaceAll(path, "\\", "/")
+			path = filepath.ToSlash(path)
 			path = strings.ReplaceAll(path, "/go.mod", "")
 			parts := strings.Split(path, "/sdk/")
 			formatted := fmt.Sprintf("github.com/Azure/azure-sdk-for-go/sdk/%s", parts[1])
@@ -235,7 +235,7 @@ func FindExampleFiles(root, serviceDirectory string) ([]string, error) {
 	err := filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
 		handle(err)
 		if strings.HasPrefix(d.Name(), "example_") && !inIgnoredDirectories(path) && filepath.Ext(d.Name()) == ".go" {
-			path = strings.ReplaceAll(path, "\\", "/")
+			path = filepath.ToSlash(path)
 			if serviceDirectory == "" || strings.Contains(path, serviceDirectory) {
 				ret = append(ret, path)
 			}

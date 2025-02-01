@@ -10,6 +10,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"path/filepath"
 	"strings"
 	"time"
 
@@ -272,7 +273,7 @@ func getCanonicalName(account string, containerName string, blobName string, dir
 	// Blob:      "/blob/account/containername/blobname"
 	elements := []string{"/blob/", account, "/", containerName}
 	if blobName != "" {
-		elements = append(elements, "/", strings.ReplaceAll(blobName, "\\", "/"))
+		elements = append(elements, "/", filepath.ToSlash(blobName))
 	} else if directoryName != "" {
 		elements = append(elements, "/", directoryName)
 	}

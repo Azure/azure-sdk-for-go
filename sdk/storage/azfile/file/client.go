@@ -12,6 +12,7 @@ import (
 	"errors"
 	"io"
 	"os"
+	"path/filepath"
 	"strings"
 	"sync"
 	"time"
@@ -112,7 +113,7 @@ func NewClientFromConnectionString(connectionString string, shareName string, fi
 		return nil, err
 	}
 
-	filePath = strings.ReplaceAll(filePath, "\\", "/")
+	filePath = filepath.ToSlash(filePath)
 	parsed.ServiceURL = runtime.JoinPaths(parsed.ServiceURL, shareName, filePath)
 
 	if parsed.AccountKey != "" && parsed.AccountName != "" {

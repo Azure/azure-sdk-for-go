@@ -3,9 +3,11 @@
 
 package utils
 
-import "strings"
+import (
+	"path/filepath"
+)
 
-// NormalizePath normalizes the path by replacing \ with /
+// NormalizePath normalizes the path 
 func NormalizePath(path string) string {
-	return strings.ReplaceAll(path, "\\", "/")
+	return filepath.ToSlash(path)
 }

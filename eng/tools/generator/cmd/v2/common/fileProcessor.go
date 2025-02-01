@@ -147,7 +147,7 @@ func CleanSDKGeneratedFiles(path string) error {
 			return nil
 		}
 
-		if strings.HasSuffix(d.Name(), ".go") {
+		if filepath.Ext(d.Name()) == ".go" {
 			b, err := os.ReadFile(path)
 			if err != nil {
 				return err

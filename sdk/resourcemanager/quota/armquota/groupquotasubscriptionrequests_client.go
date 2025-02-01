@@ -45,7 +45,7 @@ func NewGroupQuotaSubscriptionRequestsClient(credential azcore.TokenCredential, 
 // to check the intermediate status. This API provides the finals status with the request details and status.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-12-18-preview
+// Generated from API version 2025-03-01
 //   - managementGroupID - Management Group Id.
 //   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
 //   - requestID - Request Id.
@@ -93,7 +93,7 @@ func (client *GroupQuotaSubscriptionRequestsClient) getCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-18-preview")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -111,7 +111,7 @@ func (client *GroupQuotaSubscriptionRequestsClient) getHandleResponse(resp *http
 // NewListPager - List API to check the status of a subscriptionId requests by requestId. Request history is maintained for
 // 1 year.
 //
-// Generated from API version 2024-12-18-preview
+// Generated from API version 2025-03-01
 //   - managementGroupID - Management Group Id.
 //   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
 //   - options - GroupQuotaSubscriptionRequestsClientListOptions contains the optional parameters for the GroupQuotaSubscriptionRequestsClient.NewListPager
@@ -155,7 +155,7 @@ func (client *GroupQuotaSubscriptionRequestsClient) listCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-18-preview")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

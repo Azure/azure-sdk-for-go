@@ -49,7 +49,7 @@ func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*
 // the request.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-12-18-preview
+// Generated from API version 2025-03-01
 //   - resourceName - Resource name for a given resource provider. For example:
 //   - SKU name for Microsoft.Compute
 //   - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices For Microsoft.Network PublicIPAddresses.
@@ -86,7 +86,7 @@ func (client *Client) BeginCreateOrUpdate(ctx context.Context, resourceName stri
 // the request.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-12-18-preview
+// Generated from API version 2025-03-01
 func (client *Client) createOrUpdate(ctx context.Context, resourceName string, scope string, createQuotaRequest CurrentQuotaLimitBase, options *ClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginCreateOrUpdate"
@@ -121,7 +121,7 @@ func (client *Client) createOrUpdateCreateRequest(ctx context.Context, resourceN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-18-preview")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, createQuotaRequest); err != nil {
@@ -134,7 +134,7 @@ func (client *Client) createOrUpdateCreateRequest(ctx context.Context, resourceN
 // limit that can be submitted with a PUT request.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-12-18-preview
+// Generated from API version 2025-03-01
 //   - resourceName - Resource name for a given resource provider. For example:
 //   - SKU name for Microsoft.Compute
 //   - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices For Microsoft.Network PublicIPAddresses.
@@ -178,7 +178,7 @@ func (client *Client) getCreateRequest(ctx context.Context, resourceName string,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-18-preview")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -199,7 +199,7 @@ func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse,
 // NewListPager - Get a list of current quota limits of all resources for the specified scope. The response from this GET
 // operation can be leveraged to submit requests to update a quota.
 //
-// Generated from API version 2024-12-18-preview
+// Generated from API version 2025-03-01
 //   - scope - The target Azure resource URI. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/.
 //     This is the target Azure
 //     resource URI for the List GET operation. If a {resourceName} is added after /quotas, then it's the target Azure resource
@@ -237,7 +237,7 @@ func (client *Client) listCreateRequest(ctx context.Context, scope string, optio
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-18-preview")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -263,7 +263,7 @@ func (client *Client) listHandleResponse(resp *http.Response) (ClientListRespons
 // the request.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-12-18-preview
+// Generated from API version 2025-03-01
 //   - resourceName - Resource name for a given resource provider. For example:
 //   - SKU name for Microsoft.Compute
 //   - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices For Microsoft.Network PublicIPAddresses.
@@ -299,7 +299,7 @@ func (client *Client) BeginUpdate(ctx context.Context, resourceName string, scop
 // the request.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-12-18-preview
+// Generated from API version 2025-03-01
 func (client *Client) update(ctx context.Context, resourceName string, scope string, createQuotaRequest CurrentQuotaLimitBase, options *ClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginUpdate"
@@ -334,7 +334,7 @@ func (client *Client) updateCreateRequest(ctx context.Context, resourceName stri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-18-preview")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, createQuotaRequest); err != nil {

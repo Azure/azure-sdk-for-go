@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota/v2
 
 go 1.18
 

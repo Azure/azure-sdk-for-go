@@ -1,5 +1,105 @@
 # Release History
 
+## 2.0.0 (2025-02-28)
+### Breaking Changes
+
+- Function `NewClientFactory` parameter(s) have been changed from `(azcore.TokenCredential, *arm.ClientOptions)` to `(string, azcore.TokenCredential, *arm.ClientOptions)`
+
+### Features Added
+
+- New enum type `CreatedByType` with values `CreatedByTypeApplication`, `CreatedByTypeKey`, `CreatedByTypeManagedIdentity`, `CreatedByTypeUser`
+- New enum type `RequestState` with values `RequestStateAccepted`, `RequestStateCanceled`, `RequestStateCreated`, `RequestStateFailed`, `RequestStateInProgress`, `RequestStateInvalid`, `RequestStateSucceeded`
+- New function `*ClientFactory.NewGroupQuotaLimitsClient() *GroupQuotaLimitsClient`
+- New function `*ClientFactory.NewGroupQuotaLimitsRequestClient() *GroupQuotaLimitsRequestClient`
+- New function `*ClientFactory.NewGroupQuotaSubscriptionAllocationClient() *GroupQuotaSubscriptionAllocationClient`
+- New function `*ClientFactory.NewGroupQuotaSubscriptionAllocationRequestClient() *GroupQuotaSubscriptionAllocationRequestClient`
+- New function `*ClientFactory.NewGroupQuotaSubscriptionRequestsClient() *GroupQuotaSubscriptionRequestsClient`
+- New function `*ClientFactory.NewGroupQuotaSubscriptionsClient() *GroupQuotaSubscriptionsClient`
+- New function `*ClientFactory.NewGroupQuotasClient() *GroupQuotasClient`
+- New function `NewGroupQuotaLimitsClient(azcore.TokenCredential, *arm.ClientOptions) (*GroupQuotaLimitsClient, error)`
+- New function `*GroupQuotaLimitsClient.List(context.Context, string, string, string, string, *GroupQuotaLimitsClientListOptions) (GroupQuotaLimitsClientListResponse, error)`
+- New function `NewGroupQuotaLimitsRequestClient(azcore.TokenCredential, *arm.ClientOptions) (*GroupQuotaLimitsRequestClient, error)`
+- New function `*GroupQuotaLimitsRequestClient.Get(context.Context, string, string, string, *GroupQuotaLimitsRequestClientGetOptions) (GroupQuotaLimitsRequestClientGetResponse, error)`
+- New function `*GroupQuotaLimitsRequestClient.NewListPager(string, string, string, string, *GroupQuotaLimitsRequestClientListOptions) *runtime.Pager[GroupQuotaLimitsRequestClientListResponse]`
+- New function `*GroupQuotaLimitsRequestClient.BeginUpdate(context.Context, string, string, string, string, *GroupQuotaLimitsRequestClientBeginUpdateOptions) (*runtime.Poller[GroupQuotaLimitsRequestClientUpdateResponse], error)`
+- New function `NewGroupQuotaSubscriptionAllocationClient(string, azcore.TokenCredential, *arm.ClientOptions) (*GroupQuotaSubscriptionAllocationClient, error)`
+- New function `*GroupQuotaSubscriptionAllocationClient.List(context.Context, string, string, string, string, *GroupQuotaSubscriptionAllocationClientListOptions) (GroupQuotaSubscriptionAllocationClientListResponse, error)`
+- New function `NewGroupQuotaSubscriptionAllocationRequestClient(string, azcore.TokenCredential, *arm.ClientOptions) (*GroupQuotaSubscriptionAllocationRequestClient, error)`
+- New function `*GroupQuotaSubscriptionAllocationRequestClient.Get(context.Context, string, string, string, string, *GroupQuotaSubscriptionAllocationRequestClientGetOptions) (GroupQuotaSubscriptionAllocationRequestClientGetResponse, error)`
+- New function `*GroupQuotaSubscriptionAllocationRequestClient.NewListPager(string, string, string, string, *GroupQuotaSubscriptionAllocationRequestClientListOptions) *runtime.Pager[GroupQuotaSubscriptionAllocationRequestClientListResponse]`
+- New function `*GroupQuotaSubscriptionAllocationRequestClient.BeginUpdate(context.Context, string, string, string, string, SubscriptionQuotaAllocationsList, *GroupQuotaSubscriptionAllocationRequestClientBeginUpdateOptions) (*runtime.Poller[GroupQuotaSubscriptionAllocationRequestClientUpdateResponse], error)`
+- New function `NewGroupQuotaSubscriptionRequestsClient(azcore.TokenCredential, *arm.ClientOptions) (*GroupQuotaSubscriptionRequestsClient, error)`
+- New function `*GroupQuotaSubscriptionRequestsClient.Get(context.Context, string, string, string, *GroupQuotaSubscriptionRequestsClientGetOptions) (GroupQuotaSubscriptionRequestsClientGetResponse, error)`
+- New function `*GroupQuotaSubscriptionRequestsClient.NewListPager(string, string, *GroupQuotaSubscriptionRequestsClientListOptions) *runtime.Pager[GroupQuotaSubscriptionRequestsClientListResponse]`
+- New function `NewGroupQuotaSubscriptionsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*GroupQuotaSubscriptionsClient, error)`
+- New function `*GroupQuotaSubscriptionsClient.BeginCreateOrUpdate(context.Context, string, string, *GroupQuotaSubscriptionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[GroupQuotaSubscriptionsClientCreateOrUpdateResponse], error)`
+- New function `*GroupQuotaSubscriptionsClient.BeginDelete(context.Context, string, string, *GroupQuotaSubscriptionsClientBeginDeleteOptions) (*runtime.Poller[GroupQuotaSubscriptionsClientDeleteResponse], error)`
+- New function `*GroupQuotaSubscriptionsClient.Get(context.Context, string, string, *GroupQuotaSubscriptionsClientGetOptions) (GroupQuotaSubscriptionsClientGetResponse, error)`
+- New function `*GroupQuotaSubscriptionsClient.NewListPager(string, string, *GroupQuotaSubscriptionsClientListOptions) *runtime.Pager[GroupQuotaSubscriptionsClientListResponse]`
+- New function `*GroupQuotaSubscriptionsClient.BeginUpdate(context.Context, string, string, *GroupQuotaSubscriptionsClientBeginUpdateOptions) (*runtime.Poller[GroupQuotaSubscriptionsClientUpdateResponse], error)`
+- New function `NewGroupQuotasClient(azcore.TokenCredential, *arm.ClientOptions) (*GroupQuotasClient, error)`
+- New function `*GroupQuotasClient.BeginCreateOrUpdate(context.Context, string, string, *GroupQuotasClientBeginCreateOrUpdateOptions) (*runtime.Poller[GroupQuotasClientCreateOrUpdateResponse], error)`
+- New function `*GroupQuotasClient.BeginDelete(context.Context, string, string, *GroupQuotasClientBeginDeleteOptions) (*runtime.Poller[GroupQuotasClientDeleteResponse], error)`
+- New function `*GroupQuotasClient.Get(context.Context, string, string, *GroupQuotasClientGetOptions) (GroupQuotasClientGetResponse, error)`
+- New function `*GroupQuotasClient.NewListPager(string, *GroupQuotasClientListOptions) *runtime.Pager[GroupQuotasClientListResponse]`
+- New function `*GroupQuotasClient.BeginUpdate(context.Context, string, string, *GroupQuotasClientBeginUpdateOptions) (*runtime.Poller[GroupQuotasClientUpdateResponse], error)`
+- New struct `AllocatedQuotaToSubscriptionList`
+- New struct `AllocatedToSubscription`
+- New struct `AllocationRequestBase`
+- New struct `AllocationRequestBaseProperties`
+- New struct `AllocationRequestBasePropertiesName`
+- New struct `AllocationRequestStatus`
+- New struct `AllocationRequestStatusList`
+- New struct `AllocationRequestStatusProperties`
+- New struct `ErrorAdditionalInfo`
+- New struct `ErrorDetail`
+- New struct `ErrorResponse`
+- New struct `GroupQuotaDetails`
+- New struct `GroupQuotaDetailsName`
+- New struct `GroupQuotaLimit`
+- New struct `GroupQuotaLimitList`
+- New struct `GroupQuotaLimitListProperties`
+- New struct `GroupQuotaLimitProperties`
+- New struct `GroupQuotaList`
+- New struct `GroupQuotaRequestBase`
+- New struct `GroupQuotaRequestBaseProperties`
+- New struct `GroupQuotaRequestBasePropertiesName`
+- New struct `GroupQuotaSubscriptionID`
+- New struct `GroupQuotaSubscriptionIDList`
+- New struct `GroupQuotaSubscriptionIDProperties`
+- New struct `GroupQuotaSubscriptionRequestStatus`
+- New struct `GroupQuotaSubscriptionRequestStatusList`
+- New struct `GroupQuotaSubscriptionRequestStatusProperties`
+- New struct `GroupQuotaUsagesBase`
+- New struct `GroupQuotaUsagesBaseName`
+- New struct `GroupQuotasEntity`
+- New struct `GroupQuotasEntityBase`
+- New struct `GroupQuotasEntityBasePatch`
+- New struct `GroupQuotasEntityPatch`
+- New struct `GroupQuotasEntityPatchProperties`
+- New struct `GroupQuotasEntityProperties`
+- New struct `LROResponse`
+- New struct `LROResponseProperties`
+- New struct `ProxyResource`
+- New struct `Resource`
+- New struct `ResourceBaseRequest`
+- New struct `ResourceUsageList`
+- New struct `ResourceUsages`
+- New struct `SubmittedResourceRequestStatus`
+- New struct `SubmittedResourceRequestStatusList`
+- New struct `SubmittedResourceRequestStatusProperties`
+- New struct `SubscriptionGroupQuotaAssignment`
+- New struct `SubscriptionQuotaAllocationRequestList`
+- New struct `SubscriptionQuotaAllocations`
+- New struct `SubscriptionQuotaAllocationsList`
+- New struct `SubscriptionQuotaAllocationsListProperties`
+- New struct `SubscriptionQuotaAllocationsProperties`
+- New struct `SubscriptionQuotaAllocationsStatusList`
+- New struct `SubscriptionQuotaDetails`
+- New struct `SubscriptionQuotaDetailsName`
+- New struct `SystemData`
+
+
 ## 1.1.0-beta.2 (2025-01-22)
 ### Breaking Changes
 

@@ -1,5 +1,19 @@
 # Release History
 
+## 7.4.0 (2025-02-28)
+### Features Added
+
+- New enum type `CoolAccessTieringPolicy` with values `CoolAccessTieringPolicyAuto`, `CoolAccessTieringPolicySnapshotOnly`
+- New function `*AccountsClient.BeginChangeKeyVault(context.Context, string, string, *AccountsClientBeginChangeKeyVaultOptions) (*runtime.Poller[AccountsClientChangeKeyVaultResponse], error)`
+- New function `*AccountsClient.BeginGetChangeKeyVaultInformation(context.Context, string, string, *AccountsClientBeginGetChangeKeyVaultInformationOptions) (*runtime.Poller[AccountsClientGetChangeKeyVaultInformationResponse], error)`
+- New function `*AccountsClient.BeginTransitionToCmk(context.Context, string, string, *AccountsClientBeginTransitionToCmkOptions) (*runtime.Poller[AccountsClientTransitionToCmkResponse], error)`
+- New struct `ChangeKeyVault`
+- New struct `EncryptionTransitionRequest`
+- New struct `KeyVaultPrivateEndpoint`
+- New field `CoolAccessTieringPolicy` in struct `VolumePatchProperties`
+- New field `CoolAccessTieringPolicy` in struct `VolumeProperties`
+
+
 ## 7.4.0-beta.1 (2024-11-18)
 ### Features Added
 

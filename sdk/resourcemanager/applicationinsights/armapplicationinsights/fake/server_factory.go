@@ -25,15 +25,19 @@ type ServerFactory struct {
 	ComponentAvailableFeaturesServer       ComponentAvailableFeaturesServer
 	ComponentCurrentBillingFeaturesServer  ComponentCurrentBillingFeaturesServer
 	ComponentFeatureCapabilitiesServer     ComponentFeatureCapabilitiesServer
+	ComponentLinkedStorageAccountsServer   ComponentLinkedStorageAccountsServer
 	ComponentQuotaStatusServer             ComponentQuotaStatusServer
 	ComponentsServer                       ComponentsServer
+	DeletedWorkbooksServer                 DeletedWorkbooksServer
 	ExportConfigurationsServer             ExportConfigurationsServer
 	FavoritesServer                        FavoritesServer
-	MyWorkbooksServer                      MyWorkbooksServer
+	LiveTokenServer                        LiveTokenServer
+	OperationsServer                       OperationsServer
 	ProactiveDetectionConfigurationsServer ProactiveDetectionConfigurationsServer
 	WebTestLocationsServer                 WebTestLocationsServer
 	WebTestsServer                         WebTestsServer
 	WorkItemConfigurationsServer           WorkItemConfigurationsServer
+	WorkbookTemplatesServer                WorkbookTemplatesServer
 	WorkbooksServer                        WorkbooksServer
 }
 
@@ -57,15 +61,19 @@ type ServerFactoryTransport struct {
 	trComponentAvailableFeaturesServer       *ComponentAvailableFeaturesServerTransport
 	trComponentCurrentBillingFeaturesServer  *ComponentCurrentBillingFeaturesServerTransport
 	trComponentFeatureCapabilitiesServer     *ComponentFeatureCapabilitiesServerTransport
+	trComponentLinkedStorageAccountsServer   *ComponentLinkedStorageAccountsServerTransport
 	trComponentQuotaStatusServer             *ComponentQuotaStatusServerTransport
 	trComponentsServer                       *ComponentsServerTransport
+	trDeletedWorkbooksServer                 *DeletedWorkbooksServerTransport
 	trExportConfigurationsServer             *ExportConfigurationsServerTransport
 	trFavoritesServer                        *FavoritesServerTransport
-	trMyWorkbooksServer                      *MyWorkbooksServerTransport
+	trLiveTokenServer                        *LiveTokenServerTransport
+	trOperationsServer                       *OperationsServerTransport
 	trProactiveDetectionConfigurationsServer *ProactiveDetectionConfigurationsServerTransport
 	trWebTestLocationsServer                 *WebTestLocationsServerTransport
 	trWebTestsServer                         *WebTestsServerTransport
 	trWorkItemConfigurationsServer           *WorkItemConfigurationsServerTransport
+	trWorkbookTemplatesServer                *WorkbookTemplatesServerTransport
 	trWorkbooksServer                        *WorkbooksServerTransport
 }
 
@@ -108,6 +116,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewComponentFeatureCapabilitiesServerTransport(&s.srv.ComponentFeatureCapabilitiesServer)
 		})
 		resp, err = s.trComponentFeatureCapabilitiesServer.Do(req)
+	case "ComponentLinkedStorageAccountsClient":
+		initServer(s, &s.trComponentLinkedStorageAccountsServer, func() *ComponentLinkedStorageAccountsServerTransport {
+			return NewComponentLinkedStorageAccountsServerTransport(&s.srv.ComponentLinkedStorageAccountsServer)
+		})
+		resp, err = s.trComponentLinkedStorageAccountsServer.Do(req)
 	case "ComponentQuotaStatusClient":
 		initServer(s, &s.trComponentQuotaStatusServer, func() *ComponentQuotaStatusServerTransport {
 			return NewComponentQuotaStatusServerTransport(&s.srv.ComponentQuotaStatusServer)
@@ -116,6 +129,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "ComponentsClient":
 		initServer(s, &s.trComponentsServer, func() *ComponentsServerTransport { return NewComponentsServerTransport(&s.srv.ComponentsServer) })
 		resp, err = s.trComponentsServer.Do(req)
+	case "DeletedWorkbooksClient":
+		initServer(s, &s.trDeletedWorkbooksServer, func() *DeletedWorkbooksServerTransport {
+			return NewDeletedWorkbooksServerTransport(&s.srv.DeletedWorkbooksServer)
+		})
+		resp, err = s.trDeletedWorkbooksServer.Do(req)
 	case "ExportConfigurationsClient":
 		initServer(s, &s.trExportConfigurationsServer, func() *ExportConfigurationsServerTransport {
 			return NewExportConfigurationsServerTransport(&s.srv.ExportConfigurationsServer)
@@ -124,9 +142,12 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "FavoritesClient":
 		initServer(s, &s.trFavoritesServer, func() *FavoritesServerTransport { return NewFavoritesServerTransport(&s.srv.FavoritesServer) })
 		resp, err = s.trFavoritesServer.Do(req)
-	case "MyWorkbooksClient":
-		initServer(s, &s.trMyWorkbooksServer, func() *MyWorkbooksServerTransport { return NewMyWorkbooksServerTransport(&s.srv.MyWorkbooksServer) })
-		resp, err = s.trMyWorkbooksServer.Do(req)
+	case "LiveTokenClient":
+		initServer(s, &s.trLiveTokenServer, func() *LiveTokenServerTransport { return NewLiveTokenServerTransport(&s.srv.LiveTokenServer) })
+		resp, err = s.trLiveTokenServer.Do(req)
+	case "OperationsClient":
+		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		resp, err = s.trOperationsServer.Do(req)
 	case "ProactiveDetectionConfigurationsClient":
 		initServer(s, &s.trProactiveDetectionConfigurationsServer, func() *ProactiveDetectionConfigurationsServerTransport {
 			return NewProactiveDetectionConfigurationsServerTransport(&s.srv.ProactiveDetectionConfigurationsServer)
@@ -145,6 +166,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewWorkItemConfigurationsServerTransport(&s.srv.WorkItemConfigurationsServer)
 		})
 		resp, err = s.trWorkItemConfigurationsServer.Do(req)
+	case "WorkbookTemplatesClient":
+		initServer(s, &s.trWorkbookTemplatesServer, func() *WorkbookTemplatesServerTransport {
+			return NewWorkbookTemplatesServerTransport(&s.srv.WorkbookTemplatesServer)
+		})
+		resp, err = s.trWorkbookTemplatesServer.Do(req)
 	case "WorkbooksClient":
 		initServer(s, &s.trWorkbooksServer, func() *WorkbooksServerTransport { return NewWorkbooksServerTransport(&s.srv.WorkbooksServer) })
 		resp, err = s.trWorkbooksServer.Do(req)

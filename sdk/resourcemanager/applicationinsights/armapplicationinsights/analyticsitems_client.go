@@ -241,14 +241,14 @@ func (client *AnalyticsItemsClient) listCreateRequest(ctx context.Context, resou
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-05-01")
+	if options != nil && options.IncludeContent != nil {
+		reqQP.Set("includeContent", strconv.FormatBool(*options.IncludeContent))
+	}
 	if options != nil && options.Scope != nil {
 		reqQP.Set("scope", string(*options.Scope))
 	}
 	if options != nil && options.Type != nil {
 		reqQP.Set("type", string(*options.Type))
-	}
-	if options != nil && options.IncludeContent != nil {
-		reqQP.Set("includeContent", strconv.FormatBool(*options.IncludeContent))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}

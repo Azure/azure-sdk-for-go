@@ -15,11 +15,11 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/WorkbooksList.json
-func ExampleWorkbooksClient_NewListByResourceGroupPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43042075540b8d67cce7d3d9f70b9b9f5a359da/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/WorkbooksList2.json
+func ExampleWorkbooksClient_NewListBySubscriptionPager_workbooksList2() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleWorkbooksClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewWorkbooksClient().NewListByResourceGroupPager("my-resource-group", armapplicationinsights.CategoryTypeWorkbook, &armapplicationinsights.WorkbooksClientListByResourceGroupOptions{Tags: []string{},
+	pager := clientFactory.NewWorkbooksClient().NewListBySubscriptionPager(armapplicationinsights.CategoryTypeWorkbook, &armapplicationinsights.WorkbooksClientListBySubscriptionOptions{Tags: []string{},
 		CanFetchContent: nil,
 	})
 	for pager.More() {
@@ -43,12 +43,14 @@ func ExampleWorkbooksClient_NewListByResourceGroupPager() {
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page.WorkbooksListResult = armapplicationinsights.WorkbooksListResult{
+		// 	Value: []*armapplicationinsights.Workbook{
+		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/WorkbookGet.json
-func ExampleWorkbooksClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43042075540b8d67cce7d3d9f70b9b9f5a359da/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/WorkbooksListSub.json
+func ExampleWorkbooksClient_NewListBySubscriptionPager_workbooksListSub() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -58,7 +60,235 @@ func ExampleWorkbooksClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewWorkbooksClient().Get(ctx, "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", nil)
+	pager := clientFactory.NewWorkbooksClient().NewListBySubscriptionPager(armapplicationinsights.CategoryTypeWorkbook, &armapplicationinsights.WorkbooksClientListBySubscriptionOptions{Tags: []string{},
+		CanFetchContent: nil,
+	})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.WorkbooksListResult = armapplicationinsights.WorkbooksListResult{
+		// 	Value: []*armapplicationinsights.Workbook{
+		// 		{
+		// 			Name: to.Ptr("deadb33f-5e0d-4064-8ebb-1a4ed0313eb2"),
+		// 			Type: to.Ptr("Microsoft.Insights/workbooks"),
+		// 			ID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/my-resource-group/providers/Microsoft.Insights/workbooks/deadb33f-5e0d-4064-8ebb-1a4ed0313eb2"),
+		// 			Location: to.Ptr("westus"),
+		// 			Tags: map[string]*string{
+		// 			},
+		// 			Kind: to.Ptr(armapplicationinsights.WorkbookSharedTypeKindShared),
+		// 			Properties: &armapplicationinsights.WorkbookProperties{
+		// 				Description: to.Ptr("Sample workbook"),
+		// 				Category: to.Ptr("workbook"),
+		// 				DisplayName: to.Ptr("My Workbook 1"),
+		// 				Revision: to.Ptr("1e2f8435b98248febee70c64ac22e1bb"),
+		// 				SerializedData: to.Ptr("{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":\"{\"json\":\"## New workbook\\r\\n---\\r\\n\\r\\nWelcome to your new workbook.  This area will display text formatted as markdown.\\r\\n\\r\\n\\r\\nWe've included a basic analytics query to get you started. Use the `Edit` button below each section to configure it or add more sections.\"}\",\"halfWidth\":null,\"conditionalVisibility\":null},{\"type\":3,\"content\":\"{\"version\":\"KqlItem/1.0\",\"query\":\"union withsource=TableName *\\n| summarize Count=count() by TableName\\n| render barchart\",\"showQuery\":false,\"size\":1,\"aggregation\":0,\"showAnnotations\":false}\",\"halfWidth\":null,\"conditionalVisibility\":null}],\"isLocked\":false}"),
+		// 				SourceID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/my-resource-group/providers/Microsoft.Web/sites/MyApp"),
+		// 				TimeModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-20T22:00:26.422Z"); return t}()),
+		// 				UserID: to.Ptr("userId"),
+		// 				Version: to.Ptr("Notebook/1.0"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("c0deea5e-3344-40f2-96f8-6f8e1c3b5722"),
+		// 			Type: to.Ptr("Microsoft.Insights/workbooks"),
+		// 			ID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/my-resource-group/providers/Microsoft.Insights/workbooks/c0deea5e-3344-40f2-96f8-6f8e1c3b5722"),
+		// 			Location: to.Ptr("westus"),
+		// 			Tags: map[string]*string{
+		// 				"TagSample01": to.Ptr("sample01"),
+		// 				"TagSample02": to.Ptr("sample02"),
+		// 			},
+		// 			Kind: to.Ptr(armapplicationinsights.WorkbookSharedTypeKindShared),
+		// 			Properties: &armapplicationinsights.WorkbookProperties{
+		// 				Description: to.Ptr("Sample workbook"),
+		// 				Category: to.Ptr("workbook"),
+		// 				DisplayName: to.Ptr("My Workbook 2"),
+		// 				Revision: to.Ptr("1e2f8435b98248febee70c64ac22e1bc"),
+		// 				SerializedData: to.Ptr("{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":\"{\"json\":\"## New workbook\\r\\n---\\r\\n\\r\\nWelcome to your new workbook.  This area will display text formatted as markdown.\\r\\n\\r\\n\\r\\nWe've included a basic analytics query to get you started. Use the `Edit` button below each section to configure it or add more sections.\"}\",\"halfWidth\":null,\"conditionalVisibility\":null},{\"type\":3,\"content\":\"{\"version\":\"KqlItem/1.0\",\"query\":\"union withsource=TableName *\\n| summarize Count=count() by TableName\\n| render barchart\",\"showQuery\":false,\"size\":1,\"aggregation\":0,\"showAnnotations\":false}\",\"halfWidth\":null,\"conditionalVisibility\":null}],\"isLocked\":false}"),
+		// 				SourceID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/my-resource-group/providers/Microsoft.Web/sites/MyApp"),
+		// 				TimeModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-20T22:00:26.422Z"); return t}()),
+		// 				UserID: to.Ptr("userId"),
+		// 				Version: to.Ptr("Notebook/1.0"),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43042075540b8d67cce7d3d9f70b9b9f5a359da/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/WorkbooksList.json
+func ExampleWorkbooksClient_NewListByResourceGroupPager_workbooksList() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armapplicationinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewWorkbooksClient().NewListByResourceGroupPager("my-resource-group", armapplicationinsights.CategoryTypeWorkbook, &armapplicationinsights.WorkbooksClientListByResourceGroupOptions{Tags: []string{},
+		SourceID:        to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourceGroups/my-resource-group/providers/Microsoft.Web/sites/MyApp"),
+		CanFetchContent: nil,
+	})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.WorkbooksListResult = armapplicationinsights.WorkbooksListResult{
+		// 	Value: []*armapplicationinsights.Workbook{
+		// 		{
+		// 			Name: to.Ptr("deadb33f-5e0d-4064-8ebb-1a4ed0313eb2"),
+		// 			Type: to.Ptr("Microsoft.Insights/workbooks"),
+		// 			ID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/my-resource-group/providers/Microsoft.Insights/workbooks/deadb33f-5e0d-4064-8ebb-1a4ed0313eb2"),
+		// 			Location: to.Ptr("westus"),
+		// 			Tags: map[string]*string{
+		// 			},
+		// 			Kind: to.Ptr(armapplicationinsights.WorkbookSharedTypeKindShared),
+		// 			Properties: &armapplicationinsights.WorkbookProperties{
+		// 				Description: to.Ptr("Sample workbook"),
+		// 				Category: to.Ptr("workbook"),
+		// 				DisplayName: to.Ptr("My Workbook 1"),
+		// 				Revision: to.Ptr("1e2f8435b98248febee70c64ac22e1bb"),
+		// 				SerializedData: to.Ptr("{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":\"{\"json\":\"## New workbook\\r\\n---\\r\\n\\r\\nWelcome to your new workbook.  This area will display text formatted as markdown.\\r\\n\\r\\n\\r\\nWe've included a basic analytics query to get you started. Use the `Edit` button below each section to configure it or add more sections.\"}\",\"halfWidth\":null,\"conditionalVisibility\":null},{\"type\":3,\"content\":\"{\"version\":\"KqlItem/1.0\",\"query\":\"union withsource=TableName *\\n| summarize Count=count() by TableName\\n| render barchart\",\"showQuery\":false,\"size\":1,\"aggregation\":0,\"showAnnotations\":false}\",\"halfWidth\":null,\"conditionalVisibility\":null}],\"isLocked\":false}"),
+		// 				SourceID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourceGroups/my-resource-group/providers/Microsoft.Web/sites/MyApp"),
+		// 				TimeModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-04T09:07:17.735Z"); return t}()),
+		// 				UserID: to.Ptr("userId"),
+		// 				Version: to.Ptr("Notebook/1.0"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("c0deea5e-3344-40f2-96f8-6f8e1c3b5722"),
+		// 			Type: to.Ptr("Microsoft.Insights/workbooks"),
+		// 			ID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/my-resource-group/providers/Microsoft.Insights/workbooks/c0deea5e-3344-40f2-96f8-6f8e1c3b5722"),
+		// 			Location: to.Ptr("westus"),
+		// 			Tags: map[string]*string{
+		// 				"TagSample01": to.Ptr("sample01"),
+		// 				"TagSample02": to.Ptr("sample02"),
+		// 			},
+		// 			Kind: to.Ptr(armapplicationinsights.WorkbookSharedTypeKindShared),
+		// 			Properties: &armapplicationinsights.WorkbookProperties{
+		// 				Description: to.Ptr("Sample workbook"),
+		// 				Category: to.Ptr("workbook"),
+		// 				DisplayName: to.Ptr("My Workbook 2"),
+		// 				Revision: to.Ptr("1e2f8435b98248febee70c64ac22e1bc"),
+		// 				SerializedData: to.Ptr("{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":\"{\"json\":\"## New workbook\\r\\n---\\r\\n\\r\\nWelcome to your new workbook.  This area will display text formatted as markdown.\\r\\n\\r\\n\\r\\nWe've included a basic analytics query to get you started. Use the `Edit` button below each section to configure it or add more sections.\"}\",\"halfWidth\":null,\"conditionalVisibility\":null},{\"type\":3,\"content\":\"{\"version\":\"KqlItem/1.0\",\"query\":\"union withsource=TableName *\\n| summarize Count=count() by TableName\\n| render barchart\",\"showQuery\":false,\"size\":1,\"aggregation\":0,\"showAnnotations\":false}\",\"halfWidth\":null,\"conditionalVisibility\":null}],\"isLocked\":false}"),
+		// 				SourceID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourceGroups/my-resource-group/providers/Microsoft.Web/sites/MyApp"),
+		// 				TimeModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-04T09:07:17.735Z"); return t}()),
+		// 				UserID: to.Ptr("userId"),
+		// 				Version: to.Ptr("Notebook/1.0"),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43042075540b8d67cce7d3d9f70b9b9f5a359da/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/WorkbooksManagedList.json
+func ExampleWorkbooksClient_NewListByResourceGroupPager_workbooksManagedList() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armapplicationinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewWorkbooksClient().NewListByResourceGroupPager("my-resource-group", armapplicationinsights.CategoryTypeWorkbook, &armapplicationinsights.WorkbooksClientListByResourceGroupOptions{Tags: []string{},
+		SourceID:        to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac119r124af/resourceGroups/my-resource-group/providers/Microsoft.Web/sites/MyApp"),
+		CanFetchContent: nil,
+	})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.WorkbooksListResult = armapplicationinsights.WorkbooksListResult{
+		// 	Value: []*armapplicationinsights.Workbook{
+		// 		{
+		// 			Name: to.Ptr("deadb33f-5e0d-4064-8ebb-1a4ed0313eb2"),
+		// 			Type: to.Ptr("Microsoft.Insights/workbooks"),
+		// 			ID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/my-resource-group/providers/Microsoft.Insights/workbooks/deadb33f-5e0d-4064-8ebb-1a4ed0313eb2"),
+		// 			Location: to.Ptr("westus"),
+		// 			Tags: map[string]*string{
+		// 			},
+		// 			Identity: &armapplicationinsights.WorkbookResourceIdentity{
+		// 				Type: to.Ptr(armapplicationinsights.ManagedServiceIdentityTypeUserAssigned),
+		// 				UserAssignedIdentities: map[string]*armapplicationinsights.UserAssignedIdentity{
+		// 					"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-resource-group/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myid": &armapplicationinsights.UserAssignedIdentity{
+		// 						ClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 						PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					},
+		// 				},
+		// 			},
+		// 			Kind: to.Ptr(armapplicationinsights.WorkbookSharedTypeKindShared),
+		// 			Properties: &armapplicationinsights.WorkbookProperties{
+		// 				Description: to.Ptr("Sample workbook"),
+		// 				Category: to.Ptr("workbook"),
+		// 				DisplayName: to.Ptr("My Workbook 1"),
+		// 				Revision: to.Ptr("1e2f8435b98248febee70c64ac22e1bb"),
+		// 				SerializedData: to.Ptr("{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":\"{\"json\":\"## New workbook\\r\\n---\\r\\n\\r\\nWelcome to your new workbook.  This area will display text formatted as markdown.\\r\\n\\r\\n\\r\\nWe've included a basic analytics query to get you started. Use the `Edit` button below each section to configure it or add more sections.\"}\",\"halfWidth\":null,\"conditionalVisibility\":null},{\"type\":3,\"content\":\"{\"version\":\"KqlItem/1.0\",\"query\":\"union withsource=TableName *\\n| summarize Count=count() by TableName\\n| render barchart\",\"showQuery\":false,\"size\":1,\"aggregation\":0,\"showAnnotations\":false}\",\"halfWidth\":null,\"conditionalVisibility\":null}],\"isLocked\":false}"),
+		// 				SourceID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac119r124af/resourceGroups/my-resource-group/providers/Microsoft.Web/sites/MyApp"),
+		// 				StorageURI: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac119r124af/resourceGroups/my-resource-group/providers/Microsoft.Storage/storageAccounts/mystorage/blobServices/default/containers/mycontainer"),
+		// 				TimeModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-20T22:00:26.422Z"); return t}()),
+		// 				UserID: to.Ptr("userId"),
+		// 				Version: to.Ptr("Notebook/1.0"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("c0deea5e-3344-40f2-96f8-6f8e1cdd5722"),
+		// 			Type: to.Ptr("Microsoft.Insights/workbooks"),
+		// 			ID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/my-resource-group/providers/Microsoft.Insights/workbooks/c0deea5e-3344-40f2-96f8-6f8e1cdd5722"),
+		// 			Location: to.Ptr("westus"),
+		// 			Tags: map[string]*string{
+		// 				"TagSample01": to.Ptr("sample01"),
+		// 				"TagSample02": to.Ptr("sample02"),
+		// 			},
+		// 			Kind: to.Ptr(armapplicationinsights.WorkbookSharedTypeKindShared),
+		// 			Properties: &armapplicationinsights.WorkbookProperties{
+		// 				Description: to.Ptr("Sample workbook"),
+		// 				Category: to.Ptr("workbook"),
+		// 				DisplayName: to.Ptr("My Workbook 2"),
+		// 				Revision: to.Ptr("1e2f8435b98248febee70c64ac22e1bc"),
+		// 				SerializedData: to.Ptr("{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":\"{\"json\":\"## New workbook\\r\\n---\\r\\n\\r\\nWelcome to your new workbook.  This area will display text formatted as markdown.\\r\\n\\r\\n\\r\\nWe've included a basic analytics query to get you started. Use the `Edit` button below each section to configure it or add more sections.\"}\",\"halfWidth\":null,\"conditionalVisibility\":null},{\"type\":3,\"content\":\"{\"version\":\"KqlItem/1.0\",\"query\":\"union withsource=TableName *\\n| summarize Count=count() by TableName\\n| render barchart\",\"showQuery\":false,\"size\":1,\"aggregation\":0,\"showAnnotations\":false}\",\"halfWidth\":null,\"conditionalVisibility\":null}],\"isLocked\":false}"),
+		// 				SourceID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac119r124af/resourceGroups/my-resource-group/providers/Microsoft.Web/sites/MyApp"),
+		// 				TimeModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-20T21:00:26.422Z"); return t}()),
+		// 				UserID: to.Ptr("userId"),
+		// 				Version: to.Ptr("Notebook/1.0"),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43042075540b8d67cce7d3d9f70b9b9f5a359da/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/WorkbookGet.json
+func ExampleWorkbooksClient_Get_workbookGet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armapplicationinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewWorkbooksClient().Get(ctx, "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", &armapplicationinsights.WorkbooksClientGetOptions{CanFetchContent: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -66,27 +296,116 @@ func ExampleWorkbooksClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Workbook = armapplicationinsights.Workbook{
-	// 	Name: to.Ptr("deadb33f-8bee-4d3b-a059-9be8dac93960"),
-	// 	Type: to.Ptr(""),
-	// 	ID: to.Ptr("c0deea5e-3344-40f2-96f8-6f8e1c3b5722"),
+	// 	Name: to.Ptr("deadb33f-5e0d-4064-8ebb-1a4ed0313eb2"),
+	// 	Type: to.Ptr("Microsoft.Insights/workbooks"),
+	// 	ID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/my-resource-group/providers/microsoft.insights/workbooks/deadb33f-5e0d-4064-8ebb-1a4ed0313eb2"),
 	// 	Location: to.Ptr("westus"),
 	// 	Tags: map[string]*string{
-	// 		"0": to.Ptr("TagSample01"),
-	// 		"1": to.Ptr("TagSample02"),
+	// 		"TagSample01": to.Ptr("sample01"),
+	// 		"TagSample02": to.Ptr("sample02"),
 	// 	},
+	// 	Kind: to.Ptr(armapplicationinsights.WorkbookSharedTypeKindShared),
 	// 	Properties: &armapplicationinsights.WorkbookProperties{
-	// 		Name: to.Ptr("My New Workbook"),
+	// 		Description: to.Ptr("Sample workbook"),
 	// 		Category: to.Ptr("workbook"),
-	// 		SharedTypeKind: to.Ptr(armapplicationinsights.SharedTypeKindShared),
+	// 		DisplayName: to.Ptr("Sample workbook"),
+	// 		Revision: to.Ptr("1e2f8435b98248febee70c64ac22e1bb"),
 	// 		SerializedData: to.Ptr("{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":\"{\"json\":\"## New workbook\\r\\n---\\r\\n\\r\\nWelcome to your new workbook.  This area will display text formatted as markdown.\\r\\n\\r\\n\\r\\nWe've included a basic analytics query to get you started. Use the `Edit` button below each section to configure it or add more sections.\"}\",\"halfWidth\":null,\"conditionalVisibility\":null},{\"type\":3,\"content\":\"{\"version\":\"KqlItem/1.0\",\"query\":\"union withsource=TableName *\\n| summarize Count=count() by TableName\\n| render barchart\",\"showQuery\":false,\"size\":1,\"aggregation\":0,\"showAnnotations\":false}\",\"halfWidth\":null,\"conditionalVisibility\":null}],\"isLocked\":false}"),
+	// 		TimeModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-24T06:56:31.630Z"); return t}()),
 	// 		UserID: to.Ptr("userId"),
-	// 		Version: to.Ptr("ME"),
-	// 		WorkbookID: to.Ptr("deadb33f-8bee-4d3b-a059-9be8dac93960"),
+	// 		Version: to.Ptr("Notebook/1.0"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/WorkbookDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43042075540b8d67cce7d3d9f70b9b9f5a359da/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/WorkbookGet1.json
+func ExampleWorkbooksClient_Get_workbookGet1() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armapplicationinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewWorkbooksClient().Get(ctx, "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", &armapplicationinsights.WorkbooksClientGetOptions{CanFetchContent: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Workbook = armapplicationinsights.Workbook{
+	// 	Name: to.Ptr("deadb33f-5e0d-4064-8ebb-1a4ed0313eb2"),
+	// 	Type: to.Ptr("Microsoft.Insights/workbooks"),
+	// 	ID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/my-resource-group/providers/microsoft.insights/workbooks/deadb33f-5e0d-4064-8ebb-1a4ed0313eb2"),
+	// 	Location: to.Ptr("westus"),
+	// 	Tags: map[string]*string{
+	// 		"TagSample01": to.Ptr("sample01"),
+	// 		"TagSample02": to.Ptr("sample02"),
+	// 	},
+	// 	Kind: to.Ptr(armapplicationinsights.WorkbookSharedTypeKindShared),
+	// 	Properties: &armapplicationinsights.WorkbookProperties{
+	// 		Category: to.Ptr("workbook"),
+	// 		DisplayName: to.Ptr("Sample workbook"),
+	// 		SerializedData: to.Ptr("{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":\"{\"json\":\"## New workbook\\r\\n---\\r\\n\\r\\nWelcome to your new workbook.  This area will display text formatted as markdown.\\r\\n\\r\\n\\r\\nWe've included a basic analytics query to get you started. Use the `Edit` button below each section to configure it or add more sections.\"}\",\"halfWidth\":null,\"conditionalVisibility\":null},{\"type\":3,\"content\":\"{\"version\":\"KqlItem/1.0\",\"query\":\"union withsource=TableName *\\n| summarize Count=count() by TableName\\n| render barchart\",\"showQuery\":false,\"size\":1,\"aggregation\":0,\"showAnnotations\":false}\",\"halfWidth\":null,\"conditionalVisibility\":null}],\"isLocked\":false}"),
+	// 		TimeModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-24T06:56:31.630Z"); return t}()),
+	// 		UserID: to.Ptr("userId"),
+	// 		Version: to.Ptr("Notebook/1.0"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43042075540b8d67cce7d3d9f70b9b9f5a359da/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/WorkbookManagedGet.json
+func ExampleWorkbooksClient_Get_workbookManagedGet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armapplicationinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewWorkbooksClient().Get(ctx, "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", &armapplicationinsights.WorkbooksClientGetOptions{CanFetchContent: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Workbook = armapplicationinsights.Workbook{
+	// 	Name: to.Ptr("deadb33f-5e0d-4064-8ebb-1a4ed0313eb2"),
+	// 	Type: to.Ptr("Microsoft.Insights/workbooks"),
+	// 	ID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/my-resource-group/providers/Microsoft.Insights/workbooks/deadb33f-5e0d-4064-8ebb-1a4ed0313eb2"),
+	// 	Location: to.Ptr("westus"),
+	// 	Identity: &armapplicationinsights.WorkbookResourceIdentity{
+	// 		Type: to.Ptr(armapplicationinsights.ManagedServiceIdentityTypeUserAssigned),
+	// 		UserAssignedIdentities: map[string]*armapplicationinsights.UserAssignedIdentity{
+	// 			"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-resource-group/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myid": &armapplicationinsights.UserAssignedIdentity{
+	// 				ClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			},
+	// 		},
+	// 	},
+	// 	Kind: to.Ptr(armapplicationinsights.WorkbookSharedTypeKindShared),
+	// 	Properties: &armapplicationinsights.WorkbookProperties{
+	// 		Description: to.Ptr("Sample workbook"),
+	// 		Category: to.Ptr("workbook"),
+	// 		DisplayName: to.Ptr("azuremon"),
+	// 		Revision: to.Ptr("1e2f8435b98248febee70c64ac22e1bb"),
+	// 		SerializedData: to.Ptr("{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":{\"json\":\"testing1\"},\"showPin\":false,\"name\":\"text - 0\"}],\"isLocked\":true,\"fallbackResourceIds\":[\"Azure Monitor\"]}"),
+	// 		SourceID: to.Ptr("azure monitor"),
+	// 		StorageURI: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourceGroups/my-resource-group/providers/Microsoft.Storage/storageAccounts/mystorage/blobServices/default/containers/mycontainer"),
+	// 		TimeModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-04T09:07:17.735Z"); return t}()),
+	// 		UserID: to.Ptr("51d1409c-d725-4550-ac03-98c0bef9ef07"),
+	// 		Version: to.Ptr("Notebook/1.0"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43042075540b8d67cce7d3d9f70b9b9f5a359da/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/WorkbookDelete.json
 func ExampleWorkbooksClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,8 +422,8 @@ func ExampleWorkbooksClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/WorkbookAdd.json
-func ExampleWorkbooksClient_CreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43042075540b8d67cce7d3d9f70b9b9f5a359da/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/WorkbookAdd.json
+func ExampleWorkbooksClient_CreateOrUpdate_workbookAdd() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -114,24 +433,20 @@ func ExampleWorkbooksClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewWorkbooksClient().CreateOrUpdate(ctx, "my-resource-group", "deadb33f-8bee-4d3b-a059-9be8dac93960", armapplicationinsights.Workbook{
-		Name:     to.Ptr("deadb33f-8bee-4d3b-a059-9be8dac93960"),
-		ID:       to.Ptr("c0deea5e-3344-40f2-96f8-6f8e1c3b5722"),
-		Location: to.Ptr("west us"),
+	res, err := clientFactory.NewWorkbooksClient().CreateOrUpdate(ctx, "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", armapplicationinsights.Workbook{
+		Location: to.Ptr("westus"),
 		Tags: map[string]*string{
-			"0": to.Ptr("TagSample01"),
-			"1": to.Ptr("TagSample02"),
+			"TagSample01": to.Ptr("sample01"),
+			"TagSample02": to.Ptr("sample02"),
 		},
+		Kind: to.Ptr(armapplicationinsights.WorkbookSharedTypeKindShared),
 		Properties: &armapplicationinsights.WorkbookProperties{
-			Name:             to.Ptr("Blah Blah Blah"),
-			Category:         to.Ptr("workbook"),
-			SharedTypeKind:   to.Ptr(armapplicationinsights.SharedTypeKindShared),
-			SerializedData:   to.Ptr("{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":\"{\"json\":\"## New workbook\\r\\n---\\r\\n\\r\\nWelcome to your new workbook.  This area will display text formatted as markdown.\\r\\n\\r\\n\\r\\nWe've included a basic analytics query to get you started. Use the `Edit` button below each section to configure it or add more sections.\"}\",\"halfWidth\":null,\"conditionalVisibility\":null},{\"type\":3,\"content\":\"{\"version\":\"KqlItem/1.0\",\"query\":\"union withsource=TableName *\\n| summarize Count=count() by TableName\\n| render barchart\",\"showQuery\":false,\"size\":1,\"aggregation\":0,\"showAnnotations\":false}\",\"halfWidth\":null,\"conditionalVisibility\":null}],\"isLocked\":false}"),
-			SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-00000000/resourceGroups/MyGroup/providers/Microsoft.Web/sites/MyTestApp-CodeLens"),
-			UserID:           to.Ptr("userId"),
-			WorkbookID:       to.Ptr("deadb33f-8bee-4d3b-a059-9be8dac93960"),
+			Description:    to.Ptr("Sample workbook"),
+			Category:       to.Ptr("workbook"),
+			DisplayName:    to.Ptr("Sample workbook"),
+			SerializedData: to.Ptr("{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":\"{\"json\":\"## New workbook\\r\\n---\\r\\n\\r\\nWelcome to your new workbook.  This area will display text formatted as markdown.\\r\\n\\r\\n\\r\\nWe've included a basic analytics query to get you started. Use the `Edit` button below each section to configure it or add more sections.\"}\",\"halfWidth\":null,\"conditionalVisibility\":null},{\"type\":3,\"content\":\"{\"version\":\"KqlItem/1.0\",\"query\":\"union withsource=TableName *\\n| summarize Count=count() by TableName\\n| render barchart\",\"showQuery\":false,\"size\":1,\"aggregation\":0,\"showAnnotations\":false}\",\"halfWidth\":null,\"conditionalVisibility\":null}],\"isLocked\":false}"),
 		},
-	}, nil)
+	}, &armapplicationinsights.WorkbooksClientCreateOrUpdateOptions{SourceID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/my-resource-group")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -139,28 +454,31 @@ func ExampleWorkbooksClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Workbook = armapplicationinsights.Workbook{
-	// 	Name: to.Ptr("deadb33f-8bee-4d3b-a059-9be8dac93960"),
-	// 	Type: to.Ptr(""),
-	// 	ID: to.Ptr("c0deea5e-3344-40f2-96f8-6f8e1c3b5722"),
+	// 	Name: to.Ptr("deadb33f-5e0d-4064-8ebb-1a4ed0313eb2"),
+	// 	Type: to.Ptr("Microsoft.Insights/workbooks"),
+	// 	ID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/my-resource-group/providers/microsoft.insights/workbooks/deadb33f-5e0d-4064-8ebb-1a4ed0313eb2"),
 	// 	Location: to.Ptr("westus"),
 	// 	Tags: map[string]*string{
-	// 		"0": to.Ptr("TagSample01"),
-	// 		"1": to.Ptr("TagSample02"),
+	// 		"TagSample01": to.Ptr("sample01"),
+	// 		"TagSample02": to.Ptr("sample02"),
 	// 	},
+	// 	Kind: to.Ptr(armapplicationinsights.WorkbookSharedTypeKindShared),
 	// 	Properties: &armapplicationinsights.WorkbookProperties{
-	// 		Name: to.Ptr("Blah Blah Blah"),
+	// 		Description: to.Ptr("Sample workbook"),
 	// 		Category: to.Ptr("workbook"),
-	// 		SharedTypeKind: to.Ptr(armapplicationinsights.SharedTypeKindShared),
+	// 		DisplayName: to.Ptr("Sample workbook"),
+	// 		Revision: to.Ptr("1e2f8435b98248febee70c64ac22e1bb"),
 	// 		SerializedData: to.Ptr("{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":\"{\"json\":\"## New workbook\\r\\n---\\r\\n\\r\\nWelcome to your new workbook.  This area will display text formatted as markdown.\\r\\n\\r\\n\\r\\nWe've included a basic analytics query to get you started. Use the `Edit` button below each section to configure it or add more sections.\"}\",\"halfWidth\":null,\"conditionalVisibility\":null},{\"type\":3,\"content\":\"{\"version\":\"KqlItem/1.0\",\"query\":\"union withsource=TableName *\\n| summarize Count=count() by TableName\\n| render barchart\",\"showQuery\":false,\"size\":1,\"aggregation\":0,\"showAnnotations\":false}\",\"halfWidth\":null,\"conditionalVisibility\":null}],\"isLocked\":false}"),
+	// 		SourceID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/my-resource-group"),
+	// 		TimeModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-24T06:56:31.630Z"); return t}()),
 	// 		UserID: to.Ptr("userId"),
-	// 		Version: to.Ptr("ME"),
-	// 		WorkbookID: to.Ptr("deadb33f-8bee-4d3b-a059-9be8dac93960"),
+	// 		Version: to.Ptr("Notebook/1.0"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/WorkbookUpdate.json
-func ExampleWorkbooksClient_Update() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43042075540b8d67cce7d3d9f70b9b9f5a359da/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/WorkbookManagedAdd.json
+func ExampleWorkbooksClient_CreateOrUpdate_workbookManagedAdd() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -170,23 +488,24 @@ func ExampleWorkbooksClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewWorkbooksClient().Update(ctx, "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", armapplicationinsights.Workbook{
-		Name:     to.Ptr("deadb33f-8bee-4d3b-a059-9be8dac93960"),
-		Location: to.Ptr("west us"),
-		Tags: map[string]*string{
-			"0": to.Ptr("TagSample01"),
-			"1": to.Ptr("TagSample02"),
+	res, err := clientFactory.NewWorkbooksClient().CreateOrUpdate(ctx, "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", armapplicationinsights.Workbook{
+		Location: to.Ptr("westus"),
+		Identity: &armapplicationinsights.WorkbookResourceIdentity{
+			Type: to.Ptr(armapplicationinsights.ManagedServiceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armapplicationinsights.UserAssignedIdentity{
+				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-resource-group/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myid": {},
+			},
 		},
+		Kind: to.Ptr(armapplicationinsights.WorkbookSharedTypeKindShared),
 		Properties: &armapplicationinsights.WorkbookProperties{
-			Name:           to.Ptr("Blah Blah Blah"),
+			Description:    to.Ptr("Sample workbook"),
 			Category:       to.Ptr("workbook"),
-			SharedTypeKind: to.Ptr(armapplicationinsights.SharedTypeKindShared),
-			SerializedData: to.Ptr("{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":\"{\"json\":\"## New workbook\\r\\n---\\r\\n\\r\\nWelcome to your new workbook.  This area will display text formatted as markdown.\\r\\n\\r\\n\\r\\nWe've included a basic analytics query to get you started. Use the `Edit` button below each section to configure it or add more sections.\"}\",\"halfWidth\":null,\"conditionalVisibility\":null},{\"type\":3,\"content\":\"{\"version\":\"KqlItem/1.0\",\"query\":\"union withsource=TableName *\\n| summarize Count=count() by TableName\\n| render barchart\",\"showQuery\":false,\"size\":1,\"aggregation\":0,\"showAnnotations\":false}\",\"halfWidth\":null,\"conditionalVisibility\":null}],\"isLocked\":false}"),
-			UserID:         to.Ptr("userId"),
-			Version:        to.Ptr("ME"),
-			WorkbookID:     to.Ptr("deadb33f-8bee-4d3b-a059-9be8dac93960"),
+			DisplayName:    to.Ptr("Sample workbook"),
+			SerializedData: to.Ptr("{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":{\"json\":\"test\"},\"name\":\"text - 0\"}],\"isLocked\":false,\"fallbackResourceIds\":[\"/subscriptions/00000000-0000-0000-0000-00000000/resourceGroups/my-resource-group\"]}"),
+			StorageURI:     to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourceGroups/my-resource-group/providers/Microsoft.Storage/storageAccounts/mystorage/blobServices/default/containers/mycontainer"),
+			Version:        to.Ptr("Notebook/1.0"),
 		},
-	}, nil)
+	}, &armapplicationinsights.WorkbooksClientCreateOrUpdateOptions{SourceID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/my-resource-group")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -194,22 +513,239 @@ func ExampleWorkbooksClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Workbook = armapplicationinsights.Workbook{
-	// 	Name: to.Ptr("deadb33f-8bee-4d3b-a059-9be8dac93960"),
-	// 	Type: to.Ptr(""),
-	// 	ID: to.Ptr("c0deea5e-3344-40f2-96f8-6f8e1c3b5722"),
+	// 	Name: to.Ptr("deadb33f-5e0d-4064-8ebb-1a4ed0313eb2"),
+	// 	Type: to.Ptr("Microsoft.Insights/workbooks"),
+	// 	ID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/my-resource-group/providers/Microsoft.Insights/workbooks/deadb33f-5e0d-4064-8ebb-1a4ed0313eb2"),
+	// 	Location: to.Ptr("westus"),
+	// 	Identity: &armapplicationinsights.WorkbookResourceIdentity{
+	// 		Type: to.Ptr(armapplicationinsights.ManagedServiceIdentityTypeUserAssigned),
+	// 		UserAssignedIdentities: map[string]*armapplicationinsights.UserAssignedIdentity{
+	// 			"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-resource-group/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myid": &armapplicationinsights.UserAssignedIdentity{
+	// 				ClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			},
+	// 		},
+	// 	},
+	// 	Kind: to.Ptr(armapplicationinsights.WorkbookSharedTypeKindShared),
+	// 	Properties: &armapplicationinsights.WorkbookProperties{
+	// 		Description: to.Ptr("Sample workbook"),
+	// 		Category: to.Ptr("workbook"),
+	// 		DisplayName: to.Ptr("Sample workbook"),
+	// 		Revision: to.Ptr("1e2f8435b98248febee70c64ac22e1bb"),
+	// 		SerializedData: to.Ptr("{\"version\":\"Notebook/1.0\",\"items\":[],\"isLocked\":false,\"fallbackResourceIds\":[\"/subscriptions/00000000-0000-0000-0000-00000000/resourceGroups/my-resource-group/providers/Microsoft.OperationalInsights/workspaces/test-ws\"]}"),
+	// 		SourceID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/my-resource-group"),
+	// 		StorageURI: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourceGroups/my-resource-group/providers/Microsoft.Storage/storageAccounts/mystorage/blobServices/default/containers/mycontainer"),
+	// 		TimeModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-20T22:00:26.422Z"); return t}()),
+	// 		UserID: to.Ptr("70d90f65-8a70-4e42-b8d5-86gv25e0a90f"),
+	// 		Version: to.Ptr("Notebook/1.0"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43042075540b8d67cce7d3d9f70b9b9f5a359da/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/WorkbookManagedUpdate.json
+func ExampleWorkbooksClient_Update_workbookManagedUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armapplicationinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewWorkbooksClient().Update(ctx, "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", &armapplicationinsights.WorkbooksClientUpdateOptions{SourceID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/my-resource-group"),
+		WorkbookUpdateParameters: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Workbook = armapplicationinsights.Workbook{
+	// 	Name: to.Ptr("deadb33f-5e0d-4064-8ebb-1a4ed0313eb2"),
+	// 	Type: to.Ptr("Microsoft.Insights/workbooks"),
+	// 	ID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/my-resource-group/providers/Microsoft.Insights/workbooks/deadb33f-5e0d-4064-8ebb-1a4ed0313eb2"),
 	// 	Location: to.Ptr("westus"),
 	// 	Tags: map[string]*string{
-	// 		"0": to.Ptr("TagSample01"),
-	// 		"1": to.Ptr("TagSample02"),
+	// 		"TagSample01": to.Ptr("sample01"),
+	// 		"TagSample02": to.Ptr("sample02"),
+	// 		"hidden-title": to.Ptr("Sample workbook"),
 	// 	},
+	// 	Identity: &armapplicationinsights.WorkbookResourceIdentity{
+	// 		Type: to.Ptr(armapplicationinsights.ManagedServiceIdentityTypeUserAssigned),
+	// 		UserAssignedIdentities: map[string]*armapplicationinsights.UserAssignedIdentity{
+	// 			"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-resource-group/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myid": &armapplicationinsights.UserAssignedIdentity{
+	// 				ClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			},
+	// 		},
+	// 	},
+	// 	Kind: to.Ptr(armapplicationinsights.WorkbookSharedTypeKindShared),
 	// 	Properties: &armapplicationinsights.WorkbookProperties{
-	// 		Name: to.Ptr("Blah Blah Blah"),
+	// 		Description: to.Ptr("Sample workbook"),
 	// 		Category: to.Ptr("workbook"),
-	// 		SharedTypeKind: to.Ptr(armapplicationinsights.SharedTypeKindShared),
+	// 		DisplayName: to.Ptr("Sample workbook"),
+	// 		Revision: to.Ptr("1e2f8435b98248febee70c64ac22e1bb"),
+	// 		SerializedData: to.Ptr("{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":{\"json\":\"test\"},\"name\":\"text - 0\"}],\"isLocked\":false,\"fallbackResourceIds\":[\"/subscriptions/8980832b-9589-4ac2-b322-a6ae6a97f02b/resourceGroups/my-resource-group\"]}"),
+	// 		SourceID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/my-resource-group"),
+	// 		StorageURI: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourceGroups/my-resource-group/providers/Microsoft.Storage/storageAccounts/mystorage/blobServices/default/containers/mycontainer"),
+	// 		TimeModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-20T22:15:08.187Z"); return t}()),
+	// 		UserID: to.Ptr("70d90f65-8a70-4e42-b8d5-863725e0a90f"),
+	// 		Version: to.Ptr("Notebook/1.0"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43042075540b8d67cce7d3d9f70b9b9f5a359da/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/WorkbookUpdate.json
+func ExampleWorkbooksClient_Update_workbookUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armapplicationinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewWorkbooksClient().Update(ctx, "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", &armapplicationinsights.WorkbooksClientUpdateOptions{SourceID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourceGroups/my-resource-group/providers/Microsoft.Web/sites/MyApp"),
+		WorkbookUpdateParameters: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Workbook = armapplicationinsights.Workbook{
+	// 	Name: to.Ptr("deadb33f-5e0d-4064-8ebb-1a4ed0313eb2"),
+	// 	Type: to.Ptr("Microsoft.Insights/workbooks"),
+	// 	ID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/my-resource-group/providers/Microsoft.Insights/workbooks/deadb33f-5e0d-4064-8ebb-1a4ed0313eb2"),
+	// 	Location: to.Ptr("westus"),
+	// 	Tags: map[string]*string{
+	// 		"TagSample01": to.Ptr("sample01"),
+	// 		"TagSample02": to.Ptr("sample02"),
+	// 	},
+	// 	Kind: to.Ptr(armapplicationinsights.WorkbookSharedTypeKindShared),
+	// 	Properties: &armapplicationinsights.WorkbookProperties{
+	// 		Description: to.Ptr("Sample workbook"),
+	// 		Category: to.Ptr("workbook"),
+	// 		DisplayName: to.Ptr("Sample workbook"),
+	// 		Revision: to.Ptr("1e2f8435b98248febee70c64ac22e1bb"),
 	// 		SerializedData: to.Ptr("{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":\"{\"json\":\"## New workbook\\r\\n---\\r\\n\\r\\nWelcome to your new workbook.  This area will display text formatted as markdown.\\r\\n\\r\\n\\r\\nWe've included a basic analytics query to get you started. Use the `Edit` button below each section to configure it or add more sections.\"}\",\"halfWidth\":null,\"conditionalVisibility\":null},{\"type\":3,\"content\":\"{\"version\":\"KqlItem/1.0\",\"query\":\"union withsource=TableName *\\n| summarize Count=count() by TableName\\n| render barchart\",\"showQuery\":false,\"size\":1,\"aggregation\":0,\"showAnnotations\":false}\",\"halfWidth\":null,\"conditionalVisibility\":null}],\"isLocked\":false}"),
+	// 		SourceID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourceGroups/my-resource-group/providers/Microsoft.Web/sites/MyApp"),
+	// 		TimeModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-20T22:00:26.422Z"); return t}()),
 	// 		UserID: to.Ptr("userId"),
-	// 		Version: to.Ptr("ME"),
-	// 		WorkbookID: to.Ptr("deadb33f-8bee-4d3b-a059-9be8dac93960"),
+	// 		Version: to.Ptr("Notebook/1.0"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43042075540b8d67cce7d3d9f70b9b9f5a359da/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/WorkbookRevisionsList.json
+func ExampleWorkbooksClient_NewRevisionsListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armapplicationinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewWorkbooksClient().NewRevisionsListPager("my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.WorkbooksListResult = armapplicationinsights.WorkbooksListResult{
+		// 	Value: []*armapplicationinsights.Workbook{
+		// 		{
+		// 			Name: to.Ptr("deadb33f-5e0d-4064-8ebb-1a4ed0313eb2"),
+		// 			Type: to.Ptr("Microsoft.Insights/workbooks"),
+		// 			ID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/my-resource-group/providers/Microsoft.Insights/workbooks/deadb33f-5e0d-4064-8ebb-1a4ed0313eb2"),
+		// 			Location: to.Ptr("westus"),
+		// 			Tags: map[string]*string{
+		// 			},
+		// 			Kind: to.Ptr(armapplicationinsights.WorkbookSharedTypeKindShared),
+		// 			Properties: &armapplicationinsights.WorkbookProperties{
+		// 				Description: to.Ptr("Sample workbook"),
+		// 				Category: to.Ptr("workbook"),
+		// 				DisplayName: to.Ptr("My Workbook 1"),
+		// 				Revision: to.Ptr("1e2f8435b98248febee70c64ac22e1ab"),
+		// 				SourceID: to.Ptr("Azure Monitor"),
+		// 				TimeModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-04T09:07:17.735Z"); return t}()),
+		// 				UserID: to.Ptr("userId"),
+		// 				Version: to.Ptr("Notebook/1.0"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("deadb33f-5e0d-4064-8ebb-1a4ed0313eb2"),
+		// 			Type: to.Ptr("Microsoft.Insights/workbooks"),
+		// 			ID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/my-resource-group/providers/Microsoft.Insights/workbooks/deadb33f-5e0d-4064-8ebb-1a4ed0313eb2"),
+		// 			Location: to.Ptr("westus"),
+		// 			Tags: map[string]*string{
+		// 				"TagSample01": to.Ptr("sample01"),
+		// 				"TagSample02": to.Ptr("sample02"),
+		// 			},
+		// 			Kind: to.Ptr(armapplicationinsights.WorkbookSharedTypeKindShared),
+		// 			Properties: &armapplicationinsights.WorkbookProperties{
+		// 				Description: to.Ptr("Sample workbook"),
+		// 				Category: to.Ptr("workbook"),
+		// 				DisplayName: to.Ptr("My Workbook 2"),
+		// 				Revision: to.Ptr("1e2f8435b98248febee70c64ac22e1bb"),
+		// 				SourceID: to.Ptr("Azure Monitor"),
+		// 				TimeModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-04T09:07:17.735Z"); return t}()),
+		// 				UserID: to.Ptr("userId"),
+		// 				Version: to.Ptr("Notebook/1.0"),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43042075540b8d67cce7d3d9f70b9b9f5a359da/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/WorkbookRevisionGet.json
+func ExampleWorkbooksClient_RevisionGet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armapplicationinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewWorkbooksClient().RevisionGet(ctx, "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", "1e2f8435b98248febee70c64ac22e1ab", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Workbook = armapplicationinsights.Workbook{
+	// 	Name: to.Ptr("deadb33f-5e0d-4064-8ebb-1a4ed0313eb2"),
+	// 	Type: to.Ptr("Microsoft.Insights/workbooks"),
+	// 	ID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/my-resource-group/providers/Microsoft.Insights/workbooks/deadb33f-5e0d-4064-8ebb-1a4ed0313eb2"),
+	// 	Location: to.Ptr("westus"),
+	// 	Tags: map[string]*string{
+	// 		"TagSample01": to.Ptr("sample01"),
+	// 		"TagSample02": to.Ptr("sample02"),
+	// 	},
+	// 	Kind: to.Ptr(armapplicationinsights.WorkbookSharedTypeKindShared),
+	// 	Properties: &armapplicationinsights.WorkbookProperties{
+	// 		Description: to.Ptr("Sample workbook"),
+	// 		Category: to.Ptr("workbook"),
+	// 		DisplayName: to.Ptr("My New Workbook"),
+	// 		Revision: to.Ptr("1e2f8435b98248febee70c64ac22e1ab"),
+	// 		SerializedData: to.Ptr("{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":\"{\"json\":\"## New workbook\\r\\n---\\r\\n\\r\\nWelcome to your new workbook.  This area will display text formatted as markdown.\\r\\n\\r\\n\\r\\nWe've included a basic analytics query to get you started. Use the `Edit` button below each section to configure it or add more sections.\"}\",\"halfWidth\":null,\"conditionalVisibility\":null},{\"type\":3,\"content\":\"{\"version\":\"KqlItem/1.0\",\"query\":\"union withsource=TableName *\\n| summarize Count=count() by TableName\\n| render barchart\",\"showQuery\":false,\"size\":1,\"aggregation\":0,\"showAnnotations\":false}\",\"halfWidth\":null,\"conditionalVisibility\":null}],\"isLocked\":false}"),
+	// 		TimeModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-04T09:07:17.735Z"); return t}()),
+	// 		UserID: to.Ptr("userId"),
+	// 		Version: to.Ptr("Notebook/1.0"),
 	// 	},
 	// }
 }

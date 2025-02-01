@@ -291,8 +291,8 @@ func (client *AnnotationsClient) listCreateRequest(ctx context.Context, resource
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-05-01")
-	reqQP.Set("start", start)
 	reqQP.Set("end", end)
+	reqQP.Set("start", start)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -431,6 +431,27 @@ type ComponentFeatureCapability struct {
 	Value *string
 }
 
+// ComponentLinkedStorageAccounts - An Application Insights component linked storage accounts
+type ComponentLinkedStorageAccounts struct {
+	// The properties of the linked storage accounts.
+	Properties *LinkedStorageAccountsProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ComponentLinkedStorageAccountsPatch - An Application Insights component linked storage accounts patch
+type ComponentLinkedStorageAccountsPatch struct {
+	// The properties of the linked storage accounts.
+	Properties *LinkedStorageAccountsProperties
+}
+
 // ComponentListResult - Describes the list of Application Insights Resources.
 type ComponentListResult struct {
 	// REQUIRED; List of Application Insights component definitions.
@@ -653,6 +674,131 @@ type ComponentsResource struct {
 	Type *string
 }
 
+// DeletedWorkbook - A workbook definition.
+type DeletedWorkbook struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Resource etag
+	Etag *string
+
+	// The kind of workbook. Only valid value is shared.
+	Kind *WorkbookSharedTypeKind
+
+	// Metadata describing a workbook for an Azure resource.
+	Properties *DeletedWorkbookProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// DeletedWorkbookError - Error response.
+type DeletedWorkbookError struct {
+	// The error details.
+	Error *DeletedWorkbookErrorDefinition
+}
+
+// DeletedWorkbookErrorDefinition - Error definition.
+type DeletedWorkbookErrorDefinition struct {
+	// READ-ONLY; Service specific error code which serves as the substatus for the HTTP error code.
+	Code *string
+
+	// READ-ONLY; Internal error details.
+	Innererror *DeletedWorkbookInnerErrorTrace
+
+	// READ-ONLY; Description of the error.
+	Message *string
+}
+
+// DeletedWorkbookInnerErrorTrace - Error details
+type DeletedWorkbookInnerErrorTrace struct {
+	// READ-ONLY; detailed error trace
+	Trace []*string
+}
+
+// DeletedWorkbookProperties - Properties that contain a workbook.
+type DeletedWorkbookProperties struct {
+	// REQUIRED; Workbook category, as defined by the user at creation time.
+	Category *string
+
+	// REQUIRED; The user-defined name (display name) of the workbook.
+	DisplayName *string
+
+	// REQUIRED; Configuration of this particular workbook. Configuration data is a string containing valid JSON
+	SerializedData *string
+
+	// The description of the workbook.
+	Description *string
+
+	// ResourceId for a source resource.
+	SourceID *string
+
+	// The resourceId to the storage account when bring your own storage is used
+	StorageURI *string
+
+	// Being deprecated, please use the other tags field
+	Tags []*string
+
+	// Workbook schema version format, like 'Notebook/1.0', which should match the workbook in serializedData
+	Version *string
+
+	// READ-ONLY; The unique revision id for this workbook definition
+	Revision *string
+
+	// READ-ONLY; Date and time in UTC of the last modification that was made to this workbook definition.
+	TimeModified *time.Time
+
+	// READ-ONLY; Unique user id of the specific user that owns this workbook.
+	UserID *string
+}
+
+// DeletedWorkbookResource - An azure resource object
+type DeletedWorkbookResource struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Resource etag
+	Etag *string
+
+	// The kind of workbook. Only valid value is shared.
+	Kind *WorkbookSharedTypeKind
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// DeletedWorkbooksListResult - Workbook list result.
+type DeletedWorkbooksListResult struct {
+	NextLink *string
+
+	// READ-ONLY; An array of workbooks.
+	Value []*DeletedWorkbook
+}
+
 // ErrorFieldContract - Error Field contract.
 type ErrorFieldContract struct {
 	// Property level error code.
@@ -670,6 +816,9 @@ type ErrorFieldContract struct {
 type ErrorResponse struct {
 	// Error code.
 	Code *string
+
+	// The list of invalid fields send in request, in case of validation error.
+	Details []*ErrorFieldContract
 
 	// Error message indicating why the operation failed.
 	Message *string
@@ -691,6 +840,31 @@ type ErrorResponseComponentsError struct {
 	Message *string
 }
 
+type ErrorResponseLinkedStorage struct {
+	// Error response indicates Insights service is not able to process the incoming request. The reason is provided in the error
+	// message.
+	Error *ErrorResponseLinkedStorageError
+}
+
+// ErrorResponseLinkedStorageError - Error response indicates Insights service is not able to process the incoming request.
+// The reason is provided in the error message.
+type ErrorResponseLinkedStorageError struct {
+	// READ-ONLY; Error code.
+	Code *string
+
+	// READ-ONLY; Error message indicating why the operation failed.
+	Message *string
+}
+
+// HeaderField - A header to add to the WebTest.
+type HeaderField struct {
+	// The name of the header.
+	HeaderFieldName *string
+
+	// The value of the header.
+	HeaderFieldValue *string
+}
+
 // InnerError - Inner error
 type InnerError struct {
 	// Provides correlation for request
@@ -700,106 +874,39 @@ type InnerError struct {
 	Time *time.Time
 }
 
-// LinkProperties - Contains a sourceId and workbook resource id to link two resources.
-type LinkProperties struct {
-	// The category of workbook
-	Category *string
-
-	// The source Azure resource id
-	SourceID *string
-
-	// The workbook Azure resource id
-	TargetID *string
+// LinkedStorageAccountsProperties - An Application Insights component linked storage account
+type LinkedStorageAccountsProperties struct {
+	// Linked storage account resource ID
+	LinkedStorageAccount *string
 }
 
-// MyWorkbook - An Application Insights private workbook definition.
-type MyWorkbook struct {
-	// Azure resource Id
-	ID *string
-
-	// The kind of workbook. Choices are user and shared.
-	Kind *SharedTypeKind
-
-	// Resource location
-	Location *string
-
-	// Azure resource name
-	Name *string
-
-	// Metadata describing a workbook for an Azure resource.
-	Properties *MyWorkbookProperties
-
-	// Resource tags
-	Tags map[string]*string
-
-	// Azure resource type
-	Type *string
+// LiveTokenResponse - The response to a live token query.
+type LiveTokenResponse struct {
+	// READ-ONLY; JWT token for accessing live metrics stream data.
+	LiveToken *string
 }
 
-// MyWorkbookError - Error message body that will indicate why the operation failed.
-type MyWorkbookError struct {
-	// Service-defined error code. This code serves as a sub-status for the HTTP error code specified in the response.
-	Code *string
+// ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
+type ManagedServiceIdentity struct {
+	// REQUIRED; Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+	Type *ManagedServiceIdentityType
 
-	// The list of invalid fields send in request, in case of validation error.
-	Details []*ErrorFieldContract
+	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
+	// resource ids in the form:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+	// The dictionary values can be empty objects ({}) in
+	// requests.
+	UserAssignedIdentities map[string]*UserAssignedIdentity
 
-	// Human-readable representation of the error.
-	Message *string
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
+	PrincipalID *string
+
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *string
 }
 
-// MyWorkbookProperties - Properties that contain a private workbook.
-type MyWorkbookProperties struct {
-	// REQUIRED; Workbook category, as defined by the user at creation time.
-	Category *string
-
-	// REQUIRED; The user-defined name of the private workbook.
-	DisplayName *string
-
-	// REQUIRED; Configuration of this particular private workbook. Configuration data is a string containing valid JSON
-	SerializedData *string
-
-	// Optional resourceId for a source resource.
-	SourceID *string
-
-	// A list of 0 or more tags that are associated with this private workbook definition
-	Tags []*string
-
-	// This instance's version of the data model. This can change as new features are added that can be marked private workbook.
-	Version *string
-
-	// READ-ONLY; Date and time in UTC of the last modification that was made to this private workbook definition.
-	TimeModified *string
-
-	// READ-ONLY; Unique user id of the specific user that owns this private workbook.
-	UserID *string
-}
-
-// MyWorkbookResource - An azure resource object
-type MyWorkbookResource struct {
-	// Azure resource Id
-	ID *string
-
-	// Resource location
-	Location *string
-
-	// Azure resource name
-	Name *string
-
-	// Resource tags
-	Tags map[string]*string
-
-	// Azure resource type
-	Type *string
-}
-
-// MyWorkbooksListResult - Workbook list result.
-type MyWorkbooksListResult struct {
-	// READ-ONLY; An array of private workbooks.
-	Value []*MyWorkbook
-}
-
-// Operation - CDN REST API operation
+// Operation - Azure Workbooks REST API operation
 type Operation struct {
 	// The object that represents the operation.
 	Display *OperationDisplay
@@ -813,21 +920,63 @@ type OperationDisplay struct {
 	// Operation type: Read, write, delete, etc.
 	Operation *string
 
-	// Service provider: Microsoft.Cdn
+	// Service provider: Microsoft.Insights
 	Provider *string
 
 	// Resource on which the operation is performed: Profile, endpoint, etc.
 	Resource *string
 }
 
-// OperationListResult - Result of the request to list CDN operations. It contains a list of operations and a URL link to
-// get the next set of results.
+// OperationInfo - Information about an operation
+type OperationInfo struct {
+	// Description of the operation
+	Description *string
+
+	// Name of the operation
+	Operation *string
+
+	// Name of the provider
+	Provider *string
+
+	// Name of the resource type
+	Resource *string
+}
+
+// OperationListResult - Result of the request to list Azure Workbooks operations. It contains a list of operations and a
+// URL link to get the next set of results.
 type OperationListResult struct {
 	// URL to get the next set of operation list results if there are any.
 	NextLink *string
 
-	// List of CDN operations supported by the CDN resource provider.
+	// List of Workbook operations supported by the Microsoft.Insights resource provider.
 	Value []*Operation
+}
+
+// OperationLive - Represents an operation returned by the GetOperations request
+type OperationLive struct {
+	// Display name of the operation
+	Display *OperationInfo
+
+	// Indicates whether the operation is a data action
+	IsDataAction *bool
+
+	// Name of the operation
+	Name *string
+
+	// Origin of the operation
+	Origin *string
+
+	// Properties of the operation
+	Properties any
+}
+
+// OperationsListResult - Result of the List Operations operation
+type OperationsListResult struct {
+	// URL to get the next set of operation list results if there are any.
+	NextLink *string
+
+	// A collection of operations
+	Value []*OperationLive
 }
 
 // PrivateLinkScopedResource - The private link scope resource reference.
@@ -839,18 +988,129 @@ type PrivateLinkScopedResource struct {
 	ScopeID *string
 }
 
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
+type ProxyResource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
+type Resource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ResourceAutoGenerated - Common fields that are returned in the response for all Azure Resource Manager resources
+type ResourceAutoGenerated struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// SystemData - Metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// The timestamp of resource creation (UTC).
+	CreatedAt *time.Time
+
+	// The identity that created the resource.
+	CreatedBy *string
+
+	// The type of identity that created the resource.
+	CreatedByType *CreatedByType
+
+	// The timestamp of resource last modification (UTC)
+	LastModifiedAt *time.Time
+
+	// The identity that last modified the resource.
+	LastModifiedBy *string
+
+	// The type of identity that last modified the resource.
+	LastModifiedByType *CreatedByType
+}
+
 // TagsResource - A container holding only the Tags for a resource, allowing the user to update the tags on a WebTest instance.
 type TagsResource struct {
 	// Resource tags
 	Tags map[string]*string
 }
 
-// WebTest - An Application Insights web test definition.
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
+type TrackedResource struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// TrackedResourceAutoGenerated - The resource model definition for an Azure Resource Manager tracked top level resource which
+// has 'tags' and a 'location'
+type TrackedResourceAutoGenerated struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// UserAssignedIdentity - User assigned identity properties
+type UserAssignedIdentity struct {
+	// READ-ONLY; The client ID of the assigned identity.
+	ClientID *string
+
+	// READ-ONLY; The principal ID of the assigned identity.
+	PrincipalID *string
+}
+
+// WebTest - An Application Insights WebTest definition.
 type WebTest struct {
 	// REQUIRED; Resource location
 	Location *string
 
-	// The kind of web test that this web test watches. Choices are ping and multistep.
+	// The kind of WebTest that this web test watches. Choices are ping, multistep and standard.
 	Kind *WebTestKind
 
 	// Metadata describing a web test for an Azure resource.
@@ -869,19 +1129,19 @@ type WebTest struct {
 	Type *string
 }
 
-// WebTestGeolocation - Geo-physical location to run a web test from. You must specify one or more locations for the test
-// to run from.
+// WebTestGeolocation - Geo-physical location to run a WebTest from. You must specify one or more locations for the test to
+// run from.
 type WebTestGeolocation struct {
-	// Location ID for the webtest to run from.
+	// Location ID for the WebTest to run from.
 	Location *string
 }
 
-// WebTestListResult - A list of 0 or more Application Insights web test definitions.
+// WebTestListResult - A list of 0 or more Application Insights WebTest definitions.
 type WebTestListResult struct {
-	// REQUIRED; Set of Application Insights web test definitions.
+	// REQUIRED; Set of Application Insights WebTest definitions.
 	Value []*WebTest
 
-	// The link to get the next part of the returned list of web tests, should the return set be too large for a single request.
+	// The link to get the next part of the returned list of WebTest, should the return set be too large for a single request.
 	// May be null.
 	NextLink *string
 }
@@ -900,7 +1160,7 @@ type WebTestProperties struct {
 	// REQUIRED; Unique ID of this WebTest. This is typically the same value as the Name field.
 	SyntheticMonitorID *string
 
-	// REQUIRED; The kind of web test this is, valid choices are ping and multistep.
+	// REQUIRED; The kind of web test this is, valid choices are ping, multistep and standard.
 	WebTestKind *WebTestKind
 
 	// REQUIRED; User defined name if this WebTest.
@@ -909,7 +1169,7 @@ type WebTestProperties struct {
 	// An XML configuration specification for a WebTest.
 	Configuration *WebTestPropertiesConfiguration
 
-	// Purpose/user defined descriptive test for this WebTest.
+	// User defined description for this WebTest.
 	Description *string
 
 	// Is the test actively being monitored.
@@ -918,11 +1178,17 @@ type WebTestProperties struct {
 	// Interval in seconds between test runs for this WebTest. Default value is 300.
 	Frequency *int32
 
+	// The collection of request properties
+	Request *WebTestPropertiesRequest
+
 	// Allow for retries should this WebTest fail.
 	RetryEnabled *bool
 
 	// Seconds until this WebTest will timeout and fail. Default value is 30.
 	Timeout *int32
+
+	// The collection of validation rule properties
+	ValidationRules *WebTestPropertiesValidationRules
 
 	// READ-ONLY; Current state of this component, whether or not is has been provisioned within the resource group it is defined.
 	// Users cannot change this value but are able to read from it. Values will include
@@ -934,6 +1200,59 @@ type WebTestProperties struct {
 type WebTestPropertiesConfiguration struct {
 	// The XML specification of a WebTest to run against an application.
 	WebTest *string
+}
+
+// WebTestPropertiesRequest - The collection of request properties
+type WebTestPropertiesRequest struct {
+	// Follow redirects for this web test.
+	FollowRedirects *bool
+
+	// Http verb to use for this web test.
+	HTTPVerb *string
+
+	// List of headers and their values to add to the WebTest call.
+	Headers []*HeaderField
+
+	// Parse Dependent request for this WebTest.
+	ParseDependentRequests *bool
+
+	// Base64 encoded string body to send with this web test.
+	RequestBody *string
+
+	// Url location to test.
+	RequestURL *string
+}
+
+// WebTestPropertiesValidationRules - The collection of validation rule properties
+type WebTestPropertiesValidationRules struct {
+	// The collection of content validation properties
+	ContentValidation *WebTestPropertiesValidationRulesContentValidation
+
+	// Validate that the WebTest returns the http status code provided.
+	ExpectedHTTPStatusCode *int32
+
+	// When set, validation will ignore the status code.
+	IgnoreHTTPStatusCode *bool
+
+	// A number of days to check still remain before the the existing SSL cert expires. Value must be positive and the SSLCheck
+	// must be set to true.
+	SSLCertRemainingLifetimeCheck *int32
+
+	// Checks to see if the SSL cert is still valid.
+	SSLCheck *bool
+}
+
+// WebTestPropertiesValidationRulesContentValidation - The collection of content validation properties
+type WebTestPropertiesValidationRulesContentValidation struct {
+	// Content to look for in the return of the WebTest. Must not be null or empty.
+	ContentMatch *string
+
+	// When set, this value makes the ContentMatch validation case insensitive.
+	IgnoreCase *bool
+
+	// When true, validation will pass if there is a match for the ContentMatch string. If false, validation will fail if there
+	// is a match
+	PassIfTextFound *bool
 }
 
 // WebtestsResource - An azure resource object
@@ -1005,40 +1324,61 @@ type WorkItemCreateConfiguration struct {
 	WorkItemProperties map[string]*string
 }
 
-// Workbook - An Application Insights workbook definition.
+// Workbook - A workbook definition.
 type Workbook struct {
-	// The kind of workbook. Choices are user and shared.
-	Kind *SharedTypeKind
-
-	// Resource location
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// Metadata describing a web test for an Azure resource.
+	// Resource etag
+	Etag *string
+
+	// Identity used for BYOS
+	Identity *WorkbookResourceIdentity
+
+	// The kind of workbook. Only valid value is shared.
+	Kind *WorkbookSharedTypeKind
+
+	// Metadata describing a workbook for an Azure resource.
 	Properties *WorkbookProperties
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Azure resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Azure resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Azure resource type
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// WorkbookError - Error message body that will indicate why the operation failed.
+// WorkbookError - Error response.
 type WorkbookError struct {
-	// Service-defined error code. This code serves as a sub-status for the HTTP error code specified in the response.
+	// The error details.
+	Error *WorkbookErrorDefinition
+}
+
+// WorkbookErrorDefinition - Error definition.
+type WorkbookErrorDefinition struct {
+	// READ-ONLY; Service specific error code which serves as the substatus for the HTTP error code.
 	Code *string
 
-	// The list of invalid fields send in request, in case of validation error.
-	Details []*ErrorFieldContract
+	// READ-ONLY; Internal error details.
+	Innererror *WorkbookInnerErrorTrace
 
-	// Human-readable representation of the error.
+	// READ-ONLY; Description of the error.
 	Message *string
+}
+
+// WorkbookInnerErrorTrace - Error details
+type WorkbookInnerErrorTrace struct {
+	// READ-ONLY; detailed error trace
+	Trace []*string
 }
 
 // WorkbookProperties - Properties that contain a workbook.
@@ -1046,38 +1386,204 @@ type WorkbookProperties struct {
 	// REQUIRED; Workbook category, as defined by the user at creation time.
 	Category *string
 
-	// REQUIRED; The user-defined name of the workbook.
-	Name *string
+	// REQUIRED; The user-defined name (display name) of the workbook.
+	DisplayName *string
 
 	// REQUIRED; Configuration of this particular workbook. Configuration data is a string containing valid JSON
 	SerializedData *string
 
-	// REQUIRED; Enum indicating if this workbook definition is owned by a specific user or is shared between all users with access
-	// to the Application Insights component.
-	SharedTypeKind *SharedTypeKind
+	// The description of the workbook.
+	Description *string
 
-	// REQUIRED; Unique user id of the specific user that owns this workbook.
+	// ResourceId for a source resource.
+	SourceID *string
+
+	// The resourceId to the storage account when bring your own storage is used
+	StorageURI *string
+
+	// Being deprecated, please use the other tags field
+	Tags []*string
+
+	// Workbook schema version format, like 'Notebook/1.0', which should match the workbook in serializedData
+	Version *string
+
+	// READ-ONLY; The unique revision id for this workbook definition
+	Revision *string
+
+	// READ-ONLY; Date and time in UTC of the last modification that was made to this workbook definition.
+	TimeModified *time.Time
+
+	// READ-ONLY; Unique user id of the specific user that owns this workbook.
 	UserID *string
+}
 
-	// REQUIRED; Internally assigned unique id of the workbook definition.
-	WorkbookID *string
+// WorkbookPropertiesUpdateParameters - Properties that contain a workbook for PATCH operation.
+type WorkbookPropertiesUpdateParameters struct {
+	// Workbook category, as defined by the user at creation time.
+	Category *string
 
-	// Optional resourceId for a source resource.
-	SourceResourceID *string
+	// The description of the workbook.
+	Description *string
+
+	// The user-defined name (display name) of the workbook.
+	DisplayName *string
+
+	// The unique revision id for this workbook definition
+	Revision *string
+
+	// Configuration of this particular workbook. Configuration data is a string containing valid JSON
+	SerializedData *string
 
 	// A list of 0 or more tags that are associated with this workbook definition
 	Tags []*string
-
-	// This instance's version of the data model. This can change as new features are added that can be marked workbook.
-	Version *string
-
-	// READ-ONLY; Date and time in UTC of the last modification that was made to this workbook definition.
-	TimeModified *string
 }
 
 // WorkbookResource - An azure resource object
 type WorkbookResource struct {
-	// Resource location
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Resource etag
+	Etag *string
+
+	// Identity used for BYOS
+	Identity *WorkbookResourceIdentity
+
+	// The kind of workbook. Only valid value is shared.
+	Kind *WorkbookSharedTypeKind
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// WorkbookResourceIdentity - Identity used for BYOS
+type WorkbookResourceIdentity struct {
+	// REQUIRED; Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+	Type *ManagedServiceIdentityType
+
+	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
+	// resource ids in the form:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+	// The dictionary values can be empty objects ({}) in
+	// requests.
+	UserAssignedIdentities map[string]*UserAssignedIdentity
+
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
+	PrincipalID *string
+
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *string
+}
+
+// WorkbookTemplate - An Application Insights workbook template definition.
+type WorkbookTemplate struct {
+	// REQUIRED; Resource location
+	Location *string
+
+	// Metadata describing a workbook template for an Azure resource.
+	Properties *WorkbookTemplateProperties
+
+	// Resource tags
+	Tags map[string]*string
+
+	// READ-ONLY; Azure resource Id
+	ID *string
+
+	// READ-ONLY; Azure resource name.
+	Name *string
+
+	// READ-ONLY; Azure resource type
+	Type *string
+}
+
+// WorkbookTemplateError - Error message that will indicate why the operation failed.
+type WorkbookTemplateError struct {
+	// Error message object that will indicate why the operation failed.
+	Error *WorkbookTemplateErrorBody
+}
+
+// WorkbookTemplateErrorBody - Error message body that will indicate why the operation failed.
+type WorkbookTemplateErrorBody struct {
+	// Service-defined error code. This code serves as a sub-status for the HTTP error code specified in the response.
+	Code *string
+
+	// The list of invalid fields send in request, in case of validation error.
+	Details []*WorkbookTemplateErrorFieldContract
+
+	// Human-readable representation of the error.
+	Message *string
+}
+
+// WorkbookTemplateErrorFieldContract - Error Field contract.
+type WorkbookTemplateErrorFieldContract struct {
+	// Property level error code.
+	Code *string
+
+	// Human-readable representation of property-level error.
+	Message *string
+
+	// Property name.
+	Target *string
+}
+
+// WorkbookTemplateGallery - Gallery information for a workbook template.
+type WorkbookTemplateGallery struct {
+	// Category for the gallery.
+	Category *string
+
+	// Name of the workbook template in the gallery.
+	Name *string
+
+	// Order of the template within the gallery.
+	Order *int32
+
+	// Azure resource type supported by the gallery.
+	ResourceType *string
+
+	// Type of workbook supported by the workbook template.
+	Type *string
+}
+
+// WorkbookTemplateLocalizedGallery - Localized template data and gallery information.
+type WorkbookTemplateLocalizedGallery struct {
+	// Workbook galleries supported by the template.
+	Galleries []*WorkbookTemplateGallery
+
+	// Valid JSON object containing workbook template payload.
+	TemplateData any
+}
+
+// WorkbookTemplateProperties - Properties that contain a workbook template.
+type WorkbookTemplateProperties struct {
+	// REQUIRED; Workbook galleries supported by the template.
+	Galleries []*WorkbookTemplateGallery
+
+	// REQUIRED; Valid JSON object containing workbook template payload.
+	TemplateData any
+
+	// Information about the author of the workbook template.
+	Author *string
+
+	// Key value pair of localized gallery. Each key is the locale code of languages supported by the Azure portal.
+	Localized map[string][]*WorkbookTemplateLocalizedGallery
+
+	// Priority of the template. Determines which template to open when a workbook gallery is opened in viewer mode.
+	Priority *int32
+}
+
+// WorkbookTemplateResource - An azure resource object
+type WorkbookTemplateResource struct {
+	// REQUIRED; Resource location
 	Location *string
 
 	// Resource tags
@@ -1086,15 +1592,44 @@ type WorkbookResource struct {
 	// READ-ONLY; Azure resource Id
 	ID *string
 
-	// READ-ONLY; Azure resource name
+	// READ-ONLY; Azure resource name.
 	Name *string
 
 	// READ-ONLY; Azure resource type
 	Type *string
 }
 
+// WorkbookTemplateUpdateParameters - The parameters that can be provided when updating workbook template.
+type WorkbookTemplateUpdateParameters struct {
+	// Metadata describing a workbook for an Azure resource.
+	Properties *WorkbookTemplateProperties
+
+	// Resource tags
+	Tags map[string]*string
+}
+
+// WorkbookTemplatesListResult - WorkbookTemplate list result.
+type WorkbookTemplatesListResult struct {
+	// An array of workbook templates.
+	Value []*WorkbookTemplate
+}
+
+// WorkbookUpdateParameters - The parameters that can be provided when updating workbook properties properties.
+type WorkbookUpdateParameters struct {
+	// The kind of workbook. Only valid value is shared.
+	Kind *WorkbookUpdateSharedTypeKind
+
+	// Metadata describing a workbook for an Azure resource.
+	Properties *WorkbookPropertiesUpdateParameters
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
 // WorkbooksListResult - Workbook list result.
 type WorkbooksListResult struct {
+	NextLink *string
+
 	// READ-ONLY; An array of workbooks.
 	Value []*Workbook
 }

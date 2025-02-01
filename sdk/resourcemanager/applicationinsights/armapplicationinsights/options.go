@@ -109,6 +109,30 @@ type ComponentFeatureCapabilitiesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ComponentLinkedStorageAccountsClientCreateAndUpdateOptions contains the optional parameters for the ComponentLinkedStorageAccountsClient.CreateAndUpdate
+// method.
+type ComponentLinkedStorageAccountsClientCreateAndUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ComponentLinkedStorageAccountsClientDeleteOptions contains the optional parameters for the ComponentLinkedStorageAccountsClient.Delete
+// method.
+type ComponentLinkedStorageAccountsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ComponentLinkedStorageAccountsClientGetOptions contains the optional parameters for the ComponentLinkedStorageAccountsClient.Get
+// method.
+type ComponentLinkedStorageAccountsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ComponentLinkedStorageAccountsClientUpdateOptions contains the optional parameters for the ComponentLinkedStorageAccountsClient.Update
+// method.
+type ComponentLinkedStorageAccountsClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ComponentQuotaStatusClientGetOptions contains the optional parameters for the ComponentQuotaStatusClient.Get method.
 type ComponentQuotaStatusClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -153,6 +177,16 @@ type ComponentsClientPurgeOptions struct {
 // ComponentsClientUpdateTagsOptions contains the optional parameters for the ComponentsClient.UpdateTags method.
 type ComponentsClientUpdateTagsOptions struct {
 	// placeholder for future optional parameters
+}
+
+// DeletedWorkbooksClientListBySubscriptionOptions contains the optional parameters for the DeletedWorkbooksClient.NewListBySubscriptionPager
+// method.
+type DeletedWorkbooksClientListBySubscriptionOptions struct {
+	// Category of workbook to return.
+	Category *CategoryType
+
+	// Tags presents on each workbook returned.
+	Tags []string
 }
 
 // ExportConfigurationsClientCreateOptions contains the optional parameters for the ExportConfigurationsClient.Create method.
@@ -216,45 +250,13 @@ type FavoritesClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MyWorkbooksClientCreateOrUpdateOptions contains the optional parameters for the MyWorkbooksClient.CreateOrUpdate method.
-type MyWorkbooksClientCreateOrUpdateOptions struct {
+// LiveTokenClientGetOptions contains the optional parameters for the LiveTokenClient.Get method.
+type LiveTokenClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MyWorkbooksClientDeleteOptions contains the optional parameters for the MyWorkbooksClient.Delete method.
-type MyWorkbooksClientDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// MyWorkbooksClientGetOptions contains the optional parameters for the MyWorkbooksClient.Get method.
-type MyWorkbooksClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// MyWorkbooksClientListByResourceGroupOptions contains the optional parameters for the MyWorkbooksClient.NewListByResourceGroupPager
-// method.
-type MyWorkbooksClientListByResourceGroupOptions struct {
-	// Flag indicating whether or not to return the full content for each applicable workbook. If false, only return summary content
-	// for workbooks.
-	CanFetchContent *bool
-
-	// Tags presents on each workbook returned.
-	Tags []string
-}
-
-// MyWorkbooksClientListBySubscriptionOptions contains the optional parameters for the MyWorkbooksClient.NewListBySubscriptionPager
-// method.
-type MyWorkbooksClientListBySubscriptionOptions struct {
-	// Flag indicating whether or not to return the full content for each applicable workbook. If false, only return summary content
-	// for workbooks.
-	CanFetchContent *bool
-
-	// Tags presents on each workbook returned.
-	Tags []string
-}
-
-// MyWorkbooksClientUpdateOptions contains the optional parameters for the MyWorkbooksClient.Update method.
-type MyWorkbooksClientUpdateOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -353,9 +355,38 @@ type WorkItemConfigurationsClientUpdateItemOptions struct {
 	// placeholder for future optional parameters
 }
 
+// WorkbookTemplatesClientCreateOrUpdateOptions contains the optional parameters for the WorkbookTemplatesClient.CreateOrUpdate
+// method.
+type WorkbookTemplatesClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WorkbookTemplatesClientDeleteOptions contains the optional parameters for the WorkbookTemplatesClient.Delete method.
+type WorkbookTemplatesClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WorkbookTemplatesClientGetOptions contains the optional parameters for the WorkbookTemplatesClient.Get method.
+type WorkbookTemplatesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WorkbookTemplatesClientListByResourceGroupOptions contains the optional parameters for the WorkbookTemplatesClient.NewListByResourceGroupPager
+// method.
+type WorkbookTemplatesClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WorkbookTemplatesClientUpdateOptions contains the optional parameters for the WorkbookTemplatesClient.Update method.
+type WorkbookTemplatesClientUpdateOptions struct {
+	// Properties that need to be specified to patch a workbook template.
+	WorkbookTemplateUpdateParameters *WorkbookTemplateUpdateParameters
+}
+
 // WorkbooksClientCreateOrUpdateOptions contains the optional parameters for the WorkbooksClient.CreateOrUpdate method.
 type WorkbooksClientCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Azure Resource Id that will fetch all linked workbooks.
+	SourceID *string
 }
 
 // WorkbooksClientDeleteOptions contains the optional parameters for the WorkbooksClient.Delete method.
@@ -365,7 +396,9 @@ type WorkbooksClientDeleteOptions struct {
 
 // WorkbooksClientGetOptions contains the optional parameters for the WorkbooksClient.Get method.
 type WorkbooksClientGetOptions struct {
-	// placeholder for future optional parameters
+	// Flag indicating whether or not to return the full content for each applicable workbook. If false, only return summary content
+	// for workbooks.
+	CanFetchContent *bool
 }
 
 // WorkbooksClientListByResourceGroupOptions contains the optional parameters for the WorkbooksClient.NewListByResourceGroupPager
@@ -375,11 +408,39 @@ type WorkbooksClientListByResourceGroupOptions struct {
 	// for workbooks.
 	CanFetchContent *bool
 
+	// Azure Resource Id that will fetch all linked workbooks.
+	SourceID *string
+
 	// Tags presents on each workbook returned.
 	Tags []string
 }
 
+// WorkbooksClientListBySubscriptionOptions contains the optional parameters for the WorkbooksClient.NewListBySubscriptionPager
+// method.
+type WorkbooksClientListBySubscriptionOptions struct {
+	// Flag indicating whether or not to return the full content for each applicable workbook. If false, only return summary content
+	// for workbooks.
+	CanFetchContent *bool
+
+	// Tags presents on each workbook returned.
+	Tags []string
+}
+
+// WorkbooksClientRevisionGetOptions contains the optional parameters for the WorkbooksClient.RevisionGet method.
+type WorkbooksClientRevisionGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WorkbooksClientRevisionsListOptions contains the optional parameters for the WorkbooksClient.NewRevisionsListPager method.
+type WorkbooksClientRevisionsListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // WorkbooksClientUpdateOptions contains the optional parameters for the WorkbooksClient.Update method.
 type WorkbooksClientUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Azure Resource Id that will fetch all linked workbooks.
+	SourceID *string
+
+	// Properties that need to be specified to create a new workbook.
+	WorkbookUpdateParameters *WorkbookUpdateParameters
 }

@@ -17,8 +17,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43042075540b8d67cce7d3d9f70b9b9f5a359da/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/FeatureCapabilitiesGet.json
-func ExampleComponentFeatureCapabilitiesClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43042075540b8d67cce7d3d9f70b9b9f5a359da/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-10-14/examples/LiveTokenGet.json
+func ExampleLiveTokenClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -28,28 +28,14 @@ func ExampleComponentFeatureCapabilitiesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewComponentFeatureCapabilitiesClient().Get(ctx, "my-resource-group", "my-component", nil)
+	res, err := clientFactory.NewLiveTokenClient().Get(ctx, "subscriptions/df602c9c-7aa0-407d-a6fb-eb20c8bd1192/resourceGroups/FabrikamFiberApp/providers/microsoft.insights/components/CustomAvailabilityTest/providers/microsoft.insights/generatelivetoken", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ComponentFeatureCapabilities = armapplicationinsights.ComponentFeatureCapabilities{
-	// 	AnalyticsIntegration: to.Ptr(true),
-	// 	APIAccessLevel: to.Ptr("Premium"),
-	// 	ApplicationMap: to.Ptr(true),
-	// 	BurstThrottlePolicy: to.Ptr("B2"),
-	// 	DailyCap: to.Ptr[float32](0.0323),
-	// 	DailyCapResetTime: to.Ptr[float32](4),
-	// 	LiveStreamMetrics: to.Ptr(true),
-	// 	MultipleStepWebTest: to.Ptr(true),
-	// 	OpenSchema: to.Ptr(true),
-	// 	PowerBIIntegration: to.Ptr(true),
-	// 	ProactiveDetection: to.Ptr(false),
-	// 	SupportExportData: to.Ptr(true),
-	// 	ThrottleRate: to.Ptr[float32](0),
-	// 	TrackingType: to.Ptr("Basic"),
-	// 	WorkItemIntegration: to.Ptr(true),
+	// res.LiveTokenResponse = armapplicationinsights.LiveTokenResponse{
+	// 	LiveToken: to.Ptr("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"),
 	// }
 }

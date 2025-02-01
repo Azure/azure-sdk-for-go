@@ -295,14 +295,14 @@ func (client *FavoritesClient) listCreateRequest(ctx context.Context, resourceGr
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-05-01")
+	if options != nil && options.CanFetchContent != nil {
+		reqQP.Set("canFetchContent", strconv.FormatBool(*options.CanFetchContent))
+	}
 	if options != nil && options.FavoriteType != nil {
 		reqQP.Set("favoriteType", string(*options.FavoriteType))
 	}
 	if options != nil && options.SourceType != nil {
 		reqQP.Set("sourceType", string(*options.SourceType))
-	}
-	if options != nil && options.CanFetchContent != nil {
-		reqQP.Set("canFetchContent", strconv.FormatBool(*options.CanFetchContent))
 	}
 	if options != nil && options.Tags != nil {
 		reqQP.Set("tags", strings.Join(options.Tags, ","))

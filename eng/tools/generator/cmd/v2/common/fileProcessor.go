@@ -15,7 +15,6 @@ import (
 	"io/fs"
 	"log"
 	"os"
-	"path"
 	"path/filepath"
 	"regexp"
 	"slices"
@@ -232,7 +231,7 @@ func RemoveTagSet(path string) error {
 
 // get swagger rp folder name from autorest.md file
 func GetSpecRpName(packageRootPath string) (string, error) {
-	b, err := os.ReadFile(path.Join(packageRootPath, "autorest.md"))
+	b, err := os.ReadFile(filepath.Join(packageRootPath, "autorest.md"))
 	if err != nil {
 		return "", err
 	}

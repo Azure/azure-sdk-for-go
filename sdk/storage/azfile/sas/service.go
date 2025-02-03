@@ -10,7 +10,6 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"path/filepath"
 	"strings"
 	"time"
 
@@ -121,7 +120,7 @@ func getCanonicalName(account string, shareName string, filePath string) string 
 	// File:  "/file/account/sharename/directoryname/filename"
 	elements := []string{"/file/", account, "/", shareName}
 	if filePath != "" {
-		dfp := filepath.ToSlash(filePath)
+		dfp := strings.ReplaceAll(filePath, "\\", "/")
 		if dfp[0] == '/' {
 			dfp = dfp[1:]
 		}

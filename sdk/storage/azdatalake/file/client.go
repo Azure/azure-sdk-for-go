@@ -14,7 +14,6 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"path/filepath"
 	"reflect"
 	"strings"
 	"sync"
@@ -161,7 +160,7 @@ func NewClientFromConnectionString(connectionString string, filePath, fsName str
 		return nil, err
 	}
 
-	filePath = filepath.ToSlash(filePath)
+	filePath = strings.ReplaceAll(filePath, "\\", "/")
 	parsed.ServiceURL = runtime.JoinPaths(parsed.ServiceURL, fsName, filePath)
 
 	if parsed.AccountKey != "" && parsed.AccountName != "" {

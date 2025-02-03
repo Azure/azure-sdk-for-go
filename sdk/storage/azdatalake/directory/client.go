@@ -9,12 +9,6 @@ package directory
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"path/filepath"
-	"strings"
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -29,6 +23,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
+	"net/http"
+	"net/url"
+	"strings"
+	"time"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -157,7 +155,7 @@ func NewClientFromConnectionString(connectionString string, dirPath, fsName stri
 		return nil, err
 	}
 
-	dirPath = filepath.ToSlash(dirPath)
+	dirPath = strings.ReplaceAll(dirPath, "\\", "/")
 	parsed.ServiceURL = runtime.JoinPaths(parsed.ServiceURL, fsName, dirPath)
 
 	if parsed.AccountKey != "" && parsed.AccountName != "" {

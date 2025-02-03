@@ -11,7 +11,6 @@ import (
 	"errors"
 	"net/http"
 	"net/url"
-	"path/filepath"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -104,7 +103,7 @@ func NewClientFromConnectionString(connectionString string, shareName string, di
 		return nil, err
 	}
 
-	directoryPath = filepath.ToSlash(directoryPath)
+	directoryPath = strings.ReplaceAll(directoryPath, "\\", "/")
 	parsed.ServiceURL = runtime.JoinPaths(parsed.ServiceURL, shareName, directoryPath)
 
 	if parsed.AccountKey != "" && parsed.AccountName != "" {

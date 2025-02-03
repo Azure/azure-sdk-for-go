@@ -100,9 +100,7 @@ func ReadV2ModuleNameToGetNamespace(path string) (map[string][]PackageInfo, erro
 		return nil, fmt.Errorf("last `track2` section does not properly end")
 	}
 
-	// Normalize the path to use forward slashes
-	normalizedPath := filepath.ToSlash(path)
-	_, after, _ := strings.Cut(normalizedPath, "specification")
+	_, after, _ := strings.Cut(strings.ReplaceAll(path, "\\", "/"), "specification")
 	before, _, _ := strings.Cut(after, "resource-manager")
 	specName := strings.Trim(before, "/")
 

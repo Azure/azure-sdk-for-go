@@ -124,7 +124,7 @@ func execute(sdkPath, personalAccessToken, storageAccountKey string) error {
 	}
 
 	// read all module
-	sdkPath = filepath.ToSlash(sdkPath)
+	sdkPath = strings.ReplaceAll(sdkPath, "\\", "/")
 	modulePath := filepath.Join(sdkPath, "sdk", "resourcemanager")
 	dirs, err := os.ReadDir(modulePath)
 	if err != nil {

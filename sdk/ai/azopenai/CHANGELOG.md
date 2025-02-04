@@ -4,6 +4,34 @@
 
 ### Features Added
 
+- Updated `ChatCompletionsOptions` and `ChatCompletionsStreamOptions`:
+  - Added `Audio` parameter.
+  - Added `Metadata` parameter.
+  - Added `Modalities` parameter.
+  - Added `Prediction` parameter.
+  - Added `ReasoningEffort` parameter.
+  - Added `Store` parameter.
+  - Added `UserSecurityContext` parameter.
+- Added `Audio` field to `ChatResponseMessage`
+- Added `AudioOutputParameters` type.
+- Added `AudioResponseData` type.
+- Updated `CompletionsUsageCompletionTokensDetails`:
+  - Added `AcceptedPredictionTokens` field.
+  - Added `AudioTokens` field.
+  - Added `RejectedPredictionTokens` field.
+- Updated `CompletionsUsagePromptTokensDetails`:
+  - Added `AudioTokens` field.
+- Added `InputAudioContent` type.
+- Added `ChatRequestDeveloperMessage` type.
+- Added `PredictionContent` type.
+- Added `UserSecurityContext` type.
+- Added `ChatMessageAudioContentItem` type.
+- Added `ChatCompletionModality` enum.
+- Added `ChatRoleDeveloper` to the `ChatRole` enum.
+- Added `InputAudioFormat` enum.
+- Added `OutputAudioFormat` enum.
+- Added `ReasoningEffortValue` enum.
+
 ### Breaking Changes
 
 ### Bugs Fixed

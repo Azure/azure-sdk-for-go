@@ -110,6 +110,11 @@ func MustGetEnvVars[KeyT ~string](keys []KeyT) map[KeyT]string {
 }
 
 func GetConnectionString(t *testing.T, name EnvKey) string {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skipf("Skipping live test when in recording.PlaybackMode")
+		return ""
+	}
+
 	val, exists := os.LookupEnv(string(name))
 
 	if exists && val == "" {

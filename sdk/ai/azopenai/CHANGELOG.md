@@ -4,6 +4,7 @@
 
 ### Features Added
 
+- Updating to support Azure OpenAI API version `2025-01-01-preview`.
 - Updated `ChatCompletionsOptions` and `ChatCompletionsStreamOptions`:
   - Added `Audio` parameter.
   - Added `Metadata` parameter.

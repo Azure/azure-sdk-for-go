@@ -92,11 +92,13 @@ func MustGetEnvVars[KeyT ~string](keys []KeyT) map[KeyT]string {
 	var missing []string
 
 	for _, k := range keys {
-		m[k] = os.Getenv(string(k))
+		v, exists := os.LookupEnv(string(k))
 
-		if m[k] == "" {
+		if !exists {
 			missing = append(missing, string(k))
 		}
+
+		m[k] = v
 	}
 
 	if len(missing) != 0 {
@@ -105,6 +107,23 @@ func MustGetEnvVars[KeyT ~string](keys []KeyT) map[KeyT]string {
 	}
 
 	return m
+}
+
+func GetConnectionString(t *testing.T, name EnvKey) string {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skipf("Skipping live test when in recording.PlaybackMode")
+		return ""
+	}
+
+	val, exists := os.LookupEnv(string(name))
+
+	if exists && val == "" {
+		// This happens if we're not in the TME subscription - the variable will just be set to an empty string
+		// rather than not existing, altogether.
+		t.Skip("Not in TME, skipping connection string tests")
+	}
+
+	return val
 }
 
 func MustGetEnvVar(t *testing.T, name EnvKey) string {
@@ -141,9 +160,8 @@ func NewClient[OptionsT any, ClientT any](t *testing.T, args NewClientArgs[Optio
 	}
 
 	if options.UseConnectionString {
+		cs := GetConnectionString(t, EnvKeyConnectionString)
 		env := MustGetEnvVars([]EnvKey{EnvKeyConnectionString, EnvKeyConnectionStringPremium})
-
-		cs := env[EnvKeyConnectionString]
 
 		if options.UsePremium {
 			cs = env[EnvKeyConnectionStringPremium]
@@ -170,8 +188,9 @@ func NewClient[OptionsT any, ClientT any](t *testing.T, args NewClientArgs[Optio
 }
 
 func CreateExpiringQueue(t *testing.T, qd *atom.QueueDescription) (string, func()) {
-	cs := MustGetEnvVar(t, EnvKeyConnectionString)
-	em, err := atom.NewEntityManagerWithConnectionString(cs, "", nil)
+	iv := GetIdentityVars(t)
+
+	em, err := atom.NewEntityManager(iv.Endpoint, iv.Cred, "", nil)
 	require.NoError(t, err)
 
 	queueName := RandomString("queue", 5)

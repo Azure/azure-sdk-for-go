@@ -104,8 +104,8 @@ func TestNewClientWithWebsockets(t *testing.T) {
 
 func TestNewClientUsingSharedAccessSignature(t *testing.T) {
 	getLogsFn := test.CaptureLogsForTest(false)
+	cs := test.GetConnectionString(t, test.EnvKeyConnectionString)
 
-	cs := test.MustGetEnvVar(t, test.EnvKeyConnectionString)
 	sasCS, err := sas.CreateConnectionStringWithSASUsingExpiry(cs, time.Now().UTC().Add(time.Hour))
 	require.NoError(t, err)
 
@@ -328,7 +328,7 @@ func TestClientPropagatesRetryOptionsForSessions(t *testing.T) {
 }
 
 func TestClientUnauthorizedCreds(t *testing.T) {
-	allPowerfulCS := test.MustGetEnvVar(t, test.EnvKeyConnectionString)
+	allPowerfulCS := test.GetConnectionString(t, test.EnvKeyConnectionString)
 	queueName := "testqueue"
 
 	t.Run("ListenOnly with Sender", func(t *testing.T) {

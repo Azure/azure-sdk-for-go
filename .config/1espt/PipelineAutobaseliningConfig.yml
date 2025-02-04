@@ -456,3 +456,12 @@ pipelines:
           lastModifiedDate: 2025-02-04
         spotbugs:
           lastModifiedDate: 2025-02-04
+  6039:
+    retail:
+      binary:
+        credscan:
+          lastModifiedDate: 2025-02-04
+        binskim:
+          lastModifiedDate: 2025-02-04
+        spotbugs:
+          lastModifiedDate: 2025-02-04

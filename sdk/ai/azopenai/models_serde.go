@@ -2749,7 +2749,7 @@ func (c *ChatRequestAssistantMessage) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ChatRequestDeveloperMessage.
 func (c ChatRequestDeveloperMessage) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "content", json.RawMessage(c.Content))
+	populate(objectMap, "content", c.Content)
 	objectMap["role"] = ChatRoleDeveloper
 	populate(objectMap, "name", c.Name)
 	return json.Marshal(objectMap)
@@ -2765,9 +2765,7 @@ func (c *ChatRequestDeveloperMessage) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "content":
-			if string(val) != "null" {
-				c.Content = val
-			}
+			err = unpopulate(val, "Content", &c.Content)
 			delete(rawMsg, key)
 		case "role":
 			err = unpopulate(val, "role", &c.role)
@@ -5645,7 +5643,7 @@ func (p *PineconeFieldMappingOptions) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type PredictionContent.
 func (p PredictionContent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "content", json.RawMessage(p.Content))
+	populate(objectMap, "content", p.Content)
 	objectMap["type"] = "content"
 	return json.Marshal(objectMap)
 }
@@ -5660,9 +5658,7 @@ func (p *PredictionContent) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "content":
-			if string(val) != "null" {
-				p.Content = val
-			}
+			err = unpopulate(val, "Content", &p.Content)
 			delete(rawMsg, key)
 		case "type":
 			err = unpopulate(val, "Type", &p.Type)

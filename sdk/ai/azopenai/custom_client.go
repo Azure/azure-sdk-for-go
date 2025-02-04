@@ -34,7 +34,7 @@ type ClientOptions struct {
 	azcore.ClientOptions
 }
 
-const apiVersion = "2024-10-01-preview"
+const apiVersion = "2025-01-01-preview"
 
 // NewClient creates a new instance of Client that connects to an Azure OpenAI endpoint.
 //   - endpoint - Azure OpenAI service endpoint, for example: https://{your-resource-name}.openai.azure.com

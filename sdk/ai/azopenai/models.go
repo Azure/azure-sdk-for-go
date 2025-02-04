@@ -1387,7 +1387,7 @@ func (c *ChatRequestAssistantMessage) GetChatRequestMessage() *ChatRequestMessag
 // by the user. With o1 models and newer, developer messages replace the previous system messages."
 type ChatRequestDeveloperMessage struct {
 	// REQUIRED; An array of content parts with a defined type. For developer messages, only type text is supported.
-	Content []byte
+	Content *ChatRequestDeveloperMessageContent
 
 	// REQUIRED; The chat role associated with this message.
 	role *ChatRole
@@ -2787,7 +2787,7 @@ type PineconeFieldMappingOptions struct {
 type PredictionContent struct {
 	// REQUIRED; The content that should be matched when generating a model response. If generated tokens would match this content,
 	// the entire model response can be returned much more quickly.
-	Content []byte
+	Content *PredictionContentContent
 
 	// CONSTANT; The type of the predicted content you want to provide. This type is currently always content.
 	// Field has constant value "content", any specified value is ignored.

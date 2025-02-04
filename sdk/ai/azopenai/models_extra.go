@@ -283,7 +283,7 @@ type PredictionContentContent struct {
 	value any
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ChatRequestSystemMessageContent.
+// MarshalJSON implements the json.Marshaller interface for type PredictionContentContent.
 func (c PredictionContentContent) MarshalJSON() ([]byte, error) {
 	return json.Marshal(c.value)
 }

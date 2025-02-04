@@ -1,6 +1,6 @@
 # Release History
 
-## 0.7.2 (Unreleased)
+## 0.7.2 (2025-02-05)
 
 ### Features Added
 
@@ -32,12 +32,6 @@
 - Added `InputAudioFormat` enum.
 - Added `OutputAudioFormat` enum.
 - Added `ReasoningEffortValue` enum.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.7.1 (2024-11-13)
 

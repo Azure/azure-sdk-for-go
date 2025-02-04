@@ -823,11 +823,11 @@ func TestReceiverMessageLockExpires(t *testing.T) {
 }
 
 func TestReceiverUnauthorizedCreds(t *testing.T) {
-	allPowerfulCS := test.MustGetEnvVar(t, test.EnvKeyConnectionString)
+	allPowerfulCS := test.GetConnectionString(t, test.EnvKeyConnectionString)
 	queueName := "testqueue"
 
 	t.Run("ListenOnly with Sender", func(t *testing.T) {
-		cs := test.MustGetEnvVar(t, test.EnvKeyConnectionStringListenOnly)
+		cs := test.GetConnectionString(t, test.EnvKeyConnectionStringListenOnly)
 
 		client, err := NewClientFromConnectionString(cs, nil) // allowed connection string
 		require.NoError(t, err)

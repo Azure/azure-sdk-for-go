@@ -1,5 +1,29 @@
 # Release History
 
+## 1.1.0 (2025-01-23)
+### Features Added
+
+- New enum type `PolicyType` with values `PolicyTypeWAF`
+- New function `*ClientFactory.NewSecurityPoliciesInterfaceClient() *SecurityPoliciesInterfaceClient`
+- New function `NewSecurityPoliciesInterfaceClient(string, azcore.TokenCredential, *arm.ClientOptions) (*SecurityPoliciesInterfaceClient, error)`
+- New function `*SecurityPoliciesInterfaceClient.BeginCreateOrUpdate(context.Context, string, string, string, SecurityPolicy, *SecurityPoliciesInterfaceClientBeginCreateOrUpdateOptions) (*runtime.Poller[SecurityPoliciesInterfaceClientCreateOrUpdateResponse], error)`
+- New function `*SecurityPoliciesInterfaceClient.BeginDelete(context.Context, string, string, string, *SecurityPoliciesInterfaceClientBeginDeleteOptions) (*runtime.Poller[SecurityPoliciesInterfaceClientDeleteResponse], error)`
+- New function `*SecurityPoliciesInterfaceClient.Get(context.Context, string, string, string, *SecurityPoliciesInterfaceClientGetOptions) (SecurityPoliciesInterfaceClientGetResponse, error)`
+- New function `*SecurityPoliciesInterfaceClient.NewListByTrafficControllerPager(string, string, *SecurityPoliciesInterfaceClientListByTrafficControllerOptions) *runtime.Pager[SecurityPoliciesInterfaceClientListByTrafficControllerResponse]`
+- New function `*SecurityPoliciesInterfaceClient.Update(context.Context, string, string, string, SecurityPolicyUpdate, *SecurityPoliciesInterfaceClientUpdateOptions) (SecurityPoliciesInterfaceClientUpdateResponse, error)`
+- New struct `SecurityPolicy`
+- New struct `SecurityPolicyConfigurations`
+- New struct `SecurityPolicyListResult`
+- New struct `SecurityPolicyProperties`
+- New struct `SecurityPolicyUpdate`
+- New struct `SecurityPolicyUpdateProperties`
+- New struct `TrafficControllerUpdateProperties`
+- New struct `WafPolicy`
+- New struct `WafSecurityPolicy`
+- New field `SecurityPolicies`, `SecurityPolicyConfigurations` in struct `TrafficControllerProperties`
+- New field `Properties` in struct `TrafficControllerUpdate`
+
+
 ## 1.1.0-beta.2 (2024-09-26)
 ### Bugs Fixed
 

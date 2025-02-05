@@ -698,6 +698,7 @@ func (f *FileRecordedTestsSuite) TestFileSetHTTPHeadersNfs() {
 	_require.Equal(*setResp.Owner, owner)
 
 	getResp, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
 	_require.NotNil(getResp.LinkCount)
 	_require.NotNil(getResp.FileType)
 	_require.Equal(*getResp.FileMode, fileMode)
@@ -5015,3 +5016,159 @@ func TestDownloadSmallChunkSize(t *testing.T) {
 }
 
 // TODO: Add tests for retry header options
+
+func (f *FileRecordedTestsSuite) TestCreateHardLinkNFS() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountPremium)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareURL := "https://" + cred.AccountName() + ".file.core.windows.net/" + shareName
+
+	options := &share.ClientOptions{}
+	testcommon.SetClientOptions(f.T(), &options.ClientOptions)
+	premiumShareClient, err := share.NewClientWithSharedKeyCredential(shareURL, cred, options)
+	_require.NoError(err)
+
+	_, err = premiumShareClient.Create(context.Background(), &share.CreateOptions{
+		EnabledProtocols: to.Ptr("NFS"),
+	})
+	defer testcommon.DeleteShare(context.Background(), _require, premiumShareClient)
+
+	directoryName := testcommon.GenerateDirectoryName(testName)
+	directoryClient := premiumShareClient.NewRootDirectoryClient().NewSubdirectoryClient(directoryName)
+	_, err = directoryClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	// Create a source file
+	sourceFileName := testcommon.GenerateFileName("file1")
+	sourceFileClient := directoryClient.NewFileClient(sourceFileName)
+	_, err = sourceFileClient.Create(context.Background(), int64(1024), nil)
+	_require.NoError(err)
+
+	// Create a hard link to the source file
+	hardLinkFileName := testcommon.GenerateFileName("file2")
+	hardLinkFileClient := directoryClient.NewFileClient(hardLinkFileName)
+
+	targetFilePath := fmt.Sprintf("/%s/%s", directoryName, sourceFileName)
+	resp, err := hardLinkFileClient.CreateHardLink(context.Background(), &file.CreateHardLinkOptions{
+		TargetFile: targetFilePath,
+	})
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	_require.Equal(*resp.NfsFileType, file.NfsFileType("Regular"))
+	_require.Equal(resp.Owner, to.Ptr("0"))
+	_require.Equal(resp.Group, to.Ptr("0"))
+	_require.Equal(resp.FileMode, to.Ptr("0664"))
+	_require.Equal(resp.LinkCount, to.Ptr(int64(2)))
+
+	_require.NotNil(resp.FileCreationTime)
+	_require.NotNil(resp.FileLastWriteTime)
+	_require.NotNil(resp.FileChangeTime)
+}
+
+func (f *FileRecordedTestsSuite) TestCreateHardLinkNFSWithLease() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountPremium)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareURL := "https://" + cred.AccountName() + ".file.core.windows.net/" + shareName
+
+	options := &share.ClientOptions{}
+	testcommon.SetClientOptions(f.T(), &options.ClientOptions)
+	premiumShareClient, err := share.NewClientWithSharedKeyCredential(shareURL, cred, options)
+	_require.NoError(err)
+
+	_, err = premiumShareClient.Create(context.Background(), &share.CreateOptions{
+		EnabledProtocols: to.Ptr("NFS"),
+	})
+	defer testcommon.DeleteShare(context.Background(), _require, premiumShareClient)
+
+	directoryName := testcommon.GenerateDirectoryName(testName)
+	directoryClient := premiumShareClient.NewRootDirectoryClient().NewSubdirectoryClient(directoryName)
+	_, err = directoryClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	// Create a source file
+	sourceFileName := testcommon.GenerateFileName("file1")
+	sourceFileClient := directoryClient.NewFileClient(sourceFileName)
+	_, err = sourceFileClient.Create(context.Background(), int64(1024), nil)
+	_require.NoError(err)
+
+	leaseId := to.Ptr("c820a799-76d7-4ee2-6e15-546f19325c2c")
+	leaseClient, err := lease.NewShareClient(premiumShareClient, &lease.ShareClientOptions{LeaseID: leaseId})
+
+	_, err = leaseClient.Acquire(context.Background(), int32(60), nil)
+	_require.NoError(err)
+
+	// Create a hard link to the source file
+	hardLinkFileName := testcommon.GenerateFileName("file2")
+	hardLinkFileClient := directoryClient.NewFileClient(hardLinkFileName)
+
+	targetFilePath := fmt.Sprintf("/%s/%s", directoryName, sourceFileName)
+	resp, err := hardLinkFileClient.CreateHardLink(context.Background(), &file.CreateHardLinkOptions{
+		TargetFile:            targetFilePath,
+		LeaseAccessConditions: &file.LeaseAccessConditions{LeaseID: leaseId},
+	})
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	_require.Equal(*resp.NfsFileType, file.NfsFileType("Regular"))
+	_require.Equal(resp.Owner, to.Ptr("0"))
+	_require.Equal(resp.Group, to.Ptr("0"))
+	_require.Equal(resp.FileMode, to.Ptr("0664"))
+	_require.Equal(resp.LinkCount, to.Ptr(int64(2)))
+
+	_require.NotNil(resp.FileCreationTime)
+	_require.NotNil(resp.FileLastWriteTime)
+	_require.NotNil(resp.FileChangeTime)
+	_, err = leaseClient.Release(context.Background(), nil)
+	_require.NoError(err)
+}
+
+func (f *FileRecordedTestsSuite) TestCreateHardLinkNFSNilOptions() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountPremium)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareURL := "https://" + cred.AccountName() + ".file.core.windows.net/" + shareName
+
+	options := &share.ClientOptions{}
+	testcommon.SetClientOptions(f.T(), &options.ClientOptions)
+	premiumShareClient, err := share.NewClientWithSharedKeyCredential(shareURL, cred, options)
+	_require.NoError(err)
+
+	_, err = premiumShareClient.Create(context.Background(), &share.CreateOptions{
+		EnabledProtocols: to.Ptr("NFS"),
+	})
+	defer testcommon.DeleteShare(context.Background(), _require, premiumShareClient)
+
+	directoryName := testcommon.GenerateDirectoryName(testName)
+	directoryClient := premiumShareClient.NewRootDirectoryClient().NewSubdirectoryClient(directoryName)
+	_, err = directoryClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	// Create a source file
+	sourceFileName := testcommon.GenerateFileName("file1")
+	sourceFileClient := directoryClient.NewFileClient(sourceFileName)
+	_, err = sourceFileClient.Create(context.Background(), int64(1024), nil)
+	_require.NoError(err)
+
+	// Create a hard link to the source file
+	hardLinkFileName := testcommon.GenerateFileName("file2")
+	hardLinkFileClient := directoryClient.NewFileClient(hardLinkFileName)
+
+	resp, err := hardLinkFileClient.CreateHardLink(context.Background(), nil)
+	_require.Error(err)
+	_require.Error(err, "targetFile cannot be nil")
+	_require.NotNil(resp)
+}

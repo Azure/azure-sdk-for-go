@@ -815,6 +815,18 @@ func (o *ForceCloseHandlesOptions) format() *generated.FileClientForceCloseHandl
 	}
 }
 
+// CreateHardLinkOptions contains the optional parameters for the Client.CreateHardLink method.
+type CreateHardLinkOptions struct {
+	// NFS only. Required. Specifies the path of the target file to which the link will be created, up to 2 KiB in length.
+	TargetFile string
+	// LeaseAccessConditions contains optional parameters to access leased entity.
+	LeaseAccessConditions *LeaseAccessConditions
+}
+
+func (o *CreateHardLinkOptions) format() (*generated.FileClientCreateHardLinkOptions, string, *generated.LeaseAccessConditions) {
+	return &generated.FileClientCreateHardLinkOptions{}, o.TargetFile, o.LeaseAccessConditions
+}
+
 // ---------------------------------------------------------------------------------------------------------------------
 
 // ListHandlesOptions contains the optional parameters for the Client.ListHandles method.

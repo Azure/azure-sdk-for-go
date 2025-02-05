@@ -180,6 +180,8 @@ func unmarshalChatRequestMessageClassification(rawMsg json.RawMessage) (ChatRequ
 	switch m["role"] {
 	case string(ChatRoleAssistant):
 		b = &ChatRequestAssistantMessage{}
+	case string(ChatRoleDeveloper):
+		b = &ChatRequestDeveloperMessage{}
 	case string(ChatRoleFunction):
 		b = &ChatRequestFunctionMessage{}
 	case string(ChatRoleSystem):

@@ -1,4 +1,4 @@
 directory: specification/cognitiveservices/OpenAI.Inference
 # official release commit for 2024-10-01-preview
-commit: d1ae99fabc48ee2ee818a4ea96be5cdc332adc2a
+commit: 68e4b1f37f9ed18df0081f0c7c3865ecd89838e1
 repo: Azure/azure-rest-api-specs

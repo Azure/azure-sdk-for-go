@@ -56,7 +56,6 @@ type GenerateParam struct {
 	ForceStableVersion   bool
 	TypeSpecEmitOption   string
 	TspClientOptions     []string
-	IsModule             bool
 }
 
 func (ctx *GenerateContext) GenerateForAutomation(readme, repo, goVersion string) ([]GenerateResult, []error) {

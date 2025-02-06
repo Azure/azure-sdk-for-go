@@ -3,6 +3,10 @@
 
 package internal
 
-const (
-	version = "v1.1.2-beta.1" //nolint
+import (
+	"testing"
 )
+
+func TestFakeChallenge(t *testing.T) {
+
+}

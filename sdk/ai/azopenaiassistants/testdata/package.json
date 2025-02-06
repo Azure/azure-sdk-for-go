@@ -7,10 +7,10 @@
     "build": "tsp compile ./TempTypeSpecFiles/OpenAI.Assistants"
   },
   "dependencies": {
-    "@azure-tools/typespec-autorest": "^0.45.0",
-    "@azure-tools/typespec-azure-core": "^0.45.0",
-    "@typespec/compiler": "^0.59.1",
-    "@typespec/openapi3": "^0.59.1"
+    "@azure-tools/typespec-autorest": "~0.50.0",
+    "@azure-tools/typespec-azure-core": "~0.50.0",
+    "@typespec/compiler": "^0.64.0",
+    "@typespec/openapi3": "~0.64.0"
   },
   "overrides": {
     "braces": "^3.0.3"

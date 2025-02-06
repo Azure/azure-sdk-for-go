@@ -8,6 +8,15 @@
 
 package azopenaiassistants
 
+// AssistantsAPIResponseFormatClassification provides polymorphic access to related types.
+// Call the interface's GetAssistantsAPIResponseFormat() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AssistantsAPIResponseFormat, *AssistantsAPIResponseFormatJSONObject, *AssistantsAPIResponseFormatJSONSchema, *AssistantsAPIResponseFormatText
+type AssistantsAPIResponseFormatClassification interface {
+	// GetAssistantsAPIResponseFormat returns the AssistantsAPIResponseFormat content of the underlying type.
+	GetAssistantsAPIResponseFormat() *AssistantsAPIResponseFormat
+}
+
 // MessageContentClassification provides polymorphic access to related types.
 // Call the interface's GetMessageContent() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:

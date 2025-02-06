@@ -30,7 +30,8 @@ type CreateMessageOptions struct {
 
 // CreateRunOptions contains the optional parameters for the Client.CreateRun method.
 type CreateRunOptions struct {
-	// placeholder for future optional parameters
+	// A list of additional fields to include in the response.
+	RunInclude []RunIncludes
 }
 
 // CreateThreadAndRunOptions contains the optional parameters for the Client.CreateThreadAndRun method.
@@ -105,7 +106,8 @@ type GetRunOptions struct {
 
 // GetRunStepOptions contains the optional parameters for the Client.GetRunStep method.
 type GetRunStepOptions struct {
-	// placeholder for future optional parameters
+	// A list of additional fields to include in the response.
+	RunInclude []RunIncludes
 }
 
 // GetThreadOptions contains the optional parameters for the Client.GetThread method.
@@ -136,7 +138,7 @@ type ListAssistantsOptions struct {
 	After *string
 
 	// A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if you make a
-	// list request and receive 100 objects, ending with objfoo, your subsequent call
+	// list request and receive 100 objects, starting with objfoo, your subsequent call
 	// can include before=objfoo in order to fetch the previous page of the list.
 	Before *string
 
@@ -161,7 +163,7 @@ type ListMessagesOptions struct {
 	After *string
 
 	// A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if you make a
-	// list request and receive 100 objects, ending with objfoo, your subsequent call
+	// list request and receive 100 objects, starting with objfoo, your subsequent call
 	// can include before=objfoo in order to fetch the previous page of the list.
 	Before *string
 
@@ -183,7 +185,7 @@ type ListRunStepsOptions struct {
 	After *string
 
 	// A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if you make a
-	// list request and receive 100 objects, ending with objfoo, your subsequent call
+	// list request and receive 100 objects, starting with objfoo, your subsequent call
 	// can include before=objfoo in order to fetch the previous page of the list.
 	Before *string
 
@@ -192,6 +194,9 @@ type ListRunStepsOptions struct {
 
 	// Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
 	Order *ListSortOrder
+
+	// A list of additional fields to include in the response.
+	RunInclude []RunIncludes
 }
 
 // ListRunsOptions contains the optional parameters for the Client.ListRuns method.
@@ -202,7 +207,7 @@ type ListRunsOptions struct {
 	After *string
 
 	// A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if you make a
-	// list request and receive 100 objects, ending with objfoo, your subsequent call
+	// list request and receive 100 objects, starting with objfoo, your subsequent call
 	// can include before=objfoo in order to fetch the previous page of the list.
 	Before *string
 
@@ -222,7 +227,7 @@ type ListVectorStoreFileBatchFilesOptions struct {
 	After *string
 
 	// A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if you make a
-	// list request and receive 100 objects, ending with objfoo, your subsequent call
+	// list request and receive 100 objects, starting with objfoo, your subsequent call
 	// can include before=objfoo in order to fetch the previous page of the list.
 	Before *string
 
@@ -244,7 +249,7 @@ type ListVectorStoreFilesOptions struct {
 	After *string
 
 	// A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if you make a
-	// list request and receive 100 objects, ending with objfoo, your subsequent call
+	// list request and receive 100 objects, starting with objfoo, your subsequent call
 	// can include before=objfoo in order to fetch the previous page of the list.
 	Before *string
 
@@ -266,7 +271,7 @@ type ListVectorStoresOptions struct {
 	After *string
 
 	// A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if you make a
-	// list request and receive 100 objects, ending with objfoo, your subsequent call
+	// list request and receive 100 objects, starting with objfoo, your subsequent call
 	// can include before=objfoo in order to fetch the previous page of the list.
 	Before *string
 

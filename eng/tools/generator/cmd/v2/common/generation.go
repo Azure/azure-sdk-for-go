@@ -55,6 +55,7 @@ type GenerateParam struct {
 	ForceStableVersion   bool
 	TypeSpecEmitOption   string
 	TspClientOptions     []string
+	IsModule             bool
 }
 
 func (ctx *GenerateContext) GenerateForAutomation(readme, repo, goVersion string) ([]GenerateResult, []error) {
@@ -424,7 +425,10 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam, pa
 
 	log.Printf("Start to run `tsp-client init` to generate the code...")
 	defaultModuleVersion := version.String()
-	emitOption := fmt.Sprintf("module-version=%s", defaultModuleVersion)
+	emitOption := ""
+	if generateParam.IsModule {
+		emitOption = fmt.Sprintf("module-version=%s", defaultModuleVersion)
+	}
 	if generateParam.TypeSpecEmitOption != "" {
 		emitOption = fmt.Sprintf("%s;%s", emitOption, generateParam.TypeSpecEmitOption)
 	}
@@ -519,7 +523,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam, pa
 			return nil, err
 		}
 
-		if packageRelativePath != moduleRelativePath {
+		if !generateParam.IsModule {
 			// remove go.mod for sub package
 			goModPath := filepath.Join(packagePath, "go.mod")
 			if _, err := os.Stat(goModPath); !os.IsNotExist(err) {

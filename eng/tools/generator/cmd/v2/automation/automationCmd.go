@@ -125,12 +125,6 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 				SpecRepoURL:    input.RepoHTTPSURL,
 				TypeSpecConfig: tsc,
 			}
-			
-			rpAndNamespaceName, err := tsc.GetRpAndPackageName()
-			if err != nil {
-				errorBuilder.add(err)
-				continue
-			}
 
 			packageRelativePath := tsc.GetPackageRelativePath()
 			if packageRelativePath == "" {
@@ -138,14 +132,34 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 				continue
 			}
 
+			isModule := true
 			moduleRelativePath := tsc.GetModuleRelativePath()
+			// if module relative path is not provided, find it from the sdk path by go.mod
 			if moduleRelativePath == "" {
-				errorBuilder.add(fmt.Errorf("module relative path not found in %s", tspconfigPath))
-				continue
+				isModule = false
+				val, err := common.FindModuleDirByGoMod(filepath.Join(generateCtx.SDKPath, packageRelativePath))
+				if err != nil {
+					return nil, err
+				}
+				moduleRelativePath, err = filepath.Rel(generateCtx.SDKPath, val)
+				if err != nil {
+					return nil, err
+				}
+				moduleRelativePath = filepath.ToSlash(moduleRelativePath)
 			}
 
 			if !strings.HasPrefix(packageRelativePath, moduleRelativePath) {
 				errorBuilder.add(fmt.Errorf("module relative path '%s' is not a prefix of package relative path '%s', please check your tspconfig.yaml file", moduleRelativePath, packageRelativePath))
+				continue
+			}
+
+			if packageRelativePath != moduleRelativePath {
+				isModule = false
+			}
+
+			rpAndNamespaceName, err := tsc.GetRpAndPackageNameByModule(moduleRelativePath)
+			if err != nil {
+				errorBuilder.add(err)
 				continue
 			}
 
@@ -155,6 +169,7 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 				SkipGenerateExample: true,
 				GoVersion:           ctx.goVersion,
 				TspClientOptions:    []string{"--debug"},
+				IsModule:            isModule,
 			}, packageRelativePath, moduleRelativePath)
 			if err != nil {
 				errorBuilder.add(err)

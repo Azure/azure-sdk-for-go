@@ -988,7 +988,7 @@ func (f *FileRecordedTestsSuite) TestFileSetMetadataInvalidField() {
 	_require.Error(err)
 }
 
-func (f *FileRecordedTestsSuite) TestFileDelete() {
+func (f *FileUnrecordedTestsSuite) TestFileDelete() {
 	if recording.GetRecordMode() == recording.LiveMode {
 		f.T().Skip("This test cannot be made live")
 	}
@@ -5035,6 +5035,7 @@ func (f *FileRecordedTestsSuite) TestCreateHardLinkNFS() {
 	_, err = premiumShareClient.Create(context.Background(), &share.CreateOptions{
 		EnabledProtocols: to.Ptr("NFS"),
 	})
+	_require.NoError(err)
 	defer testcommon.DeleteShare(context.Background(), _require, premiumShareClient)
 
 	directoryName := testcommon.GenerateDirectoryName(testName)
@@ -5088,6 +5089,7 @@ func (f *FileRecordedTestsSuite) TestCreateHardLinkNFSWithLease() {
 	_, err = premiumShareClient.Create(context.Background(), &share.CreateOptions{
 		EnabledProtocols: to.Ptr("NFS"),
 	})
+	_require.NoError(err)
 	defer testcommon.DeleteShare(context.Background(), _require, premiumShareClient)
 
 	directoryName := testcommon.GenerateDirectoryName(testName)
@@ -5103,6 +5105,7 @@ func (f *FileRecordedTestsSuite) TestCreateHardLinkNFSWithLease() {
 
 	leaseId := to.Ptr("c820a799-76d7-4ee2-6e15-546f19325c2c")
 	leaseClient, err := lease.NewShareClient(premiumShareClient, &lease.ShareClientOptions{LeaseID: leaseId})
+	_require.NoError(err)
 
 	_, err = leaseClient.Acquire(context.Background(), int32(60), nil)
 	_require.NoError(err)

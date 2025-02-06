@@ -97,9 +97,7 @@ type CreateOptions struct {
 
 func (o *CreateOptions) format() (*generated.FileClientCreateOptions, *generated.ShareFileHTTPHeaders, *LeaseAccessConditions) {
 	if o == nil {
-		return &generated.FileClientCreateOptions{
-			NfsFileType: to.Ptr(NFSFileTypeRegular),
-		}, nil, nil
+		return nil, nil, nil
 	}
 
 	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.SMBProperties, false)
@@ -116,7 +114,7 @@ func (o *CreateOptions) format() (*generated.FileClientCreateOptions, *generated
 		FileMode:          o.FileMode,
 		Owner:             o.Owner,
 		Group:             o.Group,
-		NfsFileType:       to.Ptr(NFSFileTypeRegular),
+		NfsFileType:       o.NfsFileType,
 	}
 
 	if permissionKey != nil && *permissionKey != shared.DefaultFilePermissionString {

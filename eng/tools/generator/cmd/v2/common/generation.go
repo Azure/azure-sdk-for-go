@@ -513,7 +513,7 @@ func (t *SwaggerUpdateGenerator) AfterGenerate(generateParam *GenerateParam, cha
 }
 
 func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*GenerateResult, error) {
-	isModule := true
+	isSubPackage := false
 
 	packageRelativePath := ctx.TypeSpecConfig.GetPackageRelativePath()
 	if packageRelativePath == "" {
@@ -523,7 +523,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 	moduleRelativePath := ctx.TypeSpecConfig.GetModuleRelativePath()
 	// if module relative path is not provided, find it from the sdk path by go.mod
 	if moduleRelativePath == "" {
-		isModule = false
+		isSubPackage = true
 		val, err := FindModuleDirByGoMod(filepath.Join(ctx.SDKPath, packageRelativePath))
 		if err != nil {
 			return nil, err
@@ -540,7 +540,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 	}
 
 	if packageRelativePath != moduleRelativePath {
-		isModule = false
+		isSubPackage = true
 	}
 
 	// if rp name and namespace name are not provided, extract them from the module path
@@ -643,7 +643,7 @@ func (t *TypeSpecCommonGenerator) Generate(generateParam *GenerateParam) error {
 	log.Printf("Start to run `tsp-client init` to generate the code...")
 	defaultModuleVersion := version.String()
 	emitOption := ""
-	if isModule {
+	if !isSubPackage {
 		emitOption = fmt.Sprintf("module-version=%s", defaultModuleVersion)
 	}
 	if generateParam.TypeSpecEmitOption != "" {
@@ -848,7 +848,7 @@ func (t *TypeSpecUpdateGeneraor) PreChangeLog(generateParam *GenerateParam) (*ex
 			return nil, err
 		}
 
-		if isModule {
+		if isSubPackage {
 			// remove go.mod for sub package
 			goModPath := filepath.Join(packagePath, "go.mod")
 			if _, err := os.Stat(goModPath); !os.IsNotExist(err) {

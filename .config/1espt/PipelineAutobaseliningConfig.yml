@@ -2021,6 +2021,13 @@ pipelines:
           lastModifiedDate: 2025-02-04
         spotbugs:
           lastModifiedDate: 2025-02-04
+      source:
+        credscan:
+          lastModifiedDate: 2025-02-06
+        psscriptanalyzer:
+          lastModifiedDate: 2025-02-06
+        armory:
+          lastModifiedDate: 2025-02-06
   6739:
     retail:
       binary:

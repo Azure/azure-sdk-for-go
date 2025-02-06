@@ -59,7 +59,6 @@ type GenerateParam struct {
 	ForceStableVersion   bool
 	TypeSpecEmitOption   string
 	TspClientOptions     []string
-	IsModule             bool
 }
 
 type Generator interface {

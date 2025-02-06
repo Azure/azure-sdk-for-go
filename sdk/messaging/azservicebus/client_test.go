@@ -439,8 +439,6 @@ func TestClientUnauthorizedCreds(t *testing.T) {
 }
 
 func TestClientUsingCustomEndpoint(t *testing.T) {
-	//	env := test.MustGetEnvVars([]test.EnvKey{test.EnvKeyEndpoint})
-
 	serviceBusClient, cleanup, queueName := setupLiveTest(t, &liveTestOptions{
 		ClientOptions: &ClientOptions{
 			// A custom endpoint can be used when you need to connect to a TCP proxy.

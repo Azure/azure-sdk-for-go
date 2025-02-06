@@ -11,15 +11,12 @@ import (
 	"io/fs"
 	"io/ioutil"
 	"log"
-	"os"
 	"path/filepath"
 	"regexp"
 	"sort"
 	"strconv"
 	"strings"
 )
-
-const previewSubdir = string(os.PathSeparator) + "preview" + string(os.PathSeparator)
 
 var previewVer = regexp.MustCompile(`(?:v?\d{4}-\d{2}-\d{2}|v?\d+[\.\d+\.\d\-]*)(?:-preview|-beta)`)
 
@@ -31,9 +28,14 @@ func acceptAllPredicate(name string) bool {
 }
 
 func includePreviewPredicate(name string) bool {
-	// check if the path contains a /preview/ subdirectory
-	if strings.Contains(name, previewSubdir) {
-		return false
+	// Split the path into components
+	components := strings.Split(filepath.ToSlash(name), "/")
+
+	// Check if any component is "preview"
+	for _, component := range components {
+		if component == "preview" {
+			return false
+		}
 	}
 	return !previewVer.MatchString(name)
 }

@@ -11,7 +11,7 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"path"
+	"path/filepath"
 	"regexp"
 	"sort"
 	"strings"
@@ -86,8 +86,8 @@ func ContainsPreviewAPIVersion(packagePath string) (bool, error) {
 	}
 
 	for _, file := range files {
-		if strings.HasSuffix(file.Name(), ".go") {
-			b, err := os.ReadFile(path.Join(packagePath, file.Name()))
+		if filepath.Ext(file.Name()) == ".go" {
+			b, err := os.ReadFile(filepath.Join(packagePath, file.Name()))
 			if err != nil {
 				return false, err
 			}

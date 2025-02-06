@@ -41,7 +41,7 @@ func findCoverageFiles(root string) []string {
 		if err != nil {
 			return err
 		}
-		if strings.Contains(path, coverageXmlFile) {
+		if !d.IsDir() && d.Name() == coverageXmlFile {
 			coverageFiles = append(coverageFiles, path)
 		}
 

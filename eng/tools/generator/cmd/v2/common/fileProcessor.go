@@ -137,6 +137,9 @@ func ReadV2ModuleNameToGetNamespace(path string) (map[string][]PackageInfo, erro
 
 // remove all sdk generated files in given path
 func CleanSDKGeneratedFiles(path string) error {
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		return nil
+	}
 	log.Printf("Removing all sdk generated files in '%s'...", path)
 	return filepath.WalkDir(path, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
@@ -801,4 +804,33 @@ func importPath(s *ast.ImportSpec) string {
 		return ""
 	}
 	return t
+}
+
+// Walks the sdk directory to find module based on a go.mod file
+func FindModuleDirByGoMod(root string) (string, error) {
+	path := root
+	curLevel := 0
+	maxLevel := 5
+	for !strings.HasSuffix(path, SdkRootPath) && curLevel < maxLevel {
+		if _, err := os.Stat(path); os.IsNotExist(err) {
+			path = filepath.Dir(path)
+			curLevel++
+			continue
+		}
+		entries, err := os.ReadDir(path)
+		if err != nil {
+			return "", err
+		}
+		for _, entry := range entries {
+			if entry.IsDir() {
+				continue
+			}
+			if entry.Name() == GoModFileName {
+				return path, nil
+			}
+		}
+		path = filepath.Dir(path)
+		curLevel++
+	}
+	return "", fmt.Errorf("not found module, package path:%s", root)
 }

@@ -89,9 +89,10 @@ func ParseTypeSpecConfig(tspconfigPath string) (*TypeSpecConfig, error) {
 		}
 
 		goOption := emitOption.(map[string]any)
-		module, ok := goOption["module"].(string)
-		if !ok {
-			return nil, fmt.Errorf("the module must be set in %s option", TypeSpec_GO)
+		module, moduleOK := goOption["module"].(string)
+		_, packageOK := goOption["package-dir"].(string)
+		if !moduleOK && !packageOK {
+			return nil, fmt.Errorf("the module or package must be set in %s option", TypeSpec_GO)
 		}
 
 		if strings.Contains(module, "{service-dir}") {
@@ -123,7 +124,7 @@ func (tc *TypeSpecConfig) GetPackageRelativePath() string {
 		return tc.GetModuleRelativePath()
 	} else {
 		if goConfig["service-dir"] == nil {
-			goConfig["service-dir"] = tc.Parameters["service-dir"].(map[string]interface {})["default"]
+			goConfig["service-dir"] = tc.Parameters["service-dir"].(map[string]interface{})["default"]
 		}
 		return goConfig["service-dir"].(string) + "/" + goConfig["package-dir"].(string)
 	}
@@ -199,10 +200,22 @@ func (tc TypeSpecConfig) GetRpAndPackageName() ([2]string, error) {
 	if err != nil {
 		return [2]string{}, err
 	}
+	goOption := option.(map[string]any)
+	module, ok := goOption["module"].(string)
+	if !ok || len(module) == 0 {
+		return [2]string{}, nil
+	}
+	return tc.GetRpAndPackageNameByModule(module)
+}
 
-	module := (option.(map[string]any))["module"].(string)
+// GetRpAndPackageName return [rpName, packageName]
+// module: github.com/Azure/azure-sdk-for-go/sdk/.../{rpName}/{packageName}
+func (tc TypeSpecConfig) GetRpAndPackageNameByModule(module string) ([2]string, error) {
 	s := strings.Split(module, "/")
 	l := len(s)
+	if l < 2 {
+		return [2]string{}, fmt.Errorf("module is invalid")
+	}
 	if !strings.Contains(s[l-1], "arm") && !strings.Contains(s[l-1], "az") {
 		return [2]string{}, fmt.Errorf("packageName is invalid and must start with `arm` or `az`")
 	}

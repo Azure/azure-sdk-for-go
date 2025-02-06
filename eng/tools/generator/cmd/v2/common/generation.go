@@ -35,13 +35,14 @@ type GenerateContext struct {
 }
 
 type GenerateResult struct {
-	Version           string
-	RPName            string
-	PackageName       string
-	PackageAbsPath    string
-	Changelog         Changelog
-	ChangelogMD       string
-	PullRequestLabels string
+	Version             string
+	RPName              string
+	PackageName         string
+	PackageAbsPath      string
+	Changelog           Changelog
+	ChangelogMD         string
+	PullRequestLabels   string
+	PackageRelativePath string
 }
 
 type GenerateParam struct {
@@ -511,7 +512,47 @@ func (t *SwaggerUpdateGenerator) AfterGenerate(generateParam *GenerateParam, cha
 	}, nil
 }
 
-func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam, packageRelativePath string, moduleRelativePath string) (*GenerateResult, error) {
+func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*GenerateResult, error) {
+	isModule := true
+
+	packageRelativePath := ctx.TypeSpecConfig.GetPackageRelativePath()
+	if packageRelativePath == "" {
+		return nil, fmt.Errorf("package module relative path not found in %s", ctx.TypeSpecConfig.Path)
+	}
+
+	moduleRelativePath := ctx.TypeSpecConfig.GetModuleRelativePath()
+	// if module relative path is not provided, find it from the sdk path by go.mod
+	if moduleRelativePath == "" {
+		isModule = false
+		val, err := FindModuleDirByGoMod(filepath.Join(ctx.SDKPath, packageRelativePath))
+		if err != nil {
+			return nil, err
+		}
+		moduleRelativePath, err = filepath.Rel(ctx.SDKPath, val)
+		if err != nil {
+			return nil, err
+		}
+		moduleRelativePath = filepath.ToSlash(moduleRelativePath)
+	}
+
+	if !strings.HasPrefix(packageRelativePath, moduleRelativePath) {
+		return nil, fmt.Errorf("module relative path '%s' is not a prefix of package relative path '%s', please check your tspconfig.yaml file", moduleRelativePath, packageRelativePath)
+	}
+
+	if packageRelativePath != moduleRelativePath {
+		isModule = false
+	}
+
+	// if rp name and namespace name are not provided, extract them from the module path
+	if len(generateParam.RPName) == 0 && len(generateParam.NamespaceName) == 0 {
+		rpAndNamespaceName, err := ctx.TypeSpecConfig.GetRpAndPackageNameByModule(moduleRelativePath)
+		if err != nil {
+			return nil, err
+		}
+		generateParam.RPName = rpAndNamespaceName[0]
+		generateParam.NamespaceName = rpAndNamespaceName[1]
+	}
+
 	packagePath := filepath.Join(ctx.SDKPath, packageRelativePath)
 	modulePath := filepath.Join(ctx.SDKPath, moduleRelativePath)
 	changelogPath := filepath.Join(modulePath, ChangelogFileName)
@@ -602,7 +643,7 @@ func (t *TypeSpecCommonGenerator) Generate(generateParam *GenerateParam) error {
 	log.Printf("Start to run `tsp-client init` to generate the code...")
 	defaultModuleVersion := version.String()
 	emitOption := ""
-	if generateParam.IsModule {
+	if isModule {
 		emitOption = fmt.Sprintf("module-version=%s", defaultModuleVersion)
 	}
 	if generateParam.TypeSpecEmitOption != "" {
@@ -807,7 +848,7 @@ func (t *TypeSpecUpdateGeneraor) PreChangeLog(generateParam *GenerateParam) (*ex
 			return nil, err
 		}
 
-		if !generateParam.IsModule {
+		if isModule {
 			// remove go.mod for sub package
 			goModPath := filepath.Join(packagePath, "go.mod")
 			if _, err := os.Stat(goModPath); !os.IsNotExist(err) {
@@ -823,13 +864,14 @@ func (t *TypeSpecUpdateGeneraor) PreChangeLog(generateParam *GenerateParam) (*ex
 		}
 
 		return &GenerateResult{
-			Version:           version.String(),
-			RPName:            generateParam.RPName,
-			PackageName:       generateParam.NamespaceName,
-			PackageAbsPath:    packagePath,
-			Changelog:         *changelog,
-			ChangelogMD:       changelog.ToCompactMarkdown() + "\n" + changelog.GetChangeSummary(),
-			PullRequestLabels: string(prl),
+			Version:             version.String(),
+			RPName:              generateParam.RPName,
+			PackageName:         generateParam.NamespaceName,
+			PackageAbsPath:      packagePath,
+			Changelog:           *changelog,
+			ChangelogMD:         changelog.ToCompactMarkdown() + "\n" + changelog.GetChangeSummary(),
+			PullRequestLabels:   string(prl),
+			PackageRelativePath: packageRelativePath,
 		}, nil
 	} else {
 		log.Printf("Calculate new version...")
@@ -921,13 +963,14 @@ func (t *TypeSpecUpdateGeneraor) PreChangeLog(generateParam *GenerateParam) (*ex
 		}
 
 		return &GenerateResult{
-			Version:           version.String(),
-			RPName:            generateParam.RPName,
-			PackageName:       generateParam.NamespaceName,
-			PackageAbsPath:    packagePath,
-			Changelog:         *changelog,
-			ChangelogMD:       changelogMd + "\n" + changelog.GetChangeSummary(),
-			PullRequestLabels: string(prl),
+			Version:             version.String(),
+			RPName:              generateParam.RPName,
+			PackageName:         generateParam.NamespaceName,
+			PackageAbsPath:      packagePath,
+			Changelog:           *changelog,
+			ChangelogMD:         changelogMd + "\n" + changelog.GetChangeSummary(),
+			PullRequestLabels:   string(prl),
+			PackageRelativePath: packageRelativePath,
 		}, nil
 >>>>>>> ecc6a7c1f6 (support sub package)
 	}

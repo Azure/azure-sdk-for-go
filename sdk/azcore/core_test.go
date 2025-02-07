@@ -150,7 +150,7 @@ func TestNewClientTracingEnabled(t *testing.T) {
 				}
 				return ctx, tracing.Span{}
 			}, nil)
-		}, nil),
+		}, nil, nil),
 		Transport: srv,
 	})
 	require.NoError(t, err)
@@ -193,7 +193,7 @@ func TestClientWithClientName(t *testing.T) {
 				}
 				return ctx, tracing.Span{}
 			}, nil)
-		}, nil),
+		}, nil, nil),
 		Transport: srv,
 	})
 	require.NoError(t, err)

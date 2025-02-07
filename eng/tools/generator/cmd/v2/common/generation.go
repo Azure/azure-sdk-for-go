@@ -206,6 +206,17 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 
 	log.Printf("filter changelog...")
 	FilterChangelog(changelog, NonExportedFilter, MarshalUnmarshalFilter, EnumFilter, FuncFilter, LROFilter, PageableFilter, InterfaceToAnyFilter)
+	
+	log.Printf("##[command]Executing gofmt -s -w . in %s\n", packagePath)
+	if err = ExecuteGoFmt(packagePath, "-s", "-w", "."); err != nil {
+		return nil, err
+	}
+
+	log.Printf("##[command]Executing go mod tidy in %s\n", packagePath)
+	if err = ExecuteGo(packagePath, "mod", "tidy"); err != nil {
+		return nil, err
+	}
+
 	return generator.AfterGenerate(generateParam, version, changelog, newExports)
 }
 
@@ -477,6 +488,16 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam, pa
 	log.Printf("filter changelog...")
 	FilterChangelog(changelog, NonExportedFilter, MarshalUnmarshalFilter, EnumFilter, FuncFilter, LROFilter, PageableFilter, InterfaceToAnyFilter)
 
+	log.Printf("##[command]Executing gofmt -s -w . in %s\n", packagePath)
+	if err = ExecuteGoFmt(packagePath, "-s", "-w", "."); err != nil {
+		return nil, err
+	}
+
+	log.Printf("##[command]Executing go mod tidy in %s\n", packagePath)
+	if err = ExecuteGo(packagePath, "mod", "tidy"); err != nil {
+		return nil, err
+	}
+
 	return generator.AfterGenerate(generateParam, version, changelog, newExports)
 }
 
@@ -516,15 +537,6 @@ func (t *TypeSpecOnBoardGenerator) AfterGenerate(generateParam *GenerateParam, v
 
 	// issue: https://github.com/Azure/azure-sdk-for-go/issues/23877
 	prl = FirstBetaLabel
-	log.Printf("##[command]Executing gofmt -s -w . in %s\n", packagePath)
-	if err = ExecuteGoFmt(packagePath, "-s", "-w", "."); err != nil {
-		return nil, err
-	}
-
-	log.Printf("##[command]Executing go mod tidy in %s\n", packagePath)
-	if err = ExecuteGo(packagePath, "mod", "tidy"); err != nil {
-		return nil, err
-	}
 
 	return &GenerateResult{
 		Version:           version.String(),
@@ -675,16 +687,6 @@ func (t *TypeSpecNormalGeneraor) AfterGenerate(generateParam *GenerateParam, ver
 		if err = os.Remove(buildGoPath); err != nil {
 			return nil, err
 		}
-	}
-
-	log.Printf("##[command]Executing gofmt -s -w . in %s\n", packagePath)
-	if err = ExecuteGoFmt(packagePath, "-s", "-w", "."); err != nil {
-		return nil, err
-	}
-
-	log.Printf("##[command]Executing go mod tidy in %s\n", packagePath)
-	if err = ExecuteGo(packagePath, "mod", "tidy"); err != nil {
-		return nil, err
 	}
 
 	return &GenerateResult{

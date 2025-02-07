@@ -160,8 +160,7 @@ type SpanImpl struct {
 	// AddLink contains the implementation for the Span.AddLink method.
 	AddLink func(Link)
 
-	// SpanContext returns the SpanContext of the Span. The returned SpanContext
-	// is usable even after the End method has been called for the Span.
+	// SpanContext returns the SpanContext of the Span.
 	SpanContext func() SpanContext
 
 	// SetStatus contains the implementation for the Span.SetStatus method.
@@ -263,6 +262,7 @@ type TraceFlags byte
 
 // TraceStateImpl contains the implementation for TraceState.
 type TraceStateImpl struct {
+	// String contains the implementation for the TraceState.String method.
 	String func() string
 }
 

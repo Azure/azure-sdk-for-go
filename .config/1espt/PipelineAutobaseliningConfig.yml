@@ -1507,6 +1507,13 @@ pipelines:
           lastModifiedDate: 2025-02-04
         spotbugs:
           lastModifiedDate: 2025-02-04
+      source:
+        credscan:
+          lastModifiedDate: 2025-02-07
+        psscriptanalyzer:
+          lastModifiedDate: 2025-02-07
+        armory:
+          lastModifiedDate: 2025-02-07
   7303:
     retail:
       binary:

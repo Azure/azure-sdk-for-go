@@ -230,6 +230,44 @@ func (t *SwaggerOnBoardGenerator) PreGenerate(generateParam *GenerateParam, vers
 	})
 }
 
+func (t *SwaggerOnBoardGenerator) PrepareChangeLog(generateParam *GenerateParam, version *semver.Version) (*exports.Content, error) {
+	return nil, nil
+}
+
+func (t *SwaggerOnBoardGenerator) AfterGenerate(generateParam *GenerateParam, version *semver.Version, changelog *Changelog, newExports exports.Content) (*GenerateResult, error) {
+	var err error
+	var prl PullRequestLabel
+	packagePath := t.PackagePath
+	log.Printf("Replace {{NewClientName}} placeholder in the README.md ")
+	if err = ReplaceNewClientNamePlaceholder(packagePath, newExports); err != nil {
+		return nil, err
+	}
+
+	if !generateParam.SkipGenerateExample {
+		log.Printf("Start to generate examples...")
+		flag, err := GetAlwaysSetBodyParamRequiredFlag(filepath.Join(packagePath, "build.go"))
+		if err != nil {
+			return nil, err
+		}
+		if err := ExecuteExampleGenerate(packagePath, filepath.Join("resourcemanager", generateParam.RPName, generateParam.NamespaceName), flag); err != nil {
+			return nil, err
+		}
+	}
+
+	// issue: https://github.com/Azure/azure-sdk-for-go/issues/23877
+	prl = FirstBetaLabel
+
+	return &GenerateResult{
+		Version:           version.String(),
+		RPName:            generateParam.RPName,
+		PackageName:       generateParam.NamespaceName,
+		PackageAbsPath:    packagePath,
+		Changelog:         *changelog,
+		ChangelogMD:       changelog.ToCompactMarkdown() + "\n" + changelog.GetChangeSummary(),
+		PullRequestLabels: string(prl),
+	}, nil
+}
+
 func (t *SwaggerNormalGenerator) PreGenerate(generateParam *GenerateParam, version *semver.Version) error {
 	packagePath := t.PackagePath
 	var err error
@@ -249,10 +287,6 @@ func (t *SwaggerNormalGenerator) PreGenerate(generateParam *GenerateParam, versi
 		}
 	}
 	return nil
-}
-
-func (t *SwaggerOnBoardGenerator) PrepareChangeLog(generateParam *GenerateParam, version *semver.Version) (*exports.Content, error) {
-	return nil, nil
 }
 
 func (t *SwaggerNormalGenerator) PrepareChangeLog(generateParam *GenerateParam, version *semver.Version) (*exports.Content, error) {
@@ -300,40 +334,6 @@ func (t *SwaggerNormalGenerator) PrepareChangeLog(generateParam *GenerateParam, 
 	t.PreviousVersion = previousVersion
 	t.IsCurrentPreview = isCurrentPreview
 	return oriExports, nil
-}
-
-func (t *SwaggerOnBoardGenerator) AfterGenerate(generateParam *GenerateParam, version *semver.Version, changelog *Changelog, newExports exports.Content) (*GenerateResult, error) {
-	var err error
-	var prl PullRequestLabel
-	packagePath := t.PackagePath
-	log.Printf("Replace {{NewClientName}} placeholder in the README.md ")
-	if err = ReplaceNewClientNamePlaceholder(packagePath, newExports); err != nil {
-		return nil, err
-	}
-
-	if !generateParam.SkipGenerateExample {
-		log.Printf("Start to generate examples...")
-		flag, err := GetAlwaysSetBodyParamRequiredFlag(filepath.Join(packagePath, "build.go"))
-		if err != nil {
-			return nil, err
-		}
-		if err := ExecuteExampleGenerate(packagePath, filepath.Join("resourcemanager", generateParam.RPName, generateParam.NamespaceName), flag); err != nil {
-			return nil, err
-		}
-	}
-
-	// issue: https://github.com/Azure/azure-sdk-for-go/issues/23877
-	prl = FirstBetaLabel
-
-	return &GenerateResult{
-		Version:           version.String(),
-		RPName:            generateParam.RPName,
-		PackageName:       generateParam.NamespaceName,
-		PackageAbsPath:    packagePath,
-		Changelog:         *changelog,
-		ChangelogMD:       changelog.ToCompactMarkdown() + "\n" + changelog.GetChangeSummary(),
-		PullRequestLabels: string(prl),
-	}, nil
 }
 
 func (t *SwaggerNormalGenerator) AfterGenerate(generateParam *GenerateParam, version *semver.Version, changelog *Changelog, newExports exports.Content) (*GenerateResult, error) {
@@ -497,6 +497,46 @@ func (t *TypeSpecOnBoardGenerator) PreGenerate(generateParam *GenerateParam, ver
 	return typespec.ParseTypeSpecTemplates(filepath.Join(t.SDKPath, "eng/tools/generator/template/typespec"), t.PackagePath, sdkBasicInfo, nil)
 }
 
+func (t *TypeSpecOnBoardGenerator) PrepareChangeLog(generateParam *GenerateParam, version *semver.Version) (*exports.Content, error) {
+	return nil, nil
+}
+
+func (t *TypeSpecOnBoardGenerator) AfterGenerate(generateParam *GenerateParam, version *semver.Version, changelog *Changelog, newExports exports.Content) (*GenerateResult, error) {
+	var err error
+	var prl PullRequestLabel
+	packagePath := t.PackagePath
+	log.Printf("Replace {{NewClientName}} placeholder in the README.md ")
+	if err = ReplaceNewClientNamePlaceholder(packagePath, newExports); err != nil {
+		return nil, err
+	}
+
+	if !generateParam.SkipGenerateExample {
+		log.Printf("Generate examples...")
+	}
+
+	// issue: https://github.com/Azure/azure-sdk-for-go/issues/23877
+	prl = FirstBetaLabel
+	log.Printf("##[command]Executing gofmt -s -w . in %s\n", packagePath)
+	if err = ExecuteGoFmt(packagePath, "-s", "-w", "."); err != nil {
+		return nil, err
+	}
+
+	log.Printf("##[command]Executing go mod tidy in %s\n", packagePath)
+	if err = ExecuteGo(packagePath, "mod", "tidy"); err != nil {
+		return nil, err
+	}
+
+	return &GenerateResult{
+		Version:           version.String(),
+		RPName:            generateParam.RPName,
+		PackageName:       generateParam.NamespaceName,
+		PackageAbsPath:    packagePath,
+		Changelog:         *changelog,
+		ChangelogMD:       changelog.ToCompactMarkdown() + "\n" + changelog.GetChangeSummary(),
+		PullRequestLabels: string(prl),
+	}, nil
+}
+
 func (t *TypeSpecNormalGeneraor) PreGenerate(generateParam *GenerateParam, version *semver.Version) error {
 	log.Printf("Package '%s' existed, do update process", t.PackagePath)
 	log.Printf("Remove all the generated files ...")
@@ -504,10 +544,6 @@ func (t *TypeSpecNormalGeneraor) PreGenerate(generateParam *GenerateParam, versi
 		return err
 	}
 	return nil
-}
-
-func (t *TypeSpecOnBoardGenerator) PrepareChangeLog(generateParam *GenerateParam, version *semver.Version) (*exports.Content, error) {
-	return nil, nil
 }
 
 func (t *TypeSpecNormalGeneraor) PrepareChangeLog(generateParam *GenerateParam, version *semver.Version) (*exports.Content, error) {
@@ -553,42 +589,6 @@ func (t *TypeSpecNormalGeneraor) PrepareChangeLog(generateParam *GenerateParam, 
 	t.IsCurrentPreview = isCurrentPreview
 
 	return oriExports, nil
-}
-
-func (t *TypeSpecOnBoardGenerator) AfterGenerate(generateParam *GenerateParam, version *semver.Version, changelog *Changelog, newExports exports.Content) (*GenerateResult, error) {
-	var err error
-	var prl PullRequestLabel
-	packagePath := t.PackagePath
-	log.Printf("Replace {{NewClientName}} placeholder in the README.md ")
-	if err = ReplaceNewClientNamePlaceholder(packagePath, newExports); err != nil {
-		return nil, err
-	}
-
-	if !generateParam.SkipGenerateExample {
-		log.Printf("Generate examples...")
-	}
-
-	// issue: https://github.com/Azure/azure-sdk-for-go/issues/23877
-	prl = FirstBetaLabel
-	log.Printf("##[command]Executing gofmt -s -w . in %s\n", packagePath)
-	if err = ExecuteGoFmt(packagePath, "-s", "-w", "."); err != nil {
-		return nil, err
-	}
-
-	log.Printf("##[command]Executing go mod tidy in %s\n", packagePath)
-	if err = ExecuteGo(packagePath, "mod", "tidy"); err != nil {
-		return nil, err
-	}
-
-	return &GenerateResult{
-		Version:           version.String(),
-		RPName:            generateParam.RPName,
-		PackageName:       generateParam.NamespaceName,
-		PackageAbsPath:    packagePath,
-		Changelog:         *changelog,
-		ChangelogMD:       changelog.ToCompactMarkdown() + "\n" + changelog.GetChangeSummary(),
-		PullRequestLabels: string(prl),
-	}, nil
 }
 
 func (t *TypeSpecNormalGeneraor) AfterGenerate(generateParam *GenerateParam, version *semver.Version, changelog *Changelog, newExports exports.Content) (*GenerateResult, error) {

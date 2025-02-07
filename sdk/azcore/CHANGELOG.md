@@ -1,10 +1,22 @@
 # Release History
 
-## 1.17.1 (Unreleased)
+## 1.18.0 (Unreleased)
 
 ### Features Added
 
+* Added type `SpanContext` to the `tracing` package to support Span Context.
+* Added method `SpanContext()` to `tracing.Span` to support Span Context.
+* Added func `NewSpanContext()` to the `tracing` package to support Span Context.
+* Added type `Link` to the `tracing` package to support Span Links.
+* Added method `LinkFromContext()` to `tracing.Tracer` to support Span Links.
+* Added method `AddLink()` to `tracing.Span` to support Span Links.
+* Added type `Propagator` to the `tracing` package to support context propagation.
+* Added interface `Carrier` to the `tracing` package to support context propagation.
+* Added method `NewPropagator()` to type `tracing.Provider` to support context propagation.
+
 ### Breaking Changes
+
+* Method `tracing.NewProvider` now requires an argument of type `func() Propagator`.
 
 ### Bugs Fixed
 

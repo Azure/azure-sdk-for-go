@@ -51,7 +51,8 @@ func TestProvider(t *testing.T) {
 				SpanContext: func() SpanContext {
 					spanContextCalled = true
 					return NewSpanContext(SpanContextConfig{
-						Remote: true,
+						TraceState: NewTraceState(TraceStateImpl{String: func() string { return "key1=val1,key2=val2" }}),
+						Remote:     true,
 					})
 				},
 				End:           func() { endCalled = true },
@@ -107,7 +108,8 @@ func TestProvider(t *testing.T) {
 	require.Zero(t, sc.TraceID())
 	require.Zero(t, sc.SpanID())
 	require.Zero(t, sc.TraceFlags())
-	require.Nil(t, sc.TraceState())
+	require.NotNil(t, sc.TraceState())
+	require.EqualValues(t, "key1=val1,key2=val2", sc.TraceState().String())
 	require.True(t, sc.IsRemote())
 
 	sp.End()

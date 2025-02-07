@@ -241,6 +241,7 @@ type Attribute struct {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// Link is the relationship between two Spans.
 type Link struct {
 	// SpanContext of the linked Span.
 	SpanContext SpanContext
@@ -260,10 +261,34 @@ type TraceID [16]byte
 // TraceFlags contains flags that can be set on a SpanContext.
 type TraceFlags byte
 
-type TraceState interface {
-	String() string
+// TraceStateImpl contains the implementation for TraceState.
+type TraceStateImpl struct {
+	String func() string
 }
 
+// NewTraceState creates a TraceState with the specified implementation.
+func NewTraceState(impl TraceStateImpl) TraceState {
+	return TraceState{
+		impl: impl,
+	}
+}
+
+// TraceState provides additional vendor-specific trace identification information across different distributed tracing systems.
+type TraceState struct {
+	impl TraceStateImpl
+}
+
+// String encodes the TraceState into a string compliant with the W3C Trace Context specification.
+func (ts TraceState) String() string {
+	if ts.impl.String != nil {
+		return ts.impl.String()
+	}
+	return ""
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// SpanContext contains identifying trace information about a Span.
 type SpanContext struct {
 	spanID     SpanID
 	traceID    TraceID
@@ -272,28 +297,32 @@ type SpanContext struct {
 	remote     bool
 }
 
+// SpanID returns the SpanID from the SpanContext.
 func (sc SpanContext) SpanID() SpanID {
 	return sc.spanID
 }
 
+// TraceID returns the TraceID from the SpanContext.
 func (sc SpanContext) TraceID() TraceID {
 	return sc.traceID
 }
 
+// TraceFlags returns the flags from the SpanContext.
 func (sc SpanContext) TraceFlags() TraceFlags {
 	return sc.traceFlags
 }
 
+// TraceState returns the TraceState from the SpanContext.
 func (sc SpanContext) TraceState() TraceState {
 	return sc.traceState
 }
 
+// IsRemote indicates whether the SpanContext represents a remotely-created Span.
 func (sc SpanContext) IsRemote() bool {
 	return sc.remote
 }
 
-// SpanContextConfig contains mutable fields usable for constructing
-// an immutable SpanContext.
+// SpanContextConfig contains mutable fields usable for constructing an immutable SpanContext.
 type SpanContextConfig struct {
 	TraceID    TraceID
 	SpanID     SpanID
@@ -302,8 +331,7 @@ type SpanContextConfig struct {
 	Remote     bool
 }
 
-// NewSpanContext constructs a SpanContext using values from the provided
-// SpanContextConfig.
+// NewSpanContext constructs a SpanContext using values from the provided SpanContextConfig.
 func NewSpanContext(config SpanContextConfig) SpanContext {
 	return SpanContext{
 		traceID:    config.TraceID,
@@ -316,6 +344,17 @@ func NewSpanContext(config SpanContextConfig) SpanContext {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// PropagatorImpl contains the implementation for the Propagator.
+type PropagatorImpl struct {
+	// Inject contains the implementation for the Propagator.Inject method.
+	Inject func(ctx context.Context, carrier Carrier)
+	// Extract contains the implementation for the Propagator.Extract method.
+	Extract func(ctx context.Context, carrier Carrier) context.Context
+	// Fields contains the implementation for the Propagator.Fields method.
+	Fields func() []string
+}
+
+// Propagator is used to extract and inject context data from and into messages exchanged by applications.
 type Propagator struct {
 	impl PropagatorImpl
 }
@@ -343,17 +382,9 @@ func (p Propagator) Fields() []string {
 	return nil
 }
 
-type PropagatorImpl struct {
-	// Inject contains the implementation for the Propagator.Inject method.
-	Inject func(ctx context.Context, carrier Carrier)
-	// Extract contains the implementation for the Propagator.Extract method.
-	Extract func(ctx context.Context, carrier Carrier) context.Context
-	// Fields contains the implementation for the Propagator.Fields method.
-	Fields func() []string
-}
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// Carrier is the storage medium used by the Propagator.
 type Carrier interface {
 	// Get returns the value associated with the passed key.
 	Get(key string) string

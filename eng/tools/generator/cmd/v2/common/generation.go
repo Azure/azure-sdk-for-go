@@ -374,21 +374,21 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 	}
 }
 
-type GenerateTemplate interface {
+type Generator interface {
 	PreGenerate(generateParam *GenerateParam, version *semver.Version) error
 	PrepareChangeLog(generateParam *GenerateParam, version *semver.Version) (*exports.Content, error)
 	AfterGenerate(generateParam *GenerateParam, version *semver.Version, changelog *Changelog, newExports exports.Content) (*GenerateResult, error)
 }
 
 func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam, packageModuleRelativePath string) (*GenerateResult, error) {
-	var template GenerateTemplate
+	var generator Generator
 	packagePath := filepath.Join(ctx.SDKPath, packageModuleRelativePath)
 	changelogPath := filepath.Join(packagePath, ChangelogFileName)
 	// check if the package is onboard or update, to init different template
 	if _, err := os.Stat(changelogPath); os.IsNotExist(err) {
-		template = &OnBoardGenerateTemplate{GenerateContext: ctx, PackagePath: packagePath, PackageModuleRelativePath: packageModuleRelativePath}
+		generator = &TypeSpecOnBoardGenerator{GenerateContext: ctx, PackagePath: packagePath, PackageModuleRelativePath: packageModuleRelativePath}
 	} else {
-		template = &UpdateGenerateTemplate{GenerateContext: ctx, PackagePath: packagePath, PackageModuleRelativePath: packageModuleRelativePath}
+		generator = &TypeSpecNormalGeneraor{GenerateContext: ctx, PackagePath: packagePath, PackageModuleRelativePath: packageModuleRelativePath}
 	}
 	version, err := semver.NewVersion("0.1.0")
 	if err != nil {
@@ -402,7 +402,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam, pa
 		}
 	}
 
-	err = template.PreGenerate(generateParam, version)
+	err = generator.PreGenerate(generateParam, version)
 	if err != nil {
 		return nil, err
 	}
@@ -419,7 +419,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam, pa
 	}
 
 	log.Printf("Start to generate changelog for package...")
-	oriExports, err := template.PrepareChangeLog(generateParam, version)
+	oriExports, err := generator.PrepareChangeLog(generateParam, version)
 	if err != nil {
 		return nil, err
 	}
@@ -435,16 +435,16 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam, pa
 	log.Printf("filter changelog...")
 	FilterChangelog(changelog, NonExportedFilter, MarshalUnmarshalFilter, EnumFilter, FuncFilter, LROFilter, PageableFilter, InterfaceToAnyFilter)
 
-	return template.AfterGenerate(generateParam, version, changelog, newExports)
+	return generator.AfterGenerate(generateParam, version, changelog, newExports)
 }
 
-type OnBoardGenerateTemplate struct {
+type TypeSpecOnBoardGenerator struct {
 	PackagePath               string
 	PackageModuleRelativePath string
 	*GenerateContext
 }
 
-func (t *OnBoardGenerateTemplate) PreGenerate(generateParam *GenerateParam, version *semver.Version) error {
+func (t *TypeSpecOnBoardGenerator) PreGenerate(generateParam *GenerateParam, version *semver.Version) error {
 	log.Printf("Package '%s' changelog not exist, do onboard process", t.PackagePath)
 	if generateParam.SpecificPackageTitle == "" {
 		generateParam.SpecificPackageTitle = strings.Title(generateParam.RPName)
@@ -461,11 +461,11 @@ func (t *OnBoardGenerateTemplate) PreGenerate(generateParam *GenerateParam, vers
 	return typespec.ParseTypeSpecTemplates(filepath.Join(t.SDKPath, "eng/tools/generator/template/typespec"), t.PackagePath, sdkBasicInfo, nil)
 }
 
-func (t *OnBoardGenerateTemplate) PrepareChangeLog(generateParam *GenerateParam, version *semver.Version) (*exports.Content, error) {
+func (t *TypeSpecOnBoardGenerator) PrepareChangeLog(generateParam *GenerateParam, version *semver.Version) (*exports.Content, error) {
 	return nil, nil
 }
 
-func (t *OnBoardGenerateTemplate) AfterGenerate(generateParam *GenerateParam, version *semver.Version, changelog *Changelog, newExports exports.Content) (*GenerateResult, error) {
+func (t *TypeSpecOnBoardGenerator) AfterGenerate(generateParam *GenerateParam, version *semver.Version, changelog *Changelog, newExports exports.Content) (*GenerateResult, error) {
 	var err error
 	var prl PullRequestLabel
 	packagePath := t.PackagePath
@@ -500,7 +500,7 @@ func (t *OnBoardGenerateTemplate) AfterGenerate(generateParam *GenerateParam, ve
 	}, nil
 }
 
-type UpdateGenerateTemplate struct {
+type TypeSpecNormalGeneraor struct {
 	PackagePath               string
 	PackageModuleRelativePath string
 	*GenerateContext
@@ -508,7 +508,7 @@ type UpdateGenerateTemplate struct {
 	IsCurrentPreview bool
 }
 
-func (t *UpdateGenerateTemplate) PreGenerate(generateParam *GenerateParam, version *semver.Version) error {
+func (t *TypeSpecNormalGeneraor) PreGenerate(generateParam *GenerateParam, version *semver.Version) error {
 	log.Printf("Package '%s' existed, do update process", t.PackagePath)
 	log.Printf("Remove all the generated files ...")
 	if err := CleanSDKGeneratedFiles(t.PackagePath); err != nil {
@@ -517,7 +517,7 @@ func (t *UpdateGenerateTemplate) PreGenerate(generateParam *GenerateParam, versi
 	return nil
 }
 
-func (t *UpdateGenerateTemplate) PrepareChangeLog(generateParam *GenerateParam, version *semver.Version) (*exports.Content, error) {
+func (t *TypeSpecNormalGeneraor) PrepareChangeLog(generateParam *GenerateParam, version *semver.Version) (*exports.Content, error) {
 	var err error
 	packagePath := t.PackagePath
 	packageModuleRelativePath := t.PackageModuleRelativePath
@@ -562,7 +562,7 @@ func (t *UpdateGenerateTemplate) PrepareChangeLog(generateParam *GenerateParam, 
 	return oriExports, nil
 }
 
-func (t *UpdateGenerateTemplate) AfterGenerate(generateParam *GenerateParam, version *semver.Version, changelog *Changelog, newExports exports.Content) (*GenerateResult, error) {
+func (t *TypeSpecNormalGeneraor) AfterGenerate(generateParam *GenerateParam, version *semver.Version, changelog *Changelog, newExports exports.Content) (*GenerateResult, error) {
 	var prl PullRequestLabel
 	var err error
 	defaultModuleVersion := version.String()

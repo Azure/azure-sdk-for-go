@@ -13,16 +13,24 @@ import (
 
 // ProviderOptions contains the optional values when creating a Provider.
 type ProviderOptions struct {
-	// for future expansion
+	// NewPropagatorFn contains the underlying implementation for creating Propagator instances.
+	// If not set, a no-op propagator will be used.
+	NewPropagatorFn func() Propagator
 }
 
 // NewProvider creates a new Provider with the specified values.
 //   - newTracerFn is the underlying implementation for creating Tracer instances
 //   - options contains optional values; pass nil to accept the default value
-func NewProvider(newTracerFn func(name, version string) Tracer, newPropagatorFn func() Propagator, options *ProviderOptions) Provider {
+func NewProvider(newTracerFn func(name, version string) Tracer, options *ProviderOptions) Provider {
+	if options == nil {
+		options = &ProviderOptions{}
+	}
+	if options.NewPropagatorFn == nil {
+		options.NewPropagatorFn = func() Propagator { return Propagator{} }
+	}
 	return Provider{
 		newTracerFn:     newTracerFn,
-		newPropagatorFn: newPropagatorFn,
+		newPropagatorFn: options.NewPropagatorFn,
 	}
 }
 
@@ -348,10 +356,19 @@ func NewSpanContext(config SpanContextConfig) SpanContext {
 type PropagatorImpl struct {
 	// Inject contains the implementation for the Propagator.Inject method.
 	Inject func(ctx context.Context, carrier Carrier)
+
 	// Extract contains the implementation for the Propagator.Extract method.
 	Extract func(ctx context.Context, carrier Carrier) context.Context
+
 	// Fields contains the implementation for the Propagator.Fields method.
 	Fields func() []string
+}
+
+// NewPropagator creates a Propagator with the specified implementation.
+func NewPropagator(impl PropagatorImpl) Propagator {
+	return Propagator{
+		impl: impl,
+	}
 }
 
 // Propagator is used to extract and inject context data from and into messages exchanged by applications.
@@ -384,12 +401,48 @@ func (p Propagator) Fields() []string {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+type CarrierImpl struct {
+	// Get contains the implementation for the Carrier.Get method.
+	Get func(key string) string
+
+	// Set contains the implementation for the Carrier.Set method.
+	Set func(key string, value string)
+
+	// Keys contains the implementation for the Carrier.Keys method.
+	Keys func() []string
+}
+
+// NewCarrier creates a Carrier with the specified implementation.
+func NewCarrier(impl CarrierImpl) Carrier {
+	return Carrier{
+		impl: impl,
+	}
+}
+
 // Carrier is the storage medium used by the Propagator.
-type Carrier interface {
-	// Get returns the value associated with the passed key.
-	Get(key string) string
-	// Set stores the key-value pair.
-	Set(key string, value string)
-	// Keys lists the keys stored in this carrier.
-	Keys() []string
+type Carrier struct {
+	impl CarrierImpl
+}
+
+// Get returns the value associated with the passed key.
+func (c Carrier) Get(key string) string {
+	if c.impl.Get != nil {
+		return c.impl.Get(key)
+	}
+	return ""
+}
+
+// Set stores the key-value pair.
+func (c Carrier) Set(key string, value string) {
+	if c.impl.Set != nil {
+		c.impl.Set(key, value)
+	}
+}
+
+// Keys lists the keys stored in this carrier.
+func (c Carrier) Keys() []string {
+	if c.impl.Keys != nil {
+		return c.impl.Keys()
+	}
+	return nil
 }

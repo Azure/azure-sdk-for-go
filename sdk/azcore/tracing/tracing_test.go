@@ -69,21 +69,25 @@ func TestProvider(t *testing.T) {
 				return Link{}
 			},
 		})
-	}, func() Propagator {
-		return Propagator{
-			PropagatorImpl{
-				Inject: func(context.Context, Carrier) { injectCalled = true },
-				Extract: func(context.Context, Carrier) context.Context {
+	}, &ProviderOptions{
+		NewPropagatorFn: func() Propagator {
+			return NewPropagator(PropagatorImpl{
+				Inject: func(ctx context.Context, cr Carrier) {
+					injectCalled = true
+					cr.Set("injected", "true")
+				},
+				Extract: func(ctx context.Context, cr Carrier) context.Context {
 					extractCalled = true
+					require.EqualValues(t, "true", cr.Get("injected"))
 					return context.Background()
 				},
 				Fields: func() []string {
 					fieldsCalled = true
 					return nil
 				},
-			},
-		}
-	}, nil)
+			})
+		},
+	})
 	tr := pr.NewTracer("name", "version")
 	require.NotZero(t, tr)
 	require.True(t, tr.Enabled())
@@ -124,11 +128,41 @@ func TestProvider(t *testing.T) {
 	require.True(t, spanFromContextCalled)
 	require.True(t, linkFromContextCalled)
 
+	tc := testCarrier{inner: map[string]string{}}
+	cr := NewCarrier(CarrierImpl{
+		Get:  tc.Get,
+		Set:  tc.Set,
+		Keys: tc.Keys,
+	})
 	pp := pr.NewPropagator()
-	pp.Inject(context.Background(), nil)
-	pp.Extract(context.Background(), nil)
-	pp.Fields()
+	pp.Inject(context.Background(), cr)
+	pp.Extract(context.Background(), cr)
+	require.Zero(t, pp.Fields())
+	require.EqualValues(t, 1, len(cr.Keys()))
 	require.True(t, injectCalled)
 	require.True(t, extractCalled)
 	require.True(t, fieldsCalled)
+}
+
+type testCarrier struct {
+	inner map[string]string
+}
+
+func (tc testCarrier) Get(key string) string {
+	if v, ok := tc.inner[key]; ok {
+		return v
+	}
+	return ""
+}
+
+func (tc testCarrier) Set(key string, value string) {
+	tc.inner[key] = value
+}
+
+func (tc testCarrier) Keys() []string {
+	keys := make([]string, 0, len(tc.inner))
+	for k := range tc.inner {
+		keys = append(keys, k)
+	}
+	return keys
 }

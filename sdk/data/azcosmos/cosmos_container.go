@@ -4,6 +4,7 @@
 package azcosmos
 
 import (
+	"bytes"
 	"context"
 	"errors"
 
@@ -523,6 +524,10 @@ func (c *ContainerClient) NewQueryItemsPager(query string, partitionKey Partitio
 		headerOptionsOverride: &h,
 	}
 
+	if c.database.client.queryEngine != nil {
+		return c.executeQueryWithEngine(c.database.client.queryEngine, query, partitionKey, o, operationContext)
+	}
+
 	path, _ := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
 
 	return runtime.NewPager(runtime.PagingHandler[QueryItemsResponse]{
@@ -700,4 +705,133 @@ func (c *ContainerClient) getSpanForContainer(operationType operationType, resou
 
 func (c *ContainerClient) getSpanForItems(operationType operationType) (span, error) {
 	return getSpanNameForItems(c.database.client.accountEndpointUrl(), operationType, c.database.id, c.id)
+}
+
+func (c *ContainerClient) getQueryPlanFromGateway(ctx context.Context, query string, queryOptions *QueryOptions, operationContext pipelineRequestOptions) ([]byte, error) {
+	path, _ := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
+	azResponse, err := c.database.client.sendQueryRequest(
+		path,
+		ctx,
+		query,
+		queryOptions.QueryParameters,
+		operationContext,
+		queryOptions,
+		func(req *policy.Request) {
+			req.Raw().Header.Set(cosmosHeaderIsQueryPlanRequest, "True")
+		})
+	if err != nil {
+		return nil, err
+	}
+
+	buf := new(bytes.Buffer)
+	_, err = buf.ReadFrom(azResponse.Body)
+	if err != nil {
+		return nil, err
+	}
+	return buf.Bytes(), nil
+}
+
+func (c *ContainerClient) getPartitionKeyRanges(ctx context.Context, queryOptions *QueryOptions, operationContext pipelineRequestOptions) ([]byte, error) {
+	path, _ := generatePathForNameBased(resourceTypePartitionKeyRange, operationContext.resourceAddress, true)
+	azResponse, err := c.database.client.sendGetRequest(
+		path,
+		ctx,
+		pipelineRequestOptions{
+			resourceType:          resourceTypePartitionKeyRange,
+			resourceAddress:       operationContext.resourceAddress,
+			headerOptionsOverride: operationContext.headerOptionsOverride,
+		},
+		nil,
+		nil)
+	if err != nil {
+		return nil, err
+	}
+
+	buf := new(bytes.Buffer)
+	_, err = buf.ReadFrom(azResponse.Body)
+	if err != nil {
+		return nil, err
+	}
+	return buf.Bytes(), nil
+}
+
+// Executes a query using the provided query engine.
+func (c *ContainerClient) executeQueryWithEngine(ctx context.Context, queryEngine QueryEngine, query string, partitionKey PartitionKey, queryOptions *QueryOptions, operationContext pipelineRequestOptions) *runtime.Pager[QueryItemsResponse] {
+	var queryPipeline QueryPipeline
+	path, _ := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
+	return runtime.NewPager(runtime.PagingHandler[QueryItemsResponse]{
+		More: func(page QueryItemsResponse) bool {
+			return queryPipeline == nil || !queryPipeline.IsComplete()
+		},
+		Fetcher: func(ctx context.Context, page *QueryItemsResponse) (QueryItemsResponse, error) {
+			if queryPipeline == nil {
+				// First page, we need to fetch the query plan and PK ranges
+				// TODO: We could proactively try to run this against the gateway and then fall back to the engine.
+				plan, err := c.getQueryPlanFromGateway(ctx, query, queryOptions, operationContext)
+				if err != nil {
+					return QueryItemsResponse{}, err
+				}
+				pkranges, err := c.getPartitionKeyRanges()
+				if err != nil {
+					return QueryItemsResponse{}, err
+				}
+
+				// Create a query pipeline
+				queryPipeline, err = queryEngine.CreateQueryPipeline(plan, pkranges)
+				if err != nil {
+					return QueryItemsResponse{}, err
+				}
+				query = queryPipeline.GetRewrittenQuery()
+			}
+
+			for {
+				if queryPipeline.IsComplete() {
+					// Nil out the query pipeline, which will cause More to stop returning true.
+					queryPipeline = nil
+					return QueryItemsResponse{
+						Response: Response{}, // TODO: Synthesize something here?
+						Items:    nil,
+					}, nil
+				}
+				// Fetch more data from the pipeline
+				items, err := queryPipeline.NextBatch(queryOptions.PageSizeHint)
+				if err != nil {
+					return QueryItemsResponse{}, nil
+				}
+
+				if len(items) > 0 {
+					return QueryItemsResponse{
+						Response: Response{}, // TODO: Synthesize something here?
+						Items:    items,
+					}, nil
+				}
+
+				// We didn't get any items, so we need to put more data in.
+				requests, err := queryPipeline.NextRequests()
+				for _, request := range requests {
+					azResponse, err := c.database.client.sendQueryRequest(
+						path,
+						ctx,
+						query,
+						queryOptions.QueryParameters,
+						operationContext,
+						&request,
+						nil)
+					buf := new(bytes.Buffer)
+					_, err = buf.ReadFrom(azResponse.Body)
+					if err != nil {
+						return QueryItemsResponse{}, err
+					}
+					data := buf.Bytes()
+					continuation := azResponse.Header.Get(cosmosHeaderContinuationToken)
+
+					if err = queryPipeline.ProvideData(request.PartitionKeyRangeID, data, continuation); err != nil {
+						return QueryItemsResponse{}, err
+					}
+				}
+
+				// We've provided more data to the pipeline, so let's try to run the pipeline forward again.
+			}
+		},
+	})
 }

@@ -1403,7 +1403,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryCreateWithTrailingSlash() {
 	_require.NoError(err)
 }
 
-func (d *DirectoryRecordedTestsSuite) TestDirectoryCreateDeleteUsingOAuth() {
+func (d *DirectoryUnrecordedTestsSuite) TestDirectoryCreateDeleteUsingOAuth() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
 
@@ -1454,7 +1454,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryCreateDeleteUsingOAuth() {
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
 }
 
-func (d *DirectoryRecordedTestsSuite) TestDirectorySetPropertiesUsingOAuth() {
+func (d *DirectoryUnrecordedTestsSuite) TestDirectorySetPropertiesUsingOAuth() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
 
@@ -1542,7 +1542,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirectorySetPropertiesUsingOAuth() {
 	_require.EqualValues(fileAttributes2, fileAttributes)
 }
 
-func (d *DirectoryRecordedTestsSuite) TestDirectorySetMetadataUsingOAuth() {
+func (d *DirectoryUnrecordedTestsSuite) TestDirectorySetMetadataUsingOAuth() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
 
@@ -1596,7 +1596,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirectorySetMetadataUsingOAuth() {
 	_require.EqualValues(gResp.Metadata, md)
 }
 
-func (d *DirectoryRecordedTestsSuite) TestDirectoryListHandlesUsingOAuth() {
+func (d *DirectoryUnrecordedTestsSuite) TestDirectoryListHandlesUsingOAuth() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
 
@@ -1631,7 +1631,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryListHandlesUsingOAuth() {
 	_require.Equal(*resp.NextMarker, "")
 }
 
-func (d *DirectoryRecordedTestsSuite) TestDirectoryForceCloseHandlesUsingOAuth() {
+func (d *DirectoryUnrecordedTestsSuite) TestDirectoryForceCloseHandlesUsingOAuth() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
 
@@ -1666,7 +1666,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryForceCloseHandlesUsingOAuth()
 	_require.Nil(resp.Marker)
 }
 
-func (d *DirectoryRecordedTestsSuite) TestDirectoryListUsingOAuth() {
+func (d *DirectoryUnrecordedTestsSuite) TestDirectoryListUsingOAuth() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
 
@@ -1780,7 +1780,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryRenameDefault() {
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ParentNotFound)
 }
 
-func (d *DirectoryRecordedTestsSuite) TestDirectoryRenameUsingOAuth() {
+func (d *DirectoryUnrecordedTestsSuite) TestDirectoryRenameUsingOAuth() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
 
@@ -2083,7 +2083,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryCreateDeleteTrailingDot() {
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
 }
 
-func (d *DirectoryRecordedTestsSuite) TestDirectorySetPropertiesTrailingDotAndOAuth() {
+func (d *DirectoryUnrecordedTestsSuite) TestDirectorySetPropertiesTrailingDotAndOAuth() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
 
@@ -2438,7 +2438,7 @@ func (d *DirectoryRecordedTestsSuite) TestListFileDirEncodedPrefix() {
 	}
 }
 
-func (d *DirectoryRecordedTestsSuite) TestDirectoryClientDefaultAudience() {
+func (d *DirectoryUnrecordedTestsSuite) TestDirectoryClientDefaultAudience() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
 
@@ -2473,7 +2473,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryClientDefaultAudience() {
 	_require.NoError(err)
 }
 
-func (d *DirectoryRecordedTestsSuite) TestDirectoryClientCustomAudience() {
+func (d *DirectoryUnrecordedTestsSuite) TestDirectoryClientCustomAudience() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
 

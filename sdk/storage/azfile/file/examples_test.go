@@ -892,6 +892,7 @@ func Example_fileClient_SetHttpHeadersNFS() {
 	handleError(err)
 	fClient := premiumShareClient.NewRootDirectoryClient().NewFileClient(testcommon.GenerateFileName(shareName))
 	_, err = fClient.Create(context.Background(), 0, nil)
+	handleError(err)
 
 	md5Str := "MDAwMDAwMDA="
 	testMd5 := []byte(md5Str)
@@ -936,6 +937,7 @@ func Example_fileClient_NFS_CreateHardLink() {
 
 	options := &share.ClientOptions{}
 	premiumShareClient, err := share.NewClientWithSharedKeyCredential(shareURL, cred, options)
+	handleError(err)
 
 	_, err = premiumShareClient.Create(context.Background(), &share.CreateOptions{
 		EnabledProtocols: to.Ptr("NFS"),
@@ -944,11 +946,13 @@ func Example_fileClient_NFS_CreateHardLink() {
 	directoryName := testcommon.GenerateDirectoryName("dirName")
 	directoryClient := premiumShareClient.NewRootDirectoryClient().NewSubdirectoryClient(directoryName)
 	_, err = directoryClient.Create(context.Background(), nil)
+	handleError(err)
 
 	// Create a source file
 	sourceFileName := testcommon.GenerateFileName("file1")
 	sourceFileClient := directoryClient.NewFileClient(sourceFileName)
 	_, err = sourceFileClient.Create(context.Background(), int64(1024), nil)
+	handleError(err)
 
 	// Create a hard link to the source file
 	hardLinkFileName := testcommon.GenerateFileName("file2")

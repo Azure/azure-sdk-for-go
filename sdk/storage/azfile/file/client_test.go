@@ -3706,7 +3706,7 @@ func (f *FileRecordedTestsSuite) TestFileForceCloseHandlesDefault() {
 	_require.Nil(resp.Marker)
 }
 
-func (f *FileRecordedTestsSuite) TestFileCreateDeleteUsingOAuth() {
+func (f *FileUnrecordedTestsSuite) TestFileCreateDeleteUsingOAuth() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -3758,7 +3758,7 @@ func (f *FileRecordedTestsSuite) TestFileCreateDeleteUsingOAuth() {
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
 }
 
-func (f *FileRecordedTestsSuite) TestFileGetSetPropertiesUsingOAuth() {
+func (f *FileUnrecordedTestsSuite) TestFileGetSetPropertiesUsingOAuth() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -3845,7 +3845,7 @@ func (f *FileRecordedTestsSuite) TestFileGetSetPropertiesUsingOAuth() {
 	_require.NotNil(getResp.IsServerEncrypted)
 }
 
-func (f *FileRecordedTestsSuite) TestFileSetMetadataUsingOAuth() {
+func (f *FileUnrecordedTestsSuite) TestFileSetMetadataUsingOAuth() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -3888,7 +3888,7 @@ func (f *FileRecordedTestsSuite) TestFileSetMetadataUsingOAuth() {
 	_require.EqualValues(getResp.Metadata, metadata)
 }
 
-func (f *FileRecordedTestsSuite) TestFileUploadClearListRangeUsingOAuth() {
+func (f *FileUnrecordedTestsSuite) TestFileUploadClearListRangeUsingOAuth() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -4331,7 +4331,7 @@ func (f *FileRecordedTestsSuite) TestFileCreateDeleteTrailingDot() {
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
 }
 
-func (f *FileRecordedTestsSuite) TestFileGetSetPropertiesTrailingDotOAuth() {
+func (f *FileUnrecordedTestsSuite) TestFileGetSetPropertiesTrailingDotOAuth() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -4451,7 +4451,7 @@ func (f *FileRecordedTestsSuite) TestFileSetMetadataTrailingDot() {
 	_require.EqualValues(getResp.Metadata, metadata)
 }
 
-func (f *FileRecordedTestsSuite) TestFileUploadClearListRangeTrailingDotOAuth() {
+func (f *FileUnrecordedTestsSuite) TestFileUploadClearListRangeTrailingDotOAuth() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -4634,7 +4634,7 @@ func (f *FileUnrecordedTestsSuite) TestFileUploadRangeFromURLTrailingDot() {
 	_require.EqualValues(data, content)
 }
 
-func (f *FileRecordedTestsSuite) TestStartCopyTrailingDotOAuth() {
+func (f *FileUnrecordedTestsSuite) TestStartCopyTrailingDotOAuth() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -4852,7 +4852,7 @@ func TestServiceVersion(t *testing.T) {
 	require.NoError(t, err)
 }
 
-func (f *FileRecordedTestsSuite) TestFileClientDefaultAudience() {
+func (f *FileUnrecordedTestsSuite) TestFileClientDefaultAudience() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -4887,7 +4887,7 @@ func (f *FileRecordedTestsSuite) TestFileClientDefaultAudience() {
 	_require.NoError(err)
 }
 
-func (f *FileRecordedTestsSuite) TestFileClientCustomAudience() {
+func (f *FileUnrecordedTestsSuite) TestFileClientCustomAudience() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 

@@ -560,7 +560,7 @@ func (s *ServiceRecordedTestsSuite) TestServiceCreateDeleteRestoreShare() {
 	_require.Equal(sharesCnt, 1)
 }
 
-func (s *ServiceRecordedTestsSuite) TestServiceCreateDeleteDirOAuth() {
+func (s *ServiceUnrecordedTestsSuite) TestServiceCreateDeleteDirOAuth() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -727,7 +727,7 @@ func (s *ServiceRecordedTestsSuite) TestServiceClientWithNilSharedKey() {
 	_require.Error(err)
 }
 
-func (s *ServiceRecordedTestsSuite) TestServiceClientCustomAudience() {
+func (s *ServiceUnrecordedTestsSuite) TestServiceClientCustomAudience() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 

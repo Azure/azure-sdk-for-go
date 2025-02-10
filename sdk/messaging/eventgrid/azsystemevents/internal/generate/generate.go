@@ -23,6 +23,19 @@ var filesToDelete = []string{
 
 func main() {
 	fn := func() error {
+		// temporary renames until TypeSpec is merged and can be modified.
+		{
+			m, err := gopls.Symbols("models.go")
+
+			if err != nil {
+				return err
+			}
+
+			if err := gopls.Rename(m.Get("AcsMessageReactionContent"), "ACSMessageReactionContent"); err != nil {
+				return err
+			}
+		}
+
 		if err := swapErrorTypes(); err != nil {
 			return err
 		}

@@ -779,6 +779,8 @@ func (s *ServiceRecordedTestsSuite) TestAccountPropertiesWithNFS() {
 	_, err = premiumShareClient.Create(context.Background(), &share.CreateOptions{
 		EnabledProtocols: to.Ptr("NFS"),
 	})
+	_require.NoError(err)
+
 	resp, err := premiumShareClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.Equal(resp.EnabledProtocols, to.Ptr("NFS"))

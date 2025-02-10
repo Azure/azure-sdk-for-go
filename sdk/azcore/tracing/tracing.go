@@ -25,9 +25,6 @@ func NewProvider(newTracerFn func(name, version string) Tracer, options *Provide
 	if options == nil {
 		options = &ProviderOptions{}
 	}
-	if options.NewPropagatorFn == nil {
-		options.NewPropagatorFn = func() Propagator { return Propagator{} }
-	}
 	return Provider{
 		newTracerFn:     newTracerFn,
 		newPropagatorFn: options.NewPropagatorFn,

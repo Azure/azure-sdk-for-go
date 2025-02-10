@@ -6,5 +6,5 @@ package common
 const (
 	ChangelogFileName = "CHANGELOG.md"
 	GoModFileName     = "go.mod"
-	SdkRootPath       = "sdk"
+	SdkRootPath       = "/sdk"
 )

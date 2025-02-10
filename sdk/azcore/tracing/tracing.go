@@ -100,6 +100,7 @@ func (t Tracer) Start(ctx context.Context, spanName string, options *SpanOptions
 			opts = *options
 		}
 		opts.Attributes = append(opts.Attributes, t.attrs...)
+		opts.Links = append(opts.Links, t.links...)
 		return t.newSpanFn(ctx, spanName, &opts)
 	}
 	return ctx, Span{}

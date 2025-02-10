@@ -70,4 +70,4 @@ contact opencode@microsoft.com with any additional questions or comments.
 [azappconfig_setting]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig#Setting
 [azappconfig_src]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/data/azappconfig
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-go%2Fsdk%2Fdata%2Fazappconfig%2FREADME.png)
+

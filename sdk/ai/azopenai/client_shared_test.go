@@ -382,12 +382,6 @@ func getEndpoint(ev string, azure bool) string {
 	return v
 }
 
-func skipNowIfThrottled(t *testing.T, err error) {
-	if respErr := (*azcore.ResponseError)(nil); errors.As(err, &respErr) && respErr.StatusCode == http.StatusTooManyRequests {
-		t.Skipf("OpenAI resource overloaded, skipping this test")
-	}
-}
-
 type mimeTypeRecordingPolicy struct{}
 
 // Do changes out the boundary for a multipart message. This makes it simpler to write

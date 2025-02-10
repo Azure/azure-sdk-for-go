@@ -376,6 +376,9 @@ func (p Propagator) Fields() []string {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// CarrierImpl abstracts the underlying implementation for Carrier,
+// allowing it to work with various tracing implementations.
+// Any zero-values will have their default, no-op behavior.
 type CarrierImpl struct {
 	// Get contains the implementation for the Carrier.Get method.
 	Get func(key string) string

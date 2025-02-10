@@ -52,3 +52,8 @@ pipelines:
           lastModifiedDate: 2025-02-08
         binskim:
           lastModifiedDate: 2025-02-08
+      source:
+        credscan:
+          lastModifiedDate: 2025-02-10
+        armory:
+          lastModifiedDate: 2025-02-10

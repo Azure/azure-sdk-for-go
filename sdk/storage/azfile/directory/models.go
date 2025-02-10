@@ -181,8 +181,6 @@ type SetPropertiesOptions struct {
 	Owner *string
 	// NFS only. The owning group of the file or directory.
 	Group *string
-	//// NFS only. Type of the file or directory.
-	//NFSFileType *NFSFileType
 }
 
 func (o *SetPropertiesOptions) format() *generated.DirectoryClientSetPropertiesOptions {

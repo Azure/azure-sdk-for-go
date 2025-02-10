@@ -817,17 +817,9 @@ func FindModuleDirByGoMod(root string) (string, error) {
 			curLevel++
 			continue
 		}
-		entries, err := os.ReadDir(path)
-		if err != nil {
-			return "", err
-		}
-		for _, entry := range entries {
-			if entry.IsDir() {
-				continue
-			}
-			if entry.Name() == GoModFileName {
-				return path, nil
-			}
+		goModFilePath := filepath.Join(path, GoModFileName)
+		if _, err := os.Stat(goModFilePath); err == nil {
+			return path, nil
 		}
 		path = filepath.Dir(path)
 		curLevel++

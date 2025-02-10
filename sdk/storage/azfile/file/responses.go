@@ -96,3 +96,6 @@ type ListHandlesResponse = generated.FileClientListHandlesResponse
 
 // ListHandlesSegmentResponse - An enumeration of handles.
 type ListHandlesSegmentResponse = generated.ListHandlesResponse
+
+// CreateHardLinkResponse contains response from method Client.CreateHardLink
+type CreateHardLinkResponse = generated.FileClientCreateHardLinkResponse

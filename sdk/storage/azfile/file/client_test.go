@@ -453,7 +453,7 @@ func (f *FileRecordedTestsSuite) TestCreateFileNFS() {
 	_require.Equal(*resp.FileMode, fileMode)
 	_require.Equal(*resp.Group, group)
 	_require.Equal(*resp.Owner, owner)
-	_require.Equal(*resp.NfsFileType, file.NfsFileType("Regular"))
+	_require.Equal(*resp.NfsFileType, file.NFSFileType("Regular"))
 }
 
 func (f *FileUnrecordedTestsSuite) TestFileGetSetPropertiesNonDefault() {
@@ -5060,7 +5060,7 @@ func (f *FileRecordedTestsSuite) TestCreateHardLinkNFS() {
 	_require.NoError(err)
 	_require.NotNil(resp)
 
-	_require.Equal(*resp.NfsFileType, file.NfsFileType("Regular"))
+	_require.Equal(*resp.NfsFileType, file.NFSFileType("Regular"))
 	_require.Equal(resp.Owner, to.Ptr("0"))
 	_require.Equal(resp.Group, to.Ptr("0"))
 	_require.Equal(resp.FileMode, to.Ptr("0664"))
@@ -5122,7 +5122,7 @@ func (f *FileRecordedTestsSuite) TestCreateHardLinkNFSWithLease() {
 	_require.NoError(err)
 	_require.NotNil(resp)
 
-	_require.Equal(*resp.NfsFileType, file.NfsFileType("Regular"))
+	_require.Equal(*resp.NfsFileType, file.NFSFileType("Regular"))
 	_require.Equal(resp.Owner, to.Ptr("0"))
 	_require.Equal(resp.Group, to.Ptr("0"))
 	_require.Equal(resp.FileMode, to.Ptr("0664"))

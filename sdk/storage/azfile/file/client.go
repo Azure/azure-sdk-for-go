@@ -327,12 +327,9 @@ func (f *Client) ListHandles(ctx context.Context, options *ListHandlesOptions) (
 }
 
 // CreateHardLink operation returns a list of open handles on a file.
-// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/list-handles.
-func (f *Client) CreateHardLink(ctx context.Context, options *CreateHardLinkOptions) (CreateHardLinkResponse, error) {
-	if options == nil {
-		return CreateHardLinkResponse{}, errors.New("targetFile cannot be nil")
-	}
-	opts, targetFile, leaseAccessConditions := options.format()
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/create-hard-link.
+func (f *Client) CreateHardLink(ctx context.Context, targetFile string, options *CreateHardLinkOptions) (CreateHardLinkResponse, error) {
+	opts, leaseAccessConditions := options.format()
 	resp, err := f.generated().CreateHardLink(ctx, targetFile, opts, leaseAccessConditions)
 	return resp, err
 }

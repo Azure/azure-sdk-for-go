@@ -18,9 +18,6 @@ import (
 // SharedKeyCredential contains an account's name and its primary or secondary key.
 type SharedKeyCredential = exported.SharedKeyCredential
 
-// NfsFileType specifies the type of the file or directory.
-type NfsFileType = generated.NfsFileType
-
 // NewSharedKeyCredential creates an immutable SharedKeyCredential containing the
 // storage account's name and either its primary or secondary key.
 func NewSharedKeyCredential(accountName, accountKey string) (*SharedKeyCredential, error) {
@@ -52,8 +49,6 @@ type CreateOptions struct {
 	Owner *string
 	// NFS only. The owning group of the file or directory.
 	Group *string
-	// NFS only. Type of the file or directory.
-	NfsFileType *NfsFileType
 }
 
 func (o *CreateOptions) format() *generated.DirectoryClientCreateOptions {
@@ -186,8 +181,8 @@ type SetPropertiesOptions struct {
 	Owner *string
 	// NFS only. The owning group of the file or directory.
 	Group *string
-	// NFS only. Type of the file or directory.
-	NfsFileType *NfsFileType
+	//// NFS only. Type of the file or directory.
+	//NFSFileType *NFSFileType
 }
 
 func (o *SetPropertiesOptions) format() *generated.DirectoryClientSetPropertiesOptions {

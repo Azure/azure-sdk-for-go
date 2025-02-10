@@ -91,8 +91,6 @@ type CreateOptions struct {
 	Owner *string
 	// NFS only. The owning group of the file or directory.
 	Group *string
-	// NFS only. Type of the file or directory.
-	NfsFileType *NfsFileType
 }
 
 func (o *CreateOptions) format() (*generated.FileClientCreateOptions, *generated.ShareFileHTTPHeaders, *LeaseAccessConditions) {
@@ -114,7 +112,6 @@ func (o *CreateOptions) format() (*generated.FileClientCreateOptions, *generated
 		FileMode:          o.FileMode,
 		Owner:             o.Owner,
 		Group:             o.Group,
-		NfsFileType:       o.NfsFileType,
 	}
 
 	if permissionKey != nil && *permissionKey != shared.DefaultFilePermissionString {
@@ -815,14 +812,12 @@ func (o *ForceCloseHandlesOptions) format() *generated.FileClientForceCloseHandl
 
 // CreateHardLinkOptions contains the optional parameters for the Client.CreateHardLink method.
 type CreateHardLinkOptions struct {
-	// NFS only. Required. Specifies the path of the target file to which the link will be created, up to 2 KiB in length.
-	TargetFile string
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
-func (o *CreateHardLinkOptions) format() (*generated.FileClientCreateHardLinkOptions, string, *generated.LeaseAccessConditions) {
-	return &generated.FileClientCreateHardLinkOptions{}, o.TargetFile, o.LeaseAccessConditions
+func (o *CreateHardLinkOptions) format() (*generated.FileClientCreateHardLinkOptions, *generated.LeaseAccessConditions) {
+	return &generated.FileClientCreateHardLinkOptions{}, o.LeaseAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

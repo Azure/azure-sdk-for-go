@@ -41,8 +41,8 @@ func PossibleCopyStatusTypeValues() []CopyStatusType {
 	return generated.PossibleCopyStatusTypeValues()
 }
 
-// NfsFileType specifies the type of the file or directory.
-type NfsFileType = generated.NfsFileType
+// NFSFileType specifies the type of the file or directory.
+type NFSFileType = generated.NfsFileType
 
 // ModeCopyMode specifies the mode of the file or directory.
 type ModeCopyMode = generated.ModeCopyMode
@@ -52,9 +52,9 @@ type OwnerCopyMode = generated.OwnerCopyMode
 
 const (
 	// NFSFileTypeRegular Default and only value for the parameter NFS File Type.
-	NFSFileTypeRegular   NfsFileType = generated.NfsFileTypeRegular
-	NfsFileTypeDirectory NfsFileType = generated.NfsFileTypeDirectory
-	NfsFileTypeSymlink   NfsFileType = generated.NfsFileTypeSymLink
+	NFSFileTypeRegular   NFSFileType = generated.NfsFileTypeRegular
+	NfsFileTypeDirectory NFSFileType = generated.NfsFileTypeDirectory
+	NfsFileTypeSymlink   NFSFileType = generated.NfsFileTypeSymLink
 
 	OwnerCopyModeOverride OwnerCopyMode = generated.OwnerCopyModeOverride
 	OwnerCopyModeSource   OwnerCopyMode = generated.OwnerCopyModeSource

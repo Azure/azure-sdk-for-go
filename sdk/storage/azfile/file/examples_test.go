@@ -953,9 +953,7 @@ func Example_fileClient_NFS_CreateHardLink() {
 	hardLinkFileClient := directoryClient.NewFileClient(hardLinkFileName)
 
 	targetFilePath := fmt.Sprintf("/%s/%s", directoryName, sourceFileName)
-	_, err = hardLinkFileClient.CreateHardLink(context.Background(), &file.CreateHardLinkOptions{
-		TargetFile: targetFilePath,
-	})
+	_, err = hardLinkFileClient.CreateHardLink(context.Background(), targetFilePath, &file.CreateHardLinkOptions{})
 
 	handleError(err)
 	fmt.Println("Hard Link created - Link count = 2")

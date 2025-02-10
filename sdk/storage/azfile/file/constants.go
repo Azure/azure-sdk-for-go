@@ -53,8 +53,8 @@ type OwnerCopyMode = generated.OwnerCopyMode
 const (
 	// NFSFileTypeRegular Default and only value for the parameter NFS File Type.
 	NFSFileTypeRegular   NFSFileType = generated.NfsFileTypeRegular
-	NfsFileTypeDirectory NFSFileType = generated.NfsFileTypeDirectory
-	NfsFileTypeSymlink   NFSFileType = generated.NfsFileTypeSymLink
+	NFSFileTypeDirectory NFSFileType = generated.NfsFileTypeDirectory
+	NFSFileTypeSymlink   NFSFileType = generated.NfsFileTypeSymLink
 
 	OwnerCopyModeOverride OwnerCopyMode = generated.OwnerCopyModeOverride
 	OwnerCopyModeSource   OwnerCopyMode = generated.OwnerCopyModeSource

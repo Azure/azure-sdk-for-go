@@ -313,7 +313,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirCreateNfs() {
 	_require.Equal(*gResp.Owner, owner)
 	_require.Equal(*gResp.Group, group)
 	_require.Equal(*gResp.FileMode, mode)
-	_require.Equal(*gResp.NfsFileType, file.NfsFileTypeDirectory)
+	_require.Equal(*gResp.NfsFileType, file.NFSFileTypeDirectory)
 }
 
 func (d *DirectoryRecordedTestsSuite) TestDirCreateRenameFilePermissionFormatDefault() {
@@ -548,7 +548,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirSetPropertiesNfs() {
 	_require.Equal(*response.FileMode, mode)
 	_require.Equal(*response.Group, group)
 	_require.Equal(*response.Owner, owner)
-	_require.Equal(*response.NfsFileType, file.NfsFileTypeDirectory)
+	_require.Equal(*response.NfsFileType, file.NFSFileTypeDirectory)
 
 }
 

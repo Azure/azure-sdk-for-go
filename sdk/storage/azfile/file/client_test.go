@@ -5054,9 +5054,7 @@ func (f *FileRecordedTestsSuite) TestCreateHardLinkNFS() {
 	hardLinkFileClient := directoryClient.NewFileClient(hardLinkFileName)
 
 	targetFilePath := fmt.Sprintf("/%s/%s", directoryName, sourceFileName)
-	resp, err := hardLinkFileClient.CreateHardLink(context.Background(), &file.CreateHardLinkOptions{
-		TargetFile: targetFilePath,
-	})
+	resp, err := hardLinkFileClient.CreateHardLink(context.Background(), targetFilePath, &file.CreateHardLinkOptions{})
 	_require.NoError(err)
 	_require.NotNil(resp)
 
@@ -5115,8 +5113,7 @@ func (f *FileRecordedTestsSuite) TestCreateHardLinkNFSWithLease() {
 	hardLinkFileClient := directoryClient.NewFileClient(hardLinkFileName)
 
 	targetFilePath := fmt.Sprintf("/%s/%s", directoryName, sourceFileName)
-	resp, err := hardLinkFileClient.CreateHardLink(context.Background(), &file.CreateHardLinkOptions{
-		TargetFile:            targetFilePath,
+	resp, err := hardLinkFileClient.CreateHardLink(context.Background(), targetFilePath, &file.CreateHardLinkOptions{
 		LeaseAccessConditions: &file.LeaseAccessConditions{LeaseID: leaseId},
 	})
 	_require.NoError(err)
@@ -5170,8 +5167,6 @@ func (f *FileRecordedTestsSuite) TestCreateHardLinkNFSNilOptions() {
 	hardLinkFileName := testcommon.GenerateFileName("file2")
 	hardLinkFileClient := directoryClient.NewFileClient(hardLinkFileName)
 
-	resp, err := hardLinkFileClient.CreateHardLink(context.Background(), nil)
+	_, err = hardLinkFileClient.CreateHardLink(context.Background(), "", nil)
 	_require.Error(err)
-	_require.Error(err, "targetFile cannot be nil")
-	_require.NotNil(resp)
 }

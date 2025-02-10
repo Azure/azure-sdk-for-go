@@ -817,6 +817,9 @@ type CreateHardLinkOptions struct {
 }
 
 func (o *CreateHardLinkOptions) format() (*generated.FileClientCreateHardLinkOptions, *generated.LeaseAccessConditions) {
+	if o == nil {
+		return nil, nil
+	}
 	return &generated.FileClientCreateHardLinkOptions{}, o.LeaseAccessConditions
 }
 

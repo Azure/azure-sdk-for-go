@@ -5150,6 +5150,7 @@ func (f *FileRecordedTestsSuite) TestCreateHardLinkNFSNilOptions() {
 	_, err = premiumShareClient.Create(context.Background(), &share.CreateOptions{
 		EnabledProtocols: to.Ptr("NFS"),
 	})
+	_require.NoError(err)
 	defer testcommon.DeleteShare(context.Background(), _require, premiumShareClient)
 
 	directoryName := testcommon.GenerateDirectoryName(testName)

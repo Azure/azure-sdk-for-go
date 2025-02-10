@@ -842,6 +842,7 @@ func Example_fileClient_CreateNFSShare() {
 
 	options := &share.ClientOptions{}
 	premiumShareClient, err := share.NewClientWithSharedKeyCredential(shareURL, cred, options)
+	handleError(err)
 
 	_, err = premiumShareClient.Create(context.Background(), &share.CreateOptions{
 		EnabledProtocols: to.Ptr("NFS"),
@@ -883,6 +884,7 @@ func Example_fileClient_SetHttpHeadersNFS() {
 
 	options := &share.ClientOptions{}
 	premiumShareClient, err := share.NewClientWithSharedKeyCredential(shareURL, cred, options)
+	handleError(err)
 
 	_, err = premiumShareClient.Create(context.Background(), &share.CreateOptions{
 		EnabledProtocols: to.Ptr("NFS"),

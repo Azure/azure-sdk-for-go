@@ -19,6 +19,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
+	"go.opentelemetry.io/otel/propagation"
 	tracesdk "go.opentelemetry.io/otel/sdk/trace"
 	"go.opentelemetry.io/otel/trace"
 	"go.opentelemetry.io/otel/trace/embedded"
@@ -169,6 +170,65 @@ func TestConvertAttributes(t *testing.T) {
 	}
 }
 
+func TestConvertLinks(t *testing.T) {
+	attr := tracing.Attribute{
+		Key:   "key",
+		Value: "value",
+	}
+	spanContext := tracing.NewSpanContext(tracing.SpanContextConfig{
+		TraceID:    tracing.TraceID{1, 2, 3, 4, 5, 6, 7, 8},
+		SpanID:     tracing.SpanID{1, 2, 3, 4, 5, 6, 7, 8},
+		TraceFlags: tracing.TraceFlags(0x1),
+		TraceState: "key1=val1,key2=val2",
+		Remote:     true,
+	})
+
+	links := convertLinks([]tracing.Link{
+		{
+			SpanContext: spanContext,
+		},
+		{
+			Attributes: []tracing.Attribute{attr},
+		},
+		{
+			SpanContext: spanContext,
+			Attributes:  []tracing.Attribute{attr},
+		},
+	})
+	require.Len(t, links, 3)
+	require.NotNil(t, links[0].SpanContext)
+	require.True(t, links[0].SpanContext.IsRemote())
+	require.Len(t, links[0].Attributes, 0)
+
+	require.NotNil(t, links[1].SpanContext)
+	require.False(t, links[1].SpanContext.IsRemote())
+	require.Len(t, links[1].Attributes, 1)
+
+	require.NotNil(t, links[2].SpanContext)
+	require.True(t, links[2].SpanContext.IsRemote())
+	require.Len(t, links[2].Attributes, 1)
+}
+
+func TestConvertSpanContext(t *testing.T) {
+	traceID := tracing.TraceID{1, 2, 3, 4, 5, 6, 7, 8}
+	spanID := tracing.SpanID{1, 2, 3, 4, 5, 6, 7, 8}
+	traceFlags := tracing.TraceFlags(0x1)
+	spanContext := tracing.NewSpanContext(tracing.SpanContextConfig{
+		TraceID:    traceID,
+		SpanID:     spanID,
+		TraceFlags: traceFlags,
+		TraceState: "key1=val1,key2=val2",
+		Remote:     true,
+	})
+
+	otelSpanContext := convertSpanContext(spanContext)
+	assert.EqualValues(t, traceID, otelSpanContext.TraceID())
+	assert.EqualValues(t, spanID, otelSpanContext.SpanID())
+	assert.EqualValues(t, traceFlags, otelSpanContext.TraceFlags())
+	assert.EqualValues(t, "key1=val1,key2=val2", otelSpanContext.TraceState().String())
+	assert.True(t, otelSpanContext.IsRemote())
+}
+
 func TestConvertSpanKind(t *testing.T) {
 	assert.EqualValues(t, trace.SpanKindClient, convertSpanKind(tracing.SpanKindClient))
 	assert.EqualValues(t, trace.SpanKindConsumer, convertSpanKind(tracing.SpanKindConsumer))
@@ -183,6 +243,22 @@ func TestConvertStatus(t *testing.T) {
 	assert.EqualValues(t, codes.Error, convertStatus(tracing.SpanStatusError))
 	assert.EqualValues(t, codes.Unset, convertStatus(tracing.SpanStatusUnset))
 	assert.EqualValues(t, codes.Unset, convertStatus(tracing.SpanStatus(12345)))
+}
+
+func TestConvertPropagator(t *testing.T) {
+	carrier := tracing.NewCarrier(tracing.CarrierImpl{
+		Get:  func(key string) string { return "" },
+		Set:  func(key, value string) {},
+		Keys: func() []string { return nil },
+	})
+	propagator := &testPropagator{}
+	otelPropagator := convertPropagator(propagator)
+	require.NotNil(t, otelPropagator)
+	otelPropagator.Inject(context.Background(), carrier)
+	otelPropagator.Extract(context.Background(), carrier)
+	require.True(t, propagator.injectCalled)
+	require.True(t, propagator.extractCalled)
+	require.Len(t, propagator.Fields(), 1)
 }
 
 type testExporter struct {
@@ -258,4 +334,22 @@ func (ts *testSpan) SetAttributes(kv ...attribute.KeyValue) {
 func (ts *testSpan) TracerProvider() trace.TracerProvider {
 	ts.t.Fatal("TracerProvider not required")
 	return nil
+}
+
+type testPropagator struct {
+	injectCalled  bool
+	extractCalled bool
+}
+
+func (tp *testPropagator) Inject(ctx context.Context, carrier propagation.TextMapCarrier) {
+	tp.injectCalled = true
+}
+
+func (tp *testPropagator) Extract(ctx context.Context, carrier propagation.TextMapCarrier) context.Context {
+	tp.extractCalled = true
+	return ctx
+}
+
+func (tp *testPropagator) Fields() []string {
+	return []string{"testfield"}
 }

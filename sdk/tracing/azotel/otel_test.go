@@ -29,19 +29,24 @@ func TestNewTracingProvider(t *testing.T) {
 	exporter := &testExporter{}
 
 	otelTP := tracesdk.NewTracerProvider(tracesdk.WithBatcher(exporter))
+	provider := NewTracingProvider(otelTP, nil)
 
 	client, err := azcore.NewClient("azotel", internal.Version, azruntime.PipelineOptions{
 		Tracing: azruntime.TracingOptions{
 			Namespace: "TestNewTracingProvider",
 		},
 	}, &azcore.ClientOptions{
-		TracingProvider: NewTracingProvider(otelTP, nil),
+		TracingProvider: provider,
 	})
 	require.NoError(t, err)
 
 	// returns a no-op span as there is no span yet
 	emptySpan := client.Tracer().SpanFromContext(context.Background())
 	emptySpan.AddEvent("noop_event")
+
+	// returns an empty link as there is no span yet
+	emptyLink := client.Tracer().LinkFromContext(context.Background())
+	require.Empty(t, emptyLink)
 
 	ctx, endSpan := azruntime.StartSpan(context.Background(), "test_span", client.Tracer(), nil)
 
@@ -50,6 +55,9 @@ func TestNewTracingProvider(t *testing.T) {
 
 	startedSpan := client.Tracer().SpanFromContext(req.Raw().Context())
 	startedSpan.AddEvent("post_event")
+
+	startedSpanLink := client.Tracer().LinkFromContext(req.Raw().Context())
+	require.NotEmpty(t, startedSpanLink)
 
 	_, err = client.Pipeline().Do(req)
 	require.NoError(t, err)
@@ -60,6 +68,34 @@ func TestNewTracingProvider(t *testing.T) {
 	require.NoError(t, otelTP.Shutdown(context.Background()))
 
 	require.Len(t, exporter.spans, 2)
+}
+
+func TestPropagator(t *testing.T) {
+	provider := NewTracingProvider(tracesdk.NewTracerProvider(), nil)
+	tracer := provider.NewTracer("test", "1.0")
+	propagator := provider.NewPropagator()
+	require.EqualValues(t, 2, len(propagator.Fields()))
+
+	mapCarrier := propagation.MapCarrier{}
+	carrier := tracing.NewCarrier(tracing.CarrierImpl{
+		Get:  mapCarrier.Get,
+		Set:  mapCarrier.Set,
+		Keys: mapCarrier.Keys,
+	})
+
+	ctx, endSpan := azruntime.StartSpan(context.Background(), "test_span", tracer, nil)
+	spanContext := tracer.SpanFromContext(ctx).SpanContext()
+	require.NotNil(t, spanContext)
+	require.False(t, spanContext.IsRemote())
+	propagator.Inject(ctx, carrier)
+	endSpan(nil)
+
+	extractedCtx := propagator.Extract(context.Background(), carrier)
+	extractedSpanContext := tracer.SpanFromContext(extractedCtx).SpanContext()
+	require.NotNil(t, extractedSpanContext)
+	require.True(t, extractedSpanContext.IsRemote())
+	require.EqualValues(t, spanContext.TraceID(), extractedSpanContext.TraceID())
+	require.EqualValues(t, spanContext.SpanID(), extractedSpanContext.SpanID())
 }
 
 func TestConvertSpan(t *testing.T) {
@@ -84,6 +120,9 @@ func TestConvertSpan(t *testing.T) {
 	}
 	span.SetAttributes(attr)
 	require.Len(t, ts.attributes, 1)
+
+	span.AddLink(tracing.Link{})
+	require.Len(t, ts.links, 1)
 
 	const statusDesc = "everything is ok"
 	span.SetStatus(tracing.SpanStatusOK, statusDesc)
@@ -283,12 +322,12 @@ type testSpan struct {
 
 	t            *testing.T
 	attributes   []attribute.KeyValue
+	links        []trace.Link
 	eventName    string
 	eventOptions []trace.EventOption
 	endCalled    bool
 	statusCode   codes.Code
 	statusDesc   string
-	link         trace.Link
 }
 
 func (ts *testSpan) End(options ...trace.SpanEndOption) {
@@ -298,10 +337,6 @@ func (ts *testSpan) End(options ...trace.SpanEndOption) {
 func (ts *testSpan) AddEvent(name string, options ...trace.EventOption) {
 	ts.eventName = name
 	ts.eventOptions = options
-}
-
-func (ts *testSpan) AddLink(link trace.Link) {
-	ts.link = link
 }
 
 func (ts *testSpan) IsRecording() bool {
@@ -329,6 +364,10 @@ func (ts *testSpan) SetName(name string) {
 
 func (ts *testSpan) SetAttributes(kv ...attribute.KeyValue) {
 	ts.attributes = kv
+}
+
+func (ts *testSpan) AddLink(link trace.Link) {
+	ts.links = append(ts.links, link)
 }
 
 func (ts *testSpan) TracerProvider() trace.TracerProvider {

@@ -54,7 +54,6 @@ func NewTracingProvider(tracerProvider trace.TracerProvider, opts *TracingProvid
 				}
 			},
 		})
-
 	}, &tracing.ProviderOptions{
 		NewPropagatorFn: func() tracing.Propagator {
 			return convertPropagator(propagation.TraceContext{})

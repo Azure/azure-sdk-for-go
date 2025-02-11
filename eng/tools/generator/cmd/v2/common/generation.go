@@ -629,7 +629,7 @@ func (t *TypeSpecCommonGenerator) AfterGenerate(generateParam *GenerateParam, ch
 	modulePath := generateParam.ModulePath
 	if generateParam.IsSubPackage {
 		// remove go.mod for sub package
-		goModPath := filepath.Join(packagePath, "go.mod")
+		goModPath := filepath.Join(packagePath, GoModFileName)
 		if _, err := os.Stat(goModPath); !os.IsNotExist(err) {
 			if err = os.Remove(goModPath); err != nil {
 				return nil, err
@@ -637,8 +637,8 @@ func (t *TypeSpecCommonGenerator) AfterGenerate(generateParam *GenerateParam, ch
 		}
 	}
 
-	log.Printf("##[command]Executing gofmt -s -w . in %s\n", packagePath)
-	if err := ExecuteGoFmt(packagePath, "-s", "-w", "."); err != nil {
+	log.Printf("##[command]Executing gofmt -s -w . in %s\n", modulePath)
+	if err := ExecuteGoFmt(modulePath, "-s", "-w", "."); err != nil {
 		return nil, err
 	}
 
@@ -795,7 +795,7 @@ func (t *TypeSpecUpdateGeneraor) AfterGenerate(generateParam *GenerateParam, cha
 	}
 
 	log.Printf("Update module definition if v2+...")
-	err = UpdateModuleDefinition(packagePath, moduleRelativePath, version)
+	err = UpdateModuleDefinition(modulePath, moduleRelativePath, version)
 	if err != nil {
 		return nil, err
 	}

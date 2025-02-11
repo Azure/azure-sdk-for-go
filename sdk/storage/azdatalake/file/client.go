@@ -235,6 +235,7 @@ func (f *Client) GetProperties(ctx context.Context, options *GetPropertiesOption
 	ctxWithResp := shared.WithCaptureBlobResponse(ctx, &respFromCtx)
 	resp, err := f.blobClient().GetProperties(ctxWithResp, opts)
 	if err != nil {
+		err = exported.ConvertToDFSError(err)
 		return GetPropertiesResponse{}, err
 	}
 	newResp := path.FormatGetPropertiesResponse(&resp, respFromCtx)

@@ -71,7 +71,14 @@ func TestNewTracingProvider(t *testing.T) {
 }
 
 func TestPropagator(t *testing.T) {
-	provider := NewTracingProvider(tracesdk.NewTracerProvider(), nil)
+	// creates propagation.Baggage propagator
+	provider := NewTracingProvider(tracesdk.NewTracerProvider(), &TracingProviderOptions{
+		propagator: propagation.Baggage{},
+	})
+	require.EqualValues(t, 1, len(provider.NewPropagator().Fields()))
+
+	// creates propagation.TraceContext propagator by default
+	provider = NewTracingProvider(tracesdk.NewTracerProvider(), nil)
 	tracer := provider.NewTracer("test", "1.0")
 	propagator := provider.NewPropagator()
 	require.EqualValues(t, 2, len(propagator.Fields()))

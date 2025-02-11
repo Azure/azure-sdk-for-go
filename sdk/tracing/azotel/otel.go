@@ -21,7 +21,8 @@ import (
 
 // TracingProviderOptions contains the optional values for NewTracingProvider.
 type TracingProviderOptions struct {
-	// for future expansion
+	// propagator is the OpenTelemetry propagator to use. If nil, propagation.TraceContext is used.
+	propagator propagation.TextMapPropagator
 }
 
 // NewTracingProvider creates a new tracing.Provider that wraps the specified OpenTelemetry TracerProvider.
@@ -56,6 +57,9 @@ func NewTracingProvider(tracerProvider trace.TracerProvider, opts *TracingProvid
 		})
 	}, &tracing.ProviderOptions{
 		NewPropagatorFn: func() tracing.Propagator {
+			if opts != nil && opts.propagator != nil {
+				return convertPropagator(opts.propagator)
+			}
 			return convertPropagator(propagation.TraceContext{})
 		},
 	})

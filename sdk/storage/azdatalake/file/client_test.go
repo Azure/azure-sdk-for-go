@@ -1011,6 +1011,7 @@ func (s *RecordedTestSuite) TestFileSetExpiry() {
 	time.Sleep(time.Second * 12)
 
 	_, err = fClient.GetProperties(context.Background(), nil)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.PathNotFound)
 	_require.Error(err)
 }
 

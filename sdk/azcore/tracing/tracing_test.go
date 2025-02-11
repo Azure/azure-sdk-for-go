@@ -28,6 +28,12 @@ func TestProviderZeroValues(t *testing.T) {
 	sp.SetStatus(SpanStatusError, "boom")
 	spCtx := tr.SpanFromContext(ctx)
 	require.Zero(t, spCtx)
+	link := tr.LinkFromContext(ctx)
+	require.Zero(t, link)
+	pp := pr.NewPropagator()
+	pp.Inject(context.Background(), Carrier{})
+	pp.Extract(context.Background(), Carrier{})
+	require.Zero(t, pp.Fields())
 }
 
 func TestProvider(t *testing.T) {

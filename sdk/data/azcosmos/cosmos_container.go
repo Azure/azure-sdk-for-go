@@ -7,6 +7,7 @@ import (
 	"bytes"
 	"context"
 	"errors"
+	"io"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -485,6 +486,35 @@ func (c *ContainerClient) DeleteItem(
 	return response, err
 }
 
+// TODO: Should we get this in the SDK?
+type CloseablePager[T any] interface {
+	More() bool
+	NextPage(ctx context.Context) (T, error)
+	io.Closer
+}
+
+type closeablePagerImpl[T any] struct {
+	*runtime.Pager[T]
+	close func()
+}
+
+func NewCloseablePager[T any](p runtime.PagingHandler[T], close func()) CloseablePager[T] {
+	return &closeablePagerImpl[T]{Pager: runtime.NewPager(p), close: close}
+}
+
+func (p *closeablePagerImpl[T]) Close() error {
+	p.close()
+	return nil
+}
+
+func (p *closeablePagerImpl[T]) More() bool {
+	return p.Pager.More()
+}
+
+func (p *closeablePagerImpl[T]) NextPage(ctx context.Context) (T, error) {
+	return p.Pager.NextPage(ctx)
+}
+
 // NewQueryItemsPager executes a single partition query in a Cosmos container.
 // query - The SQL query to execute.
 // partitionKey - The partition key to scope the query on. See below for more information on cross partition queries.
@@ -505,7 +535,7 @@ func (c *ContainerClient) DeleteItem(
 // Ensure you fully iterate the pager, even if you receive empty pages, to ensure you get all results.
 //
 // If you provide a query that the gateway cannot execute, it will return a BadRequest error.
-func (c *ContainerClient) NewQueryItemsPager(query string, partitionKey PartitionKey, o *QueryOptions) *runtime.Pager[QueryItemsResponse] {
+func (c *ContainerClient) NewQueryItemsPager(query string, partitionKey PartitionKey, o *QueryOptions) CloseablePager[QueryItemsResponse] {
 	correlatedActivityId, _ := uuid.New()
 	h := headerOptionsOverride{
 		partitionKey:         &partitionKey,
@@ -530,41 +560,42 @@ func (c *ContainerClient) NewQueryItemsPager(query string, partitionKey Partitio
 
 	path, _ := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
 
-	return runtime.NewPager(runtime.PagingHandler[QueryItemsResponse]{
-		More: func(page QueryItemsResponse) bool {
-			return page.ContinuationToken != nil
-		},
-		Fetcher: func(ctx context.Context, page *QueryItemsResponse) (QueryItemsResponse, error) {
-			var err error
-			spanName, err := c.getSpanForItems(operationTypeQuery)
-			if err != nil {
-				return QueryItemsResponse{}, err
-			}
-			ctx, endSpan := runtime.StartSpan(ctx, spanName.name, c.database.client.internal.Tracer(), &spanName.options)
-			defer func() { endSpan(err) }()
-			if page != nil {
-				if page.ContinuationToken != nil {
-					// Use the previous page continuation if available
-					queryOptions.ContinuationToken = page.ContinuationToken
+	return NewCloseablePager(
+		runtime.PagingHandler[QueryItemsResponse]{
+			More: func(page QueryItemsResponse) bool {
+				return page.ContinuationToken != nil
+			},
+			Fetcher: func(ctx context.Context, page *QueryItemsResponse) (QueryItemsResponse, error) {
+				var err error
+				spanName, err := c.getSpanForItems(operationTypeQuery)
+				if err != nil {
+					return QueryItemsResponse{}, err
 				}
-			}
+				ctx, endSpan := runtime.StartSpan(ctx, spanName.name, c.database.client.internal.Tracer(), &spanName.options)
+				defer func() { endSpan(err) }()
+				if page != nil {
+					if page.ContinuationToken != nil {
+						// Use the previous page continuation if available
+						queryOptions.ContinuationToken = page.ContinuationToken
+					}
+				}
 
-			azResponse, err := c.database.client.sendQueryRequest(
-				path,
-				ctx,
-				query,
-				queryOptions.QueryParameters,
-				operationContext,
-				queryOptions,
-				nil)
+				azResponse, err := c.database.client.sendQueryRequest(
+					path,
+					ctx,
+					query,
+					queryOptions.QueryParameters,
+					operationContext,
+					queryOptions,
+					nil)
 
-			if err != nil {
-				return QueryItemsResponse{}, err
-			}
+				if err != nil {
+					return QueryItemsResponse{}, err
+				}
 
-			return newQueryResponse(azResponse)
-		},
-	})
+				return newQueryResponse(azResponse)
+			},
+		}, nil)
 }
 
 // PatchItem patches an item in a Cosmos container.
@@ -757,7 +788,7 @@ func (c *ContainerClient) getPartitionKeyRanges(ctx context.Context, operationCo
 }
 
 // Executes a query using the provided query engine.
-func (c *ContainerClient) executeQueryWithEngine(queryEngine QueryEngine, query string, partitionKey PartitionKey, queryOptions *QueryOptions, operationContext pipelineRequestOptions) *runtime.Pager[QueryItemsResponse] {
+func (c *ContainerClient) executeQueryWithEngine(queryEngine QueryEngine, query string, partitionKey PartitionKey, queryOptions *QueryOptions, operationContext pipelineRequestOptions) CloseablePager[QueryItemsResponse] {
 	// TODO: The current interface for runtime.Pager means we're probably going to risk leaking the pipeline.
 	// There's no "finalize" or "dispose" option on it. The best we can do is free it when the pager is completed.
 	// If the user abandons the pager, we'll leak the pipeline :(.
@@ -766,7 +797,7 @@ func (c *ContainerClient) executeQueryWithEngine(queryEngine QueryEngine, query 
 
 	var queryPipeline QueryPipeline
 	path, _ := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
-	return runtime.NewPager(runtime.PagingHandler[QueryItemsResponse]{
+	return NewCloseablePager(runtime.PagingHandler[QueryItemsResponse]{
 		More: func(page QueryItemsResponse) bool {
 			return queryPipeline == nil || !queryPipeline.IsComplete()
 		},
@@ -823,7 +854,9 @@ func (c *ContainerClient) executeQueryWithEngine(queryEngine QueryEngine, query 
 						queryOptions.QueryParameters,
 						operationContext,
 						&request,
-						nil)
+						func(r *policy.Request) {
+							r.Raw().Header.Set(cosmosHeaderMaxItemCount, "5")
+						})
 					if err != nil {
 						queryPipeline.Close()
 						return QueryItemsResponse{}, err
@@ -847,5 +880,9 @@ func (c *ContainerClient) executeQueryWithEngine(queryEngine QueryEngine, query 
 				// We've provided more data to the pipeline, so let's try to run the pipeline forward again.
 			}
 		},
+	}, func() {
+		if queryPipeline != nil {
+			queryPipeline.Close()
+		}
 	})
 }

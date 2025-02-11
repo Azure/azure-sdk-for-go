@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
+
 package internal
 
 import (
@@ -23,7 +24,6 @@ func (m *FakeChallenge) Do(req *http.Request) (*http.Response, error, bool) {
 		Body:       http.NoBody,
 		Header:     http.Header{},
 	}
-	//resp.Header.Set("WWW-Authenticate", "Bearer authorization=\"https://fake.login.microsoftonline.com/00000000-0000-0000-0000-000000000000\" resource=\"https://vault.azure.net\"")
-	resp.Header.Set("WWW-Authenticate", "Bearer authorization=\"https://fake.com/0\" resource=\"test\"")
+	resp.Header.Set("WWW-Authenticate", `Bearer authorization="https://fake.local/tenant" resource="https://vault.azure.net"`)
 	return resp, nil, true
 }

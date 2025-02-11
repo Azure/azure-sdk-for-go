@@ -5132,7 +5132,7 @@ func (f *FileRecordedTestsSuite) TestCreateHardLinkNFSWithLease() {
 	_require.NoError(err)
 }
 
-func (f *FileRecordedTestsSuite) TestCreateHardLinkNFSNilOptions() {
+func (f *FileRecordedTestsSuite) TestCreateHardLinkNilOptions() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 

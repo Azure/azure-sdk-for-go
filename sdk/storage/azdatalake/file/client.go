@@ -239,7 +239,6 @@ func (f *Client) GetProperties(ctx context.Context, options *GetPropertiesOption
 		return GetPropertiesResponse{}, err
 	}
 	newResp := path.FormatGetPropertiesResponse(&resp, respFromCtx)
-	err = exported.ConvertToDFSError(err)
 	return newResp, err
 }
 

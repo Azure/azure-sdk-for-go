@@ -29,14 +29,13 @@ func TestNewTracingProvider(t *testing.T) {
 	exporter := &testExporter{}
 
 	otelTP := tracesdk.NewTracerProvider(tracesdk.WithBatcher(exporter))
-	provider := NewTracingProvider(otelTP, nil)
 
 	client, err := azcore.NewClient("azotel", internal.Version, azruntime.PipelineOptions{
 		Tracing: azruntime.TracingOptions{
 			Namespace: "TestNewTracingProvider",
 		},
 	}, &azcore.ClientOptions{
-		TracingProvider: provider,
+		TracingProvider: NewTracingProvider(otelTP, nil),
 	})
 	require.NoError(t, err)
 
@@ -73,7 +72,7 @@ func TestNewTracingProvider(t *testing.T) {
 func TestPropagator(t *testing.T) {
 	// creates propagation.Baggage propagator
 	provider := NewTracingProvider(tracesdk.NewTracerProvider(), &TracingProviderOptions{
-		propagator: propagation.Baggage{},
+		Propagator: propagation.Baggage{},
 	})
 	require.EqualValues(t, 1, len(provider.NewPropagator().Fields()))
 

@@ -36,6 +36,20 @@ directive:
     return $.
       replaceAll(`[]string{"2025-01-05"}`, `[]string{ServiceVersion}`);
 ```
+### Changing casing of NfsFileType
+```yaml
+directive:
+- from: 
+  - zz_constants.go
+  - zz_options.go
+  - zz_response_types.go
+  - zz_file_client.go
+  - zz_directory_client.go
+  where: $
+  transform: >-
+    return $.
+      replaceAll(`NfsFileType`, `NFSFileType`);
+```
 
 ### Updating Header Names XMSFileShareSnapshotUsageBytes and XMSFileShareUsageBytes
 

@@ -384,7 +384,7 @@ type FileClientCreateOptions struct {
 	Metadata map[string]*string
 
 	// Optional, NFS only. Type of the file or directory.
-	NfsFileType *NfsFileType
+	NFSFileType *NFSFileType
 
 	// Optional, NFS only. The owner of the file or directory.
 	Owner *string

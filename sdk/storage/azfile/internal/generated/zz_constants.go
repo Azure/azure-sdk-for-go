@@ -210,20 +210,20 @@ func PossibleModeCopyModeValues() []ModeCopyMode {
 	}
 }
 
-type NfsFileType string
+type NFSFileType string
 
 const (
-	NfsFileTypeDirectory NfsFileType = "Directory"
-	NfsFileTypeRegular   NfsFileType = "Regular"
-	NfsFileTypeSymLink   NfsFileType = "SymLink"
+	NFSFileTypeDirectory NFSFileType = "Directory"
+	NFSFileTypeRegular   NFSFileType = "Regular"
+	NFSFileTypeSymLink   NFSFileType = "SymLink"
 )
 
-// PossibleNfsFileTypeValues returns the possible values for the NfsFileType const type.
-func PossibleNfsFileTypeValues() []NfsFileType {
-	return []NfsFileType{
-		NfsFileTypeDirectory,
-		NfsFileTypeRegular,
-		NfsFileTypeSymLink,
+// PossibleNFSFileTypeValues returns the possible values for the NFSFileType const type.
+func PossibleNFSFileTypeValues() []NFSFileType {
+	return []NFSFileType{
+		NFSFileTypeDirectory,
+		NFSFileTypeRegular,
+		NFSFileTypeSymLink,
 	}
 }
 

@@ -479,8 +479,8 @@ func (client *FileClient) createCreateRequest(ctx context.Context, fileContentLe
 	if options != nil && options.FileMode != nil {
 		req.Raw().Header["x-ms-mode"] = []string{*options.FileMode}
 	}
-	if options != nil && options.NfsFileType != nil {
-		req.Raw().Header["x-ms-file-file-type"] = []string{string(*options.NfsFileType)}
+	if options != nil && options.NFSFileType != nil {
+		req.Raw().Header["x-ms-file-file-type"] = []string{string(*options.NFSFileType)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -553,7 +553,7 @@ func (client *FileClient) createHandleResponse(resp *http.Response) (FileClientC
 		result.LastModified = &lastModified
 	}
 	if val := resp.Header.Get("x-ms-file-file-type"); val != "" {
-		result.NfsFileType = (*NfsFileType)(&val)
+		result.NFSFileType = (*NFSFileType)(&val)
 	}
 	if val := resp.Header.Get("x-ms-owner"); val != "" {
 		result.Owner = &val
@@ -686,7 +686,7 @@ func (client *FileClient) createHardLinkHandleResponse(resp *http.Response) (Fil
 		result.LinkCount = &linkCount
 	}
 	if val := resp.Header.Get("x-ms-file-file-type"); val != "" {
-		result.NfsFileType = (*NfsFileType)(&val)
+		result.NFSFileType = (*NFSFileType)(&val)
 	}
 	if val := resp.Header.Get("x-ms-owner"); val != "" {
 		result.Owner = &val
@@ -830,7 +830,7 @@ func (client *FileClient) createSymbolicLinkHandleResponse(resp *http.Response) 
 		result.LastModified = &lastModified
 	}
 	if val := resp.Header.Get("x-ms-file-file-type"); val != "" {
-		result.NfsFileType = (*NfsFileType)(&val)
+		result.NFSFileType = (*NFSFileType)(&val)
 	}
 	if val := resp.Header.Get("x-ms-owner"); val != "" {
 		result.Owner = &val
@@ -1445,7 +1445,7 @@ func (client *FileClient) getPropertiesHandleResponse(resp *http.Response) (File
 		}
 	}
 	if val := resp.Header.Get("x-ms-file-file-type"); val != "" {
-		result.NfsFileType = (*NfsFileType)(&val)
+		result.NFSFileType = (*NFSFileType)(&val)
 	}
 	if val := resp.Header.Get("x-ms-owner"); val != "" {
 		result.Owner = &val

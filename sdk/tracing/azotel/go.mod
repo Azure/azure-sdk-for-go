@@ -43,4 +43,4 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-replace github.com/Azure/azure-sdk-for-go/sdk/azcore => /Users/karenchen/go/src/azure-sdk-for-go/sdk/azcore
+replace github.com/Azure/azure-sdk-for-go/sdk/azcore => github.com/Azure/azure-sdk-for-go/sdk/azcore v1.17.1-0.20250211200623-5579d8255255

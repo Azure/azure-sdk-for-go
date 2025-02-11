@@ -23,6 +23,7 @@ func (m *FakeChallenge) Do(req *http.Request) (*http.Response, error, bool) {
 		Body:       http.NoBody,
 		Header:     http.Header{},
 	}
-	resp.Header.Set("WWW-Authenticate", "Bearer authorization=\"https://fake.login.microsoftonline.com/00000000-0000-0000-0000-000000000000\" resource=\"https://vault.azure.net\"")
+	//resp.Header.Set("WWW-Authenticate", "Bearer authorization=\"https://fake.login.microsoftonline.com/00000000-0000-0000-0000-000000000000\" resource=\"https://vault.azure.net\"")
+	resp.Header.Set("WWW-Authenticate", "Bearer authorization=\"https://fake.com/0\" resource=\"test\"")
 	return resp, nil, true
 }

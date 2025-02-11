@@ -128,6 +128,7 @@ func (t Tracer) SpanFromContext(ctx context.Context) Span {
 }
 
 // LinkFromContext returns a link encapsulating the SpanContext of the current context.
+// The provided attributes are added to the link.
 // If the provided context has no Span, an empty Link is returned.
 func (t Tracer) LinkFromContext(ctx context.Context, attrs ...Attribute) Link {
 	if t.linkFromContextFn != nil {

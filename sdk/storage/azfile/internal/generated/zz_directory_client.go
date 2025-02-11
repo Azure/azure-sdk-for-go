@@ -181,7 +181,7 @@ func (client *DirectoryClient) createHandleResponse(resp *http.Response) (Direct
 		result.LastModified = &lastModified
 	}
 	if val := resp.Header.Get("x-ms-file-file-type"); val != "" {
-		result.NfsFileType = (*NfsFileType)(&val)
+		result.NFSFileType = (*NFSFileType)(&val)
 	}
 	if val := resp.Header.Get("x-ms-owner"); val != "" {
 		result.Owner = &val
@@ -483,7 +483,7 @@ func (client *DirectoryClient) getPropertiesHandleResponse(resp *http.Response) 
 		}
 	}
 	if val := resp.Header.Get("x-ms-file-file-type"); val != "" {
-		result.NfsFileType = (*NfsFileType)(&val)
+		result.NFSFileType = (*NFSFileType)(&val)
 	}
 	if val := resp.Header.Get("x-ms-owner"); val != "" {
 		result.Owner = &val

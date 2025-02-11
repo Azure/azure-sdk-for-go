@@ -55,8 +55,8 @@ type DirectoryClientCreateResponse struct {
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
 
-	// NfsFileType contains the information returned from the x-ms-file-file-type header response.
-	NfsFileType *NfsFileType
+	// NFSFileType contains the information returned from the x-ms-file-file-type header response.
+	NFSFileType *NFSFileType
 
 	// Owner contains the information returned from the x-ms-owner header response.
 	Owner *string
@@ -145,8 +145,8 @@ type DirectoryClientGetPropertiesResponse struct {
 	// Metadata contains the information returned from the x-ms-meta header response.
 	Metadata map[string]*string
 
-	// NfsFileType contains the information returned from the x-ms-file-file-type header response.
-	NfsFileType *NfsFileType
+	// NFSFileType contains the information returned from the x-ms-file-file-type header response.
+	NFSFileType *NFSFileType
 
 	// Owner contains the information returned from the x-ms-owner header response.
 	Owner *string
@@ -427,8 +427,8 @@ type FileClientCreateHardLinkResponse struct {
 	// LinkCount contains the information returned from the x-ms-link-count header response.
 	LinkCount *int64
 
-	// NfsFileType contains the information returned from the x-ms-file-file-type header response.
-	NfsFileType *NfsFileType
+	// NFSFileType contains the information returned from the x-ms-file-file-type header response.
+	NFSFileType *NFSFileType
 
 	// Owner contains the information returned from the x-ms-owner header response.
 	Owner *string
@@ -481,8 +481,8 @@ type FileClientCreateResponse struct {
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
 
-	// NfsFileType contains the information returned from the x-ms-file-file-type header response.
-	NfsFileType *NfsFileType
+	// NFSFileType contains the information returned from the x-ms-file-file-type header response.
+	NFSFileType *NFSFileType
 
 	// Owner contains the information returned from the x-ms-owner header response.
 	Owner *string
@@ -529,8 +529,8 @@ type FileClientCreateSymbolicLinkResponse struct {
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
 
-	// NfsFileType contains the information returned from the x-ms-file-file-type header response.
-	NfsFileType *NfsFileType
+	// NFSFileType contains the information returned from the x-ms-file-file-type header response.
+	NFSFileType *NFSFileType
 
 	// Owner contains the information returned from the x-ms-owner header response.
 	Owner *string
@@ -799,8 +799,8 @@ type FileClientGetPropertiesResponse struct {
 	// Metadata contains the information returned from the x-ms-meta header response.
 	Metadata map[string]*string
 
-	// NfsFileType contains the information returned from the x-ms-file-file-type header response.
-	NfsFileType *NfsFileType
+	// NFSFileType contains the information returned from the x-ms-file-file-type header response.
+	NFSFileType *NFSFileType
 
 	// Owner contains the information returned from the x-ms-owner header response.
 	Owner *string

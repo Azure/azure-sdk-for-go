@@ -1,9 +1,9 @@
 # Release History
 
-## 1.5.1-beta.1 (Unreleased)
+## 1.5.1-beta.1 (2025-02-12)
 
 ### Features Added
-* Upgraded service version to `2025-07-05`.
+* Upgraded service version to `2025-05-05`.
 * NFS Over Rest API Request/Response changes in the following APIs - 
   CreateFile
   SetFileProperties
@@ -23,10 +23,6 @@
   FileClient.SetHttpHeaders()
   DirectoryClient.Create()
   DirectoryClient.SetHttpHeaders()
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 1.5.0 (2025-01-23)
 

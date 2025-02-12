@@ -750,7 +750,7 @@ func (t *TypeSpecUpdateGeneraor) PreChangeLog(generateParam *GenerateParam) (*ex
 	}
 
 	if len(tags) == 0 {
-		return nil, fmt.Errorf("github.com/Azure/azure-sdk-for-go/%s hasn't been released, it's supposed to OnBoard", packageRelativePath)
+		return nil, fmt.Errorf("github.com/Azure/azure-sdk-for-go/%s hasn't been released, it's supposed to OnBoard", moduleRelativePath)
 	}
 
 	previousVersionTag := GetPreviousVersionTag(isCurrentPreview, tags)

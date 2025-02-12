@@ -68,7 +68,7 @@ func (v *remoteValidator) Validate(cfg config.Config) error {
 			errResult = errors.Join(errResult, err)
 		}
 	}
-	for readme, _ := range invalidTrack2Requests {
+	for readme := range invalidTrack2Requests {
 		delete(cfg.Track2Requests, readme)
 	}
 	return errResult

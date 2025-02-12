@@ -8,6 +8,9 @@ parameters:
   - name: NonShipping
     type: boolean
     default: false
+  - name: IsSdkLibrary
+    type: boolean
+    default: true
   - name: LicenseCheck
     type: boolean
     default: true
@@ -93,12 +96,12 @@ extends:
     stages:
       - stage: Build
         variables:
-          - template: /eng/pipelines/templates/variables/globals.yml@self
-          - template: /eng/pipelines/templates/variables/image.yml@self
+          - template: /eng/pipelines/templates/variables/globals.yml
+          - template: /eng/pipelines/templates/variables/image.yml
         jobs:
-          - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml@self
+          - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml
             parameters:
-              JobTemplatePath: /eng/pipelines/templates/jobs/ci.tests.yml@self
+              JobTemplatePath: /eng/pipelines/templates/jobs/ci.tests.yml
               MatrixConfigs:
                 - ${{ if eq(parameters.ExcludeGoNMinus2, false) }}:
                     - Name: ci_test_base
@@ -131,7 +134,7 @@ extends:
               os: linux
 
             steps:
-              - template: /eng/common/pipelines/templates/steps/check-spelling.yml@self
+              - template: /eng/common/pipelines/templates/steps/check-spelling.yml
 
               - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
                 displayName: "Component Detection"
@@ -142,14 +145,15 @@ extends:
                   version: '1.23.2'
                 displayName: "Select Go Version"
 
-              - template: /eng/pipelines/templates/steps/create-go-workspace.yml@self
+              - template: /eng/pipelines/templates/steps/create-go-workspace.yml
 
-              - template: /eng/pipelines/templates/steps/analyze.yml@self
+              - template: /eng/pipelines/templates/steps/analyze.yml
                 parameters:
                   ServiceDirectory: ${{ parameters.ServiceDirectory }}
                   LintVersion: $(GoLintCLIVersion)
                   NonShipping: ${{ parameters.NonShipping }}
                   LicenseCheck: ${{ parameters.LicenseCheck }}
+                  IsSdkLibrary: ${{ parameters.IsSdkLibrary }}
 
       - ${{ parameters.AdditionalStages }}
 
@@ -161,14 +165,14 @@ extends:
                   - ${{ if not(contains(parameters.UnsupportedClouds, cloud.key)) }}:
                       - stage: ${{ cloud.key }}
                         variables:
-                          - template: /eng/pipelines/templates/variables/globals.yml@self
-                          - template: /eng/pipelines/templates/variables/image.yml@self
+                          - template: /eng/pipelines/templates/variables/globals.yml
+                          - template: /eng/pipelines/templates/variables/image.yml
                         displayName: Live Test ${{ cloud.key }}
                         dependsOn: []
                         jobs:
-                          - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml@self
+                          - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml
                             parameters:
-                              JobTemplatePath: /eng/pipelines/templates/jobs/live.tests.yml@self
+                              JobTemplatePath: /eng/pipelines/templates/jobs/live.tests.yml
                               AdditionalParameters:
                                 ServiceDirectory: ${{ parameters.ServiceDirectory }}
                                 EnvVars: ${{ parameters.EnvVars }}
@@ -210,7 +214,7 @@ extends:
       - ${{ if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal')) }}:
           - ${{ if not(contains(variables['Build.DefinitionName'], 'weekly')) }}:
               - ${{ if or(in(variables['Build.Reason'], 'Manual', ''), eq(parameters.IncludeRelease, true)) }}:
-                  - template: archetype-go-release.yml@self
+                  - template: archetype-go-release.yml
                     parameters:
                       DependsOn:
                         - Build

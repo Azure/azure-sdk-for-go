@@ -3,7 +3,7 @@
 ## 1.5.1-beta.1 (Unreleased)
 
 ### Features Added
-* Upgraded service version to `2025-07-05`.
+* Upgraded service version to `2025-05-05`.
 * NFS Over Rest API Request/Response changes in the following APIs - 
   CreateFile
   SetFileProperties

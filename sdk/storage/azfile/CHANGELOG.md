@@ -24,10 +24,6 @@
   DirectoryClient.Create()
   DirectoryClient.SetHttpHeaders()
 
-### Bugs Fixed
-
-### Other Changes
-
 ## 1.5.0 (2025-01-23)
 
 ### Features Added

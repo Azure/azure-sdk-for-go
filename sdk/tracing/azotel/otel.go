@@ -21,6 +21,7 @@ import (
 
 // TracingProviderOptions contains the optional values for NewTracingProvider.
 type TracingProviderOptions struct {
+	// for future expansion
 }
 
 // NewTracingProvider creates a new tracing.Provider that wraps the specified OpenTelemetry TracerProvider.

@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+* Updated `azidentity` version to `1.8.1`
 
 ## 1.4.0 (2025-01-27)
 

@@ -4,6 +4,7 @@
 package internal
 
 import (
+	"fmt"
 	"net/http"
 )
 
@@ -17,6 +18,7 @@ func (m *FakeChallenge) Do(req *http.Request) (*http.Response, error, bool) {
 		// presence of an authorization header means we don't need to elicit a challenge
 		return nil, nil, false
 	}
+	resource := req.Host
 	resp := &http.Response{
 		Request:    req,
 		Status:     "fake unauthorized",
@@ -24,6 +26,6 @@ func (m *FakeChallenge) Do(req *http.Request) (*http.Response, error, bool) {
 		Body:       http.NoBody,
 		Header:     http.Header{},
 	}
-	resp.Header.Set("WWW-Authenticate", `Bearer authorization="https://fake.local/tenant" resource="https://vault.azure.net"`)
+	resp.Header.Set("WWW-Authenticate", fmt.Sprintf(`Bearer authorization="https://fake.local/tenant" resource="%s"`, resource))
 	return resp, nil, true
 }

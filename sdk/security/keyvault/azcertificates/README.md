@@ -132,15 +132,15 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 
 [default_cred_ref]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azidentity#defaultazurecredential
 [azure_identity]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azidentity
-[azure_keyvault_cli]: https://docs.microsoft.com/azure/key-vault/general/quick-create-cli
-[azure_keyvault_portal]: https://docs.microsoft.com/azure/key-vault/general/quick-create-portal
+[azure_keyvault_cli]: https://learn.microsoft.com/azure/key-vault/general/quick-create-cli
+[azure_keyvault_portal]: https://learn.microsoft.com/azure/key-vault/general/quick-create-portal
 [azure_sub]: https://azure.microsoft.com/free/
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
-[keyvault_docs]: https://docs.microsoft.com/azure/key-vault/
+[keyvault_docs]: https://learn.microsoft.com/azure/key-vault/
 [client_docs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azcertificates#Client
 [reference_docs]: https://aka.ms/azsdk/go/keyvault-certificates/docs
 [certificates_client_src]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/security/keyvault/azcertificates
 [certificates_samples]: https://aka.ms/azsdk/go/keyvault-certificates/docs#pkg-examples
-[managed_identity]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
+[managed_identity]: https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-go%2Fsdk%2Fsecurity%2Fkeyvault%2Fazcertificates%2FREADME.png)
+

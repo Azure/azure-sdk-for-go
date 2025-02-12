@@ -12,7 +12,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"path"
 	"path/filepath"
 	"sort"
 	"strconv"
@@ -209,19 +208,19 @@ func execute(sdkPath, personalAccessToken, storageAccountKey string) error {
 	}
 
 	log.Println("generate a report in Markdown format...")
-	err = generateMDReport(mgmtReport, path.Join(sdkPath, "mgmtReport.md"))
+	err = generateMDReport(mgmtReport, filepath.Join(sdkPath, "mgmtReport.md"))
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	log.Println("generate a report in HTML format...")
-	err = generateHTMLReport(mgmtReport, path.Join(sdkPath, "mgmtReport.html"))
+	err = generateHTMLReport(mgmtReport, filepath.Join(sdkPath, "mgmtReport.html"))
 	if err != nil {
 		return err
 	}
 
 	log.Println("upload mgmt report to cloud...")
-	err = uploadHTMLReport(path.Join(sdkPath, "mgmtReport.html"), storageAccountName, storageAccountKey, storageContainerName, containerBlobName)
+	err = uploadHTMLReport(filepath.Join(sdkPath, "mgmtReport.html"), storageAccountName, storageAccountKey, storageContainerName, containerBlobName)
 	if err != nil {
 		return err
 	}

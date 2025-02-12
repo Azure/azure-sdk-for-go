@@ -368,6 +368,7 @@ func TestNamespaceConnectionRecovery(t *testing.T) {
 		NS              *Namespace
 		NewClientCount  int
 		FakeClientError error
+		FakeClient      *fakeAMQPClient
 	}
 
 	init := func() *testData {
@@ -376,7 +377,7 @@ func TestNamespaceConnectionRecovery(t *testing.T) {
 			connID: 2,
 			newClientFn: func(ctx context.Context, connID uint64) (amqpwrap.AMQPClient, error) {
 				td.NewClientCount++
-				return nil, td.FakeClientError
+				return td.FakeClient, td.FakeClientError
 			},
 		}
 		return td
@@ -397,6 +398,7 @@ func TestNamespaceConnectionRecovery(t *testing.T) {
 
 	t.Run("connection matches", func(t *testing.T) {
 		testData := init()
+		testData.FakeClient = &fakeAMQPClient{} // new client that was "created" for our recovery
 
 		// this time the connection must be having errors AND it matches our current ID
 		origConnID := testData.NS.connID
@@ -408,7 +410,7 @@ func TestNamespaceConnectionRecovery(t *testing.T) {
 		require.Equal(t, origConnID+1, testData.NS.connID, "new client created, connID increments")
 		require.NoError(t, err)
 		require.Equal(t, 1, origClient.closeCalled, "old client is closed")
-		require.NotSame(t, origClient, testData.NS.client, "new client instance created")
+		require.NotSame(t, origClient, testData.NS.client)
 	})
 
 	t.Run("recover but failed", func(t *testing.T) {

@@ -25,10 +25,6 @@ import (
 
 // GroupQuotaLimitsRequestServer is a fake server for instances of the armquota.GroupQuotaLimitsRequestClient type.
 type GroupQuotaLimitsRequestServer struct {
-	// BeginCreateOrUpdate is the fake for method GroupQuotaLimitsRequestClient.BeginCreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate func(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, resourceName string, options *armquota.GroupQuotaLimitsRequestClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armquota.GroupQuotaLimitsRequestClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
-
 	// Get is the fake for method GroupQuotaLimitsRequestClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, managementGroupID string, groupQuotaName string, requestID string, options *armquota.GroupQuotaLimitsRequestClientGetOptions) (resp azfake.Responder[armquota.GroupQuotaLimitsRequestClientGetResponse], errResp azfake.ErrorResponder)
@@ -39,7 +35,7 @@ type GroupQuotaLimitsRequestServer struct {
 
 	// BeginUpdate is the fake for method GroupQuotaLimitsRequestClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, resourceName string, options *armquota.GroupQuotaLimitsRequestClientBeginUpdateOptions) (resp azfake.PollerResponder[armquota.GroupQuotaLimitsRequestClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate func(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, location string, options *armquota.GroupQuotaLimitsRequestClientBeginUpdateOptions) (resp azfake.PollerResponder[armquota.GroupQuotaLimitsRequestClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewGroupQuotaLimitsRequestServerTransport creates a new instance of GroupQuotaLimitsRequestServerTransport with the provided implementation.
@@ -47,20 +43,18 @@ type GroupQuotaLimitsRequestServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewGroupQuotaLimitsRequestServerTransport(srv *GroupQuotaLimitsRequestServer) *GroupQuotaLimitsRequestServerTransport {
 	return &GroupQuotaLimitsRequestServerTransport{
-		srv:                 srv,
-		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armquota.GroupQuotaLimitsRequestClientCreateOrUpdateResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armquota.GroupQuotaLimitsRequestClientListResponse]](),
-		beginUpdate:         newTracker[azfake.PollerResponder[armquota.GroupQuotaLimitsRequestClientUpdateResponse]](),
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armquota.GroupQuotaLimitsRequestClientListResponse]](),
+		beginUpdate:  newTracker[azfake.PollerResponder[armquota.GroupQuotaLimitsRequestClientUpdateResponse]](),
 	}
 }
 
 // GroupQuotaLimitsRequestServerTransport connects instances of armquota.GroupQuotaLimitsRequestClient to instances of GroupQuotaLimitsRequestServer.
 // Don't use this type directly, use NewGroupQuotaLimitsRequestServerTransport instead.
 type GroupQuotaLimitsRequestServerTransport struct {
-	srv                 *GroupQuotaLimitsRequestServer
-	beginCreateOrUpdate *tracker[azfake.PollerResponder[armquota.GroupQuotaLimitsRequestClientCreateOrUpdateResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armquota.GroupQuotaLimitsRequestClientListResponse]]
-	beginUpdate         *tracker[azfake.PollerResponder[armquota.GroupQuotaLimitsRequestClientUpdateResponse]]
+	srv          *GroupQuotaLimitsRequestServer
+	newListPager *tracker[azfake.PagerResponder[armquota.GroupQuotaLimitsRequestClientListResponse]]
+	beginUpdate  *tracker[azfake.PollerResponder[armquota.GroupQuotaLimitsRequestClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for GroupQuotaLimitsRequestServerTransport.
@@ -75,8 +69,6 @@ func (g *GroupQuotaLimitsRequestServerTransport) Do(req *http.Request) (*http.Re
 	var err error
 
 	switch method {
-	case "GroupQuotaLimitsRequestClient.BeginCreateOrUpdate":
-		resp, err = g.dispatchBeginCreateOrUpdate(req)
 	case "GroupQuotaLimitsRequestClient.Get":
 		resp, err = g.dispatchGet(req)
 	case "GroupQuotaLimitsRequestClient.NewListPager":
@@ -89,68 +81,6 @@ func (g *GroupQuotaLimitsRequestServerTransport) Do(req *http.Request) (*http.Re
 
 	if err != nil {
 		return nil, err
-	}
-
-	return resp, nil
-}
-
-func (g *GroupQuotaLimitsRequestServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if g.srv.BeginCreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
-	}
-	beginCreateOrUpdate := g.beginCreateOrUpdate.get(req)
-	if beginCreateOrUpdate == nil {
-		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Quota/groupQuotas/(?P<groupQuotaName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceProviders/(?P<resourceProviderName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/groupQuotaRequests/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armquota.SubmittedResourceRequestStatus](req)
-		if err != nil {
-			return nil, err
-		}
-		managementGroupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("managementGroupId")])
-		if err != nil {
-			return nil, err
-		}
-		groupQuotaNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupQuotaName")])
-		if err != nil {
-			return nil, err
-		}
-		resourceProviderNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceProviderName")])
-		if err != nil {
-			return nil, err
-		}
-		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-		if err != nil {
-			return nil, err
-		}
-		var options *armquota.GroupQuotaLimitsRequestClientBeginCreateOrUpdateOptions
-		if !reflect.ValueOf(body).IsZero() {
-			options = &armquota.GroupQuotaLimitsRequestClientBeginCreateOrUpdateOptions{
-				GroupQuotaRequest: &body,
-			}
-		}
-		respr, errRespr := g.srv.BeginCreateOrUpdate(req.Context(), managementGroupIDParam, groupQuotaNameParam, resourceProviderNameParam, resourceNameParam, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginCreateOrUpdate = &respr
-		g.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
-		g.beginCreateOrUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginCreateOrUpdate) {
-		g.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -249,13 +179,13 @@ func (g *GroupQuotaLimitsRequestServerTransport) dispatchBeginUpdate(req *http.R
 	}
 	beginUpdate := g.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Quota/groupQuotas/(?P<groupQuotaName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceProviders/(?P<resourceProviderName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/groupQuotaRequests/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Quota/groupQuotas/(?P<groupQuotaName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceProviders/(?P<resourceProviderName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/groupQuotaLimits/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armquota.SubmittedResourceRequestStatus](req)
+		body, err := server.UnmarshalRequestAsJSON[armquota.GroupQuotaLimitList](req)
 		if err != nil {
 			return nil, err
 		}
@@ -271,7 +201,7 @@ func (g *GroupQuotaLimitsRequestServerTransport) dispatchBeginUpdate(req *http.R
 		if err != nil {
 			return nil, err
 		}
-		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
 		if err != nil {
 			return nil, err
 		}
@@ -281,7 +211,7 @@ func (g *GroupQuotaLimitsRequestServerTransport) dispatchBeginUpdate(req *http.R
 				GroupQuotaRequest: &body,
 			}
 		}
-		respr, errRespr := g.srv.BeginUpdate(req.Context(), managementGroupIDParam, groupQuotaNameParam, resourceProviderNameParam, resourceNameParam, options)
+		respr, errRespr := g.srv.BeginUpdate(req.Context(), managementGroupIDParam, groupQuotaNameParam, resourceProviderNameParam, locationParam, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

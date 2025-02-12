@@ -75,7 +75,8 @@ type ChatFinishDetailsClassification interface {
 // ChatMessageContentItemClassification provides polymorphic access to related types.
 // Call the interface's GetChatMessageContentItem() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *ChatMessageContentItem, *ChatMessageImageContentItem, *ChatMessageRefusalContentItem, *ChatMessageTextContentItem
+// - *ChatMessageAudioContentItem, *ChatMessageContentItem, *ChatMessageImageContentItem, *ChatMessageRefusalContentItem,
+// - *ChatMessageTextContentItem
 type ChatMessageContentItemClassification interface {
 	// GetChatMessageContentItem returns the ChatMessageContentItem content of the underlying type.
 	GetChatMessageContentItem() *ChatMessageContentItem
@@ -84,8 +85,8 @@ type ChatMessageContentItemClassification interface {
 // ChatRequestMessageClassification provides polymorphic access to related types.
 // Call the interface's GetChatRequestMessage() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *ChatRequestAssistantMessage, *ChatRequestFunctionMessage, *ChatRequestMessage, *ChatRequestSystemMessage, *ChatRequestToolMessage,
-// - *ChatRequestUserMessage
+// - *ChatRequestAssistantMessage, *ChatRequestDeveloperMessage, *ChatRequestFunctionMessage, *ChatRequestMessage, *ChatRequestSystemMessage,
+// - *ChatRequestToolMessage, *ChatRequestUserMessage
 type ChatRequestMessageClassification interface {
 	// GetChatRequestMessage returns the ChatRequestMessage content of the underlying type.
 	GetChatRequestMessage() *ChatRequestMessage

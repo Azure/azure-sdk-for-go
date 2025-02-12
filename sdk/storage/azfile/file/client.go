@@ -326,6 +326,14 @@ func (f *Client) ListHandles(ctx context.Context, options *ListHandlesOptions) (
 	return resp, err
 }
 
+// CreateHardLink operation creates Hard Link to targetFile in same share.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/create-hard-link.
+func (f *Client) CreateHardLink(ctx context.Context, targetFile string, options *CreateHardLinkOptions) (CreateHardLinkResponse, error) {
+	opts, leaseAccessConditions := options.format()
+	resp, err := f.generated().CreateHardLink(ctx, targetFile, opts, leaseAccessConditions)
+	return resp, err
+}
+
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at file.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
 func (f *Client) GetSASURL(permissions sas.FilePermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {

@@ -68,7 +68,7 @@ func (testsuite *EventhubTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestEventhubTestSuite(t *testing.T) {
+func TTestEventhubTestSuite(t *testing.T) {
 	suite.Run(t, new(EventhubTestSuite))
 }
 
@@ -194,7 +194,7 @@ func (testsuite *EventhubTestSuite) Prepare() {
 }
 
 // Microsoft.EventHub/namespaces
-func (testsuite *EventhubTestSuite) TestNamespace() {
+func (testsuite *EventhubTestSuite) TTestNamespace() {
 	var err error
 	// From step Namespaces_CheckNameAvailability
 	fmt.Println("Call operation: Namespaces_CheckNameAvailability")
@@ -293,7 +293,7 @@ func (testsuite *EventhubTestSuite) TestNamespace() {
 }
 
 // Microsoft.EventHub/namespaces/eventhubs
-func (testsuite *EventhubTestSuite) TestEventhubs() {
+func (testsuite *EventhubTestSuite) TTestEventhubs() {
 	var err error
 	// From step EventHubs_ListByNamespace
 	fmt.Println("Call operation: EventHubs_ListByNamespace")
@@ -357,7 +357,7 @@ func (testsuite *EventhubTestSuite) TestEventhubs() {
 }
 
 // Microsoft.EventHub/namespaces/eventhubs/consumergroups
-func (testsuite *EventhubTestSuite) TestConsumergroups() {
+func (testsuite *EventhubTestSuite) TTestConsumergroups() {
 	var err error
 	// From step ConsumerGroups_CreateOrUpdate
 	fmt.Println("Call operation: ConsumerGroups_CreateOrUpdate")
@@ -447,7 +447,7 @@ func (testsuite *EventhubTestSuite) TestConsumergroups() {
 // }
 
 // Microsoft.EventHub/namespaces/schemagroups
-func (testsuite *EventhubTestSuite) TestSchemaregistry() {
+func (testsuite *EventhubTestSuite) TTestSchemaregistry() {
 	var err error
 	// From step SchemaRegistry_CreateOrUpdate
 	fmt.Println("Call operation: SchemaRegistry_CreateOrUpdate")

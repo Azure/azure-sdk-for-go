@@ -33,11 +33,10 @@ type ServerFactory struct {
 	LtrBackupOperationsServer               LtrBackupOperationsServer
 	MigrationsServer                        MigrationsServer
 	OperationsServer                        OperationsServer
-	PostgreSQLManagementServer              PostgreSQLManagementServer
+	PostgreSQLServerManagementServer        PostgreSQLServerManagementServer
 	PrivateEndpointConnectionServer         PrivateEndpointConnectionServer
 	PrivateEndpointConnectionsServer        PrivateEndpointConnectionsServer
 	PrivateLinkResourcesServer              PrivateLinkResourcesServer
-	QuotaUsagesServer                       QuotaUsagesServer
 	ReplicasServer                          ReplicasServer
 	ServerCapabilitiesServer                ServerCapabilitiesServer
 	ServerThreatProtectionSettingsServer    ServerThreatProtectionSettingsServer
@@ -74,11 +73,10 @@ type ServerFactoryTransport struct {
 	trLtrBackupOperationsServer               *LtrBackupOperationsServerTransport
 	trMigrationsServer                        *MigrationsServerTransport
 	trOperationsServer                        *OperationsServerTransport
-	trPostgreSQLManagementServer              *PostgreSQLManagementServerTransport
+	trPostgreSQLServerManagementServer        *PostgreSQLServerManagementServerTransport
 	trPrivateEndpointConnectionServer         *PrivateEndpointConnectionServerTransport
 	trPrivateEndpointConnectionsServer        *PrivateEndpointConnectionsServerTransport
 	trPrivateLinkResourcesServer              *PrivateLinkResourcesServerTransport
-	trQuotaUsagesServer                       *QuotaUsagesServerTransport
 	trReplicasServer                          *ReplicasServerTransport
 	trServerCapabilitiesServer                *ServerCapabilitiesServerTransport
 	trServerThreatProtectionSettingsServer    *ServerThreatProtectionSettingsServerTransport
@@ -160,11 +158,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
-	case "PostgreSQLManagementClient":
-		initServer(s, &s.trPostgreSQLManagementServer, func() *PostgreSQLManagementServerTransport {
-			return NewPostgreSQLManagementServerTransport(&s.srv.PostgreSQLManagementServer)
+	case "PostgreSQLServerManagementClient":
+		initServer(s, &s.trPostgreSQLServerManagementServer, func() *PostgreSQLServerManagementServerTransport {
+			return NewPostgreSQLServerManagementServerTransport(&s.srv.PostgreSQLServerManagementServer)
 		})
-		resp, err = s.trPostgreSQLManagementServer.Do(req)
+		resp, err = s.trPostgreSQLServerManagementServer.Do(req)
 	case "PrivateEndpointConnectionClient":
 		initServer(s, &s.trPrivateEndpointConnectionServer, func() *PrivateEndpointConnectionServerTransport {
 			return NewPrivateEndpointConnectionServerTransport(&s.srv.PrivateEndpointConnectionServer)
@@ -180,9 +178,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewPrivateLinkResourcesServerTransport(&s.srv.PrivateLinkResourcesServer)
 		})
 		resp, err = s.trPrivateLinkResourcesServer.Do(req)
-	case "QuotaUsagesClient":
-		initServer(s, &s.trQuotaUsagesServer, func() *QuotaUsagesServerTransport { return NewQuotaUsagesServerTransport(&s.srv.QuotaUsagesServer) })
-		resp, err = s.trQuotaUsagesServer.Do(req)
 	case "ReplicasClient":
 		initServer(s, &s.trReplicasServer, func() *ReplicasServerTransport { return NewReplicasServerTransport(&s.srv.ReplicasServer) })
 		resp, err = s.trReplicasServer.Do(req)

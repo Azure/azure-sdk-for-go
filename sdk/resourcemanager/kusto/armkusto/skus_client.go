@@ -45,7 +45,7 @@ func NewSKUsClient(subscriptionID string, credential azcore.TokenCredential, opt
 
 // NewListPager - Lists eligible region SKUs for Kusto resource provider by Azure region.
 //
-// Generated from API version 2023-08-15
+// Generated from API version 2024-04-13
 //   - location - The name of Azure region.
 //   - options - SKUsClientListOptions contains the optional parameters for the SKUsClient.NewListPager method.
 func (client *SKUsClient) NewListPager(location string, options *SKUsClientListOptions) *runtime.Pager[SKUsClientListResponse] {
@@ -88,7 +88,7 @@ func (client *SKUsClient) listCreateRequest(ctx context.Context, location string
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-15")
+	reqQP.Set("api-version", "2024-04-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

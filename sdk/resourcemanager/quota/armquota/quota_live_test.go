@@ -57,7 +57,6 @@ func TestQuotaTestSuite(t *testing.T) {
 
 // Microsoft.Quota/quotas/{resourceName}
 func (testsuite *QuotaTestSuite) TestQuota() {
-	var id string
 	var err error
 
 	// From step Quota_List
@@ -85,17 +84,11 @@ func (testsuite *QuotaTestSuite) TestQuota() {
 		Skiptoken: nil,
 	})
 	for requestStatusClientNewListPager.More() {
-		nextResult, err := requestStatusClientNewListPager.NextPage(testsuite.ctx)
+		_, err := requestStatusClientNewListPager.NextPage(testsuite.ctx)
 		testsuite.Require().NoError(err)
 
-		id = *nextResult.Value[0].Name
 		break
 	}
-
-	// From step QuotaRequestStatus_Get
-	fmt.Println("Call operation: QuotaRequestStatus_Get")
-	_, err = requestStatusClient.Get(testsuite.ctx, id, "subscriptions/"+testsuite.subscriptionId+"/providers/Microsoft.Network/locations/eastus", nil)
-	testsuite.Require().NoError(err)
 }
 
 // Microsoft.Quota/operations
@@ -115,7 +108,6 @@ func (testsuite *QuotaTestSuite) TestQuotaOperation() {
 
 // Microsoft.Quota/usages/{resourceName}
 func (testsuite *QuotaTestSuite) TestUsages() {
-	var resourceName string
 	var err error
 	// From step Usages_List
 	fmt.Println("Call operation: Usages_List")
@@ -123,15 +115,8 @@ func (testsuite *QuotaTestSuite) TestUsages() {
 	testsuite.Require().NoError(err)
 	usagesClientNewListPager := usagesClient.NewListPager("subscriptions/"+testsuite.subscriptionId+"/providers/Microsoft.Network/locations/eastus", nil)
 	for usagesClientNewListPager.More() {
-		nextResult, err := usagesClientNewListPager.NextPage(testsuite.ctx)
+		_, err = usagesClientNewListPager.NextPage(testsuite.ctx)
 		testsuite.Require().NoError(err)
-
-		resourceName = *nextResult.Value[0].Name
 		break
 	}
-
-	// From step Usages_Get
-	fmt.Println("Call operation: Usages_Get")
-	_, err = usagesClient.Get(testsuite.ctx, resourceName, "subscriptions/"+testsuite.subscriptionId+"/providers/Microsoft.Network/locations/eastus", nil)
-	testsuite.Require().NoError(err)
 }

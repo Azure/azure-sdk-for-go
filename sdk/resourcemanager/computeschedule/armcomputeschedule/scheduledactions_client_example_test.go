@@ -20,8 +20,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/computeschedule/armcomputeschedule"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a287afb3721dee0d88f11502ec123470bc52a28/specification/computeschedule/resource-manager/Microsoft.ComputeSchedule/preview/2024-08-15-preview/examples/ScheduledActions_VirtualMachinesCancelOperations_MaximumSet_Gen.json
-func ExampleScheduledActionsClient_VirtualMachinesCancelOperations_scheduledActionsVirtualMachinesCancelOperationsGeneratedByMaximumSetRuleGeneratedByMaximumSetRule() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a4eca6b060cf70da696963245656fdc440b666b/specification/computeschedule/resource-manager/Microsoft.ComputeSchedule/stable/2024-10-01/examples/ScheduledActions_VirtualMachinesCancelOperations.json
+func ExampleScheduledActionsClient_VirtualMachinesCancelOperations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -31,8 +31,8 @@ func ExampleScheduledActionsClient_VirtualMachinesCancelOperations_scheduledActi
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesCancelOperations(ctx, "tdxypnse", armcomputeschedule.CancelOperationsRequest{
-		Correlationid: to.Ptr("01080d2f-1dca-4610-afb4-dd25eec1f3c1"),
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesCancelOperations(ctx, "eastus2euap", armcomputeschedule.CancelOperationsRequest{
+		Correlationid: to.Ptr("23480d2f-1dca-4610-afb4-gg25eec1f34r"),
 		OperationIDs: []*string{
 			to.Ptr("23480d2f-1dca-4610-afb4-dd25eec1f34r")},
 	}, nil)
@@ -45,221 +45,35 @@ func ExampleScheduledActionsClient_VirtualMachinesCancelOperations_scheduledActi
 	// res.CancelOperationsResponse = armcomputeschedule.CancelOperationsResponse{
 	// 	Results: []*armcomputeschedule.ResourceOperation{
 	// 		{
-	// 			ErrorCode: to.Ptr("pliurpaykwv"),
-	// 			ErrorDetails: to.Ptr("mbqwkpxl"),
+	// 			ErrorCode: to.Ptr("null"),
+	// 			ErrorDetails: to.Ptr("null"),
 	// 			Operation: &armcomputeschedule.ResourceOperationDetails{
-	// 				OperationID: to.Ptr("23480d2f-1dca-4610-afb4-dd25eec1f34"),
-	// 				CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-12T18:06:52.974Z"); return t}()),
-	// 				Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-12T18:06:52.974Z"); return t}()),
-	// 				DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
-	// 				OpType: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
-	// 				ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource1"),
-	// 				ResourceOperationError: &armcomputeschedule.ResourceOperationError{
-	// 					ErrorCode: to.Ptr("fticyqukvkillwd"),
-	// 					ErrorDetails: to.Ptr("yimgxqrkp"),
-	// 				},
-	// 				RetryPolicy: &armcomputeschedule.RetryPolicy{
-	// 					RetryCount: to.Ptr[int32](30),
-	// 					RetryWindowInMinutes: to.Ptr[int32](27),
-	// 				},
-	// 				State: to.Ptr(armcomputeschedule.OperationStateUnknown),
-	// 				SubscriptionID: to.Ptr("52C81249-550F-459E-9B6E-5BAB6EE62227"),
-	// 				TimeZone: to.Ptr("lsoalxijilbrqum"),
-	// 			},
-	// 			ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource1"),
-	// 	}},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a287afb3721dee0d88f11502ec123470bc52a28/specification/computeschedule/resource-manager/Microsoft.ComputeSchedule/preview/2024-08-15-preview/examples/ScheduledActions_VirtualMachinesCancelOperations_MinimumSet_Gen.json
-func ExampleScheduledActionsClient_VirtualMachinesCancelOperations_scheduledActionsVirtualMachinesCancelOperationsGeneratedByMaximumSetRuleGeneratedByMinimumSetRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesCancelOperations(ctx, "lwapkjsbltcqp", armcomputeschedule.CancelOperationsRequest{
-		Correlationid: to.Ptr("01080d2f-1dca-4610-afb4-dd25eec1f3c1"),
-		OperationIDs: []*string{
-			to.Ptr("23480d2f-1dca-4610-afb4-dd25eec1f34r")},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.CancelOperationsResponse = armcomputeschedule.CancelOperationsResponse{
-	// 	Results: []*armcomputeschedule.ResourceOperation{
-	// 		{
-	// 	}},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a287afb3721dee0d88f11502ec123470bc52a28/specification/computeschedule/resource-manager/Microsoft.ComputeSchedule/preview/2024-08-15-preview/examples/ScheduledActions_VirtualMachinesExecuteDeallocate_MaximumSet_Gen.json
-func ExampleScheduledActionsClient_VirtualMachinesExecuteDeallocate_scheduledActionsVirtualMachinesExecuteDeallocateGeneratedByMaximumSetRuleGeneratedByMaximumSetRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteDeallocate(ctx, "mklyzgztbivwzo", armcomputeschedule.ExecuteDeallocateRequest{
-		Correlationid: to.Ptr("01080d2f-1dca-4610-afb4-dd25eddf1f3c1"),
-		ExecutionParameters: &armcomputeschedule.ExecutionParameters{
-			OptimizationPreference: to.Ptr(armcomputeschedule.OptimizationPreferenceCost),
-			RetryPolicy: &armcomputeschedule.RetryPolicy{
-				RetryCount:           to.Ptr[int32](30),
-				RetryWindowInMinutes: to.Ptr[int32](27),
-			},
-		},
-		Resources: &armcomputeschedule.Resources{
-			IDs: []*string{
-				to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource2")},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.DeallocateResourceOperationResponse = armcomputeschedule.DeallocateResourceOperationResponse{
-	// 	Type: to.Ptr("eokrhxypminzcgplibblmwojvjd"),
-	// 	Description: to.Ptr("ndhb"),
-	// 	Location: to.Ptr("qbbvrdisvjgxirnzdvdsodkt"),
-	// 	Results: []*armcomputeschedule.ResourceOperation{
-	// 		{
-	// 			ErrorCode: to.Ptr("pliurpaykwv"),
-	// 			ErrorDetails: to.Ptr("mbqwkpxl"),
-	// 			Operation: &armcomputeschedule.ResourceOperationDetails{
-	// 				OperationID: to.Ptr("23480d2f-1dca-4610-afb4-dd25eec1f34"),
-	// 				CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-12T18:06:52.974Z"); return t}()),
-	// 				Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-12T18:06:52.974Z"); return t}()),
-	// 				DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
-	// 				OpType: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
-	// 				ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource2"),
-	// 				ResourceOperationError: &armcomputeschedule.ResourceOperationError{
-	// 					ErrorCode: to.Ptr("fticyqukvkillwd"),
-	// 					ErrorDetails: to.Ptr("yimgxqrkp"),
-	// 				},
-	// 				RetryPolicy: &armcomputeschedule.RetryPolicy{
-	// 					RetryCount: to.Ptr[int32](30),
-	// 					RetryWindowInMinutes: to.Ptr[int32](27),
-	// 				},
-	// 				State: to.Ptr(armcomputeschedule.OperationStateUnknown),
-	// 				SubscriptionID: to.Ptr("52C81249-550F-459E-9B6E-5BAB6EE62227"),
-	// 				TimeZone: to.Ptr("lsoalxijilbrqum"),
-	// 			},
-	// 			ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource2"),
-	// 	}},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a287afb3721dee0d88f11502ec123470bc52a28/specification/computeschedule/resource-manager/Microsoft.ComputeSchedule/preview/2024-08-15-preview/examples/ScheduledActions_VirtualMachinesExecuteDeallocate_MinimumSet_Gen.json
-func ExampleScheduledActionsClient_VirtualMachinesExecuteDeallocate_scheduledActionsVirtualMachinesExecuteDeallocateGeneratedByMaximumSetRuleGeneratedByMinimumSetRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteDeallocate(ctx, "irbtacrhjgfpyvhvjo", armcomputeschedule.ExecuteDeallocateRequest{
-		Correlationid:       to.Ptr("01080d2f-1dca-4610-afb4-dd25eddf1f3c1"),
-		ExecutionParameters: &armcomputeschedule.ExecutionParameters{},
-		Resources: &armcomputeschedule.Resources{
-			IDs: []*string{
-				to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource2")},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.DeallocateResourceOperationResponse = armcomputeschedule.DeallocateResourceOperationResponse{
-	// 	Type: to.Ptr("eokrhxypminzcgplibblmwojvjd"),
-	// 	Description: to.Ptr("ndhb"),
-	// 	Location: to.Ptr("qbbvrdisvjgxirnzdvdsodkt"),
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a287afb3721dee0d88f11502ec123470bc52a28/specification/computeschedule/resource-manager/Microsoft.ComputeSchedule/preview/2024-08-15-preview/examples/ScheduledActions_VirtualMachinesExecuteHibernate_MaximumSet_Gen.json
-func ExampleScheduledActionsClient_VirtualMachinesExecuteHibernate_scheduledActionsVirtualMachinesExecuteHibernateGeneratedByMaximumSetRuleGeneratedByMaximumSetRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteHibernate(ctx, "sejdmamuhhvfpljomwumsplc", armcomputeschedule.ExecuteHibernateRequest{
-		Correlationid: to.Ptr("01080d2f-1dca-4610-afb4-dd25eec1f3c1"),
-		ExecutionParameters: &armcomputeschedule.ExecutionParameters{
-			OptimizationPreference: to.Ptr(armcomputeschedule.OptimizationPreferenceCost),
-			RetryPolicy: &armcomputeschedule.RetryPolicy{
-				RetryCount:           to.Ptr[int32](30),
-				RetryWindowInMinutes: to.Ptr[int32](27),
-			},
-		},
-		Resources: &armcomputeschedule.Resources{
-			IDs: []*string{
-				to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3")},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.HibernateResourceOperationResponse = armcomputeschedule.HibernateResourceOperationResponse{
-	// 	Type: to.Ptr("mkmgbfpkiudefzhdppgjmqztx"),
-	// 	Description: to.Ptr("wbxeejgkmtwtkcsepidgox"),
-	// 	Location: to.Ptr("rvlnzczpesuvusbmbcjctzcinzlr"),
-	// 	Results: []*armcomputeschedule.ResourceOperation{
-	// 		{
-	// 			ErrorCode: to.Ptr("pliurpaykwv"),
-	// 			ErrorDetails: to.Ptr("mbqwkpxl"),
-	// 			Operation: &armcomputeschedule.ResourceOperationDetails{
-	// 				OperationID: to.Ptr("23480d2f-1dca-4610-afb4-dd25eec1f34"),
-	// 				CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-12T18:06:52.974Z"); return t}()),
-	// 				Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-12T18:06:52.974Z"); return t}()),
-	// 				DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
-	// 				OpType: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
+	// 				OperationID: to.Ptr("23480d2f-1dca-4610-afb4-dd25eec1f34r"),
+	// 				CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T17:52:53.668Z"); return t}()),
+	// 				Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T17:52:53.667Z"); return t}()),
+	// 				DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeInitiateAt),
+	// 				OpType: to.Ptr(armcomputeschedule.ResourceOperationTypeDeallocate),
 	// 				ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3"),
 	// 				ResourceOperationError: &armcomputeschedule.ResourceOperationError{
-	// 					ErrorCode: to.Ptr("fticyqukvkillwd"),
-	// 					ErrorDetails: to.Ptr("yimgxqrkp"),
+	// 					ErrorCode: to.Ptr("null"),
+	// 					ErrorDetails: to.Ptr("null"),
 	// 				},
 	// 				RetryPolicy: &armcomputeschedule.RetryPolicy{
-	// 					RetryCount: to.Ptr[int32](30),
+	// 					RetryCount: to.Ptr[int32](4),
 	// 					RetryWindowInMinutes: to.Ptr[int32](27),
 	// 				},
-	// 				State: to.Ptr(armcomputeschedule.OperationStateUnknown),
-	// 				SubscriptionID: to.Ptr("52C81249-550F-459E-9B6E-5BAB6EE62227"),
-	// 				TimeZone: to.Ptr("lsoalxijilbrqum"),
+	// 				State: to.Ptr(armcomputeschedule.OperationStateCancelled),
+	// 				SubscriptionID: to.Ptr("D8E30CC0-2763-4FCC-84A8-3C5659281032"),
+	// 				TimeZone: to.Ptr("UTC"),
+	// 				Timezone: to.Ptr("UTC"),
 	// 			},
 	// 			ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3"),
 	// 	}},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a287afb3721dee0d88f11502ec123470bc52a28/specification/computeschedule/resource-manager/Microsoft.ComputeSchedule/preview/2024-08-15-preview/examples/ScheduledActions_VirtualMachinesExecuteHibernate_MinimumSet_Gen.json
-func ExampleScheduledActionsClient_VirtualMachinesExecuteHibernate_scheduledActionsVirtualMachinesExecuteHibernateGeneratedByMaximumSetRuleGeneratedByMinimumSetRule() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a4eca6b060cf70da696963245656fdc440b666b/specification/computeschedule/resource-manager/Microsoft.ComputeSchedule/stable/2024-10-01/examples/ScheduledActions_VirtualMachinesExecuteDeallocate.json
+func ExampleScheduledActionsClient_VirtualMachinesExecuteDeallocate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -269,9 +83,77 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteHibernate_scheduledActi
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteHibernate(ctx, "kga", armcomputeschedule.ExecuteHibernateRequest{
-		Correlationid:       to.Ptr("01080d2f-1dca-4610-afb4-dd25eec1f3c1"),
-		ExecutionParameters: &armcomputeschedule.ExecutionParameters{},
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteDeallocate(ctx, "eastus2euap", armcomputeschedule.ExecuteDeallocateRequest{
+		Correlationid: to.Ptr("23480d2f-1dca-4610-afb4-dd25eec1f34r"),
+		ExecutionParameters: &armcomputeschedule.ExecutionParameters{
+			RetryPolicy: &armcomputeschedule.RetryPolicy{
+				RetryCount:           to.Ptr[int32](4),
+				RetryWindowInMinutes: to.Ptr[int32](27),
+			},
+		},
+		Resources: &armcomputeschedule.Resources{
+			IDs: []*string{
+				to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3")},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.DeallocateResourceOperationResponse = armcomputeschedule.DeallocateResourceOperationResponse{
+	// 	Type: to.Ptr("VirtualMachine"),
+	// 	Description: to.Ptr("Deallocate Resource Request"),
+	// 	Location: to.Ptr("eastus2euap"),
+	// 	Results: []*armcomputeschedule.ResourceOperation{
+	// 		{
+	// 			ErrorCode: to.Ptr("null"),
+	// 			ErrorDetails: to.Ptr("null"),
+	// 			Operation: &armcomputeschedule.ResourceOperationDetails{
+	// 				OperationID: to.Ptr("23480d2f-1dca-4610-afb4-dd25eec1f34r"),
+	// 				CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T17:52:53.668Z"); return t}()),
+	// 				Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T17:52:53.667Z"); return t}()),
+	// 				DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeInitiateAt),
+	// 				OpType: to.Ptr(armcomputeschedule.ResourceOperationTypeDeallocate),
+	// 				ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3"),
+	// 				ResourceOperationError: &armcomputeschedule.ResourceOperationError{
+	// 					ErrorCode: to.Ptr("null"),
+	// 					ErrorDetails: to.Ptr("null"),
+	// 				},
+	// 				RetryPolicy: &armcomputeschedule.RetryPolicy{
+	// 					RetryCount: to.Ptr[int32](4),
+	// 					RetryWindowInMinutes: to.Ptr[int32](27),
+	// 				},
+	// 				State: to.Ptr(armcomputeschedule.OperationStateSucceeded),
+	// 				SubscriptionID: to.Ptr("D8E30CC0-2763-4FCC-84A8-3C5659281032"),
+	// 				TimeZone: to.Ptr("UTC"),
+	// 				Timezone: to.Ptr("UTC"),
+	// 			},
+	// 			ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3"),
+	// 	}},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a4eca6b060cf70da696963245656fdc440b666b/specification/computeschedule/resource-manager/Microsoft.ComputeSchedule/stable/2024-10-01/examples/ScheduledActions_VirtualMachinesExecuteHibernate.json
+func ExampleScheduledActionsClient_VirtualMachinesExecuteHibernate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcomputeschedule.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteHibernate(ctx, "eastus2euap", armcomputeschedule.ExecuteHibernateRequest{
+		Correlationid: to.Ptr("23480d2f-1dca-4610-afb4-dd25eec1f34r"),
+		ExecutionParameters: &armcomputeschedule.ExecutionParameters{
+			RetryPolicy: &armcomputeschedule.RetryPolicy{
+				RetryCount:           to.Ptr[int32](5),
+				RetryWindowInMinutes: to.Ptr[int32](27),
+			},
+		},
 		Resources: &armcomputeschedule.Resources{
 			IDs: []*string{
 				to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3")},
@@ -284,260 +166,40 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteHibernate_scheduledActi
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.HibernateResourceOperationResponse = armcomputeschedule.HibernateResourceOperationResponse{
-	// 	Type: to.Ptr("mkmgbfpkiudefzhdppgjmqztx"),
-	// 	Description: to.Ptr("wbxeejgkmtwtkcsepidgox"),
-	// 	Location: to.Ptr("rvlnzczpesuvusbmbcjctzcinzlr"),
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a287afb3721dee0d88f11502ec123470bc52a28/specification/computeschedule/resource-manager/Microsoft.ComputeSchedule/preview/2024-08-15-preview/examples/ScheduledActions_VirtualMachinesExecuteStart_MaximumSet_Gen.json
-func ExampleScheduledActionsClient_VirtualMachinesExecuteStart_scheduledActionsVirtualMachinesExecuteStartGeneratedByMaximumSetRuleGeneratedByMaximumSetRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteStart(ctx, "ysfrwcfmfsh", armcomputeschedule.ExecuteStartRequest{
-		Correlationid: to.Ptr("23230d2f-1dca-4610-afb4-dd25eec1f34"),
-		ExecutionParameters: &armcomputeschedule.ExecutionParameters{
-			OptimizationPreference: to.Ptr(armcomputeschedule.OptimizationPreferenceCost),
-			RetryPolicy: &armcomputeschedule.RetryPolicy{
-				RetryCount:           to.Ptr[int32](30),
-				RetryWindowInMinutes: to.Ptr[int32](27),
-			},
-		},
-		Resources: &armcomputeschedule.Resources{
-			IDs: []*string{
-				to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4")},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.StartResourceOperationResponse = armcomputeschedule.StartResourceOperationResponse{
-	// 	Type: to.Ptr("gxmnjtgu"),
-	// 	Description: to.Ptr("raacd"),
-	// 	Location: to.Ptr("uvlidhowwv"),
+	// 	Type: to.Ptr("VirtualMachine"),
+	// 	Description: to.Ptr("Hibernate Resource Request"),
+	// 	Location: to.Ptr("eastus2euap"),
 	// 	Results: []*armcomputeschedule.ResourceOperation{
 	// 		{
-	// 			ErrorCode: to.Ptr("pliurpaykwv"),
-	// 			ErrorDetails: to.Ptr("mbqwkpxl"),
+	// 			ErrorCode: to.Ptr("null"),
+	// 			ErrorDetails: to.Ptr("null"),
 	// 			Operation: &armcomputeschedule.ResourceOperationDetails{
-	// 				OperationID: to.Ptr("23480d2f-1dca-4610-afb4-dd25eec1f34"),
-	// 				CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-12T18:06:52.974Z"); return t}()),
-	// 				Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-12T18:06:52.974Z"); return t}()),
-	// 				DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
-	// 				OpType: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
-	// 				ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4"),
-	// 				ResourceOperationError: &armcomputeschedule.ResourceOperationError{
-	// 					ErrorCode: to.Ptr("fticyqukvkillwd"),
-	// 					ErrorDetails: to.Ptr("yimgxqrkp"),
-	// 				},
-	// 				RetryPolicy: &armcomputeschedule.RetryPolicy{
-	// 					RetryCount: to.Ptr[int32](30),
-	// 					RetryWindowInMinutes: to.Ptr[int32](27),
-	// 				},
-	// 				State: to.Ptr(armcomputeschedule.OperationStateUnknown),
-	// 				SubscriptionID: to.Ptr("52C81249-550F-459E-9B6E-5BAB6EE62227"),
-	// 				TimeZone: to.Ptr("lsoalxijilbrqum"),
-	// 			},
-	// 			ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4"),
-	// 	}},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a287afb3721dee0d88f11502ec123470bc52a28/specification/computeschedule/resource-manager/Microsoft.ComputeSchedule/preview/2024-08-15-preview/examples/ScheduledActions_VirtualMachinesExecuteStart_MinimumSet_Gen.json
-func ExampleScheduledActionsClient_VirtualMachinesExecuteStart_scheduledActionsVirtualMachinesExecuteStartGeneratedByMaximumSetRuleGeneratedByMinimumSetRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteStart(ctx, "qegbgjculewswqvnmaclcgpqqidl", armcomputeschedule.ExecuteStartRequest{
-		Correlationid:       to.Ptr("23230d2f-1dca-4610-afb4-dd25eec1f34"),
-		ExecutionParameters: &armcomputeschedule.ExecutionParameters{},
-		Resources: &armcomputeschedule.Resources{
-			IDs: []*string{
-				to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4")},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.StartResourceOperationResponse = armcomputeschedule.StartResourceOperationResponse{
-	// 	Type: to.Ptr("gxmnjtgu"),
-	// 	Description: to.Ptr("raacd"),
-	// 	Location: to.Ptr("uvlidhowwv"),
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a287afb3721dee0d88f11502ec123470bc52a28/specification/computeschedule/resource-manager/Microsoft.ComputeSchedule/preview/2024-08-15-preview/examples/ScheduledActions_VirtualMachinesGetOperationErrors_MaximumSet_Gen.json
-func ExampleScheduledActionsClient_VirtualMachinesGetOperationErrors_csScheduledActionsVirtualMachinesGetOperationErrorsMax() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesGetOperationErrors(ctx, "hfsa", armcomputeschedule.GetOperationErrorsRequest{
-		OperationIDs: []*string{
-			to.Ptr("DE84A209-5715-43E7-BC76-3E208A9A323")},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.GetOperationErrorsResponse = armcomputeschedule.GetOperationErrorsResponse{
-	// 	Results: []*armcomputeschedule.OperationErrorsResult{
-	// 		{
-	// 			OperationID: to.Ptr("DE84A209-5715-43E7-BC76-3E208A9A323"),
-	// 			ActivationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-08T19:00:14.771Z"); return t}()),
-	// 			CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-08T19:00:14.771Z"); return t}()),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-08T19:00:14.771Z"); return t}()),
-	// 			OperationErrors: []*armcomputeschedule.OperationErrorDetails{
-	// 				{
-	// 					CrpOperationID: to.Ptr("DE84A209-5715-43E7-BC76-3E208A9A32C5"),
-	// 					ErrorCode: to.Ptr("nr"),
-	// 					ErrorDetails: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-08T19:00:14.771Z"); return t}()),
-	// 					TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-08T19:00:14.771Z"); return t}()),
-	// 			}},
-	// 			RequestErrorCode: to.Ptr("hyfvxj"),
-	// 			RequestErrorDetails: to.Ptr("heqpzxzbtrimbxalapqypezeflkyo"),
-	// 	}},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a287afb3721dee0d88f11502ec123470bc52a28/specification/computeschedule/resource-manager/Microsoft.ComputeSchedule/preview/2024-08-15-preview/examples/ScheduledActions_VirtualMachinesGetOperationErrors_MinimumSet_Gen.json
-func ExampleScheduledActionsClient_VirtualMachinesGetOperationErrors_csScheduledActionsVirtualMachinesGetOperationErrorsMin() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesGetOperationErrors(ctx, "ggxoaxzxtdbi", armcomputeschedule.GetOperationErrorsRequest{
-		OperationIDs: []*string{
-			to.Ptr("qeicik")},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.GetOperationErrorsResponse = armcomputeschedule.GetOperationErrorsResponse{
-	// 	Results: []*armcomputeschedule.OperationErrorsResult{
-	// 		{
-	// 			OperationID: to.Ptr("wetjrhx"),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-08T19:00:14.771Z"); return t}()),
-	// 	}},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a287afb3721dee0d88f11502ec123470bc52a28/specification/computeschedule/resource-manager/Microsoft.ComputeSchedule/preview/2024-08-15-preview/examples/ScheduledActions_VirtualMachinesGetOperationStatus_MinimumSet_Gen.json
-func ExampleScheduledActionsClient_VirtualMachinesGetOperationStatus_scheduledActionsVirtualMachinesGetOperationStatusGeneratedByMinimumSetRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesGetOperationStatus(ctx, "csay", armcomputeschedule.GetOperationStatusRequest{
-		Correlationid: to.Ptr("01080d2f-1dca-4610-afb4-dd25eec1f3c1"),
-		OperationIDs: []*string{
-			to.Ptr("01080d2f-1dca-4610-afb4-dd25eec1f3df")},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.GetOperationStatusResponse = armcomputeschedule.GetOperationStatusResponse{
-	// 	Results: []*armcomputeschedule.ResourceOperation{
-	// 		{
-	// 	}},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a287afb3721dee0d88f11502ec123470bc52a28/specification/computeschedule/resource-manager/Microsoft.ComputeSchedule/preview/2024-08-15-preview/examples/ScheduledActions_VirtualMachinesGetOperationStatus_MaximumSet_Gen.json
-func ExampleScheduledActionsClient_VirtualMachinesGetOperationStatus_scheduledActionsVirtualMachinesGetOperationStatusGeneratedByMinimumSetRuleGeneratedByMaximumSetRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesGetOperationStatus(ctx, "htxxasfxaesuecem", armcomputeschedule.GetOperationStatusRequest{
-		Correlationid: to.Ptr("01080d2f-1dca-4610-afb4-dd25eec1f3c1"),
-		OperationIDs: []*string{
-			to.Ptr("01080d2f-1dca-4610-afb4-dd25eec1f3df")},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.GetOperationStatusResponse = armcomputeschedule.GetOperationStatusResponse{
-	// 	Results: []*armcomputeschedule.ResourceOperation{
-	// 		{
-	// 			ErrorCode: to.Ptr("ipyvwgk"),
-	// 			ErrorDetails: to.Ptr("dfegatwcb"),
-	// 			Operation: &armcomputeschedule.ResourceOperationDetails{
-	// 				OperationID: to.Ptr("brvr"),
-	// 				CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-08T19:00:13.928Z"); return t}()),
-	// 				Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-08T19:00:13.928Z"); return t}()),
-	// 				DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
-	// 				OpType: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
+	// 				OperationID: to.Ptr("23480d2f-1dca-4610-afb4-dd25eec1f34r"),
+	// 				CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T17:52:53.668Z"); return t}()),
+	// 				Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T17:52:53.667Z"); return t}()),
+	// 				DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeInitiateAt),
+	// 				OpType: to.Ptr(armcomputeschedule.ResourceOperationTypeHibernate),
 	// 				ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3"),
 	// 				ResourceOperationError: &armcomputeschedule.ResourceOperationError{
-	// 					ErrorCode: to.Ptr("ryxlbd"),
-	// 					ErrorDetails: to.Ptr("vdwoj"),
+	// 					ErrorCode: to.Ptr("null"),
+	// 					ErrorDetails: to.Ptr("null"),
 	// 				},
 	// 				RetryPolicy: &armcomputeschedule.RetryPolicy{
 	// 					RetryCount: to.Ptr[int32](5),
-	// 					RetryWindowInMinutes: to.Ptr[int32](17),
+	// 					RetryWindowInMinutes: to.Ptr[int32](27),
 	// 				},
-	// 				State: to.Ptr(armcomputeschedule.OperationStateUnknown),
-	// 				SubscriptionID: to.Ptr("l"),
-	// 				TimeZone: to.Ptr("ggsopagtvrtsjltyyccqgufgm"),
+	// 				State: to.Ptr(armcomputeschedule.OperationStateSucceeded),
+	// 				SubscriptionID: to.Ptr("D8E30CC0-2763-4FCC-84A8-3C5659281032"),
+	// 				TimeZone: to.Ptr("UTC"),
+	// 				Timezone: to.Ptr("UTC"),
 	// 			},
 	// 			ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3"),
 	// 	}},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a287afb3721dee0d88f11502ec123470bc52a28/specification/computeschedule/resource-manager/Microsoft.ComputeSchedule/preview/2024-08-15-preview/examples/ScheduledActions_VirtualMachinesSubmitDeallocate_MaximumSet_Gen.json
-func ExampleScheduledActionsClient_VirtualMachinesSubmitDeallocate_scheduledActionsVirtualMachinesSubmitDeallocateGeneratedByMaximumSetRuleGeneratedByMaximumSetRule() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a4eca6b060cf70da696963245656fdc440b666b/specification/computeschedule/resource-manager/Microsoft.ComputeSchedule/stable/2024-10-01/examples/ScheduledActions_VirtualMachinesExecuteStart.json
+func ExampleScheduledActionsClient_VirtualMachinesExecuteStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -547,117 +209,11 @@ func ExampleScheduledActionsClient_VirtualMachinesSubmitDeallocate_scheduledActi
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesSubmitDeallocate(ctx, "ibfxsvilwrgqttuslbduzdtxcckdet", armcomputeschedule.SubmitDeallocateRequest{
-		Correlationid: to.Ptr("23519o2f-1dca-4610-afb4-dd25eec1f34"),
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteStart(ctx, "eastus2euap", armcomputeschedule.ExecuteStartRequest{
+		Correlationid: to.Ptr("23480d2f-1dca-4610-afb4-dd25eec1f34r"),
 		ExecutionParameters: &armcomputeschedule.ExecutionParameters{
-			OptimizationPreference: to.Ptr(armcomputeschedule.OptimizationPreferenceCost),
 			RetryPolicy: &armcomputeschedule.RetryPolicy{
-				RetryCount:           to.Ptr[int32](30),
-				RetryWindowInMinutes: to.Ptr[int32](27),
-			},
-		},
-		Resources: &armcomputeschedule.Resources{
-			IDs: []*string{
-				to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource2")},
-		},
-		Schedule: &armcomputeschedule.Schedule{
-			DeadLine:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-12T18:06:53.361Z"); return t }()),
-			DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
-			TimeZone:     to.Ptr("zlcujrtgxtgyik"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.DeallocateResourceOperationResponse = armcomputeschedule.DeallocateResourceOperationResponse{
-	// 	Type: to.Ptr("eokrhxypminzcgplibblmwojvjd"),
-	// 	Description: to.Ptr("ndhb"),
-	// 	Location: to.Ptr("qbbvrdisvjgxirnzdvdsodkt"),
-	// 	Results: []*armcomputeschedule.ResourceOperation{
-	// 		{
-	// 			ErrorCode: to.Ptr("pliurpaykwv"),
-	// 			ErrorDetails: to.Ptr("mbqwkpxl"),
-	// 			Operation: &armcomputeschedule.ResourceOperationDetails{
-	// 				OperationID: to.Ptr("23480d2f-1dca-4610-afb4-dd25eec1f34"),
-	// 				CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-12T18:06:52.974Z"); return t}()),
-	// 				Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-12T18:06:52.974Z"); return t}()),
-	// 				DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
-	// 				OpType: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
-	// 				ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource2"),
-	// 				ResourceOperationError: &armcomputeschedule.ResourceOperationError{
-	// 					ErrorCode: to.Ptr("fticyqukvkillwd"),
-	// 					ErrorDetails: to.Ptr("yimgxqrkp"),
-	// 				},
-	// 				RetryPolicy: &armcomputeschedule.RetryPolicy{
-	// 					RetryCount: to.Ptr[int32](30),
-	// 					RetryWindowInMinutes: to.Ptr[int32](27),
-	// 				},
-	// 				State: to.Ptr(armcomputeschedule.OperationStateUnknown),
-	// 				SubscriptionID: to.Ptr("52C81249-550F-459E-9B6E-5BAB6EE62227"),
-	// 				TimeZone: to.Ptr("lsoalxijilbrqum"),
-	// 			},
-	// 			ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource2"),
-	// 	}},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a287afb3721dee0d88f11502ec123470bc52a28/specification/computeschedule/resource-manager/Microsoft.ComputeSchedule/preview/2024-08-15-preview/examples/ScheduledActions_VirtualMachinesSubmitDeallocate_MinimumSet_Gen.json
-func ExampleScheduledActionsClient_VirtualMachinesSubmitDeallocate_scheduledActionsVirtualMachinesSubmitDeallocateGeneratedByMaximumSetRuleGeneratedByMinimumSetRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesSubmitDeallocate(ctx, "qwfcdtmshnlownbkyh", armcomputeschedule.SubmitDeallocateRequest{
-		Correlationid:       to.Ptr("23519o2f-1dca-4610-afb4-dd25eec1f34"),
-		ExecutionParameters: &armcomputeschedule.ExecutionParameters{},
-		Resources: &armcomputeschedule.Resources{
-			IDs: []*string{
-				to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource2")},
-		},
-		Schedule: &armcomputeschedule.Schedule{
-			DeadLine:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-12T18:06:53.361Z"); return t }()),
-			DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
-			TimeZone:     to.Ptr("zlcujrtgxtgyik"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.DeallocateResourceOperationResponse = armcomputeschedule.DeallocateResourceOperationResponse{
-	// 	Type: to.Ptr("eokrhxypminzcgplibblmwojvjd"),
-	// 	Description: to.Ptr("ndhb"),
-	// 	Location: to.Ptr("qbbvrdisvjgxirnzdvdsodkt"),
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a287afb3721dee0d88f11502ec123470bc52a28/specification/computeschedule/resource-manager/Microsoft.ComputeSchedule/preview/2024-08-15-preview/examples/ScheduledActions_VirtualMachinesSubmitHibernate_MaximumSet_Gen.json
-func ExampleScheduledActionsClient_VirtualMachinesSubmitHibernate_scheduledActionsVirtualMachinesSubmitHibernateGeneratedByMaximumSetRuleGeneratedByMaximumSetRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesSubmitHibernate(ctx, "bgxeayimbxqzev", armcomputeschedule.SubmitHibernateRequest{
-		Correlationid: to.Ptr("23519o2f-1dca-4610-afb4-dd25eec1f34"),
-		ExecutionParameters: &armcomputeschedule.ExecutionParameters{
-			OptimizationPreference: to.Ptr(armcomputeschedule.OptimizationPreferenceCost),
-			RetryPolicy: &armcomputeschedule.RetryPolicy{
-				RetryCount:           to.Ptr[int32](30),
+				RetryCount:           to.Ptr[int32](2),
 				RetryWindowInMinutes: to.Ptr[int32](27),
 			},
 		},
@@ -665,11 +221,6 @@ func ExampleScheduledActionsClient_VirtualMachinesSubmitHibernate_scheduledActio
 			IDs: []*string{
 				to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3")},
 		},
-		Schedule: &armcomputeschedule.Schedule{
-			DeadLine:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-12T18:06:53.361Z"); return t }()),
-			DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
-			TimeZone:     to.Ptr("zlcujrtgxtgyik"),
-		},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -677,40 +228,41 @@ func ExampleScheduledActionsClient_VirtualMachinesSubmitHibernate_scheduledActio
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.HibernateResourceOperationResponse = armcomputeschedule.HibernateResourceOperationResponse{
-	// 	Type: to.Ptr("mkmgbfpkiudefzhdppgjmqztx"),
-	// 	Description: to.Ptr("wbxeejgkmtwtkcsepidgox"),
-	// 	Location: to.Ptr("rvlnzczpesuvusbmbcjctzcinzlr"),
+	// res.StartResourceOperationResponse = armcomputeschedule.StartResourceOperationResponse{
+	// 	Type: to.Ptr("virtualMachine"),
+	// 	Description: to.Ptr("Start Resource Request"),
+	// 	Location: to.Ptr("eastus2euap"),
 	// 	Results: []*armcomputeschedule.ResourceOperation{
 	// 		{
-	// 			ErrorCode: to.Ptr("pliurpaykwv"),
-	// 			ErrorDetails: to.Ptr("mbqwkpxl"),
+	// 			ErrorCode: to.Ptr("null"),
+	// 			ErrorDetails: to.Ptr("null"),
 	// 			Operation: &armcomputeschedule.ResourceOperationDetails{
-	// 				OperationID: to.Ptr("23480d2f-1dca-4610-afb4-dd25eec1f34"),
-	// 				CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-12T18:06:52.974Z"); return t}()),
-	// 				Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-12T18:06:52.974Z"); return t}()),
-	// 				DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
-	// 				OpType: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
+	// 				OperationID: to.Ptr("23480d2f-1dca-4610-afb4-dd25eec1f34r"),
+	// 				CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T17:52:53.668Z"); return t}()),
+	// 				Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T17:52:53.667Z"); return t}()),
+	// 				DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeInitiateAt),
+	// 				OpType: to.Ptr(armcomputeschedule.ResourceOperationTypeStart),
 	// 				ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3"),
 	// 				ResourceOperationError: &armcomputeschedule.ResourceOperationError{
-	// 					ErrorCode: to.Ptr("fticyqukvkillwd"),
-	// 					ErrorDetails: to.Ptr("yimgxqrkp"),
+	// 					ErrorCode: to.Ptr("null"),
+	// 					ErrorDetails: to.Ptr("null"),
 	// 				},
 	// 				RetryPolicy: &armcomputeschedule.RetryPolicy{
-	// 					RetryCount: to.Ptr[int32](30),
+	// 					RetryCount: to.Ptr[int32](2),
 	// 					RetryWindowInMinutes: to.Ptr[int32](27),
 	// 				},
-	// 				State: to.Ptr(armcomputeschedule.OperationStateUnknown),
-	// 				SubscriptionID: to.Ptr("52C81249-550F-459E-9B6E-5BAB6EE62227"),
-	// 				TimeZone: to.Ptr("lsoalxijilbrqum"),
+	// 				State: to.Ptr(armcomputeschedule.OperationStateSucceeded),
+	// 				SubscriptionID: to.Ptr("D8E30CC0-2763-4FCC-84A8-3C5659281032"),
+	// 				TimeZone: to.Ptr("UTC"),
+	// 				Timezone: to.Ptr("UTC"),
 	// 			},
 	// 			ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3"),
 	// 	}},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a287afb3721dee0d88f11502ec123470bc52a28/specification/computeschedule/resource-manager/Microsoft.ComputeSchedule/preview/2024-08-15-preview/examples/ScheduledActions_VirtualMachinesSubmitHibernate_MinimumSet_Gen.json
-func ExampleScheduledActionsClient_VirtualMachinesSubmitHibernate_scheduledActionsVirtualMachinesSubmitHibernateGeneratedByMaximumSetRuleGeneratedByMinimumSetRule() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a4eca6b060cf70da696963245656fdc440b666b/specification/computeschedule/resource-manager/Microsoft.ComputeSchedule/stable/2024-10-01/examples/ScheduledActions_VirtualMachinesGetOperationErrors.json
+func ExampleScheduledActionsClient_VirtualMachinesGetOperationErrors() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -720,17 +272,185 @@ func ExampleScheduledActionsClient_VirtualMachinesSubmitHibernate_scheduledActio
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesSubmitHibernate(ctx, "fvjciwudfbndlqumcgqs", armcomputeschedule.SubmitHibernateRequest{
-		Correlationid:       to.Ptr("23519o2f-1dca-4610-afb4-dd25eec1f34"),
-		ExecutionParameters: &armcomputeschedule.ExecutionParameters{},
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesGetOperationErrors(ctx, "eastus2euap", armcomputeschedule.GetOperationErrorsRequest{
+		OperationIDs: []*string{
+			to.Ptr("23480d2f-1dca-4610-afb4-dd25eec1f34r")},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.GetOperationErrorsResponse = armcomputeschedule.GetOperationErrorsResponse{
+	// 	Results: []*armcomputeschedule.OperationErrorsResult{
+	// 		{
+	// 			OperationID: to.Ptr("23480d2f-1dca-4610-afb4-dd25eec1f34r"),
+	// 			ActivationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T17:52:53.999Z"); return t}()),
+	// 			CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T17:52:53.999Z"); return t}()),
+	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T17:52:53.999Z"); return t}()),
+	// 			OperationErrors: []*armcomputeschedule.OperationErrorDetails{
+	// 				{
+	// 					AzureOperationName: to.Ptr("23480d2f-1dca-4610-afb4-dd25eec1f34r"),
+	// 					CrpOperationID: to.Ptr("23480d2f-1dca-4610-afb4-dd25eec1f34r"),
+	// 					ErrorCode: to.Ptr("null"),
+	// 					ErrorDetails: to.Ptr("null"),
+	// 					TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-27T16:55:03.357Z"); return t}()),
+	// 					Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T17:52:53.999Z"); return t}()),
+	// 			}},
+	// 			RequestErrorCode: to.Ptr("null"),
+	// 			RequestErrorDetails: to.Ptr("null"),
+	// 	}},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a4eca6b060cf70da696963245656fdc440b666b/specification/computeschedule/resource-manager/Microsoft.ComputeSchedule/stable/2024-10-01/examples/ScheduledActions_VirtualMachinesGetOperationStatus.json
+func ExampleScheduledActionsClient_VirtualMachinesGetOperationStatus() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcomputeschedule.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesGetOperationStatus(ctx, "eastus2euap", armcomputeschedule.GetOperationStatusRequest{
+		Correlationid: to.Ptr("35780d2f-1dca-4610-afb4-dd25eec1f34r"),
+		OperationIDs: []*string{
+			to.Ptr("23480d2f-1dca-4610-afb4-dd25eec1f34r")},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.GetOperationStatusResponse = armcomputeschedule.GetOperationStatusResponse{
+	// 	Results: []*armcomputeschedule.ResourceOperation{
+	// 		{
+	// 			ErrorCode: to.Ptr("null"),
+	// 			ErrorDetails: to.Ptr("null"),
+	// 			Operation: &armcomputeschedule.ResourceOperationDetails{
+	// 				OperationID: to.Ptr("23480d2f-1dca-4610-afb4-dd25eec1f34r"),
+	// 				CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T17:52:53.668Z"); return t}()),
+	// 				Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T17:52:53.667Z"); return t}()),
+	// 				DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeInitiateAt),
+	// 				OpType: to.Ptr(armcomputeschedule.ResourceOperationTypeDeallocate),
+	// 				ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3"),
+	// 				ResourceOperationError: &armcomputeschedule.ResourceOperationError{
+	// 					ErrorCode: to.Ptr("null"),
+	// 					ErrorDetails: to.Ptr("null"),
+	// 				},
+	// 				RetryPolicy: &armcomputeschedule.RetryPolicy{
+	// 					RetryCount: to.Ptr[int32](4),
+	// 					RetryWindowInMinutes: to.Ptr[int32](27),
+	// 				},
+	// 				State: to.Ptr(armcomputeschedule.OperationStateSucceeded),
+	// 				SubscriptionID: to.Ptr("D8E30CC0-2763-4FCC-84A8-3C5659281032"),
+	// 				TimeZone: to.Ptr("UTC"),
+	// 				Timezone: to.Ptr("UTC"),
+	// 			},
+	// 			ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3"),
+	// 	}},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a4eca6b060cf70da696963245656fdc440b666b/specification/computeschedule/resource-manager/Microsoft.ComputeSchedule/stable/2024-10-01/examples/ScheduledActions_VirtualMachinesSubmitDeallocate.json
+func ExampleScheduledActionsClient_VirtualMachinesSubmitDeallocate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcomputeschedule.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesSubmitDeallocate(ctx, "eastus2euap", armcomputeschedule.SubmitDeallocateRequest{
+		Correlationid: to.Ptr("23480d2f-1dca-4610-afb4-dd25eec1f34r"),
+		ExecutionParameters: &armcomputeschedule.ExecutionParameters{
+			RetryPolicy: &armcomputeschedule.RetryPolicy{
+				RetryCount:           to.Ptr[int32](4),
+				RetryWindowInMinutes: to.Ptr[int32](27),
+			},
+		},
 		Resources: &armcomputeschedule.Resources{
 			IDs: []*string{
 				to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3")},
 		},
 		Schedule: &armcomputeschedule.Schedule{
-			DeadLine:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-12T18:06:53.361Z"); return t }()),
-			DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
-			TimeZone:     to.Ptr("zlcujrtgxtgyik"),
+			Deadline:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T17:52:54.215Z"); return t }()),
+			DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeInitiateAt),
+			Timezone:     to.Ptr("UTC"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.DeallocateResourceOperationResponse = armcomputeschedule.DeallocateResourceOperationResponse{
+	// 	Type: to.Ptr("virtualMachine"),
+	// 	Description: to.Ptr("Deallocate Resource Request"),
+	// 	Location: to.Ptr("eastus2euap"),
+	// 	Results: []*armcomputeschedule.ResourceOperation{
+	// 		{
+	// 			ErrorCode: to.Ptr("null"),
+	// 			ErrorDetails: to.Ptr("null"),
+	// 			Operation: &armcomputeschedule.ResourceOperationDetails{
+	// 				OperationID: to.Ptr("23480d2f-1dca-4610-afb4-dd25eec1f34r"),
+	// 				CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T17:52:53.668Z"); return t}()),
+	// 				Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T17:52:53.667Z"); return t}()),
+	// 				DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeInitiateAt),
+	// 				OpType: to.Ptr(armcomputeschedule.ResourceOperationTypeDeallocate),
+	// 				ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3"),
+	// 				ResourceOperationError: &armcomputeschedule.ResourceOperationError{
+	// 					ErrorCode: to.Ptr("null"),
+	// 					ErrorDetails: to.Ptr("null"),
+	// 				},
+	// 				RetryPolicy: &armcomputeschedule.RetryPolicy{
+	// 					RetryCount: to.Ptr[int32](4),
+	// 					RetryWindowInMinutes: to.Ptr[int32](27),
+	// 				},
+	// 				State: to.Ptr(armcomputeschedule.OperationStateSucceeded),
+	// 				SubscriptionID: to.Ptr("D8E30CC0-2763-4FCC-84A8-3C5659281032"),
+	// 				TimeZone: to.Ptr("UTC"),
+	// 				Timezone: to.Ptr("UTC"),
+	// 			},
+	// 			ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3"),
+	// 	}},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a4eca6b060cf70da696963245656fdc440b666b/specification/computeschedule/resource-manager/Microsoft.ComputeSchedule/stable/2024-10-01/examples/ScheduledActions_VirtualMachinesSubmitHibernate.json
+func ExampleScheduledActionsClient_VirtualMachinesSubmitHibernate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcomputeschedule.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesSubmitHibernate(ctx, "eastus2euap", armcomputeschedule.SubmitHibernateRequest{
+		Correlationid: to.Ptr("23480d2f-1dca-4610-afb4-dd25eec1f34r"),
+		ExecutionParameters: &armcomputeschedule.ExecutionParameters{
+			RetryPolicy: &armcomputeschedule.RetryPolicy{
+				RetryCount:           to.Ptr[int32](2),
+				RetryWindowInMinutes: to.Ptr[int32](27),
+			},
+		},
+		Resources: &armcomputeschedule.Resources{
+			IDs: []*string{
+				to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3")},
+		},
+		Schedule: &armcomputeschedule.Schedule{
+			Deadline:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T17:52:54.215Z"); return t }()),
+			DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeInitiateAt),
+			Timezone:     to.Ptr("UTC"),
 		},
 	}, nil)
 	if err != nil {
@@ -740,14 +460,40 @@ func ExampleScheduledActionsClient_VirtualMachinesSubmitHibernate_scheduledActio
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.HibernateResourceOperationResponse = armcomputeschedule.HibernateResourceOperationResponse{
-	// 	Type: to.Ptr("mkmgbfpkiudefzhdppgjmqztx"),
-	// 	Description: to.Ptr("wbxeejgkmtwtkcsepidgox"),
-	// 	Location: to.Ptr("rvlnzczpesuvusbmbcjctzcinzlr"),
+	// 	Type: to.Ptr("virtualMachine"),
+	// 	Description: to.Ptr("Hibernate Resource Request"),
+	// 	Location: to.Ptr("eastus2euap"),
+	// 	Results: []*armcomputeschedule.ResourceOperation{
+	// 		{
+	// 			ErrorCode: to.Ptr("null"),
+	// 			ErrorDetails: to.Ptr("null"),
+	// 			Operation: &armcomputeschedule.ResourceOperationDetails{
+	// 				OperationID: to.Ptr("23480d2f-1dca-4610-afb4-dd25eec1f34r"),
+	// 				CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T17:52:53.668Z"); return t}()),
+	// 				Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T17:52:53.667Z"); return t}()),
+	// 				DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeInitiateAt),
+	// 				OpType: to.Ptr(armcomputeschedule.ResourceOperationTypeHibernate),
+	// 				ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3"),
+	// 				ResourceOperationError: &armcomputeschedule.ResourceOperationError{
+	// 					ErrorCode: to.Ptr("null"),
+	// 					ErrorDetails: to.Ptr("null"),
+	// 				},
+	// 				RetryPolicy: &armcomputeschedule.RetryPolicy{
+	// 					RetryCount: to.Ptr[int32](2),
+	// 					RetryWindowInMinutes: to.Ptr[int32](27),
+	// 				},
+	// 				State: to.Ptr(armcomputeschedule.OperationStateSucceeded),
+	// 				SubscriptionID: to.Ptr("D8E30CC0-2763-4FCC-84A8-3C5659281032"),
+	// 				TimeZone: to.Ptr("UTC"),
+	// 				Timezone: to.Ptr("UTC"),
+	// 			},
+	// 			ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3"),
+	// 	}},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a287afb3721dee0d88f11502ec123470bc52a28/specification/computeschedule/resource-manager/Microsoft.ComputeSchedule/preview/2024-08-15-preview/examples/ScheduledActions_VirtualMachinesSubmitStart_MaximumSet_Gen.json
-func ExampleScheduledActionsClient_VirtualMachinesSubmitStart_scheduledActionsVirtualMachinesSubmitStartGeneratedByMaximumSetRuleGeneratedByMaximumSetRule() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a4eca6b060cf70da696963245656fdc440b666b/specification/computeschedule/resource-manager/Microsoft.ComputeSchedule/stable/2024-10-01/examples/ScheduledActions_VirtualMachinesSubmitStart.json
+func ExampleScheduledActionsClient_VirtualMachinesSubmitStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -757,23 +503,22 @@ func ExampleScheduledActionsClient_VirtualMachinesSubmitStart_scheduledActionsVi
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesSubmitStart(ctx, "fxiidszhrokwjmewlahfqjiocnes", armcomputeschedule.SubmitStartRequest{
-		Correlationid: to.Ptr("23480d2f-1dca-4610-afb4-dd25eec1f34"),
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesSubmitStart(ctx, "eastus2euap", armcomputeschedule.SubmitStartRequest{
+		Correlationid: to.Ptr("23480d2f-1dca-4610-afb4-dd25eec1f34r"),
 		ExecutionParameters: &armcomputeschedule.ExecutionParameters{
-			OptimizationPreference: to.Ptr(armcomputeschedule.OptimizationPreferenceCost),
 			RetryPolicy: &armcomputeschedule.RetryPolicy{
-				RetryCount:           to.Ptr[int32](30),
+				RetryCount:           to.Ptr[int32](5),
 				RetryWindowInMinutes: to.Ptr[int32](27),
 			},
 		},
 		Resources: &armcomputeschedule.Resources{
 			IDs: []*string{
-				to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4")},
+				to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3")},
 		},
 		Schedule: &armcomputeschedule.Schedule{
-			DeadLine:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-12T18:06:53.361Z"); return t }()),
-			DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
-			TimeZone:     to.Ptr("zlcujrtgxtgyik"),
+			Deadline:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T17:52:54.215Z"); return t }()),
+			DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeInitiateAt),
+			Timezone:     to.Ptr("UTC"),
 		},
 	}, nil)
 	if err != nil {
@@ -783,70 +528,34 @@ func ExampleScheduledActionsClient_VirtualMachinesSubmitStart_scheduledActionsVi
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.StartResourceOperationResponse = armcomputeschedule.StartResourceOperationResponse{
-	// 	Type: to.Ptr("gxmnjtgu"),
-	// 	Description: to.Ptr("raacd"),
-	// 	Location: to.Ptr("uvlidhowwv"),
+	// 	Type: to.Ptr("virtualMachine"),
+	// 	Description: to.Ptr("Start Resource Request"),
+	// 	Location: to.Ptr("eastus2euap"),
 	// 	Results: []*armcomputeschedule.ResourceOperation{
 	// 		{
-	// 			ErrorCode: to.Ptr("pliurpaykwv"),
-	// 			ErrorDetails: to.Ptr("mbqwkpxl"),
+	// 			ErrorCode: to.Ptr("null"),
+	// 			ErrorDetails: to.Ptr("null"),
 	// 			Operation: &armcomputeschedule.ResourceOperationDetails{
-	// 				OperationID: to.Ptr("23480d2f-1dca-4610-afb4-dd25eec1f34"),
-	// 				CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-12T18:06:52.974Z"); return t}()),
-	// 				Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-12T18:06:52.974Z"); return t}()),
-	// 				DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
-	// 				OpType: to.Ptr(armcomputeschedule.ResourceOperationTypeUnknown),
-	// 				ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4"),
+	// 				OperationID: to.Ptr("23480d2f-1dca-4610-afb4-dd25eec1f34r"),
+	// 				CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T17:52:53.668Z"); return t}()),
+	// 				Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T17:52:53.667Z"); return t}()),
+	// 				DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeInitiateAt),
+	// 				OpType: to.Ptr(armcomputeschedule.ResourceOperationTypeStart),
+	// 				ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3"),
 	// 				ResourceOperationError: &armcomputeschedule.ResourceOperationError{
-	// 					ErrorCode: to.Ptr("fticyqukvkillwd"),
-	// 					ErrorDetails: to.Ptr("yimgxqrkp"),
+	// 					ErrorCode: to.Ptr("null"),
+	// 					ErrorDetails: to.Ptr("null"),
 	// 				},
 	// 				RetryPolicy: &armcomputeschedule.RetryPolicy{
-	// 					RetryCount: to.Ptr[int32](30),
+	// 					RetryCount: to.Ptr[int32](5),
 	// 					RetryWindowInMinutes: to.Ptr[int32](27),
 	// 				},
-	// 				State: to.Ptr(armcomputeschedule.OperationStateUnknown),
-	// 				SubscriptionID: to.Ptr("52C81249-550F-459E-9B6E-5BAB6EE62227"),
-	// 				TimeZone: to.Ptr("lsoalxijilbrqum"),
+	// 				State: to.Ptr(armcomputeschedule.OperationStateSucceeded),
+	// 				SubscriptionID: to.Ptr("D8E30CC0-2763-4FCC-84A8-3C5659281032"),
+	// 				TimeZone: to.Ptr("UTC"),
+	// 				Timezone: to.Ptr("UTC"),
 	// 			},
-	// 			ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4"),
+	// 			ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3"),
 	// 	}},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a287afb3721dee0d88f11502ec123470bc52a28/specification/computeschedule/resource-manager/Microsoft.ComputeSchedule/preview/2024-08-15-preview/examples/ScheduledActions_VirtualMachinesSubmitStart_MinimumSet_Gen.json
-func ExampleScheduledActionsClient_VirtualMachinesSubmitStart_scheduledActionsVirtualMachinesSubmitStartGeneratedByMaximumSetRuleGeneratedByMinimumSetRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesSubmitStart(ctx, "httzei", armcomputeschedule.SubmitStartRequest{
-		Correlationid:       to.Ptr("23480d2f-1dca-4610-afb4-dd25eec1f34"),
-		ExecutionParameters: &armcomputeschedule.ExecutionParameters{},
-		Resources: &armcomputeschedule.Resources{
-			IDs: []*string{
-				to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4")},
-		},
-		Schedule: &armcomputeschedule.Schedule{
-			DeadLine:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-12T18:06:53.361Z"); return t }()),
-			DeadlineType: to.Ptr(armcomputeschedule.DeadlineTypeUnknown),
-			TimeZone:     to.Ptr("zlcujrtgxtgyik"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.StartResourceOperationResponse = armcomputeschedule.StartResourceOperationResponse{
-	// 	Type: to.Ptr("gxmnjtgu"),
-	// 	Description: to.Ptr("raacd"),
-	// 	Location: to.Ptr("uvlidhowwv"),
 	// }
 }

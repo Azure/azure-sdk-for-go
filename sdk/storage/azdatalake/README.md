@@ -228,7 +228,7 @@ The [file][file] package contains APIs related to file path types.
 
 The [directory][directory] package contains APIs related to directory path types.
 
-The [lease][lease] package contains clients for managing leases on paths (paths represent both directory and file paths) and filesystems.  Please see the [reference docs](https://docs.microsoft.com/rest/api/storageservices/lease-blob#remarks) for general information on leases.
+The [lease][lease] package contains clients for managing leases on paths (paths represent both directory and file paths) and filesystems.  Please see the [reference docs](https://learn.microsoft.com/rest/api/storageservices/lease-blob#remarks) for general information on leases.
 
 The [filesystem][filesystem] package contains APIs specific to filesystems.  This includes APIs setting access policies or properties, and more.
 
@@ -258,16 +258,16 @@ additional questions or comments.
 <!-- LINKS -->
 [source]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azdatalake
 [docs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake
-[rest_docs]: https://docs.microsoft.com/rest/api/storageservices/data-lake-storage-gen2
+[rest_docs]: https://learn.microsoft.com/rest/api/storageservices/data-lake-storage-gen2
 [godevdl]: https://go.dev/dl/
 [goget]: https://pkg.go.dev/cmd/go#hdr-Add_dependencies_to_current_module_and_install_them
-[storage_account_docs]: https://docs.microsoft.com/azure/storage/common/storage-account-overview
-[storage_account_create_ps]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-powershell
-[storage_account_create_cli]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-cli
-[storage_account_create_portal]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
+[storage_account_docs]: https://learn.microsoft.com/azure/storage/common/storage-account-overview
+[storage_account_create_ps]: https://learn.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-powershell
+[storage_account_create_cli]: https://learn.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-cli
+[storage_account_create_portal]: https://learn.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
 [azure_sub]: https://azure.microsoft.com/free/
 [azidentity]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
-[storage_ad]: https://docs.microsoft.com/azure/storage/common/storage-auth-aad
+[storage_ad]: https://learn.microsoft.com/azure/storage/common/storage-auth-aad
 [azcore_response_error]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore#ResponseError
 [datalake_error]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azdatalake/datalakeerror/error_codes.go
 [filesystem]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azdatalake/filesystem/client.go

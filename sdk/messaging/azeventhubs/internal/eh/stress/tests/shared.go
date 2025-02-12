@@ -20,10 +20,10 @@ import (
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/checkpoints"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/eh/stress/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/test"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/joho/godotenv"
-	"github.com/microsoft/ApplicationInsights-Go/appinsights"
 )
 
 const (
@@ -32,21 +32,10 @@ const (
 	numProperty       = "Number"
 )
 
-// metric names
-const (
-	// standard to all tests
-	MetricSent          = "Sent"
-	MetricReceived      = "Received"
-	MetricOwnershipLost = "OwnershipLost"
-
-	// go specific
-	MetricDeadlineExceeded = "DeadlineExceeded"
-)
-
 type stressTestData struct {
 	name  string
 	runID string
-	TC    telemetryClient
+	TC    *shared.TelemetryClientWrapper[Metric, Event]
 
 	Namespace       string
 	HubName         string
@@ -56,9 +45,7 @@ type stressTestData struct {
 }
 
 func (td *stressTestData) Close() {
-	td.TC.TrackEvent("end", nil)
-	td.TC.Channel().Flush()
-	<-td.TC.Channel().Close()
+	td.TC.TrackEvent(EventEnd)
 }
 
 type logf func(format string, v ...any)
@@ -101,16 +88,11 @@ func newStressTestData(name string, baggage map[string]string) (*stressTestData,
 		return nil, fmt.Errorf("missing environment variables (%s)", strings.Join(missing, ","))
 	}
 
-	tc, err := loadAppInsights()
-
-	if err != nil {
-		return nil, err
-	}
-
-	td.TC = telemetryClient{tc}
+	td.TC = shared.NewTelemetryClientWrapper[Metric, Event]()
 
 	// NOTE: this isn't run in the live testing pipelines, only within stress testing
 	// so you shouldn't use the test credential.
+	var err error
 	td.Cred, err = azidentity.NewDefaultAzureCredential(nil)
 
 	if err != nil {
@@ -135,7 +117,7 @@ func newStressTestData(name string, baggage map[string]string) (*stressTestData,
 		startBaggage[k] = v
 	}
 
-	td.TC.TrackEvent("start", startBaggage)
+	td.TC.TrackEventWithProps(EventStart, startBaggage)
 
 	return td, nil
 }
@@ -178,7 +160,7 @@ func sendEventsToPartition(ctx context.Context, args sendEventsToPartitionArgs) 
 			return err
 		}
 
-		args.testData.TC.TrackMetric(MetricSent, float64(batch.NumEvents()), map[string]string{
+		args.testData.TC.TrackMetricWithProps(MetricNameSent, float64(batch.NumEvents()), map[string]string{
 			"PartitionID": args.partitionID,
 		})
 
@@ -327,18 +309,6 @@ func initCheckpointStore(ctx context.Context, containerName string, testData *st
 	}
 
 	return updatedCheckpoints, nil
-}
-
-func loadAppInsights() (appinsights.TelemetryClient, error) {
-	aiKey := os.Getenv("APPINSIGHTS_INSTRUMENTATIONKEY")
-
-	if aiKey == "" {
-		return nil, errors.New("missing APPINSIGHTS_INSTRUMENTATIONKEY environment variable")
-	}
-
-	config := appinsights.NewTelemetryConfiguration(aiKey)
-	config.MaxBatchInterval = 5 * time.Second
-	return appinsights.NewTelemetryClientFromConfig(config), nil
 }
 
 func addEndProperty(ed *azeventhubs.EventData, expectedCount int64) {

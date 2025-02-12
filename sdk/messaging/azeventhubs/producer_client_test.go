@@ -624,6 +624,24 @@ func TestProducerClient_SendBatchExample(t *testing.T) {
 	}
 }
 
+func TestProducerClientUsingCustomEndpoint(t *testing.T) {
+	testParams := test.GetConnectionParamsForTest(t)
+
+	producerClient, err := azeventhubs.NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, testParams.Cred, &azeventhubs.ProducerClientOptions{
+		CustomEndpoint: "127.0.0.1",
+		RetryOptions: azeventhubs.RetryOptions{
+			MaxRetries: -1,
+		},
+	})
+	require.NoError(t, err)
+
+	_, err = producerClient.NewEventDataBatch(context.Background(), nil)
+
+	// NOTE, this is a little silly, but we just want to prove
+	// that CustomEndpoint does get used as the actual TCP endpoint we connect to.
+	require.Contains(t, err.Error(), "127.0.0.1:5671")
+}
+
 func makeByteSlice(index int, total int) []byte {
 	// ie: %0<total>d, so it'll be zero padded up to the length we want
 	text := fmt.Sprintf("%0"+fmt.Sprintf("%d", total)+"d", index)

@@ -15,7 +15,6 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota"
 	"net/http"
 	"net/url"
@@ -24,30 +23,22 @@ import (
 
 // GroupQuotaSubscriptionAllocationServer is a fake server for instances of the armquota.GroupQuotaSubscriptionAllocationClient type.
 type GroupQuotaSubscriptionAllocationServer struct {
-	// Get is the fake for method GroupQuotaSubscriptionAllocationClient.Get
+	// List is the fake for method GroupQuotaSubscriptionAllocationClient.List
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, managementGroupID string, groupQuotaName string, resourceName string, filter string, options *armquota.GroupQuotaSubscriptionAllocationClientGetOptions) (resp azfake.Responder[armquota.GroupQuotaSubscriptionAllocationClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method GroupQuotaSubscriptionAllocationClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(managementGroupID string, groupQuotaName string, filter string, options *armquota.GroupQuotaSubscriptionAllocationClientListOptions) (resp azfake.PagerResponder[armquota.GroupQuotaSubscriptionAllocationClientListResponse])
+	List func(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, location string, options *armquota.GroupQuotaSubscriptionAllocationClientListOptions) (resp azfake.Responder[armquota.GroupQuotaSubscriptionAllocationClientListResponse], errResp azfake.ErrorResponder)
 }
 
 // NewGroupQuotaSubscriptionAllocationServerTransport creates a new instance of GroupQuotaSubscriptionAllocationServerTransport with the provided implementation.
 // The returned GroupQuotaSubscriptionAllocationServerTransport instance is connected to an instance of armquota.GroupQuotaSubscriptionAllocationClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewGroupQuotaSubscriptionAllocationServerTransport(srv *GroupQuotaSubscriptionAllocationServer) *GroupQuotaSubscriptionAllocationServerTransport {
-	return &GroupQuotaSubscriptionAllocationServerTransport{
-		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armquota.GroupQuotaSubscriptionAllocationClientListResponse]](),
-	}
+	return &GroupQuotaSubscriptionAllocationServerTransport{srv: srv}
 }
 
 // GroupQuotaSubscriptionAllocationServerTransport connects instances of armquota.GroupQuotaSubscriptionAllocationClient to instances of GroupQuotaSubscriptionAllocationServer.
 // Don't use this type directly, use NewGroupQuotaSubscriptionAllocationServerTransport instead.
 type GroupQuotaSubscriptionAllocationServerTransport struct {
-	srv          *GroupQuotaSubscriptionAllocationServer
-	newListPager *tracker[azfake.PagerResponder[armquota.GroupQuotaSubscriptionAllocationClientListResponse]]
+	srv *GroupQuotaSubscriptionAllocationServer
 }
 
 // Do implements the policy.Transporter interface for GroupQuotaSubscriptionAllocationServerTransport.
@@ -62,10 +53,8 @@ func (g *GroupQuotaSubscriptionAllocationServerTransport) Do(req *http.Request) 
 	var err error
 
 	switch method {
-	case "GroupQuotaSubscriptionAllocationClient.Get":
-		resp, err = g.dispatchGet(req)
-	case "GroupQuotaSubscriptionAllocationClient.NewListPager":
-		resp, err = g.dispatchNewListPager(req)
+	case "GroupQuotaSubscriptionAllocationClient.List":
+		resp, err = g.dispatchList(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
 	}
@@ -77,17 +66,16 @@ func (g *GroupQuotaSubscriptionAllocationServerTransport) Do(req *http.Request) 
 	return resp, nil
 }
 
-func (g *GroupQuotaSubscriptionAllocationServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if g.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+func (g *GroupQuotaSubscriptionAllocationServerTransport) dispatchList(req *http.Request) (*http.Response, error) {
+	if g.srv.List == nil {
+		return nil, &nonRetriableError{errors.New("fake for method List not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Quota/groupQuotas/(?P<groupQuotaName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/quotaAllocations/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Quota/groupQuotas/(?P<groupQuotaName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceProviders/(?P<resourceProviderName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/quotaAllocations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if matches == nil || len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	qp := req.URL.Query()
 	managementGroupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("managementGroupId")])
 	if err != nil {
 		return nil, err
@@ -96,15 +84,15 @@ func (g *GroupQuotaSubscriptionAllocationServerTransport) dispatchGet(req *http.
 	if err != nil {
 		return nil, err
 	}
-	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	resourceProviderNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceProviderName")])
 	if err != nil {
 		return nil, err
 	}
-	filterParam, err := url.QueryUnescape(qp.Get("$filter"))
+	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := g.srv.Get(req.Context(), managementGroupIDParam, groupQuotaNameParam, resourceNameParam, filterParam, nil)
+	respr, errRespr := g.srv.List(req.Context(), managementGroupIDParam, groupQuotaNameParam, resourceProviderNameParam, locationParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -112,55 +100,9 @@ func (g *GroupQuotaSubscriptionAllocationServerTransport) dispatchGet(req *http.
 	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SubscriptionQuotaAllocations, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SubscriptionQuotaAllocationsList, req)
 	if err != nil {
 		return nil, err
-	}
-	return resp, nil
-}
-
-func (g *GroupQuotaSubscriptionAllocationServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if g.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := g.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Quota/groupQuotas/(?P<groupQuotaName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/quotaAllocations`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		managementGroupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("managementGroupId")])
-		if err != nil {
-			return nil, err
-		}
-		groupQuotaNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupQuotaName")])
-		if err != nil {
-			return nil, err
-		}
-		filterParam, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		resp := g.srv.NewListPager(managementGroupIDParam, groupQuotaNameParam, filterParam, nil)
-		newListPager = &resp
-		g.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armquota.GroupQuotaSubscriptionAllocationClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		g.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		g.newListPager.remove(req)
 	}
 	return resp, nil
 }

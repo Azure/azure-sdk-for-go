@@ -972,6 +972,7 @@ func (a ACSEmailDeliveryReportReceivedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateDateTimeRFC3339(objectMap, "deliveryAttemptTimestamp", a.DeliveryAttemptTimestamp)
 	populate(objectMap, "deliveryStatusDetails", a.DeliveryStatusDetails)
+	populate(objectMap, "internetMessageId", a.InternetMessageID)
 	populate(objectMap, "messageId", a.MessageID)
 	populate(objectMap, "recipient", a.Recipient)
 	populate(objectMap, "sender", a.Sender)
@@ -993,6 +994,9 @@ func (a *ACSEmailDeliveryReportReceivedEventData) UnmarshalJSON(data []byte) err
 			delete(rawMsg, key)
 		case "deliveryStatusDetails":
 			err = unpopulate(val, "DeliveryStatusDetails", &a.DeliveryStatusDetails)
+			delete(rawMsg, key)
+		case "internetMessageId":
+			err = unpopulate(val, "InternetMessageID", &a.InternetMessageID)
 			delete(rawMsg, key)
 		case "messageId":
 			err = unpopulate(val, "MessageID", &a.MessageID)
@@ -1017,6 +1021,7 @@ func (a *ACSEmailDeliveryReportReceivedEventData) UnmarshalJSON(data []byte) err
 // MarshalJSON implements the json.Marshaller interface for type ACSEmailDeliveryReportStatusDetails.
 func (a ACSEmailDeliveryReportStatusDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "recipientMailServerHostName", a.RecipientMailServerHostName)
 	populate(objectMap, "statusMessage", a.StatusMessage)
 	return json.Marshal(objectMap)
 }
@@ -1030,6 +1035,9 @@ func (a *ACSEmailDeliveryReportStatusDetails) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "recipientMailServerHostName":
+			err = unpopulate(val, "RecipientMailServerHostName", &a.RecipientMailServerHostName)
+			delete(rawMsg, key)
 		case "statusMessage":
 			err = unpopulate(val, "StatusMessage", &a.StatusMessage)
 			delete(rawMsg, key)
@@ -2950,8 +2958,8 @@ func (a *ACSRouterWorkerUpdatedEventData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ACSSmsDeliveryAttemptProperties.
-func (a ACSSmsDeliveryAttemptProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSSMSDeliveryAttemptProperties.
+func (a ACSSMSDeliveryAttemptProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "segmentsFailed", a.SegmentsFailed)
 	populate(objectMap, "segmentsSucceeded", a.SegmentsSucceeded)
@@ -2959,8 +2967,8 @@ func (a ACSSmsDeliveryAttemptProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ACSSmsDeliveryAttemptProperties.
-func (a *ACSSmsDeliveryAttemptProperties) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSSMSDeliveryAttemptProperties.
+func (a *ACSSMSDeliveryAttemptProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -2985,8 +2993,8 @@ func (a *ACSSmsDeliveryAttemptProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ACSSmsDeliveryReportReceivedEventData.
-func (a ACSSmsDeliveryReportReceivedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSSMSDeliveryReportReceivedEventData.
+func (a ACSSMSDeliveryReportReceivedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "deliveryAttempts", a.DeliveryAttempts)
 	populate(objectMap, "deliveryStatus", a.DeliveryStatus)
@@ -2999,8 +3007,8 @@ func (a ACSSmsDeliveryReportReceivedEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ACSSmsDeliveryReportReceivedEventData.
-func (a *ACSSmsDeliveryReportReceivedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSSMSDeliveryReportReceivedEventData.
+func (a *ACSSMSDeliveryReportReceivedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -3040,19 +3048,20 @@ func (a *ACSSmsDeliveryReportReceivedEventData) UnmarshalJSON(data []byte) error
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ACSSmsReceivedEventData.
-func (a ACSSmsReceivedEventData) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ACSSMSReceivedEventData.
+func (a ACSSMSReceivedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "from", a.From)
 	populate(objectMap, "message", a.Message)
 	populate(objectMap, "messageId", a.MessageID)
 	populateDateTimeRFC3339(objectMap, "receivedTimestamp", a.ReceivedTimestamp)
+	populate(objectMap, "segmentCount", a.SegmentCount)
 	populate(objectMap, "to", a.To)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ACSSmsReceivedEventData.
-func (a *ACSSmsReceivedEventData) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSSMSReceivedEventData.
+func (a *ACSSMSReceivedEventData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -3071,6 +3080,9 @@ func (a *ACSSmsReceivedEventData) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "receivedTimestamp":
 			err = unpopulateDateTimeRFC3339(val, "ReceivedTimestamp", &a.ReceivedTimestamp)
+			delete(rawMsg, key)
+		case "segmentCount":
+			err = unpopulate(val, "SegmentCount", &a.SegmentCount)
 			delete(rawMsg, key)
 		case "to":
 			err = unpopulate(val, "To", &a.To)

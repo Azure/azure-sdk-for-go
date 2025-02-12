@@ -23,15 +23,19 @@ type DefaultAzureCredentialOptions struct {
 	// to credential types that authenticate via external tools such as the Azure CLI.
 	azcore.ClientOptions
 
-	// AdditionallyAllowedTenants specifies additional tenants for which the credential may acquire tokens. Add
-	// the wildcard value "*" to allow the credential to acquire tokens for any tenant. This value can also be
-	// set as a semicolon delimited list of tenants in the environment variable AZURE_ADDITIONALLY_ALLOWED_TENANTS.
+	// AdditionallyAllowedTenants specifies tenants to which the credential may authenticate, in addition to
+	// TenantID. When TenantID is empty, this option has no effect and the credential will authenticate to
+	// any requested tenant. Add the wildcard value "*" to allow the credential to authenticate to any tenant.
+	// This value can also be set as a semicolon delimited list of tenants in the environment variable
+	// AZURE_ADDITIONALLY_ALLOWED_TENANTS.
 	AdditionallyAllowedTenants []string
+
 	// DisableInstanceDiscovery should be set true only by applications authenticating in disconnected clouds, or
 	// private clouds such as Azure Stack. It determines whether the credential requests Microsoft Entra instance metadata
 	// from https://login.microsoft.com before authenticating. Setting this to true will skip this request, making
 	// the application responsible for ensuring the configured authority is valid and trustworthy.
 	DisableInstanceDiscovery bool
+
 	// TenantID sets the default tenant for authentication via the Azure CLI and workload identity.
 	TenantID string
 }

@@ -169,7 +169,7 @@ var azureOpenAI, openAI = func() (testVars, testVars) {
 			},
 			Vision: endpointWithModel{
 				Endpoint: ifAzure(azure, servers.SWECentral, servers.OpenAI),
-				Model:    ifAzure(azure, "gpt-4-vision-preview", "gpt-4-vision-preview"),
+				Model:    ifAzure(azure, "gpt-4o", "gpt-4o"),
 			},
 			Whisper: endpointWithModel{
 				Endpoint: ifAzure(azure, servers.USNorthCentral, servers.OpenAI),
@@ -380,12 +380,6 @@ func getEndpoint(ev string, azure bool) string {
 	}
 
 	return v
-}
-
-func skipNowIfThrottled(t *testing.T, err error) {
-	if respErr := (*azcore.ResponseError)(nil); errors.As(err, &respErr) && respErr.StatusCode == http.StatusTooManyRequests {
-		t.Skipf("OpenAI resource overloaded, skipping this test")
-	}
 }
 
 type mimeTypeRecordingPolicy struct{}

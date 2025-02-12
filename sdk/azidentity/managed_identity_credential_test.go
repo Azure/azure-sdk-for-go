@@ -660,6 +660,35 @@ func TestManagedIdentityCredential_IMDSRetries(t *testing.T) {
 	}
 }
 
+func TestManagedIdentityCredential_UnexpectedIMDSResponse(t *testing.T) {
+	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer close()
+	tests := [][]mock.ResponseOption{
+		{mock.WithBody([]byte("not json")), mock.WithStatusCode(http.StatusOK)},
+	}
+	// credential should return AuthenticationFailedError when a token request ends with a retriable response
+	ro := policy.RetryOptions{}
+	setIMDSRetryOptionDefaults(&ro)
+	for _, c := range ro.StatusCodes {
+		tests = append(tests, []mock.ResponseOption{mock.WithStatusCode(c)})
+	}
+	for _, res := range tests {
+		srv.AppendResponse(res...)
+
+		c, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{
+			ClientOptions: policy.ClientOptions{
+				Retry:     policy.RetryOptions{MaxRetries: -1},
+				Transport: srv,
+			},
+		})
+		require.NoError(t, err)
+
+		_, err = c.GetToken(ctx, testTRO)
+		var af *AuthenticationFailedError
+		require.ErrorAs(t, err, &af, "unexpected token response from IMDS should prompt an AuthenticationFailedError")
+	}
+}
+
 func TestManagedIdentityCredential_ServiceFabric(t *testing.T) {
 	expectedSecret := "expected-secret"
 	pred := func(req *http.Request) bool {

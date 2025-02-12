@@ -560,7 +560,7 @@ func (s *ServiceRecordedTestsSuite) TestServiceCreateDeleteRestoreShare() {
 	_require.Equal(sharesCnt, 1)
 }
 
-func (s *ServiceRecordedTestsSuite) TestServiceCreateDeleteDirOAuth() {
+func (s *ServiceUnrecordedTestsSuite) TestServiceCreateDeleteDirOAuth() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -727,7 +727,7 @@ func (s *ServiceRecordedTestsSuite) TestServiceClientWithNilSharedKey() {
 	_require.Error(err)
 }
 
-func (s *ServiceRecordedTestsSuite) TestServiceClientCustomAudience() {
+func (s *ServiceUnrecordedTestsSuite) TestServiceClientCustomAudience() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -760,4 +760,28 @@ func (s *ServiceRecordedTestsSuite) TestServiceClientCustomAudience() {
 
 	_, err = dirClientAudience.GetProperties(context.Background(), nil)
 	_require.NoError(err)
+}
+
+func (s *ServiceRecordedTestsSuite) TestAccountPropertiesWithNFS() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountPremium)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareURL := "https://" + cred.AccountName() + ".file.core.windows.net/" + shareName
+
+	options := &share.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	premiumShareClient, err := share.NewClientWithSharedKeyCredential(shareURL, cred, options)
+	_require.NoError(err)
+
+	_, err = premiumShareClient.Create(context.Background(), &share.CreateOptions{
+		EnabledProtocols: to.Ptr("NFS"),
+	})
+	_require.NoError(err)
+
+	resp, err := premiumShareClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(resp.EnabledProtocols, to.Ptr("NFS"))
 }

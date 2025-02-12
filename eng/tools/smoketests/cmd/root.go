@@ -82,9 +82,9 @@ func inIgnoredDirectories(path string) bool {
 func findModuleDirectories(root string) []string {
 	var ret []string
 
-	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
+	err := filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
 		handle(err)
-		if strings.Contains(info.Name(), "go.mod") && !inIgnoredDirectories(path) {
+		if d.Name() == "go.mod" && !inIgnoredDirectories(path) {
 			path = strings.ReplaceAll(path, "\\", "/")
 			path = strings.ReplaceAll(path, "/go.mod", "")
 			parts := strings.Split(path, "/sdk/")
@@ -232,9 +232,9 @@ func BuildModFile(modules []Module, serviceDirectory string) error {
 func FindExampleFiles(root, serviceDirectory string) ([]string, error) {
 	var ret []string
 
-	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
+	err := filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
 		handle(err)
-		if strings.HasPrefix(info.Name(), "example_") && !inIgnoredDirectories(path) && strings.HasSuffix(info.Name(), ".go") {
+		if strings.HasPrefix(d.Name(), "example_") && !inIgnoredDirectories(path) && filepath.Ext(d.Name()) == ".go" {
 			path = strings.ReplaceAll(path, "\\", "/")
 			if serviceDirectory == "" || strings.Contains(path, serviceDirectory) {
 				ret = append(ret, path)
@@ -307,8 +307,8 @@ func CopyExampleFiles(exFiles []string, dest string) {
 // ReplacePackageStatement replaces all "package ***" with a common "package main" statement
 func ReplacePackageStatement(root string) error {
 	packageName := "package main"
-	return filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
-		if strings.HasSuffix(info.Name(), ".go") {
+	return filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
+		if filepath.Ext(d.Name()) == ".go" {
 			handle(err)
 			data, err := ioutil.ReadFile(path)
 			handle(err)
@@ -367,8 +367,8 @@ func BuildMainFile(root string, c ConfigFile) error {
 func FindEnvVars(root string) error {
 	fmt.Println("Find all environment variables using `os.Getenv` or `os.LookupEnv`")
 
-	err := filepath.Walk(root, func(path string, info fs.FileInfo, err error) error {
-		if strings.HasSuffix(path, ".go") {
+	err := filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
+		if filepath.Ext(path) == ".go" {
 			// Find Env Vars
 			searchFile(path)
 		}

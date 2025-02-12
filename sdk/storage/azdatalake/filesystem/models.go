@@ -7,12 +7,13 @@
 package filesystem
 
 import (
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/directory"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/file"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
-	"time"
 )
 
 // SetAccessPolicyOptions provides set of configurations for FileSystem.SetAccessPolicy operation.
@@ -158,6 +159,31 @@ func (o *ListPathsOptions) format() generated.FileSystemClientListPathsOptions {
 	}
 }
 
+// ListDirectoryPathsOptions contains the optional parameters from the FileSystem.ListDirectoryPathsOptions.
+type ListDirectoryPathsOptions struct {
+	// Marker contains last continuation token returned from the service for listing.
+	Marker *string
+	// MaxResults sets the maximum number of paths that will be returned per page.
+	MaxResults *int32
+	// Prefix filters the results to return only paths whose names begin with the specified prefix path.
+	Prefix *string
+}
+
+func (o *ListDirectoryPathsOptions) format() generated.FileSystemClientListBlobHierarchySegmentOptions {
+	showOnly := generated.ListBlobsShowOnlyDirectories
+	if o == nil {
+		return generated.FileSystemClientListBlobHierarchySegmentOptions{
+			Showonly: &showOnly,
+		}
+	}
+	return generated.FileSystemClientListBlobHierarchySegmentOptions{
+		Marker:     o.Marker,
+		MaxResults: o.MaxResults,
+		Prefix:     o.Prefix,
+		Showonly:   &showOnly,
+	}
+}
+
 // ListDeletedPathsOptions contains the optional parameters for the FileSystem.ListDeletedPaths operation.
 type ListDeletedPathsOptions struct {
 	// Marker contains last continuation token returned from the service for listing.
@@ -169,7 +195,7 @@ type ListDeletedPathsOptions struct {
 }
 
 func (o *ListDeletedPathsOptions) format() generated.FileSystemClientListBlobHierarchySegmentOptions {
-	showOnly := "deleted"
+	showOnly := generated.ListBlobsShowOnlyDeleted
 	if o == nil {
 		return generated.FileSystemClientListBlobHierarchySegmentOptions{Showonly: &showOnly}
 	}

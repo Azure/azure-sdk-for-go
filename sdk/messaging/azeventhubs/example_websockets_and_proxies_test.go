@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
-	"nhooyr.io/websocket"
+	"github.com/coder/websocket"
 )
 
 func ExampleNewClient_usingWebsocketsAndProxies() {

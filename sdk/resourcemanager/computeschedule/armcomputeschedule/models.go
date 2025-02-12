@@ -12,7 +12,7 @@ import "time"
 
 // CancelOperationsRequest - This is the request to cancel running operations in scheduled actions using the operation ids
 type CancelOperationsRequest struct {
-	// REQUIRED; Correlationid item
+	// REQUIRED; CorrelationId item
 	Correlationid *string
 
 	// REQUIRED; The list of operation ids to cancel operations on
@@ -42,7 +42,7 @@ type DeallocateResourceOperationResponse struct {
 
 // ExecuteDeallocateRequest - The ExecuteDeallocateRequest request for executeDeallocate operations
 type ExecuteDeallocateRequest struct {
-	// REQUIRED; Correlationid item
+	// REQUIRED; CorrelationId item
 	Correlationid *string
 
 	// REQUIRED; The execution parameters for the request
@@ -54,7 +54,7 @@ type ExecuteDeallocateRequest struct {
 
 // ExecuteHibernateRequest - The ExecuteHibernateRequest request for executeHibernate operations
 type ExecuteHibernateRequest struct {
-	// REQUIRED; Correlationid item
+	// REQUIRED; CorrelationId item
 	Correlationid *string
 
 	// REQUIRED; The execution parameters for the request
@@ -66,7 +66,7 @@ type ExecuteHibernateRequest struct {
 
 // ExecuteStartRequest - The ExecuteStartRequest request for executeStart operations
 type ExecuteStartRequest struct {
-	// REQUIRED; Correlationid item
+	// REQUIRED; CorrelationId item
 	Correlationid *string
 
 	// REQUIRED; The execution parameters for the request
@@ -99,7 +99,7 @@ type GetOperationErrorsResponse struct {
 
 // GetOperationStatusRequest - This is the request to get operation status using operationids
 type GetOperationStatusRequest struct {
-	// REQUIRED; Correlationid item
+	// REQUIRED; CorrelationId item
 	Correlationid *string
 
 	// REQUIRED; The list of operation ids to get the status of
@@ -168,17 +168,23 @@ type OperationDisplay struct {
 
 // OperationErrorDetails - This defines a list of operation errors associated with a unique operationId
 type OperationErrorDetails struct {
-	// REQUIRED; CRP operationid of the operation for deeper analysis
-	CrpOperationID *string
-
 	// REQUIRED; The error code of the operation
 	ErrorCode *string
 
 	// REQUIRED; The error details of the operation
-	ErrorDetails *time.Time
+	ErrorDetails *string
 
-	// REQUIRED; The timestamp of the error occurence
+	// The compute operationid of the Start/Deallocate/Hibernate request
+	AzureOperationName *string
+
+	// The compute operationid of the Start/Deallocate/Hibernate request
+	CrpOperationID *string
+
+	// The timestamp of the error occurence
 	TimeStamp *time.Time
+
+	// The timestamp of the error occurence
+	Timestamp *time.Time
 }
 
 // OperationErrorsResult - This is the first level of operation errors from the request when clients get errors per vm operation
@@ -232,29 +238,23 @@ type ResourceOperation struct {
 
 // ResourceOperationDetails - The details of a response from an operation on a resource
 type ResourceOperationDetails struct {
-	// REQUIRED; Deadline for the operation
-	Deadline *time.Time
-
-	// REQUIRED; Type of deadline of the operation
-	DeadlineType *DeadlineType
-
-	// REQUIRED; Type of operation performed on the resources
-	OpType *ResourceOperationType
-
 	// REQUIRED; Operation identifier for the unique operation
 	OperationID *string
 
-	// REQUIRED; Unique identifier for the resource involved in the operation, eg ArmId
-	ResourceID *string
-
-	// REQUIRED; Current state of the operation
-	State *OperationState
-
-	// REQUIRED; Subscription id attached to the request
-	SubscriptionID *string
-
 	// Time the operation was complete if errors are null
 	CompletedAt *time.Time
+
+	// Deadline for the operation
+	Deadline *time.Time
+
+	// Type of deadline of the operation
+	DeadlineType *DeadlineType
+
+	// Type of operation performed on the resources
+	OpType *ResourceOperationType
+
+	// Unique identifier for the resource involved in the operation, eg ArmId
+	ResourceID *string
 
 	// Operation level errors if they exist
 	ResourceOperationError *ResourceOperationError
@@ -262,8 +262,17 @@ type ResourceOperationDetails struct {
 	// Retry policy the user can pass
 	RetryPolicy *RetryPolicy
 
+	// Current state of the operation
+	State *OperationState
+
+	// Subscription id attached to the request
+	SubscriptionID *string
+
 	// Timezone for the operation
 	TimeZone *string
+
+	// Timezone for the operation
+	Timezone *string
 }
 
 // ResourceOperationError - These describe errors that occur at the resource level
@@ -292,14 +301,20 @@ type RetryPolicy struct {
 
 // Schedule - The schedule details for the user request
 type Schedule struct {
-	// REQUIRED; The deadline for the operation
-	DeadLine *time.Time
-
 	// REQUIRED; The deadlinetype of the operation, this can either be InitiateAt or CompleteBy
 	DeadlineType *DeadlineType
 
-	// REQUIRED; The timezone for the operation
+	// The deadline for the operation
+	DeadLine *time.Time
+
+	// The deadline for the operation
+	Deadline *time.Time
+
+	// The timezone for the operation
 	TimeZone *string
+
+	// The timezone for the operation
+	Timezone *string
 }
 
 // StartResourceOperationResponse - The response from a start request
@@ -319,7 +334,7 @@ type StartResourceOperationResponse struct {
 
 // SubmitDeallocateRequest - The deallocate request for resources
 type SubmitDeallocateRequest struct {
-	// REQUIRED; Correlationid item
+	// REQUIRED; CorrelationId item
 	Correlationid *string
 
 	// REQUIRED; The execution parameters for the request
@@ -334,7 +349,7 @@ type SubmitDeallocateRequest struct {
 
 // SubmitHibernateRequest - This is the request for hibernate
 type SubmitHibernateRequest struct {
-	// REQUIRED; Correlationid item
+	// REQUIRED; CorrelationId item
 	Correlationid *string
 
 	// REQUIRED; The execution parameters for the request
@@ -349,7 +364,7 @@ type SubmitHibernateRequest struct {
 
 // SubmitStartRequest - This is the request for start
 type SubmitStartRequest struct {
-	// REQUIRED; Correlationid item
+	// REQUIRED; CorrelationId item
 	Correlationid *string
 
 	// REQUIRED; The execution parameters for the request

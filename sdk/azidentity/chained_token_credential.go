@@ -49,6 +49,9 @@ func NewChainedTokenCredential(sources []azcore.TokenCredential, options *Chaine
 		if source == nil { // cannot have a nil credential in the chain or else the application will panic when GetToken() is called on nil
 			return nil, errors.New("sources cannot contain nil")
 		}
+		if mc, ok := source.(*ManagedIdentityCredential); ok {
+			mc.mic.chained = true
+		}
 	}
 	cp := make([]azcore.TokenCredential, len(sources))
 	copy(cp, sources)

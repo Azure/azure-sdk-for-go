@@ -40,108 +40,10 @@ func NewGroupQuotaLimitsRequestClient(credential azcore.TokenCredential, options
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Put the GroupQuota requests for a specific ResourceProvider/Location/Resource. the location and resourceName
-// ("name": {"value" : "resourceName") properties are specified in the request body. Only 1
-// resource quota can be requested. Use the polling API - OperationsStatus URI specified in Azure-AsyncOperation header field,
-// with retry-after duration in seconds to check the intermediate status. This
-// API provides the finals status with the request details and status.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-06-01-preview
-//   - managementGroupID - Management Group Id.
-//   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-//   - resourceProviderName - The resource provider name, such as - Microsoft.Compute. Currently only Microsoft.Compute resource
-//     provider supports this API.
-//   - resourceName - Resource name.
-//   - options - GroupQuotaLimitsRequestClientBeginCreateOrUpdateOptions contains the optional parameters for the GroupQuotaLimitsRequestClient.BeginCreateOrUpdate
-//     method.
-func (client *GroupQuotaLimitsRequestClient) BeginCreateOrUpdate(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, resourceName string, options *GroupQuotaLimitsRequestClientBeginCreateOrUpdateOptions) (*runtime.Poller[GroupQuotaLimitsRequestClientCreateOrUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, managementGroupID, groupQuotaName, resourceProviderName, resourceName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GroupQuotaLimitsRequestClientCreateOrUpdateResponse]{
-			FinalStateVia: runtime.FinalStateViaLocation,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GroupQuotaLimitsRequestClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// CreateOrUpdate - Put the GroupQuota requests for a specific ResourceProvider/Location/Resource. the location and resourceName
-// ("name": {"value" : "resourceName") properties are specified in the request body. Only 1
-// resource quota can be requested. Use the polling API - OperationsStatus URI specified in Azure-AsyncOperation header field,
-// with retry-after duration in seconds to check the intermediate status. This
-// API provides the finals status with the request details and status.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-06-01-preview
-func (client *GroupQuotaLimitsRequestClient) createOrUpdate(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, resourceName string, options *GroupQuotaLimitsRequestClientBeginCreateOrUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "GroupQuotaLimitsRequestClient.BeginCreateOrUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, managementGroupID, groupQuotaName, resourceProviderName, resourceName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
-	}
-	return httpResp, nil
-}
-
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *GroupQuotaLimitsRequestClient) createOrUpdateCreateRequest(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, resourceName string, options *GroupQuotaLimitsRequestClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Quota/groupQuotas/{groupQuotaName}/resourceProviders/{resourceProviderName}/groupQuotaRequests/{resourceName}"
-	if managementGroupID == "" {
-		return nil, errors.New("parameter managementGroupID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
-	if groupQuotaName == "" {
-		return nil, errors.New("parameter groupQuotaName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{groupQuotaName}", url.PathEscape(groupQuotaName))
-	if resourceProviderName == "" {
-		return nil, errors.New("parameter resourceProviderName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderName}", url.PathEscape(resourceProviderName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.GroupQuotaRequest != nil {
-		if err := runtime.MarshalAsJSON(req, *options.GroupQuotaRequest); err != nil {
-			return nil, err
-		}
-		return req, nil
-	}
-	return req, nil
-}
-
 // Get - Get API to check the status of a GroupQuota request by requestId.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01-preview
+// Generated from API version 2024-12-18-preview
 //   - managementGroupID - Management Group Id.
 //   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
 //   - requestID - Request Id.
@@ -189,7 +91,7 @@ func (client *GroupQuotaLimitsRequestClient) getCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01-preview")
+	reqQP.Set("api-version", "2024-12-18-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -206,7 +108,7 @@ func (client *GroupQuotaLimitsRequestClient) getHandleResponse(resp *http.Respon
 
 // NewListPager - Get API to check the status of a GroupQuota request by requestId.
 //
-// Generated from API version 2023-06-01-preview
+// Generated from API version 2024-12-18-preview
 //   - managementGroupID - Management Group Id.
 //   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
 //   - resourceProviderName - The resource provider name, such as - Microsoft.Compute. Currently only Microsoft.Compute resource
@@ -260,7 +162,7 @@ func (client *GroupQuotaLimitsRequestClient) listCreateRequest(ctx context.Conte
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("$filter", filter)
-	reqQP.Set("api-version", "2023-06-01-preview")
+	reqQP.Set("api-version", "2024-12-18-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -275,24 +177,24 @@ func (client *GroupQuotaLimitsRequestClient) listHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// BeginUpdate - Create the GroupQuota requests for a specific ResourceProvider/Location/Resource. the location and resourceName
-// properties are specified in the request body. Only 1 resource quota can be requested.
-// Please note that patch request creates a new groupQuota request. Use the polling API - OperationsStatus URI specified in
-// Azure-AsyncOperation header field, with retry-after duration in seconds to
-// check the intermediate status. This API provides the finals status with the request details and status.
+// BeginUpdate - Create the GroupQuota requests for a specific ResourceProvider/Location/Resource. The resourceName properties
+// are specified in the request body. Only 1 resource quota can be requested. Please note
+// that patch request creates a new groupQuota request. Use the polling API - OperationsStatus URI specified in Azure-AsyncOperation
+// header field, with retry-after duration in seconds to check the
+// intermediate status. This API provides the finals status with the request details and status.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01-preview
+// Generated from API version 2024-12-18-preview
 //   - managementGroupID - Management Group Id.
 //   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
 //   - resourceProviderName - The resource provider name, such as - Microsoft.Compute. Currently only Microsoft.Compute resource
 //     provider supports this API.
-//   - resourceName - Resource name.
+//   - location - The name of the Azure region.
 //   - options - GroupQuotaLimitsRequestClientBeginUpdateOptions contains the optional parameters for the GroupQuotaLimitsRequestClient.BeginUpdate
 //     method.
-func (client *GroupQuotaLimitsRequestClient) BeginUpdate(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, resourceName string, options *GroupQuotaLimitsRequestClientBeginUpdateOptions) (*runtime.Poller[GroupQuotaLimitsRequestClientUpdateResponse], error) {
+func (client *GroupQuotaLimitsRequestClient) BeginUpdate(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, location string, options *GroupQuotaLimitsRequestClientBeginUpdateOptions) (*runtime.Poller[GroupQuotaLimitsRequestClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, managementGroupID, groupQuotaName, resourceProviderName, resourceName, options)
+		resp, err := client.update(ctx, managementGroupID, groupQuotaName, resourceProviderName, location, options)
 		if err != nil {
 			return nil, err
 		}
@@ -308,21 +210,21 @@ func (client *GroupQuotaLimitsRequestClient) BeginUpdate(ctx context.Context, ma
 	}
 }
 
-// Update - Create the GroupQuota requests for a specific ResourceProvider/Location/Resource. the location and resourceName
-// properties are specified in the request body. Only 1 resource quota can be requested.
-// Please note that patch request creates a new groupQuota request. Use the polling API - OperationsStatus URI specified in
-// Azure-AsyncOperation header field, with retry-after duration in seconds to
-// check the intermediate status. This API provides the finals status with the request details and status.
+// Update - Create the GroupQuota requests for a specific ResourceProvider/Location/Resource. The resourceName properties
+// are specified in the request body. Only 1 resource quota can be requested. Please note
+// that patch request creates a new groupQuota request. Use the polling API - OperationsStatus URI specified in Azure-AsyncOperation
+// header field, with retry-after duration in seconds to check the
+// intermediate status. This API provides the finals status with the request details and status.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01-preview
-func (client *GroupQuotaLimitsRequestClient) update(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, resourceName string, options *GroupQuotaLimitsRequestClientBeginUpdateOptions) (*http.Response, error) {
+// Generated from API version 2024-12-18-preview
+func (client *GroupQuotaLimitsRequestClient) update(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, location string, options *GroupQuotaLimitsRequestClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GroupQuotaLimitsRequestClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, managementGroupID, groupQuotaName, resourceProviderName, resourceName, options)
+	req, err := client.updateCreateRequest(ctx, managementGroupID, groupQuotaName, resourceProviderName, location, options)
 	if err != nil {
 		return nil, err
 	}
@@ -338,8 +240,8 @@ func (client *GroupQuotaLimitsRequestClient) update(ctx context.Context, managem
 }
 
 // updateCreateRequest creates the Update request.
-func (client *GroupQuotaLimitsRequestClient) updateCreateRequest(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, resourceName string, options *GroupQuotaLimitsRequestClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Quota/groupQuotas/{groupQuotaName}/resourceProviders/{resourceProviderName}/groupQuotaRequests/{resourceName}"
+func (client *GroupQuotaLimitsRequestClient) updateCreateRequest(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, location string, options *GroupQuotaLimitsRequestClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Quota/groupQuotas/{groupQuotaName}/resourceProviders/{resourceProviderName}/groupQuotaLimits/{location}"
 	if managementGroupID == "" {
 		return nil, errors.New("parameter managementGroupID cannot be empty")
 	}
@@ -352,16 +254,16 @@ func (client *GroupQuotaLimitsRequestClient) updateCreateRequest(ctx context.Con
 		return nil, errors.New("parameter resourceProviderName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderName}", url.PathEscape(resourceProviderName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
+	if location == "" {
+		return nil, errors.New("parameter location cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01-preview")
+	reqQP.Set("api-version", "2024-12-18-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.GroupQuotaRequest != nil {

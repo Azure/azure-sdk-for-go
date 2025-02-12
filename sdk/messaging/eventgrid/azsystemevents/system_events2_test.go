@@ -960,11 +960,13 @@ func TestConsumeAcsEmailDeliveryReportReceivedEvent(t *testing.T) {
 		"data": {
 			"sender": "test2@contoso.org",
 			"recipient": "test1@contoso.com",
+			"internetMessageId": "<xyz.abc.123@contoso.com>",
 			"messageId": "950850f5-bcdf-4315-b77a-6447cf56fac9",
 			"status": "Delivered",
 			"deliveryAttemptTimestamp": "2023-02-09T19:46:12.2480265+00:00",
 			"deliveryStatusDetails": {
-				"statusMessage": "DestinationMailboxFull"
+				"statusMessage": "DestinationMailboxFull",
+				"recipientMailServerHostName": "mx.contoso.com"
 			}
 		},
 		"eventType": "Microsoft.Communication.EmailDeliveryReportReceived",
@@ -982,6 +984,8 @@ func TestConsumeAcsEmailDeliveryReportReceivedEvent(t *testing.T) {
 	require.Equal(t, azsystemevents.ACSEmailDeliveryReportStatusDelivered, *emailEvent.Status)
 	require.Equal(t, "DestinationMailboxFull", *emailEvent.DeliveryStatusDetails.StatusMessage)
 	require.Equal(t, mustParseTime(t, "2023-02-09T19:46:12.2480265+00:00"), *emailEvent.DeliveryAttemptTimestamp)
+	require.Equal(t, "<xyz.abc.123@contoso.com>", *emailEvent.InternetMessageID)
+	require.Equal(t, "mx.contoso.com", *emailEvent.DeliveryStatusDetails.RecipientMailServerHostName)
 }
 
 func TestConsumeAcsIncomingCallEvent(t *testing.T) {

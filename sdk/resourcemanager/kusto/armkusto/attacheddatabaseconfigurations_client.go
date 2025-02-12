@@ -46,7 +46,7 @@ func NewAttachedDatabaseConfigurationsClient(subscriptionID string, credential a
 // CheckNameAvailability - Checks that the attached database configuration resource name is valid and is not already in use.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-15
+// Generated from API version 2024-04-13
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - resourceName - The name of the resource.
@@ -94,7 +94,7 @@ func (client *AttachedDatabaseConfigurationsClient) checkNameAvailabilityCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-15")
+	reqQP.Set("api-version", "2024-04-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resourceName); err != nil {
@@ -115,7 +115,7 @@ func (client *AttachedDatabaseConfigurationsClient) checkNameAvailabilityHandleR
 // BeginCreateOrUpdate - Creates or updates an attached database configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-15
+// Generated from API version 2024-04-13
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - attachedDatabaseConfigurationName - The name of the attached database configuration.
@@ -142,7 +142,7 @@ func (client *AttachedDatabaseConfigurationsClient) BeginCreateOrUpdate(ctx cont
 // CreateOrUpdate - Creates or updates an attached database configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-15
+// Generated from API version 2024-04-13
 func (client *AttachedDatabaseConfigurationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, parameters AttachedDatabaseConfiguration, options *AttachedDatabaseConfigurationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AttachedDatabaseConfigurationsClient.BeginCreateOrUpdate"
@@ -188,7 +188,7 @@ func (client *AttachedDatabaseConfigurationsClient) createOrUpdateCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-15")
+	reqQP.Set("api-version", "2024-04-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -200,7 +200,7 @@ func (client *AttachedDatabaseConfigurationsClient) createOrUpdateCreateRequest(
 // BeginDelete - Deletes the attached database configuration with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-15
+// Generated from API version 2024-04-13
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - attachedDatabaseConfigurationName - The name of the attached database configuration.
@@ -226,7 +226,7 @@ func (client *AttachedDatabaseConfigurationsClient) BeginDelete(ctx context.Cont
 // Delete - Deletes the attached database configuration with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-15
+// Generated from API version 2024-04-13
 func (client *AttachedDatabaseConfigurationsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, options *AttachedDatabaseConfigurationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AttachedDatabaseConfigurationsClient.BeginDelete"
@@ -272,7 +272,7 @@ func (client *AttachedDatabaseConfigurationsClient) deleteCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-15")
+	reqQP.Set("api-version", "2024-04-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -281,7 +281,7 @@ func (client *AttachedDatabaseConfigurationsClient) deleteCreateRequest(ctx cont
 // Get - Returns an attached database configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-15
+// Generated from API version 2024-04-13
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - attachedDatabaseConfigurationName - The name of the attached database configuration.
@@ -333,7 +333,7 @@ func (client *AttachedDatabaseConfigurationsClient) getCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-15")
+	reqQP.Set("api-version", "2024-04-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -350,7 +350,7 @@ func (client *AttachedDatabaseConfigurationsClient) getHandleResponse(resp *http
 
 // NewListByClusterPager - Returns the list of attached database configurations of the given Kusto cluster.
 //
-// Generated from API version 2023-08-15
+// Generated from API version 2024-04-13
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kusto cluster.
 //   - options - AttachedDatabaseConfigurationsClientListByClusterOptions contains the optional parameters for the AttachedDatabaseConfigurationsClient.NewListByClusterPager
@@ -399,7 +399,7 @@ func (client *AttachedDatabaseConfigurationsClient) listByClusterCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-15")
+	reqQP.Set("api-version", "2024-04-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -10,26 +10,6 @@ package armquota
 
 import "time"
 
-// AdditionalAttributes - Additional attribute or filter to allow subscriptions meeting the requirements to be part of the
-// GroupQuota.
-type AdditionalAttributes struct {
-	// REQUIRED; The grouping Id for the group quota. It can be Billing Id or ServiceTreeId if applicable.
-	GroupID *GroupingID
-
-	// Environment name.
-	Environment *EnvironmentType
-}
-
-// AdditionalAttributesPatch - Additional attribute or filter to allow subscriptions meeting the requirements to be part of
-// the GroupQuota.
-type AdditionalAttributesPatch struct {
-	// Environment name.
-	Environment *EnvironmentType
-
-	// The grouping Id for the group quota. It can be Billing Id or ServiceTreeId if applicable.
-	GroupID *GroupingID
-}
-
 // AllocatedQuotaToSubscriptionList - Quota allocated to subscriptions
 type AllocatedQuotaToSubscriptionList struct {
 	// List of Group Quota Limit allocated to subscriptions.
@@ -110,11 +90,6 @@ type AllocationRequestStatusProperties struct {
 
 	// READ-ONLY; The request submission time. The date conforms to the following format specified by the ISO 8601 standard: yyyy-MM-ddTHH:mm:ssZ
 	RequestSubmitTime *time.Time
-}
-
-// BillingAccountID - A Billing Account Id.
-type BillingAccountID struct {
-	ID *string
 }
 
 // CommonResourceProperties - Resource properties.
@@ -213,8 +188,8 @@ type GroupQuotaDetails struct {
 	// The current Group Quota Limit at the parentId level.
 	Limit *int64
 
-	// Location/Azure region for the quota requested for resource.
-	Region *string
+	// The resource name, such as SKU name.
+	ResourceName *string
 
 	// READ-ONLY; Quota allocated to subscriptions
 	AllocatedToSubscriptions *AllocatedQuotaToSubscriptionList
@@ -244,7 +219,12 @@ type GroupQuotaDetailsName struct {
 // GroupQuotaLimit - Group Quota limit.
 type GroupQuotaLimit struct {
 	// Group Quota properties for the specified resource.
-	Properties *GroupQuotaDetails
+	Properties *GroupQuotaLimitProperties
+}
+
+// GroupQuotaLimitList - List of Group Quota Limit details.
+type GroupQuotaLimitList struct {
+	Properties *GroupQuotaLimitListProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
@@ -259,13 +239,41 @@ type GroupQuotaLimit struct {
 	Type *string
 }
 
-// GroupQuotaLimitList - List of Group Quota Limit details.
-type GroupQuotaLimitList struct {
+type GroupQuotaLimitListProperties struct {
 	// List of Group Quota Limit details.
 	Value []*GroupQuotaLimit
 
 	// READ-ONLY; The URL to use for getting the next set of results.
 	NextLink *string
+
+	// READ-ONLY; Request status.
+	ProvisioningState *RequestState
+}
+
+// GroupQuotaLimitProperties - Group Quota properties for the specified resource.
+type GroupQuotaLimitProperties struct {
+	// Any comment related to quota request.
+	Comment *string
+
+	// The current Group Quota Limit at the parentId level.
+	Limit *int64
+
+	// The resource name, such as SKU name.
+	ResourceName *string
+
+	// READ-ONLY; Quota allocated to subscriptions
+	AllocatedToSubscriptions *AllocatedQuotaToSubscriptionList
+
+	// READ-ONLY; The available Group Quota Limit at the MG level. This Group quota can be allocated to subscription(s).
+	AvailableLimit *int64
+
+	// READ-ONLY; Name of the resource provided by the resource provider. This property is already included in the request URI,
+	// so it is a readonly property returned in the response.
+	Name *GroupQuotaDetailsName
+
+	// READ-ONLY; The usages units, such as Count and Bytes. When requesting quota, use the unit value returned in the GET response
+	// in the request body of your PUT operation.
+	Unit *string
 }
 
 // GroupQuotaList - List of Group Quotas at MG level.
@@ -335,11 +343,11 @@ type GroupQuotaSubscriptionIDList struct {
 }
 
 type GroupQuotaSubscriptionIDProperties struct {
+	// An Azure subscriptionId.
+	SubscriptionID *string
+
 	// READ-ONLY; Status of this subscriptionId being associated with the GroupQuotasEntity.
 	ProvisioningState *RequestState
-
-	// READ-ONLY; An Azure subscriptionId.
-	SubscriptionID *string
 }
 
 // GroupQuotaSubscriptionRequestStatus - The new quota limit request status.
@@ -408,47 +416,10 @@ type GroupQuotaUsagesBaseName struct {
 	LocalizedValue *string
 }
 
-// GroupQuotasEnforcementListResponse - List of Azure regions, where the group quotas is enabled for enforcement.
-type GroupQuotasEnforcementListResponse struct {
-	// List of Azure Regions.
-	Value []*GroupQuotasEnforcementResponse
-
-	// READ-ONLY; The URL to use for getting the next set of results.
-	NextLink *string
-}
-
-// GroupQuotasEnforcementResponse - The GroupQuota Enforcement status for a Azure Location/Region.
-type GroupQuotasEnforcementResponse struct {
-	Properties *GroupQuotasEnforcementResponseProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-type GroupQuotasEnforcementResponseProperties struct {
-	// Is the GroupQuota Enforcement enabled for the Azure region.
-	EnforcementEnabled *EnforcementState
-
-	// READ-ONLY; Details of the failure.
-	FaultCode *string
-
-	// READ-ONLY; Request status.
-	ProvisioningState *RequestState
-}
-
 // GroupQuotasEntity - Properties and filters for ShareQuota. The request parameter is optional, if there are no filters specified.
 type GroupQuotasEntity struct {
-	// Properties and filters for ShareQuota. The request parameter is optional, if there are no filters specified.
-	Properties *GroupQuotasEntityBase
+	// Properties
+	Properties *GroupQuotasEntityProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
@@ -466,9 +437,6 @@ type GroupQuotasEntity struct {
 // GroupQuotasEntityBase - Properties and filters for ShareQuota. The request parameter is optional, if there are no filters
 // specified.
 type GroupQuotasEntityBase struct {
-	// Additional attributes to filter/restrict the subscriptions, which can be added to the subscriptionIds.
-	AdditionalAttributes *AdditionalAttributes
-
 	// Display name of the GroupQuota entity.
 	DisplayName *string
 
@@ -479,9 +447,6 @@ type GroupQuotasEntityBase struct {
 // GroupQuotasEntityBasePatch - Properties and filters for ShareQuota. The request parameter is optional, if there are no
 // filters specified.
 type GroupQuotasEntityBasePatch struct {
-	// Additional attributes to filter/restrict the subscriptions, which can be added to the subscriptionIds.
-	AdditionalAttributes *AdditionalAttributesPatch
-
 	// Display name of the GroupQuota entity.
 	DisplayName *string
 
@@ -492,8 +457,8 @@ type GroupQuotasEntityBasePatch struct {
 // GroupQuotasEntityPatch - Properties and filters for ShareQuota. The request parameter is optional, if there are no filters
 // specified.
 type GroupQuotasEntityPatch struct {
-	// Properties and filters for ShareQuota. The request parameter is optional, if there are no filters specified.
-	Properties *GroupQuotasEntityBasePatch
+	// Properties
+	Properties *GroupQuotasEntityPatchProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
@@ -508,13 +473,22 @@ type GroupQuotasEntityPatch struct {
 	Type *string
 }
 
-// GroupingID - The grouping Id for the group quota. It can be Billing Id or ServiceTreeId if applicable.
-type GroupingID struct {
-	// GroupingId type. It is a required property. More types of groupIds can be supported in future.
-	GroupingIDType *GroupingIDType
+// GroupQuotasEntityPatchProperties - Properties
+type GroupQuotasEntityPatchProperties struct {
+	// Display name of the GroupQuota entity.
+	DisplayName *string
 
-	// GroupId value based on the groupingType selected - Billing Id or ServiceTreeId.
-	Value *string
+	// READ-ONLY; Provisioning state of the operation.
+	ProvisioningState *RequestState
+}
+
+// GroupQuotasEntityProperties - Properties
+type GroupQuotasEntityProperties struct {
+	// Display name of the GroupQuota entity.
+	DisplayName *string
+
+	// READ-ONLY; Provisioning state of the operation.
+	ProvisioningState *RequestState
 }
 
 // LROResponse - The provisioning state for the operation.
@@ -990,7 +964,12 @@ type SubscriptionQuotaAllocationRequestList struct {
 // allocated to the subscription can be allocated back to the MG Group Quota.
 type SubscriptionQuotaAllocations struct {
 	// Quota properties for the specified resource.
-	Properties *SubscriptionQuotaDetails
+	Properties *SubscriptionQuotaAllocationsProperties
+}
+
+// SubscriptionQuotaAllocationsList - Subscription quota list.
+type SubscriptionQuotaAllocationsList struct {
+	Properties *SubscriptionQuotaAllocationsListProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
@@ -1005,13 +984,31 @@ type SubscriptionQuotaAllocations struct {
 	Type *string
 }
 
-// SubscriptionQuotaAllocationsList - Subscription quota list.
-type SubscriptionQuotaAllocationsList struct {
+type SubscriptionQuotaAllocationsListProperties struct {
 	// Subscription quota list.
 	Value []*SubscriptionQuotaAllocations
 
 	// READ-ONLY; The URL to use for getting the next set of results.
 	NextLink *string
+
+	// READ-ONLY; Request status.
+	ProvisioningState *RequestState
+}
+
+// SubscriptionQuotaAllocationsProperties - Quota properties for the specified resource.
+type SubscriptionQuotaAllocationsProperties struct {
+	// The total quota limit for the subscription.
+	Limit *int64
+
+	// The resource name, such as SKU name.
+	ResourceName *string
+
+	// READ-ONLY; Name of the resource provided by the resource provider. This property is already included in the request URI,
+	// so it is a readonly property returned in the response.
+	Name *SubscriptionQuotaDetailsName
+
+	// READ-ONLY; The shareable quota for the subscription.
+	ShareableQuota *int64
 }
 
 // SubscriptionQuotaAllocationsStatusList - Subscription quota allocation requests status list.
@@ -1028,8 +1025,8 @@ type SubscriptionQuotaDetails struct {
 	// The total quota limit for the subscription.
 	Limit *int64
 
-	// Location/Azure region for the quota requested for resource.
-	Region *string
+	// The resource name, such as SKU name.
+	ResourceName *string
 
 	// READ-ONLY; Name of the resource provided by the resource provider. This property is already included in the request URI,
 	// so it is a readonly property returned in the response.

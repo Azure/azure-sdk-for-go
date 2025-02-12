@@ -19,8 +19,8 @@ You can Try Azure Cosmos DB for free without an Azure subscription, free of char
 You can create an Azure Cosmos DB account using:
 
 * [Azure Portal](https://portal.azure.com).
-* [Azure CLI](https://docs.microsoft.com/cli/azure).
-* [Azure ARM](https://docs.microsoft.com/azure/cosmos-db/quick-create-template).
+* [Azure CLI](https://learn.microsoft.com/cli/azure).
+* [Azure ARM](https://learn.microsoft.com/azure/cosmos-db/quick-create-template).
 
 #### Install the package
 
@@ -185,9 +185,9 @@ handle(err)
 
 ## Next steps
 
-- [Resource Model of Azure Cosmos DB Service](https://docs.microsoft.com/azure/cosmos-db/sql-api-resources)
-- [Azure Cosmos DB Resource URI](https://docs.microsoft.com/rest/api/documentdb/documentdb-resource-uri-syntax-for-rest)
-- [Partitioning](https://docs.microsoft.com/azure/cosmos-db/partition-data)
+- [Resource Model of Azure Cosmos DB Service](https://learn.microsoft.com/azure/cosmos-db/sql-api-resources)
+- [Azure Cosmos DB Resource URI](https://learn.microsoft.com/rest/api/documentdb/documentdb-resource-uri-syntax-for-rest)
+- [Partitioning](https://learn.microsoft.com/azure/cosmos-db/partition-data)
 - [Using emulator](https://github.com/Azure/azure-documentdb-dotnet/blob/master/docs/documentdb-nosql-local-emulator.md)
 
 
@@ -214,4 +214,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-go/sdk/data/azcosmos/README.png)
+

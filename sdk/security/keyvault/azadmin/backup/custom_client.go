@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -56,7 +53,7 @@ func NewClient(vaultURL string, credential azcore.TokenCredential, options *Clie
 	if err != nil {
 		return nil, err
 	}
-	return &Client{endpoint: vaultURL, internal: azcoreClient}, nil
+	return &Client{vaultBaseUrl: vaultURL, internal: azcoreClient}, nil
 }
 
 // ErrorInfo - Internal error from Azure Key Vault server.
@@ -98,17 +95,21 @@ func (client *Client) beginFullRestore(ctx context.Context, restoreBlobDetails R
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FullRestoreResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FullRestoreResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 			Handler:       handler,
 			Tracer:        client.internal.Tracer(),
 		})
+		return poller, err
 	} else {
 		handler, err := pollers.NewRestorePoller[FullRestoreResponse](client.internal.Pipeline(), nil, runtime.FinalStateViaAzureAsyncOp)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[FullRestoreResponse]{Handler: handler})
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[FullRestoreResponse]{
+			Handler: handler,
+			Tracer:  client.internal.Tracer(),
+		})
 	}
 }
 
@@ -124,16 +125,20 @@ func (client *Client) beginSelectiveKeyRestore(ctx context.Context, keyName stri
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SelectiveKeyRestoreResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SelectiveKeyRestoreResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 			Handler:       handler,
 			Tracer:        client.internal.Tracer(),
 		})
+		return poller, err
 	} else {
 		handler, err := pollers.NewRestorePoller[SelectiveKeyRestoreResponse](client.internal.Pipeline(), nil, runtime.FinalStateViaAzureAsyncOp)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SelectiveKeyRestoreResponse]{Handler: handler})
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SelectiveKeyRestoreResponse]{
+			Handler: handler,
+			Tracer:  client.internal.Tracer(),
+		})
 	}
 }

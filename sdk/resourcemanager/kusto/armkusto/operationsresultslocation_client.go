@@ -46,7 +46,7 @@ func NewOperationsResultsLocationClient(subscriptionID string, credential azcore
 // Get - Returns operation results.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-15
+// Generated from API version 2024-04-13
 //   - location - The name of Azure region.
 //   - operationID - The ID of an ongoing async operation.
 //   - options - OperationsResultsLocationClientGetOptions contains the optional parameters for the OperationsResultsLocationClient.Get
@@ -93,7 +93,7 @@ func (client *OperationsResultsLocationClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-15")
+	reqQP.Set("api-version", "2024-04-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }

@@ -20,7 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDataConnectionsListByDatabase.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8adce17dc500f338f86f18af30aac61dcb71c5f/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoDataConnectionsListByDatabase.json
 func ExampleDataConnectionsClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,7 +53,7 @@ func ExampleDataConnectionsClient_NewListByDatabasePager() {
 		// 			Properties: &armkusto.EventHubConnectionProperties{
 		// 				Compression: to.Ptr(armkusto.CompressionNone),
 		// 				ConsumerGroup: to.Ptr("$Default"),
-		// 				DataFormat: to.Ptr(armkusto.EventHubDataFormatJSON),
+		// 				DataFormat: to.Ptr(armkusto.EventHubDataFormatMULTIJSON),
 		// 				DatabaseRouting: to.Ptr(armkusto.DatabaseRoutingSingle),
 		// 				EventHubResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest1"),
 		// 				EventSystemProperties: []*string{
@@ -75,7 +75,7 @@ func ExampleDataConnectionsClient_NewListByDatabasePager() {
 		// 			Properties: &armkusto.EventGridConnectionProperties{
 		// 				BlobStorageEventType: to.Ptr(armkusto.BlobStorageEventTypeMicrosoftStorageBlobCreated),
 		// 				ConsumerGroup: to.Ptr("$Default"),
-		// 				DataFormat: to.Ptr(armkusto.EventGridDataFormatJSON),
+		// 				DataFormat: to.Ptr(armkusto.EventGridDataFormatMULTIJSON),
 		// 				DatabaseRouting: to.Ptr(armkusto.DatabaseRoutingSingle),
 		// 				EventGridResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Storage/storageAccounts/teststorageaccount/providers/Microsoft.EventGrid/eventSubscriptions/eventSubscriptionTest"),
 		// 				EventHubResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest2"),
@@ -110,7 +110,7 @@ func ExampleDataConnectionsClient_NewListByDatabasePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDataConnectionEventGridValidationAsync.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8adce17dc500f338f86f18af30aac61dcb71c5f/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoDataConnectionEventGridValidationAsync.json
 func ExampleDataConnectionsClient_BeginDataConnectionValidation_kustoDataConnectionEventGridValidation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -128,7 +128,7 @@ func ExampleDataConnectionsClient_BeginDataConnectionValidation_kustoDataConnect
 			Properties: &armkusto.EventGridConnectionProperties{
 				BlobStorageEventType:      to.Ptr(armkusto.BlobStorageEventTypeMicrosoftStorageBlobCreated),
 				ConsumerGroup:             to.Ptr("$Default"),
-				DataFormat:                to.Ptr(armkusto.EventGridDataFormatJSON),
+				DataFormat:                to.Ptr(armkusto.EventGridDataFormatMULTIJSON),
 				DatabaseRouting:           to.Ptr(armkusto.DatabaseRoutingSingle),
 				EventGridResourceID:       to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Storage/storageAccounts/teststorageaccount/providers/Microsoft.EventGrid/eventSubscriptions/eventSubscriptionTest"),
 				EventHubResourceID:        to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest1"),
@@ -154,7 +154,7 @@ func ExampleDataConnectionsClient_BeginDataConnectionValidation_kustoDataConnect
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDataConnectionValidationAsync.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8adce17dc500f338f86f18af30aac61dcb71c5f/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoDataConnectionValidationAsync.json
 func ExampleDataConnectionsClient_BeginDataConnectionValidation_kustoDataConnectionValidation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -172,7 +172,7 @@ func ExampleDataConnectionsClient_BeginDataConnectionValidation_kustoDataConnect
 			Properties: &armkusto.EventHubConnectionProperties{
 				Compression:               to.Ptr(armkusto.CompressionNone),
 				ConsumerGroup:             to.Ptr("testConsumerGroup1"),
-				DataFormat:                to.Ptr(armkusto.EventHubDataFormatJSON),
+				DataFormat:                to.Ptr(armkusto.EventHubDataFormatMULTIJSON),
 				EventHubResourceID:        to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest1"),
 				ManagedIdentityResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/managedidentityTest1"),
 				MappingRuleName:           to.Ptr("TestMapping"),
@@ -194,7 +194,7 @@ func ExampleDataConnectionsClient_BeginDataConnectionValidation_kustoDataConnect
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDataConnectionsCheckNameAvailability.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8adce17dc500f338f86f18af30aac61dcb71c5f/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoDataConnectionsCheckNameAvailability.json
 func ExampleDataConnectionsClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -223,7 +223,7 @@ func ExampleDataConnectionsClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDataConnectionsCosmosDbGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8adce17dc500f338f86f18af30aac61dcb71c5f/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoDataConnectionsCosmosDbGet.json
 func ExampleDataConnectionsClient_Get_kustoDataConnectionsCosmosDbGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -263,7 +263,7 @@ func ExampleDataConnectionsClient_Get_kustoDataConnectionsCosmosDbGet() {
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDataConnectionsEventGridGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8adce17dc500f338f86f18af30aac61dcb71c5f/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoDataConnectionsEventGridGet.json
 func ExampleDataConnectionsClient_Get_kustoDataConnectionsEventGridGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -291,7 +291,7 @@ func ExampleDataConnectionsClient_Get_kustoDataConnectionsEventGridGet() {
 	// 		Properties: &armkusto.EventGridConnectionProperties{
 	// 			BlobStorageEventType: to.Ptr(armkusto.BlobStorageEventTypeMicrosoftStorageBlobCreated),
 	// 			ConsumerGroup: to.Ptr("$Default"),
-	// 			DataFormat: to.Ptr(armkusto.EventGridDataFormatJSON),
+	// 			DataFormat: to.Ptr(armkusto.EventGridDataFormatMULTIJSON),
 	// 			DatabaseRouting: to.Ptr(armkusto.DatabaseRoutingSingle),
 	// 			EventGridResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Storage/storageAccounts/teststorageaccount/providers/Microsoft.EventGrid/eventSubscriptions/eventSubscriptionTest"),
 	// 			EventHubResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest2"),
@@ -307,7 +307,7 @@ func ExampleDataConnectionsClient_Get_kustoDataConnectionsEventGridGet() {
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDataConnectionsGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8adce17dc500f338f86f18af30aac61dcb71c5f/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoDataConnectionsGet.json
 func ExampleDataConnectionsClient_Get_kustoDataConnectionsGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -335,7 +335,7 @@ func ExampleDataConnectionsClient_Get_kustoDataConnectionsGet() {
 	// 		Properties: &armkusto.EventHubConnectionProperties{
 	// 			Compression: to.Ptr(armkusto.CompressionNone),
 	// 			ConsumerGroup: to.Ptr("$Default"),
-	// 			DataFormat: to.Ptr(armkusto.EventHubDataFormatJSON),
+	// 			DataFormat: to.Ptr(armkusto.EventHubDataFormatMULTIJSON),
 	// 			DatabaseRouting: to.Ptr(armkusto.DatabaseRoutingSingle),
 	// 			EventHubResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest1"),
 	// 			EventSystemProperties: []*string{
@@ -351,7 +351,7 @@ func ExampleDataConnectionsClient_Get_kustoDataConnectionsGet() {
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDataConnectionsCosmosDbCreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8adce17dc500f338f86f18af30aac61dcb71c5f/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoDataConnectionsCosmosDbCreateOrUpdate.json
 func ExampleDataConnectionsClient_BeginCreateOrUpdate_kustoDataConnectionsCosmosDbCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -406,7 +406,7 @@ func ExampleDataConnectionsClient_BeginCreateOrUpdate_kustoDataConnectionsCosmos
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDataConnectionsCreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8adce17dc500f338f86f18af30aac61dcb71c5f/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoDataConnectionsCreateOrUpdate.json
 func ExampleDataConnectionsClient_BeginCreateOrUpdate_kustoDataConnectionsCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -453,7 +453,7 @@ func ExampleDataConnectionsClient_BeginCreateOrUpdate_kustoDataConnectionsCreate
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDataConnectionsEventGridCreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8adce17dc500f338f86f18af30aac61dcb71c5f/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoDataConnectionsEventGridCreateOrUpdate.json
 func ExampleDataConnectionsClient_BeginCreateOrUpdate_kustoDataConnectionsEventGridCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -470,7 +470,7 @@ func ExampleDataConnectionsClient_BeginCreateOrUpdate_kustoDataConnectionsEventG
 		Properties: &armkusto.EventGridConnectionProperties{
 			BlobStorageEventType:      to.Ptr(armkusto.BlobStorageEventTypeMicrosoftStorageBlobCreated),
 			ConsumerGroup:             to.Ptr("$Default"),
-			DataFormat:                to.Ptr(armkusto.EventGridDataFormatJSON),
+			DataFormat:                to.Ptr(armkusto.EventGridDataFormatMULTIJSON),
 			DatabaseRouting:           to.Ptr(armkusto.DatabaseRoutingSingle),
 			EventGridResourceID:       to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Storage/storageAccounts/teststorageaccount/providers/Microsoft.EventGrid/eventSubscriptions/eventSubscriptionTest"),
 			EventHubResourceID:        to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest2"),
@@ -501,7 +501,7 @@ func ExampleDataConnectionsClient_BeginCreateOrUpdate_kustoDataConnectionsEventG
 	// 		Properties: &armkusto.EventGridConnectionProperties{
 	// 			BlobStorageEventType: to.Ptr(armkusto.BlobStorageEventTypeMicrosoftStorageBlobCreated),
 	// 			ConsumerGroup: to.Ptr("$Default"),
-	// 			DataFormat: to.Ptr(armkusto.EventGridDataFormatJSON),
+	// 			DataFormat: to.Ptr(armkusto.EventGridDataFormatMULTIJSON),
 	// 			DatabaseRouting: to.Ptr(armkusto.DatabaseRoutingSingle),
 	// 			EventGridResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Storage/storageAccounts/teststorageaccount/providers/Microsoft.EventGrid/eventSubscriptions/eventSubscriptionTest"),
 	// 			EventHubResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest2"),
@@ -516,7 +516,7 @@ func ExampleDataConnectionsClient_BeginCreateOrUpdate_kustoDataConnectionsEventG
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDataConnectionsCosmosDbUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8adce17dc500f338f86f18af30aac61dcb71c5f/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoDataConnectionsCosmosDbUpdate.json
 func ExampleDataConnectionsClient_BeginUpdate_kustoDataConnectionsCosmosDbUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -571,7 +571,7 @@ func ExampleDataConnectionsClient_BeginUpdate_kustoDataConnectionsCosmosDbUpdate
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDataConnectionsEventGridUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8adce17dc500f338f86f18af30aac61dcb71c5f/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoDataConnectionsEventGridUpdate.json
 func ExampleDataConnectionsClient_BeginUpdate_kustoDataConnectionsEventGridUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -588,7 +588,7 @@ func ExampleDataConnectionsClient_BeginUpdate_kustoDataConnectionsEventGridUpdat
 		Properties: &armkusto.EventGridConnectionProperties{
 			BlobStorageEventType:      to.Ptr(armkusto.BlobStorageEventTypeMicrosoftStorageBlobCreated),
 			ConsumerGroup:             to.Ptr("$Default"),
-			DataFormat:                to.Ptr(armkusto.EventGridDataFormatJSON),
+			DataFormat:                to.Ptr(armkusto.EventGridDataFormatMULTIJSON),
 			DatabaseRouting:           to.Ptr(armkusto.DatabaseRoutingSingle),
 			EventGridResourceID:       to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Storage/storageAccounts/teststorageaccount/providers/Microsoft.EventGrid/eventSubscriptions/eventSubscriptionTest"),
 			EventHubResourceID:        to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest2"),
@@ -619,7 +619,7 @@ func ExampleDataConnectionsClient_BeginUpdate_kustoDataConnectionsEventGridUpdat
 	// 		Properties: &armkusto.EventGridConnectionProperties{
 	// 			BlobStorageEventType: to.Ptr(armkusto.BlobStorageEventTypeMicrosoftStorageBlobCreated),
 	// 			ConsumerGroup: to.Ptr("$Default"),
-	// 			DataFormat: to.Ptr(armkusto.EventGridDataFormatJSON),
+	// 			DataFormat: to.Ptr(armkusto.EventGridDataFormatMULTIJSON),
 	// 			DatabaseRouting: to.Ptr(armkusto.DatabaseRoutingSingle),
 	// 			EventGridResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Storage/storageAccounts/teststorageaccount/providers/Microsoft.EventGrid/eventSubscriptions/eventSubscriptionTest"),
 	// 			EventHubResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest2"),
@@ -634,7 +634,7 @@ func ExampleDataConnectionsClient_BeginUpdate_kustoDataConnectionsEventGridUpdat
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDataConnectionsUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8adce17dc500f338f86f18af30aac61dcb71c5f/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoDataConnectionsUpdate.json
 func ExampleDataConnectionsClient_BeginUpdate_kustoDataConnectionsUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -681,7 +681,7 @@ func ExampleDataConnectionsClient_BeginUpdate_kustoDataConnectionsUpdate() {
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDataConnectionsDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8adce17dc500f338f86f18af30aac61dcb71c5f/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoDataConnectionsDelete.json
 func ExampleDataConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

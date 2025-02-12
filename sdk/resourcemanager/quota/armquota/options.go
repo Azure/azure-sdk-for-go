@@ -30,31 +30,16 @@ type ClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GroupQuotaLimitsClientGetOptions contains the optional parameters for the GroupQuotaLimitsClient.Get method.
-type GroupQuotaLimitsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// GroupQuotaLimitsClientListOptions contains the optional parameters for the GroupQuotaLimitsClient.NewListPager method.
+// GroupQuotaLimitsClientListOptions contains the optional parameters for the GroupQuotaLimitsClient.List method.
 type GroupQuotaLimitsClientListOptions struct {
 	// placeholder for future optional parameters
-}
-
-// GroupQuotaLimitsRequestClientBeginCreateOrUpdateOptions contains the optional parameters for the GroupQuotaLimitsRequestClient.BeginCreateOrUpdate
-// method.
-type GroupQuotaLimitsRequestClientBeginCreateOrUpdateOptions struct {
-	// The GroupQuotaRequest body details for specific resourceProvider/location/resources.
-	GroupQuotaRequest *SubmittedResourceRequestStatus
-
-	// Resumes the LRO from the provided token.
-	ResumeToken string
 }
 
 // GroupQuotaLimitsRequestClientBeginUpdateOptions contains the optional parameters for the GroupQuotaLimitsRequestClient.BeginUpdate
 // method.
 type GroupQuotaLimitsRequestClientBeginUpdateOptions struct {
 	// The GroupQuotaRequest body details for specific resourceProvider/location/resources.
-	GroupQuotaRequest *SubmittedResourceRequestStatus
+	GroupQuotaRequest *GroupQuotaLimitList
 
 	// Resumes the LRO from the provided token.
 	ResumeToken string
@@ -71,55 +56,10 @@ type GroupQuotaLimitsRequestClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GroupQuotaLocationSettingsClientBeginCreateOrUpdateOptions contains the optional parameters for the GroupQuotaLocationSettingsClient.BeginCreateOrUpdate
-// method.
-type GroupQuotaLocationSettingsClientBeginCreateOrUpdateOptions struct {
-	// The GroupQuota body details for creation or update of a GroupQuota entity.
-	LocationSettings *GroupQuotasEnforcementResponse
-
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// GroupQuotaLocationSettingsClientBeginUpdateOptions contains the optional parameters for the GroupQuotaLocationSettingsClient.BeginUpdate
-// method.
-type GroupQuotaLocationSettingsClientBeginUpdateOptions struct {
-	// The GroupQuota body details for creation or update of a GroupQuota entity.
-	LocationSettings *GroupQuotasEnforcementResponse
-
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// GroupQuotaLocationSettingsClientGetOptions contains the optional parameters for the GroupQuotaLocationSettingsClient.Get
-// method.
-type GroupQuotaLocationSettingsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// GroupQuotaLocationSettingsClientListOptions contains the optional parameters for the GroupQuotaLocationSettingsClient.NewListPager
-// method.
-type GroupQuotaLocationSettingsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// GroupQuotaSubscriptionAllocationClientGetOptions contains the optional parameters for the GroupQuotaSubscriptionAllocationClient.Get
-// method.
-type GroupQuotaSubscriptionAllocationClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// GroupQuotaSubscriptionAllocationClientListOptions contains the optional parameters for the GroupQuotaSubscriptionAllocationClient.NewListPager
+// GroupQuotaSubscriptionAllocationClientListOptions contains the optional parameters for the GroupQuotaSubscriptionAllocationClient.List
 // method.
 type GroupQuotaSubscriptionAllocationClientListOptions struct {
 	// placeholder for future optional parameters
-}
-
-// GroupQuotaSubscriptionAllocationRequestClientBeginCreateOrUpdateOptions contains the optional parameters for the GroupQuotaSubscriptionAllocationRequestClient.BeginCreateOrUpdate
-// method.
-type GroupQuotaSubscriptionAllocationRequestClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
 }
 
 // GroupQuotaSubscriptionAllocationRequestClientBeginUpdateOptions contains the optional parameters for the GroupQuotaSubscriptionAllocationRequestClient.BeginUpdate
@@ -182,11 +122,6 @@ type GroupQuotaSubscriptionsClientGetOptions struct {
 // GroupQuotaSubscriptionsClientListOptions contains the optional parameters for the GroupQuotaSubscriptionsClient.NewListPager
 // method.
 type GroupQuotaSubscriptionsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// GroupQuotaUsagesClientListOptions contains the optional parameters for the GroupQuotaUsagesClient.NewListPager method.
-type GroupQuotaUsagesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 

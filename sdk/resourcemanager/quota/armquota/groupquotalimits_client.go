@@ -40,122 +40,42 @@ func NewGroupQuotaLimitsClient(credential azcore.TokenCredential, options *arm.C
 	return client, nil
 }
 
-// Get - Gets the GroupQuotaLimits for the specific resource for a specific resource based on the resourceProviders, resourceName
-// and $filter passed. The $filter=location eq {location} is required to location
-// specific resources groupQuota.
+// List - Gets the GroupQuotaLimits for the specified resource provider and location for resource names passed in $filter=resourceName
+// eq {SKU}.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01-preview
+// Generated from API version 2024-12-18-preview
 //   - managementGroupID - Management Group Id.
 //   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
 //   - resourceProviderName - The resource provider name, such as - Microsoft.Compute. Currently only Microsoft.Compute resource
 //     provider supports this API.
-//   - resourceName - Resource name.
-//   - filter - FIELD SUPPORTED OPERATORS
-//     location eq {location}
-//     Example: $filter=location eq eastus
-//   - options - GroupQuotaLimitsClientGetOptions contains the optional parameters for the GroupQuotaLimitsClient.Get method.
-func (client *GroupQuotaLimitsClient) Get(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, resourceName string, filter string, options *GroupQuotaLimitsClientGetOptions) (GroupQuotaLimitsClientGetResponse, error) {
+//   - location - The name of the Azure region.
+//   - options - GroupQuotaLimitsClientListOptions contains the optional parameters for the GroupQuotaLimitsClient.List method.
+func (client *GroupQuotaLimitsClient) List(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, location string, options *GroupQuotaLimitsClientListOptions) (GroupQuotaLimitsClientListResponse, error) {
 	var err error
-	const operationName = "GroupQuotaLimitsClient.Get"
+	const operationName = "GroupQuotaLimitsClient.List"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, managementGroupID, groupQuotaName, resourceProviderName, resourceName, filter, options)
+	req, err := client.listCreateRequest(ctx, managementGroupID, groupQuotaName, resourceProviderName, location, options)
 	if err != nil {
-		return GroupQuotaLimitsClientGetResponse{}, err
+		return GroupQuotaLimitsClientListResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return GroupQuotaLimitsClientGetResponse{}, err
+		return GroupQuotaLimitsClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return GroupQuotaLimitsClientGetResponse{}, err
+		return GroupQuotaLimitsClientListResponse{}, err
 	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.listHandleResponse(httpResp)
 	return resp, err
 }
 
-// getCreateRequest creates the Get request.
-func (client *GroupQuotaLimitsClient) getCreateRequest(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, resourceName string, filter string, options *GroupQuotaLimitsClientGetOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Quota/groupQuotas/{groupQuotaName}/resourceProviders/{resourceProviderName}/groupQuotaLimits/{resourceName}"
-	if managementGroupID == "" {
-		return nil, errors.New("parameter managementGroupID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
-	if groupQuotaName == "" {
-		return nil, errors.New("parameter groupQuotaName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{groupQuotaName}", url.PathEscape(groupQuotaName))
-	if resourceProviderName == "" {
-		return nil, errors.New("parameter resourceProviderName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderName}", url.PathEscape(resourceProviderName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("$filter", filter)
-	reqQP.Set("api-version", "2023-06-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getHandleResponse handles the Get response.
-func (client *GroupQuotaLimitsClient) getHandleResponse(resp *http.Response) (GroupQuotaLimitsClientGetResponse, error) {
-	result := GroupQuotaLimitsClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.GroupQuotaLimit); err != nil {
-		return GroupQuotaLimitsClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - Gets the GroupQuotaLimits for the all resource for a specific resourceProvider and $filter passed. The $filter=location
-// eq {location} is required to location specific resources groupQuota.
-//
-// Generated from API version 2023-06-01-preview
-//   - managementGroupID - Management Group Id.
-//   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-//   - resourceProviderName - The resource provider name, such as - Microsoft.Compute. Currently only Microsoft.Compute resource
-//     provider supports this API.
-//   - filter - FIELD SUPPORTED OPERATORS
-//     location eq {location}
-//     Example: $filter=location eq eastus
-//   - options - GroupQuotaLimitsClientListOptions contains the optional parameters for the GroupQuotaLimitsClient.NewListPager
-//     method.
-func (client *GroupQuotaLimitsClient) NewListPager(managementGroupID string, groupQuotaName string, resourceProviderName string, filter string, options *GroupQuotaLimitsClientListOptions) *runtime.Pager[GroupQuotaLimitsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[GroupQuotaLimitsClientListResponse]{
-		More: func(page GroupQuotaLimitsClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *GroupQuotaLimitsClientListResponse) (GroupQuotaLimitsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "GroupQuotaLimitsClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, managementGroupID, groupQuotaName, resourceProviderName, filter, options)
-			}, nil)
-			if err != nil {
-				return GroupQuotaLimitsClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
 // listCreateRequest creates the List request.
-func (client *GroupQuotaLimitsClient) listCreateRequest(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, filter string, options *GroupQuotaLimitsClientListOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Quota/groupQuotas/{groupQuotaName}/resourceProviders/{resourceProviderName}/groupQuotaLimits"
+func (client *GroupQuotaLimitsClient) listCreateRequest(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, location string, options *GroupQuotaLimitsClientListOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Quota/groupQuotas/{groupQuotaName}/resourceProviders/{resourceProviderName}/groupQuotaLimits/{location}"
 	if managementGroupID == "" {
 		return nil, errors.New("parameter managementGroupID cannot be empty")
 	}
@@ -168,13 +88,16 @@ func (client *GroupQuotaLimitsClient) listCreateRequest(ctx context.Context, man
 		return nil, errors.New("parameter resourceProviderName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderName}", url.PathEscape(resourceProviderName))
+	if location == "" {
+		return nil, errors.New("parameter location cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("$filter", filter)
-	reqQP.Set("api-version", "2023-06-01-preview")
+	reqQP.Set("api-version", "2024-12-18-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -20,7 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/220ad9c6554fc7d6d10a89bdb441c1e3b36e3285/specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/DeletedFileSharesList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cfaafee8d29d91a8c6065e407a6f389469082351/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/DeletedFileSharesList.json
 func ExampleFileSharesClient_NewListPager_listDeletedShares() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func ExampleFileSharesClient_NewListPager_listDeletedShares() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/220ad9c6554fc7d6d10a89bdb441c1e3b36e3285/specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/FileShareSnapshotsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cfaafee8d29d91a8c6065e407a6f389469082351/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/FileShareSnapshotsList.json
 func ExampleFileSharesClient_NewListPager_listShareSnapshots() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,7 +127,7 @@ func ExampleFileSharesClient_NewListPager_listShareSnapshots() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/220ad9c6554fc7d6d10a89bdb441c1e3b36e3285/specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/FileSharesList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cfaafee8d29d91a8c6065e407a6f389469082351/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/FileSharesList.json
 func ExampleFileSharesClient_NewListPager_listShares() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -178,7 +178,133 @@ func ExampleFileSharesClient_NewListPager_listShares() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/220ad9c6554fc7d6d10a89bdb441c1e3b36e3285/specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/FileSharesPut_NFS.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cfaafee8d29d91a8c6065e407a6f389469082351/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/FileSharesList_PaidBursting.json
+func ExampleFileSharesClient_NewListPager_listSharesPaidBursting() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstorage.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewFileSharesClient().NewListPager("res9290", "sto1590", &armstorage.FileSharesClientListOptions{Maxpagesize: nil,
+		Filter: nil,
+		Expand: nil,
+	})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.FileShareItems = armstorage.FileShareItems{
+		// 	Value: []*armstorage.FileShareItem{
+		// 		{
+		// 			Name: to.Ptr("share1644"),
+		// 			Type: to.Ptr("Microsoft.Storage/storageAccounts/fileServices/shares"),
+		// 			ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9290/providers/Microsoft.Storage/storageAccounts/sto1590/fileServices/default/shares/share1644"),
+		// 			Etag: to.Ptr("\"0x8D589847D51C7DE\""),
+		// 			Properties: &armstorage.FileShareProperties{
+		// 				FileSharePaidBursting: &armstorage.FileSharePropertiesFileSharePaidBursting{
+		// 					PaidBurstingEnabled: to.Ptr(true),
+		// 					PaidBurstingMaxBandwidthMibps: to.Ptr[int32](10340),
+		// 					PaidBurstingMaxIops: to.Ptr[int32](102400),
+		// 				},
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-14T08:20:47.000Z"); return t}()),
+		// 				ShareQuota: to.Ptr[int32](1024),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("share4052"),
+		// 			Type: to.Ptr("Microsoft.Storage/storageAccounts/fileServices/shares"),
+		// 			ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9290/providers/Microsoft.Storage/storageAccounts/sto1590/fileServices/default/shares/share4052"),
+		// 			Etag: to.Ptr("\"0x8D589847DAB5AF9\""),
+		// 			Properties: &armstorage.FileShareProperties{
+		// 				FileSharePaidBursting: &armstorage.FileSharePropertiesFileSharePaidBursting{
+		// 					PaidBurstingEnabled: to.Ptr(true),
+		// 					PaidBurstingMaxBandwidthMibps: to.Ptr[int32](10340),
+		// 					PaidBurstingMaxIops: to.Ptr[int32](102400),
+		// 				},
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-14T08:20:47.000Z"); return t}()),
+		// 				ShareQuota: to.Ptr[int32](1024),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cfaafee8d29d91a8c6065e407a6f389469082351/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/FileSharesList_ProvisionedV2.json
+func ExampleFileSharesClient_NewListPager_listSharesProvisionedV2() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstorage.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewFileSharesClient().NewListPager("res9290", "sto1590", &armstorage.FileSharesClientListOptions{Maxpagesize: nil,
+		Filter: nil,
+		Expand: nil,
+	})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.FileShareItems = armstorage.FileShareItems{
+		// 	Value: []*armstorage.FileShareItem{
+		// 		{
+		// 			Name: to.Ptr("share1644"),
+		// 			Type: to.Ptr("Microsoft.Storage/storageAccounts/fileServices/shares"),
+		// 			ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9290/providers/Microsoft.Storage/storageAccounts/sto1590/fileServices/default/shares/share1644"),
+		// 			Etag: to.Ptr("\"0x8D589847D51C7DE\""),
+		// 			Properties: &armstorage.FileShareProperties{
+		// 				IncludedBurstIops: to.Ptr[int32](15000),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-14T08:20:47.000Z"); return t}()),
+		// 				MaxBurstCreditsForIops: to.Ptr[int64](36000000),
+		// 				NextAllowedProvisionedBandwidthDowngradeTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-12T16:29:22.000Z"); return t}()),
+		// 				NextAllowedProvisionedIopsDowngradeTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-12T16:29:22.000Z"); return t}()),
+		// 				NextAllowedQuotaDowngradeTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-12T16:29:22.000Z"); return t}()),
+		// 				ProvisionedBandwidthMibps: to.Ptr[int32](200),
+		// 				ProvisionedIops: to.Ptr[int32](5000),
+		// 				ShareQuota: to.Ptr[int32](100),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("share4052"),
+		// 			Type: to.Ptr("Microsoft.Storage/storageAccounts/fileServices/shares"),
+		// 			ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9290/providers/Microsoft.Storage/storageAccounts/sto1590/fileServices/default/shares/share4052"),
+		// 			Etag: to.Ptr("\"0x8D589847DAB5AF9\""),
+		// 			Properties: &armstorage.FileShareProperties{
+		// 				IncludedBurstIops: to.Ptr[int32](15000),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-14T08:20:47.000Z"); return t}()),
+		// 				MaxBurstCreditsForIops: to.Ptr[int64](36000000),
+		// 				NextAllowedProvisionedBandwidthDowngradeTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-12T16:29:22.000Z"); return t}()),
+		// 				NextAllowedProvisionedIopsDowngradeTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-12T16:29:22.000Z"); return t}()),
+		// 				NextAllowedQuotaDowngradeTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-12T16:29:22.000Z"); return t}()),
+		// 				ProvisionedBandwidthMibps: to.Ptr[int32](200),
+		// 				ProvisionedIops: to.Ptr[int32](5000),
+		// 				ShareQuota: to.Ptr[int32](100),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cfaafee8d29d91a8c6065e407a6f389469082351/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/FileSharesPut_NFS.json
 func ExampleFileSharesClient_Create_createNfsShares() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -210,7 +336,7 @@ func ExampleFileSharesClient_Create_createNfsShares() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/220ad9c6554fc7d6d10a89bdb441c1e3b36e3285/specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/FileSharesPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cfaafee8d29d91a8c6065e407a6f389469082351/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/FileSharesPut.json
 func ExampleFileSharesClient_Create_putShares() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -235,7 +361,7 @@ func ExampleFileSharesClient_Create_putShares() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/220ad9c6554fc7d6d10a89bdb441c1e3b36e3285/specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/FileSharesPut_AccessTier.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cfaafee8d29d91a8c6065e407a6f389469082351/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/FileSharesPut_AccessTier.json
 func ExampleFileSharesClient_Create_putSharesWithAccessTier() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -267,7 +393,85 @@ func ExampleFileSharesClient_Create_putSharesWithAccessTier() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/220ad9c6554fc7d6d10a89bdb441c1e3b36e3285/specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/FileShareAclsPatch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cfaafee8d29d91a8c6065e407a6f389469082351/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/FileSharesPut_PaidBursting.json
+func ExampleFileSharesClient_Create_putSharesWithPaidBursting() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstorage.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewFileSharesClient().Create(ctx, "res346", "sto666", "share1235", armstorage.FileShare{
+		FileShareProperties: &armstorage.FileShareProperties{
+			FileSharePaidBursting: &armstorage.FileSharePropertiesFileSharePaidBursting{
+				PaidBurstingEnabled:           to.Ptr(true),
+				PaidBurstingMaxBandwidthMibps: to.Ptr[int32](10340),
+				PaidBurstingMaxIops:           to.Ptr[int32](102400),
+			},
+		},
+	}, &armstorage.FileSharesClientCreateOptions{Expand: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.FileShare = armstorage.FileShare{
+	// 	Name: to.Ptr("share1235"),
+	// 	Type: to.Ptr("Microsoft.Storage/storageAccounts/fileServices/shares"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res346/providers/Microsoft.Storage/storageAccounts/sto666/fileServices/default/shares/share1235"),
+	// 	FileShareProperties: &armstorage.FileShareProperties{
+	// 		FileSharePaidBursting: &armstorage.FileSharePropertiesFileSharePaidBursting{
+	// 			PaidBurstingEnabled: to.Ptr(true),
+	// 			PaidBurstingMaxBandwidthMibps: to.Ptr[int32](10340),
+	// 			PaidBurstingMaxIops: to.Ptr[int32](102400),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cfaafee8d29d91a8c6065e407a6f389469082351/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/FileSharesPut_ProvisionedV2.json
+func ExampleFileSharesClient_Create_putSharesProvisionedV2() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstorage.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewFileSharesClient().Create(ctx, "res346", "sto666", "share1235", armstorage.FileShare{
+		FileShareProperties: &armstorage.FileShareProperties{
+			ProvisionedBandwidthMibps: to.Ptr[int32](200),
+			ProvisionedIops:           to.Ptr[int32](5000),
+			ShareQuota:                to.Ptr[int32](100),
+		},
+	}, &armstorage.FileSharesClientCreateOptions{Expand: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.FileShare = armstorage.FileShare{
+	// 	Name: to.Ptr("share1235"),
+	// 	Type: to.Ptr("Microsoft.Storage/storageAccounts/fileServices/shares"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res346/providers/Microsoft.Storage/storageAccounts/sto666/fileServices/default/shares/share1235"),
+	// 	FileShareProperties: &armstorage.FileShareProperties{
+	// 		IncludedBurstIops: to.Ptr[int32](15000),
+	// 		MaxBurstCreditsForIops: to.Ptr[int64](36000000),
+	// 		ProvisionedBandwidthMibps: to.Ptr[int32](200),
+	// 		ProvisionedIops: to.Ptr[int32](5000),
+	// 		ShareQuota: to.Ptr[int32](100),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cfaafee8d29d91a8c6065e407a6f389469082351/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/FileShareAclsPatch.json
 func ExampleFileSharesClient_Update_updateShareAcls() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -315,7 +519,88 @@ func ExampleFileSharesClient_Update_updateShareAcls() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/220ad9c6554fc7d6d10a89bdb441c1e3b36e3285/specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/FileSharesPatch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cfaafee8d29d91a8c6065e407a6f389469082351/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/FileSharesPatch_PaidBursting.json
+func ExampleFileSharesClient_Update_updateSharePaidBursting() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstorage.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewFileSharesClient().Update(ctx, "res3376", "sto328", "share6185", armstorage.FileShare{
+		FileShareProperties: &armstorage.FileShareProperties{
+			FileSharePaidBursting: &armstorage.FileSharePropertiesFileSharePaidBursting{
+				PaidBurstingEnabled:           to.Ptr(true),
+				PaidBurstingMaxBandwidthMibps: to.Ptr[int32](10340),
+				PaidBurstingMaxIops:           to.Ptr[int32](102400),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.FileShare = armstorage.FileShare{
+	// 	Name: to.Ptr("share6185"),
+	// 	Type: to.Ptr("Microsoft.Storage/storageAccounts/fileServices/shares"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res3376/providers/Microsoft.Storage/storageAccounts/sto328/fileServices/default/shares/share6185"),
+	// 	FileShareProperties: &armstorage.FileShareProperties{
+	// 		FileSharePaidBursting: &armstorage.FileSharePropertiesFileSharePaidBursting{
+	// 			PaidBurstingEnabled: to.Ptr(true),
+	// 			PaidBurstingMaxBandwidthMibps: to.Ptr[int32](10340),
+	// 			PaidBurstingMaxIops: to.Ptr[int32](102400),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cfaafee8d29d91a8c6065e407a6f389469082351/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/FileSharesPatch_ProvisionedV2.json
+func ExampleFileSharesClient_Update_updateShareProvisionedV2() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstorage.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewFileSharesClient().Update(ctx, "res3376", "sto328", "share6185", armstorage.FileShare{
+		FileShareProperties: &armstorage.FileShareProperties{
+			ProvisionedBandwidthMibps: to.Ptr[int32](200),
+			ProvisionedIops:           to.Ptr[int32](5000),
+			ShareQuota:                to.Ptr[int32](100),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.FileShare = armstorage.FileShare{
+	// 	Name: to.Ptr("share6185"),
+	// 	Type: to.Ptr("Microsoft.Storage/storageAccounts/fileServices/shares"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res3376/providers/Microsoft.Storage/storageAccounts/sto328/fileServices/default/shares/share6185"),
+	// 	FileShareProperties: &armstorage.FileShareProperties{
+	// 		IncludedBurstIops: to.Ptr[int32](15000),
+	// 		MaxBurstCreditsForIops: to.Ptr[int64](36000000),
+	// 		NextAllowedProvisionedBandwidthDowngradeTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-12T16:29:22.000Z"); return t}()),
+	// 		NextAllowedProvisionedIopsDowngradeTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-12T16:29:22.000Z"); return t}()),
+	// 		NextAllowedQuotaDowngradeTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-12T16:29:22.000Z"); return t}()),
+	// 		ProvisionedBandwidthMibps: to.Ptr[int32](200),
+	// 		ProvisionedIops: to.Ptr[int32](5000),
+	// 		ShareQuota: to.Ptr[int32](100),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cfaafee8d29d91a8c6065e407a6f389469082351/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/FileSharesPatch.json
 func ExampleFileSharesClient_Update_updateShares() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -351,7 +636,83 @@ func ExampleFileSharesClient_Update_updateShares() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/220ad9c6554fc7d6d10a89bdb441c1e3b36e3285/specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/FileSharesGet_Stats.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cfaafee8d29d91a8c6065e407a6f389469082351/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/FileSharesGet_PaidBursting.json
+func ExampleFileSharesClient_Get_getSharePaidBursting() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstorage.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewFileSharesClient().Get(ctx, "res9871", "sto6217", "share1634", &armstorage.FileSharesClientGetOptions{Expand: nil,
+		XMSSnapshot: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.FileShare = armstorage.FileShare{
+	// 	Name: to.Ptr("share1634"),
+	// 	Type: to.Ptr("Microsoft.Storage/storageAccounts/fileServices/shares"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9871/providers/Microsoft.Storage/storageAccounts/sto6217/fileServices/default/shares/share1634"),
+	// 	Etag: to.Ptr("\"0x8D592D74CC20EBA\""),
+	// 	FileShareProperties: &armstorage.FileShareProperties{
+	// 		FileSharePaidBursting: &armstorage.FileSharePropertiesFileSharePaidBursting{
+	// 			PaidBurstingEnabled: to.Ptr(true),
+	// 			PaidBurstingMaxBandwidthMibps: to.Ptr[int32](10340),
+	// 			PaidBurstingMaxIops: to.Ptr[int32](102400),
+	// 		},
+	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-26T05:06:14.000Z"); return t}()),
+	// 		ShareQuota: to.Ptr[int32](1024),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cfaafee8d29d91a8c6065e407a6f389469082351/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/FileSharesGet_ProvisionedV2.json
+func ExampleFileSharesClient_Get_getShareProvisionedV2() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstorage.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewFileSharesClient().Get(ctx, "res9871", "sto6217", "share1634", &armstorage.FileSharesClientGetOptions{Expand: nil,
+		XMSSnapshot: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.FileShare = armstorage.FileShare{
+	// 	Name: to.Ptr("share1634"),
+	// 	Type: to.Ptr("Microsoft.Storage/storageAccounts/fileServices/shares"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9871/providers/Microsoft.Storage/storageAccounts/sto6217/fileServices/default/shares/share1634"),
+	// 	Etag: to.Ptr("\"0x8D592D74CC20EBA\""),
+	// 	FileShareProperties: &armstorage.FileShareProperties{
+	// 		IncludedBurstIops: to.Ptr[int32](15000),
+	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-26T05:06:14.000Z"); return t}()),
+	// 		MaxBurstCreditsForIops: to.Ptr[int64](36000000),
+	// 		NextAllowedProvisionedBandwidthDowngradeTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-12T16:29:22.000Z"); return t}()),
+	// 		NextAllowedProvisionedIopsDowngradeTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-12T16:29:22.000Z"); return t}()),
+	// 		NextAllowedQuotaDowngradeTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-12T16:29:22.000Z"); return t}()),
+	// 		ProvisionedBandwidthMibps: to.Ptr[int32](200),
+	// 		ProvisionedIops: to.Ptr[int32](5000),
+	// 		ShareQuota: to.Ptr[int32](100),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cfaafee8d29d91a8c6065e407a6f389469082351/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/FileSharesGet_Stats.json
 func ExampleFileSharesClient_Get_getShareStats() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -384,7 +745,7 @@ func ExampleFileSharesClient_Get_getShareStats() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/220ad9c6554fc7d6d10a89bdb441c1e3b36e3285/specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/FileSharesGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cfaafee8d29d91a8c6065e407a6f389469082351/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/FileSharesGet.json
 func ExampleFileSharesClient_Get_getShares() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -416,7 +777,7 @@ func ExampleFileSharesClient_Get_getShares() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/220ad9c6554fc7d6d10a89bdb441c1e3b36e3285/specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/FileSharesDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cfaafee8d29d91a8c6065e407a6f389469082351/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/FileSharesDelete.json
 func ExampleFileSharesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -435,7 +796,7 @@ func ExampleFileSharesClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/220ad9c6554fc7d6d10a89bdb441c1e3b36e3285/specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/FileSharesRestore.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cfaafee8d29d91a8c6065e407a6f389469082351/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/FileSharesRestore.json
 func ExampleFileSharesClient_Restore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -455,7 +816,7 @@ func ExampleFileSharesClient_Restore() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/220ad9c6554fc7d6d10a89bdb441c1e3b36e3285/specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/FileSharesLease_Acquire.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cfaafee8d29d91a8c6065e407a6f389469082351/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/FileSharesLease_Acquire.json
 func ExampleFileSharesClient_Lease_acquireALeaseOnAShare() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -483,7 +844,7 @@ func ExampleFileSharesClient_Lease_acquireALeaseOnAShare() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/220ad9c6554fc7d6d10a89bdb441c1e3b36e3285/specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/FileSharesLease_Break.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cfaafee8d29d91a8c6065e407a6f389469082351/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/FileSharesLease_Break.json
 func ExampleFileSharesClient_Lease_breakALeaseOnAShare() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

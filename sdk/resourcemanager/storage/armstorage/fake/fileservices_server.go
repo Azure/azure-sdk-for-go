@@ -15,10 +15,12 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
 	"net/http"
 	"net/url"
 	"regexp"
+	"strconv"
 )
 
 // FileServicesServer is a fake server for instances of the armstorage.FileServicesClient type.
@@ -27,9 +29,17 @@ type FileServicesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetServiceProperties func(ctx context.Context, resourceGroupName string, accountName string, options *armstorage.FileServicesClientGetServicePropertiesOptions) (resp azfake.Responder[armstorage.FileServicesClientGetServicePropertiesResponse], errResp azfake.ErrorResponder)
 
+	// GetServiceUsage is the fake for method FileServicesClient.GetServiceUsage
+	// HTTP status codes to indicate success: http.StatusOK
+	GetServiceUsage func(ctx context.Context, resourceGroupName string, accountName string, options *armstorage.FileServicesClientGetServiceUsageOptions) (resp azfake.Responder[armstorage.FileServicesClientGetServiceUsageResponse], errResp azfake.ErrorResponder)
+
 	// List is the fake for method FileServicesClient.List
 	// HTTP status codes to indicate success: http.StatusOK
 	List func(ctx context.Context, resourceGroupName string, accountName string, options *armstorage.FileServicesClientListOptions) (resp azfake.Responder[armstorage.FileServicesClientListResponse], errResp azfake.ErrorResponder)
+
+	// NewListServiceUsagesPager is the fake for method FileServicesClient.NewListServiceUsagesPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListServiceUsagesPager func(resourceGroupName string, accountName string, options *armstorage.FileServicesClientListServiceUsagesOptions) (resp azfake.PagerResponder[armstorage.FileServicesClientListServiceUsagesResponse])
 
 	// SetServiceProperties is the fake for method FileServicesClient.SetServiceProperties
 	// HTTP status codes to indicate success: http.StatusOK
@@ -40,13 +50,17 @@ type FileServicesServer struct {
 // The returned FileServicesServerTransport instance is connected to an instance of armstorage.FileServicesClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewFileServicesServerTransport(srv *FileServicesServer) *FileServicesServerTransport {
-	return &FileServicesServerTransport{srv: srv}
+	return &FileServicesServerTransport{
+		srv:                       srv,
+		newListServiceUsagesPager: newTracker[azfake.PagerResponder[armstorage.FileServicesClientListServiceUsagesResponse]](),
+	}
 }
 
 // FileServicesServerTransport connects instances of armstorage.FileServicesClient to instances of FileServicesServer.
 // Don't use this type directly, use NewFileServicesServerTransport instead.
 type FileServicesServerTransport struct {
-	srv *FileServicesServer
+	srv                       *FileServicesServer
+	newListServiceUsagesPager *tracker[azfake.PagerResponder[armstorage.FileServicesClientListServiceUsagesResponse]]
 }
 
 // Do implements the policy.Transporter interface for FileServicesServerTransport.
@@ -63,8 +77,12 @@ func (f *FileServicesServerTransport) Do(req *http.Request) (*http.Response, err
 	switch method {
 	case "FileServicesClient.GetServiceProperties":
 		resp, err = f.dispatchGetServiceProperties(req)
+	case "FileServicesClient.GetServiceUsage":
+		resp, err = f.dispatchGetServiceUsage(req)
 	case "FileServicesClient.List":
 		resp, err = f.dispatchList(req)
+	case "FileServicesClient.NewListServiceUsagesPager":
+		resp, err = f.dispatchNewListServiceUsagesPager(req)
 	case "FileServicesClient.SetServiceProperties":
 		resp, err = f.dispatchSetServiceProperties(req)
 	default:
@@ -111,6 +129,39 @@ func (f *FileServicesServerTransport) dispatchGetServiceProperties(req *http.Req
 	return resp, nil
 }
 
+func (f *FileServicesServerTransport) dispatchGetServiceUsage(req *http.Request) (*http.Response, error) {
+	if f.srv.GetServiceUsage == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetServiceUsage not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/fileServices/(?P<FileServicesName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/usages/(?P<fileServiceUsagesName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := f.srv.GetServiceUsage(req.Context(), resourceGroupNameParam, accountNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).FileServiceUsage, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (f *FileServicesServerTransport) dispatchList(req *http.Request) (*http.Response, error) {
 	if f.srv.List == nil {
 		return nil, &nonRetriableError{errors.New("fake for method List not implemented")}
@@ -140,6 +191,68 @@ func (f *FileServicesServerTransport) dispatchList(req *http.Request) (*http.Res
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).FileServiceItems, req)
 	if err != nil {
 		return nil, err
+	}
+	return resp, nil
+}
+
+func (f *FileServicesServerTransport) dispatchNewListServiceUsagesPager(req *http.Request) (*http.Response, error) {
+	if f.srv.NewListServiceUsagesPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListServiceUsagesPager not implemented")}
+	}
+	newListServiceUsagesPager := f.newListServiceUsagesPager.get(req)
+	if newListServiceUsagesPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/fileServices/(?P<FileServicesName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/usages`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		maxpagesizeUnescaped, err := url.QueryUnescape(qp.Get("$maxpagesize"))
+		if err != nil {
+			return nil, err
+		}
+		maxpagesizeParam, err := parseOptional(maxpagesizeUnescaped, func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armstorage.FileServicesClientListServiceUsagesOptions
+		if maxpagesizeParam != nil {
+			options = &armstorage.FileServicesClientListServiceUsagesOptions{
+				Maxpagesize: maxpagesizeParam,
+			}
+		}
+		resp := f.srv.NewListServiceUsagesPager(resourceGroupNameParam, accountNameParam, options)
+		newListServiceUsagesPager = &resp
+		f.newListServiceUsagesPager.add(req, newListServiceUsagesPager)
+		server.PagerResponderInjectNextLinks(newListServiceUsagesPager, req, func(page *armstorage.FileServicesClientListServiceUsagesResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListServiceUsagesPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		f.newListServiceUsagesPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListServiceUsagesPager) {
+		f.newListServiceUsagesPager.remove(req)
 	}
 	return resp, nil
 }

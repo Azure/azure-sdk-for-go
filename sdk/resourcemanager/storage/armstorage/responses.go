@@ -290,9 +290,21 @@ type FileServicesClientGetServicePropertiesResponse struct {
 	FileServiceProperties
 }
 
+// FileServicesClientGetServiceUsageResponse contains the response from method FileServicesClient.GetServiceUsage.
+type FileServicesClientGetServiceUsageResponse struct {
+	// The usage of file service in storage account.
+	FileServiceUsage
+}
+
 // FileServicesClientListResponse contains the response from method FileServicesClient.List.
 type FileServicesClientListResponse struct {
 	FileServiceItems
+}
+
+// FileServicesClientListServiceUsagesResponse contains the response from method FileServicesClient.NewListServiceUsagesPager.
+type FileServicesClientListServiceUsagesResponse struct {
+	// List file service usages schema.
+	FileServiceUsages
 }
 
 // FileServicesClientSetServicePropertiesResponse contains the response from method FileServicesClient.SetServiceProperties.

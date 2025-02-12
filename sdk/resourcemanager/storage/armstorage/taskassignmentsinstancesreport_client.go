@@ -46,7 +46,7 @@ func NewTaskAssignmentsInstancesReportClient(subscriptionID string, credential a
 
 // NewListPager - Fetch the report summary of all the storage task assignments and instances in an account
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2024-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -101,7 +101,7 @@ func (client *TaskAssignmentsInstancesReportClient) listCreateRequest(ctx contex
 	if options != nil && options.Maxpagesize != nil {
 		reqQP.Set("$maxpagesize", strconv.FormatInt(int64(*options.Maxpagesize), 10))
 	}
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

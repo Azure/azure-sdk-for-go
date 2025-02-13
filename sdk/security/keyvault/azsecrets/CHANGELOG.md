@@ -7,7 +7,6 @@
 ### Breaking Changes
 
 ### Bugs Fixed
-* Fixed data race when using Client from multiple goroutines concurrently.
 
 ### Other Changes
 

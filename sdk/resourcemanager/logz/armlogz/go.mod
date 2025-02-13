@@ -1,3 +1,4 @@
+// Deprecated: Please note, this package has been deprecated and will no longer be maintained after 13/02/2025. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
 module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logz/armlogz
 
 go 1.18

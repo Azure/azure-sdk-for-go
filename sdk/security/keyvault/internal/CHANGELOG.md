@@ -1,14 +1,9 @@
 # Release History
 
-## 1.1.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.1.1 (2025-02-13)
 
 ### Bugs Fixed
-
-### Other Changes
+* Fixed data race when using Client from multiple goroutines concurrently (thanks, @strager)
 
 ## 1.1.0 (2024-10-21)
 

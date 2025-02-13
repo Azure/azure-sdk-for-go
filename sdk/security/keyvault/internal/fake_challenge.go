@@ -6,6 +6,7 @@ package internal
 import (
 	"fmt"
 	"net/http"
+	"strings"
 )
 
 // FakeChallenge is used by fake servers to fake the authentication challenge.
@@ -18,7 +19,7 @@ func (m *FakeChallenge) Do(req *http.Request) (*http.Response, error, bool) {
 		// presence of an authorization header means we don't need to elicit a challenge
 		return nil, nil, false
 	}
-	resource := req.Host
+
 	resp := &http.Response{
 		Request:    req,
 		Status:     "fake unauthorized",
@@ -26,6 +27,10 @@ func (m *FakeChallenge) Do(req *http.Request) (*http.Response, error, bool) {
 		Body:       http.NoBody,
 		Header:     http.Header{},
 	}
+
+	s := strings.Split(req.URL.Host, ".")
+	resource := fmt.Sprintf("%s://%s", req.URL.Scheme, strings.Join(s[len(s)-3:], "."))
 	resp.Header.Set("WWW-Authenticate", fmt.Sprintf(`Bearer authorization="https://fake.local/tenant" resource="%s"`, resource))
+
 	return resp, nil, true
 }

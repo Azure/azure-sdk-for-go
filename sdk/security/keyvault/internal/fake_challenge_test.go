@@ -21,8 +21,9 @@ func TestFakeChallenge(t *testing.T) {
 	require.NotNil(t, resp)
 	require.Equal(t, http.StatusUnauthorized, resp.StatusCode)
 	headers := resp.Header
-	_, ok := headers["Www-Authenticate"]
+	header, ok := headers["Www-Authenticate"]
 	require.True(t, ok)
+	require.Equal(t, `Bearer authorization="https://fake.local/tenant" resource="https://vault.azure.net"`, header[0])
 
 	req.Header.Set("Authorization", "fakeauthorization")
 	resp, err, intercepted = interceptor.Do(resp.Request)

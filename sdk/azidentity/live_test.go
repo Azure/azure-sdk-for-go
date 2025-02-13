@@ -250,6 +250,9 @@ func initRecording(t *testing.T) (policy.ClientOptions, func()) {
 		t.Fatal(err)
 	}
 	clientOpts := policy.ClientOptions{Transport: transport, PerCallPolicies: []policy.Policy{newRecordingPolicy(t)}}
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		clientOpts.Retry.MaxRetries = -1
+	}
 	return clientOpts, func() {
 		err := recording.Stop(t, nil)
 		if err != nil {

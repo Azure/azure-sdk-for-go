@@ -23,12 +23,26 @@ type Entity struct {
 // EDMEntity is an entity that embeds the azcore.Entity type and has a Properties map for user defined entity properties
 type EDMEntity struct {
 	Entity
-	Metadata   string         `json:"odata.metadata"`
-	ID         string         `json:"odata.id"`
-	EditLink   string         `json:"odata.editLink"`
-	Type       string         `json:"odata.type"`
-	ETag       string         `json:"odata.etag"`
-	Properties map[string]any // Type assert the value to one of these: bool, int32, float64, string, EDMDateTime, EDMBinary, EDMGUID, EDMInt64
+	Metadata string `json:"odata.metadata"`
+	ID       string `json:"odata.id"`
+	EditLink string `json:"odata.editLink"`
+	Type     string `json:"odata.type"`
+	ETag     string `json:"odata.etag"`
+
+	// Properties contains user-defined entity properties and values.
+	// The value can be one of the following types:
+	//
+	//   - bool
+	//   - int32 for 32-bit numeric values without a decimal point
+	//   - float64 for numeric values with a decimal point
+	//   - string
+	//   - EDMDateTime
+	//   - EDMBinary
+	//   - EDMGUID
+	//   - EDMInt64 for 64-bit numeric values without a decimal point
+	//
+	// See https://learn.microsoft.com/rest/api/storageservices/payload-format-for-table-service-operations#property-types-in-a-json-feed
+	Properties map[string]any
 }
 
 // MarshalJSON implements the json.Marshal method

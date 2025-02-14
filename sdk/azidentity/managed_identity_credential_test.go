@@ -217,21 +217,6 @@ func TestManagedIdentityCredential_AzureArcErrors(t *testing.T) {
 		_, err = cred.GetToken(ctx, policy.TokenRequestOptions{Scopes: []string{t.Name()}})
 		require.ErrorContains(t, err, "invalid file")
 	})
-	if runtime.GOOS == "windows" {
-		t.Run("ProgramData not set", func(t *testing.T) {
-			t.Setenv("ProgramData", "")
-			srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
-			defer close()
-			srv.AppendResponse(
-				mock.WithHeader("WWW-Authenticate", "Basic realm=foo"),
-				mock.WithStatusCode(http.StatusUnauthorized),
-			)
-			cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: srv}})
-			require.NoError(t, err)
-			_, err = cred.GetToken(ctx, policy.TokenRequestOptions{Scopes: []string{t.Name()}})
-			require.ErrorContains(t, err, "ProgramData")
-		})
-	}
 }
 
 func TestManagedIdentityCredential_AzureContainerInstanceLive(t *testing.T) {
@@ -297,7 +282,6 @@ func TestManagedIdentityCredential_AzureMLLive(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	// TODO: recorded scope
 	testGetTokenSuccess(t, cred, t.Name())
 }
 
@@ -307,7 +291,7 @@ func TestManagedIdentityCredential_CloudShell(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if v := req.FormValue("resource"); v != strings.TrimSuffix(liveTestScope, defaultSuffix) {
+		if v := req.FormValue("resource"); v != strings.TrimSuffix(t.Name(), defaultSuffix) {
 			t.Fatalf("unexpected resource: %s", v)
 		}
 		if h := req.Header.Get("metadata"); h != "true" {
@@ -329,47 +313,49 @@ func TestManagedIdentityCredential_AppService(t *testing.T) {
 	expectedHeader := "header"
 	for _, id := range []ManagedIDKind{ClientID(expectedID), ObjectID(expectedID), ResourceID(expectedID), nil} {
 		scope := fmt.Sprintf("%s/%T/.default", t.Name(), id)
-		// TODO: capture inner T
-		validateReq := func(req *http.Request) bool {
-			if h := req.Header.Get("X-IDENTITY-HEADER"); h != expectedHeader {
-				t.Fatalf("unexpected X-IDENTITY-HEADER: %s", h)
-			}
-			q := req.URL.Query()
-			if v := q.Get("api-version"); v != "2019-08-01" {
-				t.Fatalf(`unexpected api-version "%s"`, v)
-			}
-			if v := q.Get("resource"); v != strings.TrimSuffix(scope, "/.default") {
-				t.Fatalf(`unexpected resource "%s"`, v)
-			}
-			if id == nil {
-				if q.Get(qpClientID) != "" || q.Get(miResID) != "" || q.Get("principal_id") != "" {
-					t.Fatal("request shouldn't include a user-assigned ID")
+		validateReq := func(t *testing.T) func(req *http.Request) bool {
+			return func(req *http.Request) bool {
+				if h := req.Header.Get("X-IDENTITY-HEADER"); h != expectedHeader {
+					t.Fatalf("unexpected X-IDENTITY-HEADER: %s", h)
 				}
-			} else {
-				if q.Get(qpClientID) != "" && q.Get(miResID) != "" {
+				q := req.URL.Query()
+				if v := q.Get("api-version"); v != "2019-08-01" {
+					t.Fatalf(`unexpected api-version "%s"`, v)
+				}
+				if v := q.Get("resource"); v != strings.TrimSuffix(scope, "/.default") {
+					t.Fatalf(`unexpected resource "%s"`, v)
+				}
+				clientID := q.Get(qpClientID)
+				resID := q.Get(miResID)
+				objectID := q.Get("object_id")
+				if (clientID != "" && resID != "") || (clientID != "" && objectID != "") || (resID != "" && objectID != "") {
 					t.Fatal("request includes two IDs")
 				}
-				var k string
-				switch id.(type) {
-				case ClientID:
-					k = qpClientID
-				case ObjectID:
-					k = "object_id"
-				case ResourceID:
-					k = miResID
+				if id == nil {
+					if clientID != "" || resID != "" || objectID != "" {
+						t.Fatal("request shouldn't include a user-assigned ID")
+					}
+				} else {
+					actual := clientID
+					switch id.(type) {
+					case ObjectID:
+						actual = objectID
+					case ResourceID:
+						actual = resID
+					}
+					if actual != id.String() {
+						t.Errorf("expected %s, got %q", id.String(), actual)
+					}
 				}
-				if actual := q.Get(k); actual != id.String() {
-					t.Errorf("expected %s=%s, got %q", k, id.String(), actual)
-				}
+				return true
 			}
-			return true
 		}
 
 		t.Run(fmt.Sprintf("%T", id), func(t *testing.T) {
 			srv, close := mock.NewServer()
 			defer close()
 			srv.AppendResponse(
-				mock.WithPredicate(validateReq),
+				mock.WithPredicate(validateReq(t)),
 				mock.WithBody([]byte(fmt.Sprintf(
 					`{"access_token": "%s", "expires_on": "%d", "resource": "https://vault.azure.net", "token_type": "Bearer", "client_id": "some-guid"}`,
 					tokenValue,

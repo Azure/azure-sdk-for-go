@@ -395,7 +395,6 @@ func TestDefaultAzureCredential_IMDS(t *testing.T) {
 }
 
 func TestDefaultAzureCredential_UnexpectedIMDSResponse(t *testing.T) {
-	t.Skip("TODO: need to interpret MSAL's errors")
 	before := defaultAzTokenProvider
 	defer func() { defaultAzTokenProvider = before }()
 	defaultAzTokenProvider = mockAzTokenProviderSuccess

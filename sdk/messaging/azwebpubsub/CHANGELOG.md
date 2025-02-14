@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Add UserExists/ConnectionExists/GroupExists/CheckPermission APIs
+
 ### Breaking Changes
 
 ### Bugs Fixed

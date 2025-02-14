@@ -23,6 +23,8 @@ type TokenResponse struct {
 	Token *string
 }
 
+
+
 // RemoveFromGroupsRequest - The request object containing targets groups and a connection filter
 type RemoveFromGroupsRequest struct {
 	// An OData filter which target connections satisfy
@@ -31,3 +33,4 @@ type RemoveFromGroupsRequest struct {
 	// A list of groups which target connections will be removed from
 	Groups []string
 }
+

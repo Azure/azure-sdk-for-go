@@ -25,7 +25,8 @@ type AddUserToGroupResponse struct {
 
 // CheckPermissionResponse contains the response from method Client.CheckPermission.
 type CheckPermissionResponse struct {
-	// placeholder for future response values
+	// Success indicates if the operation succeeded or failed.
+	Success bool
 }
 
 // CloseAllConnectionsResponse contains the response from method Client.CloseAllConnections.
@@ -50,7 +51,8 @@ type CloseUserConnectionsResponse struct {
 
 // ConnectionExistsResponse contains the response from method Client.ConnectionExists.
 type ConnectionExistsResponse struct {
-	// placeholder for future response values
+	// Success indicates if the operation succeeded or failed.
+	Success bool
 }
 
 // GenerateClientTokenResponse contains the response from method Client.GenerateClientToken.
@@ -66,7 +68,8 @@ type GrantPermissionResponse struct {
 
 // GroupExistsResponse contains the response from method Client.GroupExists.
 type GroupExistsResponse struct {
-	// placeholder for future response values
+	// Success indicates if the operation succeeded or failed.
+	Success bool
 }
 
 // RemoveConnectionFromAllGroupsResponse contains the response from method Client.RemoveConnectionFromAllGroups.
@@ -121,5 +124,7 @@ type SendToUserResponse struct {
 
 // UserExistsResponse contains the response from method Client.UserExists.
 type UserExistsResponse struct {
-	// placeholder for future response values
+	// Success indicates if the operation succeeded or failed.
+	Success bool
 }
+

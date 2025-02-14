@@ -183,26 +183,30 @@ func TestDefaultAzureCredential_TenantID(t *testing.T) {
 }
 
 func TestDefaultAzureCredential_UserAssignedIdentity(t *testing.T) {
-	for _, ID := range []ManagedIDKind{nil, ClientID("client-id")} {
-		t.Run(fmt.Sprintf("%v", ID), func(t *testing.T) {
-			if ID != nil {
-				t.Setenv(azureClientID, ID.String())
-			}
-			cred, err := NewDefaultAzureCredential(nil)
-			if err != nil {
-				t.Fatal(err)
-			}
-			for _, c := range cred.chain.sources {
-				if w, ok := c.(*ManagedIdentityCredential); ok {
-					if actual := w.mic.id; actual != ID {
-						t.Fatalf(`expected "%s", got "%v"`, ID, actual)
+	t.Setenv(azureClientID, fakeClientID)
+	cred, err := NewDefaultAzureCredential(&DefaultAzureCredentialOptions{
+		ClientOptions: policy.ClientOptions{
+			Transport: &mockSTS{
+				tokenRequestCallback: func(req *http.Request) *http.Response {
+					if req.Header.Get(headerMetadata) == "" {
+						return nil
 					}
-					return
-				}
-			}
-			t.Fatal("default chain should include ManagedIdentityCredential")
-		})
-	}
+					for _, p := range req.URL.Query() {
+						for _, v := range p {
+							if strings.Contains(v, fakeClientID) {
+								return nil
+							}
+						}
+					}
+					t.Fatalf("expected %q in %v", fakeClientID, req.URL.Query())
+					return nil
+				},
+			},
+		},
+	})
+	require.NoError(t, err)
+	_, err = cred.GetToken(ctx, policy.TokenRequestOptions{Scopes: []string{t.Name()}})
+	require.NoError(t, err)
 }
 
 func TestDefaultAzureCredential_Workload(t *testing.T) {

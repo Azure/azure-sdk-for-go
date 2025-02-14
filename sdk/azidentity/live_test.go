@@ -8,6 +8,8 @@ package azidentity
 
 import (
 	"context"
+	"encoding/base64"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -262,7 +264,10 @@ func newRecordingPolicy(t *testing.T) policy.Policy {
 
 func (p *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
 	mode := recording.GetRecordMode()
-	if mode != recording.LiveMode && !recording.IsLiveOnly(p.t) {
+	if mode == recording.LiveMode {
+		return req.Next()
+	}
+	if !recording.IsLiveOnly(p.t) {
 		r := req.Raw()
 		originalURL := r.URL
 		r.Header.Set(recording.IDHeader, recording.GetRecordingId(p.t))
@@ -272,7 +277,16 @@ func (p *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err erro
 		r.URL.Host = r.Host
 		r.URL.Scheme = "https"
 	}
-	return req.Next()
+	res, err := req.Next()
+	if err == nil {
+		// if the response is a recording mismatch, return it as a simple error that prints clearly in the test log
+		if e := res.Header.Get("x-request-mismatch-error"); e != "" {
+			if msg, er := base64.StdEncoding.DecodeString(e); er == nil {
+				err = errors.New(string(msg))
+			}
+		}
+	}
+	return res, err
 }
 
 // testGetTokenSuccess is a helper for happy path tests that acquires, and validates, a token from a credential

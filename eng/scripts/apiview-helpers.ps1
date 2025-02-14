@@ -80,7 +80,7 @@ function New-APIViewFromCI {
     
     Get-AllPackageInfoFromRepo $ServiceDirectory | ForEach-Object { 
         $artifactList += [PSCustomObject]@{
-            name = $sdk.Name
+            name = $_.Name
         }
     }
 

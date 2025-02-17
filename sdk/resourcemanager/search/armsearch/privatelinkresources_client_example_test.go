@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f6f50c6388fd5836fa142384641b8353a99874ef/specification/search/resource-manager/Microsoft.Search/preview/2024-06-01-preview/examples/ListSupportedPrivateLinkResources.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f6674831693bce0982f08ccf356255248a4c9a8f/specification/search/resource-manager/Microsoft.Search/preview/2025-02-01-preview/examples/ListSupportedPrivateLinkResources.json
 func ExamplePrivateLinkResourcesClient_NewListSupportedPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -21,6 +21,9 @@
 
 ### Other Changes
 
+* Added `tracing.SpanOptions.Link` when starting a span with `runtime.StartSpan` to support Span Links.
+* Added Span Attribute `error.type` to report an error when ending a span with `runtime.StartSpan`.
+
 ## 1.17.0 (2025-01-07)
 
 ### Features Added

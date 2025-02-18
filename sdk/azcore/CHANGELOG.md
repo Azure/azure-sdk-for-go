@@ -11,7 +11,7 @@
 * Added type `Link` to the `tracing` package to support Span Links.
 * Added method `LinkFromContext()` to `tracing.Tracer` to support Span Links.
 * Added method `AddLink()` to `tracing.Span` to support Span Links.
-* Added field `StartSpanOptions` to `runtime.StartSpanOptions` to support Span Links.
+* Added field `Links` to `runtime.StartSpanOptions` to support Span Links.
 * Added type `Propagator` to the `tracing` package to support context propagation.
 * Added type `Carrier` to the `tracing` package to support context propagation.
 * Added method `NewPropagator()` to type `tracing.Provider` to support context propagation.

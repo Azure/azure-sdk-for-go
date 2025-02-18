@@ -824,5 +824,5 @@ func FindModuleDirByGoMod(root string) (string, error) {
 		path = filepath.Dir(path)
 		curLevel++
 	}
-	return "", fmt.Errorf("not found module, package path:%s", root)
+	return "", fmt.Errorf("module not found, package path:%s", root)
 }

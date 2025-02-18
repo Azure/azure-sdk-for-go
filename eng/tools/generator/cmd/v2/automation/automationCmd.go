@@ -116,7 +116,7 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 		}
 
 		if ok := tsc.ExistEmitOption(string(typespec.TypeSpec_GO)); !ok {
-			errorBuilder.add(fmt.Errorf("`@azure-tools/typespec-go` option not found in %s, it is required, please refer to `https://aka.ms/azsdk/tspconfig-sample-mpg` to configure it", tspconfigPath))
+			log.Println(fmt.Sprintf("`@azure-tools/typespec-go` option not found in %s, it is required, please refer to `https://aka.ms/azsdk/tspconfig-sample-mpg` to configure it", tspconfigPath))
 			continue
 		}
 		log.Printf("Start to process typespec project: %s", tspProjectFolder)

@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/go-amqp"
 )
@@ -44,6 +45,7 @@ const (
 
 // Receiver receives messages using pull based functions (ReceiveMessages).
 type Receiver struct {
+	tracer                   tracing.Tracer
 	amqpLinks                internal.AMQPLinks
 	cancelReleaser           *atomic.Value
 	cleanupOnClose           func()
@@ -111,6 +113,7 @@ func applyReceiverOptions(receiver *Receiver, entity *entity, options *ReceiverO
 }
 
 type newReceiverArgs struct {
+	tracer              tracing.Tracer
 	ns                  internal.NamespaceForAMQPLinks
 	entity              entity
 	cleanupOnClose      func()
@@ -129,6 +132,7 @@ func newReceiver(args newReceiverArgs, options *ReceiverOptions) (*Receiver, err
 	}
 
 	receiver := &Receiver{
+		tracer:                   args.tracer,
 		cancelReleaser:           &atomic.Value{},
 		cleanupOnClose:           args.cleanupOnClose,
 		lastPeekedSequenceNumber: 0,
@@ -158,7 +162,7 @@ func newReceiver(args newReceiverArgs, options *ReceiverOptions) (*Receiver, err
 
 	// 'nil' settler handles returning an error message for receiveAndDelete links.
 	if receiver.receiveMode == ReceiveModePeekLock {
-		receiver.settler = newMessageSettler(receiver.amqpLinks, receiver.retryOptions)
+		receiver.settler = newMessageSettler(args.tracer, receiver.amqpLinks, receiver.retryOptions)
 	} else {
 		receiver.settler = (*messageSettler)(nil)
 	}
@@ -205,6 +209,10 @@ func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options
 		return nil, errors.New("receiver is already receiving messages. ReceiveMessages() cannot be called concurrently")
 	}
 
+	var err error
+	ctx, endSpan := tracing.StartSpan(ctx, &tracing.StartSpanOptions{Tracer: r.tracer, OperationName: tracing.ReceiveOperationName})
+	defer func() { endSpan(err) }()
+
 	messages, err := r.receiveMessagesImpl(ctx, maxMessages, options)
 	return messages, internal.TransformError(err)
 }
@@ -226,7 +234,10 @@ func (r *Receiver) ReceiveDeferredMessages(ctx context.Context, sequenceNumbers 
 			return err
 		}
 
+		r.addBatchSizeAttribute(ctx, len(amqpMessages))
+
 		for _, amqpMsg := range amqpMessages {
+			r.addLink(ctx, amqpMsg)
 			receivedMsg := newReceivedMessage(amqpMsg, lwid.Receiver)
 			receivedMsg.settleOnMgmtLink = true
 
@@ -234,7 +245,7 @@ func (r *Receiver) ReceiveDeferredMessages(ctx context.Context, sequenceNumbers 
 		}
 
 		return nil
-	}, r.retryOptions)
+	}, r.retryOptions, &tracing.StartSpanOptions{Tracer: r.tracer, OperationName: tracing.ReceiveDeferredOperationName})
 
 	return receivedMessages, internal.TransformError(err)
 }
@@ -276,6 +287,8 @@ func (r *Receiver) PeekMessages(ctx context.Context, maxMessageCount int, option
 			return err
 		}
 
+		r.addBatchSizeAttribute(ctx, len(messages))
+
 		receivedMessages = make([]*ReceivedMessage, len(messages))
 
 		for i := 0; i < len(messages); i++ {
@@ -288,7 +301,7 @@ func (r *Receiver) PeekMessages(ctx context.Context, maxMessageCount int, option
 		}
 
 		return nil
-	}, r.retryOptions)
+	}, r.retryOptions, &tracing.StartSpanOptions{Tracer: r.tracer, OperationName: tracing.PeekOperationName})
 
 	return receivedMessages, internal.TransformError(err)
 }
@@ -312,7 +325,11 @@ func (r *Receiver) RenewMessageLock(ctx context.Context, msg *ReceivedMessage, o
 
 		msg.LockedUntil = &newExpirationTime[0]
 		return nil
-	}, r.retryOptions)
+	}, r.retryOptions, &tracing.StartSpanOptions{
+		Tracer:        r.tracer,
+		OperationName: tracing.RenewMessageLockOperationName,
+		Attributes:    getReceivedMessageSpanAttributes(msg),
+	})
 
 	return internal.TransformError(err)
 }
@@ -377,7 +394,7 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 	err := r.amqpLinks.Retry(ctx, EventReceiver, "receiveMessages.getlinks", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		linksWithID = lwid
 		return nil
-	}, r.retryOptions)
+	}, r.retryOptions, nil)
 
 	if err != nil {
 		return nil, err
@@ -392,7 +409,7 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 	if creditsToIssue > 0 {
 		r.amqpLinks.Writef(EventReceiver, "Issuing %d credits, have %d", creditsToIssue, currentReceiverCredits)
 
-		if err := linksWithID.Receiver.IssueCredit(uint32(creditsToIssue)); err != nil {
+		if err = linksWithID.Receiver.IssueCredit(uint32(creditsToIssue)); err != nil {
 			return nil, err
 		}
 	} else {
@@ -438,19 +455,34 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 	// at that time
 	if len(result.Messages) == 0 {
 		if internal.IsCancelError(result.Error) || rk == internal.RecoveryKindFatal {
-			return nil, result.Error
+			err = result.Error
+			return nil, err
 		}
 
 		return nil, nil
 	}
 
+	r.addBatchSizeAttribute(ctx, len(result.Messages))
+
 	var receivedMessages []*ReceivedMessage
 
 	for _, msg := range result.Messages {
+		r.addLink(ctx, msg)
 		receivedMessages = append(receivedMessages, newReceivedMessage(msg, linksWithID.Receiver))
 	}
 
 	return receivedMessages, nil
+}
+
+func (r *Receiver) addLink(ctx context.Context, message *amqp.Message) {
+	sp := r.tracer.SpanFromContext(ctx)
+	sp.AddLink(r.tracer.LinkFromContext(r.tracer.Extract(context.Background(), message),
+		tracing.Attribute{Key: tracing.MessageID, Value: message.Properties.MessageID}))
+}
+
+func (r *Receiver) addBatchSizeAttribute(ctx context.Context, size int) {
+	sp := r.tracer.SpanFromContext(ctx)
+	sp.SetAttributes(tracing.Attribute{Key: tracing.BatchMessageCount, Value: int64(size)})
 }
 
 type entity struct {

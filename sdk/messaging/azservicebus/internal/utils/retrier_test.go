@@ -32,7 +32,7 @@ func TestRetrier(t *testing.T) {
 			return nil
 		}, func(err error) bool {
 			panic("won't get called")
-		}, exported.RetryOptions{})
+		}, exported.RetryOptions{}, nil)
 
 		require.Nil(t, err)
 		require.EqualValues(t, 1, called)
@@ -60,7 +60,7 @@ func TestRetrier(t *testing.T) {
 			}
 
 			return fmt.Errorf("Error, iteration %d", args.I)
-		}, isFatalFn, fastRetryOptions)
+		}, isFatalFn, fastRetryOptions, nil)
 
 		require.EqualValues(t, 4, called)
 		require.EqualValues(t, 3, isFatalCalled)
@@ -81,7 +81,7 @@ func TestRetrier(t *testing.T) {
 		err := Retry(ctx, testLogEvent, "notused", func(ctx context.Context, args *RetryFnArgs) error {
 			called++
 			return errors.New("isFatalFn says this is a fatal error")
-		}, isFatalFn, exported.RetryOptions{})
+		}, isFatalFn, exported.RetryOptions{}, nil)
 
 		require.EqualValues(t, "isFatalFn says this is a fatal error", err.Error())
 		require.EqualValues(t, 1, called)
@@ -108,7 +108,7 @@ func TestRetrier(t *testing.T) {
 			MaxRetries:    maxRetries,
 			RetryDelay:    time.Millisecond,
 			MaxRetryDelay: time.Millisecond,
-		})
+		}, nil)
 
 		expectedAttempts := []int32{
 			0, 1, 2, // we resetted attempts here.
@@ -132,7 +132,7 @@ func TestRetrier(t *testing.T) {
 		err := Retry(context.Background(), testLogEvent, "notused", func(ctx context.Context, args *RetryFnArgs) error {
 			called++
 			return errors.New("whatever")
-		}, isFatalFn, customRetryOptions)
+		}, isFatalFn, customRetryOptions, nil)
 
 		require.EqualValues(t, 1, called)
 		require.EqualValues(t, "whatever", err.Error())
@@ -154,7 +154,7 @@ func TestCancellationCancelsSleep(t *testing.T) {
 		return errors.New("try again")
 	}, isFatalFn, exported.RetryOptions{
 		RetryDelay: time.Hour,
-	})
+	}, nil)
 
 	require.Error(t, err)
 	require.ErrorIs(t, err, context.Canceled)
@@ -182,7 +182,7 @@ func TestCancellationFromUserFunc(t *testing.T) {
 		default:
 			panic("Context should have been cancelled")
 		}
-	}, isFatalFn, exported.RetryOptions{})
+	}, isFatalFn, exported.RetryOptions{}, nil)
 
 	require.Error(t, err)
 	require.ErrorIs(t, err, canceledfromFunc)
@@ -203,7 +203,7 @@ func TestCancellationTimeoutsArentPropagatedToUser(t *testing.T) {
 		return tryAgainErr
 	}, isFatalFn, exported.RetryOptions{
 		RetryDelay: time.Millisecond,
-	})
+	}, nil)
 
 	require.Error(t, err)
 	require.ErrorIs(t, err, tryAgainErr, "error should be propagated from user callback")
@@ -298,7 +298,7 @@ func TestRetryLogging(t *testing.T) {
 			return false
 		}, exported.RetryOptions{
 			RetryDelay: time.Microsecond,
-		})
+		}, nil)
 		require.EqualError(t, err, "hello")
 
 		require.Equal(t, []string{
@@ -329,7 +329,7 @@ func TestRetryLogging(t *testing.T) {
 			return false
 		}, exported.RetryOptions{
 			RetryDelay: time.Microsecond,
-		})
+		}, nil)
 		require.EqualError(t, err, "hello")
 	})
 
@@ -344,7 +344,7 @@ func TestRetryLogging(t *testing.T) {
 			return errors.Is(err, context.Canceled)
 		}, exported.RetryOptions{
 			RetryDelay: time.Microsecond,
-		})
+		}, nil)
 		require.ErrorIs(t, err, context.Canceled)
 
 		require.Equal(t, []string{
@@ -364,7 +364,7 @@ func TestRetryLogging(t *testing.T) {
 			return true
 		}, exported.RetryOptions{
 			RetryDelay: time.Microsecond,
-		})
+		}, nil)
 		require.EqualError(t, err, "custom fatal error")
 
 		require.Equal(t, []string{
@@ -398,7 +398,7 @@ func TestRetryLogging(t *testing.T) {
 			return errors.Is(err, &de)
 		}, exported.RetryOptions{
 			RetryDelay: time.Microsecond,
-		})
+		}, nil)
 		require.Nil(t, err)
 
 		require.Equal(t, []string{

@@ -46,7 +46,7 @@ func NewLongRunningBackupClient(subscriptionID string, credential azcore.TokenCr
 // BeginCreate - Create backup for a given server with specified backup name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2023-12-30
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - backupName - The name of the backup.
@@ -73,7 +73,7 @@ func (client *LongRunningBackupClient) BeginCreate(ctx context.Context, resource
 // Create - Create backup for a given server with specified backup name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2023-12-30
 func (client *LongRunningBackupClient) create(ctx context.Context, resourceGroupName string, serverName string, backupName string, options *LongRunningBackupClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "LongRunningBackupClient.BeginCreate"
@@ -119,7 +119,7 @@ func (client *LongRunningBackupClient) createCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2023-12-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {

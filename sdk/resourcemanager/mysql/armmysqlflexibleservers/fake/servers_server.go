@@ -32,6 +32,10 @@ type ServersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, serverName string, options *armmysqlflexibleservers.ServersClientBeginDeleteOptions) (resp azfake.PollerResponder[armmysqlflexibleservers.ServersClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginDetachVNet is the fake for method ServersClient.BeginDetachVNet
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginDetachVNet func(ctx context.Context, resourceGroupName string, serverName string, parameters armmysqlflexibleservers.ServerDetachVNetParameter, options *armmysqlflexibleservers.ServersClientBeginDetachVNetOptions) (resp azfake.PollerResponder[armmysqlflexibleservers.ServersClientDetachVNetResponse], errResp azfake.ErrorResponder)
+
 	// BeginFailover is the fake for method ServersClient.BeginFailover
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginFailover func(ctx context.Context, resourceGroupName string, serverName string, options *armmysqlflexibleservers.ServersClientBeginFailoverOptions) (resp azfake.PollerResponder[armmysqlflexibleservers.ServersClientFailoverResponse], errResp azfake.ErrorResponder)
@@ -81,6 +85,7 @@ func NewServersServerTransport(srv *ServersServer) *ServersServerTransport {
 		srv:                         srv,
 		beginCreate:                 newTracker[azfake.PollerResponder[armmysqlflexibleservers.ServersClientCreateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armmysqlflexibleservers.ServersClientDeleteResponse]](),
+		beginDetachVNet:             newTracker[azfake.PollerResponder[armmysqlflexibleservers.ServersClientDetachVNetResponse]](),
 		beginFailover:               newTracker[azfake.PollerResponder[armmysqlflexibleservers.ServersClientFailoverResponse]](),
 		newListPager:                newTracker[azfake.PagerResponder[armmysqlflexibleservers.ServersClientListResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armmysqlflexibleservers.ServersClientListByResourceGroupResponse]](),
@@ -98,6 +103,7 @@ type ServersServerTransport struct {
 	srv                         *ServersServer
 	beginCreate                 *tracker[azfake.PollerResponder[armmysqlflexibleservers.ServersClientCreateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armmysqlflexibleservers.ServersClientDeleteResponse]]
+	beginDetachVNet             *tracker[azfake.PollerResponder[armmysqlflexibleservers.ServersClientDetachVNetResponse]]
 	beginFailover               *tracker[azfake.PollerResponder[armmysqlflexibleservers.ServersClientFailoverResponse]]
 	newListPager                *tracker[azfake.PagerResponder[armmysqlflexibleservers.ServersClientListResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armmysqlflexibleservers.ServersClientListByResourceGroupResponse]]
@@ -124,6 +130,8 @@ func (s *ServersServerTransport) Do(req *http.Request) (*http.Response, error) {
 		resp, err = s.dispatchBeginCreate(req)
 	case "ServersClient.BeginDelete":
 		resp, err = s.dispatchBeginDelete(req)
+	case "ServersClient.BeginDetachVNet":
+		resp, err = s.dispatchBeginDetachVNet(req)
 	case "ServersClient.BeginFailover":
 		resp, err = s.dispatchBeginFailover(req)
 	case "ServersClient.Get":
@@ -242,6 +250,54 @@ func (s *ServersServerTransport) dispatchBeginDelete(req *http.Request) (*http.R
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		s.beginDelete.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (s *ServersServerTransport) dispatchBeginDetachVNet(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginDetachVNet == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDetachVNet not implemented")}
+	}
+	beginDetachVNet := s.beginDetachVNet.get(req)
+	if beginDetachVNet == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DBforMySQL/flexibleServers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/detachVNet`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armmysqlflexibleservers.ServerDetachVNetParameter](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginDetachVNet(req.Context(), resourceGroupNameParam, serverNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDetachVNet = &respr
+		s.beginDetachVNet.add(req, beginDetachVNet)
+	}
+
+	resp, err := server.PollerResponderNext(beginDetachVNet, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginDetachVNet.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginDetachVNet) {
+		s.beginDetachVNet.remove(req)
 	}
 
 	return resp, nil

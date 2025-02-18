@@ -292,6 +292,12 @@ type ServersClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
+// ServersClientBeginDetachVNetOptions contains the optional parameters for the ServersClient.BeginDetachVNet method.
+type ServersClientBeginDetachVNetOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // ServersClientBeginFailoverOptions contains the optional parameters for the ServersClient.BeginFailover method.
 type ServersClientBeginFailoverOptions struct {
 	// Resumes the LRO from the provided token.

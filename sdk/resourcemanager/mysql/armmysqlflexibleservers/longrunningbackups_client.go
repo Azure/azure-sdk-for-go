@@ -46,7 +46,7 @@ func NewLongRunningBackupsClient(subscriptionID string, credential azcore.TokenC
 // Get - Get backup for a given server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2023-12-30
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - backupName - The name of the backup.
@@ -97,7 +97,7 @@ func (client *LongRunningBackupsClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2023-12-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -114,7 +114,7 @@ func (client *LongRunningBackupsClient) getHandleResponse(resp *http.Response) (
 
 // NewListPager - List all the backups for a given server.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2023-12-30
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - LongRunningBackupsClientListOptions contains the optional parameters for the LongRunningBackupsClient.NewListPager
@@ -162,7 +162,7 @@ func (client *LongRunningBackupsClient) listCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2023-12-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

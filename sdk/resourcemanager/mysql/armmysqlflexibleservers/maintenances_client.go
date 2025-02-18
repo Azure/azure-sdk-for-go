@@ -45,7 +45,7 @@ func NewMaintenancesClient(subscriptionID string, credential azcore.TokenCredent
 
 // NewListPager - List maintenances.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2023-12-30
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - MaintenancesClientListOptions contains the optional parameters for the MaintenancesClient.NewListPager method.
@@ -92,7 +92,7 @@ func (client *MaintenancesClient) listCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2023-12-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -110,7 +110,7 @@ func (client *MaintenancesClient) listHandleResponse(resp *http.Response) (Maint
 // Read - Read maintenance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2023-12-30
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - maintenanceName - The name of the maintenance.
@@ -161,7 +161,7 @@ func (client *MaintenancesClient) readCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2023-12-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -179,7 +179,7 @@ func (client *MaintenancesClient) readHandleResponse(resp *http.Response) (Maint
 // BeginUpdate - Update maintenances.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2023-12-30
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - maintenanceName - The name of the maintenance.
@@ -205,7 +205,7 @@ func (client *MaintenancesClient) BeginUpdate(ctx context.Context, resourceGroup
 // Update - Update maintenances.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2023-12-30
 func (client *MaintenancesClient) update(ctx context.Context, resourceGroupName string, serverName string, maintenanceName string, options *MaintenancesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MaintenancesClient.BeginUpdate"
@@ -251,7 +251,7 @@ func (client *MaintenancesClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2023-12-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {

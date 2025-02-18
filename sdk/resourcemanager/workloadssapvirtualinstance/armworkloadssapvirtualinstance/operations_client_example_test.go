@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloadssapvirtualinstance/armworkloadssapvirtualinstance"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1e318cbfd2e239db54c80af5e6aea7fdf658851/specification/workloads/resource-manager/Microsoft.Workloads/operations/preview/2023-10-01-preview/examples/Operations_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4976ba2b50dfef48e992a40ed22ded04f7a40495/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/Operations_List.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,6 +41,386 @@ func ExampleOperationsClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page.OperationListResult = armworkloadssapvirtualinstance.OperationListResult{
 		// 	Value: []*armworkloadssapvirtualinstance.Operation{
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/RegisteredSubscriptions/read"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Reads registered subscriptions"),
+		// 				Operation: to.Ptr("Gets/Lists registered subscriptions"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("RegisteredSubscriptions"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/phpWorkloads/wordpressInstances/read"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Lists WordpressInstances resources under a phpWorkload resource"),
+		// 				Operation: to.Ptr("WordpressInstances_List"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("phpWorkloads/wordpressInstances"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/phpWorkloads/wordpressInstances/read"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Gets a WordpressInstances resource"),
+		// 				Operation: to.Ptr("WordpressInstances_Get"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("phpWorkloads/wordpressInstances"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/phpWorkloads/wordpressInstances/write"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Create or updated WordpressInstances resource"),
+		// 				Operation: to.Ptr("WordpressInstances_CreateOrUpdate"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("phpWorkloads/wordpressInstances"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/phpWorkloads/wordpressInstances/delete"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Delete WordpressInstances resource"),
+		// 				Operation: to.Ptr("WordpressInstances_Delete"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("phpWorkloads/wordpressInstances"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/skus/read"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Gets the list of Microsoft.Workloads SKUs available for your Subscription"),
+		// 				Operation: to.Ptr("Gets the list of Microsoft.Workloads SKUs available for your Subscription"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("Skus"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/Operations/read"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("read Operations"),
+		// 				Operation: to.Ptr("read_Operations"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("Operations"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/register/action"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Register the subscription for Microsoft.Workloads"),
+		// 				Operation: to.Ptr("Register the Microsoft.Workloads"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("Microsoft.Workloads"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/unregister/action"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Unregister the subscription for Microsoft.Workloads"),
+		// 				Operation: to.Ptr("Unregister the Microsoft.Workloads"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("Microsoft.Workloads"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/Locations/OperationStatuses/read"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("read OperationStatuses"),
+		// 				Operation: to.Ptr("read_OperationStatuses"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("Locations/OperationStatuses"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/Locations/OperationStatuses/write"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("write OperationStatuses"),
+		// 				Operation: to.Ptr("write_OperationStatuses"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("Locations/OperationStatuses"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/phpWorkloads/read"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Lists phpWorkload resources in a subscription"),
+		// 				Operation: to.Ptr("PhpWorkloads_ListBySubscription"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("phpWorkloads"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/phpWorkloads/read"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Lists phpWorkload resources in a resource group"),
+		// 				Operation: to.Ptr("PhpWorkloads_ListByResourceGroup"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("phpWorkloads"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/phpWorkloads/read"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Gets a phpWorkload resource"),
+		// 				Operation: to.Ptr("PhpWorkloads_Get"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("phpWorkloads"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/phpWorkloads/write"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Create or updated phpWorkloads resource"),
+		// 				Operation: to.Ptr("PhpWorkloads_CreateOrUpdate"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("phpWorkloads"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/phpWorkloads/delete"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Delete phpWorkloads resource"),
+		// 				Operation: to.Ptr("PhpWorkloads_Delete"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("phpWorkloads"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/phpWorkloads/write"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Update PHP workload resource."),
+		// 				Operation: to.Ptr("PhpWorkloads_Update"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("phpWorkloads"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/sapVirtualInstances/applicationInstances/read"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Gets the SAP Application Server Instance."),
+		// 				Operation: to.Ptr("SAPApplicationServerInstances_Get"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("sapVirtualInstances/applicationInstances"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/sapVirtualInstances/applicationInstances/write"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Puts the SAP Application Server Instance."),
+		// 				Operation: to.Ptr("SAPApplicationServerInstances_Create"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("sapVirtualInstances/applicationInstances"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/sapVirtualInstances/applicationInstances/delete"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Deletes the SAP Application Server Instance. <br><br>This operation will be used by service only. Delete by end user will return a Bad Request error."),
+		// 				Operation: to.Ptr("SAPApplicationServerInstances_Delete"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("sapVirtualInstances/applicationInstances"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/sapVirtualInstances/applicationInstances/write"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Puts the SAP Application Server Instance."),
+		// 				Operation: to.Ptr("SAPApplicationServerInstances_Update"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("sapVirtualInstances/applicationInstances"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/sapVirtualInstances/applicationInstances/read"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Lists the SAP Application server Instances in an SVI."),
+		// 				Operation: to.Ptr("SAPApplicationServerInstances_List"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("sapVirtualInstances/applicationInstances"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/sapVirtualInstances/applicationInstances/start/action"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Starts the SAP Application server Instance in an SVI."),
+		// 				Operation: to.Ptr("SAPApplicationServerInstances_StartInstance"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("sapVirtualInstances/applicationInstances"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/sapVirtualInstances/applicationInstances/stop/action"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Stops the SAP Application server Instance in an SVI."),
+		// 				Operation: to.Ptr("SAPApplicationServerInstances_StopInstance"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("sapVirtualInstances/applicationInstances"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/sapVirtualInstances/centralInstances/read"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Gets the SAP Central Instance."),
+		// 				Operation: to.Ptr("SAPCentralInstances_Get"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("sapVirtualInstances/centralInstances"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/sapVirtualInstances/centralInstances/write"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Puts the SAP Central Instance. <br><br>This will be used by service only. PUT by end user will return a Bad Request error."),
+		// 				Operation: to.Ptr("SAPCentralInstances_Create"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("sapVirtualInstances/centralInstances"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/sapVirtualInstances/centralInstances/delete"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Deletes the SAP Central Instance. <br><br>This will be used by service only. Delete by end user will return a Bad Request error."),
+		// 				Operation: to.Ptr("SAPCentralInstances_Delete"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("sapVirtualInstances/centralInstances"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/sapVirtualInstances/centralInstances/write"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Updates the SAP Central Instance. <br><br>This can be used to update tags."),
+		// 				Operation: to.Ptr("SAPCentralInstances_Update"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("sapVirtualInstances/centralInstances"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/sapVirtualInstances/centralInstances/read"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Lists the SAP Central Instances in an SVI."),
+		// 				Operation: to.Ptr("SAPCentralInstances_List"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("sapVirtualInstances/centralInstances"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/sapVirtualInstances/centralInstances/start/action"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Starts the SAP Central server Instance in an SVI."),
+		// 				Operation: to.Ptr("SAPCentralInstances_StartInstance"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("sapVirtualInstances/centralInstances"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/sapVirtualInstances/centralInstances/stop/action"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Stops the SAP Central server Instance in an SVI."),
+		// 				Operation: to.Ptr("SAPCentralInstances_StopInstance"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("sapVirtualInstances/centralInstances"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/sapVirtualInstances/databaseInstances/read"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Gets the SAP Database Instance."),
+		// 				Operation: to.Ptr("SAPDatabaseInstances_Get"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("sapVirtualInstances/databaseInstances"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/sapVirtualInstances/databaseInstances/write"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Puts the SAP Database Instance."),
+		// 				Operation: to.Ptr("SAPDatabaseInstances_Create"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("sapVirtualInstances/databaseInstances"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/sapVirtualInstances/databaseInstances/delete"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Deletes the SAP Database Instance. <br><br>This will be used by service only. Delete by end user will return a Bad Request error."),
+		// 				Operation: to.Ptr("SAPDatabaseInstances_Delete"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("sapVirtualInstances/databaseInstances"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/sapVirtualInstances/databaseInstances/write"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Puts the SAP Database Instance."),
+		// 				Operation: to.Ptr("SAPDatabaseInstances_Update"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("sapVirtualInstances/databaseInstances"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/sapVirtualInstances/databaseInstances/read"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Lists the SAP Database Instances in an SVI."),
+		// 				Operation: to.Ptr("SAPDatabaseInstances_List"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("sapVirtualInstances/databaseInstances"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/sapVirtualInstances/databaseInstances/start/action"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Starts the database instance of the SAP system."),
+		// 				Operation: to.Ptr("SAPDatabaseInstances_StartInstance"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("sapVirtualInstances/databaseInstances"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/sapVirtualInstances/databaseInstances/stop/action"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Stops the database instance of the SAP system."),
+		// 				Operation: to.Ptr("SAPDatabaseInstances_StopInstance"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("sapVirtualInstances/databaseInstances"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Workloads/monitors/read"),
 		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
@@ -142,6 +522,66 @@ func ExampleOperationsClient_NewListPager() {
 		// 			IsDataAction: to.Ptr(false),
 		// 		},
 		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/monitors/alerts/read"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Gets a list of alert instances in the specified SAP monitor. The operations returns various properties of each provider instances."),
+		// 				Operation: to.Ptr("Alerts_List"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("monitors/alerts"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/monitors/alerts/read"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Gets properties of a alert for the specified subscription, resource group, Monitor name, and resource name."),
+		// 				Operation: to.Ptr("Alerts_Get"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("monitors/alerts"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/monitors/alerts/write"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Creates a alert for the specified subscription, resource group, Monitor name, and resource name."),
+		// 				Operation: to.Ptr("Alerts_Create"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("monitors/alerts"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/monitors/alerts/delete"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Deletes a alert for the specified subscription, resource group, Monitor name, and resource name."),
+		// 				Operation: to.Ptr("Alerts_Delete"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("monitors/alerts"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/monitors/alertTemplates/read"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Gets properties of an alert template for the specified subscription, resource group, SAP monitor name, and resource name."),
+		// 				Operation: to.Ptr("AlertTemplates_List"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("monitors/alertTemplates"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/monitors/alertTemplates/read"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Gets properties of a alert for the specified subscription, resource group, Monitor name, and resource name."),
+		// 				Operation: to.Ptr("AlertTemplates_Get"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("monitors/alertTemplates"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
 		// 			Name: to.Ptr("Microsoft.Workloads/monitors/sapLandscapeMonitor/read"),
 		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
 		// 				Description: to.Ptr("Gets a list of properties of a SAP Landscape monitor configuration for the specified subscription, resource group, and resource name."),
@@ -182,132 +622,512 @@ func ExampleOperationsClient_NewListPager() {
 		// 			IsDataAction: to.Ptr(false),
 		// 		},
 		// 		{
-		// 			Name: to.Ptr("Microsoft.Workloads/SapDiscoverySites/Write"),
+		// 			Name: to.Ptr("Microsoft.Workloads/sapVirtualInstances/read"),
 		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
-		// 				Description: to.Ptr("Set SapDiscoverySites"),
-		// 				Operation: to.Ptr("Creates or updates the SapDiscoverySites"),
+		// 				Description: to.Ptr("Gets an SAP Virtual Instance."),
+		// 				Operation: to.Ptr("SAPVirtualInstances_Get"),
 		// 				Provider: to.Ptr("Microsoft.Workloads"),
-		// 				Resource: to.Ptr("SapDiscoverySites"),
+		// 				Resource: to.Ptr("sapVirtualInstances"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
 		// 		},
 		// 		{
-		// 			Name: to.Ptr("Microsoft.Workloads/SapDiscoverySites/Delete"),
+		// 			Name: to.Ptr("Microsoft.Workloads/sapVirtualInstances/write"),
 		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
-		// 				Description: to.Ptr("Delete SapDiscoverySites"),
-		// 				Operation: to.Ptr("Deletes the SapDiscoverySites"),
+		// 				Description: to.Ptr("Creates an SAP Virtual Instance."),
+		// 				Operation: to.Ptr("SAPVirtualInstances_Create"),
 		// 				Provider: to.Ptr("Microsoft.Workloads"),
-		// 				Resource: to.Ptr("SapDiscoverySites"),
+		// 				Resource: to.Ptr("sapVirtualInstances"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
 		// 		},
 		// 		{
-		// 			Name: to.Ptr("Microsoft.Workloads/SapDiscoverySites/Read"),
+		// 			Name: to.Ptr("Microsoft.Workloads/sapVirtualInstances/delete"),
 		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
-		// 				Description: to.Ptr("Read SapDiscoverySites"),
-		// 				Operation: to.Ptr("Reads the SapDiscoverySites"),
+		// 				Description: to.Ptr("Deletes an SAP Virtual Instance."),
+		// 				Operation: to.Ptr("SAPVirtualInstances_Delete"),
 		// 				Provider: to.Ptr("Microsoft.Workloads"),
-		// 				Resource: to.Ptr("SapDiscoverySites"),
+		// 				Resource: to.Ptr("sapVirtualInstances"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
 		// 		},
 		// 		{
-		// 			Name: to.Ptr("Microsoft.Workloads/SapDiscoverySites/SapInstances/Write"),
+		// 			Name: to.Ptr("Microsoft.Workloads/sapVirtualInstances/write"),
 		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
-		// 				Description: to.Ptr("Set SapInstances"),
-		// 				Operation: to.Ptr("Creates or updates the SapInstances"),
+		// 				Description: to.Ptr("Updates an SAP Virtual Instance."),
+		// 				Operation: to.Ptr("SAPVirtualInstances_Update"),
 		// 				Provider: to.Ptr("Microsoft.Workloads"),
-		// 				Resource: to.Ptr("SapInstances"),
+		// 				Resource: to.Ptr("sapVirtualInstances"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
 		// 		},
 		// 		{
-		// 			Name: to.Ptr("Microsoft.Workloads/SapDiscoverySites/SapInstances/Delete"),
+		// 			Name: to.Ptr("Microsoft.Workloads/sapVirtualInstances/read"),
 		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
-		// 				Description: to.Ptr("Delete SapInstances"),
-		// 				Operation: to.Ptr("Deletes the SapInstances"),
+		// 				Description: to.Ptr("Gets all SAP Virtual Instances in a resource group."),
+		// 				Operation: to.Ptr("SAPVirtualInstances_ListByResourceGroup"),
 		// 				Provider: to.Ptr("Microsoft.Workloads"),
-		// 				Resource: to.Ptr("SapInstances"),
+		// 				Resource: to.Ptr("sapVirtualInstances"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
 		// 		},
 		// 		{
-		// 			Name: to.Ptr("Microsoft.Workloads/SapDiscoverySites/SapInstances/Read"),
+		// 			Name: to.Ptr("Microsoft.Workloads/sapVirtualInstances/read"),
 		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
-		// 				Description: to.Ptr("Read SapInstances"),
-		// 				Operation: to.Ptr("Reads the SapInstances"),
+		// 				Description: to.Ptr("Gets all SAP Virtual Instances in the subscription."),
+		// 				Operation: to.Ptr("SAPVirtualInstances_ListBySubscription"),
 		// 				Provider: to.Ptr("Microsoft.Workloads"),
-		// 				Resource: to.Ptr("SapInstances"),
+		// 				Resource: to.Ptr("sapVirtualInstances"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
 		// 		},
 		// 		{
-		// 			Name: to.Ptr("Microsoft.Workloads/SapDiscoverySites/SapInstances/serverInstances/Write"),
+		// 			Name: to.Ptr("Microsoft.Workloads/sapVirtualInstances/start/action"),
 		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
-		// 				Description: to.Ptr("Set serverInstances"),
-		// 				Operation: to.Ptr("Creates or updates the serverInstances"),
+		// 				Description: to.Ptr("Starts the SAP System."),
+		// 				Operation: to.Ptr("SAPVirtualInstances_Start"),
 		// 				Provider: to.Ptr("Microsoft.Workloads"),
-		// 				Resource: to.Ptr("serverInstances"),
+		// 				Resource: to.Ptr("sapVirtualInstances"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
 		// 		},
 		// 		{
-		// 			Name: to.Ptr("Microsoft.Workloads/SapDiscoverySites/SapInstances/serverInstances/Delete"),
+		// 			Name: to.Ptr("Microsoft.Workloads/sapVirtualInstances/stop/action"),
 		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
-		// 				Description: to.Ptr("Delete serverInstances"),
-		// 				Operation: to.Ptr("Deletes the serverInstances"),
+		// 				Description: to.Ptr("Stops the SAP System."),
+		// 				Operation: to.Ptr("SAPVirtualInstances_Stop"),
 		// 				Provider: to.Ptr("Microsoft.Workloads"),
-		// 				Resource: to.Ptr("serverInstances"),
+		// 				Resource: to.Ptr("sapVirtualInstances"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
 		// 		},
 		// 		{
-		// 			Name: to.Ptr("Microsoft.Workloads/SapDiscoverySites/SapInstances/serverInstances/Read"),
+		// 			Name: to.Ptr("Microsoft.Workloads/locations/sapVirtualInstanceMetadata/getSizingRecommendations/action"),
 		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
-		// 				Description: to.Ptr("Read serverInstances"),
-		// 				Operation: to.Ptr("Reads the serverInstances"),
+		// 				Description: to.Ptr("Get SAP sizing recommendations."),
+		// 				Operation: to.Ptr("SAPSizingRecommendations"),
 		// 				Provider: to.Ptr("Microsoft.Workloads"),
-		// 				Resource: to.Ptr("serverInstances"),
+		// 				Resource: to.Ptr("locations/sapVirtualInstanceMetadata"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
 		// 		},
 		// 		{
-		// 			Name: to.Ptr("Microsoft.Workloads/connectors/Write"),
+		// 			Name: to.Ptr("Microsoft.Workloads/locations/sapVirtualInstanceMetadata/getSapSupportedSku/action"),
 		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
-		// 				Description: to.Ptr("Set connectors"),
-		// 				Operation: to.Ptr("Creates or updates the connectors"),
+		// 				Description: to.Ptr("Get SAP supported SKUs."),
+		// 				Operation: to.Ptr("SAPSupportedSku"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("locations/sapVirtualInstanceMetadata"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/locations/sapVirtualInstanceMetadata/getDiskConfigurations/action"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Get SAP Disk Configurations."),
+		// 				Operation: to.Ptr("SAPDiskConfigurations"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("locations/sapVirtualInstanceMetadata"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/locations/sapVirtualInstanceMetadata/getAvailabilityZoneDetails/action"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Get SAP Availability Zone Details."),
+		// 				Operation: to.Ptr("SAPAvailabilityZoneDetails"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("locations/sapVirtualInstanceMetadata"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/connectors/read"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Gets a connector resource"),
+		// 				Operation: to.Ptr("Connectors_Get"),
 		// 				Provider: to.Ptr("Microsoft.Workloads"),
 		// 				Resource: to.Ptr("connectors"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
 		// 		},
 		// 		{
-		// 			Name: to.Ptr("Microsoft.Workloads/connectors/Read"),
+		// 			Name: to.Ptr("Microsoft.Workloads/connectors/write"),
 		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
-		// 				Description: to.Ptr("Read connectors"),
-		// 				Operation: to.Ptr("Reads the connectors"),
+		// 				Description: to.Ptr("Creates a connector resource"),
+		// 				Operation: to.Ptr("Connectors_Create"),
 		// 				Provider: to.Ptr("Microsoft.Workloads"),
 		// 				Resource: to.Ptr("connectors"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
 		// 		},
 		// 		{
-		// 			Name: to.Ptr("Microsoft.Workloads/connectors/acssBackups/Write"),
+		// 			Name: to.Ptr("Microsoft.Workloads/connectors/delete"),
 		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
-		// 				Description: to.Ptr("Set acssBackups"),
-		// 				Operation: to.Ptr("Creates or updates the acssBackups"),
+		// 				Description: to.Ptr("Deletes a connector resource and its child resources, which are the associated connection resources. All the child resources have to be deleted before deleting the connector resource."),
+		// 				Operation: to.Ptr("Connectors_Delete"),
 		// 				Provider: to.Ptr("Microsoft.Workloads"),
-		// 				Resource: to.Ptr("acssBackups"),
+		// 				Resource: to.Ptr("connectors"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
 		// 		},
 		// 		{
-		// 			Name: to.Ptr("Microsoft.Workloads/connectors/acssBackups/Read"),
+		// 			Name: to.Ptr("Microsoft.Workloads/connectors/write"),
 		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
-		// 				Description: to.Ptr("Read acssBackups"),
-		// 				Operation: to.Ptr("Reads the acssBackups"),
+		// 				Description: to.Ptr("Updates a connector resource"),
+		// 				Operation: to.Ptr("Connectors_Update"),
 		// 				Provider: to.Ptr("Microsoft.Workloads"),
-		// 				Resource: to.Ptr("acssBackups"),
+		// 				Resource: to.Ptr("connectors"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/connectors/read"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Gets all connector resources in a Resource Group."),
+		// 				Operation: to.Ptr("Connectors_ListByResourceGroup"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("connectors"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/connectors/read"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Gets all connector resources in a Subscription."),
+		// 				Operation: to.Ptr("Connectors_ListBySubscription"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("connectors"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/connectors/acssBackups/read"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Gets the backup connection resource of virtual instance for SAP."),
+		// 				Operation: to.Ptr("ACSSBackupConnections_Get"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("connectors/acssBackups"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/connectors/acssBackups/write"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Creates the backup connection resource of virtual instance for SAP."),
+		// 				Operation: to.Ptr("ACSSBackupConnections_Create"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("connectors/acssBackups"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/connectors/acssBackups/delete"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Deletes the backup connection resource of virtual instance for SAP."),
+		// 				Operation: to.Ptr("ACSSBackupConnections_Delete"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("connectors/acssBackups"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/connectors/acssBackups/write"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Updates the backup connection resource of virtual instance for SAP. <br><br>This can be used to update tags on the resource."),
+		// 				Operation: to.Ptr("ACSSBackupConnections_Update"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("connectors/acssBackups"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/connectors/acssBackups/read"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Lists the backup connection resources of virtual instance for SAP under the given connector resource."),
+		// 				Operation: to.Ptr("ACSSBackupConnections_List"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("connectors/acssBackups"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/connectors/sapVirtualInstanceMonitors/read"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Gets the monitor connection resource of virtual instance for SAP."),
+		// 				Operation: to.Ptr("SapVirtualInstanceMonitorConnections_Get"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("connectors/sapVirtualInstanceMonitors"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/connectors/sapVirtualInstanceMonitors/write"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Creates the monitor connection resource of virtual instance for SAP."),
+		// 				Operation: to.Ptr("SapVirtualInstanceMonitorConnections_Create"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("connectors/sapVirtualInstanceMonitors"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/connectors/sapVirtualInstanceMonitors/delete"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Deletes the monitor connection resource of virtual instance for SAP."),
+		// 				Operation: to.Ptr("SapVirtualInstanceMonitorConnections_Delete"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("connectors/sapVirtualInstanceMonitors"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/connectors/sapVirtualInstanceMonitors/write"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Updates the monitor connection resource of virtual instance for SAP. <br><br>This can be used to update tags on the resource."),
+		// 				Operation: to.Ptr("SapVirtualInstanceMonitorConnections_Update"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("connectors/sapVirtualInstanceMonitors"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/connectors/sapVirtualInstanceMonitors/read"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Lists the monitor connection resources of virtual instance for SAP under the given connector resource."),
+		// 				Operation: to.Ptr("SapVirtualInstanceMonitorConnections_List"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("connectors/sapVirtualInstanceMonitors"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/insights/read"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Gets properties of Workloads Insights instance for the specified subscription, resource group and instance name."),
+		// 				Operation: to.Ptr("Insights_Get"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("insights"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/insights/read"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Gets a list of Workloads Insight instances in the specified subscription and resource group. The operations returns various properties of each instance."),
+		// 				Operation: to.Ptr("Insights_ListByResourceGroup"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("insights"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/insights/read"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Gets a list of Workloads Insight instances in the specified subscription. The operations returns various properties of each instance."),
+		// 				Operation: to.Ptr("Insights_List"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("insights"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/insights/write"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Creates a Workloads Insights instance for the specified subscription, resource group, and instance name."),
+		// 				Operation: to.Ptr("Insights_Create"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("insights"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/insights/delete"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Deletes a Workloads Insights instance for the specified subscription, resource group and instance name."),
+		// 				Operation: to.Ptr("Insights_Delete"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("insights"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/insights/write"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Patches the Workload Insights instance for the specified subscription, resource group, and instance name."),
+		// 				Operation: to.Ptr("Insights_Update"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("insights"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/sapDiscoverySites/read"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Gets a SAP Migration discovery site resource."),
+		// 				Operation: to.Ptr("SAPDiscoverySites_Get"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("sapDiscoverySites"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/sapDiscoverySites/write"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Creates a discovery site for SAP Migration."),
+		// 				Operation: to.Ptr("SAPDiscoverySites_Create"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("sapDiscoverySites"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/sapDiscoverySites/delete"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Deletes a SAP Migration discovery site resource and its child resources, that is the associated SAP Instances and Server Instances."),
+		// 				Operation: to.Ptr("SAPDiscoverySites_Delete"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("sapDiscoverySites"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/sapDiscoverySites/write"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("SAPDiscoverySites_Update."),
+		// 				Operation: to.Ptr("SAPDiscoverySites_Update"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("sapDiscoverySites"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/sapDiscoverySites/read"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Gets all SAP Migration discovery site resources in a Resource Group."),
+		// 				Operation: to.Ptr("SAPDiscoverySites_ListByResourceGroup"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("sapDiscoverySites"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/sapDiscoverySites/read"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Gets all SAP Migration discovery site resources in a Subscription."),
+		// 				Operation: to.Ptr("SAPDiscoverySites_ListBySubscription"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("sapDiscoverySites"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/sapDiscoverySites/importEntities/action"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Import a SAP Migration discovery site resource and it's child resources, that is the SAP instances and Server instances."),
+		// 				Operation: to.Ptr("SAPDiscoverySites_ImportEntities"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("sapDiscoverySites"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/sapDiscoverySites/sapInstances/read"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Gets the SAP Instance resource."),
+		// 				Operation: to.Ptr("SAPInstances_Get"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("sapDiscoverySites/sapInstances"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/sapDiscoverySites/sapInstances/write"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Creates the SAP Instance resource. <br><br>This will be used by service only. PUT operation on this resource by end user will return a Bad Request error."),
+		// 				Operation: to.Ptr("SAPInstances_Create"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("sapDiscoverySites/sapInstances"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/sapDiscoverySites/sapInstances/delete"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Deletes the SAP Instance resource. <br><br>This will be used by service only. Delete operation on this resource by end user will return a Bad Request error. You can delete the parent resource, which is the SAP Migration discovery site resource, using the delete operation on it."),
+		// 				Operation: to.Ptr("SAPInstances_Delete"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("sapDiscoverySites/sapInstances"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/sapDiscoverySites/sapInstances/write"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Updates the SAP Instance resource."),
+		// 				Operation: to.Ptr("SAPInstances_Update"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("sapDiscoverySites/sapInstances"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/sapDiscoverySites/sapInstances/read"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Lists the SAP Instance resources for the given SAP Migration discovery site resource."),
+		// 				Operation: to.Ptr("SAPInstances_List"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("sapDiscoverySites/sapInstances"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/sapDiscoverySites/sapInstances/serverInstances/read"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Gets the Server Instance resource."),
+		// 				Operation: to.Ptr("ServerInstances_Get"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("sapDiscoverySites/sapInstances/serverInstances"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/sapDiscoverySites/sapInstances/serverInstances/write"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Creates the Server Instance resource. <br><br>This will be used by service only. PUT operation on this resource by end user will return a Bad Request error."),
+		// 				Operation: to.Ptr("ServerInstances_Create"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("sapDiscoverySites/sapInstances/serverInstances"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/sapDiscoverySites/sapInstances/serverInstances/delete"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Deletes the Server Instance resource. <br><br>This will be used by service only. Delete operation on this resource by end user will return a Bad Request error. You can delete the parent resource, which is the SAP Migration discovery site resource, using the delete operation on it."),
+		// 				Operation: to.Ptr("ServerInstances_Delete"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("sapDiscoverySites/sapInstances/serverInstances"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/sapDiscoverySites/sapInstances/serverInstances/write"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Updates the Server Instance resource. This operation on a resource by end user will return a Bad Request error."),
+		// 				Operation: to.Ptr("ServerInstances_Update"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("sapDiscoverySites/sapInstances/serverInstances"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Workloads/sapDiscoverySites/sapInstances/serverInstances/read"),
+		// 			Display: &armworkloadssapvirtualinstance.OperationDisplay{
+		// 				Description: to.Ptr("Lists the Server Instance resources for the given SAP Instance resource."),
+		// 				Operation: to.Ptr("ServerInstances_List"),
+		// 				Provider: to.Ptr("Microsoft.Workloads"),
+		// 				Resource: to.Ptr("sapDiscoverySites/sapInstances/serverInstances"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
 		// 	}},

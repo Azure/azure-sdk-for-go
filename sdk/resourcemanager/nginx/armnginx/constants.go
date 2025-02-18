@@ -10,8 +10,24 @@ package armnginx
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx"
-	moduleVersion = "v3.1.0-beta.1"
+	moduleVersion = "v3.1.0-beta.2"
 )
+
+// ActivationState - The activation state of the WAF. Use 'Enabled' to enable the WAF and 'Disabled' to disable it.
+type ActivationState string
+
+const (
+	ActivationStateDisabled ActivationState = "Disabled"
+	ActivationStateEnabled  ActivationState = "Enabled"
+)
+
+// PossibleActivationStateValues returns the possible values for the ActivationState const type.
+func PossibleActivationStateValues() []ActivationState {
+	return []ActivationState{
+		ActivationStateDisabled,
+		ActivationStateEnabled,
+	}
+}
 
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
@@ -49,6 +65,22 @@ func PossibleIdentityTypeValues() []IdentityType {
 		IdentityTypeSystemAssigned,
 		IdentityTypeSystemAssignedUserAssigned,
 		IdentityTypeUserAssigned,
+	}
+}
+
+// Level - Warning or Info
+type Level string
+
+const (
+	LevelInfo    Level = "Info"
+	LevelWarning Level = "Warning"
+)
+
+// PossibleLevelValues returns the possible values for the Level const type.
+func PossibleLevelValues() []Level {
+	return []Level{
+		LevelInfo,
+		LevelWarning,
 	}
 }
 

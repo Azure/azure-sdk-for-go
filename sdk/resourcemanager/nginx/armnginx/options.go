@@ -8,6 +8,27 @@
 
 package armnginx
 
+// APIKeysClientCreateOrUpdateOptions contains the optional parameters for the APIKeysClient.CreateOrUpdate method.
+type APIKeysClientCreateOrUpdateOptions struct {
+	// The API Key object containing fields (e.g. secret text, expiration date) to upsert the key.
+	Body *DeploymentAPIKeyRequest
+}
+
+// APIKeysClientDeleteOptions contains the optional parameters for the APIKeysClient.Delete method.
+type APIKeysClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIKeysClientGetOptions contains the optional parameters for the APIKeysClient.Get method.
+type APIKeysClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIKeysClientListOptions contains the optional parameters for the APIKeysClient.NewListPager method.
+type APIKeysClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // CertificatesClientBeginCreateOrUpdateOptions contains the optional parameters for the CertificatesClient.BeginCreateOrUpdate
 // method.
 type CertificatesClientBeginCreateOrUpdateOptions struct {
@@ -44,7 +65,7 @@ type ConfigurationsClientAnalysisOptions struct {
 // method.
 type ConfigurationsClientBeginCreateOrUpdateOptions struct {
 	// The NGINX configuration
-	Body *Configuration
+	Body *ConfigurationRequest
 
 	// Resumes the LRO from the provided token.
 	ResumeToken string

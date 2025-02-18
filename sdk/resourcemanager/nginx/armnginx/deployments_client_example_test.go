@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8d26b0e4c1886458fa56c22aac09c3e3e9a5c9e/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Deployments_Get.json
 func ExampleDeploymentsClient_Get_deploymentsGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,7 +44,7 @@ func ExampleDeploymentsClient_Get_deploymentsGet() {
 	// 		AutoUpgradeProfile: &armnginx.AutoUpgradeProfile{
 	// 			UpgradeChannel: to.Ptr("stable"),
 	// 		},
-	// 		ManagedResourceGroup: to.Ptr("myManagedResourceGroup"),
+	// 		DataplaneAPIEndpoint: to.Ptr("mynginx-75b3bf22a555.eastus2.nginxaas.net"),
 	// 		NetworkProfile: &armnginx.NetworkProfile{
 	// 			FrontEndIPConfiguration: &armnginx.FrontendIPConfiguration{
 	// 				PrivateIPAddresses: []*armnginx.PrivateIPAddress{
@@ -62,6 +62,29 @@ func ExampleDeploymentsClient_Get_deploymentsGet() {
 	// 				SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"),
 	// 			},
 	// 		},
+	// 		NginxAppProtect: &armnginx.DeploymentPropertiesNginxAppProtect{
+	// 			WebApplicationFirewallSettings: &armnginx.WebApplicationFirewallSettings{
+	// 				ActivationState: to.Ptr(armnginx.ActivationStateEnabled),
+	// 			},
+	// 			WebApplicationFirewallStatus: &armnginx.WebApplicationFirewallStatus{
+	// 				AttackSignaturesPackage: &armnginx.WebApplicationFirewallPackage{
+	// 					RevisionDatetime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-21T15:50:53.000Z"); return t}()),
+	// 					Version: to.Ptr("2024.02.21"),
+	// 				},
+	// 				BotSignaturesPackage: &armnginx.WebApplicationFirewallPackage{
+	// 					RevisionDatetime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-22T15:50:53.000Z"); return t}()),
+	// 					Version: to.Ptr("2024.02.22"),
+	// 				},
+	// 				ComponentVersions: &armnginx.WebApplicationFirewallComponentVersions{
+	// 					WafEngineVersion: to.Ptr("10.624.0"),
+	// 					WafNginxVersion: to.Ptr("4.815.0"),
+	// 				},
+	// 				ThreatCampaignsPackage: &armnginx.WebApplicationFirewallPackage{
+	// 					RevisionDatetime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-23T15:50:53.000Z"); return t}()),
+	// 					Version: to.Ptr("2024.02.23"),
+	// 				},
+	// 			},
+	// 		},
 	// 		NginxVersion: to.Ptr("nginx-1.19.6"),
 	// 		ProvisioningState: to.Ptr(armnginx.ProvisioningStateSucceeded),
 	// 		ScalingProperties: &armnginx.DeploymentScalingProperties{
@@ -74,7 +97,7 @@ func ExampleDeploymentsClient_Get_deploymentsGet() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_Get_AutoScale.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8d26b0e4c1886458fa56c22aac09c3e3e9a5c9e/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Deployments_Get_AutoScale.json
 func ExampleDeploymentsClient_Get_deploymentsGetAutoScale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +124,6 @@ func ExampleDeploymentsClient_Get_deploymentsGetAutoScale() {
 	// 		AutoUpgradeProfile: &armnginx.AutoUpgradeProfile{
 	// 			UpgradeChannel: to.Ptr("stable"),
 	// 		},
-	// 		ManagedResourceGroup: to.Ptr("myManagedResourceGroup"),
 	// 		NetworkProfile: &armnginx.NetworkProfile{
 	// 			FrontEndIPConfiguration: &armnginx.FrontendIPConfiguration{
 	// 				PrivateIPAddresses: []*armnginx.PrivateIPAddress{
@@ -140,7 +162,7 @@ func ExampleDeploymentsClient_Get_deploymentsGetAutoScale() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8d26b0e4c1886458fa56c22aac09c3e3e9a5c9e/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Deployments_Create.json
 func ExampleDeploymentsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -171,8 +193,8 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate() {
 	// 		AutoUpgradeProfile: &armnginx.AutoUpgradeProfile{
 	// 			UpgradeChannel: to.Ptr("stable"),
 	// 		},
+	// 		DataplaneAPIEndpoint: to.Ptr("mynginx-75b3bf22a555.eastus2.nginxaas.net"),
 	// 		IPAddress: to.Ptr("1.1.1.1"),
-	// 		ManagedResourceGroup: to.Ptr("myManagedResourceGroup"),
 	// 		NetworkProfile: &armnginx.NetworkProfile{
 	// 			FrontEndIPConfiguration: &armnginx.FrontendIPConfiguration{
 	// 				PrivateIPAddresses: []*armnginx.PrivateIPAddress{
@@ -190,6 +212,29 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate() {
 	// 				SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"),
 	// 			},
 	// 		},
+	// 		NginxAppProtect: &armnginx.DeploymentPropertiesNginxAppProtect{
+	// 			WebApplicationFirewallSettings: &armnginx.WebApplicationFirewallSettings{
+	// 				ActivationState: to.Ptr(armnginx.ActivationStateEnabled),
+	// 			},
+	// 			WebApplicationFirewallStatus: &armnginx.WebApplicationFirewallStatus{
+	// 				AttackSignaturesPackage: &armnginx.WebApplicationFirewallPackage{
+	// 					RevisionDatetime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-21T15:50:53.000Z"); return t}()),
+	// 					Version: to.Ptr("2024.02.21"),
+	// 				},
+	// 				BotSignaturesPackage: &armnginx.WebApplicationFirewallPackage{
+	// 					RevisionDatetime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-22T15:50:53.000Z"); return t}()),
+	// 					Version: to.Ptr("2024.02.22"),
+	// 				},
+	// 				ComponentVersions: &armnginx.WebApplicationFirewallComponentVersions{
+	// 					WafEngineVersion: to.Ptr("10.624.0"),
+	// 					WafNginxVersion: to.Ptr("4.815.0"),
+	// 				},
+	// 				ThreatCampaignsPackage: &armnginx.WebApplicationFirewallPackage{
+	// 					RevisionDatetime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-23T15:50:53.000Z"); return t}()),
+	// 					Version: to.Ptr("2024.02.23"),
+	// 				},
+	// 			},
+	// 		},
 	// 		NginxVersion: to.Ptr("nginx-1.19.6"),
 	// 		ProvisioningState: to.Ptr(armnginx.ProvisioningStateSucceeded),
 	// 		ScalingProperties: &armnginx.DeploymentScalingProperties{
@@ -202,8 +247,8 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_Update.json
-func ExampleDeploymentsClient_BeginUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8d26b0e4c1886458fa56c22aac09c3e3e9a5c9e/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Deployments_Update.json
+func ExampleDeploymentsClient_BeginUpdate_deploymentsUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -233,8 +278,8 @@ func ExampleDeploymentsClient_BeginUpdate() {
 	// 		AutoUpgradeProfile: &armnginx.AutoUpgradeProfile{
 	// 			UpgradeChannel: to.Ptr("stable"),
 	// 		},
+	// 		DataplaneAPIEndpoint: to.Ptr("mynginx-75b3bf22a555.eastus2.nginxaas.net"),
 	// 		IPAddress: to.Ptr("1.1.1.1"),
-	// 		ManagedResourceGroup: to.Ptr("myManagedResourceGroup"),
 	// 		NetworkProfile: &armnginx.NetworkProfile{
 	// 			FrontEndIPConfiguration: &armnginx.FrontendIPConfiguration{
 	// 				PrivateIPAddresses: []*armnginx.PrivateIPAddress{
@@ -252,6 +297,29 @@ func ExampleDeploymentsClient_BeginUpdate() {
 	// 				SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"),
 	// 			},
 	// 		},
+	// 		NginxAppProtect: &armnginx.DeploymentPropertiesNginxAppProtect{
+	// 			WebApplicationFirewallSettings: &armnginx.WebApplicationFirewallSettings{
+	// 				ActivationState: to.Ptr(armnginx.ActivationStateEnabled),
+	// 			},
+	// 			WebApplicationFirewallStatus: &armnginx.WebApplicationFirewallStatus{
+	// 				AttackSignaturesPackage: &armnginx.WebApplicationFirewallPackage{
+	// 					RevisionDatetime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-21T15:50:53.000Z"); return t}()),
+	// 					Version: to.Ptr("2024.02.21"),
+	// 				},
+	// 				BotSignaturesPackage: &armnginx.WebApplicationFirewallPackage{
+	// 					RevisionDatetime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-22T15:50:53.000Z"); return t}()),
+	// 					Version: to.Ptr("2024.02.22"),
+	// 				},
+	// 				ComponentVersions: &armnginx.WebApplicationFirewallComponentVersions{
+	// 					WafEngineVersion: to.Ptr("10.624.0"),
+	// 					WafNginxVersion: to.Ptr("4.815.0"),
+	// 				},
+	// 				ThreatCampaignsPackage: &armnginx.WebApplicationFirewallPackage{
+	// 					RevisionDatetime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-23T15:50:53.000Z"); return t}()),
+	// 					Version: to.Ptr("2024.02.23"),
+	// 				},
+	// 			},
+	// 		},
 	// 		NginxVersion: to.Ptr("nginx-1.19.6"),
 	// 		ProvisioningState: to.Ptr(armnginx.ProvisioningStateSucceeded),
 	// 		ScalingProperties: &armnginx.DeploymentScalingProperties{
@@ -267,7 +335,91 @@ func ExampleDeploymentsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8d26b0e4c1886458fa56c22aac09c3e3e9a5c9e/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Deployments_UpdateSubnet.json
+func ExampleDeploymentsClient_BeginUpdate_deploymentsUpdateSubnet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnginx.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDeploymentsClient().BeginUpdate(ctx, "myResourceGroup", "myDeployment", &armnginx.DeploymentsClientBeginUpdateOptions{Body: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Deployment = armnginx.Deployment{
+	// 	Name: to.Ptr("myDeployment"),
+	// 	Type: to.Ptr("nginx.nginxplus/deployments"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Nginx.NginxPlus/nginxDeployments/myDeployment"),
+	// 	Location: to.Ptr("westus"),
+	// 	Properties: &armnginx.DeploymentProperties{
+	// 		AutoUpgradeProfile: &armnginx.AutoUpgradeProfile{
+	// 			UpgradeChannel: to.Ptr("stable"),
+	// 		},
+	// 		DataplaneAPIEndpoint: to.Ptr("mynginx-75b3bf22a555.eastus2.nginxaas.net"),
+	// 		IPAddress: to.Ptr("1.1.1.1"),
+	// 		NetworkProfile: &armnginx.NetworkProfile{
+	// 			FrontEndIPConfiguration: &armnginx.FrontendIPConfiguration{
+	// 				PrivateIPAddresses: []*armnginx.PrivateIPAddress{
+	// 				},
+	// 				PublicIPAddresses: []*armnginx.PublicIPAddress{
+	// 					{
+	// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/publicIPAddresses/myPublicIPAddress"),
+	// 				}},
+	// 			},
+	// 			NetworkInterfaceConfiguration: &armnginx.NetworkInterfaceConfiguration{
+	// 				SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVnet2/subnets/mySubnet"),
+	// 			},
+	// 		},
+	// 		NginxAppProtect: &armnginx.DeploymentPropertiesNginxAppProtect{
+	// 			WebApplicationFirewallSettings: &armnginx.WebApplicationFirewallSettings{
+	// 				ActivationState: to.Ptr(armnginx.ActivationStateEnabled),
+	// 			},
+	// 			WebApplicationFirewallStatus: &armnginx.WebApplicationFirewallStatus{
+	// 				AttackSignaturesPackage: &armnginx.WebApplicationFirewallPackage{
+	// 					RevisionDatetime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-21T15:50:53.000Z"); return t}()),
+	// 					Version: to.Ptr("2024.02.21"),
+	// 				},
+	// 				BotSignaturesPackage: &armnginx.WebApplicationFirewallPackage{
+	// 					RevisionDatetime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-22T15:50:53.000Z"); return t}()),
+	// 					Version: to.Ptr("2024.02.22"),
+	// 				},
+	// 				ComponentVersions: &armnginx.WebApplicationFirewallComponentVersions{
+	// 					WafEngineVersion: to.Ptr("10.624.0"),
+	// 					WafNginxVersion: to.Ptr("4.815.0"),
+	// 				},
+	// 				ThreatCampaignsPackage: &armnginx.WebApplicationFirewallPackage{
+	// 					RevisionDatetime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-23T15:50:53.000Z"); return t}()),
+	// 					Version: to.Ptr("2024.02.23"),
+	// 				},
+	// 			},
+	// 		},
+	// 		NginxVersion: to.Ptr("nginx-1.19.6"),
+	// 		ProvisioningState: to.Ptr(armnginx.ProvisioningStateSucceeded),
+	// 		ScalingProperties: &armnginx.DeploymentScalingProperties{
+	// 			Capacity: to.Ptr[int32](10),
+	// 		},
+	// 		UserProfile: &armnginx.DeploymentUserProfile{
+	// 			PreferredEmail: to.Ptr("example@example.email"),
+	// 		},
+	// 	},
+	// 	Tags: map[string]*string{
+	// 		"Environment": to.Ptr("Dev"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8d26b0e4c1886458fa56c22aac09c3e3e9a5c9e/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Deployments_Delete.json
 func ExampleDeploymentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -288,7 +440,7 @@ func ExampleDeploymentsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8d26b0e4c1886458fa56c22aac09c3e3e9a5c9e/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Deployments_List.json
 func ExampleDeploymentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -321,8 +473,8 @@ func ExampleDeploymentsClient_NewListPager() {
 		// 				AutoUpgradeProfile: &armnginx.AutoUpgradeProfile{
 		// 					UpgradeChannel: to.Ptr("stable"),
 		// 				},
+		// 				DataplaneAPIEndpoint: to.Ptr("mynginx-75b3bf22a555.eastus2.nginxaas.net"),
 		// 				IPAddress: to.Ptr("1.1.1.1"),
-		// 				ManagedResourceGroup: to.Ptr("myManagedResourceGroup"),
 		// 				NetworkProfile: &armnginx.NetworkProfile{
 		// 					FrontEndIPConfiguration: &armnginx.FrontendIPConfiguration{
 		// 						PrivateIPAddresses: []*armnginx.PrivateIPAddress{
@@ -340,6 +492,29 @@ func ExampleDeploymentsClient_NewListPager() {
 		// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"),
 		// 					},
 		// 				},
+		// 				NginxAppProtect: &armnginx.DeploymentPropertiesNginxAppProtect{
+		// 					WebApplicationFirewallSettings: &armnginx.WebApplicationFirewallSettings{
+		// 						ActivationState: to.Ptr(armnginx.ActivationStateEnabled),
+		// 					},
+		// 					WebApplicationFirewallStatus: &armnginx.WebApplicationFirewallStatus{
+		// 						AttackSignaturesPackage: &armnginx.WebApplicationFirewallPackage{
+		// 							RevisionDatetime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-21T15:50:53.000Z"); return t}()),
+		// 							Version: to.Ptr("2024.02.21"),
+		// 						},
+		// 						BotSignaturesPackage: &armnginx.WebApplicationFirewallPackage{
+		// 							RevisionDatetime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-22T15:50:53.000Z"); return t}()),
+		// 							Version: to.Ptr("2024.02.22"),
+		// 						},
+		// 						ComponentVersions: &armnginx.WebApplicationFirewallComponentVersions{
+		// 							WafEngineVersion: to.Ptr("10.624.0"),
+		// 							WafNginxVersion: to.Ptr("4.815.0"),
+		// 						},
+		// 						ThreatCampaignsPackage: &armnginx.WebApplicationFirewallPackage{
+		// 							RevisionDatetime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-23T15:50:53.000Z"); return t}()),
+		// 							Version: to.Ptr("2024.02.23"),
+		// 						},
+		// 					},
+		// 				},
 		// 				NginxVersion: to.Ptr("nginx-1.19.6"),
 		// 				ProvisioningState: to.Ptr(armnginx.ProvisioningStateSucceeded),
 		// 				ScalingProperties: &armnginx.DeploymentScalingProperties{
@@ -351,7 +526,7 @@ func ExampleDeploymentsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8d26b0e4c1886458fa56c22aac09c3e3e9a5c9e/specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Deployments_ListByResourceGroup.json
 func ExampleDeploymentsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -384,8 +559,8 @@ func ExampleDeploymentsClient_NewListByResourceGroupPager() {
 		// 				AutoUpgradeProfile: &armnginx.AutoUpgradeProfile{
 		// 					UpgradeChannel: to.Ptr("stable"),
 		// 				},
+		// 				DataplaneAPIEndpoint: to.Ptr("mynginx-75b3bf22a555.eastus2.nginxaas.net"),
 		// 				IPAddress: to.Ptr("1.1.1.1"),
-		// 				ManagedResourceGroup: to.Ptr("myManagedResourceGroup"),
 		// 				NetworkProfile: &armnginx.NetworkProfile{
 		// 					FrontEndIPConfiguration: &armnginx.FrontendIPConfiguration{
 		// 						PrivateIPAddresses: []*armnginx.PrivateIPAddress{
@@ -401,6 +576,29 @@ func ExampleDeploymentsClient_NewListByResourceGroupPager() {
 		// 					},
 		// 					NetworkInterfaceConfiguration: &armnginx.NetworkInterfaceConfiguration{
 		// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"),
+		// 					},
+		// 				},
+		// 				NginxAppProtect: &armnginx.DeploymentPropertiesNginxAppProtect{
+		// 					WebApplicationFirewallSettings: &armnginx.WebApplicationFirewallSettings{
+		// 						ActivationState: to.Ptr(armnginx.ActivationStateEnabled),
+		// 					},
+		// 					WebApplicationFirewallStatus: &armnginx.WebApplicationFirewallStatus{
+		// 						AttackSignaturesPackage: &armnginx.WebApplicationFirewallPackage{
+		// 							RevisionDatetime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-21T15:50:53.000Z"); return t}()),
+		// 							Version: to.Ptr("2024.02.21"),
+		// 						},
+		// 						BotSignaturesPackage: &armnginx.WebApplicationFirewallPackage{
+		// 							RevisionDatetime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-22T15:50:53.000Z"); return t}()),
+		// 							Version: to.Ptr("2024.02.22"),
+		// 						},
+		// 						ComponentVersions: &armnginx.WebApplicationFirewallComponentVersions{
+		// 							WafEngineVersion: to.Ptr("10.624.0"),
+		// 							WafNginxVersion: to.Ptr("4.815.0"),
+		// 						},
+		// 						ThreatCampaignsPackage: &armnginx.WebApplicationFirewallPackage{
+		// 							RevisionDatetime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-23T15:50:53.000Z"); return t}()),
+		// 							Version: to.Ptr("2024.02.23"),
+		// 						},
 		// 					},
 		// 				},
 		// 				NginxVersion: to.Ptr("nginx-1.19.6"),

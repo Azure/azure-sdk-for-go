@@ -28,7 +28,7 @@ type ConfigurationsClient struct {
 }
 
 // NewConfigurationsClient creates a new instance of ConfigurationsClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConfigurationsClient, error) {
@@ -46,7 +46,7 @@ func NewConfigurationsClient(subscriptionID string, credential azcore.TokenCrede
 // Analysis - Analyze an NGINX configuration without applying it to the NGINXaaS deployment
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-01-01-preview
+// Generated from API version 2024-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deploymentName - The name of targeted NGINX deployment
 //   - configurationName - The name of configuration, only 'default' is supported value due to the singleton of NGINX conf
@@ -97,7 +97,7 @@ func (client *ConfigurationsClient) analysisCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-01-preview")
+	reqQP.Set("api-version", "2024-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
@@ -121,7 +121,7 @@ func (client *ConfigurationsClient) analysisHandleResponse(resp *http.Response) 
 // BeginCreateOrUpdate - Create or update the NGINX configuration for given NGINX deployment
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-01-01-preview
+// Generated from API version 2024-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deploymentName - The name of targeted NGINX deployment
 //   - configurationName - The name of configuration, only 'default' is supported value due to the singleton of NGINX conf
@@ -148,7 +148,7 @@ func (client *ConfigurationsClient) BeginCreateOrUpdate(ctx context.Context, res
 // CreateOrUpdate - Create or update the NGINX configuration for given NGINX deployment
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-01-01-preview
+// Generated from API version 2024-11-01-preview
 func (client *ConfigurationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, deploymentName string, configurationName string, options *ConfigurationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConfigurationsClient.BeginCreateOrUpdate"
@@ -194,7 +194,7 @@ func (client *ConfigurationsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-01-preview")
+	reqQP.Set("api-version", "2024-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
@@ -209,7 +209,7 @@ func (client *ConfigurationsClient) createOrUpdateCreateRequest(ctx context.Cont
 // BeginDelete - Reset the NGINX configuration of given NGINX deployment to default
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-01-01-preview
+// Generated from API version 2024-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deploymentName - The name of targeted NGINX deployment
 //   - configurationName - The name of configuration, only 'default' is supported value due to the singleton of NGINX conf
@@ -235,7 +235,7 @@ func (client *ConfigurationsClient) BeginDelete(ctx context.Context, resourceGro
 // Delete - Reset the NGINX configuration of given NGINX deployment to default
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-01-01-preview
+// Generated from API version 2024-11-01-preview
 func (client *ConfigurationsClient) deleteOperation(ctx context.Context, resourceGroupName string, deploymentName string, configurationName string, options *ConfigurationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConfigurationsClient.BeginDelete"
@@ -281,7 +281,7 @@ func (client *ConfigurationsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-01-preview")
+	reqQP.Set("api-version", "2024-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -290,7 +290,7 @@ func (client *ConfigurationsClient) deleteCreateRequest(ctx context.Context, res
 // Get - Get the NGINX configuration of given NGINX deployment
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-01-01-preview
+// Generated from API version 2024-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deploymentName - The name of targeted NGINX deployment
 //   - configurationName - The name of configuration, only 'default' is supported value due to the singleton of NGINX conf
@@ -341,7 +341,7 @@ func (client *ConfigurationsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-01-preview")
+	reqQP.Set("api-version", "2024-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -350,7 +350,7 @@ func (client *ConfigurationsClient) getCreateRequest(ctx context.Context, resour
 // getHandleResponse handles the Get response.
 func (client *ConfigurationsClient) getHandleResponse(resp *http.Response) (ConfigurationsClientGetResponse, error) {
 	result := ConfigurationsClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Configuration); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigurationResponse); err != nil {
 		return ConfigurationsClientGetResponse{}, err
 	}
 	return result, nil
@@ -358,7 +358,7 @@ func (client *ConfigurationsClient) getHandleResponse(resp *http.Response) (Conf
 
 // NewListPager - List the NGINX configuration of given NGINX deployment.
 //
-// Generated from API version 2024-01-01-preview
+// Generated from API version 2024-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deploymentName - The name of targeted NGINX deployment
 //   - options - ConfigurationsClientListOptions contains the optional parameters for the ConfigurationsClient.NewListPager method.
@@ -405,7 +405,7 @@ func (client *ConfigurationsClient) listCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-01-preview")
+	reqQP.Set("api-version", "2024-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

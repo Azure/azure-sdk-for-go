@@ -7,56 +7,47 @@ import (
 	"context"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
+	testtracing "github.com/Azure/azure-sdk-for-go/sdk/internal/test/tracing"
 	"github.com/stretchr/testify/require"
 )
 
 func TestStartSpan(t *testing.T) {
-	// no-op when TracerOptions is nil
+	// no-op when StartSpanOptions is nil
 	ctx := context.Background()
 	subCtx, _ := StartSpan(ctx, nil)
 	require.Equal(t, ctx, subCtx)
 
-	// no-op when TracerOptions is empty
-	subCtx, _ = StartSpan(ctx, &TracerOptions{})
+	// no-op when StartSpanOptions is empty
+	subCtx, _ = StartSpan(ctx, &StartSpanOptions{})
 	require.Equal(t, ctx, subCtx)
 
 	// no-op when SpanName is empty
-	subCtx, _ = StartSpan(ctx, &TracerOptions{SpanName: ""})
+	subCtx, _ = StartSpan(ctx, &StartSpanOptions{OperationName: ""})
 	require.Equal(t, ctx, subCtx)
 
 	// creates a span when both tracer and SpanName are set
-	tracer := NewSpanValidator(t, SpanMatcher{
-		Name: "test",
-		Kind: SpanKindInternal,
-	}).NewTracer("module", "version")
-	subCtx1, endSpan1 := StartSpan(ctx, &TracerOptions{Tracer: tracer, SpanName: "test"})
+	tr := Tracer{
+		tracer: testtracing.NewSpanValidator(t, testtracing.SpanMatcher{
+			Name: "test",
+			Kind: SpanKindInternal,
+			Attributes: []Attribute{
+				{Key: OperationName, Value: "test"},
+			},
+		}).NewTracer("module", "version")}
+	subCtx1, endSpan1 := StartSpan(ctx, &StartSpanOptions{Tracer: tr, OperationName: "test"})
 	defer endSpan1(nil)
 	require.NotEqual(t, ctx, subCtx1)
 
-	// creates a span when span name has sender prefix
-	tracer = NewSpanValidator(t, SpanMatcher{
-		Name: "Sender.TestSpan",
+	// creates a producer span when operation name is SendOperationName
+	tr.tracer = testtracing.NewSpanValidator(t, testtracing.SpanMatcher{
+		Name: string(SendOperationName),
 		Kind: SpanKindProducer,
+		Attributes: []Attribute{
+			{Key: OperationName, Value: string(SendOperationName)},
+			{Key: OperationType, Value: string(SendOperationType)},
+		},
 	}).NewTracer("module", "version")
-	subCtx2, endSpan2 := StartSpan(ctx, &TracerOptions{Tracer: tracer, SpanName: "Sender.TestSpan"})
+	subCtx2, endSpan2 := StartSpan(ctx, &StartSpanOptions{Tracer: tr, OperationName: SendOperationName})
 	defer endSpan2(nil)
 	require.NotEqual(t, ctx, subCtx2)
-}
-
-func TestGetEntityPathAttributes(t *testing.T) {
-	entityPath := "queueName"
-	expectedAttrs := []tracing.Attribute{
-		{Key: DestinationName, Value: entityPath},
-	}
-	result := GetEntityPathAttributes(entityPath)
-	require.ElementsMatch(t, expectedAttrs, result)
-
-	entityPath = "topicName/Subscriptions/subscriptionName"
-	expectedAttrs = []tracing.Attribute{
-		{Key: DestinationName, Value: "topicName"},
-		{Key: SubscriptionName, Value: "subscriptionName"},
-	}
-	result = GetEntityPathAttributes(entityPath)
-	require.ElementsMatch(t, expectedAttrs, result)
 }

@@ -5,70 +5,41 @@ package azservicebus
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/conn"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
+	"github.com/Azure/go-amqp"
 )
 
-const messagingSystemName = "servicebus"
+func newTracer(provider tracing.Provider, creds clientCreds, queueOrTopic, subscription string) tracing.Tracer {
+	return tracing.NewTracer(provider, internal.ModuleName, internal.Version, getFullyQualifiedNamespace(creds), queueOrTopic, subscription)
+}
 
-func newTracer(provider tracing.Provider, hostName string) tracing.Tracer {
-	tracer := provider.NewTracer(internal.ModuleName, internal.Version)
-	if !tracer.Enabled() {
-		return tracer
+// getFullyQualifiedNamespace returns fullyQualifiedNamespace from clientCreds if it is set.
+// Otherwise, it parses the connection string and returns the FullyQualifiedNamespace from it.
+// If both are empty, it returns an empty string.
+func getFullyQualifiedNamespace(creds clientCreds) string {
+	if creds.fullyQualifiedNamespace != "" {
+		return creds.fullyQualifiedNamespace
 	}
-
-	tracer.SetAttributes(
-		tracing.Attribute{Key: tracing.MessagingSystem, Value: messagingSystemName},
-	)
-	if hostName != "" {
-		tracer.SetAttributes(
-			tracing.Attribute{Key: tracing.ServerAddress, Value: hostName},
-		)
+	csp, err := conn.ParseConnectionString(creds.connectionString)
+	if err != nil {
+		return ""
 	}
-
-	return tracer
+	return csp.FullyQualifiedNamespace
 }
 
-func getSenderSpanAttributes(queueOrTopic string, operationName tracing.MessagingOperationName) []tracing.Attribute {
-	return append([]tracing.Attribute{},
-		tracing.Attribute{Key: tracing.DestinationName, Value: queueOrTopic},
-		tracing.Attribute{Key: tracing.OperationType, Value: string(tracing.SendOperationType)},
-		tracing.Attribute{Key: tracing.OperationName, Value: string(operationName)},
-	)
-}
-
-func getReceiverSpanAttributes(entityPath string, operationName tracing.MessagingOperationName) []tracing.Attribute {
-	attrs := tracing.GetEntityPathAttributes(entityPath)
-	attrs = append(attrs, tracing.Attribute{Key: tracing.OperationName, Value: string(operationName)})
-
-	if operationName == tracing.CompleteOperationName || operationName == tracing.AbandonOperationName ||
-		operationName == tracing.DeadLetterOperationName || operationName == tracing.DeferOperationName {
-		attrs = append(attrs, tracing.Attribute{Key: tracing.DispositionStatus, Value: string(operationName)})
-		attrs = append(attrs, tracing.Attribute{Key: tracing.OperationType, Value: string(tracing.SettleOperationType)})
-	} else {
-		attrs = append(attrs, tracing.Attribute{Key: tracing.OperationType, Value: string(tracing.ReceiveOperationType)})
-	}
-	return attrs
-}
-
-func getSessionSpanAttributes(entityPath string, operationName tracing.MessagingOperationName) []tracing.Attribute {
-	attrs := tracing.GetEntityPathAttributes(entityPath)
-	attrs = append(attrs, tracing.Attribute{Key: tracing.OperationName, Value: string(operationName)})
-	attrs = append(attrs, tracing.Attribute{Key: tracing.OperationType, Value: string(tracing.SessionOperationType)})
-	return attrs
-}
-
-func getMessageSpanAttributes(message amqpCompatibleMessage) []tracing.Attribute {
+func getMessageIDAttribute(message *amqp.Message) []tracing.Attribute {
 	var attrs []tracing.Attribute
-	if message != nil {
-		amqpMessage := message.toAMQPMessage()
-		if amqpMessage != nil && amqpMessage.Properties != nil {
-			if amqpMessage.Properties.MessageID != nil && amqpMessage.Properties.MessageID != "" {
-				attrs = append(attrs, tracing.Attribute{Key: tracing.MessageID, Value: amqpMessage.Properties.MessageID})
-			}
-			if amqpMessage.Properties.CorrelationID != nil {
-				attrs = append(attrs, tracing.Attribute{Key: tracing.ConversationID, Value: amqpMessage.Properties.CorrelationID})
-			}
-		}
+	if message != nil && message.Properties != nil && message.Properties.MessageID != nil && message.Properties.MessageID != "" {
+		attrs = append(attrs, tracing.Attribute{Key: tracing.MessageID, Value: message.Properties.MessageID})
+	}
+	return attrs
+}
+
+func getMessageSpanAttributes(message *amqp.Message) []tracing.Attribute {
+	attrs := getMessageIDAttribute(message)
+	if message != nil && message.Properties != nil && message.Properties.CorrelationID != nil && message.Properties.CorrelationID != "" {
+		attrs = append(attrs, tracing.Attribute{Key: tracing.ConversationID, Value: message.Properties.CorrelationID})
 	}
 	return attrs
 }
@@ -76,7 +47,7 @@ func getMessageSpanAttributes(message amqpCompatibleMessage) []tracing.Attribute
 func getReceivedMessageSpanAttributes(receivedMessage *ReceivedMessage) []tracing.Attribute {
 	var attrs []tracing.Attribute
 	if receivedMessage != nil {
-		message := receivedMessage.Message()
+		message := receivedMessage.Message().toAMQPMessage()
 		attrs = getMessageSpanAttributes(message)
 		attrs = append(attrs, tracing.Attribute{Key: tracing.DeliveryCount, Value: int64(receivedMessage.DeliveryCount)})
 		if receivedMessage.EnqueuedTime != nil {

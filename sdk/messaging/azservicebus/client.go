@@ -16,7 +16,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/conn"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 )
@@ -33,10 +32,11 @@ type Client struct {
 
 	linksMu      *sync.Mutex
 	links        map[uint64]amqpwrap.Closeable
-	tracer       tracing.Tracer
 	creds        clientCreds
 	namespace    internal.NamespaceForAMQPLinks
 	retryOptions RetryOptions
+
+	tracingProvider tracing.Provider
 
 	// acceptNextTimeout controls how long the session accept can take before
 	// the server stops waiting.
@@ -60,7 +60,7 @@ type ClientOptions struct {
 	NewWebSocketConn func(ctx context.Context, args NewWebSocketConnArgs) (net.Conn, error)
 
 	// TracingProvider configures the tracing provider.
-	// It defaults to a no-op tracer.
+	// It defaults to a no-op provider
 	TracingProvider tracing.Provider
 
 	// RetryOptions controls how often operations are retried from this client and any
@@ -143,7 +143,6 @@ func newClientImpl(creds clientCreds, args clientImplArgs) (*Client, error) {
 	}
 
 	var err error
-	var tracingProvider = tracing.Provider{}
 	var nsOptions []internal.NamespaceOption
 
 	if client.creds.connectionString != "" {
@@ -157,7 +156,7 @@ func newClientImpl(creds clientCreds, args clientImplArgs) (*Client, error) {
 	}
 
 	if args.ClientOptions != nil {
-		tracingProvider = args.ClientOptions.TracingProvider
+		client.tracingProvider = args.ClientOptions.TracingProvider
 
 		client.retryOptions = args.ClientOptions.RetryOptions
 
@@ -180,9 +179,6 @@ func newClientImpl(creds clientCreds, args clientImplArgs) (*Client, error) {
 		nsOptions = append(nsOptions, internal.NamespaceWithRetryOptions(args.ClientOptions.RetryOptions))
 	}
 
-	client.tracer = newTracer(tracingProvider, getFullyQualifiedNamespace(creds))
-	nsOptions = append(nsOptions, internal.NamespaceWithTracer(client.tracer))
-
 	nsOptions = append(nsOptions, args.NSOptions...)
 
 	client.namespace, err = internal.NewNamespace(nsOptions...)
@@ -194,7 +190,7 @@ func newClientImpl(creds clientCreds, args clientImplArgs) (*Client, error) {
 func (client *Client) NewReceiverForQueue(queueName string, options *ReceiverOptions) (*Receiver, error) {
 	id, cleanupOnClose := client.getCleanupForCloseable()
 	receiver, err := newReceiver(newReceiverArgs{
-		tracer:              client.tracer,
+		tracer:              newTracer(client.tracingProvider, client.creds, queueName, ""),
 		cleanupOnClose:      cleanupOnClose,
 		ns:                  client.namespace,
 		entity:              entity{Queue: queueName},
@@ -214,7 +210,7 @@ func (client *Client) NewReceiverForQueue(queueName string, options *ReceiverOpt
 func (client *Client) NewReceiverForSubscription(topicName string, subscriptionName string, options *ReceiverOptions) (*Receiver, error) {
 	id, cleanupOnClose := client.getCleanupForCloseable()
 	receiver, err := newReceiver(newReceiverArgs{
-		tracer:              client.tracer,
+		tracer:              newTracer(client.tracingProvider, client.creds, topicName, subscriptionName),
 		cleanupOnClose:      cleanupOnClose,
 		ns:                  client.namespace,
 		entity:              entity{Topic: topicName, Subscription: subscriptionName},
@@ -239,7 +235,7 @@ type NewSenderOptions struct {
 func (client *Client) NewSender(queueOrTopic string, options *NewSenderOptions) (*Sender, error) {
 	id, cleanupOnClose := client.getCleanupForCloseable()
 	sender, err := newSender(newSenderArgs{
-		tracer:         client.tracer,
+		tracer:         newTracer(client.tracingProvider, client.creds, queueOrTopic, ""),
 		ns:             client.namespace,
 		queueOrTopic:   queueOrTopic,
 		cleanupOnClose: cleanupOnClose,
@@ -262,7 +258,7 @@ func (client *Client) AcceptSessionForQueue(ctx context.Context, queueName strin
 	sessionReceiver, err := newSessionReceiver(
 		ctx,
 		newSessionReceiverArgs{
-			tracer:         client.tracer,
+			tracer:         newTracer(client.tracingProvider, client.creds, queueName, ""),
 			sessionID:      &sessionID,
 			ns:             client.namespace,
 			entity:         entity{Queue: queueName},
@@ -290,7 +286,7 @@ func (client *Client) AcceptSessionForSubscription(ctx context.Context, topicNam
 	sessionReceiver, err := newSessionReceiver(
 		ctx,
 		newSessionReceiverArgs{
-			tracer:         client.tracer,
+			tracer:         newTracer(client.tracingProvider, client.creds, topicName, subscriptionName),
 			sessionID:      &sessionID,
 			ns:             client.namespace,
 			entity:         entity{Topic: topicName, Subscription: subscriptionName},
@@ -360,7 +356,7 @@ func (client *Client) acceptNextSessionForEntity(ctx context.Context, entity ent
 	sessionReceiver, err := newSessionReceiver(
 		ctx,
 		newSessionReceiverArgs{
-			tracer:            client.tracer,
+			tracer:            newTracer(client.tracingProvider, client.creds, entity.Topic, entity.Subscription),
 			sessionID:         nil,
 			ns:                client.namespace,
 			entity:            entity,
@@ -395,18 +391,4 @@ func (client *Client) getCleanupForCloseable() (uint64, func()) {
 		delete(client.links, id)
 		client.linksMu.Unlock()
 	}
-}
-
-// getFullyQualifiedNamespace returns fullyQualifiedNamespace from clientCreds if it is set.
-// Otherwise, it parses the connection string and returns the FullyQualifiedNamespace from it.
-// If both are empty, it returns an empty string.
-func getFullyQualifiedNamespace(creds clientCreds) string {
-	if creds.fullyQualifiedNamespace != "" {
-		return creds.fullyQualifiedNamespace
-	}
-	csp, err := conn.ParseConnectionString(creds.connectionString)
-	if err != nil {
-		return ""
-	}
-	return csp.FullyQualifiedNamespace
 }

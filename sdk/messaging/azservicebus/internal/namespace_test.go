@@ -17,7 +17,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/auth"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/sbauth"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/require"
 )
@@ -231,14 +230,6 @@ func TestNamespaceNegotiateClaimFails(t *testing.T) {
 
 func TestNamespaceNegotiateClaimFatalErrors(t *testing.T) {
 	ns := &Namespace{
-		tracer: tracing.NewSpanValidator(t, tracing.SpanMatcher{
-			Name:   "Namespace.NegotiateClaim",
-			Kind:   tracing.SpanKindInternal,
-			Status: tracing.SpanStatusError,
-			Attributes: []tracing.Attribute{
-				{Key: tracing.DestinationName, Value: "entity path"},
-			},
-		}).NewTracer("module", "version"),
 		TokenProvider: sbauth.NewTokenProvider(&fakeTokenCredential{expires: time.Now()}),
 	}
 

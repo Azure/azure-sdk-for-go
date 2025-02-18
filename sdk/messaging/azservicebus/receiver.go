@@ -210,15 +210,7 @@ func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options
 	}
 
 	var err error
-	to := &tracing.TracerOptions{
-		Tracer:   r.tracer,
-		SpanName: tracing.ReceiveSpanName,
-		Attributes: append(
-			getReceiverSpanAttributes(r.entityPath, tracing.ReceiveOperationName),
-			getMessageBatchSpanAttributes(maxMessages)...),
-	}
-
-	ctx, endSpan := tracing.StartSpan(ctx, to)
+	ctx, endSpan := tracing.StartSpan(ctx, &tracing.StartSpanOptions{Tracer: r.tracer, OperationName: tracing.ReceiveOperationName})
 	defer func() { endSpan(err) }()
 
 	messages, err := r.receiveMessagesImpl(ctx, maxMessages, options)
@@ -233,14 +225,6 @@ type ReceiveDeferredMessagesOptions struct {
 // ReceiveDeferredMessages receives messages that were deferred using `Receiver.DeferMessage`.
 // If the operation fails it can return an [*azservicebus.Error] type if the failure is actionable.
 func (r *Receiver) ReceiveDeferredMessages(ctx context.Context, sequenceNumbers []int64, options *ReceiveDeferredMessagesOptions) ([]*ReceivedMessage, error) {
-	to := &tracing.TracerOptions{
-		Tracer:   r.tracer,
-		SpanName: tracing.ReceiveDeferredSpanName,
-		Attributes: append(
-			getReceiverSpanAttributes(r.entityPath, tracing.ReceiveDeferredOperationName),
-			getMessageBatchSpanAttributes(len(sequenceNumbers))...),
-	}
-
 	var receivedMessages []*ReceivedMessage
 
 	err := r.amqpLinks.Retry(ctx, EventReceiver, "receiveDeferredMessages", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
@@ -250,7 +234,10 @@ func (r *Receiver) ReceiveDeferredMessages(ctx context.Context, sequenceNumbers 
 			return err
 		}
 
+		r.addBatchSizeAttribute(ctx, len(amqpMessages))
+
 		for _, amqpMsg := range amqpMessages {
+			r.addLink(ctx, amqpMsg)
 			receivedMsg := newReceivedMessage(amqpMsg, lwid.Receiver)
 			receivedMsg.settleOnMgmtLink = true
 
@@ -258,7 +245,7 @@ func (r *Receiver) ReceiveDeferredMessages(ctx context.Context, sequenceNumbers 
 		}
 
 		return nil
-	}, r.retryOptions, to)
+	}, r.retryOptions, &tracing.StartSpanOptions{Tracer: r.tracer, OperationName: tracing.ReceiveDeferredOperationName})
 
 	return receivedMessages, internal.TransformError(err)
 }
@@ -283,14 +270,6 @@ type PeekMessagesOptions struct {
 //
 // For more information about peeking/message-browsing see https://aka.ms/azsdk/servicebus/message-browsing
 func (r *Receiver) PeekMessages(ctx context.Context, maxMessageCount int, options *PeekMessagesOptions) ([]*ReceivedMessage, error) {
-	to := &tracing.TracerOptions{
-		Tracer:   r.tracer,
-		SpanName: tracing.PeekSpanName,
-		Attributes: append(
-			getReceiverSpanAttributes(r.entityPath, tracing.PeekOperationName),
-			getMessageBatchSpanAttributes(maxMessageCount)...),
-	}
-
 	var receivedMessages []*ReceivedMessage
 
 	err := r.amqpLinks.Retry(ctx, EventReceiver, "peekMessages", func(ctx context.Context, links *internal.LinksWithID, args *utils.RetryFnArgs) error {
@@ -308,6 +287,8 @@ func (r *Receiver) PeekMessages(ctx context.Context, maxMessageCount int, option
 			return err
 		}
 
+		r.addBatchSizeAttribute(ctx, len(messages))
+
 		receivedMessages = make([]*ReceivedMessage, len(messages))
 
 		for i := 0; i < len(messages); i++ {
@@ -320,7 +301,7 @@ func (r *Receiver) PeekMessages(ctx context.Context, maxMessageCount int, option
 		}
 
 		return nil
-	}, r.retryOptions, to)
+	}, r.retryOptions, &tracing.StartSpanOptions{Tracer: r.tracer, OperationName: tracing.PeekOperationName})
 
 	return receivedMessages, internal.TransformError(err)
 }
@@ -333,14 +314,6 @@ type RenewMessageLockOptions struct {
 // RenewMessageLock renews the lock on a message, updating the `LockedUntil` field on `msg`.
 // If the operation fails it can return an [*azservicebus.Error] type if the failure is actionable.
 func (r *Receiver) RenewMessageLock(ctx context.Context, msg *ReceivedMessage, options *RenewMessageLockOptions) error {
-	to := &tracing.TracerOptions{
-		Tracer:   r.tracer,
-		SpanName: tracing.RenewMessageLockSpanName,
-		Attributes: append(
-			getReceiverSpanAttributes(r.entityPath, tracing.RenewMessageLockOperationName),
-			getReceivedMessageSpanAttributes(msg)...),
-	}
-
 	err := r.amqpLinks.Retry(ctx, EventReceiver, "renewMessageLock", func(ctx context.Context, linksWithVersion *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		newExpirationTime, err := internal.RenewLocks(ctx, linksWithVersion.RPC, msg.linkName, []amqp.UUID{
 			(amqp.UUID)(msg.LockToken),
@@ -352,7 +325,11 @@ func (r *Receiver) RenewMessageLock(ctx context.Context, msg *ReceivedMessage, o
 
 		msg.LockedUntil = &newExpirationTime[0]
 		return nil
-	}, r.retryOptions, to)
+	}, r.retryOptions, &tracing.StartSpanOptions{
+		Tracer:        r.tracer,
+		OperationName: tracing.RenewMessageLockOperationName,
+		Attributes:    getReceivedMessageSpanAttributes(msg),
+	})
 
 	return internal.TransformError(err)
 }
@@ -485,13 +462,27 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 		return nil, nil
 	}
 
+	r.addBatchSizeAttribute(ctx, len(result.Messages))
+
 	var receivedMessages []*ReceivedMessage
 
 	for _, msg := range result.Messages {
+		r.addLink(ctx, msg)
 		receivedMessages = append(receivedMessages, newReceivedMessage(msg, linksWithID.Receiver))
 	}
 
 	return receivedMessages, nil
+}
+
+func (r *Receiver) addLink(ctx context.Context, message *amqp.Message) {
+	sp := r.tracer.SpanFromContext(ctx)
+	sp.AddLink(r.tracer.LinkFromContext(r.tracer.Extract(context.Background(), message),
+		tracing.Attribute{Key: tracing.MessageID, Value: message.Properties.MessageID}))
+}
+
+func (r *Receiver) addBatchSizeAttribute(ctx context.Context, size int) {
+	sp := r.tracer.SpanFromContext(ctx)
+	sp.SetAttributes(tracing.Attribute{Key: tracing.BatchMessageCount, Value: int64(size)})
 }
 
 type entity struct {

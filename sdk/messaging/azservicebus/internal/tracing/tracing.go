@@ -59,12 +59,6 @@ func (t *Tracer) LinkFromContext(ctx context.Context, attrs ...Attribute) Link {
 	return t.tracer.LinkFromContext(ctx, attrs...)
 }
 
-func (t *Tracer) addLinkToMessage(ctx context.Context, message *amqp.Message) {
-	sp := t.SpanFromContext(ctx)
-	sp.AddLink(t.LinkFromContext(t.Extract(context.Background(), message),
-		tracing.Attribute{Key: MessageID, Value: message.Properties.MessageID}))
-}
-
 func (t *Tracer) Inject(ctx context.Context, message *amqp.Message) {
 	t.propagator.Inject(ctx, messageCarrierAdapter(message))
 }

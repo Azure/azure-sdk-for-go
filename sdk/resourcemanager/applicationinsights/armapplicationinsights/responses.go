@@ -102,6 +102,29 @@ type ComponentFeatureCapabilitiesClientGetResponse struct {
 	ComponentFeatureCapabilities
 }
 
+// ComponentLinkedStorageAccountsClientCreateAndUpdateResponse contains the response from method ComponentLinkedStorageAccountsClient.CreateAndUpdate.
+type ComponentLinkedStorageAccountsClientCreateAndUpdateResponse struct {
+	// An Application Insights component linked storage accounts
+	ComponentLinkedStorageAccounts
+}
+
+// ComponentLinkedStorageAccountsClientDeleteResponse contains the response from method ComponentLinkedStorageAccountsClient.Delete.
+type ComponentLinkedStorageAccountsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ComponentLinkedStorageAccountsClientGetResponse contains the response from method ComponentLinkedStorageAccountsClient.Get.
+type ComponentLinkedStorageAccountsClientGetResponse struct {
+	// An Application Insights component linked storage accounts
+	ComponentLinkedStorageAccounts
+}
+
+// ComponentLinkedStorageAccountsClientUpdateResponse contains the response from method ComponentLinkedStorageAccountsClient.Update.
+type ComponentLinkedStorageAccountsClientUpdateResponse struct {
+	// An Application Insights component linked storage accounts
+	ComponentLinkedStorageAccounts
+}
+
 // ComponentQuotaStatusClientGetResponse contains the response from method ComponentQuotaStatusClient.Get.
 type ComponentQuotaStatusClientGetResponse struct {
 	// An Application Insights component daily data volume cap status
@@ -153,6 +176,12 @@ type ComponentsClientPurgeResponse struct {
 type ComponentsClientUpdateTagsResponse struct {
 	// An Application Insights component definition.
 	Component
+}
+
+// DeletedWorkbooksClientListBySubscriptionResponse contains the response from method DeletedWorkbooksClient.NewListBySubscriptionPager.
+type DeletedWorkbooksClientListBySubscriptionResponse struct {
+	// Workbook list result.
+	DeletedWorkbooksListResult
 }
 
 // ExportConfigurationsClientCreateResponse contains the response from method ExportConfigurationsClient.Create.
@@ -214,39 +243,17 @@ type FavoritesClientUpdateResponse struct {
 	ComponentFavorite
 }
 
-// MyWorkbooksClientCreateOrUpdateResponse contains the response from method MyWorkbooksClient.CreateOrUpdate.
-type MyWorkbooksClientCreateOrUpdateResponse struct {
-	// An Application Insights private workbook definition.
-	MyWorkbook
+// LiveTokenClientGetResponse contains the response from method LiveTokenClient.Get.
+type LiveTokenClientGetResponse struct {
+	// The response to a live token query.
+	LiveTokenResponse
 }
 
-// MyWorkbooksClientDeleteResponse contains the response from method MyWorkbooksClient.Delete.
-type MyWorkbooksClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// MyWorkbooksClientGetResponse contains the response from method MyWorkbooksClient.Get.
-type MyWorkbooksClientGetResponse struct {
-	// An Application Insights private workbook definition.
-	MyWorkbook
-}
-
-// MyWorkbooksClientListByResourceGroupResponse contains the response from method MyWorkbooksClient.NewListByResourceGroupPager.
-type MyWorkbooksClientListByResourceGroupResponse struct {
-	// Workbook list result.
-	MyWorkbooksListResult
-}
-
-// MyWorkbooksClientListBySubscriptionResponse contains the response from method MyWorkbooksClient.NewListBySubscriptionPager.
-type MyWorkbooksClientListBySubscriptionResponse struct {
-	// Workbook list result.
-	MyWorkbooksListResult
-}
-
-// MyWorkbooksClientUpdateResponse contains the response from method MyWorkbooksClient.Update.
-type MyWorkbooksClientUpdateResponse struct {
-	// An Application Insights private workbook definition.
-	MyWorkbook
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
+type OperationsClientListResponse struct {
+	// Result of the request to list Azure Workbooks operations. It contains a list of operations and a URL link to get the next
+	// set of results.
+	OperationListResult
 }
 
 // ProactiveDetectionConfigurationsClientGetResponse contains the response from method ProactiveDetectionConfigurationsClient.Get.
@@ -275,7 +282,7 @@ type WebTestLocationsClientListResponse struct {
 
 // WebTestsClientCreateOrUpdateResponse contains the response from method WebTestsClient.CreateOrUpdate.
 type WebTestsClientCreateOrUpdateResponse struct {
-	// An Application Insights web test definition.
+	// An Application Insights WebTest definition.
 	WebTest
 }
 
@@ -286,31 +293,31 @@ type WebTestsClientDeleteResponse struct {
 
 // WebTestsClientGetResponse contains the response from method WebTestsClient.Get.
 type WebTestsClientGetResponse struct {
-	// An Application Insights web test definition.
+	// An Application Insights WebTest definition.
 	WebTest
 }
 
 // WebTestsClientListByComponentResponse contains the response from method WebTestsClient.NewListByComponentPager.
 type WebTestsClientListByComponentResponse struct {
-	// A list of 0 or more Application Insights web test definitions.
+	// A list of 0 or more Application Insights WebTest definitions.
 	WebTestListResult
 }
 
 // WebTestsClientListByResourceGroupResponse contains the response from method WebTestsClient.NewListByResourceGroupPager.
 type WebTestsClientListByResourceGroupResponse struct {
-	// A list of 0 or more Application Insights web test definitions.
+	// A list of 0 or more Application Insights WebTest definitions.
 	WebTestListResult
 }
 
 // WebTestsClientListResponse contains the response from method WebTestsClient.NewListPager.
 type WebTestsClientListResponse struct {
-	// A list of 0 or more Application Insights web test definitions.
+	// A list of 0 or more Application Insights WebTest definitions.
 	WebTestListResult
 }
 
 // WebTestsClientUpdateTagsResponse contains the response from method WebTestsClient.UpdateTags.
 type WebTestsClientUpdateTagsResponse struct {
-	// An Application Insights web test definition.
+	// An Application Insights WebTest definition.
 	WebTest
 }
 
@@ -349,9 +356,38 @@ type WorkItemConfigurationsClientUpdateItemResponse struct {
 	WorkItemConfiguration
 }
 
+// WorkbookTemplatesClientCreateOrUpdateResponse contains the response from method WorkbookTemplatesClient.CreateOrUpdate.
+type WorkbookTemplatesClientCreateOrUpdateResponse struct {
+	// An Application Insights workbook template definition.
+	WorkbookTemplate
+}
+
+// WorkbookTemplatesClientDeleteResponse contains the response from method WorkbookTemplatesClient.Delete.
+type WorkbookTemplatesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// WorkbookTemplatesClientGetResponse contains the response from method WorkbookTemplatesClient.Get.
+type WorkbookTemplatesClientGetResponse struct {
+	// An Application Insights workbook template definition.
+	WorkbookTemplate
+}
+
+// WorkbookTemplatesClientListByResourceGroupResponse contains the response from method WorkbookTemplatesClient.NewListByResourceGroupPager.
+type WorkbookTemplatesClientListByResourceGroupResponse struct {
+	// WorkbookTemplate list result.
+	WorkbookTemplatesListResult
+}
+
+// WorkbookTemplatesClientUpdateResponse contains the response from method WorkbookTemplatesClient.Update.
+type WorkbookTemplatesClientUpdateResponse struct {
+	// An Application Insights workbook template definition.
+	WorkbookTemplate
+}
+
 // WorkbooksClientCreateOrUpdateResponse contains the response from method WorkbooksClient.CreateOrUpdate.
 type WorkbooksClientCreateOrUpdateResponse struct {
-	// An Application Insights workbook definition.
+	// A workbook definition.
 	Workbook
 }
 
@@ -362,7 +398,7 @@ type WorkbooksClientDeleteResponse struct {
 
 // WorkbooksClientGetResponse contains the response from method WorkbooksClient.Get.
 type WorkbooksClientGetResponse struct {
-	// An Application Insights workbook definition.
+	// A workbook definition.
 	Workbook
 }
 
@@ -372,8 +408,26 @@ type WorkbooksClientListByResourceGroupResponse struct {
 	WorkbooksListResult
 }
 
+// WorkbooksClientListBySubscriptionResponse contains the response from method WorkbooksClient.NewListBySubscriptionPager.
+type WorkbooksClientListBySubscriptionResponse struct {
+	// Workbook list result.
+	WorkbooksListResult
+}
+
+// WorkbooksClientRevisionGetResponse contains the response from method WorkbooksClient.RevisionGet.
+type WorkbooksClientRevisionGetResponse struct {
+	// A workbook definition.
+	Workbook
+}
+
+// WorkbooksClientRevisionsListResponse contains the response from method WorkbooksClient.NewRevisionsListPager.
+type WorkbooksClientRevisionsListResponse struct {
+	// Workbook list result.
+	WorkbooksListResult
+}
+
 // WorkbooksClientUpdateResponse contains the response from method WorkbooksClient.Update.
 type WorkbooksClientUpdateResponse struct {
-	// An Application Insights workbook definition.
+	// A workbook definition.
 	Workbook
 }

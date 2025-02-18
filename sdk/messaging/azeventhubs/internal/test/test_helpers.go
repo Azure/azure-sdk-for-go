@@ -106,6 +106,12 @@ type ConnectionParamsForTest struct {
 }
 
 func (c ConnectionParamsForTest) CS(t *testing.T) struct{ Primary, ListenOnly, SendOnly, Storage string } {
+	if val, exists := os.LookupEnv("EVENTHUB_CONNECTION_STRING_LISTEN_ONLY"); exists && val == "" {
+		// This happens if we're not in the TME subscription - the variable will just be set to an empty string
+		// rather than not existing, altogether.
+		t.Skip("Not in TME, skipping connection string tests")
+	}
+
 	envVars := mustGetEnvironmentVars(t, []string{
 		"EVENTHUB_CONNECTION_STRING_LISTEN_ONLY",
 		"EVENTHUB_CONNECTION_STRING_SEND_ONLY",

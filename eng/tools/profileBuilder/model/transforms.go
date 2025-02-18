@@ -1,3 +1,4 @@
+//go:build go1.9
 // +build go1.9
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -17,10 +18,10 @@ import (
 	"go/parser"
 	"go/printer"
 	"go/token"
+	"io/fs"
 	"log"
 	"os"
 	"os/exec"
-	"path"
 	"path/filepath"
 	"strings"
 	"sync"
@@ -56,8 +57,8 @@ func BuildProfile(packageList ListDefinition, name, outputLocation string, outpu
 			pkgDir = abs
 		}
 		go func(pd string) {
-			filepath.Walk(pd, func(path string, info os.FileInfo, err error) error {
-				if !info.IsDir() {
+			filepath.WalkDir(pd, func(path string, d fs.DirEntry, err error) error {
+				if !d.IsDir() {
 					return nil
 				}
 				fs := token.NewFileSet()
@@ -189,7 +190,7 @@ func updateAliasPackageUserAgent(ap *AliasPackage, profileName string) {
 func writeAliasPackage(ap *AliasPackage, outputPath string, outputLog, errLog *log.Logger) {
 	files := token.NewFileSet()
 
-	err := os.MkdirAll(path.Dir(outputPath), 0755|os.ModeDir)
+	err := os.MkdirAll(filepath.Dir(outputPath), 0755|os.ModeDir)
 	if err != nil {
 		errLog.Fatalf("error creating directory: %v", err)
 	}

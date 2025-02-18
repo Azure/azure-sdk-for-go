@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b574e2a41acda14a90ef237006e8bbdda2b63c63/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2024-01-01/examples/NameSpaces/EHNameSpaceList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5759c77eee2d57bdb9e47aa1805d0ffb61704f2d/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2024-05-01-preview/examples/NameSpaces/EHNameSpaceList.json
 func ExampleNamespacesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -100,7 +100,7 @@ func ExampleNamespacesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b574e2a41acda14a90ef237006e8bbdda2b63c63/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2024-01-01/examples/NameSpaces/EHNameSpaceListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5759c77eee2d57bdb9e47aa1805d0ffb61704f2d/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2024-05-01-preview/examples/NameSpaces/EHNameSpaceListByResourceGroup.json
 func ExampleNamespacesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -181,8 +181,8 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b574e2a41acda14a90ef237006e8bbdda2b63c63/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2024-01-01/examples/NameSpaces/EHNameSpaceCreate.json
-func ExampleNamespacesClient_BeginCreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5759c77eee2d57bdb9e47aa1805d0ffb61704f2d/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2024-05-01-preview/examples/NameSpaces/EHNameSpaceCreate.json
+func ExampleNamespacesClient_BeginCreateOrUpdate_namespaceCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -213,6 +213,18 @@ func ExampleNamespacesClient_BeginCreateOrUpdate() {
 						KeyName:     to.Ptr("Samplekey"),
 						KeyVaultURI: to.Ptr("https://aprao-keyvault-user.vault-int.azure-int.net/"),
 					}},
+			},
+			GeoDataReplication: &armeventhub.GeoDataReplicationProperties{
+				Locations: []*armeventhub.NamespaceReplicaLocation{
+					{
+						LocationName: to.Ptr("eastus"),
+						RoleType:     to.Ptr(armeventhub.GeoDRRoleTypePrimary),
+					},
+					{
+						LocationName: to.Ptr("southcentralus"),
+						RoleType:     to.Ptr(armeventhub.GeoDRRoleTypeSecondary),
+					}},
+				MaxReplicationLagDurationInSeconds: to.Ptr[int32](300),
 			},
 		},
 	}, nil)
@@ -265,6 +277,18 @@ func ExampleNamespacesClient_BeginCreateOrUpdate() {
 	// 			}},
 	// 			RequireInfrastructureEncryption: to.Ptr(false),
 	// 		},
+	// 		GeoDataReplication: &armeventhub.GeoDataReplicationProperties{
+	// 			Locations: []*armeventhub.NamespaceReplicaLocation{
+	// 				{
+	// 					LocationName: to.Ptr("eastus"),
+	// 					RoleType: to.Ptr(armeventhub.GeoDRRoleTypePrimary),
+	// 				},
+	// 				{
+	// 					LocationName: to.Ptr("southcentralus"),
+	// 					RoleType: to.Ptr(armeventhub.GeoDRRoleTypeSecondary),
+	// 			}},
+	// 			MaxReplicationLagDurationInSeconds: to.Ptr[int32](300),
+	// 		},
 	// 		IsAutoInflateEnabled: to.Ptr(false),
 	// 		KafkaEnabled: to.Ptr(false),
 	// 		MaximumThroughputUnits: to.Ptr[int32](0),
@@ -283,7 +307,97 @@ func ExampleNamespacesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b574e2a41acda14a90ef237006e8bbdda2b63c63/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2024-01-01/examples/NameSpaces/EHNameSpaceDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5759c77eee2d57bdb9e47aa1805d0ffb61704f2d/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2024-05-01-preview/examples/NameSpaces/NamespaceWithGeoDRCreate.json
+func ExampleNamespacesClient_BeginCreateOrUpdate_namespaceWithGeoDrCreate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventhub.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNamespacesClient().BeginCreateOrUpdate(ctx, "ResurceGroupSample", "NamespaceGeoDRCreateSample", armeventhub.EHNamespace{
+		Location: to.Ptr("East US"),
+		Properties: &armeventhub.EHNamespaceProperties{
+			GeoDataReplication: &armeventhub.GeoDataReplicationProperties{
+				Locations: []*armeventhub.NamespaceReplicaLocation{
+					{
+						LocationName: to.Ptr("eastus"),
+						RoleType:     to.Ptr(armeventhub.GeoDRRoleTypePrimary),
+					},
+					{
+						LocationName: to.Ptr("westus"),
+						RoleType:     to.Ptr(armeventhub.GeoDRRoleTypeSecondary),
+					},
+					{
+						LocationName: to.Ptr("centralus"),
+						RoleType:     to.Ptr(armeventhub.GeoDRRoleTypeSecondary),
+					}},
+				MaxReplicationLagDurationInSeconds: to.Ptr[int32](60),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.EHNamespace = armeventhub.EHNamespace{
+	// 	Name: to.Ptr("NamespaceGeoDRCreateSample"),
+	// 	Type: to.Ptr("Microsoft.EventHub/Namespaces"),
+	// 	ID: to.Ptr("/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.EventHub/namespaces/NamespaceGeoDRCreateSample"),
+	// 	Location: to.Ptr("East US"),
+	// 	Tags: map[string]*string{
+	// 	},
+	// 	Properties: &armeventhub.EHNamespaceProperties{
+	// 		ClusterArmID: to.Ptr("/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.EventHub/clusters/enc-test"),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-02-16T22:36:06.107Z"); return t}()),
+	// 		DisableLocalAuth: to.Ptr(false),
+	// 		GeoDataReplication: &armeventhub.GeoDataReplicationProperties{
+	// 			Locations: []*armeventhub.NamespaceReplicaLocation{
+	// 				{
+	// 					LocationName: to.Ptr("eastus"),
+	// 					ReplicaState: to.Ptr("Active"),
+	// 					RoleType: to.Ptr(armeventhub.GeoDRRoleTypePrimary),
+	// 				},
+	// 				{
+	// 					LocationName: to.Ptr("westus"),
+	// 					ReplicaState: to.Ptr("Active"),
+	// 					RoleType: to.Ptr(armeventhub.GeoDRRoleTypeSecondary),
+	// 				},
+	// 				{
+	// 					LocationName: to.Ptr("centralus"),
+	// 					ReplicaState: to.Ptr("Creating"),
+	// 					RoleType: to.Ptr(armeventhub.GeoDRRoleTypeSecondary),
+	// 			}},
+	// 			MaxReplicationLagDurationInSeconds: to.Ptr[int32](60),
+	// 		},
+	// 		IsAutoInflateEnabled: to.Ptr(false),
+	// 		KafkaEnabled: to.Ptr(false),
+	// 		MaximumThroughputUnits: to.Ptr[int32](0),
+	// 		MetricID: to.Ptr("MetricGUID:NamespaceGeoDRCreateSample"),
+	// 		MinimumTLSVersion: to.Ptr(armeventhub.TLSVersionOne2),
+	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		ServiceBusEndpoint: to.Ptr("https://NamespaceGeoDRCreateSample.servicebus.windows-int.net:443/"),
+	// 		UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-02-16T22:37:42.290Z"); return t}()),
+	// 		ZoneRedundant: to.Ptr(false),
+	// 	},
+	// 	SKU: &armeventhub.SKU{
+	// 		Name: to.Ptr(armeventhub.SKUNameStandard),
+	// 		Capacity: to.Ptr[int32](1),
+	// 		Tier: to.Ptr(armeventhub.SKUTierStandard),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5759c77eee2d57bdb9e47aa1805d0ffb61704f2d/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2024-05-01-preview/examples/NameSpaces/EHNameSpaceDelete.json
 func ExampleNamespacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -304,7 +418,7 @@ func ExampleNamespacesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b574e2a41acda14a90ef237006e8bbdda2b63c63/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2024-01-01/examples/NameSpaces/EHNameSpaceGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5759c77eee2d57bdb9e47aa1805d0ffb61704f2d/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2024-05-01-preview/examples/NameSpaces/EHNameSpaceGet.json
 func ExampleNamespacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -394,7 +508,7 @@ func ExampleNamespacesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b574e2a41acda14a90ef237006e8bbdda2b63c63/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2024-01-01/examples/NameSpaces/EHNameSpaceUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5759c77eee2d57bdb9e47aa1805d0ffb61704f2d/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2024-05-01-preview/examples/NameSpaces/EHNameSpaceUpdate.json
 func ExampleNamespacesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -471,7 +585,33 @@ func ExampleNamespacesClient_Update() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b574e2a41acda14a90ef237006e8bbdda2b63c63/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2024-01-01/examples/NameSpaces/VirtualNetworkRule/EHNetworkRuleSetCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5759c77eee2d57bdb9e47aa1805d0ffb61704f2d/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2024-05-01-preview/examples/NameSpaces/EHNamespaceFailover.json
+func ExampleNamespacesClient_BeginFailover() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventhub.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNamespacesClient().BeginFailover(ctx, "ResurceGroupSample", "NamespaceGeoDRFailoverSample", armeventhub.FailOver{
+		Properties: &armeventhub.FailOverProperties{
+			Force:           to.Ptr(true),
+			PrimaryLocation: to.Ptr("centralus"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5759c77eee2d57bdb9e47aa1805d0ffb61704f2d/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2024-05-01-preview/examples/NameSpaces/VirtualNetworkRule/EHNetworkRuleSetCreate.json
 func ExampleNamespacesClient_CreateOrUpdateNetworkRuleSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -583,7 +723,7 @@ func ExampleNamespacesClient_CreateOrUpdateNetworkRuleSet() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b574e2a41acda14a90ef237006e8bbdda2b63c63/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2024-01-01/examples/NameSpaces/VirtualNetworkRule/EHNetworkRuleSetGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5759c77eee2d57bdb9e47aa1805d0ffb61704f2d/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2024-05-01-preview/examples/NameSpaces/VirtualNetworkRule/EHNetworkRuleSetGet.json
 func ExampleNamespacesClient_GetNetworkRuleSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -651,7 +791,7 @@ func ExampleNamespacesClient_GetNetworkRuleSet() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b574e2a41acda14a90ef237006e8bbdda2b63c63/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2024-01-01/examples/NameSpaces/VirtualNetworkRule/EHNetworkRuleSetList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5759c77eee2d57bdb9e47aa1805d0ffb61704f2d/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2024-05-01-preview/examples/NameSpaces/VirtualNetworkRule/EHNetworkRuleSetList.json
 func ExampleNamespacesClient_ListNetworkRuleSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -722,7 +862,7 @@ func ExampleNamespacesClient_ListNetworkRuleSet() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b574e2a41acda14a90ef237006e8bbdda2b63c63/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2024-01-01/examples/NameSpaces/EHNameSpaceAuthorizationRuleListAll.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5759c77eee2d57bdb9e47aa1805d0ffb61704f2d/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2024-05-01-preview/examples/NameSpaces/EHNameSpaceAuthorizationRuleListAll.json
 func ExampleNamespacesClient_NewListAuthorizationRulesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -771,7 +911,7 @@ func ExampleNamespacesClient_NewListAuthorizationRulesPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b574e2a41acda14a90ef237006e8bbdda2b63c63/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2024-01-01/examples/NameSpaces/EHNameSpaceAuthorizationRuleCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5759c77eee2d57bdb9e47aa1805d0ffb61704f2d/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2024-05-01-preview/examples/NameSpaces/EHNameSpaceAuthorizationRuleCreate.json
 func ExampleNamespacesClient_CreateOrUpdateAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -807,7 +947,7 @@ func ExampleNamespacesClient_CreateOrUpdateAuthorizationRule() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b574e2a41acda14a90ef237006e8bbdda2b63c63/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2024-01-01/examples/NameSpaces/EHNameSpaceAuthorizationRuleDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5759c77eee2d57bdb9e47aa1805d0ffb61704f2d/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2024-05-01-preview/examples/NameSpaces/EHNameSpaceAuthorizationRuleDelete.json
 func ExampleNamespacesClient_DeleteAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -824,7 +964,7 @@ func ExampleNamespacesClient_DeleteAuthorizationRule() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b574e2a41acda14a90ef237006e8bbdda2b63c63/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2024-01-01/examples/NameSpaces/EHNameSpaceAuthorizationRuleGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5759c77eee2d57bdb9e47aa1805d0ffb61704f2d/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2024-05-01-preview/examples/NameSpaces/EHNameSpaceAuthorizationRuleGet.json
 func ExampleNamespacesClient_GetAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -854,7 +994,7 @@ func ExampleNamespacesClient_GetAuthorizationRule() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b574e2a41acda14a90ef237006e8bbdda2b63c63/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2024-01-01/examples/NameSpaces/EHNameSpaceAuthorizationRuleListKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5759c77eee2d57bdb9e47aa1805d0ffb61704f2d/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2024-05-01-preview/examples/NameSpaces/EHNameSpaceAuthorizationRuleListKey.json
 func ExampleNamespacesClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -881,7 +1021,7 @@ func ExampleNamespacesClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b574e2a41acda14a90ef237006e8bbdda2b63c63/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2024-01-01/examples/NameSpaces/EHNameSpaceAuthorizationRuleRegenerateKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5759c77eee2d57bdb9e47aa1805d0ffb61704f2d/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2024-05-01-preview/examples/NameSpaces/EHNameSpaceAuthorizationRuleRegenerateKey.json
 func ExampleNamespacesClient_RegenerateKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -910,7 +1050,7 @@ func ExampleNamespacesClient_RegenerateKeys() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b574e2a41acda14a90ef237006e8bbdda2b63c63/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2024-01-01/examples/NameSpaces/EHNameSpaceCheckNameAvailability.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5759c77eee2d57bdb9e47aa1805d0ffb61704f2d/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2024-05-01-preview/examples/NameSpaces/EHNameSpaceCheckNameAvailability.json
 func ExampleNamespacesClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

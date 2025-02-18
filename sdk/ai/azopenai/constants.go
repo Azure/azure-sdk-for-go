@@ -222,6 +222,24 @@ func PossibleBatchStatusValues() []BatchStatus {
 	}
 }
 
+// ChatCompletionModality - Values to specified the required modality for the model to use.
+type ChatCompletionModality string
+
+const (
+	// ChatCompletionModalityAudio - The model is to generate audio output.
+	ChatCompletionModalityAudio ChatCompletionModality = "audio"
+	// ChatCompletionModalityText - The model is to generate text output.
+	ChatCompletionModalityText ChatCompletionModality = "text"
+)
+
+// PossibleChatCompletionModalityValues returns the possible values for the ChatCompletionModality const type.
+func PossibleChatCompletionModalityValues() []ChatCompletionModality {
+	return []ChatCompletionModality{
+		ChatCompletionModalityAudio,
+		ChatCompletionModalityText,
+	}
+}
+
 // ChatCompletionRequestMessageContentPartImageURLDetail - Specifies the detail level of the image. Learn more in the Vision
 // guide [/docs/guides/vision/low-or-high-fidelity-image-understanding].
 type ChatCompletionRequestMessageContentPartImageURLDetail string
@@ -317,6 +335,8 @@ type ChatRole string
 const (
 	// ChatRoleAssistant - The role that provides responses to system-instructed, user-prompted input.
 	ChatRoleAssistant ChatRole = "assistant"
+	// ChatRoleDeveloper - The role that provides instructions that the model should follow
+	ChatRoleDeveloper ChatRole = "developer"
 	// ChatRoleFunction - The role that provides function results for chat completions.
 	ChatRoleFunction ChatRole = "function"
 	// ChatRoleSystem - The role that instructs or sets the behavior of the assistant.
@@ -331,6 +351,7 @@ const (
 func PossibleChatRoleValues() []ChatRole {
 	return []ChatRole{
 		ChatRoleAssistant,
+		ChatRoleDeveloper,
 		ChatRoleFunction,
 		ChatRoleSystem,
 		ChatRoleTool,
@@ -647,6 +668,24 @@ func PossibleImageSizeValues() []ImageSize {
 	}
 }
 
+// InputAudioFormat - Values to describe the format of the input audio data.
+type InputAudioFormat string
+
+const (
+	// InputAudioFormatMp3 - Specifies that the audio data is in the MP3 format.
+	InputAudioFormatMp3 InputAudioFormat = "mp3"
+	// InputAudioFormatWav - Specifies that the audio data is in the WAV format.
+	InputAudioFormatWav InputAudioFormat = "wav"
+)
+
+// PossibleInputAudioFormatValues returns the possible values for the InputAudioFormat const type.
+func PossibleInputAudioFormatValues() []InputAudioFormat {
+	return []InputAudioFormat{
+		InputAudioFormatMp3,
+		InputAudioFormatWav,
+	}
+}
+
 // OnYourDataAuthenticationType - The authentication types supported with Azure OpenAI On Your Data.
 type OnYourDataAuthenticationType string
 
@@ -749,6 +788,57 @@ func PossibleOnYourDataVectorizationSourceTypeValues() []OnYourDataVectorization
 		OnYourDataVectorizationSourceTypeEndpoint,
 		OnYourDataVectorizationSourceTypeIntegrated,
 		OnYourDataVectorizationSourceTypeModelID,
+	}
+}
+
+// OutputAudioFormat - The output audio format.
+type OutputAudioFormat string
+
+const (
+	// OutputAudioFormatFlac - The output audio format is FLAC.
+	OutputAudioFormatFlac OutputAudioFormat = "flac"
+	// OutputAudioFormatMp3 - The output audio format is MP3.
+	OutputAudioFormatMp3 OutputAudioFormat = "mp3"
+	// OutputAudioFormatOpus - The output audio format is OPUS.
+	OutputAudioFormatOpus OutputAudioFormat = "opus"
+	// OutputAudioFormatPcm16 - The output audio format is PCM16.
+	OutputAudioFormatPcm16 OutputAudioFormat = "pcm16"
+	// OutputAudioFormatWav - The output audio format is WAV.
+	OutputAudioFormatWav OutputAudioFormat = "wav"
+)
+
+// PossibleOutputAudioFormatValues returns the possible values for the OutputAudioFormat const type.
+func PossibleOutputAudioFormatValues() []OutputAudioFormat {
+	return []OutputAudioFormat{
+		OutputAudioFormatFlac,
+		OutputAudioFormatMp3,
+		OutputAudioFormatOpus,
+		OutputAudioFormatPcm16,
+		OutputAudioFormatWav,
+	}
+}
+
+// ReasoningEffortValue - This option is only valid for o1 models,
+// Constrains effort on reasoning for reasoning models (see https://platform.openai.com/docs/guides/reasoning).
+// Currently supported values are low, medium, and high. Reducing reasoning effort can result in faster responses and fewer
+// tokens used on reasoning in a response.
+type ReasoningEffortValue string
+
+const (
+	// ReasoningEffortValueHigh - The reasoning effort is high.
+	ReasoningEffortValueHigh ReasoningEffortValue = "high"
+	// ReasoningEffortValueLow - The reasoning effort is low.
+	ReasoningEffortValueLow ReasoningEffortValue = "low"
+	// ReasoningEffortValueMedium - The reasoning effort is medium.
+	ReasoningEffortValueMedium ReasoningEffortValue = "medium"
+)
+
+// PossibleReasoningEffortValueValues returns the possible values for the ReasoningEffortValue const type.
+func PossibleReasoningEffortValueValues() []ReasoningEffortValue {
+	return []ReasoningEffortValue{
+		ReasoningEffortValueHigh,
+		ReasoningEffortValueLow,
+		ReasoningEffortValueMedium,
 	}
 }
 

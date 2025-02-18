@@ -10,7 +10,7 @@ package armcomputeschedule
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/computeschedule/armcomputeschedule"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v1.0.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -54,7 +54,7 @@ type OperationState string
 const (
 	// OperationStateBlocked - Operations that are blocked
 	OperationStateBlocked OperationState = "Blocked"
-	// OperationStateCancelled - Operations that have been cancelled by the user
+	// OperationStateCancelled - Operations that have been Cancelled by the user
 	OperationStateCancelled OperationState = "Cancelled"
 	// OperationStateExecuting - Operations that are in the process of being executed
 	OperationStateExecuting OperationState = "Executing"

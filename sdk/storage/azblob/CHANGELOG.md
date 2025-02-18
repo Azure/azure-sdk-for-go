@@ -1,5 +1,25 @@
 # Release History
 
+## 1.6.1-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.6.1-beta.1 (2025-02-12)
+
+### Features Added
+* Upgraded service version to `2025-05-05`.
+
+## 1.6.0 (2025-01-23)
+
+### Features Added
+* Upgraded service version to `2025-01-05`.
+
 ## 1.6.0-beta.1 (2025-01-13)
 
 ### Features Added

@@ -25,8 +25,7 @@ func TestClient_GetCompletions(t *testing.T) {
 			Temperature:    to.Ptr(float32(0.0)),
 			DeploymentName: &epm.Model,
 		}, nil)
-		skipNowIfThrottled(t, err)
-		require.NoError(t, err)
+		customRequireNoError(t, err, true)
 
 		// we'll do a general check here - as models change the answers can also change, token usages are different,
 		// etc... So we'll just make sure data is coming back and is reasonable.

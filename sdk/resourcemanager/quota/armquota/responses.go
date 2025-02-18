@@ -38,22 +38,10 @@ type ClientUpdateResponse struct {
 	CurrentQuotaLimitBase
 }
 
-// GroupQuotaLimitsClientGetResponse contains the response from method GroupQuotaLimitsClient.Get.
-type GroupQuotaLimitsClientGetResponse struct {
-	// Group Quota limit.
-	GroupQuotaLimit
-}
-
-// GroupQuotaLimitsClientListResponse contains the response from method GroupQuotaLimitsClient.NewListPager.
+// GroupQuotaLimitsClientListResponse contains the response from method GroupQuotaLimitsClient.List.
 type GroupQuotaLimitsClientListResponse struct {
 	// List of Group Quota Limit details.
 	GroupQuotaLimitList
-}
-
-// GroupQuotaLimitsRequestClientCreateOrUpdateResponse contains the response from method GroupQuotaLimitsRequestClient.BeginCreateOrUpdate.
-type GroupQuotaLimitsRequestClientCreateOrUpdateResponse struct {
-	// Status of a single GroupQuota request.
-	SubmittedResourceRequestStatus
 }
 
 // GroupQuotaLimitsRequestClientGetResponse contains the response from method GroupQuotaLimitsRequestClient.Get.
@@ -70,52 +58,14 @@ type GroupQuotaLimitsRequestClientListResponse struct {
 
 // GroupQuotaLimitsRequestClientUpdateResponse contains the response from method GroupQuotaLimitsRequestClient.BeginUpdate.
 type GroupQuotaLimitsRequestClientUpdateResponse struct {
-	// Status of a single GroupQuota request.
-	SubmittedResourceRequestStatus
+	// List of Group Quota Limit details.
+	GroupQuotaLimitList
 }
 
-// GroupQuotaLocationSettingsClientCreateOrUpdateResponse contains the response from method GroupQuotaLocationSettingsClient.BeginCreateOrUpdate.
-type GroupQuotaLocationSettingsClientCreateOrUpdateResponse struct {
-	// The GroupQuota Enforcement status for a Azure Location/Region.
-	GroupQuotasEnforcementResponse
-}
-
-// GroupQuotaLocationSettingsClientGetResponse contains the response from method GroupQuotaLocationSettingsClient.Get.
-type GroupQuotaLocationSettingsClientGetResponse struct {
-	// The GroupQuota Enforcement status for a Azure Location/Region.
-	GroupQuotasEnforcementResponse
-}
-
-// GroupQuotaLocationSettingsClientListResponse contains the response from method GroupQuotaLocationSettingsClient.NewListPager.
-type GroupQuotaLocationSettingsClientListResponse struct {
-	// List of Azure regions, where the group quotas is enabled for enforcement.
-	GroupQuotasEnforcementListResponse
-}
-
-// GroupQuotaLocationSettingsClientUpdateResponse contains the response from method GroupQuotaLocationSettingsClient.BeginUpdate.
-type GroupQuotaLocationSettingsClientUpdateResponse struct {
-	// The GroupQuota Enforcement status for a Azure Location/Region.
-	GroupQuotasEnforcementResponse
-}
-
-// GroupQuotaSubscriptionAllocationClientGetResponse contains the response from method GroupQuotaSubscriptionAllocationClient.Get.
-type GroupQuotaSubscriptionAllocationClientGetResponse struct {
-	// Quota allocated to a subscription for the specific Resource Provider, Location, ResourceName. This will include the GroupQuota
-	// and total quota allocated to the subscription. Only the Group quota allocated to the subscription can be allocated back
-	// to the MG Group Quota.
-	SubscriptionQuotaAllocations
-}
-
-// GroupQuotaSubscriptionAllocationClientListResponse contains the response from method GroupQuotaSubscriptionAllocationClient.NewListPager.
+// GroupQuotaSubscriptionAllocationClientListResponse contains the response from method GroupQuotaSubscriptionAllocationClient.List.
 type GroupQuotaSubscriptionAllocationClientListResponse struct {
 	// Subscription quota list.
 	SubscriptionQuotaAllocationsList
-}
-
-// GroupQuotaSubscriptionAllocationRequestClientCreateOrUpdateResponse contains the response from method GroupQuotaSubscriptionAllocationRequestClient.BeginCreateOrUpdate.
-type GroupQuotaSubscriptionAllocationRequestClientCreateOrUpdateResponse struct {
-	// The subscription quota allocation status.
-	AllocationRequestStatus
 }
 
 // GroupQuotaSubscriptionAllocationRequestClientGetResponse contains the response from method GroupQuotaSubscriptionAllocationRequestClient.Get.
@@ -132,8 +82,8 @@ type GroupQuotaSubscriptionAllocationRequestClientListResponse struct {
 
 // GroupQuotaSubscriptionAllocationRequestClientUpdateResponse contains the response from method GroupQuotaSubscriptionAllocationRequestClient.BeginUpdate.
 type GroupQuotaSubscriptionAllocationRequestClientUpdateResponse struct {
-	// The subscription quota allocation status.
-	AllocationRequestStatus
+	// Subscription quota list.
+	SubscriptionQuotaAllocationsList
 }
 
 // GroupQuotaSubscriptionRequestsClientGetResponse contains the response from method GroupQuotaSubscriptionRequestsClient.Get.
@@ -175,12 +125,6 @@ type GroupQuotaSubscriptionsClientListResponse struct {
 type GroupQuotaSubscriptionsClientUpdateResponse struct {
 	// This represents a Azure subscriptionId that is associated with a GroupQuotasEntity.
 	GroupQuotaSubscriptionID
-}
-
-// GroupQuotaUsagesClientListResponse contains the response from method GroupQuotaUsagesClient.NewListPager.
-type GroupQuotaUsagesClientListResponse struct {
-	// List of resource usages and quotas for GroupQuota.
-	ResourceUsageList
 }
 
 // GroupQuotasClientCreateOrUpdateResponse contains the response from method GroupQuotasClient.BeginCreateOrUpdate.

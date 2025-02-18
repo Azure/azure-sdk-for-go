@@ -1,6 +1,16 @@
 # Release History
 
-## 0.6.0 (Unreleased)
+## 0.6.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 0.6.0 (2025-01-21)
 
 ### Features Added
 
@@ -13,10 +23,6 @@ The following fields have been added:
 
 - Azure Media services has been retired - all related system events have been removed. See the [retirement announcement](https://azure.microsoft.com/updates?id=retirement-notice-azure-media-services-is-being-retired-on-30-june-2024) for more details.
 - The following types have been renamed to correct incorrect casing: ACSSMSDeliveryAttemptProperties, ACSSMSDeliveryReportReceivedEventData, ACSSMSReceivedEventData, TypeACSSMSDeliveryReportReceived and TypeACSSMSReceived.
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.5.0 (2024-11-19)
 

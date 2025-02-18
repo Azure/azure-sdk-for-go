@@ -105,8 +105,8 @@ func TestNewClientWithWebsockets(t *testing.T) {
 
 func TestNewClientUsingSharedAccessSignature(t *testing.T) {
 	getLogsFn := test.CaptureLogsForTest(false)
+	cs := test.GetConnectionString(t, test.EnvKeyConnectionString)
 
-	cs := test.MustGetEnvVar(t, test.EnvKeyConnectionString)
 	sasCS, err := sas.CreateConnectionStringWithSASUsingExpiry(cs, time.Now().UTC().Add(time.Hour))
 	require.NoError(t, err)
 
@@ -329,7 +329,7 @@ func TestClientPropagatesRetryOptionsForSessions(t *testing.T) {
 }
 
 func TestClientUnauthorizedCreds(t *testing.T) {
-	allPowerfulCS := test.MustGetEnvVar(t, test.EnvKeyConnectionString)
+	allPowerfulCS := test.GetConnectionString(t, test.EnvKeyConnectionString)
 	queueName := "testqueue"
 
 	t.Run("ListenOnly with Sender", func(t *testing.T) {
@@ -437,6 +437,28 @@ func TestClientUnauthorizedCreds(t *testing.T) {
 		require.ErrorAs(t, err, &authFailedErr)
 		require.Empty(t, messages)
 	})
+}
+
+func TestClientUsingCustomEndpoint(t *testing.T) {
+	serviceBusClient, cleanup, queueName := setupLiveTest(t, &liveTestOptions{
+		ClientOptions: &ClientOptions{
+			// A custom endpoint can be used when you need to connect to a TCP proxy.
+			CustomEndpoint: "127.0.0.1",
+			RetryOptions: RetryOptions{
+				MaxRetries: -1,
+			},
+		},
+	})
+	defer cleanup()
+
+	sender, err := serviceBusClient.NewSender(queueName, nil)
+	require.NoError(t, err)
+
+	err = sender.SendMessage(context.Background(), &Message{Body: []byte("hello")}, nil)
+
+	// NOTE, this is a little silly, but we just want to prove
+	// that CustomEndpoint does get used as the actual TCP endpoint we connect to.
+	require.Contains(t, err.Error(), "127.0.0.1:5671")
 }
 
 func TestNewClientUnitTests(t *testing.T) {

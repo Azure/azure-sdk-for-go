@@ -10,7 +10,7 @@ package armquota
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota"
-	moduleVersion = "v1.1.0-beta.1"
+	moduleVersion = "v1.1.0-beta.2"
 )
 
 // CreatedByType - The type of identity that created the resource.
@@ -30,56 +30,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
-	}
-}
-
-// EnforcementState - Enforcement status.
-type EnforcementState string
-
-const (
-	EnforcementStateDisabled     EnforcementState = "Disabled"
-	EnforcementStateEnabled      EnforcementState = "Enabled"
-	EnforcementStateNotAvailable EnforcementState = "NotAvailable"
-)
-
-// PossibleEnforcementStateValues returns the possible values for the EnforcementState const type.
-func PossibleEnforcementStateValues() []EnforcementState {
-	return []EnforcementState{
-		EnforcementStateDisabled,
-		EnforcementStateEnabled,
-		EnforcementStateNotAvailable,
-	}
-}
-
-// EnvironmentType - Environment name.
-type EnvironmentType string
-
-const (
-	EnvironmentTypeNonProduction EnvironmentType = "NonProduction"
-	EnvironmentTypeProduction    EnvironmentType = "Production"
-)
-
-// PossibleEnvironmentTypeValues returns the possible values for the EnvironmentType const type.
-func PossibleEnvironmentTypeValues() []EnvironmentType {
-	return []EnvironmentType{
-		EnvironmentTypeNonProduction,
-		EnvironmentTypeProduction,
-	}
-}
-
-// GroupingIDType - GroupingId type. It is a required property. More types of groupIds can be supported in future.
-type GroupingIDType string
-
-const (
-	GroupingIDTypeBillingID     GroupingIDType = "BillingId"
-	GroupingIDTypeServiceTreeID GroupingIDType = "ServiceTreeId"
-)
-
-// PossibleGroupingIDTypeValues returns the possible values for the GroupingIDType const type.
-func PossibleGroupingIDTypeValues() []GroupingIDType {
-	return []GroupingIDType{
-		GroupingIDTypeBillingID,
-		GroupingIDTypeServiceTreeID,
 	}
 }
 

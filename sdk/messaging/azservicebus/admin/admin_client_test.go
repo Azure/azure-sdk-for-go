@@ -24,7 +24,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/auth"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/conn"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/stretchr/testify/require"
@@ -721,10 +720,8 @@ func TestAdminClient_Forwarding(t *testing.T) {
 
 	defer deleteTopic(t, adminClient, topicName)
 
-	cs := test.MustGetEnvVar(t, test.EnvKeyConnectionString)
-	parsed, err := conn.ParseConnectionString(cs)
-	require.NoError(t, err)
-	forwardToName := to.Ptr(fmt.Sprintf("sb://%s/%s", parsed.FullyQualifiedNamespace, forwardToQueueName))
+	endpoint := test.MustGetEnvVar(t, test.EnvKeyEndpoint)
+	forwardToName := to.Ptr(fmt.Sprintf("sb://%s/%s", endpoint, forwardToQueueName))
 
 	_, err = adminClient.CreateSubscription(context.Background(), topicName, "sub1", &CreateSubscriptionOptions{
 		Properties: &SubscriptionProperties{
@@ -1985,8 +1982,8 @@ func setupLowPrivTest(t *testing.T) *struct {
 	Cleanup   func()
 } {
 	adminClient := newAdminClientForTest(t, nil)
-
-	lowPrivAdminClient, err := NewClientFromConnectionString(test.MustGetEnvVar(t, test.EnvKeyConnectionStringNoManage), nil) // allowed connection string
+	cs := test.GetConnectionString(t, test.EnvKeyConnectionStringNoManage)
+	lowPrivAdminClient, err := NewClientFromConnectionString(cs, nil) // allowed connection string
 	require.NoError(t, err)
 
 	nanoSeconds := time.Now().UnixNano()

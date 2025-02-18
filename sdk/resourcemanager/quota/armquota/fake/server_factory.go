@@ -22,12 +22,10 @@ type ServerFactory struct {
 	Server                                        Server
 	GroupQuotaLimitsServer                        GroupQuotaLimitsServer
 	GroupQuotaLimitsRequestServer                 GroupQuotaLimitsRequestServer
-	GroupQuotaLocationSettingsServer              GroupQuotaLocationSettingsServer
 	GroupQuotaSubscriptionAllocationServer        GroupQuotaSubscriptionAllocationServer
 	GroupQuotaSubscriptionAllocationRequestServer GroupQuotaSubscriptionAllocationRequestServer
 	GroupQuotaSubscriptionRequestsServer          GroupQuotaSubscriptionRequestsServer
 	GroupQuotaSubscriptionsServer                 GroupQuotaSubscriptionsServer
-	GroupQuotaUsagesServer                        GroupQuotaUsagesServer
 	GroupQuotasServer                             GroupQuotasServer
 	OperationServer                               OperationServer
 	RequestStatusServer                           RequestStatusServer
@@ -51,12 +49,10 @@ type ServerFactoryTransport struct {
 	trServer                                        *ServerTransport
 	trGroupQuotaLimitsServer                        *GroupQuotaLimitsServerTransport
 	trGroupQuotaLimitsRequestServer                 *GroupQuotaLimitsRequestServerTransport
-	trGroupQuotaLocationSettingsServer              *GroupQuotaLocationSettingsServerTransport
 	trGroupQuotaSubscriptionAllocationServer        *GroupQuotaSubscriptionAllocationServerTransport
 	trGroupQuotaSubscriptionAllocationRequestServer *GroupQuotaSubscriptionAllocationRequestServerTransport
 	trGroupQuotaSubscriptionRequestsServer          *GroupQuotaSubscriptionRequestsServerTransport
 	trGroupQuotaSubscriptionsServer                 *GroupQuotaSubscriptionsServerTransport
-	trGroupQuotaUsagesServer                        *GroupQuotaUsagesServerTransport
 	trGroupQuotasServer                             *GroupQuotasServerTransport
 	trOperationServer                               *OperationServerTransport
 	trRequestStatusServer                           *RequestStatusServerTransport
@@ -89,11 +85,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewGroupQuotaLimitsRequestServerTransport(&s.srv.GroupQuotaLimitsRequestServer)
 		})
 		resp, err = s.trGroupQuotaLimitsRequestServer.Do(req)
-	case "GroupQuotaLocationSettingsClient":
-		initServer(s, &s.trGroupQuotaLocationSettingsServer, func() *GroupQuotaLocationSettingsServerTransport {
-			return NewGroupQuotaLocationSettingsServerTransport(&s.srv.GroupQuotaLocationSettingsServer)
-		})
-		resp, err = s.trGroupQuotaLocationSettingsServer.Do(req)
 	case "GroupQuotaSubscriptionAllocationClient":
 		initServer(s, &s.trGroupQuotaSubscriptionAllocationServer, func() *GroupQuotaSubscriptionAllocationServerTransport {
 			return NewGroupQuotaSubscriptionAllocationServerTransport(&s.srv.GroupQuotaSubscriptionAllocationServer)
@@ -114,11 +105,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewGroupQuotaSubscriptionsServerTransport(&s.srv.GroupQuotaSubscriptionsServer)
 		})
 		resp, err = s.trGroupQuotaSubscriptionsServer.Do(req)
-	case "GroupQuotaUsagesClient":
-		initServer(s, &s.trGroupQuotaUsagesServer, func() *GroupQuotaUsagesServerTransport {
-			return NewGroupQuotaUsagesServerTransport(&s.srv.GroupQuotaUsagesServer)
-		})
-		resp, err = s.trGroupQuotaUsagesServer.Do(req)
 	case "GroupQuotasClient":
 		initServer(s, &s.trGroupQuotasServer, func() *GroupQuotasServerTransport { return NewGroupQuotasServerTransport(&s.srv.GroupQuotasServer) })
 		resp, err = s.trGroupQuotasServer.Do(req)

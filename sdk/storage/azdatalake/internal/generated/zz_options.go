@@ -95,9 +95,8 @@ type FileSystemClientListBlobHierarchySegmentOptions struct {
 	// analytics logging is enabled.
 	RequestID *string
 
-	// Include this parameter to specify one or more datasets to include in the response.. Specifying any value will set the value
-	// to deleted.
-	Showonly *string
+	// Include this parameter to specify one or more datasets to include in the response.
+	Showonly *ListBlobsShowOnly
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for Blob Service Operations.
 	// [https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations]

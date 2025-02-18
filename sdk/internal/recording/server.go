@@ -146,6 +146,9 @@ func extractTestProxyArchive(archivePath string, outputDir string) error {
 		}
 
 		targetPath := filepath.Join(outputDir, header.Name)
+		if !strings.HasPrefix(targetPath, filepath.Clean(outputDir)) {
+			return fmt.Errorf("illegal file path: %q", header.Name)
+		}
 
 		log.Println("Extracting", targetPath)
 
@@ -174,7 +177,7 @@ func extractTestProxyArchive(archivePath string, outputDir string) error {
 
 func installTestProxy(archivePath string, outputDir string, proxyPath string) error {
 	var err error
-	if strings.HasSuffix(archivePath, ".zip") {
+	if filepath.Ext(archivePath) == ".zip" {
 		err = extractTestProxyZip(archivePath, outputDir)
 	} else {
 		err = extractTestProxyArchive(archivePath, outputDir)

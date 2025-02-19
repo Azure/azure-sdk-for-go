@@ -67,16 +67,17 @@ type CreateRunStreamResponse struct {
 
 // CreateRunStreamOptions contains the optional parameters for [CreateRunStream].
 type CreateRunStreamOptions struct {
+	CreateRunOptions
 	// for future expansion
 }
 
 // CreateRunStream is the equivalent of [CreateRun], but it returns a stream of responses instead of a
 // single response.
-func (client *Client) CreateRunStream(ctx context.Context, threadID string, body CreateRunBody, _ *CreateRunStreamOptions) (CreateRunStreamResponse, error) {
+func (client *Client) CreateRunStream(ctx context.Context, threadID string, body CreateRunBody, options *CreateRunStreamOptions) (CreateRunStreamResponse, error) {
 	var err error
 	body.stream = to.Ptr(true)
 
-	req, err := client.createRunCreateRequest(ctx, threadID, body, nil)
+	req, err := client.createRunCreateRequest(ctx, threadID, body, &options.CreateRunOptions)
 	if err != nil {
 		return CreateRunStreamResponse{}, err
 	}

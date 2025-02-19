@@ -686,6 +686,15 @@ type ACSMessageMediaContent struct {
 	FileName *string
 }
 
+// ACSMessageReactionContent - Message Reaction Content
+type ACSMessageReactionContent struct {
+	// REQUIRED; Required. WhatsApp message ID of the message that the emoji is applied to
+	MessageID *string
+
+	// Optional. Unicode escape sequence of the emoji.
+	Emoji *string
+}
+
 // ACSMessageReceivedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.Communication.AdvancedMessageReceived
 // event.
 type ACSMessageReceivedEventData struct {
@@ -1914,15 +1923,6 @@ type AVSScriptExecutionStartedEventData struct {
 
 	// Stdout outputs from the execution, if any.
 	Output []string
-}
-
-// ACSMessageReactionContent - Message Reaction Content
-type ACSMessageReactionContent struct {
-	// REQUIRED; Required. WhatsApp message ID of the message that the emoji is applied to
-	MessageID *string
-
-	// Optional. Unicode escape sequence of the emoji.
-	Emoji *string
 }
 
 // AppConfigurationKeyValueDeletedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.AppConfiguration.KeyValueDeleted

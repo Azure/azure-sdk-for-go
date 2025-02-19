@@ -1443,6 +1443,37 @@ func (a *ACSMessageMediaContent) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ACSMessageReactionContent.
+func (a ACSMessageReactionContent) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "emoji", a.Emoji)
+	populate(objectMap, "messageId", a.MessageID)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ACSMessageReactionContent.
+func (a *ACSMessageReactionContent) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "emoji":
+			err = unpopulate(val, "Emoji", &a.Emoji)
+			delete(rawMsg, key)
+		case "messageId":
+			err = unpopulate(val, "MessageID", &a.MessageID)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type ACSMessageReceivedEventData.
 func (a ACSMessageReceivedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -4364,37 +4395,6 @@ func (a *AVSScriptExecutionStartedEventData) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "output":
 			err = unpopulate(val, "Output", &a.Output)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", a, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AcsMessageReactionContent.
-func (a ACSMessageReactionContent) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "emoji", a.Emoji)
-	populate(objectMap, "messageId", a.MessageID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AcsMessageReactionContent.
-func (a *ACSMessageReactionContent) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", a, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "emoji":
-			err = unpopulate(val, "Emoji", &a.Emoji)
-			delete(rawMsg, key)
-		case "messageId":
-			err = unpopulate(val, "MessageID", &a.MessageID)
 			delete(rawMsg, key)
 		}
 		if err != nil {

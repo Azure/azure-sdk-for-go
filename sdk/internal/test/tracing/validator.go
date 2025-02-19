@@ -57,13 +57,22 @@ func NewSpanValidator(t *testing.T, matcher SpanMatcher) tracing.Provider {
 	})
 }
 
-// SpanMatcher contains the values to match when a span is created.
+// SpanMatcher contains the values to match when a span is ended.
 type SpanMatcher struct {
-	Name       string
-	Kind       tracing.SpanKind
-	Status     tracing.SpanStatus
+	// Name is the name of the span to match.
+	Name string
+
+	// Kind is the kind of the span to match.
+	Kind tracing.SpanKind
+
+	// Status is the final status of the span to match.
+	Status tracing.SpanStatus
+
+	// Attributes are the final set of attributes of the span to match.
 	Attributes []tracing.Attribute
-	Links      []tracing.Link
+
+	// Links are the final set of links of the span to match.
+	Links []tracing.Link
 }
 
 type matchingTracer struct {

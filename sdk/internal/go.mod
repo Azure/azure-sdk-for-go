@@ -31,6 +31,6 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-replace github.com/Azure/azure-sdk-for-go/sdk/azcore => github.com/Azure/azure-sdk-for-go/sdk/azcore v1.17.1-0.20250213005623-521dc9bd0933
+replace github.com/Azure/azure-sdk-for-go/sdk/azcore => github.com/Azure/azure-sdk-for-go/sdk/azcore v1.17.1-0.20250219025933-3121a844ea6f
 
 replace github.com/Azure/azure-sdk-for-go/sdk/tracing/azotel => github.com/Azure/azure-sdk-for-go/sdk/tracing/azotel v0.4.1-0.20250214223549-8a6d539f1772

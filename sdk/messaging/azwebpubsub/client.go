@@ -11,15 +11,14 @@ package azwebpubsub
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"io"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // Client contains the methods for the WebPubSub group.
@@ -121,8 +120,8 @@ func (client *Client) addConnectionsToGroupsCreateRequest(ctx context.Context, h
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, groupsToAdd); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -177,15 +176,14 @@ func (client *Client) addUserToGroupCreateRequest(ctx context.Context, hub strin
 	return req, nil
 }
 
-// checkPermission - Check if a connection has permission to the specified action.
-// If the operation fails it returns an *azcore.ResponseError type.
+// CheckPermission - Check if a connection has permission to the specified action.
 //
 // Generated from API version 2023-07-01
 //   - hub - Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
 //   - permission - The permission: current supported actions are joinLeaveGroup and sendToGroup.
 //   - connectionID - Target connection Id.
-//   - options - CheckPermissionOptions contains the optional parameters for the Client.checkPermission method.
-func (client *Client) checkPermission(ctx context.Context, hub string, permission Permission, connectionID string, options *CheckPermissionOptions) (CheckPermissionResponse, error) {
+//   - options - CheckPermissionOptions contains the optional parameters for the Client.CheckPermission method.
+func (client *Client) CheckPermission(ctx context.Context, hub string, permission Permission, connectionID string, options *CheckPermissionOptions) (CheckPermissionResponse, error) {
 	var err error
 	req, err := client.checkPermissionCreateRequest(ctx, hub, permission, connectionID, options)
 	if err != nil {
@@ -199,10 +197,10 @@ func (client *Client) checkPermission(ctx context.Context, hub string, permissio
 		err = runtime.NewResponseError(httpResp)
 		return CheckPermissionResponse{}, err
 	}
-	return CheckPermissionResponse{}, nil
+	return CheckPermissionResponse{Success: httpResp.StatusCode >= 200 && httpResp.StatusCode < 300}, nil
 }
 
-// checkPermissionCreateRequest creates the checkPermission request.
+// checkPermissionCreateRequest creates the CheckPermission request.
 func (client *Client) checkPermissionCreateRequest(ctx context.Context, hub string, permission Permission, connectionID string, options *CheckPermissionOptions) (*policy.Request, error) {
 	urlPath := "/api/hubs/{hub}/permissions/{permission}/connections/{connectionId}"
 	if hub == "" {
@@ -266,9 +264,9 @@ func (client *Client) closeAllConnectionsCreateRequest(ctx context.Context, hub 
 	}
 	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Excluded != nil {
-		for _, qv := range options.Excluded {
-			reqQP.Add("excluded", qv)
-		}
+			for _, qv := range options.Excluded {
+		reqQP.Add("excluded", qv)
+	}
 	}
 	if options != nil && options.Reason != nil {
 		reqQP.Set("reason", *options.Reason)
@@ -369,9 +367,9 @@ func (client *Client) closeGroupConnectionsCreateRequest(ctx context.Context, hu
 	}
 	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Excluded != nil {
-		for _, qv := range options.Excluded {
-			reqQP.Add("excluded", qv)
-		}
+			for _, qv := range options.Excluded {
+		reqQP.Add("excluded", qv)
+	}
 	}
 	if options != nil && options.Reason != nil {
 		reqQP.Set("reason", *options.Reason)
@@ -423,9 +421,9 @@ func (client *Client) closeUserConnectionsCreateRequest(ctx context.Context, hub
 	}
 	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Excluded != nil {
-		for _, qv := range options.Excluded {
-			reqQP.Add("excluded", qv)
-		}
+			for _, qv := range options.Excluded {
+		reqQP.Add("excluded", qv)
+	}
 	}
 	if options != nil && options.Reason != nil {
 		reqQP.Set("reason", *options.Reason)
@@ -436,14 +434,13 @@ func (client *Client) closeUserConnectionsCreateRequest(ctx context.Context, hub
 	return req, nil
 }
 
-// connectionExists - Check if the connection with the given connectionId exists.
-// If the operation fails it returns an *azcore.ResponseError type.
+// ConnectionExists - Check if the connection with the given connectionId exists.
 //
 // Generated from API version 2023-07-01
 //   - hub - Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
 //   - connectionID - The connection Id.
-//   - options - ConnectionExistsOptions contains the optional parameters for the Client.connectionExists method.
-func (client *Client) connectionExists(ctx context.Context, hub string, connectionID string, options *ConnectionExistsOptions) (ConnectionExistsResponse, error) {
+//   - options - ConnectionExistsOptions contains the optional parameters for the Client.ConnectionExists method.
+func (client *Client) ConnectionExists(ctx context.Context, hub string, connectionID string, options *ConnectionExistsOptions) (ConnectionExistsResponse, error) {
 	var err error
 	req, err := client.connectionExistsCreateRequest(ctx, hub, connectionID, options)
 	if err != nil {
@@ -457,10 +454,10 @@ func (client *Client) connectionExists(ctx context.Context, hub string, connecti
 		err = runtime.NewResponseError(httpResp)
 		return ConnectionExistsResponse{}, err
 	}
-	return ConnectionExistsResponse{}, nil
+	return ConnectionExistsResponse{Success: httpResp.StatusCode >= 200 && httpResp.StatusCode < 300}, nil
 }
 
-// connectionExistsCreateRequest creates the connectionExists request.
+// connectionExistsCreateRequest creates the ConnectionExists request.
 func (client *Client) connectionExistsCreateRequest(ctx context.Context, hub string, connectionID string, options *ConnectionExistsOptions) (*policy.Request, error) {
 	urlPath := "/api/hubs/{hub}/connections/{connectionId}"
 	if hub == "" {
@@ -521,18 +518,18 @@ func (client *Client) generateClientTokenCreateRequest(ctx context.Context, hub 
 		reqQP.Set("userId", *options.UserID)
 	}
 	if options != nil && options.Role != nil {
-		for _, qv := range options.Role {
-			reqQP.Add("role", qv)
-		}
+			for _, qv := range options.Role {
+		reqQP.Add("role", qv)
+	}
 	}
 	if options != nil && options.MinutesToExpire != nil {
 		reqQP.Set("minutesToExpire", strconv.FormatInt(int64(*options.MinutesToExpire), 10))
 	}
 	reqQP.Set("api-version", "2023-07-01")
 	if options != nil && options.Group != nil {
-		for _, qv := range options.Group {
-			reqQP.Add("group", qv)
-		}
+			for _, qv := range options.Group {
+		reqQP.Add("group", qv)
+	}
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json, text/json"}
@@ -602,14 +599,13 @@ func (client *Client) grantPermissionCreateRequest(ctx context.Context, hub stri
 	return req, nil
 }
 
-// groupExists - Check if there are any client connections inside the given group
-// If the operation fails it returns an *azcore.ResponseError type.
+// GroupExists - Check if there are any client connections inside the given group
 //
 // Generated from API version 2023-07-01
 //   - hub - Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
 //   - group - Target group name, which length should be greater than 0 and less than 1025.
-//   - options - GroupExistsOptions contains the optional parameters for the Client.groupExists method.
-func (client *Client) groupExists(ctx context.Context, hub string, group string, options *GroupExistsOptions) (GroupExistsResponse, error) {
+//   - options - GroupExistsOptions contains the optional parameters for the Client.GroupExists method.
+func (client *Client) GroupExists(ctx context.Context, hub string, group string, options *GroupExistsOptions) (GroupExistsResponse, error) {
 	var err error
 	req, err := client.groupExistsCreateRequest(ctx, hub, group, options)
 	if err != nil {
@@ -623,10 +619,10 @@ func (client *Client) groupExists(ctx context.Context, hub string, group string,
 		err = runtime.NewResponseError(httpResp)
 		return GroupExistsResponse{}, err
 	}
-	return GroupExistsResponse{}, nil
+	return GroupExistsResponse{Success: httpResp.StatusCode >= 200 && httpResp.StatusCode < 300}, nil
 }
 
-// groupExistsCreateRequest creates the groupExists request.
+// groupExistsCreateRequest creates the GroupExists request.
 func (client *Client) groupExistsCreateRequest(ctx context.Context, hub string, group string, options *GroupExistsOptions) (*policy.Request, error) {
 	urlPath := "/api/hubs/{hub}/groups/{group}"
 	if hub == "" {
@@ -787,8 +783,8 @@ func (client *Client) removeConnectionsFromGroupsCreateRequest(ctx context.Conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, groupsToRemove); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -982,9 +978,9 @@ func (client *Client) sendToAllCreateRequest(ctx context.Context, hub string, co
 	}
 	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Excluded != nil {
-		for _, qv := range options.Excluded {
-			reqQP.Add("excluded", qv)
-		}
+			for _, qv := range options.Excluded {
+		reqQP.Add("excluded", qv)
+	}
 	}
 	reqQP.Set("api-version", "2023-07-01")
 	if options != nil && options.Filter != nil {
@@ -997,8 +993,8 @@ func (client *Client) sendToAllCreateRequest(ctx context.Context, hub string, co
 	req.Raw().Header["Content-Type"] = []string{string(contentType)}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := req.SetBody(message, string(contentType)); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -1052,8 +1048,8 @@ func (client *Client) sendToConnectionCreateRequest(ctx context.Context, hub str
 	req.Raw().Header["Content-Type"] = []string{string(contentType)}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := req.SetBody(message, string(contentType)); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -1100,9 +1096,9 @@ func (client *Client) sendToGroupCreateRequest(ctx context.Context, hub string, 
 	}
 	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Excluded != nil {
-		for _, qv := range options.Excluded {
-			reqQP.Add("excluded", qv)
-		}
+			for _, qv := range options.Excluded {
+		reqQP.Add("excluded", qv)
+	}
 	}
 	reqQP.Set("api-version", "2023-07-01")
 	if options != nil && options.Filter != nil {
@@ -1115,8 +1111,8 @@ func (client *Client) sendToGroupCreateRequest(ctx context.Context, hub string, 
 	req.Raw().Header["Content-Type"] = []string{string(contentType)}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := req.SetBody(message, string(contentType)); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -1173,19 +1169,18 @@ func (client *Client) sendToUserCreateRequest(ctx context.Context, hub string, u
 	req.Raw().Header["Content-Type"] = []string{string(contentType)}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := req.SetBody(message, string(contentType)); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
-// userExists - Check if there are any client connections connected for the given user.
-// If the operation fails it returns an *azcore.ResponseError type.
+// UserExists - Check if there are any client connections connected for the given user.
 //
 // Generated from API version 2023-07-01
 //   - hub - Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
 //   - userID - Target user Id.
-//   - options - UserExistsOptions contains the optional parameters for the Client.userExists method.
-func (client *Client) userExists(ctx context.Context, hub string, userID string, options *UserExistsOptions) (UserExistsResponse, error) {
+//   - options - UserExistsOptions contains the optional parameters for the Client.UserExists method.
+func (client *Client) UserExists(ctx context.Context, hub string, userID string, options *UserExistsOptions) (UserExistsResponse, error) {
 	var err error
 	req, err := client.userExistsCreateRequest(ctx, hub, userID, options)
 	if err != nil {
@@ -1199,10 +1194,10 @@ func (client *Client) userExists(ctx context.Context, hub string, userID string,
 		err = runtime.NewResponseError(httpResp)
 		return UserExistsResponse{}, err
 	}
-	return UserExistsResponse{}, nil
+	return UserExistsResponse{Success: httpResp.StatusCode >= 200 && httpResp.StatusCode < 300}, nil
 }
 
-// userExistsCreateRequest creates the userExists request.
+// userExistsCreateRequest creates the UserExists request.
 func (client *Client) userExistsCreateRequest(ctx context.Context, hub string, userID string, options *UserExistsOptions) (*policy.Request, error) {
 	urlPath := "/api/hubs/{hub}/users/{userId}"
 	if hub == "" {
@@ -1222,3 +1217,4 @@ func (client *Client) userExistsCreateRequest(ctx context.Context, hub string, u
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
+

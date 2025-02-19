@@ -10,6 +10,9 @@
 
 ### Other Changes
 * `NewManagedIdentityCredential` logs the configured user-assigned identity, if any
+* Deprecated `UsernamePasswordCredential` because it can't support multifactor
+  authentication (MFA), which Microsoft Entra ID requires for most tenants. See
+  https://aka.ms/azsdk/identity/mfa for migration guidance.
 
 ## 1.8.2 (2025-02-12)
 

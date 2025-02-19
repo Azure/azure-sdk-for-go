@@ -1,8 +1,10 @@
 # Release History
 
-## 1.10.1 (Unreleased)
+## 1.11.0-beta.1 (Unreleased)
 
 ### Features Added
+
+# Added function `tracing.New`
 
 ### Breaking Changes
 

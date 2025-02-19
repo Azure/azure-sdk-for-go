@@ -11,6 +11,7 @@
 * Added type `Link` to the `tracing` package to support Span Links.
 * Added method `LinkFromContext()` to `tracing.Tracer` to support Span Links.
 * Added method `AddLink()` to `tracing.Span` to support Span Links.
+* Added field `Links` to `runtime.StartSpanOptions` to support Span Links.
 * Added type `Propagator` to the `tracing` package to support context propagation.
 * Added type `Carrier` to the `tracing` package to support context propagation.
 * Added method `NewPropagator()` to type `tracing.Provider` to support context propagation.
@@ -20,6 +21,8 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+* Added Span Attribute `error.type` to report an error when ending a span with `runtime.StartSpan`.
 
 ## 1.17.0 (2025-01-07)
 

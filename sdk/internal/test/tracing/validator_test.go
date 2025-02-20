@@ -31,7 +31,7 @@ func ExampleNewSpanValidator() {
 		Status:     tracing.SpanStatusUnset,
 		Attributes: []tracing.Attribute{initialAttr, testAttr},
 		Links:      []tracing.Link{initialLink, testLink},
-	})
+	}, nil)
 	tracer := provider.NewTracer("module", "version")
 
 	// start a test span with initial attributes and links
@@ -64,7 +64,7 @@ func TestNewSpanValidator(t *testing.T) {
 		// error.type is also expected because the span ended with an error
 		Attributes: []tracing.Attribute{initialAttr, testAttr, {Key: "error.type", Value: "*errors.errorString"}},
 		Links:      []tracing.Link{initialLink, testLink},
-	})
+	}, nil)
 	tracer := provider.NewTracer("module", "version")
 	require.NotNil(t, tracer)
 	require.True(t, tracer.Enabled())
@@ -81,7 +81,7 @@ func TestNewSpanValidator(t *testing.T) {
 
 	require.NotNil(t, tracer.SpanFromContext(ctx))
 	require.NotNil(t, tracer.LinkFromContext(ctx))
-	require.NotZero(t, provider.NewPropagator())
+	require.Zero(t, provider.NewPropagator())
 }
 
 func TestMatchingTracerStart(t *testing.T) {

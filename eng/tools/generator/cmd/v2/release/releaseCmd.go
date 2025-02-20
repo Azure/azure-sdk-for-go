@@ -183,10 +183,6 @@ func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash str
 
 	if existTypeSpec {
 		log.Printf("Generate SDK through TypeSpec...")
-		packageModuleRelativePath := generateCtx.TypeSpecConfig.GetPackageModuleRelativePath()
-		if packageModuleRelativePath == "" {
-			return fmt.Errorf("package module relative path not found")
-		}
 		result, err = generateCtx.GenerateForTypeSpec(&common.GenerateParam{
 			RPName:               c.rpName,
 			NamespaceName:        c.namespaceName,
@@ -198,7 +194,7 @@ func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash str
 			GoVersion:            c.flags.GoVersion,
 			TypeSpecEmitOption:   c.flags.TypeSpecGoOption,
 			TspClientOptions:     c.flags.TspClientOption,
-		}, packageModuleRelativePath)
+		})
 	} else {
 		log.Printf("Generate SDK through AutoRest...")
 		result, err = generateCtx.GenerateForSingleRPNamespace(&common.GenerateParam{

@@ -1,5 +1,7 @@
 # Azure Logz Module for Go
 
+Please note, this package has been deprecated and will no longer be maintained after 13/02/2025. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
+
 The `armlogz` module provides operations for working with Azure Logz.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/logz/armlogz)

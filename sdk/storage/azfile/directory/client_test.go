@@ -269,6 +269,53 @@ func (d *DirectoryRecordedTestsSuite) TestDirCreateDeleteDefault() {
 	_require.Equal(gResp.FileChangeTime.IsZero(), false)
 }
 
+func (d *DirectoryRecordedTestsSuite) TestDirCreateNfs() {
+	_require := require.New(d.T())
+	testName := d.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountPremium)
+	_require.NoError(err)
+	shareName := testcommon.GenerateShareName(testName)
+	shareURL := "https://" + cred.AccountName() + ".file.core.windows.net/" + shareName
+
+	owner := "345"
+	group := "123"
+	mode := "6444"
+
+	options := &share.ClientOptions{}
+	testcommon.SetClientOptions(d.T(), &options.ClientOptions)
+	premiumShareClient, err := share.NewClientWithSharedKeyCredential(shareURL, cred, options)
+	_require.NoError(err)
+
+	_, err = premiumShareClient.Create(context.Background(), &share.CreateOptions{
+		EnabledProtocols: to.Ptr("NFS"),
+	})
+	defer testcommon.DeleteShare(context.Background(), _require, premiumShareClient)
+	_require.NoError(err)
+
+	dirName := testcommon.GenerateDirectoryName(testName)
+	dirClient := premiumShareClient.NewDirectoryClient(dirName)
+	_require.NoError(err)
+
+	cResp, err := dirClient.Create(context.Background(), &directory.CreateOptions{
+		Owner:    to.Ptr(owner),
+		Group:    to.Ptr(group),
+		FileMode: to.Ptr(mode),
+	})
+	_require.NoError(err)
+	_require.NotNil(cResp.ETag)
+	_require.Equal(*cResp.Owner, owner)
+	_require.Equal(*cResp.Group, group)
+	_require.Equal(*cResp.FileMode, mode)
+
+	gResp, err := dirClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp.Owner, owner)
+	_require.Equal(*gResp.Group, group)
+	_require.Equal(*gResp.FileMode, mode)
+	_require.Equal(*gResp.NFSFileType, file.NFSFileTypeDirectory)
+}
+
 func (d *DirectoryRecordedTestsSuite) TestDirCreateRenameFilePermissionFormatDefault() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
@@ -456,6 +503,53 @@ func (d *DirectoryRecordedTestsSuite) TestDirSetPropertiesFilePermissionFormat()
 	_require.NotNil(sResp.FileLastWriteTime)
 	_require.NotNil(sResp.FilePermissionKey)
 	_require.NotEqual(*sResp.FilePermissionKey, *cResp.FilePermissionKey)
+}
+
+func (d *DirectoryRecordedTestsSuite) TestDirSetPropertiesNfs() {
+	_require := require.New(d.T())
+	testName := d.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountPremium)
+	_require.NoError(err)
+	shareName := testcommon.GenerateShareName(testName)
+	shareURL := "https://" + cred.AccountName() + ".file.core.windows.net/" + shareName
+
+	owner := "345"
+	group := "123"
+	mode := "7777"
+
+	options := &share.ClientOptions{}
+	testcommon.SetClientOptions(d.T(), &options.ClientOptions)
+	premiumShareClient, err := share.NewClientWithSharedKeyCredential(shareURL, cred, options)
+	_require.NoError(err)
+
+	_, err = premiumShareClient.Create(context.Background(), &share.CreateOptions{
+		EnabledProtocols: to.Ptr("NFS"),
+	})
+	defer testcommon.DeleteShare(context.Background(), _require, premiumShareClient)
+	_require.NoError(err)
+
+	dirName := testcommon.GenerateDirectoryName(testName)
+	dirClient := testcommon.GetDirectoryClient(dirName, premiumShareClient)
+
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	// Set the custom permissions
+	_, err = dirClient.SetProperties(context.Background(), &directory.SetPropertiesOptions{
+		Owner:    to.Ptr(owner),
+		Group:    to.Ptr(group),
+		FileMode: to.Ptr(mode),
+	})
+	_require.NoError(err)
+
+	response, err := dirClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*response.FileMode, mode)
+	_require.Equal(*response.Group, group)
+	_require.Equal(*response.Owner, owner)
+	_require.Equal(*response.NFSFileType, file.NFSFileTypeDirectory)
+
 }
 
 func (d *DirectoryUnrecordedTestsSuite) TestDirCreateDeleteNonDefault() {
@@ -1309,7 +1403,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryCreateWithTrailingSlash() {
 	_require.NoError(err)
 }
 
-func (d *DirectoryRecordedTestsSuite) TestDirectoryCreateDeleteUsingOAuth() {
+func (d *DirectoryUnrecordedTestsSuite) TestDirectoryCreateDeleteUsingOAuth() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
 
@@ -1360,7 +1454,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryCreateDeleteUsingOAuth() {
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
 }
 
-func (d *DirectoryRecordedTestsSuite) TestDirectorySetPropertiesUsingOAuth() {
+func (d *DirectoryUnrecordedTestsSuite) TestDirectorySetPropertiesUsingOAuth() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
 
@@ -1448,7 +1542,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirectorySetPropertiesUsingOAuth() {
 	_require.EqualValues(fileAttributes2, fileAttributes)
 }
 
-func (d *DirectoryRecordedTestsSuite) TestDirectorySetMetadataUsingOAuth() {
+func (d *DirectoryUnrecordedTestsSuite) TestDirectorySetMetadataUsingOAuth() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
 
@@ -1502,7 +1596,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirectorySetMetadataUsingOAuth() {
 	_require.EqualValues(gResp.Metadata, md)
 }
 
-func (d *DirectoryRecordedTestsSuite) TestDirectoryListHandlesUsingOAuth() {
+func (d *DirectoryUnrecordedTestsSuite) TestDirectoryListHandlesUsingOAuth() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
 
@@ -1537,7 +1631,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryListHandlesUsingOAuth() {
 	_require.Equal(*resp.NextMarker, "")
 }
 
-func (d *DirectoryRecordedTestsSuite) TestDirectoryForceCloseHandlesUsingOAuth() {
+func (d *DirectoryUnrecordedTestsSuite) TestDirectoryForceCloseHandlesUsingOAuth() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
 
@@ -1572,7 +1666,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryForceCloseHandlesUsingOAuth()
 	_require.Nil(resp.Marker)
 }
 
-func (d *DirectoryRecordedTestsSuite) TestDirectoryListUsingOAuth() {
+func (d *DirectoryUnrecordedTestsSuite) TestDirectoryListUsingOAuth() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
 
@@ -1686,7 +1780,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryRenameDefault() {
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ParentNotFound)
 }
 
-func (d *DirectoryRecordedTestsSuite) TestDirectoryRenameUsingOAuth() {
+func (d *DirectoryUnrecordedTestsSuite) TestDirectoryRenameUsingOAuth() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
 
@@ -1989,7 +2083,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryCreateDeleteTrailingDot() {
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
 }
 
-func (d *DirectoryRecordedTestsSuite) TestDirectorySetPropertiesTrailingDotAndOAuth() {
+func (d *DirectoryUnrecordedTestsSuite) TestDirectorySetPropertiesTrailingDotAndOAuth() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
 
@@ -2344,7 +2438,7 @@ func (d *DirectoryRecordedTestsSuite) TestListFileDirEncodedPrefix() {
 	}
 }
 
-func (d *DirectoryRecordedTestsSuite) TestDirectoryClientDefaultAudience() {
+func (d *DirectoryUnrecordedTestsSuite) TestDirectoryClientDefaultAudience() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
 
@@ -2379,7 +2473,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryClientDefaultAudience() {
 	_require.NoError(err)
 }
 
-func (d *DirectoryRecordedTestsSuite) TestDirectoryClientCustomAudience() {
+func (d *DirectoryUnrecordedTestsSuite) TestDirectoryClientCustomAudience() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
 

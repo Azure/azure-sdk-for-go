@@ -1,6 +1,6 @@
 # Release History
 
-## 1.8.2 (Unreleased)
+## 1.8.3-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,12 @@
 ### Bugs Fixed
 
 ### Other Changes
+* `NewManagedIdentityCredential` logs the configured user-assigned identity, if any
+
+## 1.8.2 (2025-02-12)
+
+### Other Changes
+* Upgraded dependencies
 
 ## 1.8.1 (2025-01-15)
 

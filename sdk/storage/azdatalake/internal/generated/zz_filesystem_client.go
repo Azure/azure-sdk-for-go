@@ -29,7 +29,7 @@ type FileSystemClient struct {
 // operation does not support conditional HTTP requests.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-05
+// Generated from API version 2025-05-05
 //   - options - FileSystemClientCreateOptions contains the optional parameters for the FileSystemClient.Create method.
 func (client *FileSystemClient) Create(ctx context.Context, options *FileSystemClientCreateOptions) (FileSystemClientCreateResponse, error) {
 	var err error
@@ -68,7 +68,7 @@ func (client *FileSystemClient) createCreateRequest(ctx context.Context, options
 	if options != nil && options.Properties != nil {
 		req.Raw().Header["x-ms-properties"] = []string{*options.Properties}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2025-01-05"}
+	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
 	return req, nil
 }
 
@@ -114,7 +114,7 @@ func (client *FileSystemClient) createHandleResponse(resp *http.Response) (FileS
 // [https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations].
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-05
+// Generated from API version 2025-05-05
 //   - options - FileSystemClientDeleteOptions contains the optional parameters for the FileSystemClient.Delete method.
 //   - ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the FileSystemClient.SetProperties
 //     method.
@@ -158,7 +158,7 @@ func (client *FileSystemClient) deleteCreateRequest(ctx context.Context, options
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2025-01-05"}
+	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
 	return req, nil
 }
 
@@ -184,7 +184,7 @@ func (client *FileSystemClient) deleteHandleResponse(resp *http.Response) (FileS
 // GetProperties - All system and user-defined filesystem properties are specified in the response headers.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-05
+// Generated from API version 2025-05-05
 //   - options - FileSystemClientGetPropertiesOptions contains the optional parameters for the FileSystemClient.GetProperties
 //     method.
 func (client *FileSystemClient) GetProperties(ctx context.Context, options *FileSystemClientGetPropertiesOptions) (FileSystemClientGetPropertiesResponse, error) {
@@ -221,7 +221,7 @@ func (client *FileSystemClient) getPropertiesCreateRequest(ctx context.Context, 
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2025-01-05"}
+	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
 	return req, nil
 }
 
@@ -262,7 +262,7 @@ func (client *FileSystemClient) getPropertiesHandleResponse(resp *http.Response)
 
 // NewListBlobHierarchySegmentPager - The List Blobs operation returns a list of the blobs under the specified container
 //
-// Generated from API version 2025-01-05
+// Generated from API version 2025-05-05
 //   - options - FileSystemClientListBlobHierarchySegmentOptions contains the optional parameters for the FileSystemClient.NewListBlobHierarchySegmentPager
 //     method.
 //
@@ -301,7 +301,7 @@ func (client *FileSystemClient) ListBlobHierarchySegmentCreateRequest(ctx contex
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2025-01-05"}
+	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
 	return req, nil
 }
 
@@ -335,7 +335,7 @@ func (client *FileSystemClient) ListBlobHierarchySegmentHandleResponse(resp *htt
 
 // NewListPathsPager - List FileSystem paths and their properties.
 //
-// Generated from API version 2025-01-05
+// Generated from API version 2025-05-05
 //   - recursive - Required
 //   - options - FileSystemClientListPathsOptions contains the optional parameters for the FileSystemClient.NewListPathsPager
 //     method.
@@ -369,7 +369,7 @@ func (client *FileSystemClient) ListPathsCreateRequest(ctx context.Context, recu
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2025-01-05"}
+	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
 	return req, nil
 }
 
@@ -413,7 +413,7 @@ func (client *FileSystemClient) ListPathsHandleResponse(resp *http.Response) (Fi
 // [https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations].
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-05
+// Generated from API version 2025-05-05
 //   - options - FileSystemClientSetPropertiesOptions contains the optional parameters for the FileSystemClient.SetProperties
 //     method.
 //   - ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the FileSystemClient.SetProperties
@@ -461,7 +461,7 @@ func (client *FileSystemClient) setPropertiesCreateRequest(ctx context.Context, 
 	if options != nil && options.Properties != nil {
 		req.Raw().Header["x-ms-properties"] = []string{*options.Properties}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2025-01-05"}
+	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
 	return req, nil
 }
 

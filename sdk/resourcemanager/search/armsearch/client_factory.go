@@ -61,6 +61,13 @@ func (c *ClientFactory) NewNetworkSecurityPerimeterConfigurationsClient() *Netwo
 	}
 }
 
+// NewOfferingsClient creates a new instance of OfferingsClient.
+func (c *ClientFactory) NewOfferingsClient() *OfferingsClient {
+	return &OfferingsClient{
+		internal: c.internal,
+	}
+}
+
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return &OperationsClient{
@@ -87,6 +94,14 @@ func (c *ClientFactory) NewPrivateLinkResourcesClient() *PrivateLinkResourcesCli
 // NewQueryKeysClient creates a new instance of QueryKeysClient.
 func (c *ClientFactory) NewQueryKeysClient() *QueryKeysClient {
 	return &QueryKeysClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewServiceClient creates a new instance of ServiceClient.
+func (c *ClientFactory) NewServiceClient() *ServiceClient {
+	return &ServiceClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

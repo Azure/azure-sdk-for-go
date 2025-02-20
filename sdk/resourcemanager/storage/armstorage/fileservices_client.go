@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
@@ -47,7 +48,7 @@ func NewFileServicesClient(subscriptionID string, credential azcore.TokenCredent
 // Sharing) rules.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2024-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -96,7 +97,7 @@ func (client *FileServicesClient) getServicePropertiesCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -111,10 +112,79 @@ func (client *FileServicesClient) getServicePropertiesHandleResponse(resp *http.
 	return result, nil
 }
 
+// GetServiceUsage - Gets the usage of file service in storage account including account limits, file share limits and constants
+// used in recommendations and bursting formula.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-01-01
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
+//     3 and 24 characters in length and use numbers and lower-case letters only.
+//   - options - FileServicesClientGetServiceUsageOptions contains the optional parameters for the FileServicesClient.GetServiceUsage
+//     method.
+func (client *FileServicesClient) GetServiceUsage(ctx context.Context, resourceGroupName string, accountName string, options *FileServicesClientGetServiceUsageOptions) (FileServicesClientGetServiceUsageResponse, error) {
+	var err error
+	const operationName = "FileServicesClient.GetServiceUsage"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getServiceUsageCreateRequest(ctx, resourceGroupName, accountName, options)
+	if err != nil {
+		return FileServicesClientGetServiceUsageResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return FileServicesClientGetServiceUsageResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return FileServicesClientGetServiceUsageResponse{}, err
+	}
+	resp, err := client.getServiceUsageHandleResponse(httpResp)
+	return resp, err
+}
+
+// getServiceUsageCreateRequest creates the GetServiceUsage request.
+func (client *FileServicesClient) getServiceUsageCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *FileServicesClientGetServiceUsageOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/fileServices/{FileServicesName}/usages/{fileServiceUsagesName}"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	urlPath = strings.ReplaceAll(urlPath, "{FileServicesName}", url.PathEscape("default"))
+	urlPath = strings.ReplaceAll(urlPath, "{fileServiceUsagesName}", url.PathEscape("default"))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-01-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getServiceUsageHandleResponse handles the GetServiceUsage response.
+func (client *FileServicesClient) getServiceUsageHandleResponse(resp *http.Response) (FileServicesClientGetServiceUsageResponse, error) {
+	result := FileServicesClientGetServiceUsageResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.FileServiceUsage); err != nil {
+		return FileServicesClientGetServiceUsageResponse{}, err
+	}
+	return result, nil
+}
+
 // List - List all file services in storage accounts
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2024-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -161,7 +231,7 @@ func (client *FileServicesClient) listCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -176,11 +246,81 @@ func (client *FileServicesClient) listHandleResponse(resp *http.Response) (FileS
 	return result, nil
 }
 
+// NewListServiceUsagesPager - Gets the usages of file service in storage account.
+//
+// Generated from API version 2024-01-01
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
+//     3 and 24 characters in length and use numbers and lower-case letters only.
+//   - options - FileServicesClientListServiceUsagesOptions contains the optional parameters for the FileServicesClient.NewListServiceUsagesPager
+//     method.
+func (client *FileServicesClient) NewListServiceUsagesPager(resourceGroupName string, accountName string, options *FileServicesClientListServiceUsagesOptions) *runtime.Pager[FileServicesClientListServiceUsagesResponse] {
+	return runtime.NewPager(runtime.PagingHandler[FileServicesClientListServiceUsagesResponse]{
+		More: func(page FileServicesClientListServiceUsagesResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *FileServicesClientListServiceUsagesResponse) (FileServicesClientListServiceUsagesResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "FileServicesClient.NewListServiceUsagesPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listServiceUsagesCreateRequest(ctx, resourceGroupName, accountName, options)
+			}, nil)
+			if err != nil {
+				return FileServicesClientListServiceUsagesResponse{}, err
+			}
+			return client.listServiceUsagesHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listServiceUsagesCreateRequest creates the ListServiceUsages request.
+func (client *FileServicesClient) listServiceUsagesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *FileServicesClientListServiceUsagesOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/fileServices/{FileServicesName}/usages"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	urlPath = strings.ReplaceAll(urlPath, "{FileServicesName}", url.PathEscape("default"))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.Maxpagesize != nil {
+		reqQP.Set("$maxpagesize", strconv.FormatInt(int64(*options.Maxpagesize), 10))
+	}
+	reqQP.Set("api-version", "2024-01-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listServiceUsagesHandleResponse handles the ListServiceUsages response.
+func (client *FileServicesClient) listServiceUsagesHandleResponse(resp *http.Response) (FileServicesClientListServiceUsagesResponse, error) {
+	result := FileServicesClientListServiceUsagesResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.FileServiceUsages); err != nil {
+		return FileServicesClientListServiceUsagesResponse{}, err
+	}
+	return result, nil
+}
+
 // SetServiceProperties - Sets the properties of file services in storage accounts, including CORS (Cross-Origin Resource
 // Sharing) rules.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2024-01-01
 //   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -230,7 +370,7 @@ func (client *FileServicesClient) setServicePropertiesCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

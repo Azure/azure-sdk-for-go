@@ -123,13 +123,9 @@ func (testsuite *DeploymentsClientTestSuite) TestDeploymentsCRUD() {
 		deploymentName,
 		armresources.Deployment{
 			Properties: &armresources.DeploymentProperties{
-				Mode:     to.Ptr(armresources.DeploymentModeIncremental),
-				Template: tmp,
-				Parameters: map[string]interface{}{
-					"location": map[string]string{
-						"value": "West US",
-					},
-				},
+				Mode:       to.Ptr(armresources.DeploymentModeIncremental),
+				Template:   tmp,
+				Parameters: map[string]*armresources.DeploymentParameter{},
 			},
 		},
 		nil,
@@ -174,13 +170,9 @@ func (testsuite *DeploymentsClientTestSuite) TestDeploymentsCRUD() {
 		deploymentName,
 		armresources.Deployment{
 			Properties: &armresources.DeploymentProperties{
-				Mode:     to.Ptr(armresources.DeploymentModeIncremental),
-				Template: tmp,
-				Parameters: map[string]interface{}{
-					"location": map[string]string{
-						"value": "West US",
-					},
-				},
+				Mode:       to.Ptr(armresources.DeploymentModeIncremental),
+				Template:   tmp,
+				Parameters: map[string]*armresources.DeploymentParameter{},
 			},
 		},
 		nil,
@@ -225,13 +217,9 @@ func (testsuite *DeploymentsClientTestSuite) TestDeploymentsAtScope() {
 		deploymentName,
 		armresources.Deployment{
 			Properties: &armresources.DeploymentProperties{
-				Mode:     to.Ptr(armresources.DeploymentModeIncremental),
-				Template: temp,
-				Parameters: map[string]interface{}{
-					"location": map[string]string{
-						"value": "West US",
-					},
-				},
+				Mode:       to.Ptr(armresources.DeploymentModeIncremental),
+				Template:   temp,
+				Parameters: map[string]*armresources.DeploymentParameter{},
 			},
 		},
 		nil,
@@ -257,13 +245,9 @@ func (testsuite *DeploymentsClientTestSuite) TestDeploymentsAtScope() {
 		deploymentName,
 		armresources.Deployment{
 			Properties: &armresources.DeploymentProperties{
-				Mode:     to.Ptr(armresources.DeploymentModeIncremental),
-				Template: temp,
-				Parameters: map[string]interface{}{
-					"location": map[string]string{
-						"value": "West US",
-					},
-				},
+				Mode:       to.Ptr(armresources.DeploymentModeIncremental),
+				Template:   temp,
+				Parameters: map[string]*armresources.DeploymentParameter{},
 			},
 		},
 		nil,

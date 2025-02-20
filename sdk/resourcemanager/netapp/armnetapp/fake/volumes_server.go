@@ -74,10 +74,6 @@ type VolumesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginListGetGroupIDListForLdapUser func(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body armnetapp.GetGroupIDListForLDAPUserRequest, options *armnetapp.VolumesClientBeginListGetGroupIDListForLdapUserOptions) (resp azfake.PollerResponder[armnetapp.VolumesClientListGetGroupIDListForLdapUserResponse], errResp azfake.ErrorResponder)
 
-	// BeginListQuotaReport is the fake for method VolumesClient.BeginListQuotaReport
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginListQuotaReport func(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *armnetapp.VolumesClientBeginListQuotaReportOptions) (resp azfake.PollerResponder[armnetapp.VolumesClientListQuotaReportResponse], errResp azfake.ErrorResponder)
-
 	// NewListReplicationsPager is the fake for method VolumesClient.NewListReplicationsPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListReplicationsPager func(resourceGroupName string, accountName string, poolName string, volumeName string, options *armnetapp.VolumesClientListReplicationsOptions) (resp azfake.PagerResponder[armnetapp.VolumesClientListReplicationsResponse])
@@ -130,10 +126,6 @@ type VolumesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginRevertRelocation func(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *armnetapp.VolumesClientBeginRevertRelocationOptions) (resp azfake.PollerResponder[armnetapp.VolumesClientRevertRelocationResponse], errResp azfake.ErrorResponder)
 
-	// BeginSplitCloneFromParent is the fake for method VolumesClient.BeginSplitCloneFromParent
-	// HTTP status codes to indicate success: http.StatusAccepted
-	BeginSplitCloneFromParent func(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *armnetapp.VolumesClientBeginSplitCloneFromParentOptions) (resp azfake.PollerResponder[armnetapp.VolumesClientSplitCloneFromParentResponse], errResp azfake.ErrorResponder)
-
 	// BeginUpdate is the fake for method VolumesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body armnetapp.VolumePatch, options *armnetapp.VolumesClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetapp.VolumesClientUpdateResponse], errResp azfake.ErrorResponder)
@@ -156,7 +148,6 @@ func NewVolumesServerTransport(srv *VolumesServer) *VolumesServerTransport {
 		beginFinalizeRelocation:            newTracker[azfake.PollerResponder[armnetapp.VolumesClientFinalizeRelocationResponse]](),
 		newListPager:                       newTracker[azfake.PagerResponder[armnetapp.VolumesClientListResponse]](),
 		beginListGetGroupIDListForLdapUser: newTracker[azfake.PollerResponder[armnetapp.VolumesClientListGetGroupIDListForLdapUserResponse]](),
-		beginListQuotaReport:               newTracker[azfake.PollerResponder[armnetapp.VolumesClientListQuotaReportResponse]](),
 		newListReplicationsPager:           newTracker[azfake.PagerResponder[armnetapp.VolumesClientListReplicationsResponse]](),
 		beginPeerExternalCluster:           newTracker[azfake.PollerResponder[armnetapp.VolumesClientPeerExternalClusterResponse]](),
 		beginPerformReplicationTransfer:    newTracker[azfake.PollerResponder[armnetapp.VolumesClientPerformReplicationTransferResponse]](),
@@ -169,7 +160,6 @@ func NewVolumesServerTransport(srv *VolumesServer) *VolumesServerTransport {
 		beginResyncReplication:             newTracker[azfake.PollerResponder[armnetapp.VolumesClientResyncReplicationResponse]](),
 		beginRevert:                        newTracker[azfake.PollerResponder[armnetapp.VolumesClientRevertResponse]](),
 		beginRevertRelocation:              newTracker[azfake.PollerResponder[armnetapp.VolumesClientRevertRelocationResponse]](),
-		beginSplitCloneFromParent:          newTracker[azfake.PollerResponder[armnetapp.VolumesClientSplitCloneFromParentResponse]](),
 		beginUpdate:                        newTracker[azfake.PollerResponder[armnetapp.VolumesClientUpdateResponse]](),
 	}
 }
@@ -189,7 +179,6 @@ type VolumesServerTransport struct {
 	beginFinalizeRelocation            *tracker[azfake.PollerResponder[armnetapp.VolumesClientFinalizeRelocationResponse]]
 	newListPager                       *tracker[azfake.PagerResponder[armnetapp.VolumesClientListResponse]]
 	beginListGetGroupIDListForLdapUser *tracker[azfake.PollerResponder[armnetapp.VolumesClientListGetGroupIDListForLdapUserResponse]]
-	beginListQuotaReport               *tracker[azfake.PollerResponder[armnetapp.VolumesClientListQuotaReportResponse]]
 	newListReplicationsPager           *tracker[azfake.PagerResponder[armnetapp.VolumesClientListReplicationsResponse]]
 	beginPeerExternalCluster           *tracker[azfake.PollerResponder[armnetapp.VolumesClientPeerExternalClusterResponse]]
 	beginPerformReplicationTransfer    *tracker[azfake.PollerResponder[armnetapp.VolumesClientPerformReplicationTransferResponse]]
@@ -202,7 +191,6 @@ type VolumesServerTransport struct {
 	beginResyncReplication             *tracker[azfake.PollerResponder[armnetapp.VolumesClientResyncReplicationResponse]]
 	beginRevert                        *tracker[azfake.PollerResponder[armnetapp.VolumesClientRevertResponse]]
 	beginRevertRelocation              *tracker[azfake.PollerResponder[armnetapp.VolumesClientRevertRelocationResponse]]
-	beginSplitCloneFromParent          *tracker[azfake.PollerResponder[armnetapp.VolumesClientSplitCloneFromParentResponse]]
 	beginUpdate                        *tracker[azfake.PollerResponder[armnetapp.VolumesClientUpdateResponse]]
 }
 
@@ -242,8 +230,6 @@ func (v *VolumesServerTransport) Do(req *http.Request) (*http.Response, error) {
 		resp, err = v.dispatchNewListPager(req)
 	case "VolumesClient.BeginListGetGroupIDListForLdapUser":
 		resp, err = v.dispatchBeginListGetGroupIDListForLdapUser(req)
-	case "VolumesClient.BeginListQuotaReport":
-		resp, err = v.dispatchBeginListQuotaReport(req)
 	case "VolumesClient.NewListReplicationsPager":
 		resp, err = v.dispatchNewListReplicationsPager(req)
 	case "VolumesClient.BeginPeerExternalCluster":
@@ -270,8 +256,6 @@ func (v *VolumesServerTransport) Do(req *http.Request) (*http.Response, error) {
 		resp, err = v.dispatchBeginRevert(req)
 	case "VolumesClient.BeginRevertRelocation":
 		resp, err = v.dispatchBeginRevertRelocation(req)
-	case "VolumesClient.BeginSplitCloneFromParent":
-		resp, err = v.dispatchBeginSplitCloneFromParent(req)
 	case "VolumesClient.BeginUpdate":
 		resp, err = v.dispatchBeginUpdate(req)
 	default:
@@ -933,58 +917,6 @@ func (v *VolumesServerTransport) dispatchBeginListGetGroupIDListForLdapUser(req 
 	}
 	if !server.PollerResponderMore(beginListGetGroupIDListForLdapUser) {
 		v.beginListGetGroupIDListForLdapUser.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (v *VolumesServerTransport) dispatchBeginListQuotaReport(req *http.Request) (*http.Response, error) {
-	if v.srv.BeginListQuotaReport == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginListQuotaReport not implemented")}
-	}
-	beginListQuotaReport := v.beginListQuotaReport.get(req)
-	if beginListQuotaReport == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumes/(?P<volumeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listQuotaReport`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
-		if err != nil {
-			return nil, err
-		}
-		volumeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := v.srv.BeginListQuotaReport(req.Context(), resourceGroupNameParam, accountNameParam, poolNameParam, volumeNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginListQuotaReport = &respr
-		v.beginListQuotaReport.add(req, beginListQuotaReport)
-	}
-
-	resp, err := server.PollerResponderNext(beginListQuotaReport, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		v.beginListQuotaReport.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginListQuotaReport) {
-		v.beginListQuotaReport.remove(req)
 	}
 
 	return resp, nil
@@ -1670,58 +1602,6 @@ func (v *VolumesServerTransport) dispatchBeginRevertRelocation(req *http.Request
 	}
 	if !server.PollerResponderMore(beginRevertRelocation) {
 		v.beginRevertRelocation.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (v *VolumesServerTransport) dispatchBeginSplitCloneFromParent(req *http.Request) (*http.Response, error) {
-	if v.srv.BeginSplitCloneFromParent == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginSplitCloneFromParent not implemented")}
-	}
-	beginSplitCloneFromParent := v.beginSplitCloneFromParent.get(req)
-	if beginSplitCloneFromParent == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumes/(?P<volumeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/splitCloneFromParent`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
-		if err != nil {
-			return nil, err
-		}
-		volumeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := v.srv.BeginSplitCloneFromParent(req.Context(), resourceGroupNameParam, accountNameParam, poolNameParam, volumeNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginSplitCloneFromParent = &respr
-		v.beginSplitCloneFromParent.add(req, beginSplitCloneFromParent)
-	}
-
-	resp, err := server.PollerResponderNext(beginSplitCloneFromParent, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !contains([]int{http.StatusAccepted}, resp.StatusCode) {
-		v.beginSplitCloneFromParent.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginSplitCloneFromParent) {
-		v.beginSplitCloneFromParent.remove(req)
 	}
 
 	return resp, nil

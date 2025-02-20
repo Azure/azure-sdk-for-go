@@ -46,7 +46,7 @@ func NewBackupsUnderBackupVaultClient(subscriptionID string, credential azcore.T
 // BeginRestoreFiles - Restore the specified files from the specified backup to the active filesystem
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01-preview
+// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - backupVaultName - The name of the Backup Vault
@@ -75,7 +75,7 @@ func (client *BackupsUnderBackupVaultClient) BeginRestoreFiles(ctx context.Conte
 // RestoreFiles - Restore the specified files from the specified backup to the active filesystem
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01-preview
+// Generated from API version 2024-09-01
 func (client *BackupsUnderBackupVaultClient) restoreFiles(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, body BackupRestoreFiles, options *BackupsUnderBackupVaultClientBeginRestoreFilesOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BackupsUnderBackupVaultClient.BeginRestoreFiles"
@@ -125,7 +125,7 @@ func (client *BackupsUnderBackupVaultClient) restoreFilesCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01-preview")
+	reqQP.Set("api-version", "2024-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

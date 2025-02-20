@@ -176,7 +176,7 @@ client := armresources.NewResourceGroupsClient("subscription ID", chain, nil)
 |`AZURE_CLIENT_CERTIFICATE_PATH`|path to a certificate file including private key
 |`AZURE_CLIENT_CERTIFICATE_PASSWORD`|password of the certificate file, if any
 
-#### **Deprecated**: Username and password
+#### Username and password
 
 > **Warning**: User password authentication is deprecated because it can't support multifactor authentication. See https://aka.ms/azsdk/identity/mfa for migration guidance.
 

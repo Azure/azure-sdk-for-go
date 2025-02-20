@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/55c5a0cd6da80b2700333c01e9a9c6067de9cef0/specification/quota/resource-manager/Microsoft.Quota/preview/2024-12-18-preview/examples/getComputeOneSkuQuotaLimit.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43042075540b8d67cce7d3d9f70b9b9f5a359da/specification/quota/resource-manager/Microsoft.Quota/stable/2025-03-01/examples/getComputeOneSkuQuotaLimit.json
 func ExampleClient_Get_quotasGetRequestForCompute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,7 +56,7 @@ func ExampleClient_Get_quotasGetRequestForCompute() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/55c5a0cd6da80b2700333c01e9a9c6067de9cef0/specification/quota/resource-manager/Microsoft.Quota/preview/2024-12-18-preview/examples/getNetworkOneSkuQuotaLimit.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43042075540b8d67cce7d3d9f70b9b9f5a359da/specification/quota/resource-manager/Microsoft.Quota/stable/2025-03-01/examples/getNetworkOneSkuQuotaLimit.json
 func ExampleClient_Get_quotasUsagesRequestForNetwork() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,7 +94,7 @@ func ExampleClient_Get_quotasUsagesRequestForNetwork() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/55c5a0cd6da80b2700333c01e9a9c6067de9cef0/specification/quota/resource-manager/Microsoft.Quota/preview/2024-12-18-preview/examples/putNetworkOneSkuQuotaRequest.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43042075540b8d67cce7d3d9f70b9b9f5a359da/specification/quota/resource-manager/Microsoft.Quota/stable/2025-03-01/examples/putNetworkOneSkuQuotaRequest.json
 func ExampleClient_BeginCreateOrUpdate_quotasPutRequestForNetwork() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -144,7 +144,7 @@ func ExampleClient_BeginCreateOrUpdate_quotasPutRequestForNetwork() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/55c5a0cd6da80b2700333c01e9a9c6067de9cef0/specification/quota/resource-manager/Microsoft.Quota/preview/2024-12-18-preview/examples/putNetworkOneSkuQuotaRequestStandardSkuPublicIpAddresses.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43042075540b8d67cce7d3d9f70b9b9f5a359da/specification/quota/resource-manager/Microsoft.Quota/stable/2025-03-01/examples/putNetworkOneSkuQuotaRequestStandardSkuPublicIpAddresses.json
 func ExampleClient_BeginCreateOrUpdate_quotasPutRequestForNetworkStandardSkuPublicIpAddressesResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -194,7 +194,7 @@ func ExampleClient_BeginCreateOrUpdate_quotasPutRequestForNetworkStandardSkuPubl
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/55c5a0cd6da80b2700333c01e9a9c6067de9cef0/specification/quota/resource-manager/Microsoft.Quota/preview/2024-12-18-preview/examples/putComputeOneSkuQuotaRequest.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43042075540b8d67cce7d3d9f70b9b9f5a359da/specification/quota/resource-manager/Microsoft.Quota/stable/2025-03-01/examples/putComputeOneSkuQuotaRequest.json
 func ExampleClient_BeginCreateOrUpdate_quotasPutRequestForCompute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -242,7 +242,7 @@ func ExampleClient_BeginCreateOrUpdate_quotasPutRequestForCompute() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/55c5a0cd6da80b2700333c01e9a9c6067de9cef0/specification/quota/resource-manager/Microsoft.Quota/preview/2024-12-18-preview/examples/putMachineLearningServicesQuotaRequestLowPriority.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43042075540b8d67cce7d3d9f70b9b9f5a359da/specification/quota/resource-manager/Microsoft.Quota/stable/2025-03-01/examples/putMachineLearningServicesQuotaRequestLowPriority.json
 func ExampleClient_BeginCreateOrUpdate_quotasRequestForMachineLearningServicesLowPriorityResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -292,7 +292,7 @@ func ExampleClient_BeginCreateOrUpdate_quotasRequestForMachineLearningServicesLo
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/55c5a0cd6da80b2700333c01e9a9c6067de9cef0/specification/quota/resource-manager/Microsoft.Quota/preview/2024-12-18-preview/examples/patchComputeQuotaRequest.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43042075540b8d67cce7d3d9f70b9b9f5a359da/specification/quota/resource-manager/Microsoft.Quota/stable/2025-03-01/examples/patchComputeQuotaRequest.json
 func ExampleClient_BeginUpdate_quotasRequestPatchForCompute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -341,7 +341,7 @@ func ExampleClient_BeginUpdate_quotasRequestPatchForCompute() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/55c5a0cd6da80b2700333c01e9a9c6067de9cef0/specification/quota/resource-manager/Microsoft.Quota/preview/2024-12-18-preview/examples/patchNetworkOneSkuQuotaRequest.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43042075540b8d67cce7d3d9f70b9b9f5a359da/specification/quota/resource-manager/Microsoft.Quota/stable/2025-03-01/examples/patchNetworkOneSkuQuotaRequest.json
 func ExampleClient_BeginUpdate_quotasRequestPatchForNetwork() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -391,7 +391,7 @@ func ExampleClient_BeginUpdate_quotasRequestPatchForNetwork() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/55c5a0cd6da80b2700333c01e9a9c6067de9cef0/specification/quota/resource-manager/Microsoft.Quota/preview/2024-12-18-preview/examples/getComputeQuotaLimits.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43042075540b8d67cce7d3d9f70b9b9f5a359da/specification/quota/resource-manager/Microsoft.Quota/stable/2025-03-01/examples/getComputeQuotaLimits.json
 func ExampleClient_NewListPager_quotasListQuotaLimitsForCompute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -623,7 +623,7 @@ func ExampleClient_NewListPager_quotasListQuotaLimitsForCompute() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/55c5a0cd6da80b2700333c01e9a9c6067de9cef0/specification/quota/resource-manager/Microsoft.Quota/preview/2024-12-18-preview/examples/getNetworkQuotaLimits.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43042075540b8d67cce7d3d9f70b9b9f5a359da/specification/quota/resource-manager/Microsoft.Quota/stable/2025-03-01/examples/getNetworkQuotaLimits.json
 func ExampleClient_NewListPager_quotasListQuotaLimitsForNetwork() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1374,7 +1374,7 @@ func ExampleClient_NewListPager_quotasListQuotaLimitsForNetwork() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/55c5a0cd6da80b2700333c01e9a9c6067de9cef0/specification/quota/resource-manager/Microsoft.Quota/preview/2024-12-18-preview/examples/getMachineLearningServicesQuotaLimits.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43042075540b8d67cce7d3d9f70b9b9f5a359da/specification/quota/resource-manager/Microsoft.Quota/stable/2025-03-01/examples/getMachineLearningServicesQuotaLimits.json
 func ExampleClient_NewListPager_quotasListQuotaLimitsMachineLearningServices() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

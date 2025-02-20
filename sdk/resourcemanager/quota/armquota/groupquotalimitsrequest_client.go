@@ -43,7 +43,7 @@ func NewGroupQuotaLimitsRequestClient(credential azcore.TokenCredential, options
 // Get - Get API to check the status of a GroupQuota request by requestId.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-12-18-preview
+// Generated from API version 2025-03-01
 //   - managementGroupID - Management Group Id.
 //   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
 //   - requestID - Request Id.
@@ -91,7 +91,7 @@ func (client *GroupQuotaLimitsRequestClient) getCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-18-preview")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -108,7 +108,7 @@ func (client *GroupQuotaLimitsRequestClient) getHandleResponse(resp *http.Respon
 
 // NewListPager - Get API to check the status of a GroupQuota request by requestId.
 //
-// Generated from API version 2024-12-18-preview
+// Generated from API version 2025-03-01
 //   - managementGroupID - Management Group Id.
 //   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
 //   - resourceProviderName - The resource provider name, such as - Microsoft.Compute. Currently only Microsoft.Compute resource
@@ -162,7 +162,7 @@ func (client *GroupQuotaLimitsRequestClient) listCreateRequest(ctx context.Conte
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("$filter", filter)
-	reqQP.Set("api-version", "2024-12-18-preview")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -184,7 +184,7 @@ func (client *GroupQuotaLimitsRequestClient) listHandleResponse(resp *http.Respo
 // intermediate status. This API provides the finals status with the request details and status.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-12-18-preview
+// Generated from API version 2025-03-01
 //   - managementGroupID - Management Group Id.
 //   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
 //   - resourceProviderName - The resource provider name, such as - Microsoft.Compute. Currently only Microsoft.Compute resource
@@ -217,7 +217,7 @@ func (client *GroupQuotaLimitsRequestClient) BeginUpdate(ctx context.Context, ma
 // intermediate status. This API provides the finals status with the request details and status.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-12-18-preview
+// Generated from API version 2025-03-01
 func (client *GroupQuotaLimitsRequestClient) update(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, location string, options *GroupQuotaLimitsRequestClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GroupQuotaLimitsRequestClient.BeginUpdate"
@@ -263,7 +263,7 @@ func (client *GroupQuotaLimitsRequestClient) updateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-18-preview")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.GroupQuotaRequest != nil {

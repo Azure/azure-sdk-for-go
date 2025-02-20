@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources/v2"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -90,7 +90,7 @@ func (testsuite *TagsClientTestSuite) TestTagsCRUDAtScope() {
 	tagsClient, err := armresources.NewTagsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	scopeName := fmt.Sprintf("/subscriptions/%v/resourceGroups/%v", testsuite.subscriptionID, testsuite.resourceGroupName)
-	_, err = tagsClient.CreateOrUpdateAtScope(
+	pollerResp0, err := tagsClient.BeginCreateOrUpdateAtScope(
 		testsuite.ctx,
 		scopeName,
 		armresources.TagsResource{
@@ -104,10 +104,11 @@ func (testsuite *TagsClientTestSuite) TestTagsCRUDAtScope() {
 		nil,
 	)
 	testsuite.Require().NoError(err)
-
+	_, err = testutil.PollForTest(testsuite.ctx, pollerResp0)
+	testsuite.Require().NoError(err)
 	// update at scope
 	fmt.Println("Call operation: Tags_UpdateAtScope")
-	_, err = tagsClient.UpdateAtScope(
+	pollerResp, err := tagsClient.BeginUpdateAtScope(
 		testsuite.ctx,
 		scopeName,
 		armresources.TagsPatchResource{
@@ -121,6 +122,8 @@ func (testsuite *TagsClientTestSuite) TestTagsCRUDAtScope() {
 		nil,
 	)
 	testsuite.Require().NoError(err)
+	_, err = testutil.PollForTest(testsuite.ctx, pollerResp)
+	testsuite.Require().NoError(err)
 
 	// get at scopes
 	fmt.Println("Call operation: Tags_GetAtScope")
@@ -129,6 +132,8 @@ func (testsuite *TagsClientTestSuite) TestTagsCRUDAtScope() {
 
 	// delete at scope
 	fmt.Println("Call operation: Tags_DeleteAtScope")
-	_, err = tagsClient.DeleteAtScope(testsuite.ctx, scopeName, nil)
+	pollerResp2, err := tagsClient.BeginDeleteAtScope(testsuite.ctx, scopeName, nil)
+	testsuite.Require().NoError(err)
+	_, err = testutil.PollForTest(testsuite.ctx, pollerResp2)
 	testsuite.Require().NoError(err)
 }

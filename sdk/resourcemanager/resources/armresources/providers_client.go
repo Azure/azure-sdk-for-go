@@ -46,7 +46,7 @@ func NewProvidersClient(subscriptionID string, credential azcore.TokenCredential
 // Get - Gets the specified resource provider.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-04-01
+// Generated from API version 2024-11-01
 //   - resourceProviderNamespace - The namespace of the resource provider.
 //   - options - ProvidersClientGetOptions contains the optional parameters for the ProvidersClient.Get method.
 func (client *ProvidersClient) Get(ctx context.Context, resourceProviderNamespace string, options *ProvidersClientGetOptions) (ProvidersClientGetResponse, error) {
@@ -90,7 +90,7 @@ func (client *ProvidersClient) getCreateRequest(ctx context.Context, resourcePro
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2021-04-01")
+	reqQP.Set("api-version", "2024-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -108,7 +108,7 @@ func (client *ProvidersClient) getHandleResponse(resp *http.Response) (Providers
 // GetAtTenantScope - Gets the specified resource provider at the tenant level.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-04-01
+// Generated from API version 2024-11-01
 //   - resourceProviderNamespace - The namespace of the resource provider.
 //   - options - ProvidersClientGetAtTenantScopeOptions contains the optional parameters for the ProvidersClient.GetAtTenantScope
 //     method.
@@ -149,7 +149,7 @@ func (client *ProvidersClient) getAtTenantScopeCreateRequest(ctx context.Context
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2021-04-01")
+	reqQP.Set("api-version", "2024-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -166,7 +166,7 @@ func (client *ProvidersClient) getAtTenantScopeHandleResponse(resp *http.Respons
 
 // NewListPager - Gets all resource providers for a subscription.
 //
-// Generated from API version 2021-04-01
+// Generated from API version 2024-11-01
 //   - options - ProvidersClientListOptions contains the optional parameters for the ProvidersClient.NewListPager method.
 func (client *ProvidersClient) NewListPager(options *ProvidersClientListOptions) *runtime.Pager[ProvidersClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ProvidersClientListResponse]{
@@ -206,7 +206,7 @@ func (client *ProvidersClient) listCreateRequest(ctx context.Context, options *P
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2021-04-01")
+	reqQP.Set("api-version", "2024-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -223,7 +223,7 @@ func (client *ProvidersClient) listHandleResponse(resp *http.Response) (Provider
 
 // NewListAtTenantScopePager - Gets all resource providers for the tenant.
 //
-// Generated from API version 2021-04-01
+// Generated from API version 2024-11-01
 //   - options - ProvidersClientListAtTenantScopeOptions contains the optional parameters for the ProvidersClient.NewListAtTenantScopePager
 //     method.
 func (client *ProvidersClient) NewListAtTenantScopePager(options *ProvidersClientListAtTenantScopeOptions) *runtime.Pager[ProvidersClientListAtTenantScopeResponse] {
@@ -260,7 +260,7 @@ func (client *ProvidersClient) listAtTenantScopeCreateRequest(ctx context.Contex
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2021-04-01")
+	reqQP.Set("api-version", "2024-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -278,7 +278,7 @@ func (client *ProvidersClient) listAtTenantScopeHandleResponse(resp *http.Respon
 // ProviderPermissions - Get the provider permissions.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-04-01
+// Generated from API version 2024-11-01
 //   - resourceProviderNamespace - The namespace of the resource provider.
 //   - options - ProvidersClientProviderPermissionsOptions contains the optional parameters for the ProvidersClient.ProviderPermissions
 //     method.
@@ -320,7 +320,7 @@ func (client *ProvidersClient) providerPermissionsCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01")
+	reqQP.Set("api-version", "2024-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -338,7 +338,7 @@ func (client *ProvidersClient) providerPermissionsHandleResponse(resp *http.Resp
 // Register - Registers a subscription with a resource provider.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-04-01
+// Generated from API version 2024-11-01
 //   - resourceProviderNamespace - The namespace of the resource provider to register.
 //   - options - ProvidersClientRegisterOptions contains the optional parameters for the ProvidersClient.Register method.
 func (client *ProvidersClient) Register(ctx context.Context, resourceProviderNamespace string, options *ProvidersClientRegisterOptions) (ProvidersClientRegisterResponse, error) {
@@ -379,7 +379,7 @@ func (client *ProvidersClient) registerCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01")
+	reqQP.Set("api-version", "2024-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Properties != nil {
@@ -400,10 +400,12 @@ func (client *ProvidersClient) registerHandleResponse(resp *http.Response) (Prov
 	return result, nil
 }
 
-// RegisterAtManagementGroupScope - Registers a management group with a resource provider.
+// RegisterAtManagementGroupScope - Registers a management group with a resource provider. Use this operation to register
+// a resource provider with resource types that can be deployed at the management group scope. It does not
+// recursively register subscriptions within the management group. Instead, you must register subscriptions individually.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-04-01
+// Generated from API version 2024-11-01
 //   - resourceProviderNamespace - The namespace of the resource provider to register.
 //   - groupID - The management group ID.
 //   - options - ProvidersClientRegisterAtManagementGroupScopeOptions contains the optional parameters for the ProvidersClient.RegisterAtManagementGroupScope
@@ -445,7 +447,7 @@ func (client *ProvidersClient) registerAtManagementGroupScopeCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01")
+	reqQP.Set("api-version", "2024-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -454,7 +456,7 @@ func (client *ProvidersClient) registerAtManagementGroupScopeCreateRequest(ctx c
 // Unregister - Unregisters a subscription from a resource provider.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-04-01
+// Generated from API version 2024-11-01
 //   - resourceProviderNamespace - The namespace of the resource provider to unregister.
 //   - options - ProvidersClientUnregisterOptions contains the optional parameters for the ProvidersClient.Unregister method.
 func (client *ProvidersClient) Unregister(ctx context.Context, resourceProviderNamespace string, options *ProvidersClientUnregisterOptions) (ProvidersClientUnregisterResponse, error) {
@@ -495,7 +497,7 @@ func (client *ProvidersClient) unregisterCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01")
+	reqQP.Set("api-version", "2024-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources/v2
 
 go 1.18
 
@@ -8,6 +8,7 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.10.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3 v3.1.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/armmanagementgroups v1.2.0
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources v1.2.0
 	github.com/stretchr/testify v1.10.0
 )
 

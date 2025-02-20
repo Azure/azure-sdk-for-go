@@ -15,11 +15,11 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fd842fb73656039ec94ce367bcedee25a57bd18/specification/resources/resource-manager/Microsoft.Resources/stable/2021-04-01/examples/PutTagsResource.json
-func ExampleTagsClient_CreateOrUpdateAtScope_updateTagsOnAResource() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PutTagsResource.json
+func ExampleTagsClient_BeginCreateOrUpdateAtScope_updateTagsOnAResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleTagsClient_CreateOrUpdateAtScope_updateTagsOnAResource() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewTagsClient().CreateOrUpdateAtScope(ctx, "subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/my-resource-group/providers/myPRNameSpace/VM/myVm", armresources.TagsResource{
+	poller, err := clientFactory.NewTagsClient().BeginCreateOrUpdateAtScope(ctx, "subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/my-resource-group/providers/myPRNameSpace/VM/myVm", armresources.TagsResource{
 		Properties: &armresources.Tags{
 			Tags: map[string]*string{
 				"tagKey1": to.Ptr("tag-value-1"),
@@ -40,10 +40,15 @@ func ExampleTagsClient_CreateOrUpdateAtScope_updateTagsOnAResource() {
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.TagsResource = armresources.TagsResource{
+	// 	ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/my-resource-group/providers/myPRNameSpace/VM/myVm"),
 	// 	Properties: &armresources.Tags{
 	// 		Tags: map[string]*string{
 	// 			"tagKey1": to.Ptr("tag-value-1"),
@@ -53,8 +58,8 @@ func ExampleTagsClient_CreateOrUpdateAtScope_updateTagsOnAResource() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fd842fb73656039ec94ce367bcedee25a57bd18/specification/resources/resource-manager/Microsoft.Resources/stable/2021-04-01/examples/PutTagsSubscription.json
-func ExampleTagsClient_CreateOrUpdateAtScope_updateTagsOnASubscription() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PutTagsSubscription.json
+func ExampleTagsClient_BeginCreateOrUpdateAtScope_updateTagsOnASubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -64,7 +69,7 @@ func ExampleTagsClient_CreateOrUpdateAtScope_updateTagsOnASubscription() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewTagsClient().CreateOrUpdateAtScope(ctx, "subscriptions/00000000-0000-0000-0000-000000000000", armresources.TagsResource{
+	poller, err := clientFactory.NewTagsClient().BeginCreateOrUpdateAtScope(ctx, "subscriptions/00000000-0000-0000-0000-000000000000", armresources.TagsResource{
 		Properties: &armresources.Tags{
 			Tags: map[string]*string{
 				"tagKey1": to.Ptr("tag-value-1"),
@@ -75,10 +80,15 @@ func ExampleTagsClient_CreateOrUpdateAtScope_updateTagsOnASubscription() {
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.TagsResource = armresources.TagsResource{
+	// 	ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000"),
 	// 	Properties: &armresources.Tags{
 	// 		Tags: map[string]*string{
 	// 			"tagKey1": to.Ptr("tag-value-1"),
@@ -88,7 +98,89 @@ func ExampleTagsClient_CreateOrUpdateAtScope_updateTagsOnASubscription() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fd842fb73656039ec94ce367bcedee25a57bd18/specification/resources/resource-manager/Microsoft.Resources/stable/2021-04-01/examples/GetTagsResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PatchTagsResource.json
+func ExampleTagsClient_BeginUpdateAtScope_updateTagsOnAResource() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armresources.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewTagsClient().BeginUpdateAtScope(ctx, "subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/my-resource-group/providers/myPRNameSpace/VM/myVm", armresources.TagsPatchResource{
+		Operation: to.Ptr(armresources.TagsPatchOperationReplace),
+		Properties: &armresources.Tags{
+			Tags: map[string]*string{
+				"tagKey1": to.Ptr("tag-value-1"),
+				"tagKey2": to.Ptr("tag-value-2"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.TagsResource = armresources.TagsResource{
+	// 	ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/my-resource-group/providers/myPRNameSpace/VM/myVm"),
+	// 	Properties: &armresources.Tags{
+	// 		Tags: map[string]*string{
+	// 			"tagKey1": to.Ptr("tag-value-1"),
+	// 			"tagKey2": to.Ptr("tag-value-2"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PatchTagsSubscription.json
+func ExampleTagsClient_BeginUpdateAtScope_updateTagsOnASubscription() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armresources.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewTagsClient().BeginUpdateAtScope(ctx, "subscriptions/00000000-0000-0000-0000-000000000000", armresources.TagsPatchResource{
+		Operation: to.Ptr(armresources.TagsPatchOperationReplace),
+		Properties: &armresources.Tags{
+			Tags: map[string]*string{
+				"tagKey1": to.Ptr("tag-value-1"),
+				"tagKey2": to.Ptr("tag-value-2"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.TagsResource = armresources.TagsResource{
+	// 	ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000"),
+	// 	Properties: &armresources.Tags{
+	// 		Tags: map[string]*string{
+	// 			"tagKey1": to.Ptr("tag-value-1"),
+	// 			"tagKey2": to.Ptr("tag-value-2"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/GetTagsResource.json
 func ExampleTagsClient_GetAtScope_getTagsOnAResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,6 +199,7 @@ func ExampleTagsClient_GetAtScope_getTagsOnAResource() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.TagsResource = armresources.TagsResource{
+	// 	ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/my-resource-group/providers/myPRNameSpace/VM/myVm"),
 	// 	Properties: &armresources.Tags{
 	// 		Tags: map[string]*string{
 	// 			"tagKey1": to.Ptr("tag-value-1"),
@@ -116,7 +209,7 @@ func ExampleTagsClient_GetAtScope_getTagsOnAResource() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fd842fb73656039ec94ce367bcedee25a57bd18/specification/resources/resource-manager/Microsoft.Resources/stable/2021-04-01/examples/GetTagsSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/GetTagsSubscription.json
 func ExampleTagsClient_GetAtScope_getTagsOnASubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -135,6 +228,7 @@ func ExampleTagsClient_GetAtScope_getTagsOnASubscription() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.TagsResource = armresources.TagsResource{
+	// 	ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000"),
 	// 	Properties: &armresources.Tags{
 	// 		Tags: map[string]*string{
 	// 			"tagKey1": to.Ptr("tag-value-1"),
@@ -142,4 +236,46 @@ func ExampleTagsClient_GetAtScope_getTagsOnASubscription() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/DeleteTagsResource.json
+func ExampleTagsClient_BeginDeleteAtScope_updateTagsOnAResource() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armresources.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewTagsClient().BeginDeleteAtScope(ctx, "subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/my-resource-group/providers/myPRNameSpace/VM/myVm", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/DeleteTagsSubscription.json
+func ExampleTagsClient_BeginDeleteAtScope_updateTagsOnASubscription() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armresources.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewTagsClient().BeginDeleteAtScope(ctx, "subscriptions/00000000-0000-0000-0000-000000000000", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
 }

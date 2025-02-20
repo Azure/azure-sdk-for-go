@@ -46,7 +46,7 @@ func NewProviderResourceTypesClient(subscriptionID string, credential azcore.Tok
 // List - List the resource types for a specified resource provider.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-04-01
+// Generated from API version 2024-11-01
 //   - resourceProviderNamespace - The namespace of the resource provider.
 //   - options - ProviderResourceTypesClientListOptions contains the optional parameters for the ProviderResourceTypesClient.List
 //     method.
@@ -91,7 +91,7 @@ func (client *ProviderResourceTypesClient) listCreateRequest(ctx context.Context
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2021-04-01")
+	reqQP.Set("api-version", "2024-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

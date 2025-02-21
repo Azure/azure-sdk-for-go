@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package tracing
+package tracingvalidator_test
 
 import (
 	"context"
@@ -10,6 +10,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/tracingvalidator"
 	"github.com/stretchr/testify/require"
 )
 
@@ -25,7 +26,7 @@ func ExampleNewSpanValidator() {
 
 	// create a span validator that will verify spans with the given name, kind, status, attributes, and links
 	// the span matcher will verify the span at the end of the tests
-	provider := NewSpanValidator(t, SpanMatcher{
+	provider := tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
 		Name:       "TestSpan",
 		Kind:       tracing.SpanKindClient,
 		Status:     tracing.SpanStatusUnset,
@@ -57,7 +58,7 @@ func TestNewSpanValidator(t *testing.T) {
 	testAttr := tracing.Attribute{Key: "testSetAttrKey", Value: "testSetAttrValue"}
 	testLink := tracing.Link{Attributes: []tracing.Attribute{{Key: "testAddLinkKey", Value: "testAddLinkValue"}}}
 
-	provider := NewSpanValidator(t, SpanMatcher{
+	provider := tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
 		Name:   "TestSpan",
 		Kind:   tracing.SpanKindClient,
 		Status: tracing.SpanStatusError,
@@ -69,7 +70,11 @@ func TestNewSpanValidator(t *testing.T) {
 	require.NotNil(t, tracer)
 	require.True(t, tracer.Enabled())
 
-	ctx, endSpan := runtime.StartSpan(context.Background(), "TestSpan", tracer, &runtime.StartSpanOptions{
+	// spans with unmatching names are not recorded
+	ctx, endSpan := runtime.StartSpan(context.Background(), "BadSpanName", tracer, nil)
+	endSpan(nil)
+
+	ctx, endSpan = runtime.StartSpan(context.Background(), "TestSpan", tracer, &runtime.StartSpanOptions{
 		Kind:       tracing.SpanKindClient,
 		Attributes: []tracing.Attribute{initialAttr},
 		Links:      []tracing.Link{initialLink},
@@ -82,37 +87,4 @@ func TestNewSpanValidator(t *testing.T) {
 	require.NotNil(t, tracer.SpanFromContext(ctx))
 	require.NotNil(t, tracer.LinkFromContext(ctx))
 	require.Zero(t, provider.NewPropagator())
-}
-
-func TestMatchingTracerStart(t *testing.T) {
-	matcher := SpanMatcher{
-		Name:   "TestSpan",
-		Kind:   tracing.SpanKindProducer,
-		Status: tracing.SpanStatusUnset,
-		Attributes: []tracing.Attribute{
-			{Key: "testKey1", Value: "testValue1"},
-			{Key: "testKey2", Value: "testValue2"},
-		},
-	}
-	tracer := matchingTracer{
-		matcher: matcher,
-	}
-	ctx := context.Background()
-	// no-op when SpanName doesn't match
-	_, spn := tracer.Start(ctx, "BadSpanName", tracing.SpanKindProducer, nil, nil)
-	spn.End()
-	require.EqualValues(t, spn, tracing.Span{})
-	// tracks span when SpanName matches
-	_, spn = tracer.Start(ctx, "TestSpan", tracing.SpanKindProducer, []tracing.Attribute{
-		{Key: "testKey1", Value: "testValue1"},
-		{Key: "testKey2", Value: "testValue2"},
-	}, nil)
-	require.NotNil(t, spn)
-	spn.SetAttributes(tracing.Attribute{
-		Key:   "setAttributeKey",
-		Value: "setAttributeValue",
-	})
-	spn.AddLink(tracing.Link{})
-	spn.SetStatus(tracing.SpanStatusOK, "ok")
-	spn.End()
 }

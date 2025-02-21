@@ -10,29 +10,8 @@ package armnetapp
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp"
-	moduleVersion = "v7.4.0-beta.1"
+	moduleVersion = "v7.4.0"
 )
-
-// AcceptGrowCapacityPoolForShortTermCloneSplit - While auto splitting the short term clone volume, if the parent pool does
-// not have enough space to accommodate the volume after split, it will be automatically resized, which will lead to increased
-// billing. To accept capacity pool size auto grow and create a short term clone volume, set the property as accepted.
-type AcceptGrowCapacityPoolForShortTermCloneSplit string
-
-const (
-	// AcceptGrowCapacityPoolForShortTermCloneSplitAccepted - Auto grow capacity pool for short term clone split is accepted.
-	AcceptGrowCapacityPoolForShortTermCloneSplitAccepted AcceptGrowCapacityPoolForShortTermCloneSplit = "Accepted"
-	// AcceptGrowCapacityPoolForShortTermCloneSplitDeclined - Auto grow capacity pool for short term clone split is declined.
-	// Short term clone volume creation will not be allowed, to create short term clone volume accept auto grow capacity pool.
-	AcceptGrowCapacityPoolForShortTermCloneSplitDeclined AcceptGrowCapacityPoolForShortTermCloneSplit = "Declined"
-)
-
-// PossibleAcceptGrowCapacityPoolForShortTermCloneSplitValues returns the possible values for the AcceptGrowCapacityPoolForShortTermCloneSplit const type.
-func PossibleAcceptGrowCapacityPoolForShortTermCloneSplitValues() []AcceptGrowCapacityPoolForShortTermCloneSplit {
-	return []AcceptGrowCapacityPoolForShortTermCloneSplit{
-		AcceptGrowCapacityPoolForShortTermCloneSplitAccepted,
-		AcceptGrowCapacityPoolForShortTermCloneSplitDeclined,
-	}
-}
 
 // ActiveDirectoryStatus - Status of the Active Directory
 type ActiveDirectoryStatus string
@@ -190,6 +169,25 @@ func PossibleCoolAccessRetrievalPolicyValues() []CoolAccessRetrievalPolicy {
 		CoolAccessRetrievalPolicyDefault,
 		CoolAccessRetrievalPolicyNever,
 		CoolAccessRetrievalPolicyOnRead,
+	}
+}
+
+// CoolAccessTieringPolicy - coolAccessTieringPolicy determines which cold data blocks are moved to cool tier. The possible
+// values for this field are: Auto - Moves cold user data blocks in both the Snapshot copies and the active
+// file system to the cool tier tier. This policy is the default. SnapshotOnly - Moves user data blocks of the Volume Snapshot
+// copies that are not associated with the active file system to the cool tier.
+type CoolAccessTieringPolicy string
+
+const (
+	CoolAccessTieringPolicyAuto         CoolAccessTieringPolicy = "Auto"
+	CoolAccessTieringPolicySnapshotOnly CoolAccessTieringPolicy = "SnapshotOnly"
+)
+
+// PossibleCoolAccessTieringPolicyValues returns the possible values for the CoolAccessTieringPolicy const type.
+func PossibleCoolAccessTieringPolicyValues() []CoolAccessTieringPolicy {
+	return []CoolAccessTieringPolicy{
+		CoolAccessTieringPolicyAuto,
+		CoolAccessTieringPolicySnapshotOnly,
 	}
 }
 
@@ -580,24 +578,6 @@ func PossibleReplicationScheduleValues() []ReplicationSchedule {
 	}
 }
 
-// ReplicationType - Indicates whether the replication is cross zone or cross region.
-type ReplicationType string
-
-const (
-	// ReplicationTypeCrossRegionReplication - Cross region replication
-	ReplicationTypeCrossRegionReplication ReplicationType = "CrossRegionReplication"
-	// ReplicationTypeCrossZoneReplication - Cross zone replication
-	ReplicationTypeCrossZoneReplication ReplicationType = "CrossZoneReplication"
-)
-
-// PossibleReplicationTypeValues returns the possible values for the ReplicationType const type.
-func PossibleReplicationTypeValues() []ReplicationType {
-	return []ReplicationType{
-		ReplicationTypeCrossRegionReplication,
-		ReplicationTypeCrossZoneReplication,
-	}
-}
-
 // SecurityStyle - The security style of volume, default unix, defaults to ntfs for dual protocol or CIFS protocol
 type SecurityStyle string
 
@@ -618,8 +598,6 @@ func PossibleSecurityStyleValues() []SecurityStyle {
 type ServiceLevel string
 
 const (
-	// ServiceLevelFlexible - Flexible service level
-	ServiceLevelFlexible ServiceLevel = "Flexible"
 	// ServiceLevelPremium - Premium service level
 	ServiceLevelPremium ServiceLevel = "Premium"
 	// ServiceLevelStandard - Standard service level
@@ -633,7 +611,6 @@ const (
 // PossibleServiceLevelValues returns the possible values for the ServiceLevel const type.
 func PossibleServiceLevelValues() []ServiceLevel {
 	return []ServiceLevel{
-		ServiceLevelFlexible,
 		ServiceLevelPremium,
 		ServiceLevelStandard,
 		ServiceLevelStandardZRS,
@@ -678,7 +655,7 @@ func PossibleSmbNonBrowsableValues() []SmbNonBrowsable {
 	}
 }
 
-// Type - Type of quota rule
+// Type - Type of quota
 type Type string
 
 const (
@@ -699,225 +676,6 @@ func PossibleTypeValues() []Type {
 		TypeDefaultUserQuota,
 		TypeIndividualGroupQuota,
 		TypeIndividualUserQuota,
-	}
-}
-
-// VolumeLanguage - Language supported for volume.
-type VolumeLanguage string
-
-const (
-	// VolumeLanguageAr - Arabic - Deprecated
-	VolumeLanguageAr VolumeLanguage = "ar"
-	// VolumeLanguageArUTF8 - Arabic with UTF-8
-	VolumeLanguageArUTF8 VolumeLanguage = "ar.utf-8"
-	// VolumeLanguageC - Posix - Deprecated
-	VolumeLanguageC VolumeLanguage = "c"
-	// VolumeLanguageCUTF8 - Posix with UTF-8
-	VolumeLanguageCUTF8 VolumeLanguage = "c.utf-8"
-	// VolumeLanguageCs - Czech - Deprecated
-	VolumeLanguageCs VolumeLanguage = "cs"
-	// VolumeLanguageCsUTF8 - Czech with UTF-8
-	VolumeLanguageCsUTF8 VolumeLanguage = "cs.utf-8"
-	// VolumeLanguageDa - Danish - Deprecated
-	VolumeLanguageDa VolumeLanguage = "da"
-	// VolumeLanguageDaUTF8 - Danish with UTF-8
-	VolumeLanguageDaUTF8 VolumeLanguage = "da.utf-8"
-	// VolumeLanguageDe - German - Deprecated
-	VolumeLanguageDe VolumeLanguage = "de"
-	// VolumeLanguageDeUTF8 - German with UTF-8
-	VolumeLanguageDeUTF8 VolumeLanguage = "de.utf-8"
-	// VolumeLanguageEn - English - Deprecated
-	VolumeLanguageEn VolumeLanguage = "en"
-	// VolumeLanguageEnUTF8 - English with UTF-8
-	VolumeLanguageEnUTF8 VolumeLanguage = "en.utf-8"
-	// VolumeLanguageEnUs - US English - Deprecated
-	VolumeLanguageEnUs VolumeLanguage = "en-us"
-	// VolumeLanguageEnUsUTF8 - US English with UTF-8
-	VolumeLanguageEnUsUTF8 VolumeLanguage = "en-us.utf-8"
-	// VolumeLanguageEs - Spanish - Deprecated
-	VolumeLanguageEs VolumeLanguage = "es"
-	// VolumeLanguageEsUTF8 - Spanish with UTF-8
-	VolumeLanguageEsUTF8 VolumeLanguage = "es.utf-8"
-	// VolumeLanguageFi - Finnish - Deprecated
-	VolumeLanguageFi VolumeLanguage = "fi"
-	// VolumeLanguageFiUTF8 - Finnish with UTF-8
-	VolumeLanguageFiUTF8 VolumeLanguage = "fi.utf-8"
-	// VolumeLanguageFr - French - Deprecated
-	VolumeLanguageFr VolumeLanguage = "fr"
-	// VolumeLanguageFrUTF8 - French with UTF-8
-	VolumeLanguageFrUTF8 VolumeLanguage = "fr.utf-8"
-	// VolumeLanguageHe - Hebrew - Deprecated
-	VolumeLanguageHe VolumeLanguage = "he"
-	// VolumeLanguageHeUTF8 - Hebrew with UTF-8
-	VolumeLanguageHeUTF8 VolumeLanguage = "he.utf-8"
-	// VolumeLanguageHr - Croatian - Deprecated
-	VolumeLanguageHr VolumeLanguage = "hr"
-	// VolumeLanguageHrUTF8 - Croatian with UTF-8
-	VolumeLanguageHrUTF8 VolumeLanguage = "hr.utf-8"
-	// VolumeLanguageHu - Hungarian - Deprecated
-	VolumeLanguageHu VolumeLanguage = "hu"
-	// VolumeLanguageHuUTF8 - Hungarian with UTF-8
-	VolumeLanguageHuUTF8 VolumeLanguage = "hu.utf-8"
-	// VolumeLanguageIt - Italian - Deprecated
-	VolumeLanguageIt VolumeLanguage = "it"
-	// VolumeLanguageItUTF8 - Italian with UTF-8
-	VolumeLanguageItUTF8 VolumeLanguage = "it.utf-8"
-	// VolumeLanguageJa - Japanese euc-j - Deprecated
-	VolumeLanguageJa VolumeLanguage = "ja"
-	// VolumeLanguageJaJp932 - Japanese cp932
-	VolumeLanguageJaJp932 VolumeLanguage = "ja-jp.932"
-	// VolumeLanguageJaJp932UTF8 - Japanese cp932 with UTF-8 - Deprecated
-	VolumeLanguageJaJp932UTF8 VolumeLanguage = "ja-jp.932.utf-8"
-	// VolumeLanguageJaJpPck - Japanese pck
-	VolumeLanguageJaJpPck VolumeLanguage = "ja-jp.pck"
-	// VolumeLanguageJaJpPckUTF8 - Japanese pck with UTF-8 - Deprecated
-	VolumeLanguageJaJpPckUTF8 VolumeLanguage = "ja-jp.pck.utf-8"
-	// VolumeLanguageJaJpPckV2 - Japanese pck - sjis
-	VolumeLanguageJaJpPckV2 VolumeLanguage = "ja-jp.pck-v2"
-	// VolumeLanguageJaJpPckV2UTF8 - Japanese pck - sjis with UTF-8 - Deprecated
-	VolumeLanguageJaJpPckV2UTF8 VolumeLanguage = "ja-jp.pck-v2.utf-8"
-	// VolumeLanguageJaUTF8 - Japanese euc-j with UTF-8
-	VolumeLanguageJaUTF8 VolumeLanguage = "ja.utf-8"
-	// VolumeLanguageJaV1 - Japanese euc-j - Deprecated
-	VolumeLanguageJaV1 VolumeLanguage = "ja-v1"
-	// VolumeLanguageJaV1UTF8 - Japanese euc-j with UTF-8
-	VolumeLanguageJaV1UTF8 VolumeLanguage = "ja-v1.utf-8"
-	// VolumeLanguageKo - Korean - Deprecated
-	VolumeLanguageKo VolumeLanguage = "ko"
-	// VolumeLanguageKoUTF8 - Korean with UTF-8
-	VolumeLanguageKoUTF8 VolumeLanguage = "ko.utf-8"
-	// VolumeLanguageNl - Dutch - Deprecated
-	VolumeLanguageNl VolumeLanguage = "nl"
-	// VolumeLanguageNlUTF8 - Dutch with UTF-8
-	VolumeLanguageNlUTF8 VolumeLanguage = "nl.utf-8"
-	// VolumeLanguageNo - Norwegian - Deprecated
-	VolumeLanguageNo VolumeLanguage = "no"
-	// VolumeLanguageNoUTF8 - Norwegian with UTF-8
-	VolumeLanguageNoUTF8 VolumeLanguage = "no.utf-8"
-	// VolumeLanguagePl - Polish - Deprecated
-	VolumeLanguagePl VolumeLanguage = "pl"
-	// VolumeLanguagePlUTF8 - Polish with UTF-8
-	VolumeLanguagePlUTF8 VolumeLanguage = "pl.utf-8"
-	// VolumeLanguagePt - Portuguese - Deprecated
-	VolumeLanguagePt VolumeLanguage = "pt"
-	// VolumeLanguagePtUTF8 - Portuguese with UTF-8
-	VolumeLanguagePtUTF8 VolumeLanguage = "pt.utf-8"
-	// VolumeLanguageRo - Romanian - Deprecated
-	VolumeLanguageRo VolumeLanguage = "ro"
-	// VolumeLanguageRoUTF8 - Romanian with UTF-8
-	VolumeLanguageRoUTF8 VolumeLanguage = "ro.utf-8"
-	// VolumeLanguageRu - Russian - Deprecated
-	VolumeLanguageRu VolumeLanguage = "ru"
-	// VolumeLanguageRuUTF8 - Russian with UTF-8
-	VolumeLanguageRuUTF8 VolumeLanguage = "ru.utf-8"
-	// VolumeLanguageSk - Slovak - Deprecated
-	VolumeLanguageSk VolumeLanguage = "sk"
-	// VolumeLanguageSkUTF8 - Slovak with UTF-8
-	VolumeLanguageSkUTF8 VolumeLanguage = "sk.utf-8"
-	// VolumeLanguageSl - Slovenian - Deprecated
-	VolumeLanguageSl VolumeLanguage = "sl"
-	// VolumeLanguageSlUTF8 - Slovenian with UTF-8
-	VolumeLanguageSlUTF8 VolumeLanguage = "sl.utf-8"
-	// VolumeLanguageSv - Swedish - Deprecated
-	VolumeLanguageSv VolumeLanguage = "sv"
-	// VolumeLanguageSvUTF8 - Swedish with UTF-8
-	VolumeLanguageSvUTF8 VolumeLanguage = "sv.utf-8"
-	// VolumeLanguageTr - Turkish - Deprecated
-	VolumeLanguageTr VolumeLanguage = "tr"
-	// VolumeLanguageTrUTF8 - Turkish with UTF-8
-	VolumeLanguageTrUTF8 VolumeLanguage = "tr.utf-8"
-	// VolumeLanguageUTF8Mb4 - UTF-8 with 4 byte character support
-	VolumeLanguageUTF8Mb4 VolumeLanguage = "utf8mb4"
-	// VolumeLanguageZh - Simplified Chinese - Deprecated
-	VolumeLanguageZh VolumeLanguage = "zh"
-	// VolumeLanguageZhGbk - Simplified gbk Chinese
-	VolumeLanguageZhGbk VolumeLanguage = "zh.gbk"
-	// VolumeLanguageZhGbkUTF8 - Simplified gbk Chinese with UTF-8 - Deprecated
-	VolumeLanguageZhGbkUTF8 VolumeLanguage = "zh.gbk.utf-8"
-	// VolumeLanguageZhTw - Traditional Chinese EUC-TW
-	VolumeLanguageZhTw VolumeLanguage = "zh-tw"
-	// VolumeLanguageZhTwBig5 - Traditional Chinese BIG 5
-	VolumeLanguageZhTwBig5 VolumeLanguage = "zh-tw.big5"
-	// VolumeLanguageZhTwBig5UTF8 - Traditional Chinese BIG 5 with UTF-8 - Deprecated
-	VolumeLanguageZhTwBig5UTF8 VolumeLanguage = "zh-tw.big5.utf-8"
-	// VolumeLanguageZhTwUTF8 - Traditional Chinese EUC-TW with UTF-8 - Deprecated
-	VolumeLanguageZhTwUTF8 VolumeLanguage = "zh-tw.utf-8"
-	// VolumeLanguageZhUTF8 - Simplified Chinese with UTF-8
-	VolumeLanguageZhUTF8 VolumeLanguage = "zh.utf-8"
-)
-
-// PossibleVolumeLanguageValues returns the possible values for the VolumeLanguage const type.
-func PossibleVolumeLanguageValues() []VolumeLanguage {
-	return []VolumeLanguage{
-		VolumeLanguageAr,
-		VolumeLanguageArUTF8,
-		VolumeLanguageC,
-		VolumeLanguageCUTF8,
-		VolumeLanguageCs,
-		VolumeLanguageCsUTF8,
-		VolumeLanguageDa,
-		VolumeLanguageDaUTF8,
-		VolumeLanguageDe,
-		VolumeLanguageDeUTF8,
-		VolumeLanguageEn,
-		VolumeLanguageEnUTF8,
-		VolumeLanguageEnUs,
-		VolumeLanguageEnUsUTF8,
-		VolumeLanguageEs,
-		VolumeLanguageEsUTF8,
-		VolumeLanguageFi,
-		VolumeLanguageFiUTF8,
-		VolumeLanguageFr,
-		VolumeLanguageFrUTF8,
-		VolumeLanguageHe,
-		VolumeLanguageHeUTF8,
-		VolumeLanguageHr,
-		VolumeLanguageHrUTF8,
-		VolumeLanguageHu,
-		VolumeLanguageHuUTF8,
-		VolumeLanguageIt,
-		VolumeLanguageItUTF8,
-		VolumeLanguageJa,
-		VolumeLanguageJaJp932,
-		VolumeLanguageJaJp932UTF8,
-		VolumeLanguageJaJpPck,
-		VolumeLanguageJaJpPckUTF8,
-		VolumeLanguageJaJpPckV2,
-		VolumeLanguageJaJpPckV2UTF8,
-		VolumeLanguageJaUTF8,
-		VolumeLanguageJaV1,
-		VolumeLanguageJaV1UTF8,
-		VolumeLanguageKo,
-		VolumeLanguageKoUTF8,
-		VolumeLanguageNl,
-		VolumeLanguageNlUTF8,
-		VolumeLanguageNo,
-		VolumeLanguageNoUTF8,
-		VolumeLanguagePl,
-		VolumeLanguagePlUTF8,
-		VolumeLanguagePt,
-		VolumeLanguagePtUTF8,
-		VolumeLanguageRo,
-		VolumeLanguageRoUTF8,
-		VolumeLanguageRu,
-		VolumeLanguageRuUTF8,
-		VolumeLanguageSk,
-		VolumeLanguageSkUTF8,
-		VolumeLanguageSl,
-		VolumeLanguageSlUTF8,
-		VolumeLanguageSv,
-		VolumeLanguageSvUTF8,
-		VolumeLanguageTr,
-		VolumeLanguageTrUTF8,
-		VolumeLanguageUTF8Mb4,
-		VolumeLanguageZh,
-		VolumeLanguageZhGbk,
-		VolumeLanguageZhGbkUTF8,
-		VolumeLanguageZhTw,
-		VolumeLanguageZhTwBig5,
-		VolumeLanguageZhTwBig5UTF8,
-		VolumeLanguageZhTwUTF8,
-		VolumeLanguageZhUTF8,
 	}
 }
 

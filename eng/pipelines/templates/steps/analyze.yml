@@ -5,7 +5,7 @@ parameters:
   NonShipping: false
   LicenseCheck: true
   IsSdkLibrary: true
-
+  ArtifactName: packages
 
 steps:
   - task: Powershell@2
@@ -19,6 +19,25 @@ steps:
     displayName: Dump Package properties
     condition: and(succeeded(), ${{ parameters.IsSdkLibrary }})
 
+  - pwsh: |
+      . $(Build.SourcesDirectory)/eng/scripts/apiview-helpers.ps1
+      $directoryToPublish = Join-Path -Path $(Build.ArtifactStagingDirectory) ${{ parameters.ArtifactName }}
+
+      New-APIViewArtifacts `
+        -ServiceDirectory '${{ parameters.ServiceDirectory }}' `
+        -OutputDirectory $(Build.ArtifactStagingDirectory) `
+        -DirectoryToPublish $directoryToPublish
+
+      Copy-Item "$(Build.ArtifactStagingDirectory)/PackageInfo" -Destination $directoryToPublish -Recurse
+    displayName: 'Create Go APIView Artifact'
+
+  - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+    parameters:
+      ArtifactName: ${{ parameters.ArtifactName }}
+      ArtifactPath: "$(Build.ArtifactStagingDirectory)/${{ parameters.ArtifactName }}"
+      CustomCondition: and(succeeded(), ${{ parameters.IsSdkLibrary }})
+
+  # Second publish of PackageInfo to avoid breakng release pipeline, should be cleaned up once release pipeline is updated
   - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
     parameters:
       ArtifactName: "PackageInfo"
@@ -27,22 +46,23 @@ steps:
 
   - template: /eng/common/pipelines/templates/steps/set-default-branch.yml
 
-  - task: Powershell@2
-    inputs:
-      filePath: $(Build.SourcesDirectory)/eng/scripts/Create-ApiReview.ps1
-      arguments: >
-        -ServiceDirectory '${{parameters.ServiceDirectory}}'
-        -OutPath '$(Build.ArtifactStagingDirectory)'
-        -ApiKey '$(azuresdk-apiview-apikey)'
-        -SourceBranch '$(Build.SourceBranchName)'
-        -DefaultBranch '$(DefaultBranch)'
-        -ConfigFileDir '$(Build.ArtifactStagingDirectory)/PackageInfo'
-        -BuildId $(Build.BuildId)
+  - pwsh: |
+      . $(Build.SourcesDirectory)/eng/scripts/apiview-helpers.ps1
+      New-APIViewFromCI `
+        -ServiceDirectory '${{parameters.ServiceDirectory}}' `
+        -ArtifactPath '$(Build.ArtifactStagingDirectory)' `
+        -ApiKey '$(azuresdk-apiview-apikey)' `
+        -SourceBranch '$(Build.SourceBranchName)' `
+        -DefaultBranch '$(DefaultBranch)' `
+        -ConfigFileDir '$(Build.ArtifactStagingDirectory)/PackageInfo' `
+        -BuildId $(Build.BuildId) `
         -RepoName '$(Build.Repository.Name)'
-      pwsh: true
-      workingDirectory: $(Pipeline.Workspace)
     displayName: Create API review for Go
+    workingDirectory: $(Pipeline.Workspace)
     condition: and(succeeded(), ne(variables['Skip.CreateApiReview'], 'true') , ne(variables['Build.Reason'],'PullRequest'), eq(variables['System.TeamProject'], 'internal'))
+
+  - ${{ if eq(variables['Build.Reason'],'PullRequest') }}:
+    - template: /eng/common/pipelines/templates/steps/detect-api-changes.yml
 
   - ${{ if and(ne(variables['Skip.PackageValidation'], 'true'), eq(variables['System.TeamProject'], 'internal')) }}:
     - pwsh: |

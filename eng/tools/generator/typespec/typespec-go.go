@@ -1,7 +1,11 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+
 package typespec
 
 import (
 	"errors"
+	"log"
 	"regexp"
 
 	"github.com/goccy/go-yaml"
@@ -56,7 +60,8 @@ var (
 
 func (o *GoEmitterOptions) Validate() error {
 	if o.Module == "" {
-		return ErrModuleEmpty
+		log.Printf("typesepec-go option `module` is empty")
+		return nil
 	}
 
 	matched := regexp.MustCompile(moduleRegex).MatchString(o.Module)

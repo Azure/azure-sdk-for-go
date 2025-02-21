@@ -146,7 +146,7 @@ client := armresources.NewResourceGroupsClient("subscription ID", chain, nil)
 |-|-
 |[InteractiveBrowserCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#InteractiveBrowserCredential)|Interactively authenticate a user with the default web browser
 |[DeviceCodeCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#DeviceCodeCredential)|Interactively authenticate a user on a device with limited UI
-|[UsernamePasswordCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#UsernamePasswordCredential)|Authenticate a user with a username and password
+|[UsernamePasswordCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#UsernamePasswordCredential) (**deprecated**)|Authenticate a user with a username and password
 
 ### Authenticating via Development Tools
 
@@ -177,6 +177,8 @@ client := armresources.NewResourceGroupsClient("subscription ID", chain, nil)
 |`AZURE_CLIENT_CERTIFICATE_PASSWORD`|password of the certificate file, if any
 
 #### Username and password
+
+> **Warning**: User password authentication is deprecated because it can't support multifactor authentication. See https://aka.ms/azsdk/identity/mfa for migration guidance.
 
 |variable name|value
 |-|-

@@ -7,7 +7,7 @@ go: true
 clear-output-folder: false
 version: "^3.0.0"
 license-header: MICROSOFT_MIT_NO_VERSION
-input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/ae95eb6a4701d844bada7d1c4f5ecf4a7444e5b8/specification/storage/data-plane/Microsoft.FileStorage/stable/2025-01-05/file.json"
+input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/d18a495685ccec837b72891b4deea017f62e8190/specification/storage/data-plane/Microsoft.FileStorage/stable/2025-05-05/file.json"
 credential-scope: "https://storage.azure.com/.default"
 output-folder: ../generated
 file-prefix: "zz_"
@@ -22,7 +22,7 @@ export-clients: true
 use: "@autorest/go@4.0.0-preview.61"
 ```
 
-### Updating service version to 2025-01-05
+### Updating service version to 2025-05-05
 
 ```yaml
 directive:
@@ -34,7 +34,21 @@ directive:
   where: $
   transform: >-
     return $.
-      replaceAll(`[]string{"2021-12-02"}`, `[]string{ServiceVersion}`);
+      replaceAll(`[]string{"2025-01-05"}`, `[]string{ServiceVersion}`);
+```
+### Changing casing of NfsFileType
+```yaml
+directive:
+- from: 
+  - zz_constants.go
+  - zz_options.go
+  - zz_response_types.go
+  - zz_file_client.go
+  - zz_directory_client.go
+  where: $
+  transform: >-
+    return $.
+      replaceAll(`NfsFileType`, `NFSFileType`);
 ```
 
 ### Updating Header Names XMSFileShareSnapshotUsageBytes and XMSFileShareUsageBytes

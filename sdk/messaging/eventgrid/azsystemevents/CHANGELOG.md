@@ -1,6 +1,6 @@
 # Release History
 
-## 0.6.1 (Unreleased)
+## 0.6.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,15 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 0.6.1 (2025-02-20)
+
+### Features Added
+
+The following fields have been added:
+- ACSMessageReceivedEventData.MessageType
+- ACSMessageReceivedEventData.MessageID
+- ACSMessageReceivedEventData.Reaction
 
 ## 0.6.0 (2025-01-21)
 

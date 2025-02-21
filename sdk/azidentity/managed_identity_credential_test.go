@@ -23,6 +23,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
@@ -657,6 +658,37 @@ func TestManagedIdentityCredential_IMDSRetries(t *testing.T) {
 		if reqs != 2 {
 			t.Errorf("expected 1 retry after %d response, got %d", code, reqs-1)
 		}
+	}
+}
+
+func TestManagedIdentityCredential_Logs(t *testing.T) {
+	logs := []string{}
+	log.SetListener(func(e log.Event, msg string) {
+		if e == EventAuthentication {
+			logs = append(logs, msg)
+		}
+	})
+	defer log.SetListener(nil)
+
+	for _, id := range []ManagedIDKind{ClientID(fakeClientID), ObjectID(fakeObjectID), ResourceID(fakeResourceID), nil} {
+		_, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ID: id})
+		require.NoError(t, err)
+		require.Len(t, logs, 1)
+		require.Contains(t, logs[0], "IMDS")
+		if id != nil {
+			require.Contains(t, logs[0], id.String())
+			kind := ""
+			switch id.(type) {
+			case ClientID:
+				kind = "client"
+			case ObjectID:
+				kind = "object"
+			case ResourceID:
+				kind = "resource"
+			}
+			require.Contains(t, logs[0], kind+" ID")
+		}
+		logs = nil
 	}
 }
 

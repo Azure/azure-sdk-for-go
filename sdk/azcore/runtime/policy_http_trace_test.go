@@ -150,10 +150,14 @@ func TestStartSpan(t *testing.T) {
 
 	// with error
 	var spanStatus tracing.SpanStatus
+	var spanAttrs []tracing.Attribute
 	var errStr string
 	tr = tracing.NewTracer(func(ctx context.Context, spanName string, options *tracing.SpanOptions) (context.Context, tracing.Span) {
 		spanImpl := tracing.SpanImpl{
 			End: func() { endCalled = true },
+			SetAttributes: func(attribute ...tracing.Attribute) {
+				spanAttrs = append(spanAttrs, attribute...)
+			},
 			SetStatus: func(ss tracing.SpanStatus, s string) {
 				spanStatus = ss
 				errStr = s
@@ -177,6 +181,7 @@ func TestStartSpan(t *testing.T) {
 	require.EqualValues(t, tracing.SpanStatusError, spanStatus)
 	require.Contains(t, errStr, "*azcore.ResponseError")
 	require.Contains(t, errStr, "ERROR CODE: ErrorItFailed")
+	require.Contains(t, spanAttrs, tracing.Attribute{Key: attrErrType, Value: "*azcore.ResponseError"})
 }
 
 func TestStartSpansDontNest(t *testing.T) {
@@ -258,6 +263,51 @@ func TestStartSpanWithAttributes(t *testing.T) {
 	}, nil)
 	ctx, end := StartSpan(context.Background(), "TestStartSpan", tr, &StartSpanOptions{
 		Attributes: spanAttrs,
+	})
+	end(nil)
+	ctxTr := ctx.Value(shared.CtxWithTracingTracer{})
+	require.NotNil(t, ctxTr)
+	_, ok := ctxTr.(tracing.Tracer)
+	require.True(t, ok)
+	require.True(t, startCalled)
+	require.True(t, endCalled)
+}
+
+func TestStartSpanWithLinks(t *testing.T) {
+	spanLinks := []tracing.Link{
+		{
+			SpanContext: tracing.NewSpanContext(tracing.SpanContextConfig{
+				Remote: true,
+			}),
+			Attributes: []tracing.Attribute{
+				{
+					Key:   "int_attr",
+					Value: int64(12345),
+				},
+				{
+					Key:   "string_attr",
+					Value: "foo",
+				},
+			},
+		},
+	}
+
+	var startCalled bool
+	var endCalled bool
+	tr := tracing.NewTracer(func(ctx context.Context, spanName string, options *tracing.SpanOptions) (context.Context, tracing.Span) {
+		startCalled = true
+		require.EqualValues(t, "TestStartSpan", spanName)
+		require.NotNil(t, options)
+		require.EqualValues(t, tracing.SpanKindInternal, options.Kind)
+		require.EqualValues(t, spanLinks, options.Links)
+		require.Zero(t, options.Attributes)
+		spanImpl := tracing.SpanImpl{
+			End: func() { endCalled = true },
+		}
+		return ctx, tracing.NewSpan(spanImpl)
+	}, nil)
+	ctx, end := StartSpan(context.Background(), "TestStartSpan", tr, &StartSpanOptions{
+		Links: spanLinks,
 	})
 	end(nil)
 	ctxTr := ctx.Value(shared.CtxWithTracingTracer{})

@@ -19,6 +19,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
+	"go.opentelemetry.io/otel/propagation"
 	tracesdk "go.opentelemetry.io/otel/sdk/trace"
 	"go.opentelemetry.io/otel/trace"
 	"go.opentelemetry.io/otel/trace/embedded"
@@ -42,6 +43,10 @@ func TestNewTracingProvider(t *testing.T) {
 	emptySpan := client.Tracer().SpanFromContext(context.Background())
 	emptySpan.AddEvent("noop_event")
 
+	// returns an empty link as there is no span yet
+	emptyLink := client.Tracer().LinkFromContext(context.Background())
+	require.Empty(t, emptyLink)
+
 	ctx, endSpan := azruntime.StartSpan(context.Background(), "test_span", client.Tracer(), nil)
 
 	req, err := azruntime.NewRequest(ctx, http.MethodGet, "https://www.microsoft.com/")
@@ -49,6 +54,9 @@ func TestNewTracingProvider(t *testing.T) {
 
 	startedSpan := client.Tracer().SpanFromContext(req.Raw().Context())
 	startedSpan.AddEvent("post_event")
+
+	startedSpanLink := client.Tracer().LinkFromContext(req.Raw().Context())
+	require.NotEmpty(t, startedSpanLink)
 
 	_, err = client.Pipeline().Do(req)
 	require.NoError(t, err)
@@ -59,6 +67,34 @@ func TestNewTracingProvider(t *testing.T) {
 	require.NoError(t, otelTP.Shutdown(context.Background()))
 
 	require.Len(t, exporter.spans, 2)
+}
+
+func TestPropagator(t *testing.T) {
+	provider := NewTracingProvider(tracesdk.NewTracerProvider(), nil)
+	tracer := provider.NewTracer("test", "1.0")
+	propagator := provider.NewPropagator()
+	require.EqualValues(t, 2, len(propagator.Fields()))
+
+	mapCarrier := propagation.MapCarrier{}
+	carrier := tracing.NewCarrier(tracing.CarrierImpl{
+		Get:  mapCarrier.Get,
+		Set:  mapCarrier.Set,
+		Keys: mapCarrier.Keys,
+	})
+
+	ctx, endSpan := azruntime.StartSpan(context.Background(), "test_span", tracer, nil)
+	spanContext := tracer.SpanFromContext(ctx).SpanContext()
+	require.NotNil(t, spanContext)
+	require.False(t, spanContext.IsRemote())
+	propagator.Inject(ctx, carrier)
+	endSpan(nil)
+
+	extractedCtx := propagator.Extract(context.Background(), carrier)
+	extractedSpanContext := tracer.SpanFromContext(extractedCtx).SpanContext()
+	require.NotNil(t, extractedSpanContext)
+	require.True(t, extractedSpanContext.IsRemote())
+	require.EqualValues(t, spanContext.TraceID(), extractedSpanContext.TraceID())
+	require.EqualValues(t, spanContext.SpanID(), extractedSpanContext.SpanID())
 }
 
 func TestConvertSpan(t *testing.T) {
@@ -83,6 +119,9 @@ func TestConvertSpan(t *testing.T) {
 	}
 	span.SetAttributes(attr)
 	require.Len(t, ts.attributes, 1)
+
+	span.AddLink(tracing.Link{})
+	require.Len(t, ts.links, 1)
 
 	const statusDesc = "everything is ok"
 	span.SetStatus(tracing.SpanStatusOK, statusDesc)
@@ -169,6 +208,65 @@ func TestConvertAttributes(t *testing.T) {
 	}
 }
 
+func TestConvertLinks(t *testing.T) {
+	attr := tracing.Attribute{
+		Key:   "key",
+		Value: "value",
+	}
+	spanContext := tracing.NewSpanContext(tracing.SpanContextConfig{
+		TraceID:    tracing.TraceID{1, 2, 3, 4, 5, 6, 7, 8},
+		SpanID:     tracing.SpanID{1, 2, 3, 4, 5, 6, 7, 8},
+		TraceFlags: tracing.TraceFlags(0x1),
+		TraceState: "key1=val1,key2=val2",
+		Remote:     true,
+	})
+
+	links := convertLinks([]tracing.Link{
+		{
+			SpanContext: spanContext,
+		},
+		{
+			Attributes: []tracing.Attribute{attr},
+		},
+		{
+			SpanContext: spanContext,
+			Attributes:  []tracing.Attribute{attr},
+		},
+	})
+	require.Len(t, links, 3)
+	require.NotNil(t, links[0].SpanContext)
+	require.True(t, links[0].SpanContext.IsRemote())
+	require.Len(t, links[0].Attributes, 0)
+
+	require.NotNil(t, links[1].SpanContext)
+	require.False(t, links[1].SpanContext.IsRemote())
+	require.Len(t, links[1].Attributes, 1)
+
+	require.NotNil(t, links[2].SpanContext)
+	require.True(t, links[2].SpanContext.IsRemote())
+	require.Len(t, links[2].Attributes, 1)
+}
+
+func TestConvertSpanContext(t *testing.T) {
+	traceID := tracing.TraceID{1, 2, 3, 4, 5, 6, 7, 8}
+	spanID := tracing.SpanID{1, 2, 3, 4, 5, 6, 7, 8}
+	traceFlags := tracing.TraceFlags(0x1)
+	spanContext := tracing.NewSpanContext(tracing.SpanContextConfig{
+		TraceID:    traceID,
+		SpanID:     spanID,
+		TraceFlags: traceFlags,
+		TraceState: "key1=val1,key2=val2",
+		Remote:     true,
+	})
+
+	otelSpanContext := convertSpanContext(spanContext)
+	assert.EqualValues(t, traceID, otelSpanContext.TraceID())
+	assert.EqualValues(t, spanID, otelSpanContext.SpanID())
+	assert.EqualValues(t, traceFlags, otelSpanContext.TraceFlags())
+	assert.EqualValues(t, "key1=val1,key2=val2", otelSpanContext.TraceState().String())
+	assert.True(t, otelSpanContext.IsRemote())
+}
+
 func TestConvertSpanKind(t *testing.T) {
 	assert.EqualValues(t, trace.SpanKindClient, convertSpanKind(tracing.SpanKindClient))
 	assert.EqualValues(t, trace.SpanKindConsumer, convertSpanKind(tracing.SpanKindConsumer))
@@ -183,6 +281,22 @@ func TestConvertStatus(t *testing.T) {
 	assert.EqualValues(t, codes.Error, convertStatus(tracing.SpanStatusError))
 	assert.EqualValues(t, codes.Unset, convertStatus(tracing.SpanStatusUnset))
 	assert.EqualValues(t, codes.Unset, convertStatus(tracing.SpanStatus(12345)))
+}
+
+func TestConvertPropagator(t *testing.T) {
+	carrier := tracing.NewCarrier(tracing.CarrierImpl{
+		Get:  func(key string) string { return "" },
+		Set:  func(key, value string) {},
+		Keys: func() []string { return nil },
+	})
+	propagator := &testPropagator{}
+	otelPropagator := convertPropagator(propagator)
+	require.NotNil(t, otelPropagator)
+	otelPropagator.Inject(context.Background(), carrier)
+	otelPropagator.Extract(context.Background(), carrier)
+	require.True(t, propagator.injectCalled)
+	require.True(t, propagator.extractCalled)
+	require.Len(t, propagator.Fields(), 1)
 }
 
 type testExporter struct {
@@ -207,12 +321,12 @@ type testSpan struct {
 
 	t            *testing.T
 	attributes   []attribute.KeyValue
+	links        []trace.Link
 	eventName    string
 	eventOptions []trace.EventOption
 	endCalled    bool
 	statusCode   codes.Code
 	statusDesc   string
-	link         trace.Link
 }
 
 func (ts *testSpan) End(options ...trace.SpanEndOption) {
@@ -222,10 +336,6 @@ func (ts *testSpan) End(options ...trace.SpanEndOption) {
 func (ts *testSpan) AddEvent(name string, options ...trace.EventOption) {
 	ts.eventName = name
 	ts.eventOptions = options
-}
-
-func (ts *testSpan) AddLink(link trace.Link) {
-	ts.link = link
 }
 
 func (ts *testSpan) IsRecording() bool {
@@ -255,7 +365,29 @@ func (ts *testSpan) SetAttributes(kv ...attribute.KeyValue) {
 	ts.attributes = kv
 }
 
+func (ts *testSpan) AddLink(link trace.Link) {
+	ts.links = append(ts.links, link)
+}
+
 func (ts *testSpan) TracerProvider() trace.TracerProvider {
 	ts.t.Fatal("TracerProvider not required")
 	return nil
+}
+
+type testPropagator struct {
+	injectCalled  bool
+	extractCalled bool
+}
+
+func (tp *testPropagator) Inject(ctx context.Context, carrier propagation.TextMapCarrier) {
+	tp.injectCalled = true
+}
+
+func (tp *testPropagator) Extract(ctx context.Context, carrier propagation.TextMapCarrier) context.Context {
+	tp.extractCalled = true
+	return ctx
+}
+
+func (tp *testPropagator) Fields() []string {
+	return []string{"testfield"}
 }

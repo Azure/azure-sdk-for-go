@@ -28,7 +28,7 @@ type CertificatesClient struct {
 }
 
 // NewCertificatesClient creates a new instance of CertificatesClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewCertificatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CertificatesClient, error) {
@@ -46,7 +46,7 @@ func NewCertificatesClient(subscriptionID string, credential azcore.TokenCredent
 // BeginCreateOrUpdate - Create or update the NGINX certificates for given NGINX deployment
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-01-01-preview
+// Generated from API version 2024-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deploymentName - The name of targeted NGINX deployment
 //   - certificateName - The name of certificate
@@ -73,7 +73,7 @@ func (client *CertificatesClient) BeginCreateOrUpdate(ctx context.Context, resou
 // CreateOrUpdate - Create or update the NGINX certificates for given NGINX deployment
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-01-01-preview
+// Generated from API version 2024-11-01-preview
 func (client *CertificatesClient) createOrUpdate(ctx context.Context, resourceGroupName string, deploymentName string, certificateName string, options *CertificatesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CertificatesClient.BeginCreateOrUpdate"
@@ -119,7 +119,7 @@ func (client *CertificatesClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-01-preview")
+	reqQP.Set("api-version", "2024-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
@@ -134,7 +134,7 @@ func (client *CertificatesClient) createOrUpdateCreateRequest(ctx context.Contex
 // BeginDelete - Deletes a certificate from the NGINX deployment
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-01-01-preview
+// Generated from API version 2024-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deploymentName - The name of targeted NGINX deployment
 //   - certificateName - The name of certificate
@@ -160,7 +160,7 @@ func (client *CertificatesClient) BeginDelete(ctx context.Context, resourceGroup
 // Delete - Deletes a certificate from the NGINX deployment
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-01-01-preview
+// Generated from API version 2024-11-01-preview
 func (client *CertificatesClient) deleteOperation(ctx context.Context, resourceGroupName string, deploymentName string, certificateName string, options *CertificatesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CertificatesClient.BeginDelete"
@@ -206,7 +206,7 @@ func (client *CertificatesClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-01-preview")
+	reqQP.Set("api-version", "2024-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -215,7 +215,7 @@ func (client *CertificatesClient) deleteCreateRequest(ctx context.Context, resou
 // Get - Get a certificate of given NGINX deployment
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-01-01-preview
+// Generated from API version 2024-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deploymentName - The name of targeted NGINX deployment
 //   - certificateName - The name of certificate
@@ -266,7 +266,7 @@ func (client *CertificatesClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-01-preview")
+	reqQP.Set("api-version", "2024-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -283,7 +283,7 @@ func (client *CertificatesClient) getHandleResponse(resp *http.Response) (Certif
 
 // NewListPager - List all certificates of given NGINX deployment
 //
-// Generated from API version 2024-01-01-preview
+// Generated from API version 2024-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deploymentName - The name of targeted NGINX deployment
 //   - options - CertificatesClientListOptions contains the optional parameters for the CertificatesClient.NewListPager method.
@@ -330,7 +330,7 @@ func (client *CertificatesClient) listCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-01-preview")
+	reqQP.Set("api-version", "2024-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

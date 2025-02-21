@@ -28,7 +28,7 @@ type DeploymentsClient struct {
 }
 
 // NewDeploymentsClient creates a new instance of DeploymentsClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDeploymentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DeploymentsClient, error) {
@@ -46,7 +46,7 @@ func NewDeploymentsClient(subscriptionID string, credential azcore.TokenCredenti
 // BeginCreateOrUpdate - Create or update the NGINX deployment
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-01-01-preview
+// Generated from API version 2024-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deploymentName - The name of targeted NGINX deployment
 //   - options - DeploymentsClientBeginCreateOrUpdateOptions contains the optional parameters for the DeploymentsClient.BeginCreateOrUpdate
@@ -72,7 +72,7 @@ func (client *DeploymentsClient) BeginCreateOrUpdate(ctx context.Context, resour
 // CreateOrUpdate - Create or update the NGINX deployment
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-01-01-preview
+// Generated from API version 2024-11-01-preview
 func (client *DeploymentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, deploymentName string, options *DeploymentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DeploymentsClient.BeginCreateOrUpdate"
@@ -114,7 +114,7 @@ func (client *DeploymentsClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-01-preview")
+	reqQP.Set("api-version", "2024-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
@@ -129,7 +129,7 @@ func (client *DeploymentsClient) createOrUpdateCreateRequest(ctx context.Context
 // BeginDelete - Delete the NGINX deployment resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-01-01-preview
+// Generated from API version 2024-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deploymentName - The name of targeted NGINX deployment
 //   - options - DeploymentsClientBeginDeleteOptions contains the optional parameters for the DeploymentsClient.BeginDelete method.
@@ -153,7 +153,7 @@ func (client *DeploymentsClient) BeginDelete(ctx context.Context, resourceGroupN
 // Delete - Delete the NGINX deployment resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-01-01-preview
+// Generated from API version 2024-11-01-preview
 func (client *DeploymentsClient) deleteOperation(ctx context.Context, resourceGroupName string, deploymentName string, options *DeploymentsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DeploymentsClient.BeginDelete"
@@ -195,7 +195,7 @@ func (client *DeploymentsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-01-preview")
+	reqQP.Set("api-version", "2024-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -204,7 +204,7 @@ func (client *DeploymentsClient) deleteCreateRequest(ctx context.Context, resour
 // Get - Get the NGINX deployment
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-01-01-preview
+// Generated from API version 2024-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deploymentName - The name of targeted NGINX deployment
 //   - options - DeploymentsClientGetOptions contains the optional parameters for the DeploymentsClient.Get method.
@@ -250,7 +250,7 @@ func (client *DeploymentsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-01-preview")
+	reqQP.Set("api-version", "2024-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -267,7 +267,7 @@ func (client *DeploymentsClient) getHandleResponse(resp *http.Response) (Deploym
 
 // NewListPager - List the NGINX deployments resources
 //
-// Generated from API version 2024-01-01-preview
+// Generated from API version 2024-11-01-preview
 //   - options - DeploymentsClientListOptions contains the optional parameters for the DeploymentsClient.NewListPager method.
 func (client *DeploymentsClient) NewListPager(options *DeploymentsClientListOptions) *runtime.Pager[DeploymentsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DeploymentsClientListResponse]{
@@ -304,7 +304,7 @@ func (client *DeploymentsClient) listCreateRequest(ctx context.Context, options 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-01-preview")
+	reqQP.Set("api-version", "2024-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -321,7 +321,7 @@ func (client *DeploymentsClient) listHandleResponse(resp *http.Response) (Deploy
 
 // NewListByResourceGroupPager - List all NGINX deployments under the specified resource group.
 //
-// Generated from API version 2024-01-01-preview
+// Generated from API version 2024-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - DeploymentsClientListByResourceGroupOptions contains the optional parameters for the DeploymentsClient.NewListByResourceGroupPager
 //     method.
@@ -364,7 +364,7 @@ func (client *DeploymentsClient) listByResourceGroupCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-01-preview")
+	reqQP.Set("api-version", "2024-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -382,7 +382,7 @@ func (client *DeploymentsClient) listByResourceGroupHandleResponse(resp *http.Re
 // BeginUpdate - Update the NGINX deployment
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-01-01-preview
+// Generated from API version 2024-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deploymentName - The name of targeted NGINX deployment
 //   - options - DeploymentsClientBeginUpdateOptions contains the optional parameters for the DeploymentsClient.BeginUpdate method.
@@ -406,7 +406,7 @@ func (client *DeploymentsClient) BeginUpdate(ctx context.Context, resourceGroupN
 // Update - Update the NGINX deployment
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-01-01-preview
+// Generated from API version 2024-11-01-preview
 func (client *DeploymentsClient) update(ctx context.Context, resourceGroupName string, deploymentName string, options *DeploymentsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DeploymentsClient.BeginUpdate"
@@ -448,7 +448,7 @@ func (client *DeploymentsClient) updateCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-01-preview")
+	reqQP.Set("api-version", "2024-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {

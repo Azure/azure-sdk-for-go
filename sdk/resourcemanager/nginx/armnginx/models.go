@@ -19,7 +19,7 @@ type AnalysisCreate struct {
 type AnalysisCreateConfig struct {
 	Files          []*ConfigurationFile
 	Package        *ConfigurationPackage
-	ProtectedFiles []*ConfigurationFile
+	ProtectedFiles []*ConfigurationProtectedFileRequest
 
 	// The root file of the NGINX config file(s). It must match one of the files' filepath.
 	RootFile *string
@@ -57,7 +57,8 @@ type AnalysisResult struct {
 }
 
 type AnalysisResultData struct {
-	Errors []*AnalysisDiagnostic
+	Diagnostics []*DiagnosticItem
+	Errors      []*AnalysisDiagnostic
 }
 
 // AutoUpgradeProfile - Autoupgrade settings of a deployment.
@@ -112,9 +113,47 @@ type CertificateProperties struct {
 	SHA1Thumbprint *string
 }
 
-type Configuration struct {
-	Location   *string
-	Properties *ConfigurationProperties
+type ConfigurationFile struct {
+	Content     *string
+	VirtualPath *string
+}
+
+// ConfigurationListResponse - Response of a list operation.
+type ConfigurationListResponse struct {
+	// Link to the next set of results, if any.
+	NextLink *string
+
+	// Results of a list operation.
+	Value []*ConfigurationResponse
+}
+
+type ConfigurationPackage struct {
+	Data           *string
+	ProtectedFiles []*string
+}
+
+type ConfigurationProtectedFileRequest struct {
+	// The content of the protected file. This value is a PUT only value. If you perform a GET request on this value, it will
+	// be empty because it is a protected file.
+	Content *string
+
+	// The hash of the content of the file. This value is used to determine if the file has changed.
+	ContentHash *string
+
+	// The virtual path of the protected file.
+	VirtualPath *string
+}
+
+type ConfigurationProtectedFileResponse struct {
+	// The hash of the content of the file. This value is used to determine if the file has changed.
+	ContentHash *string
+
+	// The virtual path of the protected file.
+	VirtualPath *string
+}
+
+type ConfigurationRequest struct {
+	Properties *ConfigurationRequestProperties
 
 	// READ-ONLY
 	ID *string
@@ -129,29 +168,36 @@ type Configuration struct {
 	Type *string
 }
 
-type ConfigurationFile struct {
-	Content     *string
-	VirtualPath *string
-}
-
-// ConfigurationListResponse - Response of a list operation.
-type ConfigurationListResponse struct {
-	// Link to the next set of results, if any.
-	NextLink *string
-
-	// Results of a list operation.
-	Value []*Configuration
-}
-
-type ConfigurationPackage struct {
-	Data           *string
-	ProtectedFiles []*string
-}
-
-type ConfigurationProperties struct {
+type ConfigurationRequestProperties struct {
 	Files          []*ConfigurationFile
 	Package        *ConfigurationPackage
-	ProtectedFiles []*ConfigurationFile
+	ProtectedFiles []*ConfigurationProtectedFileRequest
+	RootFile       *string
+
+	// READ-ONLY
+	ProvisioningState *ProvisioningState
+}
+
+type ConfigurationResponse struct {
+	Properties *ConfigurationResponseProperties
+
+	// READ-ONLY
+	ID *string
+
+	// READ-ONLY
+	Name *string
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData
+
+	// READ-ONLY
+	Type *string
+}
+
+type ConfigurationResponseProperties struct {
+	Files          []*ConfigurationFile
+	Package        *ConfigurationPackage
+	ProtectedFiles []*ConfigurationProtectedFileResponse
 	RootFile       *string
 
 	// READ-ONLY
@@ -180,6 +226,54 @@ type Deployment struct {
 	Type *string
 }
 
+type DeploymentAPIKeyListResponse struct {
+	NextLink *string
+	Value    []*DeploymentAPIKeyResponse
+}
+
+type DeploymentAPIKeyRequest struct {
+	Properties *DeploymentAPIKeyRequestProperties
+
+	// READ-ONLY
+	ID *string
+
+	// READ-ONLY
+	Name *string
+
+	// READ-ONLY
+	Type *string
+}
+
+type DeploymentAPIKeyRequestProperties struct {
+	// The time after which this Dataplane API Key is no longer valid.
+	EndDateTime *time.Time
+
+	// Secret text to be used as a Dataplane API Key. This is a write only property that can never be read back, but the first
+	// three characters will be returned in the 'hint' property.
+	SecretText *string
+}
+
+type DeploymentAPIKeyResponse struct {
+	Properties *DeploymentAPIKeyResponseProperties
+
+	// READ-ONLY
+	ID *string
+
+	// READ-ONLY
+	Name *string
+
+	// READ-ONLY
+	Type *string
+}
+
+type DeploymentAPIKeyResponseProperties struct {
+	// The time after which this Dataplane API Key is no longer valid.
+	EndDateTime *time.Time
+
+	// READ-ONLY; The first three characters of the secret text to help identify it in use. This property is read-only.
+	Hint *string
+}
+
 type DeploymentListResponse struct {
 	NextLink *string
 	Value    []*Deployment
@@ -190,14 +284,17 @@ type DeploymentProperties struct {
 	AutoUpgradeProfile       *AutoUpgradeProfile
 	EnableDiagnosticsSupport *bool
 	Logging                  *Logging
+	NetworkProfile           *NetworkProfile
 
-	// The managed resource group to deploy VNet injection related network resources.
-	ManagedResourceGroup *string
-	NetworkProfile       *NetworkProfile
+	// Settings for NGINX App Protect (NAP)
+	NginxAppProtect *DeploymentPropertiesNginxAppProtect
 
 	// Information on how the deployment will be scaled.
 	ScalingProperties *DeploymentScalingProperties
 	UserProfile       *DeploymentUserProfile
+
+	// READ-ONLY; Dataplane API endpoint for the caller to update the NGINX state of the deployment.
+	DataplaneAPIEndpoint *string
 
 	// READ-ONLY; The IP address of the deployment.
 	IPAddress *string
@@ -207,6 +304,15 @@ type DeploymentProperties struct {
 
 	// READ-ONLY
 	ProvisioningState *ProvisioningState
+}
+
+// DeploymentPropertiesNginxAppProtect - Settings for NGINX App Protect (NAP)
+type DeploymentPropertiesNginxAppProtect struct {
+	// REQUIRED; Settings for the NGINX App Protect Web Application Firewall (WAF)
+	WebApplicationFirewallSettings *WebApplicationFirewallSettings
+
+	// READ-ONLY; The status of the NGINX App Protect Web Application Firewall
+	WebApplicationFirewallStatus *WebApplicationFirewallStatus
 }
 
 // DeploymentScalingProperties - Information on how the deployment will be scaled.
@@ -238,16 +344,57 @@ type DeploymentUpdateProperties struct {
 	AutoUpgradeProfile       *AutoUpgradeProfile
 	EnableDiagnosticsSupport *bool
 	Logging                  *Logging
+	NetworkProfile           *NetworkProfile
+
+	// Update settings for NGINX App Protect (NAP)
+	NginxAppProtect *DeploymentUpdatePropertiesNginxAppProtect
 
 	// Information on how the deployment will be scaled.
 	ScalingProperties *DeploymentScalingProperties
 	UserProfile       *DeploymentUserProfile
 }
 
+// DeploymentUpdatePropertiesNginxAppProtect - Update settings for NGINX App Protect (NAP)
+type DeploymentUpdatePropertiesNginxAppProtect struct {
+	// Settings for the NGINX App Protect Web Application Firewall (WAF)
+	WebApplicationFirewallSettings *WebApplicationFirewallSettings
+}
+
 type DeploymentUserProfile struct {
 	// The preferred support contact email address of the user used for sending alerts and notification. Can be an empty string
 	// or a valid email address.
 	PreferredEmail *string
+}
+
+// DiagnosticItem - A diagnostic is a message associated with an NGINX config. The Analyzer returns diagnostics with a level
+// indicating the importance of the diagnostic with optional category.
+type DiagnosticItem struct {
+	// REQUIRED
+	Description *string
+
+	// REQUIRED
+	Directive *string
+
+	// REQUIRED; The filepath of the most relevant config file.
+	File *string
+
+	// REQUIRED; Warning or Info
+	Level *Level
+
+	// REQUIRED
+	Line *float32
+
+	// REQUIRED
+	Message *string
+
+	// REQUIRED
+	Rule *string
+
+	// Category of warning like Best-practices, Recommendation, Security etc.
+	Category *string
+
+	// Unique identifier for the diagnostic.
+	ID *string
 }
 
 type FrontendIPConfiguration struct {
@@ -382,4 +529,44 @@ type UserIdentityProperties struct {
 
 	// READ-ONLY
 	PrincipalID *string
+}
+
+// WebApplicationFirewallComponentVersions - Versions of the NGINX App Protect Web Application Firewall (WAF) components.
+type WebApplicationFirewallComponentVersions struct {
+	// REQUIRED; The version of the NGINX App Protect Web Application Firewall (WAF) engine.
+	WafEngineVersion *string
+
+	// REQUIRED; The version of the NGINX App Protect Web Application Firewall (WAF) module for NGINX.
+	WafNginxVersion *string
+}
+
+// WebApplicationFirewallPackage - NGINX App Protect Web Application Firewall (WAF) Package. Contains the version and revision
+// date of the package.
+type WebApplicationFirewallPackage struct {
+	// REQUIRED; The date and time of the package revision.
+	RevisionDatetime *time.Time
+
+	// REQUIRED; The version of the NGINX App Protect Web Application Firewall (WAF) package.
+	Version *string
+}
+
+// WebApplicationFirewallSettings - Settings for the NGINX App Protect Web Application Firewall (WAF)
+type WebApplicationFirewallSettings struct {
+	// The activation state of the WAF. Use 'Enabled' to enable the WAF and 'Disabled' to disable it.
+	ActivationState *ActivationState
+}
+
+// WebApplicationFirewallStatus - The status of the NGINX App Protect Web Application Firewall
+type WebApplicationFirewallStatus struct {
+	// READ-ONLY; Package containing attack signatures for the NGINX App Protect Web Application Firewall (WAF).
+	AttackSignaturesPackage *WebApplicationFirewallPackage
+
+	// READ-ONLY; Package containing bot signatures for the NGINX App Protect Web Application Firewall (WAF).
+	BotSignaturesPackage *WebApplicationFirewallPackage
+
+	// READ-ONLY; Versions of the NGINX App Protect Web Application Firewall (WAF) components.
+	ComponentVersions *WebApplicationFirewallComponentVersions
+
+	// READ-ONLY; Package containing threat campaigns for the NGINX App Protect Web Application Firewall (WAF).
+	ThreatCampaignsPackage *WebApplicationFirewallPackage
 }

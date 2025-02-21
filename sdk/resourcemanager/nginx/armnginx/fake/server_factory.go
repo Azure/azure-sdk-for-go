@@ -19,6 +19,7 @@ import (
 
 // ServerFactory is a fake server for instances of the armnginx.ClientFactory type.
 type ServerFactory struct {
+	APIKeysServer        APIKeysServer
 	CertificatesServer   CertificatesServer
 	ConfigurationsServer ConfigurationsServer
 	DeploymentsServer    DeploymentsServer
@@ -39,6 +40,7 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 type ServerFactoryTransport struct {
 	srv                    *ServerFactory
 	trMu                   sync.Mutex
+	trAPIKeysServer        *APIKeysServerTransport
 	trCertificatesServer   *CertificatesServerTransport
 	trConfigurationsServer *ConfigurationsServerTransport
 	trDeploymentsServer    *DeploymentsServerTransport
@@ -58,6 +60,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "APIKeysClient":
+		initServer(s, &s.trAPIKeysServer, func() *APIKeysServerTransport { return NewAPIKeysServerTransport(&s.srv.APIKeysServer) })
+		resp, err = s.trAPIKeysServer.Do(req)
 	case "CertificatesClient":
 		initServer(s, &s.trCertificatesServer, func() *CertificatesServerTransport { return NewCertificatesServerTransport(&s.srv.CertificatesServer) })
 		resp, err = s.trCertificatesServer.Do(req)

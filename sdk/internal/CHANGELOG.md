@@ -1,8 +1,15 @@
 # Release History
 
+<<<<<<< HEAD
 ## 1.11.1-beta.1 (Unreleased)
+=======
+## 1.11.0 (Unreleased)
+>>>>>>> bb7663b9d3 ([internal/test] Add Internal Span Validator for Unit Tests (#24142))
 
 ### Features Added
+
+* Added function `tracing.NewSpanValidator` to create a span validator for use with in unit tests.
+* Added type `tracing.SpanMatcher` to match spans in a span validator.
 
 ### Breaking Changes
 

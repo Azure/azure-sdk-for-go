@@ -48,7 +48,7 @@ func NewGroupQuotasClient(credential azcore.TokenCredential, options *arm.Client
 // change to Get URI and full details can be checked.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-12-18-preview
+// Generated from API version 2025-03-01
 //   - managementGroupID - Management Group Id.
 //   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
 //   - options - GroupQuotasClientBeginCreateOrUpdateOptions contains the optional parameters for the GroupQuotasClient.BeginCreateOrUpdate
@@ -79,7 +79,7 @@ func (client *GroupQuotasClient) BeginCreateOrUpdate(ctx context.Context, manage
 // change to Get URI and full details can be checked.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-12-18-preview
+// Generated from API version 2025-03-01
 func (client *GroupQuotasClient) createOrUpdate(ctx context.Context, managementGroupID string, groupQuotaName string, options *GroupQuotasClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GroupQuotasClient.BeginCreateOrUpdate"
@@ -117,7 +117,7 @@ func (client *GroupQuotasClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-18-preview")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.GroupQuotaPutRequestBody != nil {
@@ -132,7 +132,7 @@ func (client *GroupQuotasClient) createOrUpdateCreateRequest(ctx context.Context
 // BeginDelete - Deletes the GroupQuotas for the name passed. All the remaining shareQuota in the GroupQuotas will be lost.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-12-18-preview
+// Generated from API version 2025-03-01
 //   - managementGroupID - Management Group Id.
 //   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
 //   - options - GroupQuotasClientBeginDeleteOptions contains the optional parameters for the GroupQuotasClient.BeginDelete method.
@@ -157,7 +157,7 @@ func (client *GroupQuotasClient) BeginDelete(ctx context.Context, managementGrou
 // Delete - Deletes the GroupQuotas for the name passed. All the remaining shareQuota in the GroupQuotas will be lost.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-12-18-preview
+// Generated from API version 2025-03-01
 func (client *GroupQuotasClient) deleteOperation(ctx context.Context, managementGroupID string, groupQuotaName string, options *GroupQuotasClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GroupQuotasClient.BeginDelete"
@@ -195,7 +195,7 @@ func (client *GroupQuotasClient) deleteCreateRequest(ctx context.Context, manage
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-18-preview")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -205,7 +205,7 @@ func (client *GroupQuotasClient) deleteCreateRequest(ctx context.Context, manage
 // can be access from the group quota APIs.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-12-18-preview
+// Generated from API version 2025-03-01
 //   - managementGroupID - Management Group Id.
 //   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
 //   - options - GroupQuotasClientGetOptions contains the optional parameters for the GroupQuotasClient.Get method.
@@ -247,7 +247,7 @@ func (client *GroupQuotasClient) getCreateRequest(ctx context.Context, managemen
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-18-preview")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -265,7 +265,7 @@ func (client *GroupQuotasClient) getHandleResponse(resp *http.Response) (GroupQu
 // NewListPager - Lists GroupQuotas for the scope passed. It will return the GroupQuotas QuotaEntity properties only.The details
 // on group quota can be access from the group quota APIs.
 //
-// Generated from API version 2024-12-18-preview
+// Generated from API version 2025-03-01
 //   - managementGroupID - Management Group Id.
 //   - options - GroupQuotasClientListOptions contains the optional parameters for the GroupQuotasClient.NewListPager method.
 func (client *GroupQuotasClient) NewListPager(managementGroupID string, options *GroupQuotasClientListOptions) *runtime.Pager[GroupQuotasClientListResponse] {
@@ -303,7 +303,7 @@ func (client *GroupQuotasClient) listCreateRequest(ctx context.Context, manageme
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-18-preview")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -328,7 +328,7 @@ func (client *GroupQuotasClient) listHandleResponse(resp *http.Response) (GroupQ
 // unchanged.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-12-18-preview
+// Generated from API version 2025-03-01
 //   - managementGroupID - Management Group Id.
 //   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
 //   - options - GroupQuotasClientBeginUpdateOptions contains the optional parameters for the GroupQuotasClient.BeginUpdate method.
@@ -360,7 +360,7 @@ func (client *GroupQuotasClient) BeginUpdate(ctx context.Context, managementGrou
 // unchanged.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-12-18-preview
+// Generated from API version 2025-03-01
 func (client *GroupQuotasClient) update(ctx context.Context, managementGroupID string, groupQuotaName string, options *GroupQuotasClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GroupQuotasClient.BeginUpdate"
@@ -398,7 +398,7 @@ func (client *GroupQuotasClient) updateCreateRequest(ctx context.Context, manage
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-18-preview")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.GroupQuotasPatchRequestBody != nil {

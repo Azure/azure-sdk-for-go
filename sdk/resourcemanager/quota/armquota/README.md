@@ -18,7 +18,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Quota module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota/v2
 ```
 
 ## Authorization

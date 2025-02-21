@@ -46,7 +46,7 @@ func NewGroupQuotaSubscriptionAllocationRequestClient(subscriptionID string, cre
 // Get - Get the quota allocation request status for the subscriptionId by allocationId.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-12-18-preview
+// Generated from API version 2025-03-01
 //   - managementGroupID - Management Group Id.
 //   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
 //   - resourceProviderName - The resource provider name, such as - Microsoft.Compute. Currently only Microsoft.Compute resource
@@ -104,7 +104,7 @@ func (client *GroupQuotaSubscriptionAllocationRequestClient) getCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-18-preview")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -122,7 +122,7 @@ func (client *GroupQuotaSubscriptionAllocationRequestClient) getHandleResponse(r
 // NewListPager - Get all the quotaAllocationRequests for a resourceProvider/location. The filter paramter for location is
 // required.
 //
-// Generated from API version 2024-12-18-preview
+// Generated from API version 2025-03-01
 //   - managementGroupID - Management Group Id.
 //   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
 //   - resourceProviderName - The resource provider name, such as - Microsoft.Compute. Currently only Microsoft.Compute resource
@@ -180,7 +180,7 @@ func (client *GroupQuotaSubscriptionAllocationRequestClient) listCreateRequest(c
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("$filter", filter)
-	reqQP.Set("api-version", "2024-12-18-preview")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -203,7 +203,7 @@ func (client *GroupQuotaSubscriptionAllocationRequestClient) listHandleResponse(
 // where it's needed.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-12-18-preview
+// Generated from API version 2025-03-01
 //   - managementGroupID - Management Group Id.
 //   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
 //   - resourceProviderName - The resource provider name, such as - Microsoft.Compute. Currently only Microsoft.Compute resource
@@ -238,7 +238,7 @@ func (client *GroupQuotaSubscriptionAllocationRequestClient) BeginUpdate(ctx con
 // where it's needed.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-12-18-preview
+// Generated from API version 2025-03-01
 func (client *GroupQuotaSubscriptionAllocationRequestClient) update(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, location string, allocateQuotaRequest SubscriptionQuotaAllocationsList, options *GroupQuotaSubscriptionAllocationRequestClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GroupQuotaSubscriptionAllocationRequestClient.BeginUpdate"
@@ -288,7 +288,7 @@ func (client *GroupQuotaSubscriptionAllocationRequestClient) updateCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-18-preview")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, allocateQuotaRequest); err != nil {

@@ -43,7 +43,7 @@ func NewUsagesClient(credential azcore.TokenCredential, options *arm.ClientOptio
 // Get - Get the current usage of a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-12-18-preview
+// Generated from API version 2025-03-01
 //   - resourceName - Resource name for a given resource provider. For example:
 //   - SKU name for Microsoft.Compute
 //   - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices For Microsoft.Network PublicIPAddresses.
@@ -87,7 +87,7 @@ func (client *UsagesClient) getCreateRequest(ctx context.Context, resourceName s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-18-preview")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -107,7 +107,7 @@ func (client *UsagesClient) getHandleResponse(resp *http.Response) (UsagesClient
 
 // NewListPager - Get a list of current usage for all resources for the scope specified.
 //
-// Generated from API version 2024-12-18-preview
+// Generated from API version 2025-03-01
 //   - scope - The target Azure resource URI. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/.
 //     This is the target Azure
 //     resource URI for the List GET operation. If a {resourceName} is added after /quotas, then it's the target Azure resource
@@ -145,7 +145,7 @@ func (client *UsagesClient) listCreateRequest(ctx context.Context, scope string,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-18-preview")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

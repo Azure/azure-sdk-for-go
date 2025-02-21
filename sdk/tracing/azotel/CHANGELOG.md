@@ -11,6 +11,10 @@
 ### Other Changes
 
 * Updated dependencies.
+* Added OTel implementation for `Provider.NewPropagator()` to return a `propagation.TraceContext()` propagator for context propagation.
+* Added OTel implementation for `tracing.LinkFromContext()` to return a OTel Span Link with the passed in attributes attached to it.
+* Added OTel implementation for `Span.AddLink()` to add an OTel Span Link to the current span.
+* Added OTel implementation for `Span.SpanContext()` to return the OTel Span Context of the current span.
 
 ## 0.4.0 (2023-11-07)
 

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+
 package main
 
 import (
@@ -41,7 +44,7 @@ func findCoverageFiles(root string) []string {
 		if err != nil {
 			return err
 		}
-		if strings.Contains(path, coverageXmlFile) {
+		if !d.IsDir() && d.Name() == coverageXmlFile {
 			coverageFiles = append(coverageFiles, path)
 		}
 

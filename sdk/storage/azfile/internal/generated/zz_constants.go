@@ -195,6 +195,53 @@ func PossibleListSharesIncludeTypeValues() []ListSharesIncludeType {
 	}
 }
 
+type ModeCopyMode string
+
+const (
+	ModeCopyModeOverride ModeCopyMode = "override"
+	ModeCopyModeSource   ModeCopyMode = "source"
+)
+
+// PossibleModeCopyModeValues returns the possible values for the ModeCopyMode const type.
+func PossibleModeCopyModeValues() []ModeCopyMode {
+	return []ModeCopyMode{
+		ModeCopyModeOverride,
+		ModeCopyModeSource,
+	}
+}
+
+type NFSFileType string
+
+const (
+	NFSFileTypeDirectory NFSFileType = "Directory"
+	NFSFileTypeRegular   NFSFileType = "Regular"
+	NFSFileTypeSymLink   NFSFileType = "SymLink"
+)
+
+// PossibleNFSFileTypeValues returns the possible values for the NFSFileType const type.
+func PossibleNFSFileTypeValues() []NFSFileType {
+	return []NFSFileType{
+		NFSFileTypeDirectory,
+		NFSFileTypeRegular,
+		NFSFileTypeSymLink,
+	}
+}
+
+type OwnerCopyMode string
+
+const (
+	OwnerCopyModeOverride OwnerCopyMode = "override"
+	OwnerCopyModeSource   OwnerCopyMode = "source"
+)
+
+// PossibleOwnerCopyModeValues returns the possible values for the OwnerCopyMode const type.
+func PossibleOwnerCopyModeValues() []OwnerCopyMode {
+	return []OwnerCopyMode{
+		OwnerCopyModeOverride,
+		OwnerCopyModeSource,
+	}
+}
+
 type PermissionCopyModeType string
 
 const (

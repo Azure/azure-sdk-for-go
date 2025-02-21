@@ -847,6 +847,24 @@ func TestConsumerClient_InstanceID(t *testing.T) {
 	require.Contains(t, err.Error(), fmt.Sprintf("Description: Receiver '%s' with a higher epoch '1' already exists. Receiver 'LosesBecauseOfLowOwnerLevel' with epoch 0 cannot be created. Make sure you are creating receiver with increasing epoch value to ensure connectivity, or ensure all old epoch receivers are closed or disconnected", instanceID))
 }
 
+func TestConsumerClientUsingCustomEndpoint(t *testing.T) {
+	testParams := test.GetConnectionParamsForTest(t)
+
+	consumerClient, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, testParams.Cred, &azeventhubs.ConsumerClientOptions{
+		CustomEndpoint: "127.0.0.1",
+		RetryOptions: azeventhubs.RetryOptions{
+			MaxRetries: -1,
+		},
+	})
+	require.NoError(t, err)
+
+	_, err = consumerClient.GetEventHubProperties(context.Background(), nil)
+
+	// NOTE, this is a little silly, but we just want to prove
+	// that CustomEndpoint does get used as the actual TCP endpoint we connect to.
+	require.Contains(t, err.Error(), "127.0.0.1:5671")
+}
+
 // mustSendEventsToAllPartitions sends the event given in evt to each partition in the
 // eventHub, returning the sequence number just before the new message.
 //

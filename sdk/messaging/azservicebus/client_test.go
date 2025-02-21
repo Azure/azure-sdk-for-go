@@ -438,6 +438,28 @@ func TestClientUnauthorizedCreds(t *testing.T) {
 	})
 }
 
+func TestClientUsingCustomEndpoint(t *testing.T) {
+	serviceBusClient, cleanup, queueName := setupLiveTest(t, &liveTestOptions{
+		ClientOptions: &ClientOptions{
+			// A custom endpoint can be used when you need to connect to a TCP proxy.
+			CustomEndpoint: "127.0.0.1",
+			RetryOptions: RetryOptions{
+				MaxRetries: -1,
+			},
+		},
+	})
+	defer cleanup()
+
+	sender, err := serviceBusClient.NewSender(queueName, nil)
+	require.NoError(t, err)
+
+	err = sender.SendMessage(context.Background(), &Message{Body: []byte("hello")}, nil)
+
+	// NOTE, this is a little silly, but we just want to prove
+	// that CustomEndpoint does get used as the actual TCP endpoint we connect to.
+	require.Contains(t, err.Error(), "127.0.0.1:5671")
+}
+
 func TestNewClientUnitTests(t *testing.T) {
 	t.Run("WithTokenCredential", func(t *testing.T) {
 		fakeTokenCredential := struct{ azcore.TokenCredential }{}

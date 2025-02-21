@@ -22,7 +22,6 @@ import (
 	"log"
 	"os"
 	"os/exec"
-	"path"
 	"path/filepath"
 	"strings"
 	"sync"
@@ -191,7 +190,7 @@ func updateAliasPackageUserAgent(ap *AliasPackage, profileName string) {
 func writeAliasPackage(ap *AliasPackage, outputPath string, outputLog, errLog *log.Logger) {
 	files := token.NewFileSet()
 
-	err := os.MkdirAll(path.Dir(outputPath), 0755|os.ModeDir)
+	err := os.MkdirAll(filepath.Dir(outputPath), 0755|os.ModeDir)
 	if err != nil {
 		errLog.Fatalf("error creating directory: %v", err)
 	}

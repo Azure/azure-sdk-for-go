@@ -115,69 +115,57 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 			continue
 		}
 
-		if ok := tsc.ExistEmitOption(string(typespec.TypeSpec_GO)); ok {
-			log.Printf("Start to process typespec project: %s", tspProjectFolder)
-			generateCtx := common.GenerateContext{
-				SDKPath:        sdkRepo.Root(),
-				SDKRepo:        &sdkRepo,
-				SpecPath:       ctx.specRoot,
-				SpecCommitHash: ctx.commitHash,
-				SpecRepoURL:    input.RepoHTTPSURL,
-				TypeSpecConfig: tsc,
-			}
-
-			module, err := tsc.GetModuleName()
-			if err != nil {
-				errorBuilder.add(err)
-				continue
-			}
-			packageModuleRelativePath := tsc.GetPackageModuleRelativePath()
-			if packageModuleRelativePath == "" {
-				errorBuilder.add(fmt.Errorf("package module relative path not found in %s", tspconfigPath))
-				continue
-			}
-			namespaceResult, err := generateCtx.GenerateForTypeSpec(&common.GenerateParam{
-				RPName:              module[0],
-				NamespaceName:       module[1],
-				SkipGenerateExample: true,
-				GoVersion:           ctx.goVersion,
-				TspClientOptions:    []string{"--debug"},
-			}, packageModuleRelativePath)
-			if err != nil {
-				errorBuilder.add(err)
-				continue
-			} else {
-				content := namespaceResult.ChangelogMD
-				breaking := namespaceResult.Changelog.HasBreakingChanges()
-				breakingChangeItems := namespaceResult.Changelog.GetBreakingChangeItems()
-
-				srcFolder := filepath.Join(sdkRepo.Root(), packageModuleRelativePath)
-				apiViewArtifact := filepath.Join(sdkRepo.Root(), packageModuleRelativePath+".gosource")
-				err := zipDirectory(srcFolder, apiViewArtifact)
-				if err != nil {
-					fmt.Println(err)
-				}
-
-				results = append(results, pipeline.PackageResult{
-					Version:         namespaceResult.Version,
-					PackageName:     packageModuleRelativePath,
-					Path:            []string{packageModuleRelativePath},
-					PackageFolder:   packageModuleRelativePath,
-					TypespecProject: []string{tspProjectFolder},
-					Changelog: &pipeline.Changelog{
-						Content:             &content,
-						HasBreakingChange:   &breaking,
-						BreakingChangeItems: &breakingChangeItems,
-					},
-					APIViewArtifact: packageModuleRelativePath + ".gosource",
-					Language:        "Go",
-				})
-
-				log.Printf("Finish processing typespec file: %s", tspconfigPath)
-			}
-		} else {
-			errorBuilder.add(fmt.Errorf("`@azure-tools/typespec-go` option not found in %s, it is required, please refer to `https://aka.ms/azsdk/tspconfig-sample-mpg` to configure it", tspconfigPath))
+		if ok := tsc.ExistEmitOption(string(typespec.TypeSpec_GO)); !ok {
+			log.Println(fmt.Sprintf("`@azure-tools/typespec-go` option not found in %s, it is required, please refer to `https://aka.ms/azsdk/tspconfig-sample-mpg` to configure it", tspconfigPath))
+			continue
 		}
+		log.Printf("Start to process typespec project: %s", tspProjectFolder)
+		generateCtx := common.GenerateContext{
+			SDKPath:        sdkRepo.Root(),
+			SDKRepo:        &sdkRepo,
+			SpecPath:       ctx.specRoot,
+			SpecCommitHash: ctx.commitHash,
+			SpecRepoURL:    input.RepoHTTPSURL,
+			TypeSpecConfig: tsc,
+		}
+
+		namespaceResult, err := generateCtx.GenerateForTypeSpec(&common.GenerateParam{
+			SkipGenerateExample: true,
+			GoVersion:           ctx.goVersion,
+			TspClientOptions:    []string{"--debug"},
+		})
+		if err != nil {
+			errorBuilder.add(err)
+			continue
+		}
+		content := namespaceResult.ChangelogMD
+		breaking := namespaceResult.Changelog.HasBreakingChanges()
+		breakingChangeItems := namespaceResult.Changelog.GetBreakingChangeItems()
+		packageRelativePath := namespaceResult.PackageRelativePath
+
+		srcFolder := filepath.Join(sdkRepo.Root(), packageRelativePath)
+		apiViewArtifact := filepath.Join(sdkRepo.Root(), packageRelativePath+".gosource")
+		err = zipDirectory(srcFolder, apiViewArtifact)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		results = append(results, pipeline.PackageResult{
+			Version:         namespaceResult.Version,
+			PackageName:     packageRelativePath,
+			Path:            []string{packageRelativePath},
+			PackageFolder:   packageRelativePath,
+			TypespecProject: []string{tspProjectFolder},
+			Changelog: &pipeline.Changelog{
+				Content:             &content,
+				HasBreakingChange:   &breaking,
+				BreakingChangeItems: &breakingChangeItems,
+			},
+			APIViewArtifact: packageRelativePath + ".gosource",
+			Language:        "Go",
+		})
+
+		log.Printf("Finish processing typespec file: %s", tspconfigPath)
 	}
 
 	// autorest

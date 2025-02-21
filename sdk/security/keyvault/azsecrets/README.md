@@ -141,4 +141,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [module_source]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/security/keyvault/azsecrets
 [secrets_samples]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azsecrets#pkg-examples
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-go%2Fsdk%2Fsecurity%2Fkeyvault%2Fazsecrets%2FREADME.png)
+

@@ -34,7 +34,7 @@ type ClientOptions struct {
 	azcore.ClientOptions
 }
 
-const apiVersion = "2024-10-01-preview"
+const apiVersion = "2025-01-01-preview"
 
 // NewClient creates a new instance of Client that connects to an Azure OpenAI endpoint.
 //   - endpoint - Azure OpenAI service endpoint, for example: https://{your-resource-name}.openai.azure.com
@@ -195,6 +195,13 @@ func (options *ChatCompletionsOptions) toWireType() chatCompletionsOptions {
 	return chatCompletionsOptions{
 		Stream:                 to.Ptr(false),
 		StreamOptions:          nil,
+		Audio:                  options.Audio,
+		Metadata:               options.Metadata,
+		Modalities:             options.Modalities,
+		Prediction:             options.Prediction,
+		ReasoningEffort:        options.ReasoningEffort,
+		Store:                  options.Store,
+		UserSecurityContext:    options.UserSecurityContext,
 		Messages:               options.Messages,
 		AzureExtensionsOptions: options.AzureExtensionsOptions,
 		Enhancements:           options.Enhancements,
@@ -225,6 +232,13 @@ func (options *ChatCompletionsStreamOptions) toWireType() chatCompletionsOptions
 	return chatCompletionsOptions{
 		Stream:                 to.Ptr(true),
 		StreamOptions:          options.StreamOptions,
+		Audio:                  options.Audio,
+		Metadata:               options.Metadata,
+		Modalities:             options.Modalities,
+		Prediction:             options.Prediction,
+		ReasoningEffort:        options.ReasoningEffort,
+		Store:                  options.Store,
+		UserSecurityContext:    options.UserSecurityContext,
 		Messages:               options.Messages,
 		AzureExtensionsOptions: options.AzureExtensionsOptions,
 		Enhancements:           options.Enhancements,

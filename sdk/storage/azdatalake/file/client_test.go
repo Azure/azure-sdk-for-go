@@ -591,6 +591,7 @@ func (s *RecordedTestSuite) TestCreateFileWithExpiryRelativeToNow() {
 	time.Sleep(time.Second * 10)
 	_, err = fClient.GetProperties(context.Background(), nil)
 	_require.Error(err)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.PathNotFound)
 }
 
 func (s *RecordedTestSuite) TestCreateFileWithNeverExpire() {
@@ -1004,6 +1005,7 @@ func (s *RecordedTestSuite) TestFileSetExpiry() {
 	time.Sleep(time.Second * 12)
 
 	_, err = fClient.GetProperties(context.Background(), nil)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.PathNotFound)
 	_require.Error(err)
 }
 
@@ -1039,7 +1041,7 @@ func (s *UnrecordedTestSuite) TestFileSetExpiryTypeAbsoluteTime() {
 	time.Sleep(time.Second * 7)
 
 	_, err = fClient.GetProperties(context.Background(), nil)
-	testcommon.ValidateErrorCode(_require, err, datalakeerror.BlobNotFound)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.PathNotFound)
 
 }
 
@@ -2375,7 +2377,7 @@ func (s *UnrecordedTestSuite) TestFileRenameUsingSAS() {
 
 	_, err = srcFileClient.GetProperties(context.Background(), nil)
 	_require.Error(err)
-	testcommon.ValidateErrorCode(_require, err, datalakeerror.BlobNotFound)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.PathNotFound)
 }
 
 func (s *RecordedTestSuite) TestRenameNoOptions() {

@@ -8,7 +8,6 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"path"
 	"path/filepath"
 	"strings"
 
@@ -45,7 +44,7 @@ func GetReadmePathFromChangedFiles(ctx context.Context, client *query.Client, fi
 	// find readme files one by one
 	readmeFiles := make(map[Readme]bool)
 	for _, file := range files {
-		readme, err := GetReadmeFromPath(ctx, client, path.Dir(file))
+		readme, err := GetReadmeFromPath(ctx, client, filepath.Dir(file))
 		if err != nil {
 			log.Printf("Changed file '%s' does not belong to any RP, ignoring", file)
 			continue
@@ -55,7 +54,7 @@ func GetReadmePathFromChangedFiles(ctx context.Context, client *query.Client, fi
 	if len(readmeFiles) > 1 {
 		// filter specification/xxx/resource-manager/readme.md
 		rmReadmeFile := make(map[Readme]bool)
-		for readmePath, _ := range readmeFiles {
+		for readmePath := range readmeFiles {
 			if strings.Contains(string(readmePath), "resource-manager/readme.md") {
 				rmReadmeFile[readmePath] = true
 			}
@@ -145,7 +144,7 @@ func GetTspConfigPathFromChangedFiles(ctx context.Context, client *query.Client,
 	// find readme files one by one
 	tspConfigFiles := make(map[Readme]bool)
 	for _, file := range files {
-		tspConfig, err := GetTspConfigFromPath(ctx, client, path.Dir(file))
+		tspConfig, err := GetTspConfigFromPath(ctx, client, filepath.Dir(file))
 		if err != nil {
 			log.Printf("Changed file '%s' does not belong to any RP, ignoring", file)
 			continue

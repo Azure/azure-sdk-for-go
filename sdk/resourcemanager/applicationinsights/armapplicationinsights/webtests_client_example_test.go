@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/WebTestListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43042075540b8d67cce7d3d9f70b9b9f5a359da/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/WebTestListByResourceGroup.json
 func ExampleWebTestsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,7 +49,6 @@ func ExampleWebTestsClient_NewListByResourceGroupPager() {
 		// 			Location: to.Ptr("southcentralus"),
 		// 			Tags: map[string]*string{
 		// 				"hidden-link:/subscriptions/subid/resourceGroups/my-resource-group/providers/Microsoft.Insights/components/my-component": to.Ptr("Resource"),
-		// 				"hidden-link:/subscriptions/subid/resourceGroups/my-resource-group/providers/Microsoft.Web/sites/mytestwebapp": to.Ptr("Resource"),
 		// 			},
 		// 			Kind: to.Ptr(armapplicationinsights.WebTestKindPing),
 		// 			Properties: &armapplicationinsights.WebTestProperties{
@@ -104,7 +103,7 @@ func ExampleWebTestsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/WebTestGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43042075540b8d67cce7d3d9f70b9b9f5a359da/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/WebTestGet.json
 func ExampleWebTestsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,7 +128,6 @@ func ExampleWebTestsClient_Get() {
 	// 	Location: to.Ptr("southcentralus"),
 	// 	Tags: map[string]*string{
 	// 		"hidden-link:/subscriptions/subid/resourceGroups/my-test-resources/providers/Microsoft.Insights/components/mytester": to.Ptr("Resource"),
-	// 		"hidden-link:/subscriptions/subid/resourceGroups/my-test-resources/providers/Microsoft.Web/sites/mytester": to.Ptr("Resource"),
 	// 	},
 	// 	Kind: to.Ptr(armapplicationinsights.WebTestKindPing),
 	// 	Properties: &armapplicationinsights.WebTestProperties{
@@ -156,7 +154,7 @@ func ExampleWebTestsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/WebTestCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43042075540b8d67cce7d3d9f70b9b9f5a359da/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/WebTestCreate.json
 func ExampleWebTestsClient_CreateOrUpdate_webTestCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -201,7 +199,6 @@ func ExampleWebTestsClient_CreateOrUpdate_webTestCreate() {
 	// 	Location: to.Ptr("southcentralus"),
 	// 	Tags: map[string]*string{
 	// 		"hidden-link:/subscriptions/subid/resourceGroups/my-resource-group/providers/Microsoft.Insights/components/my-component": to.Ptr("Resource"),
-	// 		"hidden-link:/subscriptions/subid/resourceGroups/my-resource-group/providers/Microsoft.Web/sites/mytestwebapp": to.Ptr("Resource"),
 	// 	},
 	// 	Kind: to.Ptr(armapplicationinsights.WebTestKindPing),
 	// 	Properties: &armapplicationinsights.WebTestProperties{
@@ -225,7 +222,103 @@ func ExampleWebTestsClient_CreateOrUpdate_webTestCreate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/WebTestUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43042075540b8d67cce7d3d9f70b9b9f5a359da/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/WebTestCreateStandard.json
+func ExampleWebTestsClient_CreateOrUpdate_webTestCreateStandard() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armapplicationinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewWebTestsClient().CreateOrUpdate(ctx, "my-resource-group", "my-webtest-my-component", armapplicationinsights.WebTest{
+		Location: to.Ptr("South Central US"),
+		Properties: &armapplicationinsights.WebTestProperties{
+			Description: to.Ptr("Ping web test alert for mytestwebapp"),
+			Enabled:     to.Ptr(true),
+			Frequency:   to.Ptr[int32](900),
+			WebTestKind: to.Ptr(armapplicationinsights.WebTestKindStandard),
+			Locations: []*armapplicationinsights.WebTestGeolocation{
+				{
+					Location: to.Ptr("us-fl-mia-edge"),
+				}},
+			WebTestName: to.Ptr("my-webtest-my-component"),
+			Request: &armapplicationinsights.WebTestPropertiesRequest{
+				Headers: []*armapplicationinsights.HeaderField{
+					{
+						HeaderFieldName:  to.Ptr("Content-Language"),
+						HeaderFieldValue: to.Ptr("de-DE"),
+					},
+					{
+						HeaderFieldName:  to.Ptr("Accept-Language"),
+						HeaderFieldValue: to.Ptr("de-DE"),
+					}},
+				HTTPVerb:    to.Ptr("POST"),
+				RequestBody: to.Ptr("SGVsbG8gd29ybGQ="),
+				RequestURL:  to.Ptr("https://bing.com"),
+			},
+			RetryEnabled:       to.Ptr(true),
+			SyntheticMonitorID: to.Ptr("my-webtest-my-component"),
+			Timeout:            to.Ptr[int32](120),
+			ValidationRules: &armapplicationinsights.WebTestPropertiesValidationRules{
+				SSLCertRemainingLifetimeCheck: to.Ptr[int32](100),
+				SSLCheck:                      to.Ptr(true),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.WebTest = armapplicationinsights.WebTest{
+	// 	Name: to.Ptr("my-webtest-my-component"),
+	// 	Type: to.Ptr("Microsoft.Insights/webtests"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/my-resource-group/providers/Microsoft.Insights/webtests/my-webtest-my-component"),
+	// 	Location: to.Ptr("southcentralus"),
+	// 	Tags: map[string]*string{
+	// 		"hidden-link:/subscriptions/subid/resourceGroups/my-resource-group/providers/Microsoft.Insights/components/my-component": to.Ptr("Resource"),
+	// 	},
+	// 	Properties: &armapplicationinsights.WebTestProperties{
+	// 		Description: to.Ptr("Ping web test alert for mytestwebapp"),
+	// 		Enabled: to.Ptr(true),
+	// 		Frequency: to.Ptr[int32](900),
+	// 		WebTestKind: to.Ptr(armapplicationinsights.WebTestKindStandard),
+	// 		Locations: []*armapplicationinsights.WebTestGeolocation{
+	// 			{
+	// 				Location: to.Ptr("us-fl-mia-edge"),
+	// 		}},
+	// 		WebTestName: to.Ptr("my-webtest-my-component"),
+	// 		Request: &armapplicationinsights.WebTestPropertiesRequest{
+	// 			Headers: []*armapplicationinsights.HeaderField{
+	// 				{
+	// 					HeaderFieldName: to.Ptr("Content-Language"),
+	// 					HeaderFieldValue: to.Ptr("de-DE"),
+	// 				},
+	// 				{
+	// 					HeaderFieldName: to.Ptr("Accept-Language"),
+	// 					HeaderFieldValue: to.Ptr("de-DE"),
+	// 			}},
+	// 			HTTPVerb: to.Ptr("POST"),
+	// 			RequestBody: to.Ptr("SGVsbG8gd29ybGQ="),
+	// 			RequestURL: to.Ptr("https://bing.com"),
+	// 		},
+	// 		RetryEnabled: to.Ptr(true),
+	// 		SyntheticMonitorID: to.Ptr("my-webtest-my-component"),
+	// 		Timeout: to.Ptr[int32](120),
+	// 		ValidationRules: &armapplicationinsights.WebTestPropertiesValidationRules{
+	// 			SSLCertRemainingLifetimeCheck: to.Ptr[int32](100),
+	// 			SSLCheck: to.Ptr(true),
+	// 		},
+	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43042075540b8d67cce7d3d9f70b9b9f5a359da/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/WebTestUpdate.json
 func ExampleWebTestsClient_CreateOrUpdate_webTestUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -270,7 +363,6 @@ func ExampleWebTestsClient_CreateOrUpdate_webTestUpdate() {
 	// 	Location: to.Ptr("southcentralus"),
 	// 	Tags: map[string]*string{
 	// 		"hidden-link:/subscriptions/subid/resourceGroups/my-resource-group/providers/Microsoft.Insights/components/my-component": to.Ptr("Resource"),
-	// 		"hidden-link:/subscriptions/subid/resourceGroups/my-resource-group/providers/Microsoft.Web/sites/mytestwebapp": to.Ptr("Resource"),
 	// 	},
 	// 	Kind: to.Ptr(armapplicationinsights.WebTestKindPing),
 	// 	Properties: &armapplicationinsights.WebTestProperties{
@@ -297,7 +389,7 @@ func ExampleWebTestsClient_CreateOrUpdate_webTestUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/WebTestUpdateTagsOnly.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43042075540b8d67cce7d3d9f70b9b9f5a359da/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/WebTestUpdateTagsOnly.json
 func ExampleWebTestsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -314,7 +406,6 @@ func ExampleWebTestsClient_UpdateTags() {
 			"CustomField-01": to.Ptr("This is a random value"),
 			"SystemType":     to.Ptr("A08"),
 			"hidden-link:/subscriptions/subid/resourceGroups/my-resource-group/providers/Microsoft.Insights/components/my-component": to.Ptr("Resource"),
-			"hidden-link:/subscriptions/subid/resourceGroups/my-resource-group/providers/Microsoft.Web/sites/mytestwebapp":           to.Ptr("Resource"),
 		},
 	}, nil)
 	if err != nil {
@@ -333,7 +424,6 @@ func ExampleWebTestsClient_UpdateTags() {
 	// 		"CustomField-01": to.Ptr("This is a random value"),
 	// 		"SystemType": to.Ptr("A08"),
 	// 		"hidden-link:/subscriptions/subid/resourceGroups/my-resource-group/providers/Microsoft.Insights/components/my-component": to.Ptr("Resource"),
-	// 		"hidden-link:/subscriptions/subid/resourceGroups/my-resource-group/providers/Microsoft.Web/sites/mytestwebapp": to.Ptr("Resource"),
 	// 	},
 	// 	Kind: to.Ptr(armapplicationinsights.WebTestKindPing),
 	// 	Properties: &armapplicationinsights.WebTestProperties{
@@ -360,7 +450,7 @@ func ExampleWebTestsClient_UpdateTags() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/WebTestDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43042075540b8d67cce7d3d9f70b9b9f5a359da/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/WebTestDelete.json
 func ExampleWebTestsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -377,7 +467,7 @@ func ExampleWebTestsClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/WebTestList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43042075540b8d67cce7d3d9f70b9b9f5a359da/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/WebTestList.json
 func ExampleWebTestsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -408,7 +498,6 @@ func ExampleWebTestsClient_NewListPager() {
 		// 			Location: to.Ptr("southcentralus"),
 		// 			Tags: map[string]*string{
 		// 				"hidden-link:/subscriptions/subid/resourceGroups/my-resource-group/providers/Microsoft.Insights/components/my-component": to.Ptr("Resource"),
-		// 				"hidden-link:/subscriptions/subid/resourceGroups/my-resource-group/providers/Microsoft.Web/sites/mytestwebapp": to.Ptr("Resource"),
 		// 			},
 		// 			Kind: to.Ptr(armapplicationinsights.WebTestKindPing),
 		// 			Properties: &armapplicationinsights.WebTestProperties{
@@ -459,7 +548,7 @@ func ExampleWebTestsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/WebTestListByComponent.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b43042075540b8d67cce7d3d9f70b9b9f5a359da/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/WebTestListByComponent.json
 func ExampleWebTestsClient_NewListByComponentPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -490,7 +579,6 @@ func ExampleWebTestsClient_NewListByComponentPager() {
 		// 			Location: to.Ptr("southcentralus"),
 		// 			Tags: map[string]*string{
 		// 				"hidden-link:/subscriptions/subid/resourceGroups/my-resource-group/providers/Microsoft.Insights/components/my-component": to.Ptr("Resource"),
-		// 				"hidden-link:/subscriptions/subid/resourceGroups/my-resource-group/providers/Microsoft.Web/sites/mytestwebapp": to.Ptr("Resource"),
 		// 			},
 		// 			Kind: to.Ptr(armapplicationinsights.WebTestKindPing),
 		// 			Properties: &armapplicationinsights.WebTestProperties{

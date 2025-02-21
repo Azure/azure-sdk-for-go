@@ -1,5 +1,11 @@
 # Release History
 
+## 1.0.0 (2025-02-10)
+### Features Added
+
+- New field `ResourceID` in struct `OperationStatusResult`
+
+
 ## 0.2.0 (2024-12-11)
 ### Breaking Changes
 

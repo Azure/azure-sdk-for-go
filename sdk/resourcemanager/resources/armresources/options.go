@@ -130,7 +130,7 @@ type ClientListOptions struct {
 	// identity/principalId.
 	Filter *string
 
-	// The number of results to return. If null is passed, returns all resources.
+	// The number of recommendations per page if a paged version of this API is being used.
 	Top *int32
 }
 
@@ -608,9 +608,23 @@ type ResourceGroupsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TagsClientCreateOrUpdateAtScopeOptions contains the optional parameters for the TagsClient.CreateOrUpdateAtScope method.
-type TagsClientCreateOrUpdateAtScopeOptions struct {
-	// placeholder for future optional parameters
+// TagsClientBeginCreateOrUpdateAtScopeOptions contains the optional parameters for the TagsClient.BeginCreateOrUpdateAtScope
+// method.
+type TagsClientBeginCreateOrUpdateAtScopeOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// TagsClientBeginDeleteAtScopeOptions contains the optional parameters for the TagsClient.BeginDeleteAtScope method.
+type TagsClientBeginDeleteAtScopeOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// TagsClientBeginUpdateAtScopeOptions contains the optional parameters for the TagsClient.BeginUpdateAtScope method.
+type TagsClientBeginUpdateAtScopeOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // TagsClientCreateOrUpdateOptions contains the optional parameters for the TagsClient.CreateOrUpdate method.
@@ -620,11 +634,6 @@ type TagsClientCreateOrUpdateOptions struct {
 
 // TagsClientCreateOrUpdateValueOptions contains the optional parameters for the TagsClient.CreateOrUpdateValue method.
 type TagsClientCreateOrUpdateValueOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TagsClientDeleteAtScopeOptions contains the optional parameters for the TagsClient.DeleteAtScope method.
-type TagsClientDeleteAtScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -645,10 +654,5 @@ type TagsClientGetAtScopeOptions struct {
 
 // TagsClientListOptions contains the optional parameters for the TagsClient.NewListPager method.
 type TagsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TagsClientUpdateAtScopeOptions contains the optional parameters for the TagsClient.UpdateAtScope method.
-type TagsClientUpdateAtScopeOptions struct {
 	// placeholder for future optional parameters
 }

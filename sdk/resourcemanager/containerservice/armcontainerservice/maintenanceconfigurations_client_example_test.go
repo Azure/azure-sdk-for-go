@@ -20,7 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v6"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2024-09-02-preview/examples/MaintenanceConfigurationsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f2826dd1e08d4625b29867c01a232d2dad423521/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-10-01/examples/MaintenanceConfigurationsList.json
 func ExampleMaintenanceConfigurationsClient_NewListByManagedClusterPager_listMaintenanceConfigurationsByManagedCluster() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,7 +66,7 @@ func ExampleMaintenanceConfigurationsClient_NewListByManagedClusterPager_listMai
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2024-09-02-preview/examples/MaintenanceConfigurationsList_MaintenanceWindow.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f2826dd1e08d4625b29867c01a232d2dad423521/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-10-01/examples/MaintenanceConfigurationsList_MaintenanceWindow.json
 func ExampleMaintenanceConfigurationsClient_NewListByManagedClusterPager_listMaintenanceConfigurationsConfiguredWithMaintenanceWindowByManagedCluster() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,7 +92,7 @@ func ExampleMaintenanceConfigurationsClient_NewListByManagedClusterPager_listMai
 		// 	Value: []*armcontainerservice.MaintenanceConfiguration{
 		// 		{
 		// 			Name: to.Ptr("aksManagedNodeOSUpgradeSchedule"),
-		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/maintenanceConfigurations/default"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/maintenanceConfigurations/aksManagedNodeOSUpgradeSchedule"),
 		// 			Properties: &armcontainerservice.MaintenanceConfigurationProperties{
 		// 				MaintenanceWindow: &armcontainerservice.MaintenanceWindow{
 		// 					DurationHours: to.Ptr[int32](10),
@@ -109,7 +109,7 @@ func ExampleMaintenanceConfigurationsClient_NewListByManagedClusterPager_listMai
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("aksManagedAutoUpgradeSchedule"),
-		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/maintenanceConfigurations/default"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/maintenanceConfigurations/aksManagedAutoUpgradeSchedule"),
 		// 			Properties: &armcontainerservice.MaintenanceConfigurationProperties{
 		// 				MaintenanceWindow: &armcontainerservice.MaintenanceWindow{
 		// 					DurationHours: to.Ptr[int32](5),
@@ -138,7 +138,7 @@ func ExampleMaintenanceConfigurationsClient_NewListByManagedClusterPager_listMai
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2024-09-02-preview/examples/MaintenanceConfigurationsGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f2826dd1e08d4625b29867c01a232d2dad423521/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-10-01/examples/MaintenanceConfigurationsGet.json
 func ExampleMaintenanceConfigurationsClient_Get_getMaintenanceConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -184,7 +184,7 @@ func ExampleMaintenanceConfigurationsClient_Get_getMaintenanceConfiguration() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2024-09-02-preview/examples/MaintenanceConfigurationsGet_MaintenanceWindow.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f2826dd1e08d4625b29867c01a232d2dad423521/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-10-01/examples/MaintenanceConfigurationsGet_MaintenanceWindow.json
 func ExampleMaintenanceConfigurationsClient_Get_getMaintenanceConfigurationConfiguredWithMaintenanceWindow() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -204,7 +204,7 @@ func ExampleMaintenanceConfigurationsClient_Get_getMaintenanceConfigurationConfi
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.MaintenanceConfiguration = armcontainerservice.MaintenanceConfiguration{
 	// 	Name: to.Ptr("aksManagedNodeOSUpgradeSchedule"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/maintenanceConfigurations/default"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/maintenanceConfigurations/aksManagedNodeOSUpgradeSchedule"),
 	// 	Properties: &armcontainerservice.MaintenanceConfigurationProperties{
 	// 		MaintenanceWindow: &armcontainerservice.MaintenanceWindow{
 	// 			DurationHours: to.Ptr[int32](4),
@@ -227,18 +227,10 @@ func ExampleMaintenanceConfigurationsClient_Get_getMaintenanceConfigurationConfi
 	// 			UTCOffset: to.Ptr("-07:00"),
 	// 		},
 	// 	},
-	// 	SystemData: &armcontainerservice.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
-	// 		CreatedBy: to.Ptr("user1"),
-	// 		CreatedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("user2"),
-	// 		LastModifiedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2024-09-02-preview/examples/MaintenanceConfigurationsCreate_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f2826dd1e08d4625b29867c01a232d2dad423521/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-10-01/examples/MaintenanceConfigurationsCreate_Update.json
 func ExampleMaintenanceConfigurationsClient_CreateOrUpdate_createUpdateMaintenanceConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -300,7 +292,7 @@ func ExampleMaintenanceConfigurationsClient_CreateOrUpdate_createUpdateMaintenan
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2024-09-02-preview/examples/MaintenanceConfigurationsCreate_Update_MaintenanceWindow.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f2826dd1e08d4625b29867c01a232d2dad423521/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-10-01/examples/MaintenanceConfigurationsCreate_Update_MaintenanceWindow.json
 func ExampleMaintenanceConfigurationsClient_CreateOrUpdate_createUpdateMaintenanceConfigurationWithMaintenanceWindow() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -345,8 +337,7 @@ func ExampleMaintenanceConfigurationsClient_CreateOrUpdate_createUpdateMaintenan
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.MaintenanceConfiguration = armcontainerservice.MaintenanceConfiguration{
 	// 	Name: to.Ptr("aksManagedAutoUpgradeSchedule"),
-	// 	Type: to.Ptr("Microsoft.ContainerService/managedClusters/maintenanceConfigurations"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/maintenanceConfigurations/default"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/maintenanceConfigurations/aksManagedAutoUpgradeSchedule"),
 	// 	Properties: &armcontainerservice.MaintenanceConfigurationProperties{
 	// 		MaintenanceWindow: &armcontainerservice.MaintenanceWindow{
 	// 			DurationHours: to.Ptr[int32](10),
@@ -370,18 +361,10 @@ func ExampleMaintenanceConfigurationsClient_CreateOrUpdate_createUpdateMaintenan
 	// 			UTCOffset: to.Ptr("+05:30"),
 	// 		},
 	// 	},
-	// 	SystemData: &armcontainerservice.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
-	// 		CreatedBy: to.Ptr("user1"),
-	// 		CreatedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("user2"),
-	// 		LastModifiedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2024-09-02-preview/examples/MaintenanceConfigurationsDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f2826dd1e08d4625b29867c01a232d2dad423521/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-10-01/examples/MaintenanceConfigurationsDelete.json
 func ExampleMaintenanceConfigurationsClient_Delete_deleteMaintenanceConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -398,7 +381,7 @@ func ExampleMaintenanceConfigurationsClient_Delete_deleteMaintenanceConfiguratio
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2024-09-02-preview/examples/MaintenanceConfigurationsDelete_MaintenanceWindow.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f2826dd1e08d4625b29867c01a232d2dad423521/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-10-01/examples/MaintenanceConfigurationsDelete_MaintenanceWindow.json
 func ExampleMaintenanceConfigurationsClient_Delete_deleteMaintenanceConfigurationForNodeOsUpgrade() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

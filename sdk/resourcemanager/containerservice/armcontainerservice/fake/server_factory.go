@@ -20,12 +20,9 @@ import (
 // ServerFactory is a fake server for instances of the armcontainerservice.ClientFactory type.
 type ServerFactory struct {
 	AgentPoolsServer                  AgentPoolsServer
-	LoadBalancersServer               LoadBalancersServer
 	MachinesServer                    MachinesServer
 	MaintenanceConfigurationsServer   MaintenanceConfigurationsServer
-	ManagedClusterSnapshotsServer     ManagedClusterSnapshotsServer
 	ManagedClustersServer             ManagedClustersServer
-	OperationStatusResultServer       OperationStatusResultServer
 	OperationsServer                  OperationsServer
 	PrivateEndpointConnectionsServer  PrivateEndpointConnectionsServer
 	PrivateLinkResourcesServer        PrivateLinkResourcesServer
@@ -50,12 +47,9 @@ type ServerFactoryTransport struct {
 	srv                                 *ServerFactory
 	trMu                                sync.Mutex
 	trAgentPoolsServer                  *AgentPoolsServerTransport
-	trLoadBalancersServer               *LoadBalancersServerTransport
 	trMachinesServer                    *MachinesServerTransport
 	trMaintenanceConfigurationsServer   *MaintenanceConfigurationsServerTransport
-	trManagedClusterSnapshotsServer     *ManagedClusterSnapshotsServerTransport
 	trManagedClustersServer             *ManagedClustersServerTransport
-	trOperationStatusResultServer       *OperationStatusResultServerTransport
 	trOperationsServer                  *OperationsServerTransport
 	trPrivateEndpointConnectionsServer  *PrivateEndpointConnectionsServerTransport
 	trPrivateLinkResourcesServer        *PrivateLinkResourcesServerTransport
@@ -81,11 +75,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "AgentPoolsClient":
 		initServer(s, &s.trAgentPoolsServer, func() *AgentPoolsServerTransport { return NewAgentPoolsServerTransport(&s.srv.AgentPoolsServer) })
 		resp, err = s.trAgentPoolsServer.Do(req)
-	case "LoadBalancersClient":
-		initServer(s, &s.trLoadBalancersServer, func() *LoadBalancersServerTransport {
-			return NewLoadBalancersServerTransport(&s.srv.LoadBalancersServer)
-		})
-		resp, err = s.trLoadBalancersServer.Do(req)
 	case "MachinesClient":
 		initServer(s, &s.trMachinesServer, func() *MachinesServerTransport { return NewMachinesServerTransport(&s.srv.MachinesServer) })
 		resp, err = s.trMachinesServer.Do(req)
@@ -94,21 +83,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewMaintenanceConfigurationsServerTransport(&s.srv.MaintenanceConfigurationsServer)
 		})
 		resp, err = s.trMaintenanceConfigurationsServer.Do(req)
-	case "ManagedClusterSnapshotsClient":
-		initServer(s, &s.trManagedClusterSnapshotsServer, func() *ManagedClusterSnapshotsServerTransport {
-			return NewManagedClusterSnapshotsServerTransport(&s.srv.ManagedClusterSnapshotsServer)
-		})
-		resp, err = s.trManagedClusterSnapshotsServer.Do(req)
 	case "ManagedClustersClient":
 		initServer(s, &s.trManagedClustersServer, func() *ManagedClustersServerTransport {
 			return NewManagedClustersServerTransport(&s.srv.ManagedClustersServer)
 		})
 		resp, err = s.trManagedClustersServer.Do(req)
-	case "OperationStatusResultClient":
-		initServer(s, &s.trOperationStatusResultServer, func() *OperationStatusResultServerTransport {
-			return NewOperationStatusResultServerTransport(&s.srv.OperationStatusResultServer)
-		})
-		resp, err = s.trOperationStatusResultServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)

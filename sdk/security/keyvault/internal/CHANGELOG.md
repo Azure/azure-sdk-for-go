@@ -3,6 +3,7 @@
 ## 1.1.2-beta.1 (Unreleased)
 
 ### Features Added
+* Added fakes support
 
 ### Breaking Changes
 

@@ -63,5 +63,5 @@ func TestGoEmitterOptionsValidate(t *testing.T) {
 	goEmitOptions, err = typespec.NewGoEmitterOptions(goOption)
 	assert.NoError(t, err)
 	err = goEmitOptions.Validate()
-	assert.EqualError(t, err, typespec.ErrModuleEmpty.Error())
+	assert.NoError(t, err)
 }

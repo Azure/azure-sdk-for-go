@@ -71,10 +71,10 @@ func TestNewSpanValidator(t *testing.T) {
 	require.True(t, tracer.Enabled())
 
 	// spans with unmatching names are not recorded
-	ctx, endSpan := runtime.StartSpan(context.Background(), "BadSpanName", tracer, nil)
+	_, endSpan := runtime.StartSpan(context.Background(), "BadSpanName", tracer, nil)
 	endSpan(nil)
 
-	ctx, endSpan = runtime.StartSpan(context.Background(), "TestSpan", tracer, &runtime.StartSpanOptions{
+	ctx, endSpan := runtime.StartSpan(context.Background(), "TestSpan", tracer, &runtime.StartSpanOptions{
 		Kind:       tracing.SpanKindClient,
 		Attributes: []tracing.Attribute{initialAttr},
 		Links:      []tracing.Link{initialLink},

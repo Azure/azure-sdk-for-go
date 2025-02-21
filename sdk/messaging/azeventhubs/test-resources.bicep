@@ -11,15 +11,15 @@ param storageEndpointSuffix string = environment().suffixes.storage
 @description('The resource location')
 param location string = resourceGroup().location
 
+param tenantIsTME bool = false
+
 var apiVersion = '2017-04-01'
-var storageApiVersion = '2019-04-01'
 var namespaceName = baseName
 var storageAccountName = 'storage${baseName}'
 var containerName = 'container'
-var iotName = 'iot${baseName}'
 var authorizationName = '${baseName}/RootManageSharedAccessKey'
 
-resource namespace 'Microsoft.EventHub/namespaces@2017-04-01' = {
+resource namespace 'Microsoft.EventHub/namespaces@2024-01-01' = {
   name: namespaceName
   location: location
   sku: {
@@ -28,6 +28,7 @@ resource namespace 'Microsoft.EventHub/namespaces@2017-04-01' = {
     capacity: 5
   }
   properties: {
+    disableLocalAuth: !tenantIsTME
     isAutoInflateEnabled: false
     maximumThroughputUnits: 0
   }
@@ -146,18 +147,25 @@ output EVENTHUB_NAME string = eventHub.name
 output EVENTHUB_LINKSONLY_NAME string = linksonly.name
 
 // connection strings
-output EVENTHUB_CONNECTION_STRING string = listKeys(
-  resourceId('Microsoft.EventHub/namespaces/authorizationRules', namespaceName, 'RootManageSharedAccessKey'),
-  apiVersion
-).primaryConnectionString
-output EVENTHUB_CONNECTION_STRING_LISTEN_ONLY string = listKeys(
-  resourceId('Microsoft.EventHub/namespaces/authorizationRules', namespaceName, authorizedListenOnly.name),
-  apiVersion
-).primaryConnectionString
-output EVENTHUB_CONNECTION_STRING_SEND_ONLY string = listKeys(
-  resourceId('Microsoft.EventHub/namespaces/authorizationRules', namespaceName, authorizedSendOnly.name),
-  apiVersion
-).primaryConnectionString
+output EVENTHUB_CONNECTION_STRING string = tenantIsTME
+  ? listKeys(
+      resourceId('Microsoft.EventHub/namespaces/authorizationRules', namespaceName, 'RootManageSharedAccessKey'),
+      apiVersion
+    ).primaryConnectionString
+  : ''
+
+output EVENTHUB_CONNECTION_STRING_LISTEN_ONLY string = tenantIsTME
+  ? listKeys(
+      resourceId('Microsoft.EventHub/namespaces/authorizationRules', namespaceName, authorizedListenOnly.name),
+      apiVersion
+    ).primaryConnectionString
+  : ''
+output EVENTHUB_CONNECTION_STRING_SEND_ONLY string = tenantIsTME
+  ? listKeys(
+      resourceId('Microsoft.EventHub/namespaces/authorizationRules', namespaceName, authorizedSendOnly.name),
+      apiVersion
+    ).primaryConnectionString
+  : ''
 
 output RESOURCE_GROUP string = resourceGroup().name
 output AZURE_SUBSCRIPTION_ID string = subscription().subscriptionId

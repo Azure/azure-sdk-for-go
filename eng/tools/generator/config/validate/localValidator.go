@@ -82,7 +82,7 @@ func getReadmeGoFromReadme(readme string) string {
 	return strings.ReplaceAll(readme, readmeFilename, goReadmeFilename)
 }
 
-func GetModuleName(content []byte) (string, string) {
+func GetRpAndPackageName(content []byte) (string, string) {
 	moduleExist := regexp.MustCompile(goReadmeModuleName).Match(content)
 	if moduleExist {
 		moduleName := regexp.MustCompile(goReadmeModuleName).FindString(string(content))

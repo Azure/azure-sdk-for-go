@@ -13,7 +13,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/directory"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/file"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/testcommon"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/service"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/share"
 	"log"
 	"os"
 	"time"
@@ -276,4 +278,82 @@ func Example_directoryClient_Rename() {
 	_, err = srcDirClient.Rename(context.TODO(), destDirName, nil)
 	handleError(err)
 	fmt.Println("Directory renamed")
+}
+
+func Example_client_CreateDirectoryNFS() {
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+	accountKey, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_KEY")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_KEY could not be found")
+	}
+
+	serviceURL := fmt.Sprintf("https://%s.file.core.windows.net/", accountName)
+
+	cred, err := service.NewSharedKeyCredential(accountName, accountKey)
+	handleError(err)
+
+	client, err := service.NewClientWithSharedKeyCredential(serviceURL, cred, nil)
+	handleError(err)
+
+	shareClient := client.NewShareClient("testShare")
+
+	_, err = shareClient.Create(context.Background(), &share.CreateOptions{
+		EnabledProtocols: to.Ptr("NFS"),
+	})
+	handleError(err)
+
+	dirName := testcommon.GenerateDirectoryName("Dir1")
+	dirClient := shareClient.NewDirectoryClient(dirName)
+
+	_, err = dirClient.Create(context.Background(), &directory.CreateOptions{
+		Owner:    to.Ptr("123"),
+		Group:    to.Ptr("345"),
+		FileMode: to.Ptr("7774"),
+	})
+	handleError(err)
+}
+
+func Example_client_SetHTTPHeadersNFS() {
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+	accountKey, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_KEY")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_KEY could not be found")
+	}
+
+	serviceURL := fmt.Sprintf("https://%s.file.core.windows.net/", accountName)
+
+	cred, err := service.NewSharedKeyCredential(accountName, accountKey)
+	handleError(err)
+
+	client, err := service.NewClientWithSharedKeyCredential(serviceURL, cred, nil)
+	handleError(err)
+
+	shareClient := client.NewShareClient("testShare")
+
+	_, err = shareClient.Create(context.Background(), &share.CreateOptions{
+		EnabledProtocols: to.Ptr("NFS"),
+	})
+	handleError(err)
+
+	dirName := testcommon.GenerateDirectoryName("Dir1")
+	dirClient := shareClient.NewDirectoryClient(dirName)
+	_, err = dirClient.Create(context.Background(), nil)
+	handleError(err)
+	owner := "345"
+	group := "123"
+	mode := "7777"
+
+	// Set the custom permissions
+	_, err = dirClient.SetProperties(context.Background(), &directory.SetPropertiesOptions{
+		Owner:    to.Ptr(owner),
+		Group:    to.Ptr(group),
+		FileMode: to.Ptr(mode),
+	})
+	handleError(err)
 }

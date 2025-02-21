@@ -632,4 +632,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][msft_oss_co
 
 [tables_rest]: https://learn.microsoft.com/rest/api/storageservices/table-service-rest-api
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-go/sdk/data/aztables/README.png)
+

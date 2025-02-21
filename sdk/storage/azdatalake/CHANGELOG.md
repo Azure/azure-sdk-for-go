@@ -1,6 +1,6 @@
 # Release History
 
-## 1.4.1-beta.1 (Unreleased)
+## 1.4.1-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,15 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.4.1-beta.1 (2025-02-12)
+
+### Features Added
+* Upgraded service version to `2025-05-05`.
+
+### Other Changes
+* Updated `azidentity` version to `1.8.1`
+* Updated `azblob` version to `v1.6.1-beta.1`
 
 ## 1.4.0 (2025-01-27)
 

@@ -177,7 +177,7 @@ func extractTestProxyArchive(archivePath string, outputDir string) error {
 
 func installTestProxy(archivePath string, outputDir string, proxyPath string) error {
 	var err error
-	if strings.HasSuffix(archivePath, ".zip") {
+	if filepath.Ext(archivePath) == ".zip" {
 		err = extractTestProxyZip(archivePath, outputDir)
 	} else {
 		err = extractTestProxyArchive(archivePath, outputDir)

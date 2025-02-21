@@ -144,4 +144,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [keys_samples]: https://aka.ms/azsdk/go/keyvault-keys/docs#pkg-examples
 [managed_identity]: https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-go%2Fsdk%2Fsecurity%2Fkeyvault%2Fazkeys%2FREADME.png)
+

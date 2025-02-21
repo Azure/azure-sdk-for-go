@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
+	"go.opentelemetry.io/otel/propagation"
 	semconv "go.opentelemetry.io/otel/semconv/v1.17.0"
 	"go.opentelemetry.io/otel/trace"
 )
@@ -33,19 +34,31 @@ func NewTracingProvider(tracerProvider trace.TracerProvider, opts *TracingProvid
 		return tracing.NewTracer(func(ctx context.Context, spanName string, options *tracing.SpanOptions) (context.Context, tracing.Span) {
 			kind := tracing.SpanKindInternal
 			var attrs []attribute.KeyValue
+			var links []trace.Link
 			if options != nil {
 				kind = options.Kind
 				attrs = convertAttributes(options.Attributes)
+				links = convertLinks(options.Links)
 			}
-			ctx, span := tracer.Start(ctx, spanName, trace.WithSpanKind(convertSpanKind(kind)), trace.WithAttributes(attrs...))
+			ctx, span := tracer.Start(ctx, spanName, trace.WithSpanKind(convertSpanKind(kind)), trace.WithAttributes(attrs...), trace.WithLinks(links...))
 			return ctx, convertSpan(span)
 		}, &tracing.TracerOptions{
 			SpanFromContext: func(ctx context.Context) tracing.Span {
 				return convertSpan(trace.SpanFromContext(ctx))
 			},
+			LinkFromContext: func(ctx context.Context, attrs ...tracing.Attribute) tracing.Link {
+				link := trace.LinkFromContext(ctx, convertAttributes(attrs)...)
+				return tracing.Link{
+					SpanContext: convertOTelSpanContext(link.SpanContext),
+					Attributes:  attrs,
+				}
+			},
 		})
-
-	}, nil)
+	}, &tracing.ProviderOptions{
+		NewPropagatorFn: func() tracing.Propagator {
+			return convertPropagator(propagation.TraceContext{})
+		},
+	})
 }
 
 func convertSpan(traceSpan trace.Span) tracing.Span {
@@ -58,6 +71,12 @@ func convertSpan(traceSpan trace.Span) tracing.Span {
 		},
 		AddEvent: func(name string, attrs ...tracing.Attribute) {
 			traceSpan.AddEvent(name, trace.WithAttributes(convertAttributes(attrs)...))
+		},
+		AddLink: func(link tracing.Link) {
+			traceSpan.AddLink(convertLink(link))
+		},
+		SpanContext: func() tracing.SpanContext {
+			return convertOTelSpanContext(traceSpan.SpanContext())
 		},
 		SetStatus: func(code tracing.SpanStatus, desc string) {
 			traceSpan.SetStatus(convertStatus(code), desc)
@@ -87,6 +106,42 @@ func convertAttributes(attrs []tracing.Attribute) []attribute.KeyValue {
 	return keyvals
 }
 
+func convertLinks(links []tracing.Link) []trace.Link {
+	var otelLinks []trace.Link
+	for _, link := range links {
+		otelLinks = append(otelLinks, convertLink(link))
+	}
+	return otelLinks
+}
+
+func convertLink(link tracing.Link) trace.Link {
+	return trace.Link{
+		SpanContext: convertSpanContext(link.SpanContext),
+		Attributes:  convertAttributes(link.Attributes),
+	}
+}
+
+func convertSpanContext(spanContext tracing.SpanContext) trace.SpanContext {
+	oTelTraceState, _ := trace.ParseTraceState(string(spanContext.TraceState()))
+	return trace.NewSpanContext(trace.SpanContextConfig{
+		TraceID:    trace.TraceID(spanContext.TraceID()),
+		SpanID:     trace.SpanID(spanContext.SpanID()),
+		TraceFlags: trace.TraceFlags(spanContext.TraceFlags()),
+		TraceState: oTelTraceState,
+		Remote:     spanContext.IsRemote(),
+	})
+}
+
+func convertOTelSpanContext(spanContext trace.SpanContext) tracing.SpanContext {
+	return tracing.NewSpanContext(tracing.SpanContextConfig{
+		TraceID:    tracing.TraceID(spanContext.TraceID()),
+		SpanID:     tracing.SpanID(spanContext.SpanID()),
+		TraceFlags: tracing.TraceFlags(spanContext.TraceFlags()),
+		TraceState: tracing.TraceState(spanContext.TraceState().String()),
+		Remote:     spanContext.IsRemote(),
+	})
+}
+
 func convertSpanKind(sk tracing.SpanKind) trace.SpanKind {
 	switch sk {
 	case tracing.SpanKindServer:
@@ -111,4 +166,18 @@ func convertStatus(ss tracing.SpanStatus) codes.Code {
 	default:
 		return codes.Unset
 	}
+}
+
+func convertPropagator(pr propagation.TextMapPropagator) tracing.Propagator {
+	return tracing.NewPropagator(tracing.PropagatorImpl{
+		Inject: func(ctx context.Context, carrier tracing.Carrier) {
+			pr.Inject(ctx, carrier)
+		},
+		Extract: func(ctx context.Context, carrier tracing.Carrier) context.Context {
+			return pr.Extract(ctx, carrier)
+		},
+		Fields: func() []string {
+			return pr.Fields()
+		},
+	})
 }

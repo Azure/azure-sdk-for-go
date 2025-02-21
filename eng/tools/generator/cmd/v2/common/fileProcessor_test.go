@@ -4,11 +4,16 @@
 package common
 
 import (
+	"fmt"
+	"os"
+	"path/filepath"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/repo"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/delta"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/report"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/utils"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -121,4 +126,17 @@ func TestCalculateNewVersion(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, newVersion.String(), "1.2.0-beta.2")
 	assert.Equal(t, BetaLabel, prl)
+}
+
+func TestFindModule(t *testing.T) {
+	cwd, err := os.Getwd()
+	assert.NoError(t, err)
+	sdkRoot := utils.NormalizePath(cwd)
+	sdkRepo, err := repo.OpenSDKRepository(sdkRoot)
+	assert.NoError(t, err)
+	module, err := FindModuleDirByGoMod(fmt.Sprintf("%s/%s", filepath.ToSlash(sdkRepo.Root()), "sdk/security/keyvault/azadmin/settings"))
+	assert.NoError(t, err)
+	moduleRelativePath, err := filepath.Rel(sdkRepo.Root(), module)
+	assert.NoError(t, err)
+	assert.Equal(t, "sdk/security/keyvault/azadmin", filepath.ToSlash(moduleRelativePath))
 }

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.1-beta.1 (Unreleased)
+## 1.5.1-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,30 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.5.1-beta.1 (2025-02-12)
+
+### Features Added
+* Upgraded service version to `2025-05-05`.
+* NFS Over Rest API Request/Response changes in the following APIs - 
+  CreateFile
+  SetFileProperties
+  GetFileProperties
+  StartCopyFromUrl
+  DownloadFile
+  DeleteFile
+  CreateDirectory
+  GetDirectoryProperties
+  SetDirectoryProperties
+* NFS Over Rest, new API File CreateHardLink() Added 
+  
+
+### Breaking Changes
+* The following APIs no longer send the x-ms-file-permission-key, x-ms-file-attributes, x-ms-file-creation-time, and x-ms-file-last-write-time request headers by default. These headers have been optional in the REST API since x-ms-version 2021-06-08:
+  FileClient.Create()
+  FileClient.SetHttpHeaders()
+  DirectoryClient.Create()
+  DirectoryClient.SetHttpHeaders()
 
 ## 1.5.0 (2025-01-23)
 
@@ -40,8 +64,6 @@
 
 ### Features Added
 * Upgraded service version to `2024-08-04`.
-
-
 
 ## 1.3.1-beta.1 (2024-08-27)
 

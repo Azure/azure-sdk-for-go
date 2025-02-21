@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+
 package typespec_test
 
 import (
@@ -60,5 +63,5 @@ func TestGoEmitterOptionsValidate(t *testing.T) {
 	goEmitOptions, err = typespec.NewGoEmitterOptions(goOption)
 	assert.NoError(t, err)
 	err = goEmitOptions.Validate()
-	assert.EqualError(t, err, typespec.ErrModuleEmpty.Error())
+	assert.NoError(t, err)
 }

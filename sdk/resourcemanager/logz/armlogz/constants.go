@@ -10,7 +10,7 @@ package armlogz
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logz/armlogz"
-	moduleVersion = "v1.2.0"
+	moduleVersion = "v1.2.1"
 )
 
 // CreatedByType - The type of identity that created the resource.

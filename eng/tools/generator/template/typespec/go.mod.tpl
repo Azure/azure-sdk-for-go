@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/{{.rpName}}/{{.packageName}}
+module github.com/Azure/azure-sdk-for-go/{{.moduleRelativePath}}
 
 go {{.goVersion}}
 

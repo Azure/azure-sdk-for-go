@@ -297,6 +297,7 @@ func (s *RecordedTestSuite) TestCreateNewSubdirectoryClient() {
 
 	_, err = dirFileClient.GetProperties(context.Background(), nil)
 	_require.Error(err) // we should get back a 404
+	_require.True(datalakeerror.HasCode(err, datalakeerror.PathNotFound))
 }
 
 func (s *RecordedTestSuite) TestCreateNewSubdirectoryClientWithSpecialName() {

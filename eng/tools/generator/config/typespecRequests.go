@@ -48,7 +48,7 @@ func GetTypeSpecProjectsFromConfig(config *Config, specRoot string) (tspProjects
 			if err != nil {
 				return nil, err
 			}
-			module, err := tspConfig.GetModuleName()
+			module, err := tspConfig.GetRpAndPackageName()
 			if err != nil {
 				return nil, err
 			}

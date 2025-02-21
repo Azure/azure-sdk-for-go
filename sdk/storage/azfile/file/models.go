@@ -85,21 +85,21 @@ type CreateOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 	// A name-value pair to associate with a file storage object.
 	Metadata map[string]*string
+	// NFS only. The file mode of the file or directory
+	FileMode *string
+	// NFS only. The owner of the file or directory.
+	Owner *string
+	// NFS only. The owning group of the file or directory.
+	Group *string
 }
 
 func (o *CreateOptions) format() (*generated.FileClientCreateOptions, *generated.ShareFileHTTPHeaders, *LeaseAccessConditions) {
 	if o == nil {
-		return &generated.FileClientCreateOptions{
-			FileAttributes:    to.Ptr(shared.FileAttributesNone),
-			FileCreationTime:  to.Ptr(shared.DefaultCurrentTimeString),
-			FileLastWriteTime: to.Ptr(shared.DefaultCurrentTimeString),
-			FilePermission:    to.Ptr(shared.DefaultFilePermissionString),
-		}, nil, nil
+		return nil, nil, nil
 	}
 
-	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.SMBProperties, to.Ptr(shared.FileAttributesNone), to.Ptr(shared.DefaultCurrentTimeString), false)
-
-	permission, permissionKey := exported.FormatPermissions(o.Permissions, to.Ptr(shared.DefaultFilePermissionString))
+	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.SMBProperties, false)
+	permission, permissionKey := exported.FormatPermissions(o.Permissions)
 
 	createOptions := &generated.FileClientCreateOptions{
 		FileAttributes:    fileAttributes,
@@ -109,6 +109,9 @@ func (o *CreateOptions) format() (*generated.FileClientCreateOptions, *generated
 		FilePermission:    permission,
 		FilePermissionKey: permissionKey,
 		Metadata:          o.Metadata,
+		FileMode:          o.FileMode,
+		Owner:             o.Owner,
+		Group:             o.Group,
 	}
 
 	if permissionKey != nil && *permissionKey != shared.DefaultFilePermissionString {
@@ -172,9 +175,8 @@ func (o *RenameOptions) format() (*generated.FileClientRenameOptions, *generated
 		return nil, nil, nil, nil, nil
 	}
 
-	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.SMBProperties, nil, nil, false)
-
-	permission, permissionKey := exported.FormatPermissions(o.Permissions, nil)
+	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.SMBProperties, false)
+	permission, permissionKey := exported.FormatPermissions(o.Permissions)
 
 	renameOpts := &generated.FileClientRenameOptions{
 		FilePermission:    permission,
@@ -245,21 +247,21 @@ type SetHTTPHeadersOptions struct {
 	HTTPHeaders *HTTPHeaders
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
+	// NFS only. The file mode of the file or directory
+	FileMode *string
+	// NFS only. The owner of the file or directory.
+	Owner *string
+	// NFS only. The owning group of the file or directory.
+	Group *string
 }
 
 func (o *SetHTTPHeadersOptions) format() (*generated.FileClientSetHTTPHeadersOptions, *generated.ShareFileHTTPHeaders, *LeaseAccessConditions) {
 	if o == nil {
-		return &generated.FileClientSetHTTPHeadersOptions{
-			FileAttributes:    to.Ptr(shared.DefaultPreserveString),
-			FileCreationTime:  to.Ptr(shared.DefaultPreserveString),
-			FileLastWriteTime: to.Ptr(shared.DefaultPreserveString),
-			FilePermission:    to.Ptr(shared.DefaultPreserveString),
-		}, nil, nil
+		return nil, nil, nil
 	}
 
-	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.SMBProperties, to.Ptr(shared.DefaultPreserveString), to.Ptr(shared.DefaultPreserveString), false)
-
-	permission, permissionKey := exported.FormatPermissions(o.Permissions, to.Ptr(shared.DefaultPreserveString))
+	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.SMBProperties, false)
+	permission, permissionKey := exported.FormatPermissions(o.Permissions)
 
 	opts := &generated.FileClientSetHTTPHeadersOptions{
 		FileAttributes:    fileAttributes,
@@ -269,6 +271,9 @@ func (o *SetHTTPHeadersOptions) format() (*generated.FileClientSetHTTPHeadersOpt
 		FileContentLength: o.FileContentLength,
 		FilePermission:    permission,
 		FilePermissionKey: permissionKey,
+		FileMode:          o.FileMode,
+		Owner:             o.Owner,
+		Group:             o.Group,
 	}
 
 	if permissionKey != nil && *permissionKey != shared.DefaultPreserveString {
@@ -311,11 +316,25 @@ type StartCopyFromURLOptions struct {
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	// Required if the destination file has an active lease.
 	LeaseAccessConditions *LeaseAccessConditions
+	// NFS only. The file mode of the file or directory
+	FileMode *string
+	// NFS only. The owner of the file or directory.
+	Owner *string
+	// NFS only. The owning group of the file or directory.
+	Group *string
+	// NFS only. Applicable only when the copy source is a File. Determines the copy behavior of the mode bits of the file. source:
+	FileModeCopyMode *ModeCopyMode
+	// NFS only. Determines the copy behavior of the owner user identifier (UID) and group identifier (GID) of the file. source:
+	FileOwnerCopyMode *OwnerCopyMode
 }
 
 func (o *StartCopyFromURLOptions) format() (*generated.FileClientStartCopyOptions, *generated.CopyFileSMBInfo, *generated.LeaseAccessConditions) {
 	if o == nil {
-		return nil, nil, nil
+		return &generated.FileClientStartCopyOptions{
+				FileModeCopyMode:  to.Ptr(ModeCopyModeSource),
+				FileOwnerCopyMode: to.Ptr(OwnerCopyModeSource),
+			},
+			nil, nil
 	}
 
 	var permission, permissionKey *string
@@ -328,6 +347,11 @@ func (o *StartCopyFromURLOptions) format() (*generated.FileClientStartCopyOption
 		FilePermission:    permission,
 		FilePermissionKey: permissionKey,
 		Metadata:          o.Metadata,
+		FileMode:          o.FileMode,
+		Owner:             o.Owner,
+		Group:             o.Group,
+		FileModeCopyMode:  o.FileModeCopyMode,
+		FileOwnerCopyMode: o.FileOwnerCopyMode,
 	}
 	return opts, o.CopyFileSMBInfo.format(), o.LeaseAccessConditions
 }
@@ -784,6 +808,19 @@ func (o *ForceCloseHandlesOptions) format() *generated.FileClientForceCloseHandl
 		Marker:        o.Marker,
 		Sharesnapshot: o.ShareSnapshot,
 	}
+}
+
+// CreateHardLinkOptions contains the optional parameters for the Client.CreateHardLink method.
+type CreateHardLinkOptions struct {
+	// LeaseAccessConditions contains optional parameters to access leased entity.
+	LeaseAccessConditions *LeaseAccessConditions
+}
+
+func (o *CreateHardLinkOptions) format() (*generated.FileClientCreateHardLinkOptions, *generated.LeaseAccessConditions) {
+	if o == nil {
+		return nil, nil
+	}
+	return &generated.FileClientCreateHardLinkOptions{}, o.LeaseAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

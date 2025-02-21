@@ -43,6 +43,11 @@ type NetworkSecurityPerimeterConfigurationsClientListByServiceOptions struct {
 	// placeholder for future optional parameters
 }
 
+// OfferingsClientListOptions contains the optional parameters for the OfferingsClient.NewListPager method.
+type OfferingsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -99,6 +104,12 @@ type SearchManagementRequestOptions struct {
 	// A client-generated GUID value that identifies this request. If specified, this will be included in response information
 	// as a way to track the request.
 	ClientRequestID *string
+}
+
+// ServiceClientBeginUpgradeOptions contains the optional parameters for the ServiceClient.BeginUpgrade method.
+type ServiceClientBeginUpgradeOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ServicesClientBeginCreateOrUpdateOptions contains the optional parameters for the ServicesClient.BeginCreateOrUpdate method.

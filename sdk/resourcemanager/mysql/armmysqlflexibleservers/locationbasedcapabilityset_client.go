@@ -46,7 +46,7 @@ func NewLocationBasedCapabilitySetClient(subscriptionID string, credential azcor
 // Get - Get capabilities at specified location in a given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-12-30
+// Generated from API version 2024-10-01-preview
 //   - locationName - The name of the location.
 //   - capabilitySetName - Name of capability set
 //   - options - LocationBasedCapabilitySetClientGetOptions contains the optional parameters for the LocationBasedCapabilitySetClient.Get
@@ -93,7 +93,7 @@ func (client *LocationBasedCapabilitySetClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-30")
+	reqQP.Set("api-version", "2024-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -110,7 +110,7 @@ func (client *LocationBasedCapabilitySetClient) getHandleResponse(resp *http.Res
 
 // NewListPager - Get capabilities at specified location in a given subscription.
 //
-// Generated from API version 2023-12-30
+// Generated from API version 2024-10-01-preview
 //   - locationName - The name of the location.
 //   - options - LocationBasedCapabilitySetClientListOptions contains the optional parameters for the LocationBasedCapabilitySetClient.NewListPager
 //     method.
@@ -153,7 +153,7 @@ func (client *LocationBasedCapabilitySetClient) listCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-30")
+	reqQP.Set("api-version", "2024-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

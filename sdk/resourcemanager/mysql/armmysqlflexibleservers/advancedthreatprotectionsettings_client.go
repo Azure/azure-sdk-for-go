@@ -46,7 +46,7 @@ func NewAdvancedThreatProtectionSettingsClient(subscriptionID string, credential
 // Get - Get a server's Advanced Threat Protection state
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-12-30
+// Generated from API version 2024-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - advancedThreatProtectionName - The name of the Advanced Threat Protection state.
@@ -98,7 +98,7 @@ func (client *AdvancedThreatProtectionSettingsClient) getCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-30")
+	reqQP.Set("api-version", "2024-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -115,7 +115,7 @@ func (client *AdvancedThreatProtectionSettingsClient) getHandleResponse(resp *ht
 
 // NewListPager - Gets a list of server's Advanced Threat Protection states.
 //
-// Generated from API version 2023-12-30
+// Generated from API version 2024-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - AdvancedThreatProtectionSettingsClientListOptions contains the optional parameters for the AdvancedThreatProtectionSettingsClient.NewListPager
@@ -163,7 +163,7 @@ func (client *AdvancedThreatProtectionSettingsClient) listCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-30")
+	reqQP.Set("api-version", "2024-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -181,7 +181,7 @@ func (client *AdvancedThreatProtectionSettingsClient) listHandleResponse(resp *h
 // BeginUpdate - Updates a server's Advanced Threat Protection state.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-12-30
+// Generated from API version 2024-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - advancedThreatProtectionName - The name of the Advanced Threat Protection state.
@@ -209,7 +209,7 @@ func (client *AdvancedThreatProtectionSettingsClient) BeginUpdate(ctx context.Co
 // Update - Updates a server's Advanced Threat Protection state.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-12-30
+// Generated from API version 2024-10-01-preview
 func (client *AdvancedThreatProtectionSettingsClient) update(ctx context.Context, resourceGroupName string, serverName string, advancedThreatProtectionName AdvancedThreatProtectionName, parameters AdvancedThreatProtectionForUpdate, options *AdvancedThreatProtectionSettingsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AdvancedThreatProtectionSettingsClient.BeginUpdate"
@@ -255,7 +255,7 @@ func (client *AdvancedThreatProtectionSettingsClient) updateCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-30")
+	reqQP.Set("api-version", "2024-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -267,7 +267,7 @@ func (client *AdvancedThreatProtectionSettingsClient) updateCreateRequest(ctx co
 // BeginUpdatePut - Updates a server's Advanced Threat Protection state.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-12-30
+// Generated from API version 2024-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - advancedThreatProtectionName - The name of the Advanced Threat Protection state.
@@ -295,7 +295,7 @@ func (client *AdvancedThreatProtectionSettingsClient) BeginUpdatePut(ctx context
 // UpdatePut - Updates a server's Advanced Threat Protection state.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-12-30
+// Generated from API version 2024-10-01-preview
 func (client *AdvancedThreatProtectionSettingsClient) updatePut(ctx context.Context, resourceGroupName string, serverName string, advancedThreatProtectionName AdvancedThreatProtectionName, parameters AdvancedThreatProtection, options *AdvancedThreatProtectionSettingsClientBeginUpdatePutOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AdvancedThreatProtectionSettingsClient.BeginUpdatePut"
@@ -341,7 +341,7 @@ func (client *AdvancedThreatProtectionSettingsClient) updatePutCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-30")
+	reqQP.Set("api-version", "2024-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

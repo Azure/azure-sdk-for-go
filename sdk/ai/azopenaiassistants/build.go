@@ -8,6 +8,5 @@ package azopenaiassistants
 
 //go:generate pwsh ./testdata/genopenapi.ps1
 //go:generate go run ./internal/transform
-
 //go:generate goimports -w ./..
 //go:generate go mod tidy

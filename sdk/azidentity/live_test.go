@@ -174,6 +174,7 @@ func run(m *testing.M) int {
 		}
 	case recording.RecordingMode:
 		// replace path variables with fake values to simplify matching (the real values aren't secret)
+
 		pathVars := map[string]string{
 			liveManagedIdentity.clientID:                    fakeClientID,
 			liveManagedIdentity.objectID:                    fakeObjectID,

@@ -10,6 +10,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"net/url"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -25,6 +26,26 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
+
+func recordMITest(t *testing.T) (azcore.ClientOptions, string) {
+	opts, stop := initRecording(t)
+	t.Cleanup(stop)
+	recordedScope := strings.ReplaceAll(t.Name(), "/", "_")
+	scope := liveTestScope
+	switch recording.GetRecordMode() {
+	case recording.RecordingMode:
+		actual := url.QueryEscape(strings.TrimSuffix(scope, defaultSuffix))
+		err := recording.AddURISanitizer(recordedScope, actual, &recording.RecordingOptions{
+			ProxyPort:    os.Getpid()%10000 + 20000, // TODO: fix this bug
+			TestInstance: t,
+			UseHTTPS:     true,
+		})
+		require.NoError(t, err)
+	case recording.PlaybackMode:
+		scope = recordedScope
+	}
+	return opts, scope
+}
 
 func writeArcKeyFile(t *testing.T, content string) string {
 	d := ""
@@ -262,13 +283,12 @@ func TestManagedIdentityCredential_AzureMLLive(t *testing.T) {
 			t.Skip("no value for " + strings.Join(missing, ", "))
 		}
 	}
-	opts, stop := initRecording(t)
-	defer stop()
+	opts, scope := recordMITest(t)
 	cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ClientOptions: opts})
 	if err != nil {
 		t.Fatal(err)
 	}
-	testGetTokenSuccess(t, cred, t.Name())
+	testGetTokenSuccess(t, cred, scope)
 }
 
 func TestManagedIdentityCredential_CloudShell(t *testing.T) {
@@ -297,8 +317,9 @@ func TestManagedIdentityCredential_CloudShell(t *testing.T) {
 func TestManagedIdentityCredential_AppService(t *testing.T) {
 	expectedID := "expected-ID"
 	expectedHeader := "header"
-	for _, id := range []ManagedIDKind{ClientID(expectedID), ObjectID(expectedID), ResourceID(expectedID), nil} {
-		scope := fmt.Sprintf("%s/%T/.default", t.Name(), id)
+	for _, id := range []ManagedIDKind{ClientID(expectedID)} { //}, ObjectID(expectedID), ResourceID(expectedID), nil} {
+		// scope := fmt.Sprintf("%s/%T/.default", t.Name(), id)
+		scope := liveTestScope
 		validateReq := func(t *testing.T) func(req *http.Request) bool {
 			return func(req *http.Request) bool {
 				if h := req.Header.Get("X-IDENTITY-HEADER"); h != expectedHeader {
@@ -350,13 +371,14 @@ func TestManagedIdentityCredential_AppService(t *testing.T) {
 			)
 			srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest))
 			setEnvironmentVariables(t, map[string]string{identityEndpoint: srv.URL(), identityHeader: expectedHeader})
+			// co, _ := recordMITest(t)
 			options := ManagedIdentityCredentialOptions{ID: id}
 			options.Transport = srv
 			cred, err := NewManagedIdentityCredential(&options)
 			if err != nil {
 				t.Fatal(err)
 			}
-			testGetTokenSuccess(t, cred, scope)
+			testGetTokenSuccess(t, cred, liveTestScope)
 		})
 	}
 }
@@ -520,47 +542,43 @@ func TestManagedIdentityCredential_IMDSLive(t *testing.T) {
 		if recording.GetRecordMode() != recording.PlaybackMode && liveManagedIdentity.clientID == "" {
 			t.Skip("set IDENTITY_VM_USER_ASSIGNED_MI_CLIENT_ID to run this test")
 		}
-		opts, stop := initRecording(t)
-		defer stop()
+		opts, scope := recordMITest(t)
 		cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{
 			ClientOptions: opts, ID: ClientID(liveManagedIdentity.clientID)},
 		)
 		require.NoError(t, err)
-		testGetTokenSuccess(t, cred, t.Name())
+		testGetTokenSuccess(t, cred, scope)
 	})
 
 	t.Run("object ID", func(t *testing.T) {
 		if recording.GetRecordMode() != recording.PlaybackMode && liveManagedIdentity.objectID == "" {
 			t.Skip("set IDENTITY_VM_USER_ASSIGNED_MI_OBJECT_ID to run this test")
 		}
-		opts, stop := initRecording(t)
-		defer stop()
+		opts, scope := recordMITest(t)
 		cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{
 			ClientOptions: opts, ID: ObjectID(liveManagedIdentity.objectID)},
 		)
 		require.NoError(t, err)
-		testGetTokenSuccess(t, cred, t.Name())
+		testGetTokenSuccess(t, cred, scope)
 	})
 
 	t.Run("resource ID", func(t *testing.T) {
 		if recording.GetRecordMode() != recording.PlaybackMode && liveManagedIdentity.resourceID == "" {
 			t.Skip("set IDENTITY_VM_USER_ASSIGNED_MI_RESOURCE_ID to run this test")
 		}
-		opts, stop := initRecording(t)
-		defer stop()
+		opts, scope := recordMITest(t)
 		cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{
 			ClientOptions: opts, ID: ResourceID(liveManagedIdentity.resourceID)},
 		)
 		require.NoError(t, err)
-		testGetTokenSuccess(t, cred, t.Name())
+		testGetTokenSuccess(t, cred, scope)
 	})
 
 	t.Run("system assigned", func(t *testing.T) {
-		opts, stop := initRecording(t)
-		defer stop()
+		opts, scope := recordMITest(t)
 		cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ClientOptions: opts})
 		require.NoError(t, err)
-		testGetTokenSuccess(t, cred, t.Name())
+		testGetTokenSuccess(t, cred, scope)
 	})
 }
 

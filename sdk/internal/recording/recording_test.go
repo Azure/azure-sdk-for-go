@@ -65,18 +65,21 @@ func (s *recordingTests) TestGetEnvVariable() {
 
 func (s *recordingTests) TestRecordingOptions() {
 	require := require.New(s.T())
+	port := 42
 	r := RecordingOptions{
-		UseHTTPS: true,
+		ProxyPort: port,
+		UseHTTPS:  true,
 	}
-	require.Equal(r.baseURL(), "https://localhost:5001")
+	require.Equal(r.baseURL(), fmt.Sprintf("https://localhost:%d", port))
 
 	r.UseHTTPS = false
-	require.Equal(r.baseURL(), "http://localhost:5000")
+	require.Equal(r.baseURL(), fmt.Sprintf("http://localhost:%d", port))
 
 	r = *defaultOptions()
-	require.Equal(r.baseURL(), fmt.Sprintf("https://localhost:%d", r.ProxyPort))
-	// ProxyPort should be generated deterministically
-	require.Equal(r.ProxyPort, defaultOptions().ProxyPort)
+	require.Equal(r.baseURL(), fmt.Sprintf("https://localhost:%d", defaultPort))
+	require.Equal(defaultPort, defaultOptions().ProxyPort)
+
+	require.Equal(RecordingOptions{}.baseURL(), fmt.Sprintf("http://localhost:%d", defaultPort))
 }
 
 func (s *recordingTests) TestStartStop() {

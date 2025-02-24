@@ -616,8 +616,8 @@ type ACSMessageDeliveryStatusUpdatedEventData struct {
 	// REQUIRED; The updated message channel type
 	ChannelKind *ACSMessageChannelKind
 
-	// REQUIRED; The channel event error
-	Error *Error
+	// REQUIRED; The message sender
+	From *string
 
 	// REQUIRED; The time message was received
 	ReceivedTimestamp *time.Time
@@ -625,14 +625,14 @@ type ACSMessageDeliveryStatusUpdatedEventData struct {
 	// REQUIRED; The updated message status
 	Status *ACSMessageDeliveryStatus
 
-	// The message sender
-	From *string
+	// REQUIRED; The message recipient
+	To *string
+
+	// The channel event error
+	Error *Error
 
 	// The message id
 	MessageID *string
-
-	// The message recipient
-	To *string
 }
 
 // ACSMessageInteractiveButtonReplyContent - Message Interactive button reply content for a user to business message
@@ -646,14 +646,14 @@ type ACSMessageInteractiveButtonReplyContent struct {
 
 // ACSMessageInteractiveContent - Message Interactive Content
 type ACSMessageInteractiveContent struct {
-	// REQUIRED; The Message Sent when a customer clicks a button
-	ButtonReply *ACSMessageInteractiveButtonReplyContent
-
-	// REQUIRED; The Message Sent when a customer selects an item from a list
-	ListReply *ACSMessageInteractiveListReplyContent
-
 	// REQUIRED; The Message interactive reply type
 	ReplyKind *ACSInteractiveReplyKind
+
+	// The Message Sent when a customer clicks a button
+	ButtonReply *ACSMessageInteractiveButtonReplyContent
+
+	// The Message Sent when a customer selects an item from a list
+	ListReply *ACSMessageInteractiveListReplyContent
 }
 
 // ACSMessageInteractiveListReplyContent - Message Interactive list reply content for a user to business message
@@ -670,51 +670,72 @@ type ACSMessageInteractiveListReplyContent struct {
 
 // ACSMessageMediaContent - Message Media Content
 type ACSMessageMediaContent struct {
-	// The caption for the media object, if supported and provided
-	Caption *string
-
-	// The filename of the underlying media file as specified when uploaded
-	FileName *string
-
-	// The media identifier
+	// REQUIRED; Required. The media identifier
 	MediaID *string
 
-	// The MIME type of the file this media represents
+	// REQUIRED; Required. The MIME type of the file this media represents
 	MimeType *string
+
+	// Optional. Set to true if the sticker is animated; false otherwise.
+	Animated *bool
+
+	// Optional. The caption for the media object, if supported and provided
+	Caption *string
+
+	// Optional. The filename of the underlying media file as specified when uploaded
+	FileName *string
+}
+
+// ACSMessageReactionContent - Message Reaction Content
+type ACSMessageReactionContent struct {
+	// REQUIRED; Required. WhatsApp message ID of the message that the emoji is applied to
+	MessageID *string
+
+	// Optional. Unicode escape sequence of the emoji.
+	Emoji *string
 }
 
 // ACSMessageReceivedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.Communication.AdvancedMessageReceived
 // event.
 type ACSMessageReceivedEventData struct {
-	// REQUIRED; The received message button content
-	Button *ACSMessageButtonContent
-
-	// REQUIRED; The message channel type
+	// REQUIRED; Required. The message channel type
 	ChannelKind *ACSMessageChannelKind
 
-	// REQUIRED; The received message context
-	Context *ACSMessageContext
+	// REQUIRED; The message sender
+	From *string
 
-	// REQUIRED; The channel event error
-	Error *Error
-
-	// REQUIRED; The received message interactive content
-	InteractiveContent *ACSMessageInteractiveContent
-
-	// REQUIRED; The received message media content
-	MediaContent *ACSMessageMediaContent
+	// REQUIRED; Required. Whatsapp message type
+	MessageType *string
 
 	// REQUIRED; The time message was received
 	ReceivedTimestamp *time.Time
 
-	// The message content
+	// REQUIRED; The message recipient
+	To *string
+
+	// Optional. The received message button content
+	Button *ACSMessageButtonContent
+
+	// Optional. The message content
 	Content *string
 
-	// The message sender
-	From *string
+	// Optional. The received message context
+	Context *ACSMessageContext
 
-	// The message recipient
-	To *string
+	// The channel event error
+	Error *Error
+
+	// Optional. The received message interactive content
+	InteractiveContent *ACSMessageInteractiveContent
+
+	// Optional. The received message media content
+	MediaContent *ACSMessageMediaContent
+
+	// Optional. Message ID. Format is Guid as string.
+	MessageID *string
+
+	// Optional. The received message reaction content
+	Reaction *ACSMessageReactionContent
 }
 
 // ACSRecordingChunkInfoProperties - Schema for all properties of Recording Chunk Information.
@@ -3085,58 +3106,58 @@ type MachineLearningServicesRunStatusChangedEventData struct {
 
 // MapsGeofenceEnteredEventData - Schema of the Data property of an EventGridEvent for a Microsoft.Maps.GeofenceEntered event.
 type MapsGeofenceEnteredEventData struct {
+	// REQUIRED; Lists of the geometry ID of the geofence which is expired relative to the user time in the request.
+	ExpiredGeofenceGeometryID []string
+
 	// REQUIRED; Lists the fence geometries that either fully contain the coordinate position or have an overlap with the searchBuffer
 	// around the fence.
 	Geometries []MapsGeofenceGeometry
 
-	// Lists of the geometry ID of the geofence which is expired relative to the user time in the request.
-	ExpiredGeofenceGeometryID []string
-
-	// Lists of the geometry ID of the geofence which is in invalid period relative to the user time in the request.
+	// REQUIRED; Lists of the geometry ID of the geofence which is in invalid period relative to the user time in the request.
 	InvalidPeriodGeofenceGeometryID []string
 
-	// True if at least one event is published to the Azure Maps event subscriber, false if no event is published to the Azure
-	// Maps event subscriber.
+	// REQUIRED; True if at least one event is published to the Azure Maps event subscriber, false if no event is published to
+	// the Azure Maps event subscriber.
 	IsEventPublished *bool
 }
 
 // MapsGeofenceExitedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.Maps.GeofenceExited event.
 type MapsGeofenceExitedEventData struct {
+	// REQUIRED; Lists of the geometry ID of the geofence which is expired relative to the user time in the request.
+	ExpiredGeofenceGeometryID []string
+
 	// REQUIRED; Lists the fence geometries that either fully contain the coordinate position or have an overlap with the searchBuffer
 	// around the fence.
 	Geometries []MapsGeofenceGeometry
 
-	// Lists of the geometry ID of the geofence which is expired relative to the user time in the request.
-	ExpiredGeofenceGeometryID []string
-
-	// Lists of the geometry ID of the geofence which is in invalid period relative to the user time in the request.
+	// REQUIRED; Lists of the geometry ID of the geofence which is in invalid period relative to the user time in the request.
 	InvalidPeriodGeofenceGeometryID []string
 
-	// True if at least one event is published to the Azure Maps event subscriber, false if no event is published to the Azure
-	// Maps event subscriber.
+	// REQUIRED; True if at least one event is published to the Azure Maps event subscriber, false if no event is published to
+	// the Azure Maps event subscriber.
 	IsEventPublished *bool
 }
 
 // MapsGeofenceGeometry - The geofence geometry.
 type MapsGeofenceGeometry struct {
-	// ID of the device.
+	// REQUIRED; ID of the device.
 	DeviceID *string
 
-	// Distance from the coordinate to the closest border of the geofence. Positive means the coordinate is outside of the geofence.
-	// If the coordinate is outside of the geofence, but more than the value of searchBuffer away from the closest geofence border,
-	// then the value is 999. Negative means the coordinate is inside of the geofence. If the coordinate is inside the polygon,
-	// but more than the value of searchBuffer away from the closest geofencing border,then the value is -999. A value of 999
-	// means that there is great confidence the coordinate is well outside the geofence. A value of -999 means that there is great
-	// confidence the coordinate is well within the geofence.
+	// REQUIRED; Distance from the coordinate to the closest border of the geofence. Positive means the coordinate is outside
+	// of the geofence. If the coordinate is outside of the geofence, but more than the value of searchBuffer away from the closest
+	// geofence border, then the value is 999. Negative means the coordinate is inside of the geofence. If the coordinate is inside
+	// the polygon, but more than the value of searchBuffer away from the closest geofencing border,then the value is -999. A
+	// value of 999 means that there is great confidence the coordinate is well outside the geofence. A value of -999 means that
+	// there is great confidence the coordinate is well within the geofence.
 	Distance *float32
 
-	// The unique ID for the geofence geometry.
+	// REQUIRED; The unique ID for the geofence geometry.
 	GeometryID *string
 
-	// Latitude of the nearest point of the geometry.
+	// REQUIRED; Latitude of the nearest point of the geometry.
 	NearestLat *float32
 
-	// Longitude of the nearest point of the geometry.
+	// REQUIRED; Longitude of the nearest point of the geometry.
 	NearestLon *float32
 
 	// The unique id returned from user upload service when uploading a geofence. Will not be included in geofencing post API.
@@ -3145,18 +3166,18 @@ type MapsGeofenceGeometry struct {
 
 // MapsGeofenceResultEventData - Schema of the Data property of an EventGridEvent for a Microsoft.Maps.GeofenceResult event.
 type MapsGeofenceResultEventData struct {
+	// REQUIRED; Lists of the geometry ID of the geofence which is expired relative to the user time in the request.
+	ExpiredGeofenceGeometryID []string
+
 	// REQUIRED; Lists the fence geometries that either fully contain the coordinate position or have an overlap with the searchBuffer
 	// around the fence.
 	Geometries []MapsGeofenceGeometry
 
-	// Lists of the geometry ID of the geofence which is expired relative to the user time in the request.
-	ExpiredGeofenceGeometryID []string
-
-	// Lists of the geometry ID of the geofence which is in invalid period relative to the user time in the request.
+	// REQUIRED; Lists of the geometry ID of the geofence which is in invalid period relative to the user time in the request.
 	InvalidPeriodGeofenceGeometryID []string
 
-	// True if at least one event is published to the Azure Maps event subscriber, false if no event is published to the Azure
-	// Maps event subscriber.
+	// REQUIRED; True if at least one event is published to the Azure Maps event subscriber, false if no event is published to
+	// the Azure Maps event subscriber.
 	IsEventPublished *bool
 }
 

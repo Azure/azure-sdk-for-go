@@ -13,7 +13,6 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"runtime"
 	"strings"
@@ -23,6 +22,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
@@ -224,22 +224,17 @@ func TestManagedIdentityCredential_AzureArcErrors(t *testing.T) {
 func TestManagedIdentityCredential_AzureContainerInstanceLive(t *testing.T) {
 	// This test triggers the managed identity test app deployed to an Azure Container Instance.
 	// See the bicep file and test resources scripts for details.
-	// It triggers the app with az because the test subscription prohibits opening ports to the internet.
-	name := os.Getenv("AZIDENTITY_ACI_NAME")
-	rg := os.Getenv("AZIDENTITY_RESOURCE_GROUP")
-	if name == "" || rg == "" {
-		t.Skip("set AZIDENTITY_ACI_NAME and AZIDENTITY_RESOURCE_GROUP to run this test")
+	ip := os.Getenv("AZIDENTITY_ACI_IP")
+	if ip == "" {
+		t.Skip("set AZIDENTITY_ACI_IP to run this test")
 	}
-	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
-	defer cancel()
-	command := fmt.Sprintf("az container exec -g %s -n %s --exec-command 'wget -qO- localhost'", rg, name)
-	// using "script" as a workaround for "az container exec" requiring a tty
-	// https://github.com/Azure/azure-cli/issues/17530
-	cmd := exec.CommandContext(ctx, "script", "-q", "-O", "/dev/null", "-c", command)
-	b, err := cmd.CombinedOutput()
-	s := string(b)
-	require.NoError(t, err, s)
-	require.Equal(t, "test passed", s)
+	res, err := http.Get("http://" + ip)
+	require.NoError(t, err)
+	if res.StatusCode != http.StatusOK {
+		b, err := azruntime.Payload(res)
+		require.NoError(t, err)
+		t.Fatal("test application returned an error: " + string(b))
+	}
 }
 
 func TestManagedIdentityCredential_AzureFunctionsLive(t *testing.T) {
@@ -657,6 +652,37 @@ func TestManagedIdentityCredential_IMDSRetries(t *testing.T) {
 		if reqs != 2 {
 			t.Errorf("expected 1 retry after %d response, got %d", code, reqs-1)
 		}
+	}
+}
+
+func TestManagedIdentityCredential_Logs(t *testing.T) {
+	logs := []string{}
+	log.SetListener(func(e log.Event, msg string) {
+		if e == EventAuthentication {
+			logs = append(logs, msg)
+		}
+	})
+	defer log.SetListener(nil)
+
+	for _, id := range []ManagedIDKind{ClientID(fakeClientID), ObjectID(fakeObjectID), ResourceID(fakeResourceID), nil} {
+		_, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ID: id})
+		require.NoError(t, err)
+		require.Len(t, logs, 1)
+		require.Contains(t, logs[0], "IMDS")
+		if id != nil {
+			require.Contains(t, logs[0], id.String())
+			kind := ""
+			switch id.(type) {
+			case ClientID:
+				kind = "client"
+			case ObjectID:
+				kind = "object"
+			case ResourceID:
+				kind = "resource"
+			}
+			require.Contains(t, logs[0], kind+" ID")
+		}
+		logs = nil
 	}
 }
 

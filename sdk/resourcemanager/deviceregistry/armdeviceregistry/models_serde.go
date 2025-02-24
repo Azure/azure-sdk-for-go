@@ -1262,6 +1262,7 @@ func (o OperationStatusResult) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "name", o.Name)
 	populate(objectMap, "operations", o.Operations)
 	populate(objectMap, "percentComplete", o.PercentComplete)
+	populate(objectMap, "resourceId", o.ResourceID)
 	populateDateTimeRFC3339(objectMap, "startTime", o.StartTime)
 	populate(objectMap, "status", o.Status)
 	return json.Marshal(objectMap)
@@ -1293,6 +1294,9 @@ func (o *OperationStatusResult) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "percentComplete":
 			err = unpopulate(val, "PercentComplete", &o.PercentComplete)
+			delete(rawMsg, key)
+		case "resourceId":
+			err = unpopulate(val, "ResourceID", &o.ResourceID)
 			delete(rawMsg, key)
 		case "startTime":
 			err = unpopulateDateTimeRFC3339(val, "StartTime", &o.StartTime)

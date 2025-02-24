@@ -54,7 +54,7 @@ func GetReadmePathFromChangedFiles(ctx context.Context, client *query.Client, fi
 	if len(readmeFiles) > 1 {
 		// filter specification/xxx/resource-manager/readme.md
 		rmReadmeFile := make(map[Readme]bool)
-		for readmePath, _ := range readmeFiles {
+		for readmePath := range readmeFiles {
 			if strings.Contains(string(readmePath), "resource-manager/readme.md") {
 				rmReadmeFile[readmePath] = true
 			}

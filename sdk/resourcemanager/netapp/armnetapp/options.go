@@ -511,12 +511,6 @@ type VolumesClientBeginListGetGroupIDListForLdapUserOptions struct {
 	ResumeToken string
 }
 
-// VolumesClientBeginListQuotaReportOptions contains the optional parameters for the VolumesClient.BeginListQuotaReport method.
-type VolumesClientBeginListQuotaReportOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
 // VolumesClientBeginPeerExternalClusterOptions contains the optional parameters for the VolumesClient.BeginPeerExternalCluster
 // method.
 type VolumesClientBeginPeerExternalClusterOptions struct {
@@ -590,13 +584,6 @@ type VolumesClientBeginRevertOptions struct {
 // VolumesClientBeginRevertRelocationOptions contains the optional parameters for the VolumesClient.BeginRevertRelocation
 // method.
 type VolumesClientBeginRevertRelocationOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// VolumesClientBeginSplitCloneFromParentOptions contains the optional parameters for the VolumesClient.BeginSplitCloneFromParent
-// method.
-type VolumesClientBeginSplitCloneFromParentOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }

@@ -26,6 +26,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/confidential"
+	msalerrors "github.com/AzureAD/microsoft-authentication-library-for-go/apps/errors"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/managedidentity"
 )
 
@@ -68,7 +69,7 @@ type managedIdentityClient struct {
 	probeIMDS bool
 	// chained indicates whether the client is part of a credential chain. If true, the client will return
 	// a credentialUnavailableError instead of an AuthenticationFailedError for an unexpected IMDS response.
-	chained bool
+	chained    bool
 	msalClient *managedidentity.Client
 }
 
@@ -275,67 +276,21 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKi
 		c.probeIMDS = false
 	}
 
-	switch c.msiType {
-	case msiTypeAppService, msiTypeAzureArc, msiTypeAzureML, msiTypeCloudShell, msiTypeServiceFabric:
-		ar, err := c.msalClient.AcquireToken(ctx, scopes[0])
-		if err != nil {
-			err = newAuthenticationFailedErrorFromMSAL(credNameManagedIdentity, err)
-		}
-		return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
-	case msiTypeIMDS:
-		ar, err := c.msalClient.AcquireToken(ctx, scopes[0])
-		if err != nil {
-			resp := getResponseFromError(err)
-			if resp != nil {
-				switch resp.StatusCode {
-				case http.StatusBadRequest:
-					if c.id != nil {
-						return azcore.AccessToken{}, newAuthenticationFailedError(credNameManagedIdentity, "the requested identity isn't assigned to this resource", resp)
-					}
-					msg := "failed to authenticate a system assigned identity"
-					if body, err := azruntime.Payload(resp); err == nil && len(body) > 0 {
-						msg += fmt.Sprintf(". The endpoint responded with %s", body)
-					}
-					return azcore.AccessToken{}, newCredentialUnavailableError(credNameManagedIdentity, msg)
-				case http.StatusForbidden:
-					// Docker Desktop runs a proxy that responds 403 to IMDS token requests. If we get that response,
-					// we return credentialUnavailableError so credential chains continue to their next credential
-					body, err := azruntime.Payload(resp)
-					if err == nil && strings.Contains(string(body), "unreachable") {
-						return azcore.AccessToken{}, newCredentialUnavailableError(credNameManagedIdentity, fmt.Sprintf("unexpected response %q", string(body)))
-					}
-				}
-			}
-		}
-		return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
-	}
-
-	msg, err := c.createAuthRequest(ctx, id, scopes)
-	if err != nil {
-		return azcore.AccessToken{}, err
-	}
-
-	resp, err := c.azClient.Pipeline().Do(msg)
-	if err != nil {
-		return azcore.AccessToken{}, newAuthenticationFailedError(credNameManagedIdentity, err.Error(), nil)
-	}
-
-	if azruntime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		tk, err := c.createAccessToken(resp)
-		if err != nil && c.chained && c.msiType == msiTypeIMDS {
-			// failure to unmarshal a 2xx implies the response is from something other than IMDS such as a proxy listening at
+	ar, err := c.msalClient.AcquireToken(ctx, scopes[0])
+	if err != nil && c.msiType == msiTypeIMDS {
+		var ije msalerrors.InvalidJsonErr
+		if errors.As(err, &ije) && c.chained {
+			// an unmarshaling error implies the response is from something other than IMDS such as a proxy listening at
 			// the same address. Return a credentialUnavailableError so credential chains continue to their next credential
-			err = newCredentialUnavailableError(credNameManagedIdentity, err.Error())
+			return azcore.AccessToken{}, newCredentialUnavailableError(credNameManagedIdentity, err.Error())
 		}
-		return tk, err
-	}
-
-	if c.msiType == msiTypeIMDS {
+		resp := getResponseFromError(err)
+		if resp == nil {
+			return azcore.AccessToken{}, newAuthenticationFailedErrorFromMSAL(credNameManagedIdentity, err)
+		}
 		switch resp.StatusCode {
 		case http.StatusBadRequest:
-			if id != nil {
-				// return authenticationFailedError, halting any encompassing credential chain,
-				// because the explicit user-assigned identity implies the developer expected this to work
+			if c.id != nil {
 				return azcore.AccessToken{}, newAuthenticationFailedError(credNameManagedIdentity, "the requested identity isn't assigned to this resource", resp)
 			}
 			msg := "failed to authenticate a system assigned identity"
@@ -351,16 +306,8 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKi
 				return azcore.AccessToken{}, newCredentialUnavailableError(credNameManagedIdentity, fmt.Sprintf("unexpected response %q", string(body)))
 			}
 		}
-		if c.chained {
-			// the response may be from something other than IMDS, for example a proxy returning
-			// 404. Return credentialUnavailableError so credential chains continue to their
-			// next credential, include the response in the error message to help debugging
-			err = newAuthenticationFailedError(credNameManagedIdentity, "", resp)
-			return azcore.AccessToken{}, newCredentialUnavailableError(credNameManagedIdentity, err.Error())
-		}
 	}
-
-	return azcore.AccessToken{}, newAuthenticationFailedError(credNameManagedIdentity, "", resp)
+	return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 }
 
 func (c *managedIdentityClient) createAccessToken(res *http.Response) (azcore.AccessToken, error) {

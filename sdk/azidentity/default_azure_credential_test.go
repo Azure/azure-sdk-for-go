@@ -328,7 +328,7 @@ func TestDefaultAzureCredential_IMDS(t *testing.T) {
 			},
 		})
 		require.NoError(t, err)
-		tk, err := cred.GetToken(context.Background(), testTRO)
+		tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{t.Name()}})
 		require.NoError(t, err)
 		require.True(t, probed)
 		require.Equal(t, tokenValue, tk.Token)
@@ -350,7 +350,7 @@ func TestDefaultAzureCredential_IMDS(t *testing.T) {
 				},
 			})
 			require.NoError(t, err)
-			tk, err := cred.GetToken(ctx, testTRO)
+			tk, err := cred.GetToken(ctx, policy.TokenRequestOptions{Scopes: []string{t.Name()}})
 			require.NoError(t, err, "DefaultAzureCredential should accept ACI's response to the probe request")
 			require.Equal(t, tokenValue, tk.Token)
 		})
@@ -379,7 +379,7 @@ func TestDefaultAzureCredential_IMDS(t *testing.T) {
 
 		// remove the delay so ManagedIdentityCredential can get a token from the fake STS
 		dp.delay = 0
-		tk, err := chain.GetToken(context.Background(), testTRO)
+		tk, err := chain.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{t.Name()}})
 		require.NoError(t, err)
 		require.Equal(t, tokenValue, tk.Token)
 
@@ -465,7 +465,7 @@ func TestDefaultAzureCredential_UnexpectedIMDSResponse(t *testing.T) {
 				ClientOptions: policy.ClientOptions{Transport: srv},
 			})
 			require.NoError(t, err)
-			tk, err := c.GetToken(ctx, testTRO)
+			tk, err := c.GetToken(ctx, policy.TokenRequestOptions{Scopes: []string{strings.ReplaceAll(t.Name(), "#", "")}})
 			require.NoError(t, err, "expected a token from AzureCLICredential")
 			require.Equal(t, tokenValue, tk.Token, "expected a token from AzureCLICredential")
 		})

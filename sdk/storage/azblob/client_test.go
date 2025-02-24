@@ -883,7 +883,7 @@ func (s *AZBlobUnrecordedTestsSuite) TestDownloadBufferWithLessData() {
 	performUploadAndDownloadBufferTest(s.T(), _require, testName, blobSize, blockSize, concurrency, downloadOffset, downloadCount)
 }
 
-func (s *AZBlobUnrecordedTestsSuite) TestDownloadBufferWithLargeData122() {
+func (s *AZBlobUnrecordedTestsSuite) TestDownloadBufferWithLargeData() {
 	blobSize := 10 * 1024 * 1024
 	blockSize := 1024 * 1024
 	concurrency := 3

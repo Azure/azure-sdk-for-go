@@ -483,7 +483,7 @@ func (f *Client) download(ctx context.Context, writer io.WriterAt, o downloadOpt
 	// Prepare and do parallel download.
 	progress := int64(0)
 	progressLock := &sync.Mutex{}
-
+	dataDownloaded := int64(0)
 	err := shared.DoBatchTransfer(ctx, &shared.BatchTransferOptions{
 		OperationName: "downloadFileToWriterAt",
 		TransferSize:  count,
@@ -516,6 +516,9 @@ func (f *Client) download(ctx context.Context, writer io.WriterAt, o downloadOpt
 			if err != nil {
 				return err
 			}
+			progressLock.Lock()
+			dataDownloaded += *dr.ContentLength
+			progressLock.Unlock()
 			err = body.Close()
 			return err
 		},
@@ -523,7 +526,7 @@ func (f *Client) download(ctx context.Context, writer io.WriterAt, o downloadOpt
 	if err != nil {
 		return 0, err
 	}
-	return count, nil
+	return dataDownloaded, nil
 }
 
 // DownloadStream operation reads or downloads a file from the system, including its metadata and properties.

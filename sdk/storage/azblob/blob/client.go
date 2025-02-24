@@ -353,7 +353,7 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 	// Prepare and do parallel download.
 	progress := int64(0)
 	progressLock := &sync.Mutex{}
-	dataLength := int64(0)
+	dataDownloaded := int64(0)
 	err := shared.DoBatchTransfer(ctx, &shared.BatchTransferOptions{
 		OperationName: "downloadBlobToWriterAt",
 		TransferSize:  count,
@@ -388,7 +388,7 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 				return err
 			}
 			progressLock.Lock()
-			dataLength = *dr.ContentLength
+			dataDownloaded += *dr.ContentLength
 			progressLock.Unlock()
 			err = body.Close()
 			return err
@@ -397,7 +397,7 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 	if err != nil {
 		return 0, err
 	}
-	return min(dataLength, count), nil
+	return dataDownloaded, nil
 }
 
 // DownloadStream reads a range of bytes from a blob. The response also includes the blob's properties and metadata.

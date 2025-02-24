@@ -21,7 +21,9 @@ pr:
     include:
       - eng/tools/deprecate
 
-stages:
-  - template: /eng/pipelines/templates/jobs/archetype-sdk-eng-client.yml
-    parameters:
-      ServiceDirectory: '../eng/tools/deprecate'
+extends:
+  template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: '../eng/tools/deprecate'
+    NonShipping: true
+    IsSdkLibrary: false

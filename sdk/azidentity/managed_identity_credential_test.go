@@ -225,10 +225,8 @@ func TestManagedIdentityCredential_AzureArcErrors(t *testing.T) {
 		require.ErrorContains(t, err, fmt.Sprint(size))
 	})
 	t.Run("unexpected file paths", func(t *testing.T) {
-		d, err := arcKeyDirectory()
-		if err != nil {
-			// test is running on an unsupported OS e.g. darwin
-			t.Skip(err)
+		if n := runtime.GOOS; n != "linux" && n != "windows" {
+			t.Skipf("unsupported OS %q", n)
 		}
 		srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
 		defer close()
@@ -245,7 +243,7 @@ func TestManagedIdentityCredential_AzureArcErrors(t *testing.T) {
 
 		srv.AppendResponse(
 			// unexpected extension
-			mock.WithHeader("WWW-Authenticate", "Basic realm="+filepath.Join(d, "foo")),
+			mock.WithHeader("WWW-Authenticate", "Basic realm="+filepath.Join(t.TempDir(), "foo")),
 			mock.WithStatusCode(http.StatusUnauthorized),
 		)
 		cred, err = NewManagedIdentityCredential(&o)
@@ -478,39 +476,6 @@ func TestManagedIdentityCredential_GetTokenUnexpectedJSON(t *testing.T) {
 	}
 }
 
-func TestManagedIdentityCredential_CreateIMDSAuthRequest(t *testing.T) {
-	cred, err := NewManagedIdentityCredential(nil)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	req, err := cred.mic.createIMDSAuthRequest(context.Background(), ClientID(fakeClientID), []string{liveTestScope})
-	if err != nil {
-		t.Fatal(err)
-	}
-	if req.Raw().Header.Get(headerMetadata) != "true" {
-		t.Fatalf("Unexpected value for Content-Type header")
-	}
-	reqQueryParams, err := url.ParseQuery(req.Raw().URL.RawQuery)
-	if err != nil {
-		t.Fatalf("Unable to parse IMDS query params: %v", err)
-	}
-	if reqQueryParams["api-version"][0] != imdsAPIVersion {
-		t.Fatalf("Unexpected IMDS API version")
-	}
-	if reqQueryParams["resource"][0] != liveTestScope {
-		t.Fatalf("Unexpected resource in resource query param")
-	}
-	if reqQueryParams["client_id"][0] != fakeClientID {
-		t.Fatalf("Unexpected client ID. Expected: %s, Received: %s", fakeClientID, reqQueryParams["client_id"][0])
-	}
-	if u := req.Raw().URL.String(); !strings.HasPrefix(u, imdsEndpoint) {
-		t.Fatalf("Unexpected default authority host %s", u)
-	}
-	if req.Raw().URL.Scheme != "http" {
-		t.Fatalf("Wrong request scheme")
-	}
-}
-
 func TestManagedIdentityCredential_GetTokenScopes(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
@@ -549,47 +514,25 @@ func TestManagedIdentityCredential_ScopesImmutable(t *testing.T) {
 	}
 }
 
-func TestManagedIdentityCredential_ResourceID_IMDS(t *testing.T) {
-	resID := "sample/resource/id"
-	cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ID: ResourceID(resID)})
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	req, err := cred.mic.createAuthRequest(context.Background(), cred.mic.id, []string{liveTestScope})
-	if err != nil {
-		t.Fatal(err)
-	}
-	reqQueryParams, err := url.ParseQuery(req.Raw().URL.RawQuery)
-	if err != nil {
-		t.Fatalf("Unable to parse App Service request query params: %v", err)
-	}
-	if reqQueryParams["api-version"][0] != "2018-02-01" {
-		t.Fatalf("Unexpected App Service API version")
-	}
-	if reqQueryParams["resource"][0] != liveTestScope {
-		t.Fatalf("Unexpected resource in resource query param")
-	}
-	if reqQueryParams[msiResID][0] != resID {
-		t.Fatalf("Unexpected resource ID in resource query param")
-	}
-}
-
-func TestManagedIdentityCredential_CreateAccessTokenExpiresOnInt(t *testing.T) {
-	t.Skip("TODO: MSAL doesn't support expires_on as number")
+func TestManagedIdentityCredential_ExpiresOnInt(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
-	srv.AppendResponse(mock.WithBody([]byte(expiresOnNonStringIntResp)))
+	expires := time.Now().Add(time.Hour).Unix()
+	scope := t.Name()
+	srv.AppendResponse(
+		mock.WithBody([]byte(fmt.Sprintf(
+			`{"access_token":%q,"expires_on":%d,"resource":%q,"token_type":"Bearer"}`, tokenValue, expires, scope,
+		))),
+	)
 	setEnvironmentVariables(t, map[string]string{msiEndpoint: srv.URL()})
 	options := ManagedIdentityCredentialOptions{}
 	options.Transport = srv
 	msiCred, err := NewManagedIdentityCredential(&options)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	_, err = msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{t.Name()}})
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, err)
+	tk, err := msiCred.GetToken(ctx, policy.TokenRequestOptions{Scopes: []string{scope}})
+	require.NoError(t, err)
+	require.Equal(t, tokenValue, tk.Token)
+	require.Equal(t, expires, tk.ExpiresOn.Unix())
 }
 
 // adding an incorrect string value in expires_on

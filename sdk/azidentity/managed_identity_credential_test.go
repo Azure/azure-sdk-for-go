@@ -673,7 +673,7 @@ func TestManagedIdentityCredential_IMDSRetries(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if cred.mic.msiType != msiTypeIMDS {
+	if !cred.mic.imds {
 		t.SkipNow()
 	}
 	for _, code := range []int{404, 410, 429, 500, 501, 502, 503, 504, 505, 506, 507, 508, 510, 511} {

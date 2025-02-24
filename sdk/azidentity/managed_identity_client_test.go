@@ -32,43 +32,20 @@ func (p userAgentValidatingPolicy) Do(req *policy.Request) (*http.Response, erro
 	return req.Next()
 }
 
-func TestIMDSEndpointParse(t *testing.T) {
-	_, err := url.Parse(imdsEndpoint)
-	if err != nil {
-		t.Fatalf("Failed to parse the IMDS endpoint: %v", err)
-	}
-}
-
-func TestManagedIdentityClient_UserAgent(t *testing.T) {
-	options := ManagedIdentityCredentialOptions{
-		ClientOptions: azcore.ClientOptions{
-			Transport: &mockSTS{}, PerCallPolicies: []policy.Policy{userAgentValidatingPolicy{t: t}},
-		},
-	}
-	client, err := newManagedIdentityClient(&options)
-	if err != nil {
-		t.Fatal(err)
-	}
-	_, err = client.authenticate(context.Background(), nil, []string{t.Name()})
-	if err != nil {
-		t.Fatal(err)
-	}
-}
-
-func TestManagedIdentityClient_ApplicationID(t *testing.T) {
-	appID := "customvalue"
-	options := ManagedIdentityCredentialOptions{
-		ClientOptions: azcore.ClientOptions{
-			Transport: &mockSTS{}, PerCallPolicies: []policy.Policy{userAgentValidatingPolicy{t: t, appID: appID}},
-		},
-	}
-	options.Telemetry.ApplicationID = appID
-	client, err := newManagedIdentityClient(&options)
-	if err != nil {
-		t.Fatal(err)
-	}
-	_, err = client.authenticate(context.Background(), nil, []string{t.Name()})
-	if err != nil {
-		t.Fatal(err)
+func TestManagedIdentityCredential_UserAgent(t *testing.T) {
+	for _, appID := range []string{"", "customvalue"} {
+		options := ManagedIdentityCredentialOptions{
+			ClientOptions: azcore.ClientOptions{
+				Transport: &mockSTS{}, PerCallPolicies: []policy.Policy{userAgentValidatingPolicy{t: t, appID: appID}},
+			},
+		}
+		c, err := NewManagedIdentityCredential(&options)
+		if err != nil {
+			t.Fatal(err)
+		}
+		_, err = c.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{t.Name()}})
+		if err != nil {
+			t.Fatal(err)
+		}
 	}
 }

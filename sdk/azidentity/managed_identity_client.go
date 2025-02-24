@@ -8,24 +8,16 @@ package azidentity
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
-	"net/url"
-	"os"
-	"path/filepath"
-	"runtime"
-	"strconv"
 	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
-	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/confidential"
 	msalerrors "github.com/AzureAD/microsoft-authentication-library-for-go/apps/errors"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/managedidentity"
 )
@@ -50,53 +42,13 @@ const (
 
 var imdsProbeTimeout = time.Second
 
-type msiType int
-
-const (
-	msiTypeAppService msiType = iota
-	msiTypeAzureArc
-	msiTypeAzureML
-	msiTypeCloudShell
-	msiTypeIMDS
-	msiTypeServiceFabric
-)
-
 type managedIdentityClient struct {
-	azClient  *azcore.Client
-	endpoint  string
-	id        ManagedIDKind
-	msiType   msiType
-	probeIMDS bool
+	azClient                      *azcore.Client
+	imds, probeIMDS, userAssigned bool
 	// chained indicates whether the client is part of a credential chain. If true, the client will return
 	// a credentialUnavailableError instead of an AuthenticationFailedError for an unexpected IMDS response.
 	chained    bool
 	msalClient *managedidentity.Client
-}
-
-// arcKeyDirectory returns the directory expected to contain Azure Arc keys
-var arcKeyDirectory = func() (string, error) {
-	switch runtime.GOOS {
-	case "linux":
-		return "/var/opt/azcmagent/tokens", nil
-	case "windows":
-		pd := os.Getenv("ProgramData")
-		if pd == "" {
-			return "", errors.New("environment variable ProgramData has no value")
-		}
-		return filepath.Join(pd, "AzureConnectedMachineAgent", "Tokens"), nil
-	default:
-		return "", fmt.Errorf("unsupported OS %q", runtime.GOOS)
-	}
-}
-
-type wrappedNumber json.Number
-
-func (n *wrappedNumber) UnmarshalJSON(b []byte) error {
-	c := string(b)
-	if c == "\"\"" {
-		return nil
-	}
-	return json.Unmarshal(b, (*json.Number)(n))
 }
 
 // setIMDSRetryOptionDefaults sets zero-valued fields to default values appropriate for IMDS
@@ -144,51 +96,20 @@ func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) (*manag
 		options = &ManagedIdentityCredentialOptions{}
 	}
 	cp := options.ClientOptions
-	c := managedIdentityClient{id: options.ID, endpoint: imdsEndpoint, msiType: msiTypeIMDS}
-	env := "IMDS"
-	if endpoint, ok := os.LookupEnv(identityEndpoint); ok {
-		if _, ok := os.LookupEnv(identityHeader); ok {
-			if _, ok := os.LookupEnv(identityServerThumbprint); ok {
-				if options.ID != nil {
-					return nil, errors.New("the Service Fabric API doesn't support specifying a user-assigned identity at runtime. The identity is determined by cluster resource configuration. See https://aka.ms/servicefabricmi")
-				}
-				env = "Service Fabric"
-				c.endpoint = endpoint
-				c.msiType = msiTypeServiceFabric
-			} else {
-				env = "App Service"
-				c.endpoint = endpoint
-				c.msiType = msiTypeAppService
-			}
-		} else if _, ok := os.LookupEnv(arcIMDSEndpoint); ok {
-			if options.ID != nil {
-				return nil, errors.New("the Azure Arc API doesn't support specifying a user-assigned managed identity at runtime")
-			}
-			env = "Azure Arc"
-			c.endpoint = endpoint
-			c.msiType = msiTypeAzureArc
-		}
-	} else if endpoint, ok := os.LookupEnv(msiEndpoint); ok {
-		c.endpoint = endpoint
-		if _, ok := os.LookupEnv(msiSecret); ok {
-			if options.ID != nil && options.ID.idKind() != miClientID {
-				return nil, errors.New("the Azure ML API supports specifying a user-assigned managed identity by client ID only")
-			}
-			env = "Azure ML"
-			c.msiType = msiTypeAzureML
-		} else {
-			if options.ID != nil {
-				return nil, errors.New("the Cloud Shell API doesn't support user-assigned managed identities")
-			}
-			env = "Cloud Shell"
-			c.msiType = msiTypeCloudShell
-		}
-	} else {
+	c := managedIdentityClient{}
+	source, err := managedidentity.GetSource()
+	if err != nil {
+		return nil, err
+	}
+	env := string(source)
+	if source == managedidentity.DefaultToIMDS {
+		env = "IMDS"
+		c.imds = true
 		c.probeIMDS = options.dac
 		setIMDSRetryOptionDefaults(&cp.Retry)
 	}
 
-	client, err := azcore.NewClient(module, version, azruntime.PipelineOptions{
+	c.azClient, err = azcore.NewClient(module, version, azruntime.PipelineOptions{
 		Tracing: azruntime.TracingOptions{
 			Namespace: traceNamespace,
 		},
@@ -196,10 +117,10 @@ func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) (*manag
 	if err != nil {
 		return nil, err
 	}
-	c.azClient = client
 
 	id := managedidentity.SystemAssigned()
 	if options.ID != nil {
+		c.userAssigned = true
 		switch s := options.ID.String(); options.ID.idKind() {
 		case miClientID:
 			id = managedidentity.UserAssignedClientID(s)
@@ -209,11 +130,11 @@ func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) (*manag
 			id = managedidentity.UserAssignedResourceID(s)
 		}
 	}
-	miClient, err := managedidentity.New(id, managedidentity.WithHTTPClient(&c), managedidentity.WithRetryPolicyDisabled())
+	msalClient, err := managedidentity.New(id, managedidentity.WithHTTPClient(&c), managedidentity.WithRetryPolicyDisabled())
 	if err != nil {
 		return nil, err
 	}
-	c.msalClient = &miClient
+	c.msalClient = &msalClient
 
 	if log.Should(EventAuthentication) {
 		msg := fmt.Sprintf("%s will use %s managed identity", credNameManagedIdentity, env)
@@ -241,19 +162,8 @@ func (c *managedIdentityClient) Do(r *http.Request) (*http.Response, error) {
 	return doForClient(c.azClient, r)
 }
 
-// provideToken acquires a token for MSAL's confidential.Client, which caches the token
-func (c *managedIdentityClient) provideToken(ctx context.Context, params confidential.TokenProviderParameters) (confidential.TokenProviderResult, error) {
-	result := confidential.TokenProviderResult{}
-	tk, err := c.authenticate(ctx, c.id, params.Scopes)
-	if err == nil {
-		result.AccessToken = tk.Token
-		result.ExpiresInSeconds = int(time.Until(tk.ExpiresOn).Seconds())
-	}
-	return result, err
-}
-
 // authenticate acquires an access token
-func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKind, scopes []string) (azcore.AccessToken, error) {
+func (c *managedIdentityClient) GetToken(ctx context.Context, tro policy.TokenRequestOptions) (azcore.AccessToken, error) {
 	// no need to synchronize around this value because it's true only when DefaultAzureCredential constructed the client,
 	// and in that case ChainedTokenCredential.GetToken synchronizes goroutines that would execute this block
 	if c.probeIMDS {
@@ -261,7 +171,7 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKi
 		cx, cancel := context.WithTimeout(ctx, imdsProbeTimeout)
 		defer cancel()
 		cx = policy.WithRetryOptions(cx, policy.RetryOptions{MaxRetries: -1})
-		req, err := azruntime.NewRequest(cx, http.MethodGet, c.endpoint)
+		req, err := azruntime.NewRequest(cx, http.MethodGet, imdsEndpoint)
 		if err != nil {
 			return azcore.AccessToken{}, fmt.Errorf("failed to create IMDS probe request: %s", err)
 		}
@@ -276,10 +186,15 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKi
 		c.probeIMDS = false
 	}
 
-	ar, err := c.msalClient.AcquireToken(ctx, scopes[0])
-	if err != nil && c.msiType == msiTypeIMDS {
+	ar, err := c.msalClient.AcquireToken(ctx, tro.Scopes[0], managedidentity.WithClaims(tro.Claims))
+	if err == nil {
+		msg := fmt.Sprintf(scopeLogFmt, credNameManagedIdentity, strings.Join(ar.GrantedScopes, ", "))
+		log.Write(EventAuthentication, msg)
+		return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
+	}
+	if c.imds {
 		var ije msalerrors.InvalidJsonErr
-		if errors.As(err, &ije) && c.chained {
+		if c.chained && errors.As(err, &ije) {
 			// an unmarshaling error implies the response is from something other than IMDS such as a proxy listening at
 			// the same address. Return a credentialUnavailableError so credential chains continue to their next credential
 			return azcore.AccessToken{}, newCredentialUnavailableError(credNameManagedIdentity, err.Error())
@@ -290,7 +205,7 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKi
 		}
 		switch resp.StatusCode {
 		case http.StatusBadRequest:
-			if c.id != nil {
+			if c.userAssigned {
 				return azcore.AccessToken{}, newAuthenticationFailedError(credNameManagedIdentity, "the requested identity isn't assigned to this resource", resp)
 			}
 			msg := "failed to authenticate a system assigned identity"

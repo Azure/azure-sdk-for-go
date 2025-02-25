@@ -28,7 +28,7 @@ func ExampleGroupQuotaSubscriptionAllocationClient_List() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewGroupQuotaSubscriptionAllocationClient().List(ctx, "E7EC67B3-7657-4966-BFFC-41EFD36BAA09", "groupquota1", "Microsoft.Compute", "westus", nil)
+	res, err := clientFactory.NewGroupQuotaSubscriptionAllocationClient("<subscription-id>").List(ctx, "E7EC67B3-7657-4966-BFFC-41EFD36BAA09", "groupquota1", "Microsoft.Compute", "westus", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

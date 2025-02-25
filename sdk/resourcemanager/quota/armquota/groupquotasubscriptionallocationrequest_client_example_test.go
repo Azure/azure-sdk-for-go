@@ -29,7 +29,7 @@ func ExampleGroupQuotaSubscriptionAllocationRequestClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewGroupQuotaSubscriptionAllocationRequestClient().BeginUpdate(ctx, "E7EC67B3-7657-4966-BFFC-41EFD36BAA09", "groupquota1", "Microsoft.Compute", "westus", armquota.SubscriptionQuotaAllocationsList{
+	poller, err := clientFactory.NewGroupQuotaSubscriptionAllocationRequestClient("<subscription-id>").BeginUpdate(ctx, "E7EC67B3-7657-4966-BFFC-41EFD36BAA09", "groupquota1", "Microsoft.Compute", "westus", armquota.SubscriptionQuotaAllocationsList{
 		Properties: &armquota.SubscriptionQuotaAllocationsListProperties{
 			Value: []*armquota.SubscriptionQuotaAllocations{
 				{
@@ -100,7 +100,7 @@ func ExampleGroupQuotaSubscriptionAllocationRequestClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewGroupQuotaSubscriptionAllocationRequestClient().Get(ctx, "E7EC67B3-7657-4966-BFFC-41EFD36BAA09", "groupquota1", "Microsoft.Compute", "AE000000-0000-0000-0000-00000000000A", nil)
+	res, err := clientFactory.NewGroupQuotaSubscriptionAllocationRequestClient("<subscription-id>").Get(ctx, "E7EC67B3-7657-4966-BFFC-41EFD36BAA09", "groupquota1", "Microsoft.Compute", "AE000000-0000-0000-0000-00000000000A", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -140,7 +140,7 @@ func ExampleGroupQuotaSubscriptionAllocationRequestClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewGroupQuotaSubscriptionAllocationRequestClient().NewListPager("E7EC67B3-7657-4966-BFFC-41EFD36BAA09", "groupquota1", "Microsoft.Compute", "location eq westus", nil)
+	pager := clientFactory.NewGroupQuotaSubscriptionAllocationRequestClient("<subscription-id>").NewListPager("E7EC67B3-7657-4966-BFFC-41EFD36BAA09", "groupquota1", "Microsoft.Compute", "location eq westus", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

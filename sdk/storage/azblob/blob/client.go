@@ -334,7 +334,8 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 	if o.BlockSize == 0 {
 		o.BlockSize = DefaultDownloadBlockSize
 	}
-
+	dataDownloaded := int64(0)
+	calculateData := true
 	count := o.Range.Count
 	if count == CountToEnd { // If size not specified, calculate it
 		// If we don't have the length at all, get it
@@ -343,6 +344,8 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 			return 0, err
 		}
 		count = *gr.ContentLength - o.Range.Offset
+		dataDownloaded = count
+		calculateData = false
 	}
 
 	if count <= 0 {
@@ -353,7 +356,7 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 	// Prepare and do parallel download.
 	progress := int64(0)
 	progressLock := &sync.Mutex{}
-	dataDownloaded := int64(0)
+
 	err := shared.DoBatchTransfer(ctx, &shared.BatchTransferOptions{
 		OperationName: "downloadBlobToWriterAt",
 		TransferSize:  count,
@@ -387,9 +390,11 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 			if err != nil {
 				return err
 			}
-			progressLock.Lock()
-			dataDownloaded += *dr.ContentLength
-			progressLock.Unlock()
+			if calculateData {
+				progressLock.Lock()
+				dataDownloaded += *dr.ContentLength
+				progressLock.Unlock()
+			}
 			err = body.Close()
 			return err
 		},

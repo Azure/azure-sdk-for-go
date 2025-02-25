@@ -465,6 +465,8 @@ func (f *Client) download(ctx context.Context, writer io.WriterAt, o downloadOpt
 	}
 
 	count := o.Range.Count
+	dataDownloaded := int64(0)
+	calculateData := true
 	if count == CountToEnd { // If size not specified, calculate it
 		// If we don't have the length at all, get it
 		getFilePropertiesOptions := o.getFilePropertiesOptions()
@@ -473,6 +475,8 @@ func (f *Client) download(ctx context.Context, writer io.WriterAt, o downloadOpt
 			return 0, err
 		}
 		count = *gr.ContentLength - o.Range.Offset
+		dataDownloaded = count
+		calculateData = false
 	}
 
 	if count <= 0 {
@@ -483,7 +487,7 @@ func (f *Client) download(ctx context.Context, writer io.WriterAt, o downloadOpt
 	// Prepare and do parallel download.
 	progress := int64(0)
 	progressLock := &sync.Mutex{}
-	dataDownloaded := int64(0)
+
 	err := shared.DoBatchTransfer(ctx, &shared.BatchTransferOptions{
 		OperationName: "downloadFileToWriterAt",
 		TransferSize:  count,
@@ -516,9 +520,11 @@ func (f *Client) download(ctx context.Context, writer io.WriterAt, o downloadOpt
 			if err != nil {
 				return err
 			}
-			progressLock.Lock()
-			dataDownloaded += *dr.ContentLength
-			progressLock.Unlock()
+			if calculateData {
+				progressLock.Lock()
+				dataDownloaded += *dr.ContentLength
+				progressLock.Unlock()
+			}
 			err = body.Close()
 			return err
 		},

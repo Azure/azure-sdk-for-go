@@ -872,7 +872,7 @@ func (s *AZBlobRecordedTestsSuite) TestAzBlobClientCustomAudience() {
 	}
 }
 
-func (s *AZBlobUnrecordedTestsSuite) TestDownloadBufferWithLessData() {
+func (s *AZBlobRecordedTestsSuite) TestDownloadBufferWithLessData() {
 	blobSize := 15
 	blockSize := 1024
 	concurrency := 3
@@ -883,7 +883,7 @@ func (s *AZBlobUnrecordedTestsSuite) TestDownloadBufferWithLessData() {
 	performUploadAndDownloadBufferTest(s.T(), _require, testName, blobSize, blockSize, concurrency, downloadOffset, downloadCount)
 }
 
-func (s *AZBlobUnrecordedTestsSuite) TestDownloadBufferWithLargeData() {
+func (s *AZBlobRecordedTestsSuite) TestDownloadBufferWithLargeData() {
 	blobSize := 10 * 1024 * 1024
 	blockSize := 1024 * 1024
 	concurrency := 3

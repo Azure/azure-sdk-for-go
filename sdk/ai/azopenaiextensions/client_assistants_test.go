@@ -13,6 +13,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/openai/openai-go"
+	"github.com/openai/openai-go/shared"
 	"github.com/stretchr/testify/require"
 )
 
@@ -126,12 +127,12 @@ func TestAssistantsThreads(t *testing.T) {
 			require.NoError(t, err)
 		})
 
-		metadata := map[string]any{"hello": "world"}
+		metadata := shared.MetadataParam{"hello": "world"}
 
 		// update the thread
 		{
 			updatedThread, err := threadClient.Update(context.Background(), thread.ID, openai.BetaThreadUpdateParams{
-				Metadata: openai.F[any](metadata),
+				Metadata: openai.F(metadata),
 			})
 			require.NoError(t, err)
 			require.Equal(t, thread.ID, updatedThread.ID)
@@ -183,7 +184,7 @@ func TestAssistantRun(t *testing.T) {
 			Tools: openai.F([]openai.AssistantToolUnionParam{
 				openai.CodeInterpreterToolParam{Type: openai.F(openai.CodeInterpreterToolTypeCodeInterpreter)},
 			}),
-			Model: openai.F[openai.ChatModel](azureOpenAI.Assistants.Model),
+			Model: openai.F(azureOpenAI.Assistants.Model),
 		})
 
 		if err != nil {

@@ -466,7 +466,7 @@ func (f *Client) download(ctx context.Context, writer io.WriterAt, o downloadOpt
 
 	count := o.Range.Count
 	dataDownloaded := int64(0)
-	calculateData := true
+	computeReadLength := true
 	if count == CountToEnd { // If size not specified, calculate it
 		// If we don't have the length at all, get it
 		getFilePropertiesOptions := o.getFilePropertiesOptions()
@@ -476,7 +476,7 @@ func (f *Client) download(ctx context.Context, writer io.WriterAt, o downloadOpt
 		}
 		count = *gr.ContentLength - o.Range.Offset
 		dataDownloaded = count
-		calculateData = false
+		computeReadLength = false
 	}
 
 	if count <= 0 {
@@ -520,7 +520,7 @@ func (f *Client) download(ctx context.Context, writer io.WriterAt, o downloadOpt
 			if err != nil {
 				return err
 			}
-			if calculateData {
+			if computeReadLength {
 				progressLock.Lock()
 				dataDownloaded += *dr.ContentLength
 				progressLock.Unlock()

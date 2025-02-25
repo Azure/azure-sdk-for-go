@@ -1,5 +1,12 @@
 # Release History
 
+## 6.4.0 (2025-02-27)
+### Features Added
+
+- New field `MessageOfTheDay` in struct `ManagedClusterAgentPoolProfile`
+- New field `MessageOfTheDay` in struct `ManagedClusterAgentPoolProfileProperties`
+
+
 ## 6.4.0-beta.1 (2024-12-09)
 ### Features Added
 

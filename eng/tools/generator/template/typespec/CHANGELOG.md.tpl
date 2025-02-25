@@ -1,3 +1,4 @@
+TEST
 # Release History
 
 ## {{.packageVersion}} ({{.releaseDate}})

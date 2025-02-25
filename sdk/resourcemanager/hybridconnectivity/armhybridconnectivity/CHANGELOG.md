@@ -1,12 +1,6 @@
 # Release History
 
 ## 2.0.0 (2025-02-25)
-### Breaking Changes
-
-- Type of `ErrorAdditionalInfo.Info` has been changed from `any` to `*ErrorAdditionalInfoInfo`
-- Struct `ErrorResponse` has been removed
-- Struct `ProxyResource` has been removed
-- Struct `Resource` has been removed
 
 ### Features Added
 

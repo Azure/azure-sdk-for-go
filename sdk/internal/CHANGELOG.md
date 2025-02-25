@@ -14,6 +14,7 @@
 ### Other Changes
 * Zero `RecordingOptions.ProxyPort` is interpreted as indicating the default port used
   by `StartTestProxy`
+* Improved presentation of test proxy recording mismatch errors
 
 ## 1.10.0 (2024-07-16)
 

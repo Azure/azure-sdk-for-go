@@ -10,6 +10,7 @@ import (
 	"bytes"
 	"crypto/tls"
 	"crypto/x509"
+	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -662,7 +663,14 @@ func (c RecordingHTTPClient) Do(req *http.Request) (*http.Response, error) {
 	// poll for status and/or fetch the final result.
 	resp.Request.URL.Scheme = origScheme
 	resp.Request.URL.Host = origHost
-	return resp, nil
+	// if the response is a recording mismatch error from the proxy, return
+	// its message as a simple error that prints legibly in test output
+	if er := resp.Header.Get("x-request-mismatch-error"); er != "" {
+		if msg, e := base64.StdEncoding.DecodeString(er); e == nil {
+			err = errors.New(string(msg))
+		}
+	}
+	return resp, err
 }
 
 // NewRecordingHTTPClient returns a type that implements `azcore.Transporter`. This will automatically route tests on the `Do` call.

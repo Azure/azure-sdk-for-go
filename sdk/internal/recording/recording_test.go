@@ -7,17 +7,21 @@
 package recording
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"io"
 	"math/rand"
 	"net/http"
+	"net/url"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 )
@@ -61,6 +65,25 @@ func (s *recordingTests) TestGetEnvVariable() {
 	s.T().Setenv("TEST_VARIABLE", "expected")
 	require.Equal("expected", GetEnvVariable("TEST_VARIABLE", "unexpected"))
 	recordMode = temp
+}
+
+func TestRecordingHTTPClient_MismatchError(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	expected := "one of these things is not like the other"
+	srv.SetResponse(
+		mock.WithHeader("x-request-mismatch-error", base64.StdEncoding.EncodeToString([]byte(expected))),
+	)
+	u, err := url.Parse(srv.URL())
+	require.NoError(t, err)
+	port, err := strconv.Atoi(u.Port())
+	require.NoError(t, err)
+	client, err := NewRecordingHTTPClient(t, &RecordingOptions{ProxyPort: port})
+	require.NoError(t, err)
+	req, err := http.NewRequest("GET", srv.URL(), nil)
+	require.NoError(t, err)
+	_, err = client.Do(req)
+	require.EqualError(t, err, expected)
 }
 
 func (s *recordingTests) TestRecordingOptions() {

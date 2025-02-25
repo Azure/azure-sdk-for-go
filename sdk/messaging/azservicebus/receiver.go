@@ -477,12 +477,12 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 func (r *Receiver) addLink(ctx context.Context, message *amqp.Message) {
 	sp := r.tracer.SpanFromContext(ctx)
 	sp.AddLink(r.tracer.LinkFromContext(r.tracer.Extract(context.Background(), message),
-		tracing.Attribute{Key: tracing.MessageID, Value: message.Properties.MessageID}))
+		tracing.Attribute{Key: tracing.AttrMessageID, Value: message.Properties.MessageID}))
 }
 
 func (r *Receiver) addBatchSizeAttribute(ctx context.Context, size int) {
 	sp := r.tracer.SpanFromContext(ctx)
-	sp.SetAttributes(tracing.Attribute{Key: tracing.BatchMessageCount, Value: int64(size)})
+	sp.SetAttributes(tracing.Attribute{Key: tracing.AttrBatchMessageCount, Value: int64(size)})
 }
 
 type entity struct {

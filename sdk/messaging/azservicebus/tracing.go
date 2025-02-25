@@ -31,7 +31,7 @@ func getFullyQualifiedNamespace(creds clientCreds) string {
 func getMessageIDAttribute(message *amqp.Message) []tracing.Attribute {
 	var attrs []tracing.Attribute
 	if message != nil && message.Properties != nil && message.Properties.MessageID != nil && message.Properties.MessageID != "" {
-		attrs = append(attrs, tracing.Attribute{Key: tracing.MessageID, Value: message.Properties.MessageID})
+		attrs = append(attrs, tracing.Attribute{Key: tracing.AttrMessageID, Value: message.Properties.MessageID})
 	}
 	return attrs
 }
@@ -39,7 +39,7 @@ func getMessageIDAttribute(message *amqp.Message) []tracing.Attribute {
 func getMessageSpanAttributes(message *amqp.Message) []tracing.Attribute {
 	attrs := getMessageIDAttribute(message)
 	if message != nil && message.Properties != nil && message.Properties.CorrelationID != nil && message.Properties.CorrelationID != "" {
-		attrs = append(attrs, tracing.Attribute{Key: tracing.ConversationID, Value: message.Properties.CorrelationID})
+		attrs = append(attrs, tracing.Attribute{Key: tracing.AttrConversationID, Value: message.Properties.CorrelationID})
 	}
 	return attrs
 }
@@ -49,14 +49,14 @@ func getReceivedMessageSpanAttributes(receivedMessage *ReceivedMessage) []tracin
 	if receivedMessage != nil {
 		message := receivedMessage.Message().toAMQPMessage()
 		attrs = getMessageSpanAttributes(message)
-		attrs = append(attrs, tracing.Attribute{Key: tracing.DeliveryCount, Value: int64(receivedMessage.DeliveryCount)})
+		attrs = append(attrs, tracing.Attribute{Key: tracing.AttrDeliveryCount, Value: int64(receivedMessage.DeliveryCount)})
 		if receivedMessage.EnqueuedTime != nil {
-			attrs = append(attrs, tracing.Attribute{Key: tracing.EnqueuedTime, Value: receivedMessage.EnqueuedTime.Unix()})
+			attrs = append(attrs, tracing.Attribute{Key: tracing.AttrEnqueuedTime, Value: receivedMessage.EnqueuedTime.Unix()})
 		}
 	}
 	return attrs
 }
 
 func getMessageBatchSpanAttributes(size int) []tracing.Attribute {
-	return []tracing.Attribute{{Key: tracing.BatchMessageCount, Value: int64(size)}}
+	return []tracing.Attribute{{Key: tracing.AttrBatchMessageCount, Value: int64(size)}}
 }

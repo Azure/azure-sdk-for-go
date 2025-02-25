@@ -23,18 +23,19 @@ const (
 )
 
 const (
-	ServerAddress     = "server.address"
-	MessagingSystem   = "messaging.system"
-	OperationName     = "messaging.operation.name"
-	BatchMessageCount = "messaging.batch.message_count"
-	DestinationName   = "messaging.destination.name"
-	SubscriptionName  = "messaging.destination.subscription.name"
-	OperationType     = "messaging.operation.type"
-	DispositionStatus = "messaging.servicebus.disposition_status"
-	DeliveryCount     = "messaging.servicebus.message.delivery_count"
-	ConversationID    = "messaging.message.conversation_id"
-	MessageID         = "messaging.message.id"
-	EnqueuedTime      = "messaging.servicebus.message.enqueued_time"
+	AttrServerAddress     = "server.address"
+	AttrMessagingSystem   = "messaging.system"
+	AttrOperationName     = "messaging.operation.name"
+	AttrBatchMessageCount = "messaging.batch.message_count"
+	AttrDestinationName   = "messaging.destination.name"
+	AttrSubscriptionName  = "messaging.destination.subscription.name"
+	AttrOperationType     = "messaging.operation.type"
+	AttrDispositionStatus = "messaging.servicebus.disposition_status"
+	AttrDeliveryCount     = "messaging.servicebus.message.delivery_count"
+	AttrConversationID    = "messaging.message.conversation_id"
+	AttrMessageID         = "messaging.message.id"
+	AttrEnqueuedTime      = "messaging.servicebus.message.enqueued_time"
+	AttrErrorType         = "error.type"
 )
 
 type MessagingOperationType string

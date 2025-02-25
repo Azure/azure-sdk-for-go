@@ -7,7 +7,7 @@ import (
 	"context"
 	"testing"
 
-	testtracing "github.com/Azure/azure-sdk-for-go/sdk/internal/test/tracing"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/tracingvalidator"
 	"github.com/stretchr/testify/require"
 )
 
@@ -27,26 +27,26 @@ func TestStartSpan(t *testing.T) {
 
 	// creates a span when both tracer and SpanName are set
 	tr := Tracer{
-		tracer: testtracing.NewSpanValidator(t, testtracing.SpanMatcher{
+		tracer: tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
 			Name: "test",
 			Kind: SpanKindInternal,
 			Attributes: []Attribute{
-				{Key: OperationName, Value: "test"},
+				{Key: AttrOperationName, Value: "test"},
 			},
-		}).NewTracer("module", "version")}
+		}, nil).NewTracer("module", "version")}
 	subCtx1, endSpan1 := StartSpan(ctx, &StartSpanOptions{Tracer: tr, OperationName: "test"})
 	defer endSpan1(nil)
 	require.NotEqual(t, ctx, subCtx1)
 
 	// creates a producer span when operation name is SendOperationName
-	tr.tracer = testtracing.NewSpanValidator(t, testtracing.SpanMatcher{
+	tr.tracer = tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
 		Name: string(SendOperationName),
 		Kind: SpanKindProducer,
 		Attributes: []Attribute{
-			{Key: OperationName, Value: string(SendOperationName)},
-			{Key: OperationType, Value: string(SendOperationType)},
+			{Key: AttrOperationName, Value: string(SendOperationName)},
+			{Key: AttrOperationType, Value: string(SendOperationType)},
 		},
-	}).NewTracer("module", "version")
+	}, nil).NewTracer("module", "version")
 	subCtx2, endSpan2 := StartSpan(ctx, &StartSpanOptions{Tracer: tr, OperationName: SendOperationName})
 	defer endSpan2(nil)
 	require.NotEqual(t, ctx, subCtx2)

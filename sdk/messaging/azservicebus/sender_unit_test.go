@@ -5,10 +5,11 @@ package azservicebus
 
 import (
 	"context"
+	"fmt"
 	"testing"
 	"time"
 
-	testtracing "github.com/Azure/azure-sdk-for-go/sdk/internal/test/tracing"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/tracingvalidator"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/mock/emulation"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/go-amqp"
@@ -111,88 +112,93 @@ func TestSender_TracingUserFacingError(t *testing.T) {
 	var asSBError *Error
 
 	fakeClientCreds := clientCreds{fullyQualifiedNamespace: "fake.something"}
+	sendErr := &amqp.ConnError{}
 
-	sender.tracer = newTracer(testtracing.NewSpanValidator(t, testtracing.SpanMatcher{
+	sender.tracer = newTracer(tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
 		Name:   "send queue",
 		Kind:   tracing.SpanKindProducer,
 		Status: tracing.SpanStatusError,
 		Attributes: []tracing.Attribute{
-			{Key: tracing.MessagingSystem, Value: "servicebus"},
-			{Key: tracing.ServerAddress, Value: "fake.something"},
-			{Key: tracing.DestinationName, Value: "queue"},
-			{Key: tracing.OperationName, Value: "send"},
-			{Key: tracing.OperationType, Value: "send"},
+			{Key: tracing.AttrMessagingSystem, Value: "servicebus"},
+			{Key: tracing.AttrServerAddress, Value: "fake.something"},
+			{Key: tracing.AttrDestinationName, Value: "queue"},
+			{Key: tracing.AttrOperationName, Value: "send"},
+			{Key: tracing.AttrOperationType, Value: "send"},
+			{Key: tracing.AttrErrorType, Value: fmt.Sprintf("%T", sendErr)},
 		},
-	}), fakeClientCreds, "queue", "")
+	}, nil), fakeClientCreds, "queue", "")
 	err = sender.SendMessage(context.Background(), &Message{}, nil)
 	require.ErrorAs(t, err, &asSBError)
 	require.Equal(t, CodeConnectionLost, asSBError.Code)
 
 	msgID := "testID"
-	sender.tracer = newTracer(testtracing.NewSpanValidator(t, testtracing.SpanMatcher{
+	sender.tracer = newTracer(tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
 		Name:   "send queue",
 		Kind:   tracing.SpanKindProducer,
 		Status: tracing.SpanStatusError,
 		Attributes: []tracing.Attribute{
-			{Key: tracing.MessagingSystem, Value: "servicebus"},
-			{Key: tracing.ServerAddress, Value: "fake.something"},
-			{Key: tracing.DestinationName, Value: "queue"},
-			{Key: tracing.OperationName, Value: "send"},
-			{Key: tracing.OperationType, Value: "send"},
-			{Key: tracing.MessageID, Value: msgID},
+			{Key: tracing.AttrMessagingSystem, Value: "servicebus"},
+			{Key: tracing.AttrServerAddress, Value: "fake.something"},
+			{Key: tracing.AttrDestinationName, Value: "queue"},
+			{Key: tracing.AttrOperationName, Value: "send"},
+			{Key: tracing.AttrOperationType, Value: "send"},
+			{Key: tracing.AttrMessageID, Value: msgID},
+			{Key: tracing.AttrErrorType, Value: fmt.Sprintf("%T", sendErr)},
 		},
-	}), fakeClientCreds, "queue", "")
+	}, nil), fakeClientCreds, "queue", "")
 	err = sender.SendMessage(context.Background(), &Message{MessageID: &msgID}, nil)
 	require.ErrorAs(t, err, &asSBError)
 	require.Equal(t, CodeConnectionLost, asSBError.Code)
 
-	sender.tracer = newTracer(testtracing.NewSpanValidator(t, testtracing.SpanMatcher{
+	sender.tracer = newTracer(tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
 		Name:   "cancel_scheduled queue",
 		Kind:   tracing.SpanKindClient,
 		Status: tracing.SpanStatusError,
 		Attributes: []tracing.Attribute{
-			{Key: tracing.MessagingSystem, Value: "servicebus"},
-			{Key: tracing.ServerAddress, Value: "fake.something"},
-			{Key: tracing.DestinationName, Value: "queue"},
-			{Key: tracing.OperationName, Value: "cancel_scheduled"},
-			{Key: tracing.OperationType, Value: "send"},
-			{Key: tracing.BatchMessageCount, Value: int64(1)},
+			{Key: tracing.AttrMessagingSystem, Value: "servicebus"},
+			{Key: tracing.AttrServerAddress, Value: "fake.something"},
+			{Key: tracing.AttrDestinationName, Value: "queue"},
+			{Key: tracing.AttrOperationName, Value: "cancel_scheduled"},
+			{Key: tracing.AttrOperationType, Value: "send"},
+			{Key: tracing.AttrBatchMessageCount, Value: int64(1)},
+			{Key: tracing.AttrErrorType, Value: fmt.Sprintf("%T", sendErr)},
 		},
-	}), fakeClientCreds, "queue", "")
+	}, nil), fakeClientCreds, "queue", "")
 	err = sender.CancelScheduledMessages(context.Background(), []int64{1}, nil)
 	require.ErrorAs(t, err, &asSBError)
 	require.Equal(t, CodeConnectionLost, asSBError.Code)
 
-	createTracer := newTracer(testtracing.NewSpanValidator(t, testtracing.SpanMatcher{
+	createTracer := newTracer(tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
 		Name:   "create queue",
 		Kind:   tracing.SpanKindProducer,
 		Status: tracing.SpanStatusUnset,
 		Attributes: []tracing.Attribute{
-			{Key: tracing.MessagingSystem, Value: "servicebus"},
-			{Key: tracing.ServerAddress, Value: "fake.something"},
-			{Key: tracing.DestinationName, Value: "queue"},
-			{Key: tracing.OperationName, Value: "create"},
-			{Key: tracing.OperationType, Value: "create"},
-			{Key: tracing.MessageID, Value: msgID},
+			{Key: tracing.AttrMessagingSystem, Value: "servicebus"},
+			{Key: tracing.AttrServerAddress, Value: "fake.something"},
+			{Key: tracing.AttrDestinationName, Value: "queue"},
+			{Key: tracing.AttrOperationName, Value: "create"},
+			{Key: tracing.AttrOperationType, Value: "create"},
+			{Key: tracing.AttrMessageID, Value: msgID},
 		},
-	}), fakeClientCreds, "queue", "")
+	}, nil), fakeClientCreds, "queue", "")
 	msg := &Message{MessageID: &msgID}
 	createMessageSpan(context.Background(), createTracer, tracing.Span{}, msg.toAMQPMessage())
 
-	sender.tracer = newTracer(testtracing.NewSpanValidator(t, testtracing.SpanMatcher{
+	sender.tracer = newTracer(tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
 		Name:   "schedule queue",
 		Kind:   tracing.SpanKindClient,
 		Status: tracing.SpanStatusError,
 		Attributes: []tracing.Attribute{
-			{Key: tracing.MessagingSystem, Value: "servicebus"},
-			{Key: tracing.ServerAddress, Value: "fake.something"},
-			{Key: tracing.DestinationName, Value: "queue"},
-			{Key: tracing.OperationName, Value: "schedule"},
-			{Key: tracing.OperationType, Value: "send"},
-			{Key: tracing.BatchMessageCount, Value: int64(1)},
+			{Key: tracing.AttrMessagingSystem, Value: "servicebus"},
+			{Key: tracing.AttrServerAddress, Value: "fake.something"},
+			{Key: tracing.AttrDestinationName, Value: "queue"},
+			{Key: tracing.AttrOperationName, Value: "schedule"},
+			{Key: tracing.AttrOperationType, Value: "send"},
+			{Key: tracing.AttrBatchMessageCount, Value: int64(1)},
+			{Key: tracing.AttrErrorType, Value: fmt.Sprintf("%T", sendErr)},
 		},
-		Links: []tracing.Link{{Attributes: []tracing.Attribute{{Key: tracing.MessageID, Value: msgID}}}},
-	}), fakeClientCreds, "queue", "")
+		Links: []tracing.Link{{Attributes: []tracing.Attribute{{Key: tracing.AttrMessageID, Value: msgID}}}},
+	}, nil), fakeClientCreds, "queue", "")
 	seqNumbers, err := sender.ScheduleMessages(context.Background(), []*Message{msg}, time.Now(), nil)
 	require.Empty(t, seqNumbers)
 	require.ErrorAs(t, err, &asSBError)
@@ -208,20 +214,21 @@ func TestSender_TracingUserFacingError(t *testing.T) {
 	}, nil)
 	require.NoError(t, err)
 
-	sender.tracer = newTracer(testtracing.NewSpanValidator(t, testtracing.SpanMatcher{
+	sender.tracer = newTracer(tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
 		Name:   "send queue",
 		Kind:   tracing.SpanKindClient,
 		Status: tracing.SpanStatusError,
 		Attributes: []tracing.Attribute{
-			{Key: tracing.MessagingSystem, Value: "servicebus"},
-			{Key: tracing.ServerAddress, Value: "fake.something"},
-			{Key: tracing.DestinationName, Value: "queue"},
-			{Key: tracing.OperationName, Value: "send"},
-			{Key: tracing.OperationType, Value: "send"},
-			{Key: tracing.BatchMessageCount, Value: int64(1)},
+			{Key: tracing.AttrMessagingSystem, Value: "servicebus"},
+			{Key: tracing.AttrServerAddress, Value: "fake.something"},
+			{Key: tracing.AttrDestinationName, Value: "queue"},
+			{Key: tracing.AttrOperationName, Value: "send"},
+			{Key: tracing.AttrOperationType, Value: "send"},
+			{Key: tracing.AttrBatchMessageCount, Value: int64(1)},
+			{Key: tracing.AttrErrorType, Value: fmt.Sprintf("%T", sendErr)},
 		},
-		Links: []tracing.Link{{Attributes: []tracing.Attribute{{Key: tracing.MessageID, Value: msgID}}}},
-	}), fakeClientCreds, "queue", "")
+		Links: []tracing.Link{{Attributes: []tracing.Attribute{{Key: tracing.AttrMessageID, Value: msgID}}}},
+	}, nil), fakeClientCreds, "queue", "")
 	err = sender.SendMessageBatch(context.Background(), batch, nil)
 	require.ErrorAs(t, err, &asSBError)
 	require.Equal(t, CodeConnectionLost, asSBError.Code)

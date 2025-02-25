@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	testtracing "github.com/Azure/azure-sdk-for-go/sdk/internal/test/tracing"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/tracingvalidator"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/sas"
@@ -504,16 +504,16 @@ func TestNewClientUnitTests(t *testing.T) {
 		require.False(t, client.tracingProvider.NewTracer("module", "version").Enabled())
 
 		// when tracing provider is set, the tracer is set up with the provider.
-		provider := testtracing.NewSpanValidator(t, testtracing.SpanMatcher{
+		provider := tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
 			Name:   "test_span queue",
 			Status: tracing.SpanStatusUnset,
 			Attributes: []tracing.Attribute{
-				{Key: tracing.MessagingSystem, Value: "servicebus"},
-				{Key: tracing.ServerAddress, Value: hostName},
-				{Key: tracing.DestinationName, Value: "queue"},
-				{Key: tracing.OperationName, Value: "test_span"},
+				{Key: tracing.AttrMessagingSystem, Value: "servicebus"},
+				{Key: tracing.AttrServerAddress, Value: hostName},
+				{Key: tracing.AttrDestinationName, Value: "queue"},
+				{Key: tracing.AttrOperationName, Value: "test_span"},
 			},
-		})
+		}, nil)
 		client, err = NewClient(hostName, struct{ azcore.TokenCredential }{}, &ClientOptions{
 			TracingProvider: provider,
 		})

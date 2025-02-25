@@ -40,13 +40,13 @@ func NewTracer(provider Provider, moduleName, version, hostName, queueOrTopic, s
 		propagator:  provider.NewPropagator(),
 		destination: queueOrTopic,
 	}
-	t.tracer.SetAttributes(Attribute{Key: MessagingSystem, Value: messagingSystemName},
-		Attribute{Key: DestinationName, Value: queueOrTopic})
+	t.tracer.SetAttributes(Attribute{Key: AttrMessagingSystem, Value: messagingSystemName},
+		Attribute{Key: AttrDestinationName, Value: queueOrTopic})
 	if hostName != "" {
-		t.tracer.SetAttributes(Attribute{Key: ServerAddress, Value: hostName})
+		t.tracer.SetAttributes(Attribute{Key: AttrServerAddress, Value: hostName})
 	}
 	if subscription != "" {
-		t.tracer.SetAttributes(Attribute{Key: SubscriptionName, Value: subscription})
+		t.tracer.SetAttributes(Attribute{Key: AttrSubscriptionName, Value: subscription})
 	}
 	return t
 }
@@ -74,14 +74,14 @@ func StartSpan(ctx context.Context, options *StartSpanOptions) (context.Context,
 	if options == nil || options.OperationName == "" {
 		return ctx, func(error) {}
 	}
-	attrs := append(options.Attributes, Attribute{Key: OperationName, Value: string(options.OperationName)})
+	attrs := append(options.Attributes, Attribute{Key: AttrOperationName, Value: string(options.OperationName)})
 
 	operationType := getOperationType(options.OperationName)
 	if operationType != "" {
-		attrs = append(attrs, Attribute{Key: OperationType, Value: string(operationType)})
+		attrs = append(attrs, Attribute{Key: AttrOperationType, Value: string(operationType)})
 	}
 	if operationType == SettleOperationType {
-		attrs = append(attrs, Attribute{Key: DispositionStatus, Value: string(options.OperationName)})
+		attrs = append(attrs, Attribute{Key: AttrDispositionStatus, Value: string(options.OperationName)})
 	}
 
 	spanKind := getSpanKind(operationType, options.Attributes)
@@ -123,7 +123,7 @@ func getSpanKind(operationType MessagingOperationType, attrs []Attribute) SpanKi
 		// return client span if it is a batch operation
 		// otherwise return producer span
 		for _, attr := range attrs {
-			if attr.Key == BatchMessageCount {
+			if attr.Key == AttrBatchMessageCount {
 				return SpanKindClient
 			}
 		}

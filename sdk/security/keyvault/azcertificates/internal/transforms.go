@@ -26,8 +26,9 @@ func regexReplace(fileName string, regex string, replace string) {
 }
 
 func main() {
-	// delete the version path param check (version == "" is legal for Key Vault but indescribable by OpenAPI)
+	// allow `version` to be optional (TypeSpec doesn't allow optional path parameters)
 	regexReplace("client.go", `\sif version == "" \{\s+.+version cannot be empty"\)\s+\}\s`, "")
+	regexReplace("fake/server.go", `(\(\?P<certificate_version\>(.*?)\))`, `?$1?`)
 
 	regexReplace("models.go", `(type (?:Deleted)?Certificate(?:Properties|Policy|Operation)? struct \{(?:\s.+\s)+\sID \*)string`, "$1 ID")
 	regexReplace("models.go", `(\/\/ READ-ONLY; The certificate id\.\n\tID \*)string`, `$1 ID`)

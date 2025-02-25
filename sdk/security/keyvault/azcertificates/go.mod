@@ -1,5 +1,7 @@
 module github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azcertificates
 
+replace github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/internal => ../internal
+
 go 1.18
 
 require (

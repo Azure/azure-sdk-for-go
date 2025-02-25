@@ -56,11 +56,16 @@ const (
 	EncryptionAlgorithmA256GCM EncryptionAlgorithm = "A256GCM"
 	// EncryptionAlgorithmA256KW - 256-bit AES key wrap.
 	EncryptionAlgorithmA256KW EncryptionAlgorithm = "A256KW"
-	// EncryptionAlgorithmRSA15 - RSAES-PKCS1-V1_5 key encryption, as described in https://tools.ietf.org/html/rfc3447.
+	// EncryptionAlgorithmRSA15 - [Not recommended] RSAES-PKCS1-V1_5 key encryption, as described in https://tools.ietf.org/html/rfc3447.
+	// Microsoft recommends using RSA_OAEP_256 or stronger algorithms for enhanced security. Microsoft does *not* recommend RSA_1_5,
+	// which is included solely for backwards compatibility. Cryptographic standards no longer consider RSA with the PKCS#1 v1.5
+	// padding scheme secure for encryption.
 	EncryptionAlgorithmRSA15 EncryptionAlgorithm = "RSA1_5"
-	// EncryptionAlgorithmRSAOAEP - RSAES using Optimal Asymmetric Encryption Padding (OAEP), as described in https://tools.ietf.org/html/rfc3447,
-	// with the default parameters specified by RFC 3447 in Section A.2.1. Those default parameters are using a hash function
-	// of SHA-1 and a mask generation function of MGF1 with SHA-1.
+	// EncryptionAlgorithmRSAOAEP - [Not recommended] RSAES using Optimal Asymmetric Encryption Padding (OAEP), as described in
+	// https://tools.ietf.org/html/rfc3447, with the default parameters specified by RFC 3447 in Section A.2.1. Those default
+	// parameters are using a hash function of SHA-1 and a mask generation function of MGF1 with SHA-1. Microsoft recommends using
+	// RSA_OAEP_256 or stronger algorithms for enhanced security. Microsoft does *not* recommend RSA_OAEP, which is included solely
+	// for backwards compatibility. RSA_OAEP utilizes SHA1, which has known collision problems.
 	EncryptionAlgorithmRSAOAEP EncryptionAlgorithm = "RSA-OAEP"
 	// EncryptionAlgorithmRSAOAEP256 - RSAES using Optimal Asymmetric Encryption Padding with a hash function of SHA-256 and a
 	// mask generation function of MGF1 with SHA-256.

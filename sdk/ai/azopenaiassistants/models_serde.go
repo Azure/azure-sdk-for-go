@@ -296,12 +296,138 @@ func (a *AssistantToolResources) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AssistantsAPIResponseFormat.
 func (a AssistantsAPIResponseFormat) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "type", a.Type)
+	objectMap["type"] = a.Type
 	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type AssistantsAPIResponseFormat.
 func (a *AssistantsAPIResponseFormat) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "type":
+			err = unpopulate(val, "Type", &a.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AssistantsAPIResponseFormatJSONObject.
+func (a AssistantsAPIResponseFormatJSONObject) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	objectMap["type"] = APIResponseFormatJSONObject
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AssistantsAPIResponseFormatJSONObject.
+func (a *AssistantsAPIResponseFormatJSONObject) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "type":
+			err = unpopulate(val, "Type", &a.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AssistantsAPIResponseFormatJSONSchema.
+func (a AssistantsAPIResponseFormatJSONSchema) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "json_schema", a.JSONSchema)
+	objectMap["type"] = APIResponseFormatJSONSchema
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AssistantsAPIResponseFormatJSONSchema.
+func (a *AssistantsAPIResponseFormatJSONSchema) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "json_schema":
+			err = unpopulate(val, "JSONSchema", &a.JSONSchema)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, "Type", &a.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AssistantsAPIResponseFormatJSONSchemaJSONSchema.
+func (a AssistantsAPIResponseFormatJSONSchemaJSONSchema) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "description", a.Description)
+	populate(objectMap, "name", a.Name)
+	populate(objectMap, "schema", json.RawMessage(a.Schema))
+	populate(objectMap, "strict", a.Strict)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AssistantsAPIResponseFormatJSONSchemaJSONSchema.
+func (a *AssistantsAPIResponseFormatJSONSchemaJSONSchema) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "description":
+			err = unpopulate(val, "Description", &a.Description)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, "Name", &a.Name)
+			delete(rawMsg, key)
+		case "schema":
+			if string(val) != "null" {
+				a.Schema = val
+			}
+			delete(rawMsg, key)
+		case "strict":
+			err = unpopulate(val, "Strict", &a.Strict)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AssistantsAPIResponseFormatText.
+func (a AssistantsAPIResponseFormatText) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	objectMap["type"] = APIResponseFormatText
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AssistantsAPIResponseFormatText.
+func (a *AssistantsAPIResponseFormatText) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -1011,6 +1137,76 @@ func (f *FileListResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type FileSearchToolCallResult.
+func (f FileSearchToolCallResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "content", f.Content)
+	populate(objectMap, "file_id", f.FileID)
+	populate(objectMap, "file_name", f.FileName)
+	populate(objectMap, "score", f.Score)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type FileSearchToolCallResult.
+func (f *FileSearchToolCallResult) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", f, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "content":
+			err = unpopulate(val, "Content", &f.Content)
+			delete(rawMsg, key)
+		case "file_id":
+			err = unpopulate(val, "FileID", &f.FileID)
+			delete(rawMsg, key)
+		case "file_name":
+			err = unpopulate(val, "FileName", &f.FileName)
+			delete(rawMsg, key)
+		case "score":
+			err = unpopulate(val, "Score", &f.Score)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", f, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type FileSearchToolCallResultContentItem.
+func (f FileSearchToolCallResultContentItem) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "text", f.Text)
+	objectMap["type"] = "text"
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type FileSearchToolCallResultContentItem.
+func (f *FileSearchToolCallResultContentItem) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", f, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "text":
+			err = unpopulate(val, "Text", &f.Text)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, "Type", &f.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", f, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type FileSearchToolDefinition.
 func (f FileSearchToolDefinition) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -1101,7 +1297,7 @@ func (f FunctionDefinition) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "description", f.Description)
 	populate(objectMap, "name", f.Name)
-	populateAny(objectMap, "parameters", f.Parameters)
+	populate(objectMap, "parameters", json.RawMessage(f.Parameters))
 	return json.Marshal(objectMap)
 }
 
@@ -1121,7 +1317,9 @@ func (f *FunctionDefinition) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Name", &f.Name)
 			delete(rawMsg, key)
 		case "parameters":
-			err = unpopulate(val, "Parameters", &f.Parameters)
+			if string(val) != "null" {
+				f.Parameters = val
+			}
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -5221,16 +5419,6 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func populateAny(m map[string]any, k string, v any) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else {
 		m[k] = v
 	}
 }

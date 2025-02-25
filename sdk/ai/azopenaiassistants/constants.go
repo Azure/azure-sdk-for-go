@@ -8,12 +8,14 @@
 
 package azopenaiassistants
 
-// APIResponseFormat - Must be one of text or json_object.
+// APIResponseFormat - Must be one of text, json_object or json_schema .
 type APIResponseFormat string
 
 const (
 	// APIResponseFormatJSONObject - Using `json_object` format will limit the usage of ToolCall to only functions.
 	APIResponseFormatJSONObject APIResponseFormat = "json_object"
+	// APIResponseFormatJSONSchema - Using `json_schema` format will ensure the model matches the supplied JSON schema.
+	APIResponseFormatJSONSchema APIResponseFormat = "json_schema"
 	// APIResponseFormatText - `text` format should be used for requests involving any sort of ToolCall.
 	APIResponseFormatText APIResponseFormat = "text"
 )
@@ -22,6 +24,7 @@ const (
 func PossibleAPIResponseFormatValues() []APIResponseFormat {
 	return []APIResponseFormat{
 		APIResponseFormatJSONObject,
+		APIResponseFormatJSONSchema,
 		APIResponseFormatText,
 	}
 }
@@ -34,6 +37,8 @@ const (
 	AssistantResponseFormatTypeAuto AssistantResponseFormatType = "auto"
 	// AssistantResponseFormatTypeJSONObject - Using `json_object` format will limit the usage of ToolCall to only functions.
 	AssistantResponseFormatTypeJSONObject AssistantResponseFormatType = "json_object"
+	// AssistantResponseFormatTypeJSONSchema - Using `json_schema` format will ensure the model matches the supplied JSON schema.
+	AssistantResponseFormatTypeJSONSchema AssistantResponseFormatType = "json_schema"
 	// AssistantResponseFormatTypeText - `text` format should be used for requests involving any sort of ToolCall.
 	AssistantResponseFormatTypeText AssistantResponseFormatType = "text"
 )
@@ -43,6 +48,7 @@ func PossibleAssistantResponseFormatTypeValues() []AssistantResponseFormatType {
 	return []AssistantResponseFormatType{
 		AssistantResponseFormatTypeAuto,
 		AssistantResponseFormatTypeJSONObject,
+		AssistantResponseFormatTypeJSONSchema,
 		AssistantResponseFormatTypeText,
 	}
 }
@@ -417,6 +423,21 @@ func PossibleMessageStreamEventValues() []MessageStreamEvent {
 	}
 }
 
+// RunIncludes - Values to for the includes parameter in the create run operation.
+type RunIncludes string
+
+const (
+	// RunIncludesFileSearchContent - Fetch the file search result content.
+	RunIncludesFileSearchContent RunIncludes = "step_details.tool_calls[*].file_search.results[*].content"
+)
+
+// PossibleRunIncludesValues returns the possible values for the RunIncludes const type.
+func PossibleRunIncludesValues() []RunIncludes {
+	return []RunIncludes{
+		RunIncludesFileSearchContent,
+	}
+}
+
 // RunStatus - Possible values for the status of an assistant thread run.
 type RunStatus string
 
@@ -704,23 +725,20 @@ func PossibleVectorStoreFileBatchStatusValues() []VectorStoreFileBatchStatus {
 type VectorStoreFileErrorCode string
 
 const (
-	// VectorStoreFileErrorCodeFileNotFound - The file was not found.
-	VectorStoreFileErrorCodeFileNotFound VectorStoreFileErrorCode = "file_not_found"
-	// VectorStoreFileErrorCodeInternalError - An internal error occurred.
-	VectorStoreFileErrorCodeInternalError VectorStoreFileErrorCode = "internal_error"
-	// VectorStoreFileErrorCodeParsingError - The file could not be parsed.
-	VectorStoreFileErrorCodeParsingError VectorStoreFileErrorCode = "parsing_error"
-	// VectorStoreFileErrorCodeUnhandledMimeType - The file has an unhandled mime type.
-	VectorStoreFileErrorCodeUnhandledMimeType VectorStoreFileErrorCode = "unhandled_mime_type"
+	// VectorStoreFileErrorCodeInvalidFile - The file is invalid.
+	VectorStoreFileErrorCodeInvalidFile VectorStoreFileErrorCode = "invalid_file"
+	// VectorStoreFileErrorCodeServerError - The server encountered an error.
+	VectorStoreFileErrorCodeServerError VectorStoreFileErrorCode = "server_error"
+	// VectorStoreFileErrorCodeUnsupportedFile - The file format is not supported.
+	VectorStoreFileErrorCodeUnsupportedFile VectorStoreFileErrorCode = "unsupported_file"
 )
 
 // PossibleVectorStoreFileErrorCodeValues returns the possible values for the VectorStoreFileErrorCode const type.
 func PossibleVectorStoreFileErrorCodeValues() []VectorStoreFileErrorCode {
 	return []VectorStoreFileErrorCode{
-		VectorStoreFileErrorCodeFileNotFound,
-		VectorStoreFileErrorCodeInternalError,
-		VectorStoreFileErrorCodeParsingError,
-		VectorStoreFileErrorCodeUnhandledMimeType,
+		VectorStoreFileErrorCodeInvalidFile,
+		VectorStoreFileErrorCodeServerError,
+		VectorStoreFileErrorCodeUnsupportedFile,
 	}
 }
 

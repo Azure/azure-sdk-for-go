@@ -11,6 +11,7 @@ package azopenaiassistants
 import (
 	"context"
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -33,7 +34,7 @@ type Client struct {
 // CancelRun - Cancels a run of an in progress thread.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-01-01-preview
 //   - threadID - The ID of the thread being run.
 //   - runID - The ID of the run to cancel.
 //   - options - CancelRunOptions contains the optional parameters for the Client.CancelRun method.
@@ -87,7 +88,7 @@ func (client *Client) cancelRunHandleResponse(resp *http.Response) (CancelRunRes
 // batch as soon as possible.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-01-01-preview
 //   - vectorStoreID - The ID of the vector store that the file batch belongs to.
 //   - batchID - The ID of the file batch to cancel.
 //   - options - CancelVectorStoreFileBatchOptions contains the optional parameters for the Client.CancelVectorStoreFileBatch
@@ -141,7 +142,7 @@ func (client *Client) cancelVectorStoreFileBatchHandleResponse(resp *http.Respon
 // CreateAssistant - Creates a new assistant.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-01-01-preview
 //   - body - The request details to use when creating a new assistant.
 //   - options - CreateAssistantOptions contains the optional parameters for the Client.CreateAssistant method.
 func (client *Client) CreateAssistant(ctx context.Context, body CreateAssistantBody, options *CreateAssistantOptions) (CreateAssistantResponse, error) {
@@ -188,7 +189,7 @@ func (client *Client) createAssistantHandleResponse(resp *http.Response) (Create
 // CreateMessage - Creates a new message on a specified thread.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-01-01-preview
 //   - threadID - The ID of the thread to create the new message on.
 //   - body - A single message within an assistant thread, as provided during that thread's creation for its initial state.
 //   - options - CreateMessageOptions contains the optional parameters for the Client.CreateMessage method.
@@ -240,7 +241,7 @@ func (client *Client) createMessageHandleResponse(resp *http.Response) (CreateMe
 // CreateRun - Creates a new run for an assistant thread.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-01-01-preview
 //   - threadID - The ID of the thread to run.
 //   - createRunBody - The details used when creating a new run of an assistant thread.
 //   - options - CreateRunOptions contains the optional parameters for the Client.CreateRun method.
@@ -273,6 +274,11 @@ func (client *Client) createRunCreateRequest(ctx context.Context, threadID strin
 	if err != nil {
 		return nil, err
 	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.RunInclude != nil {
+		reqQP.Set("include[]", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.RunInclude), "[]")), ","))
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, createRunBody); err != nil {
 		return nil, err
@@ -292,7 +298,7 @@ func (client *Client) createRunHandleResponse(resp *http.Response) (CreateRunRes
 // CreateThread - Creates a new thread. Threads contain messages and can be run by assistants.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-01-01-preview
 //   - body - The details used to create a new assistant thread.
 //   - options - CreateThreadOptions contains the optional parameters for the Client.CreateThread method.
 func (client *Client) CreateThread(ctx context.Context, body CreateThreadBody, options *CreateThreadOptions) (CreateThreadResponse, error) {
@@ -339,7 +345,7 @@ func (client *Client) createThreadHandleResponse(resp *http.Response) (CreateThr
 // CreateThreadAndRun - Creates a new assistant thread and immediately starts a run using that new thread.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-01-01-preview
 //   - body - The details used when creating and immediately running a new assistant thread.
 //   - options - CreateThreadAndRunOptions contains the optional parameters for the Client.CreateThreadAndRun method.
 func (client *Client) CreateThreadAndRun(ctx context.Context, body CreateAndRunThreadBody, options *CreateThreadAndRunOptions) (CreateThreadAndRunResponse, error) {
@@ -386,7 +392,7 @@ func (client *Client) createThreadAndRunHandleResponse(resp *http.Response) (Cre
 // CreateVectorStore - Creates a vector store.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-01-01-preview
 //   - body - Request object for creating a vector store.
 //   - options - CreateVectorStoreOptions contains the optional parameters for the Client.CreateVectorStore method.
 func (client *Client) CreateVectorStore(ctx context.Context, body VectorStoreBody, options *CreateVectorStoreOptions) (CreateVectorStoreResponse, error) {
@@ -433,7 +439,7 @@ func (client *Client) createVectorStoreHandleResponse(resp *http.Response) (Crea
 // CreateVectorStoreFile - Create a vector store file by attaching a file to a vector store.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-01-01-preview
 //   - vectorStoreID - The ID of the vector store for which to create a File.
 //   - body - Request object for creating a vector store file.
 //   - options - CreateVectorStoreFileOptions contains the optional parameters for the Client.CreateVectorStoreFile method.
@@ -485,7 +491,7 @@ func (client *Client) createVectorStoreFileHandleResponse(resp *http.Response) (
 // CreateVectorStoreFileBatch - Create a vector store file batch.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-01-01-preview
 //   - vectorStoreID - The ID of the vector store for which to create a File Batch.
 //   - options - CreateVectorStoreFileBatchOptions contains the optional parameters for the Client.CreateVectorStoreFileBatch
 //     method.
@@ -537,7 +543,7 @@ func (client *Client) createVectorStoreFileBatchHandleResponse(resp *http.Respon
 // DeleteAssistant - Deletes an assistant.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-01-01-preview
 //   - assistantID - The ID of the assistant to delete.
 //   - options - DeleteAssistantOptions contains the optional parameters for the Client.DeleteAssistant method.
 func (client *Client) DeleteAssistant(ctx context.Context, assistantID string, options *DeleteAssistantOptions) (DeleteAssistantResponse, error) {
@@ -585,7 +591,7 @@ func (client *Client) deleteAssistantHandleResponse(resp *http.Response) (Delete
 // DeleteFile - Delete a previously uploaded file.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-01-01-preview
 //   - fileID - The ID of the file to delete.
 //   - options - DeleteFileOptions contains the optional parameters for the Client.DeleteFile method.
 func (client *Client) DeleteFile(ctx context.Context, fileID string, options *DeleteFileOptions) (DeleteFileResponse, error) {
@@ -633,7 +639,7 @@ func (client *Client) deleteFileHandleResponse(resp *http.Response) (DeleteFileR
 // DeleteThread - Deletes an existing thread.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-01-01-preview
 //   - threadID - The ID of the thread to delete.
 //   - options - DeleteThreadOptions contains the optional parameters for the Client.DeleteThread method.
 func (client *Client) DeleteThread(ctx context.Context, threadID string, options *DeleteThreadOptions) (DeleteThreadResponse, error) {
@@ -681,7 +687,7 @@ func (client *Client) deleteThreadHandleResponse(resp *http.Response) (DeleteThr
 // DeleteVectorStore - Deletes the vector store object matching the specified ID.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-01-01-preview
 //   - vectorStoreID - The ID of the vector store to delete.
 //   - options - DeleteVectorStoreOptions contains the optional parameters for the Client.DeleteVectorStore method.
 func (client *Client) DeleteVectorStore(ctx context.Context, vectorStoreID string, options *DeleteVectorStoreOptions) (DeleteVectorStoreResponse, error) {
@@ -730,7 +736,7 @@ func (client *Client) deleteVectorStoreHandleResponse(resp *http.Response) (Dele
 // will not be deleted. To delete the file, use the delete file endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-01-01-preview
 //   - vectorStoreID - The ID of the vector store that the file belongs to.
 //   - fileID - The ID of the file to delete its relationship to the vector store.
 //   - options - DeleteVectorStoreFileOptions contains the optional parameters for the Client.DeleteVectorStoreFile method.
@@ -783,7 +789,7 @@ func (client *Client) deleteVectorStoreFileHandleResponse(resp *http.Response) (
 // GetAssistant - Retrieves an existing assistant.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-01-01-preview
 //   - assistantID - The ID of the assistant to retrieve.
 //   - options - GetAssistantOptions contains the optional parameters for the Client.GetAssistant method.
 func (client *Client) GetAssistant(ctx context.Context, assistantID string, options *GetAssistantOptions) (GetAssistantResponse, error) {
@@ -831,7 +837,7 @@ func (client *Client) getAssistantHandleResponse(resp *http.Response) (GetAssist
 // GetFile - Returns information about a specific file. Does not retrieve file content.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-01-01-preview
 //   - fileID - The ID of the file to retrieve.
 //   - options - GetFileOptions contains the optional parameters for the Client.GetFile method.
 func (client *Client) GetFile(ctx context.Context, fileID string, options *GetFileOptions) (GetFileResponse, error) {
@@ -879,7 +885,7 @@ func (client *Client) getFileHandleResponse(resp *http.Response) (GetFileRespons
 // GetMessage - Gets an existing message from an existing thread.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-01-01-preview
 //   - threadID - The ID of the thread to retrieve the specified message from.
 //   - messageID - The ID of the message to retrieve from the specified thread.
 //   - options - GetMessageOptions contains the optional parameters for the Client.GetMessage method.
@@ -932,7 +938,7 @@ func (client *Client) getMessageHandleResponse(resp *http.Response) (GetMessageR
 // GetRun - Gets an existing run from an existing thread.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-01-01-preview
 //   - threadID - The ID of the thread to retrieve run information from.
 //   - runID - The ID of the thread to retrieve information about.
 //   - options - GetRunOptions contains the optional parameters for the Client.GetRun method.
@@ -985,7 +991,7 @@ func (client *Client) getRunHandleResponse(resp *http.Response) (GetRunResponse,
 // GetRunStep - Gets a single run step from a thread run.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-01-01-preview
 //   - threadID - The ID of the thread that was run.
 //   - runID - The ID of the specific run to retrieve the step from.
 //   - stepID - The ID of the step to retrieve information about.
@@ -1027,6 +1033,11 @@ func (client *Client) getRunStepCreateRequest(ctx context.Context, threadID stri
 	if err != nil {
 		return nil, err
 	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.RunInclude != nil {
+		reqQP.Set("include[]", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.RunInclude), "[]")), ","))
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1043,7 +1054,7 @@ func (client *Client) getRunStepHandleResponse(resp *http.Response) (GetRunStepR
 // GetThread - Gets information about an existing thread.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-01-01-preview
 //   - threadID - The ID of the thread to retrieve information about.
 //   - options - GetThreadOptions contains the optional parameters for the Client.GetThread method.
 func (client *Client) GetThread(ctx context.Context, threadID string, options *GetThreadOptions) (GetThreadResponse, error) {
@@ -1091,7 +1102,7 @@ func (client *Client) getThreadHandleResponse(resp *http.Response) (GetThreadRes
 // GetVectorStore - Returns the vector store object matching the specified ID.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-01-01-preview
 //   - vectorStoreID - The ID of the vector store to retrieve.
 //   - options - GetVectorStoreOptions contains the optional parameters for the Client.GetVectorStore method.
 func (client *Client) GetVectorStore(ctx context.Context, vectorStoreID string, options *GetVectorStoreOptions) (GetVectorStoreResponse, error) {
@@ -1139,7 +1150,7 @@ func (client *Client) getVectorStoreHandleResponse(resp *http.Response) (GetVect
 // GetVectorStoreFile - Retrieves a vector store file.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-01-01-preview
 //   - vectorStoreID - The ID of the vector store that the file belongs to.
 //   - fileID - The ID of the file being retrieved.
 //   - options - GetVectorStoreFileOptions contains the optional parameters for the Client.GetVectorStoreFile method.
@@ -1192,7 +1203,7 @@ func (client *Client) getVectorStoreFileHandleResponse(resp *http.Response) (Get
 // GetVectorStoreFileBatch - Retrieve a vector store file batch.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-01-01-preview
 //   - vectorStoreID - The ID of the vector store that the file batch belongs to.
 //   - batchID - The ID of the file batch being retrieved.
 //   - options - GetVectorStoreFileBatchOptions contains the optional parameters for the Client.GetVectorStoreFileBatch
@@ -1246,7 +1257,7 @@ func (client *Client) getVectorStoreFileBatchHandleResponse(resp *http.Response)
 // ListAssistants - Gets a list of assistants that were previously created.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-01-01-preview
 //   - options - ListAssistantsOptions contains the optional parameters for the Client.ListAssistants method.
 func (client *Client) internalListAssistants(ctx context.Context, options *ListAssistantsOptions) (ListAssistantsResponse, error) {
 	var err error
@@ -1303,7 +1314,7 @@ func (client *Client) listAssistantsHandleResponse(resp *http.Response) (ListAss
 // ListFiles - Gets a list of previously uploaded files.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-01-01-preview
 //   - options - ListFilesOptions contains the optional parameters for the Client.ListFiles method.
 func (client *Client) ListFiles(ctx context.Context, options *ListFilesOptions) (ListFilesResponse, error) {
 	var err error
@@ -1351,7 +1362,7 @@ func (client *Client) listFilesHandleResponse(resp *http.Response) (ListFilesRes
 // ListMessages - Gets a list of messages that exist on a thread.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-01-01-preview
 //   - threadID - The ID of the thread to list messages from.
 //   - options - ListMessagesOptions contains the optional parameters for the Client.ListMessages method.
 func (client *Client) internalListMessages(ctx context.Context, threadID string, options *ListMessagesOptions) (ListMessagesResponse, error) {
@@ -1416,7 +1427,7 @@ func (client *Client) listMessagesHandleResponse(resp *http.Response) (ListMessa
 // ListRunSteps - Gets a list of run steps from a thread run.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-01-01-preview
 //   - threadID - The ID of the thread that was run.
 //   - runID - The ID of the run to list steps from.
 //   - options - ListRunStepsOptions contains the optional parameters for the Client.ListRunSteps method.
@@ -1460,6 +1471,9 @@ func (client *Client) listRunStepsCreateRequest(ctx context.Context, threadID st
 	if options != nil && options.Before != nil {
 		reqQP.Set("before", *options.Before)
 	}
+	if options != nil && options.RunInclude != nil {
+		reqQP.Set("include[]", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.RunInclude), "[]")), ","))
+	}
 	if options != nil && options.Limit != nil {
 		reqQP.Set("limit", strconv.FormatInt(int64(*options.Limit), 10))
 	}
@@ -1483,7 +1497,7 @@ func (client *Client) listRunStepsHandleResponse(resp *http.Response) (ListRunSt
 // ListRuns - Gets a list of runs for a specified thread.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-01-01-preview
 //   - threadID - The ID of the thread to list runs from.
 //   - options - ListRunsOptions contains the optional parameters for the Client.ListRuns method.
 func (client *Client) internalListRuns(ctx context.Context, threadID string, options *ListRunsOptions) (ListRunsResponse, error) {
@@ -1545,7 +1559,7 @@ func (client *Client) listRunsHandleResponse(resp *http.Response) (ListRunsRespo
 // ListVectorStoreFileBatchFiles - Returns a list of vector store files in a batch.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-01-01-preview
 //   - vectorStoreID - The ID of the vector store that the file batch belongs to.
 //   - batchID - The ID of the file batch that the files belong to.
 //   - options - ListVectorStoreFileBatchFilesOptions contains the optional parameters for the Client.ListVectorStoreFileBatchFiles
@@ -1616,7 +1630,7 @@ func (client *Client) listVectorStoreFileBatchFilesHandleResponse(resp *http.Res
 // ListVectorStoreFiles - Returns a list of vector store files.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-01-01-preview
 //   - vectorStoreID - The ID of the vector store that the files belong to.
 //   - options - ListVectorStoreFilesOptions contains the optional parameters for the Client.ListVectorStoreFiles method.
 func (client *Client) internalListVectorStoreFiles(ctx context.Context, vectorStoreID string, options *ListVectorStoreFilesOptions) (ListVectorStoreFilesResponse, error) {
@@ -1681,7 +1695,7 @@ func (client *Client) listVectorStoreFilesHandleResponse(resp *http.Response) (L
 // ListVectorStores - Returns a list of vector stores.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-01-01-preview
 //   - options - ListVectorStoresOptions contains the optional parameters for the Client.ListVectorStores method.
 func (client *Client) internalListVectorStores(ctx context.Context, options *ListVectorStoresOptions) (ListVectorStoresResponse, error) {
 	var err error
@@ -1738,7 +1752,7 @@ func (client *Client) listVectorStoresHandleResponse(resp *http.Response) (ListV
 // ModifyVectorStore - The ID of the vector store to modify.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-01-01-preview
 //   - vectorStoreID - The ID of the vector store to modify.
 //   - body - Request object for updating a vector store.
 //   - options - ModifyVectorStoreOptions contains the optional parameters for the Client.ModifyVectorStore method.
@@ -1791,7 +1805,7 @@ func (client *Client) modifyVectorStoreHandleResponse(resp *http.Response) (Modi
 // outputs will have a status of 'requiresaction' with a requiredaction.type of 'submittooloutputs'.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-01-01-preview
 //   - threadID - The ID of the thread that was run.
 //   - runID - The ID of the run that requires tool outputs.
 //   - options - SubmitToolOutputsToRunOptions contains the optional parameters for the Client.SubmitToolOutputsToRun method.
@@ -1847,7 +1861,7 @@ func (client *Client) submitToolOutputsToRunHandleResponse(resp *http.Response) 
 // UpdateAssistant - Modifies an existing assistant.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-01-01-preview
 //   - assistantID - The ID of the assistant to modify.
 //   - body - The request details to use when modifying an existing assistant.
 //   - options - UpdateAssistantOptions contains the optional parameters for the Client.UpdateAssistant method.
@@ -1899,7 +1913,7 @@ func (client *Client) updateAssistantHandleResponse(resp *http.Response) (Update
 // UpdateMessage - Modifies an existing message on an existing thread.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-01-01-preview
 //   - threadID - The ID of the thread containing the specified message to modify.
 //   - messageID - The ID of the message to modify on the specified thread.
 //   - options - UpdateMessageOptions contains the optional parameters for the Client.UpdateMessage method.
@@ -1955,7 +1969,7 @@ func (client *Client) updateMessageHandleResponse(resp *http.Response) (UpdateMe
 // UpdateRun - Modifies an existing thread run.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-01-01-preview
 //   - threadID - The ID of the thread associated with the specified run.
 //   - runID - The ID of the run to modify.
 //   - options - UpdateRunOptions contains the optional parameters for the Client.UpdateRun method.
@@ -2011,7 +2025,7 @@ func (client *Client) updateRunHandleResponse(resp *http.Response) (UpdateRunRes
 // UpdateThread - Modifies an existing thread.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-01-01-preview
 //   - threadID - The ID of the thread to modify.
 //   - body - The details used to update an existing assistant thread.
 //   - options - UpdateThreadOptions contains the optional parameters for the Client.UpdateThread method.
@@ -2063,7 +2077,7 @@ func (client *Client) updateThreadHandleResponse(resp *http.Response) (UpdateThr
 // UploadFile - Uploads a file for use by other operations.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-01-01-preview
 //   - file - The file data (not filename) to upload.
 //   - purpose - The intended purpose of the file.
 //   - options - UploadFileOptions contains the optional parameters for the Client.UploadFile method.

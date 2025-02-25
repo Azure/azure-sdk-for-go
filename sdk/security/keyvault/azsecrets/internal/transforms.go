@@ -26,8 +26,9 @@ func regexReplace(fileName string, regex string, replace string) {
 }
 
 func main() {
-	// delete the version path param check (version == "" is legal for Key Vault but indescribable by OpenAPI)
+	// allow `version` to be optional (TypeSpec doesn't allow optional path parameters)
 	regexReplace("client.go", `\sif version == "" \{\s+.+version cannot be empty"\)\s+\}\s`, "")
+	regexReplace("fake/server.go", `(\(\?P<secret_version\>(.*?)\))`, `?$1?`)
 
 	// make secret IDs a convenience type so we can add parsing methods
 	regexReplace("models.go", `\sID \*string(\s+.*)`, "ID *ID$1")
@@ -35,8 +36,4 @@ func main() {
 
 	// remove the DeletionRecoveryLevel type
 	regexReplace("models.go", "DeletionRecoveryLevel", "string")
-
-	// remove Max Results parameter
-	regexReplace("options.go", `(?:\/\/.*\s)+\sMaxresults \*int32`, `// placeholder for future optional parameters`)
-	regexReplace("client.go", `\sif options != nil && options.Maxresults != nil \{\s+.+\)\s+\}\s`, "")
 }

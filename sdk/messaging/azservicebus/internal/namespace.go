@@ -442,7 +442,7 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 
 						expiresOn = tmpExpiresOn
 						return nil
-					}, IsFatalSBError, ns.RetryOptions)
+					}, IsFatalSBError, ns.RetryOptions, nil)
 
 					if err == nil {
 						break

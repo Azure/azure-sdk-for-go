@@ -12,6 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 )
 
 // EventRetry is the name for retry events
@@ -37,7 +38,7 @@ func (rf *RetryFnArgs) ResetAttempts() {
 
 // Retry runs a standard retry loop. It executes your passed in fn as the body of the loop.
 // It returns if it exceeds the number of configured retry options or if 'isFatal' returns true.
-func Retry(ctx context.Context, eventName log.Event, operation string, fn func(ctx context.Context, args *RetryFnArgs) error, isFatalFn func(err error) bool, o exported.RetryOptions) error {
+func Retry(ctx context.Context, eventName log.Event, operation string, fn func(ctx context.Context, args *RetryFnArgs) error, isFatalFn func(err error) bool, o exported.RetryOptions, to *tracing.StartSpanOptions) error {
 	if isFatalFn == nil {
 		panic("isFatalFn is nil, errors would panic")
 	}
@@ -46,6 +47,8 @@ func Retry(ctx context.Context, eventName log.Event, operation string, fn func(c
 	setDefaults(&ro)
 
 	var err error
+	ctx, endSpan := tracing.StartSpan(ctx, to)
+	defer func() { endSpan(err) }()
 
 	for i := int32(0); i <= ro.MaxRetries; i++ {
 		if i > 0 {
@@ -116,7 +119,7 @@ func setDefaults(o *exported.RetryOptions) {
 	}
 }
 
-// (adapted from from azcore/policy_retry)
+// (adapted from azcore/policy_retry)
 func calcDelay(o exported.RetryOptions, try int32) time.Duration { // try is >=1; never 0
 	// avoid overflow when shifting left
 	factor := time.Duration(math.MaxInt64)

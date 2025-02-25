@@ -10,6 +10,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/go-amqp"
 )
@@ -51,6 +52,7 @@ func toReceiverOptions(sropts *SessionReceiverOptions) *ReceiverOptions {
 }
 
 type newSessionReceiverArgs struct {
+	tracer            tracing.Tracer
 	sessionID         *string
 	ns                internal.NamespaceForAMQPLinks
 	entity            entity
@@ -66,6 +68,7 @@ func newSessionReceiver(ctx context.Context, args newSessionReceiverArgs, option
 	}
 
 	r, err := newReceiver(newReceiverArgs{
+		tracer:              args.tracer,
 		ns:                  args.ns,
 		entity:              args.entity,
 		cleanupOnClose:      args.cleanupOnClose,
@@ -227,7 +230,10 @@ func (sr *SessionReceiver) GetSessionState(ctx context.Context, options *GetSess
 
 		sessionState = s
 		return nil
-	}, sr.inner.retryOptions)
+	}, sr.inner.retryOptions, &tracing.StartSpanOptions{
+		Tracer:        sr.inner.tracer,
+		OperationName: tracing.GetSessionStateOperationName,
+	})
 
 	return sessionState, internal.TransformError(err)
 }
@@ -243,7 +249,10 @@ type SetSessionStateOptions struct {
 func (sr *SessionReceiver) SetSessionState(ctx context.Context, state []byte, options *SetSessionStateOptions) error {
 	err := sr.inner.amqpLinks.Retry(ctx, EventReceiver, "SetSessionState", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		return internal.SetSessionState(ctx, lwv.RPC, lwv.Receiver.LinkName(), sr.SessionID(), state)
-	}, sr.inner.retryOptions)
+	}, sr.inner.retryOptions, &tracing.StartSpanOptions{
+		Tracer:        sr.inner.tracer,
+		OperationName: tracing.SetSessionStateOperationName,
+	})
 
 	return internal.TransformError(err)
 }
@@ -266,14 +275,24 @@ func (sr *SessionReceiver) RenewSessionLock(ctx context.Context, options *RenewS
 
 		sr.lockedUntil = newLockedUntil
 		return nil
-	}, sr.inner.retryOptions)
+	}, sr.inner.retryOptions, &tracing.StartSpanOptions{
+		Tracer:        sr.inner.tracer,
+		OperationName: tracing.RenewSessionLockOperationName,
+	})
 
 	return internal.TransformError(err)
 }
 
 // init ensures the link was created, guaranteeing that we get our expected session lock.
 func (sr *SessionReceiver) init(ctx context.Context) error {
+	var err error
+	ctx, endSpan := tracing.StartSpan(ctx, &tracing.StartSpanOptions{
+		Tracer:        sr.inner.tracer,
+		OperationName: tracing.AcceptSessionOperationName,
+	})
+	defer func() { endSpan(err) }()
+
 	// initialize the links
-	_, err := sr.inner.amqpLinks.Get(ctx)
+	_, err = sr.inner.amqpLinks.Get(ctx)
 	return internal.TransformError(err)
 }

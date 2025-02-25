@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed a problem that filename would be empty if not explicitly specified in the `UploadFile` operation.
 
 ### Other Changes
 

@@ -8,13 +8,14 @@ package file
 
 import (
 	"errors"
+	"io"
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/sas"
-	"io"
-	"time"
 )
 
 // SharedKeyCredential contains an account's name and its primary or secondary key.
@@ -85,6 +86,17 @@ type CreateOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 	// A name-value pair to associate with a file storage object.
 	Metadata map[string]*string
+	// NFSProperties contains the optional parameters regarding the NFS properties for a file.
+	NFSProperties *NFSProperties
+}
+
+type NFSProperties struct {
+	// The Coordinated Universal Time (UTC) creation time for the file/directory. Default value is 'now'.
+	CreationTime *time.Time
+	// The Coordinated Universal Time (UTC) last write time for the file/directory. Default value is 'now'.
+	LastWriteTime *time.Time
+	// The Coordinated Universal Time (UTC) change time for the file/directory. Default value is 'now'.
+	ChangeTime *time.Time
 	// NFS only. The file mode of the file or directory
 	FileMode *string
 	// NFS only. The owner of the file or directory.
@@ -247,12 +259,8 @@ type SetHTTPHeadersOptions struct {
 	HTTPHeaders *HTTPHeaders
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
-	// NFS only. The file mode of the file or directory
-	FileMode *string
-	// NFS only. The owner of the file or directory.
-	Owner *string
-	// NFS only. The owning group of the file or directory.
-	Group *string
+	// NFSProperties contains the optional parameters regarding the NFS properties for a file.
+	NFSProperties *NFSProperties
 }
 
 func (o *SetHTTPHeadersOptions) format() (*generated.FileClientSetHTTPHeadersOptions, *generated.ShareFileHTTPHeaders, *LeaseAccessConditions) {
@@ -316,12 +324,8 @@ type StartCopyFromURLOptions struct {
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	// Required if the destination file has an active lease.
 	LeaseAccessConditions *LeaseAccessConditions
-	// NFS only. The file mode of the file or directory
-	FileMode *string
-	// NFS only. The owner of the file or directory.
-	Owner *string
-	// NFS only. The owning group of the file or directory.
-	Group *string
+	// NFSProperties contains the optional parameters regarding the NFS properties for a file.
+	NFSProperties *NFSProperties
 	// NFS only. Applicable only when the copy source is a File. Determines the copy behavior of the mode bits of the file. source:
 	FileModeCopyMode *ModeCopyMode
 	// NFS only. Determines the copy behavior of the owner user identifier (UID) and group identifier (GID) of the file. source:

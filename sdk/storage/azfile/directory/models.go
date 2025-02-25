@@ -7,12 +7,13 @@
 package directory
 
 import (
+	"reflect"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/file"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
-	"reflect"
 )
 
 // SharedKeyCredential contains an account's name and its primary or secondary key.
@@ -175,12 +176,7 @@ type SetPropertiesOptions struct {
 	FilePermissions *file.Permissions
 	// FilePermissionFormat contains the format of the file permissions, Can be sddl (Default) or Binary.
 	FilePermissionFormat *FilePermissionFormat
-	// NFS only. The file mode of the file or directory
-	FileMode *string
-	// NFS only. The owner of the file or directory.
-	Owner *string
-	// NFS only. The owning group of the file or directory.
-	Group *string
+	FileNFSProperties    *file.NFSProperties
 }
 
 func (o *SetPropertiesOptions) format() *generated.DirectoryClientSetPropertiesOptions {

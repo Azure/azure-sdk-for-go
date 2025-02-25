@@ -174,8 +174,9 @@ func init() {
 }
 
 var (
-	recordMode string
-	rootCAs    *x509.CertPool
+	defaultPort = os.Getpid()%10000 + 20000
+	recordMode  string
+	rootCAs     *x509.CertPool
 )
 
 const (
@@ -230,7 +231,8 @@ var client = http.Client{
 }
 
 type RecordingOptions struct {
-	UseHTTPS        bool
+	UseHTTPS bool
+	// ProxyPort is the port the test proxy is listening on. Defaults to the port used by [StartTestProxy].
 	ProxyPort       int
 	GroupForReplace string
 	Variables       map[string]interface{}
@@ -244,7 +246,7 @@ type RecordingOptions struct {
 func defaultOptions() *RecordingOptions {
 	return &RecordingOptions{
 		UseHTTPS:  true,
-		ProxyPort: os.Getpid()%10000 + 20000,
+		ProxyPort: defaultPort,
 	}
 }
 
@@ -271,14 +273,11 @@ func (r RecordingOptions) ReplaceAuthority(t *testing.T, rawReq *http.Request) *
 }
 
 func (r RecordingOptions) host() string {
-	if r.ProxyPort != 0 {
-		return fmt.Sprintf("localhost:%d", r.ProxyPort)
+	port := r.ProxyPort
+	if port == 0 {
+		port = defaultPort
 	}
-
-	if r.UseHTTPS {
-		return "localhost:5001"
-	}
-	return "localhost:5000"
+	return fmt.Sprintf("localhost:%d", port)
 }
 
 func (r RecordingOptions) scheme() string {

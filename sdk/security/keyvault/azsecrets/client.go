@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
-// Client - The key vault client performs cryptographic key operations and vault operations against the Key Vault service.
+// Client contains the methods for the group.
 // Don't use this type directly, use a constructor function instead.
 type Client struct {
 	internal     *azcore.Client
@@ -34,7 +34,9 @@ type Client struct {
 //   - options - BackupSecretOptions contains the optional parameters for the Client.BackupSecret method.
 func (client *Client) BackupSecret(ctx context.Context, name string, options *BackupSecretOptions) (BackupSecretResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "Client.BackupSecret", client.internal.Tracer(), nil)
+	const operationName = "Client.BackupSecret"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.backupSecretCreateRequest(ctx, name, options)
 	if err != nil {
@@ -92,7 +94,9 @@ func (client *Client) backupSecretHandleResponse(resp *http.Response) (BackupSec
 //   - options - DeleteSecretOptions contains the optional parameters for the Client.DeleteSecret method.
 func (client *Client) DeleteSecret(ctx context.Context, name string, options *DeleteSecretOptions) (DeleteSecretResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "Client.DeleteSecret", client.internal.Tracer(), nil)
+	const operationName = "Client.DeleteSecret"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.deleteSecretCreateRequest(ctx, name, options)
 	if err != nil {
@@ -150,7 +154,9 @@ func (client *Client) deleteSecretHandleResponse(resp *http.Response) (DeleteSec
 //   - options - GetDeletedSecretOptions contains the optional parameters for the Client.GetDeletedSecret method.
 func (client *Client) GetDeletedSecret(ctx context.Context, name string, options *GetDeletedSecretOptions) (GetDeletedSecretResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "Client.GetDeletedSecret", client.internal.Tracer(), nil)
+	const operationName = "Client.GetDeletedSecret"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getDeletedSecretCreateRequest(ctx, name, options)
 	if err != nil {
@@ -209,7 +215,9 @@ func (client *Client) getDeletedSecretHandleResponse(resp *http.Response) (GetDe
 //   - options - GetSecretOptions contains the optional parameters for the Client.GetSecret method.
 func (client *Client) GetSecret(ctx context.Context, name string, version string, options *GetSecretOptions) (GetSecretResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "Client.GetSecret", client.internal.Tracer(), nil)
+	const operationName = "Client.GetSecret"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getSecretCreateRequest(ctx, name, version, options)
 	if err != nil {
@@ -271,6 +279,7 @@ func (client *Client) NewListDeletedSecretPropertiesPager(options *ListDeletedSe
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ListDeletedSecretPropertiesResponse) (ListDeletedSecretPropertiesResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "Client.NewListDeletedSecretPropertiesPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -288,7 +297,7 @@ func (client *Client) NewListDeletedSecretPropertiesPager(options *ListDeletedSe
 }
 
 // listDeletedSecretPropertiesCreateRequest creates the ListDeletedSecretProperties request.
-func (client *Client) listDeletedSecretPropertiesCreateRequest(ctx context.Context, options *ListDeletedSecretPropertiesOptions) (*policy.Request, error) {
+func (client *Client) listDeletedSecretPropertiesCreateRequest(ctx context.Context, _ *ListDeletedSecretPropertiesOptions) (*policy.Request, error) {
 	host := "{vaultBaseUrl}"
 	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/deletedsecrets"
@@ -326,6 +335,7 @@ func (client *Client) NewListSecretPropertiesPager(options *ListSecretProperties
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ListSecretPropertiesResponse) (ListSecretPropertiesResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "Client.NewListSecretPropertiesPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -343,7 +353,7 @@ func (client *Client) NewListSecretPropertiesPager(options *ListSecretProperties
 }
 
 // listSecretPropertiesCreateRequest creates the ListSecretProperties request.
-func (client *Client) listSecretPropertiesCreateRequest(ctx context.Context, options *ListSecretPropertiesOptions) (*policy.Request, error) {
+func (client *Client) listSecretPropertiesCreateRequest(ctx context.Context, _ *ListSecretPropertiesOptions) (*policy.Request, error) {
 	host := "{vaultBaseUrl}"
 	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/secrets"
@@ -382,6 +392,7 @@ func (client *Client) NewListSecretPropertiesVersionsPager(name string, options 
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ListSecretPropertiesVersionsResponse) (ListSecretPropertiesVersionsResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "Client.NewListSecretPropertiesVersionsPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -399,7 +410,7 @@ func (client *Client) NewListSecretPropertiesVersionsPager(name string, options 
 }
 
 // listSecretPropertiesVersionsCreateRequest creates the ListSecretPropertiesVersions request.
-func (client *Client) listSecretPropertiesVersionsCreateRequest(ctx context.Context, name string, options *ListSecretPropertiesVersionsOptions) (*policy.Request, error) {
+func (client *Client) listSecretPropertiesVersionsCreateRequest(ctx context.Context, name string, _ *ListSecretPropertiesVersionsOptions) (*policy.Request, error) {
 	host := "{vaultBaseUrl}"
 	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/secrets/{secret-name}/versions"
@@ -438,7 +449,9 @@ func (client *Client) listSecretPropertiesVersionsHandleResponse(resp *http.Resp
 //   - options - PurgeDeletedSecretOptions contains the optional parameters for the Client.PurgeDeletedSecret method.
 func (client *Client) PurgeDeletedSecret(ctx context.Context, name string, options *PurgeDeletedSecretOptions) (PurgeDeletedSecretResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "Client.PurgeDeletedSecret", client.internal.Tracer(), nil)
+	const operationName = "Client.PurgeDeletedSecret"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.purgeDeletedSecretCreateRequest(ctx, name, options)
 	if err != nil {
@@ -486,7 +499,9 @@ func (client *Client) purgeDeletedSecretCreateRequest(ctx context.Context, name 
 //   - options - RecoverDeletedSecretOptions contains the optional parameters for the Client.RecoverDeletedSecret method.
 func (client *Client) RecoverDeletedSecret(ctx context.Context, name string, options *RecoverDeletedSecretOptions) (RecoverDeletedSecretResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "Client.RecoverDeletedSecret", client.internal.Tracer(), nil)
+	const operationName = "Client.RecoverDeletedSecret"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.recoverDeletedSecretCreateRequest(ctx, name, options)
 	if err != nil {
@@ -543,7 +558,9 @@ func (client *Client) recoverDeletedSecretHandleResponse(resp *http.Response) (R
 //   - options - RestoreSecretOptions contains the optional parameters for the Client.RestoreSecret method.
 func (client *Client) RestoreSecret(ctx context.Context, parameters RestoreSecretParameters, options *RestoreSecretOptions) (RestoreSecretResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "Client.RestoreSecret", client.internal.Tracer(), nil)
+	const operationName = "Client.RestoreSecret"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.restoreSecretCreateRequest(ctx, parameters, options)
 	if err != nil {
@@ -603,7 +620,9 @@ func (client *Client) restoreSecretHandleResponse(resp *http.Response) (RestoreS
 //   - options - SetSecretOptions contains the optional parameters for the Client.SetSecret method.
 func (client *Client) SetSecret(ctx context.Context, name string, parameters SetSecretParameters, options *SetSecretOptions) (SetSecretResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "Client.SetSecret", client.internal.Tracer(), nil)
+	const operationName = "Client.SetSecret"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.setSecretCreateRequest(ctx, name, parameters, options)
 	if err != nil {
@@ -667,7 +686,9 @@ func (client *Client) setSecretHandleResponse(resp *http.Response) (SetSecretRes
 //   - options - UpdateSecretPropertiesOptions contains the optional parameters for the Client.UpdateSecretProperties method.
 func (client *Client) UpdateSecretProperties(ctx context.Context, name string, version string, parameters UpdateSecretPropertiesParameters, options *UpdateSecretPropertiesOptions) (UpdateSecretPropertiesResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "Client.UpdateSecretProperties", client.internal.Tracer(), nil)
+	const operationName = "Client.UpdateSecretProperties"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.updateSecretPropertiesCreateRequest(ctx, name, version, parameters, options)
 	if err != nil {

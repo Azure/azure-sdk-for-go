@@ -23,7 +23,7 @@ func ExampleEndpointsClient_CreateOrUpdate_hybridConnectivityEndpointsPutCustom(
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewEndpointsClient().CreateOrUpdate(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine", "custom", nil)
+	res, err := clientFactory.NewEndpointsClient().CreateOrUpdate(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine", "custom",nil, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -55,7 +55,7 @@ func ExampleEndpointsClient_CreateOrUpdate_hybridConnectivityEndpointsPutDefault
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewEndpointsClient().CreateOrUpdate(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine", "default", nil)
+	res, err := clientFactory.NewEndpointsClient().CreateOrUpdate(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine", "default",nil, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

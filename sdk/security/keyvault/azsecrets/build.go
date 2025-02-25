@@ -1,4 +1,4 @@
-//go:generate tsp-client update
+//go:generate tsp-client update --local-spec-repo /home/grace/code/azure-rest-api-specs/specification/keyvault/Security.KeyVault.Secrets
 //go:generate go run ./internal/transforms.go
 //go:generate rm ./constants.go
 //go:generate goimports -w .

@@ -26,15 +26,12 @@ func regexReplace(fileName string, regex string, replace string) {
 }
 
 func main() {
-	// delete the version path param check (TypeSpec doesn't allow optional path parameters)
+	// allow `version` to be optional (TypeSpec doesn't allow optional path parameters)
 	regexReplace("client.go", `\sif version == "" \{\s+.+version cannot be empty"\)\s+\}\s`, "")
+	regexReplace("fake/server.go", `(\(\?P<key_version\>(.*?)\))`, `?$1?`)
 
 	// make secret IDs a convenience type so we can add parsing methods
 	regexReplace("models.go", `\sKID \*string(\s+.*)`, "KID *ID$1")
-
-	// remove Max Results parameter
-	regexReplace("options.go", `(?:\/\/.*\s)+\sMaxresults \*int32`, `// placeholder for future optional parameters`)
-	regexReplace("client.go", `\sif options != nil && options.Maxresults != nil \{\s+.+\)\s+\}\s`, "")
 
 	// change type of KeyOps to KeyOperation
 	regexReplace("models.go", `KeyOps \[\]\*string`, `KeyOps []*KeyOperation`)

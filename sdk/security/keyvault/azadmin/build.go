@@ -1,8 +1,8 @@
-//go:generate tsp-client update --output-dir ./settings
-//go:generate tsp-client update --output-dir ./rbac
-//go:generate tsp-client update --output-dir ./backup
+//go:generate tsp-client update --output-dir ./settings --local-spec-repo /home/grace/code/azure-rest-api-specs/specification/keyvault/Security.KeyVault.Settings
+//go:generate tsp-client update --output-dir ./rbac --local-spec-repo /home/grace/code/azure-rest-api-specs/specification/keyvault/Security.KeyVault.RBAC
+//go:generate tsp-client update --output-dir ./backup --local-spec-repo /home/grace/code/azure-rest-api-specs/specification/keyvault/Security.KeyVault.BackupRestore
 //go:generate go run ./internal/generate/transforms.go
-//go:generate gofmt -w .
+//go:generate goimports -w .
 //go:generate rm ./backup/constants.go
 //go:generate rm ./backup/go.mod
 //go:generate rm ./rbac/go.mod

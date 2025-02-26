@@ -24,7 +24,7 @@ func ExampleUsagesClient_Get_quotasUsagesRequestForCompute() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armquota.NewClientFactory(cred,nil)
+	clientFactory, err := armquota.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -61,7 +61,7 @@ func ExampleUsagesClient_Get_quotasUsagesRequestForNetwork() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armquota.NewClientFactory(cred,nil)
+	clientFactory, err := armquota.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -98,7 +98,7 @@ func ExampleUsagesClient_NewListPager_quotasListUsagesForCompute() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armquota.NewClientFactory(cred,nil)
+	clientFactory, err := armquota.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -318,7 +318,7 @@ func ExampleUsagesClient_NewListPager_quotasListUsagesForNetwork() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armquota.NewClientFactory(cred,nil)
+	clientFactory, err := armquota.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -724,7 +724,7 @@ func ExampleUsagesClient_NewListPager_quotasListUsagesMachineLearningServices() 
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armquota.NewClientFactory(cred,nil)
+	clientFactory, err := armquota.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}

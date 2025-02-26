@@ -24,7 +24,7 @@ func ExampleRequestStatusClient_Get_quotaRequestFailed() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armquota.NewClientFactory(cred,nil)
+	clientFactory, err := armquota.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -72,7 +72,7 @@ func ExampleRequestStatusClient_Get_quotaRequestInProgress() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armquota.NewClientFactory(cred,nil)
+	clientFactory, err := armquota.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -129,7 +129,7 @@ func ExampleRequestStatusClient_Get_quotaRequestStatus() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armquota.NewClientFactory(cred,nil)
+	clientFactory, err := armquota.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -173,7 +173,7 @@ func ExampleRequestStatusClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armquota.NewClientFactory(cred,nil)
+	clientFactory, err := armquota.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}

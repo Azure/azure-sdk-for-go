@@ -177,8 +177,26 @@ type JSONWebKey struct {
 	Y []byte
 }
 
+// KeyAttestation - The key attestation information.
+type KeyAttestation struct {
+	// A base64url-encoded string containing certificates in PEM format, used for attestation validation.
+	CertificatePEMFile []byte
+
+	// The attestation blob bytes encoded as base64url string corresponding to a private key.
+	PrivateKeyAttestation []byte
+
+	// The attestation blob bytes encoded as base64url string corresponding to a public key in case of asymmetric key.
+	PublicKeyAttestation []byte
+
+	// The version of the attestation.
+	Version *string
+}
+
 // KeyAttributes - The attributes of a key managed by the key vault service.
 type KeyAttributes struct {
+	// The key or key version attestation information.
+	Attestation *KeyAttestation
+
 	// Determines whether the object is enabled.
 	Enabled *bool
 

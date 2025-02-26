@@ -17,47 +17,47 @@ import (
 	"net/http"
 )
 
-// OperationsClient contains the methods for the Operations group.
-// Don't use this type directly, use NewOperationsClient() instead.
-type OperationsClient struct {
+// OfferingsClient contains the methods for the Offerings group.
+// Don't use this type directly, use NewOfferingsClient() instead.
+type OfferingsClient struct {
 	internal *arm.Client
 }
 
-// NewOperationsClient creates a new instance of OperationsClient with the specified values.
+// NewOfferingsClient creates a new instance of OfferingsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewOperationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationsClient, error) {
+func NewOfferingsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*OfferingsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &OperationsClient{
+	client := &OfferingsClient{
 		internal: cl,
 	}
 	return client, nil
 }
 
-// NewListPager - Lists all of the available REST API operations of the Microsoft.Search provider.
+// NewListPager - Lists all of the features and SKUs offered by the Azure AI Search service in each region.
 //
 // Generated from API version 2025-02-01-preview
-//   - options - OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
-func (client *OperationsClient) NewListPager(options *OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[OperationsClientListResponse]{
-		More: func(page OperationsClientListResponse) bool {
+//   - options - OfferingsClientListOptions contains the optional parameters for the OfferingsClient.NewListPager method.
+func (client *OfferingsClient) NewListPager(options *OfferingsClientListOptions) *runtime.Pager[OfferingsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[OfferingsClientListResponse]{
+		More: func(page OfferingsClientListResponse) bool {
 			return false
 		},
-		Fetcher: func(ctx context.Context, page *OperationsClientListResponse) (OperationsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "OperationsClient.NewListPager")
+		Fetcher: func(ctx context.Context, page *OfferingsClientListResponse) (OfferingsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "OfferingsClient.NewListPager")
 			req, err := client.listCreateRequest(ctx, options)
 			if err != nil {
-				return OperationsClientListResponse{}, err
+				return OfferingsClientListResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return OperationsClientListResponse{}, err
+				return OfferingsClientListResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return OperationsClientListResponse{}, runtime.NewResponseError(resp)
+				return OfferingsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -66,8 +66,8 @@ func (client *OperationsClient) NewListPager(options *OperationsClientListOption
 }
 
 // listCreateRequest creates the List request.
-func (client *OperationsClient) listCreateRequest(ctx context.Context, options *OperationsClientListOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Search/operations"
+func (client *OfferingsClient) listCreateRequest(ctx context.Context, options *OfferingsClientListOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Search/offerings"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -80,10 +80,10 @@ func (client *OperationsClient) listCreateRequest(ctx context.Context, options *
 }
 
 // listHandleResponse handles the List response.
-func (client *OperationsClient) listHandleResponse(resp *http.Response) (OperationsClientListResponse, error) {
-	result := OperationsClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.OperationListResult); err != nil {
-		return OperationsClientListResponse{}, err
+func (client *OfferingsClient) listHandleResponse(resp *http.Response) (OfferingsClientListResponse, error) {
+	result := OfferingsClientListResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.OfferingsListResult); err != nil {
+		return OfferingsClientListResponse{}, err
 	}
 	return result, nil
 }

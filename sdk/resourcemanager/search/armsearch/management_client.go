@@ -44,10 +44,10 @@ func NewManagementClient(subscriptionID string, credential azcore.TokenCredentia
 	return client, nil
 }
 
-// UsageBySubscriptionSKU - Gets the quota usage for a search sku in the given subscription.
+// UsageBySubscriptionSKU - Gets the quota usage for a search SKU in the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-06-01-preview
+// Generated from API version 2025-02-01-preview
 //   - location - The unique location name for a Microsoft Azure geographic region.
 //   - skuName - The unique SKU name that identifies a billable tier.
 //   - SearchManagementRequestOptions - SearchManagementRequestOptions contains a group of parameters for the AdminKeysClient.Get
@@ -96,7 +96,7 @@ func (client *ManagementClient) usageBySubscriptionSKUCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-06-01-preview")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if searchManagementRequestOptions != nil && searchManagementRequestOptions.ClientRequestID != nil {

@@ -47,7 +47,7 @@ func NewNetworkSecurityPerimeterConfigurationsClient(subscriptionID string, cred
 // Get - Gets a network security perimeter configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-06-01-preview
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group within the current subscription. You can obtain this value from the
 //     Azure Resource Manager API or the portal.
 //   - searchServiceName - The name of the Azure AI Search service associated with the specified resource group.
@@ -100,7 +100,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) getCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-06-01-preview")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -117,7 +117,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) getHandleResponse(re
 
 // NewListByServicePager - Gets a list of network security perimeter configurations for a search service.
 //
-// Generated from API version 2024-06-01-preview
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group within the current subscription. You can obtain this value from the
 //     Azure Resource Manager API or the portal.
 //   - searchServiceName - The name of the Azure AI Search service associated with the specified resource group.
@@ -166,7 +166,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) listByServiceCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-06-01-preview")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -186,7 +186,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) listByServiceHandleR
 // service carries the latest configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-06-01-preview
+// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group within the current subscription. You can obtain this value from the
 //     Azure Resource Manager API or the portal.
 //   - searchServiceName - The name of the Azure AI Search service associated with the specified resource group.
@@ -216,7 +216,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) BeginReconcile(ctx c
 // service carries the latest configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-06-01-preview
+// Generated from API version 2025-02-01-preview
 func (client *NetworkSecurityPerimeterConfigurationsClient) reconcile(ctx context.Context, resourceGroupName string, searchServiceName string, nspConfigName string, options *NetworkSecurityPerimeterConfigurationsClientBeginReconcileOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkSecurityPerimeterConfigurationsClient.BeginReconcile"
@@ -262,7 +262,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) reconcileCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-06-01-preview")
+	reqQP.Set("api-version", "2025-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

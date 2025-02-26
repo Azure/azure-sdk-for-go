@@ -29,7 +29,7 @@ func (client *Client) uploadFileCreateRequest(ctx context.Context, file io.ReadS
 		return nil, err
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	fileName := ""
+	fileName := "file.txt"
 
 	if options != nil && options.Filename != nil {
 		fileName = *options.Filename

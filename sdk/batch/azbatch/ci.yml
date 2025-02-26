@@ -27,4 +27,5 @@ extends:
       EnableRaceDetector: true
       RunLiveTests: true
       ServiceDirectory: batch/azbatch
+      TimeOutInMinutes: 20
       UsePipelineProxy: false

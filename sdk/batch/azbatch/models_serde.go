@@ -539,6 +539,151 @@ func (c *CIFSMountConfiguration) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type Certificate.
+func (c Certificate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "certificateFormat", c.CertificateFormat)
+	populate(objectMap, "data", c.Data)
+	populate(objectMap, "deleteCertificateError", c.DeleteCertificateError)
+	populate(objectMap, "password", c.Password)
+	populate(objectMap, "previousState", c.PreviousState)
+	populateDateTimeRFC3339(objectMap, "previousStateTransitionTime", c.PreviousStateTransitionTime)
+	populate(objectMap, "publicData", c.PublicData)
+	populate(objectMap, "state", c.State)
+	populateDateTimeRFC3339(objectMap, "stateTransitionTime", c.StateTransitionTime)
+	populate(objectMap, "thumbprint", c.Thumbprint)
+	populate(objectMap, "thumbprintAlgorithm", c.ThumbprintAlgorithm)
+	populate(objectMap, "url", c.URL)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type Certificate.
+func (c *Certificate) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "certificateFormat":
+			err = unpopulate(val, "CertificateFormat", &c.CertificateFormat)
+			delete(rawMsg, key)
+		case "data":
+			err = unpopulate(val, "Data", &c.Data)
+			delete(rawMsg, key)
+		case "deleteCertificateError":
+			err = unpopulate(val, "DeleteCertificateError", &c.DeleteCertificateError)
+			delete(rawMsg, key)
+		case "password":
+			err = unpopulate(val, "Password", &c.Password)
+			delete(rawMsg, key)
+		case "previousState":
+			err = unpopulate(val, "PreviousState", &c.PreviousState)
+			delete(rawMsg, key)
+		case "previousStateTransitionTime":
+			err = unpopulateDateTimeRFC3339(val, "PreviousStateTransitionTime", &c.PreviousStateTransitionTime)
+			delete(rawMsg, key)
+		case "publicData":
+			err = unpopulate(val, "PublicData", &c.PublicData)
+			delete(rawMsg, key)
+		case "state":
+			err = unpopulate(val, "State", &c.State)
+			delete(rawMsg, key)
+		case "stateTransitionTime":
+			err = unpopulateDateTimeRFC3339(val, "StateTransitionTime", &c.StateTransitionTime)
+			delete(rawMsg, key)
+		case "thumbprint":
+			err = unpopulate(val, "Thumbprint", &c.Thumbprint)
+			delete(rawMsg, key)
+		case "thumbprintAlgorithm":
+			err = unpopulate(val, "ThumbprintAlgorithm", &c.ThumbprintAlgorithm)
+			delete(rawMsg, key)
+		case "url":
+			err = unpopulate(val, "URL", &c.URL)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CertificateListResult.
+func (c CertificateListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "odata.nextLink", c.ODataNextLink)
+	populate(objectMap, "value", c.Value)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type CertificateListResult.
+func (c *CertificateListResult) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "odata.nextLink":
+			err = unpopulate(val, "ODataNextLink", &c.ODataNextLink)
+			delete(rawMsg, key)
+		case "value":
+			err = unpopulate(val, "Value", &c.Value)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CertificateReference.
+func (c CertificateReference) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "storeLocation", c.StoreLocation)
+	populate(objectMap, "storeName", c.StoreName)
+	populate(objectMap, "thumbprint", c.Thumbprint)
+	populate(objectMap, "thumbprintAlgorithm", c.ThumbprintAlgorithm)
+	populate(objectMap, "visibility", c.Visibility)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type CertificateReference.
+func (c *CertificateReference) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "storeLocation":
+			err = unpopulate(val, "StoreLocation", &c.StoreLocation)
+			delete(rawMsg, key)
+		case "storeName":
+			err = unpopulate(val, "StoreName", &c.StoreName)
+			delete(rawMsg, key)
+		case "thumbprint":
+			err = unpopulate(val, "Thumbprint", &c.Thumbprint)
+			delete(rawMsg, key)
+		case "thumbprintAlgorithm":
+			err = unpopulate(val, "ThumbprintAlgorithm", &c.ThumbprintAlgorithm)
+			delete(rawMsg, key)
+		case "visibility":
+			err = unpopulate(val, "Visibility", &c.Visibility)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type ContainerConfiguration.
 func (c ContainerConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -823,6 +968,7 @@ func (c CreatePoolContent) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "applicationPackageReferences", c.ApplicationPackageReferences)
 	populate(objectMap, "autoScaleEvaluationInterval", c.AutoScaleEvaluationInterval)
 	populate(objectMap, "autoScaleFormula", c.AutoScaleFormula)
+	populate(objectMap, "certificateReferences", c.CertificateReferences)
 	populate(objectMap, "displayName", c.DisplayName)
 	populate(objectMap, "enableAutoScale", c.EnableAutoScale)
 	populate(objectMap, "enableInterNodeCommunication", c.EnableInterNodeCommunication)
@@ -862,6 +1008,9 @@ func (c *CreatePoolContent) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "autoScaleFormula":
 			err = unpopulate(val, "AutoScaleFormula", &c.AutoScaleFormula)
+			delete(rawMsg, key)
+		case "certificateReferences":
+			err = unpopulate(val, "CertificateReferences", &c.CertificateReferences)
 			delete(rawMsg, key)
 		case "displayName":
 			err = unpopulate(val, "DisplayName", &c.DisplayName)
@@ -1072,6 +1221,41 @@ func (d *DeallocateNodeContent) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "nodeDeallocateOption":
 			err = unpopulate(val, "NodeDeallocateOption", &d.NodeDeallocateOption)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", d, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type DeleteBatchCertificateError.
+func (d DeleteBatchCertificateError) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "code", d.Code)
+	populate(objectMap, "message", d.Message)
+	populate(objectMap, "values", d.Values)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type DeleteBatchCertificateError.
+func (d *DeleteBatchCertificateError) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", d, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "code":
+			err = unpopulate(val, "Code", &d.Code)
+			delete(rawMsg, key)
+		case "message":
+			err = unpopulate(val, "Message", &d.Message)
+			delete(rawMsg, key)
+		case "values":
+			err = unpopulate(val, "Values", &d.Values)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -3352,6 +3536,7 @@ func (n Node) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "affinityId", n.AffinityID)
 	populateDateTimeRFC3339(objectMap, "allocationTime", n.AllocationTime)
+	populate(objectMap, "certificateReferences", n.CertificateReferences)
 	populate(objectMap, "endpointConfiguration", n.EndpointConfiguration)
 	populate(objectMap, "errors", n.Errors)
 	populate(objectMap, "id", n.ID)
@@ -3389,6 +3574,9 @@ func (n *Node) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "allocationTime":
 			err = unpopulateDateTimeRFC3339(val, "AllocationTime", &n.AllocationTime)
+			delete(rawMsg, key)
+		case "certificateReferences":
+			err = unpopulate(val, "CertificateReferences", &n.CertificateReferences)
 			delete(rawMsg, key)
 		case "endpointConfiguration":
 			err = unpopulate(val, "EndpointConfiguration", &n.EndpointConfiguration)
@@ -4121,6 +4309,7 @@ func (p Pool) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "autoScaleEvaluationInterval", p.AutoScaleEvaluationInterval)
 	populate(objectMap, "autoScaleFormula", p.AutoScaleFormula)
 	populate(objectMap, "autoScaleRun", p.AutoScaleRun)
+	populate(objectMap, "certificateReferences", p.CertificateReferences)
 	populateDateTimeRFC3339(objectMap, "creationTime", p.CreationTime)
 	populate(objectMap, "currentDedicatedNodes", p.CurrentDedicatedNodes)
 	populate(objectMap, "currentLowPriorityNodes", p.CurrentLowPriorityNodes)
@@ -4181,6 +4370,9 @@ func (p *Pool) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "autoScaleRun":
 			err = unpopulate(val, "AutoScaleRun", &p.AutoScaleRun)
+			delete(rawMsg, key)
+		case "certificateReferences":
+			err = unpopulate(val, "CertificateReferences", &p.CertificateReferences)
 			delete(rawMsg, key)
 		case "creationTime":
 			err = unpopulateDateTimeRFC3339(val, "CreationTime", &p.CreationTime)
@@ -4535,6 +4727,7 @@ func (p PoolSpecification) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "applicationPackageReferences", p.ApplicationPackageReferences)
 	populate(objectMap, "autoScaleEvaluationInterval", p.AutoScaleEvaluationInterval)
 	populate(objectMap, "autoScaleFormula", p.AutoScaleFormula)
+	populate(objectMap, "certificateReferences", p.CertificateReferences)
 	populate(objectMap, "displayName", p.DisplayName)
 	populate(objectMap, "enableAutoScale", p.EnableAutoScale)
 	populate(objectMap, "enableInterNodeCommunication", p.EnableInterNodeCommunication)
@@ -4573,6 +4766,9 @@ func (p *PoolSpecification) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "autoScaleFormula":
 			err = unpopulate(val, "AutoScaleFormula", &p.AutoScaleFormula)
+			delete(rawMsg, key)
+		case "certificateReferences":
+			err = unpopulate(val, "CertificateReferences", &p.CertificateReferences)
 			delete(rawMsg, key)
 		case "displayName":
 			err = unpopulate(val, "DisplayName", &p.DisplayName)
@@ -4869,6 +5065,7 @@ func (r *RemoveNodeContent) UnmarshalJSON(data []byte) error {
 func (r ReplacePoolContent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "applicationPackageReferences", r.ApplicationPackageReferences)
+	populate(objectMap, "certificateReferences", r.CertificateReferences)
 	populate(objectMap, "metadata", r.Metadata)
 	populate(objectMap, "startTask", r.StartTask)
 	populate(objectMap, "targetNodeCommunicationMode", r.TargetNodeCommunicationMode)
@@ -4886,6 +5083,9 @@ func (r *ReplacePoolContent) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "applicationPackageReferences":
 			err = unpopulate(val, "ApplicationPackageReferences", &r.ApplicationPackageReferences)
+			delete(rawMsg, key)
+		case "certificateReferences":
+			err = unpopulate(val, "CertificateReferences", &r.CertificateReferences)
 			delete(rawMsg, key)
 		case "metadata":
 			err = unpopulate(val, "Metadata", &r.Metadata)
@@ -6375,6 +6575,7 @@ func (u *UpdateNodeUserContent) UnmarshalJSON(data []byte) error {
 func (u UpdatePoolContent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "applicationPackageReferences", u.ApplicationPackageReferences)
+	populate(objectMap, "certificateReferences", u.CertificateReferences)
 	populate(objectMap, "displayName", u.DisplayName)
 	populate(objectMap, "enableInterNodeCommunication", u.EnableInterNodeCommunication)
 	populate(objectMap, "metadata", u.Metadata)
@@ -6403,6 +6604,9 @@ func (u *UpdatePoolContent) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "applicationPackageReferences":
 			err = unpopulate(val, "ApplicationPackageReferences", &u.ApplicationPackageReferences)
+			delete(rawMsg, key)
+		case "certificateReferences":
+			err = unpopulate(val, "CertificateReferences", &u.CertificateReferences)
 			delete(rawMsg, key)
 		case "displayName":
 			err = unpopulate(val, "DisplayName", &u.DisplayName)

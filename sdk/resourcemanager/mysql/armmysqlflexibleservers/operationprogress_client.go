@@ -46,7 +46,7 @@ func NewOperationProgressClient(subscriptionID string, credential azcore.TokenCr
 // Get - Get the operation result for a long running operation.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-12-30
+// Generated from API version 2024-10-01-preview
 //   - locationName - The name of the location.
 //   - operationID - The ID of an ongoing async operation.
 //   - options - OperationProgressClientGetOptions contains the optional parameters for the OperationProgressClient.Get method.
@@ -92,7 +92,7 @@ func (client *OperationProgressClient) getCreateRequest(ctx context.Context, loc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-30")
+	reqQP.Set("api-version", "2024-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -225,20 +225,32 @@ func ExecuteTspClient(path string, args ...string) error {
 
 	cmdWaitErr := cmd.Wait()
 	fmt.Println(stdoutBuffer.String())
-
+	if stdoutBuffer.Len() > 0 {
+		for _, line := range strings.Split(stdoutBuffer.String(), "\n") {
+			if len(strings.TrimSpace(line)) == 0 {
+				continue
+			}
+			if strings.Contains(line, "generation complete") {
+				return nil
+			}
+		}
+	}
 	if cmdWaitErr != nil || stderrBuffer.Len() > 0 {
 		if stderrBuffer.Len() > 0 {
 			log.Println(stderrBuffer.String())
-
-			// filter npm notice log
+			// filter npm notice & warning log
 			newErrMsgs := make([]string, 0)
 			for _, line := range strings.Split(stderrBuffer.String(), "\n") {
 				if len(strings.TrimSpace(line)) == 0 {
 					continue
 				}
-				if !strings.Contains(line, "npm notice") {
-					newErrMsgs = append(newErrMsgs, line)
+				if strings.Contains(line, "npm notice") {
+					continue
 				}
+				if strings.Contains(line, "npm warn") {
+					continue
+				}
+				newErrMsgs = append(newErrMsgs, line)
 			}
 
 			// filter diagnostic errors

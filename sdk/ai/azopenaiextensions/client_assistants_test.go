@@ -136,7 +136,7 @@ func TestAssistantsThreads(t *testing.T) {
 			})
 			require.NoError(t, err)
 			require.Equal(t, thread.ID, updatedThread.ID)
-			require.Equal(t, metadata, updatedThread.Metadata)
+			require.Equal(t, shared.Metadata(metadata), updatedThread.Metadata)
 		}
 
 		// get the thread back
@@ -144,7 +144,7 @@ func TestAssistantsThreads(t *testing.T) {
 			gotThread, err := threadClient.Get(context.Background(), thread.ID)
 			require.NoError(t, err)
 			require.Equal(t, thread.ID, gotThread.ID)
-			require.Equal(t, metadata, gotThread.Metadata)
+			require.Equal(t, shared.Metadata(metadata), gotThread.Metadata)
 		}
 	}
 

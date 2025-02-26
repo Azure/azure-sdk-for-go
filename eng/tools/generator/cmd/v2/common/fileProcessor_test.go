@@ -140,3 +140,21 @@ func TestFindModule(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, "sdk/security/keyvault/azadmin", filepath.ToSlash(moduleRelativePath))
 }
+
+func TestUpdateReadMeClientFactory(t *testing.T) {
+	cwd, err := os.Getwd()
+	assert.NoError(t, err)
+	sdkRoot := utils.NormalizePath(cwd)
+	sdkRepo, err := repo.OpenSDKRepository(sdkRoot)
+	assert.NoError(t, err)
+
+	// without subscription
+	packagePath := fmt.Sprintf("%s/%s", filepath.ToSlash(sdkRepo.Root()), "sdk/resourcemanager/managementgroups/armmanagementgroups")
+	err = UpdateReadmeClientFactory(packagePath)
+	assert.NoError(t, err)
+
+	// with subscription
+	packagePath = fmt.Sprintf("%s/%s", filepath.ToSlash(sdkRepo.Root()), "sdk/resourcemanager/containerservice/armcontainerservice")
+	err = UpdateReadmeClientFactory(packagePath)
+	assert.NoError(t, err)
+}

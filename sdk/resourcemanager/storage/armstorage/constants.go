@@ -10,7 +10,7 @@ package armstorage
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
-	moduleVersion = "v1.6.0"
+	moduleVersion = "v1.7.0"
 )
 
 // AccessTier - Required for storage accounts where kind = BlobStorage. The access tier is used for billing. The 'Premium'
@@ -1213,12 +1213,18 @@ type SKUName string
 
 const (
 	SKUNamePremiumLRS     SKUName = "Premium_LRS"
+	SKUNamePremiumV2LRS   SKUName = "PremiumV2_LRS"
+	SKUNamePremiumV2ZRS   SKUName = "PremiumV2_ZRS"
 	SKUNamePremiumZRS     SKUName = "Premium_ZRS"
 	SKUNameStandardGRS    SKUName = "Standard_GRS"
 	SKUNameStandardGZRS   SKUName = "Standard_GZRS"
 	SKUNameStandardLRS    SKUName = "Standard_LRS"
 	SKUNameStandardRAGRS  SKUName = "Standard_RAGRS"
 	SKUNameStandardRAGZRS SKUName = "Standard_RAGZRS"
+	SKUNameStandardV2GRS  SKUName = "StandardV2_GRS"
+	SKUNameStandardV2GZRS SKUName = "StandardV2_GZRS"
+	SKUNameStandardV2LRS  SKUName = "StandardV2_LRS"
+	SKUNameStandardV2ZRS  SKUName = "StandardV2_ZRS"
 	SKUNameStandardZRS    SKUName = "Standard_ZRS"
 )
 
@@ -1226,12 +1232,18 @@ const (
 func PossibleSKUNameValues() []SKUName {
 	return []SKUName{
 		SKUNamePremiumLRS,
+		SKUNamePremiumV2LRS,
+		SKUNamePremiumV2ZRS,
 		SKUNamePremiumZRS,
 		SKUNameStandardGRS,
 		SKUNameStandardGZRS,
 		SKUNameStandardLRS,
 		SKUNameStandardRAGRS,
 		SKUNameStandardRAGZRS,
+		SKUNameStandardV2GRS,
+		SKUNameStandardV2GZRS,
+		SKUNameStandardV2LRS,
+		SKUNameStandardV2ZRS,
 		SKUNameStandardZRS,
 	}
 }

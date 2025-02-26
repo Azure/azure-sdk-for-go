@@ -218,10 +218,10 @@ func ExampleEndpointsClient_ListCredentials() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewEndpointsClient().ListCredentials(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine", "default", &armhybridconnectivity.EndpointsClientListCredentialsOptions{
-		listCredentialsRequest: &armhybridconnectivity.ListCredentialsRequest{
+		ListCredentialsRequest: &armhybridconnectivity.ListCredentialsRequest{
 			ServiceName: to.Ptr(armhybridconnectivity.ServiceNameSSH),
 		},
-		expiresin: to.Ptr[int64](10800)})
+		Expiresin: to.Ptr[int64](10800)})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -254,7 +254,7 @@ func ExampleEndpointsClient_ListIngressGatewayCredentials() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewEndpointsClient().ListIngressGatewayCredentials(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/arcGroup/providers/Microsoft.ArcPlaceHolder/ProvisionedClusters/cluster0", "default", &armhybridconnectivity.EndpointsClientListIngressGatewayCredentialsOptions{
-		expiresin: to.Ptr[int64](10800)})
+		Expiresin: to.Ptr[int64](10800)})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -319,7 +319,7 @@ func ExampleEndpointsClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewEndpointsClient().Update(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine", "default", nil)
+	res, err := clientFactory.NewEndpointsClient().Update(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine", "default",armhybridconnectivity.EndpointResource{}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

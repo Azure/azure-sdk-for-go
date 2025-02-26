@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflexibleservers/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8691fbfca8fcdc5a241a0b501c32fd4a76bb0cd/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/CutoverMigration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e26b89bcbec9eed5026c01416e481408b2a1ca1a/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2024-10-01-preview/examples/CutoverMigration.json
 func ExampleServersMigrationClient_BeginCutoverMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,10 +55,14 @@ func ExampleServersMigrationClient_BeginCutoverMigration() {
 	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-17T06:11:38.415Z"); return t}()),
 	// 			GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
 	// 		},
+	// 		FullVersion: to.Ptr("5.7.44"),
 	// 		FullyQualifiedDomainName: to.Ptr("mysqltestserver.database.mysql.azure.com"),
 	// 		HighAvailability: &armmysqlflexibleservers.HighAvailability{
 	// 			Mode: to.Ptr(armmysqlflexibleservers.HighAvailabilityModeDisabled),
 	// 			State: to.Ptr(armmysqlflexibleservers.HighAvailabilityStateNotEnabled),
+	// 		},
+	// 		MaintenancePolicy: &armmysqlflexibleservers.MaintenancePolicy{
+	// 			PatchStrategy: to.Ptr(armmysqlflexibleservers.PatchStrategyRegular),
 	// 		},
 	// 		MaintenanceWindow: &armmysqlflexibleservers.MaintenanceWindow{
 	// 			CustomWindow: to.Ptr("Enabled"),

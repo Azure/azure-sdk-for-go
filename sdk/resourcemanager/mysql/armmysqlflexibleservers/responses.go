@@ -280,6 +280,12 @@ type ServersClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
+// ServersClientDetachVNetResponse contains the response from method ServersClient.BeginDetachVNet.
+type ServersClientDetachVNetResponse struct {
+	// Represents a server.
+	Server
+}
+
 // ServersClientFailoverResponse contains the response from method ServersClient.BeginFailover.
 type ServersClientFailoverResponse struct {
 	// placeholder for future response values

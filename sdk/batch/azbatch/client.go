@@ -25,6 +25,187 @@ type Client struct {
 	endpoint string
 }
 
+// CancelCertificateDeletion - Cancels a failed deletion of a Certificate from the specified Account.
+//
+// If you try to delete a Certificate that is being used by a Pool or Compute
+// Node, the status of the Certificate changes to deleteFailed. If you decide that
+// you want to continue using the Certificate, you can use this operation to set
+// the status of the Certificate back to active. If you intend to delete the
+// Certificate, you do not need to run this operation after the deletion failed.
+// You must make sure that the Certificate is not being used by any resources, and
+// then you can try again to delete the Certificate.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-07-01.20.0
+//   - thumbprintAlgorithm - The algorithm used to derive the thumbprint parameter. This must be sha1.
+//   - thumbprint - The thumbprint of the Certificate being deleted.
+//   - options - CancelCertificateDeletionOptions contains the optional parameters for the Client.CancelCertificateDeletion method.
+func (client *Client) CancelCertificateDeletion(ctx context.Context, thumbprintAlgorithm string, thumbprint string, options *CancelCertificateDeletionOptions) (CancelCertificateDeletionResponse, error) {
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.CancelCertificateDeletion", client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.cancelCertificateDeletionCreateRequest(ctx, thumbprintAlgorithm, thumbprint, options)
+	if err != nil {
+		return CancelCertificateDeletionResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return CancelCertificateDeletionResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
+		err = runtime.NewResponseError(httpResp)
+		return CancelCertificateDeletionResponse{}, err
+	}
+	resp, err := client.cancelCertificateDeletionHandleResponse(httpResp)
+	return resp, err
+}
+
+// cancelCertificateDeletionCreateRequest creates the CancelCertificateDeletion request.
+func (client *Client) cancelCertificateDeletionCreateRequest(ctx context.Context, thumbprintAlgorithm string, thumbprint string, options *CancelCertificateDeletionOptions) (*policy.Request, error) {
+	host := "{endpoint}"
+	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
+	urlPath := "/certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})/canceldelete"
+	if thumbprintAlgorithm == "" {
+		return nil, errors.New("parameter thumbprintAlgorithm cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{thumbprintAlgorithm}", url.PathEscape(thumbprintAlgorithm))
+	if thumbprint == "" {
+		return nil, errors.New("parameter thumbprint cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{thumbprint}", url.PathEscape(thumbprint))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-07-01.20.0")
+	if options != nil && options.Timeout != nil {
+		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.ClientRequestID != nil {
+		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
+	}
+	if options != nil && options.OCPDate != nil {
+		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	}
+	if options != nil && options.ReturnClientRequestID != nil {
+		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
+	}
+	return req, nil
+}
+
+// cancelCertificateDeletionHandleResponse handles the CancelCertificateDeletion response.
+func (client *Client) cancelCertificateDeletionHandleResponse(resp *http.Response) (CancelCertificateDeletionResponse, error) {
+	result := CancelCertificateDeletionResponse{}
+	if val := resp.Header.Get("client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
+	if val := resp.Header.Get("DataServiceId"); val != "" {
+		result.DataServiceID = &val
+	}
+	if val := resp.Header.Get("ETag"); val != "" {
+		result.ETag = (*azcore.ETag)(&val)
+	}
+	if val := resp.Header.Get("Last-Modified"); val != "" {
+		lastModified, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return CancelCertificateDeletionResponse{}, err
+		}
+		result.LastModified = &lastModified
+	}
+	if val := resp.Header.Get("request-id"); val != "" {
+		result.RequestID = &val
+	}
+	return result, nil
+}
+
+// CreateCertificate - Creates a Certificate to the specified Account.
+//
+// Creates a Certificate to the specified Account.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-07-01.20.0
+//   - certificate - The Certificate to be created.
+//   - options - CreateCertificateOptions contains the optional parameters for the Client.CreateCertificate method.
+func (client *Client) CreateCertificate(ctx context.Context, certificate Certificate, options *CreateCertificateOptions) (CreateCertificateResponse, error) {
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.CreateCertificate", client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createCertificateCreateRequest(ctx, certificate, options)
+	if err != nil {
+		return CreateCertificateResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return CreateCertificateResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
+		err = runtime.NewResponseError(httpResp)
+		return CreateCertificateResponse{}, err
+	}
+	resp, err := client.createCertificateHandleResponse(httpResp)
+	return resp, err
+}
+
+// createCertificateCreateRequest creates the CreateCertificate request.
+func (client *Client) createCertificateCreateRequest(ctx context.Context, certificate Certificate, options *CreateCertificateOptions) (*policy.Request, error) {
+	host := "{endpoint}"
+	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
+	urlPath := "/certificates"
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-07-01.20.0")
+	if options != nil && options.Timeout != nil {
+		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.ClientRequestID != nil {
+		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
+	}
+	if options != nil && options.OCPDate != nil {
+		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	}
+	if options != nil && options.ReturnClientRequestID != nil {
+		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
+	}
+	req.Raw().Header["Content-Type"] = []string{"application/json; odata=minimalmetadata"}
+	if err := runtime.MarshalAsJSON(req, certificate); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// createCertificateHandleResponse handles the CreateCertificate response.
+func (client *Client) createCertificateHandleResponse(resp *http.Response) (CreateCertificateResponse, error) {
+	result := CreateCertificateResponse{}
+	if val := resp.Header.Get("client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
+	if val := resp.Header.Get("DataServiceId"); val != "" {
+		result.DataServiceID = &val
+	}
+	if val := resp.Header.Get("ETag"); val != "" {
+		result.ETag = (*azcore.ETag)(&val)
+	}
+	if val := resp.Header.Get("Last-Modified"); val != "" {
+		lastModified, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return CreateCertificateResponse{}, err
+		}
+		result.LastModified = &lastModified
+	}
+	if val := resp.Header.Get("request-id"); val != "" {
+		result.RequestID = &val
+	}
+	return result, nil
+}
+
 // CreateJob - Creates a Job to the specified Account.
 //
 // The Batch service supports two ways to control the work done as part of a Job.
@@ -103,7 +284,7 @@ func (client *Client) createJobHandleResponse(resp *http.Response) (CreateJobRes
 		result.DataServiceID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -188,7 +369,7 @@ func (client *Client) createJobScheduleHandleResponse(resp *http.Response) (Crea
 		result.DataServiceID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -284,7 +465,7 @@ func (client *Client) createNodeUserHandleResponse(resp *http.Response) (CreateN
 		result.DataServiceID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -371,7 +552,7 @@ func (client *Client) createPoolHandleResponse(resp *http.Response) (CreatePoolR
 		result.DataServiceID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -463,7 +644,7 @@ func (client *Client) createTaskHandleResponse(resp *http.Response) (CreateTaskR
 		result.DataServiceID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -563,7 +744,7 @@ func (client *Client) createTaskCollectionHandleResponse(resp *http.Response) (C
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -663,12 +844,107 @@ func (client *Client) deallocateNodeHandleResponse(resp *http.Response) (Dealloc
 		result.DataServiceID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return DeallocateNodeResponse{}, err
+		}
+		result.LastModified = &lastModified
+	}
+	if val := resp.Header.Get("request-id"); val != "" {
+		result.RequestID = &val
+	}
+	return result, nil
+}
+
+// DeleteCertificate - Deletes a Certificate from the specified Account.
+//
+// You cannot delete a Certificate if a resource (Pool or Compute Node) is using
+// it. Before you can delete a Certificate, you must therefore make sure that the
+// Certificate is not associated with any existing Pools, the Certificate is not
+// installed on any Nodes (even if you remove a Certificate from a Pool, it is not
+// removed from existing Compute Nodes in that Pool until they restart), and no
+// running Tasks depend on the Certificate. If you try to delete a Certificate
+// that is in use, the deletion fails. The Certificate status changes to
+// deleteFailed. You can use Cancel Delete Certificate to set the status back to
+// active if you decide that you want to continue using the Certificate.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-07-01.20.0
+//   - thumbprintAlgorithm - The algorithm used to derive the thumbprint parameter. This must be sha1.
+//   - thumbprint - The thumbprint of the Certificate to be deleted.
+//   - options - DeleteCertificateOptions contains the optional parameters for the Client.DeleteCertificate method.
+func (client *Client) DeleteCertificate(ctx context.Context, thumbprintAlgorithm string, thumbprint string, options *DeleteCertificateOptions) (DeleteCertificateResponse, error) {
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.DeleteCertificate", client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteCertificateCreateRequest(ctx, thumbprintAlgorithm, thumbprint, options)
+	if err != nil {
+		return DeleteCertificateResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return DeleteCertificateResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return DeleteCertificateResponse{}, err
+	}
+	resp, err := client.deleteCertificateHandleResponse(httpResp)
+	return resp, err
+}
+
+// deleteCertificateCreateRequest creates the DeleteCertificate request.
+func (client *Client) deleteCertificateCreateRequest(ctx context.Context, thumbprintAlgorithm string, thumbprint string, options *DeleteCertificateOptions) (*policy.Request, error) {
+	host := "{endpoint}"
+	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
+	urlPath := "/certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})"
+	if thumbprintAlgorithm == "" {
+		return nil, errors.New("parameter thumbprintAlgorithm cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{thumbprintAlgorithm}", url.PathEscape(thumbprintAlgorithm))
+	if thumbprint == "" {
+		return nil, errors.New("parameter thumbprint cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{thumbprint}", url.PathEscape(thumbprint))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-07-01.20.0")
+	if options != nil && options.Timeout != nil {
+		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.ClientRequestID != nil {
+		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
+	}
+	if options != nil && options.OCPDate != nil {
+		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	}
+	if options != nil && options.ReturnClientRequestID != nil {
+		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
+	}
+	return req, nil
+}
+
+// deleteCertificateHandleResponse handles the DeleteCertificate response.
+func (client *Client) deleteCertificateHandleResponse(resp *http.Response) (DeleteCertificateResponse, error) {
+	result := DeleteCertificateResponse{}
+	if val := resp.Header.Get("client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
+	if val := resp.Header.Get("ETag"); val != "" {
+		result.ETag = (*azcore.ETag)(&val)
+	}
+	if val := resp.Header.Get("Last-Modified"); val != "" {
+		lastModified, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return DeleteCertificateResponse{}, err
 		}
 		result.LastModified = &lastModified
 	}
@@ -1398,7 +1674,7 @@ func (client *Client) disableJobHandleResponse(resp *http.Response) (DisableJobR
 		result.DataServiceID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -1495,7 +1771,7 @@ func (client *Client) disableJobScheduleHandleResponse(resp *http.Response) (Dis
 		result.DataServiceID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -1593,7 +1869,7 @@ func (client *Client) disableNodeSchedulingHandleResponse(resp *http.Response) (
 		result.DataServiceID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -1678,7 +1954,7 @@ func (client *Client) disablePoolAutoScaleHandleResponse(resp *http.Response) (D
 		result.DataServiceID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -1780,7 +2056,7 @@ func (client *Client) enableJobHandleResponse(resp *http.Response) (EnableJobRes
 		result.DataServiceID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -1877,7 +2153,7 @@ func (client *Client) enableJobScheduleHandleResponse(resp *http.Response) (Enab
 		result.DataServiceID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -1968,7 +2244,7 @@ func (client *Client) enableNodeSchedulingHandleResponse(resp *http.Response) (E
 		result.DataServiceID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -2075,7 +2351,7 @@ func (client *Client) enablePoolAutoScaleHandleResponse(resp *http.Response) (En
 		result.DataServiceID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -2167,7 +2443,7 @@ func (client *Client) evaluatePoolAutoScaleHandleResponse(resp *http.Response) (
 		result.DataServiceID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -2256,7 +2532,7 @@ func (client *Client) getApplicationHandleResponse(resp *http.Response) (GetAppl
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -2270,6 +2546,97 @@ func (client *Client) getApplicationHandleResponse(resp *http.Response) (GetAppl
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Application); err != nil {
 		return GetApplicationResponse{}, err
+	}
+	return result, nil
+}
+
+// GetCertificate - Gets information about the specified Certificate.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-07-01.20.0
+//   - thumbprintAlgorithm - The algorithm used to derive the thumbprint parameter. This must be sha1.
+//   - thumbprint - The thumbprint of the Certificate to get.
+//   - options - GetCertificateOptions contains the optional parameters for the Client.GetCertificate method.
+func (client *Client) GetCertificate(ctx context.Context, thumbprintAlgorithm string, thumbprint string, options *GetCertificateOptions) (GetCertificateResponse, error) {
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.GetCertificate", client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getCertificateCreateRequest(ctx, thumbprintAlgorithm, thumbprint, options)
+	if err != nil {
+		return GetCertificateResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return GetCertificateResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return GetCertificateResponse{}, err
+	}
+	resp, err := client.getCertificateHandleResponse(httpResp)
+	return resp, err
+}
+
+// getCertificateCreateRequest creates the GetCertificate request.
+func (client *Client) getCertificateCreateRequest(ctx context.Context, thumbprintAlgorithm string, thumbprint string, options *GetCertificateOptions) (*policy.Request, error) {
+	host := "{endpoint}"
+	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
+	urlPath := "/certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})"
+	if thumbprintAlgorithm == "" {
+		return nil, errors.New("parameter thumbprintAlgorithm cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{thumbprintAlgorithm}", url.PathEscape(thumbprintAlgorithm))
+	if thumbprint == "" {
+		return nil, errors.New("parameter thumbprint cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{thumbprint}", url.PathEscape(thumbprint))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.SelectParam != nil {
+		reqQP.Set("$select", strings.Join(options.SelectParam, ","))
+	}
+	reqQP.Set("api-version", "2024-07-01.20.0")
+	if options != nil && options.Timeout != nil {
+		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.ClientRequestID != nil {
+		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
+	}
+	if options != nil && options.OCPDate != nil {
+		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	}
+	if options != nil && options.ReturnClientRequestID != nil {
+		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
+	}
+	return req, nil
+}
+
+// getCertificateHandleResponse handles the GetCertificate response.
+func (client *Client) getCertificateHandleResponse(resp *http.Response) (GetCertificateResponse, error) {
+	result := GetCertificateResponse{}
+	if val := resp.Header.Get("client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
+	if val := resp.Header.Get("ETag"); val != "" {
+		result.ETag = (*azcore.ETag)(&val)
+	}
+	if val := resp.Header.Get("Last-Modified"); val != "" {
+		lastModified, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return GetCertificateResponse{}, err
+		}
+		result.LastModified = &lastModified
+	}
+	if val := resp.Header.Get("request-id"); val != "" {
+		result.RequestID = &val
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Certificate); err != nil {
+		return GetCertificateResponse{}, err
 	}
 	return result, nil
 }
@@ -2359,7 +2726,7 @@ func (client *Client) getJobHandleResponse(resp *http.Response) (GetJobResponse,
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -2460,7 +2827,7 @@ func (client *Client) getJobScheduleHandleResponse(resp *http.Response) (GetJobS
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -2548,7 +2915,7 @@ func (client *Client) getJobTaskCountsHandleResponse(resp *http.Response) (GetJo
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -2641,7 +3008,7 @@ func (client *Client) getNodeHandleResponse(resp *http.Response) (GetNodeRespons
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -2739,7 +3106,7 @@ func (client *Client) getNodeExtensionHandleResponse(resp *http.Response) (GetNo
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -2852,7 +3219,7 @@ func (client *Client) getNodeFileHandleResponse(resp *http.Response) (GetNodeFil
 		result.ContentType = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -2975,7 +3342,7 @@ func (client *Client) getNodeFilePropertiesHandleResponse(resp *http.Response) (
 		result.ContentLength = &contentLength
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -3084,7 +3451,7 @@ func (client *Client) getNodeRemoteLoginSettingsHandleResponse(resp *http.Respon
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -3185,7 +3552,7 @@ func (client *Client) getPoolHandleResponse(resp *http.Response) (GetPoolRespons
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -3298,7 +3665,7 @@ func (client *Client) getTaskHandleResponse(resp *http.Response) (GetTaskRespons
 		result.DataServiceID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -3411,7 +3778,7 @@ func (client *Client) getTaskFileHandleResponse(resp *http.Response) (GetTaskFil
 		result.ContentType = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -3534,7 +3901,7 @@ func (client *Client) getTaskFilePropertiesHandleResponse(resp *http.Response) (
 		result.ContentLength = &contentLength
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -3648,7 +4015,7 @@ func (client *Client) jobScheduleExistsHandleResponse(resp *http.Response) (JobS
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -3733,7 +4100,7 @@ func (client *Client) listApplicationsHandleResponse(resp *http.Response) (ListA
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -3747,6 +4114,96 @@ func (client *Client) listApplicationsHandleResponse(resp *http.Response) (ListA
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationListResult); err != nil {
 		return ListApplicationsResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListCertificatesPager - Lists all of the Certificates that have been added to the specified Account.
+//
+// Lists all of the Certificates that have been added to the specified Account.
+//
+// Generated from API version 2024-07-01.20.0
+//   - options - ListCertificatesOptions contains the optional parameters for the Client.NewListCertificatesPager method.
+func (client *Client) NewListCertificatesPager(options *ListCertificatesOptions) *runtime.Pager[ListCertificatesResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ListCertificatesResponse]{
+		More: func(page ListCertificatesResponse) bool {
+			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ListCertificatesResponse) (ListCertificatesResponse, error) {
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.ODataNextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCertificatesCreateRequest(ctx, options)
+			}, nil)
+			if err != nil {
+				return ListCertificatesResponse{}, err
+			}
+			return client.listCertificatesHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCertificatesCreateRequest creates the ListCertificates request.
+func (client *Client) listCertificatesCreateRequest(ctx context.Context, options *ListCertificatesOptions) (*policy.Request, error) {
+	host := "{endpoint}"
+	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
+	urlPath := "/certificates"
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.Filter != nil {
+		reqQP.Set("$filter", *options.Filter)
+	}
+	if options != nil && options.SelectParam != nil {
+		reqQP.Set("$select", strings.Join(options.SelectParam, ","))
+	}
+	reqQP.Set("api-version", "2024-07-01.20.0")
+	if options != nil && options.MaxResults != nil {
+		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
+	}
+	if options != nil && options.Timeout != nil {
+		reqQP.Set("timeOut", strconv.FormatInt(int64(*options.Timeout), 10))
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.ClientRequestID != nil {
+		req.Raw().Header["client-request-id"] = []string{*options.ClientRequestID}
+	}
+	if options != nil && options.OCPDate != nil {
+		req.Raw().Header["ocp-date"] = []string{options.OCPDate.Format(time.RFC1123)}
+	}
+	if options != nil && options.ReturnClientRequestID != nil {
+		req.Raw().Header["return-client-request-id"] = []string{strconv.FormatBool(*options.ReturnClientRequestID)}
+	}
+	return req, nil
+}
+
+// listCertificatesHandleResponse handles the ListCertificates response.
+func (client *Client) listCertificatesHandleResponse(resp *http.Response) (ListCertificatesResponse, error) {
+	result := ListCertificatesResponse{}
+	if val := resp.Header.Get("client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
+	if val := resp.Header.Get("ETag"); val != "" {
+		result.ETag = (*azcore.ETag)(&val)
+	}
+	if val := resp.Header.Get("Last-Modified"); val != "" {
+		lastModified, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return ListCertificatesResponse{}, err
+		}
+		result.LastModified = &lastModified
+	}
+	if val := resp.Header.Get("request-id"); val != "" {
+		result.RequestID = &val
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateListResult); err != nil {
+		return ListCertificatesResponse{}, err
 	}
 	return result, nil
 }
@@ -3836,7 +4293,7 @@ func (client *Client) listJobPreparationAndReleaseTaskStatusHandleResponse(resp 
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -3929,7 +4386,7 @@ func (client *Client) listJobSchedulesHandleResponse(resp *http.Response) (ListJ
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -4022,7 +4479,7 @@ func (client *Client) listJobsHandleResponse(resp *http.Response) (ListJobsRespo
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -4120,7 +4577,7 @@ func (client *Client) listJobsFromScheduleHandleResponse(resp *http.Response) (L
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -4217,7 +4674,7 @@ func (client *Client) listNodeExtensionsHandleResponse(resp *http.Response) (Lis
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -4317,7 +4774,7 @@ func (client *Client) listNodeFilesHandleResponse(resp *http.Response) (ListNode
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -4412,7 +4869,7 @@ func (client *Client) listNodesHandleResponse(resp *http.Response) (ListNodesRes
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -4499,7 +4956,7 @@ func (client *Client) listPoolNodeCountsHandleResponse(resp *http.Response) (Lis
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -4592,7 +5049,7 @@ func (client *Client) listPoolsHandleResponse(resp *http.Response) (ListPoolsRes
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -4687,7 +5144,7 @@ func (client *Client) listSubTasksHandleResponse(resp *http.Response) (ListSubTa
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -4774,7 +5231,7 @@ func (client *Client) listSupportedImagesHandleResponse(resp *http.Response) (Li
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -4874,7 +5331,7 @@ func (client *Client) listTaskFilesHandleResponse(resp *http.Response) (ListTask
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -4974,7 +5431,7 @@ func (client *Client) listTasksHandleResponse(resp *http.Response) (ListTasksRes
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -5069,7 +5526,7 @@ func (client *Client) poolExistsHandleResponse(resp *http.Response) (PoolExistsR
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -5178,7 +5635,7 @@ func (client *Client) reactivateTaskHandleResponse(resp *http.Response) (Reactiv
 		result.DataServiceID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -5275,7 +5732,7 @@ func (client *Client) rebootNodeHandleResponse(resp *http.Response) (RebootNodeR
 		result.DataServiceID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -5374,7 +5831,7 @@ func (client *Client) reimageNodeHandleResponse(resp *http.Response) (ReimageNod
 		result.DataServiceID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -5478,7 +5935,7 @@ func (client *Client) removeNodesHandleResponse(resp *http.Response) (RemoveNode
 		result.DataServiceID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -5582,7 +6039,7 @@ func (client *Client) replaceJobHandleResponse(resp *http.Response) (ReplaceJobR
 		result.DataServiceID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -5688,7 +6145,7 @@ func (client *Client) replaceJobScheduleHandleResponse(resp *http.Response) (Rep
 		result.DataServiceID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -5791,7 +6248,7 @@ func (client *Client) replaceNodeUserHandleResponse(resp *http.Response) (Replac
 		result.DataServiceID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -5883,7 +6340,7 @@ func (client *Client) replacePoolPropertiesHandleResponse(resp *http.Response) (
 		result.DataServiceID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -5988,7 +6445,7 @@ func (client *Client) replaceTaskHandleResponse(resp *http.Response) (ReplaceTas
 		result.DataServiceID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -6096,7 +6553,7 @@ func (client *Client) resizePoolHandleResponse(resp *http.Response) (ResizePoolR
 		result.DataServiceID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -6186,7 +6643,7 @@ func (client *Client) startNodeHandleResponse(resp *http.Response) (StartNodeRes
 		result.DataServiceID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -6289,7 +6746,7 @@ func (client *Client) stopPoolResizeHandleResponse(resp *http.Response) (StopPoo
 		result.DataServiceID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -6401,7 +6858,7 @@ func (client *Client) terminateJobHandleResponse(resp *http.Response) (Terminate
 		result.DataServiceID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -6501,7 +6958,7 @@ func (client *Client) terminateJobScheduleHandleResponse(resp *http.Response) (T
 		result.DataServiceID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -6605,7 +7062,7 @@ func (client *Client) terminateTaskHandleResponse(resp *http.Response) (Terminat
 		result.DataServiceID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -6709,7 +7166,7 @@ func (client *Client) updateJobHandleResponse(resp *http.Response) (UpdateJobRes
 		result.DataServiceID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -6815,7 +7272,7 @@ func (client *Client) updateJobScheduleHandleResponse(resp *http.Response) (Upda
 		result.DataServiceID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -6919,7 +7376,7 @@ func (client *Client) updatePoolHandleResponse(resp *http.Response) (UpdatePoolR
 		result.DataServiceID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -7016,7 +7473,7 @@ func (client *Client) uploadNodeLogsHandleResponse(resp *http.Response) (UploadN
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -7034,7 +7491,7 @@ func (client *Client) uploadNodeLogsHandleResponse(resp *http.Response) (UploadN
 	return result, nil
 }
 
-// NewlistPoolUsageMetricsPager - Lists the usage metrics, aggregated by Pool across individual time intervals,
+// newListPoolUsageMetricsPager - Lists the usage metrics, aggregated by Pool across individual time intervals,
 // for the specified Account.
 //
 // If you do not specify a $filter clause including a poolId, the response
@@ -7046,7 +7503,7 @@ func (client *Client) uploadNodeLogsHandleResponse(resp *http.Response) (UploadN
 //
 // Generated from API version 2024-07-01.20.0
 //   - options - listPoolUsageMetricsOptions contains the optional parameters for the Client.NewlistPoolUsageMetricsPager method.
-func (client *Client) NewlistPoolUsageMetricsPager(options *listPoolUsageMetricsOptions) *runtime.Pager[listPoolUsageMetricsResponse] {
+func (client *Client) newListPoolUsageMetricsPager(options *listPoolUsageMetricsOptions) *runtime.Pager[listPoolUsageMetricsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[listPoolUsageMetricsResponse]{
 		More: func(page listPoolUsageMetricsResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
@@ -7115,7 +7572,7 @@ func (client *Client) listPoolUsageMetricsHandleResponse(resp *http.Response) (l
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)

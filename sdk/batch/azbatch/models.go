@@ -123,9 +123,10 @@ type AutoUserSpecification struct {
 	// The elevation level of the auto user. The default value is nonAdmin.
 	ElevationLevel *ElevationLevel
 
-	// The scope for the auto user. The default value is pool. If the pool is running Windows, a value of Task should be specified
-	// if stricter isolation between tasks is required, such as if the task mutates the registry in a way which could impact other
-	// tasks.
+	// The scope for the auto user. The default value is pool. If the pool is running Windows a value of Task should be specified
+	// if stricter isolation between tasks is required. For example, if the task mutates the registry in a way which could impact
+	// other tasks, or if certificates have been specified on the pool which should not be accessible by normal tasks but should
+	// be accessible by StartTasks.
 	Scope *AutoUserScope
 }
 
@@ -213,6 +214,88 @@ type CIFSMountConfiguration struct {
 	// Additional command line options to pass to the mount command. These are 'net use' options in Windows and 'mount' options
 	// in Linux.
 	MountOptions *string
+}
+
+// Certificate - A Certificate that can be installed on Compute Nodes and can be used to
+// authenticate operations on the machine.
+type Certificate struct {
+	// REQUIRED; The base64-encoded contents of the Certificate. The maximum size is 10KB.
+	Data *string
+
+	// REQUIRED; The X.509 thumbprint of the Certificate. This is a sequence of up to 40 hex digits (it may include spaces but
+	// these are removed).
+	Thumbprint *string
+
+	// REQUIRED; The algorithm used to derive the thumbprint. This must be sha1.
+	ThumbprintAlgorithm *string
+
+	// The format of the Certificate data.
+	CertificateFormat *CertificateFormat
+
+	// The password to access the Certificate's private key. This must be omitted if the Certificate format is cer.
+	Password *string
+
+	// READ-ONLY; The error that occurred on the last attempt to delete this Certificate. This property is set only if the Certificate
+	// is in the DeleteFailed state.
+	DeleteCertificateError *DeleteBatchCertificateError
+
+	// READ-ONLY; The previous state of the Certificate. This property is not set if the Certificate is in its initial active
+	// state.
+	PreviousState *CertificateState
+
+	// READ-ONLY; The time at which the Certificate entered its previous state. This property is not set if the Certificate is
+	// in its initial Active state.
+	PreviousStateTransitionTime *time.Time
+
+	// READ-ONLY; The public part of the Certificate as a base-64 encoded .cer file.
+	PublicData *string
+
+	// READ-ONLY; The state of the Certificate.
+	State *CertificateState
+
+	// READ-ONLY; The time at which the Certificate entered its current state.
+	StateTransitionTime *time.Time
+
+	// READ-ONLY; The URL of the Certificate.
+	URL *string
+}
+
+// CertificateListResult - The result of listing the Certificates in the Account.
+type CertificateListResult struct {
+	// The URL to get the next set of results.
+	ODataNextLink *string
+
+	// The list of Certificates.
+	Value []Certificate
+}
+
+// CertificateReference - A reference to a Certificate to be installed on Compute Nodes in a Pool. Warning: This object is
+// deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide)
+// instead.
+type CertificateReference struct {
+	// REQUIRED; The thumbprint of the Certificate.
+	Thumbprint *string
+
+	// REQUIRED; The algorithm with which the thumbprint is associated. This must be sha1.
+	ThumbprintAlgorithm *string
+
+	// The location of the Certificate store on the Compute Node into which to install the Certificate. The default value is currentuser.
+	// This property is applicable only for Pools configured with Windows Compute Nodes (that is, created with cloudServiceConfiguration,
+	// or with virtualMachineConfiguration using a Windows Image reference). For Linux Compute Nodes, the Certificates are stored
+	// in a directory inside the Task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the
+	// Task to query for this location. For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the
+	// user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+	StoreLocation *CertificateStoreLocation
+
+	// The name of the Certificate store on the Compute Node into which to install the Certificate. This property is applicable
+	// only for Pools configured with Windows Compute Nodes (that is, created with cloudServiceConfiguration, or with virtualMachineConfiguration
+	// using a Windows Image reference). Common store names include: My, Root, CA, Trust, Disallowed, TrustedPeople, TrustedPublisher,
+	// AuthRoot, AddressBook, but any custom store name can also be used. The default value is My.
+	StoreName *string
+
+	// Which user Accounts on the Compute Node should have access to the private data of the Certificate. You can specify more
+	// than one visibility in this collection. The default is all Accounts.
+	Visibility []CertificateVisibility
 }
 
 // ContainerConfiguration - The configuration for container-enabled Pools.
@@ -412,6 +495,15 @@ type CreatePoolContent struct {
 	// about specifying this formula, see 'Automatically scale Compute Nodes in an Azure Batch Pool' (https://learn.microsoft.com/azure/batch/batch-automatic-scaling).
 	AutoScaleFormula *string
 
+	// For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location.
+	// For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an environment
+	// variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
+	// For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs)
+	// and Certificates are placed in that directory.
+	// Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide)
+	// instead.
+	CertificateReferences []CertificateReference
+
 	// The display name for the Pool. The display name need not be unique and can contain any Unicode characters up to a maximum
 	// length of 1024.
 	DisplayName *string
@@ -587,6 +679,20 @@ type DataDisk struct {
 type DeallocateNodeContent struct {
 	// When to deallocate the Compute Node and what to do with currently running Tasks. The default value is requeue.
 	NodeDeallocateOption *NodeDeallocateOption
+}
+
+// DeleteBatchCertificateError - An error encountered by the Batch service when deleting a Certificate.
+type DeleteBatchCertificateError struct {
+	// An identifier for the Certificate deletion error. Codes are invariant and are intended to be consumed programmatically.
+	Code *string
+
+	// A message describing the Certificate deletion error, intended to be suitable for display in a user interface.
+	Message *string
+
+	// A list of additional error details related to the Certificate deletion error. This list includes details such as the active
+	// Pools and Compute Nodes referencing this Certificate. However, if a large number of resources reference the Certificate,
+	// the list contains only about the first hundred.
+	Values []NameValuePair
 }
 
 // DiffDiskSettings - Specifies the ephemeral Disk Settings for the operating system disk used by the
@@ -1927,6 +2033,15 @@ type Node struct {
 	// and doesn't change once set. It is not updated when the Compute Node is service healed or preempted.
 	AllocationTime *time.Time
 
+	// For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location.
+	// For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an environment
+	// variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
+	// For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs)
+	// and Certificates are placed in that directory.
+	// Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide)
+	// instead.
+	CertificateReferences []CertificateReference
+
 	// The endpoint configuration for the Compute Node.
 	EndpointConfiguration *NodeEndpointConfiguration
 
@@ -2295,6 +2410,15 @@ type Pool struct {
 	// automatically scales, i.e. enableAutoScale is true.
 	AutoScaleRun *AutoScaleRun
 
+	// READ-ONLY; For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location.
+	// For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an environment
+	// variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
+	// For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs)
+	// and Certificates are placed in that directory.
+	// Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide)
+	// instead.
+	CertificateReferences []CertificateReference
+
 	// READ-ONLY; The creation time of the Pool.
 	CreationTime *time.Time
 
@@ -2526,6 +2650,15 @@ type PoolSpecification struct {
 	// is created. If the formula is not valid, the Batch service rejects the request with detailed error information.
 	AutoScaleFormula *string
 
+	// For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location. For Linux
+	// Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an environment variable
+	// AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location. For Certificates with visibility of 'remoteUser',
+	// a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed
+	// in that directory.
+	// Warning: This property is deprecated and will be removed after February, 2024.
+	// Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
+	CertificateReferences []CertificateReference
+
 	// The display name for the Pool. The display name need not be unique and can contain any Unicode characters up to a maximum
 	// length of 1024.
 	DisplayName *string
@@ -2685,6 +2818,17 @@ type ReplacePoolContent struct {
 	// existing Application Packages references are removed from the Pool. A maximum of 10 references may be specified on a given
 	// Pool.
 	ApplicationPackageReferences []*ApplicationPackageReference
+
+	// REQUIRED; This list replaces any existing Certificate references configured on the Pool.
+	// If you specify an empty collection, any existing Certificate references are removed from the Pool.
+	// For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location.
+	// For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an environment
+	// variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
+	// For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs)
+	// and Certificates are placed in that directory.
+	// Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide)
+	// instead.
+	CertificateReferences []CertificateReference
 
 	// REQUIRED; A list of name-value pairs associated with the Pool as metadata. This list replaces any existing metadata configured
 	// on the Pool. If omitted, or if you specify an empty collection, any existing metadata is removed from the Pool.
@@ -3541,6 +3685,17 @@ type UpdatePoolContent struct {
 	// this element is present, it replaces any existing Package references. If you specify an empty collection, then all Package
 	// references are removed from the Pool. If omitted, any existing Package references are left unchanged.
 	ApplicationPackageReferences []*ApplicationPackageReference
+
+	// If this element is present, it replaces any existing Certificate references configured on the Pool.
+	// If omitted, any existing Certificate references are left unchanged.
+	// For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location.
+	// For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an environment
+	// variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
+	// For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs)
+	// and Certificates are placed in that directory.
+	// Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide)
+	// instead.
+	CertificateReferences []CertificateReference
 
 	// The display name for the Pool. The display name need not be unique and can contain any Unicode characters up to a maximum
 	// length of 1024. This field can be updated only when the pool is empty.

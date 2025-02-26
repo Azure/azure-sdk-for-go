@@ -83,6 +83,92 @@ func PossibleCachingTypeValues() []CachingType {
 	}
 }
 
+// CertificateFormat - BatchCertificateFormat enums
+type CertificateFormat string
+
+const (
+	// CertificateFormatCER - The Certificate is a base64-encoded X.509 Certificate.
+	CertificateFormatCER CertificateFormat = "cer"
+	// CertificateFormatPFX - The Certificate is a PFX (PKCS#12) formatted Certificate or Certificate chain.
+	CertificateFormatPFX CertificateFormat = "pfx"
+)
+
+// PossibleCertificateFormatValues returns the possible values for the CertificateFormat const type.
+func PossibleCertificateFormatValues() []CertificateFormat {
+	return []CertificateFormat{
+		CertificateFormatCER,
+		CertificateFormatPFX,
+	}
+}
+
+// CertificateState - BatchCertificateState enums
+type CertificateState string
+
+const (
+	// CertificateStateActive - The Certificate is available for use in Pools.
+	CertificateStateActive CertificateState = "active"
+	// CertificateStateDeleteFailed - The user requested that the Certificate be deleted, but there are Pools that still have
+	// references to the Certificate, or it is still installed on one or more Nodes. (The latter can occur if the Certificate
+	// has been removed from the Pool, but the Compute Node has not yet restarted. Compute Nodes refresh their Certificates only
+	// when they restart.) You may use the cancel Certificate delete operation to cancel the delete, or the delete Certificate
+	// operation to retry the delete.
+	CertificateStateDeleteFailed CertificateState = "deletefailed"
+	// CertificateStateDeleting - The user has requested that the Certificate be deleted, but the delete operation has not yet
+	// completed. You may not reference the Certificate when creating or updating Pools.
+	CertificateStateDeleting CertificateState = "deleting"
+)
+
+// PossibleCertificateStateValues returns the possible values for the CertificateState const type.
+func PossibleCertificateStateValues() []CertificateState {
+	return []CertificateState{
+		CertificateStateActive,
+		CertificateStateDeleteFailed,
+		CertificateStateDeleting,
+	}
+}
+
+// CertificateStoreLocation - BatchCertificateStoreLocation enums
+type CertificateStoreLocation string
+
+const (
+	// CertificateStoreLocationCurrentUser - Certificates should be installed to the CurrentUser Certificate store.
+	CertificateStoreLocationCurrentUser CertificateStoreLocation = "currentuser"
+	// CertificateStoreLocationLocalMachine - Certificates should be installed to the LocalMachine Certificate store.
+	CertificateStoreLocationLocalMachine CertificateStoreLocation = "localmachine"
+)
+
+// PossibleCertificateStoreLocationValues returns the possible values for the CertificateStoreLocation const type.
+func PossibleCertificateStoreLocationValues() []CertificateStoreLocation {
+	return []CertificateStoreLocation{
+		CertificateStoreLocationCurrentUser,
+		CertificateStoreLocationLocalMachine,
+	}
+}
+
+// CertificateVisibility - BatchCertificateVisibility enums
+type CertificateVisibility string
+
+const (
+	// CertificateVisibilityRemoteUser - The Certificate should be visible to the user accounts under which users remotely access
+	// the Compute Node.
+	CertificateVisibilityRemoteUser CertificateVisibility = "remoteuser"
+	// CertificateVisibilityStartTask - The Certificate should be visible to the user account under which the StartTask is run.
+	// Note that if AutoUser Scope is Pool for both the StartTask and a Task, this certificate will be visible to the Task as
+	// well.
+	CertificateVisibilityStartTask CertificateVisibility = "starttask"
+	// CertificateVisibilityTask - The Certificate should be visible to the user accounts under which Job Tasks are run.
+	CertificateVisibilityTask CertificateVisibility = "task"
+)
+
+// PossibleCertificateVisibilityValues returns the possible values for the CertificateVisibility const type.
+func PossibleCertificateVisibilityValues() []CertificateVisibility {
+	return []CertificateVisibility{
+		CertificateVisibilityRemoteUser,
+		CertificateVisibilityStartTask,
+		CertificateVisibilityTask,
+	}
+}
+
 // ContainerHostDataPath - The paths which will be mounted to container task's container.
 type ContainerHostDataPath string
 

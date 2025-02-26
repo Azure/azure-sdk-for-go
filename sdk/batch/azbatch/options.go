@@ -6,6 +6,44 @@ package azbatch
 
 import "time"
 
+// CancelCertificateDeletionOptions contains the optional parameters for the Client.CancelCertificateDeletion method.
+type CancelCertificateDeletionOptions struct {
+	// The caller-generated request identity, in the form of a GUID with no decoration
+	// such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
+	ClientRequestID *string
+
+	// The time the request was issued. Client libraries typically set this to the
+	// current system clock time; set it explicitly if you are calling the REST API
+	// directly.
+	OCPDate *time.Time
+
+	// Whether the server should return the client-request-id in the response.
+	ReturnClientRequestID *bool
+
+	// The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value
+	// is larger than 30, the default will be used instead.".
+	Timeout *int32
+}
+
+// CreateCertificateOptions contains the optional parameters for the Client.CreateCertificate method.
+type CreateCertificateOptions struct {
+	// The caller-generated request identity, in the form of a GUID with no decoration
+	// such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
+	ClientRequestID *string
+
+	// The time the request was issued. Client libraries typically set this to the
+	// current system clock time; set it explicitly if you are calling the REST API
+	// directly.
+	OCPDate *time.Time
+
+	// Whether the server should return the client-request-id in the response.
+	ReturnClientRequestID *bool
+
+	// The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value
+	// is larger than 30, the default will be used instead.".
+	Timeout *int32
+}
+
 // CreateJobOptions contains the optional parameters for the Client.CreateJob method.
 type CreateJobOptions struct {
 	// The caller-generated request identity, in the form of a GUID with no decoration
@@ -133,6 +171,25 @@ type DeallocateNodeOptions struct {
 
 	// The options to use for deallocating the Compute Node.
 	Parameters *DeallocateNodeContent
+
+	// Whether the server should return the client-request-id in the response.
+	ReturnClientRequestID *bool
+
+	// The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value
+	// is larger than 30, the default will be used instead.".
+	Timeout *int32
+}
+
+// DeleteCertificateOptions contains the optional parameters for the Client.DeleteCertificate method.
+type DeleteCertificateOptions struct {
+	// The caller-generated request identity, in the form of a GUID with no decoration
+	// such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
+	ClientRequestID *string
+
+	// The time the request was issued. Client libraries typically set this to the
+	// current system clock time; set it explicitly if you are calling the REST API
+	// directly.
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -668,6 +725,28 @@ type GetApplicationOptions struct {
 	Timeout *int32
 }
 
+// GetCertificateOptions contains the optional parameters for the Client.GetCertificate method.
+type GetCertificateOptions struct {
+	// The caller-generated request identity, in the form of a GUID with no decoration
+	// such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
+	ClientRequestID *string
+
+	// The time the request was issued. Client libraries typically set this to the
+	// current system clock time; set it explicitly if you are calling the REST API
+	// directly.
+	OCPDate *time.Time
+
+	// Whether the server should return the client-request-id in the response.
+	ReturnClientRequestID *bool
+
+	// An OData $select clause.
+	SelectParam []string
+
+	// The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value
+	// is larger than 30, the default will be used instead.".
+	Timeout *int32
+}
+
 // GetJobOptions contains the optional parameters for the Client.GetJob method.
 type GetJobOptions struct {
 	// The caller-generated request identity, in the form of a GUID with no decoration
@@ -1110,6 +1189,36 @@ type ListApplicationsOptions struct {
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
+
+	// The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value
+	// is larger than 30, the default will be used instead.".
+	Timeout *int32
+}
+
+// ListCertificatesOptions contains the optional parameters for the Client.NewListCertificatesPager method.
+type ListCertificatesOptions struct {
+	// The caller-generated request identity, in the form of a GUID with no decoration
+	// such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
+	ClientRequestID *string
+
+	// An OData $filter clause. For more information on constructing this filter, see
+	// https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-certificates.
+	Filter *string
+
+	// The maximum number of items to return in the response. A maximum of 1000
+	// applications can be returned.
+	MaxResults *int32
+
+	// The time the request was issued. Client libraries typically set this to the
+	// current system clock time; set it explicitly if you are calling the REST API
+	// directly.
+	OCPDate *time.Time
+
+	// Whether the server should return the client-request-id in the response.
+	ReturnClientRequestID *bool
+
+	// An OData $select clause.
+	SelectParam []string
 
 	// The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value
 	// is larger than 30, the default will be used instead.".

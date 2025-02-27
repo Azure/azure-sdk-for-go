@@ -19,7 +19,6 @@ import (
 var ctx = context.Background()
 
 func TestApplications(t *testing.T) {
-	t.Parallel()
 	client := record(t)
 	for apps := client.NewListApplicationsPager(nil); apps.More(); {
 		page, err := apps.NextPage(ctx)
@@ -35,8 +34,38 @@ func TestApplications(t *testing.T) {
 	}
 }
 
+func TestCertificates(t *testing.T) {
+	client := record(t)
+	cc, err := client.CreateCertificate(ctx, azbatch.Certificate{
+		CertificateFormat: to.Ptr(azbatch.CertificateFormatCER),
+		// no secret here, only an expired, self-signed cert, private key not included
+		Data:                to.Ptr("MIIDazCCAlOgAwIBAgIUF2VIP4+AnEtb52KTCHbo4+fESfswDQYJKoZIhvcNAQELBQAwRTELMAkGA1UEBhMCQVUxEzARBgNVBAgMClNvbWUtU3RhdGUxITAfBgNVBAoMGEludGVybmV0IFdpZGdpdHMgUHR5IEx0ZDAeFw0xOTEwMzAyMjQ2MjBaFw0yMjA4MTkyMjQ2MjBaMEUxCzAJBgNVBAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEwHwYDVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDL1hG+JYCfIPp3tlZ05J4pYIJ3Ckfs432bE3rYuWlR2w9KqdjWkKxuAxpjJ+T+uoqVaT3BFMfi4ZRYOCI69s4+lP3DwR8uBCp9xyVkF8thXfS3iui0liGDviVBoBJJWvjDFU8a/Hseg+QfoxAb6tx0kEc7V3ozBLWoIDJjfwJ3NdsLZGVtAC34qCWeEIvS97CDA4g3Kc6hYJIrAa7pxHzo/Nd0U3e7z+DlBcJV7dY6TZUyjBVTpzppWe+XQEOfKsjkDNykHEC1C1bClG0u7unS7QOBMd6bOGkeL+Bc+n22slTzs5amsbDLNuobSaUsFt9vgD5jRD6FwhpXwj/Ek0F7AgMBAAGjUzBRMB0GA1UdDgQWBBT6Mf9uXFB67bY2PeW3GCTKfkO7vDAfBgNVHSMEGDAWgBT6Mf9uXFB67bY2PeW3GCTKfkO7vDAPBgNVHRMBAf8EBTADAQH/MA0GCSqGSIb3DQEBCwUAA4IBAQCZ1+kTISX85v9/ag7glavaPFUYsOSOOofl8gSzov7L01YL+srq7tXdvZmWrjQ/dnOYh18rp9rb24vwIYxNioNG/M2cW1jBJwEGsDPOwdPV1VPcRmmUJW9kY130gRHBCd/NqB7dIkcQnpNsxPIIWI+sRQp73U0ijhOByDnCNHLHon6vbfFTwkO1XggmV5BdZ3uQJNJyckILyNzlhmf6zhonMp4lVzkgxWsAm2vgdawd6dmBa+7Avb2QK9s+IdUSutFhDgW2L12Obgh12Y4sf1iKQXA0RbZ2k+XQIz8EKZa7vJQY0ciYXSgB/BV3a96xX3cxLIPL8Vam8Ytkopi3gsGA"),
+		Thumbprint:          to.Ptr("8CA6895C58FD5C9AEED13121F784629BE0261977"),
+		ThumbprintAlgorithm: to.Ptr("sha1"),
+	}, nil)
+	require.NoError(t, err)
+	require.NotNil(t, cc)
+
+	n := 0
+	for certs := client.NewListCertificatesPager(nil); certs.More(); {
+		page, err := certs.NextPage(ctx)
+		require.NoError(t, err)
+		require.NotNil(t, page)
+		for _, c := range page.Value {
+			require.NotNil(t, c)
+			gc, err := client.GetCertificate(ctx, *c.ThumbprintAlgorithm, *c.Thumbprint, nil)
+			require.NoError(t, err)
+			require.NotNil(t, gc)
+			dc, err := client.DeleteCertificate(ctx, *c.ThumbprintAlgorithm, *c.Thumbprint, nil)
+			require.NoError(t, err)
+			require.NotNil(t, dc)
+			n++
+		}
+	}
+	require.Greater(t, n, 0, "no certificates found")
+}
+
 func TestDeallocateNode(t *testing.T) {
-	t.Parallel()
 	client, poolID := createDefaultPool(t)
 	node := firstReadyNode(t, client, poolID)
 	dn, err := client.DeallocateNode(ctx, poolID, *node.ID, nil)
@@ -62,9 +91,88 @@ func TestDeallocateNode(t *testing.T) {
 }
 
 func TestJob(t *testing.T) {
-	t.Parallel()
-
 	client, poolID := createDefaultPool(t)
+
+	t.Run("Schedule", func(t *testing.T) {
+		client := record(t)
+		id := randomString(t)
+		schedule := azbatch.CreateJobScheduleContent{
+			DisplayName: to.Ptr(id),
+			ID:          to.Ptr(id),
+			JobSpecification: &azbatch.JobSpecification{
+				PoolInfo: &azbatch.PoolInfo{PoolID: to.Ptr(poolID)},
+			},
+			Metadata: []azbatch.MetadataItem{
+				{
+					Name:  to.Ptr("key"),
+					Value: to.Ptr("value"),
+				},
+			},
+			Schedule: &azbatch.JobScheduleConfiguration{
+				RecurrenceInterval: to.Ptr("PT1H"),
+			},
+		}
+		cj, err := client.CreateJobSchedule(ctx, schedule, nil)
+		require.NoError(t, err)
+		require.NotNil(t, cj)
+
+		rj, err := client.ReplaceJobSchedule(ctx, id, azbatch.JobSchedule{
+			ID: to.Ptr(id + "2"),
+			JobSpecification: &azbatch.JobSpecification{
+				PoolInfo: &azbatch.PoolInfo{PoolID: to.Ptr(poolID)},
+			},
+			Schedule: &azbatch.JobScheduleConfiguration{
+				RecurrenceInterval: to.Ptr("PT2H"),
+			},
+		}, nil)
+		require.NoError(t, err)
+		require.NotNil(t, rj)
+
+		gj, err := client.GetJobSchedule(ctx, *schedule.ID, nil)
+		require.NoError(t, err)
+		require.NotNil(t, gj)
+
+		uj, err := client.UpdateJobSchedule(ctx, *schedule.ID, azbatch.UpdateJobScheduleContent{
+			Metadata: []azbatch.MetadataItem{
+				{
+					Name:  to.Ptr("key"),
+					Value: to.Ptr("value"),
+				},
+			},
+		}, nil)
+		require.NoError(t, err)
+		require.NotNil(t, uj)
+
+		ex, err := client.JobScheduleExists(ctx, *schedule.ID, nil)
+		require.NoError(t, err)
+		require.NotNil(t, ex)
+
+		for scheds := client.NewListJobSchedulesPager(nil); scheds.More(); {
+			_, err := scheds.NextPage(ctx)
+			require.NoError(t, err)
+		}
+
+		for jobs := client.NewListJobsFromSchedulePager(*schedule.ID, nil); jobs.More(); {
+			_, err := jobs.NextPage(ctx)
+			require.NoError(t, err)
+		}
+
+		disj, err := client.DisableJobSchedule(ctx, id, nil)
+		require.NoError(t, err)
+		require.NotNil(t, disj)
+
+		ej, err := client.EnableJobSchedule(ctx, id, nil)
+		require.NoError(t, err)
+		require.NotNil(t, ej)
+
+		tj, err := client.TerminateJobSchedule(ctx, id, nil)
+		require.NoError(t, err)
+		require.NotNil(t, tj)
+
+		dj, err := client.DeleteJobSchedule(ctx, id, nil)
+		require.NoError(t, err)
+		require.NotNil(t, dj)
+	})
 
 	jid := randomString(t)
 	cj, err := client.CreateJob(ctx, azbatch.CreateJobContent{
@@ -107,8 +215,8 @@ func TestJob(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, uj)
 
-	for pgr := client.NewListJobsPager(nil); pgr.More(); {
-		_, err := pgr.NextPage(ctx)
+	for jobs := client.NewListJobsPager(nil); jobs.More(); {
+		_, err := jobs.NextPage(ctx)
 		require.NoError(t, err)
 	}
 
@@ -130,92 +238,7 @@ func TestJob(t *testing.T) {
 
 }
 
-func TestJobSchedule(t *testing.T) {
-	t.Parallel()
-
-	client, poolID := createDefaultPool(t)
-
-	id := randomString(t)
-	schedule := azbatch.CreateJobScheduleContent{
-		DisplayName: to.Ptr(id),
-		ID:          to.Ptr(id),
-		JobSpecification: &azbatch.JobSpecification{
-			PoolInfo: &azbatch.PoolInfo{PoolID: to.Ptr(poolID)},
-		},
-		Metadata: []*azbatch.MetadataItem{
-			{
-				Name:  to.Ptr("key"),
-				Value: to.Ptr("value"),
-			},
-		},
-		Schedule: &azbatch.JobScheduleConfiguration{
-			RecurrenceInterval: to.Ptr("PT1H"),
-		},
-	}
-	cj, err := client.CreateJobSchedule(ctx, schedule, nil)
-	require.NoError(t, err)
-	require.NotNil(t, cj)
-
-	rj, err := client.ReplaceJobSchedule(ctx, id, azbatch.JobSchedule{
-		ID: to.Ptr(id + "2"),
-		JobSpecification: &azbatch.JobSpecification{
-			PoolInfo: &azbatch.PoolInfo{PoolID: to.Ptr(poolID)},
-		},
-		Schedule: &azbatch.JobScheduleConfiguration{
-			RecurrenceInterval: to.Ptr("PT2H"),
-		},
-	}, nil)
-	require.NoError(t, err)
-	require.NotNil(t, rj)
-
-	gj, err := client.GetJobSchedule(ctx, *schedule.ID, nil)
-	require.NoError(t, err)
-	require.NotNil(t, gj)
-
-	uj, err := client.UpdateJobSchedule(ctx, *schedule.ID, azbatch.UpdateJobScheduleContent{
-		Metadata: []*azbatch.MetadataItem{
-			{
-				Name:  to.Ptr("key"),
-				Value: to.Ptr("value"),
-			},
-		},
-	}, nil)
-	require.NoError(t, err)
-	require.NotNil(t, uj)
-
-	ex, err := client.JobScheduleExists(ctx, *schedule.ID, nil)
-	require.NoError(t, err)
-	require.NotNil(t, ex)
-
-	for scheds := client.NewListJobSchedulesPager(nil); scheds.More(); {
-		_, err := scheds.NextPage(ctx)
-		require.NoError(t, err)
-	}
-
-	for jobs := client.NewListJobsFromSchedulePager(*schedule.ID, nil); jobs.More(); {
-		_, err := jobs.NextPage(ctx)
-		require.NoError(t, err)
-	}
-
-	disj, err := client.DisableJobSchedule(ctx, id, nil)
-	require.NoError(t, err)
-	require.NotNil(t, disj)
-
-	ej, err := client.EnableJobSchedule(ctx, id, nil)
-	require.NoError(t, err)
-	require.NotNil(t, ej)
-
-	tj, err := client.TerminateJobSchedule(ctx, id, nil)
-	require.NoError(t, err)
-	require.NotNil(t, tj)
-
-	dj, err := client.DeleteJobSchedule(ctx, id, nil)
-	require.NoError(t, err)
-	require.NotNil(t, dj)
-}
-
 func TestListSupportedImages(t *testing.T) {
-	t.Parallel()
 	client := record(t)
 	for images := client.NewListSupportedImagesPager(nil); images.More(); {
 		page, err := images.NextPage(ctx)
@@ -225,19 +248,17 @@ func TestListSupportedImages(t *testing.T) {
 }
 
 func TestNode(t *testing.T) {
-	t.Parallel()
-
 	client := record(t)
 	pool := defaultPoolContent(t)
 	pool.NetworkConfiguration = &azbatch.NetworkConfiguration{
 		EndpointConfiguration: &azbatch.PoolEndpointConfiguration{
-			InboundNATPools: []*azbatch.InboundNATPool{
+			InboundNATPools: []azbatch.InboundNATPool{
 				{
 					BackendPort:            to.Ptr(int32(22)),
 					FrontendPortRangeStart: to.Ptr(int32(1)),
 					FrontendPortRangeEnd:   to.Ptr(int32(42)),
 					Name:                   to.Ptr("ssh"),
-					NetworkSecurityGroupRules: []*azbatch.NetworkSecurityGroupRule{
+					NetworkSecurityGroupRules: []azbatch.NetworkSecurityGroupRule{
 						{
 							Access:              to.Ptr(azbatch.NetworkSecurityGroupRuleAccessDeny),
 							Priority:            to.Ptr(int32(150)),
@@ -248,6 +269,9 @@ func TestNode(t *testing.T) {
 				},
 			},
 		},
+	}
+	pool.StartTask = &azbatch.StartTask{
+		CommandLine: to.Ptr("/bin/sh -c 'echo done > $AZ_BATCH_NODE_SHARED_DIR/test.txt'"),
 	}
 	poolID := *pool.ID
 	_, err := client.CreatePool(ctx, pool, nil)
@@ -317,39 +341,13 @@ func TestNode(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, du)
 
-	rm, err := client.RemoveNodes(ctx, poolID, azbatch.RemoveNodeContent{
-		NodeList: []*string{node.ID},
-	}, nil)
-	require.NoError(t, err)
-	require.NotNil(t, rm)
-}
-
-func TestNodeFiles(t *testing.T) {
-	t.Parallel()
-
-	client, poolID := createDefaultPool(t)
-	node := firstReadyNode(t, client, poolID)
-	jid := randomString(t)
-	cj, err := client.CreateJob(ctx, azbatch.CreateJobContent{
-		Constraints: &azbatch.JobConstraints{
-			MaxWallClockTime: to.Ptr("PT1H"),
-		},
-		ID:                 to.Ptr(jid),
-		OnAllTasksComplete: to.Ptr(azbatch.OnAllTasksCompleteTerminateJob),
-		PoolInfo:           &azbatch.PoolInfo{PoolID: &poolID},
-	}, nil)
-	require.NoError(t, err)
-	require.NotNil(t, cj)
-
-	_ = waitForTask(t, client, jid, "/bin/sh -c 'echo done > $AZ_BATCH_NODE_SHARED_DIR/test.txt'")
-
-	var file *azbatch.NodeFile
+	var file azbatch.NodeFile
 	files := client.NewListNodeFilesPager(poolID, *node.ID, &azbatch.ListNodeFilesOptions{Recursive: to.Ptr(true)})
 	for files.More() {
 		p, err := files.NextPage(ctx)
 		require.NoError(t, err)
 		for _, f := range p.Value {
-			if f != nil && f.Name != nil && strings.HasSuffix(*f.Name, "test.txt") {
+			if f.Name != nil && strings.HasSuffix(*f.Name, "test.txt") {
 				file = f
 				break
 			}
@@ -368,14 +366,17 @@ func TestNodeFiles(t *testing.T) {
 	df, err := client.DeleteNodeFile(ctx, poolID, *node.ID, *file.Name, nil)
 	require.NoError(t, err)
 	require.NotNil(t, df)
+
+	rm, err := client.RemoveNodes(ctx, poolID, azbatch.RemoveNodeContent{
+		NodeList: []string{*node.ID},
+	}, nil)
+	require.NoError(t, err)
+	require.NotNil(t, rm)
 }
 
 func TestPool(t *testing.T) {
-	t.Parallel()
 	client := record(t)
-
 	pool := defaultPoolContent(t)
-	// this test doesn't require a node so, don't allocate one
 	pool.TargetDedicatedNodes = to.Ptr(int32(0))
 	cp, err := client.CreatePool(ctx, pool, nil)
 	require.NoError(t, err)
@@ -395,13 +396,13 @@ func TestPool(t *testing.T) {
 		require.NoError(t, err)
 	}
 
-	for pgr := client.NewListPoolsPager(nil); pgr.More(); {
-		_, err := pgr.NextPage(ctx)
+	for pools := client.NewListPoolsPager(nil); pools.More(); {
+		_, err := pools.NextPage(ctx)
 		require.NoError(t, err)
 	}
 
 	up, err := client.UpdatePool(ctx, *pool.ID, azbatch.UpdatePoolContent{
-		Metadata: []*azbatch.MetadataItem{
+		Metadata: []azbatch.MetadataItem{
 			{
 				Name:  to.Ptr("key"),
 				Value: to.Ptr("value"),
@@ -411,15 +412,11 @@ func TestPool(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, up)
 
-	// TODO: "The missing parameters are: certificateReferences."
+	// TODO: always fails with 500
 	// rpp, err := client.ReplacePoolProperties(ctx, *pool.ID, azbatch.ReplacePoolContent{
-	// ApplicationPackageReferences: azcore.NullValue[[]*azbatch.ApplicationPackageReference](),
-	// 	Metadata: []*azbatch.MetadataItem{
-	// 		{
-	// 			Name:  to.Ptr("key2"),
-	// 			Value: to.Ptr("value2"),
-	// 		},
-	// 	},
+	// 	ApplicationPackageReferences: azcore.NullValue[[]azbatch.ApplicationPackageReference](),
+	// 	CertificateReferences:        azcore.NullValue[[]azbatch.CertificateReference](),
+	// 	Metadata:                     azcore.NullValue[[]azbatch.MetadataItem](),
 	// }, nil)
 	// require.NoError(t, err)
 	// require.NotNil(t, rpp)
@@ -445,7 +442,7 @@ func TestPool(t *testing.T) {
 	require.NotNil(t, ar)
 
 	eva, err := client.EvaluatePoolAutoScale(ctx, *pool.ID, azbatch.EvaluatePoolAutoScaleContent{
-		AutoScaleFormula: to.Ptr("$TargetDedicatedNodes=1"),
+		AutoScaleFormula: to.Ptr("$TargetDedicatedNodes=0"),
 	}, nil)
 	require.NoError(t, err)
 	require.NotNil(t, eva)
@@ -454,9 +451,11 @@ func TestPool(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, dr)
 
+	steady(t, client, *pool.ID)
+	require.NoError(t, err)
 	rp, err := client.ResizePool(ctx, *pool.ID, azbatch.ResizePoolContent{
 		NodeDeallocationOption: to.Ptr(azbatch.NodeDeallocationOptionRequeue),
-		TargetDedicatedNodes:   to.Ptr(*pool.TargetDedicatedNodes + int32(1)),
+		TargetDedicatedNodes:   to.Ptr(*pool.TargetDedicatedNodes + 1),
 	}, nil)
 	require.NoError(t, err)
 	require.NotNil(t, rp)
@@ -467,7 +466,6 @@ func TestPool(t *testing.T) {
 }
 
 func TestRebootNode(t *testing.T) {
-	t.Parallel()
 	client, poolID := createDefaultPool(t)
 	node := firstReadyNode(t, client, poolID)
 	rn, err := client.RebootNode(ctx, poolID, *node.ID, nil)
@@ -476,7 +474,6 @@ func TestRebootNode(t *testing.T) {
 }
 
 func TestReimageNode(t *testing.T) {
-	t.Parallel()
 	client, poolID := createDefaultPool(t)
 	node := firstReadyNode(t, client, poolID)
 	rn, err := client.ReimageNode(ctx, poolID, *node.ID, nil)
@@ -504,6 +501,9 @@ func TestSerDe(t *testing.T) {
 		&azbatch.AutomaticOSUpgradePolicy{},
 		&azbatch.AzureBlobFileSystemConfiguration{},
 		&azbatch.AzureFileShareConfiguration{},
+		&azbatch.Certificate{},
+		&azbatch.CertificateListResult{},
+		&azbatch.CertificateReference{},
 		&azbatch.CIFSMountConfiguration{},
 		&azbatch.ContainerConfiguration{},
 		&azbatch.ContainerHostBindMountEntry{},
@@ -672,8 +672,6 @@ func TestSerDe(t *testing.T) {
 }
 
 func TestTask(t *testing.T) {
-	t.Parallel()
-
 	client, poolID := createDefaultPool(t)
 	jid := randomString(t)
 	cj, err := client.CreateJob(ctx, azbatch.CreateJobContent{
@@ -685,9 +683,14 @@ func TestTask(t *testing.T) {
 	require.NotNil(t, cj)
 
 	t.Run("Replace", func(t *testing.T) {
-		t.Parallel()
 		client := record(t)
-
+		jid := randomString(t)
+		cj, err := client.CreateJob(ctx, azbatch.CreateJobContent{
+			ID:       to.Ptr(jid),
+			PoolInfo: &azbatch.PoolInfo{PoolID: to.Ptr(poolID)},
+		}, nil)
+		require.NoError(t, err)
+		require.NotNil(t, cj)
 		tid := randomString(t)
 		ct, err := client.CreateTask(ctx, jid, azbatch.CreateTaskContent{
 			CommandLine: to.Ptr("/bin/sh -c 'sleep 300'"),
@@ -721,7 +724,7 @@ func TestTask(t *testing.T) {
 
 	tid := randomString(t)
 	ctc, err := client.CreateTaskCollection(ctx, jid, azbatch.TaskGroup{
-		Value: []*azbatch.CreateTaskContent{
+		Value: []azbatch.CreateTaskContent{
 			{
 				CommandLine: to.Ptr("/bin/sh -c 'echo done > $AZ_BATCH_TASK_DIR/task.txt'"),
 				ID:          to.Ptr(tid),
@@ -731,11 +734,11 @@ func TestTask(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, ctc)
 
-	for pgr := client.NewListTasksPager(jid, nil); pgr.More(); {
-		p, err := pgr.NextPage(ctx)
+	for tasks := client.NewListTasksPager(jid, nil); tasks.More(); {
+		p, err := tasks.NextPage(ctx)
 		require.NoError(t, err)
 		for _, task := range p.Value {
-			if task != nil && task.ID != nil && *task.ID == tid {
+			if task.ID != nil && *task.ID == tid {
 				t.Cleanup(func() {
 					dt, err := client.DeleteTask(ctx, jid, *task.ID, nil)
 					require.NoError(t, err)
@@ -751,6 +754,8 @@ func TestTask(t *testing.T) {
 		require.NoError(t, err)
 	}
 
+	_ = firstReadyNode(t, client, poolID)
+	var state azbatch.TaskState
 	_, err = poll(
 		func() azbatch.Task {
 			gt, err := client.GetTask(ctx, jid, tid, nil)
@@ -758,24 +763,27 @@ func TestTask(t *testing.T) {
 			return gt.Task
 		},
 		func(task azbatch.Task) bool {
-			return task.State != nil && *task.State == azbatch.TaskStateCompleted
+			if task.State != nil {
+				state = *task.State
+			}
+			return state == azbatch.TaskStateCompleted
 		},
 		5*time.Minute,
 	)
-	require.NoError(t, err, "task isn't complete")
+	require.NoError(t, err, "task state is %q", state)
 
 	files := client.NewListTaskFilesPager(jid, tid, &azbatch.ListTaskFilesOptions{
 		Recursive: to.Ptr(true),
 	})
 	require.NotNil(t, files)
 
-	var file *azbatch.NodeFile
+	var file azbatch.NodeFile
 	for files.More() {
 		pg, err := files.NextPage(ctx)
 		require.NoError(t, err)
 		require.NotNil(t, pg)
 		for _, file = range pg.Value {
-			if file != nil && file.Name != nil && strings.HasSuffix(*file.Name, "task.txt") {
+			if file.Name != nil && strings.HasSuffix(*file.Name, "task.txt") {
 				props, err := client.GetTaskFileProperties(ctx, jid, tid, *file.Name, nil)
 				require.NoError(t, err)
 				require.NotNil(t, props)

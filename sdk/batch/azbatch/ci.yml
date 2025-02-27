@@ -22,10 +22,11 @@ pr:
       - sdk/batch/azbatch
 
 extends:
-    template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
-    parameters:
-      EnableRaceDetector: true
-      RunLiveTests: true
-      ServiceDirectory: batch/azbatch
-      TimeOutInMinutes: 20
-      UsePipelineProxy: false
+  template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
+  parameters:
+    EnableRaceDetector: true
+    Location: westus2
+    RunLiveTests: true
+    ServiceDirectory: batch/azbatch
+    TimeOutInMinutes: 20
+    UsePipelineProxy: false

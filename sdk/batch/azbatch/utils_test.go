@@ -84,7 +84,7 @@ func defaultPoolContent(t *testing.T) azbatch.CreatePoolContent {
 			NodeFillType: to.Ptr(azbatch.NodeFillTypePack),
 		},
 		VirtualMachineConfiguration: &azbatch.VirtualMachineConfiguration{
-			DataDisks: []*azbatch.DataDisk{
+			DataDisks: []azbatch.DataDisk{
 				{
 					DiskSizeGB:        to.Ptr(int32(1)),
 					LogicalUnitNumber: to.Ptr(int32(1)),
@@ -105,28 +105,27 @@ func defaultPoolContent(t *testing.T) azbatch.CreatePoolContent {
 // It fails the test when no such node is found within 6 minutes.
 func firstReadyNode(t *testing.T, client *azbatch.Client, poolID string) azbatch.Node {
 	// note this assumes the pool has exactly one node, which is true for all test pools at time of writing
+	steady(t, client, poolID)
 	node, err := poll(
-		func() *azbatch.Node {
-			var node *azbatch.Node
-			for pgr := client.NewListNodesPager(poolID, nil); pgr.More(); {
-				pg, err := pgr.NextPage(ctx)
+		func() azbatch.Node {
+			var node azbatch.Node
+			for nodes := client.NewListNodesPager(poolID, nil); nodes.More(); {
+				pg, err := nodes.NextPage(ctx)
 				require.NoError(t, err)
 				for _, node = range pg.Value {
-					if node != nil {
-						break
-					}
+					return node
 				}
 			}
 			return node
 		},
-		func(n *azbatch.Node) bool {
-			return n != nil && n.State != nil && (*n.State == azbatch.NodeStateIdle || *n.State == azbatch.NodeStateRunning)
+		func(n azbatch.Node) bool {
+			return n.State != nil && (*n.State == azbatch.NodeStateIdle || *n.State == azbatch.NodeStateRunning)
 		},
 		6*time.Minute,
 	)
 	require.NoError(t, err)
 	require.NotNil(t, node, "found no ready node")
-	return *node
+	return node
 }
 
 func poll[T any](get func() T, done func(T) bool, timeout time.Duration) (T, error) {
@@ -152,6 +151,7 @@ func randomString(t *testing.T) string {
 }
 
 func record(t *testing.T) *azbatch.Client {
+	t.Parallel()
 	err := recording.Start(t, recordingDir, nil)
 	require.NoError(t, err)
 	t.Cleanup(func() {
@@ -171,27 +171,25 @@ func record(t *testing.T) *azbatch.Client {
 	return c
 }
 
-// waitForTask creates a task with the given command line and waits 5 minutes for it to complete.
-// It fails the test if the task doesn't complete within that time.
-func waitForTask(t *testing.T, client *azbatch.Client, jobID, commandLine string) azbatch.Task {
-	tid := randomString(t)
-	_, err := client.CreateTask(ctx, jobID, azbatch.CreateTaskContent{
-		CommandLine: to.Ptr(commandLine),
-		ID:          to.Ptr(tid),
-	}, nil)
-	require.NoError(t, err)
-
-	task, err := poll(
-		func() azbatch.Task {
-			gt, err := client.GetTask(ctx, jobID, tid, nil)
+// steady waits for a pool to reach the steady allocation state. It fails the test
+// if this doesn't happen within 6 minutes or is impossible because the pool can't
+// allocate a node.
+func steady(t *testing.T, client *azbatch.Client, poolID string) {
+	_, err := poll(
+		func() azbatch.Pool {
+			p, err := client.GetPool(ctx, poolID, nil)
 			require.NoError(t, err)
-			return gt.Task
+			for _, e := range p.ResizeErrors {
+				if e.Message != nil {
+					t.Fatal(*e.Message)
+				}
+			}
+			return p.Pool
 		},
-		func(task azbatch.Task) bool {
-			return task.State != nil && *task.State == azbatch.TaskStateCompleted
+		func(p azbatch.Pool) bool {
+			return p.AllocationState != nil && *p.AllocationState == azbatch.AllocationStateSteady
 		},
-		5*time.Minute,
+		6*time.Minute,
 	)
-	require.NoError(t, err, "task isn't complete")
-	return task
+	require.NoError(t, err)
 }

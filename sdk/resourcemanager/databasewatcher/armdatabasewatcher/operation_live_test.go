@@ -36,7 +36,6 @@ func (testsuite *DatabaseWatcherTestSuite) SetupSuite() {
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
 	testsuite.location = recording.GetEnvVariable("LOCATION", ResourceLocation)
-	// testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
 	testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 }
 

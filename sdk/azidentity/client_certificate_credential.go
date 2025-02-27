@@ -16,8 +16,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal/pkcs12"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/confidential"
-	"golang.org/x/crypto/pkcs12"
 )
 
 const credNameCert = "ClientCertificateCredential"

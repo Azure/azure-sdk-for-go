@@ -23,11 +23,11 @@ const (
 
 type DatabaseWatcherTestSuite struct {
 	suite.Suite
-	ctx               context.Context
-	cred              azcore.TokenCredential
-	options           *arm.ClientOptions
-	location          string
-	subscriptionId    string
+	ctx            context.Context
+	cred           azcore.TokenCredential
+	options        *arm.ClientOptions
+	location       string
+	subscriptionId string
 }
 
 func (testsuite *DatabaseWatcherTestSuite) SetupSuite() {

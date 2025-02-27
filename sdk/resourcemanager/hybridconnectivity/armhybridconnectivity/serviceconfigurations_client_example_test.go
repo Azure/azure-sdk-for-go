@@ -22,7 +22,7 @@ func ExampleServiceConfigurationsClient_CreateOrupdate_serviceConfigurationsPutS
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewServiceConfigurationsClient().CreateOrupdate(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridConnectivity/endpoints/default", "default", "SSH", nil)
+	res, err := clientFactory.NewServiceConfigurationsClient().CreateOrupdate(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridConnectivity/endpoints/default", "default", "SSH", armhybridconnectivity.ServiceConfigurationResource{}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -53,7 +53,7 @@ func ExampleServiceConfigurationsClient_CreateOrupdate_serviceConfigurationsPutW
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewServiceConfigurationsClient().CreateOrupdate(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridConnectivity/endpoints/default", "default", "WAC", nil)
+	res, err := clientFactory.NewServiceConfigurationsClient().CreateOrupdate(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridConnectivity/endpoints/default", "default", "WAC", armhybridconnectivity.ServiceConfigurationResource{}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -213,7 +213,7 @@ func ExampleServiceConfigurationsClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewServiceConfigurationsClient().Update(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridConnectivity/endpoints/default", "default", "SSH", nil)
+	res, err := clientFactory.NewServiceConfigurationsClient().Update(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridConnectivity/endpoints/default", "default", "SSH", armhybridconnectivity.ServiceConfigurationResourcePatch{}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

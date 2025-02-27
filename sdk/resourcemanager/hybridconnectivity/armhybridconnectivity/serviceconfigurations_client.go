@@ -202,7 +202,7 @@ func (client *ServiceConfigurationsClient) getHandleResponse(resp *http.Response
 
 // NewListByEndpointResourcePager - Lists of all the services associated with endpoint resource.
 //
-// API to enumerate registered services in service configurations under a Endpoint Resource
+// # API to enumerate registered services in service configurations under a Endpoint Resource
 //
 // Generated from API version 2024-12-01
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.

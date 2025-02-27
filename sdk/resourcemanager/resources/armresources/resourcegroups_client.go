@@ -46,7 +46,7 @@ func NewResourceGroupsClient(subscriptionID string, credential azcore.TokenCrede
 
 // CheckExistence - Checks whether a resource group exists.
 //
-// Generated from API version 2021-04-01
+// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group to check. The name is case insensitive.
 //   - options - ResourceGroupsClientCheckExistenceOptions contains the optional parameters for the ResourceGroupsClient.CheckExistence
 //     method.
@@ -87,7 +87,7 @@ func (client *ResourceGroupsClient) checkExistenceCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01")
+	reqQP.Set("api-version", "2024-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -96,7 +96,7 @@ func (client *ResourceGroupsClient) checkExistenceCreateRequest(ctx context.Cont
 // CreateOrUpdate - Creates or updates a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-04-01
+// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group to create or update. Can include alphanumeric, underscore, parentheses,
 //     hyphen, period (except at end), and Unicode characters that match the allowed characters.
 //   - parameters - Parameters supplied to the create or update a resource group.
@@ -140,7 +140,7 @@ func (client *ResourceGroupsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01")
+	reqQP.Set("api-version", "2024-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -162,7 +162,7 @@ func (client *ResourceGroupsClient) createOrUpdateHandleResponse(resp *http.Resp
 // all of its template deployments and currently stored operations.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-04-01
+// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group to delete. The name is case insensitive.
 //   - options - ResourceGroupsClientBeginDeleteOptions contains the optional parameters for the ResourceGroupsClient.BeginDelete
 //     method.
@@ -187,7 +187,7 @@ func (client *ResourceGroupsClient) BeginDelete(ctx context.Context, resourceGro
 // of its template deployments and currently stored operations.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-04-01
+// Generated from API version 2024-11-01
 func (client *ResourceGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, options *ResourceGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ResourceGroupsClient.BeginDelete"
@@ -225,10 +225,10 @@ func (client *ResourceGroupsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-11-01")
 	if options != nil && options.ForceDeletionTypes != nil {
 		reqQP.Set("forceDeletionTypes", *options.ForceDeletionTypes)
 	}
-	reqQP.Set("api-version", "2021-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -237,7 +237,7 @@ func (client *ResourceGroupsClient) deleteCreateRequest(ctx context.Context, res
 // BeginExportTemplate - Captures the specified resource group as a template.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-04-01
+// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - parameters - Parameters for exporting the template.
 //   - options - ResourceGroupsClientBeginExportTemplateOptions contains the optional parameters for the ResourceGroupsClient.BeginExportTemplate
@@ -263,7 +263,7 @@ func (client *ResourceGroupsClient) BeginExportTemplate(ctx context.Context, res
 // ExportTemplate - Captures the specified resource group as a template.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-04-01
+// Generated from API version 2024-11-01
 func (client *ResourceGroupsClient) exportTemplate(ctx context.Context, resourceGroupName string, parameters ExportTemplateRequest, options *ResourceGroupsClientBeginExportTemplateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ResourceGroupsClient.BeginExportTemplate"
@@ -301,7 +301,7 @@ func (client *ResourceGroupsClient) exportTemplateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01")
+	reqQP.Set("api-version", "2024-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -313,7 +313,7 @@ func (client *ResourceGroupsClient) exportTemplateCreateRequest(ctx context.Cont
 // Get - Gets a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-04-01
+// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group to get. The name is case insensitive.
 //   - options - ResourceGroupsClientGetOptions contains the optional parameters for the ResourceGroupsClient.Get method.
 func (client *ResourceGroupsClient) Get(ctx context.Context, resourceGroupName string, options *ResourceGroupsClientGetOptions) (ResourceGroupsClientGetResponse, error) {
@@ -354,7 +354,7 @@ func (client *ResourceGroupsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01")
+	reqQP.Set("api-version", "2024-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -371,7 +371,7 @@ func (client *ResourceGroupsClient) getHandleResponse(resp *http.Response) (Reso
 
 // NewListPager - Gets all the resource groups for a subscription.
 //
-// Generated from API version 2021-04-01
+// Generated from API version 2024-11-01
 //   - options - ResourceGroupsClientListOptions contains the optional parameters for the ResourceGroupsClient.NewListPager method.
 func (client *ResourceGroupsClient) NewListPager(options *ResourceGroupsClientListOptions) *runtime.Pager[ResourceGroupsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ResourceGroupsClientListResponse]{
@@ -414,7 +414,7 @@ func (client *ResourceGroupsClient) listCreateRequest(ctx context.Context, optio
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2021-04-01")
+	reqQP.Set("api-version", "2024-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -434,7 +434,7 @@ func (client *ResourceGroupsClient) listHandleResponse(resp *http.Response) (Res
 // value is retained.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-04-01
+// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group to update. The name is case insensitive.
 //   - parameters - Parameters supplied to update a resource group.
 //   - options - ResourceGroupsClientUpdateOptions contains the optional parameters for the ResourceGroupsClient.Update method.
@@ -476,7 +476,7 @@ func (client *ResourceGroupsClient) updateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01")
+	reqQP.Set("api-version", "2024-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

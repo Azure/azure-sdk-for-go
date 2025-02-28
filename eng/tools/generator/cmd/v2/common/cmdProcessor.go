@@ -230,7 +230,7 @@ func ExecuteTspClient(path string, args ...string) error {
 
 	cmdWaitErr := cmd.Wait()
 	fmt.Println(stdoutBuffer.String())
-	log.Println(stderrBuffer.String())
+	fmt.Println(stderrBuffer.String())
 
 	if stdoutBuffer.Len() > 0 {
 		for _, line := range strings.Split(stdoutBuffer.String(), "\n") {

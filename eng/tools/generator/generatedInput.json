@@ -1,0 +1,9 @@
+{
+    "dryRun": false,
+    "specFolder": "C:/Users/jiaqzhang/work/azure-rest-api-specs",
+    "headSha": "fc8ffd253b3711c6a8d152cb8e0e5bca9c660834",
+    "repoHttpsUrl": "https://github.com/Azure/azure-rest-api-specs",
+    "relatedReadmeMdFiles": [
+      "specification/quota/resource-manager/readme.md"
+    ]
+  }

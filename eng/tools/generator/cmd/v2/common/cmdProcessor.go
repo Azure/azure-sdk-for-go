@@ -46,7 +46,13 @@ func ExecuteGoGenerate(path string) error {
 	cmdWaitErr := cmd.Wait()
 
 	fmt.Println(stdoutBuffer.String())
+	fmt.Println(stderrBuffer.String())
+
 	if stdoutBuffer.Len() > 0 {
+		// find generated successuly flag
+		if strings.Contains(stdoutBuffer.String(), "Autorest completed") {
+			return nil
+		}
 		if strings.Contains(stdoutBuffer.String(), "error   |") {
 			// find first error message until last
 			errMsgs := stdoutBuffer.Bytes()
@@ -59,7 +65,6 @@ func ExecuteGoGenerate(path string) error {
 
 	if cmdWaitErr != nil || stderrBuffer.Len() > 0 {
 		if stderrBuffer.Len() > 0 {
-			fmt.Println(stderrBuffer.String())
 			// filter go downloading log
 			// https://github.com/golang/go/blob/1f0c044d60211e435dc58844127544dd3ecb6a41/src/cmd/go/internal/modfetch/fetch.go#L201
 			lines := strings.Split(stderrBuffer.String(), "\n")
@@ -225,6 +230,8 @@ func ExecuteTspClient(path string, args ...string) error {
 
 	cmdWaitErr := cmd.Wait()
 	fmt.Println(stdoutBuffer.String())
+	fmt.Println(stderrBuffer.String())
+
 	if stdoutBuffer.Len() > 0 {
 		for _, line := range strings.Split(stdoutBuffer.String(), "\n") {
 			if len(strings.TrimSpace(line)) == 0 {
@@ -237,7 +244,6 @@ func ExecuteTspClient(path string, args ...string) error {
 	}
 	if cmdWaitErr != nil || stderrBuffer.Len() > 0 {
 		if stderrBuffer.Len() > 0 {
-			log.Println(stderrBuffer.String())
 			// filter npm notice & warning log
 			newErrMsgs := make([]string, 0)
 			for _, line := range strings.Split(stderrBuffer.String(), "\n") {

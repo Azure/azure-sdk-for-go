@@ -18,3 +18,4 @@ type GetSettingsOptions struct {
 type UpdateSettingOptions struct {
 	// placeholder for future optional parameters
 }
+

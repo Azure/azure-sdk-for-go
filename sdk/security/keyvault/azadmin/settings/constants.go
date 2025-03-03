@@ -8,13 +8,14 @@ package settings
 type SettingType string
 
 const (
-	// SettingTypeBoolean - A boolean setting value.
+// SettingTypeBoolean - A boolean setting value.
 	SettingTypeBoolean SettingType = "boolean"
 )
 
 // PossibleSettingTypeValues returns the possible values for the SettingType const type.
 func PossibleSettingTypeValues() []SettingType {
-	return []SettingType{
+	return []SettingType{	
 		SettingTypeBoolean,
 	}
 }
+

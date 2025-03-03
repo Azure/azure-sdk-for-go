@@ -18,7 +18,7 @@ import (
 // Client - The key vault client performs cryptographic key operations and vault operations against the Key Vault service.
 // Don't use this type directly, use a constructor function instead.
 type Client struct {
-	internal     *azcore.Client
+	internal *azcore.Client
 	vaultBaseUrl string
 }
 
@@ -27,12 +27,12 @@ type Client struct {
 // Retrieves the setting object of a specified setting name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.5
+// Generated from API version 7.6-preview.2
 //   - settingName - The name of the account setting. Must be a valid settings option.
 //   - options - GetSettingOptions contains the optional parameters for the Client.GetSetting method.
 func (client *Client) GetSetting(ctx context.Context, settingName string, options *GetSettingOptions) (GetSettingResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "settings.Client.GetSetting", client.internal.Tracer(), nil)
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.GetSetting", client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getSettingCreateRequest(ctx, settingName, options)
 	if err != nil {
@@ -64,7 +64,7 @@ func (client *Client) getSettingCreateRequest(ctx context.Context, settingName s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.5")
+	reqQP.Set("api-version", "7.6-preview.2")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -84,11 +84,11 @@ func (client *Client) getSettingHandleResponse(resp *http.Response) (GetSettingR
 // Retrieves a list of all the available account settings that can be configured.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.5
+// Generated from API version 7.6-preview.2
 //   - options - GetSettingsOptions contains the optional parameters for the Client.GetSettings method.
 func (client *Client) GetSettings(ctx context.Context, options *GetSettingsOptions) (GetSettingsResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "settings.Client.GetSettings", client.internal.Tracer(), nil)
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.GetSettings", client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getSettingsCreateRequest(ctx, options)
 	if err != nil {
@@ -116,7 +116,7 @@ func (client *Client) getSettingsCreateRequest(ctx context.Context, _ *GetSettin
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.5")
+	reqQP.Set("api-version", "7.6-preview.2")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -136,13 +136,13 @@ func (client *Client) getSettingsHandleResponse(resp *http.Response) (GetSetting
 // Description of the pool setting to be updated
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.5
+// Generated from API version 7.6-preview.2
 //   - settingName - The name of the account setting. Must be a valid settings option.
 //   - parameters - The parameters to update an account setting.
 //   - options - UpdateSettingOptions contains the optional parameters for the Client.UpdateSetting method.
 func (client *Client) UpdateSetting(ctx context.Context, settingName string, parameters UpdateSettingRequest, options *UpdateSettingOptions) (UpdateSettingResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "settings.Client.UpdateSetting", client.internal.Tracer(), nil)
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.UpdateSetting", client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.updateSettingCreateRequest(ctx, settingName, parameters, options)
 	if err != nil {
@@ -174,14 +174,14 @@ func (client *Client) updateSettingCreateRequest(ctx context.Context, settingNam
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.5")
+	reqQP.Set("api-version", "7.6-preview.2")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
+if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+	return nil, err
+}
+;	return req, nil
 }
 
 // updateSettingHandleResponse handles the UpdateSetting response.
@@ -192,3 +192,4 @@ func (client *Client) updateSettingHandleResponse(resp *http.Response) (UpdateSe
 	}
 	return result, nil
 }
+

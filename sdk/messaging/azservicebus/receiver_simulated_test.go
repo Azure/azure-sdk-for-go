@@ -501,7 +501,7 @@ func TestReceiver_TracingUserFacingErrors(t *testing.T) {
 
 	receiver.settler.tracer = newTracer(tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
 		Name:   "abandon queue",
-		Kind:   tracing.SpanKindConsumer,
+		Kind:   tracing.SpanKindClient,
 		Status: tracing.SpanStatusError,
 		Attributes: []tracing.Attribute{
 			{Key: tracing.AttrMessagingSystem, Value: "servicebus"},
@@ -521,7 +521,7 @@ func TestReceiver_TracingUserFacingErrors(t *testing.T) {
 
 	receiver.settler.tracer = newTracer(tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
 		Name:   "complete queue",
-		Kind:   tracing.SpanKindConsumer,
+		Kind:   tracing.SpanKindClient,
 		Status: tracing.SpanStatusError,
 		Attributes: []tracing.Attribute{
 			{Key: tracing.AttrMessagingSystem, Value: "servicebus"},
@@ -541,7 +541,7 @@ func TestReceiver_TracingUserFacingErrors(t *testing.T) {
 
 	receiver.settler.tracer = newTracer(tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
 		Name:   "dead_letter queue",
-		Kind:   tracing.SpanKindConsumer,
+		Kind:   tracing.SpanKindClient,
 		Status: tracing.SpanStatusError,
 		Attributes: []tracing.Attribute{
 			{Key: tracing.AttrMessagingSystem, Value: "servicebus"},
@@ -561,7 +561,7 @@ func TestReceiver_TracingUserFacingErrors(t *testing.T) {
 
 	receiver.settler.tracer = newTracer(tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
 		Name:   "defer queue",
-		Kind:   tracing.SpanKindConsumer,
+		Kind:   tracing.SpanKindClient,
 		Status: tracing.SpanStatusError,
 		Attributes: []tracing.Attribute{
 			{Key: tracing.AttrMessagingSystem, Value: "servicebus"},
@@ -999,7 +999,6 @@ func TestSessionReceiverTracingUserFacingErrors_Methods(t *testing.T) {
 			{Key: tracing.AttrServerAddress, Value: "example.servicebus.windows.net"},
 			{Key: tracing.AttrDestinationName, Value: "queue"},
 			{Key: tracing.AttrOperationName, Value: "accept_session"},
-			{Key: tracing.AttrOperationType, Value: "receive"},
 		}}, nil)
 	receiver, err := client.AcceptSessionForQueue(context.Background(), "queue", "session ID", nil)
 	require.NoError(t, err)
@@ -1020,7 +1019,6 @@ func TestSessionReceiverTracingUserFacingErrors_Methods(t *testing.T) {
 			{Key: tracing.AttrServerAddress, Value: "fake.something"},
 			{Key: tracing.AttrDestinationName, Value: "queue"},
 			{Key: tracing.AttrOperationName, Value: "get_session_state"},
-			{Key: tracing.AttrOperationType, Value: "receive"},
 			{Key: tracing.AttrErrorType, Value: fmt.Sprintf("%T", lockLostErr)},
 		}}, nil), fakeClientCreds, "queue", "")
 	state, err := receiver.GetSessionState(context.Background(), nil)
@@ -1037,7 +1035,6 @@ func TestSessionReceiverTracingUserFacingErrors_Methods(t *testing.T) {
 			{Key: tracing.AttrServerAddress, Value: "fake.something"},
 			{Key: tracing.AttrDestinationName, Value: "queue"},
 			{Key: tracing.AttrOperationName, Value: "set_session_state"},
-			{Key: tracing.AttrOperationType, Value: "receive"},
 			{Key: tracing.AttrErrorType, Value: fmt.Sprintf("%T", lockLostErr)},
 		}}, nil), fakeClientCreds, "queue", "")
 	err = receiver.SetSessionState(context.Background(), []byte{}, nil)
@@ -1053,7 +1050,6 @@ func TestSessionReceiverTracingUserFacingErrors_Methods(t *testing.T) {
 			{Key: tracing.AttrServerAddress, Value: "fake.something"},
 			{Key: tracing.AttrDestinationName, Value: "queue"},
 			{Key: tracing.AttrOperationName, Value: "renew_session_lock"},
-			{Key: tracing.AttrOperationType, Value: "receive"},
 			{Key: tracing.AttrErrorType, Value: fmt.Sprintf("%T", lockLostErr)},
 		}}, nil), fakeClientCreds, "queue", "")
 	err = receiver.RenewSessionLock(context.Background(), nil)

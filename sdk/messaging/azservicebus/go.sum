@@ -3,10 +3,8 @@ github.com/Azure/azure-sdk-for-go/sdk/azcore v1.17.1-0.20250224170238-070e446295
 github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.8.2 h1:F0gBpfdPLGsw+nsgk6aqqkZS1jiixa5WwFe3fk/T3Ys=
 github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.8.2/go.mod h1:SqINnQ9lVVdRlyC8cd1lCI0SdX4n2paeABd2K8ggfnE=
 github.com/Azure/azure-sdk-for-go/sdk/azidentity/cache v0.3.2 h1:yz1bePFlP5Vws5+8ez6T3HWXPmwOK7Yvq8QxDBD3SKY=
-github.com/Azure/azure-sdk-for-go/sdk/internal v1.10.1-0.20250224170238-070e44629503 h1:X4Q4G9o5uT1Ql+R2vV4Vn+Pskam0psj15vr/sFQ6W/w=
-github.com/Azure/azure-sdk-for-go/sdk/internal v1.10.1-0.20250224170238-070e44629503/go.mod h1:4t3ohy/HCakKfIQ6+qL4dI6uaxDSLxNwLGEKxGzgS9o=
-github.com/Azure/go-amqp v1.3.0 h1://1rikYhoIQNXJFXyoO/Rlb4+4EkHYfJceNtLlys2/4=
-github.com/Azure/go-amqp v1.3.0/go.mod h1:vZAogwdrkbyK3Mla8m/CxSc/aKdnTZ4IbPxl51Y5WZE=
+github.com/Azure/azure-sdk-for-go/sdk/internal v1.10.1-0.20250301010503-a03cfeb12d70 h1:REQbdBg8xaPnym26iuKcXzdd6CTdKdyI8txvNa3VGKY=
+github.com/Azure/azure-sdk-for-go/sdk/internal v1.10.1-0.20250301010503-a03cfeb12d70/go.mod h1:4t3ohy/HCakKfIQ6+qL4dI6uaxDSLxNwLGEKxGzgS9o=
 github.com/Azure/go-amqp v1.4.0 h1:Xj3caqi4comOF/L1Uc5iuBxR/pB6KumejC01YQOqOR4=
 github.com/Azure/go-amqp v1.4.0/go.mod h1:vZAogwdrkbyK3Mla8m/CxSc/aKdnTZ4IbPxl51Y5WZE=
 github.com/AzureAD/microsoft-authentication-extensions-for-go/cache v0.1.1 h1:WJTmL004Abzc5wDB5VtZG2PJk5ndYDgVacGqfirKxjM=

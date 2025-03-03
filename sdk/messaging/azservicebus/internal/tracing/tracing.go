@@ -84,7 +84,7 @@ func StartSpan(ctx context.Context, options *StartSpanOptions) (context.Context,
 		attrs = append(attrs, Attribute{Key: AttrDispositionStatus, Value: string(options.OperationName)})
 	}
 
-	spanKind := getSpanKind(operationType, options.Attributes)
+	spanKind := getSpanKind(operationType, options.OperationName, options.Attributes)
 
 	tr := options.Tracer
 	spanName := string(options.OperationName)
@@ -105,8 +105,7 @@ func getOperationType(operationName MessagingOperationName) MessagingOperationTy
 		return CreateOperationType
 	case SendOperationName, ScheduleOperationName, CancelScheduledOperationName:
 		return SendOperationType
-	case ReceiveOperationName, PeekOperationName, ReceiveDeferredOperationName, RenewMessageLockOperationName,
-		AcceptSessionOperationName, GetSessionStateOperationName, SetSessionStateOperationName, RenewSessionLockOperationName:
+	case ReceiveOperationName, PeekOperationName, ReceiveDeferredOperationName, RenewMessageLockOperationName:
 		return ReceiveOperationType
 	case AbandonOperationName, CompleteOperationName, DeferOperationName, DeadLetterOperationName:
 		return SettleOperationType
@@ -115,24 +114,33 @@ func getOperationType(operationName MessagingOperationName) MessagingOperationTy
 	}
 }
 
-func getSpanKind(operationType MessagingOperationType, attrs []Attribute) SpanKind {
-	switch operationType {
-	case CreateOperationType:
+func getSpanKind(operationType MessagingOperationType, operationName MessagingOperationName, attrs []Attribute) SpanKind {
+	isBatch := isBatchOperation(attrs)
+	isSession := isSessionOperation(operationName)
+	switch {
+	case operationType == CreateOperationType, operationType == SendOperationType && !isBatch:
 		return SpanKindProducer
-	case SendOperationType:
-		// return client span if it is a batch operation
-		// otherwise return producer span
-		for _, attr := range attrs {
-			if attr.Key == AttrBatchMessageCount {
-				return SpanKindClient
-			}
-		}
-		return SpanKindProducer
-	case ReceiveOperationType:
+	case operationType == SendOperationType, operationType == ReceiveOperationType, operationType == SettleOperationType, isSession:
 		return SpanKindClient
-	case SettleOperationType:
-		return SpanKindConsumer
 	default:
 		return SpanKindInternal
 	}
+}
+
+func isSessionOperation(operationName MessagingOperationName) bool {
+	switch operationName {
+	case AcceptSessionOperationName, SetSessionStateOperationName, GetSessionStateOperationName, RenewSessionLockOperationName:
+		return true
+	default:
+		return false
+	}
+}
+
+func isBatchOperation(attrs []Attribute) bool {
+	for _, attr := range attrs {
+		if attr.Key == AttrBatchMessageCount {
+			return true
+		}
+	}
+	return false
 }

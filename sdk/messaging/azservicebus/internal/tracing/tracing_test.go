@@ -51,3 +51,40 @@ func TestStartSpan(t *testing.T) {
 	defer endSpan2(nil)
 	require.NotEqual(t, ctx, subCtx2)
 }
+
+func TestGetOperationType(t *testing.T) {
+	// returns CreateOperationType when operation name is CreateOperationName
+	require.Equal(t, CreateOperationType, getOperationType(CreateOperationName))
+
+	// returns SendOperationType when operation name is SendOperationName
+	require.Equal(t, SendOperationType, getOperationType(SendOperationName))
+
+	// returns ReceiveOperationType when operation name is ReceiveOperationName
+	require.Equal(t, ReceiveOperationType, getOperationType(ReceiveOperationName))
+
+	// returns SettleOperationType when operation name is SettleOperationName
+	require.Equal(t, SettleOperationType, getOperationType(CompleteOperationName))
+}
+
+func TestGetSpanKind(t *testing.T) {
+	// returns SpanKindProducer when operation type is CreateOperationType
+	require.Equal(t, SpanKindProducer, getSpanKind(CreateOperationType, CreateOperationName, nil))
+
+	// returns SpanKindProducer when operation type is SendOperationType and not a batch operation
+	require.Equal(t, SpanKindProducer, getSpanKind(SendOperationType, SendOperationName, nil))
+
+	// returns SpanKindClient when operation type is SendOperationType and a batch operation
+	require.Equal(t, SpanKindClient, getSpanKind(SendOperationType, SendOperationName, []Attribute{{Key: AttrBatchMessageCount, Value: "1"}}))
+
+	// returns SpanKindClient when operation type is ReceiveOperationType
+	require.Equal(t, SpanKindClient, getSpanKind(ReceiveOperationType, ReceiveOperationName, nil))
+
+	// returns SpanKindClient when operation type is SettleOperationType
+	require.Equal(t, SpanKindClient, getSpanKind(SettleOperationType, CompleteOperationName, nil))
+
+	// returns SpanKindClient with operation name is a session operation
+	require.Equal(t, SpanKindClient, getSpanKind("", AcceptSessionOperationName, nil))
+
+	// returns SpanKindInternal when operation type is unknown
+	require.Equal(t, SpanKindInternal, getSpanKind("", "unknown", nil))
+}

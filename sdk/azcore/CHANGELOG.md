@@ -4,6 +4,7 @@
 
 ### Features Added
 
+* Added function `DefaultRetryStatusCodes() []int` to provide a list of default HTTP codes a retry is fired on.
 * Added field `NewPropagatorFn` to `tracing.ProviderOptions` to support custom propagators.
 * Added type `SpanContext` to the `tracing` package to support Span Context.
 * Added method `SpanContext()` to `tracing.Span` to support Span Context.

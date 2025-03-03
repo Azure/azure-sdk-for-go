@@ -32,6 +32,7 @@ type StartSpanOptions struct {
 	Tracer        Tracer
 	OperationName MessagingOperationName
 	Attributes    []Attribute
+	Links         []Link
 }
 
 func NewTracer(provider Provider, moduleName, version, hostName, queueOrTopic, subscription string) Tracer {
@@ -96,6 +97,7 @@ func StartSpan(ctx context.Context, options *StartSpanOptions) (context.Context,
 		&runtime.StartSpanOptions{
 			Kind:       spanKind,
 			Attributes: attrs,
+			Links:      options.Links,
 		})
 }
 

@@ -82,6 +82,7 @@ func (ms *messageSettler) CompleteMessage(ctx context.Context, message *Received
 	}, &tracing.StartSpanOptions{
 		OperationName: tracing.CompleteOperationName,
 		Attributes:    getReceivedMessageSpanAttributes(message),
+		Links:         ms.getMessageSettlementLinks(message),
 	})
 }
 
@@ -137,6 +138,7 @@ func (ms *messageSettler) AbandonMessage(ctx context.Context, message *ReceivedM
 	}, &tracing.StartSpanOptions{
 		OperationName: tracing.AbandonOperationName,
 		Attributes:    getReceivedMessageSpanAttributes(message),
+		Links:         ms.getMessageSettlementLinks(message),
 	})
 }
 
@@ -192,6 +194,7 @@ func (ms *messageSettler) DeferMessage(ctx context.Context, message *ReceivedMes
 	}, &tracing.StartSpanOptions{
 		OperationName: tracing.DeferOperationName,
 		Attributes:    getReceivedMessageSpanAttributes(message),
+		Links:         ms.getMessageSettlementLinks(message),
 	})
 }
 
@@ -275,7 +278,19 @@ func (ms *messageSettler) DeadLetterMessage(ctx context.Context, message *Receiv
 	}, &tracing.StartSpanOptions{
 		OperationName: tracing.DeadLetterOperationName,
 		Attributes:    getReceivedMessageSpanAttributes(message),
+		Links:         ms.getMessageSettlementLinks(message),
 	})
+}
+
+func (ms *messageSettler) getMessageSettlementLinks(message *ReceivedMessage) []tracing.Link {
+	if message == nil {
+		return nil
+	}
+	ctx := ms.tracer.Extract(context.Background(), message.Message().toAMQPMessage())
+	if ctx == context.Background() { // no message creation context found
+		return nil
+	}
+	return []tracing.Link{ms.tracer.LinkFromContext(ctx)}
 }
 
 func bytesToAMQPUUID(bytes [16]byte) *amqp.UUID {

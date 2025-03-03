@@ -134,6 +134,8 @@ func TestLinks_ConnectionRecovery(t *testing.T) {
 	ns.EXPECT().NegotiateClaim(test.NotCancelled, gomock.Any()).Return(cancelNegotiateClaim, negotiateClaimCtx.Done(), nil)
 	ns.EXPECT().NewAMQPSession(test.NotCancelled).Return(session, uint64(1), nil)
 
+	session.EXPECT().Close(gomock.Any())
+
 	receiver.EXPECT().LinkName().Return("link1").AnyTimes()
 
 	links := NewLinks(ns, "managementPath", func(partitionID string) string {
@@ -226,6 +228,8 @@ func TestLinks_closeWithTimeout(t *testing.T) {
 			ns.EXPECT().NegotiateClaim(test.NotCancelled, gomock.Any()).Return(cancelNegotiateClaim, negotiateClaimCtx.Done(), nil)
 			ns.EXPECT().NewAMQPSession(test.NotCancelled).Return(session, uint64(1), nil)
 
+			session.EXPECT().Close(gomock.Any())
+
 			receiver.EXPECT().LinkName().Return("link1").AnyTimes()
 
 			links := NewLinks(ns, "managementPath", func(partitionID string) string {
@@ -271,6 +275,7 @@ func TestLinks_linkRecoveryOnly(t *testing.T) {
 		cancelNegotiateClaim, negotiateClaimCtx.Done(), nil,
 	)
 	fakeNS.EXPECT().NewAMQPSession(test.NotCancelled).Return(session, uint64(1), nil)
+	session.EXPECT().Close(gomock.Any())
 
 	fakeReceiver.EXPECT().LinkName().Return("link1").AnyTimes()
 
@@ -306,6 +311,7 @@ func TestLinks_linkRecoveryFailsWithLinkFailure(t *testing.T) {
 		cancelNegotiateClaim, negotiateClaimCtx.Done(), nil,
 	)
 	fakeNS.EXPECT().NewAMQPSession(test.NotCancelled).Return(session, uint64(1), nil)
+	session.EXPECT().Close(gomock.Any())
 
 	fakeReceiver.EXPECT().LinkName().Return("link1").AnyTimes()
 

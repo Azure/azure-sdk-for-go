@@ -1,5 +1,11 @@
 # Release History
 
+## 1.3.1 (TBD)
+
+### Bugs Fixed
+
+- Removed a memory leak that could occur when the ConsumerClient was unable to open a partition. (PR#TBD)
+
 ## 1.3.0 (2025-02-11)
 
 ### Features Added

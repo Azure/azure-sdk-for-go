@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflexibleservers/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8691fbfca8fcdc5a241a0b501c32fd4a76bb0cd/specification/mysql/resource-manager/Microsoft.DBforMySQL/ServiceOperations/stable/2023-12-30/examples/CapabilitySetListByLocation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e26b89bcbec9eed5026c01416e481408b2a1ca1a/specification/mysql/resource-manager/Microsoft.DBforMySQL/ServiceOperations/preview/2024-10-01-preview/examples/CapabilitySetListByLocation.json
 func ExampleLocationBasedCapabilitySetClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,6 +46,11 @@ func ExampleLocationBasedCapabilitySetClient_NewListPager() {
 		// 			Type: to.Ptr("Microsoft.DBforMySQL/capacitysets"),
 		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/providers/Microsoft.DBforMySQL/locations/WestUS/capabilitySets/default"),
 		// 			Properties: &armmysqlflexibleservers.CapabilityPropertiesV2{
+		// 				SupportedFeatures: []*armmysqlflexibleservers.FeatureProperty{
+		// 					{
+		// 						FeatureName: to.Ptr("SupportAcceleratedLogs"),
+		// 						FeatureValue: to.Ptr("Enabled"),
+		// 				}},
 		// 				SupportedFlexibleServerEditions: []*armmysqlflexibleservers.ServerEditionCapabilityV2{
 		// 					{
 		// 						Name: to.Ptr("Burstable"),
@@ -1011,7 +1016,7 @@ func ExampleLocationBasedCapabilitySetClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8691fbfca8fcdc5a241a0b501c32fd4a76bb0cd/specification/mysql/resource-manager/Microsoft.DBforMySQL/ServiceOperations/stable/2023-12-30/examples/CapabilitySetByLocation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e26b89bcbec9eed5026c01416e481408b2a1ca1a/specification/mysql/resource-manager/Microsoft.DBforMySQL/ServiceOperations/preview/2024-10-01-preview/examples/CapabilitySetByLocation.json
 func ExampleLocationBasedCapabilitySetClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1034,6 +1039,11 @@ func ExampleLocationBasedCapabilitySetClient_Get() {
 	// 	Type: to.Ptr("Microsoft.DBforMySQL/capabilities"),
 	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/providers/Microsoft.DBforMySQL/locations/WestUS/capabilitySets/default"),
 	// 	Properties: &armmysqlflexibleservers.CapabilityPropertiesV2{
+	// 		SupportedFeatures: []*armmysqlflexibleservers.FeatureProperty{
+	// 			{
+	// 				FeatureName: to.Ptr("SupportAcceleratedLogs"),
+	// 				FeatureValue: to.Ptr("Enabled"),
+	// 		}},
 	// 		SupportedFlexibleServerEditions: []*armmysqlflexibleservers.ServerEditionCapabilityV2{
 	// 			{
 	// 				Name: to.Ptr("Burstable"),

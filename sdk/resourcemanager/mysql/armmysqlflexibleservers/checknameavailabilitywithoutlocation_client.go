@@ -46,7 +46,7 @@ func NewCheckNameAvailabilityWithoutLocationClient(subscriptionID string, creden
 // Execute - Check the availability of name for server
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-12-30
+// Generated from API version 2024-10-01-preview
 //   - nameAvailabilityRequest - The required parameters for checking if server name is available.
 //   - options - CheckNameAvailabilityWithoutLocationClientExecuteOptions contains the optional parameters for the CheckNameAvailabilityWithoutLocationClient.Execute
 //     method.
@@ -84,7 +84,7 @@ func (client *CheckNameAvailabilityWithoutLocationClient) executeCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-30")
+	reqQP.Set("api-version", "2024-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, nameAvailabilityRequest); err != nil {

@@ -10,8 +10,9 @@ param(
     [switch]$tidy,
     [switch]$alwaysSetBodyParamRequired,
     [switch]$removeUnreferencedTypes,
+    [switch]$factoryGatherAllParams,
     [string]$config = "autorest.md",
-    [string]$goExtension = "@autorest/go@4.0.0-preview.63",
+    [string]$goExtension = "@autorest/go@4.0.0-preview.70",
     [string]$filePrefix,
     [string]$outputFolder
 )
@@ -56,15 +57,21 @@ function Process-Sdk ()
             $removeUnreferencedTypesFlag = "true"
         }
         
+        $factoryGatherAllParamsFlag = "false"
+        if ($factoryGatherAllParams)
+        {
+            $factoryGatherAllParamsFlag = "true"
+        }
+
         if ($filePrefix)
         {
-            Write-Host "autorest --use=$goExtension --go --track2 --output-folder=$outputFolder --file-prefix=$filePrefix --clear-output-folder=false --go.clear-output-folder=false --honor-body-placement=$honorBodyPlacement --remove-unreferenced-types=$removeUnreferencedTypesFlag $autorestPath"
-            autorest --use=$goExtension --go --track2 --output-folder=$outputFolder --file-prefix=$filePrefix --clear-output-folder=false --go.clear-output-folder=false --honor-body-placement=$honorBodyPlacement --remove-unreferenced-types=$removeUnreferencedTypesFlag $autorestPath
+            Write-Host "autorest --use=$goExtension --go --track2 --output-folder=$outputFolder --file-prefix=$filePrefix --clear-output-folder=false --go.clear-output-folder=false --honor-body-placement=$honorBodyPlacement --remove-unreferenced-types=$removeUnreferencedTypesFlag --factory-gather-all-params=$factoryGatherAllParamsFlag $autorestPath"
+            autorest --use=$goExtension --go --track2 --output-folder=$outputFolder --file-prefix=$filePrefix --clear-output-folder=false --go.clear-output-folder=false --honor-body-placement=$honorBodyPlacement --remove-unreferenced-types=$removeUnreferencedTypesFlag --factory-gather-all-params=$factoryGatherAllParamsFlag $autorestPath
         }
         else
         {
-            Write-Host "autorest --use=$goExtension --go --track2 --output-folder=$outputFolder --clear-output-folder=false --go.clear-output-folder=false --honor-body-placement=$honorBodyPlacement --remove-unreferenced-types=$removeUnreferencedTypesFlag $autorestPath"
-            autorest --use=$goExtension --go --track2 --output-folder=$outputFolder --clear-output-folder=false --go.clear-output-folder=false --honor-body-placement=$honorBodyPlacement --remove-unreferenced-types=$removeUnreferencedTypesFlag $autorestPath
+            Write-Host "autorest --use=$goExtension --go --track2 --output-folder=$outputFolder --clear-output-folder=false --go.clear-output-folder=false --honor-body-placement=$honorBodyPlacement --remove-unreferenced-types=$removeUnreferencedTypesFlag --factory-gather-all-params=$factoryGatherAllParamsFlag $autorestPath"
+            autorest --use=$goExtension --go --track2 --output-folder=$outputFolder --clear-output-folder=false --go.clear-output-folder=false --honor-body-placement=$honorBodyPlacement --remove-unreferenced-types=$removeUnreferencedTypesFlag --factory-gather-all-params=$factoryGatherAllParamsFlag $autorestPath
         }
         
         if ($LASTEXITCODE)

@@ -4,7 +4,7 @@
 
 ### Bugs Fixed
 
-- Removed a memory leak that could occur when the ConsumerClient was unable to open a partition. (PR#TBD)
+- Removed a memory leak that could occur when the ConsumerClient was unable to open a partition. (PR#24198)
 
 ## 1.3.0 (2025-02-11)
 

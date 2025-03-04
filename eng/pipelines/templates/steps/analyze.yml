@@ -30,7 +30,7 @@ steps:
 
       Copy-Item "$(Build.ArtifactStagingDirectory)/PackageInfo" -Destination $directoryToPublish -Recurse
     displayName: 'Create Go APIView Artifact'
-    condition: succeeded()
+    condition: and(succeeded(), ${{ startsWith(parameters.ServiceDirectory, 'sdk') }})  # exclude changes to eng/
 
   - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
     parameters:
@@ -64,6 +64,8 @@ steps:
 
   - ${{ if eq(variables['Build.Reason'],'PullRequest') }}:
     - template: /eng/common/pipelines/templates/steps/detect-api-changes.yml
+      parameters:
+        Condition: ${{ startsWith(parameters.ServiceDirectory, 'sdk') }}  # exclude changes to eng/
 
   - ${{ if and(ne(variables['Skip.PackageValidation'], 'true'), eq(variables['System.TeamProject'], 'internal')) }}:
     - pwsh: |

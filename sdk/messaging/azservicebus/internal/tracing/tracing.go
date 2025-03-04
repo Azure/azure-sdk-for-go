@@ -5,6 +5,7 @@ package tracing
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -94,12 +95,20 @@ func StartSpan(ctx context.Context, options *StartSpanOptions) (context.Context,
 		spanName = fmt.Sprintf("%s %s", options.OperationName, tr.destination)
 	}
 
-	return runtime.StartSpan(ctx, spanName, tr.tracer,
+	ctx, endSpan := runtime.StartSpan(ctx, spanName, tr.tracer,
 		&runtime.StartSpanOptions{
 			Kind:       spanKind,
 			Attributes: attrs,
 			Links:      options.Links,
 		})
+	return ctx, func(err error) {
+		// unwrap any errors from upstream
+		if unwrappedErr := errors.Unwrap(err); unwrappedErr != nil {
+			endSpan(unwrappedErr)
+			return
+		}
+		endSpan(err)
+	}
 }
 
 func getOperationType(operationName MessagingOperationName) MessagingOperationType {

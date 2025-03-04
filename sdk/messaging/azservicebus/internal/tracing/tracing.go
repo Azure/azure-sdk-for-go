@@ -75,7 +75,8 @@ func StartSpan(ctx context.Context, options *StartSpanOptions) (context.Context,
 	if options == nil || options.OperationName == "" {
 		return ctx, func(error) {}
 	}
-	attrs := append(options.Attributes, Attribute{Key: AttrOperationName, Value: string(options.OperationName)})
+	attrs := options.Attributes
+	attrs = append(attrs, Attribute{Key: AttrOperationName, Value: string(options.OperationName)})
 
 	operationType := getOperationType(options.OperationName)
 	if operationType != "" {

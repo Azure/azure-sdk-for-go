@@ -420,7 +420,7 @@ func TestSnapshotListConfigurationSettings(t *testing.T) {
 		require.NoError(t, err)
 	}
 
-	keyFilter := fmt.Sprintf(testId + "*")
+	keyFilter := testId + "*"
 	sf := []azappconfig.SettingFilter{
 		{
 			KeyFilter: &keyFilter,

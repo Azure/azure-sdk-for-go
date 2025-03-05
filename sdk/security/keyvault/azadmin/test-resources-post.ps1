@@ -84,6 +84,13 @@ $([Convert]::ToBase64String($Certificate.RawData, 'InsertLineBreaks'))
 
 }
 
+Log "Refreshing OIDC token"
+az cloud set -n $Environment
+az login --federated-token $env:ARM_OIDC_TOKEN --service-principal -t $TenantId -u $TestApplicationId
+if ($LASTEXITCODE) { exit $LASTEXITCODE }
+az account set --subscription $SubscriptionId
+if ($LASTEXITCODE) { exit $LASTEXITCODE }
+
 # Make sure we deployed a Managed HSM.
 if (!$DeploymentOutputs['AZURE_MANAGEDHSM_URL']) {
     Log "Managed HSM not deployed; skipping activation"

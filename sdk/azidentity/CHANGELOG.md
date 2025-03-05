@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+* enhanced support for AKS workloads
 
 ## 1.9.0 (2025-04-08)
 

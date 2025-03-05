@@ -7,10 +7,12 @@
 package azidentity
 
 import (
+	"bytes"
 	"context"
 	"crypto/tls"
 	"crypto/x509"
 	"errors"
+	"fmt"
 	"net/http"
 	"os"
 	"strings"
@@ -20,9 +22,16 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 )
 
-const credNameWorkloadIdentity = "WorkloadIdentityCredential"
+const (
+	aksCAData                = "AZURE_KUBERNETES_CA_DATA"
+	aksCAFile                = "AZURE_KUBERNETES_CA_FILE"
+	aksSNIName               = "AZURE_KUBERNETES_SNI_NAME"
+	aksTokenEndpoint         = "AZURE_KUBERNETES_TOKEN_ENDPOINT"
+	credNameWorkloadIdentity = "WorkloadIdentityCredential"
+)
 
 // WorkloadIdentityCredential supports Azure workload identity on Kubernetes.
 // See [Azure Kubernetes Service documentation] for more information.
@@ -98,56 +107,11 @@ func NewWorkloadIdentityCredential(options *WorkloadIdentityCredentialOptions) (
 		ClientOptions:              options.ClientOptions,
 		DisableInstanceDiscovery:   options.DisableInstanceDiscovery,
 	}
-	sni := os.Getenv("AZURE_KUBERNETES_SNI_NAME")
-	host := os.Getenv("AZURE_KUBERNETES_TOKEN_ENDPOINT")
-	
-	if sni != "" && host != "" {
-		var aksSNIPolicyCA *x509.CertPool
-
-		caFile, caFileSet := os.LookupEnv("AZURE_KUBERNETES_CA_FILE")
-		caData, caDataSet := os.LookupEnv("AZURE_KUBERNETES_CA_DATA")
-
-		if caFileSet && caDataSet {
-			return nil, errors.New("both AZURE_KUBERNETES_CA_FILE and AZURE_KUBERNETES_CA_DATA are set. Only one should be set")
-		}
-		if caFileSet {
-			content, err := os.ReadFile(caFile)
-			if err != nil {
-				return nil, err
-			}
-			certPool := x509.NewCertPool()
-			if ok := certPool.AppendCertsFromPEM(content); !ok {
-				return nil, errors.New("could not load cert file from AZURE_KUBERNETES_CA_FILE")
-			}
-
-			aksSNIPolicyCA = certPool
-
-		} else if caDataSet {
-			certPool := x509.NewCertPool()
-			if ok := certPool.AppendCertsFromPEM([]byte(caData)); !ok {
-				return nil, errors.New("could not load cert file from AZURE_KUBERNETES_CA_DATA")
-			}
-
-			aksSNIPolicyCA = certPool
-		}
-
-		if aksSNIPolicyCA == nil {
-			return nil, errors.New("could not load a valid SNI certificate")
-		}
-
-		co := caco.ClientOptions
-		co.Transport = &http.Client{
-			Transport: &http.Transport{
-				TLSClientConfig: &tls.Config{
-					RootCAs:    aksSNIPolicyCA,
-					ServerName: sni,
-				},
-			},
-		}
-		p := &aksSNIPolicy{
-			h:  host,
-			pl: runtime.NewPipeline(module, version, runtime.PipelineOptions{}, &co),
-		}
+	if p, err := newAKSTokenRequestPolicy(); err != nil {
+		return nil, err
+	} else if p != nil {
+		// add the policy to the end of the pipeline. It will run
+		// after all other policies, including any added by the caller
 		caco.ClientOptions.PerRetryPolicies = append(caco.ClientOptions.PerRetryPolicies, p)
 	}
 	cred, err := NewClientAssertionCredential(tenantID, clientID, w.getAssertion, &caco)
@@ -196,17 +160,114 @@ func (w *WorkloadIdentityCredential) getAssertion(context.Context) (string, erro
 	return w.assertion, nil
 }
 
-
-type aksSNIPolicy struct {
-	h  string
-	pl runtime.Pipeline
+// aksTokenRequestPolicy redirects token requests to the AKS token endpoint, sending them via its
+// own HTTP client. It sends all other requests unchanged, via the pipeline's configured transport.
+type aksTokenRequestPolicy struct {
+	// c is configured for the AKS token endpoint
+	c *http.Client
+	// ca trusted by c
+	ca                       []byte
+	caFile, host, serverName string
 }
 
-func (a *aksSNIPolicy) Do(req *policy.Request) (*http.Response, error) {
+func newAKSTokenRequestPolicy() (*aksTokenRequestPolicy, error) {
+	host := os.Getenv(aksTokenEndpoint)
+	serverName := os.Getenv(aksSNIName)
+	if host == "" || serverName == "" {
+		// the AKS feature isn't enabled for this process
+		return nil, nil
+	}
+	b := []byte(os.Getenv(aksCAData))
+	f := os.Getenv(aksCAFile)
+	switch {
+	case len(b) == 0 && len(f) == 0:
+		return nil, fmt.Errorf("no value found for %s or %s", aksCAData, aksCAFile)
+	case len(b) > 0 && len(f) > 0:
+		return nil, fmt.Errorf("found values for both %s and %s", aksCAData, aksCAFile)
+	}
+	p := &aksTokenRequestPolicy{caFile: f, ca: b, host: host, serverName: serverName}
+	if _, err := p.client(); err != nil {
+		return nil, err
+	}
+	return p, nil
+}
+
+func (a *aksTokenRequestPolicy) Do(req *policy.Request) (*http.Response, error) {
 	if r := req.Raw(); strings.HasSuffix(r.URL.Path, "/token") {
-		r.URL.Host = a.h
+		c, err := a.client()
+		if err != nil {
+			return nil, errorinfo.NonRetriableError(err)
+		}
+		r.URL.Host = a.host
 		r.Host = ""
-		return a.pl.Do(req)
+		res, err := c.Do(r)
+		if err != nil {
+			return nil, err
+		}
+		if res == nil {
+			// this policy is effectively a transport, so it must handle
+			// this rare case. Returning an error makes the retry policy
+			// try the request again
+			err = errors.New("received nil response")
+		}
+		return res, err
 	}
 	return req.Next()
+}
+
+func (a *aksTokenRequestPolicy) client() (*http.Client, error) {
+	// this function doesn't need synchronization because
+	// it's called under confidentialClient's lock
+
+	if a.caFile == "" {
+		// host provided CA bytes in AZURE_KUBERNETES_CA_DATA and can't change
+		// them now, so we need to create a client only if we haven't done so yet
+		if a.c == nil {
+			if len(a.ca) == 0 {
+				return nil, errors.New("no value found for " + aksCAData)
+			}
+			cp := x509.NewCertPool()
+			if !cp.AppendCertsFromPEM(a.ca) {
+				return nil, errors.New("couldn't parse " + aksCAData)
+			}
+			a.c = &http.Client{
+				Transport: &http.Transport{
+					TLSClientConfig: &tls.Config{
+						RootCAs:    cp,
+						ServerName: a.serverName,
+					},
+				},
+			}
+			// this copy of the CA bytes is redundant because we've
+			// configured the client and won't execute this block again
+			a.ca = nil
+		}
+		return a.c, nil
+	}
+
+	// host provided the CA bytes in a file whose contents it can change,
+	// so we must read that file and maybe create a new client
+	b, err := os.ReadFile(a.caFile)
+	if err != nil {
+		return nil, err
+	}
+	if len(b) == 0 {
+		return nil, errors.New(aksCAFile + " specifies an empty file")
+	}
+	if !bytes.Equal(b, a.ca) {
+		a.ca = b
+		cp := x509.NewCertPool()
+		if !cp.AppendCertsFromPEM(a.ca) {
+			return nil, errors.New("couldn't parse " + aksCAFile)
+		}
+		a.c = &http.Client{
+			Transport: &http.Transport{
+				TLSClientConfig: &tls.Config{
+					RootCAs:    cp,
+					ServerName: a.serverName,
+				},
+			},
+		}
+	}
+	return a.c, nil
 }

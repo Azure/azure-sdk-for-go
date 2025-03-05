@@ -127,7 +127,8 @@ This will create a config file and push recordings to the Azure SDK Assets repo.
 ---
 
 ## Breaking Change Review
-#Steps:
+
+### Steps:
 1. Check for breaking changes by reviewing the Issues under sdk-release-request with both "Breaking Change" and "Stable" labels.
 1. If there’s an associated PR, check for approval in the comments.
 1. If no PR exists, locate the readme.md for the corresponding service and check the commit history for breaking changes.

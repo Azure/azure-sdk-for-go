@@ -24,10 +24,12 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
@@ -223,73 +225,172 @@ func TestTestWorkloadIdentityCredential_IncompleteConfig(t *testing.T) {
 func TestWorkloadIdentityCredential_SNIPolicy(t *testing.T) {
 	called := false
 	expected := ""
-	ts := httptest.NewUnstartedServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
-		fmt.Fprintln(w, string(accessTokenRespSuccess))
-	}))
-	defer ts.Close()
-	ts.TLS = &tls.Config{
-		GetCertificate: func(info *tls.ClientHelloInfo) (*tls.Certificate, error) {
-			called = true
-			if expected == "" {
-				t.Error("test bug: expected server name not set; should match test server's DNS name")
-			} else if actual := info.ServerName; actual != expected {
-				t.Errorf("expected %q, got %q", expected, actual)
-			}
-			return nil, nil
-		},
+	newServer := func() ([]byte, *url.URL) {
+		ts := httptest.NewUnstartedServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+			fmt.Fprintln(w, string(accessTokenRespSuccess))
+		}))
+		t.Cleanup(ts.Close)
+		ts.TLS = &tls.Config{
+			GetCertificate: func(info *tls.ClientHelloInfo) (*tls.Certificate, error) {
+				called = true
+				if expected == "" {
+					t.Error("test bug: expected server name not set; should match test server's DNS name")
+				} else if actual := info.ServerName; actual != expected {
+					t.Errorf("expected %q, got %q", expected, actual)
+				}
+				return nil, nil
+			},
+		}
+		ts.StartTLS()
+		cert := ts.Certificate()
+		expected = cert.DNSNames[0]
+		pemData := pem.EncodeToMemory(&pem.Block{
+			Type:  "CERTIFICATE",
+			Bytes: cert.Raw,
+		})
+		u, err := url.Parse(ts.URL)
+		require.NoError(t, err)
+		return pemData, u
 	}
-	ts.StartTLS()
-	cert := ts.Certificate()
-	pemData := pem.EncodeToMemory(&pem.Block{
-		Type:  "CERTIFICATE",
-		Bytes: cert.Raw,
-	})
-	certFile := filepath.Join(t.TempDir(), t.Name())
-	require.NoError(t, os.WriteFile(certFile, pemData, 0600))
-	expected = cert.DNSNames[0]
 
-	u, err := url.Parse(ts.URL)
-	require.NoError(t, err)
+	pemData, u := newServer()
+	caFile := filepath.Join(t.TempDir(), t.Name())
+	require.NoError(t, os.WriteFile(caFile, pemData, 0600))
 
 	f := filepath.Join(t.TempDir(), t.Name())
 	require.NoError(t, os.WriteFile(f, []byte(tokenValue), 0600))
 
-	params := map[string]string{
-		"AZURE_KUBERNETES_CA_FILE": certFile,
-		"AZURE_KUBERNETES_CA_DATA": string(pemData),
+	for k, v := range map[string]string{
+		aksSNIName:              expected,
+		aksTokenEndpoint:        u.Host,
+		azureClientID:           fakeClientID,
+		azureFederatedTokenFile: f,
+		azureTenantID:           fakeTenantID,
+	} {
+		t.Setenv(k, v)
 	}
 
-	for k, v := range params {
-		t.Run("CAFile", func(t *testing.T) {
-			t.Setenv(k, v)
-			for k, v := range map[string]string{
-				"AZURE_KUBERNETES_SNI_NAME":       expected,
-				"AZURE_KUBERNETES_TOKEN_ENDPOINT": u.Host,
-				azureClientID:                     fakeClientID,
-				azureFederatedTokenFile:           f,
-				azureTenantID:                     fakeTenantID,
-			} {
+	for _, test := range []struct {
+		name string
+		vars map[string]string
+	}{
+		{"no cert specified", nil},
+		{"two certs specified", map[string]string{aksCAData: "...", aksCAFile: "..."}},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			for k, v := range test.vars {
 				t.Setenv(k, v)
 			}
-
-			cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
-				ClientOptions: policy.ClientOptions{
-					Transport: &mockSTS{
-						tokenRequestCallback: func(*http.Request) *http.Response {
-							t.Fatal("credential should have sent token request to endpoint specified in environment variable")
-							return nil
-						},
-					},
+			_, err := NewWorkloadIdentityCredential(nil)
+			require.ErrorContains(t, err, aksCAData)
+			require.ErrorContains(t, err, aksCAFile)
+		})
+	}
+	o := WorkloadIdentityCredentialOptions{
+		ClientOptions: policy.ClientOptions{
+			Transport: &mockSTS{
+				tokenRequestCallback: func(*http.Request) *http.Response {
+					t.Fatal("credential should have sent token request to endpoint specified in " + aksTokenEndpoint)
+					return nil
 				},
-			})
+			},
+		},
+	}
+	for k, v := range map[string]string{
+		aksCAData: string(pemData),
+		aksCAFile: caFile,
+	} {
+		called = false
+		t.Run(k, func(t *testing.T) {
+			t.Setenv(k, v)
+			cred, err := NewWorkloadIdentityCredential(&o)
 			require.NoError(t, err)
 
 			tk, err := cred.GetToken(ctx, testTRO)
 			require.NoError(t, err)
 			require.Equal(t, tokenValue, tk.Token)
 			require.True(t, called, "test bug: test server's GetCertificate function wasn't called")
+
+			t.Run("race", func(t *testing.T) {
+				cred, err := NewWorkloadIdentityCredential(&o)
+				require.NoError(t, err)
+				wg := sync.WaitGroup{}
+				ch := make(chan error, 1)
+				for i := 0; i < 100; i++ {
+					wg.Add(1)
+					go func() {
+						defer wg.Done()
+						if _, err := cred.GetToken(ctx, testTRO); err != nil {
+							select {
+							case ch <- err:
+							default:
+							}
+						}
+					}()
+				}
+				wg.Wait()
+				select {
+				case err := <-ch:
+					t.Fatal(err)
+				default:
+				}
+			})
 		})
 	}
+
+	t.Run("file", func(t *testing.T) {
+		t.Setenv(aksCAFile, caFile)
+		t.Run("updated", func(t *testing.T) {
+			p, err := newAKSTokenRequestPolicy()
+			require.NoError(t, err)
+			pl := runtime.NewPipeline("", "", runtime.PipelineOptions{}, &policy.ClientOptions{
+				PerRetryPolicies: []policy.Policy{p},
+				Transport: &mockSTS{
+					tokenRequestCallback: func(*http.Request) *http.Response {
+						t.Fatal("policy should have sent this request to the AKS endpoint")
+						return nil
+					},
+				},
+			})
+
+			called = false
+			r, err := runtime.NewRequest(ctx, http.MethodGet, u.String()+"/tenant/token")
+			require.NoError(t, err)
+			_, err = pl.Do(r)
+			require.NoError(t, err)
+			require.True(t, called, "test bug: test server's GetCertificate function wasn't called")
+
+			// need a new server because a started one's TLS cert is immutable. Unfortunately, a new
+			// server listens on a different port, so we need to update the policy's host. This is
+			// why this test exercises the policy directly rather than through a credential instance
+			pemData, u := newServer()
+			p.host = u.Host
+			require.NoError(t, os.WriteFile(caFile, pemData, 0600))
+
+			called = false
+			r, err = runtime.NewRequest(ctx, http.MethodGet, u.String()+"/tenant/token")
+			require.NoError(t, err)
+			_, err = pl.Do(r)
+			require.NoError(t, err)
+			require.True(t, called, "test bug: test server's GetCertificate function wasn't called")
+		})
+		t.Run("invalid", func(t *testing.T) {
+			require.NoError(t, os.WriteFile(caFile, []byte("not a cert"), 0600))
+			_, err := NewWorkloadIdentityCredential(nil)
+			require.ErrorContains(t, err, "couldn't parse")
+			require.ErrorContains(t, err, aksCAFile)
+		})
+		t.Run("empty", func(t *testing.T) {
+			require.NoError(t, os.Truncate(caFile, 0))
+			_, err := NewWorkloadIdentityCredential(nil)
+			require.ErrorContains(t, err, "empty file")
+		})
+		t.Run("not found", func(t *testing.T) {
+			require.NoError(t, os.Remove(caFile))
+			_, err := NewWorkloadIdentityCredential(nil)
+			require.ErrorContains(t, err, "no such file")
+		})
+	})
 }
 
 func TestWorkloadIdentityCredential_NoFile(t *testing.T) {

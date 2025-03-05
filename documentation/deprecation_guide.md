@@ -10,12 +10,12 @@ Deprecation is different from [retraction](https://go.dev/ref/mod#go-mod-file-re
 
 Lay out a migration plan for customers. Users should have a clear path to migrate their code from the old, deprecated module to the new, recommended module.
 
-Create a `MIGRATION.md` file in the directory of the new module. Here is an example of [`MIGRATION.md`](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/azidentity/MIGRATION.md) in `azidentity` module. This guide should include key differences between the modules and samples of the old vs new code.
+Create a `MIGRATION.md` file in the directory of the new module. Here is an example of a [`MIGRATION.md`](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/azidentity/MIGRATION.md) file in the `azidentity` module. This guide should include key differences between the modules and samples of the old vs new code.
 
 
 # Step 2: Release the Module with a Deprecation Message
 
-Create a PR containing the final patch release of the module that includes the deprecation message. The deprecation message should also include migration instructions. Here is an example of the [final patch release](https://github.com/Azure/azure-sdk-for-go/pull/22578/files) for `azingest`.
+Create a PR containing the final patch release of the module that includes the deprecation message. The deprecation message should also include migration instructions. Here is an example of the [final patch release](https://github.com/Azure/azure-sdk-for-go/pull/22578/files) for the `azingest` module.
 
 The deprecation message should be included in the following files:
 
@@ -56,8 +56,8 @@ The Azure Monitor Ingestion client module is used to send custom logs to [Azure 
 
 After the final release with the deprecation message, it's time to remove the module from [pkg.go.dev](https://pkg.go.dev/about). Users will still be able to access the module via `go get` or `go install` but removing should prevent new users from discovering the deprecated module.
 
-To do this, file a request to the pkgsite team by filing an issue at https://github.com/golang/go/issues, for example [this is request](https://github.com/golang/go/issues/66302)  to remove `azingest`.
+To do this, file a request to the pkgsite team by filing an issue at https://github.com/golang/go/issues, for example [this request](https://github.com/golang/go/issues/66302)  to remove `azingest`.
 
 # Step 4: Delete Deprecated Module Code
 
-Lastly, remove the old module and all references to it from the `azure-sdk-for-go` repo. Double check all documentation (including MS Learn docs) for accuracy. Here is the example [PR](https://github.com/Azure/azure-sdk-for-go/pull/22587/files) for removing `azingest`.
+Lastly, remove the old module and all references to it from the `azure-sdk-for-go` repo. Double check all documentation (including MS Learn docs) for accuracy. Here is an example [PR](https://github.com/Azure/azure-sdk-for-go/pull/22587/files) that removes the old `azingest` module code.

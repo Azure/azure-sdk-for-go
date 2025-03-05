@@ -114,6 +114,7 @@ Generate and release Azure SDK for Go package from Swagger or TypeSpec.
  ```ps
  Invoke-WebRequest -OutFile "generate-assets-json.ps1" https://raw.githubusercontent.com/Azure/azure-sdk-tools/main/eng/common/testproxy/onboarding/generate-assets-json.ps1
  Invoke-WebRequest -OutFile "generate-assets-json.ps1" https://raw.githubusercontent.com/Azure/azure-sdk-tools/main/eng/common/testproxy/onboarding/common-asset-functions.ps1
+```
 2. Run the script in the service path:
 `.\generate-assets-json.ps1 -InitialPush`
 This will create a config file and push recordings to the Azure SDK Assets repo.
@@ -123,9 +124,11 @@ This will create a config file and push recordings to the Azure SDK Assets repo.
 5. Once tests pass, switch to "playback" mode and ensure all tests pass in both modes.
 6. Push the final assets with test-proxy push --assets-json-path assets.json.
 
+---
+
 ## Breaking Change Review
 #Steps:
 1. Check for breaking changes by reviewing the Issues under sdk-release-request with both "Breaking Change" and "Stable" labels.
-2. If there’s an associated PR, check for approval in the comments.
-3. If no PR exists, locate the readme.md for the corresponding service and check the commit history for breaking changes.
-4. [example to see details](https://github.com/Azure/azure-sdk-for-go/pull/23343)
+1. If there’s an associated PR, check for approval in the comments.
+1. If no PR exists, locate the readme.md for the corresponding service and check the commit history for breaking changes.
+1. [example to see details](https://github.com/Azure/azure-sdk-for-go/pull/23343)

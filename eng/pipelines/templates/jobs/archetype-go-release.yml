@@ -44,60 +44,74 @@ stages:
     dependsOn: CheckRelease
     condition: and(succeeded(), eq(dependencies.CheckRelease.outputs['CheckReleaseJob.Verify.NeedToRelease'], 'true'))
     jobs:
-      - deployment: TagRepository
+      - deployment: ReleaseGate
+        environment: github
+        pool:
+          name: azsdk-pool-mms-ubuntu-2004-general
+          image: azsdk-pool-mms-ubuntu-2004-1espt
+          os: linux
+        templateContext:
+          type: releaseJob
+          isProduction: true
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - pwsh: |
+                    Wrote-Host "The go release job needs local scripts to actually publish, given that it's tagging the code that creates the release. This clashes with 1ES release requirements."
+                    Write-Host "This is a placeholder deployment so that we can use the gate approval feature, while allowing the actual release steps to be jobs instead of deployments."
+                  displayName: "Describe why this job exists."
+
+      - job: TagRepository
         displayName: "Create release tag"
         condition: and(succeeded(), ne(variables['Skip.TagRepository'], 'true'))
-        environment: github
+        dependsOn: ReleaseGate
 
         pool:
           name: azsdk-pool-mms-ubuntu-2004-general
           image: azsdk-pool-mms-ubuntu-2004-1espt
           os: linux
 
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                - checkout: self
-                - download: current
-                  artifact: 'PackageInfo'
-                - template: /eng/common/pipelines/templates/steps/retain-run.yml
-                - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
-                  parameters:
-                    ServiceDirectory: '${{parameters.ServiceDirectory}}'
-                    ${{ if startsWith(parameters.ServiceDirectory, '../') }}:
-                      PackageName: "${{replace(parameters.ServiceDirectory, '../', '')}}"
-                    ${{ else }}:
-                      PackageName: 'sdk/${{parameters.ServiceDirectory}}'
-                    ForRelease: true
-                - template: /eng/common/pipelines/templates/steps/verify-restapi-spec-location.yml
-                  parameters:
-                    ${{ if startsWith(parameters.ServiceDirectory, '../') }}:
-                      PackageName: "${{replace(parameters.ServiceDirectory, '../', '')}}"
-                    ${{ else }}:
-                      PackageName: 'sdk/${{parameters.ServiceDirectory}}'
-                    ServiceDirectory: ${{parameters.ServiceDirectory}}
-                    ArtifactLocation: $(Pipeline.Workspace)
-                - task: PowerShell@2
-                  displayName: 'Verify no replace directives in go.mod file'
-                  inputs:
-                    targetType: 'filePath'
-                    filePath: ./eng/scripts/validate_go_mod.ps1
-                    arguments: '${{ parameters.ServiceDirectory }}'
-                    pwsh: true
-                - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
-                  parameters:
-                    ArtifactLocation: $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }}
-                    PackageFilter: sdk/${{ parameters.ServiceDirectory }}
-                    ReleaseSha: $(Build.SourceVersion)
-                    RepoId: Azure/azure-sdk-for-go
-                    WorkingDirectory: $(System.DefaultWorkingDirectory)
+        steps:
+          - checkout: self
+          - download: current
+            artifact: 'PackageInfo'
+          - template: /eng/common/pipelines/templates/steps/retain-run.yml
+          - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
+            parameters:
+              ServiceDirectory: '${{parameters.ServiceDirectory}}'
+              ${{ if startsWith(parameters.ServiceDirectory, '../') }}:
+                PackageName: "${{replace(parameters.ServiceDirectory, '../', '')}}"
+              ${{ else }}:
+                PackageName: 'sdk/${{parameters.ServiceDirectory}}'
+              ForRelease: true
+          - template: /eng/common/pipelines/templates/steps/verify-restapi-spec-location.yml
+            parameters:
+              ${{ if startsWith(parameters.ServiceDirectory, '../') }}:
+                PackageName: "${{replace(parameters.ServiceDirectory, '../', '')}}"
+              ${{ else }}:
+                PackageName: 'sdk/${{parameters.ServiceDirectory}}'
+              ServiceDirectory: ${{parameters.ServiceDirectory}}
+              ArtifactLocation: $(Pipeline.Workspace)
+          - task: PowerShell@2
+            displayName: 'Verify no replace directives in go.mod file'
+            inputs:
+              targetType: 'filePath'
+              filePath: ./eng/scripts/validate_go_mod.ps1
+              arguments: '${{ parameters.ServiceDirectory }}'
+              pwsh: true
+          - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
+            parameters:
+              ArtifactLocation: $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }}
+              PackageFilter: sdk/${{ parameters.ServiceDirectory }}
+              ReleaseSha: $(Build.SourceVersion)
+              RepoId: Azure/azure-sdk-for-go
+              WorkingDirectory: $(System.DefaultWorkingDirectory)
 
       - ${{ if not(and(startsWith(parameters.ServiceDirectory, 'resourcemanager'), ne(parameters.ServiceDirectory, 'resourcemanager/internal'))) }}:
-        - deployment: UpdatePackageVersion
+        - job: UpdatePackageVersion
           displayName: "Update Package Version"
           condition: and(succeeded(), ne(variables['Skip.UpdatePackageVersion'], 'true'))
-          environment: github
           dependsOn: TagRepository
 
           pool:
@@ -105,17 +119,14 @@ stages:
             image: azsdk-pool-mms-ubuntu-2004-1espt
             os: linux
 
-          strategy:
-            runOnce:
-              deploy:
-                steps:
-                  - checkout: self
-                  - pwsh: |
-                      eng/scripts/Update-ModuleVersion.ps1 -ModulePath 'sdk/${{parameters.ServiceDirectory}}'
-                    displayName: Increment package version
-                  - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
-                    parameters:
-                      PRBranchName: increment-package-version-${{ parameters.ServiceDirectory }}-$(Build.BuildId)
-                      CommitMsg: "Increment package version after release of ${{ parameters.ServiceDirectory }}"
-                      PRTitle: "Increment version for ${{ parameters.ServiceDirectory }} releases"
-                      CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
+          steps:
+            - checkout: self
+            - pwsh: |
+                eng/scripts/Update-ModuleVersion.ps1 -ModulePath 'sdk/${{parameters.ServiceDirectory}}'
+              displayName: Increment package version
+            - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
+              parameters:
+                PRBranchName: increment-package-version-${{ parameters.ServiceDirectory }}-$(Build.BuildId)
+                CommitMsg: "Increment package version after release of ${{ parameters.ServiceDirectory }}"
+                PRTitle: "Increment version for ${{ parameters.ServiceDirectory }} releases"
+                CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'

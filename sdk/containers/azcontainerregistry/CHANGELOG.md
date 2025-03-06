@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+* Default audience of Azure Container Registry of all clouds to https://containerregistry.azure.net
 
 ## 0.2.2 (2024-09-19)
 

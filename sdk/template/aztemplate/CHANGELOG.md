@@ -1,5 +1,11 @@
 # Release History
 
+## 0.6.0 (2025-03-06)
+
+### Features Added
+
+* Template package validating release pipeline
+
 ## 0.6.0 (2024-03-14)
 
 ### Features Added

@@ -1,4 +1,4 @@
-//go:generate tsp-client update --local-spec-repo
+//go:generate tsp-client update
 //go:generate go run ./internal/transforms.go
 //go:generate rm ./constants.go
 //go:generate goimports -w .

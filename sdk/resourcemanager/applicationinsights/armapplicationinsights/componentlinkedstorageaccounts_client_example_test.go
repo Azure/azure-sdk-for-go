@@ -25,7 +25,7 @@ func ExampleComponentLinkedStorageAccountsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("<subscription-id>", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -53,7 +53,7 @@ func ExampleComponentLinkedStorageAccountsClient_CreateAndUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("<subscription-id>", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -85,7 +85,7 @@ func ExampleComponentLinkedStorageAccountsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("<subscription-id>", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -117,7 +117,7 @@ func ExampleComponentLinkedStorageAccountsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("<subscription-id>", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}

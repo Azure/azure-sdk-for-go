@@ -25,7 +25,7 @@ func ExampleWorkbooksClient_NewListBySubscriptionPager_workbooksList2() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("<subscription-id>", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -56,7 +56,7 @@ func ExampleWorkbooksClient_NewListBySubscriptionPager_workbooksListSub() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("<subscription-id>", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -128,7 +128,7 @@ func ExampleWorkbooksClient_NewListByResourceGroupPager_workbooksList() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("<subscription-id>", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -201,7 +201,7 @@ func ExampleWorkbooksClient_NewListByResourceGroupPager_workbooksManagedList() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("<subscription-id>", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -284,7 +284,7 @@ func ExampleWorkbooksClient_Get_workbookGet() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("<subscription-id>", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -325,7 +325,7 @@ func ExampleWorkbooksClient_Get_workbookGet1() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("<subscription-id>", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -364,7 +364,7 @@ func ExampleWorkbooksClient_Get_workbookManagedGet() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("<subscription-id>", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -412,7 +412,7 @@ func ExampleWorkbooksClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("<subscription-id>", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -429,7 +429,7 @@ func ExampleWorkbooksClient_CreateOrUpdate_workbookAdd() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("<subscription-id>", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -484,7 +484,7 @@ func ExampleWorkbooksClient_CreateOrUpdate_workbookManagedAdd() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("<subscription-id>", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -549,7 +549,7 @@ func ExampleWorkbooksClient_Update_workbookManagedUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("<subscription-id>", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -604,7 +604,7 @@ func ExampleWorkbooksClient_Update_workbookUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("<subscription-id>", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -648,7 +648,7 @@ func ExampleWorkbooksClient_NewRevisionsListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("<subscription-id>", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -716,7 +716,7 @@ func ExampleWorkbooksClient_RevisionGet() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("<subscription-id>", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}

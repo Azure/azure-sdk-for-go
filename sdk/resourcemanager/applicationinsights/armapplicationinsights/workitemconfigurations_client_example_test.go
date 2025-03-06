@@ -25,7 +25,7 @@ func ExampleWorkItemConfigurationsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("<subscription-id>", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -52,7 +52,7 @@ func ExampleWorkItemConfigurationsClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("<subscription-id>", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -82,7 +82,7 @@ func ExampleWorkItemConfigurationsClient_GetDefault() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("<subscription-id>", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -109,7 +109,7 @@ func ExampleWorkItemConfigurationsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("<subscription-id>", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -126,7 +126,7 @@ func ExampleWorkItemConfigurationsClient_GetItem() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("<subscription-id>", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -153,7 +153,7 @@ func ExampleWorkItemConfigurationsClient_UpdateItem() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("<subscription-id>", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}

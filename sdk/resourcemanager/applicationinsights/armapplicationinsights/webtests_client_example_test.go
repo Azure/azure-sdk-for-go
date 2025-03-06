@@ -29,7 +29,7 @@ func ExampleWebTestsClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewWebTestsClient().NewListByResourceGroupPager("my-resource-group", nil)
+	pager := clientFactory.NewWebTestsClient("<subscription-id>").NewListByResourceGroupPager("my-resource-group", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -114,7 +114,7 @@ func ExampleWebTestsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewWebTestsClient().Get(ctx, "my-resource-group", "my-webtest-01-mywebservice", nil)
+	res, err := clientFactory.NewWebTestsClient("<subscription-id>").Get(ctx, "my-resource-group", "my-webtest-01-mywebservice", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -165,7 +165,7 @@ func ExampleWebTestsClient_CreateOrUpdate_webTestCreate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewWebTestsClient().CreateOrUpdate(ctx, "my-resource-group", "my-webtest-my-component", armapplicationinsights.WebTest{
+	res, err := clientFactory.NewWebTestsClient("<subscription-id>").CreateOrUpdate(ctx, "my-resource-group", "my-webtest-my-component", armapplicationinsights.WebTest{
 		Location: to.Ptr("South Central US"),
 		Kind:     to.Ptr(armapplicationinsights.WebTestKindPing),
 		Properties: &armapplicationinsights.WebTestProperties{
@@ -233,7 +233,7 @@ func ExampleWebTestsClient_CreateOrUpdate_webTestCreateStandard() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewWebTestsClient().CreateOrUpdate(ctx, "my-resource-group", "my-webtest-my-component", armapplicationinsights.WebTest{
+	res, err := clientFactory.NewWebTestsClient("<subscription-id>").CreateOrUpdate(ctx, "my-resource-group", "my-webtest-my-component", armapplicationinsights.WebTest{
 		Location: to.Ptr("South Central US"),
 		Properties: &armapplicationinsights.WebTestProperties{
 			Description: to.Ptr("Ping web test alert for mytestwebapp"),
@@ -329,7 +329,7 @@ func ExampleWebTestsClient_CreateOrUpdate_webTestUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewWebTestsClient().CreateOrUpdate(ctx, "my-resource-group", "my-webtest-my-component", armapplicationinsights.WebTest{
+	res, err := clientFactory.NewWebTestsClient("<subscription-id>").CreateOrUpdate(ctx, "my-resource-group", "my-webtest-my-component", armapplicationinsights.WebTest{
 		Location: to.Ptr("South Central US"),
 		Kind:     to.Ptr(armapplicationinsights.WebTestKindPing),
 		Properties: &armapplicationinsights.WebTestProperties{
@@ -400,7 +400,7 @@ func ExampleWebTestsClient_UpdateTags() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewWebTestsClient().UpdateTags(ctx, "my-resource-group", "my-webtest-my-component", armapplicationinsights.TagsResource{
+	res, err := clientFactory.NewWebTestsClient("<subscription-id>").UpdateTags(ctx, "my-resource-group", "my-webtest-my-component", armapplicationinsights.TagsResource{
 		Tags: map[string]*string{
 			"Color":          to.Ptr("AzureBlue"),
 			"CustomField-01": to.Ptr("This is a random value"),
@@ -461,7 +461,7 @@ func ExampleWebTestsClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = clientFactory.NewWebTestsClient().Delete(ctx, "my-resource-group", "my-webtest-01-mywebservice", nil)
+	_, err = clientFactory.NewWebTestsClient("<subscription-id>").Delete(ctx, "my-resource-group", "my-webtest-01-mywebservice", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -478,7 +478,7 @@ func ExampleWebTestsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewWebTestsClient().NewListPager(nil)
+	pager := clientFactory.NewWebTestsClient("<subscription-id>").NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -559,7 +559,7 @@ func ExampleWebTestsClient_NewListByComponentPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewWebTestsClient().NewListByComponentPager("my-component", "my-resource-group", nil)
+	pager := clientFactory.NewWebTestsClient("<subscription-id>").NewListByComponentPager("my-component", "my-resource-group", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

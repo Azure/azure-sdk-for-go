@@ -31,7 +31,7 @@ func ExampleAnnotationsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewAnnotationsClient().NewListPager("my-resource-group", "my-component", "2018-02-05T00%253A30%253A00.000Z", "2018-02-06T00%253A33A00.000Z", nil)
+	pager := clientFactory.NewAnnotationsClient("<subscription-id>").NewListPager("my-resource-group", "my-component", "2018-02-05T00%253A30%253A00.000Z", "2018-02-06T00%253A33A00.000Z", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -58,7 +58,7 @@ func ExampleAnnotationsClient_Create() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewAnnotationsClient().Create(ctx, "my-resource-group", "my-component", armapplicationinsights.Annotation{
+	res, err := clientFactory.NewAnnotationsClient("<subscription-id>").Create(ctx, "my-resource-group", "my-component", armapplicationinsights.Annotation{
 		AnnotationName: to.Ptr("TestAnnotation"),
 		Category:       to.Ptr("Text"),
 		EventTime:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-31T13:41:38.657Z"); return t }()),
@@ -92,7 +92,7 @@ func ExampleAnnotationsClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = clientFactory.NewAnnotationsClient().Delete(ctx, "my-resource-group", "my-component", "bb820f1b-3110-4a8b-ba2c-8c1129d7eb6a", nil)
+	_, err = clientFactory.NewAnnotationsClient("<subscription-id>").Delete(ctx, "my-resource-group", "my-component", "bb820f1b-3110-4a8b-ba2c-8c1129d7eb6a", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

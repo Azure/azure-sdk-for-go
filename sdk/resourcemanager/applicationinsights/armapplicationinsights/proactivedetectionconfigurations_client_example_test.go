@@ -29,7 +29,7 @@ func ExampleProactiveDetectionConfigurationsClient_List() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewProactiveDetectionConfigurationsClient().List(ctx, "my-resource-group", "my-component", nil)
+	res, err := clientFactory.NewProactiveDetectionConfigurationsClient("<subscription-id>").List(ctx, "my-resource-group", "my-component", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -85,7 +85,7 @@ func ExampleProactiveDetectionConfigurationsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewProactiveDetectionConfigurationsClient().Get(ctx, "my-resource-group", "my-component", "slowpageloadtime", nil)
+	res, err := clientFactory.NewProactiveDetectionConfigurationsClient("<subscription-id>").Get(ctx, "my-resource-group", "my-component", "slowpageloadtime", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -123,7 +123,7 @@ func ExampleProactiveDetectionConfigurationsClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewProactiveDetectionConfigurationsClient().Update(ctx, "my-resource-group", "my-component", "slowpageloadtime", armapplicationinsights.ComponentProactiveDetectionConfiguration{
+	res, err := clientFactory.NewProactiveDetectionConfigurationsClient("<subscription-id>").Update(ctx, "my-resource-group", "my-component", "slowpageloadtime", armapplicationinsights.ComponentProactiveDetectionConfiguration{
 		Name: to.Ptr("slowpageloadtime"),
 		CustomEmails: []*string{
 			to.Ptr("foo@microsoft.com"),

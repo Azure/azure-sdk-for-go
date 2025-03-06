@@ -28,7 +28,7 @@ func ExampleWebTestLocationsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewWebTestLocationsClient().NewListPager("my-resource-group", "my-component", nil)
+	pager := clientFactory.NewWebTestLocationsClient("<subscription-id>").NewListPager("my-resource-group", "my-component", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

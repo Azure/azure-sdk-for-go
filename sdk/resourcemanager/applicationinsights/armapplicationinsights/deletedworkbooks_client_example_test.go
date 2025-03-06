@@ -28,7 +28,7 @@ func ExampleDeletedWorkbooksClient_NewListBySubscriptionPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewDeletedWorkbooksClient().NewListBySubscriptionPager(&armapplicationinsights.DeletedWorkbooksClientListBySubscriptionOptions{Category: nil,
+	pager := clientFactory.NewDeletedWorkbooksClient("<subscription-id>").NewListBySubscriptionPager(&armapplicationinsights.DeletedWorkbooksClientListBySubscriptionOptions{Category: nil,
 		Tags: []string{},
 	})
 	for pager.More() {

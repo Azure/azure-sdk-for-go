@@ -29,7 +29,7 @@ func ExampleComponentsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewComponentsClient().NewListPager(nil)
+	pager := clientFactory.NewComponentsClient("<subscription-id>").NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -115,7 +115,7 @@ func ExampleComponentsClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewComponentsClient().NewListByResourceGroupPager("my-resource-group", nil)
+	pager := clientFactory.NewComponentsClient("<subscription-id>").NewListByResourceGroupPager("my-resource-group", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -201,7 +201,7 @@ func ExampleComponentsClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = clientFactory.NewComponentsClient().Delete(ctx, "my-resource-group", "my-component", nil)
+	_, err = clientFactory.NewComponentsClient("<subscription-id>").Delete(ctx, "my-resource-group", "my-component", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -218,7 +218,7 @@ func ExampleComponentsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewComponentsClient().Get(ctx, "my-resource-group", "my-component", nil)
+	res, err := clientFactory.NewComponentsClient("<subscription-id>").Get(ctx, "my-resource-group", "my-component", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -267,7 +267,7 @@ func ExampleComponentsClient_CreateOrUpdate_componentCreate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewComponentsClient().CreateOrUpdate(ctx, "my-resource-group", "my-component", armapplicationinsights.Component{
+	res, err := clientFactory.NewComponentsClient("<subscription-id>").CreateOrUpdate(ctx, "my-resource-group", "my-component", armapplicationinsights.Component{
 		Location: to.Ptr("South Central US"),
 		Kind:     to.Ptr("web"),
 		Properties: &armapplicationinsights.ComponentProperties{
@@ -325,7 +325,7 @@ func ExampleComponentsClient_CreateOrUpdate_componentUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewComponentsClient().CreateOrUpdate(ctx, "my-resource-group", "my-component", armapplicationinsights.Component{
+	res, err := clientFactory.NewComponentsClient("<subscription-id>").CreateOrUpdate(ctx, "my-resource-group", "my-component", armapplicationinsights.Component{
 		Location: to.Ptr("South Central US"),
 		Tags: map[string]*string{
 			"ApplicationGatewayType": to.Ptr("Internal-Only"),
@@ -383,7 +383,7 @@ func ExampleComponentsClient_UpdateTags() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewComponentsClient().UpdateTags(ctx, "my-resource-group", "my-component", armapplicationinsights.TagsResource{
+	res, err := clientFactory.NewComponentsClient("<subscription-id>").UpdateTags(ctx, "my-resource-group", "my-component", armapplicationinsights.TagsResource{
 		Tags: map[string]*string{
 			"ApplicationGatewayType": to.Ptr("Internal-Only"),
 			"BillingEntity":          to.Ptr("Self"),
@@ -445,7 +445,7 @@ func ExampleComponentsClient_Purge() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = clientFactory.NewComponentsClient().Purge(ctx, "OIAutoRest5123", "aztest5048", armapplicationinsights.ComponentPurgeBody{
+	_, err = clientFactory.NewComponentsClient("<subscription-id>").Purge(ctx, "OIAutoRest5123", "aztest5048", armapplicationinsights.ComponentPurgeBody{
 		Filters: []*armapplicationinsights.ComponentPurgeBodyFilters{
 			{
 				Column:   to.Ptr("TimeGenerated"),
@@ -470,7 +470,7 @@ func ExampleComponentsClient_GetPurgeStatus() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewComponentsClient().GetPurgeStatus(ctx, "OIAutoRest5123", "aztest5048", "purge-970318e7-b859-4edb-8903-83b1b54d0b74", nil)
+	res, err := clientFactory.NewComponentsClient("<subscription-id>").GetPurgeStatus(ctx, "OIAutoRest5123", "aztest5048", "purge-970318e7-b859-4edb-8903-83b1b54d0b74", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

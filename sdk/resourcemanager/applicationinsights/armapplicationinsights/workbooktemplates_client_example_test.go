@@ -29,7 +29,7 @@ func ExampleWorkbookTemplatesClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewWorkbookTemplatesClient().NewListByResourceGroupPager("my-resource-group", nil)
+	pager := clientFactory.NewWorkbookTemplatesClient("<subscription-id>").NewListByResourceGroupPager("my-resource-group", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -56,7 +56,7 @@ func ExampleWorkbookTemplatesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewWorkbookTemplatesClient().Get(ctx, "my-resource-group", "my-resource-name", nil)
+	res, err := clientFactory.NewWorkbookTemplatesClient("<subscription-id>").Get(ctx, "my-resource-group", "my-resource-name", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -121,7 +121,7 @@ func ExampleWorkbookTemplatesClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = clientFactory.NewWorkbookTemplatesClient().Delete(ctx, "my-resource-group", "my-template-resource", nil)
+	_, err = clientFactory.NewWorkbookTemplatesClient("<subscription-id>").Delete(ctx, "my-resource-group", "my-template-resource", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -138,7 +138,7 @@ func ExampleWorkbookTemplatesClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewWorkbookTemplatesClient().CreateOrUpdate(ctx, "my-resource-group", "testtemplate2", armapplicationinsights.WorkbookTemplate{
+	res, err := clientFactory.NewWorkbookTemplatesClient("<subscription-id>").CreateOrUpdate(ctx, "my-resource-group", "testtemplate2", armapplicationinsights.WorkbookTemplate{
 		Location: to.Ptr("west us"),
 		Properties: &armapplicationinsights.WorkbookTemplateProperties{
 			Author: to.Ptr("Contoso"),
@@ -243,7 +243,7 @@ func ExampleWorkbookTemplatesClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewWorkbookTemplatesClient().Update(ctx, "my-resource-group", "my-template-resource", &armapplicationinsights.WorkbookTemplatesClientUpdateOptions{WorkbookTemplateUpdateParameters: nil})
+	res, err := clientFactory.NewWorkbookTemplatesClient("<subscription-id>").Update(ctx, "my-resource-group", "my-template-resource", &armapplicationinsights.WorkbookTemplatesClientUpdateOptions{WorkbookTemplateUpdateParameters: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

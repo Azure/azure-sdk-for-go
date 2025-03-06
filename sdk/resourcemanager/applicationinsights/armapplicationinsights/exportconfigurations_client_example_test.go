@@ -29,7 +29,7 @@ func ExampleExportConfigurationsClient_List() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewExportConfigurationsClient().List(ctx, "my-resource-group", "my-component", nil)
+	res, err := clientFactory.NewExportConfigurationsClient("<subscription-id>").List(ctx, "my-resource-group", "my-component", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -71,7 +71,7 @@ func ExampleExportConfigurationsClient_Create() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewExportConfigurationsClient().Create(ctx, "my-resource-group", "my-component", armapplicationinsights.ComponentExportRequest{
+	res, err := clientFactory.NewExportConfigurationsClient("<subscription-id>").Create(ctx, "my-resource-group", "my-component", armapplicationinsights.ComponentExportRequest{
 		DestinationAccountID:             to.Ptr("/subscriptions/subid/resourceGroups/my-resource-group/providers/Microsoft.ClassicStorage/storageAccounts/mystorageblob"),
 		DestinationAddress:               to.Ptr("https://mystorageblob.blob.core.windows.net/testexport?sv=2015-04-05&sr=c&sig=token"),
 		DestinationStorageLocationID:     to.Ptr("eastus"),
@@ -123,7 +123,7 @@ func ExampleExportConfigurationsClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewExportConfigurationsClient().Delete(ctx, "my-resource-group", "my-component", "uGOoki0jQsyEs3IdQ83Q4QsNr4=", nil)
+	res, err := clientFactory.NewExportConfigurationsClient("<subscription-id>").Delete(ctx, "my-resource-group", "my-component", "uGOoki0jQsyEs3IdQ83Q4QsNr4=", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -164,7 +164,7 @@ func ExampleExportConfigurationsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewExportConfigurationsClient().Get(ctx, "my-resource-group", "my-component", "uGOoki0jQsyEs3IdQ83Q4QsNr4=", nil)
+	res, err := clientFactory.NewExportConfigurationsClient("<subscription-id>").Get(ctx, "my-resource-group", "my-component", "uGOoki0jQsyEs3IdQ83Q4QsNr4=", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -205,7 +205,7 @@ func ExampleExportConfigurationsClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewExportConfigurationsClient().Update(ctx, "my-resource-group", "my-component", "uGOoki0jQsyEs3IdQ83Q4QsNr4=", armapplicationinsights.ComponentExportRequest{
+	res, err := clientFactory.NewExportConfigurationsClient("<subscription-id>").Update(ctx, "my-resource-group", "my-component", "uGOoki0jQsyEs3IdQ83Q4QsNr4=", armapplicationinsights.ComponentExportRequest{
 		DestinationAccountID:             to.Ptr("/subscriptions/subid/resourceGroups/my-resource-group/providers/Microsoft.ClassicStorage/storageAccounts/mystorageblob"),
 		DestinationAddress:               to.Ptr("https://mystorageblob.blob.core.windows.net/fchentest?sv=2015-04-05&sr=c&sig=token"),
 		DestinationStorageLocationID:     to.Ptr("eastus"),

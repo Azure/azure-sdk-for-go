@@ -29,7 +29,7 @@ func ExampleComponentCurrentBillingFeaturesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewComponentCurrentBillingFeaturesClient().Get(ctx, "my-resource-group", "my-component", nil)
+	res, err := clientFactory.NewComponentCurrentBillingFeaturesClient("<subscription-id>").Get(ctx, "my-resource-group", "my-component", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -61,7 +61,7 @@ func ExampleComponentCurrentBillingFeaturesClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewComponentCurrentBillingFeaturesClient().Update(ctx, "my-resource-group", "my-component", armapplicationinsights.ComponentBillingFeatures{
+	res, err := clientFactory.NewComponentCurrentBillingFeaturesClient("<subscription-id>").Update(ctx, "my-resource-group", "my-component", armapplicationinsights.ComponentBillingFeatures{
 		CurrentBillingFeatures: []*string{
 			to.Ptr("Basic"),
 			to.Ptr("Application Insights Enterprise")},

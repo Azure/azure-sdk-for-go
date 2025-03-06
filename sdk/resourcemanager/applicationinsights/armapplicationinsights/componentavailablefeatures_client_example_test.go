@@ -28,7 +28,7 @@ func ExampleComponentAvailableFeaturesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewComponentAvailableFeaturesClient().Get(ctx, "my-resource-group", "my-component", nil)
+	res, err := clientFactory.NewComponentAvailableFeaturesClient("<subscription-id>").Get(ctx, "my-resource-group", "my-component", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

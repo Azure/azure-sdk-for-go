@@ -29,7 +29,7 @@ func ExampleComponentLinkedStorageAccountsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewComponentLinkedStorageAccountsClient().Get(ctx, "someResourceGroupName", "myComponent", armapplicationinsights.StorageTypeServiceProfiler, nil)
+	res, err := clientFactory.NewComponentLinkedStorageAccountsClient("<subscription-id>").Get(ctx, "someResourceGroupName", "myComponent", armapplicationinsights.StorageTypeServiceProfiler, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -57,7 +57,7 @@ func ExampleComponentLinkedStorageAccountsClient_CreateAndUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewComponentLinkedStorageAccountsClient().CreateAndUpdate(ctx, "someResourceGroupName", "myComponent", armapplicationinsights.StorageTypeServiceProfiler, armapplicationinsights.ComponentLinkedStorageAccounts{
+	res, err := clientFactory.NewComponentLinkedStorageAccountsClient("<subscription-id>").CreateAndUpdate(ctx, "someResourceGroupName", "myComponent", armapplicationinsights.StorageTypeServiceProfiler, armapplicationinsights.ComponentLinkedStorageAccounts{
 		Properties: &armapplicationinsights.LinkedStorageAccountsProperties{
 			LinkedStorageAccount: to.Ptr("/subscriptions/86dc51d3-92ed-4d7e-947a-775ea79b4918/resourceGroups/someResourceGroupName/providers/Microsoft.Storage/storageAccounts/storageaccountname"),
 		},
@@ -89,7 +89,7 @@ func ExampleComponentLinkedStorageAccountsClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewComponentLinkedStorageAccountsClient().Update(ctx, "someResourceGroupName", "myComponent", armapplicationinsights.StorageTypeServiceProfiler, armapplicationinsights.ComponentLinkedStorageAccountsPatch{
+	res, err := clientFactory.NewComponentLinkedStorageAccountsClient("<subscription-id>").Update(ctx, "someResourceGroupName", "myComponent", armapplicationinsights.StorageTypeServiceProfiler, armapplicationinsights.ComponentLinkedStorageAccountsPatch{
 		Properties: &armapplicationinsights.LinkedStorageAccountsProperties{
 			LinkedStorageAccount: to.Ptr("/subscriptions/86dc51d3-92ed-4d7e-947a-775ea79b4918/resourceGroups/someResourceGroupName/providers/Microsoft.Storage/storageAccounts/storageaccountname"),
 		},

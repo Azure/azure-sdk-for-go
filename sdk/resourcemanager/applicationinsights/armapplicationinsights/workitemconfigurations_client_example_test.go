@@ -29,7 +29,7 @@ func ExampleWorkItemConfigurationsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewWorkItemConfigurationsClient().NewListPager("my-resource-group", "my-component", nil)
+	pager := clientFactory.NewWorkItemConfigurationsClient("<subscription-id>").NewListPager("my-resource-group", "my-component", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -56,7 +56,7 @@ func ExampleWorkItemConfigurationsClient_Create() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewWorkItemConfigurationsClient().Create(ctx, "my-resource-group", "my-component", armapplicationinsights.WorkItemCreateConfiguration{
+	res, err := clientFactory.NewWorkItemConfigurationsClient("<subscription-id>").Create(ctx, "my-resource-group", "my-component", armapplicationinsights.WorkItemCreateConfiguration{
 		ConnectorDataConfiguration: to.Ptr("{\"VSOAccountBaseUrl\":\"https://testtodelete.visualstudio.com\",\"ProjectCollection\":\"DefaultCollection\",\"Project\":\"todeletefirst\",\"ResourceId\":\"d0662b05-439a-4a1b-840b-33a7f8b42ebf\",\"Custom\":\"{\\\"/fields/System.WorkItemType\\\":\\\"Bug\\\",\\\"/fields/System.AreaPath\\\":\\\"todeletefirst\\\",\\\"/fields/System.AssignedTo\\\":\\\"\\\"}\"}"),
 		ConnectorID:                to.Ptr("d334e2a4-6733-488e-8645-a9fdc1694f41"),
 		ValidateOnly:               to.Ptr(true),
@@ -86,7 +86,7 @@ func ExampleWorkItemConfigurationsClient_GetDefault() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewWorkItemConfigurationsClient().GetDefault(ctx, "my-resource-group", "my-component", nil)
+	res, err := clientFactory.NewWorkItemConfigurationsClient("<subscription-id>").GetDefault(ctx, "my-resource-group", "my-component", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -113,7 +113,7 @@ func ExampleWorkItemConfigurationsClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = clientFactory.NewWorkItemConfigurationsClient().Delete(ctx, "my-resource-group", "my-component", "Visual Studio Team Services", nil)
+	_, err = clientFactory.NewWorkItemConfigurationsClient("<subscription-id>").Delete(ctx, "my-resource-group", "my-component", "Visual Studio Team Services", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -130,7 +130,7 @@ func ExampleWorkItemConfigurationsClient_GetItem() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewWorkItemConfigurationsClient().GetItem(ctx, "my-resource-group", "my-component", "Visual Studio Team Services", nil)
+	res, err := clientFactory.NewWorkItemConfigurationsClient("<subscription-id>").GetItem(ctx, "my-resource-group", "my-component", "Visual Studio Team Services", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -157,7 +157,7 @@ func ExampleWorkItemConfigurationsClient_UpdateItem() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewWorkItemConfigurationsClient().UpdateItem(ctx, "my-resource-group", "my-component", "Visual Studio Team Services", armapplicationinsights.WorkItemCreateConfiguration{
+	res, err := clientFactory.NewWorkItemConfigurationsClient("<subscription-id>").UpdateItem(ctx, "my-resource-group", "my-component", "Visual Studio Team Services", armapplicationinsights.WorkItemCreateConfiguration{
 		ConnectorDataConfiguration: to.Ptr("{\"VSOAccountBaseUrl\":\"https://testtodelete.visualstudio.com\",\"ProjectCollection\":\"DefaultCollection\",\"Project\":\"todeletefirst\",\"ResourceId\":\"d0662b05-439a-4a1b-840b-33a7f8b42ebf\",\"Custom\":\"{\\\"/fields/System.WorkItemType\\\":\\\"Bug\\\",\\\"/fields/System.AreaPath\\\":\\\"todeletefirst\\\",\\\"/fields/System.AssignedTo\\\":\\\"\\\"}\"}"),
 		ConnectorID:                to.Ptr("d334e2a4-6733-488e-8645-a9fdc1694f41"),
 		ValidateOnly:               to.Ptr(true),

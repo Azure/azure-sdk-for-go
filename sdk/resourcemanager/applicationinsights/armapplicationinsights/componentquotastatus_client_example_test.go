@@ -28,7 +28,7 @@ func ExampleComponentQuotaStatusClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewComponentQuotaStatusClient().Get(ctx, "my-resource-group", "my-component", nil)
+	res, err := clientFactory.NewComponentQuotaStatusClient("<subscription-id>").Get(ctx, "my-resource-group", "my-component", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

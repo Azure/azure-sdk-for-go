@@ -29,7 +29,7 @@ func ExampleAPIKeysClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewAPIKeysClient().NewListPager("my-resource-group", "my-component", nil)
+	pager := clientFactory.NewAPIKeysClient("<subscription-id>").NewListPager("my-resource-group", "my-component", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

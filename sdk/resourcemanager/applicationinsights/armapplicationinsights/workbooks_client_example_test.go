@@ -29,7 +29,7 @@ func ExampleWorkbooksClient_NewListBySubscriptionPager_workbooksList2() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewWorkbooksClient().NewListBySubscriptionPager(armapplicationinsights.CategoryTypeWorkbook, &armapplicationinsights.WorkbooksClientListBySubscriptionOptions{Tags: []string{},
+	pager := clientFactory.NewWorkbooksClient("<subscription-id>").NewListBySubscriptionPager(armapplicationinsights.CategoryTypeWorkbook, &armapplicationinsights.WorkbooksClientListBySubscriptionOptions{Tags: []string{},
 		CanFetchContent: nil,
 	})
 	for pager.More() {
@@ -60,7 +60,7 @@ func ExampleWorkbooksClient_NewListBySubscriptionPager_workbooksListSub() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewWorkbooksClient().NewListBySubscriptionPager(armapplicationinsights.CategoryTypeWorkbook, &armapplicationinsights.WorkbooksClientListBySubscriptionOptions{Tags: []string{},
+	pager := clientFactory.NewWorkbooksClient("<subscription-id>").NewListBySubscriptionPager(armapplicationinsights.CategoryTypeWorkbook, &armapplicationinsights.WorkbooksClientListBySubscriptionOptions{Tags: []string{},
 		CanFetchContent: nil,
 	})
 	for pager.More() {
@@ -132,7 +132,7 @@ func ExampleWorkbooksClient_NewListByResourceGroupPager_workbooksList() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewWorkbooksClient().NewListByResourceGroupPager("my-resource-group", armapplicationinsights.CategoryTypeWorkbook, &armapplicationinsights.WorkbooksClientListByResourceGroupOptions{Tags: []string{},
+	pager := clientFactory.NewWorkbooksClient("<subscription-id>").NewListByResourceGroupPager("my-resource-group", armapplicationinsights.CategoryTypeWorkbook, &armapplicationinsights.WorkbooksClientListByResourceGroupOptions{Tags: []string{},
 		SourceID:        to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourceGroups/my-resource-group/providers/Microsoft.Web/sites/MyApp"),
 		CanFetchContent: nil,
 	})
@@ -205,7 +205,7 @@ func ExampleWorkbooksClient_NewListByResourceGroupPager_workbooksManagedList() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewWorkbooksClient().NewListByResourceGroupPager("my-resource-group", armapplicationinsights.CategoryTypeWorkbook, &armapplicationinsights.WorkbooksClientListByResourceGroupOptions{Tags: []string{},
+	pager := clientFactory.NewWorkbooksClient("<subscription-id>").NewListByResourceGroupPager("my-resource-group", armapplicationinsights.CategoryTypeWorkbook, &armapplicationinsights.WorkbooksClientListByResourceGroupOptions{Tags: []string{},
 		SourceID:        to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac119r124af/resourceGroups/my-resource-group/providers/Microsoft.Web/sites/MyApp"),
 		CanFetchContent: nil,
 	})
@@ -288,7 +288,7 @@ func ExampleWorkbooksClient_Get_workbookGet() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewWorkbooksClient().Get(ctx, "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", &armapplicationinsights.WorkbooksClientGetOptions{CanFetchContent: nil})
+	res, err := clientFactory.NewWorkbooksClient("<subscription-id>").Get(ctx, "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", &armapplicationinsights.WorkbooksClientGetOptions{CanFetchContent: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -329,7 +329,7 @@ func ExampleWorkbooksClient_Get_workbookGet1() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewWorkbooksClient().Get(ctx, "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", &armapplicationinsights.WorkbooksClientGetOptions{CanFetchContent: nil})
+	res, err := clientFactory.NewWorkbooksClient("<subscription-id>").Get(ctx, "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", &armapplicationinsights.WorkbooksClientGetOptions{CanFetchContent: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -368,7 +368,7 @@ func ExampleWorkbooksClient_Get_workbookManagedGet() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewWorkbooksClient().Get(ctx, "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", &armapplicationinsights.WorkbooksClientGetOptions{CanFetchContent: nil})
+	res, err := clientFactory.NewWorkbooksClient("<subscription-id>").Get(ctx, "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", &armapplicationinsights.WorkbooksClientGetOptions{CanFetchContent: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -416,7 +416,7 @@ func ExampleWorkbooksClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = clientFactory.NewWorkbooksClient().Delete(ctx, "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", nil)
+	_, err = clientFactory.NewWorkbooksClient("<subscription-id>").Delete(ctx, "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -433,7 +433,7 @@ func ExampleWorkbooksClient_CreateOrUpdate_workbookAdd() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewWorkbooksClient().CreateOrUpdate(ctx, "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", armapplicationinsights.Workbook{
+	res, err := clientFactory.NewWorkbooksClient("<subscription-id>").CreateOrUpdate(ctx, "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", armapplicationinsights.Workbook{
 		Location: to.Ptr("westus"),
 		Tags: map[string]*string{
 			"TagSample01": to.Ptr("sample01"),
@@ -488,7 +488,7 @@ func ExampleWorkbooksClient_CreateOrUpdate_workbookManagedAdd() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewWorkbooksClient().CreateOrUpdate(ctx, "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", armapplicationinsights.Workbook{
+	res, err := clientFactory.NewWorkbooksClient("<subscription-id>").CreateOrUpdate(ctx, "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", armapplicationinsights.Workbook{
 		Location: to.Ptr("westus"),
 		Identity: &armapplicationinsights.WorkbookResourceIdentity{
 			Type: to.Ptr(armapplicationinsights.ManagedServiceIdentityTypeUserAssigned),
@@ -553,7 +553,7 @@ func ExampleWorkbooksClient_Update_workbookManagedUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewWorkbooksClient().Update(ctx, "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", &armapplicationinsights.WorkbooksClientUpdateOptions{SourceID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/my-resource-group"),
+	res, err := clientFactory.NewWorkbooksClient("<subscription-id>").Update(ctx, "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", &armapplicationinsights.WorkbooksClientUpdateOptions{SourceID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/my-resource-group"),
 		WorkbookUpdateParameters: nil,
 	})
 	if err != nil {
@@ -608,7 +608,7 @@ func ExampleWorkbooksClient_Update_workbookUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewWorkbooksClient().Update(ctx, "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", &armapplicationinsights.WorkbooksClientUpdateOptions{SourceID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourceGroups/my-resource-group/providers/Microsoft.Web/sites/MyApp"),
+	res, err := clientFactory.NewWorkbooksClient("<subscription-id>").Update(ctx, "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", &armapplicationinsights.WorkbooksClientUpdateOptions{SourceID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourceGroups/my-resource-group/providers/Microsoft.Web/sites/MyApp"),
 		WorkbookUpdateParameters: nil,
 	})
 	if err != nil {
@@ -652,7 +652,7 @@ func ExampleWorkbooksClient_NewRevisionsListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewWorkbooksClient().NewRevisionsListPager("my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", nil)
+	pager := clientFactory.NewWorkbooksClient("<subscription-id>").NewRevisionsListPager("my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -720,7 +720,7 @@ func ExampleWorkbooksClient_RevisionGet() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewWorkbooksClient().RevisionGet(ctx, "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", "1e2f8435b98248febee70c64ac22e1ab", nil)
+	res, err := clientFactory.NewWorkbooksClient("<subscription-id>").RevisionGet(ctx, "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", "1e2f8435b98248febee70c64ac22e1ab", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

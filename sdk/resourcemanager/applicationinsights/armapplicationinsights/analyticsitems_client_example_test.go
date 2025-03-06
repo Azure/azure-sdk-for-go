@@ -29,7 +29,7 @@ func ExampleAnalyticsItemsClient_List() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewAnalyticsItemsClient().List(ctx, "my-resource-group", "my-component", armapplicationinsights.ItemScopePathAnalyticsItems, &armapplicationinsights.AnalyticsItemsClientListOptions{Scope: nil,
+	res, err := clientFactory.NewAnalyticsItemsClient("<subscription-id>").List(ctx, "my-resource-group", "my-component", armapplicationinsights.ItemScopePathAnalyticsItems, &armapplicationinsights.AnalyticsItemsClientListOptions{Scope: nil,
 		Type:           nil,
 		IncludeContent: nil,
 	})
@@ -119,7 +119,7 @@ func ExampleAnalyticsItemsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewAnalyticsItemsClient().Get(ctx, "my-resource-group", "my-component", armapplicationinsights.ItemScopePathAnalyticsItems, &armapplicationinsights.AnalyticsItemsClientGetOptions{ID: to.Ptr("3466c160-4a10-4df8-afdf-0007f3f6dee5"),
+	res, err := clientFactory.NewAnalyticsItemsClient("<subscription-id>").Get(ctx, "my-resource-group", "my-component", armapplicationinsights.ItemScopePathAnalyticsItems, &armapplicationinsights.AnalyticsItemsClientGetOptions{ID: to.Ptr("3466c160-4a10-4df8-afdf-0007f3f6dee5"),
 		Name: nil,
 	})
 	if err != nil {
@@ -151,7 +151,7 @@ func ExampleAnalyticsItemsClient_Put() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewAnalyticsItemsClient().Put(ctx, "my-resource-group", "my-component", armapplicationinsights.ItemScopePathAnalyticsItems, armapplicationinsights.ComponentAnalyticsItem{
+	res, err := clientFactory.NewAnalyticsItemsClient("<subscription-id>").Put(ctx, "my-resource-group", "my-component", armapplicationinsights.ItemScopePathAnalyticsItems, armapplicationinsights.ComponentAnalyticsItem{
 		Content: to.Ptr("let newExceptionsTimeRange = 1d;\nlet timeRangeToCheckBefore = 7d;\nexceptions\n| where timestamp < ago(timeRangeToCheckBefore)\n| summarize count() by problemId\n| join kind= rightanti (\nexceptions\n| where timestamp >= ago(newExceptionsTimeRange)\n| extend stack = tostring(details[0].rawStack)\n| summarize count(), dcount(user_AuthenticatedId), min(timestamp), max(timestamp), any(stack) by problemId  \n) on problemId \n| order by  count_ desc\n"),
 		Name:    to.Ptr("Exceptions - New in the last 24 hours"),
 		Scope:   to.Ptr(armapplicationinsights.ItemScopeShared),
@@ -186,7 +186,7 @@ func ExampleAnalyticsItemsClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = clientFactory.NewAnalyticsItemsClient().Delete(ctx, "my-resource-group", "my-component", armapplicationinsights.ItemScopePathAnalyticsItems, &armapplicationinsights.AnalyticsItemsClientDeleteOptions{ID: to.Ptr("3466c160-4a10-4df8-afdf-0007f3f6dee5"),
+	_, err = clientFactory.NewAnalyticsItemsClient("<subscription-id>").Delete(ctx, "my-resource-group", "my-component", armapplicationinsights.ItemScopePathAnalyticsItems, &armapplicationinsights.AnalyticsItemsClientDeleteOptions{ID: to.Ptr("3466c160-4a10-4df8-afdf-0007f3f6dee5"),
 		Name: nil,
 	})
 	if err != nil {

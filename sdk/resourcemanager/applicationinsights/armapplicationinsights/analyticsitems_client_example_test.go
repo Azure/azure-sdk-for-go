@@ -29,7 +29,7 @@ func ExampleAnalyticsItemsClient_List() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewAnalyticsItemsClient().List(ctx, "my-resource-group", "my-component", armapplicationinsights.ItemScopePathAnalyticsItems, &armapplicationinsights.AnalyticsItemsClientListOptions{Scope: nil,
+	res, err := clientFactory.NewAnalyticsItemsClient("<subscription-id>").List(ctx, "my-resource-group", "my-component", armapplicationinsights.ItemScopePathAnalyticsItems, &armapplicationinsights.AnalyticsItemsClientListOptions{Scope: nil,
 		Type:           nil,
 		IncludeContent: nil,
 	})

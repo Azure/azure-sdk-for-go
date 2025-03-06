@@ -85,7 +85,7 @@ func ExampleAPIKeysClient_Create() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewAPIKeysClient().Create(ctx, "my-resource-group", "my-component", armapplicationinsights.APIKeyRequest{
+	res, err := clientFactory.NewAPIKeysClient("<subscription-id>").Create(ctx, "my-resource-group", "my-component", armapplicationinsights.APIKeyRequest{
 		Name: to.Ptr("test2"),
 		LinkedReadProperties: []*string{
 			to.Ptr("/subscriptions/subid/resourceGroups/my-resource-group/providers/Microsoft.Insights/components/my-component/api"),
@@ -123,7 +123,7 @@ func ExampleAPIKeysClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewAPIKeysClient().Delete(ctx, "my-resource-group", "my-component", "bb820f1b-3110-4a8b-ba2c-8c1129d7eb6a", nil)
+	res, err := clientFactory.NewAPIKeysClient("<subscription-id>").Delete(ctx, "my-resource-group", "my-component", "bb820f1b-3110-4a8b-ba2c-8c1129d7eb6a", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -157,7 +157,7 @@ func ExampleAPIKeysClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewAPIKeysClient().Get(ctx, "my-resource-group", "my-component", "bb820f1b-3110-4a8b-ba2c-8c1129d7eb6a", nil)
+	res, err := clientFactory.NewAPIKeysClient("<subscription-id>").Get(ctx, "my-resource-group", "my-component", "bb820f1b-3110-4a8b-ba2c-8c1129d7eb6a", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

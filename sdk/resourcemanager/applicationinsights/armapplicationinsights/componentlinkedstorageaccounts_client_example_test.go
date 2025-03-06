@@ -121,7 +121,7 @@ func ExampleComponentLinkedStorageAccountsClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = clientFactory.NewComponentLinkedStorageAccountsClient().Delete(ctx, "someResourceGroupName", "myComponent", armapplicationinsights.StorageTypeServiceProfiler, nil)
+	_, err = clientFactory.NewComponentLinkedStorageAccountsClient("<subscription-id>").Delete(ctx, "someResourceGroupName", "myComponent", armapplicationinsights.StorageTypeServiceProfiler, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

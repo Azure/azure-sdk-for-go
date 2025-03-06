@@ -109,7 +109,7 @@ func ExampleAnnotationsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewAnnotationsClient().Get(ctx, "my-resource-group", "my-component", "444e2c08-274a-4bbb-a89e-d77bb720f44a", nil)
+	res, err := clientFactory.NewAnnotationsClient("<subscription-id>").Get(ctx, "my-resource-group", "my-component", "444e2c08-274a-4bbb-a89e-d77bb720f44a", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

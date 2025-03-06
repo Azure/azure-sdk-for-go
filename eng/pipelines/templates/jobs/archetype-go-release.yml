@@ -58,7 +58,7 @@ stages:
             deploy:
               steps:
                 - pwsh: |
-                    Wrote-Host "The go release job needs local scripts to actually publish, given that it's tagging the code that creates the release. This clashes with 1ES release requirements."
+                    Write-Host "The go release job needs local scripts to actually publish, given that it's tagging the code that creates the release. This clashes with 1ES release requirements."
                     Write-Host "This is a placeholder deployment so that we can use the gate approval feature, while allowing the actual release steps to be jobs instead of deployments."
                   displayName: "Describe why this job exists."
 

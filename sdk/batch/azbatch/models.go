@@ -4,21 +4,25 @@
 
 package azbatch
 
-import "time"
+import (
+	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+)
 
 // AccountListSupportedImagesResult - The result of listing the supported Virtual Machine Images.
 type AccountListSupportedImagesResult struct {
 	// The URL to get the next set of results.
-	ODataNextLink *string
+	NextLink *string
 
 	// The list of supported Virtual Machine Images.
-	Value []*SupportedImage
+	Value []SupportedImage
 }
 
 // AddTaskCollectionResult - The result of adding a collection of Tasks to a Job.
 type AddTaskCollectionResult struct {
 	// The results of the add Task collection operation.
-	Value []*TaskAddResult
+	Value []TaskAddResult
 }
 
 // AffinityInfo - A locality hint that can be used by the Batch service to select a Compute Node
@@ -39,16 +43,16 @@ type Application struct {
 	ID *string
 
 	// REQUIRED; The list of available versions of the application.
-	Versions []*string
+	Versions []string
 }
 
 // ApplicationListResult - The result of listing the applications available in an Account.
 type ApplicationListResult struct {
 	// The URL to get the next set of results.
-	ODataNextLink *string
+	NextLink *string
 
 	// The list of applications available in the Account.
-	Value []*Application
+	Value []Application
 }
 
 // ApplicationPackageReference - A reference to an Package to be deployed to Compute Nodes.
@@ -70,7 +74,7 @@ type AuthenticationTokenSettings struct {
 	// The Batch resources to which the token grants access. The authentication token grants access to a limited set of Batch
 	// service operations. Currently the only supported value for the access property is 'job', which grants access to all operations
 	// related to the Job which contains the Task.
-	Access []*AccessScope
+	Access []AccessScope
 }
 
 // AutoPoolSpecification - Specifies characteristics for a temporary 'auto pool'. The Batch service will
@@ -115,7 +119,7 @@ type AutoScaleRunError struct {
 	Message *string
 
 	// A list of additional error details related to the autoscale error.
-	Values []*NameValuePair
+	Values []NameValuePair
 }
 
 // AutoUserSpecification - Specifies the options for the auto user that runs an Azure Batch Task.
@@ -305,11 +309,11 @@ type ContainerConfiguration struct {
 
 	// The collection of container Image names. This is the full Image reference, as would be specified to "docker pull". An Image
 	// will be sourced from the default Docker registry unless the Image is fully qualified with an alternative registry.
-	ContainerImageNames []*string
+	ContainerImageNames []string
 
 	// Additional private registries from which containers can be pulled. If any Images must be downloaded from a private registry
 	// which requires credentials, then those credentials must be provided here.
-	ContainerRegistries []*ContainerRegistryReference
+	ContainerRegistries []ContainerRegistryReference
 }
 
 // ContainerHostBindMountEntry - The entry of path and mount mode you want to mount into task container.
@@ -357,7 +361,7 @@ type CreateJobContent struct {
 	// The list of common environment variable settings. These environment variables are set for all Tasks in the Job (including
 	// the Job Manager, Job Preparation and Job Release Tasks). Individual Tasks can override an environment setting specified
 	// here by specifying the same setting name with a different value.
-	CommonEnvironmentSettings []*EnvironmentSetting
+	CommonEnvironmentSettings []EnvironmentSetting
 
 	// The execution constraints for the Job.
 	Constraints *JobConstraints
@@ -393,7 +397,7 @@ type CreateJobContent struct {
 
 	// A list of name-value pairs associated with the Job as metadata. The Batch service does not assign any meaning to metadata;
 	// it is solely for the use of user code.
-	Metadata []*MetadataItem
+	Metadata []MetadataItem
 
 	// The network configuration for the Job.
 	NetworkConfiguration *JobNetworkConfiguration
@@ -438,7 +442,7 @@ type CreateJobScheduleContent struct {
 
 	// A list of name-value pairs associated with the schedule as metadata. The Batch service does not assign any meaning to metadata;
 	// it is solely for the use of user code.
-	Metadata []*MetadataItem
+	Metadata []MetadataItem
 }
 
 // CreateNodeUserContent - Parameters for creating a user account for RDP or SSH access on an Azure Batch Compute Node.
@@ -481,7 +485,7 @@ type CreatePoolContent struct {
 	// ID must be fully qualified (/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}).
 	// Changes to Package references affect all new Nodes joining the Pool, but do not affect Compute Nodes that are already in
 	// the Pool until they are rebooted or reimaged. There is a maximum of 10 Package references on any given Pool.
-	ApplicationPackageReferences []*ApplicationPackageReference
+	ApplicationPackageReferences []ApplicationPackageReference
 
 	// The time interval at which to automatically adjust the Pool size according to the autoscale formula. The default value
 	// is 15 minutes. The minimum and maximum value are 5 minutes and 168 hours respectively. If you specify a value less than
@@ -520,11 +524,11 @@ type CreatePoolContent struct {
 
 	// A list of name-value pairs associated with the Pool as metadata. The Batch service does not assign any meaning to metadata;
 	// it is solely for the use of user code.
-	Metadata []*MetadataItem
+	Metadata []MetadataItem
 
 	// Mount storage using specified file system for the entire lifetime of the pool. Mount the storage using Azure fileshare,
 	// NFS, CIFS or Blobfuse based file system.
-	MountConfiguration []*MountConfiguration
+	MountConfiguration []MountConfiguration
 
 	// The network configuration for the Pool.
 	NetworkConfiguration *NetworkConfiguration
@@ -568,7 +572,7 @@ type CreatePoolContent struct {
 	UpgradePolicy *UpgradePolicy
 
 	// The list of user Accounts to be created on each Compute Node in the Pool.
-	UserAccounts []*UserAccount
+	UserAccounts []UserAccount
 
 	// The virtual machine configuration for the Pool. This property must be specified.
 	VirtualMachineConfiguration *VirtualMachineConfiguration
@@ -597,7 +601,7 @@ type CreateTaskContent struct {
 	// package is already on the Node, and is up to date, then it is not re-downloaded; the existing copy on the Compute Node
 	// is used. If a referenced Package cannot be installed, for example because the package has been deleted or because download
 	// failed, the Task fails.
-	ApplicationPackageReferences []*ApplicationPackageReference
+	ApplicationPackageReferences []ApplicationPackageReference
 
 	// The settings for an authentication token that the Task can use to perform Batch service operations. If this property is
 	// set, the Batch service provides the Task with an authentication token which can be used to authenticate Batch service operations
@@ -628,7 +632,7 @@ type CreateTaskContent struct {
 	DisplayName *string
 
 	// A list of environment variable settings for the Task.
-	EnvironmentSettings []*EnvironmentSetting
+	EnvironmentSettings []EnvironmentSetting
 
 	// How the Batch service should respond when the Task completes.
 	ExitConditions *ExitConditions
@@ -639,7 +643,7 @@ type CreateTaskContent struct {
 
 	// A list of files that the Batch service will upload from the Compute Node after running the command line. For multi-instance
 	// Tasks, the files will only be uploaded from the Compute Node on which the primary Task is executed.
-	OutputFiles []*OutputFile
+	OutputFiles []OutputFile
 
 	// The number of scheduling slots that the Task required to run. The default is 1. A Task can only be scheduled to run on
 	// a compute node if the node has enough free scheduling slots available. For multi-instance Tasks, this must be 1.
@@ -650,7 +654,7 @@ type CreateTaskContent struct {
 	// maximum size for the list of resource files. When the max size is exceeded, the request will fail and the response error
 	// code will be RequestEntityTooLarge. If this occurs, the collection of ResourceFiles must be reduced in size. This can be
 	// achieved using .zip files, Application Packages, or Docker Containers.
-	ResourceFiles []*ResourceFile
+	ResourceFiles []ResourceFile
 
 	// The user identity under which the Task runs. If omitted, the Task runs as a non-administrative user unique to the Task.
 	UserIdentity *UserIdentity
@@ -723,7 +727,7 @@ type DisableNodeSchedulingContent struct {
 type DiskEncryptionConfiguration struct {
 	// The list of disk targets Batch Service will encrypt on the compute node. The list of disk targets Batch Service will encrypt
 	// on the compute node.
-	Targets []*DiskEncryptionTarget
+	Targets []DiskEncryptionTarget
 }
 
 // EnablePoolAutoScaleContent - Parameters for enabling automatic scaling on an Azure Batch Pool.
@@ -763,7 +767,7 @@ type Error struct {
 	Message *ErrorMessage
 
 	// A collection of key-value pairs containing additional details about the error.
-	Values []*ErrorDetail
+	Values []ErrorDetail
 }
 
 // ErrorDetail - An item of additional information included in an Azure Batch error response.
@@ -825,10 +829,10 @@ type ExitConditions struct {
 	Default *ExitOptions
 
 	// A list of Task exit code ranges and how the Batch service should respond to them.
-	ExitCodeRanges []*ExitCodeRangeMapping
+	ExitCodeRanges []ExitCodeRangeMapping
 
 	// A list of individual Task exit codes and how the Batch service should respond to them.
-	ExitCodes []*ExitCodeMapping
+	ExitCodes []ExitCodeMapping
 
 	// How the Batch service should respond if a file upload error occurs. If the Task exited with an exit code that was specified
 	// via exitCodes or exitCodeRanges, and then encountered a file upload error, then the action specified by the exit code takes
@@ -973,7 +977,7 @@ type InboundNATPool struct {
 	// across all the endpoints on a Batch Pool is 25. If no network security group rules are specified, a default rule will be
 	// created to allow inbound access to the specified backendPort. If the maximum number of network security group rules is
 	// exceeded the request fails with HTTP status code 400.
-	NetworkSecurityGroupRules []*NetworkSecurityGroupRule
+	NetworkSecurityGroupRules []NetworkSecurityGroupRule
 }
 
 // InstanceViewStatus - The instance view status.
@@ -1014,7 +1018,7 @@ type Job struct {
 
 	// A list of name-value pairs associated with the Job as metadata. The Batch service does not assign any meaning to metadata;
 	// it is solely for the use of user code.
-	Metadata []*MetadataItem
+	Metadata []MetadataItem
 
 	// The action the Batch service should take when all Tasks in the Job are in the completed state. The default is noaction.
 	OnAllTasksComplete *OnAllTasksComplete
@@ -1026,7 +1030,7 @@ type Job struct {
 	// READ-ONLY; The list of common environment variable settings. These environment variables are set for all Tasks in the Job
 	// (including the Job Manager, Job Preparation and Job Release Tasks). Individual Tasks can override an environment setting
 	// specified here by specifying the same setting name with a different value.
-	CommonEnvironmentSettings []*EnvironmentSetting
+	CommonEnvironmentSettings []EnvironmentSetting
 
 	// READ-ONLY; The creation time of the Job.
 	CreationTime *time.Time
@@ -1037,7 +1041,7 @@ type Job struct {
 	// READ-ONLY; The ETag of the Job. This is an opaque string. You can use it to detect whether the Job has changed between
 	// requests. In particular, you can be pass the ETag when updating a Job to specify that your changes should take effect only
 	// if nobody else has modified the Job in the meantime.
-	ETag *string
+	ETag *azcore.ETag
 
 	// READ-ONLY; The execution information for the Job.
 	ExecutionInfo *JobExecutionInfo
@@ -1141,10 +1145,10 @@ type JobExecutionInfo struct {
 // JobListResult - The result of listing the Jobs in an Account.
 type JobListResult struct {
 	// The URL to get the next set of results.
-	ODataNextLink *string
+	NextLink *string
 
 	// The list of Jobs.
-	Value []*Job
+	Value []Job
 }
 
 // JobManagerTask - Specifies details of a Job Manager Task.
@@ -1193,7 +1197,7 @@ type JobManagerTask struct {
 	// the existing copy on the Compute Node is used. If a referenced Application
 	// Package cannot be installed, for example because the package has been deleted
 	// or because download failed, the Task fails.
-	ApplicationPackageReferences []*ApplicationPackageReference
+	ApplicationPackageReferences []ApplicationPackageReference
 
 	// The settings for an authentication token that the Task can use to perform Batch service operations. If this property is
 	// set, the Batch service provides the Task with an authentication token which can be used to authenticate Batch service operations
@@ -1218,7 +1222,7 @@ type JobManagerTask struct {
 	DisplayName *string
 
 	// A list of environment variable settings for the Job Manager Task.
-	EnvironmentSettings []*EnvironmentSetting
+	EnvironmentSettings []EnvironmentSetting
 
 	// Whether completion of the Job Manager Task signifies completion of the entire Job. If true, when the Job Manager Task completes,
 	// the Batch service marks the Job as complete. If any Tasks are still running at this time (other than Job Release), those
@@ -1232,7 +1236,7 @@ type JobManagerTask struct {
 
 	// A list of files that the Batch service will upload from the Compute Node after running the command line. For multi-instance
 	// Tasks, the files will only be uploaded from the Compute Node on which the primary Task is executed.
-	OutputFiles []*OutputFile
+	OutputFiles []OutputFile
 
 	// The number of scheduling slots that the Task requires to run. The default is 1. A Task can only be scheduled to run on
 	// a compute node if the node has enough free scheduling slots available. For multi-instance Tasks, this property is not supported
@@ -1244,7 +1248,7 @@ type JobManagerTask struct {
 	// When the max size is exceeded, the request will fail and the response error code will be RequestEntityTooLarge. If this
 	// occurs, the collection of ResourceFiles must be reduced in size. This can be achieved using .zip files, Application Packages,
 	// or Docker Containers.
-	ResourceFiles []*ResourceFile
+	ResourceFiles []ResourceFile
 
 	// Whether the Job Manager Task requires exclusive use of the Compute Node where it runs. If true, no other Tasks will run
 	// on the same Node for as long as the Job Manager is running. If false, other Tasks can run simultaneously with the Job Manager
@@ -1303,10 +1307,10 @@ type JobPreparationAndReleaseTaskStatus struct {
 // for a Job.
 type JobPreparationAndReleaseTaskStatusListResult struct {
 	// The URL to get the next set of results.
-	ODataNextLink *string
+	NextLink *string
 
 	// A list of Job Preparation and Job Release Task execution information.
-	Value []*JobPreparationAndReleaseTaskStatus
+	Value []JobPreparationAndReleaseTaskStatus
 }
 
 // JobPreparationTask - A Job Preparation Task to run before any Tasks of the Job on any given Compute Node.
@@ -1354,7 +1358,7 @@ type JobPreparationTask struct {
 	ContainerSettings *TaskContainerSettings
 
 	// A list of environment variable settings for the Job Preparation Task.
-	EnvironmentSettings []*EnvironmentSetting
+	EnvironmentSettings []EnvironmentSetting
 
 	// A string that uniquely identifies the Job Preparation Task within the Job. The ID can contain any combination of alphanumeric
 	// characters including hyphens and underscores and cannot contain more than 64 characters. If you do not specify this property,
@@ -1374,7 +1378,7 @@ type JobPreparationTask struct {
 	// When the max size is exceeded, the request will fail and the response error code will be RequestEntityTooLarge. If this
 	// occurs, the collection of ResourceFiles must be reduced in size. This can be achieved using .zip files, Application Packages,
 	// or Docker Containers.
-	ResourceFiles []*ResourceFile
+	ResourceFiles []ResourceFile
 
 	// The user identity under which the Job Preparation Task runs. If omitted, the Task runs as a non-administrative user unique
 	// to the Task on Windows Compute Nodes, or a non-administrative user unique to the Pool on Linux Compute Nodes.
@@ -1476,7 +1480,7 @@ type JobReleaseTask struct {
 	ContainerSettings *TaskContainerSettings
 
 	// A list of environment variable settings for the Job Release Task.
-	EnvironmentSettings []*EnvironmentSetting
+	EnvironmentSettings []EnvironmentSetting
 
 	// A string that uniquely identifies the Job Release Task within the Job. The ID can contain any combination of alphanumeric
 	// characters including hyphens and underscores and cannot contain more than 64 characters. If you do not specify this property,
@@ -1496,7 +1500,7 @@ type JobReleaseTask struct {
 	// be RequestEntityTooLarge. If this occurs, the collection of ResourceFiles must be reduced in size. This can be achieved
 	// using .zip files, Application Packages, or Docker Containers. Files listed under this element are located in the Task's
 	// working directory.
-	ResourceFiles []*ResourceFile
+	ResourceFiles []ResourceFile
 
 	// The minimum time to retain the Task directory for the Job Release Task on the Compute Node. After this time, the Batch
 	// service may delete the Task directory and all its contents. The default is 7 days, i.e. the Task directory will be retained
@@ -1556,7 +1560,7 @@ type JobSchedule struct {
 
 	// A list of name-value pairs associated with the schedule as metadata. The Batch service does not assign any meaning to metadata;
 	// it is solely for the use of user code.
-	Metadata []*MetadataItem
+	Metadata []MetadataItem
 
 	// The schedule according to which Jobs will be created. All times are fixed respective to UTC and are not impacted by daylight
 	// saving time.
@@ -1571,7 +1575,7 @@ type JobSchedule struct {
 	// READ-ONLY; The ETag of the Job Schedule. This is an opaque string. You can use it to detect whether the Job Schedule has
 	// changed between requests. In particular, you can be pass the ETag with an Update Job Schedule request to specify that your
 	// changes should take effect only if nobody else has modified the schedule in the meantime.
-	ETag *string
+	ETag *azcore.ETag
 
 	// READ-ONLY; Information about Jobs that have been and will be run under this schedule.
 	ExecutionInfo *JobScheduleExecutionInfo
@@ -1660,10 +1664,10 @@ type JobScheduleExecutionInfo struct {
 // JobScheduleListResult - The result of listing the Job Schedules in an Account.
 type JobScheduleListResult struct {
 	// The URL to get the next set of results.
-	ODataNextLink *string
+	NextLink *string
 
 	// The list of Job Schedules.
-	Value []*JobSchedule
+	Value []JobSchedule
 }
 
 // JobScheduleStatistics - Resource usage statistics for a Job Schedule.
@@ -1731,7 +1735,7 @@ type JobSchedulingError struct {
 	Code *string
 
 	// A list of additional error details related to the scheduling error.
-	Details []*NameValuePair
+	Details []NameValuePair
 
 	// A message describing the Job scheduling error, intended to be suitable for display in a user interface.
 	Message *string
@@ -1750,7 +1754,7 @@ type JobSpecification struct {
 	// A list of common environment variable settings. These environment variables are set for all Tasks in Jobs created under
 	// this schedule (including the Job Manager, Job Preparation and Job Release Tasks). Individual Tasks can override an environment
 	// setting specified here by specifying the same setting name with a different value.
-	CommonEnvironmentSettings []*EnvironmentSetting
+	CommonEnvironmentSettings []EnvironmentSetting
 
 	// The execution constraints for Jobs created under this schedule.
 	Constraints *JobConstraints
@@ -1782,7 +1786,7 @@ type JobSpecification struct {
 
 	// A list of name-value pairs associated with each Job created under this schedule as metadata. The Batch service does not
 	// assign any meaning to metadata; it is solely for the use of user code.
-	Metadata []*MetadataItem
+	Metadata []MetadataItem
 
 	// The network configuration for the Job.
 	NetworkConfiguration *JobNetworkConfiguration
@@ -1883,10 +1887,10 @@ type LinuxUserConfiguration struct {
 // ListPoolNodeCountsResult - The result of listing the Compute Node counts in the Account.
 type ListPoolNodeCountsResult struct {
 	// The URL to get the next set of results.
-	ODataNextLink *string
+	NextLink *string
 
 	// A list of Compute Node counts by Pool.
-	Value []*PoolNodeCounts
+	Value []PoolNodeCounts
 }
 
 // ManagedDisk - The managed disk parameters.
@@ -1940,7 +1944,7 @@ type MultiInstanceSettings struct {
 	// There is a maximum size for the list of resource files. When the max size is exceeded, the request will fail and the response
 	// error code will be RequestEntityTooLarge. If this occurs, the collection of ResourceFiles must be reduced in size. This
 	// can be achieved using .zip files, Application Packages, or Docker Containers.
-	CommonResourceFiles []*ResourceFile
+	CommonResourceFiles []ResourceFile
 
 	// The number of Compute Nodes required by the Task. If omitted, the default is 1.
 	NumberOfInstances *int32
@@ -2019,7 +2023,7 @@ type NetworkSecurityGroupRule struct {
 	// or a port range (i.e. 100-200). The ports must be in the range of 0 to 65535. Each entry in this collection must not overlap
 	// any other entry (either a range or an individual port). If any other values are provided the request fails with HTTP status
 	// code 400. The default value is '*'.
-	SourcePortRanges []*string
+	SourcePortRanges []string
 }
 
 // Node - A Compute Node in the Batch service.
@@ -2046,7 +2050,7 @@ type Node struct {
 	EndpointConfiguration *NodeEndpointConfiguration
 
 	// The list of errors that are currently being encountered by the Compute Node.
-	Errors []*NodeError
+	Errors []NodeError
 
 	// The ID of the Compute Node. Every Compute Node that is added to a Pool is assigned a unique ID. Whenever a Compute Node
 	// is removed from a Pool, all of its local files are deleted, and the ID is reclaimed and could be reused for new Compute
@@ -2069,7 +2073,7 @@ type Node struct {
 
 	// A list of Tasks whose state has recently changed. This property is present only if at least one Task has run on this Compute
 	// Node since it was assigned to the Pool.
-	RecentTasks []*TaskInfo
+	RecentTasks []TaskInfo
 
 	// The total number of scheduling slots used by currently running Job Tasks on the Compute Node. This includes Job Manager
 	// Tasks and normal Tasks, but not Job Preparation, Job Release or Start Tasks.
@@ -2183,7 +2187,7 @@ type NodeCounts struct {
 // NodeEndpointConfiguration - The endpoint configuration for the Compute Node.
 type NodeEndpointConfiguration struct {
 	// REQUIRED; The list of inbound endpoints that are accessible on the Compute Node.
-	InboundEndpoints []*InboundEndpoint
+	InboundEndpoints []InboundEndpoint
 }
 
 // NodeError - An error encountered by a Compute Node.
@@ -2192,7 +2196,7 @@ type NodeError struct {
 	Code *string
 
 	// The list of additional error details related to the Compute Node error.
-	ErrorDetails []*NameValuePair
+	ErrorDetails []NameValuePair
 
 	// A message describing the Compute Node error, intended to be suitable for display in a user interface.
 	Message *string
@@ -2217,10 +2221,10 @@ type NodeFile struct {
 // a Task on a Compute Node.
 type NodeFileListResult struct {
 	// The URL to get the next set of results.
-	ODataNextLink *string
+	NextLink *string
 
 	// The list of files.
-	Value []*NodeFile
+	Value []NodeFile
 }
 
 // NodeIdentityReference - The reference to a user assigned identity associated with the Batch pool which
@@ -2255,10 +2259,10 @@ type NodeInfo struct {
 // NodeListResult - The result of listing the Compute Nodes in a Pool.
 type NodeListResult struct {
 	// The URL to get the next set of results.
-	ODataNextLink *string
+	NextLink *string
 
 	// The list of Compute Nodes.
-	Value []*Node
+	Value []Node
 }
 
 // NodePlacementConfiguration - For regional placement, nodes in the pool will be allocated in the same region.
@@ -2294,10 +2298,10 @@ type NodeVMExtension struct {
 // NodeVMExtensionListResult - The result of listing the Compute Node extensions in a Node.
 type NodeVMExtensionListResult struct {
 	// The URL to get the next set of results.
-	ODataNextLink *string
+	NextLink *string
 
 	// The list of Compute Node extensions.
-	Value []*NodeVMExtension
+	Value []NodeVMExtension
 }
 
 // OSDisk - Settings for the operating system disk of the compute node (VM).
@@ -2360,7 +2364,7 @@ type OutputFileBlobContainerDestination struct {
 
 	// A list of name-value pairs for headers to be used in uploading output files. These headers will be specified when uploading
 	// files to Azure Storage. Official document on allowed headers when uploading blobs: https://learn.microsoft.com/rest/api/storageservices/put-blob#request-headers-all-blob-types.
-	UploadHeaders []*HTTPHeader
+	UploadHeaders []HTTPHeader
 }
 
 // OutputFileDestination - The destination to which a file should be uploaded.
@@ -2396,7 +2400,7 @@ type Pool struct {
 	// READ-ONLY; The list of Packages to be installed on each Compute Node in the Pool. Changes to Package references affect
 	// all new Nodes joining the Pool, but do not affect Compute Nodes that are already in the Pool until they are rebooted or
 	// reimaged. There is a maximum of 10 Package references on any given Pool.
-	ApplicationPackageReferences []*ApplicationPackageReference
+	ApplicationPackageReferences []ApplicationPackageReference
 
 	// READ-ONLY; The time interval at which to automatically adjust the Pool size according to the autoscale formula. This property
 	// is set only if the Pool automatically scales, i.e. enableAutoScale is true.
@@ -2439,7 +2443,7 @@ type Pool struct {
 	// READ-ONLY; The ETag of the Pool. This is an opaque string. You can use it to detect whether the Pool has changed between
 	// requests. In particular, you can be pass the ETag when updating a Pool to specify that your changes should take effect
 	// only if nobody else has modified the Pool in the meantime.
-	ETag *string
+	ETag *azcore.ETag
 
 	// READ-ONLY; Whether the Pool size should automatically adjust over time. If false, at least one of targetDedicatedNodes
 	// and targetLowPriorityNodes must be specified. If true, the autoScaleFormula property is required and the Pool automatically
@@ -2465,17 +2469,17 @@ type Pool struct {
 	LastModified *time.Time
 
 	// READ-ONLY; A list of name-value pairs associated with the Pool as metadata.
-	Metadata []*MetadataItem
+	Metadata []MetadataItem
 
 	// READ-ONLY; A list of file systems to mount on each node in the pool. This supports Azure Files, NFS, CIFS/SMB, and Blobfuse.
-	MountConfiguration []*MountConfiguration
+	MountConfiguration []MountConfiguration
 
 	// READ-ONLY; The network configuration for the Pool.
 	NetworkConfiguration *NetworkConfiguration
 
 	// READ-ONLY; A list of errors encountered while performing the last resize on the Pool. This property is set only if one
 	// or more errors occurred during the last Pool resize, and only when the Pool allocationState is Steady.
-	ResizeErrors []*ResizeError
+	ResizeErrors []ResizeError
 
 	// READ-ONLY; The timeout for allocation of Compute Nodes to the Pool. This is the timeout for the most recent resize operation.
 	// (The initial sizing when the Pool is created counts as a resize.) The default value is 15 minutes.
@@ -2515,7 +2519,7 @@ type Pool struct {
 	URL *string
 
 	// READ-ONLY; The list of user Accounts to be created on each Compute Node in the Pool.
-	UserAccounts []*UserAccount
+	UserAccounts []UserAccount
 
 	// READ-ONLY; The size of virtual machines in the Pool. All virtual machines in a Pool are the same size. For information
 	// about available VM sizes, see Sizes for Virtual Machines in Azure (https://learn.microsoft.com/azure/virtual-machines/sizes/overview).
@@ -2532,7 +2536,7 @@ type PoolEndpointConfiguration struct {
 	// REQUIRED; A list of inbound NAT Pools that can be used to address specific ports on an individual Compute Node externally.
 	// The maximum number of inbound NAT Pools per Batch Pool is 5. If the maximum number of inbound NAT Pools is exceeded the
 	// request fails with HTTP status code 400. This cannot be specified if the IPAddressProvisioningType is NoPublicIPAddresses.
-	InboundNATPools []*InboundNATPool
+	InboundNATPools []InboundNATPool
 }
 
 // PoolIdentity - The identity of the Batch pool, if configured.
@@ -2543,7 +2547,7 @@ type PoolIdentity struct {
 
 	// The list of user identities associated with the Batch account. The user identity dictionary key references will be ARM
 	// resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-	UserAssignedIdentities []*UserAssignedIdentity
+	UserAssignedIdentities []UserAssignedIdentity
 }
 
 // PoolInfo - Specifies how a Job should be assigned to a Pool.
@@ -2566,10 +2570,10 @@ type PoolInfo struct {
 // PoolListResult - The result of listing the Pools in an Account.
 type PoolListResult struct {
 	// The URL to get the next set of results.
-	ODataNextLink *string
+	NextLink *string
 
 	// The list of Pools.
-	Value []*Pool
+	Value []Pool
 }
 
 // PoolNodeCounts - The number of Compute Nodes in each state for a Pool.
@@ -2637,7 +2641,7 @@ type PoolSpecification struct {
 	// ID must be fully qualified (/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}).
 	// Changes to Package references affect all new Nodes joining the Pool, but do not affect Compute Nodes that are already in
 	// the Pool until they are rebooted or reimaged. There is a maximum of 10 Package references on any given Pool.
-	ApplicationPackageReferences []*ApplicationPackageReference
+	ApplicationPackageReferences []ApplicationPackageReference
 
 	// The time interval at which to automatically adjust the Pool size according to the autoscale formula. The default value
 	// is 15 minutes. The minimum and maximum value are 5 minutes and 168 hours respectively. If you specify a value less than
@@ -2675,10 +2679,10 @@ type PoolSpecification struct {
 
 	// A list of name-value pairs associated with the Pool as metadata. The Batch service does not assign any meaning to metadata;
 	// it is solely for the use of user code.
-	Metadata []*MetadataItem
+	Metadata []MetadataItem
 
 	// A list of file systems to mount on each node in the pool. This supports Azure Files, NFS, CIFS/SMB, and Blobfuse.
-	MountConfiguration []*MountConfiguration
+	MountConfiguration []MountConfiguration
 
 	// The network configuration for the Pool.
 	NetworkConfiguration *NetworkConfiguration
@@ -2722,7 +2726,7 @@ type PoolSpecification struct {
 	UpgradePolicy *UpgradePolicy
 
 	// The list of user Accounts to be created on each Compute Node in the Pool.
-	UserAccounts []*UserAccount
+	UserAccounts []UserAccount
 
 	// The virtual machine configuration for the Pool. This property must be specified.
 	VirtualMachineConfiguration *VirtualMachineConfiguration
@@ -2766,7 +2770,7 @@ type PublicIPAddressConfiguration struct {
 	// limits the maximum size of the Pool - 100 dedicated nodes or 100 Spot/Low-priority nodes can be allocated for each public
 	// IP. For example, a pool needing 250 dedicated VMs would need at least 3 public IPs specified. Each element of this collection
 	// is of the form: /subscriptions/{subscription}/resourceGroups/{group}/providers/Microsoft.Network/publicIPAddresses/{ip}.
-	IPAddressIDs []*string
+	IPAddressIDs []string
 
 	// The provisioning type for Public IP Addresses for the Pool. The default value is BatchManaged.
 	IPAddressProvisioningType *IPAddressProvisioningType
@@ -2797,7 +2801,7 @@ type ReimageNodeContent struct {
 type RemoveNodeContent struct {
 	// REQUIRED; A list containing the IDs of the Compute Nodes to be removed from the specified Pool. A maximum of 100 nodes
 	// may be removed per request.
-	NodeList []*string
+	NodeList []string
 
 	// Determines what to do with a Compute Node and its running task(s) after it has been selected for deallocation. The default
 	// value is requeue.
@@ -2817,7 +2821,7 @@ type ReplacePoolContent struct {
 	// maximum of 10 Application Package references on any given Pool. If omitted, or if you specify an empty collection, any
 	// existing Application Packages references are removed from the Pool. A maximum of 10 references may be specified on a given
 	// Pool.
-	ApplicationPackageReferences []*ApplicationPackageReference
+	ApplicationPackageReferences []ApplicationPackageReference
 
 	// REQUIRED; This list replaces any existing Certificate references configured on the Pool.
 	// If you specify an empty collection, any existing Certificate references are removed from the Pool.
@@ -2832,7 +2836,7 @@ type ReplacePoolContent struct {
 
 	// REQUIRED; A list of name-value pairs associated with the Pool as metadata. This list replaces any existing metadata configured
 	// on the Pool. If omitted, or if you specify an empty collection, any existing metadata is removed from the Pool.
-	Metadata []*MetadataItem
+	Metadata []MetadataItem
 
 	// A Task to run on each Compute Node as it joins the Pool. The Task runs when the Compute Node is added to the Pool or when
 	// the Compute Node is restarted. If this element is present, it overwrites any existing StartTask. If omitted, any existing
@@ -2853,7 +2857,7 @@ type ResizeError struct {
 	Message *string
 
 	// A list of additional error details related to the Pool resize error.
-	Values []*NameValuePair
+	Values []NameValuePair
 }
 
 // ResizePoolContent - Parameters for changing the size of an Azure Batch Pool.
@@ -3006,7 +3010,7 @@ type StartTask struct {
 	ContainerSettings *TaskContainerSettings
 
 	// A list of environment variable settings for the StartTask.
-	EnvironmentSettings []*EnvironmentSetting
+	EnvironmentSettings []EnvironmentSetting
 
 	// The maximum number of times the Task may be retried. The Batch service retries a Task if its exit code is nonzero. Note
 	// that this value specifically controls the number of retries. The Batch service will try the Task once, and may then retry
@@ -3021,7 +3025,7 @@ type StartTask struct {
 	// be RequestEntityTooLarge. If this occurs, the collection of ResourceFiles must be reduced in size. This can be achieved
 	// using .zip files, Application Packages, or Docker Containers. Files listed under this element are located in the Task's
 	// working directory.
-	ResourceFiles []*ResourceFile
+	ResourceFiles []ResourceFile
 
 	// The user identity under which the StartTask runs. If omitted, the Task runs as a non-administrative user unique to the
 	// Task.
@@ -3152,7 +3156,7 @@ type SupportedImage struct {
 	// The capabilities or features which the Image supports. Not every capability of the Image is listed. Capabilities in this
 	// list are considered of special interest and are generally related to integration with other features in the Azure Batch
 	// service.
-	Capabilities []*string
+	Capabilities []string
 }
 
 // Task - Batch will retry Tasks when a recovery operation is triggered on a Node.
@@ -3176,7 +3180,7 @@ type Task struct {
 	// package is already on the Node, and is up to date, then it is not re-downloaded; the existing copy on the Compute Node
 	// is used. If a referenced Package cannot be installed, for example because the package has been deleted or because download
 	// failed, the Task fails.
-	ApplicationPackageReferences []*ApplicationPackageReference
+	ApplicationPackageReferences []ApplicationPackageReference
 
 	// READ-ONLY; The settings for an authentication token that the Task can use to perform Batch service operations. If this
 	// property is set, the Batch service provides the Task with an authentication token which can be used to authenticate Batch
@@ -3216,10 +3220,10 @@ type Task struct {
 	// READ-ONLY; The ETag of the Task. This is an opaque string. You can use it to detect whether the Task has changed between
 	// requests. In particular, you can be pass the ETag when updating a Task to specify that your changes should take effect
 	// only if nobody else has modified the Task in the meantime.
-	ETag *string
+	ETag *azcore.ETag
 
 	// READ-ONLY; A list of environment variable settings for the Task.
-	EnvironmentSettings []*EnvironmentSetting
+	EnvironmentSettings []EnvironmentSetting
 
 	// READ-ONLY; Information about the execution of the Task.
 	ExecutionInfo *TaskExecutionInfo
@@ -3243,7 +3247,7 @@ type Task struct {
 
 	// READ-ONLY; A list of files that the Batch service will upload from the Compute Node after running the command line. For
 	// multi-instance Tasks, the files will only be uploaded from the Compute Node on which the primary Task is executed.
-	OutputFiles []*OutputFile
+	OutputFiles []OutputFile
 
 	// READ-ONLY; The previous state of the Task. This property is not set if the Task is in its initial Active state.
 	PreviousState *TaskState
@@ -3262,7 +3266,7 @@ type Task struct {
 	// There is a maximum size for the list of resource files. When the max size is exceeded, the request will fail and the response
 	// error code will be RequestEntityTooLarge. If this occurs, the collection of ResourceFiles must be reduced in size. This
 	// can be achieved using .zip files, Application Packages, or Docker Containers.
-	ResourceFiles []*ResourceFile
+	ResourceFiles []ResourceFile
 
 	// READ-ONLY; The current state of the Task.
 	State *TaskState
@@ -3292,7 +3296,7 @@ type TaskAddResult struct {
 	// The ETag of the Task, if the Task was successfully added. You can use this to detect whether the Task has changed between
 	// requests. In particular, you can be pass the ETag with an Update Task request to specify that your changes should take
 	// effect only if nobody else has modified the Job in the meantime.
-	ETag *string
+	ETag *azcore.ETag
 
 	// The error encountered while attempting to add the Task.
 	Error *Error
@@ -3348,7 +3352,7 @@ type TaskContainerSettings struct {
 	// The paths you want to mounted to container task. If this array is null or be not present, container task will mount entire
 	// temporary disk drive in windows (or AZ_BATCH_NODE_ROOT_DIR in Linux). It won't' mount any data paths into container if
 	// this array is set as empty.
-	ContainerHostBatchBindMounts []*ContainerHostBindMountEntry
+	ContainerHostBatchBindMounts []ContainerHostBindMountEntry
 
 	// Additional options to the container create command. These additional options are supplied as arguments to the "docker create"
 	// command, in addition to those controlled by the Batch Service.
@@ -3394,13 +3398,13 @@ type TaskCountsResult struct {
 type TaskDependencies struct {
 	// The list of Task ID ranges that this Task depends on. All Tasks in all ranges must complete successfully before the dependent
 	// Task can be scheduled.
-	TaskIDRanges []*TaskIDRange
+	TaskIDRanges []TaskIDRange
 
 	// The list of Task IDs that this Task depends on. All Tasks in this list must complete successfully before the dependent
 	// Task can be scheduled. The taskIds collection is limited to 64000 characters total (i.e. the combined length of all Task
 	// IDs). If the taskIds collection exceeds the maximum length, the Add Task request fails with error code TaskDependencyListTooLong.
 	// In this case consider using Task ID ranges instead.
-	TaskIDs []*string
+	TaskIDs []string
 }
 
 // TaskExecutionInfo - Information about the execution of a Task.
@@ -3464,7 +3468,7 @@ type TaskFailureInfo struct {
 	Code *string
 
 	// A list of additional details related to the error.
-	Details []*NameValuePair
+	Details []NameValuePair
 
 	// A message describing the Task error, intended to be suitable for display in a user interface.
 	Message *string
@@ -3475,7 +3479,7 @@ type TaskGroup struct {
 	// REQUIRED; The collection of Tasks to add. The maximum count of Tasks is 100. The total serialized size of this collection
 	// must be less than 1MB. If it is greater than 1MB (for example if each Task has 100's of resource files or environment variables),
 	// the request will fail with code 'RequestBodyTooLarge' and should be retried again with fewer Tasks.
-	Value []*CreateTaskContent
+	Value []CreateTaskContent
 }
 
 // TaskIDRange - The start and end of the range are inclusive. For example, if a range has start
@@ -3512,19 +3516,19 @@ type TaskInfo struct {
 // TaskListResult - The result of listing the Tasks in a Job.
 type TaskListResult struct {
 	// The URL to get the next set of results.
-	ODataNextLink *string
+	NextLink *string
 
 	// The list of Tasks.
-	Value []*Task
+	Value []Task
 }
 
 // TaskListSubtasksResult - The result of listing the subtasks of a Task.
 type TaskListSubtasksResult struct {
 	// The URL to get the next set of results.
-	ODataNextLink *string
+	NextLink *string
 
 	// The list of subtasks.
-	Value []*Subtask
+	Value []Subtask
 }
 
 // TaskSchedulingPolicy - Specifies how Tasks should be distributed across Compute Nodes.
@@ -3623,7 +3627,7 @@ type UpdateJobContent struct {
 	MaxParallelTasks *int32
 
 	// A list of name-value pairs associated with the Job as metadata. If omitted, the existing Job metadata is left unchanged.
-	Metadata []*MetadataItem
+	Metadata []MetadataItem
 
 	// The network configuration for the Job.
 	NetworkConfiguration *JobNetworkConfiguration
@@ -3654,7 +3658,7 @@ type UpdateJobScheduleContent struct {
 
 	// A list of name-value pairs associated with the Job Schedule as metadata. If you do not specify this element, existing metadata
 	// is left unchanged.
-	Metadata []*MetadataItem
+	Metadata []MetadataItem
 
 	// The schedule according to which Jobs will be created. All times are fixed respective to UTC and are not impacted by daylight
 	// saving time. If you do not specify this element, the existing schedule is left unchanged.
@@ -3684,7 +3688,7 @@ type UpdatePoolContent struct {
 	// joining the Pool, but do not affect Compute Nodes that are already in the Pool until they are rebooted or reimaged. If
 	// this element is present, it replaces any existing Package references. If you specify an empty collection, then all Package
 	// references are removed from the Pool. If omitted, any existing Package references are left unchanged.
-	ApplicationPackageReferences []*ApplicationPackageReference
+	ApplicationPackageReferences []ApplicationPackageReference
 
 	// If this element is present, it replaces any existing Certificate references configured on the Pool.
 	// If omitted, any existing Certificate references are left unchanged.
@@ -3709,11 +3713,11 @@ type UpdatePoolContent struct {
 	// A list of name-value pairs associated with the Pool as metadata. If this element is present, it replaces any existing metadata
 	// configured on the Pool. If you specify an empty collection, any metadata is removed from the Pool. If omitted, any existing
 	// metadata is left unchanged.
-	Metadata []*MetadataItem
+	Metadata []MetadataItem
 
 	// Mount storage using specified file system for the entire lifetime of the pool. Mount the storage using Azure fileshare,
 	// NFS, CIFS or Blobfuse based file system.<br /><br />This field can be updated only when the pool is empty.
-	MountConfiguration []*MountConfiguration
+	MountConfiguration []MountConfiguration
 
 	// The network configuration for the Pool. This field can be updated only when the pool is empty.
 	NetworkConfiguration *NetworkConfiguration
@@ -3748,7 +3752,7 @@ type UpdatePoolContent struct {
 
 	// The list of user Accounts to be created on each Compute Node in the Pool. This field can be updated only when the pool
 	// is empty.
-	UserAccounts []*UserAccount
+	UserAccounts []UserAccount
 
 	// The size of virtual machines in the Pool. For information about available sizes of virtual machines in Pools, see Choose
 	// a VM size for Compute Nodes in an Azure Batch Pool (https://learn.microsoft.com/azure/batch/batch-pool-vm-sizes).<br /><br
@@ -3888,7 +3892,7 @@ type VMExtension struct {
 	ProtectedSettings map[string]*string
 
 	// The collection of extension names. Collection of extension names after which this extension needs to be provisioned.
-	ProvisionAfterExtensions []*string
+	ProvisionAfterExtensions []string
 
 	// JSON formatted public settings for the extension.
 	Settings map[string]*string
@@ -3903,10 +3907,10 @@ type VMExtensionInstanceView struct {
 	Name *string
 
 	// The resource status information.
-	Statuses []*InstanceViewStatus
+	Statuses []InstanceViewStatus
 
 	// The resource status information.
-	SubStatuses []*InstanceViewStatus
+	SubStatuses []InstanceViewStatus
 }
 
 // VirtualMachineConfiguration - The configuration for Compute Nodes in a Pool based on the Azure Virtual
@@ -3934,7 +3938,7 @@ type VirtualMachineConfiguration struct {
 	// is removed from the Pool, the disk and all data associated with it is also deleted. The disk is not formatted after being
 	// attached, it must be formatted before use - for more information see https://learn.microsoft.com/azure/virtual-machines/linux/classic/attach-disk#initialize-a-new-data-disk-in-linux
 	// and https://learn.microsoft.com/azure/virtual-machines/windows/attach-disk-ps#add-an-empty-data-disk-to-a-virtual-machine.
-	DataDisks []*DataDisk
+	DataDisks []DataDisk
 
 	// The disk encryption configuration for the pool. If specified, encryption is performed on each node in the pool during node
 	// provisioning.
@@ -3942,7 +3946,7 @@ type VirtualMachineConfiguration struct {
 
 	// The virtual machine extension for the pool. If specified, the extensions mentioned in this configuration will be installed
 	// on each node.
-	Extensions []*VMExtension
+	Extensions []VMExtension
 
 	// This only applies to Images that contain the Windows operating system, and
 	// should only be used when you hold valid on-premises licenses for the Compute
@@ -3997,10 +4001,10 @@ type WindowsUserConfiguration struct {
 // listPoolUsageMetricsResult - The result of a listing the usage metrics for an Account.
 type listPoolUsageMetricsResult struct {
 	// The URL to get the next set of results.
-	ODataNextLink *string
+	NextLink *string
 
 	// The Pool usage metrics data.
-	Value []*poolUsageMetrics
+	Value []poolUsageMetrics
 }
 
 // poolUsageMetrics - Usage metrics for a Pool across an aggregation interval.

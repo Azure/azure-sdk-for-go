@@ -14,7 +14,7 @@ import (
 
 type replacement struct {
 	regex   *regexp.Regexp
-	replace string
+	replace []byte
 }
 
 type replacer struct {
@@ -37,7 +37,7 @@ func (r *replacer) Replace(paths []string, regex, replace string) {
 		p = must(filepath.Abs(p))
 		r.replacements[p] = append(r.replacements[p], replacement{
 			regex:   regexp.MustCompile(regex),
-			replace: replace,
+			replace: []byte(replace),
 		})
 	}
 }
@@ -54,7 +54,7 @@ func (r *replacer) Do() error {
 			return err
 		}
 		for _, t := range tasks {
-			after := t.regex.ReplaceAll(b, []byte(t.replace))
+			after := t.regex.ReplaceAll(b, t.replace)
 			if bytes.Equal(b, after) {
 				log.Printf(`replacement "%s -> %s" had no effect in %s`, t.regex, t.replace, filepath.Base(path))
 			}
@@ -82,6 +82,25 @@ func main() {
 		"OcpRange": "OCPRange",
 	} {
 		r.Replace([]string{"client.go", "options.go"}, before, after)
+	}
+	// replace ETag strings with azcore.ETag
+	r.Replace(
+		[]string{"models.go", "options.go", "responses.go"},
+		`((?:ETag|If(?:None)?Match) )\*string`,
+		`$1*azcore.ETag`,
+	)
+	// add azcore import for azcore.ETag. This would break if
+	// the emitter added another import to these files
+	r.Replace(
+		[]string{"models.go", "options.go"},
+		`import "time"`,
+		"import (\n\t\"time\"\n\t\"github.com/Azure/azure-sdk-for-go/sdk/azcore\"\n)",
+	)
+	for before, after := range map[string]string{
+		`(\*options.If(None)?Match)`: `string($1)`,
+		`(result\.ETag = )(&\w+)`:    "${1}(*azcore.ETag)($2)",
+	} {
+		r.Replace([]string{"client.go"}, before, after)
 	}
 	if err := r.Do(); err != nil {
 		log.Fatal(err)

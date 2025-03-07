@@ -4,7 +4,11 @@
 
 package azbatch
 
-import "time"
+import (
+	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+)
 
 // CancelCertificateDeletionOptions contains the optional parameters for the Client.CancelCertificateDeletion method.
 type CancelCertificateDeletionOptions struct {
@@ -212,7 +216,7 @@ type DeleteJobOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -222,7 +226,7 @@ type DeleteJobOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -255,7 +259,7 @@ type DeleteJobScheduleOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -265,7 +269,7 @@ type DeleteJobScheduleOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -338,7 +342,7 @@ type DeletePoolOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -348,7 +352,7 @@ type DeletePoolOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -402,7 +406,7 @@ type DeleteTaskOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -412,7 +416,7 @@ type DeleteTaskOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -441,7 +445,7 @@ type DisableJobOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -451,7 +455,7 @@ type DisableJobOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -480,7 +484,7 @@ type DisableJobScheduleOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -490,7 +494,7 @@ type DisableJobScheduleOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -560,7 +564,7 @@ type EnableJobOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -570,7 +574,7 @@ type EnableJobOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -599,7 +603,7 @@ type EnableJobScheduleOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -609,7 +613,7 @@ type EnableJobScheduleOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -657,7 +661,7 @@ type EnablePoolAutoScaleOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -667,7 +671,7 @@ type EnablePoolAutoScaleOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -759,7 +763,7 @@ type GetJobOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -769,7 +773,7 @@ type GetJobOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -804,7 +808,7 @@ type GetJobScheduleOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -814,7 +818,7 @@ type GetJobScheduleOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -993,7 +997,7 @@ type GetPoolOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1003,7 +1007,7 @@ type GetPoolOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1100,7 +1104,7 @@ type GetTaskOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1110,7 +1114,7 @@ type GetTaskOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1142,7 +1146,7 @@ type JobScheduleExistsOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1152,7 +1156,7 @@ type JobScheduleExistsOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1623,7 +1627,7 @@ type PoolExistsOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1633,7 +1637,7 @@ type PoolExistsOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1662,7 +1666,7 @@ type ReactivateTaskOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1672,7 +1676,7 @@ type ReactivateTaskOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1745,7 +1749,7 @@ type RemoveNodesOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1755,7 +1759,7 @@ type RemoveNodesOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1784,7 +1788,7 @@ type ReplaceJobOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1794,7 +1798,7 @@ type ReplaceJobOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1823,7 +1827,7 @@ type ReplaceJobScheduleOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1833,7 +1837,7 @@ type ReplaceJobScheduleOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1900,7 +1904,7 @@ type ReplaceTaskOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1910,7 +1914,7 @@ type ReplaceTaskOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1939,7 +1943,7 @@ type ResizePoolOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1949,7 +1953,7 @@ type ResizePoolOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1997,7 +2001,7 @@ type StopPoolResizeOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -2007,7 +2011,7 @@ type StopPoolResizeOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -2040,7 +2044,7 @@ type TerminateJobOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -2050,7 +2054,7 @@ type TerminateJobOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -2086,7 +2090,7 @@ type TerminateJobScheduleOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -2096,7 +2100,7 @@ type TerminateJobScheduleOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -2125,7 +2129,7 @@ type TerminateTaskOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -2135,7 +2139,7 @@ type TerminateTaskOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -2164,7 +2168,7 @@ type UpdateJobOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -2174,7 +2178,7 @@ type UpdateJobOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -2203,7 +2207,7 @@ type UpdateJobScheduleOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -2213,7 +2217,7 @@ type UpdateJobScheduleOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -2242,7 +2246,7 @@ type UpdatePoolOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -2252,7 +2256,7 @@ type UpdatePoolOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has

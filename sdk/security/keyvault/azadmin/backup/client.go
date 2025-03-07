@@ -219,21 +219,7 @@ func (client *Client) preFullBackupCreateRequest(ctx context.Context, preBackupO
 //   - preRestoreOperationParameters - Optional pre restore parameters to validate prior to performing a full restore operation.
 //   - options - BeginPreFullRestoreOptions contains the optional parameters for the Client.BeginPreFullRestore method.
 func (client *Client) BeginPreFullRestore(ctx context.Context, preRestoreOperationParameters PreRestoreOperationParameters, options *BeginPreFullRestoreOptions) (*runtime.Poller[PreFullRestoreResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.preFullRestore(ctx, preRestoreOperationParameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PreFullRestoreResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PreFullRestoreResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
+	return client.beginPreFullRestore(ctx, preRestoreOperationParameters, options)
 }
 
 // PreFullRestore - Pre-restore operation for checking whether the customer can perform a full restore operation.

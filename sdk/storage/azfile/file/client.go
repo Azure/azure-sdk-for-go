@@ -14,6 +14,7 @@ import (
 	"os"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -521,9 +522,7 @@ func (f *Client) download(ctx context.Context, writer io.WriterAt, o downloadOpt
 				return err
 			}
 			if computeReadLength {
-				progressLock.Lock()
-				dataDownloaded += *dr.ContentLength
-				progressLock.Unlock()
+				atomic.AddInt64(&dataDownloaded, *dr.ContentLength)
 			}
 			err = body.Close()
 			return err

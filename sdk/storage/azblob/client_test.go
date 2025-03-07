@@ -606,9 +606,9 @@ func performUploadAndDownloadBufferTest(t *testing.T, _require *require.Assertio
 		if downloadCount == 0 {
 			_require.EqualValues(destBuffer, bytesToUpload[downloadOffset:])
 		} else {
-			_require.EqualValues(destBuffer[downloadOffset:downloadOffset+int(n)], bytesToUpload[downloadOffset:downloadOffset+int(n)])
+			_require.EqualValues(destBuffer[:int(n)], bytesToUpload[downloadOffset:downloadOffset+int(n)])
 			if downloadCount > blobSize {
-				_require.EqualValues(blobSize, n)
+				_require.EqualValues(blobSize-downloadOffset, n)
 			} else {
 				_require.EqualValues(downloadCount, n)
 			}

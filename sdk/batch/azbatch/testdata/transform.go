@@ -14,7 +14,7 @@ import (
 
 type replacement struct {
 	regex   *regexp.Regexp
-	replace string
+	replace []byte
 }
 
 type replacer struct {
@@ -37,7 +37,7 @@ func (r *replacer) Replace(paths []string, regex, replace string) {
 		p = must(filepath.Abs(p))
 		r.replacements[p] = append(r.replacements[p], replacement{
 			regex:   regexp.MustCompile(regex),
-			replace: replace,
+			replace: []byte(replace),
 		})
 	}
 }
@@ -54,7 +54,7 @@ func (r *replacer) Do() error {
 			return err
 		}
 		for _, t := range tasks {
-			after := t.regex.ReplaceAll(b, []byte(t.replace))
+			after := t.regex.ReplaceAll(b, t.replace)
 			if bytes.Equal(b, after) {
 				log.Printf(`replacement "%s -> %s" had no effect in %s`, t.regex, t.replace, filepath.Base(path))
 			}
@@ -83,6 +83,14 @@ func main() {
 	} {
 		r.Replace([]string{"client.go", "options.go"}, before, after)
 	}
+	for before, after := range map[string]string{
+		`((?:ETag|If(?:None)?Match) )\*string`: `$1*azcore.ETag`,
+		// note this would break if the emitter added another import
+		`import "time"`: "import (\n\t\"time\"\n\t\"github.com/Azure/azure-sdk-for-go/sdk/azcore\"\n)",
+	} {
+		r.Replace([]string{"models.go", "options.go"}, before, after)
+	}
+	r.Replace([]string{"client.go"}, `(\*options.If(None)?Match)`, `string($1)`)
 	if err := r.Do(); err != nil {
 		log.Fatal(err)
 	}

@@ -737,13 +737,13 @@ func (client *Client) deleteJobCreateRequest(ctx context.Context, jobID string, 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
 		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
 		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
@@ -828,13 +828,13 @@ func (client *Client) deleteJobScheduleCreateRequest(ctx context.Context, jobSch
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
 		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
 		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
@@ -1091,13 +1091,13 @@ func (client *Client) deletePoolCreateRequest(ctx context.Context, poolID string
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
 		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
 		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
@@ -1184,13 +1184,13 @@ func (client *Client) deleteTaskCreateRequest(ctx context.Context, jobID string,
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
 		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
 		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
@@ -1361,13 +1361,13 @@ func (client *Client) disableJobCreateRequest(ctx context.Context, jobID string,
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
 		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
 		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
@@ -1462,13 +1462,13 @@ func (client *Client) disableJobScheduleCreateRequest(ctx context.Context, jobSc
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
 		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
 		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
@@ -1747,13 +1747,13 @@ func (client *Client) enableJobCreateRequest(ctx context.Context, jobID string, 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
 		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
 		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
@@ -1844,13 +1844,13 @@ func (client *Client) enableJobScheduleCreateRequest(ctx context.Context, jobSch
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
 		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
 		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
@@ -2038,13 +2038,13 @@ func (client *Client) enablePoolAutoScaleCreateRequest(ctx context.Context, pool
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
 		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
 		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
@@ -2329,13 +2329,13 @@ func (client *Client) getJobCreateRequest(ctx context.Context, jobID string, opt
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
 		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
 		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
@@ -2430,13 +2430,13 @@ func (client *Client) getJobScheduleCreateRequest(ctx context.Context, jobSchedu
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
 		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
 		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
@@ -3155,13 +3155,13 @@ func (client *Client) getPoolCreateRequest(ctx context.Context, poolID string, o
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
 		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
 		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
@@ -3265,13 +3265,13 @@ func (client *Client) getTaskCreateRequest(ctx context.Context, jobID string, ta
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
 		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
 		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
@@ -3618,13 +3618,13 @@ func (client *Client) jobScheduleExistsCreateRequest(ctx context.Context, jobSch
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
 		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
 		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
@@ -3676,12 +3676,12 @@ func (client *Client) jobScheduleExistsHandleResponse(resp *http.Response) (JobS
 func (client *Client) NewListApplicationsPager(options *ListApplicationsOptions) *runtime.Pager[ListApplicationsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListApplicationsResponse]{
 		More: func(page ListApplicationsResponse) bool {
-			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ListApplicationsResponse) (ListApplicationsResponse, error) {
 			nextLink := ""
 			if page != nil {
-				nextLink = *page.ODataNextLink
+				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
 				return client.listApplicationsCreateRequest(ctx, options)
@@ -3769,12 +3769,12 @@ func (client *Client) listApplicationsHandleResponse(resp *http.Response) (ListA
 func (client *Client) NewListJobPreparationAndReleaseTaskStatusPager(jobID string, options *ListJobPreparationAndReleaseTaskStatusOptions) *runtime.Pager[ListJobPreparationAndReleaseTaskStatusResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListJobPreparationAndReleaseTaskStatusResponse]{
 		More: func(page ListJobPreparationAndReleaseTaskStatusResponse) bool {
-			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ListJobPreparationAndReleaseTaskStatusResponse) (ListJobPreparationAndReleaseTaskStatusResponse, error) {
 			nextLink := ""
 			if page != nil {
-				nextLink = *page.ODataNextLink
+				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
 				return client.listJobPreparationAndReleaseTaskStatusCreateRequest(ctx, jobID, options)
@@ -3863,12 +3863,12 @@ func (client *Client) listJobPreparationAndReleaseTaskStatusHandleResponse(resp 
 func (client *Client) NewListJobSchedulesPager(options *ListJobSchedulesOptions) *runtime.Pager[ListJobSchedulesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListJobSchedulesResponse]{
 		More: func(page ListJobSchedulesResponse) bool {
-			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ListJobSchedulesResponse) (ListJobSchedulesResponse, error) {
 			nextLink := ""
 			if page != nil {
-				nextLink = *page.ODataNextLink
+				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
 				return client.listJobSchedulesCreateRequest(ctx, options)
@@ -3956,12 +3956,12 @@ func (client *Client) listJobSchedulesHandleResponse(resp *http.Response) (ListJ
 func (client *Client) NewListJobsPager(options *ListJobsOptions) *runtime.Pager[ListJobsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListJobsResponse]{
 		More: func(page ListJobsResponse) bool {
-			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ListJobsResponse) (ListJobsResponse, error) {
 			nextLink := ""
 			if page != nil {
-				nextLink = *page.ODataNextLink
+				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
 				return client.listJobsCreateRequest(ctx, options)
@@ -4050,12 +4050,12 @@ func (client *Client) listJobsHandleResponse(resp *http.Response) (ListJobsRespo
 func (client *Client) NewListJobsFromSchedulePager(jobScheduleID string, options *ListJobsFromScheduleOptions) *runtime.Pager[ListJobsFromScheduleResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListJobsFromScheduleResponse]{
 		More: func(page ListJobsFromScheduleResponse) bool {
-			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ListJobsFromScheduleResponse) (ListJobsFromScheduleResponse, error) {
 			nextLink := ""
 			if page != nil {
-				nextLink = *page.ODataNextLink
+				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
 				return client.listJobsFromScheduleCreateRequest(ctx, jobScheduleID, options)
@@ -4149,12 +4149,12 @@ func (client *Client) listJobsFromScheduleHandleResponse(resp *http.Response) (L
 func (client *Client) NewListNodeExtensionsPager(poolID string, nodeID string, options *ListNodeExtensionsOptions) *runtime.Pager[ListNodeExtensionsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListNodeExtensionsResponse]{
 		More: func(page ListNodeExtensionsResponse) bool {
-			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ListNodeExtensionsResponse) (ListNodeExtensionsResponse, error) {
 			nextLink := ""
 			if page != nil {
-				nextLink = *page.ODataNextLink
+				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
 				return client.listNodeExtensionsCreateRequest(ctx, poolID, nodeID, options)
@@ -4246,12 +4246,12 @@ func (client *Client) listNodeExtensionsHandleResponse(resp *http.Response) (Lis
 func (client *Client) NewListNodeFilesPager(poolID string, nodeID string, options *ListNodeFilesOptions) *runtime.Pager[ListNodeFilesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListNodeFilesResponse]{
 		More: func(page ListNodeFilesResponse) bool {
-			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ListNodeFilesResponse) (ListNodeFilesResponse, error) {
 			nextLink := ""
 			if page != nil {
-				nextLink = *page.ODataNextLink
+				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
 				return client.listNodeFilesCreateRequest(ctx, poolID, nodeID, options)
@@ -4345,12 +4345,12 @@ func (client *Client) listNodeFilesHandleResponse(resp *http.Response) (ListNode
 func (client *Client) NewListNodesPager(poolID string, options *ListNodesOptions) *runtime.Pager[ListNodesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListNodesResponse]{
 		More: func(page ListNodesResponse) bool {
-			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ListNodesResponse) (ListNodesResponse, error) {
 			nextLink := ""
 			if page != nil {
-				nextLink = *page.ODataNextLink
+				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
 				return client.listNodesCreateRequest(ctx, poolID, options)
@@ -4439,12 +4439,12 @@ func (client *Client) listNodesHandleResponse(resp *http.Response) (ListNodesRes
 func (client *Client) NewListPoolNodeCountsPager(options *ListPoolNodeCountsOptions) *runtime.Pager[ListPoolNodeCountsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListPoolNodeCountsResponse]{
 		More: func(page ListPoolNodeCountsResponse) bool {
-			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ListPoolNodeCountsResponse) (ListPoolNodeCountsResponse, error) {
 			nextLink := ""
 			if page != nil {
-				nextLink = *page.ODataNextLink
+				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
 				return client.listPoolNodeCountsCreateRequest(ctx, options)
@@ -4526,12 +4526,12 @@ func (client *Client) listPoolNodeCountsHandleResponse(resp *http.Response) (Lis
 func (client *Client) NewListPoolsPager(options *ListPoolsOptions) *runtime.Pager[ListPoolsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListPoolsResponse]{
 		More: func(page ListPoolsResponse) bool {
-			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ListPoolsResponse) (ListPoolsResponse, error) {
 			nextLink := ""
 			if page != nil {
-				nextLink = *page.ODataNextLink
+				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
 				return client.listPoolsCreateRequest(ctx, options)
@@ -4622,12 +4622,12 @@ func (client *Client) listPoolsHandleResponse(resp *http.Response) (ListPoolsRes
 func (client *Client) NewListSubTasksPager(jobID string, taskID string, options *ListSubTasksOptions) *runtime.Pager[ListSubTasksResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListSubTasksResponse]{
 		More: func(page ListSubTasksResponse) bool {
-			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ListSubTasksResponse) (ListSubTasksResponse, error) {
 			nextLink := ""
 			if page != nil {
-				nextLink = *page.ODataNextLink
+				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
 				return client.listSubTasksCreateRequest(ctx, jobID, taskID, options)
@@ -4714,12 +4714,12 @@ func (client *Client) listSubTasksHandleResponse(resp *http.Response) (ListSubTa
 func (client *Client) NewListSupportedImagesPager(options *ListSupportedImagesOptions) *runtime.Pager[ListSupportedImagesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListSupportedImagesResponse]{
 		More: func(page ListSupportedImagesResponse) bool {
-			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ListSupportedImagesResponse) (ListSupportedImagesResponse, error) {
 			nextLink := ""
 			if page != nil {
-				nextLink = *page.ODataNextLink
+				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
 				return client.listSupportedImagesCreateRequest(ctx, options)
@@ -4803,12 +4803,12 @@ func (client *Client) listSupportedImagesHandleResponse(resp *http.Response) (Li
 func (client *Client) NewListTaskFilesPager(jobID string, taskID string, options *ListTaskFilesOptions) *runtime.Pager[ListTaskFilesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListTaskFilesResponse]{
 		More: func(page ListTaskFilesResponse) bool {
-			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ListTaskFilesResponse) (ListTaskFilesResponse, error) {
 			nextLink := ""
 			if page != nil {
-				nextLink = *page.ODataNextLink
+				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
 				return client.listTaskFilesCreateRequest(ctx, jobID, taskID, options)
@@ -4904,12 +4904,12 @@ func (client *Client) listTaskFilesHandleResponse(resp *http.Response) (ListTask
 func (client *Client) NewListTasksPager(jobID string, options *ListTasksOptions) *runtime.Pager[ListTasksResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListTasksResponse]{
 		More: func(page ListTasksResponse) bool {
-			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ListTasksResponse) (ListTasksResponse, error) {
 			nextLink := ""
 			if page != nil {
-				nextLink = *page.ODataNextLink
+				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
 				return client.listTasksCreateRequest(ctx, jobID, options)
@@ -5039,13 +5039,13 @@ func (client *Client) poolExistsCreateRequest(ctx context.Context, poolID string
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
 		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
 		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
@@ -5145,13 +5145,13 @@ func (client *Client) reactivateTaskCreateRequest(ctx context.Context, jobID str
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
 		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
 		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
@@ -5441,13 +5441,13 @@ func (client *Client) removeNodesCreateRequest(ctx context.Context, poolID strin
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
 		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
 		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
@@ -5545,13 +5545,13 @@ func (client *Client) replaceJobCreateRequest(ctx context.Context, jobID string,
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
 		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
 		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
@@ -5651,13 +5651,13 @@ func (client *Client) replaceJobScheduleCreateRequest(ctx context.Context, jobSc
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
 		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
 		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
@@ -5951,13 +5951,13 @@ func (client *Client) replaceTaskCreateRequest(ctx context.Context, jobID string
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
 		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
 		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
@@ -6059,13 +6059,13 @@ func (client *Client) resizePoolCreateRequest(ctx context.Context, poolID string
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
 		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
 		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
@@ -6256,13 +6256,13 @@ func (client *Client) stopPoolResizeCreateRequest(ctx context.Context, poolID st
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
 		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
 		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
@@ -6361,13 +6361,13 @@ func (client *Client) terminateJobCreateRequest(ctx context.Context, jobID strin
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
 		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
 		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
@@ -6468,13 +6468,13 @@ func (client *Client) terminateJobScheduleCreateRequest(ctx context.Context, job
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
 		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
 		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
@@ -6572,13 +6572,13 @@ func (client *Client) terminateTaskCreateRequest(ctx context.Context, jobID stri
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
 		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
 		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
@@ -6672,13 +6672,13 @@ func (client *Client) updateJobCreateRequest(ctx context.Context, jobID string, 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
 		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
 		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
@@ -6778,13 +6778,13 @@ func (client *Client) updateJobScheduleCreateRequest(ctx context.Context, jobSch
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
 		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
 		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
@@ -6882,13 +6882,13 @@ func (client *Client) updatePoolCreateRequest(ctx context.Context, poolID string
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
 		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
 		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
@@ -7049,12 +7049,12 @@ func (client *Client) uploadNodeLogsHandleResponse(resp *http.Response) (UploadN
 func (client *Client) newListPoolUsageMetricsPager(options *listPoolUsageMetricsOptions) *runtime.Pager[listPoolUsageMetricsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[listPoolUsageMetricsResponse]{
 		More: func(page listPoolUsageMetricsResponse) bool {
-			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *listPoolUsageMetricsResponse) (listPoolUsageMetricsResponse, error) {
 			nextLink := ""
 			if page != nil {
-				nextLink = *page.ODataNextLink
+				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
 				return client.listPoolUsageMetricsCreateRequest(ctx, options)

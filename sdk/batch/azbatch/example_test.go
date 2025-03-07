@@ -32,7 +32,7 @@ func Example_package() {
 		ID:                   to.Ptr(poolID),
 		TargetDedicatedNodes: to.Ptr(int32(2)),
 		VirtualMachineConfiguration: &azbatch.VirtualMachineConfiguration{
-			DataDisks: []*azbatch.DataDisk{
+			DataDisks: []azbatch.DataDisk{
 				{
 					DiskSizeGB:        to.Ptr(int32(1)),
 					LogicalUnitNumber: to.Ptr(int32(1)),

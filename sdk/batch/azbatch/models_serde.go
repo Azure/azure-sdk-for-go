@@ -17,7 +17,7 @@ import (
 // MarshalJSON implements the json.Marshaller interface for type AccountListSupportedImagesResult.
 func (a AccountListSupportedImagesResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "odata.nextLink", a.ODataNextLink)
+	populate(objectMap, "odata.nextLink", a.NextLink)
 	populate(objectMap, "value", a.Value)
 	return json.Marshal(objectMap)
 }
@@ -32,7 +32,7 @@ func (a *AccountListSupportedImagesResult) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "odata.nextLink":
-			err = unpopulate(val, "ODataNextLink", &a.ODataNextLink)
+			err = unpopulate(val, "NextLink", &a.NextLink)
 			delete(rawMsg, key)
 		case "value":
 			err = unpopulate(val, "Value", &a.Value)
@@ -137,7 +137,7 @@ func (a *Application) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ApplicationListResult.
 func (a ApplicationListResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "odata.nextLink", a.ODataNextLink)
+	populate(objectMap, "odata.nextLink", a.NextLink)
 	populate(objectMap, "value", a.Value)
 	return json.Marshal(objectMap)
 }
@@ -152,7 +152,7 @@ func (a *ApplicationListResult) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "odata.nextLink":
-			err = unpopulate(val, "ODataNextLink", &a.ODataNextLink)
+			err = unpopulate(val, "NextLink", &a.NextLink)
 			delete(rawMsg, key)
 		case "value":
 			err = unpopulate(val, "Value", &a.Value)
@@ -1993,7 +1993,7 @@ func (j *JobExecutionInfo) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type JobListResult.
 func (j JobListResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "odata.nextLink", j.ODataNextLink)
+	populate(objectMap, "odata.nextLink", j.NextLink)
 	populate(objectMap, "value", j.Value)
 	return json.Marshal(objectMap)
 }
@@ -2008,7 +2008,7 @@ func (j *JobListResult) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "odata.nextLink":
-			err = unpopulate(val, "ODataNextLink", &j.ODataNextLink)
+			err = unpopulate(val, "NextLink", &j.NextLink)
 			delete(rawMsg, key)
 		case "value":
 			err = unpopulate(val, "Value", &j.Value)
@@ -2181,7 +2181,7 @@ func (j *JobPreparationAndReleaseTaskStatus) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type JobPreparationAndReleaseTaskStatusListResult.
 func (j JobPreparationAndReleaseTaskStatusListResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "odata.nextLink", j.ODataNextLink)
+	populate(objectMap, "odata.nextLink", j.NextLink)
 	populate(objectMap, "value", j.Value)
 	return json.Marshal(objectMap)
 }
@@ -2196,7 +2196,7 @@ func (j *JobPreparationAndReleaseTaskStatusListResult) UnmarshalJSON(data []byte
 		var err error
 		switch key {
 		case "odata.nextLink":
-			err = unpopulate(val, "ODataNextLink", &j.ODataNextLink)
+			err = unpopulate(val, "NextLink", &j.NextLink)
 			delete(rawMsg, key)
 		case "value":
 			err = unpopulate(val, "Value", &j.Value)
@@ -2609,7 +2609,7 @@ func (j *JobScheduleExecutionInfo) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type JobScheduleListResult.
 func (j JobScheduleListResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "odata.nextLink", j.ODataNextLink)
+	populate(objectMap, "odata.nextLink", j.NextLink)
 	populate(objectMap, "value", j.Value)
 	return json.Marshal(objectMap)
 }
@@ -2624,7 +2624,7 @@ func (j *JobScheduleListResult) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "odata.nextLink":
-			err = unpopulate(val, "ODataNextLink", &j.ODataNextLink)
+			err = unpopulate(val, "NextLink", &j.NextLink)
 			delete(rawMsg, key)
 		case "value":
 			err = unpopulate(val, "Value", &j.Value)
@@ -3035,7 +3035,7 @@ func (l *LinuxUserConfiguration) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ListPoolNodeCountsResult.
 func (l ListPoolNodeCountsResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "odata.nextLink", l.ODataNextLink)
+	populate(objectMap, "odata.nextLink", l.NextLink)
 	populate(objectMap, "value", l.Value)
 	return json.Marshal(objectMap)
 }
@@ -3050,7 +3050,7 @@ func (l *ListPoolNodeCountsResult) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "odata.nextLink":
-			err = unpopulate(val, "ODataNextLink", &l.ODataNextLink)
+			err = unpopulate(val, "NextLink", &l.NextLink)
 			delete(rawMsg, key)
 		case "value":
 			err = unpopulate(val, "Value", &l.Value)
@@ -3684,7 +3684,7 @@ func (n *NodeFile) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type NodeFileListResult.
 func (n NodeFileListResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "odata.nextLink", n.ODataNextLink)
+	populate(objectMap, "odata.nextLink", n.NextLink)
 	populate(objectMap, "value", n.Value)
 	return json.Marshal(objectMap)
 }
@@ -3699,7 +3699,7 @@ func (n *NodeFileListResult) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "odata.nextLink":
-			err = unpopulate(val, "ODataNextLink", &n.ODataNextLink)
+			err = unpopulate(val, "NextLink", &n.NextLink)
 			delete(rawMsg, key)
 		case "value":
 			err = unpopulate(val, "Value", &n.Value)
@@ -3789,7 +3789,7 @@ func (n *NodeInfo) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type NodeListResult.
 func (n NodeListResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "odata.nextLink", n.ODataNextLink)
+	populate(objectMap, "odata.nextLink", n.NextLink)
 	populate(objectMap, "value", n.Value)
 	return json.Marshal(objectMap)
 }
@@ -3804,7 +3804,7 @@ func (n *NodeListResult) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "odata.nextLink":
-			err = unpopulate(val, "ODataNextLink", &n.ODataNextLink)
+			err = unpopulate(val, "NextLink", &n.NextLink)
 			delete(rawMsg, key)
 		case "value":
 			err = unpopulate(val, "Value", &n.Value)
@@ -3913,7 +3913,7 @@ func (n *NodeVMExtension) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type NodeVMExtensionListResult.
 func (n NodeVMExtensionListResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "odata.nextLink", n.ODataNextLink)
+	populate(objectMap, "odata.nextLink", n.NextLink)
 	populate(objectMap, "value", n.Value)
 	return json.Marshal(objectMap)
 }
@@ -3928,7 +3928,7 @@ func (n *NodeVMExtensionListResult) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "odata.nextLink":
-			err = unpopulate(val, "ODataNextLink", &n.ODataNextLink)
+			err = unpopulate(val, "NextLink", &n.NextLink)
 			delete(rawMsg, key)
 		case "value":
 			err = unpopulate(val, "Value", &n.Value)
@@ -4375,7 +4375,7 @@ func (p *PoolInfo) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type PoolListResult.
 func (p PoolListResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "odata.nextLink", p.ODataNextLink)
+	populate(objectMap, "odata.nextLink", p.NextLink)
 	populate(objectMap, "value", p.Value)
 	return json.Marshal(objectMap)
 }
@@ -4390,7 +4390,7 @@ func (p *PoolListResult) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "odata.nextLink":
-			err = unpopulate(val, "ODataNextLink", &p.ODataNextLink)
+			err = unpopulate(val, "NextLink", &p.NextLink)
 			delete(rawMsg, key)
 		case "value":
 			err = unpopulate(val, "Value", &p.Value)
@@ -5976,7 +5976,7 @@ func (t *TaskInfo) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type TaskListResult.
 func (t TaskListResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "odata.nextLink", t.ODataNextLink)
+	populate(objectMap, "odata.nextLink", t.NextLink)
 	populate(objectMap, "value", t.Value)
 	return json.Marshal(objectMap)
 }
@@ -5991,7 +5991,7 @@ func (t *TaskListResult) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "odata.nextLink":
-			err = unpopulate(val, "ODataNextLink", &t.ODataNextLink)
+			err = unpopulate(val, "NextLink", &t.NextLink)
 			delete(rawMsg, key)
 		case "value":
 			err = unpopulate(val, "Value", &t.Value)
@@ -6007,7 +6007,7 @@ func (t *TaskListResult) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type TaskListSubtasksResult.
 func (t TaskListSubtasksResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "odata.nextLink", t.ODataNextLink)
+	populate(objectMap, "odata.nextLink", t.NextLink)
 	populate(objectMap, "value", t.Value)
 	return json.Marshal(objectMap)
 }
@@ -6022,7 +6022,7 @@ func (t *TaskListSubtasksResult) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "odata.nextLink":
-			err = unpopulate(val, "ODataNextLink", &t.ODataNextLink)
+			err = unpopulate(val, "NextLink", &t.NextLink)
 			delete(rawMsg, key)
 		case "value":
 			err = unpopulate(val, "Value", &t.Value)
@@ -6948,7 +6948,7 @@ func (w *WindowsUserConfiguration) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type listPoolUsageMetricsResult.
 func (l listPoolUsageMetricsResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "odata.nextLink", l.ODataNextLink)
+	populate(objectMap, "odata.nextLink", l.NextLink)
 	populate(objectMap, "value", l.Value)
 	return json.Marshal(objectMap)
 }
@@ -6963,7 +6963,7 @@ func (l *listPoolUsageMetricsResult) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "odata.nextLink":
-			err = unpopulate(val, "ODataNextLink", &l.ODataNextLink)
+			err = unpopulate(val, "NextLink", &l.NextLink)
 			delete(rawMsg, key)
 		case "value":
 			err = unpopulate(val, "Value", &l.Value)

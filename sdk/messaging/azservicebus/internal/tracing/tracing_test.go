@@ -28,19 +28,20 @@ func TestStartSpan(t *testing.T) {
 	// creates a span when both tracer and SpanName are set
 	tr := Tracer{
 		tracer: tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
-			Name: "test",
+			Name: "test queue",
 			Kind: SpanKindInternal,
 			Attributes: []Attribute{
 				{Key: AttrOperationName, Value: "test"},
 			},
-		}, nil).NewTracer("module", "version")}
+		}, nil).NewTracer("module", "version"),
+		destination: "queue"}
 	subCtx1, endSpan1 := StartSpan(ctx, &StartSpanOptions{Tracer: tr, OperationName: "test"})
 	defer endSpan1(nil)
 	require.NotEqual(t, ctx, subCtx1)
 
 	// creates a producer span when operation name is SendOperationName
 	tr.tracer = tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
-		Name: string(SendOperationName),
+		Name: "send queue",
 		Kind: SpanKindProducer,
 		Attributes: []Attribute{
 			{Key: AttrOperationName, Value: string(SendOperationName)},

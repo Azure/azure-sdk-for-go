@@ -9,16 +9,14 @@ import (
 )
 
 // messageWrapper implements the TextMapCarrier interface for sender side
-type messageWrapper struct {
-	message *amqp.Message
-}
+type messageWrapper amqp.Message
 
 // messageCarrierAdapter wraps a Message so that it implements the propagation.TextMapCarrier interface
 func messageCarrierAdapter(message *amqp.Message) tracing.Carrier {
 	if message == nil {
 		message = &amqp.Message{}
 	}
-	mw := &messageWrapper{message: message}
+	mw := messageWrapper(*message)
 	return tracing.NewCarrier(tracing.CarrierImpl{
 		Get:  mw.Get,
 		Set:  mw.Set,
@@ -27,22 +25,22 @@ func messageCarrierAdapter(message *amqp.Message) tracing.Carrier {
 }
 
 func (mw *messageWrapper) Set(key string, value string) {
-	if mw.message.ApplicationProperties == nil {
-		mw.message.ApplicationProperties = make(map[string]interface{})
+	if mw.ApplicationProperties == nil {
+		mw.ApplicationProperties = make(map[string]any)
 	}
-	mw.message.ApplicationProperties[key] = value
+	mw.ApplicationProperties[key] = value
 }
 
 func (mw *messageWrapper) Get(key string) string {
-	if mw.message.ApplicationProperties == nil || mw.message.ApplicationProperties[key] == nil {
+	if mw.ApplicationProperties == nil || mw.ApplicationProperties[key] == nil {
 		return ""
 	}
-	return mw.message.ApplicationProperties[key].(string)
+	return mw.ApplicationProperties[key].(string)
 }
 
 func (mw *messageWrapper) Keys() []string {
-	keys := make([]string, 0, len(mw.message.ApplicationProperties))
-	for k := range mw.message.ApplicationProperties {
+	keys := make([]string, 0, len(mw.ApplicationProperties))
+	for k := range mw.ApplicationProperties {
 		keys = append(keys, k)
 	}
 	return keys

@@ -126,33 +126,28 @@ func getOperationType(operationName MessagingOperationName) MessagingOperationTy
 	}
 }
 
+// getSpanKind determines the span kind based on the operation type and name.
+// based on the messaging span conventions https://opentelemetry.io/docs/specs/semconv/messaging/messaging-spans/#span-kind
 func getSpanKind(operationType MessagingOperationType, operationName MessagingOperationName, attrs []Attribute) SpanKind {
-	isBatch := isBatchOperation(attrs)
-	isSession := isSessionOperation(operationName)
+	isBatch := false
+	for _, attr := range attrs {
+		if attr.Key == AttrBatchMessageCount {
+			isBatch = true
+		}
+	}
 	switch {
-	case operationType == CreateOperationType, operationType == SendOperationType && !isBatch:
+	case operationType == CreateOperationType,
+		operationType == SendOperationType && !isBatch:
 		return SpanKindProducer
-	case operationType == SendOperationType, operationType == ReceiveOperationType, operationType == SettleOperationType, isSession:
+	case operationType == SendOperationType,
+		operationType == ReceiveOperationType,
+		operationType == SettleOperationType,
+		operationName == AcceptSessionOperationName,
+		operationName == SetSessionStateOperationName,
+		operationName == GetSessionStateOperationName,
+		operationName == RenewSessionLockOperationName:
 		return SpanKindClient
 	default:
 		return SpanKindInternal
 	}
-}
-
-func isSessionOperation(operationName MessagingOperationName) bool {
-	switch operationName {
-	case AcceptSessionOperationName, SetSessionStateOperationName, GetSessionStateOperationName, RenewSessionLockOperationName:
-		return true
-	default:
-		return false
-	}
-}
-
-func isBatchOperation(attrs []Attribute) bool {
-	for _, attr := range attrs {
-		if attr.Key == AttrBatchMessageCount {
-			return true
-		}
-	}
-	return false
 }

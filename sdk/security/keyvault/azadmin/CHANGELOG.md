@@ -11,11 +11,6 @@
 
 #### Other Changes
 * Upgraded to API service version `7.6-preview.2`
-
-
-### 1.3.1 (2025-02-13)
-
-#### Other Changes
 * Upgraded dependencies
 
 ### 1.3.0 (2024-11-13)

@@ -16,6 +16,18 @@ type FullRestoreResponse struct {
 	RestoreOperation
 }
 
+// PreFullBackupResponse contains the response from method Client.BeginPreFullBackup.
+type PreFullBackupResponse struct {
+	// Full backup operation
+	FullBackupOperation
+}
+
+// PreFullRestoreResponse contains the response from method Client.BeginPreFullRestore.
+type PreFullRestoreResponse struct {
+	// Restore operation
+	RestoreOperation
+}
+
 // SelectiveKeyRestoreResponse contains the response from method Client.BeginSelectiveKeyRestore.
 type SelectiveKeyRestoreResponse struct {
 	// Selective Key Restore operation

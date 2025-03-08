@@ -30,6 +30,28 @@ type FullBackupOperation struct {
 	StatusDetails *string
 }
 
+// PreBackupOperationParameters - The authentication method and location for the backup operation.
+type PreBackupOperationParameters struct {
+	// Azure Blob storage container Uri
+	StorageResourceURI *string
+
+	// The SAS token pointing to an Azure Blob storage container
+	Token *string
+
+	// Indicates which authentication method should be used. If set to true, Managed HSM will use the configured user-assigned
+	// managed identity to authenticate with Azure Storage. Otherwise, a SAS token has to be specified.
+	UseManagedIdentity *bool
+}
+
+// PreRestoreOperationParameters - The authentication method and location for the restore operation.
+type PreRestoreOperationParameters struct {
+	// The Folder name of the blob where the previous successful full backup was stored
+	FolderToRestore *string
+
+	// A user-provided SAS token to an Azure blob storage container.
+	SASTokenParameters *SASTokenParameters
+}
+
 // RestoreOperation - Restore operation
 type RestoreOperation struct {
 	// The end time of the restore operation

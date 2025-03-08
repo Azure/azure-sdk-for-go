@@ -60,7 +60,6 @@ type ClientOptions struct {
 	NewWebSocketConn func(ctx context.Context, args NewWebSocketConnArgs) (net.Conn, error)
 
 	// TracingProvider sets the tracing provider for the Client.
-	// It defaults to a no-op provider.
 	TracingProvider tracing.Provider
 
 	// RetryOptions controls how often operations are retried from this client and any

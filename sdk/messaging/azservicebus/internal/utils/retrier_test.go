@@ -13,8 +13,10 @@ import (
 	"time"
 
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/tracingvalidator"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/require"
 )
@@ -32,7 +34,20 @@ func TestRetrier(t *testing.T) {
 			return nil
 		}, func(err error) bool {
 			panic("won't get called")
-		}, exported.RetryOptions{}, nil)
+		}, exported.RetryOptions{}, &tracing.StartSpanOptions{
+			Tracer: tracing.NewTracer(tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
+				Name:   "notused queue",
+				Kind:   tracing.SpanKindInternal,
+				Status: tracing.SpanStatusUnset,
+				Attributes: []tracing.Attribute{
+					{Key: tracing.AttrMessagingSystem, Value: "servicebus"},
+					{Key: tracing.AttrServerAddress, Value: "fake.something"},
+					{Key: tracing.AttrDestinationName, Value: "queue"},
+					{Key: tracing.AttrOperationName, Value: "notused"},
+				}}, nil),
+				"module", "version", "fake.something", "queue", ""),
+			OperationName: "notused",
+		})
 
 		require.Nil(t, err)
 		require.EqualValues(t, 1, called)
@@ -60,7 +75,20 @@ func TestRetrier(t *testing.T) {
 			}
 
 			return fmt.Errorf("Error, iteration %d", args.I)
-		}, isFatalFn, fastRetryOptions, nil)
+		}, isFatalFn, fastRetryOptions, &tracing.StartSpanOptions{
+			Tracer: tracing.NewTracer(tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
+				Name:   "notused queue",
+				Kind:   tracing.SpanKindInternal,
+				Status: tracing.SpanStatusUnset,
+				Attributes: []tracing.Attribute{
+					{Key: tracing.AttrMessagingSystem, Value: "servicebus"},
+					{Key: tracing.AttrServerAddress, Value: "fake.something"},
+					{Key: tracing.AttrDestinationName, Value: "queue"},
+					{Key: tracing.AttrOperationName, Value: "notused"},
+				}}, nil),
+				"module", "version", "fake.something", "queue", ""),
+			OperationName: "notused",
+		})
 
 		require.EqualValues(t, 4, called)
 		require.EqualValues(t, 3, isFatalCalled)
@@ -81,7 +109,21 @@ func TestRetrier(t *testing.T) {
 		err := Retry(ctx, testLogEvent, "notused", func(ctx context.Context, args *RetryFnArgs) error {
 			called++
 			return errors.New("isFatalFn says this is a fatal error")
-		}, isFatalFn, exported.RetryOptions{}, nil)
+		}, isFatalFn, exported.RetryOptions{}, &tracing.StartSpanOptions{
+			Tracer: tracing.NewTracer(tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
+				Name:   "notused queue",
+				Kind:   tracing.SpanKindInternal,
+				Status: tracing.SpanStatusError,
+				Attributes: []tracing.Attribute{
+					{Key: tracing.AttrMessagingSystem, Value: "servicebus"},
+					{Key: tracing.AttrServerAddress, Value: "fake.something"},
+					{Key: tracing.AttrDestinationName, Value: "queue"},
+					{Key: tracing.AttrOperationName, Value: "notused"},
+					{Key: tracing.AttrErrorType, Value: "*errors.errorString"},
+				}}, nil),
+				"module", "version", "fake.something", "queue", ""),
+			OperationName: "notused",
+		})
 
 		require.EqualValues(t, "isFatalFn says this is a fatal error", err.Error())
 		require.EqualValues(t, 1, called)

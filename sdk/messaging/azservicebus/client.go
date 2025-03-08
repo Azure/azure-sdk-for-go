@@ -59,7 +59,7 @@ type ClientOptions struct {
 	// For an example, see ExampleNewClient_usingWebsockets() function in example_client_test.go.
 	NewWebSocketConn func(ctx context.Context, args NewWebSocketConnArgs) (net.Conn, error)
 
-	// TracingProvider set the tracing provider for the Client.
+	// TracingProvider sets the tracing provider for the Client.
 	// It defaults to a no-op provider.
 	TracingProvider tracing.Provider
 

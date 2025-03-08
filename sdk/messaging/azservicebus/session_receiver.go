@@ -284,7 +284,8 @@ func (sr *SessionReceiver) RenewSessionLock(ctx context.Context, options *RenewS
 }
 
 // init ensures the link was created, guaranteeing that we get our expected session lock.
-func (sr *SessionReceiver) init(ctx context.Context) (err error) {
+func (sr *SessionReceiver) init(ctx context.Context) error {
+	var err error
 	ctx, endSpan := tracing.StartSpan(ctx, &tracing.StartSpanOptions{
 		Tracer:        sr.inner.tracer,
 		OperationName: tracing.AcceptSessionOperationName,

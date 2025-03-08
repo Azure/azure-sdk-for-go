@@ -328,7 +328,7 @@ func (r *Receiver) RenewMessageLock(ctx context.Context, msg *ReceivedMessage, o
 	}, r.retryOptions, &tracing.StartSpanOptions{
 		Tracer:        r.tracer,
 		OperationName: tracing.RenewMessageLockOperationName,
-		Attributes:    getReceivedMessageSpanAttributes(msg),
+		Attributes:    tracing.GetReceivedMessageSpanAttributes(msg.Message().toAMQPMessage()),
 	})
 
 	return internal.TransformError(err)

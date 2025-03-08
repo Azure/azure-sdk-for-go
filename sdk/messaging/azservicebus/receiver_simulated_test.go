@@ -428,59 +428,60 @@ func TestReceiver_TracingUserFacingErrors(t *testing.T) {
 
 	var asSBError *Error
 
-	fakeClientCreds := clientCreds{fullyQualifiedNamespace: "fake.something"}
-
 	receiveErr = &amqp.LinkError{}
-	receiver.tracer = newTracer(tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
+	client.tracingProvider = tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
 		Name:   "peek queue",
 		Kind:   tracing.SpanKindClient,
 		Status: tracing.SpanStatusError,
 		Attributes: []tracing.Attribute{
 			{Key: tracing.AttrMessagingSystem, Value: "servicebus"},
-			{Key: tracing.AttrServerAddress, Value: "fake.something"},
+			{Key: tracing.AttrServerAddress, Value: "example.servicebus.windows.net"},
 			{Key: tracing.AttrDestinationName, Value: "queue"},
 			{Key: tracing.AttrOperationName, Value: "peek"},
 			{Key: tracing.AttrOperationType, Value: "receive"},
 			{Key: tracing.AttrErrorType, Value: fmt.Sprintf("%T", receiveErr)},
 		},
-	}, nil), fakeClientCreds, "queue", "")
+	}, nil)
+	receiver.tracer = client.newTracer("queue", "")
 	messages, err := receiver.PeekMessages(context.Background(), 1, nil)
 	require.Empty(t, messages)
 	require.ErrorAs(t, err, &asSBError)
 	require.Equal(t, CodeConnectionLost, asSBError.Code)
 
 	receiveErr = &amqp.ConnError{}
-	receiver.tracer = newTracer(tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
+	client.tracingProvider = tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
 		Name:   "receive_deferred queue",
 		Kind:   tracing.SpanKindClient,
 		Status: tracing.SpanStatusError,
 		Attributes: []tracing.Attribute{
 			{Key: tracing.AttrMessagingSystem, Value: "servicebus"},
-			{Key: tracing.AttrServerAddress, Value: "fake.something"},
+			{Key: tracing.AttrServerAddress, Value: "example.servicebus.windows.net"},
 			{Key: tracing.AttrDestinationName, Value: "queue"},
 			{Key: tracing.AttrOperationName, Value: "receive_deferred"},
 			{Key: tracing.AttrOperationType, Value: "receive"},
 			{Key: tracing.AttrErrorType, Value: fmt.Sprintf("%T", receiveErr)},
 		},
-	}, nil), fakeClientCreds, "queue", "")
+	}, nil)
+	receiver.tracer = client.newTracer("queue", "")
 	messages, err = receiver.ReceiveDeferredMessages(context.Background(), []int64{1}, nil)
 	require.Empty(t, messages)
 	require.ErrorAs(t, err, &asSBError)
 	require.Equal(t, CodeConnectionLost, asSBError.Code)
 
 	receiveErr = &amqp.ConnError{}
-	receiver.tracer = newTracer(tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
+	client.tracingProvider = tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
 		Name:   "receive queue",
 		Kind:   tracing.SpanKindClient,
 		Status: tracing.SpanStatusUnset,
 		Attributes: []tracing.Attribute{
 			{Key: tracing.AttrMessagingSystem, Value: "servicebus"},
-			{Key: tracing.AttrServerAddress, Value: "fake.something"},
+			{Key: tracing.AttrServerAddress, Value: "example.servicebus.windows.net"},
 			{Key: tracing.AttrDestinationName, Value: "queue"},
 			{Key: tracing.AttrOperationName, Value: "receive"},
 			{Key: tracing.AttrOperationType, Value: "receive"},
 		},
-	}, nil), fakeClientCreds, "queue", "")
+	}, nil)
+	receiver.tracer = client.newTracer("queue", "")
 	messages, err = receiver.ReceiveMessages(context.Background(), 1, nil)
 	require.NoError(t, err)
 	require.Empty(t, messages)
@@ -490,6 +491,7 @@ func TestReceiver_TracingUserFacingErrors(t *testing.T) {
 	id, err := uuid.New()
 	require.NoError(t, err)
 
+	enqueueTime := time.Now()
 	msg := &ReceivedMessage{
 		LockToken: id,
 		RawAMQPMessage: &AMQPAnnotatedMessage{
@@ -497,102 +499,103 @@ func TestReceiver_TracingUserFacingErrors(t *testing.T) {
 		},
 		linkName:         "link-name",
 		settleOnMgmtLink: true,
+		EnqueuedTime:     &enqueueTime,
 	}
 
-	receiver.settler.tracer = newTracer(tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
+	client.tracingProvider = tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
 		Name:   "abandon queue",
 		Kind:   tracing.SpanKindClient,
 		Status: tracing.SpanStatusError,
 		Attributes: []tracing.Attribute{
 			{Key: tracing.AttrMessagingSystem, Value: "servicebus"},
-			{Key: tracing.AttrServerAddress, Value: "fake.something"},
+			{Key: tracing.AttrServerAddress, Value: "example.servicebus.windows.net"},
 			{Key: tracing.AttrDestinationName, Value: "queue"},
 			{Key: tracing.AttrOperationName, Value: "abandon"},
 			{Key: tracing.AttrDispositionStatus, Value: "abandon"},
 			{Key: tracing.AttrOperationType, Value: "settle"},
-			{Key: tracing.AttrDeliveryCount, Value: int64(0)},
 			{Key: tracing.AttrErrorType, Value: fmt.Sprintf("%T", receiveErr)},
 		},
-	}, nil), fakeClientCreds, "queue", "")
+	}, nil)
+	receiver.settler.tracer = client.newTracer("queue", "")
 	err = receiver.AbandonMessage(context.Background(), msg, nil)
 	require.Empty(t, messages)
 	require.ErrorAs(t, err, &asSBError)
 	require.Equal(t, CodeLockLost, asSBError.Code)
 
-	receiver.settler.tracer = newTracer(tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
+	client.tracingProvider = tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
 		Name:   "complete queue",
 		Kind:   tracing.SpanKindClient,
 		Status: tracing.SpanStatusError,
 		Attributes: []tracing.Attribute{
 			{Key: tracing.AttrMessagingSystem, Value: "servicebus"},
-			{Key: tracing.AttrServerAddress, Value: "fake.something"},
+			{Key: tracing.AttrServerAddress, Value: "example.servicebus.windows.net"},
 			{Key: tracing.AttrDestinationName, Value: "queue"},
 			{Key: tracing.AttrOperationName, Value: "complete"},
 			{Key: tracing.AttrDispositionStatus, Value: "complete"},
 			{Key: tracing.AttrOperationType, Value: "settle"},
-			{Key: tracing.AttrDeliveryCount, Value: int64(0)},
 			{Key: tracing.AttrErrorType, Value: fmt.Sprintf("%T", receiveErr)},
 		},
-	}, nil), fakeClientCreds, "queue", "")
+	}, nil)
+	receiver.settler.tracer = client.newTracer("queue", "")
 	err = receiver.CompleteMessage(context.Background(), msg, nil)
 	require.Empty(t, messages)
 	require.ErrorAs(t, err, &asSBError)
 	require.Equal(t, CodeLockLost, asSBError.Code)
 
-	receiver.settler.tracer = newTracer(tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
+	client.tracingProvider = tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
 		Name:   "dead_letter queue",
 		Kind:   tracing.SpanKindClient,
 		Status: tracing.SpanStatusError,
 		Attributes: []tracing.Attribute{
 			{Key: tracing.AttrMessagingSystem, Value: "servicebus"},
-			{Key: tracing.AttrServerAddress, Value: "fake.something"},
+			{Key: tracing.AttrServerAddress, Value: "example.servicebus.windows.net"},
 			{Key: tracing.AttrDestinationName, Value: "queue"},
 			{Key: tracing.AttrOperationName, Value: "dead_letter"},
 			{Key: tracing.AttrDispositionStatus, Value: "dead_letter"},
 			{Key: tracing.AttrOperationType, Value: "settle"},
-			{Key: tracing.AttrDeliveryCount, Value: int64(0)},
 			{Key: tracing.AttrErrorType, Value: fmt.Sprintf("%T", receiveErr)},
 		},
-	}, nil), fakeClientCreds, "queue", "")
+	}, nil)
+	receiver.settler.tracer = client.newTracer("queue", "")
 	err = receiver.DeadLetterMessage(context.Background(), msg, nil)
 	require.Empty(t, messages)
 	require.ErrorAs(t, err, &asSBError)
 	require.Equal(t, CodeLockLost, asSBError.Code)
 
-	receiver.settler.tracer = newTracer(tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
+	client.tracingProvider = tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
 		Name:   "defer queue",
 		Kind:   tracing.SpanKindClient,
 		Status: tracing.SpanStatusError,
 		Attributes: []tracing.Attribute{
 			{Key: tracing.AttrMessagingSystem, Value: "servicebus"},
-			{Key: tracing.AttrServerAddress, Value: "fake.something"},
+			{Key: tracing.AttrServerAddress, Value: "example.servicebus.windows.net"},
 			{Key: tracing.AttrDestinationName, Value: "queue"},
 			{Key: tracing.AttrOperationName, Value: "defer"},
 			{Key: tracing.AttrDispositionStatus, Value: "defer"},
 			{Key: tracing.AttrOperationType, Value: "settle"},
-			{Key: tracing.AttrDeliveryCount, Value: int64(0)},
 			{Key: tracing.AttrErrorType, Value: fmt.Sprintf("%T", receiveErr)},
 		},
-	}, nil), fakeClientCreds, "queue", "")
+	}, nil)
+	receiver.settler.tracer = client.newTracer("queue", "")
 	err = receiver.DeferMessage(context.Background(), msg, nil)
 	require.Empty(t, messages)
 	require.ErrorAs(t, err, &asSBError)
 	require.Equal(t, CodeLockLost, asSBError.Code)
 
-	receiver.tracer = newTracer(tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
+	client.tracingProvider = tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
 		Name:   "renew_message_lock queue",
 		Kind:   tracing.SpanKindClient,
 		Status: tracing.SpanStatusError,
 		Attributes: []tracing.Attribute{
 			{Key: tracing.AttrMessagingSystem, Value: "servicebus"},
-			{Key: tracing.AttrServerAddress, Value: "fake.something"},
+			{Key: tracing.AttrServerAddress, Value: "example.servicebus.windows.net"},
 			{Key: tracing.AttrDestinationName, Value: "queue"},
 			{Key: tracing.AttrOperationName, Value: "renew_message_lock"},
 			{Key: tracing.AttrOperationType, Value: "receive"},
-			{Key: tracing.AttrDeliveryCount, Value: int64(0)},
 			{Key: tracing.AttrErrorType, Value: fmt.Sprintf("%T", receiveErr)},
 		},
-	}, nil), fakeClientCreds, "queue", "")
+	}, nil)
+	receiver.tracer = client.newTracer("queue", "")
 	err = receiver.RenewMessageLock(context.Background(), msg, nil)
 	require.Empty(t, messages)
 	require.ErrorAs(t, err, &asSBError)
@@ -1008,50 +1011,51 @@ func TestSessionReceiverTracingUserFacingErrors_Methods(t *testing.T) {
 
 	lockLost = true
 
-	fakeClientCreds := clientCreds{fullyQualifiedNamespace: "fake.something"}
-
-	receiver.inner.tracer = newTracer(tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
+	client.tracingProvider = tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
 		Name:   "get_session_state queue",
 		Kind:   tracing.SpanKindClient,
 		Status: tracing.SpanStatusError,
 		Attributes: []tracing.Attribute{
 			{Key: tracing.AttrMessagingSystem, Value: "servicebus"},
-			{Key: tracing.AttrServerAddress, Value: "fake.something"},
+			{Key: tracing.AttrServerAddress, Value: "example.servicebus.windows.net"},
 			{Key: tracing.AttrDestinationName, Value: "queue"},
 			{Key: tracing.AttrOperationName, Value: "get_session_state"},
 			{Key: tracing.AttrErrorType, Value: fmt.Sprintf("%T", lockLostErr)},
-		}}, nil), fakeClientCreds, "queue", "")
+		}}, nil)
+	receiver.inner.tracer = client.newTracer("queue", "")
 	state, err := receiver.GetSessionState(context.Background(), nil)
 	require.Nil(t, state)
 	require.ErrorAs(t, err, &asSBError)
 	require.Equal(t, CodeLockLost, asSBError.Code)
 
-	receiver.inner.tracer = newTracer(tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
+	client.tracingProvider = tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
 		Name:   "set_session_state queue",
 		Kind:   tracing.SpanKindClient,
 		Status: tracing.SpanStatusError,
 		Attributes: []tracing.Attribute{
 			{Key: tracing.AttrMessagingSystem, Value: "servicebus"},
-			{Key: tracing.AttrServerAddress, Value: "fake.something"},
+			{Key: tracing.AttrServerAddress, Value: "example.servicebus.windows.net"},
 			{Key: tracing.AttrDestinationName, Value: "queue"},
 			{Key: tracing.AttrOperationName, Value: "set_session_state"},
 			{Key: tracing.AttrErrorType, Value: fmt.Sprintf("%T", lockLostErr)},
-		}}, nil), fakeClientCreds, "queue", "")
+		}}, nil)
+	receiver.inner.tracer = client.newTracer("queue", "")
 	err = receiver.SetSessionState(context.Background(), []byte{}, nil)
 	require.ErrorAs(t, err, &asSBError)
 	require.Equal(t, CodeLockLost, asSBError.Code)
 
-	receiver.inner.tracer = newTracer(tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
+	client.tracingProvider = tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
 		Name:   "renew_session_lock queue",
 		Kind:   tracing.SpanKindClient,
 		Status: tracing.SpanStatusError,
 		Attributes: []tracing.Attribute{
 			{Key: tracing.AttrMessagingSystem, Value: "servicebus"},
-			{Key: tracing.AttrServerAddress, Value: "fake.something"},
+			{Key: tracing.AttrServerAddress, Value: "example.servicebus.windows.net"},
 			{Key: tracing.AttrDestinationName, Value: "queue"},
 			{Key: tracing.AttrOperationName, Value: "renew_session_lock"},
 			{Key: tracing.AttrErrorType, Value: fmt.Sprintf("%T", lockLostErr)},
-		}}, nil), fakeClientCreds, "queue", "")
+		}}, nil)
+	receiver.inner.tracer = client.newTracer("queue", "")
 	err = receiver.RenewSessionLock(context.Background(), nil)
 	require.ErrorAs(t, err, &asSBError)
 	require.Equal(t, CodeLockLost, asSBError.Code)

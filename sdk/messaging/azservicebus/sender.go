@@ -102,7 +102,7 @@ func (s *Sender) SendMessageBatch(ctx context.Context, batch *MessageBatch, opti
 	}, s.retryOptions, &tracing.StartSpanOptions{
 		Tracer:        s.tracer,
 		OperationName: tracing.SendOperationName,
-		Attributes:    getMessageBatchSpanAttributes(int(batch.NumMessages())),
+		Attributes:    tracing.GetMessageBatchSpanAttributes(int(batch.NumMessages())),
 	})
 
 	return internal.TransformError(err)
@@ -141,7 +141,7 @@ func scheduleMessages[T amqpCompatibleMessage](ctx context.Context, tracer traci
 	scheduleCtx, endSpan := tracing.StartSpan(ctx, &tracing.StartSpanOptions{
 		Tracer:        tracer,
 		OperationName: tracing.ScheduleOperationName,
-		Attributes:    getMessageBatchSpanAttributes(len(messages)),
+		Attributes:    tracing.GetMessageBatchSpanAttributes(len(messages)),
 	})
 	defer func() { endSpan(err) }()
 	scheduleSpan := tracer.SpanFromContext(scheduleCtx)
@@ -184,7 +184,7 @@ func (s *Sender) CancelScheduledMessages(ctx context.Context, sequenceNumbers []
 	}, s.retryOptions, &tracing.StartSpanOptions{
 		Tracer:        s.tracer,
 		OperationName: tracing.CancelScheduledOperationName,
-		Attributes:    getMessageBatchSpanAttributes(len(sequenceNumbers)),
+		Attributes:    tracing.GetMessageBatchSpanAttributes(len(sequenceNumbers)),
 	})
 
 	return internal.TransformError(err)
@@ -204,7 +204,7 @@ func (s *Sender) sendMessage(ctx context.Context, message amqpCompatibleMessage)
 	}, RetryOptions(s.retryOptions), &tracing.StartSpanOptions{
 		Tracer:        s.tracer,
 		OperationName: tracing.SendOperationName,
-		Attributes:    getMessageSpanAttributes(message.toAMQPMessage()),
+		Attributes:    tracing.GetMessageSpanAttributes(message.toAMQPMessage()),
 	})
 
 	if amqpErr := (*amqp.Error)(nil); errors.As(err, &amqpErr) && amqpErr.Condition == amqp.ErrCondMessageSizeExceeded {
@@ -221,10 +221,10 @@ func createMessageSpan(ctx context.Context, tracer tracing.Tracer, sendOrSchedul
 	ctx, endSpan := tracing.StartSpan(ctx, &tracing.StartSpanOptions{
 		Tracer:        tracer,
 		OperationName: tracing.CreateOperationName,
-		Attributes:    getMessageSpanAttributes(message),
+		Attributes:    tracing.GetMessageSpanAttributes(message),
 	})
 	defer func() { endSpan(nil) }()
-	sendOrScheduleSpan.AddLink(tracer.LinkFromContext(ctx, getMessageIDAttribute(message)...))
+	sendOrScheduleSpan.AddLink(tracer.LinkFromContext(ctx, tracing.GetMessageIDAttribute(message)...))
 	tracer.Inject(ctx, message)
 }
 

@@ -81,7 +81,7 @@ func (ms *messageSettler) CompleteMessage(ctx context.Context, message *Received
 		return err
 	}, &tracing.StartSpanOptions{
 		OperationName: tracing.CompleteOperationName,
-		Attributes:    getReceivedMessageSpanAttributes(message),
+		Attributes:    tracing.GetReceivedMessageSpanAttributes(message.Message().toAMQPMessage()),
 		Links:         ms.getMessageSettlementLinks(message),
 	})
 }
@@ -137,7 +137,7 @@ func (ms *messageSettler) AbandonMessage(ctx context.Context, message *ReceivedM
 		return err
 	}, &tracing.StartSpanOptions{
 		OperationName: tracing.AbandonOperationName,
-		Attributes:    getReceivedMessageSpanAttributes(message),
+		Attributes:    tracing.GetReceivedMessageSpanAttributes(message.Message().toAMQPMessage()),
 		Links:         ms.getMessageSettlementLinks(message),
 	})
 }
@@ -193,7 +193,7 @@ func (ms *messageSettler) DeferMessage(ctx context.Context, message *ReceivedMes
 		return err
 	}, &tracing.StartSpanOptions{
 		OperationName: tracing.DeferOperationName,
-		Attributes:    getReceivedMessageSpanAttributes(message),
+		Attributes:    tracing.GetReceivedMessageSpanAttributes(message.Message().toAMQPMessage()),
 		Links:         ms.getMessageSettlementLinks(message),
 	})
 }
@@ -277,7 +277,7 @@ func (ms *messageSettler) DeadLetterMessage(ctx context.Context, message *Receiv
 		return err
 	}, &tracing.StartSpanOptions{
 		OperationName: tracing.DeadLetterOperationName,
-		Attributes:    getReceivedMessageSpanAttributes(message),
+		Attributes:    tracing.GetReceivedMessageSpanAttributes(message.Message().toAMQPMessage()),
 		Links:         ms.getMessageSettlementLinks(message),
 	})
 }

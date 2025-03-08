@@ -227,7 +227,6 @@ func TestSender_TracingUserFacingError(t *testing.T) {
 			{Key: tracing.AttrBatchMessageCount, Value: int64(1)},
 			{Key: tracing.AttrErrorType, Value: fmt.Sprintf("%T", sendErr)},
 		},
-		Links: []tracing.Link{{Attributes: []tracing.Attribute{{Key: tracing.AttrMessageID, Value: msgID}}}},
 	}, nil), fakeClientCreds, "queue", "")
 	err = sender.SendMessageBatch(context.Background(), batch, nil)
 	require.ErrorAs(t, err, &asSBError)

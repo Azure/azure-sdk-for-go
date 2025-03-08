@@ -190,7 +190,7 @@ type ReceiveMessagesOptions struct {
 // ReceiveMessages receives a fixed number of messages, up to numMessages.
 // This function will block until at least one message is received or until the ctx is cancelled.
 // If the operation fails it can return an [*azservicebus.Error] type if the failure is actionable.
-func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options *ReceiveMessagesOptions) (messages []*ReceivedMessage, err error) {
+func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options *ReceiveMessagesOptions) ([]*ReceivedMessage, error) {
 	r.mu.Lock()
 	isReceiving := r.receiving
 
@@ -209,10 +209,11 @@ func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options
 		return nil, errors.New("receiver is already receiving messages. ReceiveMessages() cannot be called concurrently")
 	}
 
+	var err error
 	ctx, endSpan := tracing.StartSpan(ctx, &tracing.StartSpanOptions{Tracer: r.tracer, OperationName: tracing.ReceiveOperationName})
 	defer func() { endSpan(err) }()
 
-	messages, err = r.receiveMessagesImpl(ctx, maxMessages, options)
+	messages, err := r.receiveMessagesImpl(ctx, maxMessages, options)
 	return messages, internal.TransformError(err)
 }
 
@@ -454,8 +455,7 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 	// at that time
 	if len(result.Messages) == 0 {
 		if internal.IsCancelError(result.Error) || rk == internal.RecoveryKindFatal {
-			err = result.Error
-			return nil, err
+			return nil, result.Error
 		}
 
 		return nil, nil

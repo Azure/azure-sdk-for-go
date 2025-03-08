@@ -199,8 +199,7 @@ func (l *FakeAMQPLinks) Get(ctx context.Context) (*LinksWithID, error) {
 	}
 }
 
-func (l *FakeAMQPLinks) Retry(ctx context.Context, eventName log.Event, operation string, fn RetryWithLinksFn, o exported.RetryOptions, to *tracing.StartSpanOptions) error {
-	var err error
+func (l *FakeAMQPLinks) Retry(ctx context.Context, eventName log.Event, operation string, fn RetryWithLinksFn, o exported.RetryOptions, to *tracing.StartSpanOptions) (err error) {
 	ctx, endSpan := tracing.StartSpan(ctx, to)
 	defer func() { endSpan(err) }()
 

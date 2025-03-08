@@ -59,8 +59,8 @@ type ClientOptions struct {
 	// For an example, see ExampleNewClient_usingWebsockets() function in example_client_test.go.
 	NewWebSocketConn func(ctx context.Context, args NewWebSocketConnArgs) (net.Conn, error)
 
-	// TracingProvider configures the tracing provider.
-	// It defaults to a no-op provider
+	// TracingProvider set the tracing provider for the Client.
+	// It defaults to a no-op provider.
 	TracingProvider tracing.Provider
 
 	// RetryOptions controls how often operations are retried from this client and any

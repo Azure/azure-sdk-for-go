@@ -4,12 +4,10 @@
 package azservicebus
 
 import (
-	"context"
 	"errors"
 	"sync"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/go-amqp"
 )
 
@@ -149,26 +147,6 @@ func (mb *MessageBatch) addAMQPMessage(tempMsg amqpCompatibleMessage) error {
 	mb.currentSize += actualPayloadSize
 	mb.marshaledMessages = append(mb.marshaledMessages, bin)
 
-	return nil
-}
-
-func (mb *MessageBatch) injectCreationCtx(ctx context.Context, tracer tracing.Tracer, sendSpan tracing.Span) error {
-	mb.mu.Lock()
-	defer mb.mu.Unlock()
-
-	for i, msg := range mb.marshaledMessages {
-		var amqpMessage = &amqp.Message{}
-		err := amqpMessage.UnmarshalBinary(msg)
-		if err != nil {
-			return err
-		}
-		createMessageSpan(ctx, tracer, sendSpan, amqpMessage)
-		bin, err := amqpMessage.MarshalBinary()
-		if err != nil {
-			return err
-		}
-		mb.marshaledMessages[i] = bin
-	}
 	return nil
 }
 

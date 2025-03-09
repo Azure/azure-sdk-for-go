@@ -59,7 +59,14 @@ steps:
         -RepoName '$(Build.Repository.Name)'
     displayName: Create API review for Go
     workingDirectory: $(Pipeline.Workspace)
-    condition: and(succeeded(), ne(variables['Skip.CreateApiReview'], 'true') , ne(variables['Build.Reason'],'PullRequest'), eq(variables['System.TeamProject'], 'internal'))
+    condition: >-
+      and(
+        succeeded(),
+        ${{ startsWith(parameters.ServiceDirectory, 'sdk') }},
+        ne(variables['Skip.CreateApiReview'], 'true'),
+        ne(variables['Build.Reason'],'PullRequest'),
+        eq(variables['System.TeamProject'], 'internal')
+      )
 
   - ${{ if eq(variables['Build.Reason'],'PullRequest') }}:
     - template: /eng/common/pipelines/templates/steps/detect-api-changes.yml

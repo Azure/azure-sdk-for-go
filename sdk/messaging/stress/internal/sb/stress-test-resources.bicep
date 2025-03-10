@@ -7,7 +7,7 @@ param baseName string = resourceGroup().name
 @description('The client OID to grant access to test resources.')
 param testApplicationOid string
 
-module sb '../../test-resources.bicep' = {
+module sb '../../../azservicebus/test-resources.bicep' = {
   name: 'test_servicebus'
   params: {
     baseName: baseName

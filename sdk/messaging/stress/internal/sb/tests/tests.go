@@ -10,7 +10,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/stress/shared"
+	"stress/internal/sb/shared"
 )
 
 // Simple query to view some of the stats reported by these stress tests.
@@ -76,6 +76,6 @@ func printUsageAndQuit(allTests map[string]func(args []string)) {
 
 	sort.Strings(names)
 
-	fmt.Printf("Usage: stress test <stress test name, listed below> \n  %s\n", strings.Join(names, "\n  "))
+	fmt.Printf("Usage: stress <stress test name, listed below> \n  %s\n", strings.Join(names, "\n  "))
 	os.Exit(1)
 }

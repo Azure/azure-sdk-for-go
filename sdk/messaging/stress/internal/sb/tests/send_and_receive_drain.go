@@ -13,10 +13,11 @@ import (
 	"sync/atomic"
 	"time"
 
+	"stress/internal/sb/shared"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/stress/shared"
 )
 
 func SendAndReceiveDrain(remainingArgs []string) {

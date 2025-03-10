@@ -90,12 +90,6 @@ func MustCreateStressContext(testName string, options *StressContextOptions) *St
 		log.Fatalf("missing SERVICEBUS_ENDPOINT environment variable")
 	}
 
-	aiKey := os.Getenv("APPINSIGHTS_INSTRUMENTATIONKEY")
-
-	if aiKey == "" {
-		log.Fatalf("missing APPINSIGHTS_INSTRUMENTATIONKEY environment variable")
-	}
-
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 
 	if err != nil {

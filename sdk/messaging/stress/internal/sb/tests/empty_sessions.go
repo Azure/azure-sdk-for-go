@@ -12,10 +12,11 @@ import (
 	"strings"
 	"time"
 
+	"stress/internal/sb/shared"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/stress/shared"
 )
 
 // EmptySessions attempts to get the next available session from a session-enabled subscription that has no

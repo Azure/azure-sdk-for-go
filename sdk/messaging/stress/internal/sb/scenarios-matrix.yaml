@@ -8,7 +8,7 @@ matrix:
   images:
     go18:
       image: Dockerfile
-      imageBuildDir: "../.."
+      imageBuildDir: "../../.."
   scenarios:
     constantDetach:
       testTarget: constantDetach

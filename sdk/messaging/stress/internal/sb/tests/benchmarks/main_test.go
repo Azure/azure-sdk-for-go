@@ -8,7 +8,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/stress/shared"
+	"stress/internal/sb/shared"
 )
 
 func TestMain(m *testing.M) {

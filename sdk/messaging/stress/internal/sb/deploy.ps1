@@ -1,7 +1,7 @@
 Set-Location $PSScriptRoot
 
 function deployUsingLocalAddons() {
-    $azureSDKToolsRoot="<Git clone of azure-sdk-tools>"
+    $azureSDKToolsRoot = "<Git clone of azure-sdk-tools>"
     $stressTestAddonsFolder = "$azureSDKToolsRoot/tools/stress-cluster/cluster/kubernetes/stress-test-addons"
     $clusterResourceGroup = "<Resource Group for Cluster>"
     $clusterSubscription = "<Azure Subscription>"
@@ -20,4 +20,5 @@ function deployUsingLocalAddons() {
 }
 
 #deployUsingLocalAddons
-pwsh "../../../../../eng/common/scripts/stress-testing/deploy-stress-tests.ps1" @args
+$gitRoot = git rev-parse --show-toplevel
+pwsh "$gitRoot/eng/common/scripts/stress-testing/deploy-stress-tests.ps1" @args

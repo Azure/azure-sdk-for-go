@@ -7,24 +7,15 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/stress/tests"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/stress/tools"
+	"stress/internal/sb/tests"
 )
 
 func main() {
-	if len(os.Args) < 2 {
+	if len(os.Args) < 1 {
 		fmt.Printf("Bad command line\n")
-		fmt.Printf("Usage: stress (tests|tools)\n")
+		fmt.Printf("Usage: stress\n")
 		os.Exit(1)
 	}
 
-	switch os.Args[1] {
-	case "tests":
-		tests.Run(os.Args[2:])
-	case "tools":
-		tools.Run(os.Args[2:])
-	default:
-		fmt.Printf("Usage: stress (tests|tools)\n")
-		os.Exit(1)
-	}
+	tests.Run(os.Args[1:])
 }

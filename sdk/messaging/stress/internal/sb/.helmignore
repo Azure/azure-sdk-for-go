@@ -1,6 +1,6 @@
-stress
-stress.exe
+sb-stress*
 .env
 Dockerfile
 *.go
 *.log
+*.json

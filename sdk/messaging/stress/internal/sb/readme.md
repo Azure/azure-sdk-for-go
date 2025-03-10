@@ -5,8 +5,7 @@ These are the stress/reliability tests for the `azservicebus` package.
 The entrypoint for the tests is [`stress.go`](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azservicebus/internal/stress/stress.go). All of the individual tests are in the `tests` sub-folder. These tests should run fine on your local machine - you'll need to create an `.env` file with the following values:
 
 ```bash
-SERVICEBUS_CONNECTION_STRING=<connection string to the Service Bus namespace>
-APPINSIGHTS_INSTRUMENTATIONKEY=<instrumentation key for appinsights>
+SERVICEBUS_ENDPOINT=<hostname of the Service Bus namespace (ex: <name>.servicebus.windows.net)>
 ```
 
 To run one of the more basic tests, where we just send and receive messages for a few days:

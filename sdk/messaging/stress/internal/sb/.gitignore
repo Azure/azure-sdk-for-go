@@ -1,6 +1,7 @@
-stress
-stress.exe
+sb
+sb.exe
 logs
 generatedValues.yaml
 deploy-test-*.ps1
 *.log
+*.tgz

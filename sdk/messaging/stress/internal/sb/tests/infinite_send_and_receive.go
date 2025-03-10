@@ -10,8 +10,9 @@ import (
 	"log"
 	"time"
 
+	"stress/internal/sb/shared"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/stress/shared"
 )
 
 func InfiniteSendAndReceiveRun(remainingArgs []string) {

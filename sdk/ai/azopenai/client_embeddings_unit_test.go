@@ -21,6 +21,13 @@ func TestDeserializeEmbeddingsArray(t *testing.T) {
 		require.Equal(t, rawJSON[1:len(rawJSON)-1], ei.EmbeddingBase64)
 	})
 
+	t.Run(("NoErrorForEmptyString"), func(t *testing.T) {
+		rawJSON := ""
+		var ei EmbeddingItem
+		err := deserializeEmbeddingsArray(json.RawMessage(rawJSON), &ei)
+		require.NoError(t, err)
+	})
+
 	t.Run("InvalidBase64", func(t *testing.T) {
 		rawJSON := "\"hello\""
 

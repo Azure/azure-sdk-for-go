@@ -4,6 +4,8 @@
 
 ### Features Added
 * Added `GetKeyAttestation` operation
+* Added `EncryptionAlgorithmCKMAESKEYWRAP` and `EncryptionAlgorithmCKMAESKEYWRAPPAD`
+* Added `SignatureAlgorithm`, `SignatureAlgorithmHS256`, `SignatureAlgorithmHS384`, and `SignatureAlgorithmHS512`
 
 ### Breaking Changes
 

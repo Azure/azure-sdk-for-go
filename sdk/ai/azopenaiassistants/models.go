@@ -146,8 +146,97 @@ type AssistantToolResources struct {
 // AssistantsAPIResponseFormat - An object describing the expected output of the model. If json_object only function type
 // tools are allowed to be passed to the Run. If text the model can return text or any value needed.
 type AssistantsAPIResponseFormat struct {
-	// Must be one of text or json_object.
+	// REQUIRED; Must be one of text, json_object or json_schema .
 	Type *APIResponseFormat
+}
+
+// GetAssistantsAPIResponseFormat implements the AssistantsAPIResponseFormatClassification interface for type AssistantsAPIResponseFormat.
+func (a *AssistantsAPIResponseFormat) GetAssistantsAPIResponseFormat() *AssistantsAPIResponseFormat {
+	return a
+}
+
+// AssistantsAPIResponseFormatJSONObject - An object describing expected output of the model as a JSON object.
+type AssistantsAPIResponseFormatJSONObject struct {
+	// REQUIRED; Must be one of text, json_object or json_schema .
+	Type *APIResponseFormat
+}
+
+// GetAssistantsAPIResponseFormat implements the AssistantsAPIResponseFormatClassification interface for type AssistantsAPIResponseFormatJSONObject.
+func (a *AssistantsAPIResponseFormatJSONObject) GetAssistantsAPIResponseFormat() *AssistantsAPIResponseFormat {
+	return &AssistantsAPIResponseFormat{
+		Type: a.Type,
+	}
+}
+
+// AssistantsAPIResponseFormatJSONSchema - An object describing expected output of the model to match a JSON schema.
+type AssistantsAPIResponseFormatJSONSchema struct {
+	// REQUIRED; The JSON schema that the model must output.
+	JSONSchema *AssistantsAPIResponseFormatJSONSchemaJSONSchema
+
+	// REQUIRED; Must be one of text, json_object or json_schema .
+	Type *APIResponseFormat
+}
+
+// GetAssistantsAPIResponseFormat implements the AssistantsAPIResponseFormatClassification interface for type AssistantsAPIResponseFormatJSONSchema.
+func (a *AssistantsAPIResponseFormatJSONSchema) GetAssistantsAPIResponseFormat() *AssistantsAPIResponseFormat {
+	return &AssistantsAPIResponseFormat{
+		Type: a.Type,
+	}
+}
+
+// AssistantsAPIResponseFormatJSONSchemaJSONSchema - The JSON schema that the model must output.
+type AssistantsAPIResponseFormatJSONSchemaJSONSchema struct {
+	// REQUIRED; The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length
+	// of 64.
+	Name *string
+
+	// REQUIRED; The schema for the response format, described as a JSON Schema object.
+	// NOTE: this field is JSON text that describes a JSON schema. You can marshal a data
+	// structure using code similar to this:
+	//
+	//	jsonBytes, err := json.Marshal(map[string]any{
+	//		"required": []string{"location"},
+	// 		"type":     "object",
+	// 		"properties": map[string]any{
+	// 			"location": map[string]any{
+	//	 			"type":        "string",
+	// 				"description": "The city and state, e.g. San Francisco, CA",
+	// 			},
+	//		},
+	//	})
+	//
+	//	if err != nil {
+	// 		panic(err)
+	//	}
+	//
+	//	funcDef := &azopenaiassistants.AssistantsAPIResponseFormatJSONSchemaJSONSchema{
+	// 		Name:        to.Ptr("get_current_weather"),
+	// 		Description: to.Ptr("Get the current weather in a given location"),
+	// 		Schema:      jsonBytes,
+	//      Strict:      to.Ptr(false),
+	// 	}
+	Schema []byte
+
+	// A description of what the response format is for, used by the model to determine how to respond in the format.
+	Description *string
+
+	// Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the
+	// exact schema defined in the schema field. Only a subset of JSON Schema is
+	// supported when strict is true. To learn more, read the Structured Outputs guide.
+	Strict *bool
+}
+
+// AssistantsAPIResponseFormatText - An object describing expected output of the model as text.
+type AssistantsAPIResponseFormatText struct {
+	// REQUIRED; Must be one of text, json_object or json_schema .
+	Type *APIResponseFormat
+}
+
+// GetAssistantsAPIResponseFormat implements the AssistantsAPIResponseFormatClassification interface for type AssistantsAPIResponseFormatText.
+func (a *AssistantsAPIResponseFormatText) GetAssistantsAPIResponseFormat() *AssistantsAPIResponseFormat {
+	return &AssistantsAPIResponseFormat{
+		Type: a.Type,
+	}
 }
 
 // AssistantsPage - The response data for a requested list of items.
@@ -489,6 +578,30 @@ type FileListResponse struct {
 	Object *string
 }
 
+// FileSearchToolCallResult - File search tool call result
+type FileSearchToolCallResult struct {
+	// REQUIRED; The ID of the file that result was found in.
+	FileID *string
+
+	// REQUIRED; The name of the file that result was found in.
+	FileName *string
+
+	// REQUIRED; The score of the result. All values must be a floating point number between 0 and 1.
+	Score *float64
+
+	// The content of the result that was found. The content is only included if requested via the include query parameter.
+	Content []FileSearchToolCallResultContentItem
+}
+
+// FileSearchToolCallResultContentItem - Content item in a file search result
+type FileSearchToolCallResultContentItem struct {
+	// The text content of the file.
+	Text *string
+
+	// The type of the content.
+	Type *string
+}
+
 // FileSearchToolDefinition - The input definition information for a file search tool as used to configure an assistant.
 type FileSearchToolDefinition struct {
 	// REQUIRED; The object type.
@@ -526,7 +639,30 @@ type FunctionDefinition struct {
 	Name *string
 
 	// REQUIRED; The parameters the functions accepts, described as a JSON Schema object.
-	Parameters any
+	// NOTE: this field is JSON text that describes a JSON schema. You can marshal a data
+	// structure using code similar to this:
+	//
+	//	jsonBytes, err := json.Marshal(map[string]any{
+	//		"required": []string{"location"},
+	// 		"type":     "object",
+	// 		"properties": map[string]any{
+	// 			"location": map[string]any{
+	//	 			"type":        "string",
+	// 				"description": "The city and state, e.g. San Francisco, CA",
+	// 			},
+	//		},
+	//	})
+	//
+	//	if err != nil {
+	// 		panic(err)
+	//	}
+	//
+	//	funcDef := &azopenaiassistants.FunctionDefinition{
+	// 		Name:        to.Ptr("get_current_weather"),
+	// 		Description: to.Ptr("Get the current weather in a given location"),
+	// 		Parameters:  jsonBytes,
+	// 	}
+	Parameters []byte
 
 	// A description of what the function does, used by the model to choose when and how to call the function.
 	Description *string
@@ -1414,8 +1550,8 @@ type RunStepError struct {
 // RunStepFileSearchToolCall - A record of a call to a file search tool, issued by the model in evaluation of a defined tool,
 // that represents executed file search.
 type RunStepFileSearchToolCall struct {
-	// REQUIRED; Reserved for future use.
-	FileSearch map[string]*string
+	// REQUIRED; The results of the file search.
+	FileSearch []FileSearchToolCallResult
 
 	// REQUIRED; The ID of the tool call. This ID must be referenced when you submit tool outputs.
 	ID *string

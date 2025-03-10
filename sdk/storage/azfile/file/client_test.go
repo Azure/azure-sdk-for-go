@@ -5171,3 +5171,95 @@ func (f *FileRecordedTestsSuite) TestCreateHardLinkNilOptions() {
 	_, err = hardLinkFileClient.CreateHardLink(context.Background(), "", nil)
 	_require.Error(err)
 }
+
+func (f *FileUnrecordedTestsSuite) TestFileDownloadBufferLessCountThanData() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	var fileSize int64 = 15
+	fClient := shareClient.NewRootDirectoryClient().NewFileClient(testcommon.GenerateFileName(testName))
+	_, err = fClient.Create(context.Background(), fileSize, nil)
+	_require.NoError(err)
+
+	gResp, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp.ContentLength, fileSize)
+
+	content := make([]byte, fileSize)
+	_, err = rand.Read(content)
+	_require.NoError(err)
+
+	err = fClient.UploadBuffer(context.Background(), content, &file.UploadBufferOptions{
+		Concurrency: 5,
+		ChunkSize:   4 * 1024 * 1024,
+	})
+	_require.NoError(err)
+
+	count := int64(100)
+
+	destBuffer := make([]byte, fileSize)
+	cnt, err := fClient.DownloadBuffer(context.Background(), destBuffer, &file.DownloadBufferOptions{
+		Range: file.HTTPRange{
+			Count: count,
+		},
+	})
+	_require.NoError(err)
+	if count > fileSize {
+		_require.Equal(cnt, fileSize)
+	} else {
+		_require.Equal(cnt, count)
+	}
+	_require.EqualValues(destBuffer[:int(cnt)], content[:int(cnt)])
+}
+
+func (f *FileUnrecordedTestsSuite) TestFileDownloadBufferLargeData() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	var fileSize int64 = 100 * 1024 * 1024
+	fClient := shareClient.NewRootDirectoryClient().NewFileClient(testcommon.GenerateFileName(testName))
+	_, err = fClient.Create(context.Background(), fileSize, nil)
+	_require.NoError(err)
+
+	gResp, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp.ContentLength, fileSize)
+
+	content := make([]byte, fileSize)
+	_, err = rand.Read(content)
+	_require.NoError(err)
+
+	err = fClient.UploadBuffer(context.Background(), content, &file.UploadBufferOptions{
+		Concurrency: 5,
+		ChunkSize:   4 * 1024 * 1024,
+	})
+	_require.NoError(err)
+	count := int64(9 * 1024 * 1024)
+	destBuffer := make([]byte, fileSize)
+
+	cnt, err := fClient.DownloadBuffer(context.Background(), destBuffer, &file.DownloadBufferOptions{
+		Range: file.HTTPRange{
+			Count: int64(9 * 1024 * 1024),
+		},
+	})
+	_require.NoError(err)
+	if count > fileSize {
+		_require.Equal(cnt, fileSize)
+	} else {
+		_require.Equal(cnt, count)
+	}
+
+	_require.EqualValues(destBuffer[:int(cnt)], content[:int(cnt)])
+}

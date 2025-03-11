@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"os"
 
-	"stress/internal/sb/tests"
+	"stress/internal/servicebus/tests"
 )
 
 func main() {

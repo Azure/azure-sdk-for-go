@@ -13,7 +13,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"stress/internal/sb/shared"
+	"stress/internal/servicebus/shared"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"

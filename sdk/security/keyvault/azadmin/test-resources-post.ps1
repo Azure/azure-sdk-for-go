@@ -90,6 +90,13 @@ if (!$DeploymentOutputs['AZURE_MANAGEDHSM_URL']) {
     exit
 }
 
+Log "Refreshing OIDC token"
+az cloud set -n $Environment
+az login --federated-token $env:ARM_OIDC_TOKEN --service-principal -t $TenantId -u $TestApplicationId
+if ($LASTEXITCODE) { exit $LASTEXITCODE }
+az account set --subscription $SubscriptionId
+if ($LASTEXITCODE) { exit $LASTEXITCODE }
+
 [Uri] $hsmUrl = $DeploymentOutputs['AZURE_MANAGEDHSM_URL']
 $hsmName = $hsmUrl.Host.Substring(0, $hsmUrl.Host.IndexOf('.'))
 

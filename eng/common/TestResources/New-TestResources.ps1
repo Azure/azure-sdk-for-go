@@ -577,15 +577,6 @@ try {
         }
         Log $msg
 
-        $job = Start-Job -ScriptBlock {
-            Start-Sleep -Seconds 360
-            Write-Host "Bebroder : Refreshing OIDC token"
-            az login --federated-token $env:ARM_OIDC_TOKEN --service-principal -t $using:TenantId -u $using:TestApplicationId
-            if (!$LASTEXITCODE) {
-                az account set --subscription $using:SubscriptionId
-            }
-        }
-
         $deployment = Retry {
             New-AzResourceGroupDeployment `
                     -Name $BaseName `
@@ -594,12 +585,6 @@ try {
                     -TemplateParameterObject $templateFileParameters `
                     -Force:$Force
         }
-
-        $job | Wait-Job
-        Write-Host "=== Bebroder receive job ==="
-        $job | Receive-Job
-        Remove-Job -Force $job
-
         if ($deployment.ProvisioningState -ne 'Succeeded') {
             Write-Host "Deployment '$($deployment.DeploymentName)' has state '$($deployment.ProvisioningState)' with CorrelationId '$($deployment.CorrelationId)'. Exiting..."
             Write-Host @'

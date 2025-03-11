@@ -1,6 +1,6 @@
 # Release History
 
-## 1.3.1 (TBD)
+## 1.3.1 (2025-03-11)
 
 ### Bugs Fixed
 

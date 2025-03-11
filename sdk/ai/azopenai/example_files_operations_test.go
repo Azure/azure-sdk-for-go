@@ -68,7 +68,7 @@ func ExampleClient_AddUploadPart() {
 
 	// Complete the upload by specifying the order of parts
 	uploadResp, err := client.CompleteUpload(context.Background(), *createUploadResp.ID, azopenai.CompleteUploadRequest{
-		PartIDs: []string{*part2Resp.ID, *part1Resp.ID},
+		PartIDs: []string{*part1Resp.ID, *part2Resp.ID},
 	}, nil)
 	if err != nil {
 		fmt.Println("Error completing upload:", err)

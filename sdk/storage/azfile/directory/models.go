@@ -206,9 +206,6 @@ func (o *SetPropertiesOptions) format() *generated.DirectoryClientSetPropertiesO
 			FileLastWriteTime: fileLastWriteTime,
 			FilePermission:    permission,
 			FilePermissionKey: permissionKey,
-			FileMode:          o.FileNFSProperties.FileMode,
-			Owner:             o.FileNFSProperties.Owner,
-			Group:             o.FileNFSProperties.Group,
 		}
 
 		if permissionKey != nil && *permissionKey != shared.DefaultPreserveString {

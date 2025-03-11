@@ -26,11 +26,6 @@ type NFSProperties struct {
 	Group *string
 }
 
-// Format returns file attributes, creation time and last write time.
-func (np *NFSProperties) Format(isDir bool, defaultFileAttributes string, defaultCurrentTimeString string) (fileAttributes string, creationTime string, lastWriteTime string) {
-	return
-}
-
 // FormatNFSProperties returns creation time, last write time.
 func FormatNFSProperties(np *NFSProperties, isDir bool) (creationTime *string, lastWriteTime *string) {
 	if np == nil {

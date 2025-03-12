@@ -60,7 +60,7 @@ if [ "$outputFile" != "" ]; then
   cat > $outputFile << EOF
 {
   "envs": {
-    "PATH": "$PATH",
+    "PATH": "$GOPATH:$PATH",
     "GOPATH": "$GOPATH",
     "GOROOT": "$GOROOT"
   }
@@ -70,7 +70,7 @@ else
   # Output environment information to terminal
   echo '{
   "envs": {
-    "PATH": "'"$PATH"'",
+    "PATH": "'"$GOPATH:$PATH"'",
     "GOPATH": "'"$GOPATH"'",
     "GOROOT": "'"$GOROOT"'"
   }

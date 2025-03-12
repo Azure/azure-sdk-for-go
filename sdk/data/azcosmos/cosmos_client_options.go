@@ -15,6 +15,4 @@ type ClientOptions struct {
 	EnableContentResponseOnWrite bool
 	// PreferredRegions is a list of regions to be used when initializing the client in case the default region fails.
 	PreferredRegions []string
-	// QueryEngine is an optional replacement query engine to use instead of the built-in one.
-	QueryEngine QueryEngine
 }

@@ -7,6 +7,7 @@ import (
 	"bytes"
 	"context"
 	"io"
+	"mime"
 	"mime/multipart"
 	"net/http"
 	"strings"
@@ -51,8 +52,36 @@ func TestWriteMultipart_EmptyFileContents(t *testing.T) {
 	_, err = body.ReadFrom(req.Body())
 	require.NoError(t, err)
 
-	require.Contains(t, body.String(), "test-purpose")
-	require.Contains(t, body.String(), filename)
+	// Get Content-Type header from the request
+	contentType := req.Raw().Header.Get("Content-Type")
+	require.NotEmpty(t, contentType, "Content-Type header should be set")
+
+	// Parse the content type to get the boundary
+	mediaType, params, err := mime.ParseMediaType(contentType)
+	require.NoError(t, err)
+	require.Equal(t, "multipart/form-data", mediaType)
+	require.Contains(t, params, "boundary")
+	boundary := params["boundary"]
+
+	// Create a multipart reader with the boundary
+	reader := multipart.NewReader(body, boundary)
+
+	// First part should be the file field
+	part, err := reader.NextPart()
+	require.NoError(t, err)
+	require.Equal(t, "file", part.FormName())
+	require.Equal(t, filename, part.FileName())
+	fileValue, err := io.ReadAll(part)
+	require.NoError(t, err)
+	require.Equal(t, string(fileContents), string(fileValue))
+
+	// Second part should be the purpose field
+	part, err = reader.NextPart()
+	require.NoError(t, err)
+	require.Equal(t, "purpose", part.FormName())
+	purposeValue, err := io.ReadAll(part)
+	require.NoError(t, err)
+	require.Equal(t, string(purpose), string(purposeValue))
 }
 
 func TestCreateFormFile(t *testing.T) {

@@ -98,7 +98,19 @@ func (o *CreateOptions) format() (*generated.FileClientCreateOptions, *generated
 
 	var createOptions *generated.FileClientCreateOptions
 
-	if o.SMBProperties != nil {
+	if o.NFSProperties != nil {
+		fileCreationTime, fileLastWriteTime := exported.FormatNFSProperties(o.NFSProperties, false)
+
+		createOptions = &generated.FileClientCreateOptions{
+			FileCreationTime:  fileCreationTime,
+			FileLastWriteTime: fileLastWriteTime,
+			FileMode:          o.NFSProperties.FileMode,
+			Group:             o.NFSProperties.Group,
+			Owner:             o.NFSProperties.Owner,
+			Metadata:          o.Metadata,
+		}
+
+	} else {
 		fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.SMBProperties, false)
 		permission, permissionKey := exported.FormatPermissions(o.Permissions)
 
@@ -117,21 +129,7 @@ func (o *CreateOptions) format() (*generated.FileClientCreateOptions, *generated
 		} else if o.FilePermissionFormat != nil {
 			createOptions.FilePermissionFormat = to.Ptr(PermissionFormat(*o.FilePermissionFormat))
 		}
-
-	} else if o.NFSProperties != nil {
-		fileCreationTime, fileLastWriteTime := exported.FormatNFSProperties(o.NFSProperties, false)
-
-		createOptions = &generated.FileClientCreateOptions{
-			FileCreationTime:  fileCreationTime,
-			FileLastWriteTime: fileLastWriteTime,
-			FileMode:          o.NFSProperties.FileMode,
-			Group:             o.NFSProperties.Group,
-			Owner:             o.NFSProperties.Owner,
-			Metadata:          o.Metadata,
-		}
-
 	}
-
 	return createOptions, o.HTTPHeaders, o.LeaseAccessConditions
 }
 
@@ -270,7 +268,19 @@ func (o *SetHTTPHeadersOptions) format() (*generated.FileClientSetHTTPHeadersOpt
 
 	var opts *generated.FileClientSetHTTPHeadersOptions
 
-	if o.SMBProperties != nil {
+	if o.NFSProperties != nil {
+		fileCreationTime, fileLastWriteTime := exported.FormatNFSProperties(o.NFSProperties, false)
+
+		opts = &generated.FileClientSetHTTPHeadersOptions{
+			FileCreationTime:  fileCreationTime,
+			FileLastWriteTime: fileLastWriteTime,
+			FileMode:          o.NFSProperties.FileMode,
+			Group:             o.NFSProperties.Group,
+			Owner:             o.NFSProperties.Owner,
+			FileContentLength: o.FileContentLength,
+		}
+
+	} else {
 		fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.SMBProperties, false)
 		permission, permissionKey := exported.FormatPermissions(o.Permissions)
 
@@ -289,18 +299,6 @@ func (o *SetHTTPHeadersOptions) format() (*generated.FileClientSetHTTPHeadersOpt
 		} else if o.FilePermissionFormat != nil {
 			opts.FilePermissionFormat = to.Ptr(PermissionFormat(*o.FilePermissionFormat))
 		}
-	} else if o.NFSProperties != nil {
-		fileCreationTime, fileLastWriteTime := exported.FormatNFSProperties(o.NFSProperties, false)
-
-		opts = &generated.FileClientSetHTTPHeadersOptions{
-			FileCreationTime:  fileCreationTime,
-			FileLastWriteTime: fileLastWriteTime,
-			FileMode:          o.NFSProperties.FileMode,
-			Group:             o.NFSProperties.Group,
-			Owner:             o.NFSProperties.Owner,
-			FileContentLength: o.FileContentLength,
-		}
-
 	}
 
 	return opts, o.HTTPHeaders, o.LeaseAccessConditions

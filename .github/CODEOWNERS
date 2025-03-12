@@ -73,11 +73,6 @@
 # PRLabel: %Service Bus
 /sdk/messaging/stress/internal/servicebus/   @richardpark-msft @chlowell @jhendrixMSFT
 
-# AzureSDKOwners: @richardpark-msft
-# ServiceLabel: %Event Hubs
-# PRLabel: %Event Hubs
-/sdk/messaging/stress/internal/eventhubs/   @richardpark-msft @chlowell @jhendrixMSFT
-
 # AzureSDKOwners: @gracewilcox
 # ServiceLabel: %Monitor
 # PRLabel: %Monitor

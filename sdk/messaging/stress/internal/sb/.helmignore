@@ -1,0 +1,6 @@
+sb-stress*
+.env
+Dockerfile
+*.go
+*.log
+*.json

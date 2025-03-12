@@ -46,6 +46,7 @@ func main() {
 	regexReplace("backup/models_serde.go", `(?:\/\/.*\s)+func \(\w \*?Error\).*\{\s(?:.+\s)+\}\s`, "")
 
 	//  modify Restore to use implementation with custom poller handler
+	regexReplace("backup/client.go", `\[PreFullRestoreResponse\], error\) \{\s(?:.+\s)+\}`, "[PreFullRestoreResponse], error) {return client.beginPreFullRestore(ctx, preRestoreOperationParameters, options)}")
 	regexReplace("backup/client.go", `\[FullRestoreResponse\], error\) \{\s(?:.+\s)+\}`, "[FullRestoreResponse], error) {return client.beginFullRestore(ctx, restoreBlobDetails, options)}")
 	regexReplace("backup/client.go", `\[SelectiveKeyRestoreResponse\], error\) \{\s(?:.+\s)+\}`, "[SelectiveKeyRestoreResponse], error) {return client.beginSelectiveKeyRestore(ctx, keyName, restoreBlobDetails, options)}")
 

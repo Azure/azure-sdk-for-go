@@ -33,6 +33,7 @@ type DestinationLeaseAccessConditions = generated.DestinationLeaseAccessConditio
 type CreateOptions struct {
 	// The default value is 'Directory' for Attributes and 'now' for CreationTime and LastWriteTime fields in file.SMBProperties.
 	FileSMBProperties *file.SMBProperties
+	// NFS only.
 	FileNFSProperties *file.NFSProperties
 	// The default value is 'inherit' for Permission field in file.Permissions.
 	FilePermissions *file.Permissions
@@ -53,7 +54,19 @@ func (o *CreateOptions) format() *generated.DirectoryClientCreateOptions {
 
 	var createOptions *generated.DirectoryClientCreateOptions
 
-	if o.FileSMBProperties != nil {
+	if o.FileNFSProperties != nil {
+		fileCreationTime, fileLastWriteTime := exported.FormatNFSProperties(o.FileNFSProperties, true)
+
+		createOptions = &generated.DirectoryClientCreateOptions{
+			FileCreationTime:  fileCreationTime,
+			FileLastWriteTime: fileLastWriteTime,
+			FileMode:          o.FileNFSProperties.FileMode,
+			Group:             o.FileNFSProperties.Group,
+			Owner:             o.FileNFSProperties.Owner,
+			Metadata:          o.Metadata,
+		}
+
+	} else {
 		fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.FileSMBProperties, true)
 		permission, permissionKey := exported.FormatPermissions(o.FilePermissions)
 
@@ -72,19 +85,6 @@ func (o *CreateOptions) format() *generated.DirectoryClientCreateOptions {
 		} else if o.FilePermissionFormat != nil {
 			createOptions.FilePermissionFormat = to.Ptr(FilePermissionFormat(*o.FilePermissionFormat))
 		}
-
-	} else if o.FileNFSProperties != nil {
-		fileCreationTime, fileLastWriteTime := exported.FormatNFSProperties(o.FileNFSProperties, true)
-
-		createOptions = &generated.DirectoryClientCreateOptions{
-			FileCreationTime:  fileCreationTime,
-			FileLastWriteTime: fileLastWriteTime,
-			FileMode:          o.FileNFSProperties.FileMode,
-			Group:             o.FileNFSProperties.Group,
-			Owner:             o.FileNFSProperties.Owner,
-			Metadata:          o.Metadata,
-		}
-
 	}
 
 	return createOptions
@@ -181,6 +181,7 @@ func (o *GetPropertiesOptions) format() *generated.DirectoryClientGetPropertiesO
 type SetPropertiesOptions struct {
 	// The default value is 'preserve' for Attributes, CreationTime and LastWriteTime fields in file.SMBProperties.
 	FileSMBProperties *file.SMBProperties
+	// NFS only.
 	FileNFSProperties *file.NFSProperties
 	// The default value is 'preserve' for Permission field in file.Permissions.
 	FilePermissions *file.Permissions
@@ -195,7 +196,18 @@ func (o *SetPropertiesOptions) format() *generated.DirectoryClientSetPropertiesO
 
 	var setPropertiesOptions *generated.DirectoryClientSetPropertiesOptions
 
-	if o.FileSMBProperties != nil {
+	if o.FileNFSProperties != nil {
+		fileCreationTime, fileLastWriteTime := exported.FormatNFSProperties(o.FileNFSProperties, true)
+
+		setPropertiesOptions = &generated.DirectoryClientSetPropertiesOptions{
+			FileCreationTime:  fileCreationTime,
+			FileLastWriteTime: fileLastWriteTime,
+			FileMode:          o.FileNFSProperties.FileMode,
+			Owner:             o.FileNFSProperties.Owner,
+			Group:             o.FileNFSProperties.Group,
+		}
+
+	} else {
 		fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.FileSMBProperties, true)
 		permission, permissionKey := exported.FormatPermissions(o.FilePermissions)
 
@@ -213,17 +225,6 @@ func (o *SetPropertiesOptions) format() *generated.DirectoryClientSetPropertiesO
 		} else if o.FilePermissionFormat != nil {
 			setPropertiesOptions.FilePermissionFormat = to.Ptr(FilePermissionFormat(*o.FilePermissionFormat))
 		}
-	} else if o.FileNFSProperties != nil {
-		fileCreationTime, fileLastWriteTime := exported.FormatNFSProperties(o.FileNFSProperties, true)
-
-		setPropertiesOptions = &generated.DirectoryClientSetPropertiesOptions{
-			FileCreationTime:  fileCreationTime,
-			FileLastWriteTime: fileLastWriteTime,
-			FileMode:          o.FileNFSProperties.FileMode,
-			Owner:             o.FileNFSProperties.Owner,
-			Group:             o.FileNFSProperties.Group,
-		}
-
 	}
 
 	return setPropertiesOptions

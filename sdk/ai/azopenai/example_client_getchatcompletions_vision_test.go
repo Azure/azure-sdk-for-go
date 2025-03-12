@@ -144,7 +144,7 @@ func ExampleClient_GetChatCompletions_vision_response_json() {
 			var result map[string]interface{}
 			err := json.Unmarshal([]byte(*choice.Message.Content), &result)
 			if err != nil {
-				log.Fatalf("Error converting JSON string to struct: %s", err)
+				log.Printf("Error converting JSON string to struct: %s", err)
 			}
 			fmt.Fprintf(os.Stderr, "Parsed JSON: %+v\n", result)
 		}

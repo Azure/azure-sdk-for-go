@@ -65,14 +65,14 @@ func (t *Tracer) Inject(ctx context.Context, message *amqp.Message) {
 	if message == nil {
 		return
 	}
-	t.propagator.Inject(ctx, messageCarrierAdapter(*message))
+	t.propagator.Inject(ctx, messageCarrierAdapter(message))
 }
 
 func (t *Tracer) Extract(ctx context.Context, message *amqp.Message) context.Context {
 	if message == nil {
 		return ctx
 	}
-	return t.propagator.Extract(ctx, messageCarrierAdapter(*message))
+	return t.propagator.Extract(ctx, messageCarrierAdapter(message))
 }
 
 func StartSpan(ctx context.Context, options *StartSpanOptions) (context.Context, func(error)) {

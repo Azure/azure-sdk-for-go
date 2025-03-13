@@ -29,7 +29,6 @@ func TestPropagation(t *testing.T) {
 				Properties: &amqp.MessageProperties{
 					MessageID: "message-id",
 				},
-				ApplicationProperties: map[string]any{},
 			},
 			isNilMessage: false,
 		},
@@ -47,12 +46,11 @@ func TestPropagation(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.description, func(t *testing.T) {
-			tracer := Tracer{propagator: propagator}
-			tracer.Inject(context.TODO(), tc.message)
-			tracer.Extract(context.TODO(), tc.message)
+			carrier := messageCarrierAdapter(tc.message)
+			propagator.Inject(context.TODO(), carrier)
+			propagator.Extract(context.TODO(), carrier)
 
 			if !tc.isNilMessage {
-				carrier := messageCarrierAdapter(*tc.message)
 				require.EqualValues(t, 1, len(carrier.Keys()))
 				require.EqualValues(t, "true", carrier.Get("injected"))
 				require.EqualValues(t, 1, len(tc.message.ApplicationProperties))

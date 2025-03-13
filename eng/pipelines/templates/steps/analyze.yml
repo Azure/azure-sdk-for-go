@@ -30,6 +30,7 @@ steps:
 
       Copy-Item "$(Build.ArtifactStagingDirectory)/PackageInfo" -Destination $directoryToPublish -Recurse
     displayName: 'Create Go APIView Artifact'
+    condition: succeeded()
 
   - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
     parameters:

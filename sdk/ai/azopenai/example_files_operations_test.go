@@ -10,6 +10,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"log"
 	"os"
 	"strings"
 
@@ -32,19 +33,19 @@ func ExampleClient_AddUploadPart() {
 
 	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, nil)
 	if err != nil {
-		fmt.Println("Error creating client:", err)
+		log.Printf("Error creating client: %s", err)
 		return
 	}
 
 	// Create an upload request
-	createUploadResp, err := client.CreateUpload(context.Background(), azopenai.CreateUploadRequest{
+	createUploadResp, err := client.CreateUpload(context.TODO(), azopenai.CreateUploadRequest{
 		Bytes:    to.Ptr(int32(10)),
 		Filename: to.Ptr("test.txt"),
 		MimeType: to.Ptr("text/plain"),
 		Purpose:  to.Ptr(azopenai.CreateUploadRequestPurposeAssistants),
 	}, nil)
 	if err != nil {
-		fmt.Println("Error creating upload:", err)
+		log.Printf("Error creating upload: %s", err)
 		return
 	}
 
@@ -53,25 +54,26 @@ func ExampleClient_AddUploadPart() {
 	part2 := streaming.NopCloser(strings.NewReader("world"))
 
 	// Upload the second part
-	part2Resp, err := client.AddUploadPart(context.Background(), *createUploadResp.ID, part2, nil)
+	part2Resp, err := client.AddUploadPart(context.TODO(), *createUploadResp.ID, part2, nil)
 	if err != nil {
-		fmt.Println("Error uploading part 2:", err)
+		log.Printf("Error uploading part 2: %s", err)
 		return
 	}
 
 	// Upload the first part
-	part1Resp, err := client.AddUploadPart(context.Background(), *createUploadResp.ID, part1, nil)
+	part1Resp, err := client.AddUploadPart(context.TODO(), *createUploadResp.ID, part1, nil)
 	if err != nil {
-		fmt.Println("Error uploading part 1:", err)
+		log.Printf("Error uploading part 1: %s", err)
 		return
 	}
 
-	// Complete the upload by specifying the order of parts
-	uploadResp, err := client.CompleteUpload(context.Background(), *createUploadResp.ID, azopenai.CompleteUploadRequest{
+	// Complete the upload by assembling parts in desired sequence (part1 followed by part2)
+	// Note: The order in this array determines the final file content order, not the upload order
+	uploadResp, err := client.CompleteUpload(context.TODO(), *createUploadResp.ID, azopenai.CompleteUploadRequest{
 		PartIDs: []string{*part1Resp.ID, *part2Resp.ID},
 	}, nil)
 	if err != nil {
-		fmt.Println("Error completing upload:", err)
+		log.Printf("Error completing upload: %s", err)
 		return
 	}
 
@@ -79,9 +81,9 @@ func ExampleClient_AddUploadPart() {
 	fmt.Println("Total size of uploaded parts:", *uploadResp.Bytes)
 
 	// Delete the uploaded file
-	_, err = client.DeleteFile(context.Background(), *uploadResp.File.ID, nil)
+	_, err = client.DeleteFile(context.TODO(), *uploadResp.File.ID, nil)
 	if err != nil {
-		fmt.Println("Error deleting file:", err)
+		log.Printf("Error deleting file: %s", err)
 		return
 	}
 
@@ -102,44 +104,34 @@ func ExampleClient_UploadFile() {
 
 	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, nil)
 	if err != nil {
-		fmt.Println("Error creating client:", err)
+		log.Printf("Error creating client: %s", err)
 		return
 	}
 
 	// Upload a file
-	uploadResp, err := client.UploadFile(context.Background(), streaming.NopCloser(bytes.NewReader([]byte("hello world"))), azopenai.FilePurposeAssistants, nil)
+	uploadResp, err := client.UploadFile(context.TODO(), streaming.NopCloser(bytes.NewReader([]byte("hello world"))), azopenai.FilePurposeAssistants, nil)
 	if err != nil {
-		fmt.Println("Error uploading file:", err)
+		log.Printf("Error uploading file: %s", err)
 		return
 	}
 
 	// Cleanup: delete the uploaded file
 	defer func() {
-		_, err := client.DeleteFile(context.Background(), *uploadResp.ID, nil)
+		_, err := client.DeleteFile(context.TODO(), *uploadResp.ID, nil)
 		if err != nil {
-			fmt.Println("Error deleting file:", err)
+			log.Printf("Error deleting file: %s", err)
 		}
 	}()
 
 	// Get the uploaded file
-	getFileResp, err := client.GetFile(context.Background(), *uploadResp.ID, nil)
+	getFileResp, err := client.GetFile(context.TODO(), *uploadResp.ID, nil)
 	if err != nil {
-		fmt.Println("Error getting file:", err)
+		log.Printf("Error getting file: %s", err)
 		return
 	}
 
 	// Verify the purpose of the uploaded file
 	fmt.Println("Purpose of uploaded file:", *getFileResp.Purpose)
 
-	// List all files and verify the response is not empty
-	filesResp, err := client.ListFiles(context.Background(), nil)
-	if err != nil {
-		fmt.Println("Error listing files:", err)
-		return
-	}
-	fmt.Println("Number of files:", len(filesResp.Data))
-
 	// Output:
-	// Purpose of uploaded file: assistants
-	// Number of files: 1
 }

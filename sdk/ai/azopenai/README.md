@@ -13,7 +13,7 @@ Azure OpenAI Service provides access to OpenAI's features:
 
 ### Prerequisites
 
-* Go, version 1.18 or higher - [Install Go](https://go.dev/doc/install)
+* Latest version of Go - [Install Go](https://go.dev/doc/install)
 * [Azure subscription][azure_sub]
 * [Azure OpenAI access][azure_openai_access]
 

@@ -14,10 +14,10 @@ This repository is for active development of the Azure SDK for Go. For consumers
 
 To get started with a module, see the README.md file located in the module's project folder.  You can find these module folders grouped by service in the `/sdk` directory.
 
-> [!NOTE]
-> Go **1.18** or later is required. You could download and install the latest version of Go from [here](https://go.dev/doc/install). It will replace the existing Go on your machine. If you want to install multiple Go versions on the same machine, you could refer this [doc](https://go.dev/doc/manage-install).
+> [!IMPORTANT]
+> Our libraries are compatible with the two most recent major Go releases, the same [policy](https://go.dev/doc/devel/release#policy) the Go programming language follows.
 
-> [!NOTE]
+> [!IMPORTANT]
 > Projects are highly encouraged to use the latest version of Go. This ensures your product has all the latest security fixes and is included in [Go's support lifecycle](https://go.dev/doc/devel/release).
 
 > [!WARNING]

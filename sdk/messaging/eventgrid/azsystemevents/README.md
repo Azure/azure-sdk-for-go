@@ -20,7 +20,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/azsystemevents
 
 ### Prerequisites
 
-- Go, version 1.18 or higher
+- Latest version of Go
 
 # Key concepts
 

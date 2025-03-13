@@ -11,7 +11,7 @@ The Azure Monitor Query client module is used to execute read-only queries again
 
 ### Prerequisites
 
-* Go, version 1.18 or higher - [Install Go](https://go.dev/doc/install)
+* Latest version of Go - [Install Go](https://go.dev/doc/install)
 * Azure subscription - [Create a free account][azure_sub]
 * To query Logs, you need one of the following things:
   * An [Azure Log Analytics workspace][log_analytics_workspace_create]

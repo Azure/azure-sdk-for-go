@@ -24,7 +24,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/azeventgrid
 
 ### Prerequisites
 
-- Go, version 1.18 or higher
+- Latest version of Go
 - An [Azure subscription](https://azure.microsoft.com/free/)
 - An Event Grid topic. You can create an Event Grid topic using the [Azure Portal](https://learn.microsoft.com/azure/event-grid/custom-event-quickstart-portal).
 

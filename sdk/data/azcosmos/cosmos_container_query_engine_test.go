@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"testing"
 
-	cosmosmock "github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/internal/mock"
+	azcosmosinternal "github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/internal"
 )
 
 const (
@@ -29,7 +29,7 @@ const (
 
 var partitionKeys = [...]string{partition1Key, partition2Key, partition3Key}
 
-func createTestItems(t *testing.T, database *DatabaseClient, emulatorTests *emulatorTests, client *Client) (*ContainerClient, error) {
+func createTestItems(t *testing.T, database *DatabaseClient) (*ContainerClient, error) {
 	properties := ContainerProperties{
 		ID: "TestContainer",
 		PartitionKeyDefinition: PartitionKeyDefinition{
@@ -42,16 +42,18 @@ func createTestItems(t *testing.T, database *DatabaseClient, emulatorTests *emul
 	_, err := database.CreateContainer(context.TODO(), properties, &CreateContainerOptions{
 		ThroughputProperties: &throughput,
 	})
-
-	container, err := database.NewContainer("TestContainer")
-
 	if err != nil {
 		t.Fatalf("failed to create container: %v", err)
 	}
 
+	container, err := database.NewContainer("TestContainer")
+	if err != nil {
+		t.Fatalf("failed to create container client: %v", err)
+	}
+
 	for i := 0; i < partitionCount; i++ {
 		for j := 0; j < itemsPerPartition; j++ {
-			item := cosmosmock.MockItem{
+			item := azcosmosinternal.MockItem{
 				ID:           strconv.Itoa(i*itemsPerPartition + j),
 				PartitionKey: partitionKeys[i],
 
@@ -74,13 +76,13 @@ func TestQueryViaQueryEngine(t *testing.T) {
 	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{}))
 	database := emulatorTests.createDatabase(t, context.TODO(), client, "TestQueryViaQueryEngine")
 	defer emulatorTests.deleteDatabase(t, context.TODO(), database)
-	container, err := createTestItems(t, database, emulatorTests, client)
+	container, err := createTestItems(t, database)
 	if err != nil {
 		t.Fatalf("Failed to create test items: %v", err)
 	}
 
 	options := &QueryOptions{
-		UnstablePreviewQueryEngine: cosmosmock.NewMockQueryEngine(),
+		UnstablePreviewQueryEngine: azcosmosinternal.NewMockQueryEngine(),
 	}
 	pager := container.NewQueryItemsPager("SELECT * FROM c ORDER BY c.mergeOrder", NewPartitionKey(), options)
 
@@ -92,7 +94,7 @@ func TestQueryViaQueryEngine(t *testing.T) {
 			t.Fatalf("Failed to get next page: %v", err)
 		}
 		for i, item := range response.Items {
-			var testItem cosmosmock.MockItem
+			var testItem azcosmosinternal.MockItem
 			if err := json.Unmarshal(item, &testItem); err != nil {
 				t.Fatalf("Failed to unmarshal item: %v", err)
 			}

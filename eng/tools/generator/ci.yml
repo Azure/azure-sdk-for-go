@@ -27,4 +27,5 @@ extends:
     ServiceDirectory: '../eng/tools/generator'
     NonShipping: true
     IsSdkLibrary: false
-    ExcludeGoNMinus2: true
+    MatrixFilters:
+      - GoVersion=^(?!1.18).*

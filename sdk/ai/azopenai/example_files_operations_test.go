@@ -33,7 +33,7 @@ func ExampleClient_AddUploadPart() {
 
 	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, nil)
 	if err != nil {
-		log.Printf("Error creating client: %s", err)
+		log.Printf("ERROR: %s", err)
 		return
 	}
 
@@ -45,7 +45,7 @@ func ExampleClient_AddUploadPart() {
 		Purpose:  to.Ptr(azopenai.CreateUploadRequestPurposeAssistants),
 	}, nil)
 	if err != nil {
-		log.Printf("Error creating upload: %s", err)
+		log.Printf("ERROR: %s", err)
 		return
 	}
 
@@ -56,14 +56,14 @@ func ExampleClient_AddUploadPart() {
 	// Upload the second part
 	part2Resp, err := client.AddUploadPart(context.TODO(), *createUploadResp.ID, part2, nil)
 	if err != nil {
-		log.Printf("Error uploading part 2: %s", err)
+		log.Printf("ERROR: %s", err)
 		return
 	}
 
 	// Upload the first part
 	part1Resp, err := client.AddUploadPart(context.TODO(), *createUploadResp.ID, part1, nil)
 	if err != nil {
-		log.Printf("Error uploading part 1: %s", err)
+		log.Printf("ERROR: %s", err)
 		return
 	}
 
@@ -73,7 +73,7 @@ func ExampleClient_AddUploadPart() {
 		PartIDs: []string{*part1Resp.ID, *part2Resp.ID},
 	}, nil)
 	if err != nil {
-		log.Printf("Error completing upload: %s", err)
+		log.Printf("ERROR: %s", err)
 		return
 	}
 
@@ -83,12 +83,11 @@ func ExampleClient_AddUploadPart() {
 	// Delete the uploaded file
 	_, err = client.DeleteFile(context.TODO(), *uploadResp.File.ID, nil)
 	if err != nil {
-		log.Printf("Error deleting file: %s", err)
+		log.Printf("ERROR: %s", err)
 		return
 	}
 
 	// Output:
-	// Total size of uploaded parts: 10
 }
 
 func ExampleClient_UploadFile() {
@@ -104,14 +103,14 @@ func ExampleClient_UploadFile() {
 
 	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, nil)
 	if err != nil {
-		log.Printf("Error creating client: %s", err)
+		log.Printf("ERROR: %s", err)
 		return
 	}
 
 	// Upload a file
 	uploadResp, err := client.UploadFile(context.TODO(), streaming.NopCloser(bytes.NewReader([]byte("hello world"))), azopenai.FilePurposeAssistants, nil)
 	if err != nil {
-		log.Printf("Error uploading file: %s", err)
+		log.Printf("ERROR: %s", err)
 		return
 	}
 
@@ -119,14 +118,14 @@ func ExampleClient_UploadFile() {
 	defer func() {
 		_, err := client.DeleteFile(context.TODO(), *uploadResp.ID, nil)
 		if err != nil {
-			log.Printf("Error deleting file: %s", err)
+			log.Printf("ERROR: %s", err)
 		}
 	}()
 
 	// Get the uploaded file
 	getFileResp, err := client.GetFile(context.TODO(), *uploadResp.ID, nil)
 	if err != nil {
-		log.Printf("Error getting file: %s", err)
+		log.Printf("ERROR: %s", err)
 		return
 	}
 

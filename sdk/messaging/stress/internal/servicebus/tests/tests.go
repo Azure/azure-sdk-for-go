@@ -10,7 +10,7 @@ import (
 	"sort"
 	"strings"
 
-	"stress/internal/sb/shared"
+	"stress/internal/servicebus/shared"
 )
 
 // Simple query to view some of the stats reported by these stress tests.

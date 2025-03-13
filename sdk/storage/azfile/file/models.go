@@ -337,10 +337,6 @@ type StartCopyFromURLOptions struct {
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	// Required if the destination file has an active lease.
 	LeaseAccessConditions *LeaseAccessConditions
-	// NFS only. Applicable only when the copy source is a File. Determines the copy behavior of the mode bits of the file. source:
-	FileModeCopyMode *ModeCopyMode
-	// NFS only. Determines the copy behavior of the owner user identifier (UID) and group identifier (GID) of the file. source:
-	FileOwnerCopyMode *OwnerCopyMode
 }
 
 func (o *StartCopyFromURLOptions) format() (*generated.FileClientStartCopyOptions, *generated.CopyFileSMBInfo, *generated.LeaseAccessConditions) {
@@ -360,8 +356,8 @@ func (o *StartCopyFromURLOptions) format() (*generated.FileClientStartCopyOption
 			FileMode:          o.NFSProperties.FileMode,
 			Owner:             o.NFSProperties.Owner,
 			Group:             o.NFSProperties.Group,
-			FileModeCopyMode:  o.FileModeCopyMode,
-			FileOwnerCopyMode: o.FileOwnerCopyMode,
+			FileModeCopyMode:  o.NFSProperties.FileModeCopyMode,
+			FileOwnerCopyMode: o.NFSProperties.FileOwnerCopyMode,
 		}
 	} else {
 		var permission, permissionKey *string
@@ -374,8 +370,6 @@ func (o *StartCopyFromURLOptions) format() (*generated.FileClientStartCopyOption
 			FilePermission:    permission,
 			FilePermissionKey: permissionKey,
 			Metadata:          o.Metadata,
-			FileModeCopyMode:  o.FileModeCopyMode,
-			FileOwnerCopyMode: o.FileOwnerCopyMode,
 		}
 	}
 

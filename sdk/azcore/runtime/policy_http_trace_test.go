@@ -188,7 +188,6 @@ func TestStartSpan(t *testing.T) {
 		ModuleName: "custommodule"})
 	end(exported.NewResponseError(resp))
 	require.Contains(t, spanAttrs, tracing.Attribute{Key: attrErrType, Value: "*custommodule.ResponseError"})
-
 }
 
 func TestStartSpansDontNest(t *testing.T) {

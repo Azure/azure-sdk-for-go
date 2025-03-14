@@ -26,7 +26,7 @@ type AddUserToGroupOptions struct {
 // CheckPermissionOptions contains the optional parameters for the Client.CheckPermission method.
 type CheckPermissionOptions struct {
 	// The meaning of the target depends on the specific permission. For joinLeaveGroup and sendToGroup, targetName is a required
-	// parameter standing for the group name.
+// parameter standing for the group name.
 	TargetName *string
 }
 
@@ -86,7 +86,7 @@ type GenerateClientTokenOptions struct {
 // GrantPermissionOptions contains the optional parameters for the Client.GrantPermission method.
 type GrantPermissionOptions struct {
 	// The meaning of the target depends on the specific permission. For joinLeaveGroup and sendToGroup, targetName is a required
-	// parameter standing for the group name.
+// parameter standing for the group name.
 	TargetName *string
 }
 
@@ -124,7 +124,7 @@ type RemoveUserFromGroupOptions struct {
 // RevokePermissionOptions contains the optional parameters for the Client.RevokePermission method.
 type RevokePermissionOptions struct {
 	// The meaning of the target depends on the specific permission. For joinLeaveGroup and sendToGroup, targetName is a required
-	// parameter standing for the group name.
+// parameter standing for the group name.
 	TargetName *string
 }
 
@@ -137,18 +137,18 @@ type SendToAllOptions struct {
 	Filter *string
 
 	// The time-to-live (TTL) value in seconds for messages sent to the service. 0 is the default value, which means the message
-	// never expires. 300 is the maximum value. If this parameter is non-zero,
-	// messages that are not consumed by the client within the specified TTL will be dropped by the service. This parameter can
-	// help when the client's bandwidth is limited.
+// never expires. 300 is the maximum value. If this parameter is non-zero,
+// messages that are not consumed by the client within the specified TTL will be dropped by the service. This parameter can
+// help when the client's bandwidth is limited.
 	MessageTTLSeconds *int32
 }
 
 // SendToConnectionOptions contains the optional parameters for the Client.SendToConnection method.
 type SendToConnectionOptions struct {
 	// The time-to-live (TTL) value in seconds for messages sent to the service. 0 is the default value, which means the message
-	// never expires. 300 is the maximum value. If this parameter is non-zero,
-	// messages that are not consumed by the client within the specified TTL will be dropped by the service. This parameter can
-	// help when the client's bandwidth is limited.
+// never expires. 300 is the maximum value. If this parameter is non-zero,
+// messages that are not consumed by the client within the specified TTL will be dropped by the service. This parameter can
+// help when the client's bandwidth is limited.
 	MessageTTLSeconds *int32
 }
 
@@ -161,9 +161,9 @@ type SendToGroupOptions struct {
 	Filter *string
 
 	// The time-to-live (TTL) value in seconds for messages sent to the service. 0 is the default value, which means the message
-	// never expires. 300 is the maximum value. If this parameter is non-zero,
-	// messages that are not consumed by the client within the specified TTL will be dropped by the service. This parameter can
-	// help when the client's bandwidth is limited.
+// never expires. 300 is the maximum value. If this parameter is non-zero,
+// messages that are not consumed by the client within the specified TTL will be dropped by the service. This parameter can
+// help when the client's bandwidth is limited.
 	MessageTTLSeconds *int32
 }
 
@@ -173,9 +173,9 @@ type SendToUserOptions struct {
 	Filter *string
 
 	// The time-to-live (TTL) value in seconds for messages sent to the service. 0 is the default value, which means the message
-	// never expires. 300 is the maximum value. If this parameter is non-zero,
-	// messages that are not consumed by the client within the specified TTL will be dropped by the service. This parameter can
-	// help when the client's bandwidth is limited.
+// never expires. 300 is the maximum value. If this parameter is non-zero,
+// messages that are not consumed by the client within the specified TTL will be dropped by the service. This parameter can
+// help when the client's bandwidth is limited.
 	MessageTTLSeconds *int32
 }
 
@@ -183,3 +183,4 @@ type SendToUserOptions struct {
 type UserExistsOptions struct {
 	// placeholder for future optional parameters
 }
+

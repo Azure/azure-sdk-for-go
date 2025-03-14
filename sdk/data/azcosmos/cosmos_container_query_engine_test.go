@@ -84,12 +84,14 @@ func TestQueryViaQueryEngine(t *testing.T) {
 
 	expectedPartitionId := 0
 	expectedMergeOrder := 0
+	itemCount := 0
 	for pager.More() {
 		response, err := pager.NextPage(context.TODO())
 		if err != nil {
 			t.Fatalf("Failed to get next page: %v", err)
 		}
 		for i, item := range response.Items {
+			itemCount++
 			var testItem azcosmosinternal.MockItem
 			if err := json.Unmarshal(item, &testItem); err != nil {
 				t.Fatalf("Failed to unmarshal item: %v", err)
@@ -106,5 +108,9 @@ func TestQueryViaQueryEngine(t *testing.T) {
 			expectedPartitionId = (expectedPartitionId + 1) % partitionCount
 			expectedMergeOrder = expectedMergeOrder + 1
 		}
+	}
+
+	if itemCount != partitionCount*itemsPerPartition {
+		t.Fatalf("Expected %d items, got %d", partitionCount*itemsPerPartition, itemCount)
 	}
 }

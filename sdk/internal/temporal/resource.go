@@ -11,8 +11,10 @@ import (
 	"time"
 )
 
-// backoff is the minimum wait time between eager update attempts. It's a variable so tests can manipulate it.
-var backoff = 30 * time.Second
+// backoff sets a minimum wait time between eager update attempts. It's a variable so tests can manipulate it.
+var backoff = func(now, lastAttempt time.Time) bool {
+	return lastAttempt.Add(30 * time.Second).After(now)
+}
 
 // AcquireResource abstracts a method for refreshing a temporal resource.
 type AcquireResource[TResource, TState any] func(state TState) (newResource TResource, newExpiration time.Time, err error)
@@ -92,7 +94,7 @@ func (er *Resource[TResource, TState]) Get(state TState) (TResource, error) {
 			}
 			// Getting here means that this thread/goroutine will wait for the updated resource
 		} else if er.shouldRefresh(resource, state) {
-			if !er.acquiring && er.lastAttempt.Add(backoff).Before(now) {
+			if !(er.acquiring || backoff(now, er.lastAttempt)) {
 				// If another thread/goroutine is not acquiring/renewing the resource, and none has attempted
 				// to do so within the last 30 seconds, this thread/goroutine will do it
 				er.acquiring, acquire = true, true

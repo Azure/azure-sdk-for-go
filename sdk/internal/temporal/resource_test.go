@@ -95,7 +95,7 @@ func TestShouldRefresh(t *testing.T) {
 		t.Run(fmt.Sprint(shouldRefresh), func(t *testing.T) {
 			before := backoff
 			defer func() { backoff = before }()
-			backoff = 0
+			backoff = func(time.Time, time.Time) bool { return false }
 			called := false
 			initial, updated := "initial", "updated"
 			states := []string{"a", "b"}

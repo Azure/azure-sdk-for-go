@@ -10,12 +10,8 @@ import (
 )
 
 const (
-	// These keys have been tested to ensure they end up in separate PK ranges for an otherwise-empty 40000 RU container, using https://github.com/analogrelay/cosmos-pkhash
-	// Conveniently, they also have descriptive names
-	// These are the values, their EPK, and the range they are in:
-	//   partition1 => 069AFC9298E63A9D08429B60A594626C in 0
-	//   partition2 => 1721B45D14F4AF59263B278F53573BFF in 2
-	//   partition3 => 2DF2EB69837D3D4E551791CE80D2636F in 5
+	// These keys have been tested to ensure they end up in separate PK ranges for a 40000 RU container with the test data inserted.
+	// Conveniently, they also have descriptive names.
 
 	partition1Key string = "partition1"
 	partition2Key string = "partition2"
@@ -38,7 +34,7 @@ func createTestItems(t *testing.T, database *DatabaseClient) (*ContainerClient, 
 	}
 
 	// Force the creation of a container with multiple physical partitions
-	throughput := NewManualThroughputProperties(40000)
+	throughput := NewManualThroughputProperties(ruCount)
 	_, err := database.CreateContainer(context.TODO(), properties, &CreateContainerOptions{
 		ThroughputProperties: &throughput,
 	})

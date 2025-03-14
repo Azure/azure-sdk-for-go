@@ -40,6 +40,7 @@ type MockItem struct {
 // MockQueryEngine is a mock implementation of the QueryEngine interface.
 // This is a VERY rudimentary implementation that emulates the handling of the following query:
 // `SELECT * FROM c ORDER BY c.mergeOrder`
+// The intent here is to test how the Go SDK interacts with the query engine, not to test the query engine itself.
 type MockQueryEngine struct {
 	CreateError error
 }
@@ -63,6 +64,7 @@ func (m *MockQueryEngine) CreateQueryPipeline(query string, plan string, pkrange
 }
 
 func (m *MockQueryEngine) SupportedFeatures() string {
+	// We need to return whatever is necessary for the gateway to return a query plan for the query `SELECT * FROM c ORDER BY c.mergeOrder`
 	return "OrderBy"
 }
 
@@ -73,18 +75,23 @@ type partitionState struct {
 	nextContinuation string
 }
 
-// IsExhausted returns true if the partition is exhausted, meaning that there are no more items in the queue, no continuation token, and at least one request for this partition has been made
+// IsExhausted returns true if the partition is exhausted.
+// A partition is considered exhausted if all the below are true:
+// 1. The queue is empty (no more items to return).
+// 2. The partition has started (we've received at least one response for it from the server).
+// 3. The next continuation token is empty (the last response indicated that there are no more items on the server).
 func (m *partitionState) IsExhausted() bool {
 	return len(m.queue) == 0 && m.started && m.nextContinuation == ""
 }
 
-// ProvideData pushes data into the partition state.
+// ProvideData inserts new items into the queue, and updates the current continuation token.
 func (p *partitionState) ProvideData(items []MockItem, continuation string) {
 	p.started = true
 	p.nextContinuation = continuation
 	p.queue = append(p.queue, items...)
 }
 
+// PopItem removes the first item from the queue and returns it as a serialized JSON object.
 func (p *partitionState) PopItem() ([]byte, error) {
 	if len(p.queue) == 0 {
 		return nil, fmt.Errorf("no items in queue")
@@ -106,9 +113,6 @@ type MockQueryPipeline struct {
 }
 
 func newMockQueryPipeline(query string, partitions []PartitionKeyRange) *MockQueryPipeline {
-	// Rewrite the query to simulate the behavior of the real query engine.
-	// We can validate that only rewritten queries are passed to the Mock Account.
-
 	partState := make([]partitionState, 0, len(partitions))
 	for _, partition := range partitions {
 		partState = append(partState, partitionState{
@@ -126,23 +130,23 @@ func newMockQueryPipeline(query string, partitions []PartitionKeyRange) *MockQue
 	}
 }
 
-// Close implements QueryPipeline.
 func (m *MockQueryPipeline) Close() {
 	m.IsClosed = true
 }
 
-// IsComplete implements QueryPipeline.
 func (m *MockQueryPipeline) IsComplete() bool {
 	return m.completed
 }
 
-// NextBatch implements QueryPipeline.
+// NextBatch returns the next batch of items from the pipeline, as well as any requests needed to collect more data.
 func (m *MockQueryPipeline) NextBatch() ([][]byte, []queryengine.QueryRequest, error) {
 	if m.IsClosed {
 		return nil, nil, fmt.Errorf("pipeline is closed")
 	}
 
 	items := make([][]byte, 0)
+
+	// Loop, merging items from each partition, until all partitions are exhausted, or we need more data to conitnue.
 	for {
 		// Iterate through each partition to find the item with the lowest MergeOrder.
 		var lowestMergeOrder int
@@ -154,7 +158,7 @@ func (m *MockQueryPipeline) NextBatch() ([][]byte, []queryengine.QueryRequest, e
 			}
 
 			if m.partitionState[i].IsExhausted() {
-				// If this partition is exhausted, we can't return any items.
+				// If this partition is exhausted, it won't contribute any more items, so we can skip it.
 				continue
 			}
 
@@ -165,7 +169,7 @@ func (m *MockQueryPipeline) NextBatch() ([][]byte, []queryengine.QueryRequest, e
 		}
 
 		if lowestPartition == nil {
-			// No partitions have returnable items.
+			// All partitions are either exhausted or have no items in the queue, so we need to make requests to get more data.
 			break
 		} else {
 			// Add the item to the result set and remove it from the queue.
@@ -175,6 +179,8 @@ func (m *MockQueryPipeline) NextBatch() ([][]byte, []queryengine.QueryRequest, e
 			}
 			items = append(items, item)
 		}
+
+		// If we got here, we added an item to the result set, and we need to go back and check all the partitions again.
 	}
 
 	requests := m.getRequests()
@@ -187,6 +193,7 @@ func (m *MockQueryPipeline) NextBatch() ([][]byte, []queryengine.QueryRequest, e
 	return items, requests, nil
 }
 
+// getRequests returns a list of all the QueryRequests that are needed to get the next batch of items.
 func (m *MockQueryPipeline) getRequests() []queryengine.QueryRequest {
 	requests := make([]queryengine.QueryRequest, 0, len(m.partitionState))
 	for i := range m.partitionState {
@@ -208,6 +215,8 @@ func (m *MockQueryPipeline) getRequests() []queryengine.QueryRequest {
 	return requests
 }
 
+// ProvideData is used by the SDK to provide incoming single-partition results to the pipeline.
+// The items are expected to be ordered by the query's ORDER BY clause.
 func (m *MockQueryPipeline) ProvideData(data queryengine.QueryResult) error {
 	if m.IsClosed {
 		return fmt.Errorf("pipeline is closed")
@@ -219,7 +228,7 @@ func (m *MockQueryPipeline) ProvideData(data queryengine.QueryResult) error {
 		return fmt.Errorf("failed to unmarshal items: %w", err)
 	}
 
-	// Find the partition state for the given partition key range ID.
+	// Find the partition state for the given partition key range ID and insert the items.
 	for i := range m.partitionState {
 		if m.partitionState[i].ID == data.PartitionKeyRangeID {
 			m.partitionState[i].ProvideData(payload.Documents, data.NextContinuation)

@@ -109,13 +109,6 @@ func (c *ContainerClient) executeQueryWithEngine(queryEngine queryengine.QueryEn
 					return QueryItemsResponse{}, err
 				}
 
-				if len(items) > 0 {
-					return QueryItemsResponse{
-						Response: lastResponse,
-						Items:    items,
-					}, nil
-				}
-
 				// We didn't get any items, so we need to put more data in.
 				for _, request := range requests {
 					qryRequest := queryRequest(request) // Cast to our type, which has toHeaders defined on it.
@@ -153,7 +146,15 @@ func (c *ContainerClient) executeQueryWithEngine(queryEngine queryengine.QueryEn
 					}
 				}
 
-				// We've provided more data to the pipeline, so let's try to run the pipeline forward again.
+				// If we got items, return them.
+				if len(items) > 0 {
+					return QueryItemsResponse{
+						Response: lastResponse,
+						Items:    items,
+					}, nil
+				}
+
+				// No items, but we provided more data, so let's continue the loop.
 			}
 		},
 	})

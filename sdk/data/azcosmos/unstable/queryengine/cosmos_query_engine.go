@@ -19,6 +19,18 @@ type QueryResult struct {
 	Data                []byte
 }
 
+func NewQueryResult(partitionKeyRangeID string, data []byte, continuation string) QueryResult {
+	return QueryResult{
+		PartitionKeyRangeID: partitionKeyRangeID,
+		Data:                data,
+		NextContinuation:    continuation,
+	}
+}
+
+func NewQueryResultString(partitionKeyRangeID string, data string, continuation string) QueryResult {
+	return NewQueryResult(partitionKeyRangeID, []byte(data), continuation)
+}
+
 type PipelineResult struct {
 	IsCompleted bool
 	Items       [][]byte

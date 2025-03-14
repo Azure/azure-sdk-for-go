@@ -49,6 +49,10 @@ type Server struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetKey func(ctx context.Context, name string, version string, options *azkeys.GetKeyOptions) (resp azfake.Responder[azkeys.GetKeyResponse], errResp azfake.ErrorResponder)
 
+	// GetKeyAttestation is the fake for method Client.GetKeyAttestation
+	// HTTP status codes to indicate success: http.StatusOK
+	GetKeyAttestation func(ctx context.Context, name string, version string, options *azkeys.GetKeyAttestationOptions) (resp azfake.Responder[azkeys.GetKeyAttestationResponse], errResp azfake.ErrorResponder)
+
 	// GetKeyRotationPolicy is the fake for method Client.GetKeyRotationPolicy
 	// HTTP status codes to indicate success: http.StatusOK
 	GetKeyRotationPolicy func(ctx context.Context, name string, options *azkeys.GetKeyRotationPolicyOptions) (resp azfake.Responder[azkeys.GetKeyRotationPolicyResponse], errResp azfake.ErrorResponder)
@@ -176,6 +180,8 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 				res.resp, res.err = s.dispatchGetDeletedKey(req)
 			case "Client.GetKey":
 				res.resp, res.err = s.dispatchGetKey(req)
+			case "Client.GetKeyAttestation":
+				res.resp, res.err = s.dispatchGetKeyAttestation(req)
 			case "Client.GetKeyRotationPolicy":
 				res.resp, res.err = s.dispatchGetKeyRotationPolicy(req)
 			case "Client.GetRandomBytes":
@@ -442,6 +448,39 @@ func (s *ServerTransport) dispatchGetKey(req *http.Request) (*http.Response, err
 		return nil, err
 	}
 	respr, errRespr := s.srv.GetKey(req.Context(), nameParam, versionParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).KeyBundle, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *ServerTransport) dispatchGetKeyAttestation(req *http.Request) (*http.Response, error) {
+	if s.srv.GetKeyAttestation == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetKeyAttestation not implemented")}
+	}
+	const regexStr = `/keys/(?P<key_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/?(?P<key_version>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)?/attestation`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("key_name")])
+	if err != nil {
+		return nil, err
+	}
+	versionParam, err := url.PathUnescape(matches[regex.SubexpIndex("key_version")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.GetKeyAttestation(req.Context(), nameParam, versionParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
-// Client contains the methods for the group.
+// Client - The key vault client performs cryptographic key operations and vault operations against the Key Vault service.
 // Don't use this type directly, use a constructor function instead.
 type Client struct {
 	internal     *azcore.Client
@@ -495,7 +495,9 @@ func (client *Client) getKeyHandleResponse(resp *http.Response) (GetKeyResponse,
 //   - options - GetKeyAttestationOptions contains the optional parameters for the Client.GetKeyAttestation method.
 func (client *Client) GetKeyAttestation(ctx context.Context, name string, version string, options *GetKeyAttestationOptions) (GetKeyAttestationResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "Client.GetKeyAttestation", client.internal.Tracer(), nil)
+	const operationName = "Client.GetKeyAttestation"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getKeyAttestationCreateRequest(ctx, name, version, options)
 	if err != nil {

@@ -97,6 +97,17 @@ func getServer() fake.Server {
 			resp.SetResponse(http.StatusOK, kvResp, nil)
 			return
 		},
+		GetKeyAttestation: func(ctx context.Context, name string, version string, options *azkeys.GetKeyAttestationOptions) (resp azfake.Responder[azkeys.GetKeyAttestationResponse], errResp azfake.ErrorResponder) {
+			kvResp := azkeys.GetKeyAttestationResponse{
+				KeyBundle: azkeys.KeyBundle{
+					Key: &azkeys.JSONWebKey{
+						KID: to.Ptr(azkeys.ID(fmt.Sprintf("%s/%s/%s", vault, name, version))),
+					},
+				},
+			}
+			resp.SetResponse(http.StatusOK, kvResp, nil)
+			return
+		},
 		GetKeyRotationPolicy: func(ctx context.Context, name string, options *azkeys.GetKeyRotationPolicyOptions) (resp azfake.Responder[azkeys.GetKeyRotationPolicyResponse], errResp azfake.ErrorResponder) {
 			kvResp := azkeys.GetKeyRotationPolicyResponse{
 				KeyRotationPolicy: azkeys.KeyRotationPolicy{ID: to.Ptr("keyPolicy")},
@@ -359,6 +370,11 @@ func TestServer(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, keyName, getResp.Key.KID.Name())
 	require.Equal(t, keyVersion, getResp.Key.KID.Version())
+
+	getAttestationResp, err := client.GetKeyAttestation(context.Background(), keyName, keyVersion, nil)
+	require.NoError(t, err)
+	require.Equal(t, keyName, getAttestationResp.Key.KID.Name())
+	require.Equal(t, keyVersion, getAttestationResp.Key.KID.Version())
 
 	getPolicyResp, err := client.GetKeyRotationPolicy(context.Background(), keyName, nil)
 	require.NoError(t, err)

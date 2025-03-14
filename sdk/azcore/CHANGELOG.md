@@ -15,6 +15,7 @@
 * Added type `Propagator` to the `tracing` package to support context propagation.
 * Added type `Carrier` to the `tracing` package to support context propagation.
 * Added method `NewPropagator()` to type `tracing.Provider` to support context propagation.
+* Added option `ModuleName` to `runtime.StartSpanOptions` to support custom module names in error type.
 
 ### Breaking Changes
 

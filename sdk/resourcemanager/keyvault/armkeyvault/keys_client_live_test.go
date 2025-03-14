@@ -36,7 +36,7 @@ type KeysClientTestSuite struct {
 func (testsuite *KeysClientTestSuite) SetupSuite() {
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
-	testsuite.location = recording.GetEnvVariable("LOCATION", "eastus")
+	testsuite.location = recording.GetEnvVariable("LOCATION", "eastus2")
 	testsuite.subscriptionID = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 	testsuite.tenantID = recording.GetEnvVariable("AZURE_TENANT_ID", "00000000-0000-0000-0000-000000000000")
 	testsuite.objectID = recording.GetEnvVariable("AZURE_OBJECT_ID", "00000000-0000-0000-0000-000000000000")
@@ -61,7 +61,7 @@ func (testsuite *KeysClientTestSuite) TestKeysCRUD() {
 	fmt.Println("Call operation: Vaults_CreateOrUpdate")
 	vaultsClient, err := armkeyvault.NewVaultsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	vaultName := "go-test-vault-3"
+	vaultName := "go-test-vault-31"
 	vPollerResp, err := vaultsClient.BeginCreateOrUpdate(
 		testsuite.ctx,
 		testsuite.resourceGroupName,

@@ -1,5 +1,12 @@
 # Release History
 
+## 1.5.0 (2025-03-28)
+### Features Added
+
+- New value `ManagedHsmSKUFamilyC` added to enum type `ManagedHsmSKUFamily`
+- New value `ManagedHsmSKUNameCustomC10`, `ManagedHsmSKUNameCustomC42` added to enum type `ManagedHsmSKUName`
+
+
 ## 1.4.0 (2023-11-24)
 ### Features Added
 

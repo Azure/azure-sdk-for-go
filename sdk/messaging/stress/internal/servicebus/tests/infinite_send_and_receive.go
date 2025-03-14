@@ -10,7 +10,7 @@ import (
 	"log"
 	"time"
 
-	"stress/internal/sb/shared"
+	"stress/internal/servicebus/shared"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
 )

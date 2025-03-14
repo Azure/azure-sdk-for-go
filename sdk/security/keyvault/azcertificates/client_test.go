@@ -139,8 +139,8 @@ func TestContactsCRUD(t *testing.T) {
 	client := startTest(t)
 
 	contacts := azcertificates.Contacts{ContactList: []*azcertificates.Contact{
-		{Email: to.Ptr("one@localhost"), Name: to.Ptr("One"), Phone: to.Ptr("1111111111")},
-		{Email: to.Ptr("two@localhost"), Name: to.Ptr("Two"), Phone: to.Ptr("2222222222")},
+		{Email: to.Ptr("one@test.com"), Name: to.Ptr("One"), Phone: to.Ptr("1111111111")},
+		{Email: to.Ptr("two@test.com"), Name: to.Ptr("Two"), Phone: to.Ptr("2222222222")},
 	}}
 	setResp, err := client.SetContacts(ctx, contacts, nil)
 	require.NoError(t, err)
@@ -350,7 +350,7 @@ func TestIssuerCRUD(t *testing.T) {
 				{
 					FirstName: to.Ptr("First"),
 					LastName:  to.Ptr("Last"),
-					Email:     to.Ptr("foo@bar"),
+					Email:     to.Ptr("foo@test.com"),
 					Phone:     to.Ptr("42"),
 				},
 			},

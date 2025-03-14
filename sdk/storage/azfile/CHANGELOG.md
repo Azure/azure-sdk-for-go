@@ -7,7 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
-
+* Fixed return value of DownloadBuffer when the HTTPRange count given is greater than the data length. Fixes [#23884](https://github.com/Azure/azure-sdk-for-go/issues/23884)
 ### Other Changes
 
 ## 1.5.1-beta.1 (2025-02-12)

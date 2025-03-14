@@ -22,7 +22,7 @@ Key links:
 
 ### Prerequisites
 
-- Latest version of Go - [Install Go](https://go.dev/doc/install)
+- [Supported](../../../README.md#go-version-support) version of Go - [Install Go](https://go.dev/doc/install)
 - Azure subscription - [Create a free account](https://azure.microsoft.com/free/)
 - Azure storage account - To create a storage account, use tools including the [Azure portal][storage_account_create_portal],
 [Azure PowerShell][storage_account_create_ps], or the [Azure CLI][storage_account_create_cli].

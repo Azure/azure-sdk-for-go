@@ -9,7 +9,7 @@ The `azopenaiassistants` package can be used with either Azure OpenAI or OpenAI'
 ### Prerequisites
 
 For code fixes that do not require code generation:
-- Latest version of Go
+- [Supported](../../../README.md#go-version-support) version of Go
 
 For code generation:
 - [NodeJS (use the latest LTS)](https://nodejs.org)

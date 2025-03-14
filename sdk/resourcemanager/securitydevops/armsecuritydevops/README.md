@@ -9,7 +9,7 @@ The `armsecuritydevops` module provides operations for working with Azure Securi
 ## Prerequisites
 
 - an [Azure subscription](https://azure.microsoft.com/free/)
-- Latest version of Go
+- [Supported](../../../../README.md#go-version-support) version of Go
 
 ## Install the package
 

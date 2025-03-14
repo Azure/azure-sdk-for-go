@@ -14,6 +14,7 @@ This repository is for active development of the Azure SDK for Go. For consumers
 
 To get started with a module, see the README.md file located in the module's project folder.  You can find these module folders grouped by service in the `/sdk` directory.
 
+<a id="go-version-support"></a>
 > [!IMPORTANT]
 > Our libraries are compatible with the two most recent major Go releases, the same [policy](https://go.dev/doc/devel/release#policy) the Go programming language follows.
 

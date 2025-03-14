@@ -16,7 +16,7 @@ Use this module to:
 
 ### Prerequisites
 
-* Latest version of Go  - [Install Go](https://go.dev/doc/install)
+* [Supported](../../../README.md#go-version-support) version of Go  - [Install Go](https://go.dev/doc/install)
 * [Azure subscription][azure_sub]
 * [Azure OpenAI access][azure_openai_access]
 

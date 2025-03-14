@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8691fbfca8fcdc5a241a0b501c32fd4a76bb0cd/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/VerifiedPartners_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/VerifiedPartners_Get.json
 func ExampleVerifiedPartnersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,11 +41,6 @@ func ExampleVerifiedPartnersClient_Get() {
 	// 	ID: to.Ptr("/providers/Microsoft.EventGrid/verifiedPartners/Contoso.Finance"),
 	// 	Properties: &armeventgrid.VerifiedPartnerProperties{
 	// 		OrganizationName: to.Ptr("Contoso"),
-	// 		PartnerDestinationDetails: &armeventgrid.PartnerDetails{
-	// 			Description: to.Ptr("This is custom description"),
-	// 			LongDescription: to.Ptr("This is long custom description"),
-	// 			SetupURI: to.Ptr("https://www.example.com/"),
-	// 		},
 	// 		PartnerDisplayName: to.Ptr("Contoso - Finance Department"),
 	// 		PartnerRegistrationImmutableID: to.Ptr("941892bc-f5d0-4d1c-8fb5-477570fc2b71"),
 	// 		PartnerTopicDetails: &armeventgrid.PartnerDetails{
@@ -57,7 +52,7 @@ func ExampleVerifiedPartnersClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8691fbfca8fcdc5a241a0b501c32fd4a76bb0cd/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/VerifiedPartners_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/VerifiedPartners_List.json
 func ExampleVerifiedPartnersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,11 +84,6 @@ func ExampleVerifiedPartnersClient_NewListPager() {
 		// 			ID: to.Ptr("/providers/Microsoft.EventGrid/verifiedPartners/Contoso.Finance"),
 		// 			Properties: &armeventgrid.VerifiedPartnerProperties{
 		// 				OrganizationName: to.Ptr("Contoso"),
-		// 				PartnerDestinationDetails: &armeventgrid.PartnerDetails{
-		// 					Description: to.Ptr("This is custom description"),
-		// 					LongDescription: to.Ptr("This is long custom description"),
-		// 					SetupURI: to.Ptr("https://www.example.com/"),
-		// 				},
 		// 				PartnerDisplayName: to.Ptr("Contoso - Finance Department"),
 		// 				PartnerRegistrationImmutableID: to.Ptr("941892bc-f5d0-4d1c-8fb5-477570fc2b71"),
 		// 				PartnerTopicDetails: &armeventgrid.PartnerDetails{

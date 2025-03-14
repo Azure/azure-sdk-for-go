@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package azcosmos
 
 import (
@@ -60,7 +63,10 @@ func createTestItems(t *testing.T, database *DatabaseClient) (*ContainerClient, 
 			if err != nil {
 				return nil, err
 			}
-			container.UpsertItem(context.TODO(), NewPartitionKeyString(item.PartitionKey), serializedItem, nil)
+			_, err = container.UpsertItem(context.TODO(), NewPartitionKeyString(item.PartitionKey), serializedItem, nil)
+			if err != nil {
+				return nil, err
+			}
 		}
 	}
 
@@ -106,7 +112,7 @@ func TestQueryViaQueryEngine(t *testing.T) {
 			}
 
 			expectedPartitionId = (expectedPartitionId + 1) % partitionCount
-			expectedMergeOrder = expectedMergeOrder + 1
+			expectedMergeOrder++
 		}
 	}
 

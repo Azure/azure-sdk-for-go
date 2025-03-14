@@ -332,7 +332,7 @@ func (client *Client) deleteContactsHandleResponse(resp *http.Response) (DeleteC
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 7.6-preview.2
-//   - issuerName - The name of the issuer.
+//   - name - The name of the issuer.
 //   - options - DeleteIssuerOptions contains the optional parameters for the Client.DeleteIssuer method.
 func (client *Client) DeleteIssuer(ctx context.Context, name string, options *DeleteIssuerOptions) (DeleteIssuerResponse, error) {
 	var err error
@@ -689,7 +689,7 @@ func (client *Client) getDeletedCertificateHandleResponse(resp *http.Response) (
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 7.6-preview.2
-//   - issuerName - The name of the issuer.
+//   - name - The name of the issuer.
 //   - options - GetIssuerOptions contains the optional parameters for the Client.GetIssuer method.
 func (client *Client) GetIssuer(ctx context.Context, name string, options *GetIssuerOptions) (GetIssuerResponse, error) {
 	var err error
@@ -1347,8 +1347,8 @@ func (client *Client) setContactsHandleResponse(resp *http.Response) (SetContact
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 7.6-preview.2
-//   - issuerName - The name of the issuer. The value you provide may be copied globally for the purpose of running the service.
-//     The value provided should not include personally identifiable or sensitive information.
+//   - name - The name of the issuer. The value you provide may be copied globally for the purpose of running the service. The
+//     value provided should not include personally identifiable or sensitive information.
 //   - parameter - Certificate issuer set parameter.
 //   - options - SetIssuerOptions contains the optional parameters for the Client.SetIssuer method.
 func (client *Client) SetIssuer(ctx context.Context, name string, parameter SetIssuerParameters, options *SetIssuerOptions) (SetIssuerResponse, error) {
@@ -1610,7 +1610,7 @@ func (client *Client) updateCertificatePolicyHandleResponse(resp *http.Response)
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 7.6-preview.2
-//   - issuerName - The name of the issuer.
+//   - name - The name of the issuer.
 //   - parameter - Certificate issuer update parameter.
 //   - options - UpdateIssuerOptions contains the optional parameters for the Client.UpdateIssuer method.
 func (client *Client) UpdateIssuer(ctx context.Context, name string, parameter UpdateIssuerParameters, options *UpdateIssuerOptions) (UpdateIssuerResponse, error) {

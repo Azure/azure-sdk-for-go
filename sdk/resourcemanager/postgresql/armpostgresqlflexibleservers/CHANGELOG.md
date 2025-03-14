@@ -1,5 +1,46 @@
 # Release History
 
+## 4.1.0-beta.1 (2025-03-14)
+### Features Added
+
+- New value `IdentityTypeSystemAssignedUserAssigned` added to enum type `IdentityType`
+- New value `ServerVersionSeventeen` added to enum type `ServerVersion`
+- New value `SourceTypeApsaraDBRDS`, `SourceTypeCrunchyPostgreSQL`, `SourceTypeDigitalOceanDroplets`, `SourceTypeDigitalOceanPostgreSQL`, `SourceTypeEDBOracleServer`, `SourceTypeEDBPostgreSQL`, `SourceTypeHerokuPostgreSQL`, `SourceTypeHuaweiCompute`, `SourceTypeHuaweiRDS`, `SourceTypePostgreSQLCosmosDB`, `SourceTypePostgreSQLFlexibleServer`, `SourceTypeSupabasePostgreSQL` added to enum type `SourceType`
+- New value `StorageTypeUltraSSDLRS` added to enum type `StorageType`
+- New enum type `RecommendationType` with values `RecommendationTypeCreateIndex`, `RecommendationTypeDropIndex`
+- New enum type `RecommendationTypeEnum` with values `RecommendationTypeEnumCreateIndex`, `RecommendationTypeEnumDropIndex`
+- New enum type `SupportedFeatureStatusEnum` with values `SupportedFeatureStatusEnumDisabled`, `SupportedFeatureStatusEnumEnabled`
+- New enum type `TuningOptionEnum` with values `TuningOptionEnumIndex`
+- New function `*ClientFactory.NewQuotaUsagesClient() *QuotaUsagesClient`
+- New function `*ClientFactory.NewTuningOptionsClient() *TuningOptionsClient`
+- New function `NewQuotaUsagesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*QuotaUsagesClient, error)`
+- New function `*QuotaUsagesClient.NewListPager(string, *QuotaUsagesClientListOptions) *runtime.Pager[QuotaUsagesClientListResponse]`
+- New function `NewTuningOptionsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*TuningOptionsClient, error)`
+- New function `*TuningOptionsClient.Get(context.Context, string, string, TuningOptionEnum, *TuningOptionsClientGetOptions) (TuningOptionsClientGetResponse, error)`
+- New function `*TuningOptionsClient.NewListByServerPager(string, string, *TuningOptionsClientListByServerOptions) *runtime.Pager[TuningOptionsClientListByServerResponse]`
+- New function `*TuningOptionsClient.NewListRecommendationsPager(string, string, TuningOptionEnum, *TuningOptionsClientListRecommendationsOptions) *runtime.Pager[TuningOptionsClientListRecommendationsResponse]`
+- New struct `Cluster`
+- New struct `ImpactRecord`
+- New struct `IndexRecommendationDetails`
+- New struct `IndexRecommendationListResult`
+- New struct `IndexRecommendationResource`
+- New struct `IndexRecommendationResourceProperties`
+- New struct `IndexRecommendationResourcePropertiesAnalyzedWorkload`
+- New struct `IndexRecommendationResourcePropertiesImplementationDetails`
+- New struct `NameProperty`
+- New struct `QuotaUsage`
+- New struct `QuotaUsagesListResult`
+- New struct `SupportedFeature`
+- New struct `TuningOptionsListResult`
+- New struct `TuningOptionsResource`
+- New field `SupportedFeatures` in struct `FlexibleServerCapability`
+- New field `Cluster` in struct `ServerProperties`
+- New field `Cluster` in struct `ServerPropertiesForUpdate`
+- New field `SecurityProfile`, `SupportedFeatures` in struct `ServerSKUCapability`
+- New field `SupportedFeatures` in struct `ServerVersionCapability`
+- New field `PrincipalID` in struct `UserAssignedIdentity`
+
+
 ## 4.0.0 (2025-01-04)
 ### Breaking Changes
 

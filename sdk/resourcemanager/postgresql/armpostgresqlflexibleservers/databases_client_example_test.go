@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10925e3dec73699b950f256576cd6983947faaa3/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/DatabaseCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b0014d135f949a3db605b0b0999206f077acedd1/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2024-11-01-preview/examples/DatabaseCreate.json
 func ExampleDatabasesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,7 +56,7 @@ func ExampleDatabasesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10925e3dec73699b950f256576cd6983947faaa3/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/DatabaseDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b0014d135f949a3db605b0b0999206f077acedd1/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2024-11-01-preview/examples/DatabaseDelete.json
 func ExampleDatabasesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExampleDatabasesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10925e3dec73699b950f256576cd6983947faaa3/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/DatabaseGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b0014d135f949a3db605b0b0999206f077acedd1/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2024-11-01-preview/examples/DatabaseGet.json
 func ExampleDatabasesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,7 +106,7 @@ func ExampleDatabasesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10925e3dec73699b950f256576cd6983947faaa3/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/DatabasesListByServer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b0014d135f949a3db605b0b0999206f077acedd1/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2024-11-01-preview/examples/DatabasesListByServer.json
 func ExampleDatabasesClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

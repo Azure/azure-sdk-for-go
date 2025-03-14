@@ -182,6 +182,13 @@ func TestStartSpan(t *testing.T) {
 	require.Contains(t, errStr, "*azcore.ResponseError")
 	require.Contains(t, errStr, "ERROR CODE: ErrorItFailed")
 	require.Contains(t, spanAttrs, tracing.Attribute{Key: attrErrType, Value: "*azcore.ResponseError"})
+
+	// with custom module name
+	_, end = StartSpan(context.Background(), "TestStartSpan", tr, &StartSpanOptions{
+		ModuleName: "custommodule"})
+	end(exported.NewResponseError(resp))
+	require.Contains(t, spanAttrs, tracing.Attribute{Key: attrErrType, Value: "*custommodule.ResponseError"})
+
 }
 
 func TestStartSpansDontNest(t *testing.T) {

@@ -2,7 +2,7 @@
 
 These are the stress/reliability tests for the [`azservicebus`](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/messaging/azservicebus) package.
 
-The entrypoint for the tests is [`stress.go`](./stress.go). All of the individual tests are in the `tests` sub-folder. These tests should run fine on your local machine - you'll need to create an `.env` file with the following values:
+The entrypoint for the tests is [`main.go`](./main.go). All of the individual tests are in the `tests` sub-folder. These tests should run fine on your local machine - you'll need to create an `.env` file with the following values:
 
 ```bash
 SERVICEBUS_ENDPOINT=<hostname of the Service Bus namespace (ex: <name>.servicebus.windows.net)>

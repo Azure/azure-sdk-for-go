@@ -5,6 +5,7 @@ package shared
 
 import (
 	"context"
+	"errors"
 	"log"
 	"time"
 
@@ -63,7 +64,7 @@ func (sb *StreamingMessageBatch) Add(ctx context.Context, msg *azservicebus.Mess
 		return nil
 	}
 
-	if err != azservicebus.ErrMessageTooLarge {
+	if !errors.Is(err, azservicebus.ErrMessageTooLarge) {
 		// must be a fatal error, just give up.
 		return err
 	}

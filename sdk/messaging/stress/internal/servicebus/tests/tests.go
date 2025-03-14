@@ -49,7 +49,7 @@ func Run(remainingArgs []string) {
 	}
 
 	if len(remainingArgs) == 0 {
-		fmt.Printf("Missing test name\n")
+		fmt.Fprintln(os.Stderr, "Missing test name")
 		printUsageAndQuit(allTests)
 	}
 

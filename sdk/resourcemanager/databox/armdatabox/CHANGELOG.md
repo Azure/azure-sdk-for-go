@@ -1,5 +1,35 @@
 # Release History
 
+## 2.2.0 (2025-03-27)
+### Features Added
+
+- New value `DataCenterCodeAMS25`, `DataCenterCodeBL24`, `DataCenterCodeCPQ21`, `DataCenterCodeDSM11`, `DataCenterCodeDXB23`, `DataCenterCodeIDC5`, `DataCenterCodeNTG20`, `DataCenterCodeOSA23`, `DataCenterCodeTYO23` added to enum type `DataCenterCode`
+- New enum type `DelayNotificationStatus` with values `DelayNotificationStatusActive`, `DelayNotificationStatusResolved`
+- New enum type `ModelName` with values `ModelNameAzureDataBox120`, `ModelNameAzureDataBox525`, `ModelNameDataBox`, `ModelNameDataBoxCustomerDisk`, `ModelNameDataBoxDisk`, `ModelNameDataBoxHeavy`
+- New enum type `PortalDelayErrorCode` with values `PortalDelayErrorCodeActiveOrderLimitBreachedDelay`, `PortalDelayErrorCodeHighDemandDelay`, `PortalDelayErrorCodeInternalIssueDelay`, `PortalDelayErrorCodeLargeNumberOfFilesDelay`
+- New struct `DeviceCapabilityDetails`
+- New struct `DeviceCapabilityRequest`
+- New struct `DeviceCapabilityResponse`
+- New struct `JobDelayDetails`
+- New field `Model` in struct `CommonScheduleAvailabilityRequest`
+- New field `Model` in struct `CreateOrderLimitForSubscriptionValidationRequest`
+- New field `Model` in struct `DataTransferDetailsValidationRequest`
+- New field `Model` in struct `DatacenterAddressRequest`
+- New field `Model` in struct `DiskScheduleAvailabilityRequest`
+- New field `Model` in struct `HeavyScheduleAvailabilityRequest`
+- New field `AllDevicesLost`, `DelayedStage` in struct `JobProperties`
+- New field `DelayInformation` in struct `JobStages`
+- New field `Model` in struct `PreferencesValidationRequest`
+- New field `DeviceCapabilityRequest` in struct `RegionConfigurationRequest`
+- New field `DeviceCapabilityResponse` in struct `RegionConfigurationResponse`
+- New field `Model` in struct `SKU`
+- New field `Model` in struct `SKUAvailabilityValidationRequest`
+- New field `IndividualSKUUsable` in struct `SKUCapacity`
+- New field `Model` in struct `ScheduleAvailabilityRequest`
+- New field `Model` in struct `TransportAvailabilityRequest`
+- New field `Model` in struct `ValidateAddress`
+
+
 ## 2.1.0 (2023-11-24)
 ### Features Added
 

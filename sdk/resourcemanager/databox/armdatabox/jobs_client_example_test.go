@@ -20,7 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cecf11996f2bfc7958f6d0de814badab23f9720/specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsList.json
 func ExampleJobsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,6 +51,7 @@ func ExampleJobsClient_NewListPager() {
 		// 			Location: to.Ptr("australiaeast"),
 		// 			SKU: &armdatabox.SKU{
 		// 				Name: to.Ptr(armdatabox.SKUNameDataBoxDisk),
+		// 				Model: to.Ptr(armdatabox.ModelNameDataBoxDisk),
 		// 			},
 		// 			Tags: map[string]*string{
 		// 			},
@@ -80,6 +81,7 @@ func ExampleJobsClient_NewListPager() {
 		// 			Location: to.Ptr("australiaeast"),
 		// 			SKU: &armdatabox.SKU{
 		// 				Name: to.Ptr(armdatabox.SKUNameDataBoxDisk),
+		// 				Model: to.Ptr(armdatabox.ModelNameDataBoxDisk),
 		// 			},
 		// 			Tags: map[string]*string{
 		// 			},
@@ -106,7 +108,7 @@ func ExampleJobsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/MarkDevicesShipped.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cecf11996f2bfc7958f6d0de814badab23f9720/specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/MarkDevicesShipped.json
 func ExampleJobsClient_MarkDevicesShipped() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -128,7 +130,7 @@ func ExampleJobsClient_MarkDevicesShipped() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cecf11996f2bfc7958f6d0de814badab23f9720/specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsListByResourceGroup.json
 func ExampleJobsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -161,6 +163,7 @@ func ExampleJobsClient_NewListByResourceGroupPager() {
 		// 			Location: to.Ptr("westus"),
 		// 			SKU: &armdatabox.SKU{
 		// 				Name: to.Ptr(armdatabox.SKUNameDataBox),
+		// 				Model: to.Ptr(armdatabox.ModelNameDataBox),
 		// 			},
 		// 			Tags: map[string]*string{
 		// 			},
@@ -189,6 +192,7 @@ func ExampleJobsClient_NewListByResourceGroupPager() {
 		// 			Location: to.Ptr("westus"),
 		// 			SKU: &armdatabox.SKU{
 		// 				Name: to.Ptr(armdatabox.SKUNameDataBox),
+		// 				Model: to.Ptr(armdatabox.ModelNameDataBox),
 		// 			},
 		// 			Tags: map[string]*string{
 		// 			},
@@ -214,7 +218,7 @@ func ExampleJobsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cecf11996f2bfc7958f6d0de814badab23f9720/specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsGet.json
 func ExampleJobsClient_Get_jobsGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -239,6 +243,7 @@ func ExampleJobsClient_Get_jobsGet() {
 	// 	Location: to.Ptr("westus"),
 	// 	SKU: &armdatabox.SKU{
 	// 		Name: to.Ptr(armdatabox.SKUNameDataBox),
+	// 		Model: to.Ptr(armdatabox.ModelNameDataBox),
 	// 	},
 	// 	Tags: map[string]*string{
 	// 	},
@@ -246,6 +251,8 @@ func ExampleJobsClient_Get_jobsGet() {
 	// 	Type: to.Ptr("Microsoft.DataBox/jobs"),
 	// 	ID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.DataBox/jobs/TestJobName1"),
 	// 	Properties: &armdatabox.JobProperties{
+	// 		AllDevicesLost: to.Ptr(false),
+	// 		CancellationReason: to.Ptr("Issue reported by you. All device/s lost."),
 	// 		DeliveryInfo: &armdatabox.JobDeliveryInfo{
 	// 			ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1-01-01T00:00:00.000Z"); return t}()),
 	// 		},
@@ -316,17 +323,20 @@ func ExampleJobsClient_Get_jobsGet() {
 	// 					{
 	// 						DisplayName: to.Ptr("Processed"),
 	// 						StageName: to.Ptr(armdatabox.StageNameDevicePrepared),
-	// 						StageStatus: to.Ptr(armdatabox.StageStatusNone),
+	// 						StageStatus: to.Ptr(armdatabox.StageStatusSucceeded),
+	// 						StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-07T07:20:40.187Z"); return t}()),
 	// 					},
 	// 					{
 	// 						DisplayName: to.Ptr("Dispatched"),
 	// 						StageName: to.Ptr(armdatabox.StageNameDispatched),
-	// 						StageStatus: to.Ptr(armdatabox.StageStatusNone),
+	// 						StageStatus: to.Ptr(armdatabox.StageStatusSucceeded),
+	// 						StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-08T05:20:40.187Z"); return t}()),
 	// 					},
 	// 					{
 	// 						DisplayName: to.Ptr("Delivered"),
 	// 						StageName: to.Ptr(armdatabox.StageNameDelivered),
-	// 						StageStatus: to.Ptr(armdatabox.StageStatusNone),
+	// 						StageStatus: to.Ptr(armdatabox.StageStatusSucceeded),
+	// 						StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-09T05:20:40.187Z"); return t}()),
 	// 					},
 	// 					{
 	// 						DisplayName: to.Ptr("Picked up"),
@@ -374,7 +384,7 @@ func ExampleJobsClient_Get_jobsGet() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsGetCmk.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cecf11996f2bfc7958f6d0de814badab23f9720/specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsGetCmk.json
 func ExampleJobsClient_Get_jobsGetCmk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -401,6 +411,7 @@ func ExampleJobsClient_Get_jobsGetCmk() {
 	// 	Location: to.Ptr("westus"),
 	// 	SKU: &armdatabox.SKU{
 	// 		Name: to.Ptr(armdatabox.SKUNameDataBox),
+	// 		Model: to.Ptr(armdatabox.ModelNameDataBox),
 	// 	},
 	// 	Tags: map[string]*string{
 	// 	},
@@ -538,7 +549,7 @@ func ExampleJobsClient_Get_jobsGetCmk() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsGetCopyStuck.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cecf11996f2bfc7958f6d0de814badab23f9720/specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsGetCopyStuck.json
 func ExampleJobsClient_Get_jobsGetCopyStuck() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -563,6 +574,7 @@ func ExampleJobsClient_Get_jobsGetCopyStuck() {
 	// 	Location: to.Ptr("westus"),
 	// 	SKU: &armdatabox.SKU{
 	// 		Name: to.Ptr(armdatabox.SKUNameDataBox),
+	// 		Model: to.Ptr(armdatabox.ModelNameDataBox),
 	// 	},
 	// 	Tags: map[string]*string{
 	// 		"defaultTagsKey": to.Ptr("defaultTagsValue"),
@@ -732,7 +744,7 @@ func ExampleJobsClient_Get_jobsGetCopyStuck() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsGetExport.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cecf11996f2bfc7958f6d0de814badab23f9720/specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsGetExport.json
 func ExampleJobsClient_Get_jobsGetExport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -757,6 +769,7 @@ func ExampleJobsClient_Get_jobsGetExport() {
 	// 	Location: to.Ptr("westus"),
 	// 	SKU: &armdatabox.SKU{
 	// 		Name: to.Ptr(armdatabox.SKUNameDataBox),
+	// 		Model: to.Ptr(armdatabox.ModelNameDataBox),
 	// 	},
 	// 	Tags: map[string]*string{
 	// 	},
@@ -865,7 +878,7 @@ func ExampleJobsClient_Get_jobsGetExport() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsGetWaitingForAction.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cecf11996f2bfc7958f6d0de814badab23f9720/specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsGetWaitingForAction.json
 func ExampleJobsClient_Get_jobsGetWaitingForAction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -890,6 +903,7 @@ func ExampleJobsClient_Get_jobsGetWaitingForAction() {
 	// 	Location: to.Ptr("westus"),
 	// 	SKU: &armdatabox.SKU{
 	// 		Name: to.Ptr(armdatabox.SKUNameDataBox),
+	// 		Model: to.Ptr(armdatabox.ModelNameDataBox),
 	// 	},
 	// 	Tags: map[string]*string{
 	// 		"defaultTagsKey": to.Ptr("defaultTagsValue"),
@@ -1099,7 +1113,7 @@ func ExampleJobsClient_Get_jobsGetWaitingForAction() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cecf11996f2bfc7958f6d0de814badab23f9720/specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsCreate.json
 func ExampleJobsClient_BeginCreate_jobsCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1113,7 +1127,8 @@ func ExampleJobsClient_BeginCreate_jobsCreate() {
 	poller, err := clientFactory.NewJobsClient().BeginCreate(ctx, "YourResourceGroupName", "TestJobName1", armdatabox.JobResource{
 		Location: to.Ptr("westus"),
 		SKU: &armdatabox.SKU{
-			Name: to.Ptr(armdatabox.SKUNameDataBox),
+			Name:  to.Ptr(armdatabox.SKUNameDataBox),
+			Model: to.Ptr(armdatabox.ModelNameDataBox),
 		},
 		Properties: &armdatabox.JobProperties{
 			TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
@@ -1160,6 +1175,7 @@ func ExampleJobsClient_BeginCreate_jobsCreate() {
 	// 	Location: to.Ptr("westus"),
 	// 	SKU: &armdatabox.SKU{
 	// 		Name: to.Ptr(armdatabox.SKUNameDataBox),
+	// 		Model: to.Ptr(armdatabox.ModelNameDataBox),
 	// 	},
 	// 	Tags: map[string]*string{
 	// 	},
@@ -1273,7 +1289,7 @@ func ExampleJobsClient_BeginCreate_jobsCreate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsCreateDevicePassword.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cecf11996f2bfc7958f6d0de814badab23f9720/specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsCreateDevicePassword.json
 func ExampleJobsClient_BeginCreate_jobsCreateDevicePassword() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1287,7 +1303,8 @@ func ExampleJobsClient_BeginCreate_jobsCreateDevicePassword() {
 	poller, err := clientFactory.NewJobsClient().BeginCreate(ctx, "YourResourceGroupName", "TestJobName1", armdatabox.JobResource{
 		Location: to.Ptr("westus"),
 		SKU: &armdatabox.SKU{
-			Name: to.Ptr(armdatabox.SKUNameDataBox),
+			Name:  to.Ptr(armdatabox.SKUNameDataBox),
+			Model: to.Ptr(armdatabox.ModelNameDataBox),
 		},
 		Properties: &armdatabox.JobProperties{
 			TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
@@ -1336,6 +1353,7 @@ func ExampleJobsClient_BeginCreate_jobsCreateDevicePassword() {
 	// 	Location: to.Ptr("westus"),
 	// 	SKU: &armdatabox.SKU{
 	// 		Name: to.Ptr(armdatabox.SKUNameDataBox),
+	// 		Model: to.Ptr(armdatabox.ModelNameDataBox),
 	// 	},
 	// 	Tags: map[string]*string{
 	// 	},
@@ -1449,7 +1467,7 @@ func ExampleJobsClient_BeginCreate_jobsCreateDevicePassword() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsCreateDoubleEncryption.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cecf11996f2bfc7958f6d0de814badab23f9720/specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsCreateDoubleEncryption.json
 func ExampleJobsClient_BeginCreate_jobsCreateDoubleEncryption() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1463,7 +1481,8 @@ func ExampleJobsClient_BeginCreate_jobsCreateDoubleEncryption() {
 	poller, err := clientFactory.NewJobsClient().BeginCreate(ctx, "YourResourceGroupName", "TestJobName1", armdatabox.JobResource{
 		Location: to.Ptr("westus"),
 		SKU: &armdatabox.SKU{
-			Name: to.Ptr(armdatabox.SKUNameDataBox),
+			Name:  to.Ptr(armdatabox.SKUNameDataBox),
+			Model: to.Ptr(armdatabox.ModelNameDataBox),
 		},
 		Properties: &armdatabox.JobProperties{
 			TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
@@ -1515,6 +1534,7 @@ func ExampleJobsClient_BeginCreate_jobsCreateDoubleEncryption() {
 	// 	Location: to.Ptr("westus"),
 	// 	SKU: &armdatabox.SKU{
 	// 		Name: to.Ptr(armdatabox.SKUNameDataBox),
+	// 		Model: to.Ptr(armdatabox.ModelNameDataBox),
 	// 	},
 	// 	Tags: map[string]*string{
 	// 	},
@@ -1628,7 +1648,7 @@ func ExampleJobsClient_BeginCreate_jobsCreateDoubleEncryption() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsCreateExport.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cecf11996f2bfc7958f6d0de814badab23f9720/specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsCreateExport.json
 func ExampleJobsClient_BeginCreate_jobsCreateExport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1642,7 +1662,8 @@ func ExampleJobsClient_BeginCreate_jobsCreateExport() {
 	poller, err := clientFactory.NewJobsClient().BeginCreate(ctx, "YourResourceGroupName", "TestJobName1", armdatabox.JobResource{
 		Location: to.Ptr("westus"),
 		SKU: &armdatabox.SKU{
-			Name: to.Ptr(armdatabox.SKUNameDataBox),
+			Name:  to.Ptr(armdatabox.SKUNameDataBox),
+			Model: to.Ptr(armdatabox.ModelNameDataBox),
 		},
 		Properties: &armdatabox.JobProperties{
 			TransferType: to.Ptr(armdatabox.TransferTypeExportFromAzure),
@@ -1699,6 +1720,7 @@ func ExampleJobsClient_BeginCreate_jobsCreateExport() {
 	// 	Location: to.Ptr("westus"),
 	// 	SKU: &armdatabox.SKU{
 	// 		Name: to.Ptr(armdatabox.SKUNameDataBox),
+	// 		Model: to.Ptr(armdatabox.ModelNameDataBox),
 	// 	},
 	// 	Tags: map[string]*string{
 	// 	},
@@ -1812,7 +1834,7 @@ func ExampleJobsClient_BeginCreate_jobsCreateExport() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsCreateWithUserAssignedIdentity.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cecf11996f2bfc7958f6d0de814badab23f9720/specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsCreateWithUserAssignedIdentity.json
 func ExampleJobsClient_BeginCreate_jobsCreateWithUserAssignedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1832,7 +1854,8 @@ func ExampleJobsClient_BeginCreate_jobsCreateWithUserAssignedIdentity() {
 		},
 		Location: to.Ptr("westus"),
 		SKU: &armdatabox.SKU{
-			Name: to.Ptr(armdatabox.SKUNameDataBox),
+			Name:  to.Ptr(armdatabox.SKUNameDataBox),
+			Model: to.Ptr(armdatabox.ModelNameDataBox),
 		},
 		Properties: &armdatabox.JobProperties{
 			TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
@@ -1879,6 +1902,7 @@ func ExampleJobsClient_BeginCreate_jobsCreateWithUserAssignedIdentity() {
 	// 	Location: to.Ptr("westus"),
 	// 	SKU: &armdatabox.SKU{
 	// 		Name: to.Ptr(armdatabox.SKUNameDataBox),
+	// 		Model: to.Ptr(armdatabox.ModelNameDataBox),
 	// 	},
 	// 	Tags: map[string]*string{
 	// 	},
@@ -1992,7 +2016,7 @@ func ExampleJobsClient_BeginCreate_jobsCreateWithUserAssignedIdentity() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cecf11996f2bfc7958f6d0de814badab23f9720/specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsDelete.json
 func ExampleJobsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2013,7 +2037,7 @@ func ExampleJobsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsPatch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cecf11996f2bfc7958f6d0de814badab23f9720/specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsPatch.json
 func ExampleJobsClient_BeginUpdate_jobsPatch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2061,6 +2085,7 @@ func ExampleJobsClient_BeginUpdate_jobsPatch() {
 	// 	Location: to.Ptr("westus"),
 	// 	SKU: &armdatabox.SKU{
 	// 		Name: to.Ptr(armdatabox.SKUNameDataBox),
+	// 		Model: to.Ptr(armdatabox.ModelNameDataBox),
 	// 	},
 	// 	Tags: map[string]*string{
 	// 	},
@@ -2077,7 +2102,7 @@ func ExampleJobsClient_BeginUpdate_jobsPatch() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsPatchCmk.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cecf11996f2bfc7958f6d0de814badab23f9720/specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsPatchCmk.json
 func ExampleJobsClient_BeginUpdate_jobsPatchCmk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2113,6 +2138,7 @@ func ExampleJobsClient_BeginUpdate_jobsPatchCmk() {
 	// 	Location: to.Ptr("westus"),
 	// 	SKU: &armdatabox.SKU{
 	// 		Name: to.Ptr(armdatabox.SKUNameDataBox),
+	// 		Model: to.Ptr(armdatabox.ModelNameDataBox),
 	// 	},
 	// 	Tags: map[string]*string{
 	// 	},
@@ -2129,7 +2155,7 @@ func ExampleJobsClient_BeginUpdate_jobsPatchCmk() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsPatchSystemAssignedToUserAssigned.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cecf11996f2bfc7958f6d0de814badab23f9720/specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsPatchSystemAssignedToUserAssigned.json
 func ExampleJobsClient_BeginUpdate_jobsPatchSystemAssignedToUserAssigned() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2177,6 +2203,7 @@ func ExampleJobsClient_BeginUpdate_jobsPatchSystemAssignedToUserAssigned() {
 	// 	Location: to.Ptr("westus"),
 	// 	SKU: &armdatabox.SKU{
 	// 		Name: to.Ptr(armdatabox.SKUNameDataBox),
+	// 		Model: to.Ptr(armdatabox.ModelNameDataBox),
 	// 	},
 	// 	Tags: map[string]*string{
 	// 	},
@@ -2193,7 +2220,7 @@ func ExampleJobsClient_BeginUpdate_jobsPatchSystemAssignedToUserAssigned() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/BookShipmentPickupPost.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cecf11996f2bfc7958f6d0de814badab23f9720/specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/BookShipmentPickupPost.json
 func ExampleJobsClient_BookShipmentPickUp() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2221,7 +2248,7 @@ func ExampleJobsClient_BookShipmentPickUp() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsCancelPost.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cecf11996f2bfc7958f6d0de814badab23f9720/specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsCancelPost.json
 func ExampleJobsClient_Cancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2240,7 +2267,7 @@ func ExampleJobsClient_Cancel() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsListCredentials.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cecf11996f2bfc7958f6d0de814badab23f9720/specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsListCredentials.json
 func ExampleJobsClient_NewListCredentialsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/AvailableSkusPost.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cecf11996f2bfc7958f6d0de814badab23f9720/specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/AvailableSkusPost.json
 func ExampleServiceClient_NewListAvailableSKUsByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,6 +52,7 @@ func ExampleServiceClient_NewListAvailableSKUsByResourceGroupPager() {
 		// 				APIVersions: []*string{
 		// 					to.Ptr("2018-01-01")},
 		// 					Capacity: &armdatabox.SKUCapacity{
+		// 						IndividualSKUUsable: to.Ptr("80"),
 		// 						Maximum: to.Ptr("100"),
 		// 						Usable: to.Ptr("80"),
 		// 					},
@@ -123,6 +124,7 @@ func ExampleServiceClient_NewListAvailableSKUsByResourceGroupPager() {
 		// 					},
 		// 					SKU: &armdatabox.SKU{
 		// 						Name: to.Ptr(armdatabox.SKUNameDataBox),
+		// 						Model: to.Ptr(armdatabox.ModelNameDataBox),
 		// 					},
 		// 				},
 		// 				{
@@ -131,6 +133,7 @@ func ExampleServiceClient_NewListAvailableSKUsByResourceGroupPager() {
 		// 						APIVersions: []*string{
 		// 							to.Ptr("2018-01-01")},
 		// 							Capacity: &armdatabox.SKUCapacity{
+		// 								IndividualSKUUsable: to.Ptr("7"),
 		// 								Maximum: to.Ptr("40"),
 		// 								Usable: to.Ptr("35"),
 		// 							},
@@ -202,6 +205,7 @@ func ExampleServiceClient_NewListAvailableSKUsByResourceGroupPager() {
 		// 							},
 		// 							SKU: &armdatabox.SKU{
 		// 								Name: to.Ptr(armdatabox.SKUNameDataBoxDisk),
+		// 								Model: to.Ptr(armdatabox.ModelNameDataBoxDisk),
 		// 							},
 		// 						},
 		// 						{
@@ -210,6 +214,7 @@ func ExampleServiceClient_NewListAvailableSKUsByResourceGroupPager() {
 		// 								APIVersions: []*string{
 		// 									to.Ptr("2018-01-01")},
 		// 									Capacity: &armdatabox.SKUCapacity{
+		// 										IndividualSKUUsable: to.Ptr("800"),
 		// 										Maximum: to.Ptr("1000"),
 		// 										Usable: to.Ptr("800"),
 		// 									},
@@ -282,13 +287,14 @@ func ExampleServiceClient_NewListAvailableSKUsByResourceGroupPager() {
 		// 									},
 		// 									SKU: &armdatabox.SKU{
 		// 										Name: to.Ptr(armdatabox.SKUNameDataBoxHeavy),
+		// 										Model: to.Ptr(armdatabox.ModelNameDataBoxHeavy),
 		// 									},
 		// 							}},
 		// 						}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/ValidateAddressPost.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cecf11996f2bfc7958f6d0de814badab23f9720/specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/ValidateAddressPost.json
 func ExampleServiceClient_ValidateAddress() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -302,6 +308,7 @@ func ExampleServiceClient_ValidateAddress() {
 	res, err := clientFactory.NewServiceClient().ValidateAddress(ctx, "westus", armdatabox.ValidateAddress{
 		ValidationType: to.Ptr(armdatabox.ValidationInputDiscriminatorValidateAddress),
 		DeviceType:     to.Ptr(armdatabox.SKUNameDataBox),
+		Model:          to.Ptr(armdatabox.ModelNameDataBox),
 		ShippingAddress: &armdatabox.ShippingAddress{
 			AddressType:     to.Ptr(armdatabox.AddressTypeCommercial),
 			City:            to.Ptr("XXXX XXXX"),
@@ -338,7 +345,7 @@ func ExampleServiceClient_ValidateAddress() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/ValidateInputsByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cecf11996f2bfc7958f6d0de814badab23f9720/specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/ValidateInputsByResourceGroup.json
 func ExampleServiceClient_ValidateInputsByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -361,11 +368,13 @@ func ExampleServiceClient_ValidateInputsByResourceGroup() {
 						},
 					}},
 				DeviceType:   to.Ptr(armdatabox.SKUNameDataBox),
+				Model:        to.Ptr(armdatabox.ModelNameDataBox),
 				TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
 			},
 			&armdatabox.ValidateAddress{
 				ValidationType: to.Ptr(armdatabox.ValidationInputDiscriminatorValidateAddress),
 				DeviceType:     to.Ptr(armdatabox.SKUNameDataBox),
+				Model:          to.Ptr(armdatabox.ModelNameDataBox),
 				ShippingAddress: &armdatabox.ShippingAddress{
 					AddressType:     to.Ptr(armdatabox.AddressTypeCommercial),
 					City:            to.Ptr("XXXX XXXX"),
@@ -388,15 +397,18 @@ func ExampleServiceClient_ValidateInputsByResourceGroup() {
 				Country:        to.Ptr("XX"),
 				DeviceType:     to.Ptr(armdatabox.SKUNameDataBox),
 				Location:       to.Ptr("westus"),
+				Model:          to.Ptr(armdatabox.ModelNameDataBox),
 				TransferType:   to.Ptr(armdatabox.TransferTypeImportToAzure),
 			},
 			&armdatabox.CreateOrderLimitForSubscriptionValidationRequest{
 				ValidationType: to.Ptr(armdatabox.ValidationInputDiscriminatorValidateCreateOrderLimit),
 				DeviceType:     to.Ptr(armdatabox.SKUNameDataBox),
+				Model:          to.Ptr(armdatabox.ModelNameDataBox),
 			},
 			&armdatabox.PreferencesValidationRequest{
 				ValidationType: to.Ptr(armdatabox.ValidationInputDiscriminatorValidatePreferences),
 				DeviceType:     to.Ptr(armdatabox.SKUNameDataBox),
+				Model:          to.Ptr(armdatabox.ModelNameDataBox),
 				Preference: &armdatabox.Preferences{
 					TransportPreferences: &armdatabox.TransportPreferences{
 						PreferredShipmentType: to.Ptr(armdatabox.TransportShipmentTypesMicrosoftManaged),
@@ -502,7 +514,7 @@ func ExampleServiceClient_ValidateInputsByResourceGroup() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/ValidateInputs.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cecf11996f2bfc7958f6d0de814badab23f9720/specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/ValidateInputs.json
 func ExampleServiceClient_ValidateInputs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -525,11 +537,13 @@ func ExampleServiceClient_ValidateInputs() {
 						},
 					}},
 				DeviceType:   to.Ptr(armdatabox.SKUNameDataBox),
+				Model:        to.Ptr(armdatabox.ModelNameDataBox),
 				TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
 			},
 			&armdatabox.ValidateAddress{
 				ValidationType: to.Ptr(armdatabox.ValidationInputDiscriminatorValidateAddress),
 				DeviceType:     to.Ptr(armdatabox.SKUNameDataBox),
+				Model:          to.Ptr(armdatabox.ModelNameDataBox),
 				ShippingAddress: &armdatabox.ShippingAddress{
 					AddressType:     to.Ptr(armdatabox.AddressTypeCommercial),
 					City:            to.Ptr("XXXX XXXX"),
@@ -552,15 +566,18 @@ func ExampleServiceClient_ValidateInputs() {
 				Country:        to.Ptr("XX"),
 				DeviceType:     to.Ptr(armdatabox.SKUNameDataBox),
 				Location:       to.Ptr("westus"),
+				Model:          to.Ptr(armdatabox.ModelNameDataBox),
 				TransferType:   to.Ptr(armdatabox.TransferTypeImportToAzure),
 			},
 			&armdatabox.CreateOrderLimitForSubscriptionValidationRequest{
 				ValidationType: to.Ptr(armdatabox.ValidationInputDiscriminatorValidateCreateOrderLimit),
 				DeviceType:     to.Ptr(armdatabox.SKUNameDataBox),
+				Model:          to.Ptr(armdatabox.ModelNameDataBox),
 			},
 			&armdatabox.PreferencesValidationRequest{
 				ValidationType: to.Ptr(armdatabox.ValidationInputDiscriminatorValidatePreferences),
 				DeviceType:     to.Ptr(armdatabox.SKUNameDataBox),
+				Model:          to.Ptr(armdatabox.ModelNameDataBox),
 				Preference: &armdatabox.Preferences{
 					TransportPreferences: &armdatabox.TransportPreferences{
 						PreferredShipmentType: to.Ptr(armdatabox.TransportShipmentTypesMicrosoftManaged),
@@ -666,7 +683,7 @@ func ExampleServiceClient_ValidateInputs() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/RegionConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cecf11996f2bfc7958f6d0de814badab23f9720/specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/RegionConfiguration.json
 func ExampleServiceClient_RegionConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -678,7 +695,12 @@ func ExampleServiceClient_RegionConfiguration() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewServiceClient().RegionConfiguration(ctx, "westus", armdatabox.RegionConfigurationRequest{
+		DeviceCapabilityRequest: &armdatabox.DeviceCapabilityRequest{
+			Model:   to.Ptr(armdatabox.ModelNameDataBoxDisk),
+			SKUName: to.Ptr(armdatabox.SKUNameDataBoxDisk),
+		},
 		ScheduleAvailabilityRequest: &armdatabox.ScheduleAvailabilityRequest{
+			Model:           to.Ptr(armdatabox.ModelNameDataBox),
 			SKUName:         to.Ptr(armdatabox.SKUNameDataBox),
 			StorageLocation: to.Ptr("westus"),
 		},
@@ -690,6 +712,12 @@ func ExampleServiceClient_RegionConfiguration() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.RegionConfigurationResponse = armdatabox.RegionConfigurationResponse{
+	// 	DeviceCapabilityResponse: &armdatabox.DeviceCapabilityResponse{
+	// 		DeviceCapabilityDetails: []*armdatabox.DeviceCapabilityDetails{
+	// 			{
+	// 				HardwareEncryption: to.Ptr(armdatabox.HardwareEncryptionEnabled),
+	// 		}},
+	// 	},
 	// 	ScheduleAvailabilityResponse: &armdatabox.ScheduleAvailabilityResponse{
 	// 		AvailableDates: []*time.Time{
 	// 			to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-07-11T00:00:00.000Z"); return t}()),
@@ -717,7 +745,7 @@ func ExampleServiceClient_RegionConfiguration() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/RegionConfigurationByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cecf11996f2bfc7958f6d0de814badab23f9720/specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/RegionConfigurationByResourceGroup.json
 func ExampleServiceClient_RegionConfigurationByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -729,7 +757,12 @@ func ExampleServiceClient_RegionConfigurationByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewServiceClient().RegionConfigurationByResourceGroup(ctx, "YourResourceGroupName", "westus", armdatabox.RegionConfigurationRequest{
+		DeviceCapabilityRequest: &armdatabox.DeviceCapabilityRequest{
+			Model:   to.Ptr(armdatabox.ModelNameDataBoxDisk),
+			SKUName: to.Ptr(armdatabox.SKUNameDataBoxDisk),
+		},
 		ScheduleAvailabilityRequest: &armdatabox.ScheduleAvailabilityRequest{
+			Model:           to.Ptr(armdatabox.ModelNameDataBox),
 			SKUName:         to.Ptr(armdatabox.SKUNameDataBox),
 			StorageLocation: to.Ptr("westus"),
 		},
@@ -741,6 +774,12 @@ func ExampleServiceClient_RegionConfigurationByResourceGroup() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.RegionConfigurationResponse = armdatabox.RegionConfigurationResponse{
+	// 	DeviceCapabilityResponse: &armdatabox.DeviceCapabilityResponse{
+	// 		DeviceCapabilityDetails: []*armdatabox.DeviceCapabilityDetails{
+	// 			{
+	// 				HardwareEncryption: to.Ptr(armdatabox.HardwareEncryptionEnabled),
+	// 		}},
+	// 	},
 	// 	ScheduleAvailabilityResponse: &armdatabox.ScheduleAvailabilityResponse{
 	// 		AvailableDates: []*time.Time{
 	// 			to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-07-11T00:00:00.000Z"); return t}()),

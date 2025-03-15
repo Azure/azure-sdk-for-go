@@ -15,16 +15,16 @@ const (
 
 func init() {
 	cloud.AzureChina.Services[ServiceName] = cloud.ServiceConfiguration{
-		Audience: defaultAudience,
+		Audience: AcrAudience,
 	}
 	cloud.AzureGovernment.Services[ServiceName] = cloud.ServiceConfiguration{
-		Audience: defaultAudience,
+		Audience: AcrAudience,
 	}
 	cloud.AzurePublic.Services[ServiceName] = cloud.ServiceConfiguration{
-		Audience: defaultAudience,
+		Audience: AcrAudience,
 	}
 }
 
 var defaultCloud = cloud.Configuration{
-	Services: map[cloud.ServiceName]cloud.ServiceConfiguration{ServiceName: {Audience: defaultAudience}},
+	Services: map[cloud.ServiceName]cloud.ServiceConfiguration{ServiceName: {Audience: AcrAudience}},
 }

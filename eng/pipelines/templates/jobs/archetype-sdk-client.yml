@@ -67,9 +67,6 @@ parameters:
   - name: IncludeRelease
     type: boolean
     default: false
-  - name: ExcludeGoNMinus2
-    type: boolean
-    default: false
   - name: UsePipelineProxy
     type: boolean
     default: true
@@ -103,16 +100,14 @@ extends:
             parameters:
               JobTemplatePath: /eng/pipelines/templates/jobs/ci.tests.yml
               MatrixConfigs:
-                - ${{ if eq(parameters.ExcludeGoNMinus2, false) }}:
-                    - Name: ci_test_base
-                      Path: eng/pipelines/templates/stages/ci-platform-matrix-complete.json
-                      Selection: all
-                      GenerateVMJobs: true
-                - ${{ else }}:
-                    - Name: ci_test_base
-                      Path: eng/pipelines/templates/stages/ci-platform-matrix.json
-                      Selection: all
-                      GenerateVMJobs: true
+                - ${{ each config in parameters.MatrixConfigs }}:
+                    - ${{ config }}
+                - ${{ each config in parameters.AdditionalMatrixConfigs }}:
+                    - ${{ config }}
+              MatrixFilters:
+                - ${{ parameters.MatrixFilters }}
+              MatrixReplace:
+                - ${{ parameters.MatrixReplace }}
               AdditionalParameters:
                 EnableRaceDetector: ${{ parameters.EnableRaceDetector }}
                 ServiceDirectory: ${{ parameters.ServiceDirectory }}

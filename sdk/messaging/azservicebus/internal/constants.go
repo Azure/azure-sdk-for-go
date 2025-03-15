@@ -3,5 +3,7 @@
 
 package internal
 
+const ModuleName = "github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
+
 // Version is the semantic version number
 const Version = "v1.8.0"

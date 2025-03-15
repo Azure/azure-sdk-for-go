@@ -80,7 +80,7 @@ func TestAMQPLinksRetriesUnit(t *testing.T) {
 				return testData.Err
 			}, exported.RetryOptions{
 				RetryDelay: time.Millisecond,
-			})
+			}, nil)
 
 			require.Equal(t, testData.Err, err)
 			require.Equal(t, testData.Attempts, attempts)
@@ -222,7 +222,7 @@ func TestAMQPCloseLinkTimeout_Receiver_CancellationDuringClose(t *testing.T) {
 	err := links.Retry(userCtx, exported.EventConn, "Test", func(ctx context.Context, tmpLWID *LinksWithID, args *utils.RetryFnArgs) error {
 		lwid = tmpLWID
 		return nil
-	}, exported.RetryOptions{})
+	}, exported.RetryOptions{}, nil)
 
 	require.NoError(t, err)
 	require.NotNil(t, lwid)
@@ -241,7 +241,7 @@ func TestAMQPCloseLinkTimeout_Receiver_CancellationDuringClose(t *testing.T) {
 	err = links.Retry(context.Background(), exported.EventConn, "Test", func(ctx context.Context, tmpLWID *LinksWithID, args *utils.RetryFnArgs) error {
 		lwid = tmpLWID
 		return nil
-	}, exported.RetryOptions{})
+	}, exported.RetryOptions{}, nil)
 
 	require.NoError(t, err)
 	require.NotNil(t, lwid)
@@ -280,7 +280,7 @@ func TestAMQPCloseLinkTimeout_Receiver_RecoverIfNeeded(t *testing.T) {
 	err := links.Retry(userCtx, exported.EventConn, "Test", func(ctx context.Context, tmpLWID *LinksWithID, args *utils.RetryFnArgs) error {
 		lwid = tmpLWID
 		return nil
-	}, exported.RetryOptions{})
+	}, exported.RetryOptions{}, nil)
 
 	require.NoError(t, err)
 	require.NotNil(t, lwid)

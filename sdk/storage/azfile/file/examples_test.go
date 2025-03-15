@@ -851,9 +851,11 @@ func Example_fileClient_CreateNFSShare() {
 
 	fClient := premiumShareClient.NewRootDirectoryClient().NewFileClient(testcommon.GenerateFileName(shareName))
 	_, err = fClient.Create(context.Background(), 1024, &file.CreateOptions{
-		Owner:    to.Ptr(owner),
-		Group:    to.Ptr(group),
-		FileMode: to.Ptr(fileMode),
+		NFSProperties: &file.NFSProperties{
+			Owner:    to.Ptr(owner),
+			Group:    to.Ptr(group),
+			FileMode: to.Ptr(fileMode),
+		},
 	})
 	handleError(err)
 	fmt.Println("NFS Share created with given properties")
@@ -906,9 +908,11 @@ func Example_fileClient_SetHttpHeadersNFS() {
 			CacheControl:       to.Ptr("no-transform"),
 			ContentDisposition: to.Ptr("attachment"),
 		},
-		Owner:    to.Ptr(owner),
-		Group:    to.Ptr(group),
-		FileMode: to.Ptr(fileMode),
+		NFSProperties: &file.NFSProperties{
+			Owner:    to.Ptr(owner),
+			Group:    to.Ptr(group),
+			FileMode: to.Ptr(fileMode),
+		},
 	}
 	_, err = fClient.SetHTTPHeaders(context.Background(), opts)
 

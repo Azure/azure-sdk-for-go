@@ -298,9 +298,11 @@ func (d *DirectoryRecordedTestsSuite) TestDirCreateNfs() {
 	_require.NoError(err)
 
 	cResp, err := dirClient.Create(context.Background(), &directory.CreateOptions{
-		Owner:    to.Ptr(owner),
-		Group:    to.Ptr(group),
-		FileMode: to.Ptr(mode),
+		FileNFSProperties: &file.NFSProperties{
+			Owner:    to.Ptr(owner),
+			Group:    to.Ptr(group),
+			FileMode: to.Ptr(mode),
+		},
 	})
 	_require.NoError(err)
 	_require.NotNil(cResp.ETag)
@@ -537,9 +539,11 @@ func (d *DirectoryRecordedTestsSuite) TestDirSetPropertiesNfs() {
 
 	// Set the custom permissions
 	_, err = dirClient.SetProperties(context.Background(), &directory.SetPropertiesOptions{
-		Owner:    to.Ptr(owner),
-		Group:    to.Ptr(group),
-		FileMode: to.Ptr(mode),
+		FileNFSProperties: &file.NFSProperties{
+			Owner:    to.Ptr(owner),
+			Group:    to.Ptr(group),
+			FileMode: to.Ptr(mode),
+		},
 	})
 	_require.NoError(err)
 

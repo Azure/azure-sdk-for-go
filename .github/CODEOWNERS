@@ -71,7 +71,7 @@
 # AzureSDKOwners: @richardpark-msft
 # ServiceLabel: %Service Bus
 # PRLabel: %Service Bus
-/sdk/messaging/stress/internal/servicebus/   @richardpark-msft @chlowell @jhendrixMSFT
+/sdk/messaging/stress/   @richardpark-msft @chlowell @jhendrixMSFT
 
 # AzureSDKOwners: @gracewilcox
 # ServiceLabel: %Monitor

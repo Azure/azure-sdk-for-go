@@ -98,6 +98,9 @@ func (h *httpTracePolicy) Do(req *policy.Request) (resp *http.Response, err erro
 
 // StartSpanOptions contains the optional values for StartSpan.
 type StartSpanOptions struct {
+	// ModuleName is the name of the module that created the span.
+	// If not specified, ModuleName defaults to the azcore module name.
+	ModuleName string
 	// Kind indicates the kind of Span.
 	Kind tracing.SpanKind
 	// Attributes contains key-value pairs of attributes for the span.
@@ -136,6 +139,9 @@ func StartSpan(ctx context.Context, name string, tracer tracing.Tracer, options 
 	if options == nil {
 		options = &StartSpanOptions{}
 	}
+	if options.ModuleName == "" {
+		options.ModuleName = shared.Module
+	}
 	if options.Kind == 0 {
 		options.Kind = tracing.SpanKindInternal
 	}
@@ -148,7 +154,7 @@ func StartSpan(ctx context.Context, name string, tracer tracing.Tracer, options 
 	ctx = context.WithValue(ctx, ctxActiveSpan{}, options.Kind)
 	return ctx, func(err error) {
 		if err != nil {
-			errType := strings.Replace(fmt.Sprintf("%T", err), "*exported.", "*azcore.", 1)
+			errType := strings.Replace(fmt.Sprintf("%T", err), "*exported.", fmt.Sprintf("*%s.", options.ModuleName), 1)
 			span.SetAttributes(tracing.Attribute{Key: attrErrType, Value: errType})
 			span.SetStatus(tracing.SpanStatusError, fmt.Sprintf("%s:\n%s", errType, err.Error()))
 		}

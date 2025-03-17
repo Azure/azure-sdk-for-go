@@ -53,11 +53,11 @@ func ExampleClient_GetChatCompletions_reasoningModels() {
 		return
 	}
 
-	fmt.Fprintln(os.Stderr, "\nLow reasoning")
-	fmt.Fprintf(os.Stderr, "  Completion tokens: %v\n", *resp.Usage.CompletionTokens)
-	fmt.Fprintf(os.Stderr, "  Reasoning tokens: %v\n", *resp.Usage.CompletionTokensDetails.ReasoningTokens)
-	fmt.Fprintf(os.Stderr, "  Prompt tokens: %v\n", *resp.Usage.PromptTokens)
-	fmt.Fprintf(os.Stderr, "  Total tokens: %v\n", *resp.Usage.TotalTokens)
+	fmt.Fprintln(os.Stdout, "\nLow reasoning")
+	fmt.Fprintf(os.Stdout, "  Completion tokens: %v\n", *resp.Usage.CompletionTokens)
+	fmt.Fprintf(os.Stdout, "  Reasoning tokens: %v\n", *resp.Usage.CompletionTokensDetails.ReasoningTokens)
+	fmt.Fprintf(os.Stdout, "  Prompt tokens: %v\n", *resp.Usage.PromptTokens)
+	fmt.Fprintf(os.Stdout, "  Total tokens: %v\n", *resp.Usage.TotalTokens)
 
 	opts2 := azopenai.ChatCompletionsOptions{
 		Messages: []azopenai.ChatRequestMessageClassification{
@@ -77,11 +77,11 @@ func ExampleClient_GetChatCompletions_reasoningModels() {
 		return
 	}
 
-	fmt.Fprintln(os.Stderr, "\nHigh reasoning")
-	fmt.Fprintf(os.Stderr, "  Completion tokens: %v\n", *resp2.Usage.CompletionTokens)
-	fmt.Fprintf(os.Stderr, "  Reasoning tokens: %v\n", *resp2.Usage.CompletionTokensDetails.ReasoningTokens)
-	fmt.Fprintf(os.Stderr, "  Prompt tokens: %v\n", *resp2.Usage.PromptTokens)
-	fmt.Fprintf(os.Stderr, "  Total tokens: %v\n", *resp2.Usage.TotalTokens)
+	fmt.Fprintln(os.Stdout, "\nHigh reasoning")
+	fmt.Fprintf(os.Stdout, "  Completion tokens: %v\n", *resp2.Usage.CompletionTokens)
+	fmt.Fprintf(os.Stdout, "  Reasoning tokens: %v\n", *resp2.Usage.CompletionTokensDetails.ReasoningTokens)
+	fmt.Fprintf(os.Stdout, "  Prompt tokens: %v\n", *resp2.Usage.PromptTokens)
+	fmt.Fprintf(os.Stdout, "  Total tokens: %v\n", *resp2.Usage.TotalTokens)
 
 	// Output:
 }

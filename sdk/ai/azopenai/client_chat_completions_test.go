@@ -638,3 +638,89 @@ func TestGetChatCompletions_StructuredOutputsResponseFormat(t *testing.T) {
 		testFn(t, client, openAI.ChatCompletionsStructuredOutputs.Model)
 	})
 }
+
+func TestClient_GetChatCompletions_WithPrediction(t *testing.T) {
+	testFn := func(t *testing.T, client *azopenai.Client, deployment string) {
+		code := `
+		class User {
+		firstName: string = "";
+		lastName: string = "";
+		username: string = "";
+		}
+
+		export default User;
+		`
+		refactorPrompt := `
+		Replace the "username" property with an "email" property. Respond only 
+		with code, and with no markdown formatting.
+		`
+		options := azopenai.ChatCompletionsOptions{
+			Messages: []azopenai.ChatRequestMessageClassification{
+				&azopenai.ChatRequestUserMessage{
+					Content: azopenai.NewChatRequestUserMessageContent(refactorPrompt),
+				},
+				&azopenai.ChatRequestUserMessage{
+					Content: azopenai.NewChatRequestUserMessageContent(code),
+				},
+			},
+			Prediction: &azopenai.PredictionContent{
+				Content: azopenai.NewPredictionContentContent(code),
+				Type:    to.Ptr("content"),
+			},
+			DeploymentName: &deployment,
+		}
+
+		resp, err := client.GetChatCompletions(context.Background(), options, nil)
+		require.NoError(t, err)
+		require.NotNil(t, resp)
+
+		require.NotEmpty(t, resp.Choices)
+		require.NotNil(t, resp.Choices[0].Message.Content)
+	}
+
+	t.Run("AzureOpenAI", func(t *testing.T) {
+		client := newTestClient(t, azureOpenAI.ChatCompletionsStructuredOutputs.Endpoint)
+		testFn(t, client, azureOpenAI.ChatCompletionsStructuredOutputs.Model)
+	})
+
+	t.Run("OpenAI", func(t *testing.T) {
+		client := newTestClient(t, openAI.ChatCompletionsStructuredOutputs.Endpoint)
+		testFn(t, client, openAI.ChatCompletionsStructuredOutputs.Model)
+	})
+}
+
+func TestClient_GetChatCompletions_WithStore_Metadata(t *testing.T) {
+	testFn := func(t *testing.T, client *azopenai.Client, deployment string) {
+		options := azopenai.ChatCompletionsOptions{
+			Messages: []azopenai.ChatRequestMessageClassification{
+				&azopenai.ChatRequestUserMessage{
+					Content: azopenai.NewChatRequestUserMessageContent("Tell me a short story."),
+				},
+			},
+			Metadata: map[string]*string{
+				"user_id":      to.Ptr("user-123"),
+				"session_id":   to.Ptr("session-456"),
+				"request_type": to.Ptr("story"),
+			},
+			Store:          to.Ptr(true),
+			DeploymentName: &deployment,
+		}
+
+		resp, err := client.GetChatCompletions(context.Background(), options, nil)
+		require.NoError(t, err)
+		require.NotNil(t, resp)
+
+		require.NotEmpty(t, resp.Choices)
+		require.NotNil(t, resp.Choices[0].Message.Content)
+	}
+
+	t.Run("AzureOpenAI", func(t *testing.T) {
+		client := newTestClient(t, azureOpenAI.ChatCompletionsStructuredOutputs.Endpoint)
+		testFn(t, client, azureOpenAI.ChatCompletionsStructuredOutputs.Model)
+	})
+
+	t.Run("OpenAI", func(t *testing.T) {
+		client := newTestClient(t, openAI.ChatCompletionsStructuredOutputs.Endpoint)
+		testFn(t, client, openAI.ChatCompletionsStructuredOutputs.Model)
+	})
+}

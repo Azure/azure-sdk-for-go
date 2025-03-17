@@ -10,7 +10,7 @@ This document is intended for users that are familiar with the previous versions
 
 ## Prerequisites
 
-- [Supported](../README.md#go-version-support) version of Go
+- [Supported](https://aka.ms/azsdk/go/supported-versions) version of Go
 
 ## Package mapping
 

@@ -19,7 +19,7 @@ This document is intended for users that are familiar with the older version of 
 
 ## Prerequisites
 
-- [Supported](../README.md#go-version-support) version of Go
+- [Supported](https://aka.ms/azsdk/go/supported-versions) version of Go
 - Latest version of resource management modules
 
 ## General Changes

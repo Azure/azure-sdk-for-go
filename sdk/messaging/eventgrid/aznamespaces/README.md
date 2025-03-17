@@ -24,7 +24,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/aznamespaces
 
 ### Prerequisites
 
-- [Supported](../../../../README.md#go-version-support) version of Go
+- [Supported](https://aka.ms/azsdk/go/supported-versions) version of Go
 - An [Azure subscription](https://azure.microsoft.com/free/)
 - An [Event Grid namespace][ms_namespace]. You can create an Event Grid namespace using the [Azure Portal][ms_create_namespace].
 - An [Event Grid namespace topic][ms_topic]. You can create an Event Grid namespace topic using the [Azure Portal][ms_create_topic].

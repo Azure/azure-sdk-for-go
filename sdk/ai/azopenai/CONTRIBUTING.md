@@ -9,7 +9,7 @@ The `azopenai` package can be used with either Azure OpenAI or OpenAI's public s
 ### Prerequisites
 
 For code fixes that do not require code generation:
-- [Supported](../../../README.md#go-version-support) version of Go
+- [Supported](https://aka.ms/azsdk/go/supported-versions) version of Go
 
 For code generation:
 - [NodeJS (use the latest LTS)](https://nodejs.org)

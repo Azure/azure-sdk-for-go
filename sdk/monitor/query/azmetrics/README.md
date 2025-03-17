@@ -10,7 +10,7 @@
 
 ### Prerequisites
 
-* [Supported](../../../../README.md#go-version-support) version of Go - [Install Go](https://go.dev/doc/install)
+* [Supported](https://aka.ms/azsdk/go/supported-versions) version of Go - [Install Go](https://go.dev/doc/install)
 * Azure subscription - [Create a free account][azure_sub]
 * The resource URI of an Azure resource (Storage Account, Key Vault, CosmosDB, etc.) that you plan to monitor
 * Regional endpoint when instantiating the client (for example, "https://westus3.metrics.monitor.azure.com")

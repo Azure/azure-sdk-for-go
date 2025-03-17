@@ -10,7 +10,7 @@
 
 ### Prerequisites
 
-* [Supported](../../../../README.md#go-version-support) version of Go - [Install Go](https://go.dev/doc/install)
+* [Supported](https://aka.ms/azsdk/go/supported-versions) version of Go - [Install Go](https://go.dev/doc/install)
 * Azure subscription - [Create a free account][azure_sub]
 * To query logs, you need one of the following things:
   * An [Azure Log Analytics workspace][log_analytics_workspace_create]

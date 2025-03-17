@@ -350,6 +350,10 @@ func (o *StartCopyFromURLOptions) format() (*generated.FileClientStartCopyOption
 	var opts *generated.FileClientStartCopyOptions
 
 	if o.CopyFileNFSProperties != nil {
+		// CreationTime and LastWriteTime are sent through CopyfileNFSProperties
+		// The format function will format them and return them as CopyFileSMBInfo parameters which will be retuned
+		optsCopyFileSMBInfo := exported.FormatCopyFileNFSProperties(o.CopyFileNFSProperties)
+
 		opts = &generated.FileClientStartCopyOptions{
 			Metadata:          o.Metadata,
 			FileMode:          o.CopyFileNFSProperties.FileMode,
@@ -358,6 +362,8 @@ func (o *StartCopyFromURLOptions) format() (*generated.FileClientStartCopyOption
 			FileModeCopyMode:  o.CopyFileNFSProperties.FileModeCopyMode,
 			FileOwnerCopyMode: o.CopyFileNFSProperties.FileOwnerCopyMode,
 		}
+		return opts, optsCopyFileSMBInfo, o.LeaseAccessConditions
+
 	} else {
 		var permission, permissionKey *string
 		if o.Permissions != nil {
@@ -370,9 +376,8 @@ func (o *StartCopyFromURLOptions) format() (*generated.FileClientStartCopyOption
 			FilePermissionKey: permissionKey,
 			Metadata:          o.Metadata,
 		}
+		return opts, o.CopyFileSMBInfo.format(), o.LeaseAccessConditions
 	}
-
-	return opts, o.CopyFileSMBInfo.format(), o.LeaseAccessConditions
 }
 
 // CopyFileSMBInfo contains a group of parameters for the FileClient.StartCopy method.

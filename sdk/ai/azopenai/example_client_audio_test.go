@@ -122,19 +122,19 @@ func ExampleClient_GenerateSpeechFromText() {
 }
 
 func ExampleClient_AudioTranslation() {
-	openAIKey := os.Getenv("OPENAI_API_KEY")
+	azureOpenAIKey := os.Getenv("AZURE_OPENAI_API_KEY")
 
 	// Ex: "https://<your-azure-openai-host>.openai.azure.com"
 	azureOpenAIEndpoint := os.Getenv("AZURE_OPENAI_ENDPOINT")
 
 	modelDeploymentID := os.Getenv("AZURE_OPENAI_DEPLOYMENT_ID")
 
-	if openAIKey == "" || azureOpenAIEndpoint == "" || modelDeploymentID == "" {
+	if azureOpenAIKey == "" || azureOpenAIEndpoint == "" || modelDeploymentID == "" {
 		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
 		return
 	}
 
-	keyCredential := azcore.NewKeyCredential(openAIKey)
+	keyCredential := azcore.NewKeyCredential(azureOpenAIKey)
 
 	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, nil)
 
@@ -143,7 +143,7 @@ func ExampleClient_AudioTranslation() {
 		log.Printf("ERROR: %s", err)
 		return
 	}
-	mp3Bytes, err := os.ReadFile("../../sdk/ai/azopenai/testdata/sampleaudio_hindi_myVoiceIsMyPassportVerifyMe.mp3")
+	mp3Bytes, err := os.ReadFile("testdata/sampleaudio_hindi_myVoiceIsMyPassportVerifyMe.mp3")
 
 	if err != nil {
 		// TODO: Update the following line with your application specific error handling logic

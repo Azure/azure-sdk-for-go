@@ -12,6 +12,18 @@ import (
 
 // CopyFileNFSProperties contains the optional parameters regarding the NFS properties for a file.
 type CopyFileNFSProperties struct {
+	// Specifies either the option to copy file creation time from a source file(source) to a target file or a time value in ISO
+	// 8601 format to set as creation time on a target file.
+	// CopyFileCreationTime is an interface and its underlying implementation are:
+	//   - SourceCopyFileCreationTime - specifies to copy file creation time from a source file to a target file.
+	//   - DestinationCopyFileCreationTime - specifies a time value in ISO 8601 format to set as creation time on a target file.
+	CreationTime CopyFileCreationTime
+	// Specifies either the option to copy file last write time from a source file(source) to a target file or a time value in
+	// ISO 8601 format to set as last write time on a target file.
+	// CopyFileLastWriteTime is an interface and its underlying implementation are:
+	//   - SourceCopyFileLastWriteTime - specifies to copy file last write time from a source file to a target file.
+	//   - DestinationCopyFileLastWriteTime - specifies a time value in ISO 8601 format to set as last write time on a target file.
+	LastWriteTime CopyFileLastWriteTime
 	//The file mode of the file or directory
 	FileMode *string
 	//The owner of the file or directory.
@@ -27,4 +39,21 @@ type CopyFileNFSProperties struct {
 	// file is copied from the source file. override: The owner user identifier (UID) and group identifier (GID) on the destination
 	// file is determined via the x-ms-owner and x-ms-group headers.
 	FileOwnerCopyMode *generated.OwnerCopyMode
+}
+
+// FormatCopyFileNFSProperties returns creation time, last write time.
+func FormatCopyFileNFSProperties(np *CopyFileNFSProperties) (opts *generated.CopyFileSMBInfo) {
+	if np == nil {
+		return nil
+	}
+
+	if np.CreationTime != nil {
+		opts.FileCreationTime = np.CreationTime.FormatCreationTime()
+	}
+
+	if np.LastWriteTime != nil {
+		opts.FileLastWriteTime = np.LastWriteTime.FormatLastWriteTime()
+	}
+
+	return
 }

@@ -245,10 +245,6 @@ func (f *Client) GetProperties(ctx context.Context, options *GetPropertiesOption
 // Rename renames a file. The original file will no longer exist and the client will be stale.
 func (f *Client) Rename(ctx context.Context, destinationPath string, options *RenameOptions) (RenameResponse, error) {
 	var newBlobClient *blockblob.Client
-	u, err := url.QueryUnescape(destinationPath)
-	if err != nil || u == destinationPath {
-		destinationPath = url.QueryEscape(destinationPath)
-	}
 	destinationPath = strings.Trim(strings.TrimSpace(destinationPath), "/")
 	if len(destinationPath) == 0 {
 		return RenameResponse{}, errors.New("destination path must not be empty")

@@ -1740,13 +1740,13 @@ func (f *FileRecordedTestsSuite) TestFileStartCopyModeCopyModeNfs() {
 	_require.NoError(err)
 
 	_, err = copyFClient.StartCopyFromURL(context.Background(), fClient.URL(), &file.StartCopyFromURLOptions{
-		NFSProperties: &file.NFSProperties{
-			Owner:    to.Ptr(owner),
-			Group:    to.Ptr(group),
-			FileMode: to.Ptr(mode),
+		CopyFileNFSProperties: &file.CopyFileNFSProperties{
+			Owner:             to.Ptr(owner),
+			Group:             to.Ptr(group),
+			FileMode:          to.Ptr(mode),
+			FileOwnerCopyMode: to.Ptr(file.OwnerCopyModeOverride),
+			FileModeCopyMode:  to.Ptr(file.ModeCopyModeOverride),
 		},
-		FileOwnerCopyMode: to.Ptr(file.OwnerCopyModeOverride),
-		FileModeCopyMode:  to.Ptr(file.ModeCopyModeOverride),
 	})
 	_require.NoError(err)
 

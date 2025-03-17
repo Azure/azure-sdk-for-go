@@ -70,6 +70,58 @@ func ExampleClient_GetAudioTranscription() {
 	// Output:
 }
 
+func ExampleClient_AudioTranscriptionInJson() {
+	azureOpenAIKey := os.Getenv("AOAI_WHISPER_API_KEY")
+
+	// Ex: "https://<your-azure-openai-host>.openai.azure.com"
+	azureOpenAIEndpoint := os.Getenv("AOAI_WHISPER_ENDPOINT")
+
+	modelDeploymentID := os.Getenv("AOAI_WHISPER_MODEL")
+
+	if azureOpenAIKey == "" || azureOpenAIEndpoint == "" || modelDeploymentID == "" {
+		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
+		return
+	}
+
+	keyCredential := azcore.NewKeyCredential(azureOpenAIKey)
+
+	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, nil)
+
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
+	}
+
+	mp3Bytes, err := os.ReadFile("testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.mp3")
+
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
+	}
+
+	resp, err := client.GetAudioTranscription(context.TODO(), azopenai.AudioTranscriptionOptions{
+		File: mp3Bytes,
+
+		// this will return _just_ the translated text. Other formats are available, which return
+		// different or additional metadata. See [azopenai.AudioTranscriptionFormat] for more examples.
+		ResponseFormat: to.Ptr(azopenai.AudioTranscriptionFormatJSON),
+
+		DeploymentName: &modelDeploymentID,
+	}, nil)
+
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
+	}
+
+	fmt.Fprintf(os.Stderr, "Transcribed json: %s\n", *resp.Text)
+
+	// Output:
+}
+
 func ExampleClient_GenerateSpeechFromText() {
 	openAIKey := os.Getenv("OPENAI_API_KEY")
 

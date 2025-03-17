@@ -24,15 +24,6 @@ type NFSProperties struct {
 	Owner *string
 	//The owning group of the file or directory.
 	Group *string
-	// NFS only. Applicable only when the copy source is a File. Determines the copy behavior of the mode bits of the file. source:
-	// The mode on the destination file is copied from the source file. override:
-	// The mode on the destination file is determined via the x-ms-mode header.
-	FileModeCopyMode *generated.ModeCopyMode
-	// NFS only. Determines the copy behavior of the owner user identifier (UID) and group identifier (GID) of the file. source:
-	// The owner user identifier (UID) and group identifier (GID) on the destination
-	// file is copied from the source file. override: The owner user identifier (UID) and group identifier (GID) on the destination
-	// file is determined via the x-ms-owner and x-ms-group headers.
-	FileOwnerCopyMode *generated.OwnerCopyMode
 }
 
 // FormatNFSProperties returns creation time, last write time.

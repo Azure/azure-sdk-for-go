@@ -29,6 +29,7 @@ func NewSharedKeyCredential(accountName, accountKey string) (*SharedKeyCredentia
 // SMBProperties contains the optional parameters regarding the SMB/NTFS properties for a file.
 type SMBProperties = exported.SMBProperties
 
+// NFS only.
 type NFSProperties = exported.NFSProperties
 
 // NTFSFileAttributes for Files and Directories.
@@ -80,7 +81,7 @@ type DestinationLeaseAccessConditions = generated.DestinationLeaseAccessConditio
 type CreateOptions struct {
 	// The default value is 'None' for Attributes and 'now' for CreationTime and LastWriteTime fields in file.SMBProperties.
 	SMBProperties *SMBProperties
-	// The default value is 'now' for CreationTime and LastWriteTime fields in file.NFSProperties.
+	// NFS only. The default value is 'now' for CreationTime and LastWriteTime fields in file.NFSProperties.
 	NFSProperties *NFSProperties
 	// The default value is 'inherit' for Permission field in file.Permissions.
 	Permissions           *Permissions
@@ -245,7 +246,7 @@ type SetHTTPHeadersOptions struct {
 	FileContentLength *int64
 	// The default value is 'preserve' for Attributes, CreationTime and LastWriteTime fields in file.SMBProperties.
 	SMBProperties *SMBProperties
-	// The default value is 'now' for CreationTime and LastWriteTime fields in file.NFSProperties.
+	// NFS only. The default value is 'now' for CreationTime and LastWriteTime fields in file.NFSProperties.
 	NFSProperties *NFSProperties
 	// The default value is 'preserve' for Permission field in file.Permissions.
 	Permissions *Permissions
@@ -323,6 +324,8 @@ func (o *SetMetadataOptions) format() (*generated.FileClientSetMetadataOptions, 
 	}, o.LeaseAccessConditions
 }
 
+type CopyFileNFSProperties = exported.CopyFileNFSProperties
+
 // ---------------------------------------------------------------------------------------------------------------------
 
 // StartCopyFromURLOptions contains the optional parameters for the Client.StartCopyFromURL method.
@@ -332,8 +335,8 @@ type StartCopyFromURLOptions struct {
 	// required if x-ms-file-permission-copy-mode is specified as override
 	Permissions     *Permissions
 	CopyFileSMBInfo *CopyFileSMBInfo
-	// The default value is 'now' for CreationTime and LastWriteTime fields in file.NFSProperties.
-	NFSProperties *NFSProperties
+	// NFS only.
+	CopyFileNFSProperties *CopyFileNFSProperties
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	// Required if the destination file has an active lease.
 	LeaseAccessConditions *LeaseAccessConditions
@@ -341,23 +344,19 @@ type StartCopyFromURLOptions struct {
 
 func (o *StartCopyFromURLOptions) format() (*generated.FileClientStartCopyOptions, *generated.CopyFileSMBInfo, *generated.LeaseAccessConditions) {
 	if o == nil {
-		return &generated.FileClientStartCopyOptions{
-				FileModeCopyMode:  to.Ptr(ModeCopyModeSource),
-				FileOwnerCopyMode: to.Ptr(OwnerCopyModeSource),
-			},
-			nil, nil
+		return nil, nil, nil
 	}
 
 	var opts *generated.FileClientStartCopyOptions
 
-	if o.NFSProperties != nil {
+	if o.CopyFileNFSProperties != nil {
 		opts = &generated.FileClientStartCopyOptions{
 			Metadata:          o.Metadata,
-			FileMode:          o.NFSProperties.FileMode,
-			Owner:             o.NFSProperties.Owner,
-			Group:             o.NFSProperties.Group,
-			FileModeCopyMode:  o.NFSProperties.FileModeCopyMode,
-			FileOwnerCopyMode: o.NFSProperties.FileOwnerCopyMode,
+			FileMode:          o.CopyFileNFSProperties.FileMode,
+			Owner:             o.CopyFileNFSProperties.Owner,
+			Group:             o.CopyFileNFSProperties.Group,
+			FileModeCopyMode:  o.CopyFileNFSProperties.FileModeCopyMode,
+			FileOwnerCopyMode: o.CopyFileNFSProperties.FileOwnerCopyMode,
 		}
 	} else {
 		var permission, permissionKey *string

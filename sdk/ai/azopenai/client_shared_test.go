@@ -34,6 +34,7 @@ type endpoint struct {
 type testVars struct {
 	Batch                                 endpointWithModel
 	ChatCompletions                       endpointWithModel
+	ChatCompletionsO1                     endpointWithModel
 	ChatCompletionsLegacyFunctions        endpointWithModel
 	ChatCompletionsOYD                    endpointWithModel // azure only
 	ChatCompletionsRAI                    endpointWithModel // azure only
@@ -122,6 +123,10 @@ var azureOpenAI, openAI = func() (testVars, testVars) {
 			ChatCompletions: endpointWithModel{
 				Endpoint: ifAzure(azure, servers.USEast, servers.OpenAI),
 				Model:    ifAzure(azure, "gpt-4-0613", "gpt-4-0613"),
+			},
+			ChatCompletionsO1: endpointWithModel{
+				Endpoint: ifAzure(azure, servers.USEast2, servers.OpenAI),
+				Model:    ifAzure(azure, "o1", "o1"),
 			},
 			ChatCompletionsLegacyFunctions: endpointWithModel{
 				Endpoint: ifAzure(azure, servers.USEast, servers.OpenAI),

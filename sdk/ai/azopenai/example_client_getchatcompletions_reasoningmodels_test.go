@@ -83,4 +83,5 @@ func ExampleClient_GetChatCompletions_reasoningModels() {
 	fmt.Fprintf(os.Stderr, "  Prompt tokens: %v\n", *resp2.Usage.PromptTokens)
 	fmt.Fprintf(os.Stderr, "  Total tokens: %v\n", *resp2.Usage.TotalTokens)
 
+	// Output:
 }

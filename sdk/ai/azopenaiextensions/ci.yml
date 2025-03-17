@@ -36,8 +36,6 @@ extends:
     ServiceDirectory: "ai/azopenaiextensions"
     RunLiveTests: true
     UsePipelineProxy: false
-    MatrixFilters:
-      - GoVersion=^(?!1.18).*
     CloudConfig:
       Public:
         ServiceConnection: azure-sdk-tests-openai

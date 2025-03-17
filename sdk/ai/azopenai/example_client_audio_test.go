@@ -85,7 +85,7 @@ func ExampleClient_GenerateSpeechFromText() {
 
 	keyCredential := azcore.NewKeyCredential(openAIKey)
 
-	client, err := azopenai.NewClientForOpenAI(openAIEndpoint, keyCredential, nil)
+	client, err := azopenai.NewClientWithKeyCredential(openAIEndpoint, keyCredential, nil)
 
 	if err != nil {
 		// TODO: Update the following line with your application specific error handling logic
@@ -125,25 +125,25 @@ func ExampleClient_AudioTranslation() {
 	openAIKey := os.Getenv("OPENAI_API_KEY")
 
 	// Ex: "https://<your-azure-openai-host>.openai.azure.com"
-	azureOpenAIEndpoint := os.Getenv("AZURE_OPENAI_ENDPOINT")
+	azureOpenAIKey := os.Getenv("AZURE_OPENAI_API_KEY")
 
 	modelDeploymentID := os.Getenv("AZURE_OPENAI_DEPLOYMENT_ID")
 
-	if openAIKey == "" || azureOpenAIEndpoint == "" || modelDeploymentID == "" {
+	if openAIKey == "" || azureOpenAIKey == "" || modelDeploymentID == "" {
 		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
 		return
 	}
 
 	keyCredential := azcore.NewKeyCredential(openAIKey)
 
-	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, nil)
+	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIKey, keyCredential, nil)
 
 	if err != nil {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Printf("ERROR: %s", err)
 		return
 	}
-	mp3Bytes, err := os.ReadFile("../../sdk/ai/azopenai/testdata/sampleaudio_hindi_myVoiceIsMyPassportVerifyMe.mp3")
+	mp3Bytes, err := os.ReadFile("testdata/sampleaudio_hindi_myVoiceIsMyPassportVerifyMe.mp3")
 
 	if err != nil {
 		// TODO: Update the following line with your application specific error handling logic

@@ -18,11 +18,11 @@ type NFSProperties struct {
 	CreationTime *time.Time
 	// The Coordinated Universal Time (UTC) last write time for the file/directory. Default value is 'now'.
 	LastWriteTime *time.Time
-	//The file mode of the file or directory
+	// The file mode of the file or directory
 	FileMode *string
-	//The owner of the file or directory.
+	// The owner of the file or directory.
 	Owner *string
-	//The owning group of the file or directory.
+	// The owning group of the file or directory.
 	Group *string
 }
 

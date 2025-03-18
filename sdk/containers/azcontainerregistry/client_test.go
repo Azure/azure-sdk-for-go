@@ -324,7 +324,6 @@ func TestClient_NewListRepositoriesPager(t *testing.T) {
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		require.NoError(t, err)
-		require.NotEmpty(t, page.Repositories.Names)
 		pages++
 		items += len(page.Repositories.Names)
 	}

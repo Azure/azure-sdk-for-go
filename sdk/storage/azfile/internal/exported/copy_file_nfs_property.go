@@ -24,11 +24,11 @@ type CopyFileNFSProperties struct {
 	//   - SourceCopyFileLastWriteTime - specifies to copy file last write time from a source file to a target file.
 	//   - DestinationCopyFileLastWriteTime - specifies a time value in ISO 8601 format to set as last write time on a target file.
 	LastWriteTime CopyFileLastWriteTime
-	//The file mode of the file or directory
+	// The file mode of the file or directory
 	FileMode *string
-	//The owner of the file or directory.
+	// The owner of the file or directory.
 	Owner *string
-	//The owning group of the file or directory.
+	// The owning group of the file or directory.
 	Group *string
 	// NFS only. Applicable only when the copy source is a File. Determines the copy behavior of the mode bits of the file.
 	// source: The mode on the destination file is copied from the source file.

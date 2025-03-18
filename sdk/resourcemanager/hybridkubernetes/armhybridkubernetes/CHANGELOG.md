@@ -4,7 +4,7 @@
 ### Breaking Changes
 
 - Type of `ConnectedClusterPatch.Properties` has been changed from `any` to `*ConnectedClusterPatchProperties`
-- Function `*ConnectedClusterClient.BeginCreate` has been removed
+- Function `*ConnectedClusterClient.BeginCreate` has been renamed
 
 ### Features Added
 
@@ -13,7 +13,7 @@
 - New enum type `AzureHybridBenefit` with values `AzureHybridBenefitFalse`, `AzureHybridBenefitNotApplicable`, `AzureHybridBenefitTrue`
 - New enum type `ConnectedClusterKind` with values `ConnectedClusterKindAWS`, `ConnectedClusterKindProvisionedCluster`
 - New enum type `PrivateLinkState` with values `PrivateLinkStateDisabled`, `PrivateLinkStateEnabled`
-- New function `*ConnectedClusterClient.BeginCreateOrReplace(context.Context, string, string, ConnectedCluster, *ConnectedClusterClientBeginCreateOrReplaceOptions) (*runtime.Poller[ConnectedClusterClientCreateOrReplaceResponse], error)`
+- function  `*ConnectedClusterClient.BeginCreate` has been renamed to `*ConnectedClusterClient.BeginCreateOrReplace`
 - New struct `AADProfile`
 - New struct `AgentError`
 - New struct `ArcAgentProfile`

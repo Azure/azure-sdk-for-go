@@ -1,4 +1,4 @@
-# Azure Weightsandbiases Module for Go
+# Azure Weight Sandbiases Module for Go
 
 The `armweightsandbiases` module provides operations for working with Azure Weightsandbiases.
 

@@ -121,7 +121,7 @@ func ExampleClient_GenerateSpeechFromText() {
 	// Output:
 }
 
-func ExampleClient_AudioTranslation() {
+func ExampleClient_GetAudioTranslation() {
 	azureOpenAIKey := os.Getenv("AZURE_OPENAI_API_KEY")
 
 	// Ex: "https://<your-azure-openai-host>.openai.azure.com"

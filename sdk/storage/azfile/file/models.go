@@ -304,6 +304,9 @@ func (o *SetMetadataOptions) format() (*generated.FileClientSetMetadataOptions, 
 	}, o.LeaseAccessConditions
 }
 
+// CopyFileNFSProperties contains the optional parameters regarding the NFS properties for a file.
+type CopyFileNFSProperties = exported.CopyFileNFSProperties
+
 // ---------------------------------------------------------------------------------------------------------------------
 
 // StartCopyFromURLOptions contains the optional parameters for the Client.StartCopyFromURL method.
@@ -313,47 +316,47 @@ type StartCopyFromURLOptions struct {
 	// required if x-ms-file-permission-copy-mode is specified as override
 	Permissions     *Permissions
 	CopyFileSMBInfo *CopyFileSMBInfo
+	// NFS only.
+	CopyFileNFSProperties *CopyFileNFSProperties
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	// Required if the destination file has an active lease.
 	LeaseAccessConditions *LeaseAccessConditions
-	// NFS only. The file mode of the file or directory
-	FileMode *string
-	// NFS only. The owner of the file or directory.
-	Owner *string
-	// NFS only. The owning group of the file or directory.
-	Group *string
-	// NFS only. Applicable only when the copy source is a File. Determines the copy behavior of the mode bits of the file. source:
-	FileModeCopyMode *ModeCopyMode
-	// NFS only. Determines the copy behavior of the owner user identifier (UID) and group identifier (GID) of the file. source:
-	FileOwnerCopyMode *OwnerCopyMode
 }
 
 func (o *StartCopyFromURLOptions) format() (*generated.FileClientStartCopyOptions, *generated.CopyFileSMBInfo, *generated.LeaseAccessConditions) {
 	if o == nil {
-		return &generated.FileClientStartCopyOptions{
-				FileModeCopyMode:  to.Ptr(ModeCopyModeSource),
-				FileOwnerCopyMode: to.Ptr(OwnerCopyModeSource),
-			},
-			nil, nil
+		return nil, nil, nil
 	}
+	var opts *generated.FileClientStartCopyOptions
+	if o.CopyFileNFSProperties != nil {
+		// CreationTime and LastWriteTime are sent through CopyfileNFSProperties
+		// The format function will format them and return them as CopyFileSMBInfo parameters which will be retuned
+		optsCopyFileSMBInfo := exported.FormatCopyFileNFSProperties(o.CopyFileNFSProperties)
 
-	var permission, permissionKey *string
-	if o.Permissions != nil {
-		permission = o.Permissions.Permission
-		permissionKey = o.Permissions.PermissionKey
-	}
+		opts = &generated.FileClientStartCopyOptions{
+			Metadata:          o.Metadata,
+			FileMode:          o.CopyFileNFSProperties.FileMode,
+			Owner:             o.CopyFileNFSProperties.Owner,
+			Group:             o.CopyFileNFSProperties.Group,
+			FileModeCopyMode:  o.CopyFileNFSProperties.FileModeCopyMode,
+			FileOwnerCopyMode: o.CopyFileNFSProperties.FileOwnerCopyMode,
+		}
+		return opts, optsCopyFileSMBInfo, o.LeaseAccessConditions
 
-	opts := &generated.FileClientStartCopyOptions{
-		FilePermission:    permission,
-		FilePermissionKey: permissionKey,
-		Metadata:          o.Metadata,
-		FileMode:          o.FileMode,
-		Owner:             o.Owner,
-		Group:             o.Group,
-		FileModeCopyMode:  o.FileModeCopyMode,
-		FileOwnerCopyMode: o.FileOwnerCopyMode,
+	} else {
+		var permission, permissionKey *string
+		if o.Permissions != nil {
+			permission = o.Permissions.Permission
+			permissionKey = o.Permissions.PermissionKey
+		}
+
+		opts = &generated.FileClientStartCopyOptions{
+			FilePermission:    permission,
+			FilePermissionKey: permissionKey,
+			Metadata:          o.Metadata,
+		}
+		return opts, o.CopyFileSMBInfo.format(), o.LeaseAccessConditions
 	}
-	return opts, o.CopyFileSMBInfo.format(), o.LeaseAccessConditions
 }
 
 // CopyFileSMBInfo contains a group of parameters for the FileClient.StartCopy method.

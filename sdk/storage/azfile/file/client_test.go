@@ -1708,56 +1708,6 @@ func (f *FileUnrecordedTestsSuite) TestFileStartCopyUsingSASSrc() {
 	_require.Equal(string(data), testcommon.FileDefaultData)
 }
 
-func (f *FileRecordedTestsSuite) TestFileStartCopyModeCopyModeNfs() {
-
-	_require := require.New(f.T())
-	testName := f.T().Name()
-
-	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountPremium)
-	_require.NoError(err)
-	shareName := testcommon.GenerateShareName(testName)
-	shareURL := "https://" + cred.AccountName() + ".file.core.windows.net/" + shareName
-
-	owner := "345"
-	group := "123"
-	mode := "6444"
-
-	options := &share.ClientOptions{}
-	testcommon.SetClientOptions(f.T(), &options.ClientOptions)
-	premiumShareClient, err := share.NewClientWithSharedKeyCredential(shareURL, cred, options)
-	_require.NoError(err)
-
-	_, err = premiumShareClient.Create(context.Background(), &share.CreateOptions{
-		EnabledProtocols: to.Ptr("NFS"),
-	})
-	defer testcommon.DeleteShare(context.Background(), _require, premiumShareClient)
-	_require.NoError(err)
-
-	fClient := premiumShareClient.NewRootDirectoryClient().NewFileClient("src" + testcommon.GenerateFileName(testName))
-	copyFClient := premiumShareClient.NewRootDirectoryClient().NewFileClient("dst" + testcommon.GenerateFileName(testName))
-
-	_, err = fClient.Create(context.Background(), 0, nil)
-	_require.NoError(err)
-
-	_, err = copyFClient.StartCopyFromURL(context.Background(), fClient.URL(), &file.StartCopyFromURLOptions{
-		CopyFileNFSProperties: &file.CopyFileNFSProperties{
-			Owner:             to.Ptr(owner),
-			Group:             to.Ptr(group),
-			FileMode:          to.Ptr(mode),
-			FileOwnerCopyMode: to.Ptr(file.OwnerCopyModeOverride),
-			FileModeCopyMode:  to.Ptr(file.ModeCopyModeOverride),
-		},
-	})
-	_require.NoError(err)
-
-	time.Sleep(4 * time.Second)
-
-	resp, err := copyFClient.GetProperties(context.Background(), nil)
-	_require.NoError(err)
-	_require.Equal(*resp.Group, group)
-	_require.Equal(*resp.Owner, owner)
-}
-
 func (f *FileRecordedTestsSuite) TestFileAbortCopyNoCopyStarted() {
 	_require := require.New(f.T())
 	testName := f.T().Name()

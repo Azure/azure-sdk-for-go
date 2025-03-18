@@ -6,6 +6,7 @@
 
 package exported
 
+//NEw branch
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 )

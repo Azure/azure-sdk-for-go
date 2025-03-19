@@ -133,7 +133,7 @@ func (ctx *GenerateContext) GenerateForAutomation(readme, repo, goVersion string
 				RPName:              rpName,
 				NamespaceName:       packageInfo.Name,
 				SpecRPName:          specRPName,
-				SkipGenerateExample: true,
+				SkipGenerateExample: false,
 				NamespaceConfig:     packageInfo.Config,
 				GoVersion:           goVersion,
 				RemoveTagSet:        true,
@@ -258,6 +258,31 @@ func (t *SwaggerCommonGenerator) GenChangeLog(oriExports *exports.Content, newEx
 }
 
 func (t *SwaggerCommonGenerator) AfterGenerate(generateParam *GenerateParam, changelog *Changelog, newExports exports.Content) (*GenerateResult, error) {
+	packagePath := t.PackagePath
+
+	// Example generation should be the last step because the package import relay on the new calculated version
+	if !generateParam.SkipGenerateExample {
+		log.Printf("Start to generate examples...")
+		var flags []string
+		alwaysSetBodyParamRequiredFlag, err := GetAlwaysSetBodyParamRequiredFlag(filepath.Join(packagePath, "build.go"))
+		if err != nil {
+			return nil, err
+		}
+		if len(alwaysSetBodyParamRequiredFlag) > 0 {
+			flags = append(flags, alwaysSetBodyParamRequiredFlag)
+		}
+		clientFactoryParamsFlag, err := GetFactoryGatherAllParamsFlag(filepath.Join(packagePath, "build.go"))
+		if err != nil {
+			return nil, err
+		}
+		if len(clientFactoryParamsFlag) > 0 {
+			flags = append(flags, clientFactoryParamsFlag)
+		}
+		log.Println(flags)
+		if err := ExecuteExampleGenerate(packagePath, filepath.Join("resourcemanager", generateParam.RPName, generateParam.NamespaceName), flags); err != nil {
+			return nil, err
+		}
+	}
 	return nil, nil
 }
 
@@ -300,15 +325,8 @@ func (t *SwaggerOnBoardGenerator) AfterGenerate(generateParam *GenerateParam, ch
 		return nil, err
 	}
 
-	if !generateParam.SkipGenerateExample {
-		log.Printf("Start to generate examples...")
-		flag, err := GetAlwaysSetBodyParamRequiredFlag(filepath.Join(packagePath, "build.go"))
-		if err != nil {
-			return nil, err
-		}
-		if err := ExecuteExampleGenerate(packagePath, filepath.Join("resourcemanager", generateParam.RPName, generateParam.NamespaceName), flag); err != nil {
-			return nil, err
-		}
+	if _, err := t.SwaggerCommonGenerator.AfterGenerate(generateParam, changelog, newExports); err != nil {
+		return nil, err
 	}
 
 	// issue: https://github.com/Azure/azure-sdk-for-go/issues/23877
@@ -463,16 +481,8 @@ func (t *SwaggerUpdateGenerator) AfterGenerate(generateParam *GenerateParam, cha
 		return nil, err
 	}
 
-	// Example generation should be the last step because the package import relay on the new calculated version
-	if !generateParam.SkipGenerateExample {
-		log.Printf("Start to generate examples...")
-		flag, err := GetAlwaysSetBodyParamRequiredFlag(filepath.Join(packagePath, "build.go"))
-		if err != nil {
-			return nil, err
-		}
-		if err := ExecuteExampleGenerate(packagePath, filepath.Join("resourcemanager", generateParam.RPName, generateParam.NamespaceName), flag); err != nil {
-			return nil, err
-		}
+	if _, err := t.SwaggerCommonGenerator.AfterGenerate(generateParam, changelog, newExports); err != nil {
+		return nil, err
 	}
 
 	return &GenerateResult{

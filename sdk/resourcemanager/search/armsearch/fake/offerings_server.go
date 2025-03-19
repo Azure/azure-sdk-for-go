@@ -15,32 +15,32 @@ import (
 	"net/http"
 )
 
-// OperationsServer is a fake server for instances of the armsearch.OperationsClient type.
-type OperationsServer struct {
-	// NewListPager is the fake for method OperationsClient.NewListPager
+// OfferingsServer is a fake server for instances of the armsearch.OfferingsClient type.
+type OfferingsServer struct {
+	// NewListPager is the fake for method OfferingsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armsearch.OperationsClientListOptions) (resp azfake.PagerResponder[armsearch.OperationsClientListResponse])
+	NewListPager func(options *armsearch.OfferingsClientListOptions) (resp azfake.PagerResponder[armsearch.OfferingsClientListResponse])
 }
 
-// NewOperationsServerTransport creates a new instance of OperationsServerTransport with the provided implementation.
-// The returned OperationsServerTransport instance is connected to an instance of armsearch.OperationsClient via the
+// NewOfferingsServerTransport creates a new instance of OfferingsServerTransport with the provided implementation.
+// The returned OfferingsServerTransport instance is connected to an instance of armsearch.OfferingsClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewOperationsServerTransport(srv *OperationsServer) *OperationsServerTransport {
-	return &OperationsServerTransport{
+func NewOfferingsServerTransport(srv *OfferingsServer) *OfferingsServerTransport {
+	return &OfferingsServerTransport{
 		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armsearch.OperationsClientListResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armsearch.OfferingsClientListResponse]](),
 	}
 }
 
-// OperationsServerTransport connects instances of armsearch.OperationsClient to instances of OperationsServer.
-// Don't use this type directly, use NewOperationsServerTransport instead.
-type OperationsServerTransport struct {
-	srv          *OperationsServer
-	newListPager *tracker[azfake.PagerResponder[armsearch.OperationsClientListResponse]]
+// OfferingsServerTransport connects instances of armsearch.OfferingsClient to instances of OfferingsServer.
+// Don't use this type directly, use NewOfferingsServerTransport instead.
+type OfferingsServerTransport struct {
+	srv          *OfferingsServer
+	newListPager *tracker[azfake.PagerResponder[armsearch.OfferingsClientListResponse]]
 }
 
-// Do implements the policy.Transporter interface for OperationsServerTransport.
-func (o *OperationsServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for OfferingsServerTransport.
+func (o *OfferingsServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
@@ -50,19 +50,19 @@ func (o *OperationsServerTransport) Do(req *http.Request) (*http.Response, error
 	return o.dispatchToMethodFake(req, method)
 }
 
-func (o *OperationsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (o *OfferingsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result)
 	defer close(resultChan)
 
 	go func() {
 		var intercepted bool
 		var res result
-		if operationsServerTransportInterceptor != nil {
-			res.resp, res.err, intercepted = operationsServerTransportInterceptor.Do(req)
+		if offeringsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = offeringsServerTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
-			case "OperationsClient.NewListPager":
+			case "OfferingsClient.NewListPager":
 				res.resp, res.err = o.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
@@ -83,7 +83,7 @@ func (o *OperationsServerTransport) dispatchToMethodFake(req *http.Request, meth
 	}
 }
 
-func (o *OperationsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+func (o *OfferingsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if o.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
@@ -107,8 +107,8 @@ func (o *OperationsServerTransport) dispatchNewListPager(req *http.Request) (*ht
 	return resp, nil
 }
 
-// set this to conditionally intercept incoming requests to OperationsServerTransport
-var operationsServerTransportInterceptor interface {
+// set this to conditionally intercept incoming requests to OfferingsServerTransport
+var offeringsServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)
 }

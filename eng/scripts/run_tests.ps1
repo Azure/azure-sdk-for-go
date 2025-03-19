@@ -10,6 +10,8 @@ Param(
 $ErrorActionPreference = 'Stop'
 Push-Location sdk/$serviceDirectory
 
+$Env:GOEXPERIMENT="nocoverageredesign"
+
 if ($enableRaceDetector) {
     Write-Host "##[command] Executing 'go test -timeout $testTimeout -race -v -coverprofile coverage.txt ./...' in sdk/$serviceDirectory"
     go test -timeout $testTimeout -race -v -coverprofile coverage.txt ./... | Tee-Object -FilePath outfile.txt

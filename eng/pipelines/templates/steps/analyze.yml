@@ -122,7 +122,6 @@ steps:
           not(endsWith(variables['Build.Repository.Name'], '-pr'))
         )
 
-
   # todo: make packageinfo aware, convert to script
   - task: Powershell@2
     displayName: 'Dependency Check'
@@ -144,11 +143,16 @@ steps:
 
   # todo: make packageinfo aware, convert to script
   - pwsh: |
-      $modDirs = ./eng/scripts/get_module_dirs.ps1 '${{ parameters.ServiceDirectory }}'
-      foreach ($md in $modDirs) {
-        pushd $md
-        Write-Host "##[command]Executing golangci-lint run -c $(System.DefaultWorkingDirectory)/eng/.golangci.yml in $md"
-        golangci-lint run -c $(System.DefaultWorkingDirectory)/eng/.golangci.yml
+      $changedServices = "$(ChangedServices)" -split ","
+      $failed = $false
+
+      foreach($serviceDirectory in $changedServices) {
+        $modDirs = ./eng/scripts/get_module_dirs.ps1 '$serviceDirectory'
+        foreach ($md in $modDirs) {
+          pushd $md
+          Write-Host "##[command]Executing golangci-lint run -c $(System.DefaultWorkingDirectory)/eng/.golangci.yml in $md"
+          golangci-lint run -c $(System.DefaultWorkingDirectory)/eng/.golangci.yml
+        }
       }
     displayName: 'Lint'
     failOnStderr: false
@@ -156,43 +160,61 @@ steps:
 
   # todo: make packageinfo aware, convert to script
   - pwsh: |
-      $modDirs = ./eng/scripts/get_module_dirs.ps1 '${{ parameters.ServiceDirectory }}'
-      foreach ($md in $modDirs) {
-        pushd $md
-        Write-Host "##[command]Executing go get -u all in $md"
-        go get -u all
-        $diff = (git diff -w .)
-        Write-Host ($diff -join "`n")
-        if ($diff.Length -gt 0) {
-          exit 1
+      $changedServices = "$(ChangedServices)" -split ","
+      $failed = $false
+
+      foreach($serviceDirectory in $changedServices) {
+        $modDirs = ./eng/scripts/get_module_dirs.ps1 '${{ parameters.ServiceDirectory }}'
+        foreach ($md in $modDirs) {
+          pushd $md
+          Write-Host "##[command]Executing go get -u all in $md"
+          go get -u all
+          $diff = (git diff -w .)
+          Write-Host ($diff -join "`n")
+          if ($diff.Length -gt 0) {
+            Write-Host "Failed to go get $serviceDirectory"
+            $failed = $true
+          }
         }
       }
     displayName: 'go get -u all'
     condition: eq(variables.SkipGoGetUAll, 'false')
     workingDirectory: $(System.DefaultWorkingDirectory)
 
-  # todo: make packageinfo aware, convert to script
   - pwsh: |
-      $modDirs = ./eng/scripts/get_module_dirs.ps1 '${{ parameters.ServiceDirectory }}'
-      foreach ($md in $modDirs) {
-        pushd $md
-        Write-Host "##[command]Executing go mod tidy in $md"
-        go mod tidy
-        $diff = (git diff -w .)
-        Write-Host ($diff -join "`n")
-        if ($diff.Length -gt 0) {
-          exit 1
+      $changedServices = "$(ChangedServices)" -split ","
+      $failed = $false
+
+      foreach($serviceDirectory in $changedServices) {
+        $modDirs = ./eng/scripts/get_module_dirs.ps1 '$serviceDirectory'
+        foreach ($md in $modDirs) {
+          pushd $md
+          Write-Host "##[command]Executing go mod tidy in $md"
+          go mod tidy
+          $diff = (git diff -w .)
+          Write-Host ($diff -join "`n")
+          if ($diff.Length -gt 0) {
+            $failed = $true
+            Write-Host "Failed to go mod tidy $serviceDirectory"
+          }
         }
+      }
+
+      if ($failed) {
+        Write-Host "go mod tidy failed. Check above output for details."
+        exit 1
       }
     displayName: 'go mod tidy'
     workingDirectory: $(System.DefaultWorkingDirectory)
 
-  # todo: make packageinfo aware, convert to script
   - pwsh: |
-      $modDirs = ./eng/scripts/get_module_dirs.ps1 '${{ parameters.ServiceDirectory }}'
-      foreach ($md in $modDirs) {
-        if (-Not $md -Match "/arm") {
-          Get-ChildItem $md/doc.go
+      $changedServices = "$(ChangedServices)" -split ","
+      foreach($serviceDirectory in $changedServices) {
+        $modDirs = ./eng/scripts/get_module_dirs.ps1 '${{ parameters.ServiceDirectory }}'
+        foreach ($md in $modDirs) {
+          if (-Not $md -Match "/arm") {
+            Get-ChildItem $md/doc.go
+          }
         }
       }
     displayName: 'Verify doc.go'

@@ -8,11 +8,9 @@ Generate and release Azure SDK for Go package from Swagger or TypeSpec.
 ## Table of Contents
 1. [Prerequisites](#prerequisites)
 2. [Release Process](#release-process)
-3. [Update Existing RP](#update-existing-rp)
 4. [Special Case in PR](#special-case-in-pr)
-5. [Releases New Service](#releases-new-service)
-6. [Add Live Test and Record](#add-live-test-and-record)
-7. [Breaking Change Review](#breaking-change-review)
+5. [Add Live Test and Record](#add-live-test-and-record)
+6. [Breaking Change Review](#breaking-change-review)
 
 ---
 
@@ -48,21 +46,22 @@ Generate and release Azure SDK for Go package from Swagger or TypeSpec.
 
 ### 2. General Release Guidelines
 - All requests should be completed before the 4th Friday of the month.
-- The issue must be labeled "ReadyForApiTest," indicating readiness.It appears in specs repo PR,[like](Azure/azure-rest-api-specs#33035)
+- The issue may be labeled "ReadyForApiTest," or the live test about the service is ok indicating readiness.It appears in specs repo PR,[like](Azure/azure-rest-api-specs#33035)
 - Ensure the "API Availability Check" passes for all services before releasing.
 
----
+### 3. Update Existing RP
 
-## Update Existing RP
-
-### Steps:
+#### Steps:
 1. If the issue lacks the `PRready` label, manually create a PR.
  - If the issue has the `Inconsistent` tag, update the version tag in `autorest.md`.
  - If the issue has the `TypeSpec` label, generate the SDK code using `generator release-v2`:
    ```
    generator release-v2 <path-to-sdk> <path-to-specs> <RP-name> <package-name> <tspconfig.yaml>
    ```
- - If no `TypeSpec` label, update the commit ID and tag in `autorest.md`.
+ - If no `TypeSpec` label, update the commit ID and tag in `autorest.md` and the execute the command.
+ - ```
+ - generator release-v2 <path-to-sdk> <path-to-specs>
+ - ```
 
 2. After generating the code, fix any issues, and if live tests are included:
  - Run `test-proxy restore` to restore assets.
@@ -74,23 +73,8 @@ Generate and release Azure SDK for Go package from Swagger or TypeSpec.
 
 4. After pipeline completion, approve the merge and close the corresponding issue.
 
----
-
-## Special Case in PR
-
-### Handling Multiple Versions:
-- Release services in ascending order of versions (e.g., FirstGA before FirstBeta).
-- For services with multiple versions, the generated code will not change; only `changelog.md` should be updated.
-
-### Different Swagger and Go Package Names:
-- If the Swagger name differs from the Go package name, use the following command for code generation:
-`generator release-v2 <sdk-path> <specs-path> resources <package-name>`
-
----
-
-## Releases New Service
-
-### Steps for New Service:
+### 4. Releases New Service
+#### Steps for New Service:
 1. Pull the latest changes from:
  - [azure-rest-api-specs](https://github.com/Azure/azure-rest-api-specs)
  - [azure-sdk-for-go](https://github.com/Azure/azure-sdk-for-go)
@@ -107,13 +91,26 @@ Generate and release Azure SDK for Go package from Swagger or TypeSpec.
 
 ---
 
+
+## Special Case in PR
+
+### Handling Multiple Versions:
+- Release services in ascending order of versions (e.g., FirstGA before FirstBeta).
+- For services with multiple versions, the generated code will not change; only `changelog.md` should be updated.
+
+### Different Swagger and Go Package Names:
+- If the Swagger name differs from the Go package name, use the following command for code generation:
+`generator release-v2 <sdk-path> <specs-path> resources <package-name>`
+
+---
+
 ## Add Live Test and Record
 It is not a required step in release process，we can ensure whether the api version has been deployed by live test.
 ### Install Scripts:
 1. Run the following PowerShell commands to download necessary scripts:
  ```ps
  Invoke-WebRequest -OutFile "generate-assets-json.ps1" https://raw.githubusercontent.com/Azure/azure-sdk-tools/main/eng/common/testproxy/onboarding/generate-assets-json.ps1
- Invoke-WebRequest -OutFile "generate-assets-json.ps1" https://raw.githubusercontent.com/Azure/azure-sdk-tools/main/eng/common/testproxy/onboarding/common-asset-functions.ps1
+ Invoke-WebRequest -OutFile "common-asset-functions.ps1" https://raw.githubusercontent.com/Azure/azure-sdk-tools/main/eng/common/testproxy/onboarding/common-asset-functions.ps1
 ```
 2. Run the script in the service path:
 `.\generate-assets-json.ps1 -InitialPush`

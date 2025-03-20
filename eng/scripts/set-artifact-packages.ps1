@@ -17,7 +17,13 @@ $changedServicesArray = $packageProperties | Where-Object { $packageSet -contain
     | ForEach-Object { $_.ServiceDirectory } | Get-Unique
 $changedServices = $changedServicesArray -join ","
 
-# todo: include the removal of the package info files that are not part of the targeted batch
-
+# remove any package.json files that are not part of the targeted batch
+Get-ChildItem -Recurse "$PackageInfoFolder" *.json | ForEach-Object {
+    $fileContent = Get-Content -Raw -Path $_.FullName | ConvertFrom-Json
+    if ($packageSet -notcontains $fileContent.Name) {
+        Remove-Item $_.FullName -Force
+        Write-Host "Removed $($_.FullName) as it doesn't belong to the package set that this batch is targeting."
+    }
+}
 Write-Host "##vso[task.setvariable variable=ChangedServices;]$changedServices"
 Write-Host "This run is targeting: $Packages in [$changedServices]"

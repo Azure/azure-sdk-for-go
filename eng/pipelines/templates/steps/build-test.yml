@@ -37,6 +37,7 @@ steps:
     parameters:
       ServiceDirectory: ${{parameters.ServiceDirectory}}
       PackageInfoDirectory: $(Build.ArtifactStagingDirectory)/PackageInfo
+      IncludeIndirect: true
 
   - task: Powershell@2
     displayName: Use azcore from main
@@ -84,6 +85,9 @@ steps:
   - ${{ if eq(parameters.TestProxy, true) }}:
     - template: /eng/common/testproxy/test-proxy-tool.yml
 
+  # we do not need to change any conditional activation for this section, as it is only activated when
+  # invoking a livetest run, which will never be the case for PRs. Devs will /azp run go - <service>
+  # to get access to this section of the pipeline
   - ${{ if parameters.UseFederatedAuth }}:
     - task: AzurePowerShell@5
       displayName: Run Tests (Federated Auth)

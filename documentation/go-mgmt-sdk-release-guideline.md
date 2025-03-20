@@ -60,7 +60,7 @@ Generate and release Azure SDK for Go package from Swagger or TypeSpec.
    ```
  - If no `TypeSpec` label, update the commit ID and tag in `autorest.md` and then:
    ```
-   generator release-v2 <path-to-sdk> <path-to-specs>
+   generator release-v2 <path-to-sdk> <path-to-specs> --update-spec-version=false
    ```
 2. After generating the code, fix any issues, and if live tests are included:
  - Run `test-proxy restore` to restore assets.

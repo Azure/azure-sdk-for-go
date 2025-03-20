@@ -12,7 +12,6 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
-	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
@@ -148,7 +147,7 @@ func StartSpan(ctx context.Context, name string, tracer tracing.Tracer, options 
 	ctx = context.WithValue(ctx, ctxActiveSpan{}, options.Kind)
 	return ctx, func(err error) {
 		if err != nil {
-			errType := strings.Replace(fmt.Sprintf("%T", err), "*exported.", "*azcore.", 1)
+			errType := fmt.Sprintf("%T", err)
 			span.SetAttributes(tracing.Attribute{Key: attrErrType, Value: errType})
 			span.SetStatus(tracing.SpanStatusError, fmt.Sprintf("%s:\n%s", errType, err.Error()))
 		}

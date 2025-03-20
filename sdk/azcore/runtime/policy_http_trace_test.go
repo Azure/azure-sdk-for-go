@@ -179,9 +179,9 @@ func TestStartSpan(t *testing.T) {
 	}
 	end(exported.NewResponseError(resp))
 	require.EqualValues(t, tracing.SpanStatusError, spanStatus)
-	require.Contains(t, errStr, "*azcore.ResponseError")
+	require.Contains(t, errStr, "*exported.ResponseError")
 	require.Contains(t, errStr, "ERROR CODE: ErrorItFailed")
-	require.Contains(t, spanAttrs, tracing.Attribute{Key: attrErrType, Value: "*azcore.ResponseError"})
+	require.Contains(t, spanAttrs, tracing.Attribute{Key: attrErrType, Value: "*exported.ResponseError"})
 }
 
 func TestStartSpansDontNest(t *testing.T) {

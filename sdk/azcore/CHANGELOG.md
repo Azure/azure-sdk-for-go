@@ -20,6 +20,8 @@
 
 ### Bugs Fixed
 
+* Removed hardcoded `azcore` replacement in the error type for `runtime.StartSpan()`.
+
 ### Other Changes
 
 * Added Span Attribute `error.type` to report an error when ending a span with `runtime.StartSpan`.

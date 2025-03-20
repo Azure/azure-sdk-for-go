@@ -28,6 +28,16 @@ parameters:
     default: ''
 
 steps:
+  - template: /eng/common/pipelines/templates/steps/save-package-properties.yml
+    parameters:
+      ServiceDirectory: ${{parameters.ServiceDirectory}}
+      PackageInfoDirectory: $(Build.ArtifactStagingDirectory)/PackageInfo
+
+  - template: /eng/pipelines/templates/steps/set-artifact-packages.yml
+    parameters:
+      ServiceDirectory: ${{parameters.ServiceDirectory}}
+      PackageInfoDirectory: $(Build.ArtifactStagingDirectory)/PackageInfo
+
   - task: Powershell@2
     displayName: Use azcore from main
     condition: eq(variables.UseAzcoreFromMain, 'true')

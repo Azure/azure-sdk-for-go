@@ -108,6 +108,19 @@ extends:
                 - ${{ parameters.MatrixFilters }}
               MatrixReplace:
                 - ${{ parameters.MatrixReplace }}
+              ${{ if eq(parameters.ServiceDirectory, 'auto') }}:
+                EnablePRGeneration: true
+                PRMatrixSetting: Packages
+                PRJobBatchSize: 20
+                PreGenerationSteps:
+                  # in other languages, will publish the package properties from this prestep location, then download
+                  # the artifact on the given test step. However, for go, discovering package properties is FAR faster than
+                  # taking the time to upload, scan, and download the artifact. We will just invoke save-package-properties
+                  # on the test step directly, then filter it by the batch package names during the run of the test batch
+                  - template: /eng/common/pipelines/templates/steps/save-package-properties.yml
+                    parameters:
+                      ServiceDirectory: ${{parameters.ServiceDirectory}}
+                      PackageInfoDirectory: $(Build.ArtifactStagingDirectory)/PackageInfoPublishing
               AdditionalParameters:
                 EnableRaceDetector: ${{ parameters.EnableRaceDetector }}
                 ServiceDirectory: ${{ parameters.ServiceDirectory }}

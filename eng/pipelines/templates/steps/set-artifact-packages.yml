@@ -1,0 +1,40 @@
+parameters:
+  PackageInfo: ''
+  IncludeIndirect: true
+steps:
+  # Package-Properties folder contains the package properties for all discovered packages that were either A) affected by the PR or
+  # B) explicitly present in the service directory. This repo splits the builds into two categories: "resourcemanager" and "dataplane". While
+  # a given directory may contain both, there will be a separate build definition to release the management packages. Due to this
+  # we need to artificially filter the packages to ensure that only the packages targeted for THAT ci.yml are built.
+  # When we merge the PR adding go - pullrequest, this code will also merge, meaning the public - <service> - ci builds will still operate
+  # EXACTLY the same as they did before the pipelinev3 change. This is important to ensure that we don't accidentally build the wrong packages
+  # while in the integration period. After we disable all the public `go - <service> - ci` builds, only the `go - pullrequest` build WONT provide
+  # an artifact list, which will allow the expand/contract. Meanwhile the internal builds will continue to provide the artifact list from their
+  # individual ci.yml and ci.resourcemanager.yml files.
+  - pwsh: |
+      $packageProperties = Get-ChildItem -Recurse "${{ parameters.PackageInfo }}" *.json
+
+      if (-not $includeIndirect) {
+        $packageProperties = $packageProperties | Where-Object { (Get-Content -Raw $_ | ConvertFrom-Json).IncludedForValidation -eq $false }
+      }
+
+      $pkgNames = $packageProperties | ForEach-Object { $_.Name.Replace(".json", "") }
+
+      $setting = $pkgNames -join ","
+      Write-Host "Setting Packages to: `n$setting"
+      Write-Host "##vso[task.setvariable variable=Packages;]$setting"
+
+      if (!$pkgNames) {
+        Write-Host "No packages were identified for this build."
+      }
+    displayName: Resolve Targeted Packages
+    condition: eq(variables['Packages'], '')
+
+  # this script sets $(ChangedServices) and populates a props file with the targeted set of projects
+  # for the build. This file is set to variable $(ProjectListOverrideFile).
+  - pwsh: |
+      ./eng/scripts/splittestdependencies/set-artifact-packages.ps1 `
+        -Packages "$(Packages)" `
+        -PackageInfoFolder "${{ parameters.PackageInfo }}"
+    displayName: Resolve Service and Project List
+    condition: ne(variables['Packages'], '')

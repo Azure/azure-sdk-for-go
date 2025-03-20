@@ -76,18 +76,19 @@ class PackageProps {
         $this.Group = $group
     }
 
-    hidden [PSCustomObject]ParseYmlForArtifact([string]$ymlPath) {
+    hidden [PSCustomObject]ParseYmlForArtifact([string]$ymlPath, [bool]$soleCIYml = $false) {
         $content = LoadFrom-Yaml $ymlPath
         if ($content) {
             $artifacts = GetValueSafelyFrom-Yaml $content @("extends", "parameters", "Artifacts")
-            $artifactForCurrentPackage = $null
+            $artifactForCurrentPackage = @{}
 
             if ($artifacts) {
                 $artifactForCurrentPackage = $artifacts | Where-Object { $_["name"] -eq $this.ArtifactName -or $_["name"] -eq $this.Name }
             }
 
-            # if we found an artifact for the current package, we should count this ci file as the source of the matrix for this package
-            if ($artifactForCurrentPackage) {
+            # if we found an artifact for the current package OR this is the sole ci.yml for the given service directory,
+            # we should count this ci file as the source of the matrix for this package
+            if ($artifactForCurrentPackage -or $soleCIYml) {
                 $result = [PSCustomObject]@{
                     ArtifactConfig = [HashTable]$artifactForCurrentPackage
                     ParsedYml = $content
@@ -106,9 +107,10 @@ class PackageProps {
         $ciFolderPath = Join-Path -Path $RepoRoot -ChildPath (Join-Path "sdk" $this.ServiceDirectory)
         $ciFiles = Get-ChildItem -Path $ciFolderPath -Filter "ci*.yml" -File
         $ciArtifactResult = $null
+        $soleCIYml = ($ciFiles.Count -eq 1)
 
         foreach ($ciFile in $ciFiles) {
-            $ciArtifactResult = $this.ParseYmlForArtifact($ciFile.FullName)
+            $ciArtifactResult = $this.ParseYmlForArtifact($ciFile.FullName, $soleCIYml)
             if ($ciArtifactResult) {
                 break
             }

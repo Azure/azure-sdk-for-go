@@ -95,6 +95,27 @@ function Get-go-PackageInfoFromPackageFile($pkg, $workingDirectory)
     return $resultObj
 }
 
+function EvaluateCIParam {
+  param(
+    [HashTable]$ParsedYmlContent,
+    [PackageProps]$pkgProp,
+    [string]$ParamName,
+    [bool]$DefaultValue
+  )
+
+  $paramPresent = GetValueSafelyFrom-Yaml $ParsedYmlContent @("extends", "parameters", $ParamName)
+
+  if ($null -ne $paramPresent) {
+    $parsedBool = $null
+    if ([bool]::TryParse($shouldAot, [ref]$parsedBool)) {
+      $pkgProp.CIParameters[$ParamName] = $parsedBool
+    }
+  }
+  else {
+    $pkgProp.CIParameters[$ParamName] = $DefaultValue
+  }
+}
+
 function Get-AllPackageInfoFromRepo($serviceDirectory)
 {
   $allPackageProps = @()
@@ -116,6 +137,23 @@ function Get-AllPackageInfoFromRepo($serviceDirectory)
       $allPackageProps += $modPropertes
     }
   }
+
+  # populate ci parameters for each package
+  foreach ($pkgProp in $allPackageProps) {
+    $ciProps = $pkgProp.GetCIYmlForArtifact()
+
+    # UsePipelineProxy - installs and runs the test proxy in ci.tests.yml, defaults true
+    # NonShipping - activate verify changelog in analyze, defaults false
+    # IsSdkLibrary - activates Detect API Changes, enables save-package-properties and enables Create API Review steps, defaults true
+    # LicenseCheck - activates license check in analyze, defaults true
+    if ($ciProps) {
+      EvaluateCIParam $ciProps.ParsedYml $pkgProp "UsePipelineProxy" $true
+      EvaluateCIParam $ciProps.ParsedYml $pkgProp "NonShipping" $false
+      EvaluateCIParam $ciProps.ParsedYml $pkgProp "IsSdkLibrary" $true
+      EvaluateCIParam $ciProps.ParsedYml $pkgProp "LicenseCheck" $true
+    }
+  }
+
   return $allPackageProps
 }
 

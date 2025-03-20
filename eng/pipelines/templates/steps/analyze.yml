@@ -8,6 +8,17 @@ parameters:
   ArtifactName: packages
 
 steps:
+  - template: /eng/common/pipelines/templates/steps/save-package-properties.yml
+    parameters:
+      ServiceDirectory: ${{parameters.ServiceDirectory}}
+      PackageInfoDirectory: $(Build.ArtifactStagingDirectory)/PackageInfo
+
+  - template: /eng/pipelines/templates/steps/set-artifact-packages.yml
+    parameters:
+      ServiceDirectory: ${{parameters.ServiceDirectory}}
+      PackageInfoDirectory: $(Build.ArtifactStagingDirectory)/PackageInfo
+
+  # todo: confirm with benbp why this IsSdkLibrary check is needed
   - task: Powershell@2
     inputs:
       filePath: $(Build.SourcesDirectory)/eng/common/scripts/Save-Package-Properties.ps1
@@ -173,6 +184,7 @@ steps:
     displayName: 'go mod tidy'
     workingDirectory: $(System.DefaultWorkingDirectory)
 
+  # todo: convert to script
   - pwsh: |
       $modDirs = ./eng/scripts/get_module_dirs.ps1 '${{ parameters.ServiceDirectory }}'
       foreach ($md in $modDirs) {
@@ -183,6 +195,7 @@ steps:
     displayName: 'Verify doc.go'
     workingDirectory: $(System.DefaultWorkingDirectory)
 
+  # todo: convert to script
   - script: |
       echo scanning copyright headers in $(pwd)
       grep -L -r --include \*.go -P "Copyright (\d{4}|\(c\)) Microsoft" . | tee >&2
@@ -191,23 +204,16 @@ steps:
     failOnStderr: true
     workingDirectory: 'sdk/${{parameters.ServiceDirectory}}'
 
-  - ${{ if eq(parameters.LicenseCheck, 'true') }}:
-    - pwsh: |
-        Write-Host "ensuring $(pwd)/LICENSE.txt file exists"
-        if (Test-Path LICENSE.txt) {
-          $patternMatches = Get-Content ./LICENSE.txt | Select-String -Pattern 'Copyright (\d{4}|\(c\)) Microsoft'
-          if ($patternMatches.Length -eq 0) {
-            Write-Host "LICENSE.txt file is invalid"
-            exit 1
-          }
-        } else {
-          Write-Host "Could not find a LICENSE.txt file"
-          exit 1
-        }
-      displayName: 'LICENSE.txt Check'
-      condition: succeededOrFailed()
-      workingDirectory: 'sdk/${{parameters.ServiceDirectory}}'
+  - task: Powershell@2
+    inputs:
+      filePath: $(Build.SourcesDirectory)/eng/scripts/license-check.ps1
+      arguments: >
+        -PackageInfoFolder '$(Build.ArtifactStagingDirectory)/PackageInfo'
+      pwsh: true
+    displayName: 'LICENSE.txt Check'
+    condition: succeededOrFailed()
 
+  # todo: convert to script
   - script: |
       echo Check source file formatting in $(pwd)
       gofmt -s -l -d . | tee >&2
@@ -216,20 +222,62 @@ steps:
     failOnStderr: true
     workingDirectory: 'sdk/${{parameters.ServiceDirectory}}'
 
+  # todo: figure out something specific for this guy, I think I may have a global issue with the way we are doing this?
   - template: /eng/common/pipelines/templates/steps/verify-links.yml
     parameters:
       Directory: sdk/${{ parameters.ServiceDirectory }}
       CheckLinkGuidance: $true
 
-  - script: |
-      go run . --directory '$(System.DefaultWorkingDirectory)/sdk/${{parameters.ServiceDirectory}}'
+  - pwsh: |
+      if (-not "$(ChangedServices)") {
+        Write-Host "No services were changed build. Skipping doccheck."
+        exit 0
+      }
+
+      $changedServices = "$(ChangedServices)" -split ","
+      $failed = $false
+
+      foreach ($service in $changedServices) {
+        go run . --directory '$(System.DefaultWorkingDirectory)/sdk/$service'
+        if ($LASTEXITCODE -ne 0) {
+          $failed = $true
+        }
+      }
+
+      if ($failed) {
+        Write-Host "Doccheck failed. Check above output for details."
+        exit 1
+      }
     displayName: 'Validate Documentation'
     condition: succeededOrFailed()
     workingDirectory: 'eng/tools/doccheck'
 
-  - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
+  # todo: re-enable this once we have a working version of the updated eng/common scripts
+  # - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
 
-  - ${{if eq(parameters.NonShipping, 'false')}}:
+  # todo: if servicedirectory -eq auto, we need to run all the smoke tests fo all the changed services for the current batch
+  - task: PowerShell@2
+    displayName: 'Run Nightly SmokeTests'
+    inputs:
+      targetType: 'filePath'
+      filePath: ./eng/scripts/Smoke_Tests_Nightly.ps1
+      pwsh: true
+      arguments: '${{ parameters.ServiceDirectory }}'
+
+  # todo: should we remove this? There are no more checks after this one, so simply removing all packageInfo that aren't shipping
+  # to allow the default verify-changeslogs template to work correctly is probably better than any custom conditional code in that template.
+  - pwsh: |
+      Get-ChildItem -Path $(Build.ArtifactStagingDirectory)/PackageInfo -Recurse -Filter *.json `
+        | ForEach-Object {
+          $json = Get-Content -Path $_.FullName -Raw | ConvertFrom-Json
+          if ($json.CIParameters.NonShipping) {
+            Remove-Item -Path $_.FullName -Force
+          }
+        }
+    displayName: Clean up Non-Shipping Artifacts
+
+  # todo: am I going to need to deal with this ForRelease parameter?
+  - ${{if and(eq(parameters.NonShipping, 'false'), ne(parameters.ServiceDirectory, 'auto')) }}:
     - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
       parameters:
         ${{ if startsWith(parameters.ServiceDirectory, '../') }}:
@@ -238,11 +286,7 @@ steps:
           PackageName: 'sdk/${{parameters.ServiceDirectory}}'
         ServiceDirectory: ${{ parameters.ServiceDirectory }}
         ForRelease: false
-
-  - task: PowerShell@2
-    displayName: 'Run Nightly SmokeTests'
-    inputs:
-      targetType: 'filePath'
-      filePath: ./eng/scripts/Smoke_Tests_Nightly.ps1
-      pwsh: true
-      arguments: '${{ parameters.ServiceDirectory }}'
+  - ${{ else }}:
+    - template: /eng/common/pipelines/templates/steps/verify-changelogs.yml
+      parameters:
+        PackagePropertiesFolder: $(Build.ArtifactStagingDirectory)/PackageInfo

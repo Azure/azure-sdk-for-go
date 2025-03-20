@@ -42,6 +42,8 @@ Param (
   [switch] $addDevVersion
 )
 
+$env:GITHUB_ACTIONS="true"
+. "C:/repo/locker/cache/ms-ref/image.yml.ps1"
 . (Join-Path $PSScriptRoot common.ps1)
 
 function SetOutput($outputPath, $incomingPackageSpec)

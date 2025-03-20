@@ -93,6 +93,11 @@ param (
     })]
     [array] $AllowIpRanges = @(),
 
+    # Instead of running the post script, create a wrapped file to run it with parameters
+    # so that CI can run it in a subsequent step with a refreshed azure login
+    [Parameter()]
+    [switch] $SelfContainedPostScript,
+
     [Parameter()]
     [switch] $CI = ($null -ne $env:SYSTEM_TEAMPROJECTID),
 
@@ -626,8 +631,37 @@ try {
 
         $postDeploymentScript = $templateFile.originalFilePath | Split-Path | Join-Path -ChildPath "$ResourceType-resources-post.ps1"
         if (Test-Path $postDeploymentScript) {
-            Log "Invoking post-deployment script '$postDeploymentScript'"
-            &$postDeploymentScript -ResourceGroupName $ResourceGroupName -DeploymentOutputs $deploymentOutputs @PSBoundParameters
+            if ($SelfContainedPostScript) {
+                $selfContainedScript = $templateFile.originalFilePath | Split-Path | Join-Path -ChildPath "self-contained_$ResourceType-resources-post.ps1"
+                Log "Creating invokable post-deployment script '$selfContainedScript' from '$postDeploymentScript'"
+
+                $deserialized = @{}
+                foreach ($parameter in $PSBoundParameters.GetEnumerator()) {
+                    if ($parameter.Value -is [System.Management.Automation.SwitchParameter]) {
+                        $deserialized[$parameter.Key] = $parameter.Value.ToBool()
+                    } else {
+                        $deserialized[$parameter.Key] = $parameter.Value
+                    }
+                }
+                $deserialized['ResourceGroupName'] = $ResourceGroupName
+                $deserialized['DeploymentOutputs'] = $deploymentOutputs
+                $serialized = $deserialized | ConvertTo-Json
+
+                $outScript = @"
+`$parameters = `@'
+$serialized
+'`@ | ConvertFrom-Json -AsHashtable
+
+$postDeploymentScript `@parameters
+"@
+
+                $outScript | Out-File $selfContainedScript
+                LogVsoCommand "##vso[task.setvariable variable=SELF_CONTAINED_TEST_RESOURCES_POST_SCRIPT;]$selfContainedScript"
+
+            } else {
+                Log "Invoking post-deployment script '$postDeploymentScript'"
+                &$postDeploymentScript -ResourceGroupName $ResourceGroupName -DeploymentOutputs $deploymentOutputs @PSBoundParameters
+            }
         }
 
         if ($templateFile.jsonFilePath.EndsWith('.compiled.json')) {

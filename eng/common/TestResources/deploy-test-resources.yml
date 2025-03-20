@@ -9,6 +9,7 @@ parameters:
   ResourceType: test
   UseFederatedAuth: true
   PersistOidcToken: false
+  SelfContainedPostScript: self-contained_test-resources-post.ps1
 
 # SubscriptionConfiguration will be splatted into the parameters of the test
 # resources script. It should be JSON in the form:
@@ -100,9 +101,28 @@ steps:
             @subscriptionConfiguration `
             -AdditionalParameters ${{ parameters.ArmTemplateParameters }} `
             -AllowIpRanges ('$(azsdk-corp-net-ip-ranges)' -split ',') `
+            -SelfContainedPostScript ${{ parameters.SelfContainedPostScript }}
             -CI `
             -Force `
             -Verbose | Out-Null
+
+    - ${{ if eq(parameters.PersistOidcToken, true) }}:
+      # ARM deployments that take longer than 10-15 minutes (e.g. HSM) can
+      # cause post scripts to fail with expired credentials.
+      # Add a new task with a refreshed token as a workaround to this issue.
+      - task: AzurePowerShell@5
+        displayName: Test Resources Post with refreshed login
+        condition: ne($(SELF_CONTAINED_TEST_RESOURCES_POST_SCRIPT), '')
+        env:
+          ARM_OIDC_TOKEN: $(ARM_OIDC_TOKEN)
+          ${{ insert }}: ${{ parameters.EnvVars }}
+        inputs:
+          azureSubscription: ${{ parameters.ServiceConnection }}
+          azurePowerShellVersion: LatestVersion
+          pwsh: true
+          ScriptType: InlineScript
+          Inline: |
+            & ${{ parameters.SelfContainedPostScript }}
 
   - ${{ else }}:
     - pwsh: |

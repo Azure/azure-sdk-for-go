@@ -12,13 +12,13 @@ steps:
   # an artifact list, which will allow the expand/contract. Meanwhile the internal builds will continue to provide the artifact list from their
   # individual ci.yml and ci.resourcemanager.yml files.
   - pwsh: |
-      $packageProperties = Get-ChildItem -Recurse "${{ parameters.PackageInfo }}" *.json
+      $packageProperties = Get-ChildItem -Recurse "${{ parameters.PackageInfo }}" *.json | ForEach-Object { Get-Content -Raw $_ | ConvertFrom-Json }
 
       if (-not $includeIndirect) {
-        $packageProperties = $packageProperties | Where-Object { (Get-Content -Raw $_ | ConvertFrom-Json).IncludedForValidation -eq $false }
+        $packageProperties = $packageProperties | Where-Object { $_.IncludedForValidation -eq $false }
       }
 
-      $pkgNames = $packageProperties | ForEach-Object { $_.Name.Replace(".json", "") }
+      $pkgNames = $packageProperties | ForEach-Object { $_.Name }
 
       $setting = $pkgNames -join ","
       Write-Host "Setting Packages to: `n$setting"

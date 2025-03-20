@@ -205,6 +205,22 @@ function Get-PkgProperties {
     return $null
 }
 
+function Get-PackagesFromPackageInfo([string]$PackageInfoFolder, [bool]$IncludeIndirect, [ScriptBlock]$CustomCompareFunction = $null) {
+    $packages = Get-ChildItem -R -Path $PackageInfoFolder -Filter "*.json" | ForEach-Object {
+        Get-Content $_.FullName | ConvertFrom-Json
+    }
+
+    if (-not $includeIndirect) {
+        $packages = $packages | Where-Object { $_.IncludedForValidation -eq $false }
+    }
+
+    if ($CustomCompareFunction) {
+        $packages = $packages | Where-Object { &$CustomCompareFunction $_ }
+    }
+
+    return $packages
+}
+
 
 function Get-TriggerPaths([PSCustomObject]$AllPackageProperties) {
     $existingTriggeringPaths = @()

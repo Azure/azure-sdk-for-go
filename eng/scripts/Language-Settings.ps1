@@ -116,14 +116,17 @@ function EvaluateCIParam {
   }
 }
 
-function Get-AllPackageInfoFromRepo($serviceDirectory)
+function Get-AllPackageInfoFromRepo($serviceDirectories)
 {
   $allPackageProps = @()
   $searchPath = Join-Path $RepoRoot "sdk"
   $pkgFiles = @()
-  if ($serviceDirectory) {
-    $searchPath = Join-Path $searchPath $serviceDirectory "go.mod"
-    [array]$pkgFiles = @(Get-ChildItem $searchPath)
+  if ($serviceDirectories) {
+    $serviceDirectories = $serviceDirectory -split ","
+    foreach($serviceDirectory in $serviceDirectories){
+      $searchPath = Join-Path $searchPath $serviceDirectory "go.mod"
+      $pkgFiles += @(Get-ChildItem $searchPath)
+    }
   } else {
     # If service directory is not passed in, find all modules
     [array]$pkgFiles = Get-ChildItem -Path $searchPath -Include "go.mod" -Recurse

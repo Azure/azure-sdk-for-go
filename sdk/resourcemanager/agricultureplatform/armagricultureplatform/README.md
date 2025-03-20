@@ -1,6 +1,6 @@
-# Azure Agricultureplatform Module for Go
+# Azure Agriculture Platform Module for Go
 
-The `armagricultureplatform` module provides operations for working with Azure Agricultureplatform.
+The `armagricultureplatform` module provides operations for working with Azure Agriculture Platform.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/agricultureplatform/armagricultureplatform)
 
@@ -15,7 +15,7 @@ The `armagricultureplatform` module provides operations for working with Azure A
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Agricultureplatform module:
+Install the Azure Agriculture Platform module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/agricultureplatform/armagricultureplatform
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/agricultureplatform
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Agricultureplatform.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Agriculture Platform.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Agricultureplatform module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure Agriculture Platform module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armagricultureplatform.NewClientFactory(<subscription ID>, cred, nil)

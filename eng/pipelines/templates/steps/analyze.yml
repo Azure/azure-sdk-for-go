@@ -141,7 +141,6 @@ steps:
     workingDirectory: $(System.DefaultWorkingDirectory)
     retryCountOnTaskFailure: 3
 
-  # todo: make packageinfo aware, convert to script
   - pwsh: |
       $changedServices = "$(ChangedServices)" -split ","
       $failed = $false
@@ -152,13 +151,22 @@ steps:
           pushd $md
           Write-Host "##[command]Executing golangci-lint run -c $(System.DefaultWorkingDirectory)/eng/.golangci.yml in $md"
           golangci-lint run -c $(System.DefaultWorkingDirectory)/eng/.golangci.yml
+
+          if ($LASTEXITCODE) {
+            Write-Host "golangci-lint for $serviceDirectory failed. Check above output for details."
+            $failed = $true
+          }
         }
+      }
+
+      if ($failed) {
+        Write-Host "golangci-lint failed. Check above output for details."
+        exit 1
       }
     displayName: 'Lint'
     failOnStderr: false
     workingDirectory: $(System.DefaultWorkingDirectory)
 
-  # todo: make packageinfo aware, convert to script
   - pwsh: |
       $changedServices = "$(ChangedServices)" -split ","
       $failed = $false
@@ -176,6 +184,11 @@ steps:
             $failed = $true
           }
         }
+      }
+
+      if ($failed) {
+        Write-Host "go get failed. Check above output for details."
+        exit 1
       }
     displayName: 'go get -u all'
     condition: eq(variables.SkipGoGetUAll, 'false')

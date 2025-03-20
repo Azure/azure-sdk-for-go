@@ -101,7 +101,7 @@ steps:
             @subscriptionConfiguration `
             -AdditionalParameters ${{ parameters.ArmTemplateParameters }} `
             -AllowIpRanges ('$(azsdk-corp-net-ip-ranges)' -split ',') `
-            -SelfContainedPostScript ${{ parameters.SelfContainedPostScript }}
+            -SelfContainedPostScript
             -CI `
             -Force `
             -Verbose | Out-Null
@@ -112,7 +112,7 @@ steps:
       # Add a new task with a refreshed token as a workaround to this issue.
       - task: AzurePowerShell@5
         displayName: Test Resources Post with refreshed login
-        condition: ne($(SELF_CONTAINED_TEST_RESOURCES_POST_SCRIPT), '')
+        condition: ne(variables['SELF_CONTAINED_TEST_RESOURCES_POST_SCRIPT'], '')
         env:
           ARM_OIDC_TOKEN: $(ARM_OIDC_TOKEN)
           ${{ insert }}: ${{ parameters.EnvVars }}
@@ -122,7 +122,7 @@ steps:
           pwsh: true
           ScriptType: InlineScript
           Inline: |
-            & ${{ parameters.SelfContainedPostScript }}
+            & $env:SELF_CONTAINED_TEST_RESOURCES_POST_SCRIPT
 
   - ${{ else }}:
     - pwsh: |

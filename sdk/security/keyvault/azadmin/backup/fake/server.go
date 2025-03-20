@@ -28,6 +28,14 @@ type Server struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginFullRestore func(ctx context.Context, restoreBlobDetails backup.RestoreOperationParameters, options *backup.BeginFullRestoreOptions) (resp azfake.PollerResponder[backup.FullRestoreResponse], errResp azfake.ErrorResponder)
 
+	// BeginPreFullBackup is the fake for method Client.BeginPreFullBackup
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginPreFullBackup func(ctx context.Context, preBackupOperationParameters backup.PreBackupOperationParameters, options *backup.BeginPreFullBackupOptions) (resp azfake.PollerResponder[backup.PreFullBackupResponse], errResp azfake.ErrorResponder)
+
+	// BeginPreFullRestore is the fake for method Client.BeginPreFullRestore
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginPreFullRestore func(ctx context.Context, preRestoreOperationParameters backup.PreRestoreOperationParameters, options *backup.BeginPreFullRestoreOptions) (resp azfake.PollerResponder[backup.PreFullRestoreResponse], errResp azfake.ErrorResponder)
+
 	// BeginSelectiveKeyRestore is the fake for method Client.BeginSelectiveKeyRestore
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginSelectiveKeyRestore func(ctx context.Context, keyName string, restoreBlobDetails backup.SelectiveKeyRestoreOperationParameters, options *backup.BeginSelectiveKeyRestoreOptions) (resp azfake.PollerResponder[backup.SelectiveKeyRestoreResponse], errResp azfake.ErrorResponder)
@@ -41,6 +49,8 @@ func NewServerTransport(srv *Server) *ServerTransport {
 		srv:                      srv,
 		beginFullBackup:          newTracker[azfake.PollerResponder[backup.FullBackupResponse]](),
 		beginFullRestore:         newTracker[azfake.PollerResponder[backup.FullRestoreResponse]](),
+		beginPreFullBackup:       newTracker[azfake.PollerResponder[backup.PreFullBackupResponse]](),
+		beginPreFullRestore:      newTracker[azfake.PollerResponder[backup.PreFullRestoreResponse]](),
 		beginSelectiveKeyRestore: newTracker[azfake.PollerResponder[backup.SelectiveKeyRestoreResponse]](),
 	}
 }
@@ -51,6 +61,8 @@ type ServerTransport struct {
 	srv                      *Server
 	beginFullBackup          *tracker[azfake.PollerResponder[backup.FullBackupResponse]]
 	beginFullRestore         *tracker[azfake.PollerResponder[backup.FullRestoreResponse]]
+	beginPreFullBackup       *tracker[azfake.PollerResponder[backup.PreFullBackupResponse]]
+	beginPreFullRestore      *tracker[azfake.PollerResponder[backup.PreFullRestoreResponse]]
 	beginSelectiveKeyRestore *tracker[azfake.PollerResponder[backup.SelectiveKeyRestoreResponse]]
 }
 
@@ -81,6 +93,10 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 				res.resp, res.err = s.dispatchBeginFullBackup(req)
 			case "Client.BeginFullRestore":
 				res.resp, res.err = s.dispatchBeginFullRestore(req)
+			case "Client.BeginPreFullBackup":
+				res.resp, res.err = s.dispatchBeginPreFullBackup(req)
+			case "Client.BeginPreFullRestore":
+				res.resp, res.err = s.dispatchBeginPreFullRestore(req)
 			case "Client.BeginSelectiveKeyRestore":
 				res.resp, res.err = s.dispatchBeginSelectiveKeyRestore(req)
 			default:
@@ -165,6 +181,74 @@ func (s *ServerTransport) dispatchBeginFullRestore(req *http.Request) (*http.Res
 	}
 	if !server.PollerResponderMore(beginFullRestore) {
 		s.beginFullRestore.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (s *ServerTransport) dispatchBeginPreFullBackup(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginPreFullBackup == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginPreFullBackup not implemented")}
+	}
+	beginPreFullBackup := s.beginPreFullBackup.get(req)
+	if beginPreFullBackup == nil {
+		body, err := server.UnmarshalRequestAsJSON[backup.PreBackupOperationParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginPreFullBackup(req.Context(), body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginPreFullBackup = &respr
+		s.beginPreFullBackup.add(req, beginPreFullBackup)
+	}
+
+	resp, err := server.PollerResponderNext(beginPreFullBackup, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginPreFullBackup.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginPreFullBackup) {
+		s.beginPreFullBackup.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (s *ServerTransport) dispatchBeginPreFullRestore(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginPreFullRestore == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginPreFullRestore not implemented")}
+	}
+	beginPreFullRestore := s.beginPreFullRestore.get(req)
+	if beginPreFullRestore == nil {
+		body, err := server.UnmarshalRequestAsJSON[backup.PreRestoreOperationParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginPreFullRestore(req.Context(), body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginPreFullRestore = &respr
+		s.beginPreFullRestore.add(req, beginPreFullRestore)
+	}
+
+	resp, err := server.PollerResponderNext(beginPreFullRestore, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginPreFullRestore.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginPreFullRestore) {
+		s.beginPreFullRestore.remove(req)
 	}
 
 	return resp, nil

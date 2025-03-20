@@ -40,6 +40,23 @@ func getServer() fake.Server {
 			resp.SetTerminalResponse(http.StatusOK, restoreResp, nil)
 			return
 		},
+		BeginPreFullBackup: func(ctx context.Context, preBackupOperationParameters backup.PreBackupOperationParameters, options *backup.BeginPreFullBackupOptions) (resp azfake.PollerResponder[backup.PreFullBackupResponse], errResp azfake.ErrorResponder) {
+			resp.AddNonTerminalResponse(http.StatusAccepted, nil)
+			resp.AddNonTerminalResponse(http.StatusAccepted, nil)
+			backupResp := backup.PreFullBackupResponse{}
+			backupResp.AzureStorageBlobContainerURI = to.Ptr(storageURI)
+			backupResp.Status = to.Ptr("Succeeded")
+			resp.SetTerminalResponse(http.StatusOK, backupResp, nil)
+			return
+		},
+		BeginPreFullRestore: func(ctx context.Context, preRestoreOperationParameters backup.PreRestoreOperationParameters, options *backup.BeginPreFullRestoreOptions) (resp azfake.PollerResponder[backup.PreFullRestoreResponse], errResp azfake.ErrorResponder) {
+			resp.AddNonTerminalResponse(http.StatusAccepted, nil)
+			resp.AddNonTerminalResponse(http.StatusAccepted, nil)
+			restoreResp := backup.PreFullRestoreResponse{}
+			restoreResp.Status = to.Ptr("Succeeded")
+			resp.SetTerminalResponse(http.StatusOK, restoreResp, nil)
+			return
+		},
 		BeginSelectiveKeyRestore: func(ctx context.Context, keyName string, restoreBlobDetails backup.SelectiveKeyRestoreOperationParameters, options *backup.BeginSelectiveKeyRestoreOptions) (resp azfake.PollerResponder[backup.SelectiveKeyRestoreResponse], errResp azfake.ErrorResponder) {
 			resp.AddNonTerminalResponse(http.StatusAccepted, nil)
 			resp.AddNonTerminalResponse(http.StatusAccepted, nil)
@@ -61,26 +78,43 @@ func TestServer(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	backupPoller, err := client.BeginFullBackup(context.TODO(), backup.SASTokenParameters{StorageResourceURI: to.Ptr("testing")}, nil)
+	backupPoller, err := client.BeginFullBackup(context.Background(), backup.SASTokenParameters{StorageResourceURI: to.Ptr("testing")}, nil)
 	require.NoError(t, err)
-	backupResp, err := backupPoller.PollUntilDone(context.TODO(), &runtime.PollUntilDoneOptions{
+	backupResp, err := backupPoller.PollUntilDone(context.Background(), &runtime.PollUntilDoneOptions{
 		Frequency: time.Second,
 	})
 	require.NoError(t, err)
 	require.Equal(t, storageURI, *backupResp.AzureStorageBlobContainerURI)
 	require.Equal(t, "Succeeded", *backupResp.Status)
 
-	restorePoller, err := client.BeginFullRestore(context.TODO(), backup.RestoreOperationParameters{FolderToRestore: to.Ptr("test"), SASTokenParameters: &backup.SASTokenParameters{StorageResourceURI: &storageURI, Token: to.Ptr("SASToken")}}, nil)
+	restorePoller, err := client.BeginFullRestore(context.Background(), backup.RestoreOperationParameters{FolderToRestore: to.Ptr("test"), SASTokenParameters: &backup.SASTokenParameters{StorageResourceURI: &storageURI, Token: to.Ptr("SASToken")}}, nil)
 	require.NoError(t, err)
-	restoreResp, err := restorePoller.PollUntilDone(context.TODO(), &runtime.PollUntilDoneOptions{
+	restoreResp, err := restorePoller.PollUntilDone(context.Background(), &runtime.PollUntilDoneOptions{
 		Frequency: time.Second,
 	})
 	require.NoError(t, err)
 	require.Equal(t, "Succeeded", *restoreResp.Status)
 
-	selectiveRestorePoller, err := client.BeginSelectiveKeyRestore(context.TODO(), "key-name", backup.SelectiveKeyRestoreOperationParameters{Folder: to.Ptr("test"), SASTokenParameters: &backup.SASTokenParameters{StorageResourceURI: &storageURI, Token: to.Ptr("SASToken")}}, nil)
+	preBackupPoller, err := client.BeginPreFullBackup(context.Background(), backup.PreBackupOperationParameters{StorageResourceURI: to.Ptr("testing")}, nil)
 	require.NoError(t, err)
-	selectiveRestoreResp, err := selectiveRestorePoller.PollUntilDone(context.TODO(), &runtime.PollUntilDoneOptions{
+	preBackupResp, err := preBackupPoller.PollUntilDone(context.Background(), &runtime.PollUntilDoneOptions{
+		Frequency: time.Second,
+	})
+	require.NoError(t, err)
+	require.Equal(t, storageURI, *preBackupResp.AzureStorageBlobContainerURI)
+	require.Equal(t, "Succeeded", *preBackupResp.Status)
+
+	preRestorePoller, err := client.BeginPreFullRestore(context.Background(), backup.PreRestoreOperationParameters{FolderToRestore: to.Ptr("test"), SASTokenParameters: &backup.SASTokenParameters{StorageResourceURI: &storageURI, Token: to.Ptr("SASToken")}}, nil)
+	require.NoError(t, err)
+	preRestoreResp, err := preRestorePoller.PollUntilDone(context.Background(), &runtime.PollUntilDoneOptions{
+		Frequency: time.Second,
+	})
+	require.NoError(t, err)
+	require.Equal(t, "Succeeded", *preRestoreResp.Status)
+
+	selectiveRestorePoller, err := client.BeginSelectiveKeyRestore(context.Background(), "key-name", backup.SelectiveKeyRestoreOperationParameters{Folder: to.Ptr("test"), SASTokenParameters: &backup.SASTokenParameters{StorageResourceURI: &storageURI, Token: to.Ptr("SASToken")}}, nil)
+	require.NoError(t, err)
+	selectiveRestoreResp, err := selectiveRestorePoller.PollUntilDone(context.Background(), &runtime.PollUntilDoneOptions{
 		Frequency: time.Second,
 	})
 	require.NoError(t, err)

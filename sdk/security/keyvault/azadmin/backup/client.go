@@ -180,7 +180,9 @@ func (client *Client) BeginPreFullBackup(ctx context.Context, preBackupOperation
 // Generated from API version 7.6-preview.2
 func (client *Client) preFullBackup(ctx context.Context, preBackupOperationParameters PreBackupOperationParameters, options *BeginPreFullBackupOptions) (*http.Response, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "backup.Client.BeginPreFullBackup", client.internal.Tracer(), nil)
+	const operationName = "Client.BeginPreFullBackup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.preFullBackupCreateRequest(ctx, preBackupOperationParameters, options)
 	if err != nil {
@@ -233,7 +235,9 @@ func (client *Client) BeginPreFullRestore(ctx context.Context, preRestoreOperati
 // Generated from API version 7.6-preview.2
 func (client *Client) preFullRestore(ctx context.Context, preRestoreOperationParameters PreRestoreOperationParameters, options *BeginPreFullRestoreOptions) (*http.Response, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "backup.Client.BeginPreFullRestore", client.internal.Tracer(), nil)
+	const operationName = "Client.BeginPreFullRestore"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.preFullRestoreCreateRequest(ctx, preRestoreOperationParameters, options)
 	if err != nil {

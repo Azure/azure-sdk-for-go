@@ -18,21 +18,10 @@ steps:
       ServiceDirectory: ${{parameters.ServiceDirectory}}
       PackageInfoDirectory: $(Build.ArtifactStagingDirectory)/PackageInfo
 
-  # todo: confirm with benbp why this IsSdkLibrary check is needed
-  - task: Powershell@2
-    inputs:
-      filePath: $(Build.SourcesDirectory)/eng/common/scripts/Save-Package-Properties.ps1
-      arguments: >
-        -ServiceDirectory ${{parameters.ServiceDirectory}}
-        -OutDirectory $(Build.ArtifactStagingDirectory)/PackageInfo
-      pwsh: true
-      workingDirectory: $(Pipeline.Workspace)
-    displayName: Dump Package properties
-    condition: and(succeeded(), ${{ parameters.IsSdkLibrary }})
-
+  # todo: confirm with benbp why this IsSdkLibrary check is needed in general
   - pwsh: |
       . $(Build.SourcesDirectory)/eng/scripts/apiview-helpers.ps1
-      $directoryToPublish = Join-Path -Path $(Build.ArtifactStagingDirectory) ${{ parameters.ArtifactName }}
+      $directoryToPublish = Join-Path -Path $(Build.ArtifactStagingDirectory) ArtifactStaging ${{ parameters.ArtifactName }}
 
       New-APIViewArtifacts `
         -ServiceDirectory '${{ parameters.ServiceDirectory }}' `
@@ -43,11 +32,17 @@ steps:
     displayName: 'Create Go APIView Artifact'
     condition: and(succeeded(), ${{ parameters.IsSdkLibrary }})
 
-  - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
-    parameters:
-      ArtifactName: ${{ parameters.ArtifactName }}
-      ArtifactPath: "$(Build.ArtifactStagingDirectory)/${{ parameters.ArtifactName }}"
-      CustomCondition: and(succeeded(), ${{ parameters.IsSdkLibrary }})
+  - ${{ if eq(parameters.ServiceDirectory, 'auto') }}:
+    - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+      parameters:
+        ArtifactName: PRArtifacts
+        ArtifactPath: "$(Build.ArtifactStagingDirectory)/ArtifactStaging"
+  - ${{ else }}:
+    - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+      parameters:
+        ArtifactName: ${{ parameters.ArtifactName }}
+        ArtifactPath: "$(Build.ArtifactStagingDirectory)/ArtifactStaging/${{ parameters.ArtifactName }}"
+        CustomCondition: and(succeeded(), ${{ parameters.IsSdkLibrary }})
 
   # Second publish of PackageInfo to avoid breakng release pipeline, should be cleaned up once release pipeline is updated
   - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
@@ -58,6 +53,7 @@ steps:
 
   - template: /eng/common/pipelines/templates/steps/set-default-branch.yml
 
+  # we don't need to futz with this for PR builds, because it only ever runs on internal definitions anyway
   - pwsh: |
       . $(Build.SourcesDirectory)/eng/scripts/apiview-helpers.ps1
       New-APIViewFromCI `
@@ -73,11 +69,13 @@ steps:
     workingDirectory: $(Pipeline.Workspace)
     condition: and(succeeded(), ne(variables['Skip.CreateApiReview'], 'true') , ne(variables['Build.Reason'],'PullRequest'), eq(variables['System.TeamProject'], 'internal'))
 
+  # todo: what is the perf cost of this? Can we remove the condition?
   - ${{ if eq(variables['Build.Reason'],'PullRequest') }}:
     - template: /eng/common/pipelines/templates/steps/detect-api-changes.yml
       parameters:
         Condition: ${{ parameters.IsSdkLibrary }}
 
+  # don't need to touch any of the items below as they are all internal only
   - ${{ if and(ne(variables['Skip.PackageValidation'], 'true'), eq(variables['System.TeamProject'], 'internal')) }}:
     - pwsh: |
         . ./eng/common/scripts/common.ps1
@@ -124,6 +122,8 @@ steps:
           not(endsWith(variables['Build.Repository.Name'], '-pr'))
         )
 
+
+  # todo: make packageinfo aware, convert to script
   - task: Powershell@2
     displayName: 'Dependency Check'
     condition: ne(variables['Skip.DependencyCheck'], 'true')
@@ -142,6 +142,7 @@ steps:
     workingDirectory: $(System.DefaultWorkingDirectory)
     retryCountOnTaskFailure: 3
 
+  # todo: make packageinfo aware, convert to script
   - pwsh: |
       $modDirs = ./eng/scripts/get_module_dirs.ps1 '${{ parameters.ServiceDirectory }}'
       foreach ($md in $modDirs) {
@@ -153,6 +154,7 @@ steps:
     failOnStderr: false
     workingDirectory: $(System.DefaultWorkingDirectory)
 
+  # todo: make packageinfo aware, convert to script
   - pwsh: |
       $modDirs = ./eng/scripts/get_module_dirs.ps1 '${{ parameters.ServiceDirectory }}'
       foreach ($md in $modDirs) {
@@ -169,6 +171,7 @@ steps:
     condition: eq(variables.SkipGoGetUAll, 'false')
     workingDirectory: $(System.DefaultWorkingDirectory)
 
+  # todo: make packageinfo aware, convert to script
   - pwsh: |
       $modDirs = ./eng/scripts/get_module_dirs.ps1 '${{ parameters.ServiceDirectory }}'
       foreach ($md in $modDirs) {
@@ -184,7 +187,7 @@ steps:
     displayName: 'go mod tidy'
     workingDirectory: $(System.DefaultWorkingDirectory)
 
-  # todo: convert to script
+  # todo: make packageinfo aware, convert to script
   - pwsh: |
       $modDirs = ./eng/scripts/get_module_dirs.ps1 '${{ parameters.ServiceDirectory }}'
       foreach ($md in $modDirs) {
@@ -195,7 +198,7 @@ steps:
     displayName: 'Verify doc.go'
     workingDirectory: $(System.DefaultWorkingDirectory)
 
-  # todo: convert to script
+  # todo: make packageinfo aware, convert to script
   - script: |
       echo scanning copyright headers in $(pwd)
       grep -L -r --include \*.go -P "Copyright (\d{4}|\(c\)) Microsoft" . | tee >&2
@@ -213,7 +216,7 @@ steps:
     displayName: 'LICENSE.txt Check'
     condition: succeededOrFailed()
 
-  # todo: convert to script
+  # todo: make packageinfo aware, convert to script
   - script: |
       echo Check source file formatting in $(pwd)
       gofmt -s -l -d . | tee >&2
@@ -255,7 +258,7 @@ steps:
   # todo: re-enable this once we have a working version of the updated eng/common scripts
   # - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
 
-  # todo: if servicedirectory -eq auto, we need to run all the smoke tests fo all the changed services for the current batch
+  # todo: if servicedirectory -eq auto, we need to run all the smoke tests for all the changed services for the current batch
   - task: PowerShell@2
     displayName: 'Run Nightly SmokeTests'
     inputs:

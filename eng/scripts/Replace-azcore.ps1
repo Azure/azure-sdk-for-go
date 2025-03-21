@@ -1,6 +1,5 @@
 Param(
-    [string] $ServiceDirectory,
-    [string] $PackageInfoFolder = $null
+    [string] $ServiceDirectories
 )
 
 . (Join-Path $PSScriptRoot .. common scripts common.ps1)
@@ -50,16 +49,14 @@ function Invoke-ReplaceAzcore ([string] $ServiceDirectory) {
     return $true
 }
 
-if ($ServiceDirectory -eq "auto") {
-    $ServiceDirectories = Get-PackagesFromPackageInfo -PackageInfoFolder $PackageInfoFolder -IncludeIndirect $true -CustomCompareFunction $null
-}
-else {
-    $ServiceDirectories = @($ServiceDirectory)
-}
-
+$ServiceDirectories = $ServiceDirectories -split ","
 $succeeded = $true
 foreach($ServiceDirectory in $ServiceDirectories) {
-    $succeeded = Invoke-ReplaceAzcore $ServiceDirectory
+    $result = Invoke-ReplaceAzcore $ServiceDirectory
+
+    if (-not $result) {
+        $succeeded = $false
+    }
 }
 
 if (-not $succeeded) {

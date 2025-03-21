@@ -48,7 +48,7 @@ steps:
       targetType: filePath
       pwsh: true
       filePath: eng/scripts/Replace-azcore.ps1
-      arguments: '-ServiceDirectory "${{ parameters.ServiceDirectory }}" -PackageInfoFolder "$(Build.ArtifactStagingDirectory)/PackageInfo"
+      arguments: '-ServiceDirectory "$(ChangedServices)"'
 
   - task: Powershell@2
     displayName: Build

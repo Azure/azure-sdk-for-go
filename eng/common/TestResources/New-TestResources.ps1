@@ -96,7 +96,7 @@ param (
     # Instead of running the post script, create a wrapped file to run it with parameters
     # so that CI can run it in a subsequent step with a refreshed azure login
     [Parameter()]
-    [switch] $SelfContainedPostScript,
+    [string] $SelfContainedPostScript,
 
     [Parameter()]
     [switch] $CI = ($null -ne $env:SYSTEM_TEAMPROJECTID),
@@ -632,8 +632,7 @@ try {
         $postDeploymentScript = $templateFile.originalFilePath | Split-Path | Join-Path -ChildPath "$ResourceType-resources-post.ps1"
         if (Test-Path $postDeploymentScript) {
             if ($SelfContainedPostScript) {
-                $selfContainedScript = $templateFile.originalFilePath | Split-Path | Join-Path -ChildPath "self-contained_$ResourceType-resources-post.ps1"
-                Log "Creating invokable post-deployment script '$selfContainedScript' from '$postDeploymentScript'"
+                Log "Creating invokable post-deployment script '$SelfContainedPostScript' from '$postDeploymentScript'"
 
                 $deserialized = @{}
                 foreach ($parameter in $PSBoundParameters.GetEnumerator()) {
@@ -651,13 +650,13 @@ try {
 `$parameters = `@'
 $serialized
 '`@ | ConvertFrom-Json -AsHashtable
-$DeploymentOutputs = $parameters.DeploymentOutputs
+# Set global variables that aren't always passed as parameters
+`$ResourceGroupName = `$parameters.ResourceGroupName
+`$DeploymentOutputs = `$parameters.DeploymentOutputs
 $postDeploymentScript `@parameters
 "@
-
-                $outScript | Out-File $selfContainedScript
+                $outScript | Out-File $SelfContainedPostScript
                 LogVsoCommand "##vso[task.setvariable variable=SELF_CONTAINED_TEST_RESOURCES_POST_SCRIPT;]$selfContainedScript"
-
             } else {
                 Log "Invoking post-deployment script '$postDeploymentScript'"
                 &$postDeploymentScript -ResourceGroupName $ResourceGroupName -DeploymentOutputs $deploymentOutputs @PSBoundParameters

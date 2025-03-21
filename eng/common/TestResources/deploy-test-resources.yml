@@ -9,7 +9,7 @@ parameters:
   ResourceType: test
   UseFederatedAuth: true
   PersistOidcToken: false
-  SelfContainedPostScript: self-contained_test-resources-post.ps1
+  SelfContainedPostScript: self-contained-test-resources-post.ps1
 
 # SubscriptionConfiguration will be splatted into the parameters of the test
 # resources script. It should be JSON in the form:
@@ -101,7 +101,7 @@ steps:
             @subscriptionConfiguration `
             -AdditionalParameters ${{ parameters.ArmTemplateParameters }} `
             -AllowIpRanges ('$(azsdk-corp-net-ip-ranges)' -split ',') `
-            -SelfContainedPostScript
+            -SelfContainedPostScript $(Agent.TempDirectory)/${{ parameters.ServiceDirectory }}-${{ parameters.SelfContainedPostScript }} `
             -CI `
             -Force `
             -Verbose | Out-Null
@@ -122,9 +122,9 @@ steps:
           pwsh: true
           ScriptType: InlineScript
           Inline: |
-            cat $env:SELF_CONTAINED_TEST_RESOURCES_POST_SCRIPT
+            cat $(Agent.TempDirectory)/${{ parameters.ServiceDirectory }}-${{ parameters.SelfContainedPostScript }}
             Write-Host "Executing self contained test resources post script"
-            & $env:SELF_CONTAINED_TEST_RESOURCES_POST_SCRIPT
+            & $(Agent.TempDirectory)/${{ parameters.ServiceDirectory }}-${{ parameters.SelfContainedPostScript }}
 
   - ${{ else }}:
     - pwsh: |

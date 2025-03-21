@@ -137,27 +137,32 @@ class PackageProps {
                 if (-not $this.ArtifactDetails["triggeringPaths"]) {
                     $this.ArtifactDetails["triggeringPaths"] = @()
                 }
-                else {
-                    $adjustedPaths = @()
 
-                    # we need to convert relative references to absolute references within the repo
-                    # this will make it extremely easy to compare triggering paths to files in the deleted+changed file list.
-                    for ($i = 0; $i -lt $this.ArtifactDetails["triggeringPaths"].Count; $i++) {
-                        $currentPath = $this.ArtifactDetails["triggeringPaths"][$i]
-                        $newPath = Join-Path $repoRoot $currentPath
-                        if (!$currentPath.StartsWith("/")) {
-                            $newPath = Join-Path $repoRoot $relRoot $currentPath
-                        }
-                        # it is a possibility that users may have a triggerPath dependency on a file that no longer exists.
-                        # before we resolve it to get rid of possible relative references, we should check if the file exists
-                        # if it doesn't, we should just leave it as is. Otherwise we would _crash_ here when a user accidentally
-                        # left a triggeringPath on a file that had been deleted
-                        if (Test-Path $newPath) {
-                            $adjustedPaths += (Resolve-Path -Path $newPath -Relative -RelativeBasePath $repoRoot).TrimStart(".").Replace("`\", "/")
-                        }
-                    }
-                    $this.ArtifactDetails["triggeringPaths"] = $adjustedPaths
+                # if we know this is the matrix for our file, we should now see if there is a custom matrix config for the package
+                $serviceTriggeringPaths = GetValueSafelyFrom-Yaml $ciArtifactResult.ParsedYml @("extends", "parameters", "TriggeringPaths")
+                if ($serviceTriggeringPaths){
+                    $this.ArtifactDetails["triggeringPaths"] += $serviceTriggeringPaths
                 }
+
+                $adjustedPaths = @()
+
+                # we need to convert relative references to absolute references within the repo
+                # this will make it extremely easy to compare triggering paths to files in the deleted+changed file list.
+                for ($i = 0; $i -lt $this.ArtifactDetails["triggeringPaths"].Count; $i++) {
+                    $currentPath = $this.ArtifactDetails["triggeringPaths"][$i]
+                    $newPath = Join-Path $repoRoot $currentPath
+                    if (!$currentPath.StartsWith("/")) {
+                        $newPath = Join-Path $repoRoot $relRoot $currentPath
+                    }
+                    # it is a possibility that users may have a triggerPath dependency on a file that no longer exists.
+                    # before we resolve it to get rid of possible relative references, we should check if the file exists
+                    # if it doesn't, we should just leave it as is. Otherwise we would _crash_ here when a user accidentally
+                    # left a triggeringPath on a file that had been deleted
+                    if (Test-Path $newPath) {
+                        $adjustedPaths += (Resolve-Path -Path $newPath -Relative -RelativeBasePath $repoRoot).TrimStart(".").Replace("`\", "/")
+                    }
+                }
+                $this.ArtifactDetails["triggeringPaths"] = $adjustedPaths
                 $this.ArtifactDetails["triggeringPaths"] += $ciYamlPath
 
                 $this.CIParameters["CIMatrixConfigs"] = @()

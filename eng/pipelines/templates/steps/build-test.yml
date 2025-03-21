@@ -158,6 +158,7 @@ steps:
       displayName: 'Dump Test Proxy logs'
       condition: succeededOrFailed()
 
+  # todo: combine test results into a test results file, this will be broken for now.
   - task: PublishTestResults@2
     condition: succeededOrFailed()
     inputs:

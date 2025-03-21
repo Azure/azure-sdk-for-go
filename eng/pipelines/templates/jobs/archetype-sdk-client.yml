@@ -85,6 +85,14 @@ parameters:
   - name: PersistOidcToken
     type: boolean
     default: false
+  # This is a list of paths that will trigger the pipeline when changed. The paths can be absolute or relative to the location of this file.
+  # it is a way to trigger individual packages if another path is changed within go - pullrequest
+  # TriggeringPaths:
+  # - /an/absolute/repo/triggerpath
+  # - a/triggerpath/relative/to/this.ci.yml/
+  - name: TriggeringPaths
+    type: object
+    default: []
 
 extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml
@@ -120,7 +128,7 @@ extends:
                   - template: /eng/common/pipelines/templates/steps/save-package-properties.yml
                     parameters:
                       ServiceDirectory: ${{parameters.ServiceDirectory}}
-                      PackageInfoDirectory: $(Build.ArtifactStagingDirectory)/PackageInfoPublishing
+                      PackageInfoDirectory: $(Build.ArtifactStagingDirectory)/PackageInfo
               AdditionalParameters:
                 EnableRaceDetector: ${{ parameters.EnableRaceDetector }}
                 ServiceDirectory: ${{ parameters.ServiceDirectory }}

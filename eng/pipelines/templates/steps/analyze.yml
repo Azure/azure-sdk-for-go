@@ -18,42 +18,59 @@ steps:
       ServiceDirectory: ${{parameters.ServiceDirectory}}
       PackageInfoDirectory: $(Build.ArtifactStagingDirectory)/PackageInfo
 
-  # todo: confirm with benbp why this IsSdkLibrary check is needed in general
   - pwsh: |
+      . $(Build.SourcesDirectory)/eng/scripts/common.ps1
       . $(Build.SourcesDirectory)/eng/scripts/apiview-helpers.ps1
-      $directoryToPublish = Join-Path -Path $(Build.ArtifactStagingDirectory) ArtifactStaging ${{ parameters.ArtifactName }}
 
-      New-APIViewArtifacts `
-        -ServiceDirectory '${{ parameters.ServiceDirectory }}' `
-        -OutputDirectory $(Build.ArtifactStagingDirectory) `
-        -DirectoryToPublish $directoryToPublish
+      $pkgs = Get-PackagesFromPackageInfo -PackageInfoFolder "./PackageInfo" `
+        -IncludeIndirect $false -CustomCompareFunction { param($pkgProp) { return $pkgProp.CIParameters.IsSdkLibrary } }
+
+      $changedServices = @()
+      if ($pkgs) {
+        $changedServices = $pkgs | ForEach-Object { $_.ServiceDirectory } | Sort-Object -Unique
+      }
+      else {
+        Write-Host "No sdk packages were found in package set. Skipping APIView generation."
+        exit 0
+      }
+
+      $failed = $false
+      $directoryToPublish = Join-Path -Path $(Build.ArtifactStagingDirectory) ${{ parameters.ArtifactName }}
+
+      foreach($serviceDirectory in $changedServices) {
+        New-APIViewArtifacts `
+          -ServiceDirectory '$serviceDirectory' `
+          -OutputDirectory $(Build.ArtifactStagingDirectory) `
+          -DirectoryToPublish $directoryToPublish
+      }
 
       Copy-Item "$(Build.ArtifactStagingDirectory)/PackageInfo" -Destination $directoryToPublish -Recurse
     displayName: 'Create Go APIView Artifact'
-    condition: and(succeeded(), ${{ parameters.IsSdkLibrary }})
 
   - ${{ if eq(parameters.ServiceDirectory, 'auto') }}:
+    # in a PR context, always publish the artifacts, even if they are not shipping
     - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
       parameters:
-        ArtifactName: PRArtifacts
-        ArtifactPath: "$(Build.ArtifactStagingDirectory)/ArtifactStaging"
+        ArtifactName: ${{ parameters.ArtifactName }}
+        ArtifactPath: "$(Build.ArtifactStagingDirectory)/${{ parameters.ArtifactName }}"
   - ${{ else }}:
     - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
       parameters:
         ArtifactName: ${{ parameters.ArtifactName }}
-        ArtifactPath: "$(Build.ArtifactStagingDirectory)/ArtifactStaging/${{ parameters.ArtifactName }}"
+        ArtifactPath: "$(Build.ArtifactStagingDirectory)/${{ parameters.ArtifactName }}"
         CustomCondition: and(succeeded(), ${{ parameters.IsSdkLibrary }})
 
   # Second publish of PackageInfo to avoid breakng release pipeline, should be cleaned up once release pipeline is updated
-  - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
-    parameters:
-      ArtifactName: "PackageInfo"
-      ArtifactPath: "$(Build.ArtifactStagingDirectory)/PackageInfo"
-      CustomCondition: and(succeeded(), ${{ parameters.IsSdkLibrary }})
+  # we do not need this for PR builds, they will never release.
+  - ${{ ne(parameters.ServiceDirectory, 'auto') }}:
+    - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+      parameters:
+        ArtifactName: PackageInfo
+        ArtifactPath: "$(Build.ArtifactStagingDirectory)/PackageInfo"
+        CustomCondition: and(succeeded(), ${{ parameters.IsSdkLibrary }})
 
   - template: /eng/common/pipelines/templates/steps/set-default-branch.yml
 
-  # we don't need to futz with this for PR builds, because it only ever runs on internal definitions anyway
   - pwsh: |
       . $(Build.SourcesDirectory)/eng/scripts/apiview-helpers.ps1
       New-APIViewFromCI `
@@ -233,14 +250,14 @@ steps:
     displayName: 'Verify doc.go'
     workingDirectory: $(System.DefaultWorkingDirectory)
 
-  # todo: make packageinfo aware, convert to script
-  - script: |
-      echo scanning copyright headers in $(pwd)
-      grep -L -r --include \*.go -P "Copyright (\d{4}|\(c\)) Microsoft" . | tee >&2
-    displayName: 'Copyright Header Check'
+  - task: Powershell@2
+    inputs:
+      filePath: $(Build.SourcesDirectory)/eng/scripts/copyright-header-check.ps1
+      arguments: >
+        -ServiceDirectories '$(ChangedServices)'
+      pwsh: true
+    displayName: 'LICENSE.txt Check'
     condition: succeededOrFailed()
-    failOnStderr: true
-    workingDirectory: 'sdk/${{parameters.ServiceDirectory}}'
 
   - task: Powershell@2
     inputs:
@@ -300,7 +317,7 @@ steps:
       targetType: 'filePath'
       filePath: ./eng/scripts/Smoke_Tests_Nightly.ps1
       pwsh: true
-      arguments: '${{ parameters.ServiceDirectory }}'
+      arguments: '$(ChangedServices)'
 
   # todo: should we remove this? There are no more checks after this one, so simply removing all packageInfo that aren't shipping
   # to allow the default verify-changeslogs template to work correctly is probably better than any custom conditional code in that template.

@@ -39,7 +39,7 @@ steps:
 
       foreach($serviceDirectory in $changedServices) {
         New-APIViewArtifacts `
-          -ServiceDirectory '$serviceDirectory' `
+          -ServiceDirectory $serviceDirectory `
           -OutputDirectory $(Build.ArtifactStagingDirectory) `
           -DirectoryToPublish $directoryToPublish
       }
@@ -160,6 +160,7 @@ steps:
       curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin ${{parameters.LintVersion}}
       golangci-lint --version
     displayName: 'Install GoLintCLI and dependencies.'
+    condition: succeededOrFailed()
     workingDirectory: $(System.DefaultWorkingDirectory)
     retryCountOnTaskFailure: 3
 
@@ -169,6 +170,7 @@ steps:
       $failed = $false
 
       foreach($serviceDirectory in $changedServices) {
+        $serviceDirectory = Join-Path "sdk" $serviceDirectory
         $modDirs = ./eng/scripts/get_module_dirs.ps1 '$serviceDirectory'
         foreach ($md in $modDirs) {
           pushd $md
@@ -196,7 +198,8 @@ steps:
       $failed = $false
 
       foreach($serviceDirectory in $changedServices) {
-        $modDirs = ./eng/scripts/get_module_dirs.ps1 '${{ parameters.ServiceDirectory }}'
+        $serviceDirectory = Join-Path "sdk" $serviceDirectory
+        $modDirs = ./eng/scripts/get_module_dirs.ps1 '$serviceDirectory'
         foreach ($md in $modDirs) {
           pushd $md
           Write-Host "##[command]Executing go get -u all in $md"
@@ -224,6 +227,7 @@ steps:
       $failed = $false
 
       foreach($serviceDirectory in $changedServices) {
+        $serviceDirectory = Join-Path "sdk" $serviceDirectory
         $modDirs = ./eng/scripts/get_module_dirs.ps1 '$serviceDirectory'
         foreach ($md in $modDirs) {
           pushd $md
@@ -250,7 +254,8 @@ steps:
   - pwsh: |
       $changedServices = "$(ChangedServices)" -split ","
       foreach($serviceDirectory in $changedServices) {
-        $modDirs = ./eng/scripts/get_module_dirs.ps1 '${{ parameters.ServiceDirectory }}'
+        $serviceDirectory = Join-Path "sdk" $serviceDirectory
+        $modDirs = ./eng/scripts/get_module_dirs.ps1 '$serviceDirectory'
         foreach ($md in $modDirs) {
           if (-Not $md -Match "/arm") {
             Get-ChildItem $md/doc.go
@@ -265,7 +270,7 @@ steps:
     inputs:
       filePath: $(Build.SourcesDirectory)/eng/scripts/copyright-header-check.ps1
       arguments: >
-        -ServiceDirectories '$(ChangedServices)'
+        -Packages '$(Packages)'
       pwsh: true
     displayName: 'Copyright header Check'
     condition: succeededOrFailed()
@@ -281,7 +286,7 @@ steps:
 
   - task: Powershell@2
     inputs:
-      filePath: $(Build.SourcesDirectory)/eng/scripts/go-fmt.check.ps1
+      filePath: $(Build.SourcesDirectory)/eng/scripts/go-fmt-check.ps1
       arguments: >
         -Packages '$(Packages)'
       pwsh: true
@@ -294,6 +299,7 @@ steps:
       Directory: sdk/${{ parameters.ServiceDirectory }}
       CheckLinkGuidance: $true
 
+  # todo, convert to package level instead of service level
   - pwsh: |
       if (-not "$(ChangedServices)") {
         Write-Host "No services were changed build. Skipping doccheck."
@@ -304,7 +310,7 @@ steps:
       $failed = $false
 
       foreach ($service in $changedServices) {
-        go run . --directory '$(System.DefaultWorkingDirectory)/sdk/$service'
+        go run . --directory "$(System.DefaultWorkingDirectory)/sdk/$service"
         if ($LASTEXITCODE -ne 0) {
           $failed = $true
         }

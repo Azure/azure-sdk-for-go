@@ -124,7 +124,7 @@ function Get-AllPackageInfoFromRepo($serviceDirectories)
   if ($serviceDirectories) {
     $serviceDirectories = $serviceDirectory -split ","
     foreach($serviceDirectory in $serviceDirectories){
-      $searchPath = Join-Path $searchPath $serviceDirectory "go.mod"
+      $searchPath = Join-Path $searchPath "$serviceDirectory" "go.mod"
       $pkgFiles += @(Get-ChildItem $searchPath)
     }
   } else {

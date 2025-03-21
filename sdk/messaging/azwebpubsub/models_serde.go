@@ -11,9 +11,8 @@ package azwebpubsub
 import (
 	"encoding/json"
 	"fmt"
-	"reflect"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"reflect"
 )
 
 // MarshalJSON implements the json.Marshaller interface for type AddToGroupsRequest.
@@ -34,10 +33,10 @@ func (a *AddToGroupsRequest) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "filter":
-			err = unpopulate(val, "Filter", &a.Filter)
+				err = unpopulate(val, "Filter", &a.Filter)
 			delete(rawMsg, key)
 		case "groups":
-			err = unpopulate(val, "Groups", &a.Groups)
+				err = unpopulate(val, "Groups", &a.Groups)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -64,7 +63,7 @@ func (c *TokenResponse) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "token":
-			err = unpopulate(val, "Token", &c.Token)
+				err = unpopulate(val, "Token", &c.Token)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -73,6 +72,10 @@ func (c *TokenResponse) UnmarshalJSON(data []byte) error {
 	}
 	return nil
 }
+
+
+
+
 
 // MarshalJSON implements the json.Marshaller interface for type RemoveFromGroupsRequest.
 func (r RemoveFromGroupsRequest) MarshalJSON() ([]byte, error) {
@@ -92,10 +95,10 @@ func (r *RemoveFromGroupsRequest) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "filter":
-			err = unpopulate(val, "Filter", &r.Filter)
+				err = unpopulate(val, "Filter", &r.Filter)
 			delete(rawMsg, key)
 		case "groups":
-			err = unpopulate(val, "Groups", &r.Groups)
+				err = unpopulate(val, "Groups", &r.Groups)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -124,3 +127,4 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 	}
 	return nil
 }
+

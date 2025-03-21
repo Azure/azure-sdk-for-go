@@ -152,6 +152,15 @@ extends:
               os: linux
 
             steps:
+              - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+                parameters:
+                  ${{ if eq(parameters.ServiceDirectory, 'auto') }}:
+                    Paths:
+                      - "/*"
+                  ${{ else }}:
+                    Paths:
+                      - "sdk/${{ parameters.AdditionalParameters.ServiceDirectory }}"
+
               - template: /eng/common/pipelines/templates/steps/check-spelling.yml
 
               - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0

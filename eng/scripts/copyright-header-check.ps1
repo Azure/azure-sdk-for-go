@@ -1,5 +1,5 @@
 param(
-    $ServiceDirectories
+    $Packages
 )
 
 function Invoke-CopyrightCheck {
@@ -16,11 +16,11 @@ function Invoke-CopyrightCheck {
     return $missing
 }
 
-$services = $ServiceDirectories.Split(",")
+$folders = $Packages.Split(",")
 
 $missing = @()
-foreach($service in $services) {
-    $missing += Invoke-CopyrightCheck -Path $service
+foreach($packageFolder in $folders) {
+    $missing += Invoke-CopyrightCheck -Path $packageFolder
 }
 
 if ($missing) {
@@ -30,5 +30,5 @@ if ($missing) {
     }
 }
 else {
-    Write-Host "Copyright check succeeded. All go files within service directories [$ServiceDirectories] have the copyright header."
+    Write-Host "Copyright check succeeded. All go files within package directories [$Packages] have the copyright header."
 }

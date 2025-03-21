@@ -9,11 +9,13 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/go-amqp"
 )
 
 type messageSettler struct {
+	tracer       tracing.Tracer
 	links        internal.AMQPLinks
 	retryOptions RetryOptions
 
@@ -22,8 +24,9 @@ type messageSettler struct {
 	notifySettleOnManagement func(message *ReceivedMessage)
 }
 
-func newMessageSettler(links internal.AMQPLinks, retryOptions RetryOptions) *messageSettler {
+func newMessageSettler(tracer tracing.Tracer, links internal.AMQPLinks, retryOptions RetryOptions) *messageSettler {
 	return &messageSettler{
+		tracer:                   tracer,
 		links:                    links,
 		retryOptions:             retryOptions,
 		notifySettleOnLink:       func(message *ReceivedMessage) {},
@@ -31,9 +34,13 @@ func newMessageSettler(links internal.AMQPLinks, retryOptions RetryOptions) *mes
 	}
 }
 
-func (s *messageSettler) settleWithRetries(ctx context.Context, settleFn func(receiver amqpwrap.AMQPReceiver, rpcLink amqpwrap.RPCLink) error) error {
+func (s *messageSettler) settleWithRetries(ctx context.Context, settleFn func(receiver amqpwrap.AMQPReceiver, rpcLink amqpwrap.RPCLink) error, to *tracing.StartSpanOptions) error {
 	if s == nil {
 		return internal.NewErrNonRetriable("messages that are received in `ReceiveModeReceiveAndDelete` mode are not settleable")
+	}
+
+	if to != nil {
+		to.Tracer = s.tracer
 	}
 
 	err := s.links.Retry(ctx, EventReceiver, "settle", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
@@ -42,7 +49,7 @@ func (s *messageSettler) settleWithRetries(ctx context.Context, settleFn func(re
 		}
 
 		return nil
-	}, RetryOptions{})
+	}, RetryOptions{}, to)
 
 	return internal.TransformError(err)
 }
@@ -72,7 +79,7 @@ func (ms *messageSettler) CompleteMessage(ctx context.Context, message *Received
 		}
 
 		return err
-	})
+	}, ms.getStartSpanOptions(tracing.CompleteOperationName, message))
 }
 
 // AbandonMessageOptions contains optional parameters for Client.AbandonMessage
@@ -124,7 +131,7 @@ func (ms *messageSettler) AbandonMessage(ctx context.Context, message *ReceivedM
 		}
 
 		return err
-	})
+	}, ms.getStartSpanOptions(tracing.AbandonOperationName, message))
 }
 
 // DeferMessageOptions contains optional parameters for Client.DeferMessage
@@ -176,7 +183,7 @@ func (ms *messageSettler) DeferMessage(ctx context.Context, message *ReceivedMes
 		}
 
 		return err
-	})
+	}, ms.getStartSpanOptions(tracing.DeferOperationName, message))
 }
 
 // DeadLetterOptions describe the reason and error description for dead lettering
@@ -256,7 +263,29 @@ func (ms *messageSettler) DeadLetterMessage(ctx context.Context, message *Receiv
 		}
 
 		return err
-	})
+	}, ms.getStartSpanOptions(tracing.DeadLetterOperationName, message))
+}
+
+func (ms *messageSettler) getStartSpanOptions(operationName tracing.MessagingOperationName, message *ReceivedMessage) *tracing.StartSpanOptions {
+	if ms == nil {
+		return nil
+	}
+
+	options := &tracing.StartSpanOptions{
+		OperationName: operationName,
+	}
+
+	if message != nil {
+		options.Attributes = tracing.GetReceivedMessageSpanAttributes(message.Message().toAMQPMessage())
+	}
+
+	ctx := ms.tracer.Extract(context.Background(), message.Message().toAMQPMessage())
+	if ctx != context.Background() { // no message creation context found
+		options.Links = []tracing.Link{ms.tracer.LinkFromContext(ctx,
+			tracing.Attribute{Key: tracing.AttrMessageID, Value: message.MessageID})}
+	}
+
+	return options
 }
 
 func bytesToAMQPUUID(bytes [16]byte) *amqp.UUID {

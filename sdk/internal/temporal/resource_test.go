@@ -8,6 +8,7 @@ package temporal
 
 import (
 	"errors"
+	"fmt"
 	"sync"
 	"testing"
 	"time"
@@ -87,4 +88,83 @@ func TestNewExpiringResourceConcurrent(t *testing.T) {
 	}
 
 	wg.Wait()
+}
+
+func TestShouldRefresh(t *testing.T) {
+	for _, shouldRefresh := range []bool{true, false} {
+		t.Run(fmt.Sprint(shouldRefresh), func(t *testing.T) {
+			before := backoff
+			defer func() { backoff = before }()
+			backoff = func(time.Time, time.Time) bool { return false }
+			called := false
+			initial, updated := "initial", "updated"
+			states := []string{"a", "b"}
+			r := NewResourceWithOptions(
+				func(state string) (string, time.Time, error) {
+					rsrc := initial
+					if called {
+						require.Equal(t, states[1], state)
+						rsrc = updated
+					} else {
+						require.Equal(t, states[0], state)
+					}
+					return rsrc, time.Now().Add(time.Hour), nil
+				},
+				ResourceOptions[string, string]{
+					ShouldRefresh: func(resource, state string) bool {
+						require.False(t, called)
+						require.Equal(t, states[1], state)
+						require.Equal(t, initial, resource)
+						called = true
+						return shouldRefresh
+					},
+				},
+			)
+			resources := []string{initial, updated}
+			for _, state := range states {
+				actual, err := r.Get(state)
+				require.NoError(t, err)
+				expected := resources[0]
+				if shouldRefresh {
+					resources = resources[1:]
+				}
+				require.Equal(t, expected, actual)
+			}
+			require.True(t, called)
+		})
+	}
+	t.Run("backoff", func(t *testing.T) {
+		gets := 0
+		r := NewResourceWithOptions(
+			func(string) (string, time.Time, error) {
+				gets++
+				return "", time.Now().Add(time.Hour), nil
+			},
+			ResourceOptions[string, string]{
+				ShouldRefresh: func(string, string) bool { return true },
+			},
+		)
+		for i := 0; i < 42; i++ {
+			_, err := r.Get("")
+			require.NoError(t, err)
+		}
+		require.Equal(t, 1, gets, "Get should apply backoff when ShouldRefresh returns true")
+	})
+	t.Run("expired resource", func(t *testing.T) {
+		r := NewResourceWithOptions(
+			func(string) (string, time.Time, error) {
+				return "expired", time.Now().Add(-time.Hour), nil
+			},
+			ResourceOptions[string, string]{
+				ShouldRefresh: func(string, string) bool {
+					t.Fatal("Resource shouldn't call ShouldRefresh when it's expired")
+					return true
+				},
+			},
+		)
+		for i := 0; i < 3; i++ {
+			_, err := r.Get("")
+			require.NoError(t, err)
+		}
+	})
 }

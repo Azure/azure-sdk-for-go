@@ -1,8 +1,6 @@
 module github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus
 
-go 1.23.0
-
-toolchain go1.24.0
+go 1.18
 
 retract v1.1.2 // Breaks customers in situations where close is slow/infinite.
 

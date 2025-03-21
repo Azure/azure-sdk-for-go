@@ -170,7 +170,6 @@ steps:
       $failed = $false
 
       foreach($serviceDirectory in $changedServices) {
-        $serviceDirectory = Join-Path "sdk" $serviceDirectory
         $modDirs = ./eng/scripts/get_module_dirs.ps1 '$serviceDirectory'
         foreach ($md in $modDirs) {
           pushd $md
@@ -198,8 +197,7 @@ steps:
       $failed = $false
 
       foreach($serviceDirectory in $changedServices) {
-        $serviceDirectory = Join-Path "sdk" $serviceDirectory
-        $modDirs = ./eng/scripts/get_module_dirs.ps1 '$serviceDirectory'
+        $modDirs = ./eng/scripts/get_module_dirs.ps1 "$serviceDirectory"
         foreach ($md in $modDirs) {
           pushd $md
           Write-Host "##[command]Executing go get -u all in $md"
@@ -227,8 +225,7 @@ steps:
       $failed = $false
 
       foreach($serviceDirectory in $changedServices) {
-        $serviceDirectory = Join-Path "sdk" $serviceDirectory
-        $modDirs = ./eng/scripts/get_module_dirs.ps1 '$serviceDirectory'
+        $modDirs = ./eng/scripts/get_module_dirs.ps1 "$serviceDirectory"
         foreach ($md in $modDirs) {
           pushd $md
           Write-Host "##[command]Executing go mod tidy in $md"
@@ -254,8 +251,7 @@ steps:
   - pwsh: |
       $changedServices = "$(ChangedServices)" -split ","
       foreach($serviceDirectory in $changedServices) {
-        $serviceDirectory = Join-Path "sdk" $serviceDirectory
-        $modDirs = ./eng/scripts/get_module_dirs.ps1 '$serviceDirectory'
+        $modDirs = ./eng/scripts/get_module_dirs.ps1 "$serviceDirectory"
         foreach ($md in $modDirs) {
           if (-Not $md -Match "/arm") {
             Get-ChildItem $md/doc.go

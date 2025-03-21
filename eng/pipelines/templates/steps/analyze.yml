@@ -62,7 +62,7 @@ steps:
 
   # Second publish of PackageInfo to avoid breakng release pipeline, should be cleaned up once release pipeline is updated
   # we do not need this for PR builds, they will never release.
-  - ${{ ne(parameters.ServiceDirectory, 'auto') }}:
+  - ${{ if ne(parameters.ServiceDirectory, 'auto') }}:
     - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
       parameters:
         ArtifactName: PackageInfo

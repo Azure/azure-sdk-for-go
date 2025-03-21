@@ -16,6 +16,7 @@ go: true
 title: "OpenAIAssistants"
 use: "@autorest/go@4.0.0-preview.63"
 slice-elements-byval: true
+rawjson-as-bytes: true
 # can't use this since it removes an innererror type that we want ()
 # remove-non-reference-schema: true
 ```
@@ -38,6 +39,7 @@ directive:
     transform: |
       $["$ref"] = "#/definitions/RequiredAction"
       delete $["allOf"];
+      delete $["type"];
       return $;
 ```
 
@@ -212,7 +214,7 @@ directive:
       // POSTs
       $[threadsBase + "/messages/{messageId}"].post.parameters[2].schema["x-ms-client-name"] = "UpdateMessageBody";
       $[threadsBase + "/runs/{runId}"].post.parameters[2].schema["x-ms-client-name"] = "UpdateRunBody";
-      $[threadsBase + "/runs"].post.parameters[1]["x-ms-client-name"] = "CreateRunBody";
+      $[threadsBase + "/runs"].post.parameters[2]["x-ms-client-name"] = "CreateRunBody";
       $[threadsBase + "/runs/{runId}/submit_tool_outputs"].post.parameters[2].schema["x-ms-client-name"] = "SubmitToolOutputsToRunBody";
 
       //
@@ -229,5 +231,76 @@ directive:
       $[vectorStoresBase + "/{vectorStoreId}/file_batches"].post.parameters[1].schema["x-ms-client-name"] = "CreateVectorStoreFileBatchBody";
 
       return $;
+```
+
+
+## Docs
+
+Fix docs for []byte fields that are intended as JSON bytes.
+
+
+### AssistantsAPIResponseFormatJSONSchemaJSONSchema.Schema
+```yaml
+directive:
+  - from: models.go
+    where: $
+    transform: |
+      const comment = `	// NOTE: this field is JSON text that describes a JSON schema. You can marshal a data\n` +
+        ` // structure using code similar to this:\n` +
+        ` //\n` +
+        `	//	jsonBytes, err := json.Marshal(map[string]any{\n` +
+        `	//		"required": []string{"location"},\n` +
+        `	// 		"type":     "object",\n` +
+        `	// 		"properties": map[string]any{\n` +
+        `	// 			"location": map[string]any{\n` +
+        `	//	 			"type":        "string",\n` +
+        `	// 				"description": "The city and state, e.g. San Francisco, CA",\n` +
+        `	// 			},\n` +
+        `	//		},\n` +
+        `	//	})\n` +
+        `	//\n` +
+        `	//	if err != nil {\n` +
+        `	// 		panic(err)\n` +
+        `	//	}\n` +
+        `	// \n` +
+        `	//	funcDef := &azopenaiassistants.AssistantsAPIResponseFormatJSONSchemaJSONSchema{\n` +
+        `	// 		Name:        to.Ptr("get_current_weather"),\n` +
+        `	// 		Description: to.Ptr("Get the current weather in a given location"),\n` +
+        `	// 		Schema:      jsonBytes,\n` +
+        ` //      Strict:      to.Ptr(false),\n` +
+        `	// 	}`;
+      return $.replace(/Schema \[\]byte/, comment + "\nSchema []byte");
+```
+
+### FunctionDefinition.Schema
+```yaml
+directive:
+  - from: models.go
+    where: $
+    transform: |
+      const comment = `	// NOTE: this field is JSON text that describes a JSON schema. You can marshal a data\n` +
+        ` // structure using code similar to this:\n` +
+        ` //\n` +
+        `	//	jsonBytes, err := json.Marshal(map[string]any{\n` +
+        `	//		"required": []string{"location"},\n` +
+        `	// 		"type":     "object",\n` +
+        `	// 		"properties": map[string]any{\n` +
+        `	// 			"location": map[string]any{\n` +
+        `	//	 			"type":        "string",\n` +
+        `	// 				"description": "The city and state, e.g. San Francisco, CA",\n` +
+        `	// 			},\n` +
+        `	//		},\n` +
+        `	//	})\n` +
+        `	//\n` +
+        `	//	if err != nil {\n` +
+        `	// 		panic(err)\n` +
+        `	//	}\n` +
+        `	// \n` +
+        `	//	funcDef := &azopenaiassistants.FunctionDefinition{\n` +
+        `	// 		Name:        to.Ptr("get_current_weather"),\n` +
+        `	// 		Description: to.Ptr("Get the current weather in a given location"),\n` +
+        `	// 		Parameters:  jsonBytes,\n` +
+        `	// 	}`;
+      return $.replace(/Parameters \[\]byte/, comment + "\nParameters []byte");
 ```
 

@@ -11,8 +11,8 @@
       }
     },
     "GoVersion": [
-      "1.23.7",
-      "1.24.1"
+      "env:GO_VERSION_N0",
+      "env:GO_VERSION_N1"
     ]
   }
 }

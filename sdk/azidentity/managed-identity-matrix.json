@@ -9,7 +9,7 @@
                 }
             },
             "GoVersion": [
-                "1.22.1"
+                "env:GO_VERSION_N1"
             ],
             "IDENTITY_IMDS_AVAILABLE": "1"
         }

@@ -54,7 +54,7 @@ func (client *Client) BeginFullBackup(ctx context.Context, azureStorageBlobConta
 // Generated from API version 7.6-preview.2
 func (client *Client) fullBackup(ctx context.Context, azureStorageBlobContainerURI SASTokenParameters, options *BeginFullBackupOptions) (*http.Response, error) {
 	var err error
-	const operationName = "Client.BeginFullBackup"
+	const operationName = "backup.Client.BeginFullBackup"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -111,7 +111,7 @@ func (client *Client) BeginFullRestore(ctx context.Context, restoreBlobDetails R
 // Generated from API version 7.6-preview.2
 func (client *Client) fullRestore(ctx context.Context, restoreBlobDetails RestoreOperationParameters, options *BeginFullRestoreOptions) (*http.Response, error) {
 	var err error
-	const operationName = "Client.BeginFullRestore"
+	const operationName = "backup.Client.BeginFullRestore"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -180,7 +180,7 @@ func (client *Client) BeginPreFullBackup(ctx context.Context, preBackupOperation
 // Generated from API version 7.6-preview.2
 func (client *Client) preFullBackup(ctx context.Context, preBackupOperationParameters PreBackupOperationParameters, options *BeginPreFullBackupOptions) (*http.Response, error) {
 	var err error
-	const operationName = "Client.BeginPreFullBackup"
+	const operationName = "backup.Client.BeginPreFullBackup"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -235,7 +235,7 @@ func (client *Client) BeginPreFullRestore(ctx context.Context, preRestoreOperati
 // Generated from API version 7.6-preview.2
 func (client *Client) preFullRestore(ctx context.Context, preRestoreOperationParameters PreRestoreOperationParameters, options *BeginPreFullRestoreOptions) (*http.Response, error) {
 	var err error
-	const operationName = "Client.BeginPreFullRestore"
+	const operationName = "backup.Client.BeginPreFullRestore"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -293,7 +293,7 @@ func (client *Client) BeginSelectiveKeyRestore(ctx context.Context, keyName stri
 // Generated from API version 7.6-preview.2
 func (client *Client) selectiveKeyRestore(ctx context.Context, keyName string, restoreBlobDetails SelectiveKeyRestoreOperationParameters, options *BeginSelectiveKeyRestoreOptions) (*http.Response, error) {
 	var err error
-	const operationName = "Client.BeginSelectiveKeyRestore"
+	const operationName = "backup.Client.BeginSelectiveKeyRestore"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()

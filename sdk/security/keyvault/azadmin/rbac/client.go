@@ -34,7 +34,7 @@ type Client struct {
 //     method.
 func (client *Client) CreateOrUpdateRoleDefinition(ctx context.Context, scope RoleScope, roleDefinitionName string, parameters RoleDefinitionCreateParameters, options *CreateOrUpdateRoleDefinitionOptions) (CreateOrUpdateRoleDefinitionResponse, error) {
 	var err error
-	const operationName = "Client.CreateOrUpdateRoleDefinition"
+	const operationName = "rbac.Client.CreateOrUpdateRoleDefinition"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -98,7 +98,7 @@ func (client *Client) createOrUpdateRoleDefinitionHandleResponse(resp *http.Resp
 //   - options - CreateRoleAssignmentOptions contains the optional parameters for the Client.CreateRoleAssignment method.
 func (client *Client) CreateRoleAssignment(ctx context.Context, scope RoleScope, roleAssignmentName string, parameters RoleAssignmentCreateParameters, options *CreateRoleAssignmentOptions) (CreateRoleAssignmentResponse, error) {
 	var err error
-	const operationName = "Client.CreateRoleAssignment"
+	const operationName = "rbac.Client.CreateRoleAssignment"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -161,7 +161,7 @@ func (client *Client) createRoleAssignmentHandleResponse(resp *http.Response) (C
 //   - options - DeleteRoleAssignmentOptions contains the optional parameters for the Client.DeleteRoleAssignment method.
 func (client *Client) DeleteRoleAssignment(ctx context.Context, scope RoleScope, roleAssignmentName string, options *DeleteRoleAssignmentOptions) (DeleteRoleAssignmentResponse, error) {
 	var err error
-	const operationName = "Client.DeleteRoleAssignment"
+	const operationName = "rbac.Client.DeleteRoleAssignment"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -220,7 +220,7 @@ func (client *Client) deleteRoleAssignmentHandleResponse(resp *http.Response) (D
 //   - options - DeleteRoleDefinitionOptions contains the optional parameters for the Client.DeleteRoleDefinition method.
 func (client *Client) DeleteRoleDefinition(ctx context.Context, scope RoleScope, roleDefinitionName string, options *DeleteRoleDefinitionOptions) (DeleteRoleDefinitionResponse, error) {
 	var err error
-	const operationName = "Client.DeleteRoleDefinition"
+	const operationName = "rbac.Client.DeleteRoleDefinition"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -279,7 +279,7 @@ func (client *Client) deleteRoleDefinitionHandleResponse(resp *http.Response) (D
 //   - options - GetRoleAssignmentOptions contains the optional parameters for the Client.GetRoleAssignment method.
 func (client *Client) GetRoleAssignment(ctx context.Context, scope RoleScope, roleAssignmentName string, options *GetRoleAssignmentOptions) (GetRoleAssignmentResponse, error) {
 	var err error
-	const operationName = "Client.GetRoleAssignment"
+	const operationName = "rbac.Client.GetRoleAssignment"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -338,7 +338,7 @@ func (client *Client) getRoleAssignmentHandleResponse(resp *http.Response) (GetR
 //   - options - GetRoleDefinitionOptions contains the optional parameters for the Client.GetRoleDefinition method.
 func (client *Client) GetRoleDefinition(ctx context.Context, scope RoleScope, roleDefinitionName string, options *GetRoleDefinitionOptions) (GetRoleDefinitionResponse, error) {
 	var err error
-	const operationName = "Client.GetRoleDefinition"
+	const operationName = "rbac.Client.GetRoleDefinition"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()

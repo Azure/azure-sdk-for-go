@@ -5,6 +5,7 @@ pr:
     - feature/*
     - hotfix/*
     - release/*
+    - pullrequest*
   paths:
     include:
     - "*"

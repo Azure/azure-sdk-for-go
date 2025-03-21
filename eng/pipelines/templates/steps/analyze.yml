@@ -268,14 +268,14 @@ steps:
     displayName: 'LICENSE.txt Check'
     condition: succeededOrFailed()
 
-  # todo: make packageinfo aware, convert to script
-  - script: |
-      echo Check source file formatting in $(pwd)
-      gofmt -s -l -d . | tee >&2
+  - task: Powershell@2
+    inputs:
+      filePath: $(Build.SourcesDirectory)/eng/scripts/go-fmt.check.ps1
+      arguments: >
+        -ServiceDirectories '$(ChangedServices)'
+      pwsh: true
     displayName: 'Format Check'
     condition: succeededOrFailed()
-    failOnStderr: true
-    workingDirectory: 'sdk/${{parameters.ServiceDirectory}}'
 
   # todo: figure out something specific for this guy, I think I may have a global issue with the way we are doing this?
   - template: /eng/common/pipelines/templates/steps/verify-links.yml

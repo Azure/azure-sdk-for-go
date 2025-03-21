@@ -117,6 +117,10 @@ extends:
               MatrixReplace:
                 - ${{ parameters.MatrixReplace }}
               ${{ if eq(parameters.ServiceDirectory, 'auto') }}:
+                SparseCheckoutPaths:
+                  - "/**/go.mod"
+                  - "/**/ci*.yml"
+                  - "/**/*matrix.json"
                 EnablePRGeneration: true
                 PRMatrixSetting: Packages
                 PRJobBatchSize: 20

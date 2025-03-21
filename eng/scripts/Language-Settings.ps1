@@ -143,7 +143,7 @@ function Get-AllPackageInfoFromRepo($serviceDirectories)
 
   # populate ci parameters for each package
   foreach ($pkgProp in $allPackageProps) {
-    $pkgProp.ArtifactName = $pkgProp.DirectoryPath -replace "\\", "/"
+    $pkgProp.ArtifactName = $pkgProp.Name
     $ciProps = $pkgProp.GetCIYmlForArtifact()
 
     # UsePipelineProxy - installs and runs the test proxy in ci.tests.yml, defaults true

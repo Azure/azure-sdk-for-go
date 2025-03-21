@@ -34,6 +34,6 @@ steps:
   - pwsh: |
       ./eng/scripts/set-artifact-packages.ps1 `
         -Packages "$(Packages)" `
-        -PackageInfoFolder "${{ parameters.PackageInfo }}"
+        -PackageInfoFolder "${{ parameters.PackageInfoDirectory }}"
     displayName: Resolve Service and Project List
     condition: ne(variables['Packages'], '')

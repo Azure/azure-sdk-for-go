@@ -122,6 +122,8 @@ steps:
           pwsh: true
           ScriptType: InlineScript
           Inline: |
+            cat $env:SELF_CONTAINED_TEST_RESOURCES_POST_SCRIPT
+            Write-Host "Executing self contained test resources post script"
             & $env:SELF_CONTAINED_TEST_RESOURCES_POST_SCRIPT
 
   - ${{ else }}:

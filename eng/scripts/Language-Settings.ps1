@@ -118,6 +118,7 @@ function EvaluateCIParam {
 
 function Get-AllPackageInfoFromRepo($serviceDirectories)
 {
+  Write-Host "Entering Get-AllPackageInfoFromRepo with CWD: $PWD and serviceDirectories: $serviceDirectories"
   $allPackageProps = @()
   $searchPath = Join-Path $RepoRoot "sdk"
   $pkgFiles = @()

@@ -20,3 +20,7 @@ variables:
 
   # disable code coverage redesign until it's been fixed (causes inadvertent deflation of CC numbers)
   GOEXPERIMENT: nocoverageredesign
+
+  # Supported versions for testing. These variables are referenced in test matrix files.
+  GO_VERSION_N0: 1.24.1
+  GO_VERSION_N1: 1.23.7

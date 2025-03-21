@@ -196,7 +196,7 @@ func TestSender_TracingUserFacingError(t *testing.T) {
 			{Key: tracing.AttrOperationName, Value: "schedule"},
 			{Key: tracing.AttrOperationType, Value: "send"},
 			{Key: tracing.AttrBatchMessageCount, Value: int64(1)},
-			{Key: tracing.AttrErrorType, Value: fmt.Sprintf("%T", amqpConnErr)},
+			{Key: tracing.AttrErrorType, Value: fmt.Sprintf("%T", asSBError)},
 		},
 		Links: []tracing.Link{{Attributes: []tracing.Attribute{{Key: tracing.AttrMessageID, Value: msgID}}}},
 	}, nil)

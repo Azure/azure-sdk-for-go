@@ -136,8 +136,7 @@ func (s *Sender) ScheduleAMQPAnnotatedMessages(ctx context.Context, messages []*
 	return sequenceNumbers, err
 }
 
-func scheduleMessages[T amqpCompatibleMessage](ctx context.Context, tracer tracing.Tracer, links internal.AMQPLinks, retryOptions RetryOptions, messages []T, scheduledEnqueueTime time.Time) ([]int64, error) {
-	var err error
+func scheduleMessages[T amqpCompatibleMessage](ctx context.Context, tracer tracing.Tracer, links internal.AMQPLinks, retryOptions RetryOptions, messages []T, scheduledEnqueueTime time.Time) (sequenceNumbers []int64, err error) {
 	scheduleCtx, endSpan := tracing.StartSpan(ctx, &tracing.StartSpanOptions{
 		Tracer:        tracer,
 		OperationName: tracing.ScheduleOperationName,
@@ -153,8 +152,6 @@ func scheduleMessages[T amqpCompatibleMessage](ctx context.Context, tracer traci
 		createMessageSpan(ctx, tracer, scheduleSpan, amqpMessage)
 		amqpMessages = append(amqpMessages, amqpMessage)
 	}
-
-	var sequenceNumbers []int64
 
 	err = links.Retry(ctx, EventSender, "ScheduleMessages", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		sn, err := internal.ScheduleMessages(ctx, lwv.RPC, lwv.Sender.LinkName(), scheduledEnqueueTime, amqpMessages)

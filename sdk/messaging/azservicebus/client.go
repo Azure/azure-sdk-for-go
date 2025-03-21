@@ -356,7 +356,7 @@ func (client *Client) acceptNextSessionForEntity(ctx context.Context, entity ent
 	sessionReceiver, err := newSessionReceiver(
 		ctx,
 		newSessionReceiverArgs{
-			tracer:            client.newTracer(entity.Topic, entity.Subscription),
+			tracer:            client.newTracer(entity.Queue+entity.Topic, entity.Subscription),
 			sessionID:         nil,
 			ns:                client.namespace,
 			entity:            entity,

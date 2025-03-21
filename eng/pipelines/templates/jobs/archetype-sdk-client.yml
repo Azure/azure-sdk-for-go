@@ -121,6 +121,7 @@ extends:
                   - "/**/go.mod"
                   - "/**/ci*.yml"
                   - "/**/*matrix.json"
+                  - "/**/version.go"
                 EnablePRGeneration: true
                 PRMatrixSetting: Packages
                 PRJobBatchSize: 20

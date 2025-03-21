@@ -101,7 +101,7 @@ steps:
             @subscriptionConfiguration `
             -AdditionalParameters ${{ parameters.ArmTemplateParameters }} `
             -AllowIpRanges ('$(azsdk-corp-net-ip-ranges)' -split ',') `
-            -SelfContainedPostScript $(Agent.TempDirectory)/${{ parameters.ServiceDirectory }}-${{ parameters.SelfContainedPostScript }} `
+            -SelfContainedPostScript $(Agent.TempDirectory)/${{ parameters.SelfContainedPostScript }} `
             -CI `
             -Force `
             -Verbose | Out-Null
@@ -122,9 +122,11 @@ steps:
           pwsh: true
           ScriptType: InlineScript
           Inline: |
-            cat $(Agent.TempDirectory)/${{ parameters.ServiceDirectory }}-${{ parameters.SelfContainedPostScript }}
+            $scriptPath = $(Agent.TempDirectory)/${{ parameters.SelfContainedPostScript }}
+            cat $scriptPath
             Write-Host "Executing self contained test resources post script"
-            & $(Agent.TempDirectory)/${{ parameters.ServiceDirectory }}-${{ parameters.SelfContainedPostScript }}
+            & $scriptPath
+            Remove-Item $scriptPath  # avoid any possible complications when we run multiple deploy templates
 
   - ${{ else }}:
     - pwsh: |

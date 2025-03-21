@@ -81,7 +81,7 @@ func Example_usingAzureContentFiltering() {
 	}
 
 	if len(resp.Choices) == 0 {
-		fmt.Fprintf(os.Stderr, "ERROR: %s\n - No choices returned in the response, the model may have failed to generate content\n", err)
+		fmt.Fprintf(os.Stderr, "No choices returned in the response, the model may have failed to generate content\n")
 		return
 	}
 
@@ -113,8 +113,6 @@ func Example_usingAzureContentFiltering() {
 
 	// Access the response content
 	fmt.Fprintf(os.Stderr, "\nResponse: %s\n", resp.Choices[0].Message.Content)
-
-	fmt.Fprintf(os.Stderr, "Example complete\n")
 }
 
 // This example demonstrates how to apply Azure OpenAI prompt filtering with streaming responses
@@ -163,7 +161,12 @@ func Example_usingAzurePromptFilteringWithStreaming() {
 
 		// Get Azure-specific prompt filter results, if available
 		azureChunk := azopenaiextensions.ChatCompletionChunk(chunk)
-		promptFilterResults, _ := azureChunk.PromptFilterResults()
+		promptFilterResults, err := azureChunk.PromptFilterResults()
+
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
+			return
+		}
 
 		if promptFilterResults != nil {
 			fmt.Fprintf(os.Stderr, "- Prompt filter results detected\n")
@@ -182,6 +185,4 @@ func Example_usingAzurePromptFilteringWithStreaming() {
 	}
 
 	fmt.Fprintf(os.Stderr, "\n\nStreaming complete. Full content length: %d characters\n", len(fullContent))
-
-	fmt.Fprintf(os.Stderr, "Example complete\n")
 }

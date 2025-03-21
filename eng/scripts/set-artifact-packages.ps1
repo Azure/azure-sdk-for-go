@@ -3,8 +3,6 @@ param (
     [string] $PackageInfoFolder
 )
 
-. $PSScriptRoot/generate-dependency-functions.ps1
-
 $packageSet = "$Packages" -split ","
 
 # retrieve the package info files

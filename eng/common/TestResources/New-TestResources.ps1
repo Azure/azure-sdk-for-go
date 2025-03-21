@@ -651,7 +651,7 @@ try {
 `$parameters = `@'
 $serialized
 '`@ | ConvertFrom-Json -AsHashtable
-
+$DeploymentOutputs = $parameters.DeploymentOutputs
 $postDeploymentScript `@parameters
 "@
 

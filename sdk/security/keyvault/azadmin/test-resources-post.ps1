@@ -32,10 +32,6 @@ param (
     [ValidateNotNullOrEmpty()]
     [string] $Environment,
 
-    [Parameter(Mandatory = $true)]
-    [ValidateNotNullOrEmpty()]
-    [hashtable] $DeploymentOutputs,
-
     # Captures any arguments from eng/New-TestResources.ps1 not declared here (no parameter errors).
     [Parameter(ValueFromRemainingArguments = $true)]
     $RemainingArguments

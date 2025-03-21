@@ -56,6 +56,18 @@ const (
 	testHost = "https://localhost"
 )
 
+// compact removes whitespace from errors to simplify validation
+func compact(s string) string {
+	return strings.Map(func(r rune) rune {
+		switch r {
+		case ' ', '\n', '\t':
+			return -1
+		default:
+			return r
+		}
+	}, s)
+}
+
 func validateX5C(t *testing.T, certs []*x509.Certificate) func(*http.Request) *http.Response {
 	return func(req *http.Request) *http.Response {
 		err := req.ParseForm()
@@ -102,15 +114,6 @@ func (t *tokenRequestCountingPolicy) Do(req *policy.Request) (*http.Response, er
 }
 
 func TestResponseErrors(t *testing.T) {
-	// compact removes whitespace from errors to simplify validation
-	compact := func(s string) string {
-		return strings.Map(func(r rune) rune {
-			if r == ' ' || r == '\n' || r == '\t' {
-				return -1
-			}
-			return r
-		}, s)
-	}
 	content := "no tokens here"
 	statusCode := http.StatusTeapot
 	validate := func(t *testing.T, err error) {

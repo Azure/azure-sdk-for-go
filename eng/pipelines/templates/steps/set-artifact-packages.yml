@@ -30,10 +30,9 @@ steps:
     displayName: Resolve Targeted Packages
     condition: eq(variables['Packages'], '')
 
-  # this script sets $(ChangedServices) and populates a props file with the targeted set of projects
-  # for the build. This file is set to variable $(ProjectListOverrideFile).
+  # this script sets $(ChangedServices)
   - pwsh: |
-      ./eng/scripts/splittestdependencies/set-artifact-packages.ps1 `
+      ./eng/scripts/set-artifact-packages.ps1 `
         -Packages "$(Packages)" `
         -PackageInfoFolder "${{ parameters.PackageInfo }}"
     displayName: Resolve Service and Project List

@@ -41,15 +41,6 @@ func main() {
 	regexReplace("constants.go", `(?:\/\/.*\s)+func PossibleDeletionRecovery(?:.+\s)+\}`, "")
 	regexReplace("constants.go", `const \(\n\/\/ DeletionRecoveryLevel(?:.+\s)+\)`, "")
 
-	// remove Max Results parameter
-	regexReplace("options.go", `(?:\/\/.*\s)+\sMaxresults \*int32`, ``)
-	regexReplace("client.go", `\sif options != nil && options.Maxresults != nil \{\s+.+\)\s+\}\s`, "")
-	regexReplace("client.go", `options \*ListIssuerPropertiesOptions\) \(\*policy`, "_ *ListIssuerPropertiesOptions) (*policy")
-	regexReplace("client.go", `options \*ListCertificatePropertiesVersionsOptions\) \(\*policy`, "_ *ListCertificatePropertiesVersionsOptions) (*policy")
-	regexReplace("options.go", `{\n\n}`, `{
-		// placeholder for future optional parameters
-	}`)
-
 	// replace Error with ErrorInfo
 	regexReplace("models.go", `Error \*KeyVaultErrorError`, `Error *ErrorInfo`)
 	regexReplace("models.go", `type KeyVaultErrorError struct.+\{(?:\s.+\s)+\}`, "")

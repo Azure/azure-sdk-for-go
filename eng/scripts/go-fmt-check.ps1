@@ -1,5 +1,5 @@
 param(
-    $ServiceDirectories
+    $Packages
 )
 
 function Invoke-CopyrightCheck {
@@ -15,11 +15,11 @@ function Invoke-CopyrightCheck {
     return $missing
 }
 
-$services = $ServiceDirectories.Split(",")
+$pkgs = $Packages.Split(",")
 
 $missing = @()
-foreach($service in $services) {
-    $missing += Invoke-CopyrightCheck -Path $service
+foreach($pkg in $pkgs) {
+    $missing += Invoke-CopyrightCheck -Path $pkg
 }
 
 if ($missing) {
@@ -29,5 +29,5 @@ if ($missing) {
     }
 }
 else {
-    Write-Host "Format check succeeded. All go files within service directories [$ServiceDirectories] are properly formatted."
+    Write-Host "Format check succeeded. All go files within directories [$Packages] are properly formatted."
 }

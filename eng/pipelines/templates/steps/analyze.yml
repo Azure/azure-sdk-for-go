@@ -19,10 +19,10 @@ steps:
       PackageInfoDirectory: $(Build.ArtifactStagingDirectory)/PackageInfo
 
   - pwsh: |
-      . $(Build.SourcesDirectory)/eng/scripts/common.ps1
+      . $(Build.SourcesDirectory)/eng/common/scripts/common.ps1
       . $(Build.SourcesDirectory)/eng/scripts/apiview-helpers.ps1
 
-      $pkgs = Get-PackagesFromPackageInfo -PackageInfoFolder "./PackageInfo" `
+      $pkgs = Get-PackagesFromPackageInfo -PackageInfoFolder "$(Build.ArtifactStagingDirectory)/PackageInfo" `
         -IncludeIndirect $false -CustomCompareFunction { param($pkgProp) { return $pkgProp.CIParameters.IsSdkLibrary } }
 
       $changedServices = @()
@@ -139,7 +139,12 @@ steps:
           not(endsWith(variables['Build.Repository.Name'], '-pr'))
         )
 
-  # todo: make packageinfo aware, convert to script
+  # originally, I confused myself into thinking that package.Name and package.ServiceDirectory were the same thing, but they
+  # definitely are not. The package.Name (and now ArtifactName) includes "sdk", while the ServiceDirectory value does not.
+  # this means that if we need a directly accessible path from an attribute, we just need to look at the actual package name, not the servicedirectory value
+
+  # basically everywhere that is using $(ChangedServices) needs to use $(Packages) now. Whoops.
+  # todo: make work against individual packages, convert to script
   - task: Powershell@2
     displayName: 'Dependency Check'
     condition: ne(variables['Skip.DependencyCheck'], 'true')
@@ -158,6 +163,7 @@ steps:
     workingDirectory: $(System.DefaultWorkingDirectory)
     retryCountOnTaskFailure: 3
 
+  # todo: convert to changed packages versus changed services
   - pwsh: |
       $changedServices = "$(ChangedServices)" -split ","
       $failed = $false
@@ -181,9 +187,10 @@ steps:
         exit 1
       }
     displayName: 'Lint'
-    failOnStderr: false
     workingDirectory: $(System.DefaultWorkingDirectory)
+    condition: succeededOrFailed()
 
+  # todo: convert to changed packages versus changed services
   - pwsh: |
       $changedServices = "$(ChangedServices)" -split ","
       $failed = $false
@@ -211,6 +218,7 @@ steps:
     condition: eq(variables.SkipGoGetUAll, 'false')
     workingDirectory: $(System.DefaultWorkingDirectory)
 
+  # todo: convert to changed packages versus changed services
   - pwsh: |
       $changedServices = "$(ChangedServices)" -split ","
       $failed = $false
@@ -236,7 +244,9 @@ steps:
       }
     displayName: 'go mod tidy'
     workingDirectory: $(System.DefaultWorkingDirectory)
+    condition: succeededOrFailed()
 
+  # todo: convert to changed packages versus changed services
   - pwsh: |
       $changedServices = "$(ChangedServices)" -split ","
       foreach($serviceDirectory in $changedServices) {
@@ -249,6 +259,7 @@ steps:
       }
     displayName: 'Verify doc.go'
     workingDirectory: $(System.DefaultWorkingDirectory)
+    condition: succeededOrFailed()
 
   - task: Powershell@2
     inputs:
@@ -256,7 +267,7 @@ steps:
       arguments: >
         -ServiceDirectories '$(ChangedServices)'
       pwsh: true
-    displayName: 'LICENSE.txt Check'
+    displayName: 'Copyright header Check'
     condition: succeededOrFailed()
 
   - task: Powershell@2
@@ -272,7 +283,7 @@ steps:
     inputs:
       filePath: $(Build.SourcesDirectory)/eng/scripts/go-fmt.check.ps1
       arguments: >
-        -ServiceDirectories '$(ChangedServices)'
+        -Packages '$(Packages)'
       pwsh: true
     displayName: 'Format Check'
     condition: succeededOrFailed()

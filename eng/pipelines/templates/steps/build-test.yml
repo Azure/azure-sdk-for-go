@@ -39,10 +39,6 @@ steps:
       PackageInfoDirectory: $(Build.ArtifactStagingDirectory)/PackageInfo
       IncludeIndirect: true
 
-  - pwsh: |
-      Get-ChildItem -R -Path $(Build.SourcesDirectory) | ForEach-Object { Write-Host $_.FullName}
-    displayName: Dump Visible Files
-
   - task: Powershell@2
     displayName: Use azcore from main
     condition: eq(variables.UseAzcoreFromMain, 'true')

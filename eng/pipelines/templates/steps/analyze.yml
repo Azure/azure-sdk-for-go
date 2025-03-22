@@ -154,7 +154,7 @@ steps:
       targetType: filePath
       pwsh: true
       filePath: eng/scripts/Invoke-DependencyCheck.ps1
-      arguments: 'sdk/${{ parameters.ServiceDirectory }}'
+      arguments: "$(Packages)"
 
   - script: |
       curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin ${{parameters.LintVersion}}
@@ -289,11 +289,15 @@ steps:
     displayName: 'Format Check'
     condition: succeededOrFailed()
 
-  # todo: figure out something specific for this guy, I think I may have a global issue with the way we are doing this?
   - template: /eng/common/pipelines/templates/steps/verify-links.yml
     parameters:
-      Directory: sdk/${{ parameters.ServiceDirectory }}
+      ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
+        Directory: ''
+        Urls: (eng/common/scripts/get-markdown-files-from-changed-files.ps1)
+      ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
+        Directory: sdk/${{ parameters.ServiceDirectory }}
       CheckLinkGuidance: $true
+      Condition: succeededOrFailed()
 
   # todo, convert to package level instead of service level
   - pwsh: |

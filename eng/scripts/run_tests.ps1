@@ -79,6 +79,9 @@ $failed = $false
 foreach($serviceDirectory in $services) {
     $result = Invoke-Test $serviceDirectory $testTimeout $enableRaceDetector
 
+    Write-Host $result.GetType()
+    Write-Host $result
+
     if ($result -gt 0) {
         Write-Host "An error occured while testing $serviceDirectory."
         $failed = $true

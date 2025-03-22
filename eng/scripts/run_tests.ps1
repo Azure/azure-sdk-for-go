@@ -2,7 +2,7 @@
 
 Param(
     [Parameter(Mandatory = $true)]
-    [string] $serviceDirectory,
+    [string] $serviceDirectories,
     [string] $testTimeout = "10s",
     [bool] $enableRaceDetector = $false
 )
@@ -15,18 +15,17 @@ function Invoke-Test {
         [string] $testTimeout,
         [bool] $enableRaceDetector
     )
-    if ($serviceDirectory.StartsWith("sdk")) {
-        Push-Location $serviceDirectory
+    $targetDirectory = $serviceDirectory
+    if (-not $serviceDirectory.StartsWith("sdk")) {
+        $targetDirectory = Join-Path "sdk" $serviceDirectory
     }
-    else {
-        Push-Location sdk/$serviceDirectory
-    }
+    Push-Location $targetDirectory
 
     if ($enableRaceDetector) {
-        Write-Host "##[command] Executing 'go test -timeout $testTimeout -race -v -coverprofile coverage.txt ./...' in sdk/$serviceDirectory"
+        Write-Host "##[command] Executing 'go test -timeout $testTimeout -race -v -coverprofile coverage.txt ./...' in $targetDirectory"
         go test -timeout $testTimeout -race -v -coverprofile coverage.txt ./... | Tee-Object -FilePath outfile.txt
     } else {
-        Write-Host "##[command] Executing 'go test -timeout $testTimeout -v -coverprofile coverage.txt ./...' in sdk/$serviceDirectory"
+        Write-Host "##[command] Executing 'go test -timeout $testTimeout -v -coverprofile coverage.txt ./...' in $targetDirectory"
         go test -timeout $testTimeout -v -coverprofile coverage.txt ./... | Tee-Object -FilePath outfile.txt
     }
 
@@ -61,7 +60,7 @@ function Invoke-Test {
 
         go run $repoRoot/eng/tools/internal/coverage/coverage.go `
             -config $repoRoot/eng/config.json `
-            -serviceDirectory $serviceDirectory `
+            -serviceDirectory $targetDirectory `
             -searchDirectory $repoRoot
     }
 
@@ -72,7 +71,7 @@ function Invoke-Test {
 }
 
 
-$services = $ServiceDirectories -split ","
+$services = $serviceDirectories -split ","
 
 $failed = $false
 
@@ -85,7 +84,7 @@ foreach($serviceDirectory in $services) {
 }
 
 if ($failed) {
-    Write-Host "##[error] a failure occurred testing the directories: $ServiceDirectories. Check above details for more information."
+    Write-Host "##[error] a failure occurred testing the directories: $serviceDirectories. Check above details for more information."
     exit 1
 }
 

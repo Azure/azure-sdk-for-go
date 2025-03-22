@@ -15,7 +15,12 @@ function Invoke-Test {
         [string] $testTimeout,
         [bool] $enableRaceDetector
     )
-    Push-Location sdk/$serviceDirectory
+    if ($serviceDirectory.StartsWith("sdk")) {
+        Push-Location $serviceDirectory
+    }
+    else {
+        Push-Location sdk/$serviceDirectory
+    }
 
     if ($enableRaceDetector) {
         Write-Host "##[command] Executing 'go test -timeout $testTimeout -race -v -coverprofile coverage.txt ./...' in sdk/$serviceDirectory"

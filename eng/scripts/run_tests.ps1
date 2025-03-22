@@ -31,6 +31,7 @@ function Invoke-Test {
 
     # go test will return a non-zero exit code on test failures so don't skip generating the report in this case
     $GOTESTEXITCODE = $LASTEXITCODE
+    Write-Host "Finished test with exit code $GOTESTEXITCODE"
 
     Get-Content -Raw outfile.txt | go-junit-report > report.xml
 
@@ -79,6 +80,7 @@ foreach($serviceDirectory in $services) {
     $result = Invoke-Test $serviceDirectory $testTimeout $enableRaceDetector
 
     if ($result -gt 0) {
+        Write-Host "An error occured while testing $serviceDirectory."
         $failed = $true
     }
 }
@@ -87,4 +89,3 @@ if ($failed) {
     Write-Host "##[error] a failure occurred testing the directories: $serviceDirectories. Check above details for more information."
     exit 1
 }
-

@@ -170,7 +170,7 @@ steps:
       $failed = $false
 
       foreach($serviceDirectory in $changedServices) {
-        $modDirs = ./eng/scripts/get_module_dirs.ps1 '$serviceDirectory'
+        $modDirs = ./eng/scripts/get_module_dirs.ps1 "$serviceDirectory"
         foreach ($md in $modDirs) {
           pushd $md
           Write-Host "##[command]Executing golangci-lint run -c $(System.DefaultWorkingDirectory)/eng/.golangci.yml in $md"

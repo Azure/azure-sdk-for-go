@@ -116,19 +116,29 @@ function EvaluateCIParam {
   }
 }
 
-function Get-AllPackageInfoFromRepo($serviceDirectories)
+function Get-AllPackageInfoFromRepo($serviceDirectories, $packages)
 {
-  Write-Host "Entering Get-AllPackageInfoFromRepo with CWD: $PWD and serviceDirectories: $serviceDirectories"
+  # we can probably stick to a single filter by implicitly adding `sdk` to leading paths
+  Write-Host "Entering Get-AllPackageInfoFromRepo with CWD: $PWD, serviceDirectories: $serviceDirectories, and packages: $packages"
   $allPackageProps = @()
-  $searchPath = Join-Path $RepoRoot "sdk"
   $pkgFiles = @()
+
+  $searchPath = $RepoRoot
   if ($serviceDirectories) {
-    $serviceDirectories = $serviceDirectory -split ","
-    foreach($serviceDirectory in $serviceDirectories){
-      $searchPath = Join-Path $searchPath "$serviceDirectory" "go.mod"
-      $pkgFiles += @(Get-ChildItem $searchPath)
+    $searchPath = Join-Path $RepoRoot "sdk"
+    $services = $serviceDirectories -split ","
+    foreach ($service in $services) {
+      $pkgFiles += @(Get-ChildItem (Join-Path $searchPath $service "go.mod"))
     }
-  } else {
+  }
+  elseif ($packages) {
+    $packages = $packages -split ","
+    foreach ($package in $packages) {
+      $pkgFiles += @(Get-ChildItem (Join-Path $searchPath $package "go.mod"))
+    }
+  }
+  else {
+    $searchPath = Join-Path $RepoRoot "sdk"
     # If service directory is not passed in, find all modules
     [array]$pkgFiles = Get-ChildItem -Path $searchPath -Include "go.mod" -Recurse
   }

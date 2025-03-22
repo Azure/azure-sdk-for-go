@@ -39,6 +39,10 @@ steps:
       PackageInfoDirectory: $(Build.ArtifactStagingDirectory)/PackageInfo
       IncludeIndirect: true
 
+  - pwsh: |
+      Get-ChildItem -R -Path $(Build.SourcesDirectory) | ForEach-Object { Write-Host $_.FullName}
+    displayName: Dump Visible Files
+
   - task: Powershell@2
     displayName: Use azcore from main
     condition: eq(variables.UseAzcoreFromMain, 'true')
@@ -58,7 +62,7 @@ steps:
       targetType: filePath
       pwsh: true
       filePath: eng/scripts/build.ps1
-      arguments: -filter '$(ChangedServices)'
+      arguments: -filter "$(Packages)"
 
   - task: Powershell@2
     displayName: Vet
@@ -68,7 +72,7 @@ steps:
       targetType: filePath
       pwsh: true
       filePath: eng/scripts/build.ps1
-      arguments: -vet -skipBuild -filter '$(ChangedServices)'
+      arguments: -vet -skipBuild -filter '$(Packages)'
 
   - pwsh: |
       go install github.com/jstemmer/go-junit-report/v2@v2.1.0
@@ -134,7 +138,7 @@ steps:
       inputs:
         targetType: 'filePath'
         filePath: ./eng/scripts/run_tests.ps1
-        arguments: '"$(ChangedServices)" ${{ parameters.TestRunTime }} $${{ parameters.EnableRaceDetector }}'
+        arguments: '"$(Packages)" ${{ parameters.TestRunTime }} $${{ parameters.EnableRaceDetector }}'
         pwsh: true
       env:
         GO111MODULE: 'on'
@@ -148,7 +152,7 @@ steps:
       inputs:
         targetType: 'filePath'
         filePath: ./eng/scripts/Build_Perf.ps1
-        arguments: '"$(ChangedServices)" $$(UseAzcoreFromMain)'
+        arguments: '"$(Packages)" $$(UseAzcoreFromMain)'
         pwsh: true
 
   - ${{ if eq(parameters.TestProxy, true) }}:

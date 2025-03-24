@@ -69,23 +69,23 @@ func TestGetOperationType(t *testing.T) {
 
 func TestGetSpanKind(t *testing.T) {
 	// returns SpanKindProducer when operation type is CreateOperationType
-	require.Equal(t, SpanKindProducer, getSpanKind(CreateOperationType, CreateOperationName, nil))
+	require.Equal(t, SpanKindProducer, getSpanKind(CreateOperationType, CreateOperationName, 0))
 
 	// returns SpanKindProducer when operation type is SendOperationType and not a batch operation
-	require.Equal(t, SpanKindProducer, getSpanKind(SendOperationType, SendOperationName, nil))
+	require.Equal(t, SpanKindProducer, getSpanKind(SendOperationType, SendOperationName, 0))
 
 	// returns SpanKindClient when operation type is SendOperationType and a batch operation
-	require.Equal(t, SpanKindClient, getSpanKind(SendOperationType, SendOperationName, []Attribute{{Key: AttrBatchMessageCount, Value: "1"}}))
+	require.Equal(t, SpanKindClient, getSpanKind(SendOperationType, SendOperationName, 1))
 
 	// returns SpanKindClient when operation type is ReceiveOperationType
-	require.Equal(t, SpanKindClient, getSpanKind(ReceiveOperationType, ReceiveOperationName, nil))
+	require.Equal(t, SpanKindClient, getSpanKind(ReceiveOperationType, ReceiveOperationName, 5))
 
 	// returns SpanKindClient when operation type is SettleOperationType
-	require.Equal(t, SpanKindClient, getSpanKind(SettleOperationType, CompleteOperationName, nil))
+	require.Equal(t, SpanKindClient, getSpanKind(SettleOperationType, CompleteOperationName, 0))
 
 	// returns SpanKindClient with operation name is a session operation
-	require.Equal(t, SpanKindClient, getSpanKind("", AcceptSessionOperationName, nil))
+	require.Equal(t, SpanKindClient, getSpanKind("", AcceptSessionOperationName, 0))
 
 	// returns SpanKindInternal when operation type is unknown
-	require.Equal(t, SpanKindInternal, getSpanKind("", "unknown", nil))
+	require.Equal(t, SpanKindInternal, getSpanKind("", "unknown", 0))
 }

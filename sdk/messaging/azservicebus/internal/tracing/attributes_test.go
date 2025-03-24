@@ -22,6 +22,11 @@ func TestGetMessageSpanAttributes(t *testing.T) {
 		expected []Attribute
 	}{
 		{
+			name:     "nil message",
+			message:  nil,
+			expected: []Attribute{},
+		},
+		{
 			name:     "empty message",
 			message:  &amqp.Message{},
 			expected: []Attribute{},
@@ -82,6 +87,11 @@ func TestGetReceivedMessageSpanAttributes(t *testing.T) {
 		expected []Attribute
 	}{
 		{
+			name:     "nil message",
+			message:  nil,
+			expected: []Attribute{},
+		},
+		{
 			name:     "empty message",
 			message:  &amqp.Message{},
 			expected: []Attribute{},
@@ -128,12 +138,4 @@ func TestGetReceivedMessageSpanAttributes(t *testing.T) {
 			require.ElementsMatch(t, tc.expected, result)
 		})
 	}
-}
-
-func TestGetMessageBatchSpanAttributes(t *testing.T) {
-	expectedAttrs := []Attribute{
-		{Key: AttrBatchMessageCount, Value: int64(1)},
-	}
-	result := GetMessageBatchSpanAttributes(1)
-	require.ElementsMatch(t, expectedAttrs, result)
 }

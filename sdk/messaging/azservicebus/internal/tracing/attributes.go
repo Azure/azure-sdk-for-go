@@ -11,19 +11,25 @@ import (
 
 const enqueuedTimeAnnotation = "x-opt-enqueued-time"
 
-func GetMessageIDAttribute(message *amqp.Message) []Attribute {
-	var attrs []Attribute
+func GetMessageIDAttribute(message *amqp.Message) Attribute {
 	if message != nil && message.Properties != nil && message.Properties.MessageID != nil && message.Properties.MessageID != "" {
-		attrs = append(attrs, Attribute{Key: AttrMessageID, Value: message.Properties.MessageID})
+		return Attribute{Key: AttrMessageID, Value: message.Properties.MessageID}
 	}
-	return attrs
+	return Attribute{}
 }
 
 func GetMessageSpanAttributes(message *amqp.Message) []Attribute {
 	if message == nil {
 		return nil
 	}
-	attrs := GetMessageIDAttribute(message)
+
+	var attrs []Attribute
+
+	messageIDAttr := GetMessageIDAttribute(message)
+	if messageIDAttr.Key != "" {
+		attrs = append(attrs, messageIDAttr)
+	}
+
 	if message.Properties != nil && message.Properties.CorrelationID != nil && message.Properties.CorrelationID != "" {
 		attrs = append(attrs, Attribute{Key: AttrConversationID, Value: message.Properties.CorrelationID})
 	}
@@ -34,18 +40,22 @@ func GetReceivedMessageSpanAttributes(message *amqp.Message) []Attribute {
 	if message == nil {
 		return nil
 	}
+
 	attrs := GetMessageSpanAttributes(message)
+
 	if message.Header != nil {
 		attrs = append(attrs, Attribute{Key: AttrDeliveryCount, Value: int64(message.Header.DeliveryCount + 1)})
 	}
+
 	if message.Annotations != nil {
 		if enqueuedTime, ok := message.Annotations[enqueuedTimeAnnotation]; ok {
 			attrs = append(attrs, Attribute{Key: AttrEnqueuedTime, Value: enqueuedTime.(time.Time).Unix()})
 		}
 	}
+
 	return attrs
 }
 
-func GetMessageBatchSpanAttributes(size int) []Attribute {
-	return []Attribute{{Key: AttrBatchMessageCount, Value: int64(size)}}
+func getMessageBatchSpanAttribute(size int) Attribute {
+	return Attribute{Key: AttrBatchMessageCount, Value: int64(size)}
 }

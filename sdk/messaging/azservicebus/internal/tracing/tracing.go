@@ -31,6 +31,7 @@ type Tracer struct {
 type StartSpanOptions struct {
 	Tracer        Tracer
 	OperationName MessagingOperationName
+	BatchCount    int
 	Attributes    []Attribute
 	Links         []Link
 }
@@ -78,6 +79,7 @@ func StartSpan(ctx context.Context, options *StartSpanOptions) (context.Context,
 	if options == nil || options.OperationName == "" {
 		return ctx, func(error) {}
 	}
+
 	attrs := options.Attributes
 	attrs = append(attrs, Attribute{Key: AttrOperationName, Value: string(options.OperationName)})
 
@@ -89,7 +91,11 @@ func StartSpan(ctx context.Context, options *StartSpanOptions) (context.Context,
 		attrs = append(attrs, Attribute{Key: AttrDispositionStatus, Value: string(options.OperationName)})
 	}
 
-	spanKind := getSpanKind(operationType, options.OperationName, options.Attributes)
+	if options.BatchCount > 0 {
+		attrs = append(attrs, Attribute{Key: AttrBatchMessageCount, Value: int64(options.BatchCount)})
+	}
+
+	spanKind := getSpanKind(operationType, options.OperationName, options.BatchCount)
 
 	tr := options.Tracer
 	spanName := string(options.OperationName)
@@ -109,11 +115,11 @@ func getOperationType(operationName MessagingOperationName) MessagingOperationTy
 	switch operationName {
 	case CreateOperationName:
 		return CreateOperationType
-	case SendOperationName, ScheduleOperationName, CancelScheduledOperationName:
+	case CancelScheduledOperationName, ScheduleOperationName, SendOperationName:
 		return SendOperationType
-	case ReceiveOperationName, PeekOperationName, ReceiveDeferredOperationName, RenewMessageLockOperationName:
+	case PeekOperationName, ReceiveDeferredOperationName, ReceiveOperationName, RenewMessageLockOperationName:
 		return ReceiveOperationType
-	case AbandonOperationName, CompleteOperationName, DeferOperationName, DeadLetterOperationName:
+	case AbandonOperationName, CompleteOperationName, DeadLetterOperationName, DeferOperationName:
 		return SettleOperationType
 	default:
 		return ""
@@ -122,24 +128,18 @@ func getOperationType(operationName MessagingOperationName) MessagingOperationTy
 
 // getSpanKind determines the span kind based on the operation type and name.
 // based on the messaging span conventions https://opentelemetry.io/docs/specs/semconv/messaging/messaging-spans/#span-kind
-func getSpanKind(operationType MessagingOperationType, operationName MessagingOperationName, attrs []Attribute) SpanKind {
-	isBatch := false
-	for _, attr := range attrs {
-		if attr.Key == AttrBatchMessageCount {
-			isBatch = true
-		}
-	}
+func getSpanKind(operationType MessagingOperationType, operationName MessagingOperationName, batchCount int) SpanKind {
 	switch {
 	case operationType == CreateOperationType,
-		operationType == SendOperationType && !isBatch:
+		operationType == SendOperationType && batchCount == 0:
 		return SpanKindProducer
 	case operationType == SendOperationType,
-		operationType == ReceiveOperationType,
 		operationType == SettleOperationType,
+		operationType == ReceiveOperationType,
 		operationName == AcceptSessionOperationName,
-		operationName == SetSessionStateOperationName,
 		operationName == GetSessionStateOperationName,
-		operationName == RenewSessionLockOperationName:
+		operationName == RenewSessionLockOperationName,
+		operationName == SetSessionStateOperationName:
 		return SpanKindClient
 	default:
 		return SpanKindInternal

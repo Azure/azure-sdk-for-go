@@ -28,7 +28,7 @@ func messageCarrierAdapter(message *amqp.Message) tracing.Carrier {
 
 func (mw *messageWrapper) Set(key string, value string) {
 	if mw.message.ApplicationProperties == nil {
-		mw.message.ApplicationProperties = make(map[string]interface{})
+		mw.message.ApplicationProperties = make(map[string]any)
 	}
 	mw.message.ApplicationProperties[key] = value
 }
@@ -37,7 +37,10 @@ func (mw *messageWrapper) Get(key string) string {
 	if mw.message.ApplicationProperties == nil || mw.message.ApplicationProperties[key] == nil {
 		return ""
 	}
-	return mw.message.ApplicationProperties[key].(string)
+	if str, ok := mw.message.ApplicationProperties[key].(string); ok {
+		return str
+	}
+	return ""
 }
 
 func (mw *messageWrapper) Keys() []string {

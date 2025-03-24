@@ -116,25 +116,46 @@ function EvaluateCIParam {
   }
 }
 
-function Get-AllPackageInfoFromRepo($serviceDirectories, $packages)
+
+<#
+.DESCRIPTION
+This function resolves a filter string to a directly invokable directory or directories
+that can be assembled by a go binary.
+#>
+function ResolveSearchPaths {
+  param (
+      [Parameter(Mandatory=$true)]
+      $FilterString
+  )
+
+  $resolvedPaths = @()
+  $filters = $FilterString.Split(",")
+
+  foreach($filter in $filters) {
+    if ($filter.StartsWith("sdk")) {
+      $resolvedPaths += (Join-Path $RepoRoot $filter)
+    }
+    else {
+      $resolvedPaths += (Join-Path $RepoRoot "sdk" $filter)
+    }
+  }
+
+  return ,$resolvedPaths
+}
+
+
+function Get-AllPackageInfoFromRepo($filterString)
 {
   # we can probably stick to a single filter by implicitly adding `sdk` to leading paths
   Write-Host "Entering Get-AllPackageInfoFromRepo with CWD: $PWD, serviceDirectories: $serviceDirectories, and packages: $packages"
   $allPackageProps = @()
   $pkgFiles = @()
 
-  $searchPath = $RepoRoot
-  if ($serviceDirectories) {
-    $searchPath = Join-Path $RepoRoot "sdk"
-    $services = $serviceDirectories -split ","
-    foreach ($service in $services) {
-      $pkgFiles += @(Get-ChildItem (Join-Path $searchPath $service "go.mod"))
-    }
-  }
-  elseif ($packages) {
-    $packages = $packages -split ","
-    foreach ($package in $packages) {
-      $pkgFiles += @(Get-ChildItem (Join-Path $searchPath $package "go.mod"))
+  if ($filterString) {
+    $searchPaths = ResolveSearchPaths $filterString
+
+    foreach ($searchPath in $searchPaths) {
+      $pkgFiles += @(Get-ChildItem (Join-Path $searchPath "go.mod"))
     }
   }
   else {

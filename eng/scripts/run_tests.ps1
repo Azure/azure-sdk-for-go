@@ -2,14 +2,14 @@
 
 Param(
     [Parameter(Mandatory = $true)]
-    [string] $serviceDirectories,
+    [string] $TargetDirectories,
     [string] $testTimeout = "10s",
     [bool] $enableRaceDetector = $false
 )
 
 $ErrorActionPreference = 'Stop'
 
-$services = $serviceDirectories -split ","
+$services = $TargetDirectories -split ","
 
 foreach($serviceDirectory in $services) {
     &$PSScriptRoot/test.ps1 $serviceDirectory $testTimeout $enableRaceDetector
@@ -20,6 +20,6 @@ foreach($serviceDirectory in $services) {
 }
 
 if ($failed) {
-    Write-Host "##[error] a failure occurred testing the directories: $serviceDirectories. Check above details for more information."
+    Write-Host "##[error] a failure occurred testing the directories: $TargetDirectories. Check above details for more information."
     exit 1
 }

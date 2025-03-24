@@ -104,7 +104,7 @@ Generate and release Azure SDK for Go package from Swagger or TypeSpec.
 ---
 
 ## Add Live Test and Record
-It is not a required step in release process，we can ensure whether the api version has been deployed by live test.
+It is not a required step in release process, we can ensure whether the api version has been deployed by live test.
 ### Install Scripts:
 1. Run the following PowerShell commands to download necessary scripts:
  ```ps

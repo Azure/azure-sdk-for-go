@@ -1,5 +1,5 @@
-//go:build go1.18
-// +build go1.18
+//go:build go1.21
+// +build go1.21
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -20,12 +20,16 @@ func newStainlessTestChatCompletionOptions(deployment string) openai.ChatComplet
 	message := "Count to 10, with a comma between each number, no newlines and a period at the end. E.g., 1, 2, 3, ..."
 
 	return openai.ChatCompletionNewParams{
-		Messages: openai.F([]openai.ChatCompletionMessageParamUnion{
-			openai.UserMessage(message),
-		}),
+		Messages: []openai.ChatCompletionMessageParamUnion{{
+			OfUser: &openai.ChatCompletionUserMessageParam{
+				Content: openai.ChatCompletionUserMessageParamContentUnion{
+					OfString: openai.String(message),
+				},
+			},
+		}},
 		MaxTokens:   openai.Int(1024),
 		Temperature: openai.Float(0.0),
-		Model:       openai.F(openai.ChatModel(deployment)),
+		Model:       openai.ChatModel(deployment),
 	}
 }
 
@@ -52,9 +56,9 @@ func TestClient_GetChatCompletions(t *testing.T) {
 		t.Logf("Content = %s", choice.Message.Content)
 
 		require.Zero(t, choice.Index)
-		require.Equal(t, openai.ChatCompletionMessageRoleAssistant, choice.Message.Role)
+		require.Equal(t, "assistant", choice.Message.Role)
 		require.NotEmpty(t, choice.Message.Content)
-		require.Equal(t, openai.ChatCompletionChoicesFinishReasonStop, choice.FinishReason)
+		require.Equal(t, "stop", choice.FinishReason)
 
 		require.Equal(t, openai.CompletionUsage{
 			// these change depending on which model you use. These #'s work for gpt-4, which is
@@ -71,24 +75,29 @@ func TestClient_GetChatCompletions(t *testing.T) {
 
 	t.Run("AzureOpenAI", func(t *testing.T) {
 		client := newStainlessTestClient(t, azureOpenAI.ChatCompletionsRAI.Endpoint)
-		testFn(t, client.Chat.Completions, azureOpenAI.ChatCompletionsRAI.Model, "gpt-4", true)
+
+		testFn(t, &client.Chat.Completions, azureOpenAI.ChatCompletionsRAI.Model, "gpt-4", true)
 	})
 
 	t.Run("AzureOpenAI.DefaultAzureCredential", func(t *testing.T) {
 		client := newStainlessTestClient(t, azureOpenAI.ChatCompletionsRAI.Endpoint)
-		testFn(t, client.Chat.Completions, azureOpenAI.ChatCompletions.Model, "gpt-4", true)
+		testFn(t, &client.Chat.Completions, azureOpenAI.ChatCompletions.Model, "gpt-4", true)
 	})
 }
 
 func TestClient_GetChatCompletions_LogProbs(t *testing.T) {
 	testFn := func(t *testing.T, client *openai.ChatCompletionService, model string) {
 		opts := openai.ChatCompletionNewParams{
-			Messages: openai.F([]openai.ChatCompletionMessageParamUnion{
-				openai.UserMessage("Count to 10, with a comma between each number, no newlines and a period at the end. E.g., 1, 2, 3, ..."),
-			}),
+			Messages: []openai.ChatCompletionMessageParamUnion{{
+				OfUser: &openai.ChatCompletionUserMessageParam{
+					Content: openai.ChatCompletionUserMessageParamContentUnion{
+						OfString: openai.String("Count to 10, with a comma between each number, no newlines and a period at the end. E.g., 1, 2, 3, ..."),
+					},
+				},
+			}},
 			MaxTokens:   openai.Int(1024),
 			Temperature: openai.Float(0.0),
-			Model:       openai.F(openai.ChatModel(model)),
+			Model:       openai.ChatModel(model),
 			Logprobs:    openai.Bool(true),
 			TopLogprobs: openai.Int(5),
 		}
@@ -103,12 +112,12 @@ func TestClient_GetChatCompletions_LogProbs(t *testing.T) {
 
 	t.Run("AzureOpenAI", func(t *testing.T) {
 		client := newStainlessTestClient(t, azureOpenAI.ChatCompletions.Endpoint)
-		testFn(t, client.Chat.Completions, azureOpenAI.ChatCompletions.Model)
+		testFn(t, &client.Chat.Completions, azureOpenAI.ChatCompletions.Model)
 	})
 
 	t.Run("AzureOpenAI.Service", func(t *testing.T) {
 		client := newStainlessChatCompletionService(t, azureOpenAI.ChatCompletions.Endpoint)
-		testFn(t, client, azureOpenAI.ChatCompletions.Model)
+		testFn(t, &client, azureOpenAI.ChatCompletions.Model)
 	})
 }
 
@@ -121,13 +130,17 @@ func TestClient_GetChatCompletions_LogitBias(t *testing.T) {
 		client := newStainlessTestClient(t, epm.Endpoint)
 
 		body := openai.ChatCompletionNewParams{
-			Messages: openai.F([]openai.ChatCompletionMessageParamUnion{
-				openai.UserMessage("Briefly, what are some common roles for people at a circus, names only, one per line?"),
-			}),
+			Messages: []openai.ChatCompletionMessageParamUnion{{
+				OfUser: &openai.ChatCompletionUserMessageParam{
+					Content: openai.ChatCompletionUserMessageParamContentUnion{
+						OfString: openai.String("Briefly, what are some common roles for people at a circus, names only, one per line?"),
+					},
+				},
+			}},
 			MaxTokens:   openai.Int(200),
 			Temperature: openai.Float(0.0),
-			Model:       openai.F(openai.ChatModel(epm.Model)),
-			LogitBias: openai.F(map[string]int64{
+			Model:       openai.ChatModel(epm.Model),
+			LogitBias: map[string]int64{
 				// you can calculate these tokens using OpenAI's online tool:
 				// https://platform.openai.com/tokenizer?view=bpe
 				// These token IDs are all variations of "Clown", which I want to exclude from the response.
@@ -138,7 +151,7 @@ func TestClient_GetChatCompletions_LogitBias(t *testing.T) {
 				"5176":  -100,
 				"43456": -100,
 				"99423": -100,
-			}),
+			},
 		}
 
 		resp, err := client.Chat.Completions.New(context.Background(), body)
@@ -217,13 +230,24 @@ func TestClient_GetChatCompletions_Vision(t *testing.T) {
 	defer cancel()
 
 	resp, err := chatClient.Chat.Completions.New(ctx, openai.ChatCompletionNewParams{
-		Messages: openai.F([]openai.ChatCompletionMessageParamUnion{
-			openai.UserMessageParts(
-				openai.TextPart("Describe this image"),
-				openai.ImagePart(imageURL),
-			)},
-		),
-		Model:     openai.F(openai.ChatModel(azureOpenAI.Vision.Model)),
+		Messages: []openai.ChatCompletionMessageParamUnion{{
+			OfUser: &openai.ChatCompletionUserMessageParam{
+				Content: openai.ChatCompletionUserMessageParamContentUnion{
+					OfArrayOfContentParts: []openai.ChatCompletionContentPartUnionParam{{
+						OfText: &openai.ChatCompletionContentPartTextParam{
+							Text: "Describe this image",
+						},
+					}, {
+						OfImageURL: &openai.ChatCompletionContentPartImageParam{
+							ImageURL: openai.ChatCompletionContentPartImageImageURLParam{
+								URL: imageURL,
+							},
+						},
+					}},
+				},
+			},
+		}},
+		Model:     openai.ChatModel(azureOpenAI.Vision.Model),
 		MaxTokens: openai.Int(512),
 	})
 

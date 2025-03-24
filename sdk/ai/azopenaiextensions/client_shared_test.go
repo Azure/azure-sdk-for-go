@@ -22,7 +22,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-const apiVersion = "2024-08-01-preview"
+const apiVersion = "2025-03-15-preview"
 
 type endpoint struct {
 	URL    string
@@ -191,14 +191,13 @@ type stainlessTestClientOptions struct {
 	UseAPIKey bool
 }
 
-func newStainlessTestClient(t *testing.T, ep endpoint) *openai.Client {
+func newStainlessTestClient(t *testing.T, ep endpoint) openai.Client {
 	return newStainlessTestClientWithOptions(t, ep, nil)
 }
 
-func newStainlessTestClientWithOptions(t *testing.T, ep endpoint, options *stainlessTestClientOptions) *openai.Client {
+func newStainlessTestClientWithOptions(t *testing.T, ep endpoint, options *stainlessTestClientOptions) openai.Client {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		t.Skip("Skipping tests in playback mode")
-		return nil
 	}
 
 	if options != nil && options.UseAPIKey {
@@ -217,15 +216,13 @@ func newStainlessTestClientWithOptions(t *testing.T, ep endpoint, options *stain
 	)
 }
 
-func newStainlessChatCompletionService(t *testing.T, ep endpoint) *openai.ChatCompletionService {
+func newStainlessChatCompletionService(t *testing.T, ep endpoint) openai.ChatCompletionService {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		t.Skip("Skipping tests in playback mode")
-		return nil
 	}
 
 	tokenCredential, err := credential.New(nil)
 	require.NoError(t, err)
-
 	return openai.NewChatCompletionService(azure.WithEndpoint(ep.URL, apiVersion),
 		azure.WithTokenCredential(tokenCredential),
 	)

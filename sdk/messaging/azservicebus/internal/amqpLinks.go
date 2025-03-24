@@ -15,6 +15,7 @@ import (
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 )
 
@@ -42,7 +43,7 @@ type AMQPLinks interface {
 	Get(ctx context.Context) (*LinksWithID, error)
 
 	// Retry will run your callback, recovering links when necessary.
-	Retry(ctx context.Context, name log.Event, operation string, fn RetryWithLinksFn, o exported.RetryOptions) error
+	Retry(ctx context.Context, name log.Event, operation string, fn RetryWithLinksFn, o exported.RetryOptions, to *tracing.StartSpanOptions) error
 
 	// RecoverIfNeeded will check if an error requires recovery, and will recover
 	// the link or, possibly, the connection.
@@ -315,7 +316,7 @@ func (l *AMQPLinksImpl) Get(ctx context.Context) (*LinksWithID, error) {
 	}, nil
 }
 
-func (links *AMQPLinksImpl) Retry(ctx context.Context, eventName log.Event, operation string, fn RetryWithLinksFn, o exported.RetryOptions) error {
+func (links *AMQPLinksImpl) Retry(ctx context.Context, eventName log.Event, operation string, fn RetryWithLinksFn, o exported.RetryOptions, to *tracing.StartSpanOptions) error {
 	var lastID LinkID
 
 	didQuickRetry := false
@@ -366,7 +367,7 @@ func (links *AMQPLinksImpl) Retry(ctx context.Context, eventName log.Event, oper
 		}
 
 		return nil
-	}, isFatalErrorFunc, o)
+	}, isFatalErrorFunc, o, to)
 }
 
 // EntityPath is the full entity path for the queue/topic/subscription.

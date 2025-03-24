@@ -55,7 +55,3 @@ func GetReceivedMessageSpanAttributes(message *amqp.Message) []Attribute {
 
 	return attrs
 }
-
-func getMessageBatchSpanAttribute(size int) Attribute {
-	return Attribute{Key: AttrBatchMessageCount, Value: int64(size)}
-}

@@ -98,7 +98,6 @@ func (er *Resource[TResource, TState]) Get(state TState) (TResource, error) {
 				// If another thread/goroutine is not acquiring/renewing the resource, and none has attempted
 				// to do so within the last 30 seconds, this thread/goroutine will do it
 				er.acquiring, acquire = true, true
-				er.lastAttempt = now
 				break
 			}
 			// This thread/goroutine will use the existing resource value while another updates it
@@ -119,6 +118,7 @@ func (er *Resource[TResource, TState]) Get(state TState) (TResource, error) {
 		// This thread/goroutine has been selected to acquire/update the resource
 		var expiration time.Time
 		var newValue TResource
+		er.lastAttempt = now
 		newValue, expiration, err = er.acquireResource(state)
 
 		// Atomically, update the shared resource's new value & expiration.
@@ -150,6 +150,5 @@ func (er *Resource[TResource, TState]) Expire() {
 }
 
 func (er *Resource[TResource, TState]) expiringSoon(TResource, TState) bool {
-	now := time.Now()
-	return er.expiration.Add(-5*time.Minute).Before(now) && er.lastAttempt.Add(30*time.Second).Before(now)
+	return er.expiration.Add(-5 * time.Minute).Before(time.Now())
 }

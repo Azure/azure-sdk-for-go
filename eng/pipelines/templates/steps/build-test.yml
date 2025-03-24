@@ -39,10 +39,6 @@ steps:
       PackageInfoDirectory: $(Build.ArtifactStagingDirectory)/PackageInfo
       IncludeIndirect: true
 
-  - pwsh: |
-      Get-ChildItem -R -Path $(Build.SourcesDirectory) | ForEach-Object { Write-Host $_.FullName}
-    displayName: Dump Visible Files
-
   - task: Powershell@2
     displayName: Use azcore from main
     condition: eq(variables.UseAzcoreFromMain, 'true')
@@ -62,7 +58,7 @@ steps:
       targetType: filePath
       pwsh: true
       filePath: eng/scripts/build.ps1
-      arguments: -packages "$(Packages)"
+      arguments: -filter "$(Packages)"
 
   - task: Powershell@2
     displayName: Vet
@@ -72,7 +68,7 @@ steps:
       targetType: filePath
       pwsh: true
       filePath: eng/scripts/build.ps1
-      arguments: -vet -skipBuild -packages '$(Packages)'
+      arguments: -vet -skipBuild -filter '$(Packages)'
 
   - pwsh: |
       go install github.com/jstemmer/go-junit-report/v2@v2.1.0

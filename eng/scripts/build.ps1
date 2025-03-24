@@ -2,7 +2,6 @@
 param(
     # filter = service filter
     [string]$filter,
-    [string]$packages,
     [switch]$clean,
     [switch]$vet,
     [switch]$generate,
@@ -117,14 +116,7 @@ try
     $startingDirectory = Get-Location
     $sdks = @()
 
-    if ($packages) {
-        Write-Host "Getting packages: $packages"
-        $sdks = Get-AllPackageInfoFromRepo -packages $packages
-    }
-    else {
-        Write-Host "Getting services: $filter"
-        $sdks = Get-AllPackageInfoFromRepo -serviceDirectories $filter
-    }
+    $sdks = Get-AllPackageInfoFromRepo $filter
 
     Write-Host "Successfully found $($sdks.Count) go modules to build."
     foreach ($sdk in $sdks)

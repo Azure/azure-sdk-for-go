@@ -1,11 +1,11 @@
 #Requires -Version 7.0
 
 Param(
-    [string] $ServiceDirectories,
+    [string] $TargetDirectories,
     [bool] $useAzcoreFromMain
 )
 
-$services = $ServiceDirectories -split ","
+$services = $TargetDirectories -split ","
 
 $failed = $false
 

@@ -89,7 +89,6 @@ func (er *Resource[TResource, TState]) Get(state TState) (TResource, error) {
 			if !er.acquiring {
 				// If another thread/goroutine is not acquiring/updating the resource, this thread/goroutine will do it
 				er.acquiring, acquire = true, true
-				er.lastAttempt = now
 				break
 			}
 			// Getting here means that this thread/goroutine will wait for the updated resource

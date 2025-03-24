@@ -149,7 +149,7 @@ func (er *Resource[TResource, TState]) Expire() {
 	er.expiration = time.Time{}
 }
 
-func (r *Resource[TResource, TState]) expiringSoon(TResource, TState) bool {
+func (er *Resource[TResource, TState]) expiringSoon(TResource, TState) bool {
 	now := time.Now()
-	return r.expiration.Add(-5*time.Minute).Before(now) && r.lastAttempt.Add(30*time.Second).Before(now)
+	return er.expiration.Add(-5*time.Minute).Before(now) && er.lastAttempt.Add(30*time.Second).Before(now)
 }

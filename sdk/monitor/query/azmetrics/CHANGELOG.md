@@ -1,8 +1,9 @@
 # Release History
 
-## 1.2.1 (Unreleased)
+## 1.3.0-beta.1 (Unreleased)
 
 ### Features Added
+* Add fakes support
 
 ### Breaking Changes
 

@@ -631,6 +631,8 @@ try {
 
         $postDeploymentScript = $templateFile.originalFilePath | Split-Path | Join-Path -ChildPath "$ResourceType-resources-post.ps1"
         if (Test-Path $postDeploymentScript) {
+            Write-Host "BBP self contained value: $SelfContainedPostScript"
+            Write-Host "BBP self contained value null: $($SelfContainedPostScript -eq $null)"
             if ($SelfContainedPostScript) {
                 Log "Creating invokable post-deployment script '$SelfContainedPostScript' from '$postDeploymentScript'"
 
@@ -655,8 +657,11 @@ $serialized
 `$DeploymentOutputs = `$parameters.DeploymentOutputs
 $postDeploymentScript `@parameters
 "@
+                Write-Host "BBP output: $SelfContainedPostScript"
                 $outScript | Out-File $SelfContainedPostScript
-                LogVsoCommand "##vso[task.setvariable variable=SELF_CONTAINED_TEST_RESOURCES_POST_SCRIPT;]$selfContainedScript"
+                Write-Host "BBP contents:"
+                cat $SelfContainedPostScript
+                Write-Host "BBP contents $"
             } else {
                 Log "Invoking post-deployment script '$postDeploymentScript'"
                 &$postDeploymentScript -ResourceGroupName $ResourceGroupName -DeploymentOutputs $deploymentOutputs @PSBoundParameters

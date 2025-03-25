@@ -630,6 +630,11 @@ try {
         SetResourceNetworkAccessRules -ResourceGroupName $ResourceGroupName -AllowIpRanges $AllowIpRanges -CI:$CI
 
         $postDeploymentScript = $templateFile.originalFilePath | Split-Path | Join-Path -ChildPath "$ResourceType-resources-post.ps1"
+
+        if ($SelfContainedPostScript -and !(Test-Path $postDeploymentScript)) {
+            throw "-SelfContainedPostScript is not supported if there is no `test-resources-post.ps1` script in the deployment template directory"
+        }
+
         if (Test-Path $postDeploymentScript) {
             Write-Host "BBP self contained value: $SelfContainedPostScript"
             Write-Host "BBP self contained value null: $($SelfContainedPostScript -eq $null)"

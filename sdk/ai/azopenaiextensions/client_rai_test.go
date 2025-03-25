@@ -61,7 +61,7 @@ func requireContentFilterError(t *testing.T, err error) {
 }
 
 func TestClient_GetChatCompletions_AzureOpenAI_ContentFilter_WithResponse(t *testing.T) {
-	t.Skip("There seems to be some inconsitencies in the service, skipping until resolved.")
+	t.Skip("There seems to be some inconsistencies in the service, skipping until resolved.")
 	client := newStainlessTestClient(t, azureOpenAI.ChatCompletionsRAI.Endpoint)
 
 	resp, err := client.Chat.Completions.New(context.Background(), openai.ChatCompletionNewParams{

@@ -122,10 +122,10 @@ steps:
           scriptLocation: inlineScript
           scriptType: pscore
           inlineScript: |
-            $env:ARM_OIDC_TOKEN = $env:idToken `
-            $scriptPath = $(Agent.TempDirectory)/${{ parameters.SelfContainedPostScript }} `
-            Write-Host "Executing self contained test resources post script '$scriptPath'" `
-            & $scriptPath `
+            $env:ARM_OIDC_TOKEN = $env:idToken
+            $scriptPath = $(Agent.TempDirectory)/${{ parameters.SelfContainedPostScript }}
+            Write-Host "Executing self contained test resources post script '$scriptPath'"
+            & $scriptPath
             Remove-Item $scriptPath  # avoid any possible complications when we run multiple deploy templates
 
   - ${{ else }}:

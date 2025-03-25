@@ -43,6 +43,8 @@ type CopyFileNFSProperties struct {
 
 // FormatCopyFileNFSProperties returns creation time, last write time.
 func FormatCopyFileNFSProperties(np *CopyFileNFSProperties) (opts *generated.CopyFileSMBInfo) {
+	opts = &generated.CopyFileSMBInfo{}
+
 	if np == nil {
 		return nil
 	}

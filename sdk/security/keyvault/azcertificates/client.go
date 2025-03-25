@@ -854,6 +854,9 @@ func (client *Client) listCertificatePropertiesCreateRequest(ctx context.Context
 	if options != nil && options.IncludePending != nil {
 		reqQP.Set("includePending", strconv.FormatBool(*options.IncludePending))
 	}
+	if options != nil && options.MaxResults != nil {
+		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -901,7 +904,7 @@ func (client *Client) NewListCertificatePropertiesVersionsPager(name string, opt
 }
 
 // listCertificatePropertiesVersionsCreateRequest creates the ListCertificatePropertiesVersions request.
-func (client *Client) listCertificatePropertiesVersionsCreateRequest(ctx context.Context, name string, _ *ListCertificatePropertiesVersionsOptions) (*policy.Request, error) {
+func (client *Client) listCertificatePropertiesVersionsCreateRequest(ctx context.Context, name string, options *ListCertificatePropertiesVersionsOptions) (*policy.Request, error) {
 	host := "{vaultBaseUrl}"
 	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/certificates/{certificate-name}/versions"
@@ -915,6 +918,9 @@ func (client *Client) listCertificatePropertiesVersionsCreateRequest(ctx context
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "7.6-preview.2")
+	if options != nil && options.MaxResults != nil {
+		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -976,6 +982,9 @@ func (client *Client) listDeletedCertificatePropertiesCreateRequest(ctx context.
 	if options != nil && options.IncludePending != nil {
 		reqQP.Set("includePending", strconv.FormatBool(*options.IncludePending))
 	}
+	if options != nil && options.MaxResults != nil {
+		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1021,7 +1030,7 @@ func (client *Client) NewListIssuerPropertiesPager(options *ListIssuerProperties
 }
 
 // listIssuerPropertiesCreateRequest creates the ListIssuerProperties request.
-func (client *Client) listIssuerPropertiesCreateRequest(ctx context.Context, _ *ListIssuerPropertiesOptions) (*policy.Request, error) {
+func (client *Client) listIssuerPropertiesCreateRequest(ctx context.Context, options *ListIssuerPropertiesOptions) (*policy.Request, error) {
 	host := "{vaultBaseUrl}"
 	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/certificates/issuers"
@@ -1031,6 +1040,9 @@ func (client *Client) listIssuerPropertiesCreateRequest(ctx context.Context, _ *
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "7.6-preview.2")
+	if options != nil && options.MaxResults != nil {
+		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

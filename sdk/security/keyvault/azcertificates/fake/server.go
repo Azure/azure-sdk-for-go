@@ -626,6 +626,20 @@ func (s *ServerTransport) dispatchNewListCertificatePropertiesPager(req *http.Re
 	newListCertificatePropertiesPager := s.newListCertificatePropertiesPager.get(req)
 	if newListCertificatePropertiesPager == nil {
 		qp := req.URL.Query()
+		maxResultsUnescaped, err := url.QueryUnescape(qp.Get("maxresults"))
+		if err != nil {
+			return nil, err
+		}
+		maxResultsParam, err := parseOptional(maxResultsUnescaped, func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
 		includePendingUnescaped, err := url.QueryUnescape(qp.Get("includePending"))
 		if err != nil {
 			return nil, err
@@ -635,8 +649,9 @@ func (s *ServerTransport) dispatchNewListCertificatePropertiesPager(req *http.Re
 			return nil, err
 		}
 		var options *azcertificates.ListCertificatePropertiesOptions
-		if includePendingParam != nil {
+		if maxResultsParam != nil || includePendingParam != nil {
 			options = &azcertificates.ListCertificatePropertiesOptions{
+				MaxResults:     maxResultsParam,
 				IncludePending: includePendingParam,
 			}
 		}
@@ -673,11 +688,32 @@ func (s *ServerTransport) dispatchNewListCertificatePropertiesVersionsPager(req 
 		if matches == nil || len(matches) < 1 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
 		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("certificate_name")])
 		if err != nil {
 			return nil, err
 		}
-		resp := s.srv.NewListCertificatePropertiesVersionsPager(nameParam, nil)
+		maxResultsUnescaped, err := url.QueryUnescape(qp.Get("maxresults"))
+		if err != nil {
+			return nil, err
+		}
+		maxResultsParam, err := parseOptional(maxResultsUnescaped, func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *azcertificates.ListCertificatePropertiesVersionsOptions
+		if maxResultsParam != nil {
+			options = &azcertificates.ListCertificatePropertiesVersionsOptions{
+				MaxResults: maxResultsParam,
+			}
+		}
+		resp := s.srv.NewListCertificatePropertiesVersionsPager(nameParam, options)
 		newListCertificatePropertiesVersionsPager = &resp
 		s.newListCertificatePropertiesVersionsPager.add(req, newListCertificatePropertiesVersionsPager)
 		server.PagerResponderInjectNextLinks(newListCertificatePropertiesVersionsPager, req, func(page *azcertificates.ListCertificatePropertiesVersionsResponse, createLink func() string) {
@@ -705,6 +741,20 @@ func (s *ServerTransport) dispatchNewListDeletedCertificatePropertiesPager(req *
 	newListDeletedCertificatePropertiesPager := s.newListDeletedCertificatePropertiesPager.get(req)
 	if newListDeletedCertificatePropertiesPager == nil {
 		qp := req.URL.Query()
+		maxResultsUnescaped, err := url.QueryUnescape(qp.Get("maxresults"))
+		if err != nil {
+			return nil, err
+		}
+		maxResultsParam, err := parseOptional(maxResultsUnescaped, func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
 		includePendingUnescaped, err := url.QueryUnescape(qp.Get("includePending"))
 		if err != nil {
 			return nil, err
@@ -714,8 +764,9 @@ func (s *ServerTransport) dispatchNewListDeletedCertificatePropertiesPager(req *
 			return nil, err
 		}
 		var options *azcertificates.ListDeletedCertificatePropertiesOptions
-		if includePendingParam != nil {
+		if maxResultsParam != nil || includePendingParam != nil {
 			options = &azcertificates.ListDeletedCertificatePropertiesOptions{
+				MaxResults:     maxResultsParam,
 				IncludePending: includePendingParam,
 			}
 		}
@@ -746,7 +797,28 @@ func (s *ServerTransport) dispatchNewListIssuerPropertiesPager(req *http.Request
 	}
 	newListIssuerPropertiesPager := s.newListIssuerPropertiesPager.get(req)
 	if newListIssuerPropertiesPager == nil {
-		resp := s.srv.NewListIssuerPropertiesPager(nil)
+		qp := req.URL.Query()
+		maxResultsUnescaped, err := url.QueryUnescape(qp.Get("maxresults"))
+		if err != nil {
+			return nil, err
+		}
+		maxResultsParam, err := parseOptional(maxResultsUnescaped, func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *azcertificates.ListIssuerPropertiesOptions
+		if maxResultsParam != nil {
+			options = &azcertificates.ListIssuerPropertiesOptions{
+				MaxResults: maxResultsParam,
+			}
+		}
+		resp := s.srv.NewListIssuerPropertiesPager(options)
 		newListIssuerPropertiesPager = &resp
 		s.newListIssuerPropertiesPager.add(req, newListIssuerPropertiesPager)
 		server.PagerResponderInjectNextLinks(newListIssuerPropertiesPager, req, func(page *azcertificates.ListIssuerPropertiesResponse, createLink func() string) {

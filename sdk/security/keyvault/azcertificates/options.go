@@ -73,12 +73,16 @@ type ImportCertificateOptions struct {
 type ListCertificatePropertiesOptions struct {
 	// Specifies whether to include certificates which are not completely provisioned.
 	IncludePending *bool
+
+	// Maximum number of results to return in a page. If not specified the service will return up to 25 results.
+	MaxResults *int32
 }
 
 // ListCertificatePropertiesVersionsOptions contains the optional parameters for the Client.NewListCertificatePropertiesVersionsPager
 // method.
 type ListCertificatePropertiesVersionsOptions struct {
-	// placeholder for future optional parameters
+	// Maximum number of results to return in a page. If not specified the service will return up to 25 results.
+	MaxResults *int32
 }
 
 // ListDeletedCertificatePropertiesOptions contains the optional parameters for the Client.NewListDeletedCertificatePropertiesPager
@@ -86,11 +90,15 @@ type ListCertificatePropertiesVersionsOptions struct {
 type ListDeletedCertificatePropertiesOptions struct {
 	// Specifies whether to include certificates which are not completely provisioned.
 	IncludePending *bool
+
+	// Maximum number of results to return in a page. If not specified the service will return up to 25 results.
+	MaxResults *int32
 }
 
 // ListIssuerPropertiesOptions contains the optional parameters for the Client.NewListIssuerPropertiesPager method.
 type ListIssuerPropertiesOptions struct {
-	// placeholder for future optional parameters
+	// Maximum number of results to return in a page. If not specified the service will return up to 25 results.
+	MaxResults *int32
 }
 
 // MergeCertificateOptions contains the optional parameters for the Client.MergeCertificate method.

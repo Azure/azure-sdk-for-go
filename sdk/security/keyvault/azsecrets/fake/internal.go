@@ -33,6 +33,17 @@ func contains[T comparable](s []T, v T) bool {
 	return false
 }
 
+func parseOptional[T any](v string, parse func(v string) (T, error)) (*T, error) {
+	if v == "" {
+		return nil, nil
+	}
+	t, err := parse(v)
+	if err != nil {
+		return nil, err
+	}
+	return &t, err
+}
+
 func newTracker[T any]() *tracker[T] {
 	return &tracker[T]{
 		items: map[string]*T{},

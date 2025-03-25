@@ -9,6 +9,7 @@ import (
 	"errors"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -297,7 +298,7 @@ func (client *Client) NewListDeletedSecretPropertiesPager(options *ListDeletedSe
 }
 
 // listDeletedSecretPropertiesCreateRequest creates the ListDeletedSecretProperties request.
-func (client *Client) listDeletedSecretPropertiesCreateRequest(ctx context.Context, _ *ListDeletedSecretPropertiesOptions) (*policy.Request, error) {
+func (client *Client) listDeletedSecretPropertiesCreateRequest(ctx context.Context, options *ListDeletedSecretPropertiesOptions) (*policy.Request, error) {
 	host := "{vaultBaseUrl}"
 	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/deletedsecrets"
@@ -307,6 +308,9 @@ func (client *Client) listDeletedSecretPropertiesCreateRequest(ctx context.Conte
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "7.6-preview.2")
+	if options != nil && options.MaxResults != nil {
+		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -353,7 +357,7 @@ func (client *Client) NewListSecretPropertiesPager(options *ListSecretProperties
 }
 
 // listSecretPropertiesCreateRequest creates the ListSecretProperties request.
-func (client *Client) listSecretPropertiesCreateRequest(ctx context.Context, _ *ListSecretPropertiesOptions) (*policy.Request, error) {
+func (client *Client) listSecretPropertiesCreateRequest(ctx context.Context, options *ListSecretPropertiesOptions) (*policy.Request, error) {
 	host := "{vaultBaseUrl}"
 	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/secrets"
@@ -363,6 +367,9 @@ func (client *Client) listSecretPropertiesCreateRequest(ctx context.Context, _ *
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "7.6-preview.2")
+	if options != nil && options.MaxResults != nil {
+		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -410,7 +417,7 @@ func (client *Client) NewListSecretPropertiesVersionsPager(name string, options 
 }
 
 // listSecretPropertiesVersionsCreateRequest creates the ListSecretPropertiesVersions request.
-func (client *Client) listSecretPropertiesVersionsCreateRequest(ctx context.Context, name string, _ *ListSecretPropertiesVersionsOptions) (*policy.Request, error) {
+func (client *Client) listSecretPropertiesVersionsCreateRequest(ctx context.Context, name string, options *ListSecretPropertiesVersionsOptions) (*policy.Request, error) {
 	host := "{vaultBaseUrl}"
 	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/secrets/{secret-name}/versions"
@@ -424,6 +431,9 @@ func (client *Client) listSecretPropertiesVersionsCreateRequest(ctx context.Cont
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "7.6-preview.2")
+	if options != nil && options.MaxResults != nil {
+		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

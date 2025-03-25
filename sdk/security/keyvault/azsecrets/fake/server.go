@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"strconv"
 
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
@@ -283,7 +284,28 @@ func (s *ServerTransport) dispatchNewListDeletedSecretPropertiesPager(req *http.
 	}
 	newListDeletedSecretPropertiesPager := s.newListDeletedSecretPropertiesPager.get(req)
 	if newListDeletedSecretPropertiesPager == nil {
-		resp := s.srv.NewListDeletedSecretPropertiesPager(nil)
+		qp := req.URL.Query()
+		maxResultsUnescaped, err := url.QueryUnescape(qp.Get("maxresults"))
+		if err != nil {
+			return nil, err
+		}
+		maxResultsParam, err := parseOptional(maxResultsUnescaped, func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *azsecrets.ListDeletedSecretPropertiesOptions
+		if maxResultsParam != nil {
+			options = &azsecrets.ListDeletedSecretPropertiesOptions{
+				MaxResults: maxResultsParam,
+			}
+		}
+		resp := s.srv.NewListDeletedSecretPropertiesPager(options)
 		newListDeletedSecretPropertiesPager = &resp
 		s.newListDeletedSecretPropertiesPager.add(req, newListDeletedSecretPropertiesPager)
 		server.PagerResponderInjectNextLinks(newListDeletedSecretPropertiesPager, req, func(page *azsecrets.ListDeletedSecretPropertiesResponse, createLink func() string) {
@@ -310,7 +332,28 @@ func (s *ServerTransport) dispatchNewListSecretPropertiesPager(req *http.Request
 	}
 	newListSecretPropertiesPager := s.newListSecretPropertiesPager.get(req)
 	if newListSecretPropertiesPager == nil {
-		resp := s.srv.NewListSecretPropertiesPager(nil)
+		qp := req.URL.Query()
+		maxResultsUnescaped, err := url.QueryUnescape(qp.Get("maxresults"))
+		if err != nil {
+			return nil, err
+		}
+		maxResultsParam, err := parseOptional(maxResultsUnescaped, func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *azsecrets.ListSecretPropertiesOptions
+		if maxResultsParam != nil {
+			options = &azsecrets.ListSecretPropertiesOptions{
+				MaxResults: maxResultsParam,
+			}
+		}
+		resp := s.srv.NewListSecretPropertiesPager(options)
 		newListSecretPropertiesPager = &resp
 		s.newListSecretPropertiesPager.add(req, newListSecretPropertiesPager)
 		server.PagerResponderInjectNextLinks(newListSecretPropertiesPager, req, func(page *azsecrets.ListSecretPropertiesResponse, createLink func() string) {
@@ -343,11 +386,32 @@ func (s *ServerTransport) dispatchNewListSecretPropertiesVersionsPager(req *http
 		if matches == nil || len(matches) < 1 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
 		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("secret_name")])
 		if err != nil {
 			return nil, err
 		}
-		resp := s.srv.NewListSecretPropertiesVersionsPager(nameParam, nil)
+		maxResultsUnescaped, err := url.QueryUnescape(qp.Get("maxresults"))
+		if err != nil {
+			return nil, err
+		}
+		maxResultsParam, err := parseOptional(maxResultsUnescaped, func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *azsecrets.ListSecretPropertiesVersionsOptions
+		if maxResultsParam != nil {
+			options = &azsecrets.ListSecretPropertiesVersionsOptions{
+				MaxResults: maxResultsParam,
+			}
+		}
+		resp := s.srv.NewListSecretPropertiesVersionsPager(nameParam, options)
 		newListSecretPropertiesVersionsPager = &resp
 		s.newListSecretPropertiesVersionsPager.add(req, newListSecretPropertiesVersionsPager)
 		server.PagerResponderInjectNextLinks(newListSecretPropertiesVersionsPager, req, func(page *azsecrets.ListSecretPropertiesVersionsResponse, createLink func() string) {

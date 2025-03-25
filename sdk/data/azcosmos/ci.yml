@@ -25,7 +25,6 @@ extends:
   parameters:
     ServiceDirectory: 'data/azcosmos'
     UsePipelineProxy: false
-    ExcludeGoNMinus2: true
     AdditionalStages:
       - stage: Emulator
         displayName: 'Cosmos Emulator'

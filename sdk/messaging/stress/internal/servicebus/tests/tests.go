@@ -49,12 +49,14 @@ func Run(remainingArgs []string) {
 	}
 
 	if len(remainingArgs) == 0 {
+		fmt.Fprintln(os.Stderr, "Missing test name")
 		printUsageAndQuit(allTests)
 	}
 
 	testFn, validTestName := allTests[remainingArgs[0]]
 
 	if !validTestName {
+		fmt.Printf("Invalid test name %s\n", remainingArgs[0])
 		printUsageAndQuit(allTests)
 	}
 
@@ -66,8 +68,6 @@ func Run(remainingArgs []string) {
 }
 
 func printUsageAndQuit(allTests map[string]func(args []string)) {
-	fmt.Printf("Missing/invalid test name\n")
-
 	var names []string
 
 	for k := range allTests {

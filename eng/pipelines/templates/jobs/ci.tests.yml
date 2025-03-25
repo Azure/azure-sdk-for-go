@@ -59,7 +59,7 @@ jobs:
           - "/*"
       ${{ else }}:
         Paths:
-          - "sdk/${{ parameters.AdditionalParameters.ServiceDirectory }}"
+          - "sdk/${{ parameters.ServiceDirectory }}"
 
   - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
     parameters:

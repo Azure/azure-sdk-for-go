@@ -20,9 +20,18 @@
 
 ### Bugs Fixed
 
+* Removed hardcoded `azcore` replacement in the error type for `runtime.StartSpan()`.
+
 ### Other Changes
 
 * Added Span Attribute `error.type` to report an error when ending a span with `runtime.StartSpan`.
+
+## 1.17.1 (2025-03-20)
+
+### Other Changes
+
+* Upgraded to Go 1.23
+* Upgraded dependencies
 
 ## 1.17.0 (2025-01-07)
 

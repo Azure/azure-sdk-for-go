@@ -1,5 +1,11 @@
 # Release History
 
+## 1.8.1 (TBD)
+
+### Bugs Fixed
+
+- Some Service Bus annotation values can be set to nil values, which would panic our Receiver. These are now checked, and set to nil appropriately. (PR#TBD)
+
 ## 1.8.0 (2025-02-11)
 
 ### Features Added

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/deletePolicyAssignment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/219b2e3ef270f18149774eb2793b48baacde982f/specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/deletePolicyAssignment.json
 func ExampleAssignmentsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,6 +42,7 @@ func ExampleAssignmentsClient_Delete() {
 	// 	ID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyAssignments/EnforceNaming"),
 	// 	Properties: &armpolicy.AssignmentProperties{
 	// 		Description: to.Ptr("Force resource names to begin with given DeptA and end with -LC"),
+	// 		DefinitionVersion: to.Ptr("1.*.*"),
 	// 		DisplayName: to.Ptr("Enforce resource naming rules"),
 	// 		Metadata: map[string]any{
 	// 			"assignedBy": "Special Someone",
@@ -62,7 +63,7 @@ func ExampleAssignmentsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/createPolicyAssignment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/219b2e3ef270f18149774eb2793b48baacde982f/specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/createPolicyAssignment.json
 func ExampleAssignmentsClient_Create_createOrUpdateAPolicyAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -100,7 +101,7 @@ func ExampleAssignmentsClient_Create_createOrUpdateAPolicyAssignment() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/createPolicyAssignmentWithIdentity.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/219b2e3ef270f18149774eb2793b48baacde982f/specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/createPolicyAssignmentWithIdentity.json
 func ExampleAssignmentsClient_Create_createOrUpdateAPolicyAssignmentWithASystemAssignedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,7 +140,7 @@ func ExampleAssignmentsClient_Create_createOrUpdateAPolicyAssignmentWithASystemA
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/createPolicyAssignmentWithUserAssignedIdentity.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/219b2e3ef270f18149774eb2793b48baacde982f/specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/createPolicyAssignmentWithUserAssignedIdentity.json
 func ExampleAssignmentsClient_Create_createOrUpdateAPolicyAssignmentWithAUserAssignedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -181,7 +182,7 @@ func ExampleAssignmentsClient_Create_createOrUpdateAPolicyAssignmentWithAUserAss
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/createPolicyAssignmentNonComplianceMessages.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/219b2e3ef270f18149774eb2793b48baacde982f/specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/createPolicyAssignmentNonComplianceMessages.json
 func ExampleAssignmentsClient_Create_createOrUpdateAPolicyAssignmentWithMultipleNonComplianceMessages() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -215,7 +216,7 @@ func ExampleAssignmentsClient_Create_createOrUpdateAPolicyAssignmentWithMultiple
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/createPolicyAssignmentWithOverrides.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/219b2e3ef270f18149774eb2793b48baacde982f/specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/createPolicyAssignmentWithOverrides.json
 func ExampleAssignmentsClient_Create_createOrUpdateAPolicyAssignmentWithOverrides() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -253,7 +254,7 @@ func ExampleAssignmentsClient_Create_createOrUpdateAPolicyAssignmentWithOverride
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/createPolicyAssignmentWithResourceSelectors.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/219b2e3ef270f18149774eb2793b48baacde982f/specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/createPolicyAssignmentWithResourceSelectors.json
 func ExampleAssignmentsClient_Create_createOrUpdateAPolicyAssignmentWithResourceSelectors() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -290,7 +291,7 @@ func ExampleAssignmentsClient_Create_createOrUpdateAPolicyAssignmentWithResource
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/createPolicyAssignmentWithoutEnforcement.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/219b2e3ef270f18149774eb2793b48baacde982f/specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/createPolicyAssignmentWithoutEnforcement.json
 func ExampleAssignmentsClient_Create_createOrUpdateAPolicyAssignmentWithoutEnforcingPolicyEffectDuringResourceCreationOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -325,7 +326,7 @@ func ExampleAssignmentsClient_Create_createOrUpdateAPolicyAssignmentWithoutEnfor
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/getPolicyAssignment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/219b2e3ef270f18149774eb2793b48baacde982f/specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/getPolicyAssignment.json
 func ExampleAssignmentsClient_Get_retrieveAPolicyAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -336,7 +337,7 @@ func ExampleAssignmentsClient_Get_retrieveAPolicyAssignment() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewAssignmentsClient().Get(ctx, "subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "EnforceNaming", nil)
+	res, err := clientFactory.NewAssignmentsClient().Get(ctx, "subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "EnforceNaming", &armpolicy.AssignmentsClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -349,6 +350,7 @@ func ExampleAssignmentsClient_Get_retrieveAPolicyAssignment() {
 	// 	ID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyAssignments/EnforceNaming"),
 	// 	Properties: &armpolicy.AssignmentProperties{
 	// 		Description: to.Ptr("Force resource names to begin with given DeptA and end with -LC"),
+	// 		DefinitionVersion: to.Ptr("1.*.*"),
 	// 		DisplayName: to.Ptr("Enforce resource naming rules"),
 	// 		EnforcementMode: to.Ptr(armpolicy.EnforcementModeDefault),
 	// 		Metadata: map[string]any{
@@ -370,7 +372,7 @@ func ExampleAssignmentsClient_Get_retrieveAPolicyAssignment() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/getPolicyAssignmentWithIdentity.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/219b2e3ef270f18149774eb2793b48baacde982f/specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/getPolicyAssignmentWithIdentity.json
 func ExampleAssignmentsClient_Get_retrieveAPolicyAssignmentWithASystemAssignedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -381,7 +383,7 @@ func ExampleAssignmentsClient_Get_retrieveAPolicyAssignmentWithASystemAssignedId
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewAssignmentsClient().Get(ctx, "subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "EnforceNaming", nil)
+	res, err := clientFactory.NewAssignmentsClient().Get(ctx, "subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "EnforceNaming", &armpolicy.AssignmentsClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -400,6 +402,7 @@ func ExampleAssignmentsClient_Get_retrieveAPolicyAssignmentWithASystemAssignedId
 	// 	Location: to.Ptr("westus"),
 	// 	Properties: &armpolicy.AssignmentProperties{
 	// 		Description: to.Ptr("Force resource names to begin with given DeptA and end with -LC"),
+	// 		DefinitionVersion: to.Ptr("1.*.*"),
 	// 		DisplayName: to.Ptr("Enforce resource naming rules"),
 	// 		EnforcementMode: to.Ptr(armpolicy.EnforcementModeDefault),
 	// 		Metadata: map[string]any{
@@ -421,7 +424,7 @@ func ExampleAssignmentsClient_Get_retrieveAPolicyAssignmentWithASystemAssignedId
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/getPolicyAssignmentWithUserAssignedIdentity.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/219b2e3ef270f18149774eb2793b48baacde982f/specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/getPolicyAssignmentWithUserAssignedIdentity.json
 func ExampleAssignmentsClient_Get_retrieveAPolicyAssignmentWithAUserAssignedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -432,7 +435,7 @@ func ExampleAssignmentsClient_Get_retrieveAPolicyAssignmentWithAUserAssignedIden
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewAssignmentsClient().Get(ctx, "subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "EnforceNaming", nil)
+	res, err := clientFactory.NewAssignmentsClient().Get(ctx, "subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "EnforceNaming", &armpolicy.AssignmentsClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -455,6 +458,7 @@ func ExampleAssignmentsClient_Get_retrieveAPolicyAssignmentWithAUserAssignedIden
 	// 	Location: to.Ptr("westus"),
 	// 	Properties: &armpolicy.AssignmentProperties{
 	// 		Description: to.Ptr("Force resource names to begin with given DeptA and end with -LC"),
+	// 		DefinitionVersion: to.Ptr("1.*.*"),
 	// 		DisplayName: to.Ptr("Enforce resource naming rules"),
 	// 		EnforcementMode: to.Ptr(armpolicy.EnforcementModeDefault),
 	// 		Metadata: map[string]any{
@@ -476,7 +480,7 @@ func ExampleAssignmentsClient_Get_retrieveAPolicyAssignmentWithAUserAssignedIden
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/getPolicyAssignmentWithOverrides.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/219b2e3ef270f18149774eb2793b48baacde982f/specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/getPolicyAssignmentWithOverrides.json
 func ExampleAssignmentsClient_Get_retrieveAPolicyAssignmentWithOverrides() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -487,7 +491,7 @@ func ExampleAssignmentsClient_Get_retrieveAPolicyAssignmentWithOverrides() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewAssignmentsClient().Get(ctx, "subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "CostManagement", nil)
+	res, err := clientFactory.NewAssignmentsClient().Get(ctx, "subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "CostManagement", &armpolicy.AssignmentsClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -500,6 +504,7 @@ func ExampleAssignmentsClient_Get_retrieveAPolicyAssignmentWithOverrides() {
 	// 	ID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyAssignments/CostManagement"),
 	// 	Properties: &armpolicy.AssignmentProperties{
 	// 		Description: to.Ptr("Limit the resource location and resource SKU"),
+	// 		DefinitionVersion: to.Ptr("1.*.*"),
 	// 		DisplayName: to.Ptr("Limit the resource location and resource SKU"),
 	// 		EnforcementMode: to.Ptr(armpolicy.EnforcementModeDefault),
 	// 		Metadata: map[string]any{
@@ -525,7 +530,7 @@ func ExampleAssignmentsClient_Get_retrieveAPolicyAssignmentWithOverrides() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/getPolicyAssignmentWithResourceSelectors.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/219b2e3ef270f18149774eb2793b48baacde982f/specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/getPolicyAssignmentWithResourceSelectors.json
 func ExampleAssignmentsClient_Get_retrieveAPolicyAssignmentWithResourceSelectors() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -536,7 +541,7 @@ func ExampleAssignmentsClient_Get_retrieveAPolicyAssignmentWithResourceSelectors
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewAssignmentsClient().Get(ctx, "subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "CostManagement", nil)
+	res, err := clientFactory.NewAssignmentsClient().Get(ctx, "subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "CostManagement", &armpolicy.AssignmentsClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -549,6 +554,7 @@ func ExampleAssignmentsClient_Get_retrieveAPolicyAssignmentWithResourceSelectors
 	// 	ID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyAssignments/CostManagement"),
 	// 	Properties: &armpolicy.AssignmentProperties{
 	// 		Description: to.Ptr("Limit the resource location and resource SKU"),
+	// 		DefinitionVersion: to.Ptr("1.*.*"),
 	// 		DisplayName: to.Ptr("Limit the resource location and resource SKU"),
 	// 		EnforcementMode: to.Ptr(armpolicy.EnforcementModeDefault),
 	// 		Metadata: map[string]any{
@@ -573,7 +579,7 @@ func ExampleAssignmentsClient_Get_retrieveAPolicyAssignmentWithResourceSelectors
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/updatePolicyAssignmentWithIdentity.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/219b2e3ef270f18149774eb2793b48baacde982f/specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/updatePolicyAssignmentWithIdentity.json
 func ExampleAssignmentsClient_Update_updateAPolicyAssignmentWithASystemAssignedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -608,6 +614,7 @@ func ExampleAssignmentsClient_Update_updateAPolicyAssignmentWithASystemAssignedI
 	// 	Location: to.Ptr("eastus"),
 	// 	Properties: &armpolicy.AssignmentProperties{
 	// 		Description: to.Ptr("Force resource names to begin with given DeptA and end with -LC"),
+	// 		DefinitionVersion: to.Ptr("1.*.*"),
 	// 		DisplayName: to.Ptr("Enforce resource naming rules"),
 	// 		EnforcementMode: to.Ptr(armpolicy.EnforcementModeDefault),
 	// 		Metadata: map[string]any{
@@ -629,7 +636,7 @@ func ExampleAssignmentsClient_Update_updateAPolicyAssignmentWithASystemAssignedI
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/updatePolicyAssignmentWithUserAssignedIdentity.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/219b2e3ef270f18149774eb2793b48baacde982f/specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/updatePolicyAssignmentWithUserAssignedIdentity.json
 func ExampleAssignmentsClient_Update_updateAPolicyAssignmentWithAUserAssignedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -671,6 +678,7 @@ func ExampleAssignmentsClient_Update_updateAPolicyAssignmentWithAUserAssignedIde
 	// 	Location: to.Ptr("eastus"),
 	// 	Properties: &armpolicy.AssignmentProperties{
 	// 		Description: to.Ptr("Force resource names to begin with given DeptA and end with -LC"),
+	// 		DefinitionVersion: to.Ptr("1.*.*"),
 	// 		DisplayName: to.Ptr("Enforce resource naming rules"),
 	// 		EnforcementMode: to.Ptr(armpolicy.EnforcementModeDefault),
 	// 		Metadata: map[string]any{
@@ -692,7 +700,7 @@ func ExampleAssignmentsClient_Update_updateAPolicyAssignmentWithAUserAssignedIde
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/updatePolicyAssignmentWithOverrides.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/219b2e3ef270f18149774eb2793b48baacde982f/specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/updatePolicyAssignmentWithOverrides.json
 func ExampleAssignmentsClient_Update_updateAPolicyAssignmentWithOverrides() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -731,6 +739,7 @@ func ExampleAssignmentsClient_Update_updateAPolicyAssignmentWithOverrides() {
 	// 	ID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyAssignments/CostManagement"),
 	// 	Properties: &armpolicy.AssignmentProperties{
 	// 		Description: to.Ptr("Limit the resource location and resource SKU"),
+	// 		DefinitionVersion: to.Ptr("1.*.*"),
 	// 		DisplayName: to.Ptr("Limit the resource location and resource SKU"),
 	// 		EnforcementMode: to.Ptr(armpolicy.EnforcementModeDefault),
 	// 		Metadata: map[string]any{
@@ -756,7 +765,7 @@ func ExampleAssignmentsClient_Update_updateAPolicyAssignmentWithOverrides() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/updatePolicyAssignmentWithResourceSelectors.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/219b2e3ef270f18149774eb2793b48baacde982f/specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/updatePolicyAssignmentWithResourceSelectors.json
 func ExampleAssignmentsClient_Update_updateAPolicyAssignmentWithResourceSelectors() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -794,6 +803,7 @@ func ExampleAssignmentsClient_Update_updateAPolicyAssignmentWithResourceSelector
 	// 	ID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyAssignments/CostManagement"),
 	// 	Properties: &armpolicy.AssignmentProperties{
 	// 		Description: to.Ptr("Limit the resource location and resource SKU"),
+	// 		DefinitionVersion: to.Ptr("1.*.*"),
 	// 		DisplayName: to.Ptr("Limit the resource location and resource SKU"),
 	// 		EnforcementMode: to.Ptr(armpolicy.EnforcementModeDefault),
 	// 		Metadata: map[string]any{
@@ -818,7 +828,7 @@ func ExampleAssignmentsClient_Update_updateAPolicyAssignmentWithResourceSelector
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/listPolicyAssignmentsForResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/219b2e3ef270f18149774eb2793b48baacde982f/specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/listPolicyAssignmentsForResourceGroup.json
 func ExampleAssignmentsClient_NewListForResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -830,7 +840,8 @@ func ExampleAssignmentsClient_NewListForResourceGroupPager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewAssignmentsClient().NewListForResourceGroupPager("TestResourceGroup", &armpolicy.AssignmentsClientListForResourceGroupOptions{Filter: to.Ptr("atScope()"),
-		Top: nil,
+		Expand: to.Ptr("LatestDefinitionVersion, EffectiveDefinitionVersion"),
+		Top:    nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -856,7 +867,10 @@ func ExampleAssignmentsClient_NewListForResourceGroupPager() {
 		// 			Location: to.Ptr("eastus"),
 		// 			Properties: &armpolicy.AssignmentProperties{
 		// 				Description: to.Ptr("Minimize the risk of accidental cost overruns"),
+		// 				DefinitionVersion: to.Ptr("1.*.*"),
 		// 				DisplayName: to.Ptr("Storage Cost Management"),
+		// 				EffectiveDefinitionVersion: to.Ptr("1.0.0"),
+		// 				LatestDefinitionVersion: to.Ptr("1.0.0"),
 		// 				Metadata: map[string]any{
 		// 					"category": "Cost Management",
 		// 				},
@@ -877,7 +891,10 @@ func ExampleAssignmentsClient_NewListForResourceGroupPager() {
 		// 			ID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/TestResourceGroup/providers/Microsoft.Authorization/policyAssignments/TestTagEnforcement"),
 		// 			Properties: &armpolicy.AssignmentProperties{
 		// 				Description: to.Ptr("Ensure a given tag key and value are present on all resources"),
+		// 				DefinitionVersion: to.Ptr("1.*.*"),
 		// 				DisplayName: to.Ptr("Enforces a tag key and value"),
+		// 				EffectiveDefinitionVersion: to.Ptr("1.0.0"),
+		// 				LatestDefinitionVersion: to.Ptr("1.0.0"),
 		// 				NotScopes: []*string{
 		// 				},
 		// 				PolicyDefinitionID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyDefinitions/TagKeyValue"),
@@ -888,7 +905,7 @@ func ExampleAssignmentsClient_NewListForResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/listPolicyAssignmentsForResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/219b2e3ef270f18149774eb2793b48baacde982f/specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/listPolicyAssignmentsForResource.json
 func ExampleAssignmentsClient_NewListForResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -900,7 +917,8 @@ func ExampleAssignmentsClient_NewListForResourcePager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewAssignmentsClient().NewListForResourcePager("TestResourceGroup", "Microsoft.Compute", "virtualMachines/MyTestVm", "domainNames", "MyTestComputer.cloudapp.net", &armpolicy.AssignmentsClientListForResourceOptions{Filter: nil,
-		Top: nil,
+		Expand: nil,
+		Top:    nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -926,6 +944,7 @@ func ExampleAssignmentsClient_NewListForResourcePager() {
 		// 			Location: to.Ptr("eastus"),
 		// 			Properties: &armpolicy.AssignmentProperties{
 		// 				Description: to.Ptr("Minimize the risk of accidental cost overruns"),
+		// 				DefinitionVersion: to.Ptr("1.*.*"),
 		// 				DisplayName: to.Ptr("VM Cost Management"),
 		// 				Metadata: map[string]any{
 		// 					"category": "Cost Management",
@@ -947,6 +966,7 @@ func ExampleAssignmentsClient_NewListForResourcePager() {
 		// 			ID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/TestResourceGroup/providers/Microsoft.Authorization/policyAssignments/TestTagEnforcement"),
 		// 			Properties: &armpolicy.AssignmentProperties{
 		// 				Description: to.Ptr("Ensure a given tag key and value are present on all resources"),
+		// 				DefinitionVersion: to.Ptr("1.*.*"),
 		// 				DisplayName: to.Ptr("Enforces a tag key and value"),
 		// 				NotScopes: []*string{
 		// 				},
@@ -958,7 +978,7 @@ func ExampleAssignmentsClient_NewListForResourcePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/listPolicyAssignmentsForManagementGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/219b2e3ef270f18149774eb2793b48baacde982f/specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/listPolicyAssignmentsForManagementGroup.json
 func ExampleAssignmentsClient_NewListForManagementGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -970,7 +990,8 @@ func ExampleAssignmentsClient_NewListForManagementGroupPager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewAssignmentsClient().NewListForManagementGroupPager("TestManagementGroup", &armpolicy.AssignmentsClientListForManagementGroupOptions{Filter: to.Ptr("atScope()"),
-		Top: nil,
+		Expand: to.Ptr("LatestDefinitionVersion, EffectiveDefinitionVersion"),
+		Top:    nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -996,7 +1017,10 @@ func ExampleAssignmentsClient_NewListForManagementGroupPager() {
 		// 			Location: to.Ptr("eastus"),
 		// 			Properties: &armpolicy.AssignmentProperties{
 		// 				Description: to.Ptr("Minimize the risk of accidental cost overruns"),
+		// 				DefinitionVersion: to.Ptr("1.*.*"),
 		// 				DisplayName: to.Ptr("Storage Cost Management"),
+		// 				EffectiveDefinitionVersion: to.Ptr("1.0.0"),
+		// 				LatestDefinitionVersion: to.Ptr("1.0.0"),
 		// 				Metadata: map[string]any{
 		// 					"category": "Cost Management",
 		// 				},
@@ -1017,7 +1041,10 @@ func ExampleAssignmentsClient_NewListForManagementGroupPager() {
 		// 			ID: to.Ptr("/providers/Microsoft.Management/managementGroups/TestManagementGroup/providers/Microsoft.Authorization/policyAssignments/TestTagEnforcement"),
 		// 			Properties: &armpolicy.AssignmentProperties{
 		// 				Description: to.Ptr("Ensure a given tag key and value are present on all resources"),
+		// 				DefinitionVersion: to.Ptr("1.*.*"),
 		// 				DisplayName: to.Ptr("Enforces a tag key and value"),
+		// 				EffectiveDefinitionVersion: to.Ptr("1.0.0"),
+		// 				LatestDefinitionVersion: to.Ptr("1.0.0"),
 		// 				NotScopes: []*string{
 		// 				},
 		// 				PolicyDefinitionID: to.Ptr("/providers/Microsoft.Management/managementGroups/TestManagementGroup/providers/Microsoft.Authorization/policyDefinitions/TagKeyValue"),
@@ -1028,7 +1055,7 @@ func ExampleAssignmentsClient_NewListForManagementGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/listPolicyAssignments.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/219b2e3ef270f18149774eb2793b48baacde982f/specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/listPolicyAssignments.json
 func ExampleAssignmentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1040,7 +1067,8 @@ func ExampleAssignmentsClient_NewListPager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewAssignmentsClient().NewListPager(&armpolicy.AssignmentsClientListOptions{Filter: to.Ptr("atScope()"),
-		Top: nil,
+		Expand: to.Ptr("LatestDefinitionVersion, EffectiveDefinitionVersion"),
+		Top:    nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -1066,7 +1094,10 @@ func ExampleAssignmentsClient_NewListPager() {
 		// 			Location: to.Ptr("eastus"),
 		// 			Properties: &armpolicy.AssignmentProperties{
 		// 				Description: to.Ptr("Minimize the risk of accidental cost overruns"),
+		// 				DefinitionVersion: to.Ptr("1.*.*"),
 		// 				DisplayName: to.Ptr("Storage Cost Management"),
+		// 				EffectiveDefinitionVersion: to.Ptr("1.0.0"),
+		// 				LatestDefinitionVersion: to.Ptr("1.0.0"),
 		// 				Metadata: map[string]any{
 		// 					"category": "Cost Management",
 		// 				},
@@ -1087,7 +1118,10 @@ func ExampleAssignmentsClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyAssignments/TagEnforcement"),
 		// 			Properties: &armpolicy.AssignmentProperties{
 		// 				Description: to.Ptr("Ensure a given tag key and value are present on all resources"),
+		// 				DefinitionVersion: to.Ptr("1.*.*"),
 		// 				DisplayName: to.Ptr("Enforces a tag key and value"),
+		// 				EffectiveDefinitionVersion: to.Ptr("1.0.0"),
+		// 				LatestDefinitionVersion: to.Ptr("1.0.0"),
 		// 				NotScopes: []*string{
 		// 				},
 		// 				PolicyDefinitionID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyDefinitions/TagKeyValue"),
@@ -1098,7 +1132,7 @@ func ExampleAssignmentsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/deletePolicyAssignmentById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/219b2e3ef270f18149774eb2793b48baacde982f/specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/deletePolicyAssignmentById.json
 func ExampleAssignmentsClient_DeleteByID() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1122,6 +1156,7 @@ func ExampleAssignmentsClient_DeleteByID() {
 	// 	ID: to.Ptr("/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policyAssignments/LowCostStorage"),
 	// 	Properties: &armpolicy.AssignmentProperties{
 	// 		Description: to.Ptr("Allow only storage accounts of SKU Standard_GRS or Standard_LRS to be created"),
+	// 		DefinitionVersion: to.Ptr("1.*.*"),
 	// 		DisplayName: to.Ptr("Enforce storage account SKU"),
 	// 		Metadata: map[string]any{
 	// 			"assignedBy": "Cheapskate Boss",
@@ -1141,7 +1176,7 @@ func ExampleAssignmentsClient_DeleteByID() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/createPolicyAssignmentById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/219b2e3ef270f18149774eb2793b48baacde982f/specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/createPolicyAssignmentById.json
 func ExampleAssignmentsClient_CreateByID_createOrUpdatePolicyAssignmentById() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1154,9 +1189,10 @@ func ExampleAssignmentsClient_CreateByID_createOrUpdatePolicyAssignmentById() {
 	}
 	_, err = clientFactory.NewAssignmentsClient().CreateByID(ctx, "providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policyAssignments/LowCostStorage", armpolicy.Assignment{
 		Properties: &armpolicy.AssignmentProperties{
-			Description:     to.Ptr("Allow only storage accounts of SKU Standard_GRS or Standard_LRS to be created"),
-			DisplayName:     to.Ptr("Enforce storage account SKU"),
-			EnforcementMode: to.Ptr(armpolicy.EnforcementModeDefault),
+			Description:       to.Ptr("Allow only storage accounts of SKU Standard_GRS or Standard_LRS to be created"),
+			DefinitionVersion: to.Ptr("1.*.*"),
+			DisplayName:       to.Ptr("Enforce storage account SKU"),
+			EnforcementMode:   to.Ptr(armpolicy.EnforcementModeDefault),
 			Metadata: map[string]any{
 				"assignedBy": "Cheapskate Boss",
 			},
@@ -1176,7 +1212,7 @@ func ExampleAssignmentsClient_CreateByID_createOrUpdatePolicyAssignmentById() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/createPolicyAssignmentWithIdentityById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/219b2e3ef270f18149774eb2793b48baacde982f/specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/createPolicyAssignmentWithIdentityById.json
 func ExampleAssignmentsClient_CreateByID_createOrUpdatePolicyAssignmentWithAManagedIdentityById() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1193,9 +1229,10 @@ func ExampleAssignmentsClient_CreateByID_createOrUpdatePolicyAssignmentWithAMana
 		},
 		Location: to.Ptr("eastus"),
 		Properties: &armpolicy.AssignmentProperties{
-			Description:     to.Ptr("Allow only storage accounts of SKU Standard_GRS or Standard_LRS to be created"),
-			DisplayName:     to.Ptr("Enforce storage account SKU"),
-			EnforcementMode: to.Ptr(armpolicy.EnforcementModeDefault),
+			Description:       to.Ptr("Allow only storage accounts of SKU Standard_GRS or Standard_LRS to be created"),
+			DefinitionVersion: to.Ptr("1.*.*"),
+			DisplayName:       to.Ptr("Enforce storage account SKU"),
+			EnforcementMode:   to.Ptr(armpolicy.EnforcementModeDefault),
 			Metadata: map[string]any{
 				"assignedBy": "Cheapskate Boss",
 			},
@@ -1215,7 +1252,7 @@ func ExampleAssignmentsClient_CreateByID_createOrUpdatePolicyAssignmentWithAMana
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/getPolicyAssignmentById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/219b2e3ef270f18149774eb2793b48baacde982f/specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/getPolicyAssignmentById.json
 func ExampleAssignmentsClient_GetByID_retrieveAPolicyAssignmentById() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1226,7 +1263,7 @@ func ExampleAssignmentsClient_GetByID_retrieveAPolicyAssignmentById() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewAssignmentsClient().GetByID(ctx, "providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policyAssignments/LowCostStorage", nil)
+	res, err := clientFactory.NewAssignmentsClient().GetByID(ctx, "providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policyAssignments/LowCostStorage", &armpolicy.AssignmentsClientGetByIDOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1239,6 +1276,7 @@ func ExampleAssignmentsClient_GetByID_retrieveAPolicyAssignmentById() {
 	// 	ID: to.Ptr("/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policyAssignments/LowCostStorage"),
 	// 	Properties: &armpolicy.AssignmentProperties{
 	// 		Description: to.Ptr("Allow only storage accounts of SKU Standard_GRS or Standard_LRS to be created"),
+	// 		DefinitionVersion: to.Ptr("1.*.*"),
 	// 		DisplayName: to.Ptr("Enforce storage account SKU"),
 	// 		EnforcementMode: to.Ptr(armpolicy.EnforcementModeDefault),
 	// 		Metadata: map[string]any{
@@ -1259,7 +1297,7 @@ func ExampleAssignmentsClient_GetByID_retrieveAPolicyAssignmentById() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/getPolicyAssignmentWithIdentityById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/219b2e3ef270f18149774eb2793b48baacde982f/specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/getPolicyAssignmentWithIdentityById.json
 func ExampleAssignmentsClient_GetByID_retrieveAPolicyAssignmentWithAManagedIdentityById() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1270,7 +1308,7 @@ func ExampleAssignmentsClient_GetByID_retrieveAPolicyAssignmentWithAManagedIdent
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewAssignmentsClient().GetByID(ctx, "providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policyAssignments/LowCostStorage", nil)
+	res, err := clientFactory.NewAssignmentsClient().GetByID(ctx, "providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policyAssignments/LowCostStorage", &armpolicy.AssignmentsClientGetByIDOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1289,6 +1327,7 @@ func ExampleAssignmentsClient_GetByID_retrieveAPolicyAssignmentWithAManagedIdent
 	// 	Location: to.Ptr("westus"),
 	// 	Properties: &armpolicy.AssignmentProperties{
 	// 		Description: to.Ptr("Allow only storage accounts of SKU Standard_GRS or Standard_LRS to be created"),
+	// 		DefinitionVersion: to.Ptr("1.*.*"),
 	// 		DisplayName: to.Ptr("Enforce storage account SKU"),
 	// 		EnforcementMode: to.Ptr(armpolicy.EnforcementModeDefault),
 	// 		Metadata: map[string]any{
@@ -1309,7 +1348,7 @@ func ExampleAssignmentsClient_GetByID_retrieveAPolicyAssignmentWithAManagedIdent
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/updatePolicyAssignmentWithIdentityById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/219b2e3ef270f18149774eb2793b48baacde982f/specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/updatePolicyAssignmentWithIdentityById.json
 func ExampleAssignmentsClient_UpdateByID() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1344,6 +1383,7 @@ func ExampleAssignmentsClient_UpdateByID() {
 	// 	Location: to.Ptr("eastus"),
 	// 	Properties: &armpolicy.AssignmentProperties{
 	// 		Description: to.Ptr("Allow only storage accounts of SKU Standard_GRS or Standard_LRS to be created"),
+	// 		DefinitionVersion: to.Ptr("1.*.*"),
 	// 		DisplayName: to.Ptr("Enforce storage account SKU"),
 	// 		EnforcementMode: to.Ptr(armpolicy.EnforcementModeDefault),
 	// 		Metadata: map[string]any{

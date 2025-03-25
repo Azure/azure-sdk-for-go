@@ -17,3 +17,6 @@ variables:
 
   # We enable this selectively to avoid overloading CG scanning/reporting on PR pipelines
   skipComponentGovernanceDetection: true
+
+  # disable code coverage redesign until it's been fixed (causes inadvertent deflation of CC numbers)
+  GOEXPERIMENT: nocoverageredesign

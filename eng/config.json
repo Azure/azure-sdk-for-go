@@ -140,7 +140,7 @@
         },
         {
             "Name": "monitor/query/azmetrics",
-            "CoverageGoal": 0.75
+            "CoverageGoal": 0.60
         }
     ]
 }

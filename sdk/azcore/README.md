@@ -7,6 +7,8 @@
 The `azcore` module provides a set of common interfaces and types for Go SDK client modules.
 These modules follow the [Azure SDK Design Guidelines for Go](https://azure.github.io/azure-sdk/golang_introduction.html).
 
+This is a revertable change.
+
 ## Getting started
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.

@@ -445,9 +445,11 @@ func (f *FileRecordedTestsSuite) TestCreateFileNFS() {
 	_require.NoError(err)
 	fClient := premiumShareClient.NewRootDirectoryClient().NewFileClient(testcommon.GenerateFileName(testName))
 	resp, err := fClient.Create(context.Background(), 1024, &file.CreateOptions{
-		Owner:    to.Ptr(owner),
-		Group:    to.Ptr(group),
-		FileMode: to.Ptr(fileMode),
+		NFSProperties: &file.NFSProperties{
+			Owner:    to.Ptr(owner),
+			Group:    to.Ptr(group),
+			FileMode: to.Ptr(fileMode),
+		},
 	})
 	_require.NoError(err)
 	_require.Equal(*resp.FileMode, fileMode)
@@ -680,9 +682,11 @@ func (f *FileRecordedTestsSuite) TestFileSetHTTPHeadersNfs() {
 			CacheControl:       to.Ptr("no-transform"),
 			ContentDisposition: to.Ptr("attachment"),
 		},
-		Owner:    to.Ptr(owner),
-		Group:    to.Ptr(group),
-		FileMode: to.Ptr(fileMode),
+		NFSProperties: &file.NFSProperties{
+			Owner:    to.Ptr(owner),
+			Group:    to.Ptr(group),
+			FileMode: to.Ptr(fileMode),
+		},
 	}
 	setResp, err := fClient.SetHTTPHeaders(context.Background(), opts)
 	_require.NoError(err)

@@ -33,6 +33,8 @@ type DestinationLeaseAccessConditions = generated.DestinationLeaseAccessConditio
 type CreateOptions struct {
 	// The default value is 'Directory' for Attributes and 'now' for CreationTime and LastWriteTime fields in file.SMBProperties.
 	FileSMBProperties *file.SMBProperties
+	// NFS only.
+	FileNFSProperties *file.NFSProperties
 	// The default value is 'inherit' for Permission field in file.Permissions.
 	FilePermissions *file.Permissions
 	// A name-value pair to associate with a file storage object.
@@ -43,12 +45,6 @@ type CreateOptions struct {
 	// binary, the permission is returned as a base64 string representing the binary
 	// encoding of the permission
 	FilePermissionFormat *FilePermissionFormat
-	// NFS only. The file mode of the file or directory
-	FileMode *string
-	// NFS only. The owner of the file or directory.
-	Owner *string
-	// NFS only. The owning group of the file or directory.
-	Group *string
 }
 
 func (o *CreateOptions) format() *generated.DirectoryClientCreateOptions {
@@ -56,25 +52,39 @@ func (o *CreateOptions) format() *generated.DirectoryClientCreateOptions {
 		return nil
 	}
 
-	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.FileSMBProperties, true)
-	permission, permissionKey := exported.FormatPermissions(o.FilePermissions)
-	createOptions := &generated.DirectoryClientCreateOptions{
-		FileAttributes:    fileAttributes,
-		FileChangeTime:    fileChangeTime,
-		FileCreationTime:  fileCreationTime,
-		FileLastWriteTime: fileLastWriteTime,
-		FilePermission:    permission,
-		FilePermissionKey: permissionKey,
-		Metadata:          o.Metadata,
-		FileMode:          o.FileMode,
-		Owner:             o.Owner,
-		Group:             o.Group,
-	}
+	var createOptions *generated.DirectoryClientCreateOptions
 
-	if permissionKey != nil && *permissionKey != shared.DefaultFilePermissionString {
-		createOptions.FilePermissionFormat = to.Ptr(FilePermissionFormat(shared.DefaultFilePermissionFormat))
-	} else if o.FilePermissionFormat != nil {
-		createOptions.FilePermissionFormat = to.Ptr(FilePermissionFormat(*o.FilePermissionFormat))
+	if o.FileNFSProperties != nil {
+		fileCreationTime, fileLastWriteTime := exported.FormatNFSProperties(o.FileNFSProperties, true)
+
+		createOptions = &generated.DirectoryClientCreateOptions{
+			FileCreationTime:  fileCreationTime,
+			FileLastWriteTime: fileLastWriteTime,
+			FileMode:          o.FileNFSProperties.FileMode,
+			Group:             o.FileNFSProperties.Group,
+			Owner:             o.FileNFSProperties.Owner,
+			Metadata:          o.Metadata,
+		}
+
+	} else {
+		fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.FileSMBProperties, true)
+		permission, permissionKey := exported.FormatPermissions(o.FilePermissions)
+
+		createOptions = &generated.DirectoryClientCreateOptions{
+			FileAttributes:    fileAttributes,
+			FileChangeTime:    fileChangeTime,
+			FileCreationTime:  fileCreationTime,
+			FileLastWriteTime: fileLastWriteTime,
+			FilePermission:    permission,
+			FilePermissionKey: permissionKey,
+			Metadata:          o.Metadata,
+		}
+
+		if permissionKey != nil && *permissionKey != shared.DefaultFilePermissionString {
+			createOptions.FilePermissionFormat = to.Ptr(FilePermissionFormat(shared.DefaultFilePermissionFormat))
+		} else if o.FilePermissionFormat != nil {
+			createOptions.FilePermissionFormat = to.Ptr(FilePermissionFormat(*o.FilePermissionFormat))
+		}
 	}
 
 	return createOptions
@@ -171,16 +181,12 @@ func (o *GetPropertiesOptions) format() *generated.DirectoryClientGetPropertiesO
 type SetPropertiesOptions struct {
 	// The default value is 'preserve' for Attributes, CreationTime and LastWriteTime fields in file.SMBProperties.
 	FileSMBProperties *file.SMBProperties
+	// NFS only.
+	FileNFSProperties *file.NFSProperties
 	// The default value is 'preserve' for Permission field in file.Permissions.
 	FilePermissions *file.Permissions
 	// FilePermissionFormat contains the format of the file permissions, Can be sddl (Default) or Binary.
 	FilePermissionFormat *FilePermissionFormat
-	// NFS only. The file mode of the file or directory
-	FileMode *string
-	// NFS only. The owner of the file or directory.
-	Owner *string
-	// NFS only. The owning group of the file or directory.
-	Group *string
 }
 
 func (o *SetPropertiesOptions) format() *generated.DirectoryClientSetPropertiesOptions {
@@ -188,26 +194,39 @@ func (o *SetPropertiesOptions) format() *generated.DirectoryClientSetPropertiesO
 		return nil
 	}
 
-	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.FileSMBProperties, true)
-	permission, permissionKey := exported.FormatPermissions(o.FilePermissions)
+	var setPropertiesOptions *generated.DirectoryClientSetPropertiesOptions
 
-	setPropertiesOptions := &generated.DirectoryClientSetPropertiesOptions{
-		FileAttributes:    fileAttributes,
-		FileChangeTime:    fileChangeTime,
-		FileCreationTime:  fileCreationTime,
-		FileLastWriteTime: fileLastWriteTime,
-		FilePermission:    permission,
-		FilePermissionKey: permissionKey,
-		FileMode:          o.FileMode,
-		Owner:             o.Owner,
-		Group:             o.Group,
+	if o.FileNFSProperties != nil {
+		fileCreationTime, fileLastWriteTime := exported.FormatNFSProperties(o.FileNFSProperties, true)
+
+		setPropertiesOptions = &generated.DirectoryClientSetPropertiesOptions{
+			FileCreationTime:  fileCreationTime,
+			FileLastWriteTime: fileLastWriteTime,
+			FileMode:          o.FileNFSProperties.FileMode,
+			Owner:             o.FileNFSProperties.Owner,
+			Group:             o.FileNFSProperties.Group,
+		}
+
+	} else {
+		fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.FileSMBProperties, true)
+		permission, permissionKey := exported.FormatPermissions(o.FilePermissions)
+
+		setPropertiesOptions = &generated.DirectoryClientSetPropertiesOptions{
+			FileAttributes:    fileAttributes,
+			FileChangeTime:    fileChangeTime,
+			FileCreationTime:  fileCreationTime,
+			FileLastWriteTime: fileLastWriteTime,
+			FilePermission:    permission,
+			FilePermissionKey: permissionKey,
+		}
+
+		if permissionKey != nil && *permissionKey != shared.DefaultPreserveString {
+			setPropertiesOptions.FilePermissionFormat = to.Ptr(FilePermissionFormat(shared.DefaultFilePermissionFormat))
+		} else if o.FilePermissionFormat != nil {
+			setPropertiesOptions.FilePermissionFormat = to.Ptr(FilePermissionFormat(*o.FilePermissionFormat))
+		}
 	}
 
-	if permissionKey != nil && *permissionKey != shared.DefaultPreserveString {
-		setPropertiesOptions.FilePermissionFormat = to.Ptr(FilePermissionFormat(shared.DefaultFilePermissionFormat))
-	} else if o.FilePermissionFormat != nil {
-		setPropertiesOptions.FilePermissionFormat = to.Ptr(FilePermissionFormat(*o.FilePermissionFormat))
-	}
 	return setPropertiesOptions
 }
 

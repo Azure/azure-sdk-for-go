@@ -149,5 +149,6 @@ func (er *Resource[TResource, TState]) Expire() {
 }
 
 func (er *Resource[TResource, TState]) expiringSoon(TResource, TState) bool {
+	// call time.Now() instead of using Get's value so ShouldRefresh doesn't need a time.Time parameter
 	return er.expiration.Add(-5 * time.Minute).Before(time.Now())
 }

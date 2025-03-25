@@ -36,7 +36,7 @@ func TestClient_GetAudioTranscription(t *testing.T) {
 			Temperature:    openai.Float(0.0),
 		})
 		require.Empty(t, transcriptResp)
-		require.EqualError(t, err, "expected destination type of 'string' or '[]byte' for responses with content-type that is not 'application/json'")
+		require.EqualError(t, err, "expected destination type of 'string' or '[]byte' for responses with content-type 'text/plain; charset=utf-8' that is not 'application/json'")
 	})
 
 	t.Run(fmt.Sprintf("%s (%s)", openai.AudioResponseFormatJSON, "mp3"), func(t *testing.T) {

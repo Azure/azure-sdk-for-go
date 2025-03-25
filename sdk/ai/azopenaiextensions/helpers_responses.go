@@ -91,7 +91,8 @@ type stainlessField interface {
 func unmarshalField[T any](field stainlessField) (T, error) {
 	var zero T
 
-	if !field.IsPresent() {
+	raw := field.Raw()
+	if len(raw) == 0 {
 		return zero, nil
 	}
 

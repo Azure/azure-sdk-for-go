@@ -56,7 +56,7 @@ func TestClient_GetChatCompletions(t *testing.T) {
 		t.Logf("Content = %s", choice.Message.Content)
 
 		require.Zero(t, choice.Index)
-		require.Equal(t, "assistant", choice.Message.Role)
+		require.EqualValues(t, "assistant", choice.Message.Role)
 		require.NotEmpty(t, choice.Message.Content)
 		require.Equal(t, "stop", choice.FinishReason)
 

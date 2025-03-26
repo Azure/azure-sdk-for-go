@@ -611,7 +611,7 @@ func TestBearerTokenPolicy_ShouldRefresh(t *testing.T) {
 		{
 			desc: "zero RefreshOn/imminent ExpiresOn",
 			tk: exported.AccessToken{
-				ExpiresOn: now.Add(5 * time.Minute).UTC(),
+				ExpiresOn: now.Add(4 * time.Minute).UTC(),
 			},
 			expected: true,
 		},

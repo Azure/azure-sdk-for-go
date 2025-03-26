@@ -14,12 +14,11 @@ import (
 
 const messagingSystemName = "servicebus"
 
-type Provider = tracing.Provider
 type Attribute = tracing.Attribute
+type Carrier = tracing.Carrier
 type Link = tracing.Link
 type Propagator = tracing.Propagator
-type Carrier = tracing.Carrier
-
+type Provider = tracing.Provider
 type Span = tracing.Span
 
 type Tracer struct {
@@ -28,12 +27,23 @@ type Tracer struct {
 	destination string
 }
 
+// StartSpanOptions contains options for starting a span.
 type StartSpanOptions struct {
-	Tracer        Tracer
+	// Tracer is the tracer to use for starting the span.
+	// If not set, the default no-op tracer will be used.
+	Tracer Tracer
+	// OperationName is the name of the operation being traced.
+	// This is a required field. If not set, the span will not be started.
 	OperationName MessagingOperationName
-	BatchCount    int
-	Attributes    []Attribute
-	Links         []Link
+	// Message is the message being traced. Only one of Message or BatchCount should be set.
+	// If set, it will be used to extract span attributes.
+	Message *amqp.Message
+	// BatchCount is the number of messages in the batch being traced. Only one of Message or BatchCount should be set.
+	// If set, it will be used to build span attributes.
+	BatchCount int
+	// Links are the links to set on the span.
+	// If not set, no links will be added to the span.
+	Links []Link
 }
 
 func NewTracer(provider Provider, moduleName, version, hostName, queueOrTopic, subscription string) Tracer {
@@ -80,19 +90,24 @@ func StartSpan(ctx context.Context, options *StartSpanOptions) (context.Context,
 		return ctx, func(error) {}
 	}
 
-	attrs := options.Attributes
+	var attrs []Attribute
 	attrs = append(attrs, Attribute{Key: AttrOperationName, Value: string(options.OperationName)})
 
 	operationType := getOperationType(options.OperationName)
 	if operationType != "" {
 		attrs = append(attrs, Attribute{Key: AttrOperationType, Value: string(operationType)})
 	}
+
 	if operationType == SettleOperationType {
 		attrs = append(attrs, Attribute{Key: AttrDispositionStatus, Value: string(options.OperationName)})
 	}
 
 	if options.BatchCount > 0 {
 		attrs = append(attrs, Attribute{Key: AttrBatchMessageCount, Value: int64(options.BatchCount)})
+	}
+
+	if options.Message != nil {
+		attrs = append(attrs, getMessageAttributes(options.Message)...)
 	}
 
 	spanKind := getSpanKind(operationType, options.OperationName, options.BatchCount)

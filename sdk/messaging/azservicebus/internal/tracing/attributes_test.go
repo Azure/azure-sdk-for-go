@@ -12,71 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestGetMessageSpanAttributes(t *testing.T) {
-	messageId := "message-id"
-	correlationId := "correlation-id"
-
-	testCases := []struct {
-		name     string
-		message  *amqp.Message
-		expected []Attribute
-	}{
-		{
-			name:     "nil message",
-			message:  nil,
-			expected: []Attribute{},
-		},
-		{
-			name:     "empty message",
-			message:  &amqp.Message{},
-			expected: []Attribute{},
-		},
-		{
-			name: "message with messageId",
-			message: &amqp.Message{
-				Properties: &amqp.MessageProperties{
-					MessageID: messageId,
-				},
-			},
-			expected: []Attribute{
-				{Key: AttrMessageID, Value: messageId},
-			},
-		},
-		{
-			name: "message with correlationId",
-			message: &amqp.Message{
-				Properties: &amqp.MessageProperties{
-					CorrelationID: correlationId,
-				},
-			},
-			expected: []Attribute{
-				{Key: AttrConversationID, Value: correlationId},
-			},
-		},
-		{
-			name: "message with all attributes",
-			message: &amqp.Message{
-				Properties: &amqp.MessageProperties{
-					MessageID:     messageId,
-					CorrelationID: correlationId,
-				},
-			},
-			expected: []Attribute{
-				{Key: AttrMessageID, Value: messageId},
-				{Key: AttrConversationID, Value: correlationId},
-			},
-		},
-	}
-
-	for _, tc := range testCases {
-		t.Run(tc.name, func(t *testing.T) {
-			result := GetMessageSpanAttributes(tc.message)
-			require.ElementsMatch(t, tc.expected, result)
-		})
-	}
-}
-
-func TestGetReceivedMessageSpanAttributes(t *testing.T) {
+func TestGetMessageAttributes(t *testing.T) {
 	messageId := "message-id"
 	correlationId := "correlation-id"
 	enqueuedTime := time.Now()
@@ -134,7 +70,7 @@ func TestGetReceivedMessageSpanAttributes(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			result := GetReceivedMessageSpanAttributes(tc.message)
+			result := getMessageAttributes(tc.message)
 			require.ElementsMatch(t, tc.expected, result)
 		})
 	}

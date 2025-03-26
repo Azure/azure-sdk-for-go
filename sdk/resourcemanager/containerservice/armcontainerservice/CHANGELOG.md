@@ -1,5 +1,19 @@
 # Release History
 
+## 6.5.0 (2025-03-26)
+### Features Added
+
+- New value `OutboundTypeNone` added to enum type `OutboundType`
+- New enum type `ArtifactSource` with values `ArtifactSourceCache`, `ArtifactSourceDirect`
+- New enum type `GPUDriver` with values `GPUDriverInstall`, `GPUDriverNone`
+- New struct `GPUProfile`
+- New struct `ManagedClusterBootstrapProfile`
+- New field `GpuProfile` in struct `ManagedClusterAgentPoolProfile`
+- New field `GpuProfile` in struct `ManagedClusterAgentPoolProfileProperties`
+- New field `BootstrapProfile` in struct `ManagedClusterProperties`
+- New field `CustomCATrustCertificates` in struct `ManagedClusterSecurityProfile`
+
+
 ## 6.5.0-beta.1 (2025-03-11)
 ### Features Added
 

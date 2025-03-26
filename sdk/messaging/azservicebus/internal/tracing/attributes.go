@@ -27,6 +27,17 @@ func GetMessageSpanAttributes(message *amqp.Message) []Attribute {
 	if message.Properties != nil && message.Properties.CorrelationID != nil && message.Properties.CorrelationID != "" {
 		attrs = append(attrs, Attribute{Key: AttrConversationID, Value: message.Properties.CorrelationID})
 	}
+	if message.Annotations != nil {
+		enqueuedTime, ok := message.Annotations[enqueuedTimeAnnotation]
+		// if enqeueTime is not set, we know this is a sender side message and return early
+		if !ok {
+			return attrs
+		}
+		attrs = append(attrs, Attribute{Key: AttrEnqueuedTime, Value: enqueuedTime.(time.Time).Unix()})
+	}
+	if message.Header != nil {
+		attrs = append(attrs, Attribute{Key: AttrDeliveryCount, Value: int64(message.Header.DeliveryCount + 1)})
+	}
 	return attrs
 }
 

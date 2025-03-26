@@ -276,7 +276,7 @@ func (ms *messageSettler) getStartSpanOptions(operationName tracing.MessagingOpe
 	}
 
 	if message != nil {
-		options.Attributes = tracing.GetReceivedMessageSpanAttributes(message.Message().toAMQPMessage())
+		options.Attributes = tracing.GetMessageSpanAttributes(message.Message().toAMQPMessage())
 	}
 
 	ctx := ms.tracer.Extract(context.Background(), message.Message().toAMQPMessage())

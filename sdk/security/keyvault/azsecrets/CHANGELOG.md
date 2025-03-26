@@ -1,12 +1,6 @@
 # Release History
 
-## 1.3.2-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.4.0-beta.1 (2025-03-27)
 
 ### Other Changes
 * Upgraded to API service version `7.6-preview.2`

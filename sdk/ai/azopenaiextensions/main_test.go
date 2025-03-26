@@ -10,7 +10,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
 
-const RecordingDirectory = "sdk/ai/azopenai/testdata"
+const RecordingDirectory = "sdk/ai/azopenaiextensions/testdata"
 
 func TestMain(m *testing.M) {
 	code := run(m)

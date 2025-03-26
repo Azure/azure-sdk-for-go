@@ -14,11 +14,13 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiextensions"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/openai/openai-go"
 	"github.com/openai/openai-go/azure"
+	"github.com/openai/openai-go/option"
 	"github.com/stretchr/testify/require"
 )
 
@@ -195,15 +197,67 @@ func newStainlessTestClient(t *testing.T, ep endpoint) openai.Client {
 	return newStainlessTestClientWithOptions(t, ep, nil)
 }
 
+const fakeAPIKey = "redacted"
+const fakeCognitiveEndpoint = "https://Sanitized.openai.azure.com"
+const fakeCognitiveIndexName = "index"
+
+// newRecordingTransporter sets up our recording policy to sanitize endpoints and any parts of the response that might
+// involve UUIDs that would make the response/request inconsistent.
+func newRecordingTransporter(t *testing.T) policy.Transporter {
+	transport, err := recording.NewRecordingHTTPClient(t, nil)
+	require.NoError(t, err)
+
+	err = recording.Start(t, RecordingDirectory, nil)
+	require.NoError(t, err)
+
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		err = recording.AddHeaderRegexSanitizer("Api-Key", fakeAPIKey, "", nil)
+		require.NoError(t, err)
+
+		err = recording.AddHeaderRegexSanitizer("User-Agent", "fake-user-agent", "", nil)
+		require.NoError(t, err)
+
+		err = recording.AddURISanitizer("/openai/operations/images/00000000-AAAA-BBBB-CCCC-DDDDDDDDDDDD", "/openai/operations/images/[A-Za-z-0-9]+", nil)
+		require.NoError(t, err)
+
+		err = recording.AddGeneralRegexSanitizer(
+			fmt.Sprintf(`"endpoint": "%s"`, fakeCognitiveEndpoint),
+			fmt.Sprintf(`"endpoint":\s*"%s"`, *azureOpenAI.Cognitive.Parameters.Endpoint), nil)
+		require.NoError(t, err)
+
+		err = recording.AddGeneralRegexSanitizer(
+			fmt.Sprintf(`"index_name": "%s"`, fakeCognitiveIndexName),
+			fmt.Sprintf(`"index_name":\s*"%s"`, *azureOpenAI.Cognitive.Parameters.IndexName), nil)
+		require.NoError(t, err)
+	}
+
+	t.Cleanup(func() {
+		err := recording.Stop(t, nil)
+		require.NoError(t, err)
+	})
+
+	return transport
+}
+
 func newStainlessTestClientWithOptions(t *testing.T, ep endpoint, options *stainlessTestClientOptions) openai.Client {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("Skipping tests in playback mode")
+	var middleware option.Middleware
+	if recording.GetRecordMode() == recording.LiveMode {
+		middleware = func(req *http.Request, next option.MiddlewareNext) (*http.Response, error) {
+			return next(req)
+		}
+	} else {
+		transport := newRecordingTransporter(t)
+
+		middleware = func(req *http.Request, next option.MiddlewareNext) (*http.Response, error) {
+			return transport.Do(req)
+		}
 	}
 
 	if options != nil && options.UseAPIKey {
 		return openai.NewClient(
 			azure.WithEndpoint(ep.URL, apiVersion),
 			azure.WithAPIKey(ep.APIKey),
+			option.WithMiddleware(middleware),
 		)
 	}
 
@@ -213,11 +267,12 @@ func newStainlessTestClientWithOptions(t *testing.T, ep endpoint, options *stain
 	return openai.NewClient(
 		azure.WithEndpoint(ep.URL, apiVersion),
 		azure.WithTokenCredential(tokenCredential),
+		option.WithMiddleware(middleware),
 	)
 }
 
 func newStainlessChatCompletionService(t *testing.T, ep endpoint) openai.ChatCompletionService {
-	if recording.GetRecordMode() == recording.PlaybackMode {
+	if recording.GetRecordMode() != recording.LiveMode {
 		t.Skip("Skipping tests in playback mode")
 	}
 

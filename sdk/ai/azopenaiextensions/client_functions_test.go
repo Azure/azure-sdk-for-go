@@ -16,27 +16,26 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-var weatherFuncTool = openai.F([]openai.ChatCompletionToolParam{{
-	Type: openai.F(openai.ChatCompletionToolTypeFunction),
-	Function: openai.F(shared.FunctionDefinitionParam{
-		Name:        openai.F("get_current_weather"),
-		Description: openai.F("Get the current weather in a given location"),
-		Parameters: openai.F(openai.FunctionParameters{
+var weatherFuncTool = []openai.ChatCompletionToolParam{{
+	Function: shared.FunctionDefinitionParam{
+		Name:        "get_current_weather",
+		Description: openai.String("Get the current weather in a given location"),
+		Parameters: openai.FunctionParameters{
 			"required": []string{"location"},
 			"type":     "object",
-			"properties": map[string]map[string]any{
-				"location": {
+			"properties": map[string]interface{}{
+				"location": map[string]string{
 					"type":        "string",
 					"description": "The city and state, e.g. San Francisco, CA",
 				},
-				"unit": {
+				"unit": map[string]interface{}{
 					"type": "string",
 					"enum": []string{"celsius", "fahrenheit"},
 				},
 			},
-		}),
-	}),
-}})
+		},
+	},
+}}
 
 func TestGetChatCompletions_usingFunctions(t *testing.T) {
 	if recording.GetRecordMode() == recording.PlaybackMode {
@@ -45,15 +44,21 @@ func TestGetChatCompletions_usingFunctions(t *testing.T) {
 
 	// https://platform.openai.com/docs/guides/gpt/function-calling
 
-	testFn := func(t *testing.T, chatClient *openai.Client, deploymentName string, toolChoice openai.ChatCompletionToolChoiceOptionUnionParam) {
+	testFn := func(t *testing.T, chatClient *openai.Client, deploymentName string, toolChoice *openai.ChatCompletionToolChoiceOptionUnionParam) {
 		body := openai.ChatCompletionNewParams{
-			Model: openai.F(openai.ChatModel(deploymentName)),
-			Messages: openai.F([]openai.ChatCompletionMessageParamUnion{
-				openai.AssistantMessage("What's the weather like in Boston, MA, in celsius?"),
-			}),
+			Model: openai.ChatModel(deploymentName),
+			Messages: []openai.ChatCompletionMessageParamUnion{{
+				OfAssistant: &openai.ChatCompletionAssistantMessageParam{
+					Content: openai.ChatCompletionAssistantMessageParamContentUnion{
+						OfString: openai.String("What's the weather like in Boston, MA, in celsius?"),
+					},
+				},
+			}},
 			Tools:       weatherFuncTool,
-			ToolChoice:  openai.F(toolChoice),
 			Temperature: openai.Float(0.0),
+		}
+		if toolChoice != nil {
+			body.ToolChoice = *toolChoice
 		}
 
 		resp, err := chatClient.Chat.Completions.New(context.Background(), body)
@@ -79,31 +84,38 @@ func TestGetChatCompletions_usingFunctions(t *testing.T) {
 
 	testData := []struct {
 		Model      string
-		ToolChoice openai.ChatCompletionToolChoiceOptionUnionParam
+		ToolChoice *openai.ChatCompletionToolChoiceOptionUnionParam
 	}{
 		// all of these variants use the tool provided - auto just also works since we did provide
 		// a tool reference and ask a question to use it.
 		{Model: azureOpenAI.ChatCompletions.Model, ToolChoice: nil},
-		{Model: azureOpenAI.ChatCompletions.Model, ToolChoice: openai.ChatCompletionToolChoiceOptionAutoAuto},
-		{Model: azureOpenAI.ChatCompletions.Model, ToolChoice: openai.ChatCompletionNamedToolChoiceParam{
-			Type: openai.F(openai.ChatCompletionNamedToolChoiceTypeFunction),
-			Function: openai.F(openai.ChatCompletionNamedToolChoiceFunctionParam{
-				Name: openai.String("get_current_weather"),
-			}),
+		{Model: azureOpenAI.ChatCompletions.Model, ToolChoice: &openai.ChatCompletionToolChoiceOptionUnionParam{
+			OfAuto: openai.String("auto"),
+		}},
+		{Model: azureOpenAI.ChatCompletions.Model, ToolChoice: &openai.ChatCompletionToolChoiceOptionUnionParam{
+			OfChatCompletionNamedToolChoice: &openai.ChatCompletionNamedToolChoiceParam{
+				Function: openai.ChatCompletionNamedToolChoiceFunctionParam{
+					Name: "get_current_weather",
+				},
+			},
 		}},
 	}
 
 	for _, td := range testData {
-		testFn(t, chatClient, td.Model, td.ToolChoice)
+		testFn(t, &chatClient, td.Model, td.ToolChoice)
 	}
 }
 
 func TestGetChatCompletions_usingFunctions_streaming(t *testing.T) {
 	body := openai.ChatCompletionNewParams{
-		Model: openai.F(openai.ChatModel(azureOpenAI.ChatCompletions.Model)),
-		Messages: openai.F([]openai.ChatCompletionMessageParamUnion{
-			openai.AssistantMessage("What's the weather like in Boston, MA, in celsius?"),
-		}),
+		Model: openai.ChatModel(azureOpenAI.ChatCompletions.Model),
+		Messages: []openai.ChatCompletionMessageParamUnion{{
+			OfAssistant: &openai.ChatCompletionAssistantMessageParam{
+				Content: openai.ChatCompletionAssistantMessageParamContentUnion{
+					OfString: openai.String("What's the weather like in Boston, MA, in celsius?"),
+				},
+			},
+		}},
 		Tools:       weatherFuncTool,
 		Temperature: openai.Float(0.0),
 	}
@@ -143,7 +155,7 @@ func TestGetChatCompletions_usingFunctions_streaming(t *testing.T) {
 		}
 
 		if chunk.Choices[0].FinishReason != "" {
-			require.Equal(t, openai.ChatCompletionChunkChoicesFinishReasonToolCalls, chunk.Choices[0].FinishReason)
+			require.Equal(t, "tool_calls", chunk.Choices[0].FinishReason)
 			continue
 		}
 

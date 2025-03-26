@@ -5,13 +5,16 @@ go: true
 input-file: https://github.com/Azure/azure-rest-api-specs/blob/0b64ca7cbe3af8cd13228dfb783a16b8272b8be2/specification/monitor/data-plane/Microsoft.Insights/stable/2024-02-01/metricBatch.json
 license-header: MICROSOFT_MIT_NO_VERSION
 module: github.com/Azure/azure-sdk-for-go/sdk/monitor/query/azmetrics
+module-version: 0.0.1
 openapi-type: "data-plane"
 output-folder: ../azmetrics
 security: "AADToken"
-use: "@autorest/go@4.0.0-preview.61"
+use: "@autorest/go@4.0.0-preview.70"
 inject-spans: true
 version: "^3.0.0"
 slice-elements-byval: true
+generate-fakes: true
+single-client: true
 
 directive:
   # rename Batch to QueryResources
@@ -86,12 +89,4 @@ directive:
   - from: client.go
     where: $
     transform: return $.replace(/batchRequest/g, "resourceIDs");
-
-  # delete client name prefix from method options and response types
-  - from:
-      - client.go
-      - options.go
-      - response_types.go
-    where: $
-    transform: return $.replace(/Client(\w+)((?:Options|Response))/g, "$1$2");
 ```

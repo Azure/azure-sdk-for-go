@@ -141,7 +141,7 @@ class PackageProps {
         if (-not $this.ArtifactDetails) {
             $ciArtifactResult = $this.GetCIYmlForArtifact()
 
-            if ($ciArtifactResult) {
+            if ($ciArtifactResult -and $null -ne $ciArtifactResult.ArtifactConfig) {
                 $this.ArtifactDetails = [Hashtable]$ciArtifactResult.ArtifactConfig
 
                 $repoRoot = Resolve-Path (Join-Path $PSScriptRoot ".." ".." "..")
@@ -472,7 +472,8 @@ function Get-PrPkgProperties([string]$InputDiffJson) {
     # finally, if we have gotten all the way here and we still don't have any packages, we should include the template service
     # packages. We should never return NO validation.
     if ($packagesWithChanges.Count -eq 0) {
-        $packagesWithChanges += ($allPackageProperties | Where-Object { $_.ServiceDirectory -eq "template" })
+        # most of our languages use `template` as the service directory for the template service, but `go` uses `template/aztemplate`.
+        $packagesWithChanges += ($allPackageProperties | Where-Object { $_.ServiceDirectory -eq "template"-or $_.ServiceDirectory -eq "template/aztemplate" })
         foreach ($package in $packagesWithChanges) {
             $package.IncludedForValidation = $true
         }

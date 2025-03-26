@@ -4,6 +4,8 @@
 
 ### Features Added
 
+* Added `AccessToken.RefreshOn` and updated `BearerTokenPolicy` to consider nonzero values of it
+  when deciding whether to request a new token
 * Added field `NewPropagatorFn` to `tracing.ProviderOptions` to support custom propagators.
 * Added type `SpanContext` to the `tracing` package to support Span Context.
 * Added method `SpanContext()` to `tracing.Span` to support Span Context.

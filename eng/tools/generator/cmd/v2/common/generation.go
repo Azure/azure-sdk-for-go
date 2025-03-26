@@ -97,7 +97,7 @@ type TypeSpecOnBoardGenerator struct {
 	*TypeSpecCommonGenerator
 }
 
-type TypeSpecUpdateGeneraor struct {
+type TypeSpecUpdateGenerator struct {
 	*TypeSpecCommonGenerator
 	PreviousVersion  string
 	IsCurrentPreview bool
@@ -557,7 +557,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 	if _, err := os.Stat(changelogPath); os.IsNotExist(err) {
 		generator = &TypeSpecOnBoardGenerator{TypeSpecCommonGenerator: commonGenerator}
 	} else {
-		generator = &TypeSpecUpdateGeneraor{TypeSpecCommonGenerator: commonGenerator}
+		generator = &TypeSpecUpdateGenerator{TypeSpecCommonGenerator: commonGenerator}
 	}
 
 	err = generator.PreGenerate(generateParam)
@@ -713,7 +713,7 @@ func (t *TypeSpecOnBoardGenerator) AfterGenerate(generateParam *GenerateParam, c
 	}, nil
 }
 
-func (t *TypeSpecUpdateGeneraor) PreGenerate(generateParam *GenerateParam) error {
+func (t *TypeSpecUpdateGenerator) PreGenerate(generateParam *GenerateParam) error {
 	log.Printf("Package '%s' existed, do update process", t.PackagePath)
 	log.Printf("Remove all the generated files ...")
 	if err := CleanSDKGeneratedFiles(t.PackagePath); err != nil {
@@ -722,7 +722,7 @@ func (t *TypeSpecUpdateGeneraor) PreGenerate(generateParam *GenerateParam) error
 	return nil
 }
 
-func (t *TypeSpecUpdateGeneraor) PreChangeLog(generateParam *GenerateParam) (*exports.Content, error) {
+func (t *TypeSpecUpdateGenerator) PreChangeLog(generateParam *GenerateParam) (*exports.Content, error) {
 	var err error
 	version := t.Version
 	packagePath := t.PackagePath
@@ -769,7 +769,7 @@ func (t *TypeSpecUpdateGeneraor) PreChangeLog(generateParam *GenerateParam) (*ex
 	return oriExports, nil
 }
 
-func (t *TypeSpecUpdateGeneraor) AfterGenerate(generateParam *GenerateParam, changelog *Changelog, newExports exports.Content) (*GenerateResult, error) {
+func (t *TypeSpecUpdateGenerator) AfterGenerate(generateParam *GenerateParam, changelog *Changelog, newExports exports.Content) (*GenerateResult, error) {
 	var prl PullRequestLabel
 	var err error
 	version := t.Version

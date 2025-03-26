@@ -12,4 +12,7 @@ require (
 	golang.org/x/text v0.23.0 // indirect
 )
 
-replace github.com/Azure/azure-sdk-for-go/sdk/azcore => ../../
+replace (
+	github.com/Azure/azure-sdk-for-go/sdk/azcore => ../../
+	github.com/Azure/azure-sdk-for-go/sdk/internal => ../../../internal
+)

@@ -4,6 +4,8 @@
 
 ### Features Added
 
+* Added `AccessToken.RefreshOn` and updated `BearerTokenPolicy` to consider nonzero values of it when deciding whether to request a new token
+
 ### Breaking Changes
 
 ### Bugs Fixed

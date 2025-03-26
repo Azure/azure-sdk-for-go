@@ -324,9 +324,6 @@ func (o *SetMetadataOptions) format() (*generated.FileClientSetMetadataOptions, 
 	}, o.LeaseAccessConditions
 }
 
-// CopyFileNFSProperties contains the optional parameters regarding the NFS properties for a file.
-type CopyFileNFSProperties = exported.CopyFileNFSProperties
-
 // ---------------------------------------------------------------------------------------------------------------------
 
 // StartCopyFromURLOptions contains the optional parameters for the Client.StartCopyFromURL method.

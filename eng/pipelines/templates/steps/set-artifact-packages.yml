@@ -19,6 +19,24 @@ steps:
         $packageProperties = $packageProperties | Where-Object { $_.IncludedForValidation -eq $false }
       }
 
+      # analyze job doesn't classically run on indirectly changed packages, but we need to at least try to exercise these code paths
+      # if they are triggered. What we will do to make that happen is default `aztemplate` to `IncludeForValidation = false` if there are no other packages in the list.
+      # This will allow the job to run, but not actually pay a huge performance penalty for running the job on a package that is not actually being validated.
+
+      if ($packageProperties.Count -eq 0 -and !$includeIndirect) {
+        Write-Host "No direct packages were identified for this build. Setting aztemplate to direct."
+        Get-ChildItem -Recurse "${{ parameters.PackageInfoDirectory }}" *.json | ForEach-Object {
+          $name = $_.FullName
+          $pkg = Get-Content -Raw $_ | ConvertFrom-Json
+
+          if ($pkg.Name -eq "sdk/template/aztemplate") {
+            Write-Host "Updating $($_.FullName)"
+            $pkg.IncludedForValidation = $false
+            Set-Content -Path $name -Value ($pkg | ConvertTo-Json -Depth 100)
+          }
+        }
+      }
+
       $pkgNames = $packageProperties | ForEach-Object { $_.Name }
 
       $setting = $pkgNames -join ","

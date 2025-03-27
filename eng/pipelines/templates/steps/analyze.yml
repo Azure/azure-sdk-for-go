@@ -17,6 +17,7 @@ steps:
     parameters:
       ServiceDirectory: ${{parameters.ServiceDirectory}}
       PackageInfoDirectory: $(Build.ArtifactStagingDirectory)/PackageInfo
+      IncludeIndirect: false
 
   - pwsh: |
       . $(Build.SourcesDirectory)/eng/common/scripts/common.ps1

@@ -15,7 +15,7 @@ import (
 )
 
 // execute `go generate` command and fetch result
-func ExecuteGoGenerate(path string) error {
+func ExecuteGoGenerateForAutorest(path string) error {
 	cmd := exec.Command("go", "generate")
 	cmd.Dir = path
 
@@ -289,6 +289,101 @@ func ExecuteTspClient(path string, args ...string) error {
 		}
 
 		return fmt.Errorf("failed to execute `tsp-client %s`\n%+v", strings.Join(args, " "), err)
+	}
+
+	return nil
+}
+
+// execute tsp-client command
+func ExecuteGoGenerateForTypeSpec(path string) error {
+	cmd := exec.Command("go", "generate")
+	cmd.Dir = path
+
+	stdoutPipe, err := cmd.StdoutPipe()
+	if err != nil {
+		return err
+	}
+
+	stderrPipe, err := cmd.StderrPipe()
+	if err != nil {
+		return err
+	}
+
+	if err = cmd.Start(); err != nil {
+		return err
+	}
+
+	var stdoutBuffer bytes.Buffer
+	if _, err = io.Copy(&stdoutBuffer, stdoutPipe); err != nil {
+		return err
+	}
+
+	var stderrBuffer bytes.Buffer
+	if _, err = io.Copy(&stderrBuffer, stderrPipe); err != nil {
+		return err
+	}
+
+	cmdWaitErr := cmd.Wait()
+	fmt.Println(stdoutBuffer.String())
+	fmt.Println(stderrBuffer.String())
+
+	if stdoutBuffer.Len() > 0 {
+		for _, line := range strings.Split(stdoutBuffer.String(), "\n") {
+			if len(strings.TrimSpace(line)) == 0 {
+				continue
+			}
+			if strings.Contains(line, "generation complete") {
+				return nil
+			}
+		}
+	}
+	if cmdWaitErr != nil || stderrBuffer.Len() > 0 {
+		if stderrBuffer.Len() > 0 {
+			// filter npm notice & warning log
+			newErrMsgs := make([]string, 0)
+			for _, line := range strings.Split(stderrBuffer.String(), "\n") {
+				if len(strings.TrimSpace(line)) == 0 {
+					continue
+				}
+				if strings.Contains(line, "npm notice") {
+					continue
+				}
+				if strings.Contains(line, "npm warn") {
+					continue
+				}
+				newErrMsgs = append(newErrMsgs, line)
+			}
+
+			// filter diagnostic errors
+			if len(newErrMsgs) >= 1 &&
+				strings.HasPrefix(newErrMsgs[0], "Diagnostics were reported during compilation.") {
+				newErrMsgs = newErrMsgs[1:]
+
+				errDiags := getErrorDiagnostics(strings.Split(stdoutBuffer.String(), "\n"))
+				temp := make([]string, 0)
+				for _, line := range errDiags {
+					line := strings.TrimSpace(line)
+					if line == "" ||
+						strings.Contains(line, "Cleaning up temp directory") ||
+						strings.Contains(line, "Skipping cleanup of temp directory:") {
+						continue
+					}
+					temp = append(temp, line)
+				}
+
+				if len(temp) > 0 {
+					newErrMsgs = append(newErrMsgs, temp...)
+				}
+			}
+
+			if len(newErrMsgs) > 0 {
+				return fmt.Errorf("failed to execute `go generate`:\n%s", strings.Join(newErrMsgs, "\n"))
+			}
+
+			return nil
+		}
+
+		return fmt.Errorf("failed to execute `go generate`:\n%+v", err)
 	}
 
 	return nil

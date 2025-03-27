@@ -22,17 +22,6 @@ function Process-TypeSpec ()
         return
     }
 
-    # Read moduleVersion from constants.go before cleaning
-    $moduleVersion = "0.1.0" # default version
-    if (Test-Path "constants.go") {
-        $constants = Get-Content "constants.go" -Raw
-        if ($constants -match 'moduleVersion\s*=\s*"([^"]*)"') {
-            # Remove 'v' prefix if it exists
-            $moduleVersion = $matches[1] -replace '^v', ''
-        }
-        Write-Host "##[command]Found module version: $moduleVersion"
-    }
-
     if ($clean)
     {
         Write-Host "##[command]Executing go clean -v ./... in " $currentDirectory
@@ -58,7 +47,8 @@ function Process-TypeSpec ()
             exit $LASTEXITCODE
         }
 
-        # Execute tsp-client update in current directory with proper module version
+        # Execute tsp-client update in current directory
+        $moduleVersion = "0.1.0" # default version
         Write-Host "##[command]Executing tsp-client update with version $moduleVersion"
         tsp-client update --debug --emitter-options="module-version=$moduleVersion"
         if ($LASTEXITCODE) {

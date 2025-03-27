@@ -141,7 +141,7 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 		content := namespaceResult.ChangelogMD
 		breaking := namespaceResult.Changelog.HasBreakingChanges()
 		if namespaceResult.PullRequestLabels == string(common.FirstGABreakingChangeLabel) || namespaceResult.PullRequestLabels == string(common.BetaBreakingChangeLabel) {
-			// If the pr is first beta or first GA, it's no necessary to report sdk breaking change in spec pr
+			// If the PR is first beta or first GA, it is not necessary to report SDK breaking change in spec PR
 			breaking = false
 		}
 		breakingChangeItems := namespaceResult.Changelog.GetBreakingChangeItems()

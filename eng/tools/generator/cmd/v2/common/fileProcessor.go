@@ -826,3 +826,38 @@ func FindModuleDirByGoMod(root string) (string, error) {
 	}
 	return "", fmt.Errorf("module not found, package path:%s", root)
 }
+
+func GenerateBuildGoFile(sdkRoot, packagePath, rpName, packageName string) error {
+	root, err := filepath.Abs(sdkRoot)
+	if err != nil {
+		return fmt.Errorf("cannot get the root of azure-sdk-for-go from '%s': %+v", sdkRoot, err)
+	}
+	buildGoTemplatePath := filepath.Join(root, "eng/tools/generator/template/typespec/build.go.tpl")
+	buildGoFilePath := filepath.Join(sdkRoot, packagePath, "build.go")
+	if _, err := os.Stat(buildGoFilePath); !os.IsNotExist(err) {
+		log.Printf("Removing existing build.go file in '%s'...", buildGoFilePath)
+		if err := os.Remove(buildGoFilePath); err != nil {
+			return fmt.Errorf("cannot remove existing build.go file: %v", err)
+		}
+	}
+	// replace the package name in the build.go template file
+	b, err := os.ReadFile(buildGoTemplatePath)
+	if err != nil {
+		return fmt.Errorf("cannot read build.go template file: %v", err)
+	}
+	// replace the package name in the build.go template file
+	b = bytes.ReplaceAll(b, []byte("{{packageName}}"), []byte(packageName))
+	// replace the rp name in the build.go template file
+	b = bytes.ReplaceAll(b, []byte("{{rpName}}"), []byte(rpName))
+	// write the new build.go file
+	buildGoFile, err := os.Create(buildGoFilePath)
+	if err != nil {
+		return fmt.Errorf("cannot create build.go file: %v", err)
+	}
+	defer buildGoFile.Close()
+	_, err = buildGoFile.Write(b)
+	if err != nil {
+		return fmt.Errorf("cannot write build.go file: %v", err)
+	}
+	return nil
+}

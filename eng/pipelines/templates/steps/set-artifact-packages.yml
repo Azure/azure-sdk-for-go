@@ -13,6 +13,7 @@ steps:
   # individual ci.yml and ci.resourcemanager.yml files.
   - pwsh: |
       $packageProperties = Get-ChildItem -Recurse "${{ parameters.PackageInfoDirectory }}" *.json | ForEach-Object { Get-Content -Raw $_ | ConvertFrom-Json }
+      $includeIndirect = $${{ parameters.IncludeIndirect }}
 
       if (-not $includeIndirect) {
         $packageProperties = $packageProperties | Where-Object { $_.IncludedForValidation -eq $false }

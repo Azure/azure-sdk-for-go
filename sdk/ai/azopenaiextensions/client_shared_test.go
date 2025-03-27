@@ -264,26 +264,39 @@ func newRecordingTransporter(t *testing.T) policy.Transporter {
 	return transport
 }
 
+type recordingRoundTripper struct {
+	transport policy.Transporter
+}
+
+func (d *recordingRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
+	return d.transport.Do(req)
+}
+
 func newStainlessTestClientWithOptions(t *testing.T, ep endpoint, options *stainlessTestClientOptions) openai.Client {
-	var middleware option.Middleware
+	var client *http.Client
+	// var middleware option.Middleware
 	if recording.GetRecordMode() == recording.LiveMode {
-		middleware = func(req *http.Request, next option.MiddlewareNext) (*http.Response, error) {
-			return next(req)
-		}
+		client = &http.Client{}
+		// middleware = func(req *http.Request, next option.MiddlewareNext) (*http.Response, error) {
+		// 	return next(req)
+		// }
 	} else {
 		transport := newRecordingTransporter(t)
-
-		middleware = func(req *http.Request, next option.MiddlewareNext) (*http.Response, error) {
-
-			return transport.Do(req)
+		client = &http.Client{
+			Transport: &recordingRoundTripper{transport: transport},
 		}
+		// middleware = func(req *http.Request, next option.MiddlewareNext) (*http.Response, error) {
+
+		// 	return transport.Do(req)
+		// }
 	}
 
 	if options != nil && options.UseAPIKey {
 		return openai.NewClient(
 			azure.WithEndpoint(ep.URL, apiVersion),
 			azure.WithAPIKey(ep.APIKey),
-			option.WithMiddleware(middleware),
+			option.WithHTTPClient(client),
+			// option.WithMiddleware(middleware),
 		)
 	}
 
@@ -293,7 +306,8 @@ func newStainlessTestClientWithOptions(t *testing.T, ep endpoint, options *stain
 	return openai.NewClient(
 		azure.WithEndpoint(ep.URL, apiVersion),
 		azure.WithTokenCredential(tokenCredential),
-		option.WithMiddleware(middleware),
+		option.WithHTTPClient(client),
+		// option.WithMiddleware(middleware),
 	)
 }
 

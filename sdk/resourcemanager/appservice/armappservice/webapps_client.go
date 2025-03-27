@@ -17613,7 +17613,7 @@ func (client *WebAppsClient) listFunctionKeysCreateRequest(ctx context.Context, 
 // listFunctionKeysHandleResponse handles the ListFunctionKeys response.
 func (client *WebAppsClient) listFunctionKeysHandleResponse(resp *http.Response) (WebAppsClientListFunctionKeysResponse, error) {
 	result := WebAppsClientListFunctionKeysResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.StringDictionary); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.StringDictionary.Properties); err != nil {
 		return WebAppsClientListFunctionKeysResponse{}, err
 	}
 	return result, nil

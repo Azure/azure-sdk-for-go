@@ -726,7 +726,7 @@ func (t *TypeSpecUpdateGenerator) PreGenerate(generateParam *GenerateParam) erro
 		if err != nil {
 			return fmt.Errorf("cannot read build.go template file: %v", err)
 		}
-		if strings.Contains(string(b), "typespec-build.sh") {
+		if strings.Contains(string(b), "typespec-build.ps1") {
 			return nil
 		}
 	}

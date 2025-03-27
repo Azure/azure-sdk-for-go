@@ -4,9 +4,12 @@
 package azopenaiextensions_test
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"fmt"
+	"io"
+	"mime"
 	"net/http"
 	"os"
 	"strings"
@@ -15,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiextensions"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
@@ -56,16 +60,35 @@ type endpointWithModel struct {
 
 // getEnvVariable is recording.GetEnvVariable but it panics if the
 // value isn't found, rather than falling back to the playback value.
-func getEnvVariable(varName string) string {
+func getEnvVariable(varName string, playbackValue string) string {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		return playbackValue
+	}
+
 	val := os.Getenv(varName)
 
 	if val == "" {
-		if recording.GetRecordMode() != recording.PlaybackMode {
-			panic(fmt.Sprintf("Missing required environment variable %s", varName))
-		}
+		panic(fmt.Sprintf("Missing required environment variable %s", varName))
 	}
 
 	return val
+}
+
+func getEndpoint(ev string, azure bool) string {
+	fakeEP := fakeAzureEndpoint
+
+	if !azure {
+		fakeEP = fakeOpenAIEndpoint
+	}
+
+	v := getEnvVariable(ev, fakeEP)
+
+	if !strings.HasSuffix(v, "/") {
+		// (this just makes recording replacement easier)
+		v += "/"
+	}
+
+	return v
 }
 
 var azureOpenAI = func() testVars {
@@ -77,23 +100,23 @@ var azureOpenAI = func() testVars {
 		OpenAI         endpoint
 	}{
 		USEast: endpoint{
-			URL:    getEnvVariable("AOAI_ENDPOINT_USEAST"),
-			APIKey: getEnvVariable("AOAI_ENDPOINT_USEAST_API_KEY"),
+			URL:    getEndpoint("AOAI_ENDPOINT_USEAST", true),
+			APIKey: getEnvVariable("AOAI_ENDPOINT_USEAST_API_KEY", fakeAPIKey),
 			Azure:  true,
 		},
 		USEast2: endpoint{
-			URL:    getEnvVariable("AOAI_ENDPOINT_USEAST2"),
-			APIKey: getEnvVariable("AOAI_ENDPOINT_USEAST2_API_KEY"),
+			URL:    getEndpoint("AOAI_ENDPOINT_USEAST2", true),
+			APIKey: getEnvVariable("AOAI_ENDPOINT_USEAST2_API_KEY", fakeAPIKey),
 			Azure:  true,
 		},
 		USNorthCentral: endpoint{
-			URL:    getEnvVariable("AOAI_ENDPOINT_USNORTHCENTRAL"),
-			APIKey: getEnvVariable("AOAI_ENDPOINT_USNORTHCENTRAL_API_KEY"),
+			URL:    getEndpoint("AOAI_ENDPOINT_USNORTHCENTRAL", true),
+			APIKey: getEnvVariable("AOAI_ENDPOINT_USNORTHCENTRAL_API_KEY", fakeAPIKey),
 			Azure:  true,
 		},
 		SWECentral: endpoint{
-			URL:    getEnvVariable("AOAI_ENDPOINT_SWECENTRAL"),
-			APIKey: getEnvVariable("AOAI_ENDPOINT_SWECENTRAL_API_KEY"),
+			URL:    getEndpoint("AOAI_ENDPOINT_SWECENTRAL", true),
+			APIKey: getEnvVariable("AOAI_ENDPOINT_SWECENTRAL_API_KEY", fakeAPIKey),
 			Azure:  true,
 		},
 	}
@@ -154,8 +177,8 @@ var azureOpenAI = func() testVars {
 			},
 			Cognitive: azopenaiextensions.AzureSearchChatExtensionConfiguration{
 				Parameters: &azopenaiextensions.AzureSearchChatExtensionParameters{
-					Endpoint:       to.Ptr(getEnvVariable("COGNITIVE_SEARCH_API_ENDPOINT")),
-					IndexName:      to.Ptr(getEnvVariable("COGNITIVE_SEARCH_API_INDEX")),
+					Endpoint:       to.Ptr(getEnvVariable("COGNITIVE_SEARCH_API_ENDPOINT", fakeCognitiveEndpoint)),
+					IndexName:      to.Ptr(getEnvVariable("COGNITIVE_SEARCH_API_INDEX", fakeCognitiveIndexName)),
 					Authentication: &azopenaiextensions.OnYourDataSystemAssignedManagedIdentityAuthenticationOptions{},
 				},
 			},
@@ -197,6 +220,8 @@ func newStainlessTestClient(t *testing.T, ep endpoint) openai.Client {
 	return newStainlessTestClientWithOptions(t, ep, nil)
 }
 
+const fakeAzureEndpoint = "https://Sanitized.openai.azure.com/"
+const fakeOpenAIEndpoint = "https://Sanitized.openai.com/v1"
 const fakeAPIKey = "redacted"
 const fakeCognitiveEndpoint = "https://Sanitized.openai.azure.com"
 const fakeCognitiveIndexName = "index"
@@ -249,6 +274,7 @@ func newStainlessTestClientWithOptions(t *testing.T, ep endpoint, options *stain
 		transport := newRecordingTransporter(t)
 
 		middleware = func(req *http.Request, next option.MiddlewareNext) (*http.Response, error) {
+
 			return transport.Do(req)
 		}
 	}
@@ -315,4 +341,51 @@ func customRequireNoError(t *testing.T, err error) {
 	}
 
 	require.NoError(t, err)
+}
+
+type mimeTypeRecordingPolicy struct{}
+
+// Do changes out the boundary for a multipart message. This makes it simpler to write
+// recordings.
+func (mrp *mimeTypeRecordingPolicy) Do(req *policy.Request) (*http.Response, error) {
+	if recording.GetRecordMode() == recording.LiveMode {
+		// this is strictly to make the IDs in the multipart body stable for test recordings.
+		return req.Next()
+	}
+
+	// we'll fix up the multipart to make it more predictable for test recordings.
+	//    Content-Type: multipart/form-data; boundary=787c880ce3dd11f9b6384d625c399c8490fc8989ceb6b7d208ec7426c12e
+	mediaType, params, err := mime.ParseMediaType(req.Raw().Header[http.CanonicalHeaderKey("Content-type")][0])
+
+	if err != nil || mediaType != "multipart/form-data" {
+		// we'll just assume our policy doesn't apply here.
+		return req.Next()
+	}
+
+	origBoundary := params["boundary"]
+
+	if origBoundary == "" {
+		return nil, errors.New("Invalid use of this policy - no boundary was passed as part of the multipart mime type")
+	}
+
+	params["boundary"] = "boundary-for-recordings"
+
+	// now let's update the body itself - we'll just do a simple string replacement. The entire purpose of the boundary string is to provide a
+	// separator, which is distinct from the content.
+	body := req.Body()
+	defer body.Close()
+
+	origBody, err := io.ReadAll(body)
+
+	if err != nil {
+		return nil, err
+	}
+
+	newBody := bytes.ReplaceAll(origBody, []byte(origBoundary), []byte("boundary-for-recordings"))
+
+	if err := req.SetBody(streaming.NopCloser(bytes.NewReader(newBody)), mime.FormatMediaType(mediaType, params)); err != nil {
+		return nil, err
+	}
+
+	return req.Next()
 }

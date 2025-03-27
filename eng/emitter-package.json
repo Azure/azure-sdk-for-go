@@ -17,6 +17,6 @@
     "@typespec/streams": "0.67.1",
     "@typespec/events": "0.67.1",
     "@typespec/sse": "0.67.1",
-    "@azure-tools/typespec-liftr-base": "0.7.0"
+    "@azure-tools/typespec-liftr-base": "0.8.0"
   }
 }

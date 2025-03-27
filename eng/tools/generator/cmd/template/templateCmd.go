@@ -4,6 +4,7 @@
 package template
 
 import (
+	"bytes"
 	"fmt"
 	"log"
 	"os"
@@ -128,6 +129,36 @@ func GeneratePackageByTemplate(rpName, packageName string, flags Flags) error {
 		}
 	}
 
+	return nil
+}
+
+func GenerateBuildGoFileByTemplate(packagePath, rpName, packageName, templatePath string) error {
+	buildGoFilePath := filepath.Join(packagePath, "build.go")
+	if _, err := os.Stat(buildGoFilePath); !os.IsNotExist(err) {
+		log.Printf("Removing existing build.go file in '%s'...", buildGoFilePath)
+		if err := os.Remove(buildGoFilePath); err != nil {
+			return fmt.Errorf("cannot remove existing build.go file: %v", err)
+		}
+	}
+	// replace the package name in the build.go template file
+	b, err := os.ReadFile(templatePath)
+	if err != nil {
+		return fmt.Errorf("cannot read build.go template file: %v", err)
+	}
+	// replace the package name in the build.go template file
+	b = bytes.ReplaceAll(b, []byte(PackageNameKey), []byte(packageName))
+	// replace the rp name in the build.go template file
+	b = bytes.ReplaceAll(b, []byte(RPNameKey), []byte(rpName))
+	// write the new build.go file
+	buildGoFile, err := os.Create(buildGoFilePath)
+	if err != nil {
+		return fmt.Errorf("cannot create build.go file: %v", err)
+	}
+	defer buildGoFile.Close()
+	_, err = buildGoFile.Write(b)
+	if err != nil {
+		return fmt.Errorf("cannot write build.go file: %v", err)
+	}
 	return nil
 }
 

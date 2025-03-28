@@ -5,6 +5,7 @@ title: WebPubSub
 description: Azure Web PubSub client
 clear-output-folder: false
 slice-elements-byval: true
+head-as-boolean: true
 remove-non-reference-schema: true
 go: true
 input-file: https://github.com/Azure/azure-rest-api-specs/blob/052a4b8d50bfd5595a8b5b506015d18f2b65998d/specification/webpubsub/data-plane/WebPubSub/stable/2023-07-01/webpubsub.json
@@ -27,14 +28,6 @@ directive:
     - from: client.go
       where: $
       transform: return $.replace(/\bGenerateClientToken\b/g, "generateClientToken");
-    # Make *Exists internal until SDK supports it.
-    - from: client.go
-      where: $
-      transform: return $.replace(/\b(Group|Connection|User)Exists\b/g, function(match, group) { return group.toLowerCase() + "Exists";});
-    # Make CheckPermission internal until SDK supports it, since it leverage 404 status code
-    - from: client.go
-      where: $
-      transform: return $.replace(/\bCheckPermission\b/g, "checkPermission");
     # Add more properties to the client
     - from: client.go
       where: $

@@ -52,6 +52,11 @@ func TestClient_ManagePermissions(t *testing.T) {
 		TargetName: &group,
 	})
 	require.NoError(t, err)
+	res, err2 := client.CheckPermission(context.Background(), hub, azwebpubsub.PermissionJoinLeaveGroup, conn1, &azwebpubsub.CheckPermissionOptions{
+		TargetName: &group,
+	})
+	require.NoError(t, err2)
+	require.False(t, res.Success)
 }
 
 func TestClient_CloseConnections(t *testing.T) {
@@ -73,6 +78,23 @@ func TestClient_CloseConnections(t *testing.T) {
 	_, err = client.CloseUserConnections(context.Background(),
 		hub, user1, &azwebpubsub.CloseUserConnectionsOptions{Excluded: []string{conn1}, Reason: &reason})
 	require.NoError(t, err)
+}
+
+func TestClient_CheckExistence(t *testing.T) {
+	client := newClientWrapper(t)
+	const hub = "chat"
+	const conn1 = "conn1"
+	const group1 = "group1"
+	const user1 = "user1"
+	res1, err1 := client.UserExists(context.Background(), hub, user1, &azwebpubsub.UserExistsOptions{})
+	require.NoError(t, err1)
+	require.False(t, res1.Success)
+	res2, err2 := client.GroupExists(context.Background(), hub, group1, &azwebpubsub.GroupExistsOptions{})
+	require.NoError(t, err2)
+	require.False(t, res2.Success)
+	res3, err3 := client.ConnectionExists(context.Background(), hub, conn1, &azwebpubsub.ConnectionExistsOptions{})
+	require.NoError(t, err3)
+	require.False(t, res3.Success)
 }
 
 func TestClient_GenerateClientAccessURLFromConnectionString(t *testing.T) {

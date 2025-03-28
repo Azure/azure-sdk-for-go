@@ -826,3 +826,24 @@ func FindModuleDirByGoMod(root string) (string, error) {
 	}
 	return "", fmt.Errorf("module not found, package path:%s", root)
 }
+
+// set local spec repo in build.go file
+func SetLocalSpecRepo(packagePath, localSpecRepo string) error {
+	buildGoPath := filepath.Join(packagePath, "build.go")
+	b, err := os.ReadFile(buildGoPath)
+	if err != nil {
+		return err
+	}
+
+	lines := strings.Split(string(b), "\n")
+	for i, line := range lines {
+		if strings.Contains(line, "go:generate") {
+			// split line by space and find the index of local spec repo
+			parts := strings.Fields(line)
+			lines[i] = strings.Join(append(parts[0:len(parts)-1], "-localSpecRepo", localSpecRepo, parts[len(parts)-1]), " ")
+			break
+		}
+	}
+
+	return os.WriteFile(buildGoPath, []byte(strings.Join(lines, "\n")), 0644)
+}

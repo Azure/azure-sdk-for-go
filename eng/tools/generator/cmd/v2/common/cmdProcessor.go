@@ -201,7 +201,7 @@ func ExecuteTspClient(path string, args ...string) error {
 	return nil
 }
 
-func ExecuteTypeSpecGenerate(ctx *GenerateContext, emitOptions string, tspClientOptions []string) error {
+func ExecuteTypeSpecInit(ctx *GenerateContext, emitOptions string, tspClientOptions []string) error {
 	tspConfigAbs, err := filepath.Abs(ctx.TypeSpecConfig.Path)
 	if err != nil {
 		return err
@@ -214,6 +214,7 @@ func ExecuteTypeSpecGenerate(ctx *GenerateContext, emitOptions string, tspClient
 		"--repo", ctx.SpecRepoURL[len("https://github.com/"):],
 		"--local-spec-repo", filepath.Dir(tspConfigAbs),
 		"--emitter-options", emitOptions,
+		"--skip-sync-and-generate", // only init the tsp-location.yaml
 	}
 
 	if len(tspClientOptions) > 0 {

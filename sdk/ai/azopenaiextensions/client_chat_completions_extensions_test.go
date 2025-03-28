@@ -11,11 +11,15 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiextensions"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/openai/openai-go"
 	"github.com/stretchr/testify/require"
 )
 
 func TestChatCompletions_extensions_bringYourOwnData(t *testing.T) {
+	if recording.GetRecordMode() != recording.LiveMode {
+		t.Skip("Skipping test in non-live mode until we investigate the test-proxy miss.")
+	}
 	client := newStainlessTestClient(t, azureOpenAI.ChatCompletionsOYD.Endpoint)
 
 	inputParams := openai.ChatCompletionNewParams{

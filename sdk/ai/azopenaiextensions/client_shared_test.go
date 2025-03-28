@@ -12,6 +12,7 @@ import (
 	"mime"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 	"testing"
 
@@ -216,6 +217,24 @@ type stainlessTestClientOptions struct {
 	UseAPIKey bool
 }
 
+func initDefaultOptions() *recording.RecordingOptions {
+	val := os.Getenv("PROXY_PORT")
+	if len(val) > 0 {
+		port, err := strconv.ParseInt(val, 10, 16)
+		if err != nil {
+			panic(fmt.Sprintf("Invalid proxy port %s", val))
+		}
+		return &recording.RecordingOptions{
+			UseHTTPS:  true,
+			ProxyPort: int(port),
+		}
+	}
+	/* If port is not set, return nil so we use the default provided by the recording package */
+	return nil
+}
+
+var defaultOptions = initDefaultOptions()
+
 func newStainlessTestClient(t *testing.T, ep endpoint) openai.Client {
 	return newStainlessTestClientWithOptions(t, ep, nil)
 }
@@ -229,35 +248,35 @@ const fakeCognitiveIndexName = "index"
 // newRecordingTransporter sets up our recording policy to sanitize endpoints and any parts of the response that might
 // involve UUIDs that would make the response/request inconsistent.
 func newRecordingTransporter(t *testing.T) policy.Transporter {
-	transport, err := recording.NewRecordingHTTPClient(t, nil)
+	transport, err := recording.NewRecordingHTTPClient(t, defaultOptions)
 	require.NoError(t, err)
 
-	err = recording.Start(t, RecordingDirectory, nil)
+	err = recording.Start(t, RecordingDirectory, defaultOptions)
 	require.NoError(t, err)
 
 	if recording.GetRecordMode() != recording.PlaybackMode {
-		err = recording.AddHeaderRegexSanitizer("Api-Key", fakeAPIKey, "", nil)
+		err = recording.AddHeaderRegexSanitizer("Api-Key", fakeAPIKey, "", defaultOptions)
 		require.NoError(t, err)
 
-		err = recording.AddHeaderRegexSanitizer("User-Agent", "fake-user-agent", "", nil)
+		err = recording.AddHeaderRegexSanitizer("User-Agent", "fake-user-agent", "", defaultOptions)
 		require.NoError(t, err)
 
-		err = recording.AddURISanitizer("/openai/operations/images/00000000-AAAA-BBBB-CCCC-DDDDDDDDDDDD", "/openai/operations/images/[A-Za-z-0-9]+", nil)
+		err = recording.AddURISanitizer("/openai/operations/images/00000000-AAAA-BBBB-CCCC-DDDDDDDDDDDD", "/openai/operations/images/[A-Za-z-0-9]+", defaultOptions)
 		require.NoError(t, err)
 
 		err = recording.AddGeneralRegexSanitizer(
 			fmt.Sprintf(`"endpoint": "%s"`, fakeCognitiveEndpoint),
-			fmt.Sprintf(`"endpoint":\s*"%s"`, *azureOpenAI.Cognitive.Parameters.Endpoint), nil)
+			fmt.Sprintf(`"endpoint":\s*"%s"`, *azureOpenAI.Cognitive.Parameters.Endpoint), defaultOptions)
 		require.NoError(t, err)
 
 		err = recording.AddGeneralRegexSanitizer(
 			fmt.Sprintf(`"index_name": "%s"`, fakeCognitiveIndexName),
-			fmt.Sprintf(`"index_name":\s*"%s"`, *azureOpenAI.Cognitive.Parameters.IndexName), nil)
+			fmt.Sprintf(`"index_name":\s*"%s"`, *azureOpenAI.Cognitive.Parameters.IndexName), defaultOptions)
 		require.NoError(t, err)
 	}
 
 	t.Cleanup(func() {
-		err := recording.Stop(t, nil)
+		err := recording.Stop(t, defaultOptions)
 		require.NoError(t, err)
 	})
 
@@ -274,21 +293,13 @@ func (d *recordingRoundTripper) RoundTrip(req *http.Request) (*http.Response, er
 
 func newStainlessTestClientWithOptions(t *testing.T, ep endpoint, options *stainlessTestClientOptions) openai.Client {
 	var client *http.Client
-	// var middleware option.Middleware
 	if recording.GetRecordMode() == recording.LiveMode {
 		client = &http.Client{}
-		// middleware = func(req *http.Request, next option.MiddlewareNext) (*http.Response, error) {
-		// 	return next(req)
-		// }
 	} else {
 		transport := newRecordingTransporter(t)
 		client = &http.Client{
 			Transport: &recordingRoundTripper{transport: transport},
 		}
-		// middleware = func(req *http.Request, next option.MiddlewareNext) (*http.Response, error) {
-
-		// 	return transport.Do(req)
-		// }
 	}
 
 	if options != nil && options.UseAPIKey {

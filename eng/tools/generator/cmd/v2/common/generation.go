@@ -595,7 +595,7 @@ func (t *TypeSpecCommonGenerator) PreGenerate(generateParam *GenerateParam) erro
 func (t *TypeSpecCommonGenerator) Generate(generateParam *GenerateParam) error {
 	version := t.Version
 	ctx := t.GenerateContext
-	log.Printf("Start to run `tsp-client init` to generate the code...")
+	packagePath := t.PackagePath
 	defaultModuleVersion := version.String()
 	emitOption := ""
 	if !t.IsSubPackage {
@@ -604,8 +604,23 @@ func (t *TypeSpecCommonGenerator) Generate(generateParam *GenerateParam) error {
 	if generateParam.TypeSpecEmitOption != "" {
 		emitOption = fmt.Sprintf("%s;%s", emitOption, generateParam.TypeSpecEmitOption)
 	}
-	err := ExecuteTypeSpecGenerate(ctx, emitOption, generateParam.TspClientOptions)
+	log.Printf("Start to run `tsp-client init` to initialize generation")
+	err := ExecuteTypeSpecInit(ctx, emitOption, generateParam.TspClientOptions)
 	if err != nil {
+		return err
+	}
+
+	if !strings.HasPrefix(t.TypeSpecConfig.Path, "http") {
+		// local path, need to set local spec repo into build.go
+		log.Printf("Set local spec repo in build.go...")
+		err = SetLocalSpecRepo(packagePath, filepath.Dir(t.TypeSpecConfig.Path))
+		if err != nil {
+			return err
+		}
+	}
+
+	log.Printf("Start to run `go generate` to generate the code...")
+	if err := ExecuteGoGenerate(packagePath); err != nil {
 		return err
 	}
 	return nil
@@ -733,15 +748,6 @@ func (t *TypeSpecUpdateGenerator) PreGenerate(generateParam *GenerateParam) erro
 	log.Printf("Create build.go for typespec package...")
 	buildGoTemplatePath := filepath.Join(t.SDKPath, "eng/tools/generator/template/typespec/build.go.tpl")
 	if err := template.GenerateBuildGoFileByTemplate(t.PackagePath, generateParam.RPName, generateParam.NamespaceName, buildGoTemplatePath); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (t *TypeSpecUpdateGenerator) Generate(generateParam *GenerateParam) error {
-	packagePath := t.PackagePath
-	log.Printf("Start to run `go generate` to regenerate the code...")
-	if err := ExecuteGoGenerate(packagePath); err != nil {
 		return err
 	}
 	return nil

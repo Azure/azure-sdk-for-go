@@ -8,7 +8,8 @@ param(
     [switch]$cleanGenerated,
     [switch]$format,
     [switch]$tidy,
-    [string]$emitterOptions = "module-version=0.1.0" # default options
+    [string]$emitterOptions = "module-version=0.1.0", # default options
+    [string]$localSpecRepo
 )
 
 . (Join-Path $PSScriptRoot .. common scripts common.ps1)
@@ -40,8 +41,13 @@ function Process-TypeSpec ()
     {
         # Execute tsp-client update in current directory
         Write-Host "##[command]Executing tsp-client update in " $currentDirectory
-        Write-Host "tsp-client update --debug --emitter-options="$emitterOptions
-        tsp-client update --debug --emitter-options="$emitterOptions"
+        if ($localSpecRepo) {
+            Write-Host "tsp-client update --debug --emitter-options"$emitterOptions "--local-spec-repo" $localSpecRepo
+            tsp-client update --debug --emitter-options $emitterOptions --local-spec-repo $localSpecRepo
+        } else {
+            Write-Host "tsp-client update --debug --emitter-options"$emitterOptions
+            tsp-client update --debug --emitter-options $emitterOptions
+        }
         if ($LASTEXITCODE) {
             Write-Host "##[error]Error running tsp-client update"
             exit $LASTEXITCODE

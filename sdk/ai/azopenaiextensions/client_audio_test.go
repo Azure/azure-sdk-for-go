@@ -19,7 +19,7 @@ import (
 )
 
 func TestClient_GetAudioTranscription(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
+	if recording.GetRecordMode() != recording.LiveMode {
 		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
 	}
 
@@ -54,7 +54,7 @@ func TestClient_GetAudioTranscription(t *testing.T) {
 }
 
 func TestClient_GetAudioTranslation(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
+	if recording.GetRecordMode() != recording.LiveMode {
 		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
 	}
 
@@ -74,7 +74,7 @@ func TestClient_GetAudioTranslation(t *testing.T) {
 }
 
 func TestClient_GetAudioSpeech(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
+	if recording.GetRecordMode() != recording.LiveMode {
 		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
 	}
 

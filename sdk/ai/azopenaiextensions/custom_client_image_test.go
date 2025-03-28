@@ -18,7 +18,7 @@ import (
 )
 
 func TestImageGeneration_AzureOpenAI(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
+	if recording.GetRecordMode() != recording.LiveMode {
 		t.Skipf("Ignoring poller-based test")
 	}
 

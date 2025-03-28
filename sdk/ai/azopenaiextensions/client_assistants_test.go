@@ -18,7 +18,7 @@ import (
 )
 
 func TestAssistants(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
+	if recording.GetRecordMode() != recording.LiveMode {
 		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
 	}
 
@@ -93,7 +93,7 @@ func TestAssistants(t *testing.T) {
 }
 
 func TestAssistantsThreads(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
+	if recording.GetRecordMode() != recording.LiveMode {
 		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
 	}
 
@@ -158,7 +158,7 @@ func TestAssistantsThreads(t *testing.T) {
 }
 
 func TestAssistantRun(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
+	if recording.GetRecordMode() != recording.LiveMode {
 		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
 	}
 

@@ -23,9 +23,12 @@ steps:
       # if they are triggered. What we will do to make that happen is default `aztemplate` to `IncludeForValidation = false` if there are no other packages in the list.
       # This will allow the job to run, but not actually pay a huge performance penalty for running the job on a package that is not actually being validated.
 
+      $props = Get-ChildItem -Recurse "${{ parameters.PackageInfoDirectory }}" *.json | ForEach-Object { Get-Content -Raw $_ | ConvertFrom-Json }
+      $packageProperties = $props | Where-Object { $_.IncludedForValidation -eq $false }
+
       if ($packageProperties.Count -eq 0 -and !$includeIndirect) {
         Write-Host "No direct packages were identified for this build. Setting aztemplate to direct."
-        Get-ChildItem -Recurse "${{ parameters.PackageInfoDirectory }}" *.json | ForEach-Object {
+        $packageProperties = Get-ChildItem -Recurse "${{ parameters.PackageInfoDirectory }}" *.json | ForEach-Object {
           $name = $_.FullName
           $pkg = Get-Content -Raw $_ | ConvertFrom-Json
 
@@ -34,7 +37,9 @@ steps:
             $pkg.IncludedForValidation = $false
             Set-Content -Path $name -Value ($pkg | ConvertTo-Json -Depth 100)
           }
-        }
+
+          return $pkg
+        } | Where-Object { $_.IncludedForValidation -eq $false }
       }
 
       $pkgNames = $packageProperties | ForEach-Object { $_.Name }

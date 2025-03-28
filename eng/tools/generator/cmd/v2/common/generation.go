@@ -236,7 +236,7 @@ func (t *SwaggerCommonGenerator) PreGenerate(generateParam *GenerateParam) error
 func (t *SwaggerCommonGenerator) Generate(generateParam *GenerateParam) error {
 	packagePath := t.PackagePath
 	log.Printf("Start to run `go generate` to regenerate the code...")
-	if err := ExecuteGoGenerateForAutorest(packagePath); err != nil {
+	if err := ExecuteGoGenerate(packagePath); err != nil {
 		return err
 	}
 	return nil
@@ -726,7 +726,7 @@ func (t *TypeSpecUpdateGenerator) PreGenerate(generateParam *GenerateParam) erro
 		if err != nil {
 			return fmt.Errorf("cannot read build.go template file: %v", err)
 		}
-		if strings.Contains(string(b), "typespec-build.ps1") {
+		if strings.Contains(string(b), "typespec_build.ps1") {
 			return nil
 		}
 	}
@@ -741,7 +741,7 @@ func (t *TypeSpecUpdateGenerator) PreGenerate(generateParam *GenerateParam) erro
 func (t *TypeSpecUpdateGenerator) Generate(generateParam *GenerateParam) error {
 	packagePath := t.PackagePath
 	log.Printf("Start to run `go generate` to regenerate the code...")
-	if err := ExecuteGoGenerateForTypeSpec(packagePath); err != nil {
+	if err := ExecuteGoGenerate(packagePath); err != nil {
 		return err
 	}
 	return nil

@@ -7,7 +7,8 @@ param(
     [switch]$skipBuild,
     [switch]$cleanGenerated,
     [switch]$format,
-    [switch]$tidy
+    [switch]$tidy,
+    [string]$emitterOptions = "module-version=0.1.0" # default options
 )
 
 . (Join-Path $PSScriptRoot .. common scripts common.ps1)
@@ -37,20 +38,10 @@ function Process-TypeSpec ()
 
     if ($generate)
     {
-        Write-Host "##[command]Executing TypeSpec generation in " $currentDirectory
-        
-        # Install tsp-client if not already installed
-        Write-Host "##[command]Ensuring TypeSpec tooling is installed..."
-        npm list -g @azure-tools/typespec-client-generator-cli || npm install -g @azure-tools/typespec-client-generator-cli@v0.10.0
-        if ($LASTEXITCODE) {
-            Write-Host "##[error]Error installing TypeSpec tooling"
-            exit $LASTEXITCODE
-        }
-
         # Execute tsp-client update in current directory
-        $moduleVersion = "0.1.0" # default version
-        Write-Host "##[command]Executing tsp-client update with version $moduleVersion"
-        tsp-client update --debug --emitter-options="module-version=$moduleVersion"
+        Write-Host "##[command]Executing tsp-client update in " $currentDirectory
+        Write-Host "tsp-client update --debug --emitter-options="$emitterOptions
+        tsp-client update --debug --emitter-options="$emitterOptions"
         if ($LASTEXITCODE) {
             Write-Host "##[error]Error running tsp-client update"
             exit $LASTEXITCODE

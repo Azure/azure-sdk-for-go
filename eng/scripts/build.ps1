@@ -10,9 +10,9 @@ param(
     [switch]$tidy,
     [switch]$alwaysSetBodyParamRequired,
     [switch]$removeUnreferencedTypes,
-    [switch]$factoryGatherAllParams,
+    [switch]$factoryGatherCommonParams,
     [string]$config = "autorest.md",
-    [string]$goExtension = "@autorest/go@4.0.0-preview.70",
+    [string]$goExtension = "C:\Users\jiaqzhang\work\autorest.go\packages\autorest.go",
     [string]$filePrefix,
     [string]$outputFolder
 )
@@ -57,10 +57,10 @@ function Process-Sdk ()
             $removeUnreferencedTypesFlag = "true"
         }
         
-        $factoryGatherAllParamsFlag = "false"
-        if ($factoryGatherAllParams)
+        $factoryGatherAllParamsFlag = "true"
+        if ($factoryGatherCommonParams)
         {
-            $factoryGatherAllParamsFlag = "true"
+            $factoryGatherAllParamsFlag = "false"
         }
 
         if ($filePrefix)

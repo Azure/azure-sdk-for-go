@@ -27,7 +27,7 @@ type MarketplaceDetails struct {
 	// REQUIRED; Offer details for the marketplace that is selected by the user
 	OfferDetails *OfferDetails
 
-	// REQUIRED; Azure subscription id for the the marketplace offer is purchased from
+	// Azure subscription id for the the marketplace offer is purchased from
 	SubscriptionID *string
 
 	// READ-ONLY; Marketplace subscription status
@@ -223,13 +223,13 @@ type UserAssignedIdentity struct {
 
 // UserDetails - User details for an organization
 type UserDetails struct {
-	// REQUIRED; Email address of the user
+	// Email address of the user
 	EmailAddress *string
 
-	// REQUIRED; First name of the user
+	// First name of the user
 	FirstName *string
 
-	// REQUIRED; Last name of the user
+	// Last name of the user
 	LastName *string
 
 	// User's phone number

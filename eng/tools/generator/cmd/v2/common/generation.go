@@ -97,7 +97,7 @@ type TypeSpecOnBoardGenerator struct {
 	*TypeSpecCommonGenerator
 }
 
-type TypeSpecUpdateGeneraor struct {
+type TypeSpecUpdateGenerator struct {
 	*TypeSpecCommonGenerator
 	PreviousVersion  string
 	IsCurrentPreview bool
@@ -557,7 +557,7 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 	if _, err := os.Stat(changelogPath); os.IsNotExist(err) {
 		generator = &TypeSpecOnBoardGenerator{TypeSpecCommonGenerator: commonGenerator}
 	} else {
-		generator = &TypeSpecUpdateGeneraor{TypeSpecCommonGenerator: commonGenerator}
+		generator = &TypeSpecUpdateGenerator{TypeSpecCommonGenerator: commonGenerator}
 	}
 
 	err = generator.PreGenerate(generateParam)
@@ -595,7 +595,7 @@ func (t *TypeSpecCommonGenerator) PreGenerate(generateParam *GenerateParam) erro
 func (t *TypeSpecCommonGenerator) Generate(generateParam *GenerateParam) error {
 	version := t.Version
 	ctx := t.GenerateContext
-	log.Printf("Start to run `tsp-client init` to generate the code...")
+	packagePath := t.PackagePath
 	defaultModuleVersion := version.String()
 	emitOption := ""
 	if !t.IsSubPackage {
@@ -604,8 +604,23 @@ func (t *TypeSpecCommonGenerator) Generate(generateParam *GenerateParam) error {
 	if generateParam.TypeSpecEmitOption != "" {
 		emitOption = fmt.Sprintf("%s;%s", emitOption, generateParam.TypeSpecEmitOption)
 	}
-	err := ExecuteTypeSpecGenerate(ctx, emitOption, generateParam.TspClientOptions)
+	log.Printf("Start to run `tsp-client init` to initialize generation")
+	err := ExecuteTypeSpecInit(ctx, emitOption, generateParam.TspClientOptions)
 	if err != nil {
+		return err
+	}
+
+	if !strings.HasPrefix(t.TypeSpecConfig.Path, "http") {
+		// local path, need to set local spec repo into build.go
+		log.Printf("Set local spec repo in build.go...")
+		err = SetLocalSpecRepo(packagePath, filepath.Dir(t.TypeSpecConfig.Path))
+		if err != nil {
+			return err
+		}
+	}
+
+	log.Printf("Start to run `go generate` to generate the code...")
+	if err := ExecuteGoGenerate(packagePath); err != nil {
 		return err
 	}
 	return nil
@@ -713,16 +728,32 @@ func (t *TypeSpecOnBoardGenerator) AfterGenerate(generateParam *GenerateParam, c
 	}, nil
 }
 
-func (t *TypeSpecUpdateGeneraor) PreGenerate(generateParam *GenerateParam) error {
+func (t *TypeSpecUpdateGenerator) PreGenerate(generateParam *GenerateParam) error {
 	log.Printf("Package '%s' existed, do update process", t.PackagePath)
 	log.Printf("Remove all the generated files ...")
 	if err := CleanSDKGeneratedFiles(t.PackagePath); err != nil {
 		return err
 	}
+	// check if the build.go is for typespec
+	buildGoPath := filepath.Join(t.PackagePath, "build.go")
+	if _, err := os.Stat(buildGoPath); !os.IsNotExist(err) {
+		b, err := os.ReadFile(buildGoPath)
+		if err != nil {
+			return fmt.Errorf("cannot read build.go template file: %v", err)
+		}
+		if strings.Contains(string(b), "typespec_build.ps1") {
+			return nil
+		}
+	}
+	log.Printf("Create build.go for typespec package...")
+	buildGoTemplatePath := filepath.Join(t.SDKPath, "eng/tools/generator/template/typespec/build.go.tpl")
+	if err := template.GenerateBuildGoFileByTemplate(t.PackagePath, generateParam.RPName, generateParam.NamespaceName, buildGoTemplatePath); err != nil {
+		return err
+	}
 	return nil
 }
 
-func (t *TypeSpecUpdateGeneraor) PreChangeLog(generateParam *GenerateParam) (*exports.Content, error) {
+func (t *TypeSpecUpdateGenerator) PreChangeLog(generateParam *GenerateParam) (*exports.Content, error) {
 	var err error
 	version := t.Version
 	packagePath := t.PackagePath
@@ -769,7 +800,7 @@ func (t *TypeSpecUpdateGeneraor) PreChangeLog(generateParam *GenerateParam) (*ex
 	return oriExports, nil
 }
 
-func (t *TypeSpecUpdateGeneraor) AfterGenerate(generateParam *GenerateParam, changelog *Changelog, newExports exports.Content) (*GenerateResult, error) {
+func (t *TypeSpecUpdateGenerator) AfterGenerate(generateParam *GenerateParam, changelog *Changelog, newExports exports.Content) (*GenerateResult, error) {
 	var prl PullRequestLabel
 	var err error
 	version := t.Version
@@ -842,7 +873,7 @@ func (t *TypeSpecUpdateGeneraor) AfterGenerate(generateParam *GenerateParam, cha
 		log.Printf("Generate examples...")
 	}
 
-	// remove autorest.md and build.go
+	// remove autorest.md
 	autorestMdPath := filepath.Join(packagePath, "autorest.md")
 	if _, err := os.Stat(autorestMdPath); !os.IsNotExist(err) {
 		log.Println("Remove autorest.md...")
@@ -850,13 +881,6 @@ func (t *TypeSpecUpdateGeneraor) AfterGenerate(generateParam *GenerateParam, cha
 			return nil, err
 		}
 
-	}
-	buildGoPath := filepath.Join(packagePath, "build.go")
-	if _, err := os.Stat(buildGoPath); !os.IsNotExist(err) {
-		log.Println("Remove build.go...")
-		if err = os.Remove(buildGoPath); err != nil {
-			return nil, err
-		}
 	}
 
 	if _, err := t.TypeSpecCommonGenerator.AfterGenerate(generateParam, changelog, newExports); err != nil {

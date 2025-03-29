@@ -4,7 +4,9 @@
 package common
 
 const (
-	ChangelogFileName = "CHANGELOG.md"
-	GoModFileName     = "go.mod"
-	SdkRootPath       = "/sdk"
+	ChangelogFileName     = "CHANGELOG.md"
+	GoModFileName         = "go.mod"
+	SdkRootPath           = "/sdk"
+	ReadmeFileName        = "README.md"
+	ClientFactoryFileName = "client_factory.go"
 )

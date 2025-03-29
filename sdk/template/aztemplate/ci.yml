@@ -38,3 +38,5 @@ extends:
   parameters:
     oneESTemplateTag: ${{ parameters.oneESTemplateTag }}
     ServiceDirectory: 'template/aztemplate'
+    TriggeringPaths:
+    - /eng/

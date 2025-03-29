@@ -1,0 +1,63 @@
+parameters:
+  PackageInfoDirectory: ''
+  IncludeIndirect: true
+steps:
+  # Package-Properties folder contains the package properties for all discovered packages that were either A) affected by the PR or
+  # B) explicitly present in the service directory. This repo splits the builds into two categories: "resourcemanager" and "dataplane". While
+  # a given directory may contain both, there will be a separate build definition to release the management packages. Due to this
+  # we need to artificially filter the packages to ensure that only the packages targeted for THAT ci.yml are built.
+  # When we merge the PR adding go - pullrequest, this code will also merge, meaning the public - <service> - ci builds will still operate
+  # EXACTLY the same as they did before the pipelinev3 change. This is important to ensure that we don't accidentally build the wrong packages
+  # while in the integration period. After we disable all the public `go - <service> - ci` builds, only the `go - pullrequest` build WONT provide
+  # an artifact list, which will allow the expand/contract. Meanwhile the internal builds will continue to provide the artifact list from their
+  # individual ci.yml and ci.resourcemanager.yml files.
+  - pwsh: |
+      $packageProperties = Get-ChildItem -Recurse "${{ parameters.PackageInfoDirectory }}" *.json | ForEach-Object { Get-Content -Raw $_ | ConvertFrom-Json }
+      $includeIndirect = $${{ parameters.IncludeIndirect }}
+
+      if (-not $includeIndirect) {
+        $packageProperties = $packageProperties | Where-Object { $_.IncludedForValidation -eq $false }
+      }
+
+      # analyze job doesn't classically run on indirectly changed packages, but we need to at least try to exercise these code paths
+      # if they are triggered. What we will do to make that happen is default `aztemplate` to `IncludeForValidation = false` if there are no other packages in the list.
+      # This will allow the job to run, but not actually pay a huge performance penalty for running the job on a package that is not actually being validated.
+
+      $props = Get-ChildItem -Recurse "${{ parameters.PackageInfoDirectory }}" *.json | ForEach-Object { Get-Content -Raw $_ | ConvertFrom-Json }
+      $packageProperties = $props | Where-Object { $_.IncludedForValidation -eq $false }
+
+      if ($packageProperties.Count -eq 0 -and !$includeIndirect) {
+        Write-Host "No direct packages were identified for this build. Setting aztemplate to direct."
+        $packageProperties = Get-ChildItem -Recurse "${{ parameters.PackageInfoDirectory }}" *.json | ForEach-Object {
+          $name = $_.FullName
+          $pkg = Get-Content -Raw $_ | ConvertFrom-Json
+
+          if ($pkg.Name -eq "sdk/template/aztemplate") {
+            Write-Host "Updating $($_.FullName)"
+            $pkg.IncludedForValidation = $false
+            Set-Content -Path $name -Value ($pkg | ConvertTo-Json -Depth 100)
+          }
+
+          return $pkg
+        } | Where-Object { $_.IncludedForValidation -eq $false }
+      }
+
+      $pkgNames = $packageProperties | ForEach-Object { $_.Name }
+
+      $setting = $pkgNames -join ","
+      Write-Host "Setting Packages to: `n$setting"
+      Write-Host "##vso[task.setvariable variable=Packages;]$setting"
+
+      if (!$pkgNames) {
+        Write-Host "No packages were identified for this build."
+      }
+    displayName: Resolve Targeted Packages
+    condition: eq(variables['Packages'], '')
+
+  # this script sets $(ChangedServices)
+  - pwsh: |
+      ./eng/scripts/set-artifact-packages.ps1 `
+        -Packages "$(Packages)" `
+        -PackageInfoFolder "${{ parameters.PackageInfoDirectory }}"
+    displayName: Resolve Service and Project List
+    condition: ne(variables['Packages'], '')

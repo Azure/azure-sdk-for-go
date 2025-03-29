@@ -95,15 +95,71 @@ function Get-go-PackageInfoFromPackageFile($pkg, $workingDirectory)
     return $resultObj
 }
 
-function Get-AllPackageInfoFromRepo($serviceDirectory)
+function EvaluateCIParam {
+  param(
+    [HashTable]$ParsedYmlContent,
+    [PackageProps]$pkgProp,
+    [string]$ParamName,
+    [bool]$DefaultValue
+  )
+
+  $paramPresent = GetValueSafelyFrom-Yaml $ParsedYmlContent @("extends", "parameters", $ParamName)
+
+  if ($null -ne $paramPresent) {
+    $parsedBool = $null
+    if ([bool]::TryParse($shouldAot, [ref]$parsedBool)) {
+      $pkgProp.CIParameters[$ParamName] = $parsedBool
+    }
+  }
+  else {
+    $pkgProp.CIParameters[$ParamName] = $DefaultValue
+  }
+}
+
+
+<#
+.DESCRIPTION
+This function resolves a filter string to a directly invokable directory or directories
+that can be assembled by a go binary.
+#>
+function ResolveSearchPaths {
+  param (
+      [Parameter(Mandatory=$true)]
+      $FilterString
+  )
+
+  $resolvedPaths = @()
+  $filters = $FilterString.Split(",")
+
+  foreach($filter in $filters) {
+    if ($filter.StartsWith("sdk")) {
+      $resolvedPaths += (Join-Path $RepoRoot $filter)
+    }
+    else {
+      $resolvedPaths += (Join-Path $RepoRoot "sdk" $filter)
+    }
+  }
+
+  return ,$resolvedPaths
+}
+
+
+function Get-AllPackageInfoFromRepo($filterString)
 {
+  # we can probably stick to a single filter by implicitly adding `sdk` to leading paths
+  Write-Host "Entering Get-AllPackageInfoFromRepo with CWD: $PWD, and input string of $filterString"
   $allPackageProps = @()
-  $searchPath = Join-Path $RepoRoot "sdk"
   $pkgFiles = @()
-  if ($serviceDirectory) {
-    $searchPath = Join-Path $searchPath $serviceDirectory "go.mod"
-    [array]$pkgFiles = @(Get-ChildItem $searchPath)
-  } else {
+
+  if ($filterString) {
+    $searchPaths = ResolveSearchPaths $filterString
+
+    foreach ($searchPath in $searchPaths) {
+      $pkgFiles += @(Get-ChildItem (Join-Path $searchPath "go.mod"))
+    }
+  }
+  else {
+    $searchPath = Join-Path $RepoRoot "sdk"
     # If service directory is not passed in, find all modules
     [array]$pkgFiles = Get-ChildItem -Path $searchPath -Include "go.mod" -Recurse
   }
@@ -116,6 +172,24 @@ function Get-AllPackageInfoFromRepo($serviceDirectory)
       $allPackageProps += $modPropertes
     }
   }
+
+  # populate ci parameters for each package
+  foreach ($pkgProp in $allPackageProps) {
+    $pkgProp.ArtifactName = $pkgProp.Name
+    $ciProps = $pkgProp.GetCIYmlForArtifact()
+
+    # UsePipelineProxy - installs and runs the test proxy in ci.tests.yml, defaults true
+    # NonShipping - activate verify changelog in analyze, defaults false
+    # IsSdkLibrary - activates Detect API Changes, enables save-package-properties and enables Create API Review steps, defaults true
+    # LicenseCheck - activates license check in analyze, defaults true
+    if ($ciProps) {
+      EvaluateCIParam $ciProps.ParsedYml $pkgProp "UsePipelineProxy" $true
+      EvaluateCIParam $ciProps.ParsedYml $pkgProp "NonShipping" $false
+      EvaluateCIParam $ciProps.ParsedYml $pkgProp "IsSdkLibrary" $true
+      EvaluateCIParam $ciProps.ParsedYml $pkgProp "LicenseCheck" $true
+    }
+  }
+
   return $allPackageProps
 }
 

@@ -76,7 +76,7 @@ func (client *DirectoryClient) createCreateRequest(ctx context.Context, options 
 			}
 		}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if options != nil && options.FilePermission != nil {
 		req.Raw().Header["x-ms-file-permission"] = []string{*options.FilePermission}
 	}
@@ -233,7 +233,7 @@ func (client *DirectoryClient) deleteCreateRequest(ctx context.Context, options 
 	if client.allowTrailingDot != nil {
 		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if client.fileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
@@ -308,7 +308,7 @@ func (client *DirectoryClient) forceCloseHandlesCreateRequest(ctx context.Contex
 	if options != nil && options.Recursive != nil {
 		req.Raw().Header["x-ms-recursive"] = []string{strconv.FormatBool(*options.Recursive)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if client.allowTrailingDot != nil {
 		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
 	}
@@ -400,7 +400,7 @@ func (client *DirectoryClient) getPropertiesCreateRequest(ctx context.Context, o
 	if client.allowTrailingDot != nil {
 		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if client.fileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
@@ -532,7 +532,7 @@ func (client *DirectoryClient) ListFilesAndDirectoriesSegmentCreateRequest(ctx c
 		reqQP.Set("include", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.Include), "[]")), ","))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if options != nil && options.IncludeExtendedInfo != nil {
 		req.Raw().Header["x-ms-file-extended-info"] = []string{strconv.FormatBool(*options.IncludeExtendedInfo)}
 	}
@@ -618,7 +618,7 @@ func (client *DirectoryClient) listHandlesCreateRequest(ctx context.Context, opt
 	if options != nil && options.Recursive != nil {
 		req.Raw().Header["x-ms-recursive"] = []string{strconv.FormatBool(*options.Recursive)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if client.allowTrailingDot != nil {
 		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
 	}
@@ -696,7 +696,7 @@ func (client *DirectoryClient) renameCreateRequest(ctx context.Context, renameSo
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	req.Raw().Header["x-ms-file-rename-source"] = []string{renameSource}
 	if options != nil && options.ReplaceIfExists != nil {
 		req.Raw().Header["x-ms-file-rename-replace-if-exists"] = []string{strconv.FormatBool(*options.ReplaceIfExists)}
@@ -863,7 +863,7 @@ func (client *DirectoryClient) setMetadataCreateRequest(ctx context.Context, opt
 			}
 		}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if client.allowTrailingDot != nil {
 		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
 	}
@@ -939,7 +939,7 @@ func (client *DirectoryClient) setPropertiesCreateRequest(ctx context.Context, o
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if options != nil && options.FilePermission != nil {
 		req.Raw().Header["x-ms-file-permission"] = []string{*options.FilePermission}
 	}

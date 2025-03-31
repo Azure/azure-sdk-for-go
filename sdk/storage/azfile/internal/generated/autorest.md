@@ -22,7 +22,7 @@ export-clients: true
 use: "@autorest/go@4.0.0-preview.61"
 ```
 
-### Updating service version to 2025-05-05
+### Updating service version to 2025-07-05
 
 ```yaml
 directive:
@@ -34,7 +34,7 @@ directive:
   where: $
   transform: >-
     return $.
-      replaceAll(`[]string{"2025-01-05"}`, `[]string{ServiceVersion}`);
+      replaceAll(`[]string{"2025-05-05"}`, `[]string{ServiceVersion}`);
 ```
 ### Changing casing of NfsFileType
 ```yaml

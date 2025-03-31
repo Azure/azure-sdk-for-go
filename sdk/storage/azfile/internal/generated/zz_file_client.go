@@ -71,7 +71,7 @@ func (client *FileClient) abortCopyCreateRequest(ctx context.Context, copyID str
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["x-ms-copy-action"] = []string{"abort"}
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
 	}
@@ -147,7 +147,7 @@ func (client *FileClient) acquireLeaseCreateRequest(ctx context.Context, duratio
 	if options != nil && options.ProposedLeaseID != nil {
 		req.Raw().Header["x-ms-proposed-lease-id"] = []string{*options.ProposedLeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -236,7 +236,7 @@ func (client *FileClient) breakLeaseCreateRequest(ctx context.Context, options *
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -326,7 +326,7 @@ func (client *FileClient) changeLeaseCreateRequest(ctx context.Context, leaseID 
 	if options != nil && options.ProposedLeaseID != nil {
 		req.Raw().Header["x-ms-proposed-lease-id"] = []string{*options.ProposedLeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -415,7 +415,7 @@ func (client *FileClient) createCreateRequest(ctx context.Context, fileContentLe
 	if client.allowTrailingDot != nil {
 		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	req.Raw().Header["x-ms-content-length"] = []string{strconv.FormatInt(fileContentLength, 10)}
 	req.Raw().Header["x-ms-type"] = []string{"file"}
 	if shareFileHTTPHeaders != nil && shareFileHTTPHeaders.ContentType != nil {
@@ -606,7 +606,7 @@ func (client *FileClient) createHardLinkCreateRequest(ctx context.Context, targe
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	req.Raw().Header["x-ms-type"] = []string{"file"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
@@ -739,7 +739,7 @@ func (client *FileClient) createSymbolicLinkCreateRequest(ctx context.Context, l
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if options != nil && options.Metadata != nil {
 		for k, v := range options.Metadata {
 			if v != nil {
@@ -882,7 +882,7 @@ func (client *FileClient) deleteCreateRequest(ctx context.Context, options *File
 	if client.allowTrailingDot != nil {
 		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
 	}
@@ -958,7 +958,7 @@ func (client *FileClient) downloadCreateRequest(ctx context.Context, options *Fi
 	if client.allowTrailingDot != nil {
 		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if options != nil && options.Range != nil {
 		req.Raw().Header["x-ms-range"] = []string{*options.Range}
 	}
@@ -1198,7 +1198,7 @@ func (client *FileClient) forceCloseHandlesCreateRequest(ctx context.Context, ha
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["x-ms-handle-id"] = []string{handleID}
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if client.allowTrailingDot != nil {
 		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
 	}
@@ -1289,7 +1289,7 @@ func (client *FileClient) getPropertiesCreateRequest(ctx context.Context, option
 	if client.allowTrailingDot != nil {
 		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
 	}
@@ -1501,7 +1501,7 @@ func (client *FileClient) getRangeListCreateRequest(ctx context.Context, options
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if options != nil && options.Range != nil {
 		req.Raw().Header["x-ms-range"] = []string{*options.Range}
 	}
@@ -1598,7 +1598,7 @@ func (client *FileClient) getSymbolicLinkCreateRequest(ctx context.Context, opti
 		reqQP.Set("sharesnapshot", *options.Sharesnapshot)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -1688,7 +1688,7 @@ func (client *FileClient) listHandlesCreateRequest(ctx context.Context, options 
 		reqQP.Set("sharesnapshot", *options.Sharesnapshot)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if client.allowTrailingDot != nil {
 		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*client.allowTrailingDot)}
 	}
@@ -1762,7 +1762,7 @@ func (client *FileClient) releaseLeaseCreateRequest(ctx context.Context, leaseID
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["x-ms-lease-action"] = []string{"release"}
 	req.Raw().Header["x-ms-lease-id"] = []string{leaseID}
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -1850,7 +1850,7 @@ func (client *FileClient) renameCreateRequest(ctx context.Context, renameSource 
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	req.Raw().Header["x-ms-file-rename-source"] = []string{renameSource}
 	if options != nil && options.ReplaceIfExists != nil {
 		req.Raw().Header["x-ms-file-rename-replace-if-exists"] = []string{strconv.FormatBool(*options.ReplaceIfExists)}
@@ -2014,7 +2014,7 @@ func (client *FileClient) setHTTPHeadersCreateRequest(ctx context.Context, optio
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if options != nil && options.FileContentLength != nil {
 		req.Raw().Header["x-ms-content-length"] = []string{strconv.FormatInt(*options.FileContentLength, 10)}
 	}
@@ -2207,7 +2207,7 @@ func (client *FileClient) setMetadataCreateRequest(ctx context.Context, options 
 			}
 		}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
 	}
@@ -2299,7 +2299,7 @@ func (client *FileClient) startCopyCreateRequest(ctx context.Context, copySource
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if options != nil && options.Metadata != nil {
 		for k, v := range options.Metadata {
 			if v != nil {
@@ -2459,7 +2459,7 @@ func (client *FileClient) uploadRangeCreateRequest(ctx context.Context, rangePar
 	if options != nil && options.ContentMD5 != nil {
 		req.Raw().Header["Content-MD5"] = []string{base64.StdEncoding.EncodeToString(options.ContentMD5)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
 	}
@@ -2601,7 +2601,7 @@ func (client *FileClient) uploadRangeFromURLCreateRequest(ctx context.Context, r
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfNoneMatchCRC64 != nil {
 		req.Raw().Header["x-ms-source-if-none-match-crc64"] = []string{base64.StdEncoding.EncodeToString(sourceModifiedAccessConditions.SourceIfNoneMatchCRC64)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
 	}

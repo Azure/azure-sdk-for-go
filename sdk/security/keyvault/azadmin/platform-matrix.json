@@ -11,7 +11,7 @@
                 }
             },
             "ArmTemplateParameters": "@{ enableHsm = $true }",
-            "GoVersion": ["1.18"]
+            "GoVersion": ["1.23.7"]
         }
     ]
 }

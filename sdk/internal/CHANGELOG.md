@@ -4,8 +4,6 @@
 
 ### Features Added
 
-* Added function `tracing.NewSpanValidator` to create a span validator for use with in unit tests.
-* Added type `tracing.SpanMatcher` to match spans in a span validator.
 * `temporal.NewResourceWithOptions` enables overriding default `temporal.Resource` refresh behavior
 
 ### Breaking Changes

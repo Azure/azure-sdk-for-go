@@ -60,7 +60,10 @@ func (r *replacer) Do() error {
 			}
 			b = after
 		}
-		if err = os.WriteFile(path, b, 0644); err != nil {
+		if err := f.Truncate(0); err != nil {
+			return err
+		}
+		if _, err = f.WriteAt(b, 0); err != nil {
 			return err
 		}
 	}
@@ -70,10 +73,9 @@ func (r *replacer) Do() error {
 func main() {
 	r := replacer{}
 	for before, after := range map[string]string{
-		"OcpBatchFileIsdirectory": "OCPBatchFileIsDirectory",
-		"OcpBatchFileMode":        "OCPBatchFileMode",
-		"OcpBatchFileURL":         "OCPBatchFileURL",
-		"OcpCreationTime":         "OCPCreationTime",
+		"OcpBatchFileIsdirectory":    "OCPBatchFileIsDirectory",
+		"OcpBatchFile((?:Mode|URL))": "OCPBatchFile$1",
+		"OcpCreationTime":            "OCPCreationTime",
 	} {
 		r.Replace([]string{"client.go", "responses.go"}, before, after)
 	}
@@ -83,25 +85,25 @@ func main() {
 	} {
 		r.Replace([]string{"client.go", "options.go"}, before, after)
 	}
-	// replace ETag strings with azcore.ETag
+	// ETag fields should be azcore.ETag, not string
 	r.Replace(
 		[]string{"models.go", "options.go", "responses.go"},
 		`((?:ETag|If(?:None)?Match) )\*string`,
-		`$1*azcore.ETag`,
+		"$1*azcore.ETag",
 	)
-	// add azcore import for azcore.ETag. This would break if
+	for before, after := range map[string]string{
+		`(\*\w+\.If(None)?Match)`: "string($1)",
+		`(\w+\.ETag = )(&\w+)`:    "${1}(*azcore.ETag)($2)",
+	} {
+		r.Replace([]string{"client.go"}, before, after)
+	}
+	// add import for azcore.ETag. This would break if
 	// the emitter added another import to these files
 	r.Replace(
 		[]string{"models.go", "options.go"},
 		`import "time"`,
 		"import (\n\t\"time\"\n\t\"github.com/Azure/azure-sdk-for-go/sdk/azcore\"\n)",
 	)
-	for before, after := range map[string]string{
-		`(\*options.If(None)?Match)`: `string($1)`,
-		`(result\.ETag = )(&\w+)`:    "${1}(*azcore.ETag)($2)",
-	} {
-		r.Replace([]string{"client.go"}, before, after)
-	}
 	if err := r.Do(); err != nil {
 		log.Fatal(err)
 	}

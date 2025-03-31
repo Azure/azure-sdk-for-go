@@ -515,7 +515,7 @@ func TestSerDe(t *testing.T) {
 		&azbatch.CreateTaskContent{},
 		&azbatch.DataDisk{},
 		&azbatch.DeallocateNodeContent{},
-		&azbatch.DeleteBatchCertificateError{},
+		&azbatch.DeleteCertificateError{},
 		&azbatch.DiffDiskSettings{},
 		&azbatch.DisableJobContent{},
 		&azbatch.DisableNodeSchedulingContent{},

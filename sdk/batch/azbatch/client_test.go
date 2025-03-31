@@ -37,7 +37,7 @@ func TestApplications(t *testing.T) {
 func TestCertificates(t *testing.T) {
 	client := record(t)
 	cc, err := client.CreateCertificate(ctx, azbatch.Certificate{
-		CertificateFormat: to.Ptr(azbatch.CertificateFormatCER),
+		Format: to.Ptr(azbatch.CertificateFormatCER),
 		// no secret here, only an expired, self-signed cert, private key not included
 		Data:                to.Ptr("MIIDazCCAlOgAwIBAgIUF2VIP4+AnEtb52KTCHbo4+fESfswDQYJKoZIhvcNAQELBQAwRTELMAkGA1UEBhMCQVUxEzARBgNVBAgMClNvbWUtU3RhdGUxITAfBgNVBAoMGEludGVybmV0IFdpZGdpdHMgUHR5IEx0ZDAeFw0xOTEwMzAyMjQ2MjBaFw0yMjA4MTkyMjQ2MjBaMEUxCzAJBgNVBAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEwHwYDVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDL1hG+JYCfIPp3tlZ05J4pYIJ3Ckfs432bE3rYuWlR2w9KqdjWkKxuAxpjJ+T+uoqVaT3BFMfi4ZRYOCI69s4+lP3DwR8uBCp9xyVkF8thXfS3iui0liGDviVBoBJJWvjDFU8a/Hseg+QfoxAb6tx0kEc7V3ozBLWoIDJjfwJ3NdsLZGVtAC34qCWeEIvS97CDA4g3Kc6hYJIrAa7pxHzo/Nd0U3e7z+DlBcJV7dY6TZUyjBVTpzppWe+XQEOfKsjkDNykHEC1C1bClG0u7unS7QOBMd6bOGkeL+Bc+n22slTzs5amsbDLNuobSaUsFt9vgD5jRD6FwhpXwj/Ek0F7AgMBAAGjUzBRMB0GA1UdDgQWBBT6Mf9uXFB67bY2PeW3GCTKfkO7vDAfBgNVHSMEGDAWgBT6Mf9uXFB67bY2PeW3GCTKfkO7vDAPBgNVHRMBAf8EBTADAQH/MA0GCSqGSIb3DQEBCwUAA4IBAQCZ1+kTISX85v9/ag7glavaPFUYsOSOOofl8gSzov7L01YL+srq7tXdvZmWrjQ/dnOYh18rp9rb24vwIYxNioNG/M2cW1jBJwEGsDPOwdPV1VPcRmmUJW9kY130gRHBCd/NqB7dIkcQnpNsxPIIWI+sRQp73U0ijhOByDnCNHLHon6vbfFTwkO1XggmV5BdZ3uQJNJyckILyNzlhmf6zhonMp4lVzkgxWsAm2vgdawd6dmBa+7Avb2QK9s+IdUSutFhDgW2L12Obgh12Y4sf1iKQXA0RbZ2k+XQIz8EKZa7vJQY0ciYXSgB/BV3a96xX3cxLIPL8Vam8Ytkopi3gsGA"),
 		Thumbprint:          to.Ptr("8CA6895C58FD5C9AEED13121F784629BE0261977"),
@@ -515,6 +515,7 @@ func TestSerDe(t *testing.T) {
 		&azbatch.CreateTaskContent{},
 		&azbatch.DataDisk{},
 		&azbatch.DeallocateNodeContent{},
+		&azbatch.DeleteBatchCertificateError{},
 		&azbatch.DiffDiskSettings{},
 		&azbatch.DisableJobContent{},
 		&azbatch.DisableNodeSchedulingContent{},
@@ -556,6 +557,7 @@ func TestSerDe(t *testing.T) {
 		&azbatch.JobSpecification{},
 		&azbatch.JobStatistics{},
 		&azbatch.LinuxUserConfiguration{},
+		&azbatch.ListCertificatesResponse{},
 		&azbatch.ListPoolNodeCountsResult{},
 		&azbatch.ManagedDisk{},
 		&azbatch.MetadataItem{},

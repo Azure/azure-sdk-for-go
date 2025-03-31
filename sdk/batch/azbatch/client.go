@@ -4127,12 +4127,12 @@ func (client *Client) listApplicationsHandleResponse(resp *http.Response) (ListA
 func (client *Client) NewListCertificatesPager(options *ListCertificatesOptions) *runtime.Pager[ListCertificatesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListCertificatesResponse]{
 		More: func(page ListCertificatesResponse) bool {
-			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ListCertificatesResponse) (ListCertificatesResponse, error) {
 			nextLink := ""
 			if page != nil {
-				nextLink = *page.ODataNextLink
+				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
 				return client.listCertificatesCreateRequest(ctx, options)

@@ -542,9 +542,9 @@ func (c *CIFSMountConfiguration) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type Certificate.
 func (c Certificate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "certificateFormat", c.CertificateFormat)
 	populate(objectMap, "data", c.Data)
 	populate(objectMap, "deleteCertificateError", c.DeleteCertificateError)
+	populate(objectMap, "certificateFormat", c.Format)
 	populate(objectMap, "password", c.Password)
 	populate(objectMap, "previousState", c.PreviousState)
 	populateDateTimeRFC3339(objectMap, "previousStateTransitionTime", c.PreviousStateTransitionTime)
@@ -566,14 +566,14 @@ func (c *Certificate) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "certificateFormat":
-			err = unpopulate(val, "CertificateFormat", &c.CertificateFormat)
-			delete(rawMsg, key)
 		case "data":
 			err = unpopulate(val, "Data", &c.Data)
 			delete(rawMsg, key)
 		case "deleteCertificateError":
 			err = unpopulate(val, "DeleteCertificateError", &c.DeleteCertificateError)
+			delete(rawMsg, key)
+		case "certificateFormat":
+			err = unpopulate(val, "Format", &c.Format)
 			delete(rawMsg, key)
 		case "password":
 			err = unpopulate(val, "Password", &c.Password)
@@ -613,7 +613,7 @@ func (c *Certificate) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type CertificateListResult.
 func (c CertificateListResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "odata.nextLink", c.ODataNextLink)
+	populate(objectMap, "odata.nextLink", c.NextLink)
 	populate(objectMap, "value", c.Value)
 	return json.Marshal(objectMap)
 }
@@ -628,7 +628,7 @@ func (c *CertificateListResult) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "odata.nextLink":
-			err = unpopulate(val, "ODataNextLink", &c.ODataNextLink)
+			err = unpopulate(val, "NextLink", &c.NextLink)
 			delete(rawMsg, key)
 		case "value":
 			err = unpopulate(val, "Value", &c.Value)
@@ -1230,8 +1230,8 @@ func (d *DeallocateNodeContent) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DeleteBatchCertificateError.
-func (d DeleteBatchCertificateError) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type DeleteCertificateError.
+func (d DeleteCertificateError) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "code", d.Code)
 	populate(objectMap, "message", d.Message)
@@ -1239,8 +1239,8 @@ func (d DeleteBatchCertificateError) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type DeleteBatchCertificateError.
-func (d *DeleteBatchCertificateError) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type DeleteCertificateError.
+func (d *DeleteCertificateError) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", d, err)

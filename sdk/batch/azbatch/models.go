@@ -234,14 +234,14 @@ type Certificate struct {
 	ThumbprintAlgorithm *string
 
 	// The format of the Certificate data.
-	CertificateFormat *CertificateFormat
+	Format *CertificateFormat
 
 	// The password to access the Certificate's private key. This must be omitted if the Certificate format is cer.
 	Password *string
 
 	// READ-ONLY; The error that occurred on the last attempt to delete this Certificate. This property is set only if the Certificate
 	// is in the DeleteFailed state.
-	DeleteCertificateError *DeleteBatchCertificateError
+	DeleteCertificateError *DeleteCertificateError
 
 	// READ-ONLY; The previous state of the Certificate. This property is not set if the Certificate is in its initial active
 	// state.
@@ -267,7 +267,7 @@ type Certificate struct {
 // CertificateListResult - The result of listing the Certificates in the Account.
 type CertificateListResult struct {
 	// The URL to get the next set of results.
-	ODataNextLink *string
+	NextLink *string
 
 	// The list of Certificates.
 	Value []Certificate
@@ -685,8 +685,8 @@ type DeallocateNodeContent struct {
 	NodeDeallocateOption *NodeDeallocateOption
 }
 
-// DeleteBatchCertificateError - An error encountered by the Batch service when deleting a Certificate.
-type DeleteBatchCertificateError struct {
+// DeleteCertificateError - An error encountered by the Batch service when deleting a Certificate.
+type DeleteCertificateError struct {
 	// An identifier for the Certificate deletion error. Codes are invariant and are intended to be consumed programmatically.
 	Code *string
 

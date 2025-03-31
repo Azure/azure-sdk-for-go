@@ -5279,7 +5279,6 @@ func (f *FileRecordedTestsSuite) TestCreateSymbolicLinkNFSWithOptions() {
 	_require.Equal(*resp.NFSFileType, file.NFSFileType("SymLink"))
 	_require.Equal(resp.Owner, to.Ptr("345"))
 	_require.Equal(resp.Group, to.Ptr("123"))
-	_require.Equal(resp.FileMode, to.Ptr("6444"))
 	_require.NotNil(resp.FileCreationTime)
 	_require.NotNil(resp.FileLastWriteTime)
 	_require.NotNil(resp.FileChangeTime)

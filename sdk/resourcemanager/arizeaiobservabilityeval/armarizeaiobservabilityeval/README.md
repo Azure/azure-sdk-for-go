@@ -1,5 +1,5 @@
-# Azure Arizeaiobservabilityeval Module for Go
-
+# Azure Arize AI Observability Eval Module for Go
+ 
 The `armarizeaiobservabilityeval` module provides operations for working with Azure Arizeaiobservabilityeval.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/arizeaiobservabilityeval/armarizeaiobservabilityeval)

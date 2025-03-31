@@ -16,6 +16,9 @@ type AppendBlobClientAppendBlockFromURLOptions struct {
 	// Only Bearer type is supported. Credentials should be a valid OAuth access token to copy source.
 	CopySourceAuthorization *string
 
+	// Valid value is backup
+	FileRequestIntent *FileShareTokenIntent
+
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestID *string
@@ -184,6 +187,9 @@ type BlobClientCopyFromURLOptions struct {
 
 	// Optional, default 'replace'. Indicates if source tags should be copied or replaced with the tags specified by x-ms-tags.
 	CopySourceTags *BlobCopySourceTags
+
+	// Valid value is backup
+	FileRequestIntent *FileShareTokenIntent
 
 	// Specifies the date time when the blobs immutability policy is set to expire.
 	ImmutabilityPolicyExpiry *time.Time
@@ -691,6 +697,9 @@ type BlockBlobClientPutBlobFromURLOptions struct {
 	// Optional, default 'replace'. Indicates if source tags should be copied or replaced with the tags specified by x-ms-tags.
 	CopySourceTags *BlobCopySourceTags
 
+	// Valid value is backup
+	FileRequestIntent *FileShareTokenIntent
+
 	// Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the
 	// operation will copy the metadata from the source blob or file to the destination
 	// blob. If one or more name-value pairs are specified, the destination blob is created with the specified metadata, and metadata
@@ -721,6 +730,9 @@ type BlockBlobClientPutBlobFromURLOptions struct {
 type BlockBlobClientStageBlockFromURLOptions struct {
 	// Only Bearer type is supported. Credentials should be a valid OAuth access token to copy source.
 	CopySourceAuthorization *string
+
+	// Valid value is backup
+	FileRequestIntent *FileShareTokenIntent
 
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
@@ -1343,6 +1355,9 @@ type PageBlobClientUpdateSequenceNumberOptions struct {
 type PageBlobClientUploadPagesFromURLOptions struct {
 	// Only Bearer type is supported. Credentials should be a valid OAuth access token to copy source.
 	CopySourceAuthorization *string
+
+	// Valid value is backup
+	FileRequestIntent *FileShareTokenIntent
 
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.

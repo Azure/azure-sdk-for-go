@@ -48,7 +48,7 @@ type managedIdentityClient struct {
 	// chained indicates whether the client is part of a credential chain. If true, the client will return
 	// a credentialUnavailableError instead of an AuthenticationFailedError for an unexpected IMDS response.
 	chained    bool
-	msalClient *managedidentity.Client
+	msalClient msalManagedIdentityClient
 }
 
 // setIMDSRetryOptionDefaults sets zero-valued fields to default values appropriate for IMDS
@@ -190,7 +190,7 @@ func (c *managedIdentityClient) GetToken(ctx context.Context, tro policy.TokenRe
 	if err == nil {
 		msg := fmt.Sprintf(scopeLogFmt, credNameManagedIdentity, strings.Join(ar.GrantedScopes, ", "))
 		log.Write(EventAuthentication, msg)
-		return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
+		return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC(), RefreshOn: ar.Metadata.RefreshOn.UTC()}, err
 	}
 	if c.imds {
 		var ije msalerrors.InvalidJsonErr

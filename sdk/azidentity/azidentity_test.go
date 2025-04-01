@@ -31,6 +31,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/cache"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/confidential"
+	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/managedidentity"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/public"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/stretchr/testify/assert"
@@ -1196,6 +1197,41 @@ func TestCLIArgumentValidation(t *testing.T) {
 	})
 }
 
+func TestRefreshOn(t *testing.T) {
+	t.Run("confidential client", func(t *testing.T) {
+		expected := confidential.AuthResult{}
+		expected.Metadata.RefreshOn = time.Now().Add(42 * time.Minute)
+		cred, err := confidential.NewCredFromSecret("...")
+		require.NoError(t, err)
+		client, err := newConfidentialClient(fakeTenantID, fakeClientID, "...", cred, confidentialClientOptions{})
+		require.NoError(t, err)
+		client.noCAE = fakeConfidentialClient{ar: expected}
+		actual, err := client.GetToken(ctx, testTRO)
+		require.NoError(t, err)
+		require.True(t, expected.Metadata.RefreshOn.Equal(actual.RefreshOn))
+	})
+	t.Run("managed identity client", func(t *testing.T) {
+		expected := managedidentity.AuthResult{}
+		expected.Metadata.RefreshOn = time.Now().Add(42 * time.Minute)
+		cred, err := NewManagedIdentityCredential(nil)
+		require.NoError(t, err)
+		cred.mic.msalClient = fakeManagedIdentityClient{ar: expected}
+		actual, err := cred.GetToken(ctx, testTRO)
+		require.NoError(t, err)
+		require.True(t, expected.Metadata.RefreshOn.Equal(actual.RefreshOn))
+	})
+	t.Run("public client", func(t *testing.T) {
+		expected := public.AuthResult{}
+		expected.Metadata.RefreshOn = time.Now().Add(42 * time.Minute)
+		client, err := newPublicClient(fakeTenantID, fakeClientID, credNameBrowser, publicClientOptions{})
+		require.NoError(t, err)
+		client.noCAE = fakePublicClient{ar: expected}
+		actual, err := client.GetToken(ctx, testTRO)
+		require.NoError(t, err)
+		require.True(t, expected.Metadata.RefreshOn.Equal(actual.RefreshOn))
+	})
+}
+
 func TestResolveTenant(t *testing.T) {
 	credName := "testcred"
 	defaultTenant := "default-tenant"
@@ -1497,6 +1533,17 @@ func (f fakeConfidentialClient) AcquireTokenOnBehalfOf(ctx context.Context, user
 }
 
 var _ msalConfidentialClient = (*fakeConfidentialClient)(nil)
+
+// ==================================================================================================================================
+
+type fakeManagedIdentityClient struct {
+	// set ar to have all API calls return the provided AuthResult
+	ar public.AuthResult
+}
+
+func (f fakeManagedIdentityClient) AcquireToken(context.Context, string, ...managedidentity.AcquireTokenOption) (managedidentity.AuthResult, error) {
+	return f.ar, nil
+}
 
 // ==================================================================================================================================
 

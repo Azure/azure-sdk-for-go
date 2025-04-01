@@ -3,6 +3,7 @@
 ## 1.8.3-beta.1 (Unreleased)
 
 ### Features Added
+* `GetToken()` sets `AccessToken.RefreshOn` when the token provider specifies a value
 
 ### Breaking Changes
 

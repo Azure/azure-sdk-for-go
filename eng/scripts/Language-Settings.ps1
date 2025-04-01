@@ -107,7 +107,8 @@ function EvaluateCIParam {
 
   if ($null -ne $paramPresent) {
     $parsedBool = $null
-    if ([bool]::TryParse($shouldAot, [ref]$parsedBool)) {
+
+    if ([bool]::TryParse($paramPresent, [ref]$parsedBool)) {
       $pkgProp.CIParameters[$ParamName] = $parsedBool
     }
   }

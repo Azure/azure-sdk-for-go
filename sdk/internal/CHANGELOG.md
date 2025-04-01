@@ -1,14 +1,9 @@
 # Release History
 
-## 1.11.0 (Unreleased)
+## 1.11.0 (2025-04-01)
 
 ### Features Added
-
 * `temporal.NewResourceWithOptions` enables overriding default `temporal.Resource` refresh behavior
-
-### Breaking Changes
-
-### Bugs Fixed
 
 ### Other Changes
 * Zero `RecordingOptions.ProxyPort` is interpreted as indicating the default port used

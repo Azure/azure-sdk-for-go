@@ -1,5 +1,12 @@
 # Release History
 
+## 1.8.1 (TBD)
+
+### Bugs Fixed
+
+- AcceptNextSessionFor(Queue/Subscription) and AcceptSessionFor(Queue/Subscription) no longer need to call RenewSessionForLock before returning the accepted
+  session. (PR#TBD)
+
 ## 1.8.0 (2025-02-11)
 
 ### Features Added

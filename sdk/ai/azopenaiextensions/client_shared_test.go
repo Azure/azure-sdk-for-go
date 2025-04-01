@@ -217,23 +217,25 @@ type stainlessTestClientOptions struct {
 	UseAPIKey bool
 }
 
-func initDefaultOptions() *recording.RecordingOptions {
+func getRecordingOptions(t *testing.T) *recording.RecordingOptions {
+	var port int
 	val := os.Getenv("PROXY_PORT")
+
 	if len(val) > 0 {
-		port, err := strconv.ParseInt(val, 10, 16)
+		parsedPort, err := strconv.ParseInt(val, 10, 0)
 		if err != nil {
 			panic(fmt.Sprintf("Invalid proxy port %s", val))
 		}
-		return &recording.RecordingOptions{
-			UseHTTPS:  true,
-			ProxyPort: int(port),
-		}
+		port = int(parsedPort)
+	} else {
+		port = os.Getpid()%10000 + 20000
 	}
-	/* If port is not set, return nil so we use the default provided by the recording package */
-	return nil
+	return &recording.RecordingOptions{
+		UseHTTPS:     true,
+		ProxyPort:    int(port),
+		TestInstance: t,
+	}
 }
-
-var defaultOptions = initDefaultOptions()
 
 func newStainlessTestClient(t *testing.T, ep endpoint) openai.Client {
 	return newStainlessTestClientWithOptions(t, ep, nil)
@@ -248,6 +250,7 @@ const fakeCognitiveIndexName = "index"
 // newRecordingTransporter sets up our recording policy to sanitize endpoints and any parts of the response that might
 // involve UUIDs that would make the response/request inconsistent.
 func newRecordingTransporter(t *testing.T) policy.Transporter {
+	defaultOptions := getRecordingOptions(t)
 	transport, err := recording.NewRecordingHTTPClient(t, defaultOptions)
 	require.NoError(t, err)
 
@@ -271,7 +274,7 @@ func newRecordingTransporter(t *testing.T) policy.Transporter {
 
 		err = recording.AddGeneralRegexSanitizer(
 			fmt.Sprintf(`"index_name": "%s"`, fakeCognitiveIndexName),
-			fmt.Sprintf(`"index_name":\s*"%s"`, *azureOpenAI.Cognitive.Parameters.IndexName), defaultOptions)
+			`"index_name":\s*".+?"`, defaultOptions)
 		require.NoError(t, err)
 	}
 

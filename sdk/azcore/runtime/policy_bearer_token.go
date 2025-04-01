@@ -56,6 +56,7 @@ var shouldRefresh = func(tk exported.AccessToken, _ acquiringResourceState) bool
 	if tk.RefreshOn.IsZero() {
 		return tk.ExpiresOn.Add(-5 * time.Minute).Before(time.Now())
 	}
+	// no offset in this case because the authority suggested a refresh window--between RefreshOn and ExpiresOn
 	return tk.RefreshOn.Before(time.Now())
 }
 

@@ -11,6 +11,8 @@
     ],
     "ignorePaths": [
         "eng/common/**",
+        "eng/pipelines/**",
+        "**/platform-matrix.json",
         ".vscode/cspell.json",
         "*.PNG",
         "*.pfx",

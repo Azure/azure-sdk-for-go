@@ -27,7 +27,7 @@ type MarketplaceDetails struct {
 	// REQUIRED; Offer details for the marketplace that is selected by the user
 	OfferDetails *OfferDetails
 
-	// Azure subscription id for the the marketplace offer is purchased from
+	// Azure subscription id for the marketplace offer is purchased from
 	SubscriptionID *string
 
 	// READ-ONLY; Marketplace subscription status

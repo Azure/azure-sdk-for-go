@@ -1,5 +1,5 @@
-//go:build go1.18
-// +build go1.18
+//go:build go1.21
+// +build go1.21
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -29,21 +29,21 @@ func TestClient_GetAudioTranscription(t *testing.T) {
 	// We're experiencing load issues on some of our shared test resources so we'll just spot check.
 	t.Run(fmt.Sprintf("%s (%s)", openai.AudioResponseFormatText, "m4a"), func(t *testing.T) {
 		transcriptResp, err := client.Audio.Transcriptions.New(context.Background(), openai.AudioTranscriptionNewParams{
-			Model:          openai.F(openai.AudioModel(model)),
-			File:           openai.F(getFile(t, "testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.m4a")),
-			ResponseFormat: openai.F(openai.AudioResponseFormatText),
+			Model:          openai.AudioModel(model),
+			File:           getFile(t, "testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.m4a"),
+			ResponseFormat: openai.AudioResponseFormatText,
 			Language:       openai.String("en"),
 			Temperature:    openai.Float(0.0),
 		})
 		require.Empty(t, transcriptResp)
-		require.EqualError(t, err, "expected destination type of 'string' or '[]byte' for responses with content-type that is not 'application/json'")
+		require.EqualError(t, err, "expected destination type of 'string' or '[]byte' for responses with content-type 'text/plain; charset=utf-8' that is not 'application/json'")
 	})
 
 	t.Run(fmt.Sprintf("%s (%s)", openai.AudioResponseFormatJSON, "mp3"), func(t *testing.T) {
 		transcriptResp, err := client.Audio.Transcriptions.New(context.Background(), openai.AudioTranscriptionNewParams{
-			Model:          openai.F(openai.AudioModel(model)),
-			File:           openai.F(getFile(t, "testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.mp3")),
-			ResponseFormat: openai.F(openai.AudioResponseFormatJSON),
+			Model:          openai.AudioModel(model),
+			File:           getFile(t, "testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.mp3"),
+			ResponseFormat: openai.AudioResponseFormatJSON,
 			Language:       openai.String("en"),
 			Temperature:    openai.Float(0.0),
 		})
@@ -62,9 +62,9 @@ func TestClient_GetAudioTranslation(t *testing.T) {
 	model := azureOpenAI.Whisper.Model
 
 	resp, err := client.Audio.Translations.New(context.Background(), openai.AudioTranslationNewParams{
-		Model:          openai.F(openai.AudioModel(model)),
-		File:           openai.F(getFile(t, "testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.m4a")),
-		ResponseFormat: openai.F(openai.AudioResponseFormatVerboseJSON),
+		Model:          openai.AudioModel(model),
+		File:           getFile(t, "testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.m4a"),
+		ResponseFormat: openai.AudioTranslationNewParamsResponseFormatVerboseJSON,
 		Temperature:    openai.Float(0.0),
 	})
 	customRequireNoError(t, err)
@@ -85,10 +85,10 @@ func TestClient_GetAudioSpeech(t *testing.T) {
 		speechClient := newStainlessTestClient(t, azureOpenAI.Speech.Endpoint)
 
 		audioResp, err := speechClient.Audio.Speech.New(context.Background(), openai.AudioSpeechNewParams{
-			Input:          openai.String("i am a computer"),
-			Voice:          openai.F(openai.AudioSpeechNewParamsVoiceAlloy),
-			ResponseFormat: openai.F(openai.AudioSpeechNewParamsResponseFormatFLAC),
-			Model:          openai.F(openai.AudioModel(azureOpenAI.Speech.Model)),
+			Input:          "i am a computer",
+			Voice:          openai.AudioSpeechNewParamsVoiceAlloy,
+			ResponseFormat: openai.AudioSpeechNewParamsResponseFormatFLAC,
+			Model:          openai.AudioModel(azureOpenAI.Speech.Model),
 		})
 		require.NoError(t, err)
 
@@ -121,9 +121,9 @@ func TestClient_GetAudioSpeech(t *testing.T) {
 
 	// now send _it_ back through the transcription API and see if we can get something useful.
 	transcriptResp, err := transcriptClient.Audio.Transcriptions.New(context.Background(), openai.AudioTranscriptionNewParams{
-		Model:          openai.F(openai.AudioModel(azureOpenAI.Whisper.Model)),
-		File:           openai.F[io.Reader](tempFile),
-		ResponseFormat: openai.F(openai.AudioResponseFormatVerboseJSON),
+		Model:          openai.AudioModel(azureOpenAI.Whisper.Model),
+		File:           tempFile,
+		ResponseFormat: openai.AudioResponseFormatVerboseJSON,
 		Language:       openai.String("en"),
 		Temperature:    openai.Float(0.0),
 	})

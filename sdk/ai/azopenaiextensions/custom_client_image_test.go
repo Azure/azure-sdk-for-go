@@ -1,5 +1,5 @@
-//go:build go1.18
-// +build go1.18
+//go:build go1.21
+// +build go1.21
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -31,10 +31,10 @@ func TestImageGeneration_AzureOpenAI(t *testing.T) {
 	resp, err := client.Images.Generate(ctx, openai.ImageGenerateParams{
 		// saw this prompt in a thread about trying to _prevent_ Dall-E3 from rewriting your
 		// propmt. When this is revised you'll see the text in the
-		Prompt:         openai.String("acrylic painting of a sunflower with bees"),
-		Size:           openai.F(openai.ImageGenerateParamsSize1024x1792),
-		ResponseFormat: openai.F(openai.ImageGenerateParamsResponseFormatURL),
-		Model:          openai.F(openai.ImageModel(azureOpenAI.DallE.Model)),
+		Prompt:         "acrylic painting of a sunflower with bees",
+		Size:           openai.ImageGenerateParamsSize1024x1792,
+		ResponseFormat: openai.ImageGenerateParamsResponseFormatURL,
+		Model:          openai.ImageModel(azureOpenAI.DallE.Model),
 	})
 	customRequireNoError(t, err)
 

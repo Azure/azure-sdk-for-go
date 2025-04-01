@@ -1,5 +1,9 @@
 # Release History
 
+## 0.1.1 (2025-04-01)
+### Other Changes
+
+
 ## 0.1.0 (2025-02-06)
 ### Other Changes
 

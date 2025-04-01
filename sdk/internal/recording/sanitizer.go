@@ -78,6 +78,80 @@ func handleTestLevelSanitizer(req *http.Request, options *RecordingOptions) {
 	}
 }
 
+type SanitizerDefinition interface {
+	Name() string
+}
+
+type HeaderRegexSanitizer struct {
+	Key             string `json:"key"`
+	Value           string `json:"value,omitempty"`
+	Regex           string `json:"regex,omitempty"`
+	GroupForReplace string `json:"groupForReplace,omitempty"`
+}
+
+func (h HeaderRegexSanitizer) Name() string {
+	return "HeaderRegexSanitizer"
+}
+
+type UriRegexSanitizer struct {
+	Value string `json:"value"`
+	Regex string `json:"regex"`
+}
+
+func (u UriRegexSanitizer) Name() string {
+	return "UriRegexSanitizer"
+}
+
+type GeneralRegexSanitizer struct {
+	Value           string `json:"value"`
+	Regex           string `json:"regex"`
+	GroupForReplace string `json:"groupForReplace,omitempty"`
+}
+
+func (g GeneralRegexSanitizer) Name() string {
+	return "GeneralRegexSanitizer"
+}
+
+func MarshalSanitizers(sanitizers []SanitizerDefinition) ([]byte, error) {
+	type wrapper struct {
+		Name string              `json:"Name"`
+		Body SanitizerDefinition `json:"Body"`
+	}
+
+	result := make([]wrapper, len(sanitizers))
+	for i, sanitizer := range sanitizers {
+		result[i] = wrapper{
+			Name: sanitizer.Name(),
+			Body: sanitizer,
+		}
+	}
+	return json.Marshal(result)
+}
+
+func AddSanitizers(sanitizers []SanitizerDefinition, options *RecordingOptions) error {
+	if recordMode == LiveMode {
+		return nil
+	}
+	if options == nil {
+		options = defaultOptions()
+	}
+	url := fmt.Sprintf("%s/Admin/AddSanitizers", options.baseURL())
+	req, err := http.NewRequest("POST", url, nil)
+	if err != nil {
+		return err
+	}
+	handleTestLevelSanitizer(req, options)
+
+	marshalled, err := MarshalSanitizers(sanitizers)
+	if err != nil {
+		return err
+	}
+
+	req.Body = io.NopCloser(bytes.NewReader(marshalled))
+	req.ContentLength = int64(len(marshalled))
+	return handleProxyResponse(client.Do(req))
+}
+
 // AddBodyKeySanitizer adds a sanitizer for JSON Bodies. jsonPath is the path to the key, value
 // is the value to replace with, and regex is the string to match in the body. If your regex includes a group
 // options.GroupForReplace specifies which group to replace

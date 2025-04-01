@@ -76,7 +76,7 @@ steps:
 
   - ${{ if parameters.UseFederatedAuth }}:
     - task: AzurePowerShell@5
-      displayName: Run Tests (Federated Auth)
+      displayName: Run Tests - v$(GoVersion) (Federated Auth)
       inputs:
         azureSubscription: ${{ parameters.ServiceConnection }}
         azurePowerShellVersion: LatestVersion
@@ -116,7 +116,7 @@ steps:
 
   - ${{ else }}:
     - task: PowerShell@2
-      displayName: 'Run Tests'
+      displayName: Run Tests - v$(GoVersion)
       inputs:
         targetType: 'filePath'
         filePath: ./eng/scripts/run_tests.ps1

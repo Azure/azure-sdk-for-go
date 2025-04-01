@@ -1,7 +1,7 @@
 {
   "matrix": {
     "Agent": {
-      "ubuntu-20.04": {
+      "ubuntu": {
         "OSVmImage": "env:LINUXVMIMAGE",
         "Pool": "env:LINUXPOOL"
       },
@@ -11,8 +11,8 @@
       }
     },
     "GoVersion": [
-      "env:GO_VERSION_N0",
-      "env:GO_VERSION_N1"
+      "env:GO_VERSION_LATEST",
+      "env:GO_VERSION_PREVIOUS"
     ]
   }
 }

@@ -260,6 +260,16 @@ func newRecordingTransporter(t *testing.T) policy.Transporter {
 	require.NoError(t, err)
 
 	if recording.GetRecordMode() != recording.PlaybackMode {
+		err = recording.SetDefaultMatcher(t, &recording.SetDefaultMatcherOptions{
+			RecordingOptions: *defaultOptions,
+			ExcludedHeaders: []string{
+				"X-Stainless-Arch",
+				"X-Stainless-Os",
+				"X-Stainless-Runtime-Version",
+			},
+		})
+		require.NoError(t, err)
+
 		err = recording.AddHeaderRegexSanitizer("Api-Key", fakeAPIKey, "", defaultOptions)
 		require.NoError(t, err)
 

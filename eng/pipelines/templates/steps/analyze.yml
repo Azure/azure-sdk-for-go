@@ -336,7 +336,7 @@ steps:
       pwsh: true
       arguments: '$(ChangedServices)'
 
-  There are no more checks after this one, so simply removing all packageInfo that aren't shipping
+  # There are no more checks after this one, so simply removing all packageInfo that aren't shipping
   # to allow the default verify-changeslogs template to work correctly is probably better than any custom conditional code in that template.
   - pwsh: |
       Get-ChildItem -Path $(Build.ArtifactStagingDirectory)/PackageInfo -Recurse -Filter *.json `

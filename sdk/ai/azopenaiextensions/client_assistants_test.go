@@ -1,5 +1,5 @@
-//go:build go1.18
-// +build go1.18
+//go:build go1.21
+// +build go1.21
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -28,7 +28,7 @@ func TestAssistants(t *testing.T) {
 		}).Beta.Assistants
 
 		assistant, err := assistantClient.New(context.Background(), openai.BetaAssistantNewParams{
-			Model:        openai.F(azureOpenAI.Assistants.Model),
+			Model:        shared.ChatModel(azureOpenAI.Assistants.Model),
 			Instructions: openai.String("Answer questions in any manner possible"),
 		})
 		require.NoError(t, err)
@@ -39,7 +39,7 @@ func TestAssistants(t *testing.T) {
 		})
 
 		junkAssistant, err := assistantClient.New(context.Background(), openai.BetaAssistantNewParams{
-			Model:        openai.F(azureOpenAI.Assistants.Model),
+			Model:        shared.ChatModel(azureOpenAI.Assistants.Model),
 			Instructions: openai.String("Answer questions in any manner possible"),
 		})
 		require.NoError(t, err)
@@ -73,7 +73,7 @@ func TestAssistants(t *testing.T) {
 		// listing assistants
 		{
 			pager, err := assistantClient.List(context.Background(), openai.BetaAssistantListParams{
-				After: openai.F(assistant.ID),
+				After: openai.String(assistant.ID),
 				Limit: openai.Int(1),
 			})
 			require.NoError(t, err)
@@ -109,7 +109,7 @@ func TestAssistantsThreads(t *testing.T) {
 		threadClient := beta.Threads
 
 		assistant, err := assistantClient.New(context.Background(), openai.BetaAssistantNewParams{
-			Model:        openai.F(azureOpenAI.Assistants.Model),
+			Model:        shared.ChatModel(azureOpenAI.Assistants.Model),
 			Instructions: openai.String("Answer questions in any manner possible"),
 		})
 		require.NoError(t, err)
@@ -132,7 +132,7 @@ func TestAssistantsThreads(t *testing.T) {
 		// update the thread
 		{
 			updatedThread, err := threadClient.Update(context.Background(), thread.ID, openai.BetaThreadUpdateParams{
-				Metadata: openai.F(metadata),
+				Metadata: metadata,
 			})
 			require.NoError(t, err)
 			require.Equal(t, thread.ID, updatedThread.ID)
@@ -181,10 +181,10 @@ func TestAssistantRun(t *testing.T) {
 		assistant, err := client.Beta.Assistants.New(ctx, openai.BetaAssistantNewParams{
 			Name:         openai.String("Math Tutor"),
 			Instructions: openai.String("You are a personal math tutor. Write and run code to answer math questions."),
-			Tools: openai.F([]openai.AssistantToolUnionParam{
-				openai.CodeInterpreterToolParam{Type: openai.F(openai.CodeInterpreterToolTypeCodeInterpreter)},
-			}),
-			Model: openai.F(azureOpenAI.Assistants.Model),
+			Tools: []openai.AssistantToolUnionParam{{
+				OfCodeInterpreter: &openai.CodeInterpreterToolParam{},
+			}},
+			Model: shared.ChatModel(azureOpenAI.Assistants.Model),
 		})
 
 		if err != nil {
@@ -201,13 +201,14 @@ func TestAssistantRun(t *testing.T) {
 		// Create a message in the thread
 		println("Create a message")
 		_, err = client.Beta.Threads.Messages.New(ctx, thread.ID, openai.BetaThreadMessageNewParams{
-			Role: openai.F(openai.BetaThreadMessageNewParamsRoleAssistant),
-			Content: openai.F([]openai.MessageContentPartParamUnion{
-				openai.TextContentBlockParam{
-					Type: openai.F(openai.TextContentBlockParamTypeText),
-					Text: openai.String("I need to solve the equation `3x + 11 = 14`. Can you help me?"),
-				},
-			}),
+			Role: openai.BetaThreadMessageNewParamsRoleAssistant,
+			Content: openai.BetaThreadMessageNewParamsContentUnion{
+				OfArrayOfContentParts: []openai.MessageContentPartParamUnion{{
+					OfText: &openai.TextContentBlockParam{
+						Text: "I need to solve the equation `3x + 11 = 14`. Can you help me?",
+					},
+				}},
+			},
 		})
 		if err != nil {
 			panic(err)
@@ -216,7 +217,7 @@ func TestAssistantRun(t *testing.T) {
 		// Create a run
 		println("Create a run")
 		stream := client.Beta.Threads.Runs.NewStreaming(ctx, thread.ID, openai.BetaThreadRunNewParams{
-			AssistantID:  openai.String(assistant.ID),
+			AssistantID:  assistant.ID,
 			Instructions: openai.String("Please address the user as Jane Doe. The user has a premium account."),
 		})
 

@@ -38,14 +38,15 @@ func Example_usingAzureContentFiltering() {
 
 	// Standard OpenAI chat completion request
 	chatParams := openai.ChatCompletionNewParams{
-		Model:     openai.F(model),
+		Model:     openai.ChatModel(model),
 		MaxTokens: openai.Int(256),
-		Messages: openai.F([]openai.ChatCompletionMessageParamUnion{
-			openai.ChatCompletionMessageParam{
-				Role:    openai.F(openai.ChatCompletionMessageParamRoleUser),
-				Content: openai.F[any]("Explain briefly how solar panels work"),
+		Messages: []openai.ChatCompletionMessageParamUnion{{
+			OfUser: &openai.ChatCompletionUserMessageParam{
+				Content: openai.ChatCompletionUserMessageParamContentUnion{
+					OfString: openai.String("Explain briefly how solar panels work"),
+				},
 			},
-		}),
+		}},
 	}
 
 	resp, err := client.Chat.Completions.New(
@@ -139,14 +140,15 @@ func Example_usingAzurePromptFilteringWithStreaming() {
 	// Example of streaming with Azure extensions
 	fmt.Fprintf(os.Stderr, "Streaming example:\n")
 	streamingParams := openai.ChatCompletionNewParams{
-		Model:     openai.F(model),
+		Model:     openai.ChatModel(model),
 		MaxTokens: openai.Int(256),
-		Messages: openai.F([]openai.ChatCompletionMessageParamUnion{
-			openai.ChatCompletionMessageParam{
-				Role:    openai.F(openai.ChatCompletionMessageParamRoleUser),
-				Content: openai.F[any]("List 3 benefits of renewable energy"),
+		Messages: []openai.ChatCompletionMessageParamUnion{{
+			OfUser: &openai.ChatCompletionUserMessageParam{
+				Content: openai.ChatCompletionUserMessageParamContentUnion{
+					OfString: openai.String("List 3 benefits of renewable energy"),
+				},
 			},
-		}),
+		}},
 	}
 
 	stream := client.Chat.Completions.NewStreaming(

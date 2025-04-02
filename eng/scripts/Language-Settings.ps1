@@ -187,6 +187,13 @@ function Get-AllPackageInfoFromRepo($filterString)
       EvaluateCIParam $ciProps.ParsedYml $pkgProp "IsSdkLibrary" $true
       EvaluateCIParam $ciProps.ParsedYml $pkgProp "LicenseCheck" $true
     }
+    # if we don't have a ci yml, just set the defaults
+    else {
+      $pkgProp.CIParameters["UsePipelineProxy"] = $true
+      $pkgProp.CIParameters["NonShipping"] = $false
+      $pkgProp.CIParameters["IsSdkLibrary"] = $true
+      $pkgProp.CIParameters["LicenseCheck"] = $true
+    }
   }
 
   return $allPackageProps

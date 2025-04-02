@@ -314,12 +314,11 @@ steps:
 
   - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
 
-  # todo: if servicedirectory -eq auto, we need to run all the smoke tests for all the changed services for the current batch
   - task: PowerShell@2
     displayName: 'Run Nightly SmokeTests'
     inputs:
       targetType: 'filePath'
-      filePath: ./eng/scripts/Smoke_Tests_Nightly.ps1
+      filePath: ./eng/scripts/Invoke-SmokeTests.ps1
       pwsh: true
       arguments: '$(ChangedServices)'
 

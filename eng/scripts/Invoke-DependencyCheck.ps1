@@ -4,7 +4,7 @@ Param(
 
 . (Join-Path $PSScriptRoot .. common scripts common.ps1)
 
-$sdks = Get-AllPackageInfoFromRepo
+$sdks = Get-AllPackageInfoFromRepo $PackageDirectories
 
 ## Use local git to fetch tags without GitHub token
 $existingTags = git tag

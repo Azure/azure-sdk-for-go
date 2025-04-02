@@ -4,7 +4,7 @@
 
 ### Bugs Fixed
 
-- AcceptNextSessionFor(Queue/Subscription) and AcceptSessionFor(Queue/Subscription) no longer need to call RenewSessionForLock before returning the accepted
+- AcceptNextSessionFor(Queue/Subscription) and AcceptSessionFor(Queue/Subscription) no longer need to call RenewSessionLock before returning the accepted
   session. (PR#24345)
 
 ## 1.8.0 (2025-02-11)

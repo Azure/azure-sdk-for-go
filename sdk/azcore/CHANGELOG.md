@@ -4,17 +4,7 @@
 
 ### Features Added
 
-* Added field `NewPropagatorFn` to `tracing.ProviderOptions` to support custom propagators.
-* Added type `SpanContext` to the `tracing` package to support Span Context.
-* Added method `SpanContext()` to `tracing.Span` to support Span Context.
-* Added func `NewSpanContext()` to the `tracing` package to support Span Context.
-* Added type `Link` to the `tracing` package to support Span Links.
-* Added method `LinkFromContext()` to `tracing.Tracer` to support Span Links.
-* Added method `AddLink()` to `tracing.Span` to support Span Links.
-* Added field `Links` to `runtime.StartSpanOptions` to support Span Links.
-* Added type `Propagator` to the `tracing` package to support context propagation.
-* Added type `Carrier` to the `tracing` package to support context propagation.
-* Added method `NewPropagator()` to type `tracing.Provider` to support context propagation.
+* Added `AccessToken.RefreshOn` and updated `BearerTokenPolicy` to consider nonzero values of it when deciding whether to request a new token
 
 ### Breaking Changes
 

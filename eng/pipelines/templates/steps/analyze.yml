@@ -87,13 +87,11 @@ steps:
     workingDirectory: $(Pipeline.Workspace)
     condition: and(succeeded(), ne(variables['Skip.CreateApiReview'], 'true') , ne(variables['Build.Reason'],'PullRequest'), eq(variables['System.TeamProject'], 'internal'))
 
-  # todo: what is the perf cost of this? Can we remove the condition?
   - ${{ if eq(variables['Build.Reason'],'PullRequest') }}:
     - template: /eng/common/pipelines/templates/steps/detect-api-changes.yml
       parameters:
         Condition: ${{ parameters.IsSdkLibrary }}
 
-  # don't need to touch any of the items below as they are all internal only
   - ${{ if and(ne(variables['Skip.PackageValidation'], 'true'), eq(variables['System.TeamProject'], 'internal')) }}:
     - pwsh: |
         . ./eng/common/scripts/common.ps1
@@ -140,12 +138,6 @@ steps:
           not(endsWith(variables['Build.Repository.Name'], '-pr'))
         )
 
-  # originally, I confused myself into thinking that package.Name and package.ServiceDirectory were the same thing, but they
-  # definitely are not. The package.Name (and now ArtifactName) includes "sdk", while the ServiceDirectory value does not.
-  # this means that if we need a directly accessible path from an attribute, we just need to look at the actual package name, not the servicedirectory value
-
-  # basically everywhere that is using $(ChangedServices) needs to use $(Packages) now. Whoops.
-  # todo: make work against individual packages, convert to script
   - task: Powershell@2
     displayName: 'Dependency Check'
     condition: ne(variables['Skip.DependencyCheck'], 'true')
@@ -165,7 +157,6 @@ steps:
     workingDirectory: $(System.DefaultWorkingDirectory)
     retryCountOnTaskFailure: 3
 
-  # todo: convert to changed packages versus changed services
   - pwsh: |
       $changedServices = "$(ChangedServices)" -split ","
       $failed = $false
@@ -192,7 +183,6 @@ steps:
     workingDirectory: $(System.DefaultWorkingDirectory)
     condition: succeededOrFailed()
 
-  # todo: convert to changed packages versus changed services
   - pwsh: |
       $changedServices = "$(ChangedServices)" -split ","
       $failed = $false
@@ -220,7 +210,6 @@ steps:
     condition: eq(variables.SkipGoGetUAll, 'false')
     workingDirectory: $(System.DefaultWorkingDirectory)
 
-  # todo: convert to changed packages versus changed services
   - pwsh: |
       $changedServices = "$(ChangedServices)" -split ","
       $failed = $false
@@ -248,7 +237,6 @@ steps:
     workingDirectory: $(System.DefaultWorkingDirectory)
     condition: succeededOrFailed()
 
-  # todo: convert to changed packages versus changed services
   - pwsh: |
       $changedServices = "$(ChangedServices)" -split ","
       foreach($serviceDirectory in $changedServices) {
@@ -300,7 +288,6 @@ steps:
       CheckLinkGuidance: $true
       Condition: succeededOrFailed()
 
-  # todo, convert to package level instead of service level
   - pwsh: |
       if (-not "$(ChangedServices)") {
         Write-Host "No services were changed build. Skipping doccheck."
@@ -348,7 +335,6 @@ steps:
         }
     displayName: Clean up Non-Shipping Artifacts
 
-  # todo: am I going to need to deal with this ForRelease parameter?
   - ${{if and(eq(parameters.NonShipping, 'false'), ne(parameters.ServiceDirectory, 'auto')) }}:
     - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
       parameters:

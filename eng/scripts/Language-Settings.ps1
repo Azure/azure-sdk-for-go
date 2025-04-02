@@ -147,8 +147,6 @@ function ResolveSearchPaths {
 
 function Get-AllPackageInfoFromRepo($filterString)
 {
-  # we can probably stick to a single filter by implicitly adding `sdk` to leading paths
-  Write-Host "Entering Get-AllPackageInfoFromRepo with CWD: $PWD, and input string of $filterString"
   $allPackageProps = @()
   $pkgFiles = @()
 

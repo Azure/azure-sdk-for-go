@@ -122,6 +122,7 @@ extends:
                 EnablePRGeneration: true
                 PRMatrixSetting: Packages
                 PRJobBatchSize: 20
+                PRMatrixSparseIndirect: false
                 PreGenerationSteps:
                   # in other languages, will publish the package properties from this prestep location, then download
                   # the artifact on the given test step. However, for go, discovering package properties is FAR faster than

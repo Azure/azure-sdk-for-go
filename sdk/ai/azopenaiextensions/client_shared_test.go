@@ -251,6 +251,8 @@ const fakeCognitiveIndexName = "index"
 // involve UUIDs that would make the response/request inconsistent.
 func newRecordingTransporter(t *testing.T) policy.Transporter {
 	defaultOptions := getRecordingOptions(t)
+	t.Logf("Using test proxy on port %d", defaultOptions.ProxyPort)
+
 	transport, err := recording.NewRecordingHTTPClient(t, defaultOptions)
 	require.NoError(t, err)
 

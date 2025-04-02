@@ -4,12 +4,9 @@
 package azopenaiextensions_test
 
 import (
-	"bytes"
 	"context"
 	"errors"
 	"fmt"
-	"io"
-	"mime"
 	"net/http"
 	"os"
 	"strconv"
@@ -19,7 +16,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiextensions"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
@@ -371,51 +367,4 @@ func customRequireNoError(t *testing.T, err error) {
 	}
 
 	require.NoError(t, err)
-}
-
-type mimeTypeRecordingPolicy struct{}
-
-// Do changes out the boundary for a multipart message. This makes it simpler to write
-// recordings.
-func (mrp *mimeTypeRecordingPolicy) Do(req *policy.Request) (*http.Response, error) {
-	if recording.GetRecordMode() == recording.LiveMode {
-		// this is strictly to make the IDs in the multipart body stable for test recordings.
-		return req.Next()
-	}
-
-	// we'll fix up the multipart to make it more predictable for test recordings.
-	//    Content-Type: multipart/form-data; boundary=787c880ce3dd11f9b6384d625c399c8490fc8989ceb6b7d208ec7426c12e
-	mediaType, params, err := mime.ParseMediaType(req.Raw().Header[http.CanonicalHeaderKey("Content-type")][0])
-
-	if err != nil || mediaType != "multipart/form-data" {
-		// we'll just assume our policy doesn't apply here.
-		return req.Next()
-	}
-
-	origBoundary := params["boundary"]
-
-	if origBoundary == "" {
-		return nil, errors.New("Invalid use of this policy - no boundary was passed as part of the multipart mime type")
-	}
-
-	params["boundary"] = "boundary-for-recordings"
-
-	// now let's update the body itself - we'll just do a simple string replacement. The entire purpose of the boundary string is to provide a
-	// separator, which is distinct from the content.
-	body := req.Body()
-	defer body.Close()
-
-	origBody, err := io.ReadAll(body)
-
-	if err != nil {
-		return nil, err
-	}
-
-	newBody := bytes.ReplaceAll(origBody, []byte(origBoundary), []byte("boundary-for-recordings"))
-
-	if err := req.SetBody(streaming.NopCloser(bytes.NewReader(newBody)), mime.FormatMediaType(mediaType, params)); err != nil {
-		return nil, err
-	}
-
-	return req.Next()
 }

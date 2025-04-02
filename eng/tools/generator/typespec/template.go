@@ -41,3 +41,24 @@ func ParseTypeSpecTemplates(templateDir, outputDir string, data map[string]any, 
 
 	return nil
 }
+
+func ParseTypeSpecTemplate(templatePath, outputDir string, data map[string]any, funcMap template.FuncMap) error {
+	if err := os.MkdirAll(outputDir, 0755); err != nil {
+		return err
+	}
+
+	tpl := template.New(filepath.Base(templatePath)).Funcs(funcMap)
+	tpl, err := tpl.ParseFiles(templatePath)
+	if err != nil {
+		return err
+	}
+
+	fName, _ := strings.CutSuffix(filepath.Base(templatePath), ".tpl")
+	w, err := os.OpenFile(filepath.Join(outputDir, fName), os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0666)
+	if err != nil {
+		return err
+	}
+	defer w.Close()
+
+	return tpl.ExecuteTemplate(w, filepath.Base(templatePath), data)
+}

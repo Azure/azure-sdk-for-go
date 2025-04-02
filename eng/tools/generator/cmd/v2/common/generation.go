@@ -755,7 +755,11 @@ func (t *TypeSpecUpdateGenerator) PreGenerate(generateParam *GenerateParam) erro
 	}
 	log.Printf("Create build.go for typespec package...")
 	buildGoTemplatePath := filepath.Join(t.SDKPath, "eng/tools/generator/template/typespec/build.go.tpl")
-	if err := template.GenerateBuildGoFileByTemplate(t.PackagePath, generateParam.RPName, generateParam.NamespaceName, buildGoTemplatePath); err != nil {
+	sdkBasicInfo := map[string]any{
+		"rpName":             generateParam.RPName,
+		"packageName":        generateParam.NamespaceName,
+	}
+	if err := typespec.ParseTypeSpecTemplate(buildGoTemplatePath, t.PackagePath, sdkBasicInfo, nil); err != nil {
 		return err
 	}
 	return nil

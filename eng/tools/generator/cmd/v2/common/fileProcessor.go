@@ -847,3 +847,32 @@ func SetLocalSpecRepo(packagePath, localSpecRepo string) error {
 
 	return os.WriteFile(buildGoPath, []byte(strings.Join(lines, "\n")), 0644)
 }
+
+// RemoveLocalSpecRepo removes localSpecRepo parameter from build.go file
+func RemoveLocalSpecRepo(packagePath string) error {
+	buildGoPath := filepath.Join(packagePath, "build.go")
+	b, err := os.ReadFile(buildGoPath)
+	if err != nil {
+		return err
+	}
+
+	lines := strings.Split(string(b), "\n")
+	for i, line := range lines {
+		if strings.Contains(line, "go:generate") {
+			parts := strings.Fields(line)
+			newParts := []string{}
+			for j := 0; j < len(parts); j++ {
+				if parts[j] == "-localSpecRepo" {
+					// Skip both the flag and its value
+					j++
+					continue
+				}
+				newParts = append(newParts, parts[j])
+			}
+			lines[i] = strings.Join(newParts, " ")
+			break
+		}
+	}
+
+	return os.WriteFile(buildGoPath, []byte(strings.Join(lines, "\n")), 0644)
+}

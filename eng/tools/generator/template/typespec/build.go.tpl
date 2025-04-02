@@ -2,6 +2,6 @@
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 // This file enables 'go generate' to regenerate this specific SDK
-//go:generate pwsh ../../../../eng/scripts/typespec_build.ps1 -skipBuild -cleanGenerated -format -tidy -generate resourcemanager/{{rpName}}/{{packageName}}
+//go:generate pwsh ../../../../eng/scripts/typespec_build.ps1 -skipBuild -cleanGenerated -format -tidy -generate resourcemanager/{{.rpName}}/{{.packageName}}
 
-package {{packageName}}
+package {{.packageName}}

@@ -654,6 +654,14 @@ func (t *TypeSpecCommonGenerator) AfterGenerate(generateParam *GenerateParam, ch
 		}
 	}
 
+	if !strings.HasPrefix(t.TypeSpecConfig.Path, "http") {
+		// local path, need to remove local spec repo from build.go after
+		err := RemoveLocalSpecRepo(packagePath)
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	log.Printf("##[command]Executing gofmt -s -w . in %s\n", modulePath)
 	if err := ExecuteGoFmt(modulePath, "-s", "-w", "."); err != nil {
 		return nil, err

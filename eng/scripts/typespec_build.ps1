@@ -20,7 +20,7 @@ function Process-TypeSpec ()
     
     # Check for tsp-location.yaml first
     if (-not (Test-Path "tsp-location.yaml")) {
-        Write-Host "##[error]This is not a TypeSpec-based SDK. No tsp-location.yaml file found in $currentDirectory"
+        LogWarning "This is not a TypeSpec-based SDK. No tsp-location.yaml file found in $currentDirectory"
         return
     }
 

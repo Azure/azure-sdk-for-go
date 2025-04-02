@@ -25,7 +25,7 @@ function Process-Sdk ()
 
     # Check for autorest.md first
     if (-not (Test-Path "autorest.md")) {
-        Write-Host "##[error]This is not a Swagger-based SDK. No autorest.md file found in $currentDirectory"
+        LogWarning "This is not a Swagger-based SDK. No autorest.md file found in $currentDirectory"
         return
     }
 

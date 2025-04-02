@@ -11,7 +11,6 @@ pr:
     - "*"
 
     exclude:
-    - eng/packages/http-client-csharp/
     - sdk/data/azcosmos/
 
 parameters:

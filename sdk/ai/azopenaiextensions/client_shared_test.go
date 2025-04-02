@@ -264,7 +264,11 @@ func newRecordingTransporter(t *testing.T) policy.Transporter {
 			RecordingOptions: *defaultOptions,
 			ExcludedHeaders: []string{
 				"X-Stainless-Arch",
+				"X-Stainless-Lang",
 				"X-Stainless-Os",
+				"X-Stainless-Package-Version",
+				"X-Stainless-Retry-Count",
+				"X-Stainless-Runtime",
 				"X-Stainless-Runtime-Version",
 			},
 		})

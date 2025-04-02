@@ -68,6 +68,11 @@
 # PRLabel: %Event Hubs
 /sdk/messaging/azeventhubs/   @richardpark-msft @chlowell @jhendrixMSFT
 
+# AzureSDKOwners: @vicancy
+# ServiceLabel: %WebPubSub
+# PRLabel: %WebPubSub
+/sdk/messaging/azwebpubsub/  @vicancy @chlowell @jhendrixMSFT
+
 # AzureSDKOwners: @richardpark-msft
 # ServiceLabel: %Service Bus
 # PRLabel: %Service Bus

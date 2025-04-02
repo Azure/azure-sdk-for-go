@@ -263,6 +263,7 @@ func newRecordingTransporter(t *testing.T) policy.Transporter {
 		err = recording.SetDefaultMatcher(t, &recording.SetDefaultMatcherOptions{
 			RecordingOptions: *defaultOptions,
 			ExcludedHeaders: []string{
+				"User-Agent",
 				"X-Stainless-Arch",
 				"X-Stainless-Lang",
 				"X-Stainless-Os",

@@ -21,8 +21,6 @@ func run(m *testing.M) int {
 	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
 		defaultOptions := getRecordingOptions(nil)
 		proxy, err := recording.StartTestProxy(RecordingDirectory, defaultOptions)
-		proxy.Cmd.Stderr = os.Stderr
-		proxy.Cmd.Stdout = os.Stdout
 		if err != nil {
 			panic(err)
 		}

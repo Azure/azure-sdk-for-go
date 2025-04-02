@@ -4,12 +4,15 @@ Param(
     [string] $filter
 )
 
+. (Join-Path $PSScriptRoot ".." common scripts common.ps1)
+
 $packages = Get-AllPackageInfoFromRepo $filter
-$targetServices = $packages | Where-Object { $_.CIParameters.NonShipping -eq $false } | Select-Object -Property Service -Unique
+$targetServices = $packages | Where-Object { $_.CIParameters.NonShipping -eq $false } | Select-Object -Property ServiceDirectory -Unique
 
 $failed = $false
 
 foreach($service in $targetServices) {
+    Write-Host $service
     & $PSScriptRoot/Smoke_Tests_Nightly.ps1 $service
 
     if ($LASTEXITCODE) {

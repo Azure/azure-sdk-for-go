@@ -71,7 +71,7 @@
 # AzureSDKOwners: @vicancy
 # ServiceLabel: %WebPubSub
 # PRLabel: %WebPubSub
-/sdk/messaging/azwebpubsub/  @vicancy @chlowell @jhendrixMSFT
+/sdk/messaging/azwebpubsub/  @vicancy @chenkennt @jhendrixMSFT
 
 # AzureSDKOwners: @richardpark-msft
 # ServiceLabel: %Service Bus

@@ -1,5 +1,82 @@
 # Release History
 
+## 3.1.0 (2025-04-24)
+### Features Added
+
+- New value `StorageTypeNfsAzureFile` added to enum type `StorageType`
+- New enum type `ContainerAppRunningStatus` with values `ContainerAppRunningStatusProgressing`, `ContainerAppRunningStatusReady`, `ContainerAppRunningStatusRunning`, `ContainerAppRunningStatusStopped`, `ContainerAppRunningStatusSuspended`
+- New enum type `ContainerType` with values `ContainerTypeCustomContainer`, `ContainerTypePythonLTS`
+- New enum type `IdentitySettingsLifeCycle` with values `IdentitySettingsLifeCycleAll`, `IdentitySettingsLifeCycleInit`, `IdentitySettingsLifeCycleMain`, `IdentitySettingsLifeCycleNone`
+- New enum type `JavaComponentProvisioningState` with values `JavaComponentProvisioningStateCanceled`, `JavaComponentProvisioningStateDeleting`, `JavaComponentProvisioningStateFailed`, `JavaComponentProvisioningStateInProgress`, `JavaComponentProvisioningStateSucceeded`
+- New enum type `JavaComponentType` with values `JavaComponentTypeSpringBootAdmin`, `JavaComponentTypeSpringCloudConfig`, `JavaComponentTypeSpringCloudEureka`
+- New enum type `LifecycleType` with values `LifecycleTypeOnContainerExit`, `LifecycleTypeTimed`
+- New enum type `PoolManagementType` with values `PoolManagementTypeDynamic`, `PoolManagementTypeManual`
+- New enum type `SessionNetworkStatus` with values `SessionNetworkStatusEgressDisabled`, `SessionNetworkStatusEgressEnabled`
+- New enum type `SessionPoolProvisioningState` with values `SessionPoolProvisioningStateCanceled`, `SessionPoolProvisioningStateDeleting`, `SessionPoolProvisioningStateFailed`, `SessionPoolProvisioningStateInProgress`, `SessionPoolProvisioningStateSucceeded`
+- New function `*ClientFactory.NewContainerAppsSessionPoolsClient() *ContainerAppsSessionPoolsClient`
+- New function `*ClientFactory.NewJavaComponentsClient() *JavaComponentsClient`
+- New function `NewContainerAppsSessionPoolsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ContainerAppsSessionPoolsClient, error)`
+- New function `*ContainerAppsSessionPoolsClient.BeginCreateOrUpdate(context.Context, string, string, SessionPool, *ContainerAppsSessionPoolsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ContainerAppsSessionPoolsClientCreateOrUpdateResponse], error)`
+- New function `*ContainerAppsSessionPoolsClient.BeginDelete(context.Context, string, string, *ContainerAppsSessionPoolsClientBeginDeleteOptions) (*runtime.Poller[ContainerAppsSessionPoolsClientDeleteResponse], error)`
+- New function `*ContainerAppsSessionPoolsClient.Get(context.Context, string, string, *ContainerAppsSessionPoolsClientGetOptions) (ContainerAppsSessionPoolsClientGetResponse, error)`
+- New function `*ContainerAppsSessionPoolsClient.NewListByResourceGroupPager(string, *ContainerAppsSessionPoolsClientListByResourceGroupOptions) *runtime.Pager[ContainerAppsSessionPoolsClientListByResourceGroupResponse]`
+- New function `*ContainerAppsSessionPoolsClient.NewListBySubscriptionPager(*ContainerAppsSessionPoolsClientListBySubscriptionOptions) *runtime.Pager[ContainerAppsSessionPoolsClientListBySubscriptionResponse]`
+- New function `*ContainerAppsSessionPoolsClient.BeginUpdate(context.Context, string, string, SessionPoolUpdatableProperties, *ContainerAppsSessionPoolsClientBeginUpdateOptions) (*runtime.Poller[ContainerAppsSessionPoolsClientUpdateResponse], error)`
+- New function `*JavaComponentProperties.GetJavaComponentProperties() *JavaComponentProperties`
+- New function `NewJavaComponentsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*JavaComponentsClient, error)`
+- New function `*JavaComponentsClient.BeginCreateOrUpdate(context.Context, string, string, string, JavaComponent, *JavaComponentsClientBeginCreateOrUpdateOptions) (*runtime.Poller[JavaComponentsClientCreateOrUpdateResponse], error)`
+- New function `*JavaComponentsClient.BeginDelete(context.Context, string, string, string, *JavaComponentsClientBeginDeleteOptions) (*runtime.Poller[JavaComponentsClientDeleteResponse], error)`
+- New function `*JavaComponentsClient.Get(context.Context, string, string, string, *JavaComponentsClientGetOptions) (JavaComponentsClientGetResponse, error)`
+- New function `*JavaComponentsClient.NewListPager(string, string, *JavaComponentsClientListOptions) *runtime.Pager[JavaComponentsClientListResponse]`
+- New function `*JavaComponentsClient.BeginUpdate(context.Context, string, string, string, JavaComponent, *JavaComponentsClientBeginUpdateOptions) (*runtime.Poller[JavaComponentsClientUpdateResponse], error)`
+- New function `*SpringBootAdminComponent.GetJavaComponentProperties() *JavaComponentProperties`
+- New function `*SpringCloudConfigComponent.GetJavaComponentProperties() *JavaComponentProperties`
+- New function `*SpringCloudEurekaComponent.GetJavaComponentProperties() *JavaComponentProperties`
+- New struct `CertificateKeyVaultProperties`
+- New struct `CustomContainerTemplate`
+- New struct `DynamicPoolConfiguration`
+- New struct `IdentitySettings`
+- New struct `JavaComponent`
+- New struct `JavaComponentConfigurationProperty`
+- New struct `JavaComponentIngress`
+- New struct `JavaComponentPropertiesScale`
+- New struct `JavaComponentServiceBind`
+- New struct `JavaComponentsCollection`
+- New struct `LifecycleConfiguration`
+- New struct `ManagedIdentitySetting`
+- New struct `NfsAzureFileProperties`
+- New struct `Runtime`
+- New struct `RuntimeJava`
+- New struct `ScaleConfiguration`
+- New struct `SessionContainer`
+- New struct `SessionContainerResources`
+- New struct `SessionIngress`
+- New struct `SessionNetworkConfiguration`
+- New struct `SessionPool`
+- New struct `SessionPoolCollection`
+- New struct `SessionPoolProperties`
+- New struct `SessionPoolSecret`
+- New struct `SessionPoolUpdatableProperties`
+- New struct `SessionPoolUpdatablePropertiesProperties`
+- New struct `SessionRegistryCredentials`
+- New struct `SpringBootAdminComponent`
+- New struct `SpringCloudConfigComponent`
+- New struct `SpringCloudEurekaComponent`
+- New field `CertificateKeyVaultProperties` in struct `CertificateProperties`
+- New field `IdentitySettings`, `Runtime` in struct `Configuration`
+- New field `RunningStatus` in struct `ContainerAppProperties`
+- New field `CertificateKeyVaultProperties` in struct `CustomDomainConfiguration`
+- New field `Identity` in struct `CustomScaleRule`
+- New field `Identity` in struct `HTTPScaleRule`
+- New field `IdentitySettings` in struct `JobConfiguration`
+- New field `Identity` in struct `JobScaleRule`
+- New field `Identity` in struct `ManagedEnvironment`
+- New field `NfsAzureFile` in struct `ManagedEnvironmentStorageProperties`
+- New field `AccountName`, `Identity` in struct `QueueScaleRule`
+- New field `CooldownPeriod`, `PollingInterval` in struct `Scale`
+- New field `Identity` in struct `TCPScaleRule`
+
+
 ## 3.1.0-beta.1 (2024-10-23)
 ### Features Added
 

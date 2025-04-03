@@ -308,7 +308,6 @@ func newStainlessTestClientWithOptions(t *testing.T, ep endpoint, options *stain
 			azure.WithEndpoint(ep.URL, apiVersion),
 			azure.WithAPIKey(ep.APIKey),
 			option.WithHTTPClient(client),
-			// option.WithMiddleware(middleware),
 		)
 	}
 
@@ -319,7 +318,6 @@ func newStainlessTestClientWithOptions(t *testing.T, ep endpoint, options *stain
 		azure.WithEndpoint(ep.URL, apiVersion),
 		azure.WithTokenCredential(tokenCredential),
 		option.WithHTTPClient(client),
-		// option.WithMiddleware(middleware),
 	)
 }
 

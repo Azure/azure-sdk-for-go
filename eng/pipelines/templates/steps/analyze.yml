@@ -322,6 +322,13 @@ steps:
   # There are no more checks after this one, so simply removing all packageInfo that aren't shipping
   # to allow the default verify-changeslogs template to work correctly is probably better than any custom conditional code in that template.
   - pwsh: |
+      # remove the manifest files that were dropped into this directory due to publishing of the 1es artifact.
+      # we don't need them around anymore and they will break the verify-changelogs step.
+
+      if (Test-Path -Path $(Build.ArtifactStagingDirectory)/PackageInfo/_manifest) {
+        Remove-Item -Path $(Build.ArtifactStagingDirectory)/PackageInfo/_manifest -Force
+      }
+
       Get-ChildItem -Path $(Build.ArtifactStagingDirectory)/PackageInfo -Recurse -Filter *.json `
         | ForEach-Object {
           $json = Get-Content -Path $_.FullName -Raw | ConvertFrom-Json
@@ -329,8 +336,6 @@ steps:
             Remove-Item -Path $_.FullName -Force
           }
         }
-      Get-ChildItem -Recurse -Path $(Build.ArtifactStagingDirectory)/PackageInfo `
-        | ForEach-Object { Write-Host $_.FullName; Get-Content -Path $_.FullName -Raw | Out-String }
     displayName: Clean up Non-Shipping Artifacts
 
   - template: /eng/common/pipelines/templates/steps/verify-changelogs.yml

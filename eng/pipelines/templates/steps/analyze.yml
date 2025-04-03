@@ -326,7 +326,7 @@ steps:
       # we don't need them around anymore and they will break the verify-changelogs step.
 
       if (Test-Path -Path $(Build.ArtifactStagingDirectory)/PackageInfo/_manifest) {
-        Remove-Item -Path $(Build.ArtifactStagingDirectory)/PackageInfo/_manifest -Force
+        Remove-Item -Recurse -Force -Path $(Build.ArtifactStagingDirectory)/PackageInfo/_manifest
       }
 
       Get-ChildItem -Path $(Build.ArtifactStagingDirectory)/PackageInfo -Recurse -Filter *.json `

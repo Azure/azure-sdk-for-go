@@ -1,20 +1,11 @@
 # Release History
 
-## 1.18.0-beta.1 (Unreleased)
+## 1.18.0 (2025-04-03)
 
 ### Features Added
 
 * Added `AccessToken.RefreshOn` and updated `BearerTokenPolicy` to consider nonzero values of it when deciding whether to request a new token
 
-### Breaking Changes
-
-### Bugs Fixed
-
-* Removed hardcoded `azcore` replacement in the error type for `runtime.StartSpan()`.
-
-### Other Changes
-
-* Added Span Attribute `error.type` to report an error when ending a span with `runtime.StartSpan`.
 
 ## 1.17.1 (2025-03-20)
 

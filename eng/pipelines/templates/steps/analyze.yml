@@ -330,7 +330,7 @@ steps:
           }
         }
       Get-ChildItem -Recurse -Path $(Build.ArtifactStagingDirectory)/PackageInfo `
-        | ForEach-Object { Write-Host $_.FullName; Get-Content -Path $_.FullName -Raw | Out-String } `
+        | ForEach-Object { Write-Host $_.FullName; Get-Content -Path $_.FullName -Raw | Out-String }
     displayName: Clean up Non-Shipping Artifacts
 
   - template: /eng/common/pipelines/templates/steps/verify-changelogs.yml

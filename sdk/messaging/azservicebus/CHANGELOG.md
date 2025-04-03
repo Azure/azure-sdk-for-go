@@ -1,6 +1,6 @@
 # Release History
 
-## 1.8.1 (TBD)
+## 1.8.1 (2025-04-08)
 
 ### Bugs Fixed
 

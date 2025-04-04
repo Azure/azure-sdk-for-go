@@ -92,7 +92,7 @@ steps:
       }
     displayName: "Detect Proxy eligibility"
 
-  - ${{ if and(eq(parameters.TestProxy, true) }}:
+  - ${{ if eq(parameters.TestProxy, true) }}:
     - template: /eng/common/testproxy/test-proxy-tool.yml
 
   # we do not need to change any conditional activation for this section, as it is only activated when

@@ -150,7 +150,8 @@ function ResolveSearchPaths {
 # when passing the string through to the function. Due to that, we can't name this the more appropraite "filterString"
 # We have to meet that function signature that is called from Get-AllPkgProperties in `Package-Properties.ps1`.
 # This $ServiceDirectory argument can actually be a comma separated list of package paths OR the standard service directories,
-# but until we make a change over in eng/common/scripts/Package-Properties.ps1 to support that, we will just pass the string named $ServiceDirectory
+# but until we make a change over in eng/common/scripts/Package-Properties.ps1 to support that, we will just use the name $ServiceDirectory
+# here.
 function Get-AllPackageInfoFromRepo($ServiceDirectory)
 {
   $allPackageProps = @()

@@ -136,10 +136,6 @@ steps:
         )
 
   - pwsh: |
-      Get-ChildItem -R $(Build.SourcesDirectory) | % { Write-Host $_.FullName }
-    displayName: "Show the visible files. Why can't we retrieve this?"
-
-  - pwsh: |
       ./eng/scripts/Invoke-DependencyCheck.ps1 "$(Packages)"
     displayName: Dependency Check
     condition: ne(variables['Skip.DependencyCheck'], 'true')

@@ -82,8 +82,20 @@ steps:
     displayName: "Install Coverage and Junit Dependencies"
     retryCountOnTaskFailure: 3
 
-  - ${{ if eq(parameters.TestProxy, true) }}:
+  - pwsh:
+      $packageProps = Get-ChildItem -Recurse -Path "$(Build.ArtifactStagingDirectory)/PackageInfo" -Filter "*.json" `
+        | ForEach-Object { Get-Content -Raw -Path $_.FullName | ConvertFrom-Json }
+        | Where-Object { $_.CIParameters.UsePipelineProxy -eq $true }
+
+      if ($packageProps) {
+        Write-Host "##vso[task.setvariable variable=ProxyRequired]true"
+      }
+    displayName: "Detect Proxy eligibility"
+
+  - ${{ if and(eq(parameters.TestProxy, true) }}:
     - template: /eng/common/testproxy/test-proxy-tool.yml
+      parameters:
+        condition: eq(variables['ProxyRequired'], 'true')
 
   # we do not need to change any conditional activation for this section, as it is only activated when
   # invoking a livetest run, which will never be the case for PRs. Devs will /azp run go - <service>

@@ -161,8 +161,9 @@ extends:
                       - ".vscode/"
                   ${{ else }}:
                     Paths:
-                      - "sdk/${{ parameters.ServiceDirectory }}/"
+                      - "sdk/${{ parameters.ServiceDirectory }}/**"
                       - ".vscode/"
+                      - "eng/**"
 
               - template: /eng/common/pipelines/templates/steps/check-spelling.yml
 

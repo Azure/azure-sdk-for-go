@@ -124,7 +124,7 @@ func (g GeneralRegexSanitizer) Name() string {
 	return "GeneralRegexSanitizer"
 }
 
-func MarshalSanitizers(sanitizers []SanitizerDefinition) ([]byte, error) {
+func marshalSanitizers(sanitizers []SanitizerDefinition) ([]byte, error) {
 	type wrapper struct {
 		Name string              `json:"Name"`
 		Body SanitizerDefinition `json:"Body"`
@@ -158,7 +158,7 @@ func AddSanitizers(sanitizers []SanitizerDefinition, options *RecordingOptions) 
 	}
 	handleTestLevelSanitizer(req, options)
 
-	marshalled, err := MarshalSanitizers(sanitizers)
+	marshalled, err := marshalSanitizers(sanitizers)
 	if err != nil {
 		return err
 	}

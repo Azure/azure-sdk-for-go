@@ -165,6 +165,10 @@ extends:
                       - ".vscode/"
                       - "eng/**"
 
+              - pwsh: |
+                  Get-ChildItem -R $(Build.SourcesDirectory) | % { Write-Host $_.FullName }
+                displayName: "Show the checked out files"
+
               - template: /eng/common/pipelines/templates/steps/check-spelling.yml
 
               - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0

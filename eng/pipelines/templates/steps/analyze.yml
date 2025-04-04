@@ -135,6 +135,10 @@ steps:
           not(endsWith(variables['Build.Repository.Name'], '-pr'))
         )
 
+  - pwsh: |
+      Get-ChildItem -R $(Build.SourcesDirectory) | % { Write-Host $_.FullName }
+    displayName: "Show the visible files. Why can't we retrieve this?"
+
   - task: Powershell@2
     displayName: 'Dependency Check'
     condition: ne(variables['Skip.DependencyCheck'], 'true')

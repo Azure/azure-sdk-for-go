@@ -26,7 +26,7 @@ func TestClient_GetCompletions(t *testing.T) {
 		},
 		MaxTokens:   openai.Int(2048 - 127),
 		Temperature: openai.Float(0.0),
-		Model:       azureOpenAI.Completions.Model,
+		Model:       openai.CompletionNewParamsModel(azureOpenAI.Completions.Model),
 	})
 	skipNowIfThrottled(t, err)
 	require.NoError(t, err)
@@ -61,7 +61,7 @@ func TestGetCompletionsStream(t *testing.T) {
 	client := newStainlessTestClient(t, azureOpenAI.Completions.Endpoint)
 
 	stream := client.Completions.NewStreaming(context.TODO(), openai.CompletionNewParams{
-		Model:       azureOpenAI.Completions.Model,
+		Model:       openai.CompletionNewParamsModel(azureOpenAI.Completions.Model),
 		MaxTokens:   openai.Int(2048),
 		Temperature: openai.Float(0.0),
 		Prompt: openai.CompletionNewParamsPromptUnion{

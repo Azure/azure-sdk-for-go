@@ -145,13 +145,16 @@ function ResolveSearchPaths {
 }
 
 
-function Get-AllPackageInfoFromRepo($filterString)
+# this parameter can be a straightforward filter string. However the eng/common passes -ServiceDirectory
+# specifically to the function. We have to meet that function signature if we want to see this value here.
+# This filter string can be a comma separated list of package paths OR the standard service directories.
+function Get-AllPackageInfoFromRepo($ServiceDirectory)
 {
   $allPackageProps = @()
   $pkgFiles = @()
 
-  if ($filterString) {
-    $searchPaths = ResolveSearchPaths $filterString
+  if ($ServiceDirectory) {
+    $searchPaths = ResolveSearchPaths $ServiceDirectory
 
     foreach ($searchPath in $searchPaths) {
       Write-Host "Searching for go modules in $searchPath"

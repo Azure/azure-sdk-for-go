@@ -135,16 +135,16 @@ steps:
           not(endsWith(variables['Build.Repository.Name'], '-pr'))
         )
 
-  - task: Powershell@2
-    displayName: 'Dependency Check'
+  - pwsh: |
+      Get-ChildItem -R $(Build.SourcesDirectory) | % { Write-Host $_.FullName }
+    displayName: "Show the visible files. Why can't we retrieve this?"
+
+  - pwsh: |
+      ./eng/scripts/Invoke-DependencyCheck.ps1 "$(Packages)"
+    displayName: Dependency Check
     condition: ne(variables['Skip.DependencyCheck'], 'true')
     env:
       GO111MODULE: 'on'
-    inputs:
-      targetType: filePath
-      pwsh: true
-      filePath: eng/scripts/Invoke-DependencyCheck.ps1
-      arguments: "$(Packages)"
 
   - script: |
       curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin ${{parameters.LintVersion}}
@@ -159,7 +159,7 @@ steps:
       $failed = $false
 
       foreach($serviceDirectory in $changedServices) {
-        $modDirs = ./eng/scripts/get_module_dirs.ps1 "$serviceDirectory"
+        $modDirs = & $(Build.SourcesDirectory)/eng/scripts/get_module_dirs.ps1 "$serviceDirectory"
         foreach ($md in $modDirs) {
           pushd $md
           Write-Host "##[command]Executing golangci-lint run -c $(System.DefaultWorkingDirectory)/eng/.golangci.yml in $md"
@@ -185,7 +185,7 @@ steps:
       $failed = $false
 
       foreach($serviceDirectory in $changedServices) {
-        $modDirs = ./eng/scripts/get_module_dirs.ps1 "$serviceDirectory"
+        $modDirs = & $(Build.SourcesDirectory)/eng/scripts/get_module_dirs.ps1 "$serviceDirectory"
         foreach ($md in $modDirs) {
           pushd $md
           Write-Host "##[command]Executing go get -u all in $md"
@@ -212,7 +212,7 @@ steps:
       $failed = $false
 
       foreach($serviceDirectory in $changedServices) {
-        $modDirs = ./eng/scripts/get_module_dirs.ps1 "$serviceDirectory"
+        $modDirs = & $(Build.SourcesDirectory)/eng/scripts/get_module_dirs.ps1 "$serviceDirectory"
         foreach ($md in $modDirs) {
           pushd $md
           Write-Host "##[command]Executing go mod tidy in $md"
@@ -311,13 +311,9 @@ steps:
 
   - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
 
-  - task: PowerShell@2
+  - pwsh: |
+      ./eng/scripts/Invoke-SmokeTests.ps1 "$(ChangedServices)"
     displayName: 'Run Nightly SmokeTests'
-    inputs:
-      targetType: 'filePath'
-      filePath: ./eng/scripts/Invoke-SmokeTests.ps1
-      pwsh: true
-      arguments: '$(ChangedServices)'
 
   # There are no more checks after this one, so simply removing all packageInfo that aren't shipping
   # to allow the default verify-changeslogs template to work correctly is probably better than any custom conditional code in that template.

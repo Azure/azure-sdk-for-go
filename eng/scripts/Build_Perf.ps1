@@ -5,7 +5,9 @@ Param(
     [bool] $useAzcoreFromMain
 )
 
-$services = $TargetDirectories -split ","
+. (Join-Path $PSScriptRoot "Language-Settings.ps1")
+
+$services = ResolveSearchPaths $TargetDirectories
 
 $failed = $false
 

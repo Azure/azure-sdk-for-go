@@ -163,7 +163,7 @@ steps:
       $failed = $false
 
       foreach($serviceDirectory in $changedServices) {
-        $modDirs = ./eng/scripts/get_module_dirs.ps1 "$serviceDirectory"
+        $modDirs = & $(Build.SourcesDirectory)/eng/scripts/get_module_dirs.ps1 "$serviceDirectory"
         foreach ($md in $modDirs) {
           pushd $md
           Write-Host "##[command]Executing golangci-lint run -c $(System.DefaultWorkingDirectory)/eng/.golangci.yml in $md"
@@ -189,7 +189,7 @@ steps:
       $failed = $false
 
       foreach($serviceDirectory in $changedServices) {
-        $modDirs = ./eng/scripts/get_module_dirs.ps1 "$serviceDirectory"
+        $modDirs = & $(Build.SourcesDirectory)/eng/scripts/get_module_dirs.ps1 "$serviceDirectory"
         foreach ($md in $modDirs) {
           pushd $md
           Write-Host "##[command]Executing go get -u all in $md"
@@ -216,7 +216,7 @@ steps:
       $failed = $false
 
       foreach($serviceDirectory in $changedServices) {
-        $modDirs = ./eng/scripts/get_module_dirs.ps1 "$serviceDirectory"
+        $modDirs = & $(Build.SourcesDirectory)/eng/scripts/get_module_dirs.ps1 "$serviceDirectory"
         foreach ($md in $modDirs) {
           pushd $md
           Write-Host "##[command]Executing go mod tidy in $md"

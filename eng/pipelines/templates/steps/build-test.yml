@@ -94,8 +94,6 @@ steps:
 
   - ${{ if and(eq(parameters.TestProxy, true) }}:
     - template: /eng/common/testproxy/test-proxy-tool.yml
-      parameters:
-        condition: eq(variables['ProxyRequired'], 'true')
 
   # we do not need to change any conditional activation for this section, as it is only activated when
   # invoking a livetest run, which will never be the case for PRs. Devs will /azp run go - <service>

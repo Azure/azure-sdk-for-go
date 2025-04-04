@@ -17,60 +17,61 @@ import (
 	"strings"
 )
 
-// ResourceRegionInfosClient contains the methods for the NetAppResourceRegionInfos group.
-// Don't use this type directly, use NewResourceRegionInfosClient() instead.
-type ResourceRegionInfosClient struct {
+// ResourceUsagesClient contains the methods for the NetAppResourceUsages group.
+// Don't use this type directly, use NewResourceUsagesClient() instead.
+type ResourceUsagesClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewResourceRegionInfosClient creates a new instance of ResourceRegionInfosClient with the specified values.
+// NewResourceUsagesClient creates a new instance of ResourceUsagesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewResourceRegionInfosClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourceRegionInfosClient, error) {
+func NewResourceUsagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourceUsagesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &ResourceRegionInfosClient{
+	client := &ResourceUsagesClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// Get - Provides storage to network proximity and logical zone mapping information.
+// Get - Get current subscription usage of the specific type
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-01
 //   - location - The name of the Azure region.
-//   - options - ResourceRegionInfosClientGetOptions contains the optional parameters for the ResourceRegionInfosClient.Get method.
-func (client *ResourceRegionInfosClient) Get(ctx context.Context, location string, options *ResourceRegionInfosClientGetOptions) (ResourceRegionInfosClientGetResponse, error) {
+//   - usageType - The type of usage
+//   - options - ResourceUsagesClientGetOptions contains the optional parameters for the ResourceUsagesClient.Get method.
+func (client *ResourceUsagesClient) Get(ctx context.Context, location string, usageType string, options *ResourceUsagesClientGetOptions) (ResourceUsagesClientGetResponse, error) {
 	var err error
-	const operationName = "ResourceRegionInfosClient.Get"
+	const operationName = "ResourceUsagesClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, location, options)
+	req, err := client.getCreateRequest(ctx, location, usageType, options)
 	if err != nil {
-		return ResourceRegionInfosClientGetResponse{}, err
+		return ResourceUsagesClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ResourceRegionInfosClientGetResponse{}, err
+		return ResourceUsagesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return ResourceRegionInfosClientGetResponse{}, err
+		return ResourceUsagesClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *ResourceRegionInfosClient) getCreateRequest(ctx context.Context, location string, _ *ResourceRegionInfosClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/regionInfos/default"
+func (client *ResourceUsagesClient) getCreateRequest(ctx context.Context, location string, usageType string, _ *ResourceUsagesClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/usages/{usageType}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -79,6 +80,10 @@ func (client *ResourceRegionInfosClient) getCreateRequest(ctx context.Context, l
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+	if usageType == "" {
+		return nil, errors.New("parameter usageType cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{usageType}", url.PathEscape(usageType))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -91,27 +96,26 @@ func (client *ResourceRegionInfosClient) getCreateRequest(ctx context.Context, l
 }
 
 // getHandleResponse handles the Get response.
-func (client *ResourceRegionInfosClient) getHandleResponse(resp *http.Response) (ResourceRegionInfosClientGetResponse, error) {
-	result := ResourceRegionInfosClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.RegionInfoResource); err != nil {
-		return ResourceRegionInfosClientGetResponse{}, err
+func (client *ResourceUsagesClient) getHandleResponse(resp *http.Response) (ResourceUsagesClientGetResponse, error) {
+	result := ResourceUsagesClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.UsageResult); err != nil {
+		return ResourceUsagesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListPager - Provides region specific information.
+// NewListPager - Get current subscription usages
 //
 // Generated from API version 2025-01-01
 //   - location - The name of the Azure region.
-//   - options - ResourceRegionInfosClientListOptions contains the optional parameters for the ResourceRegionInfosClient.NewListPager
-//     method.
-func (client *ResourceRegionInfosClient) NewListPager(location string, options *ResourceRegionInfosClientListOptions) *runtime.Pager[ResourceRegionInfosClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ResourceRegionInfosClientListResponse]{
-		More: func(page ResourceRegionInfosClientListResponse) bool {
+//   - options - ResourceUsagesClientListOptions contains the optional parameters for the ResourceUsagesClient.NewListPager method.
+func (client *ResourceUsagesClient) NewListPager(location string, options *ResourceUsagesClientListOptions) *runtime.Pager[ResourceUsagesClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ResourceUsagesClientListResponse]{
+		More: func(page ResourceUsagesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *ResourceRegionInfosClientListResponse) (ResourceRegionInfosClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ResourceRegionInfosClient.NewListPager")
+		Fetcher: func(ctx context.Context, page *ResourceUsagesClientListResponse) (ResourceUsagesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ResourceUsagesClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -120,7 +124,7 @@ func (client *ResourceRegionInfosClient) NewListPager(location string, options *
 				return client.listCreateRequest(ctx, location, options)
 			}, nil)
 			if err != nil {
-				return ResourceRegionInfosClientListResponse{}, err
+				return ResourceUsagesClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -129,8 +133,8 @@ func (client *ResourceRegionInfosClient) NewListPager(location string, options *
 }
 
 // listCreateRequest creates the List request.
-func (client *ResourceRegionInfosClient) listCreateRequest(ctx context.Context, location string, _ *ResourceRegionInfosClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/regionInfos"
+func (client *ResourceUsagesClient) listCreateRequest(ctx context.Context, location string, _ *ResourceUsagesClientListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/usages"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -151,10 +155,10 @@ func (client *ResourceRegionInfosClient) listCreateRequest(ctx context.Context, 
 }
 
 // listHandleResponse handles the List response.
-func (client *ResourceRegionInfosClient) listHandleResponse(resp *http.Response) (ResourceRegionInfosClientListResponse, error) {
-	result := ResourceRegionInfosClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.RegionInfosList); err != nil {
-		return ResourceRegionInfosClientListResponse{}, err
+func (client *ResourceUsagesClient) listHandleResponse(resp *http.Response) (ResourceUsagesClientListResponse, error) {
+	result := ResourceUsagesClientListResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.UsagesListResult); err != nil {
+		return ResourceUsagesClientListResponse{}, err
 	}
 	return result, nil
 }

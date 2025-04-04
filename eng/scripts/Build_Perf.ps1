@@ -5,9 +5,11 @@ Param(
     [bool] $useAzcoreFromMain
 )
 
-. (Join-Path $PSScriptRoot "Language-Settings.ps1")
-
-$services = ResolveSearchPaths $TargetDirectories
+# get access to the common functions so we can use the common implementation of
+# "give me a resolved invokable path for this filter string". Will properly handle
+# one or multiple service directories in either fully qualified or pure servicedirectory name format
+. (Join-Path $PSScriptRoot ".." "common" "scripts" "common.ps1" )
+$services = ResolveSearchPaths -FilterString $TargetDirectories
 
 $failed = $false
 

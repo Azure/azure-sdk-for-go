@@ -251,6 +251,29 @@ func defaultOptions() *RecordingOptions {
 	}
 }
 
+// GetRecordingOptions returns the default recording options. The port is set to the value of the
+// PROXY_PORT environment variable if set, otherwise it defaults to a random port between 20000 and 30000.
+// The test instance is set to the provided testing.T instance (can be nil).
+func GetRecordingOptions(t *testing.T) *RecordingOptions {
+	var port int
+	val := os.Getenv("PROXY_PORT")
+
+	if len(val) > 0 {
+		parsedPort, err := strconv.ParseInt(val, 10, 0)
+		if err != nil {
+			panic(fmt.Sprintf("Invalid proxy port %s", val))
+		}
+		port = int(parsedPort)
+	} else {
+		port = defaultPort
+	}
+	return &RecordingOptions{
+		UseHTTPS:     true,
+		ProxyPort:    int(port),
+		TestInstance: t,
+	}
+}
+
 func (r RecordingOptions) ReplaceAuthority(t *testing.T, rawReq *http.Request) *http.Request {
 	if GetRecordMode() != LiveMode && !IsLiveOnly(t) {
 		originalURLHost := rawReq.URL.Host

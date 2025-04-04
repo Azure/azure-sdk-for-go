@@ -82,6 +82,11 @@ type SanitizerDefinition interface {
 	Name() string
 }
 
+// HeaderRegexSanitizer describes a sanitizer that modifies header values based on a regex pattern.
+// Key: The name of the header to target.
+// Value: The substitution value for the header.
+// Regex: The regex pattern to match within the header value.
+// GroupForReplace: Specifies which regex group to replace, if applicable.
 type HeaderRegexSanitizer struct {
 	Key             string `json:"key"`
 	Value           string `json:"value,omitempty"`
@@ -93,6 +98,9 @@ func (h HeaderRegexSanitizer) Name() string {
 	return "HeaderRegexSanitizer"
 }
 
+// UriRegexSanitizer describes a sanitizer that modifies URI values based on a regex pattern.
+// Value: The substitution value for the URI.
+// Regex: The regex pattern to match within the URI.
 type UriRegexSanitizer struct {
 	Value string `json:"value"`
 	Regex string `json:"regex"`
@@ -102,6 +110,10 @@ func (u UriRegexSanitizer) Name() string {
 	return "UriRegexSanitizer"
 }
 
+// GeneralRegexSanitizer describes a sanitizer that applies regex-based replacements across request/response bodies, headers, and URIs.
+// Value: The substitution value.
+// Regex: The regex pattern to match.
+// GroupForReplace: Specifies which regex group to replace, if applicable.
 type GeneralRegexSanitizer struct {
 	Value           string `json:"value"`
 	Regex           string `json:"regex"`
@@ -128,6 +140,10 @@ func MarshalSanitizers(sanitizers []SanitizerDefinition) ([]byte, error) {
 	return json.Marshal(result)
 }
 
+// AddSanitizers allows adding a batch of sanitizers in a single call. Supported sanitizers include:
+// - HeaderRegexSanitizer: Replaces or modifies header values based on a regex pattern.
+// - UriRegexSanitizer: Replaces or modifies URI values based on a regex pattern.
+// - GeneralRegexSanitizer: Applies regex-based replacements across request/response bodies, headers, and URIs.
 func AddSanitizers(sanitizers []SanitizerDefinition, options *RecordingOptions) error {
 	if recordMode == LiveMode {
 		return nil

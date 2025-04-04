@@ -145,9 +145,12 @@ function ResolveSearchPaths {
 }
 
 
-# this parameter can be a straightforward filter string. However the eng/common passes -ServiceDirectory
-# specifically to the function. We have to meet that function signature if we want to see this value here.
-# This filter string can be a comma separated list of package paths OR the standard service directories.
+# This parameter can be a straightforward filter string EG "sdk/template/aztemplate,sdk/core/azcore".
+# However the Save-Package-Properties call for a service directory context EXPLICITLY passes -ServiceDirectory
+# when passing the string through to the function. Due to that, we can't name this the more appropraite "filterString"
+# We have to meet that function signature that is called from Get-AllPkgProperties in `Package-Properties.ps1`.
+# This $ServiceDirectory argument can actually be a comma separated list of package paths OR the standard service directories,
+# but until we make a change over in eng/common/scripts/Package-Properties.ps1 to support that, we will just pass the string named $ServiceDirectory
 function Get-AllPackageInfoFromRepo($ServiceDirectory)
 {
   $allPackageProps = @()
@@ -157,7 +160,6 @@ function Get-AllPackageInfoFromRepo($ServiceDirectory)
     $searchPaths = ResolveSearchPaths $ServiceDirectory
 
     foreach ($searchPath in $searchPaths) {
-      Write-Host "Searching for go modules in $searchPath"
       $pkgFiles += @(Get-ChildItem (Join-Path $searchPath "go.mod"))
     }
   }

@@ -154,7 +154,6 @@ function Get-AllPackageInfoFromRepo($filterString)
     $searchPaths = ResolveSearchPaths $filterString
 
     foreach ($searchPath in $searchPaths) {
-      Write-Host "Searching for go modules in $searchPath"
       $pkgFiles += @(Get-ChildItem (Join-Path $searchPath "go.mod"))
     }
   }

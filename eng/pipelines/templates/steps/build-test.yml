@@ -82,7 +82,8 @@ steps:
     displayName: "Install Coverage and Junit Dependencies"
     retryCountOnTaskFailure: 3
 
-  - ${{ if eq(parameters.TestProxy, true) }}:
+  # todo: does usefederatedauth need this present? if not we can put it in the else section on line 157.
+  - ${{ if and(eq(parameters.TestProxy, true), ne(parameters.ServiceDirectory, 'auto')) }}:
     - template: /eng/common/testproxy/test-proxy-tool.yml
 
   # we do not need to change any conditional activation for this section, as it is only activated when
@@ -129,27 +130,38 @@ steps:
         SYSTEM_ACCESSTOKEN: $(System.AccessToken)
 
   - ${{ else }}:
-    - task: PowerShell@2
-      displayName: Run Tests - v$(GoVersion)
-      inputs:
-        targetType: 'filePath'
-        filePath: ./eng/scripts/run_tests.ps1
-        arguments: '"$(Packages)" ${{ parameters.TestRunTime }} $${{ parameters.EnableRaceDetector }}'
-        pwsh: true
-      env:
-        GO111MODULE: 'on'
-        PROXY_CERT: $(Build.SourcesDirectory)/eng/common/testproxy/dotnet-devcert.crt
-        ${{ insert }}: ${{ parameters.EnvVars }}
-        GOTRACEBACK: all
-        AZURE_SDK_GO_LOGGING: all
+    # pullrequest builds MAY have both packages that use the proxy for tests and those that do not.
+    # we need to split the packages into two groups, one for the proxy and one for non-proxy to make this actualy work properly.
+    - ${{ eq(parameters.ServiceDirectory, 'auto') }}:
+      # run non proxy packages first
+      - template: /eng/pipelines/templates/steps/test-steps.yml
+        parameters:
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+          TestRunTime: ${{ parameters.TestRunTime }}
+          EnableRaceDetector: ${{ parameters.EnableRaceDetector }}
+          EnvVars: ${{ parameters.EnvVars }}
+          Packages: $(NonProxyPackages)
+          Condition: eq(variables['NonProxyPackagesPresent'], 'true')
 
-    - task: PowerShell@2
-      displayName: 'Build Performance Tests'
-      inputs:
-        targetType: 'filePath'
-        filePath: ./eng/scripts/Build_Perf.ps1
-        arguments: '"$(Packages)" $$(UseAzcoreFromMain)'
-        pwsh: true
+      - template: /eng/common/testproxy/test-proxy-tool.yml
+
+      - template: /eng/pipelines/templates/steps/test-steps.yml
+        parameters:
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+          TestRunTime: ${{ parameters.TestRunTime }}
+          EnableRaceDetector: ${{ parameters.EnableRaceDetector }}
+          EnvVars: ${{ parameters.EnvVars }}
+          Packages: $(ProxyPackages)
+          Condition: eq(variables['ProxyPackagesPresent'], 'true')
+
+    - ${{ else }}:
+      - template: /eng/pipelines/templates/steps/test-steps.yml
+        parameters:
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+          TestRunTime: ${{ parameters.TestRunTime }}
+          EnableRaceDetector: ${{ parameters.EnableRaceDetector }}
+          EnvVars: ${{ parameters.EnvVars }}
+          Packages: $(Packages)
 
   - ${{ if eq(parameters.TestProxy, true) }}:
     - pwsh: |

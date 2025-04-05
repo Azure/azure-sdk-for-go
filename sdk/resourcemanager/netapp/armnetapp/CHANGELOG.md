@@ -1,5 +1,26 @@
 # Release History
 
+## 7.5.0 (2025-04-25)
+### Features Added
+
+- New enum type `MultiAdStatus` with values `MultiAdStatusDisabled`, `MultiAdStatusEnabled`
+- New enum type `ReplicationType` with values `ReplicationTypeCrossRegionReplication`, `ReplicationTypeCrossZoneReplication`
+- New function `*ClientFactory.NewResourceUsagesClient() *ResourceUsagesClient`
+- New function `NewResourceUsagesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ResourceUsagesClient, error)`
+- New function `*ResourceUsagesClient.Get(context.Context, string, string, *ResourceUsagesClientGetOptions) (ResourceUsagesClientGetResponse, error)`
+- New function `*ResourceUsagesClient.NewListPager(string, *ResourceUsagesClientListOptions) *runtime.Pager[ResourceUsagesClientListResponse]`
+- New struct `DestinationReplication`
+- New struct `UsageName`
+- New struct `UsageProperties`
+- New struct `UsageResult`
+- New struct `UsagesListResult`
+- New field `MultiAdStatus`, `NfsV4IDDomain` in struct `AccountProperties`
+- New field `CompletionDate`, `IsLargeVolume`, `SnapshotCreationDate` in struct `BackupProperties`
+- New field `FederatedClientID` in struct `EncryptionIdentity`
+- New field `NextLink` in struct `OperationListResult`
+- New field `DestinationReplications` in struct `ReplicationObject`
+
+
 ## 7.4.0 (2025-02-12)
 ### Features Added
 

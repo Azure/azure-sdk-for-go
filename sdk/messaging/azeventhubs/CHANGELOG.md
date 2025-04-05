@@ -1,5 +1,11 @@
 # Release History
 
+## 1.3.2 (TBD)
+
+### Bugs Fixed
+
+- Processor now only lists checkpoints when it needs to start a new partition client, avoiding wasted calls to the checkpoint store. (PR#TBD)
+
 ## 1.3.1 (2025-03-11)
 
 ### Bugs Fixed

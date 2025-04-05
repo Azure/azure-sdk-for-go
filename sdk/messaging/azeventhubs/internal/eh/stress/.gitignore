@@ -6,3 +6,5 @@ newstress
 oldstress
 *.log
 generatedValues.yaml
+stress-test-resources.json
+

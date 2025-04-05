@@ -42,39 +42,3 @@ spec:
           cpu: "0.5"
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
 {{- end -}}
-
-{{- include "stress-test-addons.chaos-wrapper.tpl" (list . "stress.network-chaos") -}}
-{{- define "stress.network-chaos" -}}
-# basically: every 5 minutes do 10s of network loss
-kind: Schedule
-apiVersion: chaos-mesh.org/v1alpha1
-spec:
-  schedule: "*/5 * * * *"
-  type: NetworkChaos
-  historyLimit: 10
-  concurrencyPolicy: Allow
-  networkChaos:
-    selector:
-      namespaces:
-        - "{{ .Release.Namespace }}"
-      labelSelectors:
-        testInstance: "{{.Stress.Scenario}}-{{ .Release.Name }}-{{ .Release.Revision }}"
-        chaos: "true"
-    mode: all
-    action: loss
-    duration: 10s
-    loss:
-      loss: '100'
-      correlation: '100'
-    direction: to
-    target:
-      selector:
-        namespaces:
-          - {{ .Release.Namespace }}
-        labelSelectors:
-          testInstance: "{{.Stress.Scenario}}-{{ .Release.Name }}-{{ .Release.Revision }}"
-          chaos: "true"
-      mode: all
-    externalTargets:
-      - {{ .Stress.BaseName }}.servicebus.windows.net
-{{- end -}}

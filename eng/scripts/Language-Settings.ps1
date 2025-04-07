@@ -49,7 +49,7 @@ function Get-GoModuleProperties($goModPath)
     if ($modPath.Contains("eng")) { $sdkType = "eng" }
 
     $modVersion, $versionFile = Get-GoModuleVersionInfo $goModPath
-    if (!$modVersion -and -not $goModPath -match "(?<modPath>(eng)/(?<serviceDir>(.*?(?<serviceName>[^/]+)/)?(?<modName>[^/]+$)))") {
+    if (!$modVersion -and -not $sdkType -eq "eng") {
       return $null
     }
 

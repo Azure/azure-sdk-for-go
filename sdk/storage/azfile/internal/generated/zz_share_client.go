@@ -77,7 +77,7 @@ func (client *ShareClient) acquireLeaseCreateRequest(ctx context.Context, durati
 	if options != nil && options.ProposedLeaseID != nil {
 		req.Raw().Header["x-ms-proposed-lease-id"] = []string{*options.ProposedLeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -171,7 +171,7 @@ func (client *ShareClient) breakLeaseCreateRequest(ctx context.Context, options 
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -271,7 +271,7 @@ func (client *ShareClient) changeLeaseCreateRequest(ctx context.Context, leaseID
 	if options != nil && options.ProposedLeaseID != nil {
 		req.Raw().Header["x-ms-proposed-lease-id"] = []string{*options.ProposedLeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -366,7 +366,7 @@ func (client *ShareClient) createCreateRequest(ctx context.Context, options *Sha
 	if options != nil && options.AccessTier != nil {
 		req.Raw().Header["x-ms-access-tier"] = []string{string(*options.AccessTier)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if options != nil && options.EnabledProtocols != nil {
 		req.Raw().Header["x-ms-enabled-protocols"] = []string{*options.EnabledProtocols}
 	}
@@ -499,7 +499,7 @@ func (client *ShareClient) createPermissionCreateRequest(ctx context.Context, sh
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if client.fileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
@@ -575,7 +575,7 @@ func (client *ShareClient) createSnapshotCreateRequest(ctx context.Context, opti
 			}
 		}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if client.fileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
@@ -655,7 +655,7 @@ func (client *ShareClient) deleteCreateRequest(ctx context.Context, options *Sha
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if options != nil && options.DeleteSnapshots != nil {
 		req.Raw().Header["x-ms-delete-snapshots"] = []string{string(*options.DeleteSnapshots)}
 	}
@@ -739,7 +739,7 @@ func (client *ShareClient) getAccessPolicyCreateRequest(ctx context.Context, opt
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
 	}
@@ -823,7 +823,7 @@ func (client *ShareClient) getPermissionCreateRequest(ctx context.Context, fileP
 	if options != nil && options.FilePermissionFormat != nil {
 		req.Raw().Header["x-ms-file-permission-format"] = []string{string(*options.FilePermissionFormat)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if client.fileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
@@ -893,7 +893,7 @@ func (client *ShareClient) getPropertiesCreateRequest(ctx context.Context, optio
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
 	}
@@ -1109,7 +1109,7 @@ func (client *ShareClient) getStatisticsCreateRequest(ctx context.Context, optio
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
 	}
@@ -1195,7 +1195,7 @@ func (client *ShareClient) releaseLeaseCreateRequest(ctx context.Context, leaseI
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["x-ms-lease-action"] = []string{"release"}
 	req.Raw().Header["x-ms-lease-id"] = []string{leaseID}
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -1281,7 +1281,7 @@ func (client *ShareClient) renewLeaseCreateRequest(ctx context.Context, leaseID 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["x-ms-lease-action"] = []string{"renew"}
 	req.Raw().Header["x-ms-lease-id"] = []string{leaseID}
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -1363,7 +1363,7 @@ func (client *ShareClient) restoreCreateRequest(ctx context.Context, options *Sh
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -1485,7 +1485,7 @@ func (client *ShareClient) setAccessPolicyCreateRequest(ctx context.Context, sha
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
 	}
@@ -1576,7 +1576,7 @@ func (client *ShareClient) setMetadataCreateRequest(ctx context.Context, options
 			}
 		}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
 	}
@@ -1653,7 +1653,7 @@ func (client *ShareClient) setPropertiesCreateRequest(ctx context.Context, optio
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if options != nil && options.Quota != nil {
 		req.Raw().Header["x-ms-share-quota"] = []string{strconv.FormatInt(int64(*options.Quota), 10)}
 	}

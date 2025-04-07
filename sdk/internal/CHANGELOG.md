@@ -1,14 +1,10 @@
 # Release History
 
-## 1.11.1-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.11.1
 
 ### Other Changes
+
+The recording framework now always starts a requested test-proxy instance when in CI even if PROXY_MANUAL_START is set to `true`.
 
 ## 1.11.0 (2025-04-01)
 

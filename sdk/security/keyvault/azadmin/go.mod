@@ -5,7 +5,7 @@ go 1.23.0
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.17.1
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.8.2
-	github.com/Azure/azure-sdk-for-go/sdk/internal v1.10.0
+	github.com/Azure/azure-sdk-for-go/sdk/internal v1.11.1
 	github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azkeys v1.3.1
 	github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/internal v1.1.1
 	github.com/google/uuid v1.6.0

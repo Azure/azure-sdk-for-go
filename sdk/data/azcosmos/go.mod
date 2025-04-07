@@ -6,7 +6,7 @@ require (
 	github.com/Azure/azure-sdk-for-go v68.0.0+incompatible
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.17.1
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.8.2
-	github.com/Azure/azure-sdk-for-go/sdk/internal v1.10.0
+	github.com/Azure/azure-sdk-for-go/sdk/internal v1.11.1
 	github.com/stretchr/testify v1.10.0
 )
 

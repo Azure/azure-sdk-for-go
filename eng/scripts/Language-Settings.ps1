@@ -46,7 +46,7 @@ function Get-GoModuleProperties($goModPath)
     $serviceDir = $matches["serviceDir"]
     $sdkType = "client"
     if ($modName.StartsWith("arm") -or $modPath.Contains("resourcemanager")) { $sdkType = "mgmt" }
-    if ($modPath.Contains("eng")) { $sdkType = "eng" }
+    if ($modPath.Contains("eng/tools")) { $sdkType = "eng" }
 
     $modVersion, $versionFile = Get-GoModuleVersionInfo $goModPath
     if (!$modVersion -and -not $sdkType -eq "eng") {

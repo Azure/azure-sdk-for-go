@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-github.com/Azure/azure-sdk-for-go/sdk/azcore v1.17.1 h1:DSDNVxqkoXJiko6x8a90zidoYqnYYa6c1MTzDKzKkTo=
-github.com/Azure/azure-sdk-for-go/sdk/azcore v1.17.1/go.mod h1:zGqV2R4Cr/k8Uye5w+dgQ06WJtEcbQG/8J7BB6hnCr4=
-=======
 github.com/Azure/azure-sdk-for-go/sdk/azcore v1.17.1-0.20250219025933-3121a844ea6f h1:1zLNowVVYA0K21eqm+4nsy19fRzSoMfJehwIBFUE9qQ=
 github.com/Azure/azure-sdk-for-go/sdk/azcore v1.17.1-0.20250219025933-3121a844ea6f/go.mod h1:Ge6nSHgGsCgaojamitzmySEcAl46ZTs37ng9dm4FXcs=
->>>>>>> bb7663b9d3 ([internal/test] Add Internal Span Validator for Unit Tests (#24142))
 github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.8.2 h1:F0gBpfdPLGsw+nsgk6aqqkZS1jiixa5WwFe3fk/T3Ys=
 github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.8.2/go.mod h1:SqINnQ9lVVdRlyC8cd1lCI0SdX4n2paeABd2K8ggfnE=
 github.com/Azure/azure-sdk-for-go/sdk/azidentity/cache v0.3.2 h1:yz1bePFlP5Vws5+8ez6T3HWXPmwOK7Yvq8QxDBD3SKY=

@@ -120,3 +120,49 @@ func ExampleClient_GenerateSpeechFromText() {
 
 	// Output:
 }
+
+func ExampleClient_GetAudioTranslation() {
+	azureOpenAIKey := os.Getenv("AZURE_OPENAI_API_KEY")
+
+	// Ex: "https://<your-azure-openai-host>.openai.azure.com"
+	azureOpenAIEndpoint := os.Getenv("AZURE_OPENAI_ENDPOINT")
+
+	modelDeploymentID := os.Getenv("AZURE_OPENAI_DEPLOYMENT_ID")
+
+	if azureOpenAIKey == "" || azureOpenAIEndpoint == "" || modelDeploymentID == "" {
+		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
+		return
+	}
+
+	keyCredential := azcore.NewKeyCredential(azureOpenAIKey)
+
+	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, nil)
+
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
+	}
+	mp3Bytes, err := os.ReadFile("testdata/sampleaudio_hindi_myVoiceIsMyPassportVerifyMe.mp3")
+
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
+	}
+
+	resp, err := client.GetAudioTranslation(context.TODO(), azopenai.AudioTranslationOptions{
+		File:           mp3Bytes,
+		DeploymentName: &modelDeploymentID,
+		Prompt:         to.Ptr("Translate the following Hindi audio to English"),
+	}, nil)
+
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Printf("ERROR: %s", err)
+		return
+	}
+
+	// Output:
+	fmt.Fprintf(os.Stderr, "Transcribed json: %s\n", *resp.Text)
+}

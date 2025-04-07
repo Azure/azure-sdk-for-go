@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fd842fb73656039ec94ce367bcedee25a57bd18/specification/resources/resource-manager/Microsoft.Resources/stable/2021-04-01/examples/PutDeploymentAtScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PutDeploymentAtScope.json
 func ExampleDeploymentsClient_BeginCreateOrUpdateAtScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,7 +33,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdateAtScope() {
 		Location: to.Ptr("eastus"),
 		Properties: &armresources.DeploymentProperties{
 			Mode:       to.Ptr(armresources.DeploymentModeIncremental),
-			Parameters: map[string]any{},
+			Parameters: map[string]*armresources.DeploymentParameter{},
 			TemplateLink: &armresources.TemplateLink{
 				URI: to.Ptr("https://example.com/exampleTemplate.json"),
 			},
@@ -110,7 +110,91 @@ func ExampleDeploymentsClient_BeginCreateOrUpdateAtScope() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fd842fb73656039ec94ce367bcedee25a57bd18/specification/resources/resource-manager/Microsoft.Resources/stable/2021-04-01/examples/PutDeploymentAtTenant.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PostDeploymentValidateOnScope.json
+func ExampleDeploymentsClient_BeginValidateAtScope() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armresources.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDeploymentsClient().BeginValidateAtScope(ctx, "subscriptions/00000000-0000-0000-0000-000000000001/resourceGroups/my-resource-group", "my-deployment", armresources.Deployment{
+		Properties: &armresources.DeploymentProperties{
+			Mode:       to.Ptr(armresources.DeploymentModeIncremental),
+			Parameters: map[string]*armresources.DeploymentParameter{},
+			TemplateLink: &armresources.TemplateLink{
+				QueryString: to.Ptr("sv=2019-02-02&st=2019-04-29T22%3A18%3A26Z&se=2019-04-30T02%3A23%3A26Z&sr=b&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https&sig=xxxxxxxx0xxxxxxxxxxxxx%2bxxxxxxxxxxxxxxxxxxxx%3d"),
+				URI:         to.Ptr("https://example.com/exampleTemplate.json"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.DeploymentValidateResult = armresources.DeploymentValidateResult{
+	// 	Name: to.Ptr("my-deployment"),
+	// 	Type: to.Ptr("Microsoft.Resources/deployments"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000001/resourceGroups/my-resource-group/providers/Microsoft.Resources/deployments/my-deployment"),
+	// 	Properties: &armresources.DeploymentPropertiesExtended{
+	// 		CorrelationID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		Dependencies: []*armresources.Dependency{
+	// 		},
+	// 		Diagnostics: []*armresources.DeploymentDiagnosticsDefinition{
+	// 			{
+	// 				Code: to.Ptr("NestedDeploymentShortCircuited"),
+	// 				Level: to.Ptr(armresources.LevelWarning),
+	// 				Message: to.Ptr("A nested deployment got short-circuited and all its resources got skipped from validation. This is due to a nested template having a parameter that was not fully evaluated (e.g. contains a reference() function)."),
+	// 			},
+	// 			{
+	// 				Code: to.Ptr("NestedDeploymentSkippedFromInternalExpansion"),
+	// 				Level: to.Ptr(armresources.LevelWarning),
+	// 				Message: to.Ptr("When nested deployments are expanded, all its inner resources are retrieved for further validation. This process is performed in batch of: '10' at a time. Nested deployments exceeding this batch count are skipped from expansion."),
+	// 			},
+	// 			{
+	// 				Code: to.Ptr("NestedDeploymentExpansionLimitReached"),
+	// 				Level: to.Ptr(armresources.LevelWarning),
+	// 				Message: to.Ptr("Nested deployments are expanded up to: '50' in total. Nested deployments exceeding this count are skipped from expansion."),
+	// 		}},
+	// 		Duration: to.Ptr("PT22.8356799S"),
+	// 		Mode: to.Ptr(armresources.DeploymentModeIncremental),
+	// 		Parameters: map[string]any{
+	// 		},
+	// 		Providers: []*armresources.Provider{
+	// 			{
+	// 				Namespace: to.Ptr("Microsoft.Storage"),
+	// 				ResourceTypes: []*armresources.ProviderResourceType{
+	// 					{
+	// 						Locations: []*string{
+	// 							to.Ptr("eastus")},
+	// 							ResourceType: to.Ptr("storageAccounts"),
+	// 					}},
+	// 			}},
+	// 			ProvisioningState: to.Ptr(armresources.ProvisioningStateSucceeded),
+	// 			TemplateHash: to.Ptr("0000000000000000000"),
+	// 			TemplateLink: &armresources.TemplateLink{
+	// 				ContentVersion: to.Ptr("1.0.0.0"),
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000001/resourceGroups/my-resource-group/providers/Microsoft.Resources/TemplateSpecs/TemplateSpec-Name/versions/v1"),
+	// 			},
+	// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-05T01:20:01.723Z"); return t}()),
+	// 			ValidatedResources: []*armresources.ResourceReference{
+	// 				{
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000001/resourceGroups/my-resource-group/providers/Microsoft.Storage/storageAccounts/my-storage-account"),
+	// 			}},
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PutDeploymentAtTenant.json
 func ExampleDeploymentsClient_BeginCreateOrUpdateAtTenantScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +209,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdateAtTenantScope() {
 		Location: to.Ptr("eastus"),
 		Properties: &armresources.DeploymentProperties{
 			Mode:       to.Ptr(armresources.DeploymentModeIncremental),
-			Parameters: map[string]any{},
+			Parameters: map[string]*armresources.DeploymentParameter{},
 			TemplateLink: &armresources.TemplateLink{
 				URI: to.Ptr("https://example.com/exampleTemplate.json"),
 			},
@@ -202,7 +286,91 @@ func ExampleDeploymentsClient_BeginCreateOrUpdateAtTenantScope() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fd842fb73656039ec94ce367bcedee25a57bd18/specification/resources/resource-manager/Microsoft.Resources/stable/2021-04-01/examples/PostDeploymentWhatIfOnTenant.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PostDeploymentValidateOnTenant.json
+func ExampleDeploymentsClient_BeginValidateAtTenantScope() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armresources.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDeploymentsClient().BeginValidateAtTenantScope(ctx, "my-deployment", armresources.ScopedDeployment{
+		Location: to.Ptr("eastus"),
+		Properties: &armresources.DeploymentProperties{
+			Mode:       to.Ptr(armresources.DeploymentModeIncremental),
+			Parameters: map[string]*armresources.DeploymentParameter{},
+			TemplateLink: &armresources.TemplateLink{
+				URI: to.Ptr("https://example.com/exampleTemplate.json"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.DeploymentValidateResult = armresources.DeploymentValidateResult{
+	// 	Name: to.Ptr("my-deployment"),
+	// 	Type: to.Ptr("Microsoft.Resources/deployments"),
+	// 	ID: to.Ptr("/providers/Microsoft.Resources/deployments/my-deployment"),
+	// 	Properties: &armresources.DeploymentPropertiesExtended{
+	// 		CorrelationID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		Dependencies: []*armresources.Dependency{
+	// 		},
+	// 		Diagnostics: []*armresources.DeploymentDiagnosticsDefinition{
+	// 			{
+	// 				Code: to.Ptr("NestedDeploymentShortCircuited"),
+	// 				Level: to.Ptr(armresources.LevelWarning),
+	// 				Message: to.Ptr("A nested deployment got short-circuited and all its resources got skipped from validation. This is due to a nested template having a parameter that was not fully evaluated (e.g. contains a reference() function)."),
+	// 			},
+	// 			{
+	// 				Code: to.Ptr("NestedDeploymentSkippedFromInternalExpansion"),
+	// 				Level: to.Ptr(armresources.LevelWarning),
+	// 				Message: to.Ptr("When nested deployments are expanded, all its inner resources are retrieved for further validation. This process is performed in batch of: '10' at a time. Nested deployments exceeding this batch count are skipped from expansion."),
+	// 			},
+	// 			{
+	// 				Code: to.Ptr("NestedDeploymentExpansionLimitReached"),
+	// 				Level: to.Ptr(armresources.LevelWarning),
+	// 				Message: to.Ptr("Nested deployments are expanded up to: '50' in total. Nested deployments exceeding this count are skipped from expansion."),
+	// 		}},
+	// 		Duration: to.Ptr("PT22.8356799S"),
+	// 		Mode: to.Ptr(armresources.DeploymentModeIncremental),
+	// 		Parameters: map[string]any{
+	// 		},
+	// 		Providers: []*armresources.Provider{
+	// 			{
+	// 				Namespace: to.Ptr("Microsoft.Authorization"),
+	// 				ResourceTypes: []*armresources.ProviderResourceType{
+	// 					{
+	// 						Locations: []*string{
+	// 							nil},
+	// 							ResourceType: to.Ptr("policyDefinitions"),
+	// 					}},
+	// 			}},
+	// 			ProvisioningState: to.Ptr(armresources.ProvisioningStateSucceeded),
+	// 			TemplateHash: to.Ptr("0000000000000000000"),
+	// 			TemplateLink: &armresources.TemplateLink{
+	// 				ContentVersion: to.Ptr("1.0.0.0"),
+	// 				URI: to.Ptr("https://example.com/exampleTemplate.json"),
+	// 			},
+	// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-05T01:20:01.723Z"); return t}()),
+	// 			ValidatedResources: []*armresources.ResourceReference{
+	// 				{
+	// 					ID: to.Ptr("/providers/Microsoft.Authorization/policyDefinitions/policy-definition-name"),
+	// 			}},
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PostDeploymentWhatIfOnTenant.json
 func ExampleDeploymentsClient_BeginWhatIfAtTenantScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -216,9 +384,11 @@ func ExampleDeploymentsClient_BeginWhatIfAtTenantScope() {
 	poller, err := clientFactory.NewDeploymentsClient().BeginWhatIfAtTenantScope(ctx, "exampleDeploymentName", armresources.ScopedDeploymentWhatIf{
 		Location: to.Ptr("eastus"),
 		Properties: &armresources.DeploymentWhatIfProperties{
-			Mode:         to.Ptr(armresources.DeploymentModeIncremental),
-			Parameters:   map[string]any{},
-			TemplateLink: &armresources.TemplateLink{},
+			Mode:       to.Ptr(armresources.DeploymentModeIncremental),
+			Parameters: map[string]*armresources.DeploymentParameter{},
+			TemplateLink: &armresources.TemplateLink{
+				URI: to.Ptr("https://example.com/exampleTemplate.json"),
+			},
 		},
 	}, nil)
 	if err != nil {
@@ -249,7 +419,7 @@ func ExampleDeploymentsClient_BeginWhatIfAtTenantScope() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fd842fb73656039ec94ce367bcedee25a57bd18/specification/resources/resource-manager/Microsoft.Resources/stable/2021-04-01/examples/PutDeploymentAtManagementGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PutDeploymentAtManagementGroup.json
 func ExampleDeploymentsClient_BeginCreateOrUpdateAtManagementGroupScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -264,7 +434,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdateAtManagementGroupScope() {
 		Location: to.Ptr("eastus"),
 		Properties: &armresources.DeploymentProperties{
 			Mode:       to.Ptr(armresources.DeploymentModeIncremental),
-			Parameters: map[string]any{},
+			Parameters: map[string]*armresources.DeploymentParameter{},
 			TemplateLink: &armresources.TemplateLink{
 				URI: to.Ptr("https://example.com/exampleTemplate.json"),
 			},
@@ -333,7 +503,91 @@ func ExampleDeploymentsClient_BeginCreateOrUpdateAtManagementGroupScope() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fd842fb73656039ec94ce367bcedee25a57bd18/specification/resources/resource-manager/Microsoft.Resources/stable/2021-04-01/examples/PostDeploymentWhatIfOnManagementGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PostDeploymentValidateOnManagementGroup.json
+func ExampleDeploymentsClient_BeginValidateAtManagementGroupScope() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armresources.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDeploymentsClient().BeginValidateAtManagementGroupScope(ctx, "my-management-group-id", "my-deployment", armresources.ScopedDeployment{
+		Location: to.Ptr("eastus"),
+		Properties: &armresources.DeploymentProperties{
+			Mode:       to.Ptr(armresources.DeploymentModeIncremental),
+			Parameters: map[string]*armresources.DeploymentParameter{},
+			TemplateLink: &armresources.TemplateLink{
+				URI: to.Ptr("https://example.com/exampleTemplate.json"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.DeploymentValidateResult = armresources.DeploymentValidateResult{
+	// 	Name: to.Ptr("my-deployment"),
+	// 	Type: to.Ptr("Microsoft.Resources/deployments"),
+	// 	ID: to.Ptr("/providers/Microsoft.Management/managementGroups/my-management-group-id/providers/Microsoft.Resources/deployments/my-deployment"),
+	// 	Properties: &armresources.DeploymentPropertiesExtended{
+	// 		CorrelationID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		Dependencies: []*armresources.Dependency{
+	// 		},
+	// 		Diagnostics: []*armresources.DeploymentDiagnosticsDefinition{
+	// 			{
+	// 				Code: to.Ptr("NestedDeploymentShortCircuited"),
+	// 				Level: to.Ptr(armresources.LevelWarning),
+	// 				Message: to.Ptr("A nested deployment got short-circuited and all its resources got skipped from validation. This is due to a nested template having a parameter that was not fully evaluated (e.g. contains a reference() function)."),
+	// 			},
+	// 			{
+	// 				Code: to.Ptr("NestedDeploymentSkippedFromInternalExpansion"),
+	// 				Level: to.Ptr(armresources.LevelWarning),
+	// 				Message: to.Ptr("When nested deployments are expanded, all its inner resources are retrieved for further validation. This process is performed in batch of: '10' at a time. Nested deployments exceeding this batch count are skipped from expansion."),
+	// 			},
+	// 			{
+	// 				Code: to.Ptr("NestedDeploymentExpansionLimitReached"),
+	// 				Level: to.Ptr(armresources.LevelWarning),
+	// 				Message: to.Ptr("Nested deployments are expanded up to: '50' in total. Nested deployments exceeding this count are skipped from expansion."),
+	// 		}},
+	// 		Duration: to.Ptr("PT22.8356799S"),
+	// 		Mode: to.Ptr(armresources.DeploymentModeIncremental),
+	// 		Parameters: map[string]any{
+	// 		},
+	// 		Providers: []*armresources.Provider{
+	// 			{
+	// 				Namespace: to.Ptr("Microsoft.Authorization"),
+	// 				ResourceTypes: []*armresources.ProviderResourceType{
+	// 					{
+	// 						Locations: []*string{
+	// 							nil},
+	// 							ResourceType: to.Ptr("policyAssignments"),
+	// 					}},
+	// 			}},
+	// 			ProvisioningState: to.Ptr(armresources.ProvisioningStateSucceeded),
+	// 			TemplateHash: to.Ptr("0000000000000000000"),
+	// 			TemplateLink: &armresources.TemplateLink{
+	// 				ContentVersion: to.Ptr("1.0.0.0"),
+	// 				URI: to.Ptr("https://example.com/exampleTemplate.json"),
+	// 			},
+	// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-05T01:20:01.723Z"); return t}()),
+	// 			ValidatedResources: []*armresources.ResourceReference{
+	// 				{
+	// 					ID: to.Ptr("/providers/Microsoft.Management/managementGroups/myManagementGroup/providers/Microsoft.Authorization/policyAssignments/myPolicyAssignment"),
+	// 			}},
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PostDeploymentWhatIfOnManagementGroup.json
 func ExampleDeploymentsClient_BeginWhatIfAtManagementGroupScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -347,9 +601,11 @@ func ExampleDeploymentsClient_BeginWhatIfAtManagementGroupScope() {
 	poller, err := clientFactory.NewDeploymentsClient().BeginWhatIfAtManagementGroupScope(ctx, "myManagementGruop", "exampleDeploymentName", armresources.ScopedDeploymentWhatIf{
 		Location: to.Ptr("eastus"),
 		Properties: &armresources.DeploymentWhatIfProperties{
-			Mode:         to.Ptr(armresources.DeploymentModeIncremental),
-			Parameters:   map[string]any{},
-			TemplateLink: &armresources.TemplateLink{},
+			Mode:       to.Ptr(armresources.DeploymentModeIncremental),
+			Parameters: map[string]*armresources.DeploymentParameter{},
+			TemplateLink: &armresources.TemplateLink{
+				URI: to.Ptr("https://example.com/exampleTemplate.json"),
+			},
 		},
 	}, nil)
 	if err != nil {
@@ -426,7 +682,7 @@ func ExampleDeploymentsClient_BeginWhatIfAtManagementGroupScope() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fd842fb73656039ec94ce367bcedee25a57bd18/specification/resources/resource-manager/Microsoft.Resources/stable/2021-04-01/examples/PutDeploymentSubscriptionTemplateSpecsWithId.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PutDeploymentSubscriptionTemplateSpecsWithId.json
 func ExampleDeploymentsClient_BeginCreateOrUpdateAtSubscriptionScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -441,7 +697,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdateAtSubscriptionScope() {
 		Location: to.Ptr("eastus"),
 		Properties: &armresources.DeploymentProperties{
 			Mode:       to.Ptr(armresources.DeploymentModeIncremental),
-			Parameters: map[string]any{},
+			Parameters: map[string]*armresources.DeploymentParameter{},
 			TemplateLink: &armresources.TemplateLink{
 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000001/resourceGroups/my-resource-group/providers/Microsoft.Resources/TemplateSpecs/TemplateSpec-Name/versions/v1"),
 			},
@@ -485,7 +741,91 @@ func ExampleDeploymentsClient_BeginCreateOrUpdateAtSubscriptionScope() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fd842fb73656039ec94ce367bcedee25a57bd18/specification/resources/resource-manager/Microsoft.Resources/stable/2021-04-01/examples/PostDeploymentWhatIfOnSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PostDeploymentValidateOnSubscription.json
+func ExampleDeploymentsClient_BeginValidateAtSubscriptionScope() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armresources.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDeploymentsClient().BeginValidateAtSubscriptionScope(ctx, "my-deployment", armresources.Deployment{
+		Location: to.Ptr("eastus"),
+		Properties: &armresources.DeploymentProperties{
+			Mode:       to.Ptr(armresources.DeploymentModeIncremental),
+			Parameters: map[string]*armresources.DeploymentParameter{},
+			TemplateLink: &armresources.TemplateLink{
+				URI: to.Ptr("https://example.com/exampleTemplate.json"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.DeploymentValidateResult = armresources.DeploymentValidateResult{
+	// 	Name: to.Ptr("my-deployment"),
+	// 	Type: to.Ptr("Microsoft.Resources/deployments"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000001/providers/Microsoft.Resources/deployments/my-deployment"),
+	// 	Properties: &armresources.DeploymentPropertiesExtended{
+	// 		CorrelationID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		Dependencies: []*armresources.Dependency{
+	// 		},
+	// 		Diagnostics: []*armresources.DeploymentDiagnosticsDefinition{
+	// 			{
+	// 				Code: to.Ptr("NestedDeploymentShortCircuited"),
+	// 				Level: to.Ptr(armresources.LevelWarning),
+	// 				Message: to.Ptr("A nested deployment got short-circuited and all its resources got skipped from validation. This is due to a nested template having a parameter that was not fully evaluated (e.g. contains a reference() function)."),
+	// 			},
+	// 			{
+	// 				Code: to.Ptr("NestedDeploymentSkippedFromInternalExpansion"),
+	// 				Level: to.Ptr(armresources.LevelWarning),
+	// 				Message: to.Ptr("When nested deployments are expanded, all its inner resources are retrieved for further validation. This process is performed in batch of: '10' at a time. Nested deployments exceeding this batch count are skipped from expansion."),
+	// 			},
+	// 			{
+	// 				Code: to.Ptr("NestedDeploymentExpansionLimitReached"),
+	// 				Level: to.Ptr(armresources.LevelWarning),
+	// 				Message: to.Ptr("Nested deployments are expanded up to: '50' in total. Nested deployments exceeding this count are skipped from expansion."),
+	// 		}},
+	// 		Duration: to.Ptr("PT22.8356799S"),
+	// 		Mode: to.Ptr(armresources.DeploymentModeIncremental),
+	// 		Parameters: map[string]any{
+	// 		},
+	// 		Providers: []*armresources.Provider{
+	// 			{
+	// 				Namespace: to.Ptr("Microsoft.Resources"),
+	// 				ResourceTypes: []*armresources.ProviderResourceType{
+	// 					{
+	// 						Locations: []*string{
+	// 							to.Ptr("eastus")},
+	// 							ResourceType: to.Ptr("resourceGroups"),
+	// 					}},
+	// 			}},
+	// 			ProvisioningState: to.Ptr(armresources.ProvisioningStateSucceeded),
+	// 			TemplateHash: to.Ptr("0000000000000000000"),
+	// 			TemplateLink: &armresources.TemplateLink{
+	// 				ContentVersion: to.Ptr("1.0.0.0"),
+	// 				URI: to.Ptr("https://example.com/exampleTemplate.json"),
+	// 			},
+	// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-05T01:20:01.723Z"); return t}()),
+	// 			ValidatedResources: []*armresources.ResourceReference{
+	// 				{
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000001/resourceGroups/my-resource-group2"),
+	// 			}},
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PostDeploymentWhatIfOnSubscription.json
 func ExampleDeploymentsClient_BeginWhatIfAtSubscriptionScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -499,9 +839,11 @@ func ExampleDeploymentsClient_BeginWhatIfAtSubscriptionScope() {
 	poller, err := clientFactory.NewDeploymentsClient().BeginWhatIfAtSubscriptionScope(ctx, "my-deployment", armresources.DeploymentWhatIf{
 		Location: to.Ptr("westus"),
 		Properties: &armresources.DeploymentWhatIfProperties{
-			Mode:         to.Ptr(armresources.DeploymentModeIncremental),
-			Parameters:   map[string]any{},
-			TemplateLink: &armresources.TemplateLink{},
+			Mode:       to.Ptr(armresources.DeploymentModeIncremental),
+			Parameters: map[string]*armresources.DeploymentParameter{},
+			TemplateLink: &armresources.TemplateLink{
+				URI: to.Ptr("https://example.com/exampleTemplate.json"),
+			},
 		},
 	}, nil)
 	if err != nil {
@@ -570,11 +912,11 @@ func ExampleDeploymentsClient_BeginWhatIfAtSubscriptionScope() {
 	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000001/resourceGroups/my-resource-group2"),
 	// 		}},
 	// 	},
-	// 	Status: to.Ptr("succeeded"),
+	// 	Status: to.Ptr("Succeeded"),
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fd842fb73656039ec94ce367bcedee25a57bd18/specification/resources/resource-manager/Microsoft.Resources/stable/2021-04-01/examples/PutDeploymentResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PutDeploymentResourceGroup.json
 func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillDeployATemplateWithAUriAndQueryString() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -588,7 +930,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillDeplo
 	poller, err := clientFactory.NewDeploymentsClient().BeginCreateOrUpdate(ctx, "my-resource-group", "my-deployment", armresources.Deployment{
 		Properties: &armresources.DeploymentProperties{
 			Mode:       to.Ptr(armresources.DeploymentModeIncremental),
-			Parameters: map[string]any{},
+			Parameters: map[string]*armresources.DeploymentParameter{},
 			TemplateLink: &armresources.TemplateLink{
 				QueryString: to.Ptr("sv=2019-02-02&st=2019-04-29T22%3A18%3A26Z&se=2019-04-30T02%3A23%3A26Z&sr=b&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https&sig=xxxxxxxx0xxxxxxxxxxxxx%2bxxxxxxxxxxxxxxxxxxxx%3d"),
 				URI:         to.Ptr("https://example.com/exampleTemplate.json"),
@@ -642,7 +984,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillDeplo
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fd842fb73656039ec94ce367bcedee25a57bd18/specification/resources/resource-manager/Microsoft.Resources/stable/2021-04-01/examples/PutDeploymentResourceGroupTemplateSpecsWithId.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PutDeploymentResourceGroupTemplateSpecsWithId.json
 func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillDeployATemplateSpecWithTheGivenResourceId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -656,7 +998,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillDeplo
 	poller, err := clientFactory.NewDeploymentsClient().BeginCreateOrUpdate(ctx, "my-resource-group", "my-deployment", armresources.Deployment{
 		Properties: &armresources.DeploymentProperties{
 			Mode:       to.Ptr(armresources.DeploymentModeIncremental),
-			Parameters: map[string]any{},
+			Parameters: map[string]*armresources.DeploymentParameter{},
 			TemplateLink: &armresources.TemplateLink{
 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000001/resourceGroups/my-resource-group/providers/Microsoft.Resources/TemplateSpecs/TemplateSpec-Name/versions/v1"),
 			},
@@ -709,7 +1051,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillDeplo
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fd842fb73656039ec94ce367bcedee25a57bd18/specification/resources/resource-manager/Microsoft.Resources/stable/2021-04-01/examples/PutDeploymentWithOnErrorDeploymentSpecificDeployment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PutDeploymentWithOnErrorDeploymentSpecificDeployment.json
 func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillRedeployAnotherDeploymentOnFailure() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -727,7 +1069,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillRedep
 				Type:           to.Ptr(armresources.OnErrorDeploymentTypeSpecificDeployment),
 				DeploymentName: to.Ptr("name-of-deployment-to-use"),
 			},
-			Parameters: map[string]any{},
+			Parameters: map[string]*armresources.DeploymentParameter{},
 			TemplateLink: &armresources.TemplateLink{
 				URI: to.Ptr("https://example.com/exampleTemplate.json"),
 			},
@@ -810,7 +1152,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillRedep
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fd842fb73656039ec94ce367bcedee25a57bd18/specification/resources/resource-manager/Microsoft.Resources/stable/2021-04-01/examples/PutDeploymentWithOnErrorDeploymentLastSuccessful.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PutDeploymentWithOnErrorDeploymentLastSuccessful.json
 func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillRedeployTheLastSuccessfulDeploymentOnFailure() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -827,7 +1169,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillRedep
 			OnErrorDeployment: &armresources.OnErrorDeployment{
 				Type: to.Ptr(armresources.OnErrorDeploymentTypeLastSuccessful),
 			},
-			Parameters: map[string]any{},
+			Parameters: map[string]*armresources.DeploymentParameter{},
 			TemplateLink: &armresources.TemplateLink{
 				URI: to.Ptr("https://example.com/exampleTemplate.json"),
 			},
@@ -910,7 +1252,91 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillRedep
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fd842fb73656039ec94ce367bcedee25a57bd18/specification/resources/resource-manager/Microsoft.Resources/stable/2021-04-01/examples/PostDeploymentWhatIfOnResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PostDeploymentValidateOnResourceGroup.json
+func ExampleDeploymentsClient_BeginValidate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armresources.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDeploymentsClient().BeginValidate(ctx, "my-resource-group", "my-deployment", armresources.Deployment{
+		Properties: &armresources.DeploymentProperties{
+			Mode:       to.Ptr(armresources.DeploymentModeIncremental),
+			Parameters: map[string]*armresources.DeploymentParameter{},
+			TemplateLink: &armresources.TemplateLink{
+				QueryString: to.Ptr("sv=2019-02-02&st=2019-04-29T22%3A18%3A26Z&se=2019-04-30T02%3A23%3A26Z&sr=b&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https&sig=xxxxxxxx0xxxxxxxxxxxxx%2bxxxxxxxxxxxxxxxxxxxx%3d"),
+				URI:         to.Ptr("https://example.com/exampleTemplate.json"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.DeploymentValidateResult = armresources.DeploymentValidateResult{
+	// 	Name: to.Ptr("my-deployment"),
+	// 	Type: to.Ptr("Microsoft.Resources/deployments"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000001/resourceGroups/my-resource-group/providers/Microsoft.Resources/deployments/my-deployment"),
+	// 	Properties: &armresources.DeploymentPropertiesExtended{
+	// 		CorrelationID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		Dependencies: []*armresources.Dependency{
+	// 		},
+	// 		Diagnostics: []*armresources.DeploymentDiagnosticsDefinition{
+	// 			{
+	// 				Code: to.Ptr("NestedDeploymentShortCircuited"),
+	// 				Level: to.Ptr(armresources.LevelWarning),
+	// 				Message: to.Ptr("A nested deployment got short-circuited and all its resources got skipped from validation. This is due to a nested template having a parameter that was not fully evaluated (e.g. contains a reference() function)."),
+	// 			},
+	// 			{
+	// 				Code: to.Ptr("NestedDeploymentSkippedFromInternalExpansion"),
+	// 				Level: to.Ptr(armresources.LevelWarning),
+	// 				Message: to.Ptr("When nested deployments are expanded, all its inner resources are retrieved for further validation. This process is performed in batch of: '10' at a time. Nested deployments exceeding this batch count are skipped from expansion."),
+	// 			},
+	// 			{
+	// 				Code: to.Ptr("NestedDeploymentExpansionLimitReached"),
+	// 				Level: to.Ptr(armresources.LevelWarning),
+	// 				Message: to.Ptr("Nested deployments are expanded up to: '50' in total. Nested deployments exceeding this count are skipped from expansion."),
+	// 		}},
+	// 		Duration: to.Ptr("PT22.8356799S"),
+	// 		Mode: to.Ptr(armresources.DeploymentModeIncremental),
+	// 		Parameters: map[string]any{
+	// 		},
+	// 		Providers: []*armresources.Provider{
+	// 			{
+	// 				Namespace: to.Ptr("Microsoft.Storage"),
+	// 				ResourceTypes: []*armresources.ProviderResourceType{
+	// 					{
+	// 						Locations: []*string{
+	// 							to.Ptr("eastus")},
+	// 							ResourceType: to.Ptr("storageAccounts"),
+	// 					}},
+	// 			}},
+	// 			ProvisioningState: to.Ptr(armresources.ProvisioningStateSucceeded),
+	// 			TemplateHash: to.Ptr("0000000000000000000"),
+	// 			TemplateLink: &armresources.TemplateLink{
+	// 				ContentVersion: to.Ptr("1.0.0.0"),
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000001/resourceGroups/my-resource-group/providers/Microsoft.Resources/TemplateSpecs/TemplateSpec-Name/versions/v1"),
+	// 			},
+	// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-05T01:20:01.723Z"); return t}()),
+	// 			ValidatedResources: []*armresources.ResourceReference{
+	// 				{
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000001/resourceGroups/my-resource-group/providers/Microsoft.Storage/storageAccounts/my-storage-account"),
+	// 			}},
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PostDeploymentWhatIfOnResourceGroup.json
 func ExampleDeploymentsClient_BeginWhatIf() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -923,9 +1349,11 @@ func ExampleDeploymentsClient_BeginWhatIf() {
 	}
 	poller, err := clientFactory.NewDeploymentsClient().BeginWhatIf(ctx, "my-resource-group", "my-deployment", armresources.DeploymentWhatIf{
 		Properties: &armresources.DeploymentWhatIfProperties{
-			Mode:         to.Ptr(armresources.DeploymentModeIncremental),
-			Parameters:   map[string]any{},
-			TemplateLink: &armresources.TemplateLink{},
+			Mode:       to.Ptr(armresources.DeploymentModeIncremental),
+			Parameters: map[string]*armresources.DeploymentParameter{},
+			TemplateLink: &armresources.TemplateLink{
+				URI: to.Ptr("https://example.com/exampleTemplate.json"),
+			},
 		},
 	}, nil)
 	if err != nil {
@@ -983,11 +1411,11 @@ func ExampleDeploymentsClient_BeginWhatIf() {
 	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000001/resourceGroups/my-resource-group/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myNewIdentity"),
 	// 		}},
 	// 	},
-	// 	Status: to.Ptr("succeeded"),
+	// 	Status: to.Ptr("Succeeded"),
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fd842fb73656039ec94ce367bcedee25a57bd18/specification/resources/resource-manager/Microsoft.Resources/stable/2021-04-01/examples/CalculateTemplateHash.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/CalculateTemplateHash.json
 func ExampleDeploymentsClient_CalculateTemplateHash() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

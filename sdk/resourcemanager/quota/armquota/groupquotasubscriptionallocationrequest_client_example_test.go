@@ -18,18 +18,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/55c5a0cd6da80b2700333c01e9a9c6067de9cef0/specification/quota/resource-manager/Microsoft.Quota/preview/2024-12-18-preview/examples/SubscriptionQuotaAllocationRequests/PatchSubscriptionQuotaAllocationRequest-Compute.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8691e5081766c7ad602a9e55de841d07bed5196a/specification/quota/resource-manager/Microsoft.Quota/stable/2025-03-01/examples/SubscriptionQuotaAllocationRequests/PatchSubscriptionQuotaAllocationRequest-Compute.json
 func ExampleGroupQuotaSubscriptionAllocationRequestClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armquota.NewClientFactory("<subscription-id>", cred, nil)
+	clientFactory, err := armquota.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewGroupQuotaSubscriptionAllocationRequestClient().BeginUpdate(ctx, "E7EC67B3-7657-4966-BFFC-41EFD36BAA09", "groupquota1", "Microsoft.Compute", "westus", armquota.SubscriptionQuotaAllocationsList{
+	poller, err := clientFactory.NewGroupQuotaSubscriptionAllocationRequestClient("<subscription-id>").BeginUpdate(ctx, "E7EC67B3-7657-4966-BFFC-41EFD36BAA09", "groupquota1", "Microsoft.Compute", "westus", armquota.SubscriptionQuotaAllocationsList{
 		Properties: &armquota.SubscriptionQuotaAllocationsListProperties{
 			Value: []*armquota.SubscriptionQuotaAllocations{
 				{
@@ -59,7 +59,7 @@ func ExampleGroupQuotaSubscriptionAllocationRequestClient_BeginUpdate() {
 	// res.SubscriptionQuotaAllocationsList = armquota.SubscriptionQuotaAllocationsList{
 	// 	Name: to.Ptr("westus"),
 	// 	Type: to.Ptr("Microsoft.Quota/groupQuotas/quotaAllocations"),
-	// 	ID: to.Ptr("/providers/Microsoft.Management/managementGroups/E7EC67B3-7657-4966-BFFC-41EFD36BAA09/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Quota/groupQuotas/groupquota1/resourceProviders/Microsoft.Compute/locations/westus/quotaAllocations/westus"),
+	// 	ID: to.Ptr("/providers/Microsoft.Management/managementGroups/E7EC67B3-7657-4966-BFFC-41EFD36BAA09/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Quota/groupQuotas/groupquota1/resourceProviders/Microsoft.Compute/quotaAllocations/westus"),
 	// 	Properties: &armquota.SubscriptionQuotaAllocationsListProperties{
 	// 		ProvisioningState: to.Ptr(armquota.RequestStateSucceeded),
 	// 		Value: []*armquota.SubscriptionQuotaAllocations{
@@ -89,18 +89,18 @@ func ExampleGroupQuotaSubscriptionAllocationRequestClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/55c5a0cd6da80b2700333c01e9a9c6067de9cef0/specification/quota/resource-manager/Microsoft.Quota/preview/2024-12-18-preview/examples/SubscriptionQuotaAllocationRequests/SubscriptionQuotaAllocationRequests_Get-Compute.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8691e5081766c7ad602a9e55de841d07bed5196a/specification/quota/resource-manager/Microsoft.Quota/stable/2025-03-01/examples/SubscriptionQuotaAllocationRequests/SubscriptionQuotaAllocationRequests_Get-Compute.json
 func ExampleGroupQuotaSubscriptionAllocationRequestClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armquota.NewClientFactory("<subscription-id>", cred, nil)
+	clientFactory, err := armquota.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewGroupQuotaSubscriptionAllocationRequestClient().Get(ctx, "E7EC67B3-7657-4966-BFFC-41EFD36BAA09", "groupquota1", "Microsoft.Compute", "AE000000-0000-0000-0000-00000000000A", nil)
+	res, err := clientFactory.NewGroupQuotaSubscriptionAllocationRequestClient("<subscription-id>").Get(ctx, "E7EC67B3-7657-4966-BFFC-41EFD36BAA09", "groupquota1", "Microsoft.Compute", "AE000000-0000-0000-0000-00000000000A", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -129,18 +129,18 @@ func ExampleGroupQuotaSubscriptionAllocationRequestClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/55c5a0cd6da80b2700333c01e9a9c6067de9cef0/specification/quota/resource-manager/Microsoft.Quota/preview/2024-12-18-preview/examples/SubscriptionQuotaAllocationRequests/SubscriptionQuotaAllocationRequests_List-Compute.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8691e5081766c7ad602a9e55de841d07bed5196a/specification/quota/resource-manager/Microsoft.Quota/stable/2025-03-01/examples/SubscriptionQuotaAllocationRequests/SubscriptionQuotaAllocationRequests_List-Compute.json
 func ExampleGroupQuotaSubscriptionAllocationRequestClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armquota.NewClientFactory("<subscription-id>", cred, nil)
+	clientFactory, err := armquota.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewGroupQuotaSubscriptionAllocationRequestClient().NewListPager("E7EC67B3-7657-4966-BFFC-41EFD36BAA09", "groupquota1", "Microsoft.Compute", "location eq westus", nil)
+	pager := clientFactory.NewGroupQuotaSubscriptionAllocationRequestClient("<subscription-id>").NewListPager("E7EC67B3-7657-4966-BFFC-41EFD36BAA09", "groupquota1", "Microsoft.Compute", "location eq westus", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

@@ -95,15 +95,77 @@ function Get-go-PackageInfoFromPackageFile($pkg, $workingDirectory)
     return $resultObj
 }
 
-function Get-AllPackageInfoFromRepo($serviceDirectory)
+function EvaluateCIParam {
+  param(
+    [HashTable]$ParsedYmlContent,
+    [PackageProps]$pkgProp,
+    [string]$ParamName,
+    [bool]$DefaultValue
+  )
+
+  $paramPresent = GetValueSafelyFrom-Yaml $ParsedYmlContent @("extends", "parameters", $ParamName)
+
+  if ($null -ne $paramPresent) {
+    $parsedBool = $null
+
+    if ([bool]::TryParse($paramPresent, [ref]$parsedBool)) {
+      $pkgProp.CIParameters[$ParamName] = $parsedBool
+    }
+  }
+  else {
+    $pkgProp.CIParameters[$ParamName] = $DefaultValue
+  }
+}
+
+
+<#
+.DESCRIPTION
+This function resolves a filter string to a directly invokable directory or directories
+that can be assembled by a go binary.
+#>
+function ResolveSearchPaths {
+  param (
+      [Parameter(Mandatory=$true)]
+      $FilterString
+  )
+
+  $resolvedPaths = @()
+  $filters = $FilterString.Split(",")
+
+  foreach($filter in $filters) {
+    if ($filter.StartsWith("sdk")) {
+      $resolvedPaths += (Join-Path $RepoRoot $filter)
+    }
+    else {
+      $resolvedPaths += (Join-Path $RepoRoot "sdk" $filter)
+    }
+  }
+
+  return ,$resolvedPaths
+}
+
+
+# This parameter can be a straightforward filter string EG "sdk/template/aztemplate,sdk/core/azcore".
+# However the Save-Package-Properties call for a service directory context EXPLICITLY passes -ServiceDirectory
+# when passing the string through to the function. Due to that, we can't name this the more appropraite "filterString"
+# We have to meet that function signature that is called from Get-AllPkgProperties in `Package-Properties.ps1`.
+# This $ServiceDirectory argument can actually be a comma separated list of package paths OR the standard service directories,
+# but until we make a change over in eng/common/scripts/Package-Properties.ps1 to support that, we will just use the name $ServiceDirectory
+# here.
+function Get-AllPackageInfoFromRepo($ServiceDirectory)
 {
   $allPackageProps = @()
-  $searchPath = Join-Path $RepoRoot "sdk"
   $pkgFiles = @()
-  if ($serviceDirectory) {
-    $searchPath = Join-Path $searchPath $serviceDirectory "go.mod"
-    [array]$pkgFiles = @(Get-ChildItem $searchPath)
-  } else {
+
+  if ($ServiceDirectory) {
+    $searchPaths = ResolveSearchPaths $ServiceDirectory
+
+    foreach ($searchPath in $searchPaths) {
+      $pkgFiles += @(Get-ChildItem (Join-Path $searchPath "go.mod"))
+    }
+  }
+  else {
+    $searchPath = Join-Path $RepoRoot "sdk"
     # If service directory is not passed in, find all modules
     [array]$pkgFiles = Get-ChildItem -Path $searchPath -Include "go.mod" -Recurse
   }
@@ -116,6 +178,31 @@ function Get-AllPackageInfoFromRepo($serviceDirectory)
       $allPackageProps += $modPropertes
     }
   }
+
+  # populate ci parameters for each package
+  foreach ($pkgProp in $allPackageProps) {
+    $pkgProp.ArtifactName = $pkgProp.Name
+    $ciProps = $pkgProp.GetCIYmlForArtifact()
+
+    # UsePipelineProxy - installs and runs the test proxy in ci.tests.yml, defaults true
+    # NonShipping - activate verify changelog in analyze, defaults false
+    # IsSdkLibrary - activates Detect API Changes, enables save-package-properties and enables Create API Review steps, defaults true
+    # LicenseCheck - activates license check in analyze, defaults true
+    if ($ciProps) {
+      EvaluateCIParam $ciProps.ParsedYml $pkgProp "UsePipelineProxy" $true
+      EvaluateCIParam $ciProps.ParsedYml $pkgProp "NonShipping" $false
+      EvaluateCIParam $ciProps.ParsedYml $pkgProp "IsSdkLibrary" $true
+      EvaluateCIParam $ciProps.ParsedYml $pkgProp "LicenseCheck" $true
+    }
+    # if we don't have a ci yml, just set the defaults
+    else {
+      $pkgProp.CIParameters["UsePipelineProxy"] = $true
+      $pkgProp.CIParameters["NonShipping"] = $false
+      $pkgProp.CIParameters["IsSdkLibrary"] = $true
+      $pkgProp.CIParameters["LicenseCheck"] = $true
+    }
+  }
+
   return $allPackageProps
 }
 

@@ -1,19 +1,18 @@
 {
   "matrix": {
     "Agent": {
-      "ubuntu-20.04": {
+      "ubuntu_go": {
         "OSVmImage": "env:LINUXVMIMAGE",
         "Pool": "env:LINUXPOOL"
       },
-      "windows-2022": {
+      "windows_go": {
         "OSVmImage": "env:WINDOWSVMIMAGE",
         "Pool": "env:WINDOWSPOOL"
       }
     },
     "GoVersion": [
-      "1.18.10",
-      "1.22.8",
-      "1.23.2"
+      "env:GO_VERSION_LATEST",
+      "env:GO_VERSION_PREVIOUS"
     ]
   }
 }

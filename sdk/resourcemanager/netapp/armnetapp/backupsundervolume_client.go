@@ -46,7 +46,7 @@ func NewBackupsUnderVolumeClient(subscriptionID string, credential azcore.TokenC
 // BeginMigrateBackups - Migrate the backups under volume to backup vault
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01-preview
+// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
@@ -75,7 +75,7 @@ func (client *BackupsUnderVolumeClient) BeginMigrateBackups(ctx context.Context,
 // MigrateBackups - Migrate the backups under volume to backup vault
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01-preview
+// Generated from API version 2024-09-01
 func (client *BackupsUnderVolumeClient) migrateBackups(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body BackupsMigrationRequest, options *BackupsUnderVolumeClientBeginMigrateBackupsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BackupsUnderVolumeClient.BeginMigrateBackups"
@@ -125,7 +125,7 @@ func (client *BackupsUnderVolumeClient) migrateBackupsCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01-preview")
+	reqQP.Set("api-version", "2024-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

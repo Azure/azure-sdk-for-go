@@ -1,6 +1,6 @@
 # Release History
 
-## 1.10.1 (Unreleased)
+## 1.11.1-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,16 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.11.0 (2025-04-01)
+
+### Features Added
+* `temporal.NewResourceWithOptions` enables overriding default `temporal.Resource` refresh behavior
+
+### Other Changes
+* Zero `RecordingOptions.ProxyPort` is interpreted as indicating the default port used
+  by `StartTestProxy`
+* Improved presentation of test proxy recording mismatch errors
 
 ## 1.10.0 (2024-07-16)
 

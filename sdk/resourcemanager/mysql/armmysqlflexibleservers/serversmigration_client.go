@@ -46,7 +46,7 @@ func NewServersMigrationClient(subscriptionID string, credential azcore.TokenCre
 // BeginCutoverMigration - Cutover migration for MySQL import, it will switch source elastic server DNS to flexible server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-12-30
+// Generated from API version 2024-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - ServersMigrationClientBeginCutoverMigrationOptions contains the optional parameters for the ServersMigrationClient.BeginCutoverMigration
@@ -72,7 +72,7 @@ func (client *ServersMigrationClient) BeginCutoverMigration(ctx context.Context,
 // CutoverMigration - Cutover migration for MySQL import, it will switch source elastic server DNS to flexible server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-12-30
+// Generated from API version 2024-10-01-preview
 func (client *ServersMigrationClient) cutoverMigration(ctx context.Context, resourceGroupName string, serverName string, options *ServersMigrationClientBeginCutoverMigrationOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServersMigrationClient.BeginCutoverMigration"
@@ -114,7 +114,7 @@ func (client *ServersMigrationClient) cutoverMigrationCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-12-30")
+	reqQP.Set("api-version", "2024-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

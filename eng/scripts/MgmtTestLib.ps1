@@ -20,7 +20,7 @@ function Invoke-MgmtTestgen ()
         [string]$autorestPath = "",
         [string]$config = "autorest.md",
         [string]$goExtension = "C:\Users\jiaqzhang\work\autorest.go\packages\autorest.go",
-        [string]$testExtension = "C:\Users\jiaqzhang\work\autorest.go\packages\autorest.gotest",
+        [string]$testExtension = "@autorest/gotest@4.7.4",
         [string]$outputFolder
     )
     if ($clean)

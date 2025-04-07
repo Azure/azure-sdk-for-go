@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListBackends.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListBackends.json
 func ExampleBackendClient_NewListByServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,7 +49,7 @@ func ExampleBackendClient_NewListByServicePager() {
 		// 		{
 		// 			Name: to.Ptr("proxybackend"),
 		// 			Type: to.Ptr("Microsoft.ApiManagement/service/backends"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/proxybackend"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/proxybackend"),
 		// 			Properties: &armapimanagement.BackendContractProperties{
 		// 				Description: to.Ptr("description5308"),
 		// 				Credentials: &armapimanagement.BackendCredentialsContract{
@@ -85,12 +85,12 @@ func ExampleBackendClient_NewListByServicePager() {
 		// 				{
 		// 					Name: to.Ptr("sfbackend"),
 		// 					Type: to.Ptr("Microsoft.ApiManagement/service/backends"),
-		// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/sfbackend"),
+		// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/sfbackend"),
 		// 					Properties: &armapimanagement.BackendContractProperties{
 		// 						Description: to.Ptr("Service Fabric Test App 1"),
 		// 						Properties: &armapimanagement.BackendProperties{
 		// 							ServiceFabricCluster: &armapimanagement.BackendServiceFabricClusterProperties{
-		// 								ClientCertificateID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/cert1"),
+		// 								ClientCertificateID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/cert1"),
 		// 								ManagementEndpoints: []*string{
 		// 									to.Ptr("https://somecluster.com")},
 		// 									MaxPartitionResolutionRetries: to.Ptr[int32](5),
@@ -109,7 +109,7 @@ func ExampleBackendClient_NewListByServicePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementHeadBackend.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementHeadBackend.json
 func ExampleBackendClient_GetEntityTag() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -126,7 +126,7 @@ func ExampleBackendClient_GetEntityTag() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetBackend.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementGetBackend.json
 func ExampleBackendClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,12 +147,12 @@ func ExampleBackendClient_Get() {
 	// res.BackendContract = armapimanagement.BackendContract{
 	// 	Name: to.Ptr("sfbackend"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/backends"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/sfbackend"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/sfbackend"),
 	// 	Properties: &armapimanagement.BackendContractProperties{
 	// 		Description: to.Ptr("Service Fabric Test App 1"),
 	// 		Properties: &armapimanagement.BackendProperties{
 	// 			ServiceFabricCluster: &armapimanagement.BackendServiceFabricClusterProperties{
-	// 				ClientCertificateID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/cert1"),
+	// 				ClientCertificateID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/cert1"),
 	// 				ManagementEndpoints: []*string{
 	// 					to.Ptr("https://somecluster.com")},
 	// 					MaxPartitionResolutionRetries: to.Ptr[int32](5),
@@ -169,7 +169,7 @@ func ExampleBackendClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateBackendProxyBackend.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateBackendProxyBackend.json
 func ExampleBackendClient_CreateOrUpdate_apiManagementCreateBackendProxyBackend() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -222,7 +222,7 @@ func ExampleBackendClient_CreateOrUpdate_apiManagementCreateBackendProxyBackend(
 	// res.BackendContract = armapimanagement.BackendContract{
 	// 	Name: to.Ptr("proxybackend"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/backends"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/proxybackend"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/proxybackend"),
 	// 	Properties: &armapimanagement.BackendContractProperties{
 	// 		Description: to.Ptr("description5308"),
 	// 		Credentials: &armapimanagement.BackendCredentialsContract{
@@ -257,7 +257,7 @@ func ExampleBackendClient_CreateOrUpdate_apiManagementCreateBackendProxyBackend(
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateBackendServiceFabric.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateBackendServiceFabric.json
 func ExampleBackendClient_CreateOrUpdate_apiManagementCreateBackendServiceFabric() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -273,7 +273,7 @@ func ExampleBackendClient_CreateOrUpdate_apiManagementCreateBackendServiceFabric
 			Description: to.Ptr("Service Fabric Test App 1"),
 			Properties: &armapimanagement.BackendProperties{
 				ServiceFabricCluster: &armapimanagement.BackendServiceFabricClusterProperties{
-					ClientCertificateID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/cert1"),
+					ClientCertificateID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/cert1"),
 					ManagementEndpoints: []*string{
 						to.Ptr("https://somecluster.com")},
 					MaxPartitionResolutionRetries: to.Ptr[int32](5),
@@ -297,12 +297,12 @@ func ExampleBackendClient_CreateOrUpdate_apiManagementCreateBackendServiceFabric
 	// res.BackendContract = armapimanagement.BackendContract{
 	// 	Name: to.Ptr("sfbackend"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/backends"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/sfbackend"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/sfbackend"),
 	// 	Properties: &armapimanagement.BackendContractProperties{
 	// 		Description: to.Ptr("Service Fabric Test App 1"),
 	// 		Properties: &armapimanagement.BackendProperties{
 	// 			ServiceFabricCluster: &armapimanagement.BackendServiceFabricClusterProperties{
-	// 				ClientCertificateID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/cert1"),
+	// 				ClientCertificateID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/cert1"),
 	// 				ManagementEndpoints: []*string{
 	// 					to.Ptr("https://somecluster.com")},
 	// 					MaxPartitionResolutionRetries: to.Ptr[int32](5),
@@ -319,7 +319,7 @@ func ExampleBackendClient_CreateOrUpdate_apiManagementCreateBackendServiceFabric
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementUpdateBackend.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementUpdateBackend.json
 func ExampleBackendClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -348,7 +348,7 @@ func ExampleBackendClient_Update() {
 	// res.BackendContract = armapimanagement.BackendContract{
 	// 	Name: to.Ptr("proxybackend"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/backends"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/proxybackend"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/backends/proxybackend"),
 	// 	Properties: &armapimanagement.BackendContractProperties{
 	// 		Description: to.Ptr("description5308"),
 	// 		Credentials: &armapimanagement.BackendCredentialsContract{
@@ -383,7 +383,7 @@ func ExampleBackendClient_Update() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeleteBackend.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementDeleteBackend.json
 func ExampleBackendClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -400,7 +400,7 @@ func ExampleBackendClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementBackendReconnect.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementBackendReconnect.json
 func ExampleBackendClient_Reconnect() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

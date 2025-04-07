@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListProductGroups.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListProductGroups.json
 func ExampleProductGroupClient_NewListByProductPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,7 +48,7 @@ func ExampleProductGroupClient_NewListByProductPager() {
 		// 		{
 		// 			Name: to.Ptr("5600b57e7e8880006a020001"),
 		// 			Type: to.Ptr("Microsoft.ApiManagement/service/products/groups"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/products/5600b57e7e8880006a060002/groups/5600b57e7e8880006a020001"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/products/5600b57e7e8880006a060002/groups/5600b57e7e8880006a020001"),
 		// 			Properties: &armapimanagement.GroupContractProperties{
 		// 				Type: to.Ptr(armapimanagement.GroupTypeSystem),
 		// 				Description: to.Ptr("Administrators is a built-in group. Its membership is managed by the system. Microsoft Azure subscription administrators fall into this group."),
@@ -59,7 +59,7 @@ func ExampleProductGroupClient_NewListByProductPager() {
 		// 		{
 		// 			Name: to.Ptr("5600b57e7e8880006a020002"),
 		// 			Type: to.Ptr("Microsoft.ApiManagement/service/products/groups"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/products/5600b57e7e8880006a060002/groups/5600b57e7e8880006a020002"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/products/5600b57e7e8880006a060002/groups/5600b57e7e8880006a020002"),
 		// 			Properties: &armapimanagement.GroupContractProperties{
 		// 				Type: to.Ptr(armapimanagement.GroupTypeSystem),
 		// 				Description: to.Ptr("Developers is a built-in group. Its membership is managed by the system. Signed-in users fall into this group."),
@@ -70,7 +70,7 @@ func ExampleProductGroupClient_NewListByProductPager() {
 		// 		{
 		// 			Name: to.Ptr("5600b57e7e8880006a020003"),
 		// 			Type: to.Ptr("Microsoft.ApiManagement/service/products/groups"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/products/5600b57e7e8880006a060002/groups/5600b57e7e8880006a020003"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/products/5600b57e7e8880006a060002/groups/5600b57e7e8880006a020003"),
 		// 			Properties: &armapimanagement.GroupContractProperties{
 		// 				Type: to.Ptr(armapimanagement.GroupTypeSystem),
 		// 				Description: to.Ptr("Guests is a built-in group. Its membership is managed by the system. Unauthenticated users visiting the developer portal fall into this group."),
@@ -82,7 +82,7 @@ func ExampleProductGroupClient_NewListByProductPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementHeadProductGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementHeadProductGroup.json
 func ExampleProductGroupClient_CheckEntityExists() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,7 +99,7 @@ func ExampleProductGroupClient_CheckEntityExists() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateProductGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateProductGroup.json
 func ExampleProductGroupClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -120,7 +120,7 @@ func ExampleProductGroupClient_CreateOrUpdate() {
 	// res.GroupContract = armapimanagement.GroupContract{
 	// 	Name: to.Ptr("templateGroup"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/products/groups"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/groups/templateGroup"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/groups/templateGroup"),
 	// 	Properties: &armapimanagement.GroupContractProperties{
 	// 		Type: to.Ptr(armapimanagement.GroupTypeCustom),
 	// 		Description: to.Ptr("group created via Template"),
@@ -130,7 +130,7 @@ func ExampleProductGroupClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeleteProductGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementDeleteProductGroup.json
 func ExampleProductGroupClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

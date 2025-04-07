@@ -15,11 +15,11 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListPortalConfig.json
-func ExamplePortalConfigClient_ListByService() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListPortalConfig.json
+func ExamplePortalConfigClient_NewListByServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,51 +29,56 @@ func ExamplePortalConfigClient_ListByService() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewPortalConfigClient().ListByService(ctx, "rg1", "apimService1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
+	pager := clientFactory.NewPortalConfigClient().NewListByServicePager("rg1", "apimService1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.PortalConfigCollection = armapimanagement.PortalConfigCollection{
+		// 	Value: []*armapimanagement.PortalConfigContract{
+		// 		{
+		// 			Name: to.Ptr("default"),
+		// 			Type: to.Ptr("Microsoft.ApiManagement/service/portalconfigs"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/portalconfigs/default"),
+		// 			Properties: &armapimanagement.PortalConfigProperties{
+		// 				Cors: &armapimanagement.PortalConfigCorsProperties{
+		// 					AllowedOrigins: []*string{
+		// 						to.Ptr("https://contoso.com")},
+		// 					},
+		// 					Csp: &armapimanagement.PortalConfigCspProperties{
+		// 						AllowedSources: []*string{
+		// 							to.Ptr("*.contoso.com")},
+		// 							Mode: to.Ptr(armapimanagement.PortalSettingsCspModeReportOnly),
+		// 							ReportURI: []*string{
+		// 								to.Ptr("https://report.contoso.com")},
+		// 							},
+		// 							Delegation: &armapimanagement.PortalConfigDelegationProperties{
+		// 								DelegateRegistration: to.Ptr(false),
+		// 								DelegateSubscription: to.Ptr(false),
+		// 							},
+		// 							EnableBasicAuth: to.Ptr(true),
+		// 							Signin: &armapimanagement.PortalConfigPropertiesSignin{
+		// 								Require: to.Ptr(false),
+		// 							},
+		// 							Signup: &armapimanagement.PortalConfigPropertiesSignup{
+		// 								TermsOfService: &armapimanagement.PortalConfigTermsOfServiceProperties{
+		// 									RequireConsent: to.Ptr(false),
+		// 									Text: to.Ptr("I agree to the service terms and conditions."),
+		// 								},
+		// 							},
+		// 						},
+		// 				}},
+		// 			}
 	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.PortalConfigCollection = armapimanagement.PortalConfigCollection{
-	// 	Value: []*armapimanagement.PortalConfigContract{
-	// 		{
-	// 			Name: to.Ptr("default"),
-	// 			Type: to.Ptr("Microsoft.ApiManagement/service/portalconfigs"),
-	// 			ID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/portalconfigs/default"),
-	// 			Properties: &armapimanagement.PortalConfigProperties{
-	// 				Cors: &armapimanagement.PortalConfigCorsProperties{
-	// 					AllowedOrigins: []*string{
-	// 						to.Ptr("https://contoso.com")},
-	// 					},
-	// 					Csp: &armapimanagement.PortalConfigCspProperties{
-	// 						AllowedSources: []*string{
-	// 							to.Ptr("*.contoso.com")},
-	// 							Mode: to.Ptr(armapimanagement.PortalSettingsCspModeReportOnly),
-	// 							ReportURI: []*string{
-	// 								to.Ptr("https://report.contoso.com")},
-	// 							},
-	// 							Delegation: &armapimanagement.PortalConfigDelegationProperties{
-	// 								DelegateRegistration: to.Ptr(false),
-	// 								DelegateSubscription: to.Ptr(false),
-	// 							},
-	// 							EnableBasicAuth: to.Ptr(true),
-	// 							Signin: &armapimanagement.PortalConfigPropertiesSignin{
-	// 								Require: to.Ptr(false),
-	// 							},
-	// 							Signup: &armapimanagement.PortalConfigPropertiesSignup{
-	// 								TermsOfService: &armapimanagement.PortalConfigTermsOfServiceProperties{
-	// 									RequireConsent: to.Ptr(false),
-	// 									Text: to.Ptr("I agree to the service terms and conditions."),
-	// 								},
-	// 							},
-	// 						},
-	// 				}},
-	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementHeadPortalConfig.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementHeadPortalConfig.json
 func ExamplePortalConfigClient_GetEntityTag() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,7 +95,7 @@ func ExamplePortalConfigClient_GetEntityTag() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementPortalConfig.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementPortalConfig.json
 func ExamplePortalConfigClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,7 +116,7 @@ func ExamplePortalConfigClient_Get() {
 	// res.PortalConfigContract = armapimanagement.PortalConfigContract{
 	// 	Name: to.Ptr("default"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/portalconfigs"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/portalconfigs/default"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/portalconfigs/default"),
 	// 	Properties: &armapimanagement.PortalConfigProperties{
 	// 		Cors: &armapimanagement.PortalConfigCorsProperties{
 	// 			AllowedOrigins: []*string{
@@ -142,7 +147,7 @@ func ExamplePortalConfigClient_Get() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementUpdatePortalConfig.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementUpdatePortalConfig.json
 func ExamplePortalConfigClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -191,7 +196,7 @@ func ExamplePortalConfigClient_Update() {
 	// res.PortalConfigContract = armapimanagement.PortalConfigContract{
 	// 	Name: to.Ptr("default"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/portalconfigs"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/portalconfigs/default"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/portalconfigs/default"),
 	// 	Properties: &armapimanagement.PortalConfigProperties{
 	// 		Cors: &armapimanagement.PortalConfigCorsProperties{
 	// 			AllowedOrigins: []*string{
@@ -222,7 +227,7 @@ func ExamplePortalConfigClient_Update() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreatePortalConfig.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreatePortalConfig.json
 func ExamplePortalConfigClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -271,7 +276,7 @@ func ExamplePortalConfigClient_CreateOrUpdate() {
 	// res.PortalConfigContract = armapimanagement.PortalConfigContract{
 	// 	Name: to.Ptr("default"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/portalconfigs"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/portalconfigs/default"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/portalconfigs/default"),
 	// 	Properties: &armapimanagement.PortalConfigProperties{
 	// 		Cors: &armapimanagement.PortalConfigCorsProperties{
 	// 			AllowedOrigins: []*string{

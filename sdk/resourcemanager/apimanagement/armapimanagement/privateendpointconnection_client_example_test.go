@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListPrivateEndpointConnections.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListPrivateEndpointConnections.json
 func ExamplePrivateEndpointConnectionClient_NewListByServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,10 +45,10 @@ func ExamplePrivateEndpointConnectionClient_NewListByServicePager() {
 		// 		{
 		// 			Name: to.Ptr("privateEndpointProxyName"),
 		// 			Type: to.Ptr("Microsoft.ApiManagement/service/privateEndpointConnections"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/privateEndpointConnections/connectionName"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/privateEndpointConnections/connectionName"),
 		// 			Properties: &armapimanagement.PrivateEndpointConnectionProperties{
 		// 				PrivateEndpoint: &armapimanagement.PrivateEndpoint{
-		// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/privateEndpoints/privateEndpointName"),
+		// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateEndpoints/privateEndpointName"),
 		// 				},
 		// 				PrivateLinkServiceConnectionState: &armapimanagement.PrivateLinkServiceConnectionState{
 		// 					Description: to.Ptr("Please approve my request, thanks"),
@@ -61,10 +61,10 @@ func ExamplePrivateEndpointConnectionClient_NewListByServicePager() {
 		// 		{
 		// 			Name: to.Ptr("privateEndpointProxyName2"),
 		// 			Type: to.Ptr("Microsoft.ApiManagement/service/privateEndpointConnections"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/privateEndpointConnections/privateEndpointProxyName2"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/privateEndpointConnections/privateEndpointProxyName2"),
 		// 			Properties: &armapimanagement.PrivateEndpointConnectionProperties{
 		// 				PrivateEndpoint: &armapimanagement.PrivateEndpoint{
-		// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/privateEndpoints/privateEndpointName2"),
+		// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateEndpoints/privateEndpointName2"),
 		// 				},
 		// 				PrivateLinkServiceConnectionState: &armapimanagement.PrivateLinkServiceConnectionState{
 		// 					Description: to.Ptr("Please approve my request, thanks"),
@@ -78,7 +78,7 @@ func ExamplePrivateEndpointConnectionClient_NewListByServicePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetPrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementGetPrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionClient_GetByName() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,10 +99,10 @@ func ExamplePrivateEndpointConnectionClient_GetByName() {
 	// res.PrivateEndpointConnection = armapimanagement.PrivateEndpointConnection{
 	// 	Name: to.Ptr("privateEndpointProxyName"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/privateEndpointConnections"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/privateEndpointConnections/privateEndpointConnectionName"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/privateEndpointConnections/privateEndpointConnectionName"),
 	// 	Properties: &armapimanagement.PrivateEndpointConnectionProperties{
 	// 		PrivateEndpoint: &armapimanagement.PrivateEndpoint{
-	// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/privateEndpoints/privateEndpointName"),
+	// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateEndpoints/privateEndpointName"),
 	// 		},
 	// 		PrivateLinkServiceConnectionState: &armapimanagement.PrivateLinkServiceConnectionState{
 	// 			Description: to.Ptr("Please approve my request, thanks"),
@@ -114,7 +114,7 @@ func ExamplePrivateEndpointConnectionClient_GetByName() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementApproveOrRejectPrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementApproveOrRejectPrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -126,7 +126,7 @@ func ExamplePrivateEndpointConnectionClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewPrivateEndpointConnectionClient().BeginCreateOrUpdate(ctx, "rg1", "apimService1", "privateEndpointConnectionName", armapimanagement.PrivateEndpointConnectionRequest{
-		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/privateEndpointConnections/connectionName"),
+		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/privateEndpointConnections/connectionName"),
 		Properties: &armapimanagement.PrivateEndpointConnectionRequestProperties{
 			PrivateLinkServiceConnectionState: &armapimanagement.PrivateLinkServiceConnectionState{
 				Description: to.Ptr("The Private Endpoint Connection is approved."),
@@ -147,10 +147,10 @@ func ExamplePrivateEndpointConnectionClient_BeginCreateOrUpdate() {
 	// res.PrivateEndpointConnection = armapimanagement.PrivateEndpointConnection{
 	// 	Name: to.Ptr("privateEndpointConnectionName"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/privateEndpointConnections"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/privateEndpointConnections/privateEndpointConnectionName"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/privateEndpointConnections/privateEndpointConnectionName"),
 	// 	Properties: &armapimanagement.PrivateEndpointConnectionProperties{
 	// 		PrivateEndpoint: &armapimanagement.PrivateEndpoint{
-	// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/privateEndpoints/privateEndpointName"),
+	// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateEndpoints/privateEndpointName"),
 	// 		},
 	// 		PrivateLinkServiceConnectionState: &armapimanagement.PrivateLinkServiceConnectionState{
 	// 			Description: to.Ptr("The request has been approved."),
@@ -161,7 +161,7 @@ func ExamplePrivateEndpointConnectionClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeletePrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementDeletePrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -182,7 +182,7 @@ func ExamplePrivateEndpointConnectionClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListPrivateLinkGroupResources.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListPrivateLinkGroupResources.json
 func ExamplePrivateEndpointConnectionClient_ListPrivateLinkResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -205,7 +205,7 @@ func ExamplePrivateEndpointConnectionClient_ListPrivateLinkResources() {
 	// 		{
 	// 			Name: to.Ptr("Gateway"),
 	// 			Type: to.Ptr("Microsoft.ApiManagement/service/privateLinkResources"),
-	// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/privateLinkResources/Gateway"),
+	// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/privateLinkResources/Gateway"),
 	// 			Properties: &armapimanagement.PrivateLinkResourceProperties{
 	// 				GroupID: to.Ptr("Gateway"),
 	// 				RequiredMembers: []*string{
@@ -217,7 +217,7 @@ func ExamplePrivateEndpointConnectionClient_ListPrivateLinkResources() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetPrivateLinkGroupResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementGetPrivateLinkGroupResource.json
 func ExamplePrivateEndpointConnectionClient_GetPrivateLinkResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -238,7 +238,7 @@ func ExamplePrivateEndpointConnectionClient_GetPrivateLinkResource() {
 	// res.PrivateLinkResource = armapimanagement.PrivateLinkResource{
 	// 	Name: to.Ptr("Gateway"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/privateLinkResources"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/privateLinkResources/Gateway"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/privateLinkResources/Gateway"),
 	// 	Properties: &armapimanagement.PrivateLinkResourceProperties{
 	// 		GroupID: to.Ptr("Gateway"),
 	// 		RequiredMembers: []*string{

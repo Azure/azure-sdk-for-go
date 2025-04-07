@@ -1,5 +1,39 @@
 # Release History
 
+## 1.4.0-beta.3 (2025-04-07)
+### Breaking Changes
+
+- Function `NewClientFactory` parameter(s) have been changed from `(string, azcore.TokenCredential, *arm.ClientOptions)` to `(azcore.TokenCredential, *arm.ClientOptions)`
+- Function `*ClientFactory.NewAdminKeysClient` parameter(s) have been changed from `(<none>)` to `(string)`
+- Function `*ClientFactory.NewManagementClient` parameter(s) have been changed from `(<none>)` to `(string)`
+- Function `*ClientFactory.NewNetworkSecurityPerimeterConfigurationsClient` parameter(s) have been changed from `(<none>)` to `(string)`
+- Function `*ClientFactory.NewPrivateEndpointConnectionsClient` parameter(s) have been changed from `(<none>)` to `(string)`
+- Function `*ClientFactory.NewPrivateLinkResourcesClient` parameter(s) have been changed from `(<none>)` to `(string)`
+- Function `*ClientFactory.NewQueryKeysClient` parameter(s) have been changed from `(<none>)` to `(string)`
+- Function `*ClientFactory.NewServicesClient` parameter(s) have been changed from `(<none>)` to `(string)`
+- Function `*ClientFactory.NewSharedPrivateLinkResourcesClient` parameter(s) have been changed from `(<none>)` to `(string)`
+- Function `*ClientFactory.NewUsagesClient` parameter(s) have been changed from `(<none>)` to `(string)`
+
+### Features Added
+
+- New enum type `ComputeType` with values `ComputeTypeConfidential`, `ComputeTypeDefault`
+- New enum type `CreatedByType` with values `CreatedByTypeApplication`, `CreatedByTypeKey`, `CreatedByTypeManagedIdentity`, `CreatedByTypeUser`
+- New enum type `FeatureName` with values `FeatureNameAvailabilityZones`, `FeatureNameDocumentIntelligence`, `FeatureNameGrok`, `FeatureNameImageVectorization`, `FeatureNameMegaStore`, `FeatureNameQueryRewrite`, `FeatureNameS3`, `FeatureNameSemanticSearch`, `FeatureNameStorageOptimized`
+- New function `*ClientFactory.NewOfferingsClient() *OfferingsClient`
+- New function `NewOfferingsClient(azcore.TokenCredential, *arm.ClientOptions) (*OfferingsClient, error)`
+- New function `*OfferingsClient.NewListPager(*OfferingsClientListOptions) *runtime.Pager[OfferingsClientListResponse]`
+- New function `*ServicesClient.BeginUpgrade(context.Context, string, string, *ServicesClientBeginUpgradeOptions) (*runtime.Poller[ServicesClientUpgradeResponse], error)`
+- New struct `FeatureOffering`
+- New struct `OfferingsByRegion`
+- New struct `OfferingsListResult`
+- New struct `SKUOffering`
+- New struct `SKUOfferingLimits`
+- New struct `SystemData`
+- New field `SystemData` in struct `Service`
+- New field `ComputeType`, `Endpoint`, `ServiceUpgradeDate`, `UpgradeAvailable` in struct `ServiceProperties`
+- New field `SystemData` in struct `ServiceUpdate`
+
+
 ## 1.4.0-beta.2 (2024-06-21)
 ### Features Added
 

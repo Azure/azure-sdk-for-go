@@ -151,18 +151,18 @@ steps:
     retryCountOnTaskFailure: 3
 
   - pwsh: |
-      $changedServices = "$(ChangedServices)" -split ","
+      $changedPackages = "$(Packages)" -split ","
       $failed = $false
 
-      foreach($serviceDirectory in $changedServices) {
-        $modDirs = & $(Build.SourcesDirectory)/eng/scripts/get_module_dirs.ps1 "$serviceDirectory"
+      foreach($packageDirectory in $changedPackages) {
+        $modDirs = & $(Build.SourcesDirectory)/eng/scripts/get_module_dirs.ps1 "$packageDirectory"
         foreach ($md in $modDirs) {
           pushd $md
           Write-Host "##[command]Executing golangci-lint run -c $(System.DefaultWorkingDirectory)/eng/.golangci.yml in $md"
           golangci-lint run -c $(System.DefaultWorkingDirectory)/eng/.golangci.yml
 
           if ($LASTEXITCODE) {
-            Write-Host "golangci-lint for $serviceDirectory failed. Check above output for details."
+            Write-Host "golangci-lint for $packageDirectory failed. Check above output for details."
             $failed = $true
           }
         }
@@ -177,11 +177,11 @@ steps:
     condition: succeededOrFailed()
 
   - pwsh: |
-      $changedServices = "$(ChangedServices)" -split ","
+      $changedPackages = "$(Packages)" -split ","
       $failed = $false
 
-      foreach($serviceDirectory in $changedServices) {
-        $modDirs = & $(Build.SourcesDirectory)/eng/scripts/get_module_dirs.ps1 "$serviceDirectory"
+      foreach($packageDirectory in $changedPackages) {
+        $modDirs = & $(Build.SourcesDirectory)/eng/scripts/get_module_dirs.ps1 "$packageDirectory"
         foreach ($md in $modDirs) {
           pushd $md
           Write-Host "##[command]Executing go get -u all in $md"
@@ -189,7 +189,7 @@ steps:
           $diff = (git diff -w .)
           Write-Host ($diff -join "`n")
           if ($diff.Length -gt 0) {
-            Write-Host "Failed to go get $serviceDirectory"
+            Write-Host "Failed to go get $packageDirectory"
             $failed = $true
           }
         }
@@ -204,11 +204,11 @@ steps:
     workingDirectory: $(System.DefaultWorkingDirectory)
 
   - pwsh: |
-      $changedServices = "$(ChangedServices)" -split ","
+      $changedPackages = "$(Packages)" -split ","
       $failed = $false
 
-      foreach($serviceDirectory in $changedServices) {
-        $modDirs = & $(Build.SourcesDirectory)/eng/scripts/get_module_dirs.ps1 "$serviceDirectory"
+      foreach($packageDirectory in $changedPackages) {
+        $modDirs = & $(Build.SourcesDirectory)/eng/scripts/get_module_dirs.ps1 "$packageDirectory"
         foreach ($md in $modDirs) {
           pushd $md
           Write-Host "##[command]Executing go mod tidy in $md"
@@ -217,7 +217,7 @@ steps:
           Write-Host ($diff -join "`n")
           if ($diff.Length -gt 0) {
             $failed = $true
-            Write-Host "Failed to go mod tidy $serviceDirectory"
+            Write-Host "Failed to go mod tidy $packageDirectory"
           }
         }
       }
@@ -231,9 +231,9 @@ steps:
     condition: succeededOrFailed()
 
   - pwsh: |
-      $changedServices = "$(ChangedServices)" -split ","
-      foreach($serviceDirectory in $changedServices) {
-        $modDirs = ./eng/scripts/get_module_dirs.ps1 "$serviceDirectory"
+      $packages = "$(Packages)" -split ","
+      foreach($packageDir in $packages) {
+        $modDirs = ./eng/scripts/get_module_dirs.ps1 "$packageDir"
         foreach ($md in $modDirs) {
           if (-Not $md -Match "/arm") {
             Get-ChildItem $md/doc.go
@@ -282,16 +282,16 @@ steps:
       Condition: succeededOrFailed()
 
   - pwsh: |
-      if (-not "$(ChangedServices)") {
+      if (-not "$(Packages)") {
         Write-Host "No services were changed build. Skipping doccheck."
         exit 0
       }
 
-      $changedServices = "$(ChangedServices)" -split ","
+      $changedServices = "$(Packages)" -split ","
       $failed = $false
 
       foreach ($service in $changedServices) {
-        go run . --directory "$(System.DefaultWorkingDirectory)/sdk/$service"
+        go run . --directory "$(System.DefaultWorkingDirectory)/$service"
         if ($LASTEXITCODE -ne 0) {
           $failed = $true
         }

@@ -3,10 +3,9 @@ param (
     [string] $testTimeout,
     [bool] $enableRaceDetector
 )
-$targetDirectory = $serviceDirectory
-if (-not $serviceDirectory.StartsWith("sdk")) {
-    $targetDirectory = Join-Path "sdk" $serviceDirectory
-}
+. $PSScriptRoot/../common/scripts/common.ps1
+$targetDirectory = ResolveSearchPaths $serviceDirectory
+
 Push-Location $targetDirectory
 
 if ($enableRaceDetector) {

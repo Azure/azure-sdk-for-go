@@ -4,8 +4,8 @@ param (
     [bool] $enableRaceDetector
 )
 . $PSScriptRoot/../common/scripts/common.ps1
-$targetDirectory = ResolveSearchPaths $serviceDirectory
-
+# we are passing in a single item here, so the first item is all we need as that is all there will ever be
+$targetDirectory = ResolveSearchPaths $serviceDirectory | Select-Object -First 1
 Push-Location $targetDirectory
 
 if ($enableRaceDetector) {

@@ -10,7 +10,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"io"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -184,26 +183,30 @@ func TestDefaultAzureCredential_TenantID(t *testing.T) {
 }
 
 func TestDefaultAzureCredential_UserAssignedIdentity(t *testing.T) {
-	for _, ID := range []ManagedIDKind{nil, ClientID("client-id")} {
-		t.Run(fmt.Sprintf("%v", ID), func(t *testing.T) {
-			if ID != nil {
-				t.Setenv(azureClientID, ID.String())
-			}
-			cred, err := NewDefaultAzureCredential(nil)
-			if err != nil {
-				t.Fatal(err)
-			}
-			for _, c := range cred.chain.sources {
-				if w, ok := c.(*ManagedIdentityCredential); ok {
-					if actual := w.mic.id; actual != ID {
-						t.Fatalf(`expected "%s", got "%v"`, ID, actual)
+	t.Setenv(azureClientID, fakeClientID)
+	cred, err := NewDefaultAzureCredential(&DefaultAzureCredentialOptions{
+		ClientOptions: policy.ClientOptions{
+			Transport: &mockSTS{
+				tokenRequestCallback: func(req *http.Request) *http.Response {
+					if req.Header.Get(headerMetadata) == "" {
+						return nil
 					}
-					return
-				}
-			}
-			t.Fatal("default chain should include ManagedIdentityCredential")
-		})
-	}
+					for _, p := range req.URL.Query() {
+						for _, v := range p {
+							if strings.Contains(v, fakeClientID) {
+								return nil
+							}
+						}
+					}
+					t.Fatalf("expected %q in %v", fakeClientID, req.URL.Query())
+					return nil
+				},
+			},
+		},
+	})
+	require.NoError(t, err)
+	_, err = cred.GetToken(ctx, policy.TokenRequestOptions{Scopes: []string{t.Name()}})
+	require.NoError(t, err)
 }
 
 func TestDefaultAzureCredential_Workload(t *testing.T) {
@@ -322,7 +325,6 @@ func TestDefaultAzureCredential_IMDS(t *testing.T) {
 						probed = true
 						require.Empty(t, hdr, "probe request shouldn't have Metadata header")
 						return &http.Response{
-							Body:       io.NopCloser(strings.NewReader("{}")),
 							StatusCode: http.StatusInternalServerError,
 						}
 					},
@@ -330,32 +332,31 @@ func TestDefaultAzureCredential_IMDS(t *testing.T) {
 			},
 		})
 		require.NoError(t, err)
-		tk, err := cred.GetToken(context.Background(), testTRO)
+		tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{t.Name()}})
 		require.NoError(t, err)
 		require.True(t, probed)
 		require.Equal(t, tokenValue, tk.Token)
 
-		t.Run("non-JSON response", func(t *testing.T) {
+		t.Run("Azure Container Instances", func(t *testing.T) {
+			// ensure GetToken returns an error if DefaultAzureCredential skips managed identity
 			before := defaultAzTokenProvider
 			defer func() { defaultAzTokenProvider = before }()
-			defaultAzTokenProvider = mockAzTokenProviderSuccess
-			for _, res := range [][]mock.ResponseOption{
-				{mock.WithStatusCode(http.StatusNotFound)},
-				{mock.WithBody([]byte("not json")), mock.WithStatusCode(http.StatusBadRequest)},
-				{mock.WithBody([]byte("not json")), mock.WithStatusCode(http.StatusOK)},
-			} {
-				srv, close := mock.NewTLSServer(mock.WithTransformAllRequestsToTestServerUrl())
-				defer close()
-				srv.SetResponse(res...)
-				cred, err := NewDefaultAzureCredential(&DefaultAzureCredentialOptions{
-					ClientOptions: policy.ClientOptions{
-						Transport: srv,
-					},
-				})
-				require.NoError(t, err)
-				_, err = cred.GetToken(ctx, testTRO)
-				require.NoError(t, err, "DefaultAzureCredential should continue after receiving a non-JSON response from IMDS")
-			}
+			defaultAzTokenProvider = mockAzTokenProviderFailure
+
+			srv, close := mock.NewTLSServer(mock.WithTransformAllRequestsToTestServerUrl())
+			defer close()
+			srv.AppendResponse(mock.WithBody([]byte("Required metadata header not specified or not correct")), mock.WithStatusCode(http.StatusBadRequest))
+			srv.AppendResponse(mock.WithBody(accessTokenRespSuccess), mock.WithStatusCode(http.StatusOK))
+
+			cred, err := NewDefaultAzureCredential(&DefaultAzureCredentialOptions{
+				ClientOptions: policy.ClientOptions{
+					Transport: srv,
+				},
+			})
+			require.NoError(t, err)
+			tk, err := cred.GetToken(ctx, policy.TokenRequestOptions{Scopes: []string{t.Name()}})
+			require.NoError(t, err, "DefaultAzureCredential should accept ACI's response to the probe request")
+			require.Equal(t, tokenValue, tk.Token)
 		})
 	})
 
@@ -382,7 +383,7 @@ func TestDefaultAzureCredential_IMDS(t *testing.T) {
 
 		// remove the delay so ManagedIdentityCredential can get a token from the fake STS
 		dp.delay = 0
-		tk, err := chain.GetToken(context.Background(), testTRO)
+		tk, err := chain.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{t.Name()}})
 		require.NoError(t, err)
 		require.Equal(t, tokenValue, tk.Token)
 
@@ -395,6 +396,84 @@ func TestDefaultAzureCredential_IMDS(t *testing.T) {
 		require.NoError(t, err)
 		require.Equal(t, tokenValue, tk.Token)
 	})
+}
+
+func TestDefaultAzureCredential_UnexpectedIMDSResponse(t *testing.T) {
+	before := defaultAzTokenProvider
+	defer func() { defaultAzTokenProvider = before }()
+	defaultAzTokenProvider = mockAzTokenProviderSuccess
+
+	const dockerDesktopPrefix = "connecting to 169.254.169.254:80: connecting to 169.254.169.254:80: dial tcp 169.254.169.254:80: connectex: A socket operation was attempted to an unreachable "
+	for _, test := range []struct {
+		desc string
+		res  [][]mock.ResponseOption
+	}{
+		{
+			"Docker Desktop",
+			[][]mock.ResponseOption{
+				{
+					mock.WithBody([]byte(dockerDesktopPrefix + "host.")),
+					mock.WithStatusCode(http.StatusForbidden),
+				},
+				{
+					mock.WithBody([]byte(dockerDesktopPrefix + "host.")),
+					mock.WithStatusCode(http.StatusForbidden),
+				},
+			},
+		},
+		{
+			"Docker Desktop",
+			[][]mock.ResponseOption{
+				{
+					mock.WithBody([]byte(dockerDesktopPrefix + "network.")),
+					mock.WithStatusCode(http.StatusForbidden),
+				},
+				{
+					mock.WithBody([]byte(dockerDesktopPrefix + "network.")),
+					mock.WithStatusCode(http.StatusForbidden),
+				},
+			},
+		},
+		{
+			"IMDS: no identity assigned",
+			[][]mock.ResponseOption{
+				{mock.WithStatusCode(http.StatusBadRequest)},
+				{
+					mock.WithBody([]byte(`{"error":"invalid_request","error_description":"Identity not found"}`)),
+					mock.WithStatusCode(http.StatusBadRequest),
+				},
+			},
+		},
+		{
+			"no token in response",
+			[][]mock.ResponseOption{
+				{mock.WithStatusCode(http.StatusOK)},
+				{mock.WithBody([]byte(`{"error": "no token here"}`)), mock.WithStatusCode(http.StatusOK)},
+			},
+		},
+		{
+			"non-JSON token response",
+			[][]mock.ResponseOption{
+				{mock.WithStatusCode(http.StatusOK)},
+				{mock.WithBody([]byte("not json")), mock.WithStatusCode(http.StatusOK)},
+			},
+		},
+	} {
+		t.Run(test.desc, func(t *testing.T) {
+			srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+			defer close()
+			for _, res := range test.res {
+				srv.AppendResponse(res...)
+			}
+			c, err := NewDefaultAzureCredential(&DefaultAzureCredentialOptions{
+				ClientOptions: policy.ClientOptions{Transport: srv},
+			})
+			require.NoError(t, err)
+			tk, err := c.GetToken(ctx, policy.TokenRequestOptions{Scopes: []string{strings.ReplaceAll(t.Name(), "#", "")}})
+			require.NoError(t, err, "expected a token from AzureCLICredential")
+			require.Equal(t, tokenValue, tk.Token, "expected a token from AzureCLICredential")
+		})
+	}
 }
 
 func TestDefaultAzureCredential_UnsupportedMIClientID(t *testing.T) {

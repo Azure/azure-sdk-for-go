@@ -7,17 +7,21 @@
 package recording
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"io"
 	"math/rand"
 	"net/http"
+	"net/url"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 )
@@ -63,20 +67,42 @@ func (s *recordingTests) TestGetEnvVariable() {
 	recordMode = temp
 }
 
+func TestRecordingHTTPClient_MismatchError(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	expected := "one of these things is not like the other"
+	srv.SetResponse(
+		mock.WithHeader("x-request-mismatch-error", base64.StdEncoding.EncodeToString([]byte(expected))),
+	)
+	u, err := url.Parse(srv.URL())
+	require.NoError(t, err)
+	port, err := strconv.Atoi(u.Port())
+	require.NoError(t, err)
+	client, err := NewRecordingHTTPClient(t, &RecordingOptions{ProxyPort: port})
+	require.NoError(t, err)
+	req, err := http.NewRequest("GET", srv.URL(), nil)
+	require.NoError(t, err)
+	_, err = client.Do(req)
+	require.EqualError(t, err, expected)
+}
+
 func (s *recordingTests) TestRecordingOptions() {
 	require := require.New(s.T())
+	port := 42
 	r := RecordingOptions{
-		UseHTTPS: true,
+		ProxyPort: port,
+		UseHTTPS:  true,
 	}
-	require.Equal(r.baseURL(), "https://localhost:5001")
+	require.Equal(r.baseURL(), fmt.Sprintf("https://localhost:%d", port))
 
 	r.UseHTTPS = false
-	require.Equal(r.baseURL(), "http://localhost:5000")
+	require.Equal(r.baseURL(), fmt.Sprintf("http://localhost:%d", port))
 
 	r = *defaultOptions()
-	require.Equal(r.baseURL(), fmt.Sprintf("https://localhost:%d", r.ProxyPort))
-	// ProxyPort should be generated deterministically
-	require.Equal(r.ProxyPort, defaultOptions().ProxyPort)
+	require.Equal(r.baseURL(), fmt.Sprintf("https://localhost:%d", defaultPort))
+	require.Equal(defaultPort, defaultOptions().ProxyPort)
+
+	require.Equal(RecordingOptions{}.baseURL(), fmt.Sprintf("http://localhost:%d", defaultPort))
 }
 
 func (s *recordingTests) TestStartStop() {

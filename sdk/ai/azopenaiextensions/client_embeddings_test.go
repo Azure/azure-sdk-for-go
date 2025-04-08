@@ -21,7 +21,7 @@ func TestClient_GetEmbeddings_InvalidModel(t *testing.T) {
 	client := newStainlessTestClient(t, azureOpenAI.Embeddings.Endpoint)
 
 	_, err := client.Embeddings.New(context.Background(), openai.EmbeddingNewParams{
-		Model: openai.F(openai.EmbeddingModel("thisdoesntexist")),
+		Model: openai.EmbeddingModel("thisdoesntexist"),
 	})
 
 	var openaiErr *openai.Error
@@ -34,8 +34,10 @@ func TestClient_GetEmbeddings(t *testing.T) {
 	client := newStainlessTestClient(t, azureOpenAI.Embeddings.Endpoint)
 
 	resp, err := client.Embeddings.New(context.Background(), openai.EmbeddingNewParams{
-		Input: openai.F[openai.EmbeddingNewParamsInputUnion](openai.EmbeddingNewParamsInputArrayOfStrings([]string{"\"Your text string goes here\""})),
-		Model: openai.F(openai.EmbeddingModel(azureOpenAI.Embeddings.Model)),
+		Input: openai.EmbeddingNewParamsInputUnion{
+			OfArrayOfStrings: []string{"\"Your text string goes here\""},
+		},
+		Model: openai.EmbeddingModel(azureOpenAI.Embeddings.Model),
 	})
 	require.NoError(t, err)
 	require.NotEmpty(t, resp.Data[0].Embedding)
@@ -46,9 +48,11 @@ func TestClient_GetEmbeddings_embeddingsFormat(t *testing.T) {
 		client := newStainlessTestClient(t, epm.Endpoint)
 
 		arg := openai.EmbeddingNewParams{
-			Input:          openai.F[openai.EmbeddingNewParamsInputUnion](openai.EmbeddingNewParamsInputArrayOfStrings([]string{"hello"})),
-			EncodingFormat: openai.F(openai.EmbeddingNewParamsEncodingFormatBase64),
-			Model:          openai.F(openai.EmbeddingModel(epm.Model)),
+			Input: openai.EmbeddingNewParamsInputUnion{
+				OfArrayOfStrings: []string{"hello"},
+			},
+			EncodingFormat: openai.EmbeddingNewParamsEncodingFormatBase64,
+			Model:          openai.EmbeddingModel(epm.Model),
 		}
 
 		if dimension > 0 {
@@ -69,8 +73,10 @@ func TestClient_GetEmbeddings_embeddingsFormat(t *testing.T) {
 		}
 
 		arg2 := openai.EmbeddingNewParams{
-			Input: openai.F[openai.EmbeddingNewParamsInputUnion](openai.EmbeddingNewParamsInputArrayOfStrings([]string{"hello"})),
-			Model: openai.F(openai.EmbeddingModel(epm.Model)),
+			Input: openai.EmbeddingNewParamsInputUnion{
+				OfArrayOfStrings: []string{"hello"},
+			},
+			Model: openai.EmbeddingModel(epm.Model),
 		}
 
 		if dimension > 0 {

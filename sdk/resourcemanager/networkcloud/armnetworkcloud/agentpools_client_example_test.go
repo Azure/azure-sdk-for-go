@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/98d74b2db60e46ceb7e3b75755e51519cd500485/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/AgentPools_ListByKubernetesCluster.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c0a12a75b702054cf1e7fcd8c014d0fc116dea6e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2024-07-01/examples/AgentPools_ListByKubernetesCluster.json
 func ExampleAgentPoolsClient_NewListByKubernetesClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,19 +111,19 @@ func ExampleAgentPoolsClient_NewListByKubernetesClusterPager() {
 		// 					Taints: []*armnetworkcloud.KubernetesLabel{
 		// 						{
 		// 							Key: to.Ptr("kubernetes.taint"),
-		// 							Value: to.Ptr("true"),
+		// 							Value: to.Ptr("true:NoSchedule"),
 		// 					}},
 		// 					UpgradeSettings: &armnetworkcloud.AgentPoolUpgradeSettings{
 		// 						MaxSurge: to.Ptr("1"),
 		// 					},
-		// 					VMSKUName: to.Ptr("NC_XXXX"),
+		// 					VMSKUName: to.Ptr("NC_P46_224_v1"),
 		// 				},
 		// 		}},
 		// 	}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/98d74b2db60e46ceb7e3b75755e51519cd500485/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/AgentPools_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c0a12a75b702054cf1e7fcd8c014d0fc116dea6e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2024-07-01/examples/AgentPools_Get.json
 func ExampleAgentPoolsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -210,17 +210,17 @@ func ExampleAgentPoolsClient_Get() {
 	// 			Taints: []*armnetworkcloud.KubernetesLabel{
 	// 				{
 	// 					Key: to.Ptr("kubernetes.taint"),
-	// 					Value: to.Ptr("true"),
+	// 					Value: to.Ptr("true:NoSchedule"),
 	// 			}},
 	// 			UpgradeSettings: &armnetworkcloud.AgentPoolUpgradeSettings{
 	// 				MaxSurge: to.Ptr("1"),
 	// 			},
-	// 			VMSKUName: to.Ptr("NC_XXXX"),
+	// 			VMSKUName: to.Ptr("NC_P46_224_v1"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/98d74b2db60e46ceb7e3b75755e51519cd500485/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/AgentPools_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c0a12a75b702054cf1e7fcd8c014d0fc116dea6e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2024-07-01/examples/AgentPools_Create.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -285,12 +285,12 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate() {
 			Taints: []*armnetworkcloud.KubernetesLabel{
 				{
 					Key:   to.Ptr("kubernetes.taint"),
-					Value: to.Ptr("true"),
+					Value: to.Ptr("true:NoSchedule"),
 				}},
 			UpgradeSettings: &armnetworkcloud.AgentPoolUpgradeSettings{
 				MaxSurge: to.Ptr("1"),
 			},
-			VMSKUName: to.Ptr("NC_XXXX"),
+			VMSKUName: to.Ptr("NC_P46_224_v1"),
 		},
 	}, nil)
 	if err != nil {
@@ -372,17 +372,17 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate() {
 	// 			Taints: []*armnetworkcloud.KubernetesLabel{
 	// 				{
 	// 					Key: to.Ptr("kubernetes.taint"),
-	// 					Value: to.Ptr("true"),
+	// 					Value: to.Ptr("true:NoSchedule"),
 	// 			}},
 	// 			UpgradeSettings: &armnetworkcloud.AgentPoolUpgradeSettings{
 	// 				MaxSurge: to.Ptr("1"),
 	// 			},
-	// 			VMSKUName: to.Ptr("NC_XXXX"),
+	// 			VMSKUName: to.Ptr("NC_P46_224_v1"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/98d74b2db60e46ceb7e3b75755e51519cd500485/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/AgentPools_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c0a12a75b702054cf1e7fcd8c014d0fc116dea6e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2024-07-01/examples/AgentPools_Delete.json
 func ExampleAgentPoolsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -403,7 +403,7 @@ func ExampleAgentPoolsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/98d74b2db60e46ceb7e3b75755e51519cd500485/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/AgentPools_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c0a12a75b702054cf1e7fcd8c014d0fc116dea6e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2024-07-01/examples/AgentPools_Patch.json
 func ExampleAgentPoolsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -513,12 +513,12 @@ func ExampleAgentPoolsClient_BeginUpdate() {
 	// 			Taints: []*armnetworkcloud.KubernetesLabel{
 	// 				{
 	// 					Key: to.Ptr("kubernetes.taint"),
-	// 					Value: to.Ptr("true"),
+	// 					Value: to.Ptr("true:NoSchedule"),
 	// 			}},
 	// 			UpgradeSettings: &armnetworkcloud.AgentPoolUpgradeSettings{
 	// 				MaxSurge: to.Ptr("1"),
 	// 			},
-	// 			VMSKUName: to.Ptr("NC_XXXX"),
+	// 			VMSKUName: to.Ptr("NC_P46_224_v1"),
 	// 		},
 	// 	}
 }

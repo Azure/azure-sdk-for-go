@@ -1,5 +1,16 @@
 # Release History
 
+## 0.3.0 (2024-12-27)
+### Breaking Changes
+
+- Operation `*NodeTypesClient.Update` has been changed to LRO, use `*NodeTypesClient.BeginUpdate` instead.
+- Field `CustomFqdn` of struct `ManagedClusterProperties` has been removed
+
+### Features Added
+
+- New field `AllocatedOutboundPorts` in struct `ManagedClusterProperties`
+
+
 ## 0.2.0 (2024-10-23)
 ### Features Added
 

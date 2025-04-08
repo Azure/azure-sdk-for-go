@@ -68,6 +68,16 @@
 # PRLabel: %Event Hubs
 /sdk/messaging/azeventhubs/   @richardpark-msft @chlowell @jhendrixMSFT
 
+# AzureSDKOwners: @vicancy
+# ServiceLabel: %WebPubSub
+# PRLabel: %WebPubSub
+/sdk/messaging/azwebpubsub/  @vicancy @chenkennt @jhendrixMSFT
+
+# AzureSDKOwners: @richardpark-msft
+# ServiceLabel: %Service Bus
+# PRLabel: %Service Bus
+/sdk/messaging/stress/   @richardpark-msft @chlowell @jhendrixMSFT
+
 # AzureSDKOwners: @gracewilcox
 # ServiceLabel: %Monitor
 # PRLabel: %Monitor
@@ -76,7 +86,7 @@
 # AzureSDKOwners: @lirenhe
 # ServiceLabel: %Mgmt
 # PRLabel: %Mgmt
-/sdk/resourcemanager/         @ArcturusZhang @lirenhe @tadelesh
+/sdk/resourcemanager/         @ArcturusZhang @lirenhe @tadelesh @JiaqiZhang-Dev
 
 # AzureSDKOwners: @jhendrixMSFT
 # ServiceOwner: @tanyasethi-msft
@@ -347,7 +357,7 @@
 #/<NotInRepo>/          @AzmonLogA
 
 # ServiceLabel: %KeyVault
-#/<NotInRepo>/          @RandalliLama @schaabs @jlichwa
+#/<NotInRepo>/          @cheathamb36 @chen-karen @lgonsoulin @vickm
 
 # ServiceLabel: %Kubernetes Configuration
 #/<NotInRepo>/          @NarayanThiru
@@ -622,12 +632,12 @@
 /.github/CODEOWNERS           @rickwinter @sandeep-sen @Azure/azure-sdk-eng
 
 # Add owners for go sdk tool
-/eng/tools/generator          @ArcturusZhang @lirenhe @tadelesh
-/eng/tools/internal           @ArcturusZhang @lirenhe @tadelesh
+/eng/tools/generator          @ArcturusZhang @lirenhe @tadelesh @JiaqiZhang-Dev
+/eng/tools/internal           @ArcturusZhang @lirenhe @tadelesh @JiaqiZhang-Dev
 
 # Add owners for typespec emitter config
-/eng/emitter-package-lock.json  @ArcturusZhang @lirenhe @tadelesh @richardpark-msft @jhendrixMSFT @rickwinter @chlowell @gracewilcox
-/eng/emitter-package.json       @ArcturusZhang @lirenhe @tadelesh @richardpark-msft @jhendrixMSFT @rickwinter @chlowell @gracewilcox
+/eng/emitter-package-lock.json  @ArcturusZhang @lirenhe @tadelesh @JiaqiZhang-Dev @richardpark-msft @jhendrixMSFT @rickwinter @chlowell @gracewilcox
+/eng/emitter-package.json       @ArcturusZhang @lirenhe @tadelesh @JiaqiZhang-Dev @richardpark-msft @jhendrixMSFT @rickwinter @chlowell @gracewilcox
 
 
 # Add owners for notifications for specific pipelines

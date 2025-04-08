@@ -20,7 +20,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/azsystemevents
 
 ### Prerequisites
 
-- Go, version 1.18 or higher
+- [Supported](https://aka.ms/azsdk/go/supported-versions) version of Go
 
 # Key concepts
 
@@ -92,7 +92,7 @@ Azure SDK for Go is licensed under the [MIT](https://github.com/Azure/azure-sdk-
 [azure_sdk_for_go_contributing]: https://github.com/Azure/azure-sdk-for-go/blob/main/CONTRIBUTING.md
 [azure_sdk_for_go_contributing_developer_guide]: https://github.com/Azure/azure-sdk-for-go/blob/main/CONTRIBUTING.md#developer-guide
 [azure_sdk_for_go_contributing_pull_requests]: https://github.com/Azure/azure-sdk-for-go/blob/main/CONTRIBUTING.md#pull-requests
-[azure_cli]: https://docs.microsoft.com/cli/azure
+[azure_cli]: https://learn.microsoft.com/cli/azure
 [azure_portal]: https://portal.azure.com
 [azure_sub]: https://azure.microsoft.com/free/
 [event_handler_storage_queues]: https://learn.microsoft.com/azure/event-grid/handler-storage-queues

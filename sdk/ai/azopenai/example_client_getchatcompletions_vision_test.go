@@ -17,7 +17,7 @@ import (
 
 func ExampleClient_GetChatCompletions_vision() {
 	azureOpenAIKey := os.Getenv("AOAI_VISION_API_KEY")
-	modelDeployment := os.Getenv("AOAI_VISION_MODEL") // ex: gpt-4-vision-preview"
+	modelDeployment := os.Getenv("AOAI_VISION_MODEL") // ex: gpt-4o"
 
 	// Ex: "https://<your-azure-openai-host>.openai.azure.com"
 	azureOpenAIEndpoint := os.Getenv("AOAI_VISION_ENDPOINT")

@@ -14,6 +14,7 @@ import (
 	"os"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -326,6 +327,30 @@ func (f *Client) ListHandles(ctx context.Context, options *ListHandlesOptions) (
 	return resp, err
 }
 
+// CreateHardLink operation creates Hard Link to targetFile in same share.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/create-hard-link.
+func (f *Client) CreateHardLink(ctx context.Context, targetFile string, options *CreateHardLinkOptions) (CreateHardLinkResponse, error) {
+	opts, leaseAccessConditions := options.format()
+	resp, err := f.generated().CreateHardLink(ctx, targetFile, opts, leaseAccessConditions)
+	return resp, err
+}
+
+// CreateSymbolicLink operation creates a Symbolic Link to targetFile in same share.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/create-symbolic-link.
+func (f *Client) CreateSymbolicLink(ctx context.Context, linkText string, options *CreateSymbolicLinkOptions) (CreateSymbolicLinkResponse, error) {
+	opts, leaseAccessConditions := options.format()
+	resp, err := f.generated().CreateSymbolicLink(ctx, linkText, opts, leaseAccessConditions)
+	return resp, err
+}
+
+// GetSymbolicLink operation allows to read the value of a symbolic link.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/read-symbolic-link.
+func (f *Client) GetSymbolicLink(ctx context.Context, options *GetSymbolicLinkOptions) (GetSymbolicLinkResponse, error) {
+	opts := options.format()
+	resp, err := f.generated().GetSymbolicLink(ctx, opts)
+	return resp, err
+}
+
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at file.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
 func (f *Client) GetSASURL(permissions sas.FilePermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {
@@ -457,6 +482,8 @@ func (f *Client) download(ctx context.Context, writer io.WriterAt, o downloadOpt
 	}
 
 	count := o.Range.Count
+	dataDownloaded := int64(0)
+	computeReadLength := true
 	if count == CountToEnd { // If size not specified, calculate it
 		// If we don't have the length at all, get it
 		getFilePropertiesOptions := o.getFilePropertiesOptions()
@@ -465,6 +492,8 @@ func (f *Client) download(ctx context.Context, writer io.WriterAt, o downloadOpt
 			return 0, err
 		}
 		count = *gr.ContentLength - o.Range.Offset
+		dataDownloaded = count
+		computeReadLength = false
 	}
 
 	if count <= 0 {
@@ -508,6 +537,9 @@ func (f *Client) download(ctx context.Context, writer io.WriterAt, o downloadOpt
 			if err != nil {
 				return err
 			}
+			if computeReadLength {
+				atomic.AddInt64(&dataDownloaded, *dr.ContentLength)
+			}
 			err = body.Close()
 			return err
 		},
@@ -515,7 +547,7 @@ func (f *Client) download(ctx context.Context, writer io.WriterAt, o downloadOpt
 	if err != nil {
 		return 0, err
 	}
-	return count, nil
+	return dataDownloaded, nil
 }
 
 // DownloadStream operation reads or downloads a file from the system, including its metadata and properties.

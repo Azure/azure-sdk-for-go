@@ -1,14 +1,23 @@
 # Release History
 
-## 1.2.1 (Unreleased)
+## 1.3.1-beta.1 (Unreleased)
 
 ### Features Added
+* Added an initial API for integrating an external client-side Query Engine with the Cosmos DB Go SDK. This API is unstable and not recommended for production use. See [PR 24273](https://github.com/Azure/azure-sdk-for-go/pull/24273) for more details.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.3.0 (2025-02-12)
+
+### Features Added
+* Added limited support for cross-partition queries that can be served by the gateway. See [PR 23926](https://github.com/Azure/azure-sdk-for-go/pull/23926) and <https://learn.microsoft.com/rest/api/cosmos-db/querying-cosmosdb-resources-using-the-rest-api#queries-that-cannot-be-served-by-gateway> for more details.
+
+### Other Changes
+* All queries now set the `x-ms-documentdb-query-enablecrosspartition` header. This should not impact single-partition queries, but in the event that it does cause problems for you, this behavior can be disabled by setting the `EnableCrossPartitionQuery` value on `azcosmos.QueryOptions` to `false`.
 
 ## 1.2.0 (2024-11-12)
 

@@ -90,8 +90,7 @@ func TestClient_GetChatCompletions(t *testing.T) {
 		}
 
 		resp, err := client.GetChatCompletions(context.Background(), newTestChatCompletionOptions(deployment), nil)
-		skipNowIfThrottled(t, err)
-		require.NoError(t, err)
+		customRequireNoError(t, err, true)
 
 		require.NotEmpty(t, resp.ID)
 		require.NotEmpty(t, resp.Created)
@@ -108,7 +107,18 @@ func TestClient_GetChatCompletions(t *testing.T) {
 			resp.ChatCompletions.Choices[i].ContentFilterResults = nil
 		}
 
+		// Exclude Usage field from comparison as they can change
+		expectedUsage := expected.Usage
+		actualUsage := resp.ChatCompletions.Usage
+		expected.Usage = nil
+		resp.ChatCompletions.Usage = nil
+
 		require.Equal(t, expected, resp.ChatCompletions)
+
+		// Compare the usage numbers, but allow for a small margin of error
+		require.InDelta(t, *expectedUsage.CompletionTokens, *actualUsage.CompletionTokens, 5)
+		require.InDelta(t, *expectedUsage.PromptTokens, *actualUsage.PromptTokens, 5)
+		require.InDelta(t, *expectedUsage.TotalTokens, *actualUsage.TotalTokens, 5)
 	}
 
 	t.Run("AzureOpenAI", func(t *testing.T) {
@@ -162,7 +172,7 @@ func TestClient_GetChatCompletions_LogProbs(t *testing.T) {
 		}
 
 		resp, err := client.GetChatCompletions(context.Background(), opts, nil)
-		require.NoError(t, err)
+		customRequireNoError(t, err, true)
 
 		for _, choice := range resp.Choices {
 			require.NotEmpty(t, choice.LogProbs)
@@ -210,7 +220,7 @@ func TestClient_GetChatCompletions_LogitBias(t *testing.T) {
 		}
 
 		resp, err := client.GetChatCompletions(context.Background(), opts, nil)
-		require.NoError(t, err)
+		customRequireNoError(t, err, true)
 
 		for _, choice := range resp.Choices {
 			if choice.Message == nil || choice.Message.Content == nil {
@@ -383,7 +393,7 @@ func TestGetChatCompletions_usingResponseFormatForJSON(t *testing.T) {
 		}
 
 		resp, err := chatClient.GetChatCompletions(context.Background(), body, nil)
-		require.NoError(t, err)
+		customRequireNoError(t, err, true)
 
 		// validate that it came back as JSON data
 		var v any
@@ -525,7 +535,7 @@ func TestGetChatCompletions_StructuredOutputs(t *testing.T) {
 				},
 			},
 		}, nil)
-		require.NoError(t, err)
+		customRequireNoError(t, err, true)
 
 		// and now the results should contain proper JSON for the arguments, every time.
 		fn := resp.Choices[0].Message.ToolCalls[0].(*azopenai.ChatCompletionsFunctionToolCall).Function
@@ -608,7 +618,7 @@ func TestGetChatCompletions_StructuredOutputsResponseFormat(t *testing.T) {
 				},
 			},
 		}, nil)
-		require.NoError(t, err)
+		customRequireNoError(t, err, true)
 
 		jsonText := *resp.Choices[0].Message.Content
 

@@ -2439,7 +2439,7 @@ func (s *ContainerUnrecordedTestsSuite) TestSASContainerClient() {
 	_require.NoError(err)
 }
 
-func (s *ContainerUnrecordedTestsSuite) TestFilterBlobsByTags() {
+func (s *ContainerUnrecordedTestsSuite) TestFilterBlobsByBasicTags() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -2483,9 +2483,58 @@ func (s *ContainerUnrecordedTestsSuite) TestFilterBlobsByTags() {
 	opts := container.FilterBlobsOptions{MaxResults: to.Ptr(int32(10)), Marker: to.Ptr("")}
 	lResp, err := containerSasClient.FilterBlobs(context.Background(), where, &opts)
 	_require.NoError(err)
-	_require.Len(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet, 1)
 	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Key, "azure")
 	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Value, "blob")
+}
+
+func (s *ContainerUnrecordedTestsSuite) TestFilterBlobsBySpecialCharTags() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName), svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Adding SAS and options
+	permissions := sas.ContainerPermissions{
+		Read:         true,
+		Add:          true,
+		Write:        true,
+		Create:       true,
+		Delete:       true,
+		Tag:          true,
+		FilterByTags: true,
+	}
+	expiry := time.Now().Add(time.Hour)
+
+	// ContainerSASURL is created with GetSASURL
+	sasUrl, err := containerClient.GetSASURL(permissions, expiry, nil)
+	_require.NoError(err)
+
+	// Create container client with sasUrl
+	containerSasClient, err := container.NewClientWithNoCredential(sasUrl, nil)
+	_require.NoError(err)
+
+	abClient := containerSasClient.NewAppendBlobClient(testcommon.GenerateBlobName(testName))
+
+	createAppendBlobOptions := appendblob.CreateOptions{
+		Tags: testcommon.SpecialCharBlobTagsMap,
+	}
+	createResp, err := abClient.Create(context.Background(), &createAppendBlobOptions)
+	_require.NoError(err)
+	_require.NotNil(createResp.VersionID)
+	time.Sleep(10 * time.Second)
+
+	// Use container client to filter blobs by tag
+
+	where := "\"go\"='written in golang'"
+	opts := container.FilterBlobsOptions{MaxResults: to.Ptr(int32(10))}
+	lResp, err := containerSasClient.FilterBlobs(context.Background(), where, &opts)
+	_require.NoError(err)
+	_require.Len(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet, 1)
+	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Key, "go")
+	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Value, "written in golang")
 }
 
 func (s *ContainerUnrecordedTestsSuite) TestFilterBlobsByTagsNegative() {

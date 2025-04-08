@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+
 package main
 
 import (
@@ -6,6 +9,7 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"io/fs"
 	"log"
 	"os"
 	"path/filepath"
@@ -36,11 +40,11 @@ func check(e error) {
 func findCoverageFiles(root string) []string {
 	var coverageFiles []string
 
-	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
+	err := filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
-		if strings.Contains(path, coverageXmlFile) {
+		if !d.IsDir() && d.Name() == coverageXmlFile {
 			coverageFiles = append(coverageFiles, path)
 		}
 

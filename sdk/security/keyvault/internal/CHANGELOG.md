@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.1 (Unreleased)
+## 1.2.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,16 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.0-beta.1 (2025-03-11)
+
+### Features Added
+* Added fakes support
+
+## 1.1.1 (2025-02-13)
+
+### Bugs Fixed
+* Fixed data race when using Client from multiple goroutines concurrently (thanks, @strager)
 
 ## 1.1.0 (2024-10-21)
 

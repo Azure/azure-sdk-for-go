@@ -24,7 +24,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/azeventgrid
 
 ### Prerequisites
 
-- Go, version 1.18 or higher
+- [Supported](https://aka.ms/azsdk/go/supported-versions) version of Go
 - An [Azure subscription](https://azure.microsoft.com/free/)
 - An Event Grid topic. You can create an Event Grid topic using the [Azure Portal](https://learn.microsoft.com/azure/event-grid/custom-event-quickstart-portal).
 
@@ -104,12 +104,12 @@ Azure SDK for Go is licensed under the [MIT](https://github.com/Azure/azure-sdk-
 [azure_sdk_for_go_contributing]: https://github.com/Azure/azure-sdk-for-go/blob/main/CONTRIBUTING.md
 [azure_sdk_for_go_contributing_developer_guide]: https://github.com/Azure/azure-sdk-for-go/blob/main/CONTRIBUTING.md#developer-guide
 [azure_sdk_for_go_contributing_pull_requests]: https://github.com/Azure/azure-sdk-for-go/blob/main/CONTRIBUTING.md#pull-requests
-[azure_cli]: https://docs.microsoft.com/cli/azure
-[azure_pattern_circuit_breaker]: https://docs.microsoft.com/azure/architecture/patterns/circuit-breaker
-[azure_pattern_retry]: https://docs.microsoft.com/azure/architecture/patterns/retry
+[azure_cli]: https://learn.microsoft.com/cli/azure
+[azure_pattern_circuit_breaker]: https://learn.microsoft.com/azure/architecture/patterns/circuit-breaker
+[azure_pattern_retry]: https://learn.microsoft.com/azure/architecture/patterns/retry
 [azure_portal]: https://portal.azure.com
 [azure_sub]: https://azure.microsoft.com/free/
-[cloud_shell]: https://docs.microsoft.com/azure/cloud-shell/overview
+[cloud_shell]: https://learn.microsoft.com/azure/cloud-shell/overview
 [cloud_shell_bash]: https://shell.azure.com/bash
 [source]: https://aka.ms/azsdk/go/eventgrid/src
 [godoc_namespaces]: https://aka.ms/azsdk/go/namespaces/pkg#Client

@@ -8,7 +8,6 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"path"
 	"path/filepath"
 	"strings"
 
@@ -45,7 +44,7 @@ func GetReadmePathFromChangedFiles(ctx context.Context, client *query.Client, fi
 	// find readme files one by one
 	readmeFiles := make(map[Readme]bool)
 	for _, file := range files {
-		readme, err := GetReadmeFromPath(ctx, client, path.Dir(file))
+		readme, err := GetReadmeFromPath(ctx, client, filepath.Dir(file))
 		if err != nil {
 			log.Printf("Changed file '%s' does not belong to any RP, ignoring", file)
 			continue
@@ -53,7 +52,18 @@ func GetReadmePathFromChangedFiles(ctx context.Context, client *query.Client, fi
 		readmeFiles[readme] = true
 	}
 	if len(readmeFiles) > 1 {
-		return "", fmt.Errorf("cannot determine which RP to release because we have the following readme files involved: %+v", getMapKeys(readmeFiles))
+		// filter specification/xxx/resource-manager/readme.md
+		rmReadmeFile := make(map[Readme]bool)
+		for readmePath := range readmeFiles {
+			if strings.Contains(string(readmePath), "resource-manager/readme.md") {
+				rmReadmeFile[readmePath] = true
+			}
+		}
+		if len(rmReadmeFile) == 1 {
+			readmeFiles = rmReadmeFile
+		} else {
+			return "", fmt.Errorf("cannot determine which RP to release because we have the following readme files involved: %+v", getMapKeys(readmeFiles))
+		}
 	}
 	if len(readmeFiles) == 0 {
 		return "", fmt.Errorf("cannot get any readme files from these changed files: [%s]", strings.Join(files, ", "))
@@ -134,7 +144,7 @@ func GetTspConfigPathFromChangedFiles(ctx context.Context, client *query.Client,
 	// find readme files one by one
 	tspConfigFiles := make(map[Readme]bool)
 	for _, file := range files {
-		tspConfig, err := GetTspConfigFromPath(ctx, client, path.Dir(file))
+		tspConfig, err := GetTspConfigFromPath(ctx, client, filepath.Dir(file))
 		if err != nil {
 			log.Printf("Changed file '%s' does not belong to any RP, ignoring", file)
 			continue

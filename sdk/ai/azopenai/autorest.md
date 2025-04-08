@@ -753,6 +753,23 @@ directive:
     transform: $["$ref"] = "#/definitions/ChatRequestSystemMessageContent"; return $;
 ```
 
+Update ChatRequestDeveloperMessage.content to use its custom type.
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: |
+      $["ChatRequestDeveloperMessageContent"] = {
+        "x-ms-external": true,
+        "type": "object", "properties": { "stub": { "type": "string" }}
+      };
+      return $;
+  - from: swagger-document
+    where: $.definitions.ChatRequestDeveloperMessage.properties.content
+    transform: $["$ref"] = "#/definitions/ChatRequestDeveloperMessageContent"; return $;
+```
+
 Update ChatRequestToolMessage.content to use its custom type.
 
 ```yaml
@@ -785,6 +802,23 @@ directive:
   - from: swagger-document
     where: $.definitions.MongoDBChatExtensionParameters.properties.embedding_dependency
     transform: $["$ref"] = "#/definitions/MongoDBChatExtensionParametersEmbeddingDependency"; return $;
+```
+
+Update PredictionContent.content to use its custom type.
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: |
+      $["PredictionContentContent"] = {
+        "x-ms-external": true,
+        "type": "object", "properties": { "stub": { "type": "string" }}
+      };
+      return $;
+  - from: swagger-document
+    where: $.definitions.PredictionContent.properties.content
+    transform: $["$ref"] = "#/definitions/PredictionContentContent"; return $;
 ```
 
 \*ChatCompletionsToolChoice

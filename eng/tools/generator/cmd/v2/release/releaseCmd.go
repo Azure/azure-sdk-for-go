@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"path"
+	"path/filepath"
 	"strings"
 	"time"
 
@@ -148,7 +148,7 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 		return err
 	}
 
-	if path.Ext(c.rpName) == ".json" {
+	if filepath.Ext(c.rpName) == ".json" {
 		return c.generateFromRequest(sdkRepo, specRepoParam, specCommitHash)
 	} else {
 		return c.generate(sdkRepo, specCommitHash)

@@ -1,5 +1,30 @@
 # Release History
 
+## 2.3.0 (2025-01-24)
+### Features Added
+
+- New value `ClusterPrincipalRoleAllDatabasesMonitor` added to enum type `ClusterPrincipalRole`
+- New value `LanguageExtensionImageNamePython3117`, `LanguageExtensionImageNamePython3117DL` added to enum type `LanguageExtensionImageName`
+- New enum type `CalloutType` with values `CalloutTypeAzureDigitalTwins`, `CalloutTypeAzureOpenai`, `CalloutTypeCosmosdb`, `CalloutTypeExternalData`, `CalloutTypeGenevametrics`, `CalloutTypeKusto`, `CalloutTypeMysql`, `CalloutTypePostgresql`, `CalloutTypeSQL`, `CalloutTypeSandboxArtifacts`, `CalloutTypeWebapi`
+- New enum type `OutboundAccess` with values `OutboundAccessAllow`, `OutboundAccessDeny`
+- New enum type `PrincipalPermissionsAction` with values `PrincipalPermissionsActionRemovePermissionOnScriptCompletion`, `PrincipalPermissionsActionRetainPermissionOnScriptCompletion`
+- New enum type `ScriptLevel` with values `ScriptLevelCluster`, `ScriptLevelDatabase`
+- New enum type `ZoneStatus` with values `ZoneStatusNonZonal`, `ZoneStatusZonal`, `ZoneStatusZonalInconsistency`
+- New function `*ClustersClient.BeginAddCalloutPolicies(context.Context, string, string, CalloutPoliciesList, *ClustersClientBeginAddCalloutPoliciesOptions) (*runtime.Poller[ClustersClientAddCalloutPoliciesResponse], error)`
+- New function `*ClustersClient.NewListCalloutPoliciesPager(string, string, *ClustersClientListCalloutPoliciesOptions) *runtime.Pager[ClustersClientListCalloutPoliciesResponse]`
+- New function `*ClustersClient.NewListFollowerDatabasesGetPager(string, string, *ClustersClientListFollowerDatabasesGetOptions) *runtime.Pager[ClustersClientListFollowerDatabasesGetResponse]`
+- New function `*ClustersClient.BeginRemoveCalloutPolicy(context.Context, string, string, CalloutPolicyToRemove, *ClustersClientBeginRemoveCalloutPolicyOptions) (*runtime.Poller[ClustersClientRemoveCalloutPolicyResponse], error)`
+- New struct `CalloutPoliciesList`
+- New struct `CalloutPolicy`
+- New struct `CalloutPolicyToRemove`
+- New struct `FollowerDatabaseDefinitionGet`
+- New struct `FollowerDatabaseListResultGet`
+- New struct `FollowerDatabaseProperties`
+- New field `CalloutPolicies`, `ZoneStatus` in struct `ClusterProperties`
+- New field `BaseImageName` in struct `SandboxCustomImageProperties`
+- New field `PrincipalPermissionsAction`, `ScriptLevel` in struct `ScriptProperties`
+
+
 ## 2.2.0 (2023-11-24)
 ### Features Added
 

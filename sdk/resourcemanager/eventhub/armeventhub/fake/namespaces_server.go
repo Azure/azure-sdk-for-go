@@ -48,6 +48,10 @@ type NamespacesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
 	DeleteAuthorizationRule func(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, options *armeventhub.NamespacesClientDeleteAuthorizationRuleOptions) (resp azfake.Responder[armeventhub.NamespacesClientDeleteAuthorizationRuleResponse], errResp azfake.ErrorResponder)
 
+	// BeginFailover is the fake for method NamespacesClient.BeginFailover
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginFailover func(ctx context.Context, resourceGroupName string, namespaceName string, parameters armeventhub.FailOver, options *armeventhub.NamespacesClientBeginFailoverOptions) (resp azfake.PollerResponder[armeventhub.NamespacesClientFailoverResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method NamespacesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, namespaceName string, options *armeventhub.NamespacesClientGetOptions) (resp azfake.Responder[armeventhub.NamespacesClientGetResponse], errResp azfake.ErrorResponder)
@@ -97,6 +101,7 @@ func NewNamespacesServerTransport(srv *NamespacesServer) *NamespacesServerTransp
 		srv:                            srv,
 		beginCreateOrUpdate:            newTracker[azfake.PollerResponder[armeventhub.NamespacesClientCreateOrUpdateResponse]](),
 		beginDelete:                    newTracker[azfake.PollerResponder[armeventhub.NamespacesClientDeleteResponse]](),
+		beginFailover:                  newTracker[azfake.PollerResponder[armeventhub.NamespacesClientFailoverResponse]](),
 		newListPager:                   newTracker[azfake.PagerResponder[armeventhub.NamespacesClientListResponse]](),
 		newListAuthorizationRulesPager: newTracker[azfake.PagerResponder[armeventhub.NamespacesClientListAuthorizationRulesResponse]](),
 		newListByResourceGroupPager:    newTracker[azfake.PagerResponder[armeventhub.NamespacesClientListByResourceGroupResponse]](),
@@ -109,6 +114,7 @@ type NamespacesServerTransport struct {
 	srv                            *NamespacesServer
 	beginCreateOrUpdate            *tracker[azfake.PollerResponder[armeventhub.NamespacesClientCreateOrUpdateResponse]]
 	beginDelete                    *tracker[azfake.PollerResponder[armeventhub.NamespacesClientDeleteResponse]]
+	beginFailover                  *tracker[azfake.PollerResponder[armeventhub.NamespacesClientFailoverResponse]]
 	newListPager                   *tracker[azfake.PagerResponder[armeventhub.NamespacesClientListResponse]]
 	newListAuthorizationRulesPager *tracker[azfake.PagerResponder[armeventhub.NamespacesClientListAuthorizationRulesResponse]]
 	newListByResourceGroupPager    *tracker[azfake.PagerResponder[armeventhub.NamespacesClientListByResourceGroupResponse]]
@@ -138,6 +144,8 @@ func (n *NamespacesServerTransport) Do(req *http.Request) (*http.Response, error
 		resp, err = n.dispatchBeginDelete(req)
 	case "NamespacesClient.DeleteAuthorizationRule":
 		resp, err = n.dispatchDeleteAuthorizationRule(req)
+	case "NamespacesClient.BeginFailover":
+		resp, err = n.dispatchBeginFailover(req)
 	case "NamespacesClient.Get":
 		resp, err = n.dispatchGet(req)
 	case "NamespacesClient.GetAuthorizationRule":
@@ -402,6 +410,54 @@ func (n *NamespacesServerTransport) dispatchDeleteAuthorizationRule(req *http.Re
 	if err != nil {
 		return nil, err
 	}
+	return resp, nil
+}
+
+func (n *NamespacesServerTransport) dispatchBeginFailover(req *http.Request) (*http.Response, error) {
+	if n.srv.BeginFailover == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginFailover not implemented")}
+	}
+	beginFailover := n.beginFailover.get(req)
+	if beginFailover == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/failover`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armeventhub.FailOver](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := n.srv.BeginFailover(req.Context(), resourceGroupNameParam, namespaceNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginFailover = &respr
+		n.beginFailover.add(req, beginFailover)
+	}
+
+	resp, err := server.PollerResponderNext(beginFailover, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		n.beginFailover.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginFailover) {
+		n.beginFailover.remove(req)
+	}
+
 	return resp, nil
 }
 

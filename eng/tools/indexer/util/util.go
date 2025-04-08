@@ -7,8 +7,8 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"io/fs"
 	"io/ioutil"
-	"os"
 	"path/filepath"
 	"regexp"
 	"strings"
@@ -47,11 +47,11 @@ func GetIndexedPackages(content io.Reader) (PackageSet, error) {
 // Each directory entry is converted to a complete package path, e.g. "github.com/Azure/azure-sdk-for-go/services/foo/...".
 func GetPackagesForIndexing(dir string) (PackageSet, error) {
 	leafDirs := []string{}
-	err := filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
+	err := filepath.WalkDir(dir, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
-		if info.IsDir() {
+		if d.IsDir() {
 			// check if leaf dir
 			fi, err := ioutil.ReadDir(path)
 			if err != nil {

@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflexibleservers/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8691fbfca8fcdc5a241a0b501c32fd4a76bb0cd/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/ReplicasListByServer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e26b89bcbec9eed5026c01416e481408b2a1ca1a/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2024-10-01-preview/examples/ReplicasListByServer.json
 func ExampleReplicasClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,10 +57,20 @@ func ExampleReplicasClient_NewListByServerPager() {
 		// 					EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-24T08:19:18.000Z"); return t}()),
 		// 					GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
 		// 				},
+		// 				FullVersion: to.Ptr("5.7.44"),
 		// 				FullyQualifiedDomainName: to.Ptr("mysqltestserver-repl.orcabrci-seas1-a.mscds.com"),
 		// 				HighAvailability: &armmysqlflexibleservers.HighAvailability{
 		// 					Mode: to.Ptr(armmysqlflexibleservers.HighAvailabilityModeDisabled),
 		// 					State: to.Ptr(armmysqlflexibleservers.HighAvailabilityStateNotEnabled),
+		// 				},
+		// 				MaintenancePolicy: &armmysqlflexibleservers.MaintenancePolicy{
+		// 					PatchStrategy: to.Ptr(armmysqlflexibleservers.PatchStrategyRegular),
+		// 				},
+		// 				MaintenanceWindow: &armmysqlflexibleservers.MaintenanceWindow{
+		// 					CustomWindow: to.Ptr("Disabled"),
+		// 					DayOfWeek: to.Ptr[int32](0),
+		// 					StartHour: to.Ptr[int32](0),
+		// 					StartMinute: to.Ptr[int32](0),
 		// 				},
 		// 				Network: &armmysqlflexibleservers.Network{
 		// 					PublicNetworkAccess: to.Ptr(armmysqlflexibleservers.EnableStatusEnumEnabled),
@@ -72,6 +82,7 @@ func ExampleReplicasClient_NewListByServerPager() {
 		// 				Storage: &armmysqlflexibleservers.Storage{
 		// 					AutoGrow: to.Ptr(armmysqlflexibleservers.EnableStatusEnumEnabled),
 		// 					Iops: to.Ptr[int32](360),
+		// 					StorageRedundancy: to.Ptr(armmysqlflexibleservers.StorageRedundancyEnumLocalRedundancy),
 		// 					StorageSizeGB: to.Ptr[int32](20),
 		// 					StorageSKU: to.Ptr("Premium_LRS"),
 		// 				},
@@ -98,10 +109,20 @@ func ExampleReplicasClient_NewListByServerPager() {
 		// 					EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-23T08:19:18.000Z"); return t}()),
 		// 					GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
 		// 				},
+		// 				FullVersion: to.Ptr("5.7.44"),
 		// 				FullyQualifiedDomainName: to.Ptr("mysqltestserver-repl2.orcabrci-seas1-a.mscds.com"),
 		// 				HighAvailability: &armmysqlflexibleservers.HighAvailability{
 		// 					Mode: to.Ptr(armmysqlflexibleservers.HighAvailabilityModeDisabled),
 		// 					State: to.Ptr(armmysqlflexibleservers.HighAvailabilityStateNotEnabled),
+		// 				},
+		// 				MaintenancePolicy: &armmysqlflexibleservers.MaintenancePolicy{
+		// 					PatchStrategy: to.Ptr(armmysqlflexibleservers.PatchStrategy("Default")),
+		// 				},
+		// 				MaintenanceWindow: &armmysqlflexibleservers.MaintenanceWindow{
+		// 					CustomWindow: to.Ptr("Disabled"),
+		// 					DayOfWeek: to.Ptr[int32](0),
+		// 					StartHour: to.Ptr[int32](0),
+		// 					StartMinute: to.Ptr[int32](0),
 		// 				},
 		// 				Network: &armmysqlflexibleservers.Network{
 		// 					PublicNetworkAccess: to.Ptr(armmysqlflexibleservers.EnableStatusEnumEnabled),
@@ -113,8 +134,9 @@ func ExampleReplicasClient_NewListByServerPager() {
 		// 				Storage: &armmysqlflexibleservers.Storage{
 		// 					AutoGrow: to.Ptr(armmysqlflexibleservers.EnableStatusEnumEnabled),
 		// 					Iops: to.Ptr[int32](360),
+		// 					StorageRedundancy: to.Ptr(armmysqlflexibleservers.StorageRedundancyEnumZoneRedundancy),
 		// 					StorageSizeGB: to.Ptr[int32](20),
-		// 					StorageSKU: to.Ptr("Premium_LRS"),
+		// 					StorageSKU: to.Ptr("Premium_ZRS"),
 		// 				},
 		// 				Version: to.Ptr(armmysqlflexibleservers.ServerVersionFive7),
 		// 			},

@@ -149,6 +149,29 @@ func NewChatRequestSystemMessageContent[T []ChatMessageTextContentItem | string]
 	}
 }
 
+// ChatRequestDeveloperMessageContent contains the content for a [ChatRequestDeveloperMessage].
+// NOTE: This should be created using [azopenai.NewChatRequestDeveloperMessageContent]
+type ChatRequestDeveloperMessageContent struct {
+	value any
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ChatRequestSystemMessageContent.
+func (c ChatRequestDeveloperMessageContent) MarshalJSON() ([]byte, error) {
+	return json.Marshal(c.value)
+}
+
+// NewChatRequestDeveloperMessageContent creates a [azopenai.ChatRequestDeveloperMessageContent].
+func NewChatRequestDeveloperMessageContent[T []ChatMessageTextContentItem | string](value T) *ChatRequestDeveloperMessageContent {
+	switch any(value).(type) {
+	case []ChatMessageTextContentItem:
+		return &ChatRequestDeveloperMessageContent{value: value}
+	case string:
+		return &ChatRequestDeveloperMessageContent{value: value}
+	default:
+		panic(fmt.Sprintf("Invalid type %T for ChatRequestDeveloperMessageContent", value))
+	}
+}
+
 // ChatRequestToolMessageContent contains the content for a [ChatRequestToolMessage].
 // NOTE: This should be created using [azopenai.NewChatRequestToolMessageContent]
 type ChatRequestToolMessageContent struct {
@@ -252,6 +275,29 @@ func NewMongoDBChatExtensionParametersEmbeddingDependency[T OnYourDataDeployment
 // MarshalJSON implements the json.Marshaller interface for type MongoDBChatExtensionParametersEmbeddingDependency.
 func (c MongoDBChatExtensionParametersEmbeddingDependency) MarshalJSON() ([]byte, error) {
 	return json.Marshal(c.value)
+}
+
+// PredictionContentContent contains the content for a [PredictionContent].
+// NOTE: This should be created using [azopenai.NewPredictionContentContent]
+type PredictionContentContent struct {
+	value any
+}
+
+// MarshalJSON implements the json.Marshaller interface for type PredictionContentContent.
+func (c PredictionContentContent) MarshalJSON() ([]byte, error) {
+	return json.Marshal(c.value)
+}
+
+// NewPredictionContentContent creates a [azopenai.PredictionContentContent].
+func NewPredictionContentContent[T []ChatMessageTextContentItem | string](value T) *PredictionContentContent {
+	switch any(value).(type) {
+	case []ChatMessageTextContentItem:
+		return &PredictionContentContent{value: value}
+	case string:
+		return &PredictionContentContent{value: value}
+	default:
+		panic(fmt.Sprintf("Invalid type %T for PredictionContentContent", value))
+	}
 }
 
 // ContentFilterResponseError is an error as a result of a request being filtered.

@@ -42,7 +42,7 @@
         },
         {
             "Name": "azfile",
-            "CoverageGoal": 0.75
+            "CoverageGoal": 0.70
         },
         {
             "Name": "azopenai",
@@ -70,7 +70,7 @@
         },
         {
             "Name": "keyvault/azsecrets",
-            "CoverageGoal": 0.86
+            "CoverageGoal": 0.85
         },
         {
             "Name": "data/aztables",
@@ -140,7 +140,7 @@
         },
         {
             "Name": "monitor/query/azmetrics",
-            "CoverageGoal": 0.75
+            "CoverageGoal": 0.60
         }
     ]
 }

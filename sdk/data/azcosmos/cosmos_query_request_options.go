@@ -6,6 +6,8 @@ package azcosmos
 import (
 	"fmt"
 	"strconv"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/unstable/queryengine"
 )
 
 // QueryOptions includes options for query operations on items.
@@ -39,6 +41,14 @@ type QueryOptions struct {
 	QueryParameters []QueryParameter
 	// Options for operations in the dedicated gateway.
 	DedicatedGatewayRequestOptions *DedicatedGatewayRequestOptions
+	// EnableCrossPartitionQuery configures the behavior of the query engine when executing queries.
+	// If set to true, the query engine will set the 'x-ms-documentdb-query-enablecrosspartition' header to true for cross-partition queries.
+	// If set to false, cross-partition queries will be rejected.
+	// The default value, if this is not set, is true.
+	EnableCrossPartitionQuery *bool
+	// UnstablePreviewQueryEngine is used to enable the use of an external query engine for processing cross-partition queries.
+	// This is an unstable preview feature, which is NOT SUPPORTED in production, and is subject to breaking changes in minor releases.
+	UnstablePreviewQueryEngine queryengine.QueryEngine
 }
 
 func (options *QueryOptions) toHeaders() *map[string]string {
@@ -82,6 +92,10 @@ func (options *QueryOptions) toHeaders() *map[string]string {
 	}
 
 	headers[cosmosHeaderPopulateQueryMetrics] = "true"
+
+	if options.EnableCrossPartitionQuery == nil || *options.EnableCrossPartitionQuery {
+		headers[cosmosHeaderEnableCrossPartitionQuery] = "true"
+	}
 
 	return &headers
 }

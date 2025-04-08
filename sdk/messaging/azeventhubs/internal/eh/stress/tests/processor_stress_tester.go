@@ -266,7 +266,7 @@ func (inf *processorStressTest) receiveForever(ctx context.Context, partClient *
 		if errors.Is(err, context.DeadlineExceeded) && ctx.Err() == nil {
 			// this is fine - it just means we ran out of time waiting for events.
 			// This'll happen periodically in between tests when there are no messages.
-			inf.TC.TrackMetric(MetricDeadlineExceeded, 1.0, map[string]string{
+			inf.TC.TrackMetricWithProps(MetricDeadlineExceeded, 1.0, map[string]string{
 				"PartitionID": partClient.PartitionID(),
 			})
 			continue
@@ -275,7 +275,7 @@ func (inf *processorStressTest) receiveForever(ctx context.Context, partClient *
 		if ehErr := (*azeventhubs.Error)(nil); errors.As(err, &ehErr) && ehErr.Code == azeventhubs.ErrorCodeOwnershipLost {
 			// this can happen as partitions are rebalanced between processors - Event Hubs
 			// actually detaches us with this error.
-			inf.TC.TrackMetric(MetricOwnershipLost, 1.0, map[string]string{
+			inf.TC.TrackMetricWithProps(MetricNameOwnershipLost, 1.0, map[string]string{
 				"PartitionID": partClient.PartitionID(),
 			})
 			logger("Ownership lost")
@@ -296,7 +296,7 @@ func (inf *processorStressTest) receiveForever(ctx context.Context, partClient *
 				panic(err)
 			}
 
-			inf.TC.TrackMetric(MetricReceived, float64(len(events)), map[string]string{
+			inf.TC.TrackMetricWithProps(MetricNameReceived, float64(len(events)), map[string]string{
 				"PartitionID": partClient.PartitionID(),
 			})
 		}

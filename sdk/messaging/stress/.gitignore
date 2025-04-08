@@ -1,0 +1,6 @@
+#  build by-products of deploying stress tests
+stress-test-resources.json
+generatedValues.yaml
+
+# folder where helm downloads addons
+charts

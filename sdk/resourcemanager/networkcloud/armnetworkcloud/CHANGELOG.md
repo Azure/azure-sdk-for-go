@@ -1,5 +1,87 @@
 # Release History
 
+## 1.2.0 (2025-02-11)
+### Features Added
+
+- New value `ClusterConnectionStatusDisconnected` added to enum type `ClusterConnectionStatus`
+- New value `ClusterDetailedStatusUpdatePaused` added to enum type `ClusterDetailedStatus`
+- New value `RackSKUProvisioningStateCanceled`, `RackSKUProvisioningStateFailed` added to enum type `RackSKUProvisioningState`
+- New enum type `ClusterContinueUpdateVersionMachineGroupTargetingMode` with values `ClusterContinueUpdateVersionMachineGroupTargetingModeAlphaByRack`
+- New enum type `ClusterScanRuntimeParametersScanActivity` with values `ClusterScanRuntimeParametersScanActivityScan`, `ClusterScanRuntimeParametersScanActivitySkip`
+- New enum type `ClusterSecretArchiveEnabled` with values `ClusterSecretArchiveEnabledFalse`, `ClusterSecretArchiveEnabledTrue`
+- New enum type `ClusterUpdateStrategyType` with values `ClusterUpdateStrategyTypePauseAfterRack`, `ClusterUpdateStrategyTypeRack`
+- New enum type `KubernetesClusterFeatureAvailabilityLifecycle` with values `KubernetesClusterFeatureAvailabilityLifecycleGenerallyAvailable`, `KubernetesClusterFeatureAvailabilityLifecyclePreview`
+- New enum type `KubernetesClusterFeatureDetailedStatus` with values `KubernetesClusterFeatureDetailedStatusError`, `KubernetesClusterFeatureDetailedStatusInstalled`, `KubernetesClusterFeatureDetailedStatusProvisioning`
+- New enum type `KubernetesClusterFeatureProvisioningState` with values `KubernetesClusterFeatureProvisioningStateAccepted`, `KubernetesClusterFeatureProvisioningStateCanceled`, `KubernetesClusterFeatureProvisioningStateDeleting`, `KubernetesClusterFeatureProvisioningStateFailed`, `KubernetesClusterFeatureProvisioningStateSucceeded`, `KubernetesClusterFeatureProvisioningStateUpdating`
+- New enum type `KubernetesClusterFeatureRequired` with values `KubernetesClusterFeatureRequiredFalse`, `KubernetesClusterFeatureRequiredTrue`
+- New enum type `ManagedServiceIdentitySelectorType` with values `ManagedServiceIdentitySelectorTypeSystemAssignedIdentity`, `ManagedServiceIdentitySelectorTypeUserAssignedIdentity`
+- New enum type `ManagedServiceIdentityType` with values `ManagedServiceIdentityTypeNone`, `ManagedServiceIdentityTypeSystemAssigned`, `ManagedServiceIdentityTypeSystemAssignedUserAssigned`, `ManagedServiceIdentityTypeUserAssigned`
+- New enum type `RuntimeProtectionEnforcementLevel` with values `RuntimeProtectionEnforcementLevelAudit`, `RuntimeProtectionEnforcementLevelDisabled`, `RuntimeProtectionEnforcementLevelOnDemand`, `RuntimeProtectionEnforcementLevelPassive`, `RuntimeProtectionEnforcementLevelRealTime`
+- New function `*ClientFactory.NewKubernetesClusterFeaturesClient() *KubernetesClusterFeaturesClient`
+- New function `*ClustersClient.BeginContinueUpdateVersion(context.Context, string, string, ClusterContinueUpdateVersionParameters, *ClustersClientBeginContinueUpdateVersionOptions) (*runtime.Poller[ClustersClientContinueUpdateVersionResponse], error)`
+- New function `*ClustersClient.BeginScanRuntime(context.Context, string, string, *ClustersClientBeginScanRuntimeOptions) (*runtime.Poller[ClustersClientScanRuntimeResponse], error)`
+- New function `NewKubernetesClusterFeaturesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*KubernetesClusterFeaturesClient, error)`
+- New function `*KubernetesClusterFeaturesClient.BeginCreateOrUpdate(context.Context, string, string, string, KubernetesClusterFeature, *KubernetesClusterFeaturesClientBeginCreateOrUpdateOptions) (*runtime.Poller[KubernetesClusterFeaturesClientCreateOrUpdateResponse], error)`
+- New function `*KubernetesClusterFeaturesClient.BeginDelete(context.Context, string, string, string, *KubernetesClusterFeaturesClientBeginDeleteOptions) (*runtime.Poller[KubernetesClusterFeaturesClientDeleteResponse], error)`
+- New function `*KubernetesClusterFeaturesClient.Get(context.Context, string, string, string, *KubernetesClusterFeaturesClientGetOptions) (KubernetesClusterFeaturesClientGetResponse, error)`
+- New function `*KubernetesClusterFeaturesClient.NewListByKubernetesClusterPager(string, string, *KubernetesClusterFeaturesClientListByKubernetesClusterOptions) *runtime.Pager[KubernetesClusterFeaturesClientListByKubernetesClusterResponse]`
+- New function `*KubernetesClusterFeaturesClient.BeginUpdate(context.Context, string, string, string, KubernetesClusterFeaturePatchParameters, *KubernetesClusterFeaturesClientBeginUpdateOptions) (*runtime.Poller[KubernetesClusterFeaturesClientUpdateResponse], error)`
+- New struct `AdministratorConfigurationPatch`
+- New struct `ClusterContinueUpdateVersionParameters`
+- New struct `ClusterScanRuntimeParameters`
+- New struct `ClusterSecretArchive`
+- New struct `ClusterUpdateStrategy`
+- New struct `CommandOutputSettings`
+- New struct `IdentitySelector`
+- New struct `KubernetesClusterFeature`
+- New struct `KubernetesClusterFeatureList`
+- New struct `KubernetesClusterFeaturePatchParameters`
+- New struct `KubernetesClusterFeaturePatchProperties`
+- New struct `KubernetesClusterFeatureProperties`
+- New struct `L2ServiceLoadBalancerConfiguration`
+- New struct `ManagedServiceIdentity`
+- New struct `NodePoolAdministratorConfigurationPatch`
+- New struct `OperationStatusResultProperties`
+- New struct `RuntimeProtectionConfiguration`
+- New struct `RuntimeProtectionStatus`
+- New struct `SecretArchiveReference`
+- New struct `SecretRotationStatus`
+- New struct `StringKeyValuePair`
+- New struct `UserAssignedIdentity`
+- New field `AdministratorConfiguration` in struct `AgentPoolPatchProperties`
+- New field `DrainTimeout`, `MaxUnavailable` in struct `AgentPoolUpgradeSettings`
+- New anonymous field `OperationStatusResult` in struct `AgentPoolsClientDeleteResponse`
+- New anonymous field `OperationStatusResult` in struct `BareMetalMachineKeySetsClientDeleteResponse`
+- New field `MachineClusterVersion`, `MachineRoles`, `RuntimeProtectionStatus`, `SecretRotationStatus` in struct `BareMetalMachineProperties`
+- New anonymous field `OperationStatusResult` in struct `BareMetalMachinesClientDeleteResponse`
+- New anonymous field `OperationStatusResult` in struct `BmcKeySetsClientDeleteResponse`
+- New anonymous field `OperationStatusResult` in struct `CloudServicesNetworksClientDeleteResponse`
+- New field `Identity` in struct `Cluster`
+- New field `Identity` in struct `ClusterManager`
+- New field `Identity` in struct `ClusterManagerPatchParameters`
+- New anonymous field `OperationStatusResult` in struct `ClusterManagersClientDeleteResponse`
+- New field `Identity` in struct `ClusterPatchParameters`
+- New field `CommandOutputSettings`, `RuntimeProtectionConfiguration`, `SecretArchive`, `UpdateStrategy` in struct `ClusterPatchProperties`
+- New field `CommandOutputSettings`, `RuntimeProtectionConfiguration`, `SecretArchive`, `UpdateStrategy` in struct `ClusterProperties`
+- New anonymous field `OperationStatusResult` in struct `ClustersClientDeleteResponse`
+- New anonymous field `OperationStatusResult` in struct `ConsolesClientDeleteResponse`
+- New field `AdministratorConfiguration` in struct `ControlPlaneNodePatchConfiguration`
+- New field `UserPrincipalName` in struct `KeySetUser`
+- New field `AdministratorConfiguration` in struct `KubernetesClusterPatchProperties`
+- New anonymous field `OperationStatusResult` in struct `KubernetesClustersClientDeleteResponse`
+- New anonymous field `OperationStatusResult` in struct `L2NetworksClientDeleteResponse`
+- New anonymous field `OperationStatusResult` in struct `L3NetworksClientDeleteResponse`
+- New anonymous field `OperationStatusResult` in struct `MetricsConfigurationsClientDeleteResponse`
+- New field `L2ServiceLoadBalancerConfiguration` in struct `NetworkConfiguration`
+- New field `Properties` in struct `OperationStatusResult`
+- New anonymous field `OperationStatusResult` in struct `RacksClientDeleteResponse`
+- New field `Manufacturer`, `Model`, `SecretRotationStatus`, `Version` in struct `StorageApplianceProperties`
+- New anonymous field `OperationStatusResult` in struct `StorageAppliancesClientDeleteResponse`
+- New anonymous field `OperationStatusResult` in struct `TrunkedNetworksClientDeleteResponse`
+- New anonymous field `OperationStatusResult` in struct `VirtualMachinesClientDeleteResponse`
+- New anonymous field `OperationStatusResult` in struct `VolumesClientDeleteResponse`
+
+
 ## 1.2.0-beta.1 (2024-11-15)
 ### Features Added
 

@@ -10,6 +10,7 @@ import (
 	"regexp"
 	"sort"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 
@@ -672,9 +673,12 @@ func TestReceiverAMQPDataTypes(t *testing.T) {
 
 	actualProps := messages[0].ApplicationProperties
 
-	require.Equal(t, map[string]any{
-		"timestamp": expectedTime,
+	// You can have two equivalent timestamps that have different in-memory representations so
+	// it's safer to just let the time package do the math.
+	require.Equal(t, time.Duration(0), expectedTime.Sub(actualProps["timestamp"].(time.Time)))
+	delete(actualProps, "timestamp") // remove it so we can still compare the overall property map
 
+	require.Equal(t, map[string]any{
 		"byte":   byte(128),
 		"uint8":  int8(101),
 		"uint32": int32(400),
@@ -685,7 +689,6 @@ func TestReceiverAMQPDataTypes(t *testing.T) {
 		"int32": int32(-400),
 		"int64": int64(-400),
 
-		"float":   float64(400.1),
 		"float64": float64(400.1),
 
 		"string": "hello world",
@@ -822,11 +825,11 @@ func TestReceiverMessageLockExpires(t *testing.T) {
 }
 
 func TestReceiverUnauthorizedCreds(t *testing.T) {
-	allPowerfulCS := test.MustGetEnvVar(t, test.EnvKeyConnectionString)
+	allPowerfulCS := test.GetConnectionString(t, test.EnvKeyConnectionString)
 	queueName := "testqueue"
 
 	t.Run("ListenOnly with Sender", func(t *testing.T) {
-		cs := test.MustGetEnvVar(t, test.EnvKeyConnectionStringListenOnly)
+		cs := test.GetConnectionString(t, test.EnvKeyConnectionStringListenOnly)
 
 		client, err := NewClientFromConnectionString(cs, nil) // allowed connection string
 		require.NoError(t, err)
@@ -1041,6 +1044,187 @@ func TestReceiveWithDifferentWaitTime(t *testing.T) {
 	t.Logf("Bigger: %d messages", bigger)
 	require.Greater(t, bigger, base)
 	require.Greater(t, bigger, base2)
+}
+
+func TestReceiveCancelReleaser(t *testing.T) {
+	getLogs := test.CaptureLogsForTest(false)
+
+	client, cleanup, queueName := setupLiveTest(t, &liveTestOptions{
+		QueueProperties: &admin.QueueProperties{
+			// use a long lock time to really make it clear when we've accidentally
+			// orphaned a message.
+			LockDuration: to.Ptr("PT5M"),
+		},
+	})
+	defer cleanup()
+
+	receiver, err := client.NewReceiverForQueue(queueName, nil)
+	require.NoError(t, err)
+
+	sender, err := client.NewSender(queueName, nil)
+	require.NoError(t, err)
+
+	padding := make([]byte, 1)
+
+	var batch *MessageBatch
+	const numSent = 2000
+
+	t.Logf("Sending messages")
+SendLoop:
+	for i := 0; i < numSent; i++ {
+		if batch == nil {
+			tmpBatch, err := sender.NewMessageBatch(context.Background(), nil)
+			require.NoError(t, err)
+			batch = tmpBatch
+		}
+
+		err := batch.AddMessage(&Message{
+			MessageID: to.Ptr(fmt.Sprintf("%d", i)),
+			Body:      padding}, nil)
+
+		if errors.Is(err, ErrMessageTooLarge) {
+			err := sender.SendMessageBatch(context.Background(), batch, nil)
+			require.NoError(t, err)
+			batch = nil
+			i--
+			continue SendLoop
+		}
+
+		if i == numSent-1 {
+			err := sender.SendMessageBatch(context.Background(), batch, nil)
+			require.NoError(t, err)
+			break SendLoop
+		}
+	}
+
+	t.Logf("Receiving small subset of messages")
+	messages, err := receiver.ReceiveMessages(context.Background(), numSent, &ReceiveMessagesOptions{
+		// Receive with a high credit count, but too little time to actually get them all
+		// This will force us into a situation where the AMQP receiver will have a lot of messages
+		// in its prefetch cache, giving us a high chance of triggering a previous bug where early
+		// cancellation could result in us losing messages.
+		TimeAfterFirstMessage: time.Nanosecond,
+	})
+	require.NoError(t, err)
+
+	ids := &sync.Map{}
+
+	for _, msg := range messages {
+		require.NoError(t, receiver.CompleteMessage(context.Background(), msg, nil))
+		_, exists := ids.LoadOrStore(msg.MessageID, true)
+		require.False(t, exists)
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+	defer cancel()
+
+	expected := numSent - len(messages) // remove any messages we've already received. Usually it's just one but it's not
+	remaining := expected
+
+	t.Logf("Receiving remaining messages (%d)", remaining)
+
+	for remaining > 0 {
+		messages, err := receiver.ReceiveMessages(ctx, remaining, nil)
+		require.NoError(t, err)
+		require.NotEmpty(t, messages)
+
+		t.Logf("Received %d messages", len(messages))
+
+		wg := sync.WaitGroup{}
+
+		for _, msg := range messages {
+			msg := msg
+			wg.Add(1)
+
+			go func() {
+				defer wg.Done()
+				require.NoError(t, receiver.CompleteMessage(context.Background(), msg, nil))
+				_, exists := ids.LoadOrStore(msg.MessageID, true)
+				require.False(t, exists)
+			}()
+		}
+
+		wg.Wait()
+
+		remaining -= len(messages)
+	}
+
+	count := 0
+	ids.Range(func(_, _ any) bool {
+		count++
+		return true
+	})
+
+	require.Equal(t, numSent, count)
+
+	logs := getLogs()
+
+	found := 0
+
+	for _, log := range logs {
+		if strings.Contains(log, "Message releaser pausing. Released ") {
+			found++
+		}
+	}
+
+	// This is a bit of a non-deterministic bit so I'm not going to fail the overall test
+	if found == 0 {
+		t.Logf("Failed to find our 'messages released' log entry: %#v", logs)
+	}
+}
+
+func TestNilPartitionKey(t *testing.T) {
+	client, cleanup, queueName := setupLiveTest(t, nil)
+	defer cleanup()
+
+	receiver, err := client.NewReceiverForQueue(queueName, nil)
+	require.NoError(t, err)
+
+	sender, err := client.NewSender(queueName, nil)
+	require.NoError(t, err)
+
+	err = sender.SendAMQPAnnotatedMessage(context.Background(), &AMQPAnnotatedMessage{
+		MessageAnnotations: map[any]any{
+			// accepted, and the values are forwarded, so we need to handle them being nil.
+			"x-opt-partition-key":     nil,
+			"x-opt-deadletter-source": nil,
+
+			// can't be set to nil, results in the service rejecting the message so no need
+			// to check them.
+			// "x-opt-scheduled-enqueue-time": nil,
+			// "x-opt-message-state": nil,
+			// "x-opt-enqueue-sequence-number": nil,
+
+			// accepted but ignored - they'll be filled out when the broker
+			// sends the message to one of our receivers.
+			"x-opt-locked-until":    nil,
+			"x-opt-sequence-number": nil,
+			"x-opt-enqueued-time":   nil,
+			"xopt-lock-token":       nil,
+		},
+		Body: AMQPAnnotatedMessageBody{
+			Value: "hello world, with a nil partition key",
+		},
+	}, nil)
+	require.NoError(t, err)
+
+	messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+
+	m := messages[0]
+	require.Nil(t, m.PartitionKey)
+	require.Nil(t, m.DeadLetterSource)
+
+	// these are always set, by the broker, so nothing we set in our
+	// sent message will take effect
+	require.NotNil(t, m.LockToken)
+	require.NotNil(t, m.LockedUntil)
+	require.NotNil(t, m.SequenceNumber)
+	require.NotNil(t, m.EnqueuedTime)
+
+	require.Equal(t, "hello world, with a nil partition key", m.RawAMQPMessage.Body.Value)
+	err = receiver.CompleteMessage(context.Background(), m, nil)
+	require.NoError(t, err)
 }
 
 type receivedMessageSlice []*ReceivedMessage

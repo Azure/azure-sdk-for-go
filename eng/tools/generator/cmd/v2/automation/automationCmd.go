@@ -115,65 +115,61 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 			continue
 		}
 
-		if ok := tsc.ExistEmitOption(string(typespec.TypeSpec_GO)); ok {
-			log.Printf("Start to process typespec project: %s", tspProjectFolder)
-			generateCtx := common.GenerateContext{
-				SDKPath:        sdkRepo.Root(),
-				SDKRepo:        &sdkRepo,
-				SpecPath:       ctx.specRoot,
-				SpecCommitHash: ctx.commitHash,
-				SpecRepoURL:    input.RepoHTTPSURL,
-				TypeSpecConfig: tsc,
-			}
-
-			module, err := tsc.GetModuleName()
-			if err != nil {
-				errorBuilder.add(err)
-				continue
-			}
-
-			namespaceResult, err := generateCtx.GenerateForTypeSpec(&common.GenerateParam{
-				RPName:              module[0],
-				NamespaceName:       module[1],
-				SkipGenerateExample: true,
-				GoVersion:           ctx.goVersion,
-				TspClientOptions:    []string{"--debug"},
-			})
-			if err != nil {
-				errorBuilder.add(err)
-				continue
-			} else {
-				content := namespaceResult.ChangelogMD
-				breaking := namespaceResult.Changelog.HasBreakingChanges()
-				breakingChangeItems := namespaceResult.Changelog.GetBreakingChangeItems()
-
-				srcFolder := filepath.Join(sdkRepo.Root(), "sdk", "resourcemanager", namespaceResult.RPName, namespaceResult.PackageName)
-				apiViewArtifact := filepath.Join(sdkRepo.Root(), "sdk", "resourcemanager", namespaceResult.RPName, namespaceResult.PackageName+".gosource")
-				err := zipDirectory(srcFolder, apiViewArtifact)
-				if err != nil {
-					fmt.Println(err)
-				}
-
-				results = append(results, pipeline.PackageResult{
-					Version:         namespaceResult.Version,
-					PackageName:     fmt.Sprintf("sdk/resourcemanager/%s/%s", namespaceResult.RPName, namespaceResult.PackageName),
-					Path:            []string{fmt.Sprintf("sdk/resourcemanager/%s/%s", namespaceResult.RPName, namespaceResult.PackageName)},
-					PackageFolder:   fmt.Sprintf("sdk/resourcemanager/%s/%s", namespaceResult.RPName, namespaceResult.PackageName),
-					TypespecProject: []string{tspProjectFolder},
-					Changelog: &pipeline.Changelog{
-						Content:             &content,
-						HasBreakingChange:   &breaking,
-						BreakingChangeItems: &breakingChangeItems,
-					},
-					APIViewArtifact: fmt.Sprintf("sdk/resourcemanager/%s/%s", namespaceResult.RPName, namespaceResult.PackageName+".gosource"),
-					Language:        "Go",
-				})
-
-				log.Printf("Finish processing typespec file: %s", tspconfigPath)
-			}
-		} else {
-			errorBuilder.add(fmt.Errorf("`@azure-tools/typespec-go` option not found in %s, it is required, please refer to `https://aka.ms/azsdk/tspconfig-sample-mpg` to configure it", tspconfigPath))
+		if ok := tsc.ExistEmitOption(string(typespec.TypeSpec_GO)); !ok {
+			log.Println(fmt.Sprintf("`@azure-tools/typespec-go` option not found in %s, it is required, please refer to `https://aka.ms/azsdk/tspconfig-sample-mpg` to configure it", tspconfigPath))
+			continue
 		}
+		log.Printf("Start to process typespec project: %s", tspProjectFolder)
+		generateCtx := common.GenerateContext{
+			SDKPath:        sdkRepo.Root(),
+			SDKRepo:        &sdkRepo,
+			SpecPath:       ctx.specRoot,
+			SpecCommitHash: ctx.commitHash,
+			SpecRepoURL:    input.RepoHTTPSURL,
+			TypeSpecConfig: tsc,
+		}
+
+		namespaceResult, err := generateCtx.GenerateForTypeSpec(&common.GenerateParam{
+			SkipGenerateExample: true,
+			GoVersion:           ctx.goVersion,
+			TspClientOptions:    []string{"--debug"},
+		})
+		if err != nil {
+			errorBuilder.add(err)
+			continue
+		}
+		content := namespaceResult.ChangelogMD
+		breaking := namespaceResult.Changelog.HasBreakingChanges()
+		if namespaceResult.PullRequestLabels == string(common.FirstGABreakingChangeLabel) || namespaceResult.PullRequestLabels == string(common.BetaBreakingChangeLabel) {
+			// If the PR is first beta or first GA, it is not necessary to report SDK breaking change in spec PR
+			breaking = false
+		}
+		breakingChangeItems := namespaceResult.Changelog.GetBreakingChangeItems()
+		packageRelativePath := namespaceResult.PackageRelativePath
+
+		srcFolder := filepath.Join(sdkRepo.Root(), packageRelativePath)
+		apiViewArtifact := filepath.Join(sdkRepo.Root(), packageRelativePath+".gosource")
+		err = zipDirectory(srcFolder, apiViewArtifact)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		results = append(results, pipeline.PackageResult{
+			Version:         namespaceResult.Version,
+			PackageName:     packageRelativePath,
+			Path:            []string{packageRelativePath},
+			PackageFolder:   packageRelativePath,
+			TypespecProject: []string{tspProjectFolder},
+			Changelog: &pipeline.Changelog{
+				Content:             &content,
+				HasBreakingChange:   &breaking,
+				BreakingChangeItems: &breakingChangeItems,
+			},
+			APIViewArtifact: packageRelativePath + ".gosource",
+			Language:        "Go",
+		})
+
+		log.Printf("Finish processing typespec file: %s", tspconfigPath)
 	}
 
 	// autorest
@@ -182,6 +178,7 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 	}
 
 	for _, readme := range input.RelatedReadmeMdFiles {
+
 		log.Printf("Start to process autorest project: %s", readme)
 
 		sepStrs := strings.Split(readme, "/")
@@ -210,6 +207,10 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 		for _, namespaceResult := range namespaceResults {
 			content := namespaceResult.ChangelogMD
 			breaking := namespaceResult.Changelog.HasBreakingChanges()
+			if namespaceResult.PullRequestLabels == string(common.FirstGABreakingChangeLabel) || namespaceResult.PullRequestLabels == string(common.BetaBreakingChangeLabel) {
+				// If the pr is beta or first GA, it's no necessary to report sdk breaking change in spec pr
+				breaking = false
+			}
 			breakingChangeItems := namespaceResult.Changelog.GetBreakingChangeItems()
 
 			srcFolder := filepath.Join(sdkRepo.Root(), "sdk", "resourcemanager", namespaceResult.RPName, namespaceResult.PackageName)

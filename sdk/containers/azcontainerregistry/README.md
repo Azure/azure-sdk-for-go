@@ -10,7 +10,7 @@ Use the client library for Azure Container Registry to:
 - Delete images and artifacts, repositories and tags
 - Upload and download images
 
-[Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/containers/azcontainerregistry) | [Package (pkg.go.dev)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/containers/azcontainerregistry) | [REST API documentation](https://docs.microsoft.com/rest/api/containerregistry/) | [Product documentation](https://docs.microsoft.com/azure/container-registry/)
+[Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/containers/azcontainerregistry) | [Package (pkg.go.dev)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/containers/azcontainerregistry) | [REST API documentation](https://learn.microsoft.com/rest/api/containerregistry/) | [Product documentation](https://learn.microsoft.com/azure/container-registry/)
 
 ## Getting started
 
@@ -27,10 +27,10 @@ go get github.com/Azure/azure-sdk-for-go/sdk/azidentity
 
 - An [Azure subscription](https://azure.microsoft.com/free/)
 - A supported Go version (the Azure SDK supports the two most recent Go releases)
-- A [Container Registry service instance](https://docs.microsoft.com/azure/container-registry/container-registry-intro)
+- A [Container Registry service instance](https://learn.microsoft.com/azure/container-registry/container-registry-intro)
 
-To create a new Container Registry, you can use the [Azure Portal](https://docs.microsoft.com/azure/container-registry/container-registry-get-started-portal),
-[Azure PowerShell](https://docs.microsoft.com/azure/container-registry/container-registry-get-started-powershell), or the [Azure CLI](https://docs.microsoft.com/azure/container-registry/container-registry-get-started-azure-cli).
+To create a new Container Registry, you can use the [Azure Portal](https://learn.microsoft.com/azure/container-registry/container-registry-get-started-portal),
+[Azure PowerShell](https://learn.microsoft.com/azure/container-registry/container-registry-get-started-powershell), or the [Azure CLI](https://learn.microsoft.com/azure/container-registry/container-registry-get-started-azure-cli).
 Here's an example using the Azure CLI:
 
 ```Powershell
@@ -40,7 +40,7 @@ az acr create --name MyContainerRegistry --resource-group MyResourceGroup --loca
 
 This document demonstrates using [azidentity.NewDefaultAzureCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#NewDefaultAzureCredential) to authenticate.
 This credential type works in both local development and production environments.
-We recommend using a [managed identity](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview) in production.
+We recommend using a [managed identity](https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview) in production.
 
 [Client](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/containers/azcontainerregistry#Client) and [BlobClient](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/containers/azcontainerregistry#BlobClient) accepts any [azidentity][https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity] credential.
 See the [azidentity](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity) documentation for more information about other credential types.
@@ -78,7 +78,7 @@ An image can also be "tagged" to give it a human-readable alias.
 An image or artifact can have zero or more **tags** associated with it, and each tag uniquely identifies the image.
 A collection of images that share the same name but have different tags, is referred to as a **repository**.
 
-For more information please see [Container Registry Concepts](https://docs.microsoft.com/azure/container-registry/container-registry-concepts).
+For more information please see [Container Registry Concepts](https://learn.microsoft.com/azure/container-registry/container-registry-concepts).
 
 ## Examples
 

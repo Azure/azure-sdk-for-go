@@ -8,7 +8,7 @@ import (
 	"net"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
-	"nhooyr.io/websocket"
+	"github.com/coder/websocket"
 )
 
 func ExampleNewClient_usingWebsocketsAndProxies() {

@@ -1,5 +1,9 @@
 # Release History
 
+## 1.2.1 (2025-02-13)
+### Other Changes
+Please note, this package has been deprecated and will no longer be maintained after 13/02/2025. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
+
 ## 1.2.0 (2023-11-24)
 ### Features Added
 

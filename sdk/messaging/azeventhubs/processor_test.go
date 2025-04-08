@@ -509,6 +509,16 @@ func testPartitionAcquisition(t *testing.T, loadBalancerStrategy azeventhubs.Pro
 	<-processorClosed
 }
 
+type countingCheckpointStore struct {
+	*checkpoints.BlobStore
+	listed int
+}
+
+func (c *countingCheckpointStore) ListCheckpoints(ctx context.Context, fullyQualifiedNamespace string, eventHubName string, consumerGroup string, options *azeventhubs.ListCheckpointsOptions) ([]azeventhubs.Checkpoint, error) {
+	c.listed++
+	return c.BlobStore.ListCheckpoints(ctx, fullyQualifiedNamespace, eventHubName, consumerGroup, options)
+}
+
 func testWithLoadBalancer(t *testing.T, loadBalancerStrategy azeventhubs.ProcessorStrategy) {
 	testParams := test.GetConnectionParamsForTest(t)
 
@@ -529,8 +539,13 @@ func testWithLoadBalancer(t *testing.T, loadBalancerStrategy azeventhubs.Process
 	// Create the checkpoint store
 	// NOTE: the container must exist before the checkpoint store can be used.
 	t.Logf("Checkpoint store created")
-	checkpointStore, err := checkpoints.NewBlobStore(cc, nil)
-	require.NoError(t, err)
+	var checkpointStore *countingCheckpointStore
+	{
+		inner, err := checkpoints.NewBlobStore(cc, nil)
+		require.NoError(t, err)
+
+		checkpointStore = &countingCheckpointStore{BlobStore: inner, listed: 0}
+	}
 
 	t.Logf("Consumer client created")
 	consumerClient, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, testParams.Cred, nil)
@@ -589,6 +604,15 @@ func testWithLoadBalancer(t *testing.T, loadBalancerStrategy azeventhubs.Process
 	t.Logf("Starting processor in separate goroutine")
 	err = processor.Run(runCtx)
 	require.NoError(t, err)
+
+	if loadBalancerStrategy == azeventhubs.ProcessorStrategyGreedy {
+		// with greedy we do one dispatch, so all 'x' number of partition clients will use/reuse
+		// the one ListCheckpoints() call's results.
+		require.Equal(t, 1, checkpointStore.listed)
+	} else {
+		// with balanced, we do a dispatch round _per_ partition, so we'll see 'x' number of requests
+		require.Equal(t, len(ehProps.PartitionIDs), checkpointStore.listed)
+	}
 }
 
 func processEventsForTest(t *testing.T, producerClient *azeventhubs.ProducerClient, partitionClient *azeventhubs.ProcessorPartitionClient) error {

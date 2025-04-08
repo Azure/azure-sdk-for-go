@@ -1,0 +1,6 @@
+{
+    "AssetsRepo":  "Azure/azure-sdk-assets",
+    "AssetsRepoPrefixPath":  "go",
+    "TagPrefix":  "go/resourcemanager/computeschedule/armcomputeschedule",
+    "Tag": "go/resourcemanager/computeschedule/armcomputeschedule_64008a328d"
+}

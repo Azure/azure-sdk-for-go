@@ -1,8 +1,5 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
+// Licensed under the MIT License. See License.txt in the project root for license information.
 
 package backup_test
 
@@ -34,6 +31,18 @@ func TestBackupRestore(t *testing.T) {
 	}
 
 	// backup the vault
+	preBackupParameters := backup.PreBackupOperationParameters{
+		StorageResourceURI: sasToken.StorageResourceURI,
+		Token:              sasToken.Token,
+	}
+	preBackupPoller, err := client.BeginPreFullBackup(context.Background(), preBackupParameters, nil)
+	require.NoError(t, err)
+	preBackupResults, err := preBackupPoller.PollUntilDone(context.Background(), &runtime.PollUntilDoneOptions{
+		Frequency: frequency,
+	})
+	require.NoError(t, err)
+	require.Nil(t, preBackupResults.Error)
+
 	backupPoller, err := client.BeginFullBackup(context.Background(), sasToken, nil)
 	require.NoError(t, err)
 	backupResults, err := backupPoller.PollUntilDone(context.Background(), &runtime.PollUntilDoneOptions{
@@ -48,11 +57,24 @@ func TestBackupRestore(t *testing.T) {
 	// restore the backup
 	s := *backupResults.AzureStorageBlobContainerURI
 	folderURI := s[strings.LastIndex(s, "/")+1:]
+	preRestoreOperationParameters := backup.PreRestoreOperationParameters{
+		FolderToRestore:    &folderURI,
+		SASTokenParameters: &sasToken,
+	}
 	restoreOperationParameters := backup.RestoreOperationParameters{
 		FolderToRestore:    &folderURI,
 		SASTokenParameters: &sasToken,
 	}
 	testSerde(t, &restoreOperationParameters)
+
+	preRestorePoller, err := client.BeginPreFullRestore(context.Background(), preRestoreOperationParameters, nil)
+	require.NoError(t, err)
+	preRestoreResults, err := preRestorePoller.PollUntilDone(context.Background(), &runtime.PollUntilDoneOptions{
+		Frequency: frequency,
+	})
+	require.NoError(t, err)
+	require.Nil(t, preRestoreResults.Error)
+
 	restorePoller, err := client.BeginFullRestore(context.Background(), restoreOperationParameters, nil)
 	require.NoError(t, err)
 	restoreResults, err := restorePoller.PollUntilDone(context.Background(), &runtime.PollUntilDoneOptions{

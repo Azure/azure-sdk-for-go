@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
-// ReceiverClient contains the methods for the Microsoft.EventGrid namespace.
+// ReceiverClient contains the methods for the Receiver group.
 // Don't use this type directly, use a constructor function instead.
 type ReceiverClient struct {
 	data receiverData
@@ -76,12 +76,12 @@ func (client *ReceiverClient) acknowledgeEventsCreateRequest(ctx context.Context
 	reqQP.Set("api-version", "2024-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	body := struct {
 		LockTokens []string `json:"lockTokens"`
 	}{
 		LockTokens: lockTokens,
 	}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
 		return nil, err
 	}
@@ -210,12 +210,12 @@ func (client *ReceiverClient) rejectEventsCreateRequest(ctx context.Context, top
 	reqQP.Set("api-version", "2024-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	body := struct {
 		LockTokens []string `json:"lockTokens"`
 	}{
 		LockTokens: lockTokens,
 	}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
 		return nil, err
 	}
@@ -283,12 +283,12 @@ func (client *ReceiverClient) releaseEventsCreateRequest(ctx context.Context, to
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	body := struct {
 		LockTokens []string `json:"lockTokens"`
 	}{
 		LockTokens: lockTokens,
 	}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
 		return nil, err
 	}
@@ -354,12 +354,12 @@ func (client *ReceiverClient) renewEventLocksCreateRequest(ctx context.Context, 
 	reqQP.Set("api-version", "2024-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	body := struct {
 		LockTokens []string `json:"lockTokens"`
 	}{
 		LockTokens: lockTokens,
 	}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
 		return nil, err
 	}

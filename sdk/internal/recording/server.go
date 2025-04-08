@@ -146,6 +146,9 @@ func extractTestProxyArchive(archivePath string, outputDir string) error {
 		}
 
 		targetPath := filepath.Join(outputDir, header.Name)
+		if !strings.HasPrefix(targetPath, filepath.Clean(outputDir)) {
+			return fmt.Errorf("illegal file path: %q", header.Name)
+		}
 
 		log.Println("Extracting", targetPath)
 
@@ -174,7 +177,7 @@ func extractTestProxyArchive(archivePath string, outputDir string) error {
 
 func installTestProxy(archivePath string, outputDir string, proxyPath string) error {
 	var err error
-	if strings.HasSuffix(archivePath, ".zip") {
+	if filepath.Ext(archivePath) == ".zip" {
 		err = extractTestProxyZip(archivePath, outputDir)
 	} else {
 		err = extractTestProxyArchive(archivePath, outputDir)
@@ -374,9 +377,13 @@ func waitForProxyStart(cmd *exec.Cmd, options *RecordingOptions) (*TestProxyInst
 	return nil, fmt.Errorf("test proxy server did not become available in the allotted time")
 }
 
+func inCI() bool {
+	return os.Getenv("TF_BUILD") != "" || os.Getenv("GITHUB_ACTIONS") != ""
+}
+
 func StartTestProxy(pathToRecordings string, options *RecordingOptions) (*TestProxyInstance, error) {
 	manualStart := strings.ToLower(os.Getenv(proxyManualStartEnv))
-	if manualStart == "true" {
+	if manualStart == "true" && !inCI() {
 		log.Printf("%s env variable is set to true, not starting test proxy...\n", proxyManualStartEnv)
 		return nil, nil
 	}

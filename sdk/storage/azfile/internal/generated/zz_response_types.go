@@ -37,17 +37,29 @@ type DirectoryClientCreateResponse struct {
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
 	FileLastWriteTime *time.Time
 
+	// FileMode contains the information returned from the x-ms-mode header response.
+	FileMode *string
+
 	// ParentID contains the information returned from the x-ms-file-parent-id header response.
 	ParentID *string
 
 	// FilePermissionKey contains the information returned from the x-ms-file-permission-key header response.
 	FilePermissionKey *string
 
+	// Group contains the information returned from the x-ms-group header response.
+	Group *string
+
 	// IsServerEncrypted contains the information returned from the x-ms-request-server-encrypted header response.
 	IsServerEncrypted *bool
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
+
+	// NFSFileType contains the information returned from the x-ms-file-file-type header response.
+	NFSFileType *NFSFileType
+
+	// Owner contains the information returned from the x-ms-owner header response.
+	Owner *string
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
@@ -112,11 +124,17 @@ type DirectoryClientGetPropertiesResponse struct {
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
 	FileLastWriteTime *time.Time
 
+	// FileMode contains the information returned from the x-ms-mode header response.
+	FileMode *string
+
 	// ParentID contains the information returned from the x-ms-file-parent-id header response.
 	ParentID *string
 
 	// FilePermissionKey contains the information returned from the x-ms-file-permission-key header response.
 	FilePermissionKey *string
+
+	// Group contains the information returned from the x-ms-group header response.
+	Group *string
 
 	// IsServerEncrypted contains the information returned from the x-ms-server-encrypted header response.
 	IsServerEncrypted *bool
@@ -126,6 +144,12 @@ type DirectoryClientGetPropertiesResponse struct {
 
 	// Metadata contains the information returned from the x-ms-meta header response.
 	Metadata map[string]*string
+
+	// NFSFileType contains the information returned from the x-ms-file-file-type header response.
+	NFSFileType *NFSFileType
+
+	// Owner contains the information returned from the x-ms-owner header response.
+	Owner *string
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
@@ -253,17 +277,26 @@ type DirectoryClientSetPropertiesResponse struct {
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
 	FileLastWriteTime *time.Time
 
+	// FileMode contains the information returned from the x-ms-mode header response.
+	FileMode *string
+
 	// ParentID contains the information returned from the x-ms-file-parent-id header response.
 	ParentID *string
 
 	// FilePermissionKey contains the information returned from the x-ms-file-permission-key header response.
 	FilePermissionKey *string
 
+	// Group contains the information returned from the x-ms-group header response.
+	Group *string
+
 	// IsServerEncrypted contains the information returned from the x-ms-request-server-encrypted header response.
 	IsServerEncrypted *bool
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
+
+	// Owner contains the information returned from the x-ms-owner header response.
+	Owner *string
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
@@ -356,6 +389,57 @@ type FileClientChangeLeaseResponse struct {
 	Version *string
 }
 
+// FileClientCreateHardLinkResponse contains the response from method FileClient.CreateHardLink.
+type FileClientCreateHardLinkResponse struct {
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	ClientRequestID *string
+
+	// Date contains the information returned from the Date header response.
+	Date *time.Time
+
+	// ETag contains the information returned from the ETag header response.
+	ETag *azcore.ETag
+
+	// FileChangeTime contains the information returned from the x-ms-file-change-time header response.
+	FileChangeTime *time.Time
+
+	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
+	FileCreationTime *time.Time
+
+	// ID contains the information returned from the x-ms-file-id header response.
+	ID *string
+
+	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
+	FileLastWriteTime *time.Time
+
+	// FileMode contains the information returned from the x-ms-mode header response.
+	FileMode *string
+
+	// ParentID contains the information returned from the x-ms-file-parent-id header response.
+	ParentID *string
+
+	// Group contains the information returned from the x-ms-group header response.
+	Group *string
+
+	// LastModified contains the information returned from the Last-Modified header response.
+	LastModified *time.Time
+
+	// LinkCount contains the information returned from the x-ms-link-count header response.
+	LinkCount *int64
+
+	// NFSFileType contains the information returned from the x-ms-file-file-type header response.
+	NFSFileType *NFSFileType
+
+	// Owner contains the information returned from the x-ms-owner header response.
+	Owner *string
+
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string
+
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string
+}
+
 // FileClientCreateResponse contains the response from method FileClient.Create.
 type FileClientCreateResponse struct {
 	// Date contains the information returned from the Date header response.
@@ -379,17 +463,77 @@ type FileClientCreateResponse struct {
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
 	FileLastWriteTime *time.Time
 
+	// FileMode contains the information returned from the x-ms-mode header response.
+	FileMode *string
+
 	// ParentID contains the information returned from the x-ms-file-parent-id header response.
 	ParentID *string
 
 	// FilePermissionKey contains the information returned from the x-ms-file-permission-key header response.
 	FilePermissionKey *string
 
+	// Group contains the information returned from the x-ms-group header response.
+	Group *string
+
 	// IsServerEncrypted contains the information returned from the x-ms-request-server-encrypted header response.
 	IsServerEncrypted *bool
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
+
+	// NFSFileType contains the information returned from the x-ms-file-file-type header response.
+	NFSFileType *NFSFileType
+
+	// Owner contains the information returned from the x-ms-owner header response.
+	Owner *string
+
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string
+
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string
+}
+
+// FileClientCreateSymbolicLinkResponse contains the response from method FileClient.CreateSymbolicLink.
+type FileClientCreateSymbolicLinkResponse struct {
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	ClientRequestID *string
+
+	// Date contains the information returned from the Date header response.
+	Date *time.Time
+
+	// ETag contains the information returned from the ETag header response.
+	ETag *azcore.ETag
+
+	// FileChangeTime contains the information returned from the x-ms-file-change-time header response.
+	FileChangeTime *time.Time
+
+	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
+	FileCreationTime *time.Time
+
+	// ID contains the information returned from the x-ms-file-id header response.
+	ID *string
+
+	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
+	FileLastWriteTime *time.Time
+
+	// FileMode contains the information returned from the x-ms-mode header response.
+	FileMode *string
+
+	// ParentID contains the information returned from the x-ms-file-parent-id header response.
+	ParentID *string
+
+	// Group contains the information returned from the x-ms-group header response.
+	Group *string
+
+	// LastModified contains the information returned from the Last-Modified header response.
+	LastModified *time.Time
+
+	// NFSFileType contains the information returned from the x-ms-file-file-type header response.
+	NFSFileType *NFSFileType
+
+	// Owner contains the information returned from the x-ms-owner header response.
+	Owner *string
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
@@ -402,6 +546,9 @@ type FileClientCreateResponse struct {
 type FileClientDeleteResponse struct {
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
+
+	// LinkCount contains the information returned from the x-ms-link-count header response.
+	LinkCount *int64
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
@@ -484,11 +631,17 @@ type FileClientDownloadResponse struct {
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
 	FileLastWriteTime *time.Time
 
+	// FileMode contains the information returned from the x-ms-mode header response.
+	FileMode *string
+
 	// ParentID contains the information returned from the x-ms-file-parent-id header response.
 	ParentID *string
 
 	// FilePermissionKey contains the information returned from the x-ms-file-permission-key header response.
 	FilePermissionKey *string
+
+	// Group contains the information returned from the x-ms-group header response.
+	Group *string
 
 	// IsServerEncrypted contains the information returned from the x-ms-server-encrypted header response.
 	IsServerEncrypted *bool
@@ -505,11 +658,23 @@ type FileClientDownloadResponse struct {
 	// LeaseStatus contains the information returned from the x-ms-lease-status header response.
 	LeaseStatus *LeaseStatusType
 
+	// LinkCount contains the information returned from the x-ms-link-count header response.
+	LinkCount *int64
+
 	// Metadata contains the information returned from the x-ms-meta header response.
 	Metadata map[string]*string
 
+	// Owner contains the information returned from the x-ms-owner header response.
+	Owner *string
+
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
+
+	// StructuredBodyType contains the information returned from the x-ms-structured-body header response.
+	StructuredBodyType *string
+
+	// StructuredContentLength contains the information returned from the x-ms-structured-content-length header response.
+	StructuredContentLength *int64
 
 	// Version contains the information returned from the x-ms-version header response.
 	Version *string
@@ -598,6 +763,9 @@ type FileClientGetPropertiesResponse struct {
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
 	FileLastWriteTime *time.Time
 
+	// FileMode contains the information returned from the x-ms-mode header response.
+	FileMode *string
+
 	// ParentID contains the information returned from the x-ms-file-parent-id header response.
 	ParentID *string
 
@@ -606,6 +774,9 @@ type FileClientGetPropertiesResponse struct {
 
 	// FileType contains the information returned from the x-ms-type header response.
 	FileType *string
+
+	// Group contains the information returned from the x-ms-group header response.
+	Group *string
 
 	// IsServerEncrypted contains the information returned from the x-ms-server-encrypted header response.
 	IsServerEncrypted *bool
@@ -622,8 +793,17 @@ type FileClientGetPropertiesResponse struct {
 	// LeaseStatus contains the information returned from the x-ms-lease-status header response.
 	LeaseStatus *LeaseStatusType
 
+	// LinkCount contains the information returned from the x-ms-link-count header response.
+	LinkCount *int64
+
 	// Metadata contains the information returned from the x-ms-meta header response.
 	Metadata map[string]*string
+
+	// NFSFileType contains the information returned from the x-ms-file-file-type header response.
+	NFSFileType *NFSFileType
+
+	// Owner contains the information returned from the x-ms-owner header response.
+	Owner *string
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
@@ -648,6 +828,30 @@ type FileClientGetRangeListResponse struct {
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
+
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string
+
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string
+}
+
+// FileClientGetSymbolicLinkResponse contains the response from method FileClient.GetSymbolicLink.
+type FileClientGetSymbolicLinkResponse struct {
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	ClientRequestID *string
+
+	// Date contains the information returned from the Date header response.
+	Date *time.Time
+
+	// ETag contains the information returned from the ETag header response.
+	ETag *azcore.ETag
+
+	// LastModified contains the information returned from the Last-Modified header response.
+	LastModified *time.Time
+
+	// LinkText contains the information returned from the x-ms-link-text header response.
+	LinkText *string
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
@@ -760,17 +964,29 @@ type FileClientSetHTTPHeadersResponse struct {
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
 	FileLastWriteTime *time.Time
 
+	// FileMode contains the information returned from the x-ms-mode header response.
+	FileMode *string
+
 	// ParentID contains the information returned from the x-ms-file-parent-id header response.
 	ParentID *string
 
 	// FilePermissionKey contains the information returned from the x-ms-file-permission-key header response.
 	FilePermissionKey *string
 
+	// Group contains the information returned from the x-ms-group header response.
+	Group *string
+
 	// IsServerEncrypted contains the information returned from the x-ms-request-server-encrypted header response.
 	IsServerEncrypted *bool
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
+
+	// LinkCount contains the information returned from the x-ms-link-count header response.
+	LinkCount *int64
+
+	// Owner contains the information returned from the x-ms-owner header response.
+	Owner *string
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
@@ -876,6 +1092,9 @@ type FileClientUploadRangeResponse struct {
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
+
+	// StructuredBodyType contains the information returned from the x-ms-structured-body header response.
+	StructuredBodyType *string
 
 	// Version contains the information returned from the x-ms-version header response.
 	Version *string
@@ -1015,8 +1234,24 @@ type ShareClientCreateResponse struct {
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
 
+	// MaxBurstCreditsForIops contains the information returned from the x-ms-share-max-burst-credits-for-iops header response.
+	MaxBurstCreditsForIops *int64
+
+	// Quota contains the information returned from the x-ms-share-quota header response.
+	Quota *int64
+
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
+
+	// ShareIncludedBurstIops contains the information returned from the x-ms-share-included-burst-iops header response.
+	ShareIncludedBurstIops *int64
+
+	// ShareProvisionedBandwidthMibps contains the information returned from the x-ms-share-provisioned-bandwidth-mibps header
+	// response.
+	ShareProvisionedBandwidthMibps *int64
+
+	// ShareProvisionedIops contains the information returned from the x-ms-share-provisioned-iops header response.
+	ShareProvisionedIops *int64
 
 	// Version contains the information returned from the x-ms-version header response.
 	Version *string
@@ -1053,6 +1288,12 @@ type ShareClientDeleteResponse struct {
 
 	// Version contains the information returned from the x-ms-version header response.
 	Version *string
+
+	// FileShareSnapshotUsageBytes contains the information returned from the x-ms-file-share-snapshot-usage-bytes header response.
+	FileShareSnapshotUsageBytes *int64
+
+	// FileShareUsageBytes contains the information returned from the x-ms-file-share-usage-bytes header response.
+	FileShareUsageBytes *int64
 }
 
 // ShareClientGetAccessPolicyResponse contains the response from method ShareClient.GetAccessPolicy.
@@ -1115,6 +1356,9 @@ type ShareClientGetPropertiesResponse struct {
 	// EnabledProtocols contains the information returned from the x-ms-enabled-protocols header response.
 	EnabledProtocols *string
 
+	// IncludedBurstIops contains the information returned from the x-ms-share-included-burst-iops header response.
+	IncludedBurstIops *int64
+
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
 
@@ -1127,8 +1371,19 @@ type ShareClientGetPropertiesResponse struct {
 	// LeaseStatus contains the information returned from the x-ms-lease-status header response.
 	LeaseStatus *LeaseStatusType
 
+	// MaxBurstCreditsForIops contains the information returned from the x-ms-share-max-burst-credits-for-iops header response.
+	MaxBurstCreditsForIops *int64
+
 	// Metadata contains the information returned from the x-ms-meta header response.
 	Metadata map[string]*string
+
+	// NextAllowedProvisionedBandwidthDowngradeTime contains the information returned from the x-ms-share-next-allowed-provisioned-bandwidth-downgrade-time
+	// header response.
+	NextAllowedProvisionedBandwidthDowngradeTime *time.Time
+
+	// NextAllowedProvisionedIopsDowngradeTime contains the information returned from the x-ms-share-next-allowed-provisioned-iops-downgrade-time
+	// header response.
+	NextAllowedProvisionedIopsDowngradeTime *time.Time
 
 	// NextAllowedQuotaDowngradeTime contains the information returned from the x-ms-share-next-allowed-quota-downgrade-time header
 	// response.
@@ -1246,8 +1501,23 @@ type ShareClientRestoreResponse struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *azcore.ETag
 
+	// IncludedBurstIops contains the information returned from the x-ms-share-included-burst-iops header response.
+	IncludedBurstIops *int64
+
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
+
+	// MaxBurstCreditsForIops contains the information returned from the x-ms-share-max-burst-credits-for-iops header response.
+	MaxBurstCreditsForIops *int64
+
+	// ProvisionedBandwidthMibps contains the information returned from the x-ms-share-provisioned-bandwidth-mibps header response.
+	ProvisionedBandwidthMibps *int64
+
+	// ProvisionedIops contains the information returned from the x-ms-share-provisioned-iops header response.
+	ProvisionedIops *int64
+
+	// Quota contains the information returned from the x-ms-share-quota header response.
+	Quota *int64
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
@@ -1300,8 +1570,35 @@ type ShareClientSetPropertiesResponse struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *azcore.ETag
 
+	// IncludedBurstIops contains the information returned from the x-ms-share-included-burst-iops header response.
+	IncludedBurstIops *int64
+
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
+
+	// MaxBurstCreditsForIops contains the information returned from the x-ms-share-max-burst-credits-for-iops header response.
+	MaxBurstCreditsForIops *int64
+
+	// NextAllowedProvisionedBandwidthDowngradeTime contains the information returned from the x-ms-share-next-allowed-provisioned-bandwidth-downgrade-time
+	// header response.
+	NextAllowedProvisionedBandwidthDowngradeTime *time.Time
+
+	// NextAllowedProvisionedIopsDowngradeTime contains the information returned from the x-ms-share-next-allowed-provisioned-iops-downgrade-time
+	// header response.
+	NextAllowedProvisionedIopsDowngradeTime *time.Time
+
+	// NextAllowedQuotaDowngradeTime contains the information returned from the x-ms-share-next-allowed-quota-downgrade-time header
+	// response.
+	NextAllowedQuotaDowngradeTime *time.Time
+
+	// ProvisionedBandwidthMibps contains the information returned from the x-ms-share-provisioned-bandwidth-mibps header response.
+	ProvisionedBandwidthMibps *int64
+
+	// ProvisionedIops contains the information returned from the x-ms-share-provisioned-iops header response.
+	ProvisionedIops *int64
+
+	// Quota contains the information returned from the x-ms-share-quota header response.
+	Quota *int64
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string

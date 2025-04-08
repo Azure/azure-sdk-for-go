@@ -1,10 +1,10 @@
 Param(
-    [string] $PackageDirectory
+    [string] $PackageDirectories
 )
 
 . (Join-Path $PSScriptRoot .. common scripts common.ps1)
 
-$sdks = Get-AllPackageInfoFromRepo
+$sdks = Get-AllPackageInfoFromRepo $PackageDirectories
 
 ## Use local git to fetch tags without GitHub token
 $existingTags = git tag
@@ -23,7 +23,7 @@ Write-Host "##[command]Executing go mod init in " $workingPath
 go mod init github.com/Azure/azure-sdk-for-go/sdk/depcheck
 if ($LASTEXITCODE) { exit $LASTEXITCODE }
 
-# Find whether latest version is in the `retract` section in `go.mod` to judge whether the package is temporarily deprecated. 
+# Find whether latest version is in the `retract` section in `go.mod` to judge whether the package is temporarily deprecated.
 function IsPackageDeprecated($sdk)
 {
     $RETRACT_SECTION_REGEX = "retract\s*((?<retract>(.|\s)*))"
@@ -42,6 +42,9 @@ function IsPackageDeprecated($sdk)
 
 # Get all existed packages
 $packagesImport = ""
+
+$PackageDirectories = $PackageDirectories -split ","
+
 foreach ($sdk in $sdks)
 {
     if ($sdk.Name -like "*internal*" -or (IsPackageDeprecated $sdk))
@@ -50,8 +53,8 @@ foreach ($sdk in $sdks)
     }
     $parsedSemver = [AzureEngSemanticVersion]::ParseVersionString($sdk.Version)
 
-    
-    if ($sdk.Name -eq $PackageDirectory -or $existingTags -notcontains "$($sdk.Name)/v$($sdk.Version)")
+
+    if ($sdk.Name -in $PackageDirectories -or $existingTags -notcontains "$($sdk.Name)/v$($sdk.Version)")
     {
         ## Add replace for new package
         $modPath = Join-Path $RepoRoot "sdk" "depcheck" "go.mod"

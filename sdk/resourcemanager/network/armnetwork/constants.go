@@ -10,7 +10,7 @@ package armnetwork
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
-	moduleVersion = "v6.1.0"
+	moduleVersion = "v6.2.0"
 )
 
 // Access - Access to be allowed or denied.
@@ -55,15 +55,34 @@ func PossibleActionTypeValues() []ActionType {
 type AddressPrefixType string
 
 const (
-	AddressPrefixTypeIPPrefix   AddressPrefixType = "IPPrefix"
-	AddressPrefixTypeServiceTag AddressPrefixType = "ServiceTag"
+	AddressPrefixTypeIPPrefix     AddressPrefixType = "IPPrefix"
+	AddressPrefixTypeNetworkGroup AddressPrefixType = "NetworkGroup"
+	AddressPrefixTypeServiceTag   AddressPrefixType = "ServiceTag"
 )
 
 // PossibleAddressPrefixTypeValues returns the possible values for the AddressPrefixType const type.
 func PossibleAddressPrefixTypeValues() []AddressPrefixType {
 	return []AddressPrefixType{
 		AddressPrefixTypeIPPrefix,
+		AddressPrefixTypeNetworkGroup,
 		AddressPrefixTypeServiceTag,
+	}
+}
+
+// AddressSpaceAggregationOption - Option indicating the update behavior of a resource's address prefixes referenced within
+// a network manager configuration.
+type AddressSpaceAggregationOption string
+
+const (
+	AddressSpaceAggregationOptionManual AddressSpaceAggregationOption = "Manual"
+	AddressSpaceAggregationOptionNone   AddressSpaceAggregationOption = "None"
+)
+
+// PossibleAddressSpaceAggregationOptionValues returns the possible values for the AddressSpaceAggregationOption const type.
+func PossibleAddressSpaceAggregationOptionValues() []AddressSpaceAggregationOption {
+	return []AddressSpaceAggregationOption{
+		AddressSpaceAggregationOptionManual,
+		AddressSpaceAggregationOptionNone,
 	}
 }
 
@@ -1716,6 +1735,100 @@ func PossibleExtendedLocationTypesValues() []ExtendedLocationTypes {
 	}
 }
 
+// FailoverConnectionStatus - The current status of the connection
+type FailoverConnectionStatus string
+
+const (
+	FailoverConnectionStatusConnected    FailoverConnectionStatus = "Connected"
+	FailoverConnectionStatusDisconnected FailoverConnectionStatus = "Disconnected"
+)
+
+// PossibleFailoverConnectionStatusValues returns the possible values for the FailoverConnectionStatus const type.
+func PossibleFailoverConnectionStatusValues() []FailoverConnectionStatus {
+	return []FailoverConnectionStatus{
+		FailoverConnectionStatusConnected,
+		FailoverConnectionStatusDisconnected,
+	}
+}
+
+// FailoverTestStatus - The current status of the test
+type FailoverTestStatus string
+
+const (
+	FailoverTestStatusCompleted   FailoverTestStatus = "Completed"
+	FailoverTestStatusExpired     FailoverTestStatus = "Expired"
+	FailoverTestStatusInvalid     FailoverTestStatus = "Invalid"
+	FailoverTestStatusNotStarted  FailoverTestStatus = "NotStarted"
+	FailoverTestStatusRunning     FailoverTestStatus = "Running"
+	FailoverTestStatusStartFailed FailoverTestStatus = "StartFailed"
+	FailoverTestStatusStarting    FailoverTestStatus = "Starting"
+	FailoverTestStatusStopFailed  FailoverTestStatus = "StopFailed"
+	FailoverTestStatusStopping    FailoverTestStatus = "Stopping"
+)
+
+// PossibleFailoverTestStatusValues returns the possible values for the FailoverTestStatus const type.
+func PossibleFailoverTestStatusValues() []FailoverTestStatus {
+	return []FailoverTestStatus{
+		FailoverTestStatusCompleted,
+		FailoverTestStatusExpired,
+		FailoverTestStatusInvalid,
+		FailoverTestStatusNotStarted,
+		FailoverTestStatusRunning,
+		FailoverTestStatusStartFailed,
+		FailoverTestStatusStarting,
+		FailoverTestStatusStopFailed,
+		FailoverTestStatusStopping,
+	}
+}
+
+// FailoverTestStatusForSingleTest - The current status of the test
+type FailoverTestStatusForSingleTest string
+
+const (
+	FailoverTestStatusForSingleTestCompleted   FailoverTestStatusForSingleTest = "Completed"
+	FailoverTestStatusForSingleTestExpired     FailoverTestStatusForSingleTest = "Expired"
+	FailoverTestStatusForSingleTestInvalid     FailoverTestStatusForSingleTest = "Invalid"
+	FailoverTestStatusForSingleTestNotStarted  FailoverTestStatusForSingleTest = "NotStarted"
+	FailoverTestStatusForSingleTestRunning     FailoverTestStatusForSingleTest = "Running"
+	FailoverTestStatusForSingleTestStartFailed FailoverTestStatusForSingleTest = "StartFailed"
+	FailoverTestStatusForSingleTestStarting    FailoverTestStatusForSingleTest = "Starting"
+	FailoverTestStatusForSingleTestStopFailed  FailoverTestStatusForSingleTest = "StopFailed"
+	FailoverTestStatusForSingleTestStopping    FailoverTestStatusForSingleTest = "Stopping"
+)
+
+// PossibleFailoverTestStatusForSingleTestValues returns the possible values for the FailoverTestStatusForSingleTest const type.
+func PossibleFailoverTestStatusForSingleTestValues() []FailoverTestStatusForSingleTest {
+	return []FailoverTestStatusForSingleTest{
+		FailoverTestStatusForSingleTestCompleted,
+		FailoverTestStatusForSingleTestExpired,
+		FailoverTestStatusForSingleTestInvalid,
+		FailoverTestStatusForSingleTestNotStarted,
+		FailoverTestStatusForSingleTestRunning,
+		FailoverTestStatusForSingleTestStartFailed,
+		FailoverTestStatusForSingleTestStarting,
+		FailoverTestStatusForSingleTestStopFailed,
+		FailoverTestStatusForSingleTestStopping,
+	}
+}
+
+// FailoverTestType - The type of failover test
+type FailoverTestType string
+
+const (
+	FailoverTestTypeAll                FailoverTestType = "All"
+	FailoverTestTypeMultiSiteFailover  FailoverTestType = "MultiSiteFailover"
+	FailoverTestTypeSingleSiteFailover FailoverTestType = "SingleSiteFailover"
+)
+
+// PossibleFailoverTestTypeValues returns the possible values for the FailoverTestType const type.
+func PossibleFailoverTestTypeValues() []FailoverTestType {
+	return []FailoverTestType{
+		FailoverTestTypeAll,
+		FailoverTestTypeMultiSiteFailover,
+		FailoverTestTypeSingleSiteFailover,
+	}
+}
+
 // FirewallPolicyFilterRuleCollectionActionType - The action type of a rule.
 type FirewallPolicyFilterRuleCollectionActionType string
 
@@ -1749,10 +1862,11 @@ func PossibleFirewallPolicyIDPSQuerySortOrderValues() []FirewallPolicyIDPSQueryS
 }
 
 // FirewallPolicyIDPSSignatureDirection - Describes in which direction signature is being enforced: 0 - OutBound, 1 - InBound,
-// 2 - Any, 3 - Internal, 4 - InternalOutbound
+// 2 - Any, 3 - Internal, 4 - InternalOutbound, 5 - InternalInbound
 type FirewallPolicyIDPSSignatureDirection int32
 
 const (
+	FirewallPolicyIDPSSignatureDirectionFive  FirewallPolicyIDPSSignatureDirection = 5
 	FirewallPolicyIDPSSignatureDirectionFour  FirewallPolicyIDPSSignatureDirection = 4
 	FirewallPolicyIDPSSignatureDirectionOne   FirewallPolicyIDPSSignatureDirection = 1
 	FirewallPolicyIDPSSignatureDirectionThree FirewallPolicyIDPSSignatureDirection = 3
@@ -1763,6 +1877,7 @@ const (
 // PossibleFirewallPolicyIDPSSignatureDirectionValues returns the possible values for the FirewallPolicyIDPSSignatureDirection const type.
 func PossibleFirewallPolicyIDPSSignatureDirectionValues() []FirewallPolicyIDPSSignatureDirection {
 	return []FirewallPolicyIDPSSignatureDirection{
+		FirewallPolicyIDPSSignatureDirectionFive,
 		FirewallPolicyIDPSSignatureDirectionFour,
 		FirewallPolicyIDPSSignatureDirectionOne,
 		FirewallPolicyIDPSSignatureDirectionThree,
@@ -2269,6 +2384,22 @@ func PossibleIPSecIntegrityValues() []IPSecIntegrity {
 	}
 }
 
+// IPType - Enumeration to indicate the IP type.
+type IPType string
+
+const (
+	IPTypeIPv4 IPType = "IPv4"
+	IPTypeIPv6 IPType = "IPv6"
+)
+
+// PossibleIPTypeValues returns the possible values for the IPType const type.
+func PossibleIPTypeValues() []IPType {
+	return []IPType{
+		IPTypeIPv4,
+		IPTypeIPv6,
+	}
+}
+
 // IPVersion - IP address version.
 type IPVersion string
 
@@ -2662,6 +2793,26 @@ func PossibleNetworkOperationStatusValues() []NetworkOperationStatus {
 		NetworkOperationStatusFailed,
 		NetworkOperationStatusInProgress,
 		NetworkOperationStatusSucceeded,
+	}
+}
+
+// NetworkProtocol - Network Protocol.
+type NetworkProtocol string
+
+const (
+	NetworkProtocolAny  NetworkProtocol = "Any"
+	NetworkProtocolICMP NetworkProtocol = "ICMP"
+	NetworkProtocolTCP  NetworkProtocol = "TCP"
+	NetworkProtocolUDP  NetworkProtocol = "UDP"
+)
+
+// PossibleNetworkProtocolValues returns the possible values for the NetworkProtocol const type.
+func PossibleNetworkProtocolValues() []NetworkProtocol {
+	return []NetworkProtocol{
+		NetworkProtocolAny,
+		NetworkProtocolICMP,
+		NetworkProtocolTCP,
+		NetworkProtocolUDP,
 	}
 }
 
@@ -3110,10 +3261,12 @@ func PossibleProtocolTypeValues() []ProtocolType {
 	}
 }
 
-// ProvisioningState - The current provisioning state.
+// ProvisioningState - Provisioning states of a resource.
 type ProvisioningState string
 
 const (
+	ProvisioningStateCanceled  ProvisioningState = "Canceled"
+	ProvisioningStateCreating  ProvisioningState = "Creating"
 	ProvisioningStateDeleting  ProvisioningState = "Deleting"
 	ProvisioningStateFailed    ProvisioningState = "Failed"
 	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
@@ -3123,6 +3276,8 @@ const (
 // PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return []ProvisioningState{
+		ProvisioningStateCanceled,
+		ProvisioningStateCreating,
 		ProvisioningStateDeleting,
 		ProvisioningStateFailed,
 		ProvisioningStateSucceeded,

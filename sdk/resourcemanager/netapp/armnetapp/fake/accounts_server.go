@@ -42,7 +42,7 @@ type AccountsServer struct {
 	Get func(ctx context.Context, resourceGroupName string, accountName string, options *armnetapp.AccountsClientGetOptions) (resp azfake.Responder[armnetapp.AccountsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// BeginGetChangeKeyVaultInformation is the fake for method AccountsClient.BeginGetChangeKeyVaultInformation
-	// HTTP status codes to indicate success: http.StatusAccepted
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginGetChangeKeyVaultInformation func(ctx context.Context, resourceGroupName string, accountName string, options *armnetapp.AccountsClientBeginGetChangeKeyVaultInformationOptions) (resp azfake.PollerResponder[armnetapp.AccountsClientGetChangeKeyVaultInformationResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method AccountsClient.NewListPager
@@ -354,9 +354,9 @@ func (a *AccountsServerTransport) dispatchBeginGetChangeKeyVaultInformation(req 
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		a.beginGetChangeKeyVaultInformation.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginGetChangeKeyVaultInformation) {
 		a.beginGetChangeKeyVaultInformation.remove(req)

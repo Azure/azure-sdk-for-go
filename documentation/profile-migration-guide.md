@@ -10,7 +10,7 @@ This document is intended for users that are familiar with the previous versions
 
 ## Prerequisites
 
-- Go 1.18
+- [Supported](https://aka.ms/azsdk/go/supported-versions) version of Go
 
 ## Package mapping
 

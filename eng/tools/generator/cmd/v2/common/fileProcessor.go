@@ -15,7 +15,6 @@ import (
 	"io/fs"
 	"log"
 	"os"
-	"path"
 	"path/filepath"
 	"regexp"
 	"slices"
@@ -138,17 +137,20 @@ func ReadV2ModuleNameToGetNamespace(path string) (map[string][]PackageInfo, erro
 
 // remove all sdk generated files in given path
 func CleanSDKGeneratedFiles(path string) error {
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		return nil
+	}
 	log.Printf("Removing all sdk generated files in '%s'...", path)
-	return filepath.Walk(path, func(path string, info fs.FileInfo, err error) error {
+	return filepath.WalkDir(path, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
 
-		if info.IsDir() {
+		if d.IsDir() {
 			return nil
 		}
 
-		if strings.HasSuffix(info.Name(), ".go") {
+		if filepath.Ext(d.Name()) == ".go" {
 			b, err := os.ReadFile(path)
 			if err != nil {
 				return err
@@ -232,7 +234,7 @@ func RemoveTagSet(path string) error {
 
 // get swagger rp folder name from autorest.md file
 func GetSpecRpName(packageRootPath string) (string, error) {
-	b, err := os.ReadFile(path.Join(packageRootPath, "autorest.md"))
+	b, err := os.ReadFile(filepath.Join(packageRootPath, "autorest.md"))
 	if err != nil {
 		return "", err
 	}
@@ -397,7 +399,6 @@ func AddChangelogToFile(changelog *Changelog, version *semver.Version, packageRo
 
 // replace `{{NewClientName}}` placeholder in README.md by first func name according to `^New.+Method$` pattern
 func ReplaceNewClientNamePlaceholder(packageRootPath string, exports exports.Content) error {
-	path := filepath.Join(packageRootPath, "README.md")
 	var clientName string
 	for _, k := range SortFuncItem(exports.Funcs) {
 		v := exports.Funcs[k]
@@ -405,6 +406,12 @@ func ReplaceNewClientNamePlaceholder(packageRootPath string, exports exports.Con
 			clientName = k
 			break
 		}
+	}
+
+	path := filepath.Join(packageRootPath, "README.md")
+
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		return nil
 	}
 
 	b, err := os.ReadFile(path)
@@ -416,13 +423,17 @@ func ReplaceNewClientNamePlaceholder(packageRootPath string, exports exports.Con
 	return os.WriteFile(path, []byte(content), 0644)
 }
 
-func UpdateModuleDefinition(packageRootPath, rpName, namespaceName string, version *semver.Version) error {
+func UpdateModuleDefinition(packageRootPath, packageModuleRelativePath string, version *semver.Version) error {
 	if version.Major() > 1 {
 		path := filepath.Join(packageRootPath, "go.mod")
 
+		if _, err := os.Stat(path); os.IsNotExist(err) {
+			return nil
+		}
+
 		b, err := os.ReadFile(path)
 		if err != nil {
-			return fmt.Errorf("cannot parse version from changelog")
+			return fmt.Errorf("cannot read go.mod")
 		}
 
 		lines := strings.Split(string(b), "\n")
@@ -431,7 +442,7 @@ func UpdateModuleDefinition(packageRootPath, rpName, namespaceName string, versi
 				line = strings.TrimRight(line, "\r")
 				parts := strings.Split(line, "/")
 				if parts[len(parts)-1] != fmt.Sprintf("v%d", version.Major()) {
-					lines[i] = fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/%s/%s/v%d", rpName, namespaceName, version.Major())
+					lines[i] = fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/%s/v%d", packageModuleRelativePath, version.Major())
 				}
 				break
 			}
@@ -553,16 +564,16 @@ func replaceModuleImport(path, rpName, namespaceName, previousVersion, currentVe
 		return nil
 	}
 
-	return filepath.Walk(filepath.Join(path, subPath), func(path string, info fs.FileInfo, err error) error {
+	return filepath.WalkDir(filepath.Join(path, subPath), func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
-		if info.IsDir() {
+		if d.IsDir() {
 			return nil
 		}
 		suffix := false
 		for i := 0; i < len(suffixes) && !suffix; i++ {
-			suffix = strings.HasSuffix(info.Name(), suffixes[i])
+			suffix = strings.HasSuffix(d.Name(), suffixes[i])
 		}
 
 		if suffix {
@@ -621,13 +632,13 @@ func existSuffixFile(path, suffix string) bool {
 	return existed
 }
 
-func replaceReadmeModule(path, rpName, namespaceName, currentVersion string) error {
+func replaceReadmeModule(path, packageModuleRelativePath, currentVersion string) error {
 	readmeFile, err := os.ReadFile(filepath.Join(path, "README.md"))
 	if err != nil {
 		return err
 	}
 
-	module := fmt.Sprintf("github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/%s/%s", rpName, namespaceName)
+	module := fmt.Sprintf("github.com/Azure/azure-sdk-for-go/%s", packageModuleRelativePath)
 
 	readmeModule := module
 	match := regexp.MustCompile(fmt.Sprintf(`%s/v\d+`, module))
@@ -691,6 +702,11 @@ func ReplaceReadmeNewClientName(packageRootPath string, exports exports.Content)
 
 func ReplaceConstModuleVersion(packagePath string, newVersion string) error {
 	path := filepath.Join(packagePath, "constants.go")
+
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		return nil
+	}
+
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return err
@@ -705,16 +721,16 @@ func ReplaceConstModuleVersion(packagePath string, newVersion string) error {
 }
 
 func ReplaceModule(newVersion *semver.Version, packagePath, baseModule string, suffixs ...string) error {
-	return filepath.Walk(packagePath, func(path string, info fs.FileInfo, err error) error {
+	return filepath.WalkDir(packagePath, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
 
-		if info.IsDir() {
+		if d.IsDir() {
 			return nil
 		}
 
-		hasSuffix := slices.ContainsFunc(suffixs, func(s string) bool { return strings.HasSuffix(info.Name(), s) })
+		hasSuffix := slices.ContainsFunc(suffixs, func(s string) bool { return strings.HasSuffix(d.Name(), s) })
 		if len(suffixs) == 0 || hasSuffix {
 			if err = ReplaceImport(path, baseModule, newVersion.Major()); err != nil {
 				return err
@@ -788,4 +804,25 @@ func importPath(s *ast.ImportSpec) string {
 		return ""
 	}
 	return t
+}
+
+// Walks the sdk directory to find module based on a go.mod file
+func FindModuleDirByGoMod(root string) (string, error) {
+	path := root
+	curLevel := 0
+	maxLevel := 5
+	for !strings.HasSuffix(path, SdkRootPath) && curLevel < maxLevel {
+		if _, err := os.Stat(path); os.IsNotExist(err) {
+			path = filepath.Dir(path)
+			curLevel++
+			continue
+		}
+		goModFilePath := filepath.Join(path, GoModFileName)
+		if _, err := os.Stat(goModFilePath); err == nil {
+			return path, nil
+		}
+		path = filepath.Dir(path)
+		curLevel++
+	}
+	return "", fmt.Errorf("module not found, package path:%s", root)
 }

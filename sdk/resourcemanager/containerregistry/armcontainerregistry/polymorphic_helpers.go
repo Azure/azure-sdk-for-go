@@ -11,7 +11,7 @@ package armcontainerregistry
 import "encoding/json"
 
 func unmarshalRunRequestClassification(rawMsg json.RawMessage) (RunRequestClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -38,7 +38,7 @@ func unmarshalRunRequestClassification(rawMsg json.RawMessage) (RunRequestClassi
 }
 
 func unmarshalTaskStepPropertiesClassification(rawMsg json.RawMessage) (TaskStepPropertiesClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -63,7 +63,7 @@ func unmarshalTaskStepPropertiesClassification(rawMsg json.RawMessage) (TaskStep
 }
 
 func unmarshalTaskStepUpdateParametersClassification(rawMsg json.RawMessage) (TaskStepUpdateParametersClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any

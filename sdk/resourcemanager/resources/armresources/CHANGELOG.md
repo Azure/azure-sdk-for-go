@@ -1,5 +1,33 @@
 # Release History
 
+## 2.0.0 (2025-02-13)
+### Breaking Changes
+
+- Type of `DeploymentProperties.Parameters` has been changed from `any` to `map[string]*DeploymentParameter`
+- Type of `DeploymentWhatIfProperties.Parameters` has been changed from `any` to `map[string]*DeploymentParameter`
+- Operation `*TagsClient.CreateOrUpdateAtScope` has been changed to LRO, use `*TagsClient.BeginCreateOrUpdateAtScope` instead.
+- Operation `*TagsClient.DeleteAtScope` has been changed to LRO, use `*TagsClient.BeginDeleteAtScope` instead.
+- Operation `*TagsClient.UpdateAtScope` has been changed to LRO, use `*TagsClient.BeginUpdateAtScope` instead.
+
+### Features Added
+
+- New enum type `ExportTemplateOutputFormat` with values `ExportTemplateOutputFormatBicep`, `ExportTemplateOutputFormatJSON`
+- New enum type `Level` with values `LevelError`, `LevelInfo`, `LevelWarning`
+- New enum type `ValidationLevel` with values `ValidationLevelProvider`, `ValidationLevelProviderNoRbac`, `ValidationLevelTemplate`
+- New struct `DeploymentDiagnosticsDefinition`
+- New struct `DeploymentParameter`
+- New struct `KeyVaultParameterReference`
+- New struct `KeyVaultReference`
+- New field `ValidationLevel` in struct `DeploymentProperties`
+- New field `Diagnostics`, `ValidationLevel` in struct `DeploymentPropertiesExtended`
+- New field `ID`, `Name`, `Type` in struct `DeploymentValidateResult`
+- New field `ValidationLevel` in struct `DeploymentWhatIfProperties`
+- New field `OutputFormat` in struct `ExportTemplateRequest`
+- New field `Output` in struct `ResourceGroupExportResult`
+- New field `DeploymentID`, `Identifiers`, `SymbolicName` in struct `WhatIfChange`
+- New field `Diagnostics`, `PotentialChanges` in struct `WhatIfOperationProperties`
+
+
 ## 1.2.0 (2023-11-24)
 ### Features Added
 

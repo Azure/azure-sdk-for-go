@@ -46,7 +46,7 @@ func NewAccessPolicyAssignmentClient(subscriptionID string, credential azcore.To
 // BeginCreateUpdate - Adds the access policy assignment to the specified users
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cacheName - The name of the Redis cache.
 //   - accessPolicyAssignmentName - The name of the access policy assignment.
@@ -73,7 +73,7 @@ func (client *AccessPolicyAssignmentClient) BeginCreateUpdate(ctx context.Contex
 // CreateUpdate - Adds the access policy assignment to the specified users
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2024-11-01
 func (client *AccessPolicyAssignmentClient) createUpdate(ctx context.Context, resourceGroupName string, cacheName string, accessPolicyAssignmentName string, parameters CacheAccessPolicyAssignment, options *AccessPolicyAssignmentClientBeginCreateUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AccessPolicyAssignmentClient.BeginCreateUpdate"
@@ -119,7 +119,7 @@ func (client *AccessPolicyAssignmentClient) createUpdateCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2024-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -131,7 +131,7 @@ func (client *AccessPolicyAssignmentClient) createUpdateCreateRequest(ctx contex
 // BeginDelete - Deletes the access policy assignment from a redis cache
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cacheName - The name of the Redis cache.
 //   - accessPolicyAssignmentName - The name of the access policy assignment.
@@ -158,7 +158,7 @@ func (client *AccessPolicyAssignmentClient) BeginDelete(ctx context.Context, res
 // Delete - Deletes the access policy assignment from a redis cache
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2024-11-01
 func (client *AccessPolicyAssignmentClient) deleteOperation(ctx context.Context, resourceGroupName string, cacheName string, accessPolicyAssignmentName string, options *AccessPolicyAssignmentClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AccessPolicyAssignmentClient.BeginDelete"
@@ -204,7 +204,7 @@ func (client *AccessPolicyAssignmentClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2024-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -213,7 +213,7 @@ func (client *AccessPolicyAssignmentClient) deleteCreateRequest(ctx context.Cont
 // Get - Gets the list of assignments for an access policy of a redis cache
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cacheName - The name of the Redis cache.
 //   - accessPolicyAssignmentName - The name of the access policy assignment.
@@ -265,7 +265,7 @@ func (client *AccessPolicyAssignmentClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2024-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -282,7 +282,7 @@ func (client *AccessPolicyAssignmentClient) getHandleResponse(resp *http.Respons
 
 // NewListPager - Gets the list of access policy assignments associated with this redis cache
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cacheName - The name of the Redis cache.
 //   - options - AccessPolicyAssignmentClientListOptions contains the optional parameters for the AccessPolicyAssignmentClient.NewListPager
@@ -330,7 +330,7 @@ func (client *AccessPolicyAssignmentClient) listCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2024-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

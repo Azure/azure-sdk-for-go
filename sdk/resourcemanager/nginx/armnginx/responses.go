@@ -8,6 +8,26 @@
 
 package armnginx
 
+// APIKeysClientCreateOrUpdateResponse contains the response from method APIKeysClient.CreateOrUpdate.
+type APIKeysClientCreateOrUpdateResponse struct {
+	DeploymentAPIKeyResponse
+}
+
+// APIKeysClientDeleteResponse contains the response from method APIKeysClient.Delete.
+type APIKeysClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// APIKeysClientGetResponse contains the response from method APIKeysClient.Get.
+type APIKeysClientGetResponse struct {
+	DeploymentAPIKeyResponse
+}
+
+// APIKeysClientListResponse contains the response from method APIKeysClient.NewListPager.
+type APIKeysClientListResponse struct {
+	DeploymentAPIKeyListResponse
+}
+
 // CertificatesClientCreateOrUpdateResponse contains the response from method CertificatesClient.BeginCreateOrUpdate.
 type CertificatesClientCreateOrUpdateResponse struct {
 	Certificate
@@ -36,7 +56,7 @@ type ConfigurationsClientAnalysisResponse struct {
 
 // ConfigurationsClientCreateOrUpdateResponse contains the response from method ConfigurationsClient.BeginCreateOrUpdate.
 type ConfigurationsClientCreateOrUpdateResponse struct {
-	Configuration
+	ConfigurationResponse
 }
 
 // ConfigurationsClientDeleteResponse contains the response from method ConfigurationsClient.BeginDelete.
@@ -46,7 +66,7 @@ type ConfigurationsClientDeleteResponse struct {
 
 // ConfigurationsClientGetResponse contains the response from method ConfigurationsClient.Get.
 type ConfigurationsClientGetResponse struct {
-	Configuration
+	ConfigurationResponse
 }
 
 // ConfigurationsClientListResponse contains the response from method ConfigurationsClient.NewListPager.

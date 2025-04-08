@@ -207,6 +207,8 @@ func unmarshalCopySinkClassification(rawMsg json.RawMessage) (CopySinkClassifica
 		b = &DynamicsSink{}
 	case "FileSystemSink":
 		b = &FileSystemSink{}
+	case "IcebergSink":
+		b = &IcebergSink{}
 	case "InformixSink":
 		b = &InformixSink{}
 	case "JsonSink":
@@ -683,6 +685,8 @@ func unmarshalDatasetClassification(rawMsg json.RawMessage) (DatasetClassificati
 		b = &HTTPDataset{}
 	case "HubspotObject":
 		b = &HubspotObjectDataset{}
+	case "Iceberg":
+		b = &IcebergDataset{}
 	case "ImpalaObject":
 		b = &ImpalaObjectDataset{}
 	case "InformixTable":

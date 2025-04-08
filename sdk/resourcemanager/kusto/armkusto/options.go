@@ -72,6 +72,13 @@ type ClusterPrincipalAssignmentsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ClustersClientBeginAddCalloutPoliciesOptions contains the optional parameters for the ClustersClient.BeginAddCalloutPolicies
+// method.
+type ClustersClientBeginAddCalloutPoliciesOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // ClustersClientBeginAddLanguageExtensionsOptions contains the optional parameters for the ClustersClient.BeginAddLanguageExtensions
 // method.
 type ClustersClientBeginAddLanguageExtensionsOptions struct {
@@ -119,6 +126,13 @@ type ClustersClientBeginMigrateOptions struct {
 	ResumeToken string
 }
 
+// ClustersClientBeginRemoveCalloutPolicyOptions contains the optional parameters for the ClustersClient.BeginRemoveCalloutPolicy
+// method.
+type ClustersClientBeginRemoveCalloutPolicyOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // ClustersClientBeginRemoveLanguageExtensionsOptions contains the optional parameters for the ClustersClient.BeginRemoveLanguageExtensions
 // method.
 type ClustersClientBeginRemoveLanguageExtensionsOptions struct {
@@ -162,6 +176,18 @@ type ClustersClientGetOptions struct {
 // ClustersClientListByResourceGroupOptions contains the optional parameters for the ClustersClient.NewListByResourceGroupPager
 // method.
 type ClustersClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClustersClientListCalloutPoliciesOptions contains the optional parameters for the ClustersClient.NewListCalloutPoliciesPager
+// method.
+type ClustersClientListCalloutPoliciesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClustersClientListFollowerDatabasesGetOptions contains the optional parameters for the ClustersClient.NewListFollowerDatabasesGetPager
+// method.
+type ClustersClientListFollowerDatabasesGetOptions struct {
 	// placeholder for future optional parameters
 }
 

@@ -31,8 +31,7 @@ func TestGetCompletionsStream(t *testing.T) {
 		client := newTestClient(t, epm.Endpoint)
 
 		response, err := client.GetCompletionsStream(context.TODO(), body, nil)
-		skipNowIfThrottled(t, err)
-		require.NoError(t, err)
+		customRequireNoError(t, err, true)
 
 		if err != nil {
 			t.Errorf("Client.GetCompletionsStream() error = %v", err)

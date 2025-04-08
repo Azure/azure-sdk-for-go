@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -42,7 +39,13 @@ func NewClient(endpoint string, credential azcore.TokenCredential, options *Clie
 	}
 
 	authPolicy := runtime.NewBearerTokenPolicy(credential, []string{c.Audience + "/.default"}, nil)
-	azcoreClient, err := azcore.NewClient(moduleName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
+	azcoreClient, err := azcore.NewClient(moduleName, version, runtime.PipelineOptions{
+		APIVersion: runtime.APIVersionOptions{
+			Location: runtime.APIVersionLocationQueryParam,
+			Name:     "api-version",
+		},
+		PerRetry: []policy.Policy{authPolicy},
+	}, &options.ClientOptions)
 	if err != nil {
 		return nil, err
 	}

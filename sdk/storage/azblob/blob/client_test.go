@@ -13,8 +13,6 @@ import (
 	"crypto/rand"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"io"
 	"net/http"
 	"net/url"
@@ -24,6 +22,9 @@ import (
 	"sync/atomic"
 	"testing"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
@@ -205,7 +206,7 @@ func waitForCopy(_require *require.Assertions, copyBlobClient *blockblob.Client,
 	}
 }
 
-func (s *BlobUnrecordedTestsSuite) TestCopyBlockBlobFromUrlSourceContentMD5() {
+func (s *BlobUnrecordedTestsSuite) TestCopyBlobFromUrlSourceContentMD5() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

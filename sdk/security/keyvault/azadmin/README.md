@@ -152,8 +152,8 @@ additional questions or comments.
 [create_managed_hsm]: https://learn.microsoft.com/azure/key-vault/managed-hsm/quick-create-cli
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [default_cred_ref]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azidentity#defaultazurecredential
-[managed_hsm]: https://docs.microsoft.com/azure/key-vault/managed-hsm/overview
+[managed_hsm]: https://learn.microsoft.com/azure/key-vault/managed-hsm/overview
 [managed_hsm_docs]: https://learn.microsoft.com/azure/key-vault/managed-hsm/
-[managed_identity]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
+[managed_identity]: https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 

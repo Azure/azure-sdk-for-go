@@ -1,6 +1,6 @@
 matrix:
   images:
-    go18:
+    go:
       image: Dockerfile
       imageBuildDir: "../../.."
   scenarios:

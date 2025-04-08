@@ -1,5 +1,106 @@
 # Release History
 
+## 6.2.0 (2024-12-09)
+### Features Added
+
+- New value `AddressPrefixTypeNetworkGroup` added to enum type `AddressPrefixType`
+- New value `FirewallPolicyIDPSSignatureDirectionFive` added to enum type `FirewallPolicyIDPSSignatureDirection`
+- New value `ProvisioningStateCanceled`, `ProvisioningStateCreating` added to enum type `ProvisioningState`
+- New enum type `AddressSpaceAggregationOption` with values `AddressSpaceAggregationOptionManual`, `AddressSpaceAggregationOptionNone`
+- New enum type `FailoverConnectionStatus` with values `FailoverConnectionStatusConnected`, `FailoverConnectionStatusDisconnected`
+- New enum type `FailoverTestStatus` with values `FailoverTestStatusCompleted`, `FailoverTestStatusExpired`, `FailoverTestStatusInvalid`, `FailoverTestStatusNotStarted`, `FailoverTestStatusRunning`, `FailoverTestStatusStartFailed`, `FailoverTestStatusStarting`, `FailoverTestStatusStopFailed`, `FailoverTestStatusStopping`
+- New enum type `FailoverTestStatusForSingleTest` with values `FailoverTestStatusForSingleTestCompleted`, `FailoverTestStatusForSingleTestExpired`, `FailoverTestStatusForSingleTestInvalid`, `FailoverTestStatusForSingleTestNotStarted`, `FailoverTestStatusForSingleTestRunning`, `FailoverTestStatusForSingleTestStartFailed`, `FailoverTestStatusForSingleTestStarting`, `FailoverTestStatusForSingleTestStopFailed`, `FailoverTestStatusForSingleTestStopping`
+- New enum type `FailoverTestType` with values `FailoverTestTypeAll`, `FailoverTestTypeMultiSiteFailover`, `FailoverTestTypeSingleSiteFailover`
+- New enum type `IPType` with values `IPTypeIPv4`, `IPTypeIPv6`
+- New enum type `NetworkProtocol` with values `NetworkProtocolAny`, `NetworkProtocolICMP`, `NetworkProtocolTCP`, `NetworkProtocolUDP`
+- New function `*ClientFactory.NewIpamPoolsClient() *IpamPoolsClient`
+- New function `*ClientFactory.NewReachabilityAnalysisIntentsClient() *ReachabilityAnalysisIntentsClient`
+- New function `*ClientFactory.NewReachabilityAnalysisRunsClient() *ReachabilityAnalysisRunsClient`
+- New function `*ClientFactory.NewStaticCidrsClient() *StaticCidrsClient`
+- New function `*ClientFactory.NewVerifierWorkspacesClient() *VerifierWorkspacesClient`
+- New function `NewIpamPoolsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*IpamPoolsClient, error)`
+- New function `*IpamPoolsClient.BeginCreate(context.Context, string, string, string, IpamPool, *IpamPoolsClientBeginCreateOptions) (*runtime.Poller[IpamPoolsClientCreateResponse], error)`
+- New function `*IpamPoolsClient.BeginDelete(context.Context, string, string, string, *IpamPoolsClientBeginDeleteOptions) (*runtime.Poller[IpamPoolsClientDeleteResponse], error)`
+- New function `*IpamPoolsClient.Get(context.Context, string, string, string, *IpamPoolsClientGetOptions) (IpamPoolsClientGetResponse, error)`
+- New function `*IpamPoolsClient.GetPoolUsage(context.Context, string, string, string, *IpamPoolsClientGetPoolUsageOptions) (IpamPoolsClientGetPoolUsageResponse, error)`
+- New function `*IpamPoolsClient.NewListAssociatedResourcesPager(string, string, string, *IpamPoolsClientListAssociatedResourcesOptions) *runtime.Pager[IpamPoolsClientListAssociatedResourcesResponse]`
+- New function `*IpamPoolsClient.NewListPager(string, string, *IpamPoolsClientListOptions) *runtime.Pager[IpamPoolsClientListResponse]`
+- New function `*IpamPoolsClient.Update(context.Context, string, string, string, *IpamPoolsClientUpdateOptions) (IpamPoolsClientUpdateResponse, error)`
+- New function `*LoadBalancerLoadBalancingRulesClient.BeginHealth(context.Context, string, string, string, *LoadBalancerLoadBalancingRulesClientBeginHealthOptions) (*runtime.Poller[LoadBalancerLoadBalancingRulesClientHealthResponse], error)`
+- New function `NewReachabilityAnalysisIntentsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ReachabilityAnalysisIntentsClient, error)`
+- New function `*ReachabilityAnalysisIntentsClient.Create(context.Context, string, string, string, string, ReachabilityAnalysisIntent, *ReachabilityAnalysisIntentsClientCreateOptions) (ReachabilityAnalysisIntentsClientCreateResponse, error)`
+- New function `*ReachabilityAnalysisIntentsClient.Delete(context.Context, string, string, string, string, *ReachabilityAnalysisIntentsClientDeleteOptions) (ReachabilityAnalysisIntentsClientDeleteResponse, error)`
+- New function `*ReachabilityAnalysisIntentsClient.Get(context.Context, string, string, string, string, *ReachabilityAnalysisIntentsClientGetOptions) (ReachabilityAnalysisIntentsClientGetResponse, error)`
+- New function `*ReachabilityAnalysisIntentsClient.NewListPager(string, string, string, *ReachabilityAnalysisIntentsClientListOptions) *runtime.Pager[ReachabilityAnalysisIntentsClientListResponse]`
+- New function `NewReachabilityAnalysisRunsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ReachabilityAnalysisRunsClient, error)`
+- New function `*ReachabilityAnalysisRunsClient.Create(context.Context, string, string, string, string, ReachabilityAnalysisRun, *ReachabilityAnalysisRunsClientCreateOptions) (ReachabilityAnalysisRunsClientCreateResponse, error)`
+- New function `*ReachabilityAnalysisRunsClient.BeginDelete(context.Context, string, string, string, string, *ReachabilityAnalysisRunsClientBeginDeleteOptions) (*runtime.Poller[ReachabilityAnalysisRunsClientDeleteResponse], error)`
+- New function `*ReachabilityAnalysisRunsClient.Get(context.Context, string, string, string, string, *ReachabilityAnalysisRunsClientGetOptions) (ReachabilityAnalysisRunsClientGetResponse, error)`
+- New function `*ReachabilityAnalysisRunsClient.NewListPager(string, string, string, *ReachabilityAnalysisRunsClientListOptions) *runtime.Pager[ReachabilityAnalysisRunsClientListResponse]`
+- New function `NewStaticCidrsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*StaticCidrsClient, error)`
+- New function `*StaticCidrsClient.Create(context.Context, string, string, string, string, *StaticCidrsClientCreateOptions) (StaticCidrsClientCreateResponse, error)`
+- New function `*StaticCidrsClient.BeginDelete(context.Context, string, string, string, string, *StaticCidrsClientBeginDeleteOptions) (*runtime.Poller[StaticCidrsClientDeleteResponse], error)`
+- New function `*StaticCidrsClient.Get(context.Context, string, string, string, string, *StaticCidrsClientGetOptions) (StaticCidrsClientGetResponse, error)`
+- New function `*StaticCidrsClient.NewListPager(string, string, string, *StaticCidrsClientListOptions) *runtime.Pager[StaticCidrsClientListResponse]`
+- New function `NewVerifierWorkspacesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*VerifierWorkspacesClient, error)`
+- New function `*VerifierWorkspacesClient.Create(context.Context, string, string, string, VerifierWorkspace, *VerifierWorkspacesClientCreateOptions) (VerifierWorkspacesClientCreateResponse, error)`
+- New function `*VerifierWorkspacesClient.BeginDelete(context.Context, string, string, string, *VerifierWorkspacesClientBeginDeleteOptions) (*runtime.Poller[VerifierWorkspacesClientDeleteResponse], error)`
+- New function `*VerifierWorkspacesClient.Get(context.Context, string, string, string, *VerifierWorkspacesClientGetOptions) (VerifierWorkspacesClientGetResponse, error)`
+- New function `*VerifierWorkspacesClient.NewListPager(string, string, *VerifierWorkspacesClientListOptions) *runtime.Pager[VerifierWorkspacesClientListResponse]`
+- New function `*VerifierWorkspacesClient.Update(context.Context, string, string, string, *VerifierWorkspacesClientUpdateOptions) (VerifierWorkspacesClientUpdateResponse, error)`
+- New function `*VirtualNetworkGatewaysClient.BeginGetFailoverAllTestDetails(context.Context, string, string, string, bool, *VirtualNetworkGatewaysClientBeginGetFailoverAllTestDetailsOptions) (*runtime.Poller[VirtualNetworkGatewaysClientGetFailoverAllTestDetailsResponse], error)`
+- New function `*VirtualNetworkGatewaysClient.BeginGetFailoverSingleTestDetails(context.Context, string, string, string, string, *VirtualNetworkGatewaysClientBeginGetFailoverSingleTestDetailsOptions) (*runtime.Poller[VirtualNetworkGatewaysClientGetFailoverSingleTestDetailsResponse], error)`
+- New function `*VirtualNetworkGatewaysClient.BeginStartExpressRouteSiteFailoverSimulation(context.Context, string, string, string, *VirtualNetworkGatewaysClientBeginStartExpressRouteSiteFailoverSimulationOptions) (*runtime.Poller[VirtualNetworkGatewaysClientStartExpressRouteSiteFailoverSimulationResponse], error)`
+- New function `*VirtualNetworkGatewaysClient.BeginStopExpressRouteSiteFailoverSimulation(context.Context, string, string, ExpressRouteFailoverStopAPIParameters, *VirtualNetworkGatewaysClientBeginStopExpressRouteSiteFailoverSimulationOptions) (*runtime.Poller[VirtualNetworkGatewaysClientStopExpressRouteSiteFailoverSimulationResponse], error)`
+- New struct `CommonErrorAdditionalInfo`
+- New struct `CommonErrorDetail`
+- New struct `CommonErrorResponse`
+- New struct `CommonProxyResource`
+- New struct `CommonResource`
+- New struct `CommonTrackedResource`
+- New struct `ExpressRouteFailoverCircuitResourceDetails`
+- New struct `ExpressRouteFailoverConnectionResourceDetails`
+- New struct `ExpressRouteFailoverRedundantRoute`
+- New struct `ExpressRouteFailoverSingleTestDetails`
+- New struct `ExpressRouteFailoverStopAPIParameters`
+- New struct `ExpressRouteFailoverTestDetails`
+- New struct `FailoverConnectionDetails`
+- New struct `IPTraffic`
+- New struct `IntentContent`
+- New struct `IpamPool`
+- New struct `IpamPoolList`
+- New struct `IpamPoolPrefixAllocation`
+- New struct `IpamPoolPrefixAllocationPool`
+- New struct `IpamPoolProperties`
+- New struct `IpamPoolUpdate`
+- New struct `IpamPoolUpdateProperties`
+- New struct `LoadBalancerHealthPerRule`
+- New struct `LoadBalancerHealthPerRulePerBackendAddress`
+- New struct `PoolAssociation`
+- New struct `PoolAssociationList`
+- New struct `PoolUsage`
+- New struct `ReachabilityAnalysisIntent`
+- New struct `ReachabilityAnalysisIntentListResult`
+- New struct `ReachabilityAnalysisIntentProperties`
+- New struct `ReachabilityAnalysisRun`
+- New struct `ReachabilityAnalysisRunListResult`
+- New struct `ReachabilityAnalysisRunProperties`
+- New struct `ResourceBasics`
+- New struct `StaticCidr`
+- New struct `StaticCidrList`
+- New struct `StaticCidrProperties`
+- New struct `VerifierWorkspace`
+- New struct `VerifierWorkspaceListResult`
+- New struct `VerifierWorkspaceProperties`
+- New struct `VerifierWorkspaceUpdate`
+- New struct `VerifierWorkspaceUpdateProperties`
+- New field `IpamPoolPrefixAllocations` in struct `AddressSpace`
+- New field `EnablePrivateOnlyBastion` in struct `BastionHostPropertiesFormat`
+- New field `DefaultOutboundConnectivityEnabled` in struct `InterfacePropertiesFormat`
+- New field `NetworkGroupAddressSpaceAggregationOption` in struct `SecurityAdminConfigurationPropertiesFormat`
+- New field `IpamPoolPrefixAllocations` in struct `SubnetPropertiesFormat`
+
+
 ## 6.1.0 (2024-09-24)
 ### Features Added
 

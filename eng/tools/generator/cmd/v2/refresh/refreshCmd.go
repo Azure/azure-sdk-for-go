@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"path"
+	"path/filepath"
 	"strings"
 	"time"
 
@@ -117,7 +117,7 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 
 	var rpNames []string
 	if c.flags.RPs == "" {
-		rps, err := os.ReadDir(path.Join(generateCtx.SDKPath, "sdk", "resourcemanager"))
+		rps, err := os.ReadDir(filepath.Join(generateCtx.SDKPath, "sdk", "resourcemanager"))
 		if err != nil {
 			return fmt.Errorf("failed to get all rps: %+v", err)
 		}
@@ -129,14 +129,14 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 	}
 
 	for _, rpName := range rpNames {
-		namespaces, err := os.ReadDir(path.Join(generateCtx.SDKPath, "sdk", "resourcemanager", rpName))
+		namespaces, err := os.ReadDir(filepath.Join(generateCtx.SDKPath, "sdk", "resourcemanager", rpName))
 		if err != nil {
 			continue
 		}
 
 		for _, namespace := range namespaces {
 			log.Printf("Release generation for rp: %s, namespace: %s", rpName, namespace.Name())
-			specRpName, err := common.GetSpecRpName(path.Join(generateCtx.SDKPath, "sdk", "resourcemanager", rpName, namespace.Name()))
+			specRpName, err := common.GetSpecRpName(filepath.Join(generateCtx.SDKPath, "sdk", "resourcemanager", rpName, namespace.Name()))
 			if err != nil {
 				continue
 			}

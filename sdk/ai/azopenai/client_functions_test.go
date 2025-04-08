@@ -59,7 +59,7 @@ func TestGetChatCompletions_usingFunctions(t *testing.T) {
 		}
 
 		resp, err := chatClient.GetChatCompletions(context.Background(), body, nil)
-		require.NoError(t, err)
+		customRequireNoError(t, err, true)
 
 		funcCall := resp.Choices[0].Message.ToolCalls[0].(*azopenai.ChatCompletionsFunctionToolCall).Function
 
@@ -166,7 +166,7 @@ func TestGetChatCompletions_usingFunctions_legacy(t *testing.T) {
 		}
 
 		resp, err := client.GetChatCompletions(context.Background(), body, nil)
-		require.NoError(t, err)
+		customRequireNoError(t, err, true)
 
 		funcCall := resp.ChatCompletions.Choices[0].Message.FunctionCall
 

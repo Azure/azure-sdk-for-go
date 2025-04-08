@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -161,6 +158,16 @@ func TestCRUD(t *testing.T) {
 				require.Equal(t, createResp.Key.KID.Name(), getResp.Key.KID.Name())
 				require.Equal(t, createResp.Key.KID.Version(), getResp.Key.KID.Version())
 				testSerde(t, &getResp.KeyBundle)
+
+				if mhsm {
+					getAttResp, err := client.GetKeyAttestation(context.Background(), keyName, "", nil)
+					require.NoError(t, err)
+					require.Equal(t, createResp.Key.KID.Name(), getAttResp.Key.KID.Name())
+					require.Equal(t, createResp.Key.KID.Version(), getAttResp.Key.KID.Version())
+					require.NotEmpty(t, getAttResp.Attributes.Attestation.CertificatePEMFile)
+					require.NotEmpty(t, getAttResp.Attributes.Attestation.PrivateKeyAttestation)
+					testSerde(t, &getAttResp.KeyBundle)
+				}
 
 				updateParams := azkeys.UpdateKeyParameters{
 					KeyAttributes: &azkeys.KeyAttributes{

@@ -6,7 +6,7 @@
 > Service Version: 2023-11-03
 
 Azure File Shares offers fully managed file shares in the cloud that are accessible via the industry standard 
-[Server Message Block (SMB) protocol](https://docs.microsoft.com/windows/desktop/FileIO/microsoft-smb-protocol-and-cifs-protocol-overview). 
+[Server Message Block (SMB) protocol](https://learn.microsoft.com/windows/desktop/FileIO/microsoft-smb-protocol-and-cifs-protocol-overview). 
 Azure file shares can be mounted concurrently by cloud or on-premises deployments of Windows, Linux, and macOS. 
 Additionally, Azure file shares can be cached on Windows Servers with Azure File Sync for fast access near where the data is being used.
 
@@ -262,14 +262,14 @@ additional questions or comments.
 <!-- LINKS -->
 [source]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azfile
 [docs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/storage/azfile
-[rest_docs]: https://docs.microsoft.com/rest/api/storageservices/file-service-rest-api
-[product_docs]: https://docs.microsoft.com/azure/storage/files/storage-files-introduction
+[rest_docs]: https://learn.microsoft.com/rest/api/storageservices/file-service-rest-api
+[product_docs]: https://learn.microsoft.com/azure/storage/files/storage-files-introduction
 [godevdl]: https://go.dev/dl/
 [goget]: https://pkg.go.dev/cmd/go#hdr-Add_dependencies_to_current_module_and_install_them
-[storage_account_docs]: https://docs.microsoft.com/azure/storage/common/storage-account-overview
-[storage_account_create_ps]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-powershell
-[storage_account_create_cli]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-cli
-[storage_account_create_portal]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
+[storage_account_docs]: https://learn.microsoft.com/azure/storage/common/storage-account-overview
+[storage_account_create_ps]: https://learn.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-powershell
+[storage_account_create_cli]: https://learn.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-cli
+[storage_account_create_portal]: https://learn.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
 [azure_sub]: https://azure.microsoft.com/free/
 [azcore_response_error]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore#ResponseError
 [file_error]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azfile/fileerror/error_codes.go

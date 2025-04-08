@@ -53,7 +53,7 @@ type CassandraClustersServer struct {
 
 	// BeginInvokeCommandAsync is the fake for method CassandraClustersClient.BeginInvokeCommandAsync
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginInvokeCommandAsync func(ctx context.Context, resourceGroupName string, clusterName string, body armcosmos.CommandPostBody, options *armcosmos.CassandraClustersClientBeginInvokeCommandAsyncOptions) (resp azfake.PollerResponder[armcosmos.CassandraClustersClientInvokeCommandAsyncResponse], errResp azfake.ErrorResponder)
+	BeginInvokeCommandAsync func(ctx context.Context, resourceGroupName string, clusterName string, body armcosmos.CommandAsyncPostBody, options *armcosmos.CassandraClustersClientBeginInvokeCommandAsyncOptions) (resp azfake.PollerResponder[armcosmos.CassandraClustersClientInvokeCommandAsyncResponse], errResp azfake.ErrorResponder)
 
 	// NewListBackupsPager is the fake for method CassandraClustersClient.NewListBackupsPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -417,7 +417,7 @@ func (c *CassandraClustersServerTransport) dispatchGetCommandAsync(req *http.Req
 	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ListCommands, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CommandPublicResource, req)
 	if err != nil {
 		return nil, err
 	}
@@ -484,7 +484,7 @@ func (c *CassandraClustersServerTransport) dispatchBeginInvokeCommandAsync(req *
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armcosmos.CommandPostBody](req)
+		body, err := server.UnmarshalRequestAsJSON[armcosmos.CommandAsyncPostBody](req)
 		if err != nil {
 			return nil, err
 		}

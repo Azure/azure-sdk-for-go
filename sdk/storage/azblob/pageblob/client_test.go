@@ -4225,7 +4225,6 @@ func (s *PageBlobUnrecordedTestsSuite) TestPageBlobSetBlobTagForSnapshot() {
 
 	blobGetTagsResponse, err := pbClient.GetTags(context.Background(), nil)
 	_require.NoError(err)
-	// _require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
 	blobTagsSet := blobGetTagsResponse.BlobTagSet
 	_require.NotNil(blobTagsSet)
 	_require.Len(blobTagsSet, len(testcommon.SpecialCharBlobTagsMap))

@@ -1,5 +1,109 @@
 # Release History
 
+## 6.4.0 (2025-03-28)
+### Features Added
+
+- New value `AllocationStrategyPrioritized` added to enum type `AllocationStrategy`
+- New value `InstanceViewTypesResiliencyView` added to enum type `InstanceViewTypes`
+- New value `NetworkAPIVersionTwoThousandTwentyTwo1101` added to enum type `NetworkAPIVersion`
+- New enum type `Expand` with values `ExpandProperties`
+- New enum type `Modes` with values `ModesAudit`, `ModesDisabled`, `ModesEnforce`
+- New enum type `RebalanceBehavior` with values `RebalanceBehaviorCreateBeforeDelete`
+- New enum type `RebalanceStrategy` with values `RebalanceStrategyRecreate`
+- New enum type `ResilientVMDeletionStatus` with values `ResilientVMDeletionStatusDisabled`, `ResilientVMDeletionStatusEnabled`, `ResilientVMDeletionStatusFailed`, `ResilientVMDeletionStatusInProgress`
+- New enum type `ZonePlacementPolicyType` with values `ZonePlacementPolicyTypeAny`
+- New function `*AvailabilitySetsClient.CancelMigrationToVirtualMachineScaleSet(context.Context, string, string, *AvailabilitySetsClientCancelMigrationToVirtualMachineScaleSetOptions) (AvailabilitySetsClientCancelMigrationToVirtualMachineScaleSetResponse, error)`
+- New function `*AvailabilitySetsClient.BeginConvertToVirtualMachineScaleSet(context.Context, string, string, *AvailabilitySetsClientBeginConvertToVirtualMachineScaleSetOptions) (*runtime.Poller[AvailabilitySetsClientConvertToVirtualMachineScaleSetResponse], error)`
+- New function `*AvailabilitySetsClient.StartMigrationToVirtualMachineScaleSet(context.Context, string, string, MigrateToVirtualMachineScaleSetInput, *AvailabilitySetsClientStartMigrationToVirtualMachineScaleSetOptions) (AvailabilitySetsClientStartMigrationToVirtualMachineScaleSetResponse, error)`
+- New function `*AvailabilitySetsClient.ValidateMigrationToVirtualMachineScaleSet(context.Context, string, string, MigrateToVirtualMachineScaleSetInput, *AvailabilitySetsClientValidateMigrationToVirtualMachineScaleSetOptions) (AvailabilitySetsClientValidateMigrationToVirtualMachineScaleSetResponse, error)`
+- New function `*VirtualMachineImagesClient.NewListWithPropertiesPager(string, string, string, string, Expand, *VirtualMachineImagesClientListWithPropertiesOptions) *runtime.Pager[VirtualMachineImagesClientListWithPropertiesResponse]`
+- New function `*VirtualMachinesClient.BeginMigrateToVMScaleSet(context.Context, string, string, *VirtualMachinesClientBeginMigrateToVMScaleSetOptions) (*runtime.Poller[VirtualMachinesClientMigrateToVMScaleSetResponse], error)`
+- New struct `AutomaticZoneRebalancingPolicy`
+- New struct `ConvertToVirtualMachineScaleSetInput`
+- New struct `DefaultVirtualMachineScaleSetInfo`
+- New struct `HostEndpointSettings`
+- New struct `MigrateToVirtualMachineScaleSetInput`
+- New struct `MigrateVMToVirtualMachineScaleSetInput`
+- New struct `Placement`
+- New struct `VirtualMachineImagesWithPropertiesListResult`
+- New struct `VirtualMachineScaleSetMigrationInfo`
+- New field `VirtualMachineScaleSetMigrationInfo` in struct `AvailabilitySetProperties`
+- New field `Imds`, `WireServer` in struct `ProxyAgentSettings`
+- New field `AutomaticZoneRebalancingPolicy` in struct `ResiliencyPolicy`
+- New field `Rank` in struct `SKUProfileVMSize`
+- New field `PrioritizeUnhealthyVMs` in struct `ScaleInPolicy`
+- New field `AlignRegionalDisksToVMZone` in struct `StorageProfile`
+- New field `Placement` in struct `VirtualMachine`
+- New field `ResilientVMDeletionStatus` in struct `VirtualMachineScaleSetVMProperties`
+
+
+## 6.3.0 (2025-01-24)
+### Features Added
+
+- New field `IsBootstrapCertificate` in struct `CloudServiceVaultCertificate`
+
+
+## 6.2.0 (2024-12-27)
+### Features Added
+
+- New value `StorageAccountTypePremiumV2LRS` added to enum type `StorageAccountType`
+- New enum type `AccessControlRulesMode` with values `AccessControlRulesModeAudit`, `AccessControlRulesModeDisabled`, `AccessControlRulesModeEnforce`
+- New enum type `EndpointAccess` with values `EndpointAccessAllow`, `EndpointAccessDeny`
+- New enum type `EndpointTypes` with values `EndpointTypesIMDS`, `EndpointTypesWireServer`
+- New enum type `GalleryApplicationScriptRebootBehavior` with values `GalleryApplicationScriptRebootBehaviorNone`, `GalleryApplicationScriptRebootBehaviorRerun`
+- New enum type `SoftDeletedArtifactTypes` with values `SoftDeletedArtifactTypesImages`
+- New enum type `ValidationStatus` with values `ValidationStatusFailed`, `ValidationStatusSucceeded`, `ValidationStatusUnknown`
+- New function `*ClientFactory.NewGalleryInVMAccessControlProfileVersionsClient() *GalleryInVMAccessControlProfileVersionsClient`
+- New function `*ClientFactory.NewGalleryInVMAccessControlProfilesClient() *GalleryInVMAccessControlProfilesClient`
+- New function `*ClientFactory.NewSoftDeletedResourceClient() *SoftDeletedResourceClient`
+- New function `NewGalleryInVMAccessControlProfileVersionsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*GalleryInVMAccessControlProfileVersionsClient, error)`
+- New function `*GalleryInVMAccessControlProfileVersionsClient.BeginCreateOrUpdate(context.Context, string, string, string, string, GalleryInVMAccessControlProfileVersion, *GalleryInVMAccessControlProfileVersionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[GalleryInVMAccessControlProfileVersionsClientCreateOrUpdateResponse], error)`
+- New function `*GalleryInVMAccessControlProfileVersionsClient.BeginDelete(context.Context, string, string, string, string, *GalleryInVMAccessControlProfileVersionsClientBeginDeleteOptions) (*runtime.Poller[GalleryInVMAccessControlProfileVersionsClientDeleteResponse], error)`
+- New function `*GalleryInVMAccessControlProfileVersionsClient.Get(context.Context, string, string, string, string, *GalleryInVMAccessControlProfileVersionsClientGetOptions) (GalleryInVMAccessControlProfileVersionsClientGetResponse, error)`
+- New function `*GalleryInVMAccessControlProfileVersionsClient.NewListByGalleryInVMAccessControlProfilePager(string, string, string, *GalleryInVMAccessControlProfileVersionsClientListByGalleryInVMAccessControlProfileOptions) *runtime.Pager[GalleryInVMAccessControlProfileVersionsClientListByGalleryInVMAccessControlProfileResponse]`
+- New function `*GalleryInVMAccessControlProfileVersionsClient.BeginUpdate(context.Context, string, string, string, string, GalleryInVMAccessControlProfileVersionUpdate, *GalleryInVMAccessControlProfileVersionsClientBeginUpdateOptions) (*runtime.Poller[GalleryInVMAccessControlProfileVersionsClientUpdateResponse], error)`
+- New function `NewGalleryInVMAccessControlProfilesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*GalleryInVMAccessControlProfilesClient, error)`
+- New function `*GalleryInVMAccessControlProfilesClient.BeginCreateOrUpdate(context.Context, string, string, string, GalleryInVMAccessControlProfile, *GalleryInVMAccessControlProfilesClientBeginCreateOrUpdateOptions) (*runtime.Poller[GalleryInVMAccessControlProfilesClientCreateOrUpdateResponse], error)`
+- New function `*GalleryInVMAccessControlProfilesClient.BeginDelete(context.Context, string, string, string, *GalleryInVMAccessControlProfilesClientBeginDeleteOptions) (*runtime.Poller[GalleryInVMAccessControlProfilesClientDeleteResponse], error)`
+- New function `*GalleryInVMAccessControlProfilesClient.Get(context.Context, string, string, string, *GalleryInVMAccessControlProfilesClientGetOptions) (GalleryInVMAccessControlProfilesClientGetResponse, error)`
+- New function `*GalleryInVMAccessControlProfilesClient.NewListByGalleryPager(string, string, *GalleryInVMAccessControlProfilesClientListByGalleryOptions) *runtime.Pager[GalleryInVMAccessControlProfilesClientListByGalleryResponse]`
+- New function `*GalleryInVMAccessControlProfilesClient.BeginUpdate(context.Context, string, string, string, GalleryInVMAccessControlProfileUpdate, *GalleryInVMAccessControlProfilesClientBeginUpdateOptions) (*runtime.Poller[GalleryInVMAccessControlProfilesClientUpdateResponse], error)`
+- New function `NewSoftDeletedResourceClient(string, azcore.TokenCredential, *arm.ClientOptions) (*SoftDeletedResourceClient, error)`
+- New function `*SoftDeletedResourceClient.NewListByArtifactNamePager(string, string, string, string, *SoftDeletedResourceClientListByArtifactNameOptions) *runtime.Pager[SoftDeletedResourceClientListByArtifactNameResponse]`
+- New struct `AccessControlRules`
+- New struct `AccessControlRulesIdentity`
+- New struct `AccessControlRulesPrivilege`
+- New struct `AccessControlRulesRole`
+- New struct `AccessControlRulesRoleAssignment`
+- New struct `AdditionalReplicaSet`
+- New struct `ExecutedValidation`
+- New struct `GalleryIdentity`
+- New struct `GalleryInVMAccessControlProfile`
+- New struct `GalleryInVMAccessControlProfileList`
+- New struct `GalleryInVMAccessControlProfileProperties`
+- New struct `GalleryInVMAccessControlProfileUpdate`
+- New struct `GalleryInVMAccessControlProfileVersion`
+- New struct `GalleryInVMAccessControlProfileVersionList`
+- New struct `GalleryInVMAccessControlProfileVersionProperties`
+- New struct `GalleryInVMAccessControlProfileVersionUpdate`
+- New struct `GalleryResourceProfilePropertiesBase`
+- New struct `GalleryResourceProfileVersionPropertiesBase`
+- New struct `GallerySoftDeletedResource`
+- New struct `GallerySoftDeletedResourceList`
+- New struct `GallerySoftDeletedResourceProperties`
+- New struct `PlatformAttribute`
+- New struct `ValidationsProfile`
+- New field `Identity` in struct `Gallery`
+- New field `StartsAtVersion` in struct `GalleryImageFeature`
+- New field `AllowUpdateImage` in struct `GalleryImageProperties`
+- New field `Restore`, `ValidationsProfile` in struct `GalleryImageVersionProperties`
+- New field `BlockDeletionBeforeEndOfLife` in struct `GalleryImageVersionSafetyProfile`
+- New field `SecurityProfile` in struct `GalleryList`
+- New field `Identity` in struct `GalleryUpdate`
+- New field `AdditionalReplicaSets` in struct `TargetRegion`
+- New field `ScriptBehaviorAfterReboot` in struct `UserArtifactSettings`
+
+
 ## 6.1.0 (2024-08-23)
 ### Features Added
 

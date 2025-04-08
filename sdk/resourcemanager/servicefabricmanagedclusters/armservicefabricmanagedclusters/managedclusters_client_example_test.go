@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabricmanagedclusters/armservicefabricmanagedclusters"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/examples/ManagedClusterListByResourceGroupOperation_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/examples/ManagedClusterListByResourceGroupOperation_example.json
 func ExampleManagedClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,7 +122,7 @@ func ExampleManagedClustersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/examples/ManagedClusterListBySubscriptionOperation_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/examples/ManagedClusterListBySubscriptionOperation_example.json
 func ExampleManagedClustersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -226,7 +226,7 @@ func ExampleManagedClustersClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/examples/ManagedClusterGetOperation_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/examples/ManagedClusterGetOperation_example.json
 func ExampleManagedClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -304,7 +304,7 @@ func ExampleManagedClustersClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/examples/ManagedClusterPutOperation_example_max.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/examples/ManagedClusterPutOperation_example_max.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_putAClusterWithMaximumParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -323,9 +323,10 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_putAClusterWithMaximumPara
 				to.Ptr(armservicefabricmanagedclusters.ManagedClusterAddOnFeatureDNSService),
 				to.Ptr(armservicefabricmanagedclusters.ManagedClusterAddOnFeatureBackupRestoreService),
 				to.Ptr(armservicefabricmanagedclusters.ManagedClusterAddOnFeatureResourceMonitorService)},
-			AdminPassword:  to.Ptr("{vm-password}"),
-			AdminUserName:  to.Ptr("vmadmin"),
-			AllowRdpAccess: to.Ptr(true),
+			AdminPassword:          to.Ptr("{vm-password}"),
+			AdminUserName:          to.Ptr("vmadmin"),
+			AllocatedOutboundPorts: to.Ptr[int32](0),
+			AllowRdpAccess:         to.Ptr(true),
 			ApplicationTypeVersionsCleanupPolicy: &armservicefabricmanagedclusters.ApplicationTypeVersionsCleanupPolicy{
 				MaxUnusedVersionsToKeep: to.Ptr[int32](3),
 			},
@@ -473,6 +474,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_putAClusterWithMaximumPara
 	// 			to.Ptr(armservicefabricmanagedclusters.ManagedClusterAddOnFeatureBackupRestoreService),
 	// 			to.Ptr(armservicefabricmanagedclusters.ManagedClusterAddOnFeatureResourceMonitorService)},
 	// 			AdminUserName: to.Ptr("vmadmin"),
+	// 			AllocatedOutboundPorts: to.Ptr[int32](0),
 	// 			AllowRdpAccess: to.Ptr(true),
 	// 			ApplicationTypeVersionsCleanupPolicy: &armservicefabricmanagedclusters.ApplicationTypeVersionsCleanupPolicy{
 	// 				MaxUnusedVersionsToKeep: to.Ptr[int32](3),
@@ -493,7 +495,6 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_putAClusterWithMaximumPara
 	// 				ClusterID: to.Ptr("92584666-9889-4ae8-8d02-91902923d37f"),
 	// 				ClusterState: to.Ptr(armservicefabricmanagedclusters.ClusterStateWaitingForNodes),
 	// 				ClusterUpgradeMode: to.Ptr(armservicefabricmanagedclusters.ClusterUpgradeModeManual),
-	// 				CustomFqdn: to.Ptr("mycluster.abcdefghijk.eastus.sfmc.io"),
 	// 				DdosProtectionPlanID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resRg/providers/Microsoft.Network/ddosProtectionPlans/myDDoSProtectionPlan"),
 	// 				DNSName: to.Ptr("mycluster"),
 	// 				EnableAutoOSUpgrade: to.Ptr(true),
@@ -609,7 +610,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_putAClusterWithMaximumPara
 	// 							}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/examples/ManagedClusterPutOperation_example_min.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/examples/ManagedClusterPutOperation_example_min.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_putAClusterWithMinimumParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -691,7 +692,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_putAClusterWithMinimumPara
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/examples/ManagedClusterPatchOperation_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/examples/ManagedClusterPatchOperation_example.json
 func ExampleManagedClustersClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -797,7 +798,7 @@ func ExampleManagedClustersClient_Update() {
 	// 						}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/examples/ManagedClusterDeleteOperation_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/examples/ManagedClusterDeleteOperation_example.json
 func ExampleManagedClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

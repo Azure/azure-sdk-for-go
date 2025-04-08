@@ -15,11 +15,13 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/file"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/testcommon"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/sas"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/service"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/share"
 	"io"
 	"log"
+	"net/url"
 	"os"
 	"strings"
 	"time"
@@ -814,4 +816,211 @@ func Example_fileClient_CopyFileUsingDestinationProperties() {
 	})
 	handleError(err)
 	fmt.Println("File copied")
+}
+
+func Example_fileClient_CreateNFSShare() {
+
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+
+	accountKey, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_KEY")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_KEY could not be found")
+	}
+
+	cred, err := service.NewSharedKeyCredential(accountName, accountKey)
+	handleError(err)
+
+	shareName := "testShare"
+	shareURL := "https://" + accountName + ".file.core.windows.net/" + shareName
+
+	owner := "345"
+	group := "123"
+	fileMode := "7777"
+
+	options := &share.ClientOptions{}
+	premiumShareClient, err := share.NewClientWithSharedKeyCredential(shareURL, cred, options)
+	handleError(err)
+
+	_, err = premiumShareClient.Create(context.Background(), &share.CreateOptions{
+		EnabledProtocols: to.Ptr("NFS"),
+	})
+	handleError(err)
+
+	fClient := premiumShareClient.NewRootDirectoryClient().NewFileClient(testcommon.GenerateFileName(shareName))
+	_, err = fClient.Create(context.Background(), 1024, &file.CreateOptions{
+		NFSProperties: &file.NFSProperties{
+			Owner:    to.Ptr(owner),
+			Group:    to.Ptr(group),
+			FileMode: to.Ptr(fileMode),
+		},
+	})
+	handleError(err)
+	fmt.Println("NFS Share created with given properties")
+}
+
+func Example_fileClient_SetHttpHeadersNFS() {
+
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+
+	accountKey, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_KEY")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_KEY could not be found")
+	}
+
+	cred, err := service.NewSharedKeyCredential(accountName, accountKey)
+	handleError(err)
+
+	shareName := "testShare"
+	shareURL := "https://" + accountName + ".file.core.windows.net/" + shareName
+
+	owner := "345"
+	group := "123"
+	fileMode := "7777"
+
+	options := &share.ClientOptions{}
+	premiumShareClient, err := share.NewClientWithSharedKeyCredential(shareURL, cred, options)
+	handleError(err)
+
+	_, err = premiumShareClient.Create(context.Background(), &share.CreateOptions{
+		EnabledProtocols: to.Ptr("NFS"),
+	})
+	handleError(err)
+	fClient := premiumShareClient.NewRootDirectoryClient().NewFileClient(testcommon.GenerateFileName(shareName))
+	_, err = fClient.Create(context.Background(), 0, nil)
+	handleError(err)
+
+	md5Str := "MDAwMDAwMDA="
+	testMd5 := []byte(md5Str)
+
+	opts := &file.SetHTTPHeadersOptions{
+		HTTPHeaders: &file.HTTPHeaders{
+			ContentType:        to.Ptr("text/html"),
+			ContentEncoding:    to.Ptr("gzip"),
+			ContentLanguage:    to.Ptr("en"),
+			ContentMD5:         testMd5,
+			CacheControl:       to.Ptr("no-transform"),
+			ContentDisposition: to.Ptr("attachment"),
+		},
+		NFSProperties: &file.NFSProperties{
+			Owner:    to.Ptr(owner),
+			Group:    to.Ptr(group),
+			FileMode: to.Ptr(fileMode),
+		},
+	}
+	_, err = fClient.SetHTTPHeaders(context.Background(), opts)
+
+	handleError(err)
+	fmt.Println("Properties set on NFS share")
+}
+
+func Example_fileClient_NFS_CreateHardLink() {
+
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+
+	accountKey, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_KEY")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_KEY could not be found")
+	}
+
+	cred, err := service.NewSharedKeyCredential(accountName, accountKey)
+	handleError(err)
+
+	shareName := "testShare"
+	shareURL := "https://" + accountName + ".file.core.windows.net/" + shareName
+
+	options := &share.ClientOptions{}
+	premiumShareClient, err := share.NewClientWithSharedKeyCredential(shareURL, cred, options)
+	handleError(err)
+
+	_, err = premiumShareClient.Create(context.Background(), &share.CreateOptions{
+		EnabledProtocols: to.Ptr("NFS"),
+	})
+	handleError(err)
+	directoryName := testcommon.GenerateDirectoryName("dirName")
+	directoryClient := premiumShareClient.NewRootDirectoryClient().NewSubdirectoryClient(directoryName)
+	_, err = directoryClient.Create(context.Background(), nil)
+	handleError(err)
+
+	// Create a source file
+	sourceFileName := testcommon.GenerateFileName("file1")
+	sourceFileClient := directoryClient.NewFileClient(sourceFileName)
+	_, err = sourceFileClient.Create(context.Background(), int64(1024), nil)
+	handleError(err)
+
+	// Create a hard link to the source file
+	hardLinkFileName := testcommon.GenerateFileName("file2")
+	hardLinkFileClient := directoryClient.NewFileClient(hardLinkFileName)
+
+	targetFilePath := fmt.Sprintf("/%s/%s", directoryName, sourceFileName)
+	_, err = hardLinkFileClient.CreateHardLink(context.Background(), targetFilePath, &file.CreateHardLinkOptions{})
+
+	handleError(err)
+	fmt.Println("Hard Link created - Link count = 2")
+}
+
+func Example_fileClient_NFS_CreateAndReadSymbolicLink() {
+
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+
+	accountKey, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_KEY")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_KEY could not be found")
+	}
+
+	cred, err := service.NewSharedKeyCredential(accountName, accountKey)
+	handleError(err)
+
+	shareName := "testShare"
+	shareURL := "https://" + accountName + ".file.core.windows.net/" + shareName
+
+	options := &share.ClientOptions{}
+	premiumShareClient, err := share.NewClientWithSharedKeyCredential(shareURL, cred, options)
+	handleError(err)
+
+	_, err = premiumShareClient.Create(context.Background(), &share.CreateOptions{
+		EnabledProtocols: to.Ptr("NFS"),
+	})
+	handleError(err)
+	directoryName := testcommon.GenerateDirectoryName("dirName")
+	directoryClient := premiumShareClient.NewRootDirectoryClient().NewSubdirectoryClient(directoryName)
+	_, err = directoryClient.Create(context.Background(), nil)
+	handleError(err)
+
+	// Create a source file
+	sourceFileName := testcommon.GenerateFileName("file1")
+	sourceFileClient := directoryClient.NewFileClient(sourceFileName)
+	_, err = sourceFileClient.Create(context.Background(), int64(1024), nil)
+	handleError(err)
+
+	// Create a hard link to the source file
+	symbolicLinkFileName := testcommon.GenerateFileName("file2")
+	symbolicLinkFileClient := directoryClient.NewFileClient(symbolicLinkFileName)
+
+	filePath := fmt.Sprintf("/%s/%s", directoryName, sourceFileName)
+	_, err = symbolicLinkFileClient.CreateSymbolicLink(context.Background(), filePath, &file.CreateSymbolicLinkOptions{})
+
+	handleError(err)
+	fmt.Println("Symbolic Link created")
+
+	// Read the value of the symbolic link
+	response, err := symbolicLinkFileClient.GetSymbolicLink(context.Background(), &file.GetSymbolicLinkOptions{})
+	fmt.Println("File path read : " + url.QueryEscape(*response.LinkText))
+	handleError(err)
+	fmt.Println("Symbolic Link read")
 }

@@ -29,8 +29,8 @@ type ChatCompletionMessage openai.ChatCompletionMessage
 // ChatCompletionChunk wraps an [openai.ChatCompletionChunk], allowing access to Azure specific properties.
 type ChatCompletionChunk openai.ChatCompletionChunk
 
-// ChatCompletionChunkChoicesDelta wraps an [openai.ChatCompletionChunkChoicesDelta], allowing access to Azure specific properties.
-type ChatCompletionChunkChoicesDelta openai.ChatCompletionChunkChoicesDelta
+// ChatCompletionChunkChoiceDelta wraps an [openai.ChatCompletionChunkChoiceDelta], allowing access to Azure specific properties.
+type ChatCompletionChunkChoiceDelta openai.ChatCompletionChunkChoiceDelta
 
 //
 // Completions (streaming and non-streaming)
@@ -66,7 +66,7 @@ func (c ChatCompletionChunk) PromptFilterResults() ([]ContentFilterResultsForPro
 
 // Context contains additional context information available when Azure OpenAI chat extensions are involved
 // in the generation of a corresponding chat completions response.
-func (c ChatCompletionChunkChoicesDelta) Context() (*AzureChatExtensionsMessageContext, error) {
+func (c ChatCompletionChunkChoiceDelta) Context() (*AzureChatExtensionsMessageContext, error) {
 	return unmarshalField[*AzureChatExtensionsMessageContext](c.JSON.ExtraFields["context"])
 }
 
@@ -84,14 +84,15 @@ func (c CompletionChoice) ContentFilterResults() (*ContentFilterResultsForChoice
 // but the data structure is exposed in public APIs.
 type stainlessField interface {
 	Raw() string
-	IsMissing() bool
+	IsPresent() bool
 }
 
 // unmarshalField is a generic way for us to unmarshal our 'extra' fields.
 func unmarshalField[T any](field stainlessField) (T, error) {
 	var zero T
 
-	if field.IsMissing() {
+	raw := field.Raw()
+	if len(raw) == 0 {
 		return zero, nil
 	}
 

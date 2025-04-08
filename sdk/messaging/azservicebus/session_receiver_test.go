@@ -40,6 +40,7 @@ func TestSessionReceiver_acceptSession(t *testing.T) {
 
 	receiver, err := client.AcceptSessionForQueue(ctx, queueName, "session-1", nil)
 	require.NoError(t, err)
+	require.Greater(t, receiver.lockedUntil, time.Now().UTC())
 
 	messages, err := receiver.inner.ReceiveMessages(ctx, 1, nil)
 	require.NoError(t, err)
@@ -95,7 +96,8 @@ func TestSessionReceiver_blankSessionIDs(t *testing.T) {
 	// start a receiver with the "" session ID
 	receiver, err := client.AcceptSessionForQueue(ctx, queueName, "", nil)
 	require.NoError(t, err)
-	require.EqualValues(t, "", receiver.SessionID())
+	require.Equal(t, "", receiver.SessionID())
+	require.NotZero(t, receiver.LockedUntil())
 
 	var received []*ReceivedMessage
 
@@ -134,10 +136,14 @@ func TestSessionReceiver_acceptSessionButAlreadyLocked(t *testing.T) {
 	receiver, err := client.AcceptSessionForQueue(ctx, queueName, "session-1", nil)
 	require.NoError(t, err)
 	require.NotNil(t, receiver)
+	require.NotZero(t, receiver.LockedUntil())
 
 	// You can address a session by name which makes lock contention possible (unlike
 	// messages where the lock token is not a predefined value)
 	receiver, err = client.AcceptSessionForQueue(ctx, queueName, "session-1", nil)
+
+	// The error will contain some text like this:
+	// microsoft:session-cannot-be-locked, Description: The requested session 'session-1' cannot be accepted. It may be locked by another receiver.
 
 	require.EqualValues(t, internal.RecoveryKindFatal, internal.GetRecoveryKind(err))
 	require.Nil(t, receiver)
@@ -299,6 +305,7 @@ func TestSessionReceiver_RenewSessionLock(t *testing.T) {
 
 	sessionReceiver, err := client.AcceptSessionForQueue(context.Background(), queueName, "session-1", nil)
 	require.NoError(t, err)
+	require.NotZero(t, sessionReceiver.LockedUntil())
 
 	sender, err := client.NewSender(queueName, nil)
 	require.NoError(t, err)
@@ -441,6 +448,7 @@ func TestSessionReceiver_roundRobin(t *testing.T) {
 			panic(err)
 		}
 
+		require.NotZero(t, sessionReceiver.LockedUntil())
 		fmt.Printf("Got receiving for session '%s'\n", sessionReceiver.SessionID())
 
 		// consume the session
@@ -518,6 +526,7 @@ func TestSessionReceiverSendFiveReceiveFive_Queue(t *testing.T) {
 
 	receiver, err := serviceBusClient.AcceptNextSessionForQueue(context.Background(), queueName, nil)
 	require.NoError(t, err)
+	require.NotZero(t, receiver.LockedUntil())
 
 	messages := mustReceiveMessages(t, receiver, 5, time.Minute)
 
@@ -554,6 +563,7 @@ func TestSessionReceiverSendFiveReceiveFive_Subscription(t *testing.T) {
 
 	receiver, err := serviceBusClient.AcceptNextSessionForSubscription(context.Background(), topicName, subscriptionName, nil)
 	require.NoError(t, err)
+	require.NotZero(t, receiver.LockedUntil())
 
 	messages := mustReceiveMessages(t, receiver, 5, time.Minute)
 
@@ -566,6 +576,14 @@ func TestSessionReceiverSendFiveReceiveFive_Subscription(t *testing.T) {
 
 		require.NoError(t, receiver.CompleteMessage(context.Background(), messages[i], nil))
 	}
+}
+
+func TestConvertTicksToUnixTime(t *testing.T) {
+	const a = 621356942450000000
+	require.Equal(t, "1970-01-02T03:04:05Z", ticksToUnixTime(a).Format(time.RFC3339))
+
+	const b = 630823790450000000
+	require.Equal(t, "2000-01-02T03:04:05Z", ticksToUnixTime(b).Format(time.RFC3339))
 }
 
 func mustReceiveMessages(t *testing.T, receiver interface {

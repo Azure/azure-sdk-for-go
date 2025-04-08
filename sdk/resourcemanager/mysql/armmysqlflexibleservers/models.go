@@ -267,6 +267,9 @@ type CapabilityProperties struct {
 
 // CapabilityPropertiesV2 - Location capability.
 type CapabilityPropertiesV2 struct {
+	// READ-ONLY; A list of supported features.
+	SupportedFeatures []*FeatureProperty
+
 	// READ-ONLY; A list of supported flexible server editions.
 	SupportedFlexibleServerEditions []*ServerEditionCapabilityV2
 
@@ -473,6 +476,15 @@ type ErrorResponse struct {
 	Error *ErrorDetail
 }
 
+// FeatureProperty - Server version capabilities.
+type FeatureProperty struct {
+	// READ-ONLY; feature name
+	FeatureName *string
+
+	// READ-ONLY; feature value
+	FeatureValue *string
+}
+
 // FirewallRule - Represents a server firewall rule.
 type FirewallRule struct {
 	// REQUIRED; The properties of a firewall rule.
@@ -656,6 +668,12 @@ type MaintenanceListResult struct {
 
 	// The list of maintenances in a server.
 	Value []*Maintenance
+}
+
+// MaintenancePolicy - Maintenance policy of a server.
+type MaintenancePolicy struct {
+	// The patch strategy of this server
+	PatchStrategy *PatchStrategy
 }
 
 // MaintenanceProperties - The properties of a maintenance resource.
@@ -1179,6 +1197,12 @@ type ServerBackupV2ListResult struct {
 	Value []*ServerBackupV2
 }
 
+// ServerDetachVNetParameter - Parameters to detach Vnet.
+type ServerDetachVNetParameter struct {
+	// Whether or not public network access is allowed for this server. Value is 'Disabled' when server has VNet integration.
+	PublicNetworkAccess *EnableStatusEnum
+}
+
 // ServerEditionCapability - Server edition capabilities.
 type ServerEditionCapability struct {
 	// READ-ONLY; Server edition name
@@ -1224,7 +1248,7 @@ type ServerForUpdate struct {
 	Tags map[string]*string
 }
 
-// ServerGtidSetParameter - Server Gtid set parameters.
+// ServerGtidSetParameter - Server Gtid set parameters: Replication with Global Transaction Identifiers.
 type ServerGtidSetParameter struct {
 	// The Gtid set of server.
 	GtidSet *string
@@ -1260,13 +1284,23 @@ type ServerProperties struct {
 	// The Data Encryption for CMK.
 	DataEncryption *DataEncryption
 
+	// The server database port. Can only be specified when the server is being created.
+	DatabasePort *int32
+
+	// Major version and actual engine version
+	FullVersion *string
+
 	// High availability related properties of a server.
 	HighAvailability *HighAvailability
 
 	// Source properties for import from storage.
 	ImportSourceProperties *ImportSourceProperties
 
-	// Maintenance window of a server.
+	// Maintenance policy of a server.
+	MaintenancePolicy *MaintenancePolicy
+
+	// Maintenance window of a server. Known issue: cannot be set during server creation or updated with other properties during
+	// server update; must be updated separately.
 	MaintenanceWindow *MaintenanceWindow
 
 	// Network related properties of a server.
@@ -1284,7 +1318,7 @@ type ServerProperties struct {
 	// Storage related properties of a server.
 	Storage *Storage
 
-	// Server version.
+	// Major version of MySQL. 8.0.21 stands for MySQL 8.0, 5.7.44 stands for MySQL 5.7
 	Version *ServerVersion
 
 	// READ-ONLY; The fully qualified domain name of a server.
@@ -1313,6 +1347,9 @@ type ServerPropertiesForUpdate struct {
 
 	// High availability related properties of a server.
 	HighAvailability *HighAvailability
+
+	// Maintenance policy of a server.
+	MaintenancePolicy *MaintenancePolicy
 
 	// Maintenance window of a server.
 	MaintenanceWindow *MaintenanceWindow
@@ -1367,6 +1404,9 @@ type Storage struct {
 
 	// Enable Log On Disk or not.
 	LogOnDisk *EnableStatusEnum
+
+	// The redundant type of the server storage. The parameter is used for server creation.
+	StorageRedundancy *StorageRedundancyEnum
 
 	// Max storage size allowed for a server.
 	StorageSizeGB *int32

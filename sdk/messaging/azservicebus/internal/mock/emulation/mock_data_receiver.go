@@ -58,6 +58,9 @@ func (rcvr *MockReceiver) LinkEvent() LinkEvent {
 	}
 }
 
+// SessionPropertiesCtxKey lets you set the value returned from Properties(). Use it like this:
+type SessionPropertiesCtxKey struct{}
+
 func (md *MockData) NewReceiver(ctx context.Context, source string, opts *amqp.ReceiverOptions, sess *MockSession) (amqpwrap.AMQPReceiverCloser, error) {
 	select {
 	case <-ctx.Done():
@@ -78,6 +81,10 @@ func (md *MockData) NewReceiver(ctx context.Context, source string, opts *amqp.R
 		Status:                 NewStatus(sess.Status),
 		TargetAddress:          opts.TargetAddress,
 		Opts:                   opts,
+	}
+
+	if properties, ok := ctx.Value(SessionPropertiesCtxKey{}).(map[string]any); ok {
+		rcvr.EXPECT().Properties().Return(properties).AnyTimes()
 	}
 
 	id := fmt.Sprintf("%s|%s|%s|e:%s", sess.Conn.Name(), sess.ID, md.nextUniqueName("r"), source)

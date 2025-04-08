@@ -10,7 +10,7 @@ package armkusto
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto"
-	moduleVersion = "v2.2.0"
+	moduleVersion = "v2.3.0"
 )
 
 // AzureSKUName - SKU name.
@@ -218,6 +218,40 @@ func PossibleCallerRoleValues() []CallerRole {
 	}
 }
 
+// CalloutType - Type of the callout service, specifying the kind of external resource or service being accessed.
+type CalloutType string
+
+const (
+	CalloutTypeAzureDigitalTwins CalloutType = "azure_digital_twins"
+	CalloutTypeAzureOpenai       CalloutType = "azure_openai"
+	CalloutTypeCosmosdb          CalloutType = "cosmosdb"
+	CalloutTypeExternalData      CalloutType = "external_data"
+	CalloutTypeGenevametrics     CalloutType = "genevametrics"
+	CalloutTypeKusto             CalloutType = "kusto"
+	CalloutTypeMysql             CalloutType = "mysql"
+	CalloutTypePostgresql        CalloutType = "postgresql"
+	CalloutTypeSQL               CalloutType = "sql"
+	CalloutTypeSandboxArtifacts  CalloutType = "sandbox_artifacts"
+	CalloutTypeWebapi            CalloutType = "webapi"
+)
+
+// PossibleCalloutTypeValues returns the possible values for the CalloutType const type.
+func PossibleCalloutTypeValues() []CalloutType {
+	return []CalloutType{
+		CalloutTypeAzureDigitalTwins,
+		CalloutTypeAzureOpenai,
+		CalloutTypeCosmosdb,
+		CalloutTypeExternalData,
+		CalloutTypeGenevametrics,
+		CalloutTypeKusto,
+		CalloutTypeMysql,
+		CalloutTypePostgresql,
+		CalloutTypeSQL,
+		CalloutTypeSandboxArtifacts,
+		CalloutTypeWebapi,
+	}
+}
+
 // ClusterNetworkAccessFlag - Whether or not to restrict outbound network access. Value is optional but if passed in, must
 // be 'Enabled' or 'Disabled'
 type ClusterNetworkAccessFlag string
@@ -239,14 +273,16 @@ func PossibleClusterNetworkAccessFlagValues() []ClusterNetworkAccessFlag {
 type ClusterPrincipalRole string
 
 const (
-	ClusterPrincipalRoleAllDatabasesAdmin  ClusterPrincipalRole = "AllDatabasesAdmin"
-	ClusterPrincipalRoleAllDatabasesViewer ClusterPrincipalRole = "AllDatabasesViewer"
+	ClusterPrincipalRoleAllDatabasesAdmin   ClusterPrincipalRole = "AllDatabasesAdmin"
+	ClusterPrincipalRoleAllDatabasesMonitor ClusterPrincipalRole = "AllDatabasesMonitor"
+	ClusterPrincipalRoleAllDatabasesViewer  ClusterPrincipalRole = "AllDatabasesViewer"
 )
 
 // PossibleClusterPrincipalRoleValues returns the possible values for the ClusterPrincipalRole const type.
 func PossibleClusterPrincipalRoleValues() []ClusterPrincipalRole {
 	return []ClusterPrincipalRole{
 		ClusterPrincipalRoleAllDatabasesAdmin,
+		ClusterPrincipalRoleAllDatabasesMonitor,
 		ClusterPrincipalRoleAllDatabasesViewer,
 	}
 }
@@ -608,6 +644,8 @@ type LanguageExtensionImageName string
 const (
 	LanguageExtensionImageNamePython3108        LanguageExtensionImageName = "Python3_10_8"
 	LanguageExtensionImageNamePython3108DL      LanguageExtensionImageName = "Python3_10_8_DL"
+	LanguageExtensionImageNamePython3117        LanguageExtensionImageName = "Python3_11_7"
+	LanguageExtensionImageNamePython3117DL      LanguageExtensionImageName = "Python3_11_7_DL"
 	LanguageExtensionImageNamePython365         LanguageExtensionImageName = "Python3_6_5"
 	LanguageExtensionImageNamePythonCustomImage LanguageExtensionImageName = "PythonCustomImage"
 	LanguageExtensionImageNameR                 LanguageExtensionImageName = "R"
@@ -618,6 +656,8 @@ func PossibleLanguageExtensionImageNameValues() []LanguageExtensionImageName {
 	return []LanguageExtensionImageName{
 		LanguageExtensionImageNamePython3108,
 		LanguageExtensionImageNamePython3108DL,
+		LanguageExtensionImageNamePython3117,
+		LanguageExtensionImageNamePython3117DL,
 		LanguageExtensionImageNamePython365,
 		LanguageExtensionImageNamePythonCustomImage,
 		LanguageExtensionImageNameR,
@@ -653,6 +693,38 @@ func PossibleMigrationClusterRoleValues() []MigrationClusterRole {
 	return []MigrationClusterRole{
 		MigrationClusterRoleDestination,
 		MigrationClusterRoleSource,
+	}
+}
+
+// OutboundAccess - Indicates whether outbound access is permitted for the specified URI pattern.
+type OutboundAccess string
+
+const (
+	OutboundAccessAllow OutboundAccess = "Allow"
+	OutboundAccessDeny  OutboundAccess = "Deny"
+)
+
+// PossibleOutboundAccessValues returns the possible values for the OutboundAccess const type.
+func PossibleOutboundAccessValues() []OutboundAccess {
+	return []OutboundAccess{
+		OutboundAccessAllow,
+		OutboundAccessDeny,
+	}
+}
+
+// PrincipalPermissionsAction - Indicates if the permissions for the script caller are kept following completion of the script.
+type PrincipalPermissionsAction string
+
+const (
+	PrincipalPermissionsActionRemovePermissionOnScriptCompletion PrincipalPermissionsAction = "RemovePermissionOnScriptCompletion"
+	PrincipalPermissionsActionRetainPermissionOnScriptCompletion PrincipalPermissionsAction = "RetainPermissionOnScriptCompletion"
+)
+
+// PossiblePrincipalPermissionsActionValues returns the possible values for the PrincipalPermissionsAction const type.
+func PossiblePrincipalPermissionsActionValues() []PrincipalPermissionsAction {
+	return []PrincipalPermissionsAction{
+		PrincipalPermissionsActionRemovePermissionOnScriptCompletion,
+		PrincipalPermissionsActionRetainPermissionOnScriptCompletion,
 	}
 }
 
@@ -767,6 +839,22 @@ func PossibleReasonValues() []Reason {
 	}
 }
 
+// ScriptLevel - Differentiates between the type of script commands included - Database or Cluster. The default is Database.
+type ScriptLevel string
+
+const (
+	ScriptLevelCluster  ScriptLevel = "Cluster"
+	ScriptLevelDatabase ScriptLevel = "Database"
+)
+
+// PossibleScriptLevelValues returns the possible values for the ScriptLevel const type.
+func PossibleScriptLevelValues() []ScriptLevel {
+	return []ScriptLevel{
+		ScriptLevelCluster,
+		ScriptLevelDatabase,
+	}
+}
+
 // State - The state of the resource.
 type State string
 
@@ -849,5 +937,23 @@ func PossibleVnetStateValues() []VnetState {
 	return []VnetState{
 		VnetStateDisabled,
 		VnetStateEnabled,
+	}
+}
+
+// ZoneStatus - Indicates whether the cluster is zonal or non-zonal.
+type ZoneStatus string
+
+const (
+	ZoneStatusNonZonal           ZoneStatus = "NonZonal"
+	ZoneStatusZonal              ZoneStatus = "Zonal"
+	ZoneStatusZonalInconsistency ZoneStatus = "ZonalInconsistency"
+)
+
+// PossibleZoneStatusValues returns the possible values for the ZoneStatus const type.
+func PossibleZoneStatusValues() []ZoneStatus {
+	return []ZoneStatus{
+		ZoneStatusNonZonal,
+		ZoneStatusZonal,
+		ZoneStatusZonalInconsistency,
 	}
 }

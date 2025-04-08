@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+
 package main
 
 import (
@@ -21,7 +24,7 @@ func filter(f fs.FileInfo) bool {
 func findAllSubDirectories(root string) []string {
 	var ret []string
 
-	filepath.Walk(root, func(path string, info fs.FileInfo, err error) error {
+	filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			panic(err)
 		}
@@ -31,9 +34,9 @@ func findAllSubDirectories(root string) []string {
 		if strings.Contains(path, "eng/tools") {
 			return filepath.SkipDir
 		}
-		if info.IsDir() && strings.HasSuffix(path, "internal") {
+		if d.IsDir() && strings.HasSuffix(path, "internal") {
 			return filepath.SkipDir
-		} else if info.IsDir() {
+		} else if d.IsDir() {
 			ret = append(ret, path)
 		}
 		return nil

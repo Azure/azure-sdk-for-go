@@ -1,14 +1,28 @@
 # Release History
 
-## 1.2.4 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.3.2 (2025-04-08)
 
 ### Bugs Fixed
 
-### Other Changes
+- Processor now only lists checkpoints when it needs to start a new partition client, avoiding wasted calls to the checkpoint store. (PR#24383)
+
+## 1.3.1 (2025-03-11)
+
+### Bugs Fixed
+
+- Removed a memory leak that could occur when the ConsumerClient was unable to open a partition. (PR#24198)
+
+## 1.3.0 (2025-02-11)
+
+### Features Added
+
+- ProducerClient and ConsumerClient allow the endpoint to be overridden with CustomEndpoint, allowing the use of TCP proxies with AMQP.
+
+## 1.3.0-beta.1 (2025-01-13)
+
+### Features Added
+
+- ProducerClient and ConsumerClient allow the endpoint to be overridden with CustomEndpoint, allowing the use of TCP proxies with AMQP.
 
 ## 1.2.3 (2024-10-14)
 

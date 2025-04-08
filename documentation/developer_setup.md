@@ -92,6 +92,38 @@ const (
 Once the skeleton for your SDK has been created, you can start writing your SDK.
 Please refer to the Azure [Go SDK API design guidelines][api_design] for detailed information on how to structure clients, their APIs, and more.
 
+From here you will choose which code generation stack you'll be using: [TypeSpec](https://typespec.io/), which should be used for all new stacks or autorest, which is only used for legacy stacks that use Swagger/OpenAPI specifications.
+
+### Using TypeSpec and `tsp-client`
+
+tsp-client bundles up the client generation process into a single program, making it simple to generate your code once you've onboarded your TypeSpec files into the azure-rest-api-specs repository.
+
+Setting up your project involves a few steps:
+
+1. Add the typespec-go emitter for your TypeSpec project to the `tspconfig.yaml` in azure-rest-api-specs: ([example](https://github.com/Azure/azure-rest-api-specs/blob/2bde125befabb21807a2021765901f20e3e74ec8/specification/eventgrid/Azure.Messaging.EventGrid/tspconfig.yaml#L55)).
+
+	```yaml
+	# other YAML elided
+	options:
+	  # other emitters elided
+	  "@azure-tools/typespec-go":
+        module: "github.com/Azure/azure-sdk-for-go/sdk/<path to your 'az' package goes here>"
+        module-version: "0.0.1"
+        emitter-output-dir: "{project-root}"
+	```
+2. Create a tsp-location.yaml file at the root of your module directory. This file gives the location and commit that should be used to generate your code: ([example](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/eventgrid/aznamespaces/tsp-location.yaml)).
+
+3. Install `tsp-client`: [(instructions)](https://github.com/Azure/azure-sdk-tools/blob/main/tools/tsp-client/README.md)
+4. Create a `build.go` file, and add `go generate` commands to run tsp-client: ([example](https://github.com/Azure/azure-sdk-for-go/blob/656c879ce93a0bc011d60df1f7b300620be08f82/sdk/messaging/eventgrid/aznamespaces/build.go#L4)).
+    
+	NOTE: the formatting here is _very_ important:
+	```go
+    //go:generate tsp-client update
+    //go:generate goimports -w .
+	```
+
+4. In a terminal, `cd` into your package folder and type `go generate`. This should run without error and will create a client, along with code needed to serialize and deserialize models.
+
 ### Using Autorest
 
 If your SDK doesn't require any Autorest-generated content, please skip this section.

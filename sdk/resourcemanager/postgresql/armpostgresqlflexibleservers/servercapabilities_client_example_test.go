@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/92de53a5f1e0e03c94b40475d2135d97148ed014/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/ServerCapabilities.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ecee919199a39cc0d864410f540aa105bf7cdb64/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/ServerCapabilities.json
 func ExampleServerCapabilitiesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleServerCapabilitiesClient_NewListPager() {
 		// 			Name: to.Ptr("FlexibleServerCapabilities"),
 		// 			FastProvisioningSupported: to.Ptr(armpostgresqlflexibleservers.FastProvisioningSupportedEnumEnabled),
 		// 			GeoBackupSupported: to.Ptr(armpostgresqlflexibleservers.GeoBackupSupportedEnumEnabled),
-		// 			OnlineResizeSupported: to.Ptr(armpostgresqlflexibleservers.OnlineResizeSupportedEnumDisabled),
+		// 			OnlineResizeSupported: to.Ptr(armpostgresqlflexibleservers.OnlineResizeSupportedEnumEnabled),
 		// 			Restricted: to.Ptr(armpostgresqlflexibleservers.RestrictedEnumDisabled),
 		// 			StorageAutoGrowthSupported: to.Ptr(armpostgresqlflexibleservers.StorageAutoGrowthSupportedEnumEnabled),
 		// 			SupportedFastProvisioningEditions: []*armpostgresqlflexibleservers.FastProvisioningEditionCapability{
@@ -120,7 +120,7 @@ func ExampleServerCapabilitiesClient_NewListPager() {
 		// 					SupportedTier: to.Ptr("MemoryOptimized"),
 		// 				},
 		// 				{
-		// 					ServerCount: to.Ptr[int32](23),
+		// 					ServerCount: to.Ptr[int32](0),
 		// 					SupportedServerVersions: to.Ptr("14"),
 		// 					SupportedSKU: to.Ptr("standard_b1ms"),
 		// 					SupportedStorageGb: to.Ptr[int32](32),
@@ -225,8 +225,8 @@ func ExampleServerCapabilitiesClient_NewListPager() {
 		// 											SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 												to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 												to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
-		// 												SupportedIops: to.Ptr[int32](1700),
-		// 												SupportedMemoryPerVcoreMb: to.Ptr[int64](2048),
+		// 												SupportedIops: to.Ptr[int32](1920),
+		// 												SupportedMemoryPerVcoreMb: to.Ptr[int64](4096),
 		// 												SupportedZones: []*string{
 		// 													to.Ptr("1"),
 		// 													to.Ptr("2"),
@@ -238,8 +238,8 @@ func ExampleServerCapabilitiesClient_NewListPager() {
 		// 													SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 														to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 														to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
-		// 														SupportedIops: to.Ptr[int32](2400),
-		// 														SupportedMemoryPerVcoreMb: to.Ptr[int64](2048),
+		// 														SupportedIops: to.Ptr[int32](2880),
+		// 														SupportedMemoryPerVcoreMb: to.Ptr[int64](4096),
 		// 														SupportedZones: []*string{
 		// 															to.Ptr("1"),
 		// 															to.Ptr("2"),
@@ -251,8 +251,8 @@ func ExampleServerCapabilitiesClient_NewListPager() {
 		// 															SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
-		// 																SupportedIops: to.Ptr[int32](3100),
-		// 																SupportedMemoryPerVcoreMb: to.Ptr[int64](2048),
+		// 																SupportedIops: to.Ptr[int32](4320),
+		// 																SupportedMemoryPerVcoreMb: to.Ptr[int64](4096),
 		// 																SupportedZones: []*string{
 		// 																	to.Ptr("1"),
 		// 																	to.Ptr("2"),
@@ -264,8 +264,8 @@ func ExampleServerCapabilitiesClient_NewListPager() {
 		// 																	SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																		to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																		to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
-		// 																		SupportedIops: to.Ptr[int32](3800),
-		// 																		SupportedMemoryPerVcoreMb: to.Ptr[int64](2048),
+		// 																		SupportedIops: to.Ptr[int32](4320),
+		// 																		SupportedMemoryPerVcoreMb: to.Ptr[int64](4096),
 		// 																		SupportedZones: []*string{
 		// 																			to.Ptr("1"),
 		// 																			to.Ptr("2"),
@@ -277,8 +277,8 @@ func ExampleServerCapabilitiesClient_NewListPager() {
 		// 																			SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																				to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																				to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
-		// 																				SupportedIops: to.Ptr[int32](4300),
-		// 																				SupportedMemoryPerVcoreMb: to.Ptr[int64](2048),
+		// 																				SupportedIops: to.Ptr[int32](4320),
+		// 																				SupportedMemoryPerVcoreMb: to.Ptr[int64](4096),
 		// 																				SupportedZones: []*string{
 		// 																					to.Ptr("1"),
 		// 																					to.Ptr("2"),
@@ -290,8 +290,8 @@ func ExampleServerCapabilitiesClient_NewListPager() {
 		// 																					SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																						to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																						to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
-		// 																						SupportedIops: to.Ptr[int32](5000),
-		// 																						SupportedMemoryPerVcoreMb: to.Ptr[int64](2048),
+		// 																						SupportedIops: to.Ptr[int32](4320),
+		// 																						SupportedMemoryPerVcoreMb: to.Ptr[int64](4096),
 		// 																						SupportedZones: []*string{
 		// 																							to.Ptr("1"),
 		// 																							to.Ptr("2"),
@@ -487,6 +487,16 @@ func ExampleServerCapabilitiesClient_NewListPager() {
 		// 																								},
 		// 																								{
 		// 																									DefaultIopsTier: to.Ptr("P50"),
+		// 																									StorageSizeMb: to.Ptr[int64](4193280),
+		// 																									SupportedIops: to.Ptr[int32](7500),
+		// 																									SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
+		// 																										{
+		// 																											Name: to.Ptr("P50"),
+		// 																											Iops: to.Ptr[int32](7500),
+		// 																									}},
+		// 																								},
+		// 																								{
+		// 																									DefaultIopsTier: to.Ptr("P50"),
 		// 																									StorageSizeMb: to.Ptr[int64](4194304),
 		// 																									SupportedIops: to.Ptr[int32](7500),
 		// 																									SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
@@ -540,7 +550,7 @@ func ExampleServerCapabilitiesClient_NewListPager() {
 		// 																						},
 		// 																						{
 		// 																							Name: to.Ptr("ManagedDiskV2"),
-		// 																							DefaultStorageSizeMb: to.Ptr[int64](65536),
+		// 																							DefaultStorageSizeMb: to.Ptr[int64](32768),
 		// 																							SupportedStorageMb: []*armpostgresqlflexibleservers.StorageMbCapability{
 		// 																								{
 		// 																									DefaultIopsTier: to.Ptr("None"),
@@ -553,14 +563,14 @@ func ExampleServerCapabilitiesClient_NewListPager() {
 		// 																											Iops: to.Ptr[int32](0),
 		// 																									}},
 		// 																									SupportedMaximumIops: to.Ptr[int32](80000),
-		// 																									SupportedMaximumThroughput: to.Ptr[int32](750),
+		// 																									SupportedMaximumThroughput: to.Ptr[int32](1200),
 		// 																									SupportedThroughput: to.Ptr[int32](125),
 		// 																							}},
 		// 																					}},
 		// 																				},
 		// 																				{
 		// 																					Name: to.Ptr("GeneralPurpose"),
-		// 																					DefaultSKUName: to.Ptr("Standard_D2ds_v4"),
+		// 																					DefaultSKUName: to.Ptr("Standard_D4ads_v5"),
 		// 																					SupportedServerSKUs: []*armpostgresqlflexibleservers.ServerSKUCapability{
 		// 																						{
 		// 																							Name: to.Ptr("Standard_D2s_v3"),
@@ -606,7 +616,7 @@ func ExampleServerCapabilitiesClient_NewListPager() {
 		// 																													SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																														to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																														to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
-		// 																														SupportedIops: to.Ptr[int32](20000),
+		// 																														SupportedIops: to.Ptr[int32](25600),
 		// 																														SupportedMemoryPerVcoreMb: to.Ptr[int64](4096),
 		// 																														SupportedZones: []*string{
 		// 																															to.Ptr("1"),
@@ -619,7 +629,7 @@ func ExampleServerCapabilitiesClient_NewListPager() {
 		// 																															SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
-		// 																																SupportedIops: to.Ptr[int32](20000),
+		// 																																SupportedIops: to.Ptr[int32](51200),
 		// 																																SupportedMemoryPerVcoreMb: to.Ptr[int64](4096),
 		// 																																SupportedZones: []*string{
 		// 																																	to.Ptr("1"),
@@ -632,7 +642,7 @@ func ExampleServerCapabilitiesClient_NewListPager() {
 		// 																																	SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																		to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																		to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
-		// 																																		SupportedIops: to.Ptr[int32](20000),
+		// 																																		SupportedIops: to.Ptr[int32](76800),
 		// 																																		SupportedMemoryPerVcoreMb: to.Ptr[int64](4096),
 		// 																																		SupportedZones: []*string{
 		// 																																			to.Ptr("1"),
@@ -645,7 +655,7 @@ func ExampleServerCapabilitiesClient_NewListPager() {
 		// 																																			SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																				to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																				to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
-		// 																																				SupportedIops: to.Ptr[int32](20000),
+		// 																																				SupportedIops: to.Ptr[int32](80000),
 		// 																																				SupportedMemoryPerVcoreMb: to.Ptr[int64](4096),
 		// 																																				SupportedZones: []*string{
 		// 																																					to.Ptr("1"),
@@ -697,7 +707,7 @@ func ExampleServerCapabilitiesClient_NewListPager() {
 		// 																																											SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																												to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																												to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
-		// 																																												SupportedIops: to.Ptr[int32](20000),
+		// 																																												SupportedIops: to.Ptr[int32](25600),
 		// 																																												SupportedMemoryPerVcoreMb: to.Ptr[int64](4096),
 		// 																																												SupportedZones: []*string{
 		// 																																													to.Ptr("1"),
@@ -710,7 +720,7 @@ func ExampleServerCapabilitiesClient_NewListPager() {
 		// 																																													SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																														to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																														to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
-		// 																																														SupportedIops: to.Ptr[int32](20000),
+		// 																																														SupportedIops: to.Ptr[int32](51200),
 		// 																																														SupportedMemoryPerVcoreMb: to.Ptr[int64](4096),
 		// 																																														SupportedZones: []*string{
 		// 																																															to.Ptr("1"),
@@ -723,7 +733,7 @@ func ExampleServerCapabilitiesClient_NewListPager() {
 		// 																																															SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
-		// 																																																SupportedIops: to.Ptr[int32](20000),
+		// 																																																SupportedIops: to.Ptr[int32](76800),
 		// 																																																SupportedMemoryPerVcoreMb: to.Ptr[int64](4096),
 		// 																																																SupportedZones: []*string{
 		// 																																																	to.Ptr("1"),
@@ -736,7 +746,7 @@ func ExampleServerCapabilitiesClient_NewListPager() {
 		// 																																																	SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																		to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																		to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
-		// 																																																		SupportedIops: to.Ptr[int32](20000),
+		// 																																																		SupportedIops: to.Ptr[int32](80000),
 		// 																																																		SupportedMemoryPerVcoreMb: to.Ptr[int64](4096),
 		// 																																																		SupportedZones: []*string{
 		// 																																																			to.Ptr("1"),
@@ -788,7 +798,7 @@ func ExampleServerCapabilitiesClient_NewListPager() {
 		// 																																																									SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																										to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																										to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
-		// 																																																										SupportedIops: to.Ptr[int32](20000),
+		// 																																																										SupportedIops: to.Ptr[int32](25600),
 		// 																																																										SupportedMemoryPerVcoreMb: to.Ptr[int64](4096),
 		// 																																																										SupportedZones: []*string{
 		// 																																																											to.Ptr("1"),
@@ -801,7 +811,7 @@ func ExampleServerCapabilitiesClient_NewListPager() {
 		// 																																																											SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																												to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																												to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
-		// 																																																												SupportedIops: to.Ptr[int32](20000),
+		// 																																																												SupportedIops: to.Ptr[int32](51200),
 		// 																																																												SupportedMemoryPerVcoreMb: to.Ptr[int64](4096),
 		// 																																																												SupportedZones: []*string{
 		// 																																																													to.Ptr("1"),
@@ -814,7 +824,7 @@ func ExampleServerCapabilitiesClient_NewListPager() {
 		// 																																																													SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																														to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																														to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
-		// 																																																														SupportedIops: to.Ptr[int32](20000),
+		// 																																																														SupportedIops: to.Ptr[int32](76800),
 		// 																																																														SupportedMemoryPerVcoreMb: to.Ptr[int64](4096),
 		// 																																																														SupportedZones: []*string{
 		// 																																																															to.Ptr("1"),
@@ -827,7 +837,7 @@ func ExampleServerCapabilitiesClient_NewListPager() {
 		// 																																																															SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
-		// 																																																																SupportedIops: to.Ptr[int32](20000),
+		// 																																																																SupportedIops: to.Ptr[int32](80000),
 		// 																																																																SupportedMemoryPerVcoreMb: to.Ptr[int64](4096),
 		// 																																																																SupportedZones: []*string{
 		// 																																																																	to.Ptr("1"),
@@ -840,285 +850,21 @@ func ExampleServerCapabilitiesClient_NewListPager() {
 		// 																																																																	SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																		to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																		to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
-		// 																																																																		SupportedIops: to.Ptr[int32](20000),
+		// 																																																																		SupportedIops: to.Ptr[int32](80000),
 		// 																																																																		SupportedMemoryPerVcoreMb: to.Ptr[int64](4096),
 		// 																																																																		SupportedZones: []*string{
 		// 																																																																			to.Ptr("1"),
 		// 																																																																			to.Ptr("2"),
 		// 																																																																			to.Ptr("3")},
 		// 																																																																			VCores: to.Ptr[int32](96),
-		// 																																																																	}},
-		// 																																																																	SupportedStorageEditions: []*armpostgresqlflexibleservers.StorageEditionCapability{
-		// 																																																																		{
-		// 																																																																			Name: to.Ptr("ManagedDisk"),
-		// 																																																																			DefaultStorageSizeMb: to.Ptr[int64](65536),
-		// 																																																																			SupportedStorageMb: []*armpostgresqlflexibleservers.StorageMbCapability{
-		// 																																																																				{
-		// 																																																																					DefaultIopsTier: to.Ptr("P4"),
-		// 																																																																					StorageSizeMb: to.Ptr[int64](32768),
-		// 																																																																					SupportedIops: to.Ptr[int32](120),
-		// 																																																																					SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P4"),
-		// 																																																																							Iops: to.Ptr[int32](120),
-		// 																																																																						},
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P6"),
-		// 																																																																							Iops: to.Ptr[int32](240),
-		// 																																																																						},
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P10"),
-		// 																																																																							Iops: to.Ptr[int32](500),
-		// 																																																																						},
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P15"),
-		// 																																																																							Iops: to.Ptr[int32](1100),
-		// 																																																																						},
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P20"),
-		// 																																																																							Iops: to.Ptr[int32](2300),
-		// 																																																																						},
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P30"),
-		// 																																																																							Iops: to.Ptr[int32](5000),
-		// 																																																																						},
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P40"),
-		// 																																																																							Iops: to.Ptr[int32](7500),
-		// 																																																																						},
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P50"),
-		// 																																																																							Iops: to.Ptr[int32](7500),
-		// 																																																																					}},
-		// 																																																																				},
-		// 																																																																				{
-		// 																																																																					DefaultIopsTier: to.Ptr("P6"),
-		// 																																																																					StorageSizeMb: to.Ptr[int64](65536),
-		// 																																																																					SupportedIops: to.Ptr[int32](240),
-		// 																																																																					SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P6"),
-		// 																																																																							Iops: to.Ptr[int32](240),
-		// 																																																																						},
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P10"),
-		// 																																																																							Iops: to.Ptr[int32](500),
-		// 																																																																						},
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P15"),
-		// 																																																																							Iops: to.Ptr[int32](1100),
-		// 																																																																						},
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P20"),
-		// 																																																																							Iops: to.Ptr[int32](2300),
-		// 																																																																						},
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P30"),
-		// 																																																																							Iops: to.Ptr[int32](5000),
-		// 																																																																						},
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P40"),
-		// 																																																																							Iops: to.Ptr[int32](7500),
-		// 																																																																						},
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P50"),
-		// 																																																																							Iops: to.Ptr[int32](7500),
-		// 																																																																					}},
-		// 																																																																				},
-		// 																																																																				{
-		// 																																																																					DefaultIopsTier: to.Ptr("P10"),
-		// 																																																																					StorageSizeMb: to.Ptr[int64](131072),
-		// 																																																																					SupportedIops: to.Ptr[int32](500),
-		// 																																																																					SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P10"),
-		// 																																																																							Iops: to.Ptr[int32](500),
-		// 																																																																						},
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P15"),
-		// 																																																																							Iops: to.Ptr[int32](1100),
-		// 																																																																						},
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P20"),
-		// 																																																																							Iops: to.Ptr[int32](2300),
-		// 																																																																						},
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P30"),
-		// 																																																																							Iops: to.Ptr[int32](5000),
-		// 																																																																						},
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P40"),
-		// 																																																																							Iops: to.Ptr[int32](7500),
-		// 																																																																						},
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P50"),
-		// 																																																																							Iops: to.Ptr[int32](7500),
-		// 																																																																					}},
-		// 																																																																				},
-		// 																																																																				{
-		// 																																																																					DefaultIopsTier: to.Ptr("P15"),
-		// 																																																																					StorageSizeMb: to.Ptr[int64](262144),
-		// 																																																																					SupportedIops: to.Ptr[int32](1100),
-		// 																																																																					SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P15"),
-		// 																																																																							Iops: to.Ptr[int32](1100),
-		// 																																																																						},
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P20"),
-		// 																																																																							Iops: to.Ptr[int32](2300),
-		// 																																																																						},
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P30"),
-		// 																																																																							Iops: to.Ptr[int32](5000),
-		// 																																																																						},
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P40"),
-		// 																																																																							Iops: to.Ptr[int32](7500),
-		// 																																																																						},
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P50"),
-		// 																																																																							Iops: to.Ptr[int32](7500),
-		// 																																																																					}},
-		// 																																																																				},
-		// 																																																																				{
-		// 																																																																					DefaultIopsTier: to.Ptr("P20"),
-		// 																																																																					StorageSizeMb: to.Ptr[int64](524288),
-		// 																																																																					SupportedIops: to.Ptr[int32](2300),
-		// 																																																																					SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P20"),
-		// 																																																																							Iops: to.Ptr[int32](2300),
-		// 																																																																						},
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P30"),
-		// 																																																																							Iops: to.Ptr[int32](5000),
-		// 																																																																						},
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P40"),
-		// 																																																																							Iops: to.Ptr[int32](7500),
-		// 																																																																						},
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P50"),
-		// 																																																																							Iops: to.Ptr[int32](7500),
-		// 																																																																					}},
-		// 																																																																				},
-		// 																																																																				{
-		// 																																																																					DefaultIopsTier: to.Ptr("P30"),
-		// 																																																																					StorageSizeMb: to.Ptr[int64](1048576),
-		// 																																																																					SupportedIops: to.Ptr[int32](5000),
-		// 																																																																					SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P30"),
-		// 																																																																							Iops: to.Ptr[int32](5000),
-		// 																																																																						},
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P40"),
-		// 																																																																							Iops: to.Ptr[int32](7500),
-		// 																																																																						},
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P50"),
-		// 																																																																							Iops: to.Ptr[int32](7500),
-		// 																																																																					}},
-		// 																																																																				},
-		// 																																																																				{
-		// 																																																																					DefaultIopsTier: to.Ptr("P40"),
-		// 																																																																					StorageSizeMb: to.Ptr[int64](2097152),
-		// 																																																																					SupportedIops: to.Ptr[int32](7500),
-		// 																																																																					SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P40"),
-		// 																																																																							Iops: to.Ptr[int32](7500),
-		// 																																																																						},
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P50"),
-		// 																																																																							Iops: to.Ptr[int32](7500),
-		// 																																																																					}},
-		// 																																																																				},
-		// 																																																																				{
-		// 																																																																					DefaultIopsTier: to.Ptr("P50"),
-		// 																																																																					StorageSizeMb: to.Ptr[int64](4194304),
-		// 																																																																					SupportedIops: to.Ptr[int32](7500),
-		// 																																																																					SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P50"),
-		// 																																																																							Iops: to.Ptr[int32](7500),
-		// 																																																																					}},
-		// 																																																																				},
-		// 																																																																				{
-		// 																																																																					DefaultIopsTier: to.Ptr("P60"),
-		// 																																																																					StorageSizeMb: to.Ptr[int64](8388608),
-		// 																																																																					SupportedIops: to.Ptr[int32](16000),
-		// 																																																																					SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P60"),
-		// 																																																																							Iops: to.Ptr[int32](16000),
-		// 																																																																						},
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P70"),
-		// 																																																																							Iops: to.Ptr[int32](18000),
-		// 																																																																						},
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P80"),
-		// 																																																																							Iops: to.Ptr[int32](20000),
-		// 																																																																					}},
-		// 																																																																				},
-		// 																																																																				{
-		// 																																																																					DefaultIopsTier: to.Ptr("P70"),
-		// 																																																																					StorageSizeMb: to.Ptr[int64](16777216),
-		// 																																																																					SupportedIops: to.Ptr[int32](18000),
-		// 																																																																					SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P70"),
-		// 																																																																							Iops: to.Ptr[int32](18000),
-		// 																																																																						},
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P80"),
-		// 																																																																							Iops: to.Ptr[int32](20000),
-		// 																																																																					}},
-		// 																																																																				},
-		// 																																																																				{
-		// 																																																																					DefaultIopsTier: to.Ptr("P80"),
-		// 																																																																					StorageSizeMb: to.Ptr[int64](33553408),
-		// 																																																																					SupportedIops: to.Ptr[int32](20000),
-		// 																																																																					SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("P80"),
-		// 																																																																							Iops: to.Ptr[int32](20000),
-		// 																																																																					}},
-		// 																																																																			}},
 		// 																																																																		},
 		// 																																																																		{
-		// 																																																																			Name: to.Ptr("ManagedDiskV2"),
-		// 																																																																			DefaultStorageSizeMb: to.Ptr[int64](65536),
-		// 																																																																			SupportedStorageMb: []*armpostgresqlflexibleservers.StorageMbCapability{
-		// 																																																																				{
-		// 																																																																					DefaultIopsTier: to.Ptr("None"),
-		// 																																																																					MaximumStorageSizeMb: to.Ptr[int64](67108864),
-		// 																																																																					StorageSizeMb: to.Ptr[int64](32768),
-		// 																																																																					SupportedIops: to.Ptr[int32](3000),
-		// 																																																																					SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
-		// 																																																																						{
-		// 																																																																							Name: to.Ptr("None"),
-		// 																																																																							Iops: to.Ptr[int32](0),
-		// 																																																																					}},
-		// 																																																																					SupportedMaximumIops: to.Ptr[int32](80000),
-		// 																																																																					SupportedMaximumThroughput: to.Ptr[int32](750),
-		// 																																																																					SupportedThroughput: to.Ptr[int32](125),
-		// 																																																																			}},
-		// 																																																																	}},
-		// 																																																																},
-		// 																																																																{
-		// 																																																																	Name: to.Ptr("MemoryOptimized"),
-		// 																																																																	DefaultSKUName: to.Ptr("Standard_E2ds_v4"),
-		// 																																																																	SupportedServerSKUs: []*armpostgresqlflexibleservers.ServerSKUCapability{
-		// 																																																																		{
-		// 																																																																			Name: to.Ptr("Standard_E2s_v3"),
+		// 																																																																			Name: to.Ptr("Standard_D2ds_v5"),
 		// 																																																																			SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																				to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																				to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
-		// 																																																																				SupportedIops: to.Ptr[int32](3200),
-		// 																																																																				SupportedMemoryPerVcoreMb: to.Ptr[int64](8192),
+		// 																																																																				SupportedIops: to.Ptr[int32](3750),
+		// 																																																																				SupportedMemoryPerVcoreMb: to.Ptr[int64](4096),
 		// 																																																																				SupportedZones: []*string{
 		// 																																																																					to.Ptr("1"),
 		// 																																																																					to.Ptr("2"),
@@ -1126,12 +872,12 @@ func ExampleServerCapabilitiesClient_NewListPager() {
 		// 																																																																					VCores: to.Ptr[int32](2),
 		// 																																																																				},
 		// 																																																																				{
-		// 																																																																					Name: to.Ptr("Standard_E4s_v3"),
+		// 																																																																					Name: to.Ptr("Standard_D4ds_v5"),
 		// 																																																																					SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																						to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																						to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
 		// 																																																																						SupportedIops: to.Ptr[int32](6400),
-		// 																																																																						SupportedMemoryPerVcoreMb: to.Ptr[int64](8192),
+		// 																																																																						SupportedMemoryPerVcoreMb: to.Ptr[int64](4096),
 		// 																																																																						SupportedZones: []*string{
 		// 																																																																							to.Ptr("1"),
 		// 																																																																							to.Ptr("2"),
@@ -1139,12 +885,12 @@ func ExampleServerCapabilitiesClient_NewListPager() {
 		// 																																																																							VCores: to.Ptr[int32](4),
 		// 																																																																						},
 		// 																																																																						{
-		// 																																																																							Name: to.Ptr("Standard_E8s_v3"),
+		// 																																																																							Name: to.Ptr("Standard_D8ds_v5"),
 		// 																																																																							SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																								to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																								to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
 		// 																																																																								SupportedIops: to.Ptr[int32](12800),
-		// 																																																																								SupportedMemoryPerVcoreMb: to.Ptr[int64](8192),
+		// 																																																																								SupportedMemoryPerVcoreMb: to.Ptr[int64](4096),
 		// 																																																																								SupportedZones: []*string{
 		// 																																																																									to.Ptr("1"),
 		// 																																																																									to.Ptr("2"),
@@ -1152,12 +898,12 @@ func ExampleServerCapabilitiesClient_NewListPager() {
 		// 																																																																									VCores: to.Ptr[int32](8),
 		// 																																																																								},
 		// 																																																																								{
-		// 																																																																									Name: to.Ptr("Standard_E16s_v3"),
+		// 																																																																									Name: to.Ptr("Standard_D16ds_v5"),
 		// 																																																																									SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																										to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																										to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
-		// 																																																																										SupportedIops: to.Ptr[int32](20000),
-		// 																																																																										SupportedMemoryPerVcoreMb: to.Ptr[int64](8192),
+		// 																																																																										SupportedIops: to.Ptr[int32](25600),
+		// 																																																																										SupportedMemoryPerVcoreMb: to.Ptr[int64](4096),
 		// 																																																																										SupportedZones: []*string{
 		// 																																																																											to.Ptr("1"),
 		// 																																																																											to.Ptr("2"),
@@ -1165,12 +911,12 @@ func ExampleServerCapabilitiesClient_NewListPager() {
 		// 																																																																											VCores: to.Ptr[int32](16),
 		// 																																																																										},
 		// 																																																																										{
-		// 																																																																											Name: to.Ptr("Standard_E32s_v3"),
+		// 																																																																											Name: to.Ptr("Standard_D32ds_v5"),
 		// 																																																																											SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																												to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																												to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
-		// 																																																																												SupportedIops: to.Ptr[int32](20000),
-		// 																																																																												SupportedMemoryPerVcoreMb: to.Ptr[int64](8192),
+		// 																																																																												SupportedIops: to.Ptr[int32](51200),
+		// 																																																																												SupportedMemoryPerVcoreMb: to.Ptr[int64](4096),
 		// 																																																																												SupportedZones: []*string{
 		// 																																																																													to.Ptr("1"),
 		// 																																																																													to.Ptr("2"),
@@ -1178,12 +924,12 @@ func ExampleServerCapabilitiesClient_NewListPager() {
 		// 																																																																													VCores: to.Ptr[int32](32),
 		// 																																																																												},
 		// 																																																																												{
-		// 																																																																													Name: to.Ptr("Standard_E48s_v3"),
+		// 																																																																													Name: to.Ptr("Standard_D48ds_v5"),
 		// 																																																																													SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																														to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																														to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
-		// 																																																																														SupportedIops: to.Ptr[int32](20000),
-		// 																																																																														SupportedMemoryPerVcoreMb: to.Ptr[int64](8192),
+		// 																																																																														SupportedIops: to.Ptr[int32](76800),
+		// 																																																																														SupportedMemoryPerVcoreMb: to.Ptr[int64](4096),
 		// 																																																																														SupportedZones: []*string{
 		// 																																																																															to.Ptr("1"),
 		// 																																																																															to.Ptr("2"),
@@ -1191,12 +937,12 @@ func ExampleServerCapabilitiesClient_NewListPager() {
 		// 																																																																															VCores: to.Ptr[int32](48),
 		// 																																																																														},
 		// 																																																																														{
-		// 																																																																															Name: to.Ptr("Standard_E64s_v3"),
+		// 																																																																															Name: to.Ptr("Standard_D64ds_v5"),
 		// 																																																																															SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
-		// 																																																																																SupportedIops: to.Ptr[int32](20000),
-		// 																																																																																SupportedMemoryPerVcoreMb: to.Ptr[int64](6912),
+		// 																																																																																SupportedIops: to.Ptr[int32](80000),
+		// 																																																																																SupportedMemoryPerVcoreMb: to.Ptr[int64](4096),
 		// 																																																																																SupportedZones: []*string{
 		// 																																																																																	to.Ptr("1"),
 		// 																																																																																	to.Ptr("2"),
@@ -1204,76 +950,350 @@ func ExampleServerCapabilitiesClient_NewListPager() {
 		// 																																																																																	VCores: to.Ptr[int32](64),
 		// 																																																																																},
 		// 																																																																																{
-		// 																																																																																	Name: to.Ptr("Standard_E2ds_v4"),
+		// 																																																																																	Name: to.Ptr("Standard_D96ds_v5"),
 		// 																																																																																	SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																		to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																		to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
-		// 																																																																																		SupportedIops: to.Ptr[int32](3200),
-		// 																																																																																		SupportedMemoryPerVcoreMb: to.Ptr[int64](8192),
+		// 																																																																																		SupportedIops: to.Ptr[int32](80000),
+		// 																																																																																		SupportedMemoryPerVcoreMb: to.Ptr[int64](4096),
 		// 																																																																																		SupportedZones: []*string{
 		// 																																																																																			to.Ptr("1"),
 		// 																																																																																			to.Ptr("2"),
 		// 																																																																																			to.Ptr("3")},
-		// 																																																																																			VCores: to.Ptr[int32](2),
+		// 																																																																																			VCores: to.Ptr[int32](96),
+		// 																																																																																	}},
+		// 																																																																																	SupportedStorageEditions: []*armpostgresqlflexibleservers.StorageEditionCapability{
+		// 																																																																																		{
+		// 																																																																																			Name: to.Ptr("ManagedDisk"),
+		// 																																																																																			DefaultStorageSizeMb: to.Ptr[int64](65536),
+		// 																																																																																			SupportedStorageMb: []*armpostgresqlflexibleservers.StorageMbCapability{
+		// 																																																																																				{
+		// 																																																																																					DefaultIopsTier: to.Ptr("P4"),
+		// 																																																																																					StorageSizeMb: to.Ptr[int64](32768),
+		// 																																																																																					SupportedIops: to.Ptr[int32](120),
+		// 																																																																																					SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P4"),
+		// 																																																																																							Iops: to.Ptr[int32](120),
+		// 																																																																																						},
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P6"),
+		// 																																																																																							Iops: to.Ptr[int32](240),
+		// 																																																																																						},
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P10"),
+		// 																																																																																							Iops: to.Ptr[int32](500),
+		// 																																																																																						},
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P15"),
+		// 																																																																																							Iops: to.Ptr[int32](1100),
+		// 																																																																																						},
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P20"),
+		// 																																																																																							Iops: to.Ptr[int32](2300),
+		// 																																																																																						},
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P30"),
+		// 																																																																																							Iops: to.Ptr[int32](5000),
+		// 																																																																																						},
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P40"),
+		// 																																																																																							Iops: to.Ptr[int32](7500),
+		// 																																																																																						},
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P50"),
+		// 																																																																																							Iops: to.Ptr[int32](7500),
+		// 																																																																																					}},
+		// 																																																																																				},
+		// 																																																																																				{
+		// 																																																																																					DefaultIopsTier: to.Ptr("P6"),
+		// 																																																																																					StorageSizeMb: to.Ptr[int64](65536),
+		// 																																																																																					SupportedIops: to.Ptr[int32](240),
+		// 																																																																																					SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P6"),
+		// 																																																																																							Iops: to.Ptr[int32](240),
+		// 																																																																																						},
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P10"),
+		// 																																																																																							Iops: to.Ptr[int32](500),
+		// 																																																																																						},
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P15"),
+		// 																																																																																							Iops: to.Ptr[int32](1100),
+		// 																																																																																						},
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P20"),
+		// 																																																																																							Iops: to.Ptr[int32](2300),
+		// 																																																																																						},
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P30"),
+		// 																																																																																							Iops: to.Ptr[int32](5000),
+		// 																																																																																						},
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P40"),
+		// 																																																																																							Iops: to.Ptr[int32](7500),
+		// 																																																																																						},
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P50"),
+		// 																																																																																							Iops: to.Ptr[int32](7500),
+		// 																																																																																					}},
+		// 																																																																																				},
+		// 																																																																																				{
+		// 																																																																																					DefaultIopsTier: to.Ptr("P10"),
+		// 																																																																																					StorageSizeMb: to.Ptr[int64](131072),
+		// 																																																																																					SupportedIops: to.Ptr[int32](500),
+		// 																																																																																					SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P10"),
+		// 																																																																																							Iops: to.Ptr[int32](500),
+		// 																																																																																						},
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P15"),
+		// 																																																																																							Iops: to.Ptr[int32](1100),
+		// 																																																																																						},
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P20"),
+		// 																																																																																							Iops: to.Ptr[int32](2300),
+		// 																																																																																						},
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P30"),
+		// 																																																																																							Iops: to.Ptr[int32](5000),
+		// 																																																																																						},
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P40"),
+		// 																																																																																							Iops: to.Ptr[int32](7500),
+		// 																																																																																						},
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P50"),
+		// 																																																																																							Iops: to.Ptr[int32](7500),
+		// 																																																																																					}},
+		// 																																																																																				},
+		// 																																																																																				{
+		// 																																																																																					DefaultIopsTier: to.Ptr("P15"),
+		// 																																																																																					StorageSizeMb: to.Ptr[int64](262144),
+		// 																																																																																					SupportedIops: to.Ptr[int32](1100),
+		// 																																																																																					SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P15"),
+		// 																																																																																							Iops: to.Ptr[int32](1100),
+		// 																																																																																						},
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P20"),
+		// 																																																																																							Iops: to.Ptr[int32](2300),
+		// 																																																																																						},
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P30"),
+		// 																																																																																							Iops: to.Ptr[int32](5000),
+		// 																																																																																						},
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P40"),
+		// 																																																																																							Iops: to.Ptr[int32](7500),
+		// 																																																																																						},
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P50"),
+		// 																																																																																							Iops: to.Ptr[int32](7500),
+		// 																																																																																					}},
+		// 																																																																																				},
+		// 																																																																																				{
+		// 																																																																																					DefaultIopsTier: to.Ptr("P20"),
+		// 																																																																																					StorageSizeMb: to.Ptr[int64](524288),
+		// 																																																																																					SupportedIops: to.Ptr[int32](2300),
+		// 																																																																																					SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P20"),
+		// 																																																																																							Iops: to.Ptr[int32](2300),
+		// 																																																																																						},
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P30"),
+		// 																																																																																							Iops: to.Ptr[int32](5000),
+		// 																																																																																						},
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P40"),
+		// 																																																																																							Iops: to.Ptr[int32](7500),
+		// 																																																																																						},
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P50"),
+		// 																																																																																							Iops: to.Ptr[int32](7500),
+		// 																																																																																					}},
+		// 																																																																																				},
+		// 																																																																																				{
+		// 																																																																																					DefaultIopsTier: to.Ptr("P30"),
+		// 																																																																																					StorageSizeMb: to.Ptr[int64](1048576),
+		// 																																																																																					SupportedIops: to.Ptr[int32](5000),
+		// 																																																																																					SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P30"),
+		// 																																																																																							Iops: to.Ptr[int32](5000),
+		// 																																																																																						},
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P40"),
+		// 																																																																																							Iops: to.Ptr[int32](7500),
+		// 																																																																																						},
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P50"),
+		// 																																																																																							Iops: to.Ptr[int32](7500),
+		// 																																																																																					}},
+		// 																																																																																				},
+		// 																																																																																				{
+		// 																																																																																					DefaultIopsTier: to.Ptr("P40"),
+		// 																																																																																					StorageSizeMb: to.Ptr[int64](2097152),
+		// 																																																																																					SupportedIops: to.Ptr[int32](7500),
+		// 																																																																																					SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P40"),
+		// 																																																																																							Iops: to.Ptr[int32](7500),
+		// 																																																																																						},
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P50"),
+		// 																																																																																							Iops: to.Ptr[int32](7500),
+		// 																																																																																					}},
+		// 																																																																																				},
+		// 																																																																																				{
+		// 																																																																																					DefaultIopsTier: to.Ptr("P50"),
+		// 																																																																																					StorageSizeMb: to.Ptr[int64](4193280),
+		// 																																																																																					SupportedIops: to.Ptr[int32](7500),
+		// 																																																																																					SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P50"),
+		// 																																																																																							Iops: to.Ptr[int32](7500),
+		// 																																																																																					}},
+		// 																																																																																				},
+		// 																																																																																				{
+		// 																																																																																					DefaultIopsTier: to.Ptr("P50"),
+		// 																																																																																					StorageSizeMb: to.Ptr[int64](4194304),
+		// 																																																																																					SupportedIops: to.Ptr[int32](7500),
+		// 																																																																																					SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P50"),
+		// 																																																																																							Iops: to.Ptr[int32](7500),
+		// 																																																																																					}},
+		// 																																																																																				},
+		// 																																																																																				{
+		// 																																																																																					DefaultIopsTier: to.Ptr("P60"),
+		// 																																																																																					StorageSizeMb: to.Ptr[int64](8388608),
+		// 																																																																																					SupportedIops: to.Ptr[int32](16000),
+		// 																																																																																					SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P60"),
+		// 																																																																																							Iops: to.Ptr[int32](16000),
+		// 																																																																																						},
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P70"),
+		// 																																																																																							Iops: to.Ptr[int32](18000),
+		// 																																																																																						},
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P80"),
+		// 																																																																																							Iops: to.Ptr[int32](20000),
+		// 																																																																																					}},
+		// 																																																																																				},
+		// 																																																																																				{
+		// 																																																																																					DefaultIopsTier: to.Ptr("P70"),
+		// 																																																																																					StorageSizeMb: to.Ptr[int64](16777216),
+		// 																																																																																					SupportedIops: to.Ptr[int32](18000),
+		// 																																																																																					SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P70"),
+		// 																																																																																							Iops: to.Ptr[int32](18000),
+		// 																																																																																						},
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P80"),
+		// 																																																																																							Iops: to.Ptr[int32](20000),
+		// 																																																																																					}},
+		// 																																																																																				},
+		// 																																																																																				{
+		// 																																																																																					DefaultIopsTier: to.Ptr("P80"),
+		// 																																																																																					StorageSizeMb: to.Ptr[int64](33553408),
+		// 																																																																																					SupportedIops: to.Ptr[int32](20000),
+		// 																																																																																					SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("P80"),
+		// 																																																																																							Iops: to.Ptr[int32](20000),
+		// 																																																																																					}},
+		// 																																																																																			}},
 		// 																																																																																		},
 		// 																																																																																		{
-		// 																																																																																			Name: to.Ptr("Standard_E4ds_v4"),
+		// 																																																																																			Name: to.Ptr("ManagedDiskV2"),
+		// 																																																																																			DefaultStorageSizeMb: to.Ptr[int64](65536),
+		// 																																																																																			SupportedStorageMb: []*armpostgresqlflexibleservers.StorageMbCapability{
+		// 																																																																																				{
+		// 																																																																																					DefaultIopsTier: to.Ptr("None"),
+		// 																																																																																					MaximumStorageSizeMb: to.Ptr[int64](67108864),
+		// 																																																																																					StorageSizeMb: to.Ptr[int64](32768),
+		// 																																																																																					SupportedIops: to.Ptr[int32](3000),
+		// 																																																																																					SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("None"),
+		// 																																																																																							Iops: to.Ptr[int32](0),
+		// 																																																																																					}},
+		// 																																																																																					SupportedMaximumIops: to.Ptr[int32](80000),
+		// 																																																																																					SupportedMaximumThroughput: to.Ptr[int32](1200),
+		// 																																																																																					SupportedThroughput: to.Ptr[int32](125),
+		// 																																																																																			}},
+		// 																																																																																	}},
+		// 																																																																																},
+		// 																																																																																{
+		// 																																																																																	Name: to.Ptr("MemoryOptimized"),
+		// 																																																																																	DefaultSKUName: to.Ptr("Standard_E4ads_v5"),
+		// 																																																																																	SupportedServerSKUs: []*armpostgresqlflexibleservers.ServerSKUCapability{
+		// 																																																																																		{
+		// 																																																																																			Name: to.Ptr("Standard_E2s_v3"),
 		// 																																																																																			SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																				to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																				to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
-		// 																																																																																				SupportedIops: to.Ptr[int32](6400),
+		// 																																																																																				SupportedIops: to.Ptr[int32](3200),
 		// 																																																																																				SupportedMemoryPerVcoreMb: to.Ptr[int64](8192),
 		// 																																																																																				SupportedZones: []*string{
 		// 																																																																																					to.Ptr("1"),
 		// 																																																																																					to.Ptr("2"),
 		// 																																																																																					to.Ptr("3")},
-		// 																																																																																					VCores: to.Ptr[int32](4),
+		// 																																																																																					VCores: to.Ptr[int32](2),
 		// 																																																																																				},
 		// 																																																																																				{
-		// 																																																																																					Name: to.Ptr("Standard_E8ds_v4"),
+		// 																																																																																					Name: to.Ptr("Standard_E4s_v3"),
 		// 																																																																																					SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																						to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																						to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
-		// 																																																																																						SupportedIops: to.Ptr[int32](12800),
+		// 																																																																																						SupportedIops: to.Ptr[int32](6400),
 		// 																																																																																						SupportedMemoryPerVcoreMb: to.Ptr[int64](8192),
 		// 																																																																																						SupportedZones: []*string{
 		// 																																																																																							to.Ptr("1"),
 		// 																																																																																							to.Ptr("2"),
 		// 																																																																																							to.Ptr("3")},
-		// 																																																																																							VCores: to.Ptr[int32](8),
+		// 																																																																																							VCores: to.Ptr[int32](4),
 		// 																																																																																						},
 		// 																																																																																						{
-		// 																																																																																							Name: to.Ptr("Standard_E16ds_v4"),
+		// 																																																																																							Name: to.Ptr("Standard_E8s_v3"),
 		// 																																																																																							SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																								to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																								to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
-		// 																																																																																								SupportedIops: to.Ptr[int32](20000),
+		// 																																																																																								SupportedIops: to.Ptr[int32](12800),
 		// 																																																																																								SupportedMemoryPerVcoreMb: to.Ptr[int64](8192),
 		// 																																																																																								SupportedZones: []*string{
 		// 																																																																																									to.Ptr("1"),
 		// 																																																																																									to.Ptr("2"),
 		// 																																																																																									to.Ptr("3")},
-		// 																																																																																									VCores: to.Ptr[int32](16),
+		// 																																																																																									VCores: to.Ptr[int32](8),
 		// 																																																																																								},
 		// 																																																																																								{
-		// 																																																																																									Name: to.Ptr("Standard_E20ds_v4"),
+		// 																																																																																									Name: to.Ptr("Standard_E16s_v3"),
 		// 																																																																																									SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																										to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																										to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
-		// 																																																																																										SupportedIops: to.Ptr[int32](20000),
+		// 																																																																																										SupportedIops: to.Ptr[int32](25600),
 		// 																																																																																										SupportedMemoryPerVcoreMb: to.Ptr[int64](8192),
 		// 																																																																																										SupportedZones: []*string{
 		// 																																																																																											to.Ptr("1"),
 		// 																																																																																											to.Ptr("2"),
 		// 																																																																																											to.Ptr("3")},
-		// 																																																																																											VCores: to.Ptr[int32](20),
+		// 																																																																																											VCores: to.Ptr[int32](16),
 		// 																																																																																										},
 		// 																																																																																										{
-		// 																																																																																											Name: to.Ptr("Standard_E32ds_v4"),
+		// 																																																																																											Name: to.Ptr("Standard_E32s_v3"),
 		// 																																																																																											SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																												to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																												to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
-		// 																																																																																												SupportedIops: to.Ptr[int32](20000),
+		// 																																																																																												SupportedIops: to.Ptr[int32](32000),
 		// 																																																																																												SupportedMemoryPerVcoreMb: to.Ptr[int64](8192),
 		// 																																																																																												SupportedZones: []*string{
 		// 																																																																																													to.Ptr("1"),
@@ -1282,11 +1302,11 @@ func ExampleServerCapabilitiesClient_NewListPager() {
 		// 																																																																																													VCores: to.Ptr[int32](32),
 		// 																																																																																												},
 		// 																																																																																												{
-		// 																																																																																													Name: to.Ptr("Standard_E48ds_v4"),
+		// 																																																																																													Name: to.Ptr("Standard_E48s_v3"),
 		// 																																																																																													SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																														to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																														to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
-		// 																																																																																														SupportedIops: to.Ptr[int32](20000),
+		// 																																																																																														SupportedIops: to.Ptr[int32](51200),
 		// 																																																																																														SupportedMemoryPerVcoreMb: to.Ptr[int64](8192),
 		// 																																																																																														SupportedZones: []*string{
 		// 																																																																																															to.Ptr("1"),
@@ -1295,11 +1315,11 @@ func ExampleServerCapabilitiesClient_NewListPager() {
 		// 																																																																																															VCores: to.Ptr[int32](48),
 		// 																																																																																														},
 		// 																																																																																														{
-		// 																																																																																															Name: to.Ptr("Standard_E64ds_v4"),
+		// 																																																																																															Name: to.Ptr("Standard_E64s_v3"),
 		// 																																																																																															SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																																to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																																to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
-		// 																																																																																																SupportedIops: to.Ptr[int32](20000),
+		// 																																																																																																SupportedIops: to.Ptr[int32](76800),
 		// 																																																																																																SupportedMemoryPerVcoreMb: to.Ptr[int64](6912),
 		// 																																																																																																SupportedZones: []*string{
 		// 																																																																																																	to.Ptr("1"),
@@ -1308,7 +1328,7 @@ func ExampleServerCapabilitiesClient_NewListPager() {
 		// 																																																																																																	VCores: to.Ptr[int32](64),
 		// 																																																																																																},
 		// 																																																																																																{
-		// 																																																																																																	Name: to.Ptr("Standard_E2ads_v5"),
+		// 																																																																																																	Name: to.Ptr("Standard_E2ds_v4"),
 		// 																																																																																																	SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																																		to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																																		to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -1321,7 +1341,7 @@ func ExampleServerCapabilitiesClient_NewListPager() {
 		// 																																																																																																			VCores: to.Ptr[int32](2),
 		// 																																																																																																		},
 		// 																																																																																																		{
-		// 																																																																																																			Name: to.Ptr("Standard_E4ads_v5"),
+		// 																																																																																																			Name: to.Ptr("Standard_E4ds_v4"),
 		// 																																																																																																			SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																																				to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																																				to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -1334,7 +1354,7 @@ func ExampleServerCapabilitiesClient_NewListPager() {
 		// 																																																																																																					VCores: to.Ptr[int32](4),
 		// 																																																																																																				},
 		// 																																																																																																				{
-		// 																																																																																																					Name: to.Ptr("Standard_E8ads_v5"),
+		// 																																																																																																					Name: to.Ptr("Standard_E8ds_v4"),
 		// 																																																																																																					SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																																						to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																																						to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -1347,11 +1367,11 @@ func ExampleServerCapabilitiesClient_NewListPager() {
 		// 																																																																																																							VCores: to.Ptr[int32](8),
 		// 																																																																																																						},
 		// 																																																																																																						{
-		// 																																																																																																							Name: to.Ptr("Standard_E16ads_v5"),
+		// 																																																																																																							Name: to.Ptr("Standard_E16ds_v4"),
 		// 																																																																																																							SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																																								to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																																								to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
-		// 																																																																																																								SupportedIops: to.Ptr[int32](20000),
+		// 																																																																																																								SupportedIops: to.Ptr[int32](25600),
 		// 																																																																																																								SupportedMemoryPerVcoreMb: to.Ptr[int64](8192),
 		// 																																																																																																								SupportedZones: []*string{
 		// 																																																																																																									to.Ptr("1"),
@@ -1360,347 +1380,605 @@ func ExampleServerCapabilitiesClient_NewListPager() {
 		// 																																																																																																									VCores: to.Ptr[int32](16),
 		// 																																																																																																								},
 		// 																																																																																																								{
-		// 																																																																																																									Name: to.Ptr("Standard_E32ads_v5"),
+		// 																																																																																																									Name: to.Ptr("Standard_E20ds_v4"),
 		// 																																																																																																									SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																																										to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																																										to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
-		// 																																																																																																										SupportedIops: to.Ptr[int32](20000),
+		// 																																																																																																										SupportedIops: to.Ptr[int32](32000),
 		// 																																																																																																										SupportedMemoryPerVcoreMb: to.Ptr[int64](8192),
 		// 																																																																																																										SupportedZones: []*string{
 		// 																																																																																																											to.Ptr("1"),
 		// 																																																																																																											to.Ptr("2"),
 		// 																																																																																																											to.Ptr("3")},
-		// 																																																																																																											VCores: to.Ptr[int32](32),
+		// 																																																																																																											VCores: to.Ptr[int32](20),
 		// 																																																																																																										},
 		// 																																																																																																										{
-		// 																																																																																																											Name: to.Ptr("Standard_E48ads_v5"),
+		// 																																																																																																											Name: to.Ptr("Standard_E32ds_v4"),
 		// 																																																																																																											SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																																												to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																																												to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
-		// 																																																																																																												SupportedIops: to.Ptr[int32](20000),
+		// 																																																																																																												SupportedIops: to.Ptr[int32](51200),
 		// 																																																																																																												SupportedMemoryPerVcoreMb: to.Ptr[int64](8192),
 		// 																																																																																																												SupportedZones: []*string{
 		// 																																																																																																													to.Ptr("1"),
 		// 																																																																																																													to.Ptr("2"),
 		// 																																																																																																													to.Ptr("3")},
-		// 																																																																																																													VCores: to.Ptr[int32](48),
+		// 																																																																																																													VCores: to.Ptr[int32](32),
 		// 																																																																																																												},
 		// 																																																																																																												{
-		// 																																																																																																													Name: to.Ptr("Standard_E64ads_v5"),
+		// 																																																																																																													Name: to.Ptr("Standard_E48ds_v4"),
 		// 																																																																																																													SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																																														to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																																														to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
-		// 																																																																																																														SupportedIops: to.Ptr[int32](20000),
+		// 																																																																																																														SupportedIops: to.Ptr[int32](76800),
 		// 																																																																																																														SupportedMemoryPerVcoreMb: to.Ptr[int64](8192),
 		// 																																																																																																														SupportedZones: []*string{
 		// 																																																																																																															to.Ptr("1"),
 		// 																																																																																																															to.Ptr("2"),
 		// 																																																																																																															to.Ptr("3")},
-		// 																																																																																																															VCores: to.Ptr[int32](64),
+		// 																																																																																																															VCores: to.Ptr[int32](48),
 		// 																																																																																																														},
 		// 																																																																																																														{
-		// 																																																																																																															Name: to.Ptr("Standard_E96ads_v5"),
+		// 																																																																																																															Name: to.Ptr("Standard_E64ds_v4"),
 		// 																																																																																																															SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																																																to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																																																to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
-		// 																																																																																																																SupportedIops: to.Ptr[int32](20000),
-		// 																																																																																																																SupportedMemoryPerVcoreMb: to.Ptr[int64](7168),
+		// 																																																																																																																SupportedIops: to.Ptr[int32](80000),
+		// 																																																																																																																SupportedMemoryPerVcoreMb: to.Ptr[int64](6912),
 		// 																																																																																																																SupportedZones: []*string{
 		// 																																																																																																																	to.Ptr("1"),
 		// 																																																																																																																	to.Ptr("2"),
 		// 																																																																																																																	to.Ptr("3")},
-		// 																																																																																																																	VCores: to.Ptr[int32](96),
-		// 																																																																																																															}},
-		// 																																																																																																															SupportedStorageEditions: []*armpostgresqlflexibleservers.StorageEditionCapability{
-		// 																																																																																																																{
-		// 																																																																																																																	Name: to.Ptr("ManagedDisk"),
-		// 																																																																																																																	DefaultStorageSizeMb: to.Ptr[int64](131072),
-		// 																																																																																																																	SupportedStorageMb: []*armpostgresqlflexibleservers.StorageMbCapability{
-		// 																																																																																																																		{
-		// 																																																																																																																			DefaultIopsTier: to.Ptr("P4"),
-		// 																																																																																																																			StorageSizeMb: to.Ptr[int64](32768),
-		// 																																																																																																																			SupportedIops: to.Ptr[int32](120),
-		// 																																																																																																																			SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P4"),
-		// 																																																																																																																					Iops: to.Ptr[int32](120),
-		// 																																																																																																																				},
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P6"),
-		// 																																																																																																																					Iops: to.Ptr[int32](240),
-		// 																																																																																																																				},
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P10"),
-		// 																																																																																																																					Iops: to.Ptr[int32](500),
-		// 																																																																																																																				},
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P15"),
-		// 																																																																																																																					Iops: to.Ptr[int32](1100),
-		// 																																																																																																																				},
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P20"),
-		// 																																																																																																																					Iops: to.Ptr[int32](2300),
-		// 																																																																																																																				},
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P30"),
-		// 																																																																																																																					Iops: to.Ptr[int32](5000),
-		// 																																																																																																																				},
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P40"),
-		// 																																																																																																																					Iops: to.Ptr[int32](7500),
-		// 																																																																																																																				},
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P50"),
-		// 																																																																																																																					Iops: to.Ptr[int32](7500),
-		// 																																																																																																																			}},
-		// 																																																																																																																		},
-		// 																																																																																																																		{
-		// 																																																																																																																			DefaultIopsTier: to.Ptr("P6"),
-		// 																																																																																																																			StorageSizeMb: to.Ptr[int64](65536),
-		// 																																																																																																																			SupportedIops: to.Ptr[int32](240),
-		// 																																																																																																																			SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P6"),
-		// 																																																																																																																					Iops: to.Ptr[int32](240),
-		// 																																																																																																																				},
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P10"),
-		// 																																																																																																																					Iops: to.Ptr[int32](500),
-		// 																																																																																																																				},
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P15"),
-		// 																																																																																																																					Iops: to.Ptr[int32](1100),
-		// 																																																																																																																				},
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P20"),
-		// 																																																																																																																					Iops: to.Ptr[int32](2300),
-		// 																																																																																																																				},
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P30"),
-		// 																																																																																																																					Iops: to.Ptr[int32](5000),
-		// 																																																																																																																				},
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P40"),
-		// 																																																																																																																					Iops: to.Ptr[int32](7500),
-		// 																																																																																																																				},
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P50"),
-		// 																																																																																																																					Iops: to.Ptr[int32](7500),
-		// 																																																																																																																			}},
-		// 																																																																																																																		},
-		// 																																																																																																																		{
-		// 																																																																																																																			DefaultIopsTier: to.Ptr("P10"),
-		// 																																																																																																																			StorageSizeMb: to.Ptr[int64](131072),
-		// 																																																																																																																			SupportedIops: to.Ptr[int32](500),
-		// 																																																																																																																			SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P10"),
-		// 																																																																																																																					Iops: to.Ptr[int32](500),
-		// 																																																																																																																				},
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P15"),
-		// 																																																																																																																					Iops: to.Ptr[int32](1100),
-		// 																																																																																																																				},
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P20"),
-		// 																																																																																																																					Iops: to.Ptr[int32](2300),
-		// 																																																																																																																				},
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P30"),
-		// 																																																																																																																					Iops: to.Ptr[int32](5000),
-		// 																																																																																																																				},
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P40"),
-		// 																																																																																																																					Iops: to.Ptr[int32](7500),
-		// 																																																																																																																				},
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P50"),
-		// 																																																																																																																					Iops: to.Ptr[int32](7500),
-		// 																																																																																																																			}},
-		// 																																																																																																																		},
-		// 																																																																																																																		{
-		// 																																																																																																																			DefaultIopsTier: to.Ptr("P15"),
-		// 																																																																																																																			StorageSizeMb: to.Ptr[int64](262144),
-		// 																																																																																																																			SupportedIops: to.Ptr[int32](1100),
-		// 																																																																																																																			SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P15"),
-		// 																																																																																																																					Iops: to.Ptr[int32](1100),
-		// 																																																																																																																				},
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P20"),
-		// 																																																																																																																					Iops: to.Ptr[int32](2300),
-		// 																																																																																																																				},
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P30"),
-		// 																																																																																																																					Iops: to.Ptr[int32](5000),
-		// 																																																																																																																				},
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P40"),
-		// 																																																																																																																					Iops: to.Ptr[int32](7500),
-		// 																																																																																																																				},
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P50"),
-		// 																																																																																																																					Iops: to.Ptr[int32](7500),
-		// 																																																																																																																			}},
-		// 																																																																																																																		},
-		// 																																																																																																																		{
-		// 																																																																																																																			DefaultIopsTier: to.Ptr("P20"),
-		// 																																																																																																																			StorageSizeMb: to.Ptr[int64](524288),
-		// 																																																																																																																			SupportedIops: to.Ptr[int32](2300),
-		// 																																																																																																																			SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P20"),
-		// 																																																																																																																					Iops: to.Ptr[int32](2300),
-		// 																																																																																																																				},
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P30"),
-		// 																																																																																																																					Iops: to.Ptr[int32](5000),
-		// 																																																																																																																				},
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P40"),
-		// 																																																																																																																					Iops: to.Ptr[int32](7500),
-		// 																																																																																																																				},
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P50"),
-		// 																																																																																																																					Iops: to.Ptr[int32](7500),
-		// 																																																																																																																			}},
-		// 																																																																																																																		},
-		// 																																																																																																																		{
-		// 																																																																																																																			DefaultIopsTier: to.Ptr("P30"),
-		// 																																																																																																																			StorageSizeMb: to.Ptr[int64](1048576),
-		// 																																																																																																																			SupportedIops: to.Ptr[int32](5000),
-		// 																																																																																																																			SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P30"),
-		// 																																																																																																																					Iops: to.Ptr[int32](5000),
-		// 																																																																																																																				},
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P40"),
-		// 																																																																																																																					Iops: to.Ptr[int32](7500),
-		// 																																																																																																																				},
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P50"),
-		// 																																																																																																																					Iops: to.Ptr[int32](7500),
-		// 																																																																																																																			}},
-		// 																																																																																																																		},
-		// 																																																																																																																		{
-		// 																																																																																																																			DefaultIopsTier: to.Ptr("P40"),
-		// 																																																																																																																			StorageSizeMb: to.Ptr[int64](2097152),
-		// 																																																																																																																			SupportedIops: to.Ptr[int32](7500),
-		// 																																																																																																																			SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P40"),
-		// 																																																																																																																					Iops: to.Ptr[int32](7500),
-		// 																																																																																																																				},
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P50"),
-		// 																																																																																																																					Iops: to.Ptr[int32](7500),
-		// 																																																																																																																			}},
-		// 																																																																																																																		},
-		// 																																																																																																																		{
-		// 																																																																																																																			DefaultIopsTier: to.Ptr("P50"),
-		// 																																																																																																																			StorageSizeMb: to.Ptr[int64](4194304),
-		// 																																																																																																																			SupportedIops: to.Ptr[int32](7500),
-		// 																																																																																																																			SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P50"),
-		// 																																																																																																																					Iops: to.Ptr[int32](7500),
-		// 																																																																																																																			}},
-		// 																																																																																																																		},
-		// 																																																																																																																		{
-		// 																																																																																																																			DefaultIopsTier: to.Ptr("P60"),
-		// 																																																																																																																			StorageSizeMb: to.Ptr[int64](8388608),
-		// 																																																																																																																			SupportedIops: to.Ptr[int32](16000),
-		// 																																																																																																																			SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P60"),
-		// 																																																																																																																					Iops: to.Ptr[int32](16000),
-		// 																																																																																																																				},
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P70"),
-		// 																																																																																																																					Iops: to.Ptr[int32](18000),
-		// 																																																																																																																				},
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P80"),
-		// 																																																																																																																					Iops: to.Ptr[int32](20000),
-		// 																																																																																																																			}},
-		// 																																																																																																																		},
-		// 																																																																																																																		{
-		// 																																																																																																																			DefaultIopsTier: to.Ptr("P70"),
-		// 																																																																																																																			StorageSizeMb: to.Ptr[int64](16777216),
-		// 																																																																																																																			SupportedIops: to.Ptr[int32](18000),
-		// 																																																																																																																			SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P70"),
-		// 																																																																																																																					Iops: to.Ptr[int32](18000),
-		// 																																																																																																																				},
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P80"),
-		// 																																																																																																																					Iops: to.Ptr[int32](20000),
-		// 																																																																																																																			}},
-		// 																																																																																																																		},
-		// 																																																																																																																		{
-		// 																																																																																																																			DefaultIopsTier: to.Ptr("P80"),
-		// 																																																																																																																			StorageSizeMb: to.Ptr[int64](33553408),
-		// 																																																																																																																			SupportedIops: to.Ptr[int32](20000),
-		// 																																																																																																																			SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
-		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("P80"),
-		// 																																																																																																																					Iops: to.Ptr[int32](20000),
-		// 																																																																																																																			}},
-		// 																																																																																																																	}},
+		// 																																																																																																																	VCores: to.Ptr[int32](64),
 		// 																																																																																																																},
 		// 																																																																																																																{
-		// 																																																																																																																	Name: to.Ptr("ManagedDiskV2"),
-		// 																																																																																																																	DefaultStorageSizeMb: to.Ptr[int64](65536),
-		// 																																																																																																																	SupportedStorageMb: []*armpostgresqlflexibleservers.StorageMbCapability{
+		// 																																																																																																																	Name: to.Ptr("Standard_E2ads_v5"),
+		// 																																																																																																																	SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
+		// 																																																																																																																		to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
+		// 																																																																																																																		to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
+		// 																																																																																																																		SupportedIops: to.Ptr[int32](3750),
+		// 																																																																																																																		SupportedMemoryPerVcoreMb: to.Ptr[int64](8192),
+		// 																																																																																																																		SupportedZones: []*string{
+		// 																																																																																																																			to.Ptr("1"),
+		// 																																																																																																																			to.Ptr("2"),
+		// 																																																																																																																			to.Ptr("3")},
+		// 																																																																																																																			VCores: to.Ptr[int32](2),
+		// 																																																																																																																		},
 		// 																																																																																																																		{
-		// 																																																																																																																			DefaultIopsTier: to.Ptr("None"),
-		// 																																																																																																																			MaximumStorageSizeMb: to.Ptr[int64](67108864),
-		// 																																																																																																																			StorageSizeMb: to.Ptr[int64](32768),
-		// 																																																																																																																			SupportedIops: to.Ptr[int32](3000),
-		// 																																																																																																																			SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
+		// 																																																																																																																			Name: to.Ptr("Standard_E4ads_v5"),
+		// 																																																																																																																			SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
+		// 																																																																																																																				to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
+		// 																																																																																																																				to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
+		// 																																																																																																																				SupportedIops: to.Ptr[int32](6400),
+		// 																																																																																																																				SupportedMemoryPerVcoreMb: to.Ptr[int64](8192),
+		// 																																																																																																																				SupportedZones: []*string{
+		// 																																																																																																																					to.Ptr("1"),
+		// 																																																																																																																					to.Ptr("2"),
+		// 																																																																																																																					to.Ptr("3")},
+		// 																																																																																																																					VCores: to.Ptr[int32](4),
+		// 																																																																																																																				},
 		// 																																																																																																																				{
-		// 																																																																																																																					Name: to.Ptr("None"),
-		// 																																																																																																																					Iops: to.Ptr[int32](0),
-		// 																																																																																																																			}},
-		// 																																																																																																																			SupportedMaximumIops: to.Ptr[int32](80000),
-		// 																																																																																																																			SupportedMaximumThroughput: to.Ptr[int32](750),
-		// 																																																																																																																			SupportedThroughput: to.Ptr[int32](125),
-		// 																																																																																																																	}},
-		// 																																																																																																															}},
-		// 																																																																																																													}},
-		// 																																																																																																													SupportedServerVersions: []*armpostgresqlflexibleservers.ServerVersionCapability{
-		// 																																																																																																														{
-		// 																																																																																																															Name: to.Ptr("11"),
-		// 																																																																																																															SupportedVersionsToUpgrade: []*string{
-		// 																																																																																																																to.Ptr("12"),
-		// 																																																																																																																to.Ptr("13"),
-		// 																																																																																																																to.Ptr("14"),
-		// 																																																																																																																to.Ptr("15")},
-		// 																																																																																																															},
-		// 																																																																																																															{
-		// 																																																																																																																Name: to.Ptr("12"),
-		// 																																																																																																																SupportedVersionsToUpgrade: []*string{
-		// 																																																																																																																	to.Ptr("13"),
-		// 																																																																																																																	to.Ptr("14"),
-		// 																																																																																																																	to.Ptr("15")},
-		// 																																																																																																																},
-		// 																																																																																																																{
-		// 																																																																																																																	Name: to.Ptr("13"),
-		// 																																																																																																																	SupportedVersionsToUpgrade: []*string{
-		// 																																																																																																																		to.Ptr("14"),
-		// 																																																																																																																		to.Ptr("15")},
-		// 																																																																																																																	},
-		// 																																																																																																																	{
-		// 																																																																																																																		Name: to.Ptr("14"),
-		// 																																																																																																																		SupportedVersionsToUpgrade: []*string{
-		// 																																																																																																																			to.Ptr("15")},
-		// 																																																																																																																	}},
-		// 																																																																																																																	ZoneRedundantHaAndGeoBackupSupported: to.Ptr(armpostgresqlflexibleservers.ZoneRedundantHaAndGeoBackupSupportedEnumEnabled),
-		// 																																																																																																																	ZoneRedundantHaSupported: to.Ptr(armpostgresqlflexibleservers.ZoneRedundantHaSupportedEnumEnabled),
-		// 																																																																																																															}},
-		// 																																																																																																														}
+		// 																																																																																																																					Name: to.Ptr("Standard_E8ads_v5"),
+		// 																																																																																																																					SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
+		// 																																																																																																																						to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
+		// 																																																																																																																						to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
+		// 																																																																																																																						SupportedIops: to.Ptr[int32](12800),
+		// 																																																																																																																						SupportedMemoryPerVcoreMb: to.Ptr[int64](8192),
+		// 																																																																																																																						SupportedZones: []*string{
+		// 																																																																																																																							to.Ptr("1"),
+		// 																																																																																																																							to.Ptr("2"),
+		// 																																																																																																																							to.Ptr("3")},
+		// 																																																																																																																							VCores: to.Ptr[int32](8),
+		// 																																																																																																																						},
+		// 																																																																																																																						{
+		// 																																																																																																																							Name: to.Ptr("Standard_E16ads_v5"),
+		// 																																																																																																																							SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
+		// 																																																																																																																								to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
+		// 																																																																																																																								to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
+		// 																																																																																																																								SupportedIops: to.Ptr[int32](25600),
+		// 																																																																																																																								SupportedMemoryPerVcoreMb: to.Ptr[int64](8192),
+		// 																																																																																																																								SupportedZones: []*string{
+		// 																																																																																																																									to.Ptr("1"),
+		// 																																																																																																																									to.Ptr("2"),
+		// 																																																																																																																									to.Ptr("3")},
+		// 																																																																																																																									VCores: to.Ptr[int32](16),
+		// 																																																																																																																								},
+		// 																																																																																																																								{
+		// 																																																																																																																									Name: to.Ptr("Standard_E20ads_v5"),
+		// 																																																																																																																									SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
+		// 																																																																																																																										to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
+		// 																																																																																																																										to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
+		// 																																																																																																																										SupportedIops: to.Ptr[int32](32000),
+		// 																																																																																																																										SupportedMemoryPerVcoreMb: to.Ptr[int64](8192),
+		// 																																																																																																																										SupportedZones: []*string{
+		// 																																																																																																																											to.Ptr("1"),
+		// 																																																																																																																											to.Ptr("2"),
+		// 																																																																																																																											to.Ptr("3")},
+		// 																																																																																																																											VCores: to.Ptr[int32](20),
+		// 																																																																																																																										},
+		// 																																																																																																																										{
+		// 																																																																																																																											Name: to.Ptr("Standard_E32ads_v5"),
+		// 																																																																																																																											SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
+		// 																																																																																																																												to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
+		// 																																																																																																																												to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
+		// 																																																																																																																												SupportedIops: to.Ptr[int32](51200),
+		// 																																																																																																																												SupportedMemoryPerVcoreMb: to.Ptr[int64](8192),
+		// 																																																																																																																												SupportedZones: []*string{
+		// 																																																																																																																													to.Ptr("1"),
+		// 																																																																																																																													to.Ptr("2"),
+		// 																																																																																																																													to.Ptr("3")},
+		// 																																																																																																																													VCores: to.Ptr[int32](32),
+		// 																																																																																																																												},
+		// 																																																																																																																												{
+		// 																																																																																																																													Name: to.Ptr("Standard_E48ads_v5"),
+		// 																																																																																																																													SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
+		// 																																																																																																																														to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
+		// 																																																																																																																														to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
+		// 																																																																																																																														SupportedIops: to.Ptr[int32](76800),
+		// 																																																																																																																														SupportedMemoryPerVcoreMb: to.Ptr[int64](8192),
+		// 																																																																																																																														SupportedZones: []*string{
+		// 																																																																																																																															to.Ptr("1"),
+		// 																																																																																																																															to.Ptr("2"),
+		// 																																																																																																																															to.Ptr("3")},
+		// 																																																																																																																															VCores: to.Ptr[int32](48),
+		// 																																																																																																																														},
+		// 																																																																																																																														{
+		// 																																																																																																																															Name: to.Ptr("Standard_E64ads_v5"),
+		// 																																																																																																																															SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
+		// 																																																																																																																																to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
+		// 																																																																																																																																to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
+		// 																																																																																																																																SupportedIops: to.Ptr[int32](80000),
+		// 																																																																																																																																SupportedMemoryPerVcoreMb: to.Ptr[int64](8192),
+		// 																																																																																																																																SupportedZones: []*string{
+		// 																																																																																																																																	to.Ptr("1"),
+		// 																																																																																																																																	to.Ptr("2"),
+		// 																																																																																																																																	to.Ptr("3")},
+		// 																																																																																																																																	VCores: to.Ptr[int32](64),
+		// 																																																																																																																																},
+		// 																																																																																																																																{
+		// 																																																																																																																																	Name: to.Ptr("Standard_E96ads_v5"),
+		// 																																																																																																																																	SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
+		// 																																																																																																																																		to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
+		// 																																																																																																																																		to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
+		// 																																																																																																																																		SupportedIops: to.Ptr[int32](80000),
+		// 																																																																																																																																		SupportedMemoryPerVcoreMb: to.Ptr[int64](7168),
+		// 																																																																																																																																		SupportedZones: []*string{
+		// 																																																																																																																																			to.Ptr("1"),
+		// 																																																																																																																																			to.Ptr("2"),
+		// 																																																																																																																																			to.Ptr("3")},
+		// 																																																																																																																																			VCores: to.Ptr[int32](96),
+		// 																																																																																																																																		},
+		// 																																																																																																																																		{
+		// 																																																																																																																																			Name: to.Ptr("Standard_E2ds_v5"),
+		// 																																																																																																																																			SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
+		// 																																																																																																																																				to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
+		// 																																																																																																																																				to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
+		// 																																																																																																																																				SupportedIops: to.Ptr[int32](3750),
+		// 																																																																																																																																				SupportedMemoryPerVcoreMb: to.Ptr[int64](8192),
+		// 																																																																																																																																				SupportedZones: []*string{
+		// 																																																																																																																																					to.Ptr("1"),
+		// 																																																																																																																																					to.Ptr("2"),
+		// 																																																																																																																																					to.Ptr("3")},
+		// 																																																																																																																																					VCores: to.Ptr[int32](2),
+		// 																																																																																																																																				},
+		// 																																																																																																																																				{
+		// 																																																																																																																																					Name: to.Ptr("Standard_E4ds_v5"),
+		// 																																																																																																																																					SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
+		// 																																																																																																																																						to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
+		// 																																																																																																																																						to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
+		// 																																																																																																																																						SupportedIops: to.Ptr[int32](6400),
+		// 																																																																																																																																						SupportedMemoryPerVcoreMb: to.Ptr[int64](8192),
+		// 																																																																																																																																						SupportedZones: []*string{
+		// 																																																																																																																																							to.Ptr("1"),
+		// 																																																																																																																																							to.Ptr("2"),
+		// 																																																																																																																																							to.Ptr("3")},
+		// 																																																																																																																																							VCores: to.Ptr[int32](4),
+		// 																																																																																																																																						},
+		// 																																																																																																																																						{
+		// 																																																																																																																																							Name: to.Ptr("Standard_E8ds_v5"),
+		// 																																																																																																																																							SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
+		// 																																																																																																																																								to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
+		// 																																																																																																																																								to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
+		// 																																																																																																																																								SupportedIops: to.Ptr[int32](12800),
+		// 																																																																																																																																								SupportedMemoryPerVcoreMb: to.Ptr[int64](8192),
+		// 																																																																																																																																								SupportedZones: []*string{
+		// 																																																																																																																																									to.Ptr("1"),
+		// 																																																																																																																																									to.Ptr("2"),
+		// 																																																																																																																																									to.Ptr("3")},
+		// 																																																																																																																																									VCores: to.Ptr[int32](8),
+		// 																																																																																																																																								},
+		// 																																																																																																																																								{
+		// 																																																																																																																																									Name: to.Ptr("Standard_E16ds_v5"),
+		// 																																																																																																																																									SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
+		// 																																																																																																																																										to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
+		// 																																																																																																																																										to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
+		// 																																																																																																																																										SupportedIops: to.Ptr[int32](25600),
+		// 																																																																																																																																										SupportedMemoryPerVcoreMb: to.Ptr[int64](8192),
+		// 																																																																																																																																										SupportedZones: []*string{
+		// 																																																																																																																																											to.Ptr("1"),
+		// 																																																																																																																																											to.Ptr("2"),
+		// 																																																																																																																																											to.Ptr("3")},
+		// 																																																																																																																																											VCores: to.Ptr[int32](16),
+		// 																																																																																																																																										},
+		// 																																																																																																																																										{
+		// 																																																																																																																																											Name: to.Ptr("Standard_E20ds_v5"),
+		// 																																																																																																																																											SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
+		// 																																																																																																																																												to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
+		// 																																																																																																																																												to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
+		// 																																																																																																																																												SupportedIops: to.Ptr[int32](32000),
+		// 																																																																																																																																												SupportedMemoryPerVcoreMb: to.Ptr[int64](8192),
+		// 																																																																																																																																												SupportedZones: []*string{
+		// 																																																																																																																																													to.Ptr("1"),
+		// 																																																																																																																																													to.Ptr("2"),
+		// 																																																																																																																																													to.Ptr("3")},
+		// 																																																																																																																																													VCores: to.Ptr[int32](20),
+		// 																																																																																																																																												},
+		// 																																																																																																																																												{
+		// 																																																																																																																																													Name: to.Ptr("Standard_E32ds_v5"),
+		// 																																																																																																																																													SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
+		// 																																																																																																																																														to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
+		// 																																																																																																																																														to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
+		// 																																																																																																																																														SupportedIops: to.Ptr[int32](51200),
+		// 																																																																																																																																														SupportedMemoryPerVcoreMb: to.Ptr[int64](8192),
+		// 																																																																																																																																														SupportedZones: []*string{
+		// 																																																																																																																																															to.Ptr("1"),
+		// 																																																																																																																																															to.Ptr("2"),
+		// 																																																																																																																																															to.Ptr("3")},
+		// 																																																																																																																																															VCores: to.Ptr[int32](32),
+		// 																																																																																																																																														},
+		// 																																																																																																																																														{
+		// 																																																																																																																																															Name: to.Ptr("Standard_E48ds_v5"),
+		// 																																																																																																																																															SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
+		// 																																																																																																																																																to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
+		// 																																																																																																																																																to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
+		// 																																																																																																																																																SupportedIops: to.Ptr[int32](76800),
+		// 																																																																																																																																																SupportedMemoryPerVcoreMb: to.Ptr[int64](8192),
+		// 																																																																																																																																																SupportedZones: []*string{
+		// 																																																																																																																																																	to.Ptr("1"),
+		// 																																																																																																																																																	to.Ptr("2"),
+		// 																																																																																																																																																	to.Ptr("3")},
+		// 																																																																																																																																																	VCores: to.Ptr[int32](48),
+		// 																																																																																																																																																},
+		// 																																																																																																																																																{
+		// 																																																																																																																																																	Name: to.Ptr("Standard_E64ds_v5"),
+		// 																																																																																																																																																	SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
+		// 																																																																																																																																																		to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
+		// 																																																																																																																																																		to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
+		// 																																																																																																																																																		SupportedIops: to.Ptr[int32](80000),
+		// 																																																																																																																																																		SupportedMemoryPerVcoreMb: to.Ptr[int64](8192),
+		// 																																																																																																																																																		SupportedZones: []*string{
+		// 																																																																																																																																																			to.Ptr("1"),
+		// 																																																																																																																																																			to.Ptr("2"),
+		// 																																																																																																																																																			to.Ptr("3")},
+		// 																																																																																																																																																			VCores: to.Ptr[int32](64),
+		// 																																																																																																																																																		},
+		// 																																																																																																																																																		{
+		// 																																																																																																																																																			Name: to.Ptr("Standard_E96ds_v5"),
+		// 																																																																																																																																																			SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
+		// 																																																																																																																																																				to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
+		// 																																																																																																																																																				to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
+		// 																																																																																																																																																				SupportedIops: to.Ptr[int32](80000),
+		// 																																																																																																																																																				SupportedMemoryPerVcoreMb: to.Ptr[int64](7168),
+		// 																																																																																																																																																				SupportedZones: []*string{
+		// 																																																																																																																																																					to.Ptr("1"),
+		// 																																																																																																																																																					to.Ptr("2"),
+		// 																																																																																																																																																					to.Ptr("3")},
+		// 																																																																																																																																																					VCores: to.Ptr[int32](96),
+		// 																																																																																																																																																			}},
+		// 																																																																																																																																																			SupportedStorageEditions: []*armpostgresqlflexibleservers.StorageEditionCapability{
+		// 																																																																																																																																																				{
+		// 																																																																																																																																																					Name: to.Ptr("ManagedDisk"),
+		// 																																																																																																																																																					DefaultStorageSizeMb: to.Ptr[int64](131072),
+		// 																																																																																																																																																					SupportedStorageMb: []*armpostgresqlflexibleservers.StorageMbCapability{
+		// 																																																																																																																																																						{
+		// 																																																																																																																																																							DefaultIopsTier: to.Ptr("P4"),
+		// 																																																																																																																																																							StorageSizeMb: to.Ptr[int64](32768),
+		// 																																																																																																																																																							SupportedIops: to.Ptr[int32](120),
+		// 																																																																																																																																																							SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P4"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](120),
+		// 																																																																																																																																																								},
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P6"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](240),
+		// 																																																																																																																																																								},
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P10"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](500),
+		// 																																																																																																																																																								},
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P15"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](1100),
+		// 																																																																																																																																																								},
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P20"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](2300),
+		// 																																																																																																																																																								},
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P30"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](5000),
+		// 																																																																																																																																																								},
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P40"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](7500),
+		// 																																																																																																																																																								},
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P50"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](7500),
+		// 																																																																																																																																																							}},
+		// 																																																																																																																																																						},
+		// 																																																																																																																																																						{
+		// 																																																																																																																																																							DefaultIopsTier: to.Ptr("P6"),
+		// 																																																																																																																																																							StorageSizeMb: to.Ptr[int64](65536),
+		// 																																																																																																																																																							SupportedIops: to.Ptr[int32](240),
+		// 																																																																																																																																																							SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P6"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](240),
+		// 																																																																																																																																																								},
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P10"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](500),
+		// 																																																																																																																																																								},
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P15"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](1100),
+		// 																																																																																																																																																								},
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P20"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](2300),
+		// 																																																																																																																																																								},
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P30"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](5000),
+		// 																																																																																																																																																								},
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P40"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](7500),
+		// 																																																																																																																																																								},
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P50"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](7500),
+		// 																																																																																																																																																							}},
+		// 																																																																																																																																																						},
+		// 																																																																																																																																																						{
+		// 																																																																																																																																																							DefaultIopsTier: to.Ptr("P10"),
+		// 																																																																																																																																																							StorageSizeMb: to.Ptr[int64](131072),
+		// 																																																																																																																																																							SupportedIops: to.Ptr[int32](500),
+		// 																																																																																																																																																							SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P10"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](500),
+		// 																																																																																																																																																								},
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P15"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](1100),
+		// 																																																																																																																																																								},
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P20"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](2300),
+		// 																																																																																																																																																								},
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P30"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](5000),
+		// 																																																																																																																																																								},
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P40"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](7500),
+		// 																																																																																																																																																								},
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P50"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](7500),
+		// 																																																																																																																																																							}},
+		// 																																																																																																																																																						},
+		// 																																																																																																																																																						{
+		// 																																																																																																																																																							DefaultIopsTier: to.Ptr("P15"),
+		// 																																																																																																																																																							StorageSizeMb: to.Ptr[int64](262144),
+		// 																																																																																																																																																							SupportedIops: to.Ptr[int32](1100),
+		// 																																																																																																																																																							SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P15"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](1100),
+		// 																																																																																																																																																								},
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P20"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](2300),
+		// 																																																																																																																																																								},
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P30"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](5000),
+		// 																																																																																																																																																								},
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P40"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](7500),
+		// 																																																																																																																																																								},
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P50"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](7500),
+		// 																																																																																																																																																							}},
+		// 																																																																																																																																																						},
+		// 																																																																																																																																																						{
+		// 																																																																																																																																																							DefaultIopsTier: to.Ptr("P20"),
+		// 																																																																																																																																																							StorageSizeMb: to.Ptr[int64](524288),
+		// 																																																																																																																																																							SupportedIops: to.Ptr[int32](2300),
+		// 																																																																																																																																																							SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P20"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](2300),
+		// 																																																																																																																																																								},
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P30"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](5000),
+		// 																																																																																																																																																								},
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P40"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](7500),
+		// 																																																																																																																																																								},
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P50"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](7500),
+		// 																																																																																																																																																							}},
+		// 																																																																																																																																																						},
+		// 																																																																																																																																																						{
+		// 																																																																																																																																																							DefaultIopsTier: to.Ptr("P30"),
+		// 																																																																																																																																																							StorageSizeMb: to.Ptr[int64](1048576),
+		// 																																																																																																																																																							SupportedIops: to.Ptr[int32](5000),
+		// 																																																																																																																																																							SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P30"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](5000),
+		// 																																																																																																																																																								},
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P40"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](7500),
+		// 																																																																																																																																																								},
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P50"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](7500),
+		// 																																																																																																																																																							}},
+		// 																																																																																																																																																						},
+		// 																																																																																																																																																						{
+		// 																																																																																																																																																							DefaultIopsTier: to.Ptr("P40"),
+		// 																																																																																																																																																							StorageSizeMb: to.Ptr[int64](2097152),
+		// 																																																																																																																																																							SupportedIops: to.Ptr[int32](7500),
+		// 																																																																																																																																																							SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P40"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](7500),
+		// 																																																																																																																																																								},
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P50"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](7500),
+		// 																																																																																																																																																							}},
+		// 																																																																																																																																																						},
+		// 																																																																																																																																																						{
+		// 																																																																																																																																																							DefaultIopsTier: to.Ptr("P50"),
+		// 																																																																																																																																																							StorageSizeMb: to.Ptr[int64](4193280),
+		// 																																																																																																																																																							SupportedIops: to.Ptr[int32](7500),
+		// 																																																																																																																																																							SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P50"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](7500),
+		// 																																																																																																																																																							}},
+		// 																																																																																																																																																						},
+		// 																																																																																																																																																						{
+		// 																																																																																																																																																							DefaultIopsTier: to.Ptr("P50"),
+		// 																																																																																																																																																							StorageSizeMb: to.Ptr[int64](4194304),
+		// 																																																																																																																																																							SupportedIops: to.Ptr[int32](7500),
+		// 																																																																																																																																																							SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P50"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](7500),
+		// 																																																																																																																																																							}},
+		// 																																																																																																																																																						},
+		// 																																																																																																																																																						{
+		// 																																																																																																																																																							DefaultIopsTier: to.Ptr("P60"),
+		// 																																																																																																																																																							StorageSizeMb: to.Ptr[int64](8388608),
+		// 																																																																																																																																																							SupportedIops: to.Ptr[int32](16000),
+		// 																																																																																																																																																							SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P60"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](16000),
+		// 																																																																																																																																																								},
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P70"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](18000),
+		// 																																																																																																																																																								},
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P80"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](20000),
+		// 																																																																																																																																																							}},
+		// 																																																																																																																																																						},
+		// 																																																																																																																																																						{
+		// 																																																																																																																																																							DefaultIopsTier: to.Ptr("P70"),
+		// 																																																																																																																																																							StorageSizeMb: to.Ptr[int64](16777216),
+		// 																																																																																																																																																							SupportedIops: to.Ptr[int32](18000),
+		// 																																																																																																																																																							SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P70"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](18000),
+		// 																																																																																																																																																								},
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P80"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](20000),
+		// 																																																																																																																																																							}},
+		// 																																																																																																																																																						},
+		// 																																																																																																																																																						{
+		// 																																																																																																																																																							DefaultIopsTier: to.Ptr("P80"),
+		// 																																																																																																																																																							StorageSizeMb: to.Ptr[int64](33553408),
+		// 																																																																																																																																																							SupportedIops: to.Ptr[int32](20000),
+		// 																																																																																																																																																							SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("P80"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](20000),
+		// 																																																																																																																																																							}},
+		// 																																																																																																																																																					}},
+		// 																																																																																																																																																				},
+		// 																																																																																																																																																				{
+		// 																																																																																																																																																					Name: to.Ptr("ManagedDiskV2"),
+		// 																																																																																																																																																					DefaultStorageSizeMb: to.Ptr[int64](131072),
+		// 																																																																																																																																																					SupportedStorageMb: []*armpostgresqlflexibleservers.StorageMbCapability{
+		// 																																																																																																																																																						{
+		// 																																																																																																																																																							DefaultIopsTier: to.Ptr("None"),
+		// 																																																																																																																																																							MaximumStorageSizeMb: to.Ptr[int64](67108864),
+		// 																																																																																																																																																							StorageSizeMb: to.Ptr[int64](32768),
+		// 																																																																																																																																																							SupportedIops: to.Ptr[int32](3000),
+		// 																																																																																																																																																							SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("None"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](0),
+		// 																																																																																																																																																							}},
+		// 																																																																																																																																																							SupportedMaximumIops: to.Ptr[int32](80000),
+		// 																																																																																																																																																							SupportedMaximumThroughput: to.Ptr[int32](1200),
+		// 																																																																																																																																																							SupportedThroughput: to.Ptr[int32](125),
+		// 																																																																																																																																																					}},
+		// 																																																																																																																																																			}},
+		// 																																																																																																																																																	}},
+		// 																																																																																																																																																	SupportedServerVersions: []*armpostgresqlflexibleservers.ServerVersionCapability{
+		// 																																																																																																																																																		{
+		// 																																																																																																																																																			Name: to.Ptr("11"),
+		// 																																																																																																																																																			SupportedVersionsToUpgrade: []*string{
+		// 																																																																																																																																																				to.Ptr("12"),
+		// 																																																																																																																																																				to.Ptr("13"),
+		// 																																																																																																																																																				to.Ptr("14"),
+		// 																																																																																																																																																				to.Ptr("15"),
+		// 																																																																																																																																																				to.Ptr("16")},
+		// 																																																																																																																																																			},
+		// 																																																																																																																																																			{
+		// 																																																																																																																																																				Name: to.Ptr("12"),
+		// 																																																																																																																																																				SupportedVersionsToUpgrade: []*string{
+		// 																																																																																																																																																					to.Ptr("13"),
+		// 																																																																																																																																																					to.Ptr("14"),
+		// 																																																																																																																																																					to.Ptr("15"),
+		// 																																																																																																																																																					to.Ptr("16")},
+		// 																																																																																																																																																				},
+		// 																																																																																																																																																				{
+		// 																																																																																																																																																					Name: to.Ptr("13"),
+		// 																																																																																																																																																					SupportedVersionsToUpgrade: []*string{
+		// 																																																																																																																																																						to.Ptr("14"),
+		// 																																																																																																																																																						to.Ptr("15"),
+		// 																																																																																																																																																						to.Ptr("16")},
+		// 																																																																																																																																																					},
+		// 																																																																																																																																																					{
+		// 																																																																																																																																																						Name: to.Ptr("14"),
+		// 																																																																																																																																																						SupportedVersionsToUpgrade: []*string{
+		// 																																																																																																																																																							to.Ptr("15"),
+		// 																																																																																																																																																							to.Ptr("16")},
+		// 																																																																																																																																																						},
+		// 																																																																																																																																																						{
+		// 																																																																																																																																																							Name: to.Ptr("15"),
+		// 																																																																																																																																																							SupportedVersionsToUpgrade: []*string{
+		// 																																																																																																																																																								to.Ptr("16")},
+		// 																																																																																																																																																							},
+		// 																																																																																																																																																							{
+		// 																																																																																																																																																								Name: to.Ptr("16"),
+		// 																																																																																																																																																								SupportedVersionsToUpgrade: []*string{
+		// 																																																																																																																																																								},
+		// 																																																																																																																																																						}},
+		// 																																																																																																																																																						ZoneRedundantHaAndGeoBackupSupported: to.Ptr(armpostgresqlflexibleservers.ZoneRedundantHaAndGeoBackupSupportedEnumEnabled),
+		// 																																																																																																																																																						ZoneRedundantHaSupported: to.Ptr(armpostgresqlflexibleservers.ZoneRedundantHaSupportedEnumEnabled),
+		// 																																																																																																																																																				}},
+		// 																																																																																																																																																			}
 	}
 }

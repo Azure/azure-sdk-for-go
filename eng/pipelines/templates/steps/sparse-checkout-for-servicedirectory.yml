@@ -1,0 +1,20 @@
+parameters:
+  - name: ServiceDirectory
+    type: string
+    default: ''
+
+
+steps:
+  - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+    parameters:
+      ${{ if eq(parameters.ServiceDirectory, 'auto') }}:
+        Paths:
+          - "/*"
+          - ".vscode/"
+      ${{ else }}:
+        Paths:
+          - ${{ if startsWith(parameters.ServiceDirectory, '../') }}:
+            - ${{ replace(parameters.ServiceDirectory, '../', '') }}
+          - ${{ else }}:
+            - "sdk/${{ parameters.ServiceDirectory }}"
+          - ".vscode/"

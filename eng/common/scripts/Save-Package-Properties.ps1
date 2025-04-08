@@ -41,6 +41,7 @@ Param (
   [string] $prDiff,
   [switch] $addDevVersion
 )
+
 . (Join-Path $PSScriptRoot common.ps1)
 
 function SetOutput($outputPath, $incomingPackageSpec)

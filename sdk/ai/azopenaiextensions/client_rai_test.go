@@ -26,7 +26,7 @@ func TestClient_GetCompletions_AzureOpenAI_ContentFilter_Response(t *testing.T) 
 	client := newStainlessTestClient(t, azureOpenAI.Completions.Endpoint)
 
 	arg := openai.CompletionNewParams{
-		Model:       azureOpenAI.Completions.Model,
+		Model:       openai.CompletionNewParamsModel(azureOpenAI.Completions.Model),
 		Temperature: openai.Float(0.0),
 		MaxTokens:   openai.Int(2048 - 127),
 		Prompt: openai.CompletionNewParamsPromptUnion{

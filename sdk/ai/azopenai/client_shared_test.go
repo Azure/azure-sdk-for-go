@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package azopenaiextensions_test
+package azopenai_test
 
 import (
 	"context"
@@ -13,7 +13,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiextensions"
+	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -40,7 +40,7 @@ type testVars struct {
 	ChatCompletionsOYD                    endpointWithModel // azure only
 	ChatCompletionsRAI                    endpointWithModel // azure only
 	ChatCompletionsWithJSONResponseFormat endpointWithModel
-	Cognitive                             azopenaiextensions.AzureSearchChatExtensionConfiguration
+	Cognitive                             azopenai.AzureSearchChatExtensionConfiguration
 	Completions                           endpointWithModel
 	DallE                                 endpointWithModel
 	Embeddings                            endpointWithModel
@@ -172,11 +172,11 @@ var azureOpenAI = func() testVars {
 				Endpoint: servers.USNorthCentral,
 				Model:    "whisper",
 			},
-			Cognitive: azopenaiextensions.AzureSearchChatExtensionConfiguration{
-				Parameters: &azopenaiextensions.AzureSearchChatExtensionParameters{
+			Cognitive: azopenai.AzureSearchChatExtensionConfiguration{
+				Parameters: &azopenai.AzureSearchChatExtensionParameters{
 					Endpoint:       to.Ptr(getEnvVariable("COGNITIVE_SEARCH_API_ENDPOINT", fakeCognitiveEndpoint)),
 					IndexName:      to.Ptr(getEnvVariable("COGNITIVE_SEARCH_API_INDEX", fakeCognitiveIndexName)),
-					Authentication: &azopenaiextensions.OnYourDataSystemAssignedManagedIdentityAuthenticationOptions{},
+					Authentication: &azopenai.OnYourDataSystemAssignedManagedIdentityAuthenticationOptions{},
 				},
 			},
 		}

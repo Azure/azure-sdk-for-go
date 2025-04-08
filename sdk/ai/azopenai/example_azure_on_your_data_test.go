@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package azopenaiextensions_test
+package azopenai_test
 
 import (
 	"context"
 	"fmt"
 	"os"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiextensions"
+	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/openai/openai-go"
@@ -59,18 +59,18 @@ func Example_usingAzureOnYourData() {
 	// - PineconeChatExtensionConfiguration
 	//
 	// See the definition of [AzureChatExtensionConfigurationClassification] for a full list.
-	azureSearchDataSource := &azopenaiextensions.AzureSearchChatExtensionConfiguration{
-		Parameters: &azopenaiextensions.AzureSearchChatExtensionParameters{
+	azureSearchDataSource := &azopenai.AzureSearchChatExtensionConfiguration{
+		Parameters: &azopenai.AzureSearchChatExtensionParameters{
 			Endpoint:       &cognitiveSearchEndpoint,
 			IndexName:      &cognitiveSearchIndexName,
-			Authentication: &azopenaiextensions.OnYourDataSystemAssignedManagedIdentityAuthenticationOptions{},
+			Authentication: &azopenai.OnYourDataSystemAssignedManagedIdentityAuthenticationOptions{},
 		},
 	}
 
 	resp, err := client.Chat.Completions.New(
 		context.TODO(),
 		chatParams,
-		azopenaiextensions.WithDataSources(azureSearchDataSource),
+		azopenai.WithDataSources(azureSearchDataSource),
 	)
 
 	if err != nil {
@@ -80,8 +80,8 @@ func Example_usingAzureOnYourData() {
 	}
 
 	for _, chatChoice := range resp.Choices {
-		// Azure-specific response data can be extracted using helpers, like [azopenaiextensions.ChatCompletionChoice].
-		azureChatChoice := azopenaiextensions.ChatCompletionChoice(chatChoice)
+		// Azure-specific response data can be extracted using helpers, like [azopenai.ChatCompletionChoice].
+		azureChatChoice := azopenai.ChatCompletionChoice(chatChoice)
 		azureContentFilterResult, err := azureChatChoice.ContentFilterResults()
 
 		if err != nil {
@@ -95,7 +95,7 @@ func Example_usingAzureOnYourData() {
 		}
 
 		// there are also helpers for individual types, not just top-level response types.
-		azureChatCompletionMsg := azopenaiextensions.ChatCompletionMessage(chatChoice.Message)
+		azureChatCompletionMsg := azopenai.ChatCompletionMessage(chatChoice.Message)
 		msgContext, err := azureChatCompletionMsg.Context()
 
 		if err != nil {
@@ -156,8 +156,8 @@ func Example_usingEnhancements() {
 	resp, err := client.Chat.Completions.New(
 		context.TODO(),
 		chatParams,
-		azopenaiextensions.WithEnhancements(azopenaiextensions.AzureChatEnhancementConfiguration{
-			Grounding: &azopenaiextensions.AzureChatGroundingEnhancementConfiguration{
+		azopenai.WithEnhancements(azopenai.AzureChatEnhancementConfiguration{
+			Grounding: &azopenai.AzureChatGroundingEnhancementConfiguration{
 				Enabled: to.Ptr(true),
 			},
 		}),
@@ -170,8 +170,8 @@ func Example_usingEnhancements() {
 	}
 
 	for _, chatChoice := range resp.Choices {
-		// Azure-specific response data can be extracted using helpers, like [azopenaiextensions.ChatCompletionChoice].
-		azureChatChoice := azopenaiextensions.ChatCompletionChoice(chatChoice)
+		// Azure-specific response data can be extracted using helpers, like [azopenai.ChatCompletionChoice].
+		azureChatChoice := azopenai.ChatCompletionChoice(chatChoice)
 		azureContentFilterResult, err := azureChatChoice.ContentFilterResults()
 
 		if err != nil {
@@ -185,7 +185,7 @@ func Example_usingEnhancements() {
 		}
 
 		// there are also helpers for individual types, not just top-level response types.
-		azureChatCompletionMsg := azopenaiextensions.ChatCompletionMessage(chatChoice.Message)
+		azureChatCompletionMsg := azopenai.ChatCompletionMessage(chatChoice.Message)
 		msgContext, err := azureChatCompletionMsg.Context()
 
 		if err != nil {

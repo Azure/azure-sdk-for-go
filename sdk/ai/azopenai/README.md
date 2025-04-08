@@ -14,10 +14,10 @@ This module provides models and convenience functions to make it simpler to use 
 
 ### Install the packages
 
-Install the `azopenaiextensions` and `azidentity` modules with `go get`:
+Install the `azopenai` and `azidentity` modules with `go get`:
 
 ```bash
-go get github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiextensions
+go get github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai
 
 # optional
 go get github.com/Azure/azure-sdk-for-go/sdk/azidentity
@@ -31,7 +31,7 @@ See [Key concepts][openai_key_concepts] in the product documentation for more de
 
 # Examples
 
-Examples for scenarios specific to Azure can be found on [pkg.go.dev](https://aka.ms/azsdk/go/azopenaiextensions/pkg#pkg-examples) or in the example*_test.go files in our GitHub repo for [azopenaiextensions](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/ai/azopenaiextensions).
+Examples for scenarios specific to Azure can be found on [pkg.go.dev](https://aka.ms/azsdk/go/azopenai/pkg#pkg-examples) or in the example*_test.go files in our GitHub repo for [azopenai](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/ai/azopenai).
 
 For examples on using the openai-go client, see the examples in the [openai-go](https://github.com/openai/openai-go/tree/main/examples) repository.
 
@@ -60,5 +60,5 @@ comments.
 [openai_key_concepts]: https://learn.microsoft.com/azure/cognitive-services/openai/overview#key-concepts
 [openai_on_your_data]: https://learn.microsoft.com/azure/ai-services/openai/concepts/use-your-data
 [openai_rest_docs]: https://learn.microsoft.com/azure/cognitive-services/openai/reference
-[pkggodev]: https://aka.ms/azsdk/go/azopenaiextensions/pkg
-[repo]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/ai/azopenaiextensions
+[pkggodev]: https://aka.ms/azsdk/go/azopenai/pkg
+[repo]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/ai/azopenai

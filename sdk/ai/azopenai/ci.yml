@@ -11,7 +11,7 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/ai/azopenaiextensions
+      - sdk/ai/azopenai
       - eng/
 
 pr:
@@ -23,7 +23,7 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/ai/azopenaiextensions
+      - sdk/ai/azopenai
 
 extends:
   template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
@@ -33,7 +33,7 @@ extends:
     # controls the overall pipeline and TestRunTime configures the individual `go test -timeout` parameter.
     TimeoutInMinutes: 35
     TestRunTime: 30m
-    ServiceDirectory: "ai/azopenaiextensions"
+    ServiceDirectory: "ai/azopenai"
     RunLiveTests: true
     UsePipelineProxy: false
     CloudConfig:

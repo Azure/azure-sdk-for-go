@@ -6,9 +6,9 @@ These settings apply only when `--go` is specified on the command line.
 input-file:
 # this file is generated using the ./testdata/genopenapi.ps1 file.
 - ./testdata/generated/openapi.json
-output-folder: ../azopenaiextensions
+output-folder: ../azopenai
 clear-output-folder: false
-module: github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiextensions
+module: github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai
 license-header: MICROSOFT_MIT_NO_VERSION
 openapi-type: data-plane
 go: true
@@ -65,13 +65,13 @@ directive:
     debug: true
     where: $.definitions
     transform: |
-      $["Azure.Core.Foundations.Error"]["x-ms-client-name"] = "Error"; 
+      $["Azure.Core.Foundations.Error"]["x-ms-client-name"] = "Error";
       delete $["Azure.Core.Foundations.Error"].properties["innererror"];
       delete $["Azure.Core.Foundations.Error"].properties["details"];
       delete $["Azure.Core.Foundations.Error"].properties["target"];
 
       $["Azure.Core.Foundations.InnerError"]["x-ms-external"] = true;
-      $["Azure.Core.Foundations.ErrorResponse"]["x-ms-external"] = true; 
+      $["Azure.Core.Foundations.ErrorResponse"]["x-ms-external"] = true;
       return $;
 ```
 

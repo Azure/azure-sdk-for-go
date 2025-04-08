@@ -1,10 +1,10 @@
 # Contributing Guide
 
-> NOTE: these instructions are for fixing or adding features to the `azopenaiextensions` module. To use the module refer to the readme for this package: [readme.md](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/ai/azopenaiextensions/README.md).
+> NOTE: these instructions are for fixing or adding features to the `azopenai` module. To use the module refer to the readme for this package: [readme.md](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/ai/azopenai/README.md).
 
-This is a contributing guide for the `azopenaiextensions` package. For general contributing guidelines refer to [CONTRIBUTING.md](https://github.com/Azure/azure-sdk-for-go/blob/main/CONTRIBUTING.md).
+This is a contributing guide for the `azopenai` package. For general contributing guidelines refer to [CONTRIBUTING.md](https://github.com/Azure/azure-sdk-for-go/blob/main/CONTRIBUTING.md).
 
-The `azopenaiextensions` package can be used with either Azure OpenAI's public service. New features are added using our code generation process, specified using TypeSpec [TypeSpec](https://github.com/Microsoft/typespec), which details all the models and protocol methods for using OpenAI. 
+The `azopenai` package can be used with either Azure OpenAI's public service. New features are added using our code generation process, specified using TypeSpec [TypeSpec](https://github.com/Microsoft/typespec), which details all the models and protocol methods for using OpenAI.
 
 ### Prerequisites
 
@@ -51,14 +51,14 @@ There are three kinds of tests for this package: unit tests, recorded tests and 
 
 ## Unit and recorded tests
 
-Unit tests and recorded tests do not require access to OpenAI to run and will run with any PR as a check-in gate. 
+Unit tests and recorded tests do not require access to OpenAI to run and will run with any PR as a check-in gate.
 
 Recorded tests require the Azure SDK test proxy is running. See the instructions for [installing the test-proxy](https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/README.md#installation).
 
 In one terminal window, start the test-proxy:
 
 ```bash
-cd <root of the azopenaiextensions module>
+cd <root of the azopenai module>
 test-proxy
 ```
 
@@ -67,7 +67,7 @@ In another terminal window:
 
 To playback (ie: use recordings):
 ```bash
-cd <root of the azopenaiextensions module>
+cd <root of the azopenai module>
 
 export AZURE_RECORD_MODE=playback
 go test -count 1 -v ./...
@@ -75,7 +75,7 @@ go test -count 1 -v ./...
 
 To re-record:
 ```bash
-cd <root of the azopenaiextensions module>
+cd <root of the azopenai module>
 
 export AZURE_RECORD_MODE=record
 go test -count 1 -v ./...
@@ -94,7 +94,7 @@ git push
 
 ### Local development
 
-Copy the `sample.env` file to `.env`, and fill out all the values. Each value is documented to give you a general idea of what's needed, but ultimately you'll need to work with the Azure OpenAI SDK team to figure out which services are used for which features. 
+Copy the `sample.env` file to `.env`, and fill out all the values. Each value is documented to give you a general idea of what's needed, but ultimately you'll need to work with the Azure OpenAI SDK team to figure out which services are used for which features.
 
 Once filled out, the tests will automatically load environment variables from the `.env`:
 
@@ -108,7 +108,7 @@ go test -count 1 -v ./...
 Post a comment to your PR with this text:
 
 ```
-/azp run go - azopenaiextensions
+/azp run go - azopenai
 ```
 
 The build bot will post a comment indicating its started the pipeline and the checks will start showing up in the status for the PR as well.

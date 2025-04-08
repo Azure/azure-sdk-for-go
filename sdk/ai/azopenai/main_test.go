@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package azopenaiextensions_test
+package azopenai_test
 
 import (
 	"os"
@@ -10,7 +10,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
 
-const RecordingDirectory = "sdk/ai/azopenaiextensions/testdata"
+const RecordingDirectory = "sdk/ai/azopenai/testdata"
 
 func TestMain(m *testing.M) {
 	code := run(m)

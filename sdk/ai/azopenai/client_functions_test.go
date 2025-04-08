@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package azopenaiextensions_test
+package azopenai_test
 
 import (
 	"context"
 	"encoding/json"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiextensions"
+	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/openai/openai-go"
@@ -144,7 +144,7 @@ func TestGetChatCompletions_usingFunctions_streaming(t *testing.T) {
 		chunk := stream.Current()
 
 		if len(chunk.Choices) == 0 {
-			azureChunk := azopenaiextensions.ChatCompletionChunk(chunk)
+			azureChunk := azopenai.ChatCompletionChunk(chunk)
 
 			promptFilterResults, err := azureChunk.PromptFilterResults()
 			require.NoError(t, err)

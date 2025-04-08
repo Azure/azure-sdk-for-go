@@ -13,4 +13,4 @@
 // running the tests that check that generation went the way we expected to.
 //go:go test -v ./internal
 
-package azopenaiextensions
+package azopenai

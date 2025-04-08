@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package azopenaiextensions_test
+package azopenai_test
 
 import (
 	"context"
 	"fmt"
 	"os"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiextensions"
+	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/openai/openai-go"
 	"github.com/openai/openai-go/azure"
@@ -55,8 +55,8 @@ func Example_usingAzureContentFiltering() {
 	)
 
 	// Check if there's a content filter error
-	var contentErr *azopenaiextensions.ContentFilterError
-	if azopenaiextensions.ExtractContentFilterError(err, &contentErr) {
+	var contentErr *azopenai.ContentFilterError
+	if azopenai.ExtractContentFilterError(err, &contentErr) {
 		fmt.Fprintf(os.Stderr, "Content was filtered by Azure OpenAI:\n")
 
 		if contentErr.Hate != nil && contentErr.Hate.Filtered != nil && *contentErr.Hate.Filtered {
@@ -87,7 +87,7 @@ func Example_usingAzureContentFiltering() {
 	}
 
 	// Access the Azure-specific content filter results from the response
-	azureChatChoice := azopenaiextensions.ChatCompletionChoice(resp.Choices[0])
+	azureChatChoice := azopenai.ChatCompletionChoice(resp.Choices[0])
 	contentFilterResults, err := azureChatChoice.ContentFilterResults()
 
 	if err != nil {
@@ -162,7 +162,7 @@ func Example_usingAzurePromptFilteringWithStreaming() {
 		chunk := stream.Current()
 
 		// Get Azure-specific prompt filter results, if available
-		azureChunk := azopenaiextensions.ChatCompletionChunk(chunk)
+		azureChunk := azopenai.ChatCompletionChunk(chunk)
 		promptFilterResults, err := azureChunk.PromptFilterResults()
 
 		if err != nil {

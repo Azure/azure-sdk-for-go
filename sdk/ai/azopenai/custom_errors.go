@@ -4,7 +4,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package azopenaiextensions
+package azopenai
 
 import (
 	"encoding/json"
@@ -43,7 +43,7 @@ func (c *ContentFilterError) Unwrap() error {
 //
 //	resp, err := chatCompletionsService.New(args)
 //
-//	var contentFilterErr *azopenaiextensions.ContentFilterError
+//	var contentFilterErr *azopenai.ContentFilterError
 //
 //	if openai.ExtractContentFilterError(err, &contentFilterErr) {
 //		// contentFilterErr.Hate, contentFilterErr.SelfHarm, contentFilterErr.Sexual or contentFilterErr.Violence

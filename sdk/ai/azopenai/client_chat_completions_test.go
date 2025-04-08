@@ -4,14 +4,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package azopenaiextensions_test
+package azopenai_test
 
 import (
 	"context"
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiextensions"
+	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
 	"github.com/openai/openai-go"
 	"github.com/stretchr/testify/require"
 )
@@ -190,7 +190,7 @@ func TestClient_GetChatCompletionsStream(t *testing.T) {
 			modelWasReturned = true
 		}
 
-		azureChunk := azopenaiextensions.ChatCompletionChunk(chunk)
+		azureChunk := azopenai.ChatCompletionChunk(chunk)
 
 		// NOTE: prompt filter results are non-deterministic as they're based on their own criteria, which
 		// can change over time. We'll check that we can safely attempt to deserialize it.
@@ -221,7 +221,7 @@ func TestClient_GetChatCompletionsStream(t *testing.T) {
 }
 
 func TestClient_GetChatCompletions_Vision(t *testing.T) {
-	// testFn := func(t *testing.T, chatClient *azopenaiextensions.Client, deploymentName string, azure bool) {
+	// testFn := func(t *testing.T, chatClient *azopenai.Client, deploymentName string, azure bool) {
 	chatClient := newStainlessTestClient(t, azureOpenAI.Vision.Endpoint)
 
 	imageURL := "https://www.bing.com/th?id=OHR.BradgateFallow_EN-US3932725763_1920x1080.jpg"

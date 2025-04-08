@@ -4,7 +4,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package azopenaiextensions_test
+package azopenai_test
 
 import (
 	"context"
@@ -23,7 +23,7 @@ func TestImageGeneration_AzureOpenAI(t *testing.T) {
 	}
 
 	client := newStainlessTestClient(t, azureOpenAI.DallE.Endpoint)
-	// testImageGeneration(t, client, azureOpenAI.DallE.Model, azopenaiextensions.ImageGenerationResponseFormatURL, true)
+	// testImageGeneration(t, client, azureOpenAI.DallE.Model, azopenai.ImageGenerationResponseFormatURL, true)
 
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Minute)
 	defer cancel()

@@ -4,14 +4,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package azopenaiextensions_test
+package azopenai_test
 
 import (
 	"context"
 	"strings"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiextensions"
+	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/openai/openai-go"
 	"github.com/stretchr/testify/require"
@@ -41,17 +41,17 @@ func TestClient_GetCompletions(t *testing.T) {
 
 	require.NotEmpty(t, resp.Choices[0].Text)
 
-	azureChoice := azopenaiextensions.CompletionChoice(resp.Choices[0])
+	azureChoice := azopenai.CompletionChoice(resp.Choices[0])
 	contentFilterResults, err := azureChoice.ContentFilterResults()
 	require.NoError(t, err)
 
 	require.Equal(t, safeContentFilter, contentFilterResults)
 
-	azureCompletion := azopenaiextensions.Completion(*resp)
+	azureCompletion := azopenai.Completion(*resp)
 	promptFilterResults, err := azureCompletion.PromptFilterResults()
 	require.NoError(t, err)
 
-	require.Equal(t, []azopenaiextensions.ContentFilterResultsForPrompt{{
+	require.Equal(t, []azopenai.ContentFilterResultsForPrompt{{
 		PromptIndex:          to.Ptr[int32](0),
 		ContentFilterResults: safeContentFilterResultDetailsForPrompt,
 	}}, promptFilterResults)
@@ -78,13 +78,13 @@ func TestGetCompletionsStream(t *testing.T) {
 	var eventCount int
 
 	for stream.Next() {
-		completion := azopenaiextensions.Completion(stream.Current())
+		completion := azopenai.Completion(stream.Current())
 
 		promptFilterResults, err := completion.PromptFilterResults()
 		require.NoError(t, err)
 
 		if promptFilterResults != nil {
-			require.Equal(t, []azopenaiextensions.ContentFilterResultsForPrompt{
+			require.Equal(t, []azopenai.ContentFilterResultsForPrompt{
 				{PromptIndex: to.Ptr[int32](0), ContentFilterResults: safeContentFilterResultDetailsForPrompt},
 			}, promptFilterResults)
 		}

@@ -4,14 +4,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package azopenaiextensions_test
+package azopenai_test
 
 import (
 	"context"
 	"net/http"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiextensions"
+	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/openai/openai-go"
 	"github.com/stretchr/testify/require"
@@ -43,9 +43,9 @@ func TestClient_GetCompletions_AzureOpenAI_ContentFilter_Response(t *testing.T) 
 func requireContentFilterError(t *testing.T, err error) {
 	// In this scenario the payload for the error contains content filtering information.
 	// This happens if Azure OpenAI outright rejects your request (rather than pieces of it)
-	// [azopenaiextensions.AsContentFilterError] will parse out error, and also wrap the openai.Error.
-	var contentErr *azopenaiextensions.ContentFilterError
-	require.True(t, azopenaiextensions.ExtractContentFilterError(err, &contentErr))
+	// [azopenai.AsContentFilterError] will parse out error, and also wrap the openai.Error.
+	var contentErr *azopenai.ContentFilterError
+	require.True(t, azopenai.ExtractContentFilterError(err, &contentErr))
 
 	// ensure that our new error wraps their openai.Error. This makes it simpler for them to do generic
 	// error handling using the actual error type they expect (openai.Error) while still extracting any
@@ -57,7 +57,7 @@ func requireContentFilterError(t *testing.T, err error) {
 	require.Contains(t, openaiErr.Error(), "The response was filtered due to the prompt triggering")
 
 	require.True(t, *contentErr.Violence.Filtered)
-	require.NotEqual(t, azopenaiextensions.ContentFilterSeveritySafe, *contentErr.Violence.Severity)
+	require.NotEqual(t, azopenai.ContentFilterSeveritySafe, *contentErr.Violence.Severity)
 }
 
 func TestClient_GetChatCompletions_AzureOpenAI_ContentFilter_WithResponse(t *testing.T) {
@@ -78,22 +78,22 @@ func TestClient_GetChatCompletions_AzureOpenAI_ContentFilter_WithResponse(t *tes
 	})
 	customRequireNoError(t, err)
 
-	contentFilterResults, err := azopenaiextensions.ChatCompletionChoice(resp.Choices[0]).ContentFilterResults()
+	contentFilterResults, err := azopenai.ChatCompletionChoice(resp.Choices[0]).ContentFilterResults()
 	require.NoError(t, err)
 
 	require.Equal(t, safeContentFilter, contentFilterResults)
 }
 
-var safeContentFilter = &azopenaiextensions.ContentFilterResultsForChoice{
-	Hate:     &azopenaiextensions.ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(azopenaiextensions.ContentFilterSeveritySafe)},
-	SelfHarm: &azopenaiextensions.ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(azopenaiextensions.ContentFilterSeveritySafe)},
-	Sexual:   &azopenaiextensions.ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(azopenaiextensions.ContentFilterSeveritySafe)},
-	Violence: &azopenaiextensions.ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(azopenaiextensions.ContentFilterSeveritySafe)},
+var safeContentFilter = &azopenai.ContentFilterResultsForChoice{
+	Hate:     &azopenai.ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(azopenai.ContentFilterSeveritySafe)},
+	SelfHarm: &azopenai.ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(azopenai.ContentFilterSeveritySafe)},
+	Sexual:   &azopenai.ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(azopenai.ContentFilterSeveritySafe)},
+	Violence: &azopenai.ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(azopenai.ContentFilterSeveritySafe)},
 }
 
-var safeContentFilterResultDetailsForPrompt = &azopenaiextensions.ContentFilterResultDetailsForPrompt{
-	Hate:     &azopenaiextensions.ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(azopenaiextensions.ContentFilterSeveritySafe)},
-	SelfHarm: &azopenaiextensions.ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(azopenaiextensions.ContentFilterSeveritySafe)},
-	Sexual:   &azopenaiextensions.ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(azopenaiextensions.ContentFilterSeveritySafe)},
-	Violence: &azopenaiextensions.ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(azopenaiextensions.ContentFilterSeveritySafe)},
+var safeContentFilterResultDetailsForPrompt = &azopenai.ContentFilterResultDetailsForPrompt{
+	Hate:     &azopenai.ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(azopenai.ContentFilterSeveritySafe)},
+	SelfHarm: &azopenai.ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(azopenai.ContentFilterSeveritySafe)},
+	Sexual:   &azopenai.ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(azopenai.ContentFilterSeveritySafe)},
+	Violence: &azopenai.ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(azopenai.ContentFilterSeveritySafe)},
 }

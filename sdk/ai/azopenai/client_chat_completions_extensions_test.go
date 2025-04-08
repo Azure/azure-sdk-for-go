@@ -4,13 +4,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package azopenaiextensions_test
+package azopenai_test
 
 import (
 	"context"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiextensions"
+	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
 	"github.com/openai/openai-go"
 	"github.com/stretchr/testify/require"
 )
@@ -33,11 +33,11 @@ func TestChatCompletions_extensions_bringYourOwnData(t *testing.T) {
 	}
 
 	resp, err := client.Chat.Completions.New(context.Background(), inputParams,
-		azopenaiextensions.WithDataSources(&azureOpenAI.Cognitive))
+		azopenai.WithDataSources(&azureOpenAI.Cognitive))
 	customRequireNoError(t, err)
 	require.NotEmpty(t, resp)
 
-	msg := azopenaiextensions.ChatCompletionMessage(resp.Choices[0].Message)
+	msg := azopenai.ChatCompletionMessage(resp.Choices[0].Message)
 
 	msgContext, err := msg.Context()
 	require.NoError(t, err)
@@ -65,7 +65,7 @@ func TestChatExtensionsStreaming_extensions_bringYourOwnData(t *testing.T) {
 	}
 
 	streamer := client.Chat.Completions.NewStreaming(context.Background(), inputParams,
-		azopenaiextensions.WithDataSources(
+		azopenai.WithDataSources(
 			&azureOpenAI.Cognitive,
 		))
 
@@ -83,7 +83,7 @@ func TestChatExtensionsStreaming_extensions_bringYourOwnData(t *testing.T) {
 			// data source.
 			first = false
 
-			msgContext, err := azopenaiextensions.ChatCompletionChunkChoiceDelta(chunk.Choices[0].Delta).Context()
+			msgContext, err := azopenai.ChatCompletionChunkChoiceDelta(chunk.Choices[0].Delta).Context()
 			require.NoError(t, err)
 			require.NotEmpty(t, msgContext.Citations[0].Content)
 		}

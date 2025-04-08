@@ -49,7 +49,7 @@ function Get-GoModuleProperties($goModPath)
     if ($modPath.Contains("eng/tools")) { $sdkType = "eng" }
 
     $modVersion, $versionFile = Get-GoModuleVersionInfo $goModPath
-    if (!$modVersion -and -not $sdkType -eq "eng") {
+    if (!$modVersion -and $sdkType -ne "eng") {
       return $null
     }
 

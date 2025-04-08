@@ -15,6 +15,9 @@ steps:
         Paths:
           - ${{ if startsWith(parameters.ServiceDirectory, '../') }}:
             - ${{ replace(parameters.ServiceDirectory, '../', '') }}
+            # this is a workaround for the eng packages that have integration tests that rely on keyvault
+            # todo: transform this to a more generic solution of passed sparse checkout paths
+            - "sdk/security"
           - ${{ else }}:
             - "sdk/${{ parameters.ServiceDirectory }}"
           - ".vscode/"

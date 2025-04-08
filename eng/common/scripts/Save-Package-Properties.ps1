@@ -41,7 +41,7 @@ Param (
   [string] $prDiff,
   [switch] $addDevVersion
 )
-
+$env:GITHUB_ACTIONS="true"
 . (Join-Path $PSScriptRoot common.ps1)
 
 function SetOutput($outputPath, $incomingPackageSpec)

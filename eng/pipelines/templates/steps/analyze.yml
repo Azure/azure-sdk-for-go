@@ -26,9 +26,9 @@ steps:
       $pkgs = Get-PackagesFromPackageInfo -PackageInfoFolder "$(Build.ArtifactStagingDirectory)/PackageInfo" `
         -IncludeIndirect $false -CustomCompareFunction { param($pkgProp) { return $pkgProp.CIParameters.IsSdkLibrary } }
 
-      $changedServices = @()
+      $apiviewEnabledPackages = @()
       if ($pkgs) {
-        $changedServices = $pkgs | ForEach-Object { $_.ServiceDirectory } | Sort-Object -Unique
+        $apiviewEnabledPackages = $pkgs | ForEach-Object { $_.Name } | Sort-Object -Unique
       }
       else {
         Write-Host "No sdk packages were found in package set. Skipping APIView generation."
@@ -38,7 +38,7 @@ steps:
       $failed = $false
       $directoryToPublish = Join-Path -Path $(Build.ArtifactStagingDirectory) ${{ parameters.ArtifactName }}
 
-      foreach($serviceDirectory in $changedServices) {
+      foreach($serviceDirectory in $apiviewEnabledPackages) {
         New-APIViewArtifacts `
           -ServiceDirectory $serviceDirectory `
           -OutputDirectory $(Build.ArtifactStagingDirectory) `

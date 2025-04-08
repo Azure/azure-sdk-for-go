@@ -386,9 +386,3 @@ func (a *AuthorizationServerTransport) dispatchNewListByAuthorizationProviderPag
 	}
 	return resp, nil
 }
-
-// set this to conditionally intercept incoming requests to AuthorizationServerTransport
-var authorizationServerTransportInterceptor interface {
-	// Do returns true if the server transport should use the returned response/error
-	Do(*http.Request) (*http.Response, error, bool)
-}

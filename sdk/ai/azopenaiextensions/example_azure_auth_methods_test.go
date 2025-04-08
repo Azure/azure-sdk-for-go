@@ -43,36 +43,7 @@ func Example_usingDefaultAzureCredential() {
 	)
 
 	// Use the client with default credentials
-	makeSimpleRequest(client, model)
-}
-
-func Example_usingClientSecretCredential() {
-	endpoint := os.Getenv("AOAI_ENDPOINT")
-	model := os.Getenv("AOAI_MODEL")
-	tenantID := os.Getenv("AZURE_TENANT_ID")
-	clientID := os.Getenv("AZURE_CLIENT_ID")
-	clientSecret := os.Getenv("AZURE_CLIENT_SECRET")
-
-	if endpoint == "" || model == "" || tenantID == "" || clientID == "" || clientSecret == "" {
-		fmt.Fprintf(os.Stderr, "Environment variables are not set, not running example.")
-		return
-	}
-
-	// ClientSecretCredential is used when you have a service principal
-	// with client ID and client secret
-	credential, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
-		return
-	}
-
-	client := openai.NewClient(
-		azure.WithEndpoint(endpoint, "2024-08-01-preview"),
-		azure.WithTokenCredential(credential),
-	)
-
-	// Use the client with service principal credentials
-	makeSimpleRequest(client, model)
+	makeSimpleRequest(&client, model)
 }
 
 func Example_usingManagedIdentityCredential() {
@@ -106,54 +77,21 @@ func Example_usingManagedIdentityCredential() {
 	)
 
 	// Use the client with managed identity credentials
-	makeSimpleRequest(client, model)
-}
-
-func Example_usingInteractiveBrowserCredential() {
-	endpoint := os.Getenv("AOAI_ENDPOINT")
-	model := os.Getenv("AOAI_MODEL")
-
-	if endpoint == "" || model == "" {
-		fmt.Fprintf(os.Stderr, "Environment variables are not set, not running example.")
-		return
-	}
-
-	// InteractiveBrowserCredential authenticates a user by opening the default browser
-	// to the Azure login page and waiting for the user to complete the login process
-	//
-	// Optional configurations can be specified using InteractiveBrowserCredentialOptions:
-	// options := &azidentity.InteractiveBrowserCredentialOptions{
-	//     TenantID: "<tenant-id>",                    // Specify a tenant for authentication
-	//     ClientID: "<client-id>",                    // Use a custom client ID
-	//     RedirectURL: "http://localhost",            // Custom redirect URL
-	//     LoginHint: "user@contoso.com",             // Pre-fill username field
-	// }
-	credential, err := azidentity.NewInteractiveBrowserCredential(nil)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
-		return
-	}
-
-	client := openai.NewClient(
-		azure.WithEndpoint(endpoint, "2024-08-01-preview"),
-		azure.WithTokenCredential(credential),
-	)
-
-	// Use the client with interactive browser credentials
-	makeSimpleRequest(client, model)
+	makeSimpleRequest(&client, model)
 }
 
 // Helper function to make a simple request to Azure OpenAI
 func makeSimpleRequest(client *openai.Client, model string) {
 	chatParams := openai.ChatCompletionNewParams{
-		Model:     openai.F(model),
-		MaxTokens: openai.Int(100),
-		Messages: openai.F([]openai.ChatCompletionMessageParamUnion{
-			openai.ChatCompletionMessageParam{
-				Role:    openai.F(openai.ChatCompletionMessageParamRoleUser),
-				Content: openai.F[any]("Say hello!"),
+		Model:     openai.ChatModel(model),
+		MaxTokens: openai.Int(512),
+		Messages: []openai.ChatCompletionMessageParamUnion{{
+			OfUser: &openai.ChatCompletionUserMessageParam{
+				Content: openai.ChatCompletionUserMessageParamContentUnion{
+					OfString: openai.String("Say hello!"),
+				},
 			},
-		}),
+		}},
 	}
 
 	resp, err := client.Chat.Completions.New(

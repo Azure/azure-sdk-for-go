@@ -2,5 +2,5 @@
     "AssetsRepo":  "Azure/azure-sdk-assets",
     "AssetsRepoPrefixPath":  "go",
     "TagPrefix":  "go/resourcemanager/workloadssapvirtualinstance/armworkloadssapvirtualinstance",
-    "Tag": "go/resourcemanager/workloadssapvirtualinstance/armworkloadssapvirtualinstance_38fb28a39f"
+    "Tag": "go/resourcemanager/workloadssapvirtualinstance/armworkloadssapvirtualinstance_c66078bc4d"
 }

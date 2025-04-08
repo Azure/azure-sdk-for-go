@@ -42,7 +42,7 @@ func (s *messageSettler) settleWithRetries(ctx context.Context, settleFn func(re
 		}
 
 		return nil
-	}, RetryOptions{})
+	}, RetryOptions{}, nil)
 
 	return internal.TransformError(err)
 }

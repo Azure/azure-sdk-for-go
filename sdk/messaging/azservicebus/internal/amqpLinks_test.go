@@ -13,9 +13,11 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/tracingvalidator"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/require"
@@ -455,6 +457,19 @@ func TestAMQPLinksCBSLinkStillOpen(t *testing.T) {
 	}, exported.RetryOptions{
 		RetryDelay:    -1,
 		MaxRetryDelay: time.Millisecond,
+	}, &tracing.StartSpanOptions{
+		Tracer: tracing.NewTracer(tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
+			Name:   "test queue",
+			Kind:   tracing.SpanKindInternal,
+			Status: tracing.SpanStatusUnset,
+			Attributes: []tracing.Attribute{
+				{Key: tracing.AttrMessagingSystem, Value: "servicebus"},
+				{Key: tracing.AttrServerAddress, Value: "fake.something"},
+				{Key: tracing.AttrDestinationName, Value: "queue"},
+				{Key: tracing.AttrOperationName, Value: "test"},
+			}}, nil),
+			"module", "version", "fake.something", "queue", ""),
+		OperationName: "test",
 	})
 
 	defer func() {
@@ -629,6 +644,19 @@ func TestAMQPLinksRetry(t *testing.T) {
 		// we do setDefaults() before we run.
 		RetryDelay:    time.Millisecond,
 		MaxRetryDelay: time.Millisecond,
+	}, &tracing.StartSpanOptions{
+		Tracer: tracing.NewTracer(tracingvalidator.NewSpanValidator(t, tracingvalidator.SpanMatcher{
+			Name:   "notused queue",
+			Kind:   tracing.SpanKindInternal,
+			Status: tracing.SpanStatusUnset,
+			Attributes: []tracing.Attribute{
+				{Key: tracing.AttrMessagingSystem, Value: "servicebus"},
+				{Key: tracing.AttrServerAddress, Value: "fake.something"},
+				{Key: tracing.AttrDestinationName, Value: "queue"},
+				{Key: tracing.AttrOperationName, Value: "notused"},
+			}}, nil),
+			"module", "version", "fake.something", "queue", ""),
+		OperationName: "notused",
 	})
 
 	var connErr *amqp.ConnError

@@ -7,7 +7,7 @@ retract v1.1.2 // Breaks customers in situations where close is slow/infinite.
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.18.1-0.20250408001805-0ffd48d3672e
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.8.2
-	github.com/Azure/azure-sdk-for-go/sdk/internal v1.11.1-0.20250407225617-9ad800486946
+	github.com/Azure/azure-sdk-for-go/sdk/internal v1.11.1-0.20250408173140-a42592db08e0
 	github.com/Azure/go-amqp v1.4.0
 )
 

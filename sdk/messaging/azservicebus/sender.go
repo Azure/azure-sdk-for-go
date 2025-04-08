@@ -47,7 +47,7 @@ func (s *Sender) NewMessageBatch(ctx context.Context, options *MessageBatchOptio
 
 		batch = newMessageBatch(maxBytes)
 		return nil
-	}, s.retryOptions)
+	}, s.retryOptions, nil)
 
 	if err != nil {
 		return nil, internal.TransformError(err)
@@ -95,7 +95,7 @@ type SendMessageBatchOptions struct {
 func (s *Sender) SendMessageBatch(ctx context.Context, batch *MessageBatch, options *SendMessageBatchOptions) error {
 	err := s.links.Retry(ctx, EventSender, "SendMessageBatch", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		return lwid.Sender.Send(ctx, batch.toAMQPMessage(), nil)
-	}, RetryOptions(s.retryOptions))
+	}, RetryOptions(s.retryOptions), nil)
 
 	return internal.TransformError(err)
 }
@@ -143,7 +143,7 @@ func scheduleMessages[T amqpCompatibleMessage](ctx context.Context, links intern
 		}
 		sequenceNumbers = sn
 		return nil
-	}, retryOptions)
+	}, retryOptions, nil)
 
 	return sequenceNumbers, internal.TransformError(err)
 }
@@ -160,7 +160,7 @@ type CancelScheduledMessagesOptions struct {
 func (s *Sender) CancelScheduledMessages(ctx context.Context, sequenceNumbers []int64, options *CancelScheduledMessagesOptions) error {
 	err := s.links.Retry(ctx, EventSender, "CancelScheduledMessages", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		return internal.CancelScheduledMessages(ctx, lwv.RPC, lwv.Sender.LinkName(), sequenceNumbers)
-	}, s.retryOptions)
+	}, s.retryOptions, nil)
 
 	return internal.TransformError(err)
 }
@@ -174,7 +174,7 @@ func (s *Sender) Close(ctx context.Context) error {
 func (s *Sender) sendMessage(ctx context.Context, message amqpCompatibleMessage) error {
 	err := s.links.Retry(ctx, EventSender, "SendMessage", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		return lwid.Sender.Send(ctx, message.toAMQPMessage(), nil)
-	}, RetryOptions(s.retryOptions))
+	}, RetryOptions(s.retryOptions), nil)
 
 	if amqpErr := (*amqp.Error)(nil); errors.As(err, &amqpErr) && amqpErr.Condition == amqp.ErrCondMessageSizeExceeded {
 		return ErrMessageTooLarge

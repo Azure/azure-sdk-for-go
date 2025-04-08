@@ -5,9 +5,9 @@ go 1.23.0
 retract v1.1.2 // Breaks customers in situations where close is slow/infinite.
 
 require (
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.17.1
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.18.1-0.20250408001805-0ffd48d3672e
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.8.2
-	github.com/Azure/azure-sdk-for-go/sdk/internal v1.11.0
+	github.com/Azure/azure-sdk-for-go/sdk/internal v1.11.1-0.20250407225617-9ad800486946
 	github.com/Azure/go-amqp v1.4.0
 )
 
@@ -37,7 +37,3 @@ require (
 	golang.org/x/text v0.23.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
-
-replace github.com/Azure/azure-sdk-for-go/sdk/azcore => github.com/Azure/azure-sdk-for-go/sdk/azcore v1.18.1-0.20250408001805-0ffd48d3672e
-
-replace github.com/Azure/azure-sdk-for-go/sdk/internal => github.com/Azure/azure-sdk-for-go/sdk/internal v1.11.1-0.20250407225617-9ad800486946

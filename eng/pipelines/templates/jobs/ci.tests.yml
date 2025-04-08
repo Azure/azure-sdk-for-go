@@ -52,6 +52,15 @@ jobs:
     os: ${{ parameters.OSName }}
 
   steps:
+  - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+    parameters:
+      ${{ if eq(parameters.ServiceDirectory, 'auto') }}:
+        Paths:
+          - "/*"
+      ${{ else }}:
+        Paths:
+          - "sdk/${{ parameters.ServiceDirectory }}"
+
   - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
     parameters:
       AgentImage: ${{ parameters.OSName }}

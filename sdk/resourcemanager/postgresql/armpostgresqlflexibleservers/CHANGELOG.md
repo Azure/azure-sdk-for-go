@@ -1,5 +1,12 @@
 # Release History
 
+## 4.1.0 (2025-03-17)
+### Features Added
+
+- New value `IdentityTypeSystemAssignedUserAssigned` added to enum type `IdentityType`
+- New field `PrincipalID` in struct `UserAssignedIdentity`
+
+
 ## 4.0.0 (2025-01-04)
 ### Breaking Changes
 

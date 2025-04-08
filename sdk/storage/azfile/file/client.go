@@ -335,6 +335,22 @@ func (f *Client) CreateHardLink(ctx context.Context, targetFile string, options 
 	return resp, err
 }
 
+// CreateSymbolicLink operation creates a Symbolic Link to targetFile in same share.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/create-symbolic-link.
+func (f *Client) CreateSymbolicLink(ctx context.Context, linkText string, options *CreateSymbolicLinkOptions) (CreateSymbolicLinkResponse, error) {
+	opts, leaseAccessConditions := options.format()
+	resp, err := f.generated().CreateSymbolicLink(ctx, linkText, opts, leaseAccessConditions)
+	return resp, err
+}
+
+// GetSymbolicLink operation allows to read the value of a symbolic link.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/read-symbolic-link.
+func (f *Client) GetSymbolicLink(ctx context.Context, options *GetSymbolicLinkOptions) (GetSymbolicLinkResponse, error) {
+	opts := options.format()
+	resp, err := f.generated().GetSymbolicLink(ctx, opts)
+	return resp, err
+}
+
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at file.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
 func (f *Client) GetSASURL(permissions sas.FilePermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {

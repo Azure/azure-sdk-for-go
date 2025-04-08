@@ -689,6 +689,7 @@ func TestReceiverAMQPDataTypes(t *testing.T) {
 		"int32": int32(-400),
 		"int64": int64(-400),
 
+		"float":   float64(400.1),
 		"float64": float64(400.1),
 
 		"string": "hello world",

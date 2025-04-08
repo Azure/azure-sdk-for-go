@@ -2,8 +2,6 @@
 
 This is a command line tool for generating new releases for `github.com/Azure/azure-sdk-for-go`.
 
-Testing a change to this package. Do all apiview artifacts create properly?
-
 ## Commands
 
 This CLI tool provides 2 commands now: `automation`, `issue`.

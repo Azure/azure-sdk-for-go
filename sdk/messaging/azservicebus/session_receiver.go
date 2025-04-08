@@ -228,7 +228,7 @@ func (sr *SessionReceiver) GetSessionState(ctx context.Context, options *GetSess
 
 		sessionState = s
 		return nil
-	}, sr.inner.retryOptions)
+	}, sr.inner.retryOptions, nil)
 
 	return sessionState, internal.TransformError(err)
 }
@@ -244,7 +244,7 @@ type SetSessionStateOptions struct {
 func (sr *SessionReceiver) SetSessionState(ctx context.Context, state []byte, options *SetSessionStateOptions) error {
 	err := sr.inner.amqpLinks.Retry(ctx, EventReceiver, "SetSessionState", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		return internal.SetSessionState(ctx, lwv.RPC, lwv.Receiver.LinkName(), sr.SessionID(), state)
-	}, sr.inner.retryOptions)
+	}, sr.inner.retryOptions, nil)
 
 	return internal.TransformError(err)
 }
@@ -267,7 +267,7 @@ func (sr *SessionReceiver) RenewSessionLock(ctx context.Context, options *RenewS
 
 		sr.lockedUntil = newLockedUntil
 		return nil
-	}, sr.inner.retryOptions)
+	}, sr.inner.retryOptions, nil)
 
 	return internal.TransformError(err)
 }

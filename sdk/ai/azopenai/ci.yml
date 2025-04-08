@@ -1,4 +1,7 @@
 # NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+## ai-extensions
+
 trigger:
   branches:
     include:
@@ -8,7 +11,7 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/ai/azopenai
+      - sdk/ai/azopenaiextensions
       - eng/
 
 pr:
@@ -20,7 +23,7 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/ai/azopenai
+      - sdk/ai/azopenaiextensions
 
 extends:
   template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
@@ -30,7 +33,7 @@ extends:
     # controls the overall pipeline and TestRunTime configures the individual `go test -timeout` parameter.
     TimeoutInMinutes: 35
     TestRunTime: 30m
-    ServiceDirectory: "ai/azopenai"
+    ServiceDirectory: "ai/azopenaiextensions"
     RunLiveTests: true
     UsePipelineProxy: false
     CloudConfig:

@@ -1,89 +1,100 @@
-//go:build go1.18
-// +build go1.18
+//go:build go1.21
+// +build go1.21
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package azopenai_test
+package azopenaiextensions_test
 
 import (
 	"context"
-	"errors"
-	"io"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiextensions"
+	"github.com/openai/openai-go"
 	"github.com/stretchr/testify/require"
 )
 
 func TestChatCompletions_extensions_bringYourOwnData(t *testing.T) {
-	client := newTestClient(t, azureOpenAI.ChatCompletionsOYD.Endpoint)
+	client := newStainlessTestClient(t, azureOpenAI.ChatCompletionsOYD.Endpoint)
 
-	resp, err := client.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
-		Messages: []azopenai.ChatRequestMessageClassification{
-			&azopenai.ChatRequestUserMessage{Content: azopenai.NewChatRequestUserMessageContent("What does PR complete mean?")},
+	inputParams := openai.ChatCompletionNewParams{
+		Model:     openai.ChatModel(azureOpenAI.ChatCompletionsOYD.Model),
+		MaxTokens: openai.Int(512),
+		Messages: []openai.ChatCompletionMessageParamUnion{
+			{
+				OfUser: &openai.ChatCompletionUserMessageParam{
+					Content: openai.ChatCompletionUserMessageParamContentUnion{
+						OfString: openai.String("What does the OpenAI package do?"),
+					},
+				},
+			},
 		},
-		MaxTokens: to.Ptr[int32](512),
-		AzureExtensionsOptions: []azopenai.AzureChatExtensionConfigurationClassification{
-			&azureOpenAI.Cognitive,
-		},
-		DeploymentName: &azureOpenAI.ChatCompletionsOYD.Model,
-	}, nil)
-	customRequireNoError(t, err, true)
+	}
+
+	resp, err := client.Chat.Completions.New(context.Background(), inputParams,
+		azopenaiextensions.WithDataSources(&azureOpenAI.Cognitive))
+	customRequireNoError(t, err)
 	require.NotEmpty(t, resp)
 
-	msgContext := resp.Choices[0].Message.Context
+	msg := azopenaiextensions.ChatCompletionMessage(resp.Choices[0].Message)
+
+	msgContext, err := msg.Context()
+	require.NoError(t, err)
 	require.NotEmpty(t, msgContext.Citations[0].Content)
 
-	require.NotEmpty(t, *resp.Choices[0].Message.Content)
-	require.Equal(t, azopenai.CompletionsFinishReasonStopped, *resp.Choices[0].FinishReason)
+	require.NotEmpty(t, msg.Content)
+	require.Equal(t, "stop", resp.Choices[0].FinishReason)
+
+	t.Logf("Content = %s", resp.Choices[0].Message.Content)
 }
 
 func TestChatExtensionsStreaming_extensions_bringYourOwnData(t *testing.T) {
-	client := newTestClient(t, azureOpenAI.ChatCompletionsOYD.Endpoint)
+	client := newStainlessTestClient(t, azureOpenAI.ChatCompletionsOYD.Endpoint)
 
-	streamResp, err := client.GetChatCompletionsStream(context.Background(), azopenai.ChatCompletionsStreamOptions{
-		Messages: []azopenai.ChatRequestMessageClassification{
-			&azopenai.ChatRequestUserMessage{Content: azopenai.NewChatRequestUserMessageContent("What does PR complete mean?")},
-		},
-		MaxTokens: to.Ptr[int32](512),
-		AzureExtensionsOptions: []azopenai.AzureChatExtensionConfigurationClassification{
+	inputParams := openai.ChatCompletionNewParams{
+		Model:     openai.ChatModel(azureOpenAI.ChatCompletionsOYD.Model),
+		MaxTokens: openai.Int(512),
+		Messages: []openai.ChatCompletionMessageParamUnion{{
+			OfUser: &openai.ChatCompletionUserMessageParam{
+				Content: openai.ChatCompletionUserMessageParamContentUnion{
+					OfString: openai.String("What does the OpenAI package do?"),
+				},
+			},
+		}},
+	}
+
+	streamer := client.Chat.Completions.NewStreaming(context.Background(), inputParams,
+		azopenaiextensions.WithDataSources(
 			&azureOpenAI.Cognitive,
-		},
-		DeploymentName: &azureOpenAI.ChatCompletionsOYD.Model,
-	}, nil)
+		))
 
-	customRequireNoError(t, err, true)
-	defer streamResp.ChatCompletionsStream.Close()
+	defer streamer.Close()
 
 	text := ""
 
-	first := false
+	first := true
 
-	for {
-		event, err := streamResp.ChatCompletionsStream.Read()
-
-		if errors.Is(err, io.EOF) {
-			break
-		}
-
-		require.NoError(t, err)
+	for streamer.Next() {
+		chunk := streamer.Current()
 
 		if first {
 			// when you BYOD you get some extra content showing you metadata/info from the external
 			// data source.
 			first = false
-			msgContext := event.Choices[0].Message.Context
+
+			msgContext, err := azopenaiextensions.ChatCompletionChunkChoiceDelta(chunk.Choices[0].Delta).Context()
+			require.NoError(t, err)
 			require.NotEmpty(t, msgContext.Citations[0].Content)
 		}
 
-		for _, choice := range event.Choices {
-			if choice.Delta != nil && choice.Delta.Content != nil {
-				text += *choice.Delta.Content
-			}
+		for _, choice := range chunk.Choices {
+			text += choice.Delta.Content
 		}
 	}
 
+	customRequireNoError(t, streamer.Err())
 	require.NotEmpty(t, text)
+
+	t.Logf("Streaming content = %s", text)
 }

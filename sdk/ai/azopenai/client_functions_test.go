@@ -1,69 +1,72 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package azopenai_test
+package azopenaiextensions_test
 
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
+	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiextensions"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/openai/openai-go"
+	"github.com/openai/openai-go/shared"
 	"github.com/stretchr/testify/require"
 )
 
+var weatherFuncTool = []openai.ChatCompletionToolParam{{
+	Function: shared.FunctionDefinitionParam{
+		Name:        "get_current_weather",
+		Description: openai.String("Get the current weather in a given location"),
+		Parameters: openai.FunctionParameters{
+			"required": []string{"location"},
+			"type":     "object",
+			"properties": map[string]interface{}{
+				"location": map[string]string{
+					"type":        "string",
+					"description": "The city and state, e.g. San Francisco, CA",
+				},
+				"unit": map[string]interface{}{
+					"type": "string",
+					"enum": []string{"celsius", "fahrenheit"},
+				},
+			},
+		},
+	},
+}}
+
 func TestGetChatCompletions_usingFunctions(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
+	if recording.GetRecordMode() != recording.LiveMode {
 		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
 	}
+
 	// https://platform.openai.com/docs/guides/gpt/function-calling
 
-	parametersJSON, err := json.Marshal(map[string]any{
-		"required": []string{"location"},
-		"type":     "object",
-		"properties": map[string]any{
-			"location": map[string]any{
-				"type":        "string",
-				"description": "The city and state, e.g. San Francisco, CA",
-			},
-			"unit": map[string]any{
-				"type": "string",
-				"enum": []string{"celsius", "fahrenheit"},
-			},
-		},
-	})
-	require.NoError(t, err)
-
-	testFn := func(t *testing.T, chatClient *azopenai.Client, deploymentName string, toolChoice *azopenai.ChatCompletionsToolChoice) {
-		body := azopenai.ChatCompletionsOptions{
-			DeploymentName: &deploymentName,
-			Messages: []azopenai.ChatRequestMessageClassification{
-				&azopenai.ChatRequestAssistantMessage{
-					Content: azopenai.NewChatRequestAssistantMessageContent("What's the weather like in Boston, MA, in celsius?"),
-				},
-			},
-			Tools: []azopenai.ChatCompletionsToolDefinitionClassification{
-				&azopenai.ChatCompletionsFunctionToolDefinition{
-					Function: &azopenai.ChatCompletionsFunctionToolDefinitionFunction{
-						Name:        to.Ptr("get_current_weather"),
-						Description: to.Ptr("Get the current weather in a given location"),
-						Parameters:  parametersJSON,
+	testFn := func(t *testing.T, chatClient *openai.Client, deploymentName string, toolChoice *openai.ChatCompletionToolChoiceOptionUnionParam) {
+		body := openai.ChatCompletionNewParams{
+			Model: openai.ChatModel(deploymentName),
+			Messages: []openai.ChatCompletionMessageParamUnion{{
+				OfAssistant: &openai.ChatCompletionAssistantMessageParam{
+					Content: openai.ChatCompletionAssistantMessageParamContentUnion{
+						OfString: openai.String("What's the weather like in Boston, MA, in celsius?"),
 					},
 				},
-			},
-			ToolChoice:  toolChoice,
-			Temperature: to.Ptr[float32](0.0),
+			}},
+			Tools:       weatherFuncTool,
+			Temperature: openai.Float(0.0),
+		}
+		if toolChoice != nil {
+			body.ToolChoice = *toolChoice
 		}
 
-		resp, err := chatClient.GetChatCompletions(context.Background(), body, nil)
-		customRequireNoError(t, err, true)
+		resp, err := chatClient.Chat.Completions.New(context.Background(), body)
+		require.NoError(t, err)
 
-		funcCall := resp.Choices[0].Message.ToolCalls[0].(*azopenai.ChatCompletionsFunctionToolCall).Function
+		funcCall := resp.Choices[0].Message.ToolCalls[0]
 
-		require.Equal(t, "get_current_weather", *funcCall.Name)
+		require.Equal(t, "get_current_weather", funcCall.Function.Name)
 
 		type location struct {
 			Location string `json:"location"`
@@ -71,236 +74,110 @@ func TestGetChatCompletions_usingFunctions(t *testing.T) {
 		}
 
 		var funcParams *location
-		err = json.Unmarshal([]byte(*funcCall.Arguments), &funcParams)
+		err = json.Unmarshal([]byte(funcCall.Function.Arguments), &funcParams)
 		require.NoError(t, err)
 
 		require.Equal(t, location{Location: "Boston, MA", Unit: "celsius"}, *funcParams)
 	}
 
-	useSpecificTool := azopenai.NewChatCompletionsToolChoice(
-		azopenai.ChatCompletionsToolChoiceFunction{Name: "get_current_weather"},
-	)
+	chatClient := newStainlessTestClient(t, azureOpenAI.ChatCompletions.Endpoint)
 
-	t.Run("AzureOpenAI", func(t *testing.T) {
-		chatClient := newTestClient(t, azureOpenAI.ChatCompletions.Endpoint)
-
-		testData := []struct {
-			Model      string
-			ToolChoice *azopenai.ChatCompletionsToolChoice
-		}{
-			// all of these variants use the tool provided - auto just also works since we did provide
-			// a tool reference and ask a question to use it.
-			{Model: azureOpenAI.ChatCompletions.Model, ToolChoice: nil},
-			{Model: azureOpenAI.ChatCompletions.Model, ToolChoice: azopenai.ChatCompletionsToolChoiceAuto},
-			{Model: azureOpenAI.ChatCompletions.Model, ToolChoice: useSpecificTool},
-		}
-
-		for _, td := range testData {
-			testFn(t, chatClient, td.Model, td.ToolChoice)
-		}
-	})
-
-	t.Run("OpenAI", func(t *testing.T) {
-		testData := []struct {
-			EPM        endpointWithModel
-			ToolChoice *azopenai.ChatCompletionsToolChoice
-		}{
-			// all of these variants use the tool provided - auto just also works since we did provide
-			// a tool reference and ask a question to use it.
-			{EPM: openAI.ChatCompletions, ToolChoice: nil},
-			{EPM: openAI.ChatCompletions, ToolChoice: azopenai.ChatCompletionsToolChoiceAuto},
-			{EPM: openAI.ChatCompletionsLegacyFunctions, ToolChoice: useSpecificTool},
-		}
-
-		for i, td := range testData {
-			t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
-				chatClient := newTestClient(t, td.EPM.Endpoint)
-				testFn(t, chatClient, td.EPM.Model, td.ToolChoice)
-			})
-		}
-	})
-}
-
-func TestGetChatCompletions_usingFunctions_legacy(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
-
-	parametersJSON, err := json.Marshal(map[string]any{
-		"required": []string{"location"},
-		"type":     "object",
-		"properties": map[string]any{
-			"location": map[string]any{
-				"type":        "string",
-				"description": "The city and state, e.g. San Francisco, CA",
-			},
-			"unit": map[string]any{
-				"type": "string",
-				"enum": []string{"celsius", "fahrenheit"},
-			},
-		},
-	})
-	require.NoError(t, err)
-
-	testFn := func(t *testing.T, epm endpointWithModel) {
-		client := newTestClient(t, epm.Endpoint)
-
-		body := azopenai.ChatCompletionsOptions{
-			DeploymentName: &epm.Model,
-			Messages: []azopenai.ChatRequestMessageClassification{
-				&azopenai.ChatRequestAssistantMessage{
-					Content: azopenai.NewChatRequestAssistantMessageContent("What's the weather like in Boston, MA, in celsius?"),
+	testData := []struct {
+		Model      string
+		ToolChoice *openai.ChatCompletionToolChoiceOptionUnionParam
+	}{
+		// all of these variants use the tool provided - auto just also works since we did provide
+		// a tool reference and ask a question to use it.
+		{Model: azureOpenAI.ChatCompletions.Model, ToolChoice: nil},
+		{Model: azureOpenAI.ChatCompletions.Model, ToolChoice: &openai.ChatCompletionToolChoiceOptionUnionParam{
+			OfAuto: openai.String("auto"),
+		}},
+		{Model: azureOpenAI.ChatCompletions.Model, ToolChoice: &openai.ChatCompletionToolChoiceOptionUnionParam{
+			OfChatCompletionNamedToolChoice: &openai.ChatCompletionNamedToolChoiceParam{
+				Function: openai.ChatCompletionNamedToolChoiceFunctionParam{
+					Name: "get_current_weather",
 				},
 			},
-			FunctionCall: &azopenai.ChatCompletionsOptionsFunctionCall{
-				Value: to.Ptr("auto"),
-			},
-			Functions: []azopenai.FunctionDefinition{
-				{
-					Name:        to.Ptr("get_current_weather"),
-					Description: to.Ptr("Get the current weather in a given location"),
-					Parameters:  parametersJSON,
-				},
-			},
-			Temperature: to.Ptr[float32](0.0),
-		}
-
-		resp, err := client.GetChatCompletions(context.Background(), body, nil)
-		customRequireNoError(t, err, true)
-
-		funcCall := resp.ChatCompletions.Choices[0].Message.FunctionCall
-
-		require.Equal(t, "get_current_weather", *funcCall.Name)
-
-		type location struct {
-			Location string `json:"location"`
-			Unit     string `json:"unit"`
-		}
-
-		var funcParams *location
-		err = json.Unmarshal([]byte(*funcCall.Arguments), &funcParams)
-		require.NoError(t, err)
-
-		require.Equal(t, location{Location: "Boston, MA", Unit: "celsius"}, *funcParams)
+		}},
 	}
 
-	t.Run("AzureOpenAI", func(t *testing.T) {
-		testFn(t, azureOpenAI.ChatCompletionsLegacyFunctions)
-	})
-
-	t.Run("OpenAI", func(t *testing.T) {
-		testFn(t, openAI.ChatCompletions)
-	})
-
-	t.Run("OpenAI.LegacyFunctions", func(t *testing.T) {
-		testFn(t, openAI.ChatCompletionsLegacyFunctions)
-
-	})
+	for _, td := range testData {
+		testFn(t, &chatClient, td.Model, td.ToolChoice)
+	}
 }
 
 func TestGetChatCompletions_usingFunctions_streaming(t *testing.T) {
-	parametersJSON, err := json.Marshal(map[string]any{
-		"required": []string{"location"},
-		"type":     "object",
-		"properties": map[string]any{
-			"location": map[string]any{
-				"type":        "string",
-				"description": "The city and state, e.g. San Francisco, CA",
-			},
-			"unit": map[string]any{
-				"type": "string",
-				"enum": []string{"celsius", "fahrenheit"},
-			},
-		},
-	})
-	require.NoError(t, err)
-
-	testFn := func(t *testing.T, epm endpointWithModel) {
-		body := azopenai.ChatCompletionsStreamOptions{
-			DeploymentName: &epm.Model,
-			Messages: []azopenai.ChatRequestMessageClassification{
-				&azopenai.ChatRequestAssistantMessage{
-					Content: azopenai.NewChatRequestAssistantMessageContent("What's the weather like in Boston, MA, in celsius?"),
+	body := openai.ChatCompletionNewParams{
+		Model: openai.ChatModel(azureOpenAI.ChatCompletions.Model),
+		Messages: []openai.ChatCompletionMessageParamUnion{{
+			OfAssistant: &openai.ChatCompletionAssistantMessageParam{
+				Content: openai.ChatCompletionAssistantMessageParamContentUnion{
+					OfString: openai.String("What's the weather like in Boston, MA, in celsius?"),
 				},
 			},
-			Tools: []azopenai.ChatCompletionsToolDefinitionClassification{
-				&azopenai.ChatCompletionsFunctionToolDefinition{
-					Function: &azopenai.ChatCompletionsFunctionToolDefinitionFunction{
-						Name:        to.Ptr("get_current_weather"),
-						Description: to.Ptr("Get the current weather in a given location"),
-						Parameters:  parametersJSON,
-					},
-				},
-			},
-			Temperature: to.Ptr[float32](0.0),
-		}
-
-		chatClient := newTestClient(t, epm.Endpoint)
-
-		resp, err := chatClient.GetChatCompletionsStream(context.Background(), body, nil)
-		require.NoError(t, err)
-		require.NotEmpty(t, resp)
-
-		defer func() {
-			err := resp.ChatCompletionsStream.Close()
-			require.NoError(t, err)
-		}()
-
-		// these results are way trickier than they should be, but we have to accumulate across
-		// multiple fields to get a full result.
-
-		funcCall := &azopenai.FunctionCall{
-			Arguments: to.Ptr(""),
-			Name:      to.Ptr(""),
-		}
-
-		for {
-			streamResp, err := resp.ChatCompletionsStream.Read()
-			require.NoError(t, err)
-
-			if len(streamResp.Choices) == 0 {
-				// there are prompt filter results.
-				require.NotEmpty(t, streamResp.PromptFilterResults)
-				continue
-			}
-
-			if streamResp.Choices[0].FinishReason != nil {
-				break
-			}
-
-			var functionToolCall *azopenai.ChatCompletionsFunctionToolCall = streamResp.Choices[0].Delta.ToolCalls[0].(*azopenai.ChatCompletionsFunctionToolCall)
-			require.NotEmpty(t, functionToolCall.Function)
-
-			if functionToolCall.Function.Arguments != nil {
-				*funcCall.Arguments += *functionToolCall.Function.Arguments
-			}
-
-			if functionToolCall.Function.Name != nil {
-				*funcCall.Name += *functionToolCall.Function.Name
-			}
-		}
-
-		require.Equal(t, "get_current_weather", *funcCall.Name)
-
-		type location struct {
-			Location string `json:"location"`
-			Unit     string `json:"unit"`
-		}
-
-		var funcParams *location
-		err = json.Unmarshal([]byte(*funcCall.Arguments), &funcParams)
-		require.NoError(t, err)
-
-		require.Equal(t, location{Location: "Boston, MA", Unit: "celsius"}, *funcParams)
+		}},
+		Tools:       weatherFuncTool,
+		Temperature: openai.Float(0.0),
 	}
 
-	// https://platform.openai.com/docs/guides/gpt/function-calling
+	chatClient := newStainlessTestClient(t, azureOpenAI.ChatCompletions.Endpoint)
 
-	t.Run("AzureOpenAI", func(t *testing.T) {
-		testFn(t, azureOpenAI.ChatCompletions)
-	})
+	stream := chatClient.Chat.Completions.NewStreaming(context.Background(), body)
 
-	t.Run("OpenAI", func(t *testing.T) {
-		testFn(t, openAI.ChatCompletions)
-	})
+	defer func() {
+		err := stream.Close()
+		require.NoError(t, err)
+	}()
+
+	// these results are way trickier than they should be, but we have to accumulate across
+	// multiple fields to get a full result.
+
+	funcCall := &struct {
+		Arguments *string
+		Name      *string
+	}{
+		Arguments: to.Ptr(""),
+		Name:      to.Ptr(""),
+	}
+
+	for stream.Next() {
+		chunk := stream.Current()
+
+		if len(chunk.Choices) == 0 {
+			azureChunk := azopenaiextensions.ChatCompletionChunk(chunk)
+
+			promptFilterResults, err := azureChunk.PromptFilterResults()
+			require.NoError(t, err)
+
+			// there are prompt filter results.
+			require.NotEmpty(t, promptFilterResults)
+			continue
+		}
+
+		if chunk.Choices[0].FinishReason != "" {
+			require.Equal(t, "tool_calls", chunk.Choices[0].FinishReason)
+			continue
+		}
+
+		functionToolCall := chunk.Choices[0].Delta.ToolCalls[0]
+
+		require.NotEmpty(t, functionToolCall.Function)
+
+		*funcCall.Arguments += functionToolCall.Function.Arguments
+		*funcCall.Name += functionToolCall.Function.Name
+	}
+
+	require.NoError(t, stream.Err())
+	require.Equal(t, "get_current_weather", *funcCall.Name)
+
+	type location struct {
+		Location string `json:"location"`
+		Unit     string `json:"unit"`
+	}
+
+	var funcParams *location
+	err := json.Unmarshal([]byte(*funcCall.Arguments), &funcParams)
+	require.NoError(t, err)
+
+	require.Equal(t, location{Location: "Boston, MA", Unit: "celsius"}, *funcParams)
 }

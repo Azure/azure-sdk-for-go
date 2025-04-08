@@ -18,3 +18,7 @@ steps:
           - ${{ else }}:
             - "sdk/${{ parameters.ServiceDirectory }}"
           - ".vscode/"
+
+  - pwsh: |
+      Get-ChildItem -Path "$(Build.SourcesDirectory)" -Recurse | % { Write-Host $_.FullName }
+    displayName: "Dump visible files"

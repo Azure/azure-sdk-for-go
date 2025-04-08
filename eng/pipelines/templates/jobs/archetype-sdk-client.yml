@@ -153,7 +153,7 @@ extends:
               os: linux
 
             steps:
-              - template: eng/pipelines/templates/steps/sparse-checkout-for-servicedirectory.yml
+              - template: /eng/pipelines/templates/steps/sparse-checkout-for-servicedirectory.yml
                 parameters:
                   ServiceDirectory: ${{ parameters.ServiceDirectory }}
 

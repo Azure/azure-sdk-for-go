@@ -243,6 +243,49 @@ const fakeAPIKey = "redacted"
 const fakeCognitiveEndpoint = "https://Sanitized.openai.azure.com"
 const fakeCognitiveIndexName = "index"
 
+func configureTestProxy(options recording.RecordingOptions) error {
+	if err := recording.SetDefaultMatcher(nil, &recording.SetDefaultMatcherOptions{
+		RecordingOptions: options,
+		ExcludedHeaders: []string{
+			"X-Stainless-Arch",
+			"X-Stainless-Lang",
+			"X-Stainless-Os",
+			"X-Stainless-Package-Version",
+			"X-Stainless-Retry-Count",
+			"X-Stainless-Runtime",
+			"X-Stainless-Runtime-Version",
+		},
+	}); err != nil {
+		return err
+	}
+
+	if err := recording.AddHeaderRegexSanitizer("Api-Key", fakeAPIKey, "", &options); err != nil {
+		return err
+	}
+
+	if err := recording.AddHeaderRegexSanitizer("User-Agent", "fake-user-agent", "", &options); err != nil {
+		return err
+	}
+
+	if err := recording.AddURISanitizer("/openai/operations/images/00000000-AAAA-BBBB-CCCC-DDDDDDDDDDDD", "/openai/operations/images/[A-Za-z-0-9]+", &options); err != nil {
+		return err
+	}
+
+	if err := recording.AddGeneralRegexSanitizer(
+		fmt.Sprintf(`"endpoint": "%s"`, fakeCognitiveEndpoint),
+		`"endpoint":\s*"[^"]+"`, &options); err != nil {
+		return err
+	}
+
+	if err := recording.AddGeneralRegexSanitizer(
+		fmt.Sprintf(`"index_name": "%s"`, fakeCognitiveIndexName),
+		`"index_name":\s*"[^"]+"`, &options); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // newRecordingTransporter sets up our recording policy to sanitize endpoints and any parts of the response that might
 // involve UUIDs that would make the response/request inconsistent.
 func newRecordingTransporter(t *testing.T) policy.Transporter {
@@ -254,27 +297,6 @@ func newRecordingTransporter(t *testing.T) policy.Transporter {
 
 	err = recording.Start(t, RecordingDirectory, defaultOptions)
 	require.NoError(t, err)
-
-	if recording.GetRecordMode() != recording.PlaybackMode {
-		err = recording.AddHeaderRegexSanitizer("Api-Key", fakeAPIKey, "", defaultOptions)
-		require.NoError(t, err)
-
-		err = recording.AddHeaderRegexSanitizer("User-Agent", "fake-user-agent", "", defaultOptions)
-		require.NoError(t, err)
-
-		err = recording.AddURISanitizer("/openai/operations/images/00000000-AAAA-BBBB-CCCC-DDDDDDDDDDDD", "/openai/operations/images/[A-Za-z-0-9]+", defaultOptions)
-		require.NoError(t, err)
-
-		err = recording.AddGeneralRegexSanitizer(
-			fmt.Sprintf(`"endpoint": "%s"`, fakeCognitiveEndpoint),
-			fmt.Sprintf(`"endpoint":\s*"%s"`, *azureOpenAI.Cognitive.Parameters.Endpoint), defaultOptions)
-		require.NoError(t, err)
-
-		err = recording.AddGeneralRegexSanitizer(
-			fmt.Sprintf(`"index_name": "%s"`, fakeCognitiveIndexName),
-			`"index_name":\s*".+?"`, defaultOptions)
-		require.NoError(t, err)
-	}
 
 	t.Cleanup(func() {
 		err := recording.Stop(t, defaultOptions)

@@ -188,9 +188,9 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate_createAnUpdateRunGeneratedByMax
 			},
 			AutoUpgradeProfileID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgfleets/providers/Microsoft.ContainerService/fleets/fleet1/autoUpgradeProfiles/aup1"),
 		},
-	}, &UpdateRunsClientBeginCreateOrUpdateOptions{
-		ifMatch:     to.Ptr("wyolpuaxgybeygcbz"),
-		ifNoneMatch: to.Ptr("rwrhonlormgshamadufoo")})
+	}, &armcontainerservicefleet.UpdateRunsClientBeginCreateOrUpdateOptions{
+		IfMatch:     to.Ptr("wyolpuaxgybeygcbz"),
+		IfNoneMatch: to.Ptr("rwrhonlormgshamadufoo")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -413,8 +413,8 @@ func ExampleUpdateRunsClient_BeginDelete_deleteAnUpdateRunResourceGeneratedByMax
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewUpdateRunsClient().BeginDelete(ctx, "rgfleets", "fleet1", "fleet1", &UpdateRunsClientBeginDeleteOptions{
-		ifMatch: to.Ptr("xnbwucfeufeagpa")})
+	poller, err := clientFactory.NewUpdateRunsClient().BeginDelete(ctx, "rgfleets", "fleet1", "fleet1", &armcontainerservicefleet.UpdateRunsClientBeginDeleteOptions{
+		IfMatch: to.Ptr("xnbwucfeufeagpa")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1185,8 +1185,8 @@ func ExampleUpdateRunsClient_BeginSkip_skipsOneOrMoreMemberGroupStageAfterStageW
 				Name: to.Ptr("stage1"),
 			},
 		},
-	}, &UpdateRunsClientBeginSkipOptions{
-		ifMatch: to.Ptr("rncfubdzrhcihvpqflbsjvoau")})
+	}, &armcontainerservicefleet.UpdateRunsClientBeginSkipOptions{
+		IfMatch: to.Ptr("rncfubdzrhcihvpqflbsjvoau")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1487,8 +1487,8 @@ func ExampleUpdateRunsClient_BeginStart_startsAnUpdateRunGeneratedByMaximumSetRu
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewUpdateRunsClient().BeginStart(ctx, "rgfleets", "fleet1", "fleet1", &UpdateRunsClientBeginStartOptions{
-		ifMatch: to.Ptr("bvhjlqeindkmljbbiypbqiaqgtkhlu")})
+	poller, err := clientFactory.NewUpdateRunsClient().BeginStart(ctx, "rgfleets", "fleet1", "fleet1", &armcontainerservicefleet.UpdateRunsClientBeginStartOptions{
+		IfMatch: to.Ptr("bvhjlqeindkmljbbiypbqiaqgtkhlu")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1789,8 +1789,8 @@ func ExampleUpdateRunsClient_BeginStop_stopsAnUpdateRunGeneratedByMaximumSetRule
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewUpdateRunsClient().BeginStop(ctx, "rgfleets", "fleet1", "fleet1", &UpdateRunsClientBeginStopOptions{
-		ifMatch: to.Ptr("jb")})
+	poller, err := clientFactory.NewUpdateRunsClient().BeginStop(ctx, "rgfleets", "fleet1", "fleet1", &armcontainerservicefleet.UpdateRunsClientBeginStopOptions{
+		IfMatch: to.Ptr("jb")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

@@ -83,9 +83,9 @@ func ExampleAutoUpgradeProfilesClient_BeginCreateOrUpdate_createAnAutoUpgradePro
 				LastTriggerError: &armcontainerservicefleet.ErrorDetail{},
 			},
 		},
-	}, &AutoUpgradeProfilesClientBeginCreateOrUpdateOptions{
-		ifMatch:     to.Ptr("teikqmg"),
-		ifNoneMatch: to.Ptr("ghfmmyrekxincsxklbldnvhqd")})
+	}, &armcontainerservicefleet.AutoUpgradeProfilesClientBeginCreateOrUpdateOptions{
+		IfMatch:     to.Ptr("teikqmg"),
+		IfNoneMatch: to.Ptr("ghfmmyrekxincsxklbldnvhqd")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -176,8 +176,8 @@ func ExampleAutoUpgradeProfilesClient_BeginDelete_deleteAnAutoUpgradeProfileReso
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewAutoUpgradeProfilesClient().BeginDelete(ctx, "rgfleets", "fleet1", "autoupgradeprofile1", &AutoUpgradeProfilesClientBeginDeleteOptions{
-		ifMatch: to.Ptr("qmdsmmawj")})
+	poller, err := clientFactory.NewAutoUpgradeProfilesClient().BeginDelete(ctx, "rgfleets", "fleet1", "autoupgradeprofile1", &armcontainerservicefleet.AutoUpgradeProfilesClientBeginDeleteOptions{
+		IfMatch: to.Ptr("qmdsmmawj")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

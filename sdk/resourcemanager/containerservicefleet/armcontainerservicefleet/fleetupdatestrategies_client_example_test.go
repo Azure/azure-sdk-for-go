@@ -39,9 +39,9 @@ func ExampleFleetUpdateStrategiesClient_BeginCreateOrUpdate_createAFleetUpdateSt
 				},
 			},
 		},
-	}, &FleetUpdateStrategiesClientBeginCreateOrUpdateOptions{
-		ifMatch:     to.Ptr("bttptpmhheves"),
-		ifNoneMatch: to.Ptr("tlx")})
+	}, &armcontainerservicefleet.FleetUpdateStrategiesClientBeginCreateOrUpdateOptions{
+		IfMatch:     to.Ptr("bttptpmhheves"),
+		IfNoneMatch: to.Ptr("tlx")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -169,8 +169,8 @@ func ExampleFleetUpdateStrategiesClient_BeginDelete_deleteAFleetUpdateStrategyRe
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewFleetUpdateStrategiesClient().BeginDelete(ctx, "rgfleets", "fleet1", "fleet1", &FleetUpdateStrategiesClientBeginDeleteOptions{
-		ifMatch: to.Ptr("saqprswlk")})
+	poller, err := clientFactory.NewFleetUpdateStrategiesClient().BeginDelete(ctx, "rgfleets", "fleet1", "fleet1", &armcontainerservicefleet.FleetUpdateStrategiesClientBeginDeleteOptions{
+		IfMatch: to.Ptr("saqprswlk")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

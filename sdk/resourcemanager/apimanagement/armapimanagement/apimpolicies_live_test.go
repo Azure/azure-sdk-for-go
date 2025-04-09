@@ -110,8 +110,11 @@ func (testsuite *ApimpoliciesTestSuite) TestPolicy() {
 
 	// From step Policy_ListByService
 	fmt.Println("Call operation: Policy_ListByService")
-	_, err = policyClient.ListByService(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, nil)
-	testsuite.Require().NoError(err)
+	pager := policyClient.NewListByServicePager(testsuite.resourceGroupName, testsuite.serviceName, nil)
+	for pager.More() {
+		_, err = pager.NextPage(testsuite.ctx)
+		testsuite.Require().NoError(err)
+	}
 
 	// From step Policy_Delete
 	fmt.Println("Call operation: Policy_Delete")

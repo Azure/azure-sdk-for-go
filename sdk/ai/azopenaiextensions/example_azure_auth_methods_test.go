@@ -46,40 +46,6 @@ func Example_usingDefaultAzureCredential() {
 	makeSimpleRequest(&client, model)
 }
 
-func Example_usingManagedIdentityCredential() {
-	endpoint := os.Getenv("AOAI_ENDPOINT")
-	model := os.Getenv("AOAI_MODEL")
-
-	if endpoint == "" || model == "" {
-		fmt.Fprintf(os.Stderr, "Environment variables are not set, not running example.")
-		return
-	}
-
-	var credential *azidentity.ManagedIdentityCredential
-	var err error
-
-	// Use system assigned managed identity
-	credential, err = azidentity.NewManagedIdentityCredential(nil)
-
-	// When using User Assigned Managed Identity use this instead and pass your client id in the options
-	// clientID := azidentity.ClientID("abcd1234-...")
-	// opts := azidentity.ManagedIdentityCredentialOptions{ID: clientID}
-	// cred, err := azidentity.NewManagedIdentityCredential(&opts)
-
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
-		return
-	}
-
-	client := openai.NewClient(
-		azure.WithEndpoint(endpoint, "2024-08-01-preview"),
-		azure.WithTokenCredential(credential),
-	)
-
-	// Use the client with managed identity credentials
-	makeSimpleRequest(&client, model)
-}
-
 // Helper function to make a simple request to Azure OpenAI
 func makeSimpleRequest(client *openai.Client, model string) {
 	chatParams := openai.ChatCompletionNewParams{

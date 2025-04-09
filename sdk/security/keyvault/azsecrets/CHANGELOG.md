@@ -9,7 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
-* Upgraded to API service version `7.6-preview.2` - Test change to be undone.
+* Upgraded to API service version `7.6-preview.2` - Test change to be undone
 
 ## 1.3.1 (2025-02-13)
 

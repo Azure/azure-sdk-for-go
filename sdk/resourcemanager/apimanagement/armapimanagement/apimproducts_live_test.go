@@ -268,7 +268,11 @@ func (testsuite *ApimproductsTestSuite) TestProductpolicy() {
 
 	// From step ProductPolicy_ListByProduct
 	fmt.Println("Call operation: ProductPolicy_ListByProduct")
-	_, err = productPolicyClient.ListByProduct(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.productId, nil)
+	pager := productPolicyClient.NewListByProductPager(testsuite.resourceGroupName, testsuite.serviceName, testsuite.productId, nil)
+	for pager.More() {
+		_, err = pager.NextPage(testsuite.ctx)
+		testsuite.Require().NoError(err)
+	}
 	testsuite.Require().NoError(err)
 
 	// From step ProductPolicy_Get

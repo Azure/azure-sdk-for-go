@@ -191,7 +191,7 @@ func (testsuite *ApimusersTestSuite) TestUser() {
 
 	// From step User_Delete
 	fmt.Println("Call operation: User_Delete")
-	_, err = userClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.userId, "*", &armapimanagement.UserClientDeleteOptions{DeleteSubscriptions: nil,
+	_, err = userClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.userId, "*", &armapimanagement.UserClientBeginDeleteOptions{DeleteSubscriptions: nil,
 		Notify:  nil,
 		AppType: nil,
 	})

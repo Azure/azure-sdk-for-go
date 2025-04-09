@@ -482,4 +482,12 @@ func (testsuite *ApimapisTestSuite) Cleanup() {
 	testsuite.Require().NoError(err)
 	_, err = aPIOperationClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, testsuite.operationId, "*", nil)
 	testsuite.Require().NoError(err)
+
+	// From step Api_Delete
+	fmt.Println("Call operation: Api_Delete")
+	aPIClient, err := armapimanagement.NewAPIClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
+	_, err = aPIClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, "*", &armapimanagement.APIClientBeginDeleteOptions{DeleteRevisions: nil})
+	testsuite.Require().NoError(err)
+
 }

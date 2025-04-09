@@ -84,6 +84,10 @@ steps:
 
   - ${{ if eq(parameters.TestProxy, true) }}:
     - template: /eng/common/testproxy/test-proxy-tool.yml
+    - pwsh:
+        Write-Host "set PROXY_PORT=5000"
+        Write-Host "##vso[task.setvariable variable=PROXY_PORT]5000"
+      displayName: Set test-proxy to default port
 
   # we do not need to change any conditional activation for this section, as it is only activated when
   # invoking a livetest run, which will never be the case for PRs. Devs will /azp run go - <service>

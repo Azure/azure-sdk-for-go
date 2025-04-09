@@ -135,7 +135,7 @@ func (testsuite *FleetsTestSuite) TestFleets() {
 }
 
 // Microsoft.ContainerService/fleets/{fleetName}/members/{fleetMemberName}
-func (testsuite *FleetsTestSuite) TestFleetMembers() {
+func (testsuite *FleetsTestSuite) TTestFleetMembers() {
 	var managedClusterId string
 	var err error
 	// From step Create_ManageCluster

@@ -57,16 +57,6 @@ const (
 	releaseDateKeyword = "**Target release date**: "
 )
 
-type issueError struct {
-	issue github.Issue
-	err   error
-}
-
-// Error ...
-func (e *issueError) Error() string {
-	return fmt.Sprintf("cannot parse release request from issue %s: %+v", e.issue.GetHTMLURL(), e.err)
-}
-
 func initializeHandlers(options ParsingOptions) {
 	if options.IncludeDataPlaneRequests {
 		resultHandlerMap[link.CodeDataPlane] = handleTrack2

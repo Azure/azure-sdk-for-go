@@ -126,6 +126,11 @@ func (c ChatRequestAssistantMessageContent) MarshalJSON() ([]byte, error) {
 	return json.Marshal(c.value)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type ChatRequestAssistantMessageContent.
+func (c *ChatRequestAssistantMessageContent) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &c.value)
+}
+
 // ChatRequestSystemMessageContent contains the content for a [ChatRequestSystemMessage].
 // NOTE: This should be created using [azopenai.NewChatRequestSystemMessageContent]
 type ChatRequestSystemMessageContent struct {
@@ -135,6 +140,11 @@ type ChatRequestSystemMessageContent struct {
 // MarshalJSON implements the json.Marshaller interface for type ChatRequestSystemMessageContent.
 func (c ChatRequestSystemMessageContent) MarshalJSON() ([]byte, error) {
 	return json.Marshal(c.value)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ChatRequestSystemMessageContent.
+func (c *ChatRequestSystemMessageContent) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &c.value)
 }
 
 // NewChatRequestSystemMessageContent creates a [azopenai.ChatRequestSystemMessageContent].
@@ -160,6 +170,11 @@ func (c ChatRequestDeveloperMessageContent) MarshalJSON() ([]byte, error) {
 	return json.Marshal(c.value)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type ChatRequestDeveloperMessageContent.
+func (c *ChatRequestDeveloperMessageContent) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &c.value)
+}
+
 // NewChatRequestDeveloperMessageContent creates a [azopenai.ChatRequestDeveloperMessageContent].
 func NewChatRequestDeveloperMessageContent[T []ChatMessageTextContentItem | string](value T) *ChatRequestDeveloperMessageContent {
 	switch any(value).(type) {
@@ -181,6 +196,11 @@ type ChatRequestToolMessageContent struct {
 // MarshalJSON implements the json.Marshaller interface for type ChatRequestToolMessageContent.
 func (c ChatRequestToolMessageContent) MarshalJSON() ([]byte, error) {
 	return json.Marshal(c.value)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ChatRequestToolMessageContent.
+func (c *ChatRequestToolMessageContent) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &c.value)
 }
 
 // NewChatRequestToolMessageContent creates a [azopenai.ChatRequestToolMessageContent].

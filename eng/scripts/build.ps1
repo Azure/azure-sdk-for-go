@@ -23,6 +23,13 @@ param(
 function Process-Sdk ()
 {
     $currentDirectory = Get-Location
+
+    # Check for autorest.md first
+    if (-not (Test-Path "autorest.md")) {
+        LogWarning "This is not a Swagger-based SDK. No autorest.md file found in $currentDirectory"
+        return
+    }
+
     if ($clean)
     {
         Write-Host "##[command]Executing go clean -v ./... in " $currentDirectory
